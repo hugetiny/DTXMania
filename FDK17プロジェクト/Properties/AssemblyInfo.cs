@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct( "FDKライブラリ ver.17" )]
-[assembly: AssemblyCopyright("Copyright 2000-2010 FROM / Kenji YAMAZAKI")]
+[assembly: AssemblyCopyright( "Copyright 2000-2010 DTXMania Group" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 //[assembly: AssemblyKeyName( "FROMsCspContainer" )]
@@ -35,5 +35,5 @@ using System.Resources;
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion( "17.0.0.0" )]
-[assembly: AssemblyFileVersion( "17.0.0.4" )]
+[assembly: AssemblyFileVersion( "17.0.0.5" )]
 [assembly: NeutralResourcesLanguageAttribute("ja-JP")]
