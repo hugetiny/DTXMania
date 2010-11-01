@@ -392,6 +392,8 @@ namespace DTXMania
 		public bool b選曲リストフォントを斜体にする;
 		public bool b選曲リストフォントを太字にする;
 		public bool b全画面モード;
+		public int nウインドウwidth;				// #23510 2010.10.31 yyagi add
+		public int nウインドウheight;				// #23510 2010.10.31 yyagi add
 		public Dictionary<int, string> dicJoystick;
 		public ECYGroup eCYGroup;
 		public Eダークモード eDark;
@@ -704,6 +706,8 @@ namespace DTXMania
 			this.str曲データ検索パス = @".\";
 			this.b全画面モード = false;
 			this.b垂直帰線待ちを行う = true;
+			this.nウインドウwidth = 640;				// #23510 2010.10.31 yyagi add
+			this.nウインドウheight = 480;				// 
 			this._bGuitar有効 = true;
 			this._bDrums有効 = true;
 			this.nBGAlpha = 100;
@@ -849,7 +853,15 @@ namespace DTXMania
 			sw.WriteLine( "; 画面モード(0:ウィンドウ, 1:全画面)" );
 			sw.WriteLine( "FullScreen={0}", this.b全画面モード ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine( "; 垂直帰線同期(0:OFF,1:ON)" );
+
+			sw.WriteLine("; ウインドウモード時の画面幅");				// #23510 2010.10.31 yyagi add
+			sw.WriteLine("WindowWidth={0}", this.nウインドウwidth);		//
+			sw.WriteLine();												//
+			sw.WriteLine("; ウインドウモード時の画面高さ");				//
+			sw.WriteLine("WindowHeight={0}", this.nウインドウheight);	//
+			sw.WriteLine();												//
+
+			sw.WriteLine("; 垂直帰線同期(0:OFF,1:ON)");
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; ギター/ベース有効(0:OFF,1:ON)" );
@@ -1298,7 +1310,23 @@ namespace DTXMania
 												{
 													this.b全画面モード = C変換.bONorOFF( str4[ 0 ] );
 												}
-												else if( str3.Equals( "VSyncWait" ) )
+												else if (str3.Equals("WindowWidth"))		// #23510 2010.10.31 yyagi add
+												{
+													this.nウインドウwidth = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 1, 65535, this.nウインドウwidth);
+													if (this.nウインドウwidth <= 0)
+													{
+														this.nウインドウwidth = 640;
+													}
+												}
+												else if (str3.Equals("WindowHeight"))		// #23510 2010.10.31 yyagi add
+												{
+													this.nウインドウheight = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 1, 65535, this.nウインドウheight);
+													if (this.nウインドウheight <= 0)
+													{
+														this.nウインドウheight = 480;
+													}
+												}
+												else if (str3.Equals("VSyncWait"))
 												{
 													this.b垂直帰線待ちを行う = C変換.bONorOFF( str4[ 0 ] );
 												}

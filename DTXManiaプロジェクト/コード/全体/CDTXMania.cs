@@ -286,6 +286,8 @@ namespace DTXMania
 				if (ConfigIni.bウィンドウモード == false)	// #23510 2010.10.27 yyagi: backup current window size before going fullscreen mode
 				{
 					currentClientSize = this.Window.ClientSize;
+					ConfigIni.nウインドウwidth = this.Window.ClientSize.Width;
+					ConfigIni.nウインドウheight = this.Window.ClientSize.Height;
 				}
 //				base.GraphicsDeviceManager.ToggleFullScreen();
 				base.GraphicsDeviceManager.ChangeDevice( settings );
@@ -1147,7 +1149,7 @@ namespace DTXMania
 			#region [ ウィンドウ初期化 ]
 			//---------------------
 			base.Window.Text = "DTXMania .NET style release " + VERSION;
-			base.Window.ClientSize = new Size( 640, 480 );
+			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #34510 yyagi 2010.10.31 to change window size got from Config.ini
 			base.Window.MaximizeBox = false;
 			base.Window.FormBorderStyle = FormBorderStyle.Sizable;	// #23510 2010.10.27 yyagi: changed from FixedDialog to Sizable, to support window resize
 			base.Window.ShowIcon = true;
@@ -1167,6 +1169,7 @@ namespace DTXMania
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
 			base.GraphicsDeviceManager.ChangeDevice( settings );
 			base.IsFixedTimeStep = false;
+			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi
 			//---------------------
 			#endregion
 
@@ -1649,6 +1652,12 @@ namespace DTXMania
 					Trace.Unindent();
 				}
 				Trace.TraceInformation( "Config.ini を出力します。" );
+				// #23510 2010.10.31 yyagi
+				// とりあえずここでConfigへの変数書き戻しを行っているが、
+				// 一段落したらリサイズイベントの処理中に入れ込んでしまう予定。
+					ConfigIni.nウインドウwidth = (base.Window.ClientSize.Width > 0) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
+					ConfigIni.nウインドウheight = (base.Window.ClientSize.Height > 0) ? base.Window.ClientSize.Height : currentClientSize.Height;
+Debug.WriteLine("width,height=" + base.Window.ClientSize.Width + " " + base.Window.ClientSize.Height);
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
 				try

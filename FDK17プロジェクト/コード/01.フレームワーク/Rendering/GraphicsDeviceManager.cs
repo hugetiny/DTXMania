@@ -394,7 +394,12 @@ namespace SampleFramework
 				return;
 			newSettings.Direct3D9.AdapterOrdinal = adapterOrdinal;
 
-			CreateDevice( newSettings );
+			newSettings.BackBufferWidth = 0;								// #23510 2010.11.1 add yyagi to avoid to reset to 640x480 for the first time in XP.
+			newSettings.BackBufferHeight = 0;								//
+			newSettings.Direct3D9.PresentParameters.BackBufferWidth = 640;	//
+			newSettings.Direct3D9.PresentParameters.BackBufferHeight = 480;	//
+
+			CreateDevice(newSettings);
 		}
 
 		void game_FrameEnd( object sender, EventArgs e )
