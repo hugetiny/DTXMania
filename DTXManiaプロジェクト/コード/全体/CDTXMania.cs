@@ -1150,6 +1150,10 @@ namespace DTXMania
 			//---------------------
 			base.Window.Text = "DTXMania .NET style release " + VERSION;
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #34510 yyagi 2010.10.31 to change window size got from Config.ini
+			if (!ConfigIni.bウィンドウモード)						// #23510 2010.11.02 yyagi: add; to recover window size in case bootup with fullscreen mode
+			{
+				currentClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);
+			}
 			base.Window.MaximizeBox = false;
 			base.Window.FormBorderStyle = FormBorderStyle.Sizable;	// #23510 2010.10.27 yyagi: changed from FixedDialog to Sizable, to support window resize
 			base.Window.ShowIcon = true;
@@ -1653,11 +1657,11 @@ namespace DTXMania
 				}
 				Trace.TraceInformation( "Config.ini を出力します。" );
 				// #23510 2010.10.31 yyagi
+				// #23510 2010.11.02 yyagi change conditions from (base.windows.clientsize.width > 0) to (ConfigIni.bウインドウモード) to detect whether fullscreenmode or not correctly
 				// とりあえずここでConfigへの変数書き戻しを行っているが、
 				// 一段落したらリサイズイベントの処理中に入れ込んでしまう予定。
-					ConfigIni.nウインドウwidth = (base.Window.ClientSize.Width > 0) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
-					ConfigIni.nウインドウheight = (base.Window.ClientSize.Height > 0) ? base.Window.ClientSize.Height : currentClientSize.Height;
-Debug.WriteLine("width,height=" + base.Window.ClientSize.Width + " " + base.Window.ClientSize.Height);
+					ConfigIni.nウインドウwidth  = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
+					ConfigIni.nウインドウheight = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Height : currentClientSize.Height;
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
 				try
