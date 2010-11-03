@@ -419,7 +419,7 @@ namespace SampleFramework
 //            if (!game.IsActive || deviceLost)		// #23568 2010.11.3 yyagi: separate conditions to support valiable sleep value when !IsActive.
 			if (deviceLost)
 				Thread.Sleep(50);
-			else if (!game.IsActive)
+			else if (!game.IsActive && !this.CurrentSettings.EnableVSync)	// #23568 2010.11.4 yyagi: Don't add sleep() while VSync is enabled.
 				Thread.Sleep(this.game.InactiveSleepTime.Milliseconds);
 
             if (deviceLost)
