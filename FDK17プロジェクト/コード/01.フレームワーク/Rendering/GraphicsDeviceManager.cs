@@ -416,8 +416,11 @@ namespace SampleFramework
                 return;
             }
 
-            if (!game.IsActive || deviceLost)
-                Thread.Sleep(50);
+//            if (!game.IsActive || deviceLost)		// #23568 2010.11.3 yyagi: separate conditions to support valiable sleep value when !IsActive.
+			if (deviceLost)
+				Thread.Sleep(50);
+			else if (!game.IsActive)
+				Thread.Sleep(this.game.InactiveSleepTime.Milliseconds);
 
             if (deviceLost)
             {

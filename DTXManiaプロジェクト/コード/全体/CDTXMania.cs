@@ -1041,10 +1041,12 @@ namespace DTXMania
 			}
 			if( this.b次のタイミングで垂直帰線同期切り替えを行う )
 			{
+				currentClientSize = this.Window.ClientSize;												// #23510 2010.11.3 yyagi: to backup current window size before changing VSyncWait
 				DeviceSettings currentSettings = app.GraphicsDeviceManager.CurrentSettings;
 				currentSettings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
 				app.GraphicsDeviceManager.ChangeDevice( currentSettings );
 				this.b次のタイミングで垂直帰線同期切り替えを行う = false;
+				base.Window.ClientSize = new Size(currentClientSize.Width, currentClientSize.Height);	// #23510 2010.11.3 yyagi: to resume window size after changing VSyncWait
 			}
 		}
 
@@ -1174,6 +1176,7 @@ namespace DTXMania
 			base.GraphicsDeviceManager.ChangeDevice( settings );
 			base.IsFixedTimeStep = false;
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi
+			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)1);	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
 			//---------------------
 			#endregion
 
@@ -1465,7 +1468,9 @@ namespace DTXMania
 			{
 				Trace.TraceInformation( "----------------------" );
 				Trace.TraceInformation( "■ アプリケーションの終了" );
-				if( r現在のステージ != null )
+				#region [ 現在のステージの終了処理 ]
+				//---------------------
+				if (r現在のステージ != null)
 				{
 					Trace.TraceInformation( "現在のステージを終了します。" );
 					Trace.Indent();
@@ -1479,8 +1484,11 @@ namespace DTXMania
 						Trace.Unindent();
 					}
 				}
-
-				if( this.listプラグイン != null && this.listプラグイン.Count > 0 )
+				//---------------------
+				#endregion
+				#region [ プラグインの終了処理 ]
+				//---------------------
+				if (this.listプラグイン != null && this.listプラグイン.Count > 0)
 				{
 					Trace.TraceInformation( "すべてのプラグインを終了します。" );
 					Trace.Indent();
@@ -1502,8 +1510,11 @@ namespace DTXMania
 						Trace.Unindent();
 					}
 				}
-
-				if( Songs管理 != null )
+				//---------------------
+				#endregion
+				#region [ 曲リストの終了処理 ]
+				//---------------------
+				if (Songs管理 != null)
 				{
 					Trace.TraceInformation( "曲リストの終了処理を行います。" );
 					Trace.Indent();
@@ -1523,7 +1534,11 @@ namespace DTXMania
 					}
 				}
 				CAvi.t終了();
-				if( Skin != null )
+				//---------------------
+				#endregion
+				#region [ スキンの終了処理 ]
+				//---------------------
+				if (Skin != null)
 				{
 					Trace.TraceInformation( "スキンの終了処理を行います。" );
 					Trace.Indent();
@@ -1543,7 +1558,11 @@ namespace DTXMania
 						Trace.Unindent();
 					}
 				}
-				if( Sound管理 != null )
+				//---------------------
+				#endregion
+				#region [ DirectSoundの終了処理 ]
+				//---------------------
+				if (Sound管理 != null)
 				{
 					Trace.TraceInformation( "DirectSound の終了処理を行います。" );
 					Trace.Indent();
@@ -1563,7 +1582,11 @@ namespace DTXMania
 						Trace.Unindent();
 					}
 				}
-				if( Pad != null )
+				//---------------------
+				#endregion
+				#region [ パッドの終了処理 ]
+				//---------------------
+				if (Pad != null)
 				{
 					Trace.TraceInformation( "パッドの終了処理を行います。" );
 					Trace.Indent();
@@ -1582,7 +1605,11 @@ namespace DTXMania
 						Trace.Unindent();
 					}
 				}
-				if( Input管理 != null )
+				//---------------------
+				#endregion
+				#region [ DirectInput, MIDI入力の終了処理 ]
+				//---------------------
+				if (Input管理 != null)
 				{
 					Trace.TraceInformation( "DirectInput, MIDI入力の終了処理を行います。" );
 					Trace.Indent();
@@ -1602,7 +1629,11 @@ namespace DTXMania
 						Trace.Unindent();
 					}
 				}
-				if( act文字コンソール != null )
+				//---------------------
+				#endregion
+				#region [ 文字コンソールの終了処理 ]
+				//---------------------
+				if (act文字コンソール != null)
 				{
 					Trace.TraceInformation( "文字コンソールの終了処理を行います。" );
 					Trace.Indent();
@@ -1622,7 +1653,11 @@ namespace DTXMania
 						Trace.Unindent();
 					}
 				}
-				Trace.TraceInformation( "FPSカウンタの終了処理を行います。" );
+				//---------------------
+				#endregion
+				#region [ FPSカウンタの終了処理 ]
+				//---------------------
+				Trace.TraceInformation("FPSカウンタの終了処理を行います。");
 				Trace.Indent();
 				try
 				{
@@ -1636,7 +1671,11 @@ namespace DTXMania
 				{
 					Trace.Unindent();
 				}
-				Trace.TraceInformation( "タイマの終了処理を行います。" );
+				//---------------------
+				#endregion
+				#region [ タイマの終了処理 ]
+				//---------------------
+				Trace.TraceInformation("タイマの終了処理を行います。");
 				Trace.Indent();
 				try
 				{
@@ -1655,7 +1694,11 @@ namespace DTXMania
 				{
 					Trace.Unindent();
 				}
-				Trace.TraceInformation( "Config.ini を出力します。" );
+				//---------------------
+				#endregion
+				#region [ Config.iniの出力 ]
+				//---------------------
+				Trace.TraceInformation("Config.ini を出力します。");
 				// #23510 2010.10.31 yyagi
 				// #23510 2010.11.02 yyagi change conditions from (base.windows.clientsize.width > 0) to (ConfigIni.bウインドウモード) to detect whether fullscreenmode or not correctly
 				// とりあえずここでConfigへの変数書き戻しを行っているが、
@@ -1678,7 +1721,9 @@ namespace DTXMania
 				{
 					Trace.Unindent();
 				}
-				Trace.TraceInformation( "アプリケーションの終了処理を完了しました。" );
+				//---------------------
+				#endregion
+				Trace.TraceInformation("アプリケーションの終了処理を完了しました。");
 
 
 				this.b終了処理完了済み = true;
@@ -1708,7 +1753,7 @@ namespace DTXMania
 				e.SuppressKeyPress = true;
 			}
 		}
-		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新( string str新ヒストリ行 )
+		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
 		{
 			bool flag;
 			bool flag2;
