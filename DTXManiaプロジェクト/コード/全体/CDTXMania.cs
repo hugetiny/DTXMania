@@ -1176,7 +1176,8 @@ namespace DTXMania
 			base.GraphicsDeviceManager.ChangeDevice( settings );
 			base.IsFixedTimeStep = false;
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi
-			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)1);	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
+            base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
+            // #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
 			//---------------------
 			#endregion
 

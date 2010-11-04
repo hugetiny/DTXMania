@@ -404,7 +404,8 @@ namespace DTXMania
 		public E打ち分け時の再生の優先順位 eHitSoundPriorityHH;
 		public STDGBVALUE<Eランダムモード> eRandom;
 		public Eダメージレベル eダメージレベル;
-		public CKeyAssign KeyAssign;
+        public CKeyAssign KeyAssign;
+        public int n非フォーカス時スリープms;       // #23568 2010.11.04 ikanick add
 		public int n演奏速度;
 		public int n曲が選択されてからプレビュー音が鳴るまでのウェイトms;
 		public int n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms;
@@ -707,7 +708,8 @@ namespace DTXMania
 			this.b全画面モード = false;
 			this.b垂直帰線待ちを行う = true;
 			this.nウインドウwidth = 640;				// #23510 2010.10.31 yyagi add
-			this.nウインドウheight = 480;				// 
+            this.nウインドウheight = 480;				// 
+            this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
 			this._bGuitar有効 = true;
 			this._bDrums有効 = true;
 			this.nBGAlpha = 100;
@@ -852,7 +854,7 @@ namespace DTXMania
 			sw.WriteLine();
 			sw.WriteLine( "; 画面モード(0:ウィンドウ, 1:全画面)" );
 			sw.WriteLine( "FullScreen={0}", this.b全画面モード ? 1 : 0 );
-			sw.WriteLine();
+            sw.WriteLine();
 
 			sw.WriteLine("; ウインドウモード時の画面幅");				// #23510 2010.10.31 yyagi add
 			sw.WriteLine("WindowWidth={0}", this.nウインドウwidth);		//
@@ -863,7 +865,12 @@ namespace DTXMania
 
 			sw.WriteLine("; 垂直帰線同期(0:OFF,1:ON)");
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
-			sw.WriteLine();
+            sw.WriteLine();
+
+            sw.WriteLine("; 非フォーカス時のsleep値[ms]");	    			    // #23568 2011.11.04 ikanick add
+            sw.WriteLine("BackSleep={0}", this.n非フォーカス時スリープms);		// そのまま引用（苦笑）
+            sw.WriteLine();											        	//
+
 			sw.WriteLine( "; ギター/ベース有効(0:OFF,1:ON)" );
 			sw.WriteLine( "Guitar={0}", this.bGuitar有効 ? 1 : 0 );
 			sw.WriteLine();
@@ -1329,7 +1336,11 @@ namespace DTXMania
 												else if (str3.Equals("VSyncWait"))
 												{
 													this.b垂直帰線待ちを行う = C変換.bONorOFF( str4[ 0 ] );
-												}
+                                                }
+                                                else if (str3.Equals("BackSleep"))		// #23568 2010.11.04 ikanick add
+                                                {
+                                                    this.n非フォーカス時スリープms = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 50, this.n非フォーカス時スリープms);
+                                                }
 												else if( str3.Equals( "Guitar" ) )
 												{
 													this.bGuitar有効 = C変換.bONorOFF( str4[ 0 ] );
