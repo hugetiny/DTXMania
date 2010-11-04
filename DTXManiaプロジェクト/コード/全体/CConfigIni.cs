@@ -1339,7 +1339,7 @@ namespace DTXMania
                                                 }
                                                 else if (str3.Equals("BackSleep"))		// #23568 2010.11.04 ikanick add
                                                 {
-                                                    this.n非フォーカス時スリープms = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 50, this.n非フォーカス時スリープms);
+                                                    this.n非フォーカス時スリープms = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す(str4, 0, 50, this.n非フォーカス時スリープms);
                                                 }
 												else if( str3.Equals( "Guitar" ) )
 												{

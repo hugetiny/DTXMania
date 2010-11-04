@@ -47,7 +47,24 @@ namespace FDK
 				return num;
 
 			return n取得失敗時のデフォルト値;
-		}
+        }
+        // #23568 2010.11.04 ikanick add
+        public static int n値を文字列から取得して範囲内にちゃんと丸めて返す(string str数値文字列, int n最小値, int n最大値, int n取得失敗時のデフォルト値)
+        {
+            // 1 と違って範囲外の場合ちゃんと丸めて返します。
+            int num;
+            if (int.TryParse(str数値文字列, out num)) {
+                if ((num >= n最小値) && (num <= n最大値))
+                    return num;
+			    if ( num < n最小値 )
+				    return n最小値;
+			    if ( num > n最大値 )
+				    return n最大値;
+            }
+
+            return n取得失敗時のデフォルト値;
+        }
+        // --------------------ここまで-------------------------/
 		public static int n値を文字列から取得して返す( string str数値文字列, int n取得失敗時のデフォルト値 )
 		{
 			int num;
