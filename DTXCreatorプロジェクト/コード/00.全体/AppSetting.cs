@@ -57,8 +57,8 @@ namespace DTXCreator
 		//-----------------
 		public List<string> RecentUsedFile
 		{
-			get; 
-			set;
+			get { return _RecentUsedFile; }
+			set { _RecentUsedFile = value; }
 		}
 		private List<string> _RecentUsedFile = new List<string>();
 		//-----------------
