@@ -265,7 +265,6 @@ namespace DTXMania
 			set;
 		}
 
-
 		// コンストラクタ
 
 		public CDTXMania()
@@ -1041,12 +1040,17 @@ namespace DTXMania
 			}
 			if( this.b次のタイミングで垂直帰線同期切り替えを行う )
 			{
+				bool bIsMaximized = this.Window.IsMaximized;											// #23510 2010.11.3 yyagi: to backup current window mode before changing VSyncWait
 				currentClientSize = this.Window.ClientSize;												// #23510 2010.11.3 yyagi: to backup current window size before changing VSyncWait
 				DeviceSettings currentSettings = app.GraphicsDeviceManager.CurrentSettings;
 				currentSettings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
 				app.GraphicsDeviceManager.ChangeDevice( currentSettings );
 				this.b次のタイミングで垂直帰線同期切り替えを行う = false;
 				base.Window.ClientSize = new Size(currentClientSize.Width, currentClientSize.Height);	// #23510 2010.11.3 yyagi: to resume window size after changing VSyncWait
+				if (bIsMaximized)
+				{
+					this.Window.WindowState = FormWindowState.Maximized;								// #23510 2010.11.3 yyagi: to resume window mode after changing VSyncWait
+				}
 			}
 		}
 
@@ -1096,8 +1100,8 @@ namespace DTXMania
 
 		private void t起動処理()
 		{
-			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
-
+//			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
+			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\";	// #23629 2011.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
 			#region [ Config.ini の読込み ]
 			//---------------------
 			ConfigIni = new CConfigIni();
@@ -1122,7 +1126,7 @@ namespace DTXMania
 			{
 				Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( "DTXManiaLog.txt", false, Encoding.GetEncoding( "shift-jis" ) ) ) );
 			}
-			Trace.WriteLine( "" );
+			Trace.WriteLine("");
 			Trace.WriteLine( "DTXMania powered by YAMAHA Silent Session Drums" );
 			Trace.WriteLine( string.Format( "Release: {0}", VERSION ) );
 			Trace.WriteLine( "" );
@@ -1138,7 +1142,6 @@ namespace DTXMania
 			bコンパクトモード = false;
 			strコンパクトモードファイル = "";
 			string[] commandLineArgs = Environment.GetCommandLineArgs();
-			
 			if( ( commandLineArgs != null ) && ( commandLineArgs.Length > 1 ) )
 			{
 				bコンパクトモード = true;
@@ -1156,14 +1159,14 @@ namespace DTXMania
 			{
 				currentClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);
 			}
-			base.Window.MaximizeBox = false;
+			base.Window.MaximizeBox = true;							// #23510 2010.11.04 yyagi: to support maximizing window
 			base.Window.FormBorderStyle = FormBorderStyle.Sizable;	// #23510 2010.10.27 yyagi: changed from FixedDialog to Sizable, to support window resize
 			base.Window.ShowIcon = true;
 			base.Window.Icon = Properties.Resources.dtx;
 			base.Window.KeyDown += new KeyEventHandler( this.Window_KeyDown );
+			base.Window.MouseDoubleClick += new MouseEventHandler(this.Window_MouseDoubleClick);	// #23510 2010.11.04 yyagi: to reset window size to 640x480
 			base.Window.ApplicationActivated += new EventHandler( this.Window_ApplicationActivated );
 			base.Window.ApplicationDeactivated += new EventHandler( this.Window_ApplicationDeactivated );
-//			base.Window.Resize += new EventHandler(Window_Resize);
 			//---------------------
 			#endregion
 			#region [ Direct3D9 デバイスの生成 ]
@@ -1175,8 +1178,8 @@ namespace DTXMania
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
 			base.GraphicsDeviceManager.ChangeDevice( settings );
 			base.IsFixedTimeStep = false;
-			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi
-            base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
+			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
+			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
             // #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
 			//---------------------
 			#endregion
@@ -1878,6 +1881,10 @@ namespace DTXMania
 				this.t指定フォルダ内でのプラグイン検索と生成( dir + "\\", strプラグイン型名 );
 		}
 		//-----------------
+		private void Window_MouseDoubleClick( object sender, MouseEventArgs e)	// #23510 2010.11.04 yyagi: to reset window size to 640x480
+		{
+			this.Window.ClientSize = new Size(640, 480);
+		}
 		#endregion
 	}
 }
