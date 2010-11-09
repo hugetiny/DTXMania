@@ -248,9 +248,11 @@ namespace DTXMania
 				}
 				if( CDTXMania.ConfigIni.bSTAGEFAILED有効 && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{
-					bool flag3 = ( CDTXMania.ConfigIni.bAutoPlay.Guitar || !CDTXMania.DTX.bチップがある.Guitar ) || ( this.actGauge.db現在のゲージ値.Guitar <= -0.1 );
-					bool flag4 = ( CDTXMania.ConfigIni.bAutoPlay.Bass || !CDTXMania.DTX.bチップがある.Bass ) || ( this.actGauge.db現在のゲージ値.Bass <= -0.1 );
-					if( flag3 && flag4 )
+//					bool flag3 = ( CDTXMania.ConfigIni.bAutoPlay.Guitar || !CDTXMania.DTX.bチップがある.Guitar ) || ( this.actGauge.db現在のゲージ値.Guitar <= -0.1 );				// #23630
+//					bool flag4 = ( CDTXMania.ConfigIni.bAutoPlay.Bass || !CDTXMania.DTX.bチップがある.Bass ) || ( this.actGauge.db現在のゲージ値.Bass <= -0.1 );					// #23630
+					bool bFailedGuitar = (!CDTXMania.ConfigIni.bAutoPlay.Guitar && ((!CDTXMania.DTX.bチップがある.Guitar) || (this.actGauge.db現在のゲージ値.Guitar <= -0.1)));		// #23630 2011.11.9 yyagi: separated AutoPlay condition: not to be failed at once
+					bool bFailedBass   = (!CDTXMania.ConfigIni.bAutoPlay.Bass   && ((!CDTXMania.DTX.bチップがある.Bass)   || (this.actGauge.db現在のゲージ値.Bass   <= -0.1)));		// #23630 
+					if (bFailedGuitar && bFailedBass)
 					{
 						this.actStageFailed.Start();
 						CDTXMania.DTX.t全チップの再生停止();
