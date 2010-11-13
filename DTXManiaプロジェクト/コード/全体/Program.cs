@@ -51,11 +51,26 @@ namespace DTXMania
 				if( !tDLLの存在チェック( CDTXMania.D3DXDLL, CDTXMania.D3DXDLL + " が存在しません。" + newLine + "Direct Regist フォルダの DXSETUP.exe を実行し、" + newLine + "必要な DirectX ランタイムをインストールしてください。" ) ) flag = true;
 				if( !flag )
 				{
-					using( var mania = new CDTXMania() )
-						mania.Run();
+					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
+					try
+					{
+						int[] n = new int[ 2 ] { 0, 0 };
+						n[ 3 ] = 10;
 
-					Trace.WriteLine( "" );
-					Trace.WriteLine( "遊んでくれてありがとう！" );
+						using( var mania = new CDTXMania() )
+							mania.Run();
+
+						Trace.WriteLine( "" );
+						Trace.WriteLine( "遊んでくれてありがとう！" );
+					}
+					catch( Exception e )
+					{
+						Trace.WriteLine( "" );
+						Trace.Write( e.ToString() );
+						Trace.WriteLine( "" );
+						Trace.WriteLine( "エラーだゴメン！（涙" );
+					}
+					// END #23670 2010.11.13 from
 					
 					if( Trace.Listeners.Count > 1 )
 						Trace.Listeners.RemoveAt( 1 );
