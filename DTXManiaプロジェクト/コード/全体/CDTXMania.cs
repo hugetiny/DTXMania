@@ -1100,8 +1100,18 @@ namespace DTXMania
 
 		private void t起動処理()
 		{
-//			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
-			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\";	// #23629 2011.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
+			#region [ strEXEのあるフォルダを決定する ]
+			//-----------------
+// BEGIN #23629 2010.11.13 from: デバッグ時は Application.ExecutablePath が ($SolutionDir)/bin/x86/Debug/ などになり System/ の読み込みに失敗するので、カレントディレクトリを採用する。（プロジェクトのプロパティ→デバッグ→作業ディレクトリが有効になる）
+#if DEBUG
+			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
+#else
+			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\";	// #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
+#endif
+// END #23629 2010.11.13 from
+			//-----------------
+			#endregion
+
 			#region [ Config.ini の読込み ]
 			//---------------------
 			ConfigIni = new CConfigIni();
