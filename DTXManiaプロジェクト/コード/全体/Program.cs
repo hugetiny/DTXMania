@@ -54,9 +54,6 @@ namespace DTXMania
 					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
 					try
 					{
-						int[] n = new int[ 2 ] { 0, 0 };
-						n[ 3 ] = 10;
-
 						using( var mania = new CDTXMania() )
 							mania.Run();
 
