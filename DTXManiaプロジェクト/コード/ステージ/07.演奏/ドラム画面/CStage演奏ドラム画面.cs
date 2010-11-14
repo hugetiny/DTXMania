@@ -14,6 +14,21 @@ namespace DTXMania
 {
 	internal class CStage演奏ドラム画面 : CStage
 	{
+#if DAMAGELEVELTUNING
+		// ----------------------------------
+		public float[,] gaugeDelta = {
+			{  0.003f,  0.005f },
+			{  0.001f,  0.002f },
+			{  0.000f,  0.000f },
+			{ -0.025f, -0.020f },
+			{ -0.050f, -0.030f }
+		};
+		public float[] damageLevelFactor = {
+			0.5f, 1.0f, 1.5f
+		};
+		// ----------------------------------
+#endif		
+		
 		// プロパティ
 
 		public bool bAUTOでないチップが１つでもバーを通過した 
@@ -4139,7 +4154,50 @@ namespace DTXMania
 		private void t判定にあわせてゲージを増減する( E楽器パート part, E判定 e今回の判定 )
 		{
 			double num;
-			switch( e今回の判定 )
+
+#if DAMAGELEVELTUNING
+			switch (e今回の判定)
+			{
+				case E判定.Perfect:
+					num = (part == E楽器パート.DRUMS) ? gaugeDelta[0, 0] : gaugeDelta[0, 1];
+					break;
+
+				case E判定.Great:
+					num = (part == E楽器パート.DRUMS) ? gaugeDelta[1, 0] : gaugeDelta[1, 1];
+					break;
+
+				case E判定.Good:
+					num = (part == E楽器パート.DRUMS) ? gaugeDelta[2, 0] : gaugeDelta[2, 1];
+					break;
+
+				case E判定.Poor:
+					num = (part == E楽器パート.DRUMS) ? gaugeDelta[3, 0] : gaugeDelta[3, 1];
+					break;
+
+				case E判定.Miss:
+					num = (part == E楽器パート.DRUMS) ? gaugeDelta[4, 0] : gaugeDelta[4, 1];
+					switch (CDTXMania.ConfigIni.eダメージレベル)
+					{
+						case Eダメージレベル.少ない:
+							num *= damageLevelFactor[0];
+							break;
+
+						case Eダメージレベル.普通:
+							num *= damageLevelFactor[1];
+							break;
+
+						case Eダメージレベル.大きい:
+							num *= damageLevelFactor[2];
+							break;
+					}
+					break;
+
+				default:
+					num = 0.0;
+					break;
+			}
+#else
+			switch (e今回の判定)
 			{
 				case E判定.Perfect:
 					num = ( part == E楽器パート.DRUMS ) ? 0.01 : 0.015;
@@ -4179,6 +4237,7 @@ namespace DTXMania
 					num = 0.0;
 					break;
 			}
+#endif
 			this.actGauge.db現在のゲージ値 += num;
 
 			if( this.actGauge.db現在のゲージ値 > 1.0 )

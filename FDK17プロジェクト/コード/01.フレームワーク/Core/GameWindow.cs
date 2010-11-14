@@ -26,6 +26,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Permissions;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using SampleFramework.Properties;
 
 namespace SampleFramework
@@ -84,12 +85,12 @@ namespace SampleFramework
         /// </summary>
         public event EventHandler SystemResume;
 
-        /// <summary>
+		/// <summary>
         /// Occurs when a screen saver is about to be activated.
         /// </summary>
         public event CancelEventHandler Screensaver;
 
-        /// <summary>
+		/// <summary>
         /// Gets a value indicating whether this instance is minimized.
         /// </summary>
         /// <value>
@@ -265,16 +266,37 @@ namespace SampleFramework
 
             // resume application processing
             OnResume(EventArgs.Empty);
-        }
+		}
 
-        /// <summary>
+
+		#region #23510 2010.11.14 yyagi add: 縦横比固定でのウインドウサイズ変更 定数定義 from http://www.vcskicks.com/maintain-aspect-ratio.php
+		//double so division keeps decimal points
+		const double widthRatio = 640;
+		const double heightRatio = 480;
+
+		const int WM_SIZING = 0x214;
+		const int WMSZ_LEFT = 1;
+		const int WMSZ_RIGHT = 2;
+		const int WMSZ_TOP = 3;
+		const int WMSZ_BOTTOM = 6;
+
+		public struct RECT
+		{
+			public int Left;
+			public int Top;
+			public int Right;
+			public int Bottom;
+		}
+		#endregion
+
+		/// <summary>
         /// Handles raw window messages.
         /// </summary>
         /// <param name="m">The raw message.</param>
         [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == WindowConstants.WM_SIZE)
+			if (m.Msg == WindowConstants.WM_SIZE)
             {
                 if (m.WParam == WindowConstants.SIZE_MINIMIZED)
                 {
@@ -355,10 +377,46 @@ namespace SampleFramework
                         m.Result = IntPtr.Zero;
                         return;
                     }
-                }
-            }
+				}
+				#region #23510 2010.11.13 yyagi: reset to 640x480
+				if ((m.WParam.ToInt32() & 0xFFFF) == MENU_VIEW)		
+				{
+					 base.ClientSize = new Size(640, 480);
+				}
+				#endregion
+			}
 
-            base.WndProc(ref m);
+			#region #23510 2010.11.14 yyagi add: 縦横比固定でのウインドウサイズ変更 from http://www.vcskicks.com/maintain-aspect-ratio.php
+			else if (m.Msg == WM_SIZING)
+			{
+				RECT rc = (RECT)Marshal.PtrToStructure(m.LParam, typeof(RECT));
+				int res = m.WParam.ToInt32();
+				if (res == WMSZ_LEFT || res == WMSZ_RIGHT)
+				{
+					//Left or right resize -> adjust height (bottom)
+					rc.Bottom = rc.Top + (int)(heightRatio * this.Width / widthRatio);
+				}
+				else if (res == WMSZ_TOP || res == WMSZ_BOTTOM)
+				{
+					//Up or down resize -> adjust width (right)
+					rc.Right = rc.Left + (int)(widthRatio * this.Height / heightRatio);
+				}
+				else if (res == WMSZ_RIGHT + WMSZ_BOTTOM)
+				{
+					//Lower-right corner resize -> adjust height (could have been width)
+					rc.Bottom = rc.Top + (int)(heightRatio * this.Width / widthRatio);
+				}
+				else if (res == WMSZ_LEFT + WMSZ_TOP)
+				{
+					//Upper-left corner -> adjust width (could have been height)
+					rc.Left = rc.Right - (int)(widthRatio * this.Height / heightRatio);
+				}
+				Marshal.StructureToPtr(rc, m.LParam, true);
+			}
+			#endregion
+
+
+			base.WndProc(ref m);
         }
 
         void UpdateScreen()
@@ -433,6 +491,59 @@ namespace SampleFramework
         static Icon GetDefaultIcon()
         {
             return (Icon)Resources.sdx_icon_black.Clone();
-        }
-    }
+		}
+
+		#region システムメニューに"640x480"を追加 #23510 2010.11.13 yyagi add: to set "640x480" menu in systemmenu. See also http://cs2ch.blog123.fc2.com/blog-entry-80.html
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		private struct MENUITEMINFO
+		{
+			public uint cbSize;
+			public uint fMask;
+			public uint fType;
+			public uint fState;
+			public uint wID;
+			public IntPtr hSubMenu;
+			public IntPtr hbmpChecked;
+			public IntPtr hbmpUnchecked;
+			public IntPtr dwItemData;
+			public string dwTypeData;
+			public uint cch;
+			public IntPtr hbmpItem;
+		}
+
+		[DllImport("user32", ExactSpelling = true)]
+		private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+		[DllImport("user32", CharSet = CharSet.Auto)]
+		private static extern bool InsertMenuItem(IntPtr hMenu, uint uItem, bool fByPosition, ref MENUITEMINFO lpmii);
+
+		private const uint MENU_VIEW = 0x9999;
+		private const uint MFT_SEPARATOR = 0x00000800;
+		private const uint MIIM_FTYPE = 0x00000100;
+		private const uint MIIM_STRING = 0x00000040;
+		private const uint MIIM_ID = 0x00000002;
+
+		protected override void OnCreateControl()
+		{
+			base.OnCreateControl();
+
+			//システムメニューのハンドル取得   
+			IntPtr hSysMenu = GetSystemMenu(this.Handle, false);
+
+			//セパレーターの挿入   
+			MENUITEMINFO item1 = new MENUITEMINFO();
+			item1.cbSize = (uint)Marshal.SizeOf(item1);
+			item1.fMask = MIIM_FTYPE;
+			item1.fType = MFT_SEPARATOR;
+			InsertMenuItem(hSysMenu, 5, true, ref item1);
+
+			//メニュー項目の挿入   
+			MENUITEMINFO item2 = new MENUITEMINFO();
+			item2.cbSize = (uint)Marshal.SizeOf(item2);
+			item2.fMask = MIIM_STRING | MIIM_ID;
+			item2.wID = MENU_VIEW;
+			item2.dwTypeData = "&640x480";
+			InsertMenuItem(hSysMenu, 6, true, ref item2);
+		}   
+		#endregion
+	}
 }

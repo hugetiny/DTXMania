@@ -765,6 +765,18 @@ namespace DTXMania
 							{
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 演奏（ドラム画面）" );
+#if DAMAGELEVELTUNING
+for (int i = 0; i < 5; i++)
+{
+	for (int j = 0; j < 2; j++)
+	{
+		stage演奏ドラム画面.gaugeDelta[i, j] = ConfigIni.fGaugeFactor[i, j];
+	}
+}
+for (int i = 0; i < 3; i++) {
+	stage演奏ドラム画面.damageLevelFactor[i] = ConfigIni.fDamageLevelFactor[i];
+}		
+#endif
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage演奏ドラム画面;
 							}
@@ -1190,7 +1202,7 @@ namespace DTXMania
 			base.IsFixedTimeStep = false;
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
 			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
-            // #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
+																												// #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
 			//---------------------
 			#endregion
 
@@ -1891,9 +1903,10 @@ namespace DTXMania
 				this.t指定フォルダ内でのプラグイン検索と生成( dir + "\\", strプラグイン型名 );
 		}
 		//-----------------
-		private void Window_MouseDoubleClick( object sender, MouseEventArgs e)	// #23510 2010.11.04 yyagi: to reset window size to 640x480
+		private void Window_MouseDoubleClick( object sender, MouseEventArgs e)	// #23510 2010.11.13 yyagi: to go full screen mode
 		{
-			this.Window.ClientSize = new Size(640, 480);
+			ConfigIni.bウィンドウモード = false;
+			this.t全画面・ウィンドウモード切り替え();
 		}
 		#endregion
 	}

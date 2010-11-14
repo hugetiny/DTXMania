@@ -363,6 +363,12 @@ namespace DTXMania
 
 		// プロパティ
 
+#if DAMAGELEVELTUNING
+		//----------------------------------------
+		public float[,] fGaugeFactor = new float[5,2];
+		public float[] fDamageLevelFactor = new float[3];
+		//----------------------------------------
+#endif
 		public int nBGAlpha;
 		public bool bAVI有効;
 		public bool bBGA有効;
@@ -703,6 +709,24 @@ namespace DTXMania
 
 		public CConfigIni()
 		{
+#if DAMAGELEVELTUNING
+			//----------------------------------------
+			this.fGaugeFactor[0,0] =  0.003f;
+			this.fGaugeFactor[0,1] =  0.005f;
+			this.fGaugeFactor[1,0] =  0.001f;
+			this.fGaugeFactor[1,1] =  0.002f;
+			this.fGaugeFactor[2,0] =  0.000f;
+			this.fGaugeFactor[2,1] =  0.000f;
+			this.fGaugeFactor[3,0] = -0.025f;
+			this.fGaugeFactor[3,1] = -0.020f;
+			this.fGaugeFactor[4,0] = -0.050f;
+			this.fGaugeFactor[4,1] = -0.030f;
+
+			this.fDamageLevelFactor[0] = 0.5f;
+			this.fDamageLevelFactor[1] = 1.0f;
+			this.fDamageLevelFactor[2] = 1.5f;
+			//----------------------------------------
+#endif
 			this.strDTXManiaのバージョン = "Unknown";
 			this.str曲データ検索パス = @".\";
 			this.b全画面モード = false;
@@ -845,6 +869,20 @@ namespace DTXMania
 			sw.WriteLine( ";-------------------" );
 			sw.WriteLine( "[System]" );
 			sw.WriteLine();
+
+#if DAMAGELEVELTUNING
+	//------------------------------
+			sw.WriteLine("; ライフゲージのパラメータ調整(調整完了後削除予定)");
+			sw.WriteLine("; GaugeFactorD: ドラムのPerfect, Great,... の回復量(ライフMAXを1.0としたときの値を指定)");
+			sw.WriteLine("; GaugeFactorG:  Gt/BsのPerfect, Great,... の回復量(ライフMAXを1.0としたときの値を指定)");
+			sw.WriteLine("; DamageFactorD: DamageLevelがSmall, Normal, Largeの時に対するダメージ係数");
+			sw.WriteLine("GaugeFactorD={0}, {1}, {2}, {3}, {4}", this.fGaugeFactor[0, 0], this.fGaugeFactor[1, 0], this.fGaugeFactor[2, 0], this.fGaugeFactor[3, 0], this.fGaugeFactor[4, 0]);
+			sw.WriteLine("GaugeFactorG={0}, {1}, {2}, {3}, {4}", this.fGaugeFactor[0, 1], this.fGaugeFactor[1, 1], this.fGaugeFactor[2, 1], this.fGaugeFactor[3, 1], this.fGaugeFactor[4, 1]);
+			sw.WriteLine("DamageFactor={0}, {1}, {2}", this.fDamageLevelFactor[0], this.fDamageLevelFactor[1], fDamageLevelFactor[2]);
+			sw.WriteLine();
+	//------------------------------
+#endif
+			
 			sw.WriteLine( "; リリースバージョン" );
 			sw.WriteLine( "Version={0}", CDTXMania.VERSION );
 			sw.WriteLine();
@@ -1305,6 +1343,38 @@ namespace DTXMania
 										//-----------------------------
 										case Eセクション種別.System:
 											{
+#if DAMAGELEVELTUNING
+										//----------------------------------------
+												if (str3.Equals("GaugeFactorD"))
+												{
+													int p = 0;
+													string[] splittedFactor = str4.Split(',');
+													foreach (string s in splittedFactor) {
+														this.fGaugeFactor[p++, 0] = Convert.ToSingle(s);
+													}
+												} else
+												if (str3.Equals("GaugeFactorG"))
+												{
+													int p = 0;
+													string[] splittedFactor = str4.Split(',');
+													foreach (string s in splittedFactor)
+													{
+														this.fGaugeFactor[p++, 1] = Convert.ToSingle(s);
+													}
+												}
+												else
+												if (str3.Equals("DamageFactor"))
+												{
+													int p = 0;
+													string[] splittedFactor = str4.Split(',');
+													foreach (string s in splittedFactor)
+													{
+														this.fDamageLevelFactor[p++] = Convert.ToSingle(s);
+													}
+												}
+												else
+										//----------------------------------------
+#endif
 												if( str3.Equals( "Version" ) )
 												{
 													this.strDTXManiaのバージョン = str4;
