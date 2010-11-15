@@ -25,7 +25,12 @@ namespace DTXMania
 			public string Hash;
 			public int PlayCountDrums;
 			public int PlayCountGuitar;
-			public int PlayCountBass;
+            public int PlayCountBass;
+            // #23596 10.11.16 add ikanick-----/
+            public int ClearCountDrums;
+            public int ClearCountGuitar;
+            public int ClearCountBass;
+            // --------------------------------/
 			public int HistoryCount;
 			public string[] History;
 			public int BGMAdjust;
@@ -551,7 +556,21 @@ namespace DTXMania
 							else if( str3.Equals( "PlayCountBass" ) )
 							{
 								this.stファイル.PlayCountBass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x5f5e0ff, 0 );
-							}
+                            }
+                            // #23596 10.11.16 add ikanick------------------------------------/
+                            else if (str3.Equals("ClearCountDrums"))
+                            {
+                                this.stファイル.ClearCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 0x5f5e0ff, 0);
+                            }
+                            else if (str3.Equals("ClearCountGuitar"))
+                            {
+                                this.stファイル.ClearCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 0x5f5e0ff, 0);
+                            }
+                            else if (str3.Equals("ClearCountBass"))
+                            {
+                                this.stファイル.ClearCountBass = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 0x5f5e0ff, 0);
+                            }
+                            //----------------------------------------------------------------/
 							else if( str3.Equals( "History0" ) )
 							{
 								this.stファイル.History[ 0 ] = str4;
@@ -1017,7 +1036,10 @@ namespace DTXMania
 			writer.WriteLine( "Hash={0}", this.stファイル.Hash );
 			writer.WriteLine( "PlayCountDrums={0}", this.stファイル.PlayCountDrums );
 			writer.WriteLine( "PlayCountGuitars={0}", this.stファイル.PlayCountGuitar );
-			writer.WriteLine( "PlayCountBass={0}", this.stファイル.PlayCountBass );
+            writer.WriteLine( "PlayCountBass={0}", this.stファイル.PlayCountBass );
+            writer.WriteLine( "ClearCountDrums={0}", this.stファイル.ClearCountDrums );       // #23596 10.11.16 add ikanick
+            writer.WriteLine( "ClearCountGuitars={0}", this.stファイル.ClearCountGuitar );    // #23596 10.11.16 add ikanick
+            writer.WriteLine( "ClearCountBass={0}", this.stファイル.ClearCountBass );         // #23596 10.11.16 add ikanick
 			writer.WriteLine( "HistoryCount={0}", this.stファイル.HistoryCount );
 			writer.WriteLine( "History0={0}", this.stファイル.History[ 0 ] );
 			writer.WriteLine( "History1={0}", this.stファイル.History[ 1 ] );

@@ -17,7 +17,8 @@ namespace DTXMania
 		public STDGBVALUE<float> fGreat率;
 		public STDGBVALUE<float> fGood率;
 		public STDGBVALUE<float> fPoor率;
-		public STDGBVALUE<float> fMiss率;
+        public STDGBVALUE<float> fMiss率;
+        public STDGBVALUE<int> nオート;     // #23596 10.11.16 add ikanick
 		public STDGBVALUE<int> nランク値;
 		public STDGBVALUE<int> n演奏回数;
 		public int n総合ランク値;
@@ -85,7 +86,7 @@ namespace DTXMania
 						switch( j )
 						{
 							case 0:
-								guitar = CDTXMania.ConfigIni.bドラムが全部オートプレイである;
+                                guitar = CDTXMania.ConfigIni.bドラムが全部オートプレイである;
 								break;
 
 							case 1:
@@ -101,6 +102,7 @@ namespace DTXMania
 						this.fGood率[ j ] = guitar ? 0f : ( ( 100f * part.nGood数 ) / ( (float) part.n全チップ数 ) );
 						this.fPoor率[ j ] = guitar ? 0f : ( ( 100f * part.nPoor数 ) / ( (float) part.n全チップ数 ) );
 						this.fMiss率[ j ] = guitar ? 0f : ( ( 100f * part.nMiss数 ) / ( (float) part.n全チップ数 ) );
+                        this.nオート[ j ] = guitar ? 1 : 0; // #23596 10.11.16 add ikanick そのパートがオートなら1
 						this.nランク値[ j ] = CScoreIni.tランク値を計算して返す( part );
 					}
 				}
@@ -139,6 +141,23 @@ namespace DTXMania
 						this.b新記録スキル[ k ] = true;
 						ini.stセクション[ ( k * 2 ) + 1 ] = this.st演奏記録[ k ];
 					}
+                    // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
+                    if (this.nオート[ k ] == 0)
+                    {
+                        switch ( k )
+                        {
+                            case 0:
+                                ini.stファイル.ClearCountDrums++;
+                                break;
+                            case 1:
+                                ini.stファイル.ClearCountGuitar++;
+                                break;
+                            case 2:
+                                ini.stファイル.ClearCountBass++;
+                                break;
+                        }
+                    }
+                    //---------------------------------------------------------------------/
 				}
 				ini.t書き出し( str );
 				//---------------------
