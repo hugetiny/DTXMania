@@ -18,7 +18,8 @@ namespace DTXMania
 		public STDGBVALUE<float> fGood率;
 		public STDGBVALUE<float> fPoor率;
         public STDGBVALUE<float> fMiss率;
-        public STDGBVALUE<int> nオート;     // #23596 10.11.16 add ikanick
+        public STDGBVALUE<bool> bオート;        // #23596 10.11.16 add ikanick
+                                                //        10.11.17 change (int to bool) ikanick
 		public STDGBVALUE<int> nランク値;
 		public STDGBVALUE<int> n演奏回数;
 		public int n総合ランク値;
@@ -102,7 +103,8 @@ namespace DTXMania
 						this.fGood率[ j ] = guitar ? 0f : ( ( 100f * part.nGood数 ) / ( (float) part.n全チップ数 ) );
 						this.fPoor率[ j ] = guitar ? 0f : ( ( 100f * part.nPoor数 ) / ( (float) part.n全チップ数 ) );
 						this.fMiss率[ j ] = guitar ? 0f : ( ( 100f * part.nMiss数 ) / ( (float) part.n全チップ数 ) );
-                        this.nオート[ j ] = guitar ? 1 : 0; // #23596 10.11.16 add ikanick そのパートがオートなら1
+                        this.bオート[ j ] = guitar ;    // #23596 10.11.16 add ikanick そのパートがオートなら1
+                                                        //        10.11.17 change (int to bool) ikanick
 						this.nランク値[ j ] = CScoreIni.tランク値を計算して返す( part );
 					}
 				}
@@ -142,7 +144,9 @@ namespace DTXMania
 						ini.stセクション[ ( k * 2 ) + 1 ] = this.st演奏記録[ k ];
 					}
                     // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
-                    if (this.nオート[ k ] == 0)
+                    //        10.11.17 change (nオート to bオート)
+                    //                 add default..throw           ikanick
+                    if (this.bオート[ k ] == false)
                     {
                         switch ( k )
                         {
@@ -155,6 +159,8 @@ namespace DTXMania
                             case 2:
                                 ini.stファイル.ClearCountBass++;
                                 break;
+                            default:
+                                throw new Exception("クリア回数増加のk(0-2)が範囲外です。");
                         }
                     }
                     //---------------------------------------------------------------------/
