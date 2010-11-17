@@ -232,7 +232,7 @@ namespace SampleFramework
             Format[] allowedAdapterFormats = { Format.X8R8G8B8, Format.X1R5G5B5, Format.R5G6B5, 
                 Format.A2R10G10B10 };
 
-            foreach (AdapterInformation adapter in GraphicsDeviceManager.Direct3D9Object.Adapters)
+			foreach (AdapterInformation adapter in GraphicsDeviceManager.Direct3D9Object.Adapters)		//
             {
                 AdapterInfo9 info = new AdapterInfo9();
                 info.AdapterOrdinal = adapter.Adapter;
@@ -306,12 +306,19 @@ namespace SampleFramework
 
                 DeviceInfo9 deviceInfo = new DeviceInfo9();
                 deviceInfo.DeviceType = deviceType;
-                deviceInfo.Capabilities = GraphicsDeviceManager.Direct3D9Object.GetDeviceCaps(info.AdapterOrdinal, deviceInfo.DeviceType);
+				try
+				{
+					deviceInfo.Capabilities = GraphicsDeviceManager.Direct3D9Object.GetDeviceCaps(info.AdapterOrdinal, deviceInfo.DeviceType);
 
-                EnumerateSettingsCombos(info, deviceInfo, adapterFormats);
+					EnumerateSettingsCombos(info, deviceInfo, adapterFormats);
 
-                if (deviceInfo.DeviceSettings.Count > 0)
-                    info.Devices.Add(deviceInfo);
+					if (deviceInfo.DeviceSettings.Count > 0)
+						info.Devices.Add(deviceInfo);
+				}
+				catch (Direct3D9Exception e)
+				{
+					// #23681 2010.11.17 yyagi: GetDeviceCaps()で例外が発生するモニタに対しては、enumerateをスキップする。
+				}
             }
         }
 
