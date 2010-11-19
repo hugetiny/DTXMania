@@ -288,7 +288,6 @@ namespace DTXMania
 					ConfigIni.nウインドウwidth = this.Window.ClientSize.Width;
 					ConfigIni.nウインドウheight = this.Window.ClientSize.Height;
 				}
-//				base.GraphicsDeviceManager.ToggleFullScreen();
 				base.GraphicsDeviceManager.ChangeDevice( settings );
 				if (ConfigIni.bウィンドウモード == true)	// #23510 2010.10.27 yyagi: to resume window size from backuped value
 				{
@@ -1186,8 +1185,9 @@ for (int i = 0; i < 3; i++) {
 			base.Window.ShowIcon = true;
 			base.Window.Icon = Properties.Resources.dtx;
 			base.Window.KeyDown += new KeyEventHandler( this.Window_KeyDown );
-			base.Window.MouseDoubleClick += new MouseEventHandler(this.Window_MouseDoubleClick);	// #23510 2010.11.04 yyagi: to reset window size to 640x480
-			base.Window.ApplicationActivated += new EventHandler( this.Window_ApplicationActivated );
+			base.Window.MouseDoubleClick += new MouseEventHandler(this.Window_MouseDoubleClick);	// #23510 2010.11.13 yyagi: to go fullscreen mode
+			base.Window.ResizeEnd += new EventHandler(this.Window_ResizeEnd);						// #23510 2010.11.20 yyagi: to set resized window size in Config.ini
+			base.Window.ApplicationActivated += new EventHandler(this.Window_ApplicationActivated);
 			base.Window.ApplicationDeactivated += new EventHandler( this.Window_ApplicationDeactivated );
 			//---------------------
 			#endregion
@@ -1725,12 +1725,6 @@ for (int i = 0; i < 3; i++) {
 				#region [ Config.iniの出力 ]
 				//---------------------
 				Trace.TraceInformation("Config.ini を出力します。");
-				// #23510 2010.10.31 yyagi
-				// #23510 2010.11.02 yyagi change conditions from (base.windows.clientsize.width > 0) to (ConfigIni.bウインドウモード) to detect whether fullscreenmode or not correctly
-				// とりあえずここでConfigへの変数書き戻しを行っているが、
-				// 一段落したらリサイズイベントの処理中に入れ込んでしまう予定。
-					ConfigIni.nウインドウwidth  = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
-					ConfigIni.nウインドウheight = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Height : currentClientSize.Height;
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
 				try
@@ -1738,9 +1732,9 @@ for (int i = 0; i < 3; i++) {
 					ConfigIni.t書き出し( str );
 					Trace.TraceInformation( "保存しました。({0})", new object[] { str } );
 				}
-				catch( Exception exception7 )
+				catch( Exception e )
 				{
-					Trace.TraceError( exception7.Message );
+					Trace.TraceError( e.Message );
 					Trace.TraceError( "Config.ini の出力に失敗しました。({0})", new object[] { str } );
 				}
 				finally
@@ -1907,6 +1901,11 @@ for (int i = 0; i < 3; i++) {
 		{
 			ConfigIni.bウィンドウモード = false;
 			this.t全画面・ウィンドウモード切り替え();
+		}
+		private void Window_ResizeEnd(object sender, EventArgs e)				// #23510 2010.11.20 yyagi: to get resized window size
+		{
+			ConfigIni.nウインドウwidth = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
+			ConfigIni.nウインドウheight = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Height : currentClientSize.Height;
 		}
 		#endregion
 	}

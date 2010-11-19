@@ -384,7 +384,8 @@ namespace SampleFramework
 				#region #23510 2010.11.13 yyagi: reset to 640x480
 				if ((m.WParam.ToInt32() & 0xFFFF) == MENU_VIEW)		
 				{
-					 base.ClientSize = new Size(640, 480);
+					base.ClientSize = new Size(640, 480);
+					this.OnResizeEnd(new EventArgs());		// #23510 2010.11.20 yyagi: to set window size to Config.ini
 				}
 				#endregion
 			}
