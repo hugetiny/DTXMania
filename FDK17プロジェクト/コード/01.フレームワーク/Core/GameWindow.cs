@@ -271,14 +271,17 @@ namespace SampleFramework
 
 		#region #23510 2010.11.14 yyagi add: 縦横比固定でのウインドウサイズ変更 定数定義 from http://www.vcskicks.com/maintain-aspect-ratio.php
 		//double so division keeps decimal points
-		const double widthRatio = 640;
-		const double heightRatio = 480;
-
+		const double widthRatio = 640.0f;
+		const double heightRatio = 480.0f;
 		const int WM_SIZING = 0x214;
 		const int WMSZ_LEFT = 1;
 		const int WMSZ_RIGHT = 2;
 		const int WMSZ_TOP = 3;
+		const int WMSZ_TOPLEFT = 4;
+		const int WMSZ_TOPRIGHT = 5;
 		const int WMSZ_BOTTOM = 6;
+		const int WMSZ_BOTTOMLEFT = 7;
+		const int WMSZ_BOTTOMRIGHT = 8;
 
 		public struct RECT
 		{
@@ -386,73 +389,66 @@ namespace SampleFramework
 				#endregion
 			}
 
-			#region #23510 2010.11.16 yyagi add: 縦横比固定でのウインドウサイズ変更 from http://www.vcskicks.com/maintain-aspect-ratio.php http://hp.vector.co.jp/authors/VA016117/sizing.html
+			#region #23510 2010.11.16 yyagi add: 縦横比固定でのウインドウサイズ変更 from http://d.hatena.ne.jp/iselix/20080917/1221666614 http://hp.vector.co.jp/authors/VA016117/sizing.html
 			else if (m.Msg == WM_SIZING)
 			{
 				RECT rc = (RECT)Marshal.PtrToStructure(m.LParam, typeof(RECT));
-				int res = m.WParam.ToInt32();
-				int totalWidth = rc.Right - rc.Left;
-				int totalHeight = rc.Bottom - rc.Top;
-				int edgeWidth = totalWidth - this.ClientSize.Width;
-				int edgeHeight = totalHeight - this.ClientSize.Height;
+				int w = rc.Right - rc.Left - (Size.Width - ClientSize.Width);
+				int h = rc.Bottom - rc.Top - (Size.Height - ClientSize.Height);
+				int dw = (int)(h * widthRatio / heightRatio + 0.5) - w;
+				int dh = (int)(w / (widthRatio / heightRatio) + 0.5) - h;
 
-				if (res == WMSZ_LEFT || res == WMSZ_RIGHT)
-				{
-					//Left or right resize -> adjust height (bottom)
-					rc.Bottom = rc.Top + (int)((double)this.ClientSize.Width * (double)(heightRatio / widthRatio)) + edgeHeight;
-				}
-				else if (res == WMSZ_TOP || res == WMSZ_BOTTOM)
-				{
-					//Up or down resize -> adjust width (right)
-					rc.Right = rc.Left + (int)((double)this.ClientSize.Height * (double)(widthRatio / heightRatio)) + edgeWidth;
-				}
-				else if (res == WMSZ_RIGHT + WMSZ_BOTTOM)
-				{
-					//Lower-right corner resize -> adjust height (could have been width)
-					if (((double)this.ClientSize.Width / (double)this.ClientSize.Height) < (widthRatio / heightRatio))
-					{
-						rc.Right = rc.Left + (int)((double)this.ClientSize.Height * (double)(widthRatio / heightRatio)) + edgeWidth;
-					}
-					else
-					{
-						rc.Bottom = rc.Top + (int)((double)this.ClientSize.Width * (double)(heightRatio / widthRatio)) + edgeHeight;
-					}
-				}
-				else if (res == WMSZ_LEFT + WMSZ_TOP)
-				{
-					//Upper-left corner -> adjust width (could have been height)
-					if (((double)this.ClientSize.Width / (double)this.ClientSize.Height) < (widthRatio / heightRatio))
-					{
-						rc.Left = rc.Right - (int)(widthRatio * this.ClientSize.Height / heightRatio) - edgeWidth;
-					}
-					else
-					{
-						rc.Top = rc.Bottom - (int)((double)this.ClientSize.Width * (double)(heightRatio / widthRatio)) - edgeHeight;
-					}
-				}
-				else if (res == WMSZ_RIGHT + WMSZ_TOP)
-				{
-					//Upper-right corner resize -> adjust height (could have been width)
-					if (((double)this.ClientSize.Width / (double)this.ClientSize.Height) < (widthRatio / heightRatio))
-					{
-						rc.Right = rc.Left + (int)((double)this.ClientSize.Height * (double)(widthRatio / heightRatio)) + edgeWidth;
-					}
-					else
-					{
-						rc.Top = rc.Bottom - (int)(heightRatio * this.ClientSize.Width / widthRatio) - edgeHeight;
-					}
-				}
-				else if (res == WMSZ_LEFT + WMSZ_BOTTOM)
-				{
-					//Lower-left corner -> adjust width (could have been height)
-					if (((double)this.ClientSize.Width / (double)this.ClientSize.Height) < (widthRatio / heightRatio))
-					{
-						rc.Left = rc.Right - (int)(widthRatio * this.ClientSize.Height / heightRatio) - edgeWidth;
-					}
-					else
-					{
-						rc.Bottom = rc.Top + (int)((double)this.ClientSize.Width * (double)(heightRatio / widthRatio)) + edgeHeight;
-					}
+				switch (m.WParam.ToInt32()) {
+					case WMSZ_LEFT:
+					case WMSZ_RIGHT:
+						rc.Bottom += dh;
+						break;
+					case WMSZ_TOP:
+					case WMSZ_BOTTOM:
+						rc.Right += dw;
+						break;
+					case WMSZ_BOTTOMRIGHT:
+						if (dw > 0)
+						{
+							rc.Right += dw;
+						}
+						else
+						{
+							rc.Bottom += dh;
+						}
+						break;
+					case WMSZ_TOPLEFT:
+						if (dw > 0)
+						{
+							rc.Left -= dw;
+						}
+						else
+						{
+							rc.Top -= dh;
+						}
+						break;
+					case WMSZ_TOPRIGHT:
+						if (dw > 0)
+						{
+							rc.Right += dw;
+						}
+						else
+						{
+							rc.Top -= dh;
+						}
+						break;
+					case WMSZ_BOTTOMLEFT:
+						if (dw > 0)
+						{
+							rc.Left -= dw;
+						}
+						else
+						{
+							rc.Bottom += dh;
+						}
+						break;
+					default:
+						throw new ArgumentOutOfRangeException("value", "Illegal WM_SIZING value.");
 				}
 				Marshal.StructureToPtr(rc, m.LParam, true);
 			}
