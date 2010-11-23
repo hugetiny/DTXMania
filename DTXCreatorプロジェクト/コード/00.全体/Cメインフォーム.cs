@@ -364,6 +364,12 @@ namespace DTXCreator
 
 			// DTXCreator から保存すべきアプリ設定を取得する。
 
+			#region [ #23729 2010.11.22 yyagi: to get DTXC's x, y, width & height correctly, set windowstate "normal" if it is "minimized." ]
+			if (this.WindowState == FormWindowState.Minimized)
+			{
+				this.WindowState = FormWindowState.Normal;
+			}
+			#endregion
 			#region [ ウィンドウの位置とサイズ ]
 			//-----------------
 			this.appアプリ設定.X = this.Location.X;
