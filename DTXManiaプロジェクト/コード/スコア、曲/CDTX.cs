@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
+using System.Reflection;
 using FDK;
 
 namespace DTXMania
@@ -1522,11 +1523,11 @@ namespace DTXMania
 			this.strファイル名 = "";
 			this.strフォルダ名 = "";
 			this.strファイル名の絶対パス = "";
-			this.n無限管理WAV = new int[ 0x510 ];
-			this.n無限管理BPM = new int[ 0x510 ];
-			this.n無限管理VOL = new int[ 0x510 ];
-			this.n無限管理PAN = new int[ 0x510 ];
-			this.n無限管理SIZE = new int[ 0x510 ];
+			this.n無限管理WAV = new int[ 36 * 36 ];
+			this.n無限管理BPM = new int[ 36 * 36 ];
+			this.n無限管理VOL = new int[ 36 * 36 ];
+			this.n無限管理PAN = new int[ 36 * 36 ];
+			this.n無限管理SIZE = new int[ 36 * 36 ];
 			this.nRESULTIMAGE用優先順位 = new int[ 7 ];
 			this.nRESULTMOVIE用優先順位 = new int[ 7 ];
 			this.nRESULTSOUND用優先順位 = new int[ 7 ];
@@ -2100,6 +2101,29 @@ namespace DTXMania
 						{
 							break;
 						}
+//						Type t = typeof(CSound);
+//						MethodInfo[] methods = t.GetMethods(
+//							BindingFlags.Public | BindingFlags.NonPublic |
+//							BindingFlags.Instance | BindingFlags.Static
+//						);
+
+//						for (int j = 1; j < 3; j++)
+//						{
+//							SlimDX.DirectSound.SoundBuffer result;
+//							CDTXMania.Sound管理.Device.DuplicateSoundBuffer(
+//								cwav.rSound[0].Buffer,
+//								out result);
+//							cwav.rSound[j].Buffer = (SlimDX.DirectSound.SecondarySoundBuffer)result;
+//							cwav.rSound[j].bストリーム再生する = cwav.rSound[0].bストリーム再生する;
+//							cwav.rSound[j].bループする
+//							foreach(MethodInfo m in methods) {
+//								if (m cwav..rSound[j].
+//						}
+//						cwav.rSound[0].Buffer.
+						cwav.rSound[1] = cwav.rSound[0];		// 2010.11.23 yyagi add: to accelerate loading chip sounds
+						cwav.rSound[2] = cwav.rSound[0];		//
+						cwav.rSound[3] = cwav.rSound[0];		//
+						break;									//
 					}
 					continue;
 				}
@@ -2116,12 +2140,12 @@ namespace DTXMania
 		}
 		public static string tZZ( int n )
 		{
-			if( ( n < 0 ) || ( n >= 0x510 ) )
+			if( ( n < 0 ) || ( n >= 36 * 36) )
 			{
 				return "!!";
 			}
 			string str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-			return new string( new char[] { str[ n / 0x24 ], str[ n % 0x24 ] } );
+			return new string( new char[] { str[ n / 36 ], str[ n % 36 ] } );
 		}
 
 		/// <summary>
@@ -2458,7 +2482,7 @@ namespace DTXMania
 				str全入力文字列 = str全入力文字列.Replace( Environment.NewLine, "\n" );
 				str全入力文字列 = str全入力文字列.Replace( '\t', ' ' );
 				str全入力文字列 = str全入力文字列 + "\n";
-				for( int j = 0; j < 0x510; j++ )
+				for( int j = 0; j < 36 * 36; j++ )
 				{
 					this.n無限管理WAV[ j ] = -j;
 					this.n無限管理BPM[ j ] = -j;
@@ -3312,15 +3336,20 @@ namespace DTXMania
 						}
 						else if( !this.bヘッダのみ )
 						{
+							if( str.StartsWith( "PANEL", StringComparison.OrdinalIgnoreCase ) )
+							{
+								this.t入力・パラメータ食い込みチェック( "PANEL", ref str, ref str2 );
+								int dummyResult;								// #23885 2010.12.12 yyagi: not to confuse "#PANEL strings (panel)" and "#PANEL int (panpot of EL)"
+								if (!int.TryParse( str2, out dummyResult) ) {	// 数値じゃないならPANELとみなす
+									this.PANEL = str2;							//
+									goto EOL;									//
+								}												// 数値ならPAN ELとみなす
+
+							}
 							if( str.StartsWith( "MIDIFILE", StringComparison.OrdinalIgnoreCase ) )
 							{
 								this.t入力・パラメータ食い込みチェック( "MIDIFILE", ref str, ref str2 );
 								this.MIDIFILE = str2;
-							}
-							else if( str.StartsWith( "PANEL", StringComparison.OrdinalIgnoreCase ) )
-							{
-								this.t入力・パラメータ食い込みチェック( "PANEL", ref str, ref str2 );
-								this.PANEL = str2;
 							}
 							else
 							{
@@ -3363,6 +3392,8 @@ namespace DTXMania
 									this.t入力・行解析・チップ配置( str, str2, str3 );
 								}
 							}
+						EOL:
+							int xx = 0;		// #23885 2010.12.12 yyagi: dummy line to exit parsing the line
 						}
 					}
 				}
@@ -3387,7 +3418,7 @@ namespace DTXMania
 				return false;
 			}
 			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 0x510 ) )
+			if( ( key < 0 ) || ( key >= 36 * 36 ) )
 			{
 				Trace.TraceError( "AVI(VIDEO)番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
@@ -3418,7 +3449,7 @@ namespace DTXMania
 				return false;
 			}
 			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 0x510 ) )
+			if( ( key < 0 ) || ( key >= 36 * 36 ) )
 			{
 				Trace.TraceError( "AVIPAN番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
@@ -3439,7 +3470,7 @@ namespace DTXMania
 				return false;
 			}
 			cavipan.nAVI番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strArray[ index ] );
-			if( ( cavipan.nAVI番号 < 1 ) || ( cavipan.nAVI番号 >= 0x510 ) )
+			if( ( cavipan.nAVI番号 < 1 ) || ( cavipan.nAVI番号 >= 36 * 36 ) )
 			{
 				Trace.TraceError( "AVIPAN: {2}番目の数（AVI番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
 				return false;
@@ -3575,7 +3606,7 @@ namespace DTXMania
 				return false;
 			}
 			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 0x510 ) )
+			if( ( key < 0 ) || ( key >= 36 * 36 ) )
 			{
 				Trace.TraceError( "BGA番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
@@ -3596,7 +3627,7 @@ namespace DTXMania
 				return false;
 			}
 			cbga.nBMP番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strArray[ index ] );
-			if( ( cbga.nBMP番号 < 1 ) || ( cbga.nBMP番号 >= 0x510 ) )
+			if( ( cbga.nBMP番号 < 1 ) || ( cbga.nBMP番号 >= 36 * 36 ) )
 			{
 				Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
 				return false;
@@ -3684,7 +3715,7 @@ namespace DTXMania
 				return false;
 			}
 			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 0x510 ) )
+			if( ( key < 0 ) || ( key >= 36 * 36 ) )
 			{
 				Trace.TraceError( "BGAPAN番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
@@ -3705,7 +3736,7 @@ namespace DTXMania
 				return false;
 			}
 			cbgapan.nBMP番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strArray[ index ] );
-			if( ( cbgapan.nBMP番号 < 1 ) || ( cbgapan.nBMP番号 >= 0x510 ) )
+			if( ( cbgapan.nBMP番号 < 1 ) || ( cbgapan.nBMP番号 >= 36 * 36 ) )
 			{
 				Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
 				return false;
@@ -3844,7 +3875,7 @@ namespace DTXMania
 			else
 			{
 				key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-				if( ( key < 0 ) || ( key >= 0x510 ) )
+				if( ( key < 0 ) || ( key >= 36 * 36 ) )
 				{
 					Trace.TraceError( "BMP番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 					return false;
@@ -3876,7 +3907,7 @@ namespace DTXMania
 				return false;
 			}
 			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 0x510 ) )
+			if( ( key < 0 ) || ( key >= 36 * 36 ) )
 			{
 				Trace.TraceError( "BMPTEX番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
@@ -3910,7 +3941,7 @@ namespace DTXMania
 			else
 			{
 				index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-				if( ( index < 0 ) || ( index >= 0x510 ) )
+				if( ( index < 0 ) || ( index >= 36 * 36 ) )
 				{
 					Trace.TraceError( "BPM番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 					return false;
@@ -4175,7 +4206,7 @@ namespace DTXMania
 				return false;
 			}
 			int index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( index < 0 ) || ( index >= 0x510 ) )
+			if( ( index < 0 ) || ( index >= 36 * 36 ) )
 			{
 				Trace.TraceError( "SIZE番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
@@ -4219,7 +4250,7 @@ namespace DTXMania
 				return false;
 			}
 			int index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( index < 0 ) || ( index >= 0x510 ) )
+			if( ( index < 0 ) || ( index >= 36 * 36 ) )
 			{
 				Trace.TraceError( "WAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
@@ -4253,11 +4284,11 @@ namespace DTXMania
 			int num2;
 			if( strコマンド.StartsWith( "WAVPAN", StringComparison.OrdinalIgnoreCase ) )
 			{
-				strコマンド = strコマンド.Substring( 6 );
+				strコマンド = strコマンド.Substring(6);
 			}
 			else if( strコマンド.StartsWith( "PAN", StringComparison.OrdinalIgnoreCase ) )
 			{
-				strコマンド = strコマンド.Substring( 3 );
+				strコマンド = strコマンド.Substring(3);
 			}
 			else
 			{
@@ -4268,7 +4299,7 @@ namespace DTXMania
 				return false;
 			}
 			int index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( index < 0 ) || ( index >= 0x510 ) )
+			if( ( index < 0 ) || ( index >= 36 * 36 ) )
 			{
 				Trace.TraceError( "WAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
@@ -4317,7 +4348,7 @@ namespace DTXMania
 				return false;
 			}
 			int index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( index < 0 ) || ( index >= 0x510 ) )
+			if( ( index < 0 ) || ( index >= 36 * 36 ) )
 			{
 				Trace.TraceError( "WAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 				return false;
