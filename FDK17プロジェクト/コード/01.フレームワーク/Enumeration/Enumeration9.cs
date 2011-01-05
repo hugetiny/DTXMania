@@ -315,7 +315,7 @@ namespace SampleFramework
 					if (deviceInfo.DeviceSettings.Count > 0)
 						info.Devices.Add(deviceInfo);
 				}
-				catch (Direct3D9Exception e)
+				catch (Direct3D9Exception)
 				{
 					// #23681 2010.11.17 yyagi: GetDeviceCaps()で例外が発生するモニタに対しては、enumerateをスキップする。
 				}

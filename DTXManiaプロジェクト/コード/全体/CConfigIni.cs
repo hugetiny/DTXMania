@@ -426,6 +426,12 @@ namespace DTXMania
 		public Eドラムコンボ文字の表示位置 ドラムコンボ文字の表示位置;
 		public STDGBVALUE<E判定文字表示位置> 判定文字表示位置;
 		public int nハイハット切り捨て下限Velocity;
+		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+		public int nInputAdjustTimeMs_Drums;		// #23580 2011.1.3 yyagi タイミングアジャスト機能
+		public int nInputAdjustTimeMs_Guitar;		// #23580 2011.1.3 yyagi タイミングアジャスト機能
+		public int nInputAdjustTimeMs_Bass;			// #23580 2011.1.3 yyagi タイミングアジャスト機能
+#endif
 		public bool bバッファ入力を行う;
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
@@ -732,8 +738,8 @@ namespace DTXMania
 			this.b全画面モード = false;
 			this.b垂直帰線待ちを行う = true;
 			this.nウインドウwidth = 640;				// #23510 2010.10.31 yyagi add
-            this.nウインドウheight = 480;				// 
-            this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
+			this.nウインドウheight = 480;				// 
+			this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
 			this._bGuitar有効 = true;
 			this._bDrums有効 = true;
 			this.nBGAlpha = 100;
@@ -742,7 +748,7 @@ namespace DTXMania
 			this.bAVI有効 = true;
 			this.bBGA有効 = true;
 			this.bフィルイン有効 = true;
-			this.n曲が選択されてからプレビュー音が鳴るまでのウェイトms = 0x3e8;
+			this.n曲が選択されてからプレビュー音が鳴るまでのウェイトms = 1000;
 			this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms = 100;
 			this.bWave再生位置自動調整機能有効 = true;
 			this.bBGM音を発声する = true;
@@ -820,15 +826,21 @@ namespace DTXMania
 			stautoplay.Bass = true;
 			this.bAutoPlay = stautoplay;
 			STRANGE strange = new STRANGE();
-			strange.Perfect = 0x22;
-			strange.Great = 0x43;
-			strange.Good = 0x54;
-			strange.Poor = 0x75;
+			strange.Perfect = 34;
+			strange.Great = 67;
+			strange.Good = 84;
+			strange.Poor = 117;
 			this.nヒット範囲ms = strange;
 			this.ConfigIniファイル名 = "";
 			this.dicJoystick = new Dictionary<int, string>( 10 );
 			this.tデフォルトのキーアサインに設定する();
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+			this.nInputAdjustTimeMs_Drums = 0;			// #23580 2011.1.3 yyagi
+			this.nInputAdjustTimeMs_Guitar = 0;			// #23580 2011.1.3 yyagi
+			this.nInputAdjustTimeMs_Bass = 0;			// #23580 2011.1.3 yyagi
+#endif
 			this.nハイハット切り捨て下限Velocity = 20;
+			this.n切り捨て下限Velocity = 0;				// #23857 2010.12.12 yyagi VelocityMin
 			this.bバッファ入力を行う = true;
 		}
 		public CConfigIni( string iniファイル名 )
@@ -1023,10 +1035,29 @@ namespace DTXMania
 			sw.WriteLine( "; バッファ入力モード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BufferedInput={0}", this.bバッファ入力を行う ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine( "; ハイハット入力切り捨て下限Velocity値(0～127)" );
-			sw.WriteLine( "HHVelocityMin={0}", this.nハイハット切り捨て下限Velocity );
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+			sw.WriteLine("; 判定タイミング調整(ドラム)(-100～100)[ms]");								// #23580 2011.1.3 yyagi
+			sw.WriteLine("; To adjust judgement timing for drums.");
+			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs_Drums);
 			sw.WriteLine();
-			sw.WriteLine( ";-------------------" );
+			sw.WriteLine("; 判定タイミング調整(ギター)(-100～100)[ms]");								// #23580 2011.1.3 yyagi
+			sw.WriteLine("; To adjust judgement timing for guitar.");
+			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs_Guitar);
+			sw.WriteLine();
+			sw.WriteLine("; 判定タイミング調整(ベース)(-100～100)[ms]");								// #23580 2011.1.3 yyagi
+			sw.WriteLine("; To adjust judgement timing for bass.");
+			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs_Bass);
+			sw.WriteLine();
+#endif
+			sw.WriteLine("; ハイハット入力切り捨て下限Velocity値(0～127)");
+			sw.WriteLine("; Minimum velocity value to accept. (for HiHat)");				// #23857 2010.12.12 yyagi
+			sw.WriteLine("HHVelocityMin={0}", this.nハイハット切り捨て下限Velocity);
+			sw.WriteLine();
+			sw.WriteLine("; ハイハット以外の入力切り捨て下限Velocity値(0～127)");			// #23857 2010.12.12 yyagi
+			sw.WriteLine("; Minimum velocity value to accept. (except HiHat)");				//
+			sw.WriteLine("VelocityMin={0}", this.n切り捨て下限Velocity);					//
+			sw.WriteLine();																	//
+			sw.WriteLine(";-------------------");
 			sw.WriteLine( "[Log]" );
 			sw.WriteLine();
 			sw.WriteLine( "; Log出力(0:OFF, 1:ON)" );
@@ -1559,13 +1590,29 @@ namespace DTXMania
 												{
 													this.bシンバルフリー = C変換.bONorOFF( str4[ 0 ] );
 												}
-												else if( str3.Equals( "BufferedInput" ) )
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+												else if ( str3.Equals("InputAdjustTimeDrums") )		// #23580 2011.1.3 yyagi
 												{
-													this.bバッファ入力を行う = C変換.bONorOFF( str4[ 0 ] );
+													this.nInputAdjustTimeMs_Drums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs_Drums);
 												}
-												else if( str3.Equals( "HHVelocityMin" ) )
+												else if ( str3.Equals("InputAdjustTimeGuitar") )	// #23580 2011.1.3 yyagi
 												{
-													this.nハイハット切り捨て下限Velocity = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nハイハット切り捨て下限Velocity );
+													this.nInputAdjustTimeMs_Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs_Guitar);
+												}
+												else if ( str3.Equals("InputAdjustTimeBass") )		// #23580 2011.1.3 yyagi
+												{
+													this.nInputAdjustTimeMs_Bass = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs_Bass);
+												}
+#endif
+												else if ( str3.Equals("BufferedInput") ) {
+													this.bバッファ入力を行う = C変換.bONorOFF(str4[0]);
+												}
+												else if ( str3.Equals("HHVelocityMin") ) {
+													this.nハイハット切り捨て下限Velocity = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 127, this.nハイハット切り捨て下限Velocity);
+												}
+												else if ( str3.Equals("VelocityMin") )				// #23857 2010 12.12 yyagi
+												{
+													this.n切り捨て下限Velocity = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 127, this.n切り捨て下限Velocity);
 												}
 												continue;
 											}

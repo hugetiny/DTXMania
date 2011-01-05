@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace DTXMania
 {
@@ -44,10 +46,27 @@ namespace DTXMania
 		{
 			this.t初期化( str項目名 );
 		}
-		public CItemBase( string str項目名, Eパネル種別 eパネル種別 )
+		public CItemBase(string str項目名, string str説明文jp)
+			: this() {
+			this.t初期化(str項目名, str説明文jp);
+		}
+		public CItemBase(string str項目名,  string str説明文jp, string str説明文en)
+			: this() {
+			this.t初期化(str項目名, str説明文jp, str説明文en);
+		}
+
+		public CItemBase(string str項目名, Eパネル種別 eパネル種別)
 			: this()
 		{
 			this.t初期化( str項目名, eパネル種別 );
+		}
+		public CItemBase(string str項目名, Eパネル種別 eパネル種別, string str説明文jp)
+			: this() {
+			this.t初期化(str項目名, eパネル種別, str説明文jp);
+		}
+		public CItemBase(string str項目名, Eパネル種別 eパネル種別, string str説明文jp, string str説明文en)
+			: this() {
+			this.t初期化(str項目名, eパネル種別, str説明文jp, str説明文en);
 		}
 
 		
@@ -66,10 +85,24 @@ namespace DTXMania
 		{
 			this.t初期化( str項目名, Eパネル種別.通常 );
 		}
+		public virtual void t初期化(string str項目名, string str説明文jp) {
+			this.t初期化(str項目名, Eパネル種別.通常, str説明文jp, str説明文jp);
+		}
+		public virtual void t初期化(string str項目名, string str説明文jp, string str説明文en) {
+			this.t初期化(str項目名, Eパネル種別.通常, str説明文jp, str説明文en);
+		}
+
 		public virtual void t初期化( string str項目名, Eパネル種別 eパネル種別 )
 		{
+			this.t初期化(str項目名, eパネル種別, "", "");
+		}
+		public virtual void t初期化(string str項目名, Eパネル種別 eパネル種別, string str説明文jp) {
+			this.t初期化(str項目名, eパネル種別, str説明文jp, str説明文jp);
+		}
+		public virtual void t初期化(string str項目名, Eパネル種別 eパネル種別, string str説明文jp, string str説明文en) {
 			this.str項目名 = str項目名;
 			this.eパネル種別 = eパネル種別;
+			this.str説明文 = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? str説明文jp : str説明文en;
 		}
 	}
 }

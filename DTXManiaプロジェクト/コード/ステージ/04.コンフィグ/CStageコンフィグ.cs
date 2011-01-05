@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
@@ -505,32 +506,47 @@ namespace DTXMania
 			{
 				Bitmap image = new Bitmap( 440, 0x100 );
 				Graphics graphics = Graphics.FromImage( image );
+				string[,] str = new string[2, 2];
 				switch( this.n現在のメニュー番号 )
 				{
 					case 0:
-						graphics.DrawString( "システムに関係する項目を設定しま", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "す。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "システムに関係する項目を設定しま";
+						str[0, 1] = "す。";
+						str[1, 0] = "Settings for an overall systems.";
 						break;
 
 					case 1:
-						graphics.DrawString( "ドラムのキー入力に関する項目を設", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "定します。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "ドラムのキー入力に関する項目を設";
+						str[0, 1] = "定します。";
+						str[1, 0] = "Settings for the drums key/pad inputs.";
+						str[1, 1] = "";
 						break;
 
 					case 2:
-						graphics.DrawString( "ギターのキー入力に関する項目を設", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "定します。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "ギターのキー入力に関する項目を設";
+						str[0, 1] = "定します。";
+						str[1, 0] = "Settings for the guitar key/pad inputs.";
+						str[1, 1] = "";
 						break;
 
 					case 3:
-						graphics.DrawString( "ベースのキー入力に関する項目を設", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "定します。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "ベースのキー入力に関する項目を設";
+						str[0, 1] = "定します。";
+						str[1, 0] = "Settings for the bass key/pad inputs.";
+						str[1, 1] = "";
 						break;
 
 					case 4:
-						graphics.DrawString( "設定を保存し、コンフィグ画面を終了", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "します。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "設定を保存し、コンフィグ画面を終了";
+						str[0, 1] = "します。";
+						str[1, 0] = "Save the settings and exit from";
+						str[1, 1] = "CONFIGURATION menu.";
 						break;
+				}
+				int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
+				for (int i = 0; i < 2; i++)
+				{
+					graphics.DrawString(str[c, i], this.ftフォント, Brushes.White, new PointF(4f, (i * 30)));
 				}
 				graphics.Dispose();
 				if( this.tx説明文パネル != null )

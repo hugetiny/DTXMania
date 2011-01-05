@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Threading;
 using SlimDX;
 using SlimDX.Direct3D9;
 using FDK;
@@ -1135,7 +1136,7 @@ for (int i = 0; i < 3; i++) {
 				}
 				catch
 				{
-					ConfigIni = new CConfigIni();	// 存在してなければ新規生成
+					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
 				}
 			}
 			//---------------------
@@ -1198,7 +1199,17 @@ for (int i = 0; i < 3; i++) {
 			settings.BackBufferWidth = 640;
 			settings.BackBufferHeight = 480;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
-			base.GraphicsDeviceManager.ChangeDevice( settings );
+			try
+			{
+				base.GraphicsDeviceManager.ChangeDevice(settings);
+			}
+			catch (DeviceCreationException e)
+			{
+				Trace.TraceError(e.ToString());
+				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Environment.Exit(-1);
+			}
+
 			base.IsFixedTimeStep = false;
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
 			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
@@ -1759,18 +1770,32 @@ for (int i = 0; i < 3; i++) {
 		}
 		private void Window_KeyDown( object sender, KeyEventArgs e )
 		{
-			if( e.KeyCode == Keys.Menu )
+			if (e.KeyCode == Keys.Menu)
 			{
+				e.Handled = true;
 				e.SuppressKeyPress = true;
 			}
-			else if( ( e.KeyCode == Keys.Return ) && e.Alt )
+			else if ((e.KeyCode == Keys.Return) && e.Alt)
 			{
-				if( ConfigIni != null )
+				if (ConfigIni != null)
 				{
 					ConfigIni.bウィンドウモード = !ConfigIni.bウィンドウモード;
 					this.t全画面・ウィンドウモード切り替え();
 				}
+				e.Handled = true;
 				e.SuppressKeyPress = true;
+/*
+ * while (Input管理.Keyboard.bキーが押されている(0x75))
+				{
+					Trace.TraceInformation("Enterが押されている");
+					Thread.Sleep(100);
+					if (Input管理.Keyboard.bキーが離された(0x75))
+					{
+						Trace.TraceInformation("Enterが離された");
+						break;
+					}
+				}
+*/
 			}
 		}
 		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)

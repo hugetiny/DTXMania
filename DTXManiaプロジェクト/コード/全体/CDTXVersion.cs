@@ -175,7 +175,28 @@ namespace DTXMania
 		{
 			return ( ( x.n整数部 < y.n整数部 ) || ( ( x.n整数部 == y.n整数部 ) && ( x.n小数部 <= y.n小数部 ) ) );
 		}
-
+		public override bool Equals(object obj)			// 2011.1.3 yyagi: warningを無くすために追加
+		{
+			if (obj == null)
+			{
+				return false;
+			}
+			if (this.GetType() != obj.GetType())
+			{
+				return false;
+			}
+			CDTXVersion objCDTXVersion = (CDTXVersion)obj;
+			if (!int.Equals(this.n整数部, objCDTXVersion.n整数部) || !int.Equals(this.n小数部, objCDTXVersion.n小数部))
+			{
+				return false;
+			}
+			return true;
+		}
+		public override int GetHashCode()				// 2011.1.3 yyagi: warningを無くすために追加
+		{
+			string v = this.toString();
+			return v.GetHashCode();
+		}
 
 		// その他
 

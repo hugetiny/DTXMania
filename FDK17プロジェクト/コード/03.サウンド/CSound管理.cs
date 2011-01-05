@@ -12,9 +12,9 @@ namespace FDK
 	{
 		// 定数
 
-		public static int nキープする再生済みバッファの数 = ( nバッファの数 / 3 );
-		public static int nバッファサイズ = 0x1000;
 		public static int nバッファの数 = 0x20;
+		public static int nキープする再生済みバッファの数 = (nバッファの数 / 3);
+		public static int nバッファサイズ = 0x1000;
 		public static int n最大オンメモリ可能サイズ = 0x300000;
 
 
@@ -89,7 +89,8 @@ namespace FDK
 				throw new ArgumentException( "ファイル名が無効です。" );
 
 			CSound item = null;
-			if( ( ( ( item = this.tネイティブOggVorbisの場合( strファイル名 ) ) == null ) && ( ( item = this.tネイティブXAの場合( strファイル名 ) ) == null ) ) && ( ( ( item = this.tネイティブmp3の場合( strファイル名 ) ) == null ) && ( ( item = this.tRIFF_WAVEの場合( strファイル名 ) ) == null ) ) )
+//			if( ( ( ( item = this.tネイティブOggVorbisの場合( strファイル名 ) ) == null ) && ( ( item = this.tネイティブXAの場合( strファイル名 ) ) == null ) ) && ( ( ( item = this.tネイティブmp3の場合( strファイル名 ) ) == null ) && ( ( item = this.tRIFF_WAVEの場合( strファイル名 ) ) == null ) ) )
+			if ( (item = this.tCheckAndDecode(strファイル名)) == null)
 				throw new Exception( "OggVorbis, mp3, XA, RIFF ACM のいずれでもデコードに失敗しました。" );
 
 			lock( this.obj排他用 )
@@ -155,79 +156,46 @@ namespace FDK
 		private bool bDisposed = false;
 		private List<CSound> listSound = new List<CSound>();
 
-		private CSound tネイティブmp3の場合( string strファイル名 )
+
+		private CSound tCheckAndDecode(string strFilename)
 		{
-			CSoundMp3 mp = new CSoundMp3();
-			int num = mp.tデコード後のサイズを調べる( strファイル名 );
-			if( num < 0 )
+			int nDecodedPCMsize;
+			int nHandle;
+
+			CSound csound = new CSoundOggVorbis();
+			nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
+			if (nDecodedPCMsize < 0)
 			{
-				mp.Dispose();
-				mp = null;
-				return null;
+				csound.Dispose();
+				csound = new CSoundXA();
+				nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
+				if (nDecodedPCMsize < 0)
+				{
+					csound.Dispose();
+					csound = new CSoundRiffWave();
+					nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
+					if (nDecodedPCMsize < 0)
+					{
+						csound.Dispose();
+						csound = new CSoundMp3();
+						nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
+						if (nDecodedPCMsize < 0) {
+							csound.Dispose();
+							return null;
+						}
+					}
+				}
 			}
-			if( num < n最大オンメモリ可能サイズ )
+			if (nDecodedPCMsize < n最大オンメモリ可能サイズ)
 			{
-				mp.tオンメモリ方式で作成する( this.Device, strファイル名 );
-				return mp;
+				csound.tオンメモリ方式で作成する(this.Device, strFilename, nHandle);
 			}
-			mp.tストリーム方式で作成する( this.Device, strファイル名 );
-			return mp;
+			else
+			{
+				csound.tストリーム方式で作成する(this.Device, strFilename, nHandle);
+			}
+			return csound;
 		}
-		private CSound tネイティブOggVorbisの場合( string strファイル名 )
-		{
-			CSoundOggVorbis vorbis = new CSoundOggVorbis();
-			int num = vorbis.tデコード後のサイズを調べる( strファイル名 );
-			if( num < 0 )
-			{
-				vorbis.Dispose();
-				vorbis = null;
-				return null;
-			}
-			if( num < n最大オンメモリ可能サイズ )
-			{
-				vorbis.tオンメモリ方式で作成する( this.Device, strファイル名 );
-				return vorbis;
-			}
-			vorbis.tストリーム方式で作成する( this.Device, strファイル名 );
-			return vorbis;
-		}
-		private CSound tネイティブXAの場合( string strファイル名 )
-		{
-			CSoundXA dxa = new CSoundXA();
-			int num = dxa.tデコード後のサイズを調べる( strファイル名 );
-			if( num < 0 )
-			{
-				dxa.Dispose();
-				dxa = null;
-				return null;
-			}
-			if( num < n最大オンメモリ可能サイズ )
-			{
-				dxa.tオンメモリ方式で作成する( this.Device, strファイル名 );
-				return dxa;
-			}
-			dxa.tストリーム方式で作成する( this.Device, strファイル名 );
-			return dxa;
-		}
-		private CSound tRIFF_WAVEの場合( string strファイル名 )
-		{
-			CSoundRiffWave wave = new CSoundRiffWave();
-			int num = wave.tデコード後のサイズを調べる( strファイル名 );
-			if( num < 0 )
-			{
-				wave.Dispose();
-				wave = null;
-				return null;
-			}
-			if( num < n最大オンメモリ可能サイズ )
-			{
-				wave.tオンメモリ方式で作成する( this.Device, strファイル名 );
-				return wave;
-			}
-			wave.tストリーム方式で作成する( this.Device, strファイル名 );
-			return wave;
-		}
-		//-----------------
 		#endregion
 	}
 }

@@ -211,46 +211,51 @@ namespace FDK
 
 		// メソッド
 
-		public int tデコード後のサイズを調べる( string strファイル名 )
+		public int tデコード後のサイズを調べる( string strファイル名, out int _nHandle )
 		{
-			int nHandle = this.Open( strファイル名 );
+//Trace.TraceInformation("tデコード後のサイズを調べる、を開始。");
+			_nHandle = -1;
+			int nHandle = this.Open(strファイル名);
 			if( nHandle < 0 )
 			{
 				return -1;
+			}
+//Trace.TraceInformation("this.Open()完了。");
+			CWin32.WAVEFORMATEX wfx = new CWin32.WAVEFORMATEX();
+			if (this.GetFormat(nHandle, ref wfx) < 0)
+			{
+				this.Close( nHandle );
+				return -2;
+			}
+			uint totalPCMSize = this.GetTotalPCMSize(nHandle);
+			if (totalPCMSize == 0)
+			{
+				this.Close( nHandle );
+				return -3;
+			}
+			//this.Close( nHandle );	// 2011.1.2 yyagi ここでClose()しないで、次のオンメモリ/ストリーム読み出しの時に再利用して読み込みを高速化
+			_nHandle = nHandle;
+			return (int) totalPCMSize;
+		}
+		public void tオンメモリ方式で作成する( SlimDX.DirectSound.DirectSound Device, string strファイル名, int _nHandle )
+		{
+			byte[] buffer = null;
+			//int nHandle = this.Open( strファイル名 );	// 2011.1.2 yyagi tデコード後のサイズを調べる()で得たnHandleを使ってOpen()分の読み込み時間を短縮
+			int nHandle = _nHandle;
+			if( nHandle < 0 )
+			{
+				throw new Exception( string.Format( "Open() に失敗しました。({0})({1})", nHandle, strファイル名 ) );
 			}
 			CWin32.WAVEFORMATEX wfx = new CWin32.WAVEFORMATEX();
 			if( this.GetFormat( nHandle, ref wfx ) < 0 )
 			{
 				this.Close( nHandle );
-				return -2;
+				throw new Exception( string.Format( "GetFormat() に失敗しました。({0})", strファイル名 ) );
 			}
-			uint totalPCMSize = this.GetTotalPCMSize( nHandle );
+			int totalPCMSize = (int) this.GetTotalPCMSize( nHandle );
 			if( totalPCMSize == 0 )
 			{
 				this.Close( nHandle );
-				return -3;
-			}
-			this.Close( nHandle );
-			return (int) totalPCMSize;
-		}
-		public void tオンメモリ方式で作成する( SlimDX.DirectSound.DirectSound Device, string strファイル名 )
-		{
-			byte[] buffer = null;
-			int num = this.Open( strファイル名 );
-			if( num < 0 )
-			{
-				throw new Exception( string.Format( "Open() に失敗しました。({0})({1})", num, strファイル名 ) );
-			}
-			CWin32.WAVEFORMATEX wfx = new CWin32.WAVEFORMATEX();
-			if( this.GetFormat( num, ref wfx ) < 0 )
-			{
-				this.Close( num );
-				throw new Exception( string.Format( "GetFormat() に失敗しました。({0})", strファイル名 ) );
-			}
-			int totalPCMSize = (int) this.GetTotalPCMSize( num );
-			if( totalPCMSize == 0 )
-			{
-				this.Close( num );
 				throw new Exception( string.Format( "GetTotalPCMSize() に失敗しました。({0})", strファイル名 ) );
 			}
 			totalPCMSize += ( ( totalPCMSize % 2 ) != 0 ) ? 1 : 0;
@@ -258,7 +263,7 @@ namespace FDK
 			GCHandle handle = GCHandle.Alloc( buffer, GCHandleType.Pinned );
 			try
 			{
-				if( this.Decode( num, Marshal.UnsafeAddrOfPinnedArrayElement( buffer, 0 ), (uint) totalPCMSize, 0 ) < 0 )
+				if( this.Decode( nHandle, Marshal.UnsafeAddrOfPinnedArrayElement( buffer, 0 ), (uint) totalPCMSize, 0 ) < 0 )
 				{
 					buffer = null;
 					throw new Exception( string.Format( "デコードに失敗しました。({0})", strファイル名 ) );
@@ -267,7 +272,7 @@ namespace FDK
 			finally
 			{
 				handle.Free();
-				this.Close( num );
+				this.Close( nHandle );
 			}
 			WaveFormat format = new WaveFormat();
 			format.FormatTag = WaveFormatTag.Pcm;
@@ -287,9 +292,10 @@ namespace FDK
 			this.dt最終更新時刻 = File.GetLastWriteTime( strファイル名 );
 			this.nオリジナルの周波数 = this.Buffer.Frequency;
 		}
-		public void tストリーム方式で作成する( SlimDX.DirectSound.DirectSound Device, string strファイル名 )
+		public void tストリーム方式で作成する( SlimDX.DirectSound.DirectSound Device, string strファイル名, int _nHandle )
 		{
-			this.nHandle = this.Open( strファイル名 );
+			//this.nHandle = this.Open( strファイル名 );	// 2011.1.2 yyagi tデコード後のサイズを調べる()で得たnHandleを継続して使って、Open()の処理時間を削減
+			this.nHandle = _nHandle;
 			if( this.nHandle < 0 )
 			{
 				throw new Exception( string.Format( "Open() に失敗しました。({0})", strファイル名 ) );
@@ -348,7 +354,10 @@ namespace FDK
 			this.Buffer.Pan = this._n位置db;
 			try
 			{
-				this.Buffer.Play( 0, ( this.bストリーム再生する || bループする ) ? PlayFlags.Looping : PlayFlags.None );
+//				this.bループする = bループする;			// #23575 2010.12.18 yyagi:
+														// これで大抵のプレビューはループするようになるが、
+														// おばたけメドレー(riff chunked mp3)はAPエラーになるので注意
+				this.Buffer.Play(0, (this.bストリーム再生する || bループする) ? PlayFlags.Looping : PlayFlags.None);
 			}
 			catch( OutOfMemoryException )
 			{
@@ -400,7 +409,7 @@ namespace FDK
 		}
 		public void t再生位置を変更する( int n新しい再生位置sample )
 		{
-			if( this.nHandle >= 0 )
+			if (this.nHandle >= 0)
 			{
 				int num = n新しい再生位置sample * this.Buffer.Format.BlockAlignment;
 				if( this.bストリーム再生する )
@@ -441,38 +450,43 @@ namespace FDK
 		{
 			if( ( this.bストリーム再生する && ( this.Buffer != null ) ) && ( this.b再生中 && ( this.n一時停止回数 <= 0 ) ) )
 			{
-				int num2 = this.Buffer.CurrentPlayPosition / this.by中継バッファ.Length;
-				int num3 = num2 - CSound管理.nキープする再生済みバッファの数;
-				if( this.n現在書き込み許可待ちのバッファ番号 < num2 )
+//Trace.TraceInformation("CurrentPosition={0}", this.Buffer.CurrentPlayPosition);
+				int n現在再生中のバッファ番号 = this.Buffer.CurrentPlayPosition / this.by中継バッファ.Length;
+				int num3 = n現在再生中のバッファ番号 - CSound管理.nキープする再生済みバッファの数;
+//Trace.TraceInformation("A{0},{1},{2}",
+//	this.Buffer.CurrentPlayPosition,
+//	n現在書き込み許可待ちのバッファ番号,
+//	n現在再生中のバッファ番号);
+				if (this.n現在書き込み許可待ちのバッファ番号 < n現在再生中のバッファ番号)
 				{
-					while( this.n現在書き込み許可待ちのバッファ番号 < num3 )
+					while (this.n現在書き込み許可待ちのバッファ番号 < num3)
 					{
-						this.tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( this.Buffer, this.n現在書き込み許可待ちのバッファ番号, this.bループする );
+						this.tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む(this.Buffer, this.n現在書き込み許可待ちのバッファ番号, this.bループする);
 						this.n現在書き込み許可待ちのバッファ番号++;
 					}
 				}
-				else if( this.n現在書き込み許可待ちのバッファ番号 > num2 )
+				else if( this.n現在書き込み許可待ちのバッファ番号 > n現在再生中のバッファ番号 )
 				{
-					num3 = ( num3 + CSound管理.nバッファの数 ) % CSound管理.nバッファの数;
+					num3 = (num3 + CSound管理.nバッファの数) % CSound管理.nバッファの数;
 					if( this.n現在書き込み許可待ちのバッファ番号 < num3 )
 					{
-						while( this.n現在書き込み許可待ちのバッファ番号 < num3 )
+						while (this.n現在書き込み許可待ちのバッファ番号 < num3)
 						{
-							this.tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( this.Buffer, this.n現在書き込み許可待ちのバッファ番号, this.bループする );
+							this.tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む(this.Buffer, this.n現在書き込み許可待ちのバッファ番号, this.bループする);
 							this.n現在書き込み許可待ちのバッファ番号++;
 						}
 					}
 					else if( this.n現在書き込み許可待ちのバッファ番号 > num3 )
 					{
-						while( this.n現在書き込み許可待ちのバッファ番号 < CSound管理.nバッファの数 )
+						while (this.n現在書き込み許可待ちのバッファ番号 < CSound管理.nバッファの数)
 						{
-							this.tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( this.Buffer, this.n現在書き込み許可待ちのバッファ番号, this.bループする );
+							this.tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む(this.Buffer, this.n現在書き込み許可待ちのバッファ番号, this.bループする);
 							this.n現在書き込み許可待ちのバッファ番号++;
 						}
 						this.n現在書き込み許可待ちのバッファ番号 = 0;
 						while( this.n現在書き込み許可待ちのバッファ番号 < num3 )
 						{
-							this.tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( this.Buffer, this.n現在書き込み許可待ちのバッファ番号, this.bループする );
+							this.tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む(this.Buffer, this.n現在書き込み許可待ちのバッファ番号, this.bループする);
 							this.n現在書き込み許可待ちのバッファ番号++;
 						}
 					}
@@ -576,11 +590,18 @@ namespace FDK
 		{
 			if( !this.bDispose完了済み && ( this.nHandle >= 0 ) )
 			{
-				this.Decode( this.nHandle, Marshal.UnsafeAddrOfPinnedArrayElement( this.by中継バッファ, 0 ), (uint) this.by中継バッファ.Length, bPCMの末尾に達したら先頭に戻る ? 1 : 0 );
+				this.Decode(
+					this.nHandle,
+					Marshal.UnsafeAddrOfPinnedArrayElement( this.by中継バッファ, 0 ),
+					(uint) this.by中継バッファ.Length,
+					bPCMの末尾に達したら先頭に戻る ? 1 : 0
+				);
 				this.n現在のPCM側の位置byte += this.by中継バッファ.Length;
-				if( bPCMの末尾に達したら先頭に戻る )
+				if (bPCMの末尾に達したら先頭に戻る)
+			//	if (true)
 				{
 					this.n現在のPCM側の位置byte = (int) ( this.n現在のPCM側の位置byte % this.GetTotalPCMSize( this.nHandle ) );
+//Trace.TraceInformation("現在位置={0}", this.n現在のPCM側の位置byte);
 				}
 				this.Buffer.Write( this.by中継バッファ, n書込先バッファ番号 * this.by中継バッファ.Length, LockFlags.None );
 			}

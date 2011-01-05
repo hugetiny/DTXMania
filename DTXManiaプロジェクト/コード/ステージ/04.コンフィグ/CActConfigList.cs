@@ -183,30 +183,38 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
-			this.iKeyAssignBassReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他 );
-			this.iKeyAssignBassReturnToMenu.str説明文 = "左側のメニューに戻ります。";
+			this.iKeyAssignBassReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu.");
 			this.list項目リスト.Add( this.iKeyAssignBassReturnToMenu );
-			this.iKeyAssignBassR = new CItemBase( "R" );
-			this.iKeyAssignBassR.str説明文 = "ベースのキー設定：\nRボタンへのキーの割り当てを設定し\nます。";
+			this.iKeyAssignBassR = new CItemBase( "R",
+				"ベースのキー設定：\nRボタンへのキーの割り当てを設定し\nます。",
+				"Bass key assign:\nTo assign key/pads for R button.");
 			this.list項目リスト.Add( this.iKeyAssignBassR );
-			this.iKeyAssignBassG = new CItemBase( "G" );
-			this.iKeyAssignBassG.str説明文 = "ベースのキー設定：\nGボタンへのキーの割り当てを設定し\nます。";
+			this.iKeyAssignBassG = new CItemBase( "G",
+				"ベースのキー設定：\nGボタンへのキーの割り当てを設定し\nます。",
+				"Bass key assign:\nTo assign key/pads for G button.");
 			this.list項目リスト.Add( this.iKeyAssignBassG );
-			this.iKeyAssignBassB = new CItemBase( "B" );
-			this.iKeyAssignBassB.str説明文 = "ベースのキー設定：\nBボタンへのキーの割り当てを設定し\nます。";
-			this.list項目リスト.Add( this.iKeyAssignBassB );
-			this.iKeyAssignBassPick = new CItemBase( "Pick" );
-			this.iKeyAssignBassPick.str説明文 = "ベースのキー設定：\nピックボタンへのキーの割り当てを設\n定します。";
-			this.list項目リスト.Add( this.iKeyAssignBassPick );
-			this.iKeyAssignBassWail = new CItemBase( "Wailing" );
-			this.iKeyAssignBassWail.str説明文 = "ベースのキー設定：\nWailingボタンへのキーの割り当てを設\n定します。";
-			this.list項目リスト.Add( this.iKeyAssignBassWail );
-			this.iKeyAssignBassDecide = new CItemBase( "Decide" );
-			this.iKeyAssignBassDecide.str説明文 = "ベースのキー設定：\n決定ボタンへのキーの割り当てを設\n定します。";
-			this.list項目リスト.Add( this.iKeyAssignBassDecide );
-			this.iKeyAssignBassCancel = new CItemBase( "Cancel" );
-			this.iKeyAssignBassCancel.str説明文 = "ベースのキー設定：\nキャンセルボタンへのキーの割り当\nてを設定します。";
-			this.list項目リスト.Add( this.iKeyAssignBassCancel );
+			this.iKeyAssignBassB = new CItemBase( "B",
+				"ベースのキー設定：\nBボタンへのキーの割り当てを設定し\nます。",
+				"Bass key assign:\nTo assign key/pads for B button.");
+			this.list項目リスト.Add(this.iKeyAssignBassB);
+			this.iKeyAssignBassPick = new CItemBase( "Pick",
+				"ベースのキー設定：\nピックボタンへのキーの割り当てを設\n定します。",
+				"Bass key assign:\nTo assign key/pads for Pick button.");
+			this.list項目リスト.Add(this.iKeyAssignBassPick);
+			this.iKeyAssignBassWail = new CItemBase( "Wailing",
+				"ベースのキー設定：\nWailingボタンへのキーの割り当てを設\n定します。",
+				"Bass key assign:\nTo assign key/pads for Wailing button.");
+			this.list項目リスト.Add(this.iKeyAssignBassWail);
+			this.iKeyAssignBassDecide = new CItemBase( "Decide",
+				"ベースのキー設定：\n決定ボタンへのキーの割り当てを設\n定します。",
+				"Bass key assign:\nTo assign key/pads for Decide button.");
+			this.list項目リスト.Add(this.iKeyAssignBassDecide);
+			this.iKeyAssignBassCancel = new CItemBase( "Cancel",
+				"ベースのキー設定：\nキャンセルボタンへのキーの割り当\nてを設定します。",
+				"Bass key assign:\nTo assign key/pads for Cancel button.");
+			this.list項目リスト.Add(this.iKeyAssignBassCancel);
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignBass;
 		}
@@ -214,39 +222,50 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
-			this.iKeyAssignDrumsReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他 );
-			this.iKeyAssignDrumsReturnToMenu.str説明文 = "左側のメニューに戻ります。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsReturnToMenu );
-			this.iKeyAssignDrumsLC = new CItemBase( "LeftCymbal" );
-			this.iKeyAssignDrumsLC.str説明文 = "ドラムのキー設定：\n左シンバルへのキーの割り当てを設\n定します。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsLC );
-			this.iKeyAssignDrumsHHC = new CItemBase( "HiHat(Close)" );
-			this.iKeyAssignDrumsHHC.str説明文 = "ドラムのキー設定：\nハイハット（クローズ）へのキーの割り\n当てを設定します。";
+			this.iKeyAssignDrumsReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsReturnToMenu);
+			this.iKeyAssignDrumsLC = new CItemBase( "LeftCymbal",
+				"ドラムのキー設定：\n左シンバルへのキーの割り当てを設\n定します。",
+				"Drums key assign:\nTo assign key/pads for LeftCymbal\n button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsLC);
+			this.iKeyAssignDrumsHHC = new CItemBase( "HiHat(Close)",
+				"ドラムのキー設定：\nハイハット（クローズ）へのキーの割り\n当てを設定します。",
+				"Drums key assign:\nTo assign key/pads for HiHat(Close)\n button.");
 			this.list項目リスト.Add( this.iKeyAssignDrumsHHC );
-			this.iKeyAssignDrumsHHO = new CItemBase( "HiHat(Open)" );
-			this.iKeyAssignDrumsHHO.str説明文 = "ドラムのキー設定：\nハイハット（オープン）へのキーの割り\n当てを設定します。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsHHO );
-			this.iKeyAssignDrumsSD = new CItemBase( "Snare" );
-			this.iKeyAssignDrumsSD.str説明文 = "ドラムのキー設定：\nスネアへのキーの割り当てを設定し\nます。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsSD );
-			this.iKeyAssignDrumsBD = new CItemBase( "Bass" );
-			this.iKeyAssignDrumsBD.str説明文 = "ドラムのキー設定：\nバスドラムへのキーの割り当てを設定\nします。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsBD );
-			this.iKeyAssignDrumsHT = new CItemBase( "HighTom" );
-			this.iKeyAssignDrumsHT.str説明文 = "ドラムのキー設定：\nハイタムへのキーの割り当てを設定\nします。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsHT );
-			this.iKeyAssignDrumsLT = new CItemBase( "LowTom" );
-			this.iKeyAssignDrumsLT.str説明文 = "ドラムのキー設定：\nロータムへのキーの割り当てを設定\nします。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsLT );
-			this.iKeyAssignDrumsFT = new CItemBase( "FloorTom" );
-			this.iKeyAssignDrumsFT.str説明文 = "ドラムのキー設定：\nフロアタムへのキーの割り当てを設\n定します。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsFT );
-			this.iKeyAssignDrumsCY = new CItemBase( "RightCymbal" );
-			this.iKeyAssignDrumsCY.str説明文 = "ドラムのキー設定：\n右シンバルへのキーの割り当てを設\n定します。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsCY );
-			this.iKeyAssignDrumsRD = new CItemBase( "RideCymbal" );
-			this.iKeyAssignDrumsRD.str説明文 = "ドラムのキー設定：\nライドシンバルへのキーの割り当て\nを設定します。";
-			this.list項目リスト.Add( this.iKeyAssignDrumsRD );
+			this.iKeyAssignDrumsHHO = new CItemBase( "HiHat(Open)",
+				"ドラムのキー設定：\nハイハット（オープン）へのキーの割り\n当てを設定します。",
+				"Drums key assign:\nTo assign key/pads for HiHat(Open)\n button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsHHO);
+			this.iKeyAssignDrumsSD = new CItemBase( "Snare",
+				"ドラムのキー設定：\nスネアへのキーの割り当てを設定し\nます。",
+				"Drums key assign:\nTo assign key/pads for Snare button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsSD);
+			this.iKeyAssignDrumsBD = new CItemBase( "Bass",
+				"ドラムのキー設定：\nバスドラムへのキーの割り当てを設定\nします。",
+				"Drums key assign:\nTo assign key/pads for Bass button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsBD);
+			this.iKeyAssignDrumsHT = new CItemBase( "HighTom",
+				"ドラムのキー設定：\nハイタムへのキーの割り当てを設定\nします。",
+				"Drums key assign:\nTo assign key/pads for HighTom\n button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsHT);
+			this.iKeyAssignDrumsLT = new CItemBase( "LowTom",
+				"ドラムのキー設定：\nロータムへのキーの割り当てを設定\nします。",
+				"Drums key assign:\nTo assign key/pads for LowTom button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsLT);
+			this.iKeyAssignDrumsFT = new CItemBase( "FloorTom",
+				"ドラムのキー設定：\nフロアタムへのキーの割り当てを設\n定します。",
+				"Drums key assign:\nTo assign key/pads for FloorTom\n button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsFT);
+			this.iKeyAssignDrumsCY = new CItemBase( "RightCymbal",
+				"ドラムのキー設定：\n右シンバルへのキーの割り当てを設\n定します。",
+				"Drums key assign:\nTo assign key/pads for RightCymbal\n button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsCY);
+			this.iKeyAssignDrumsRD = new CItemBase( "RideCymbal",
+				"ドラムのキー設定：\nライドシンバルへのキーの割り当て\nを設定します。",
+				"Drums key assign:\nTo assign key/pads for RideCymbal\n button.");
+			this.list項目リスト.Add(this.iKeyAssignDrumsRD);
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignDrums;
 		}
@@ -254,30 +273,38 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
-			this.iKeyAssignGuitarReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他 );
-			this.iKeyAssignGuitarReturnToMenu.str説明文 = "左側のメニューに戻ります。";
-			this.list項目リスト.Add( this.iKeyAssignGuitarReturnToMenu );
-			this.iKeyAssignGuitarR = new CItemBase( "R" );
-			this.iKeyAssignGuitarR.str説明文 = "ギターのキー設定：\nRボタンへのキーの割り当てを設定し\nます。";
-			this.list項目リスト.Add( this.iKeyAssignGuitarR );
-			this.iKeyAssignGuitarG = new CItemBase( "G" );
-			this.iKeyAssignGuitarG.str説明文 = "ギターのキー設定：\nGボタンへのキーの割り当てを設定し\nます。";
-			this.list項目リスト.Add( this.iKeyAssignGuitarG );
-			this.iKeyAssignGuitarB = new CItemBase( "B" );
-			this.iKeyAssignGuitarB.str説明文 = "ギターのキー設定：\nBボタンへのキーの割り当てを設定し\nます。";
-			this.list項目リスト.Add( this.iKeyAssignGuitarB );
-			this.iKeyAssignGuitarPick = new CItemBase( "Pick" );
-			this.iKeyAssignGuitarPick.str説明文 = "ギターのキー設定：\nピックボタンへのキーの割り当てを設\n定します。";
-			this.list項目リスト.Add( this.iKeyAssignGuitarPick );
-			this.iKeyAssignGuitarWail = new CItemBase( "Wailing" );
-			this.iKeyAssignGuitarWail.str説明文 = "ギターのキー設定：\nWailingボタンへのキーの割り当てを\n設定します。";
-			this.list項目リスト.Add( this.iKeyAssignGuitarWail );
-			this.iKeyAssignGuitarDecide = new CItemBase( "Decide" );
-			this.iKeyAssignGuitarDecide.str説明文 = "ギターのキー設定：\n決定ボタンへのキーの割り当てを設\n定します。";
-			this.list項目リスト.Add( this.iKeyAssignGuitarDecide );
-			this.iKeyAssignGuitarCancel = new CItemBase( "Cancel" );
-			this.iKeyAssignGuitarCancel.str説明文 = "ギターのキー設定：\nキャンセルボタンへのキーの割り当\nてを設定します。";
-			this.list項目リスト.Add( this.iKeyAssignGuitarCancel );
+			this.iKeyAssignGuitarReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu.");
+			this.list項目リスト.Add(this.iKeyAssignGuitarReturnToMenu);
+			this.iKeyAssignGuitarR = new CItemBase( "R",
+				"ギターのキー設定：\nRボタンへのキーの割り当てを設定し\nます。",
+				"Guitar key assign:\nTo assign key/pads for R button.");
+			this.list項目リスト.Add(this.iKeyAssignGuitarR);
+			this.iKeyAssignGuitarG = new CItemBase( "G",
+				"ギターのキー設定：\nGボタンへのキーの割り当てを設定し\nます。",
+				"Guitar key assign:\nTo assign key/pads for G button.");
+			this.list項目リスト.Add(this.iKeyAssignGuitarG);
+			this.iKeyAssignGuitarB = new CItemBase( "B",
+				"ギターのキー設定：\nBボタンへのキーの割り当てを設定し\nます。",
+				"Guitar key assign:\nTo assign key/pads for B button.");
+			this.list項目リスト.Add(this.iKeyAssignGuitarB);
+			this.iKeyAssignGuitarPick = new CItemBase( "Pick",
+				"ギターのキー設定：\nピックボタンへのキーの割り当てを設\n定します。",
+				"Guitar key assign:\nTo assign key/pads for Pick button.");
+			this.list項目リスト.Add(this.iKeyAssignGuitarPick);
+			this.iKeyAssignGuitarWail = new CItemBase( "Wailing",
+				"ギターのキー設定：\nWailingボタンへのキーの割り当てを\n設定します。",
+				"Guitar key assign:\nTo assign key/pads for Wailing button.");
+			this.list項目リスト.Add(this.iKeyAssignGuitarWail);
+			this.iKeyAssignGuitarDecide = new CItemBase( "Decide",
+				"ギターのキー設定：\n決定ボタンへのキーの割り当てを設\n定します。",
+				"Guitar key assign:\nTo assign key/pads for Decide button.");
+			this.list項目リスト.Add(this.iKeyAssignGuitarDecide);
+			this.iKeyAssignGuitarCancel = new CItemBase( "Cancel",
+				"ギターのキー設定：\nキャンセルボタンへのキーの割り当\nてを設定します。",
+				"Guitar key assign:\nTo assign key/pads for Cancel button.");
+			this.list項目リスト.Add(this.iKeyAssignGuitarCancel);
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignGuitar;
 		}
@@ -285,119 +312,164 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
-			this.iSystemReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他 );
-			this.iSystemReturnToMenu.str説明文 = "左側のメニューに戻ります。";
+			this.iSystemReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu.");
 			this.list項目リスト.Add( this.iSystemReturnToMenu );
-			this.iSystemGuitar = new CItemToggle( "Guitar", CDTXMania.ConfigIni.bGuitar有効 );
-			this.iSystemGuitar.str説明文 = "ギター有効：\nこれを OFF にすると、ギターとベース\nに関するすべてが無効になります。\nつまりは DTXMania がドラム専用の\nゲームとなります。";
+			this.iSystemGuitar = new CItemToggle( "Guitar", CDTXMania.ConfigIni.bGuitar有効,
+				"ギター有効：\nこれを OFF にすると、ギターとベース\nに関するすべてが無効になります。\nつまりは DTXMania がドラム専用の\nゲームとなります。",
+				"To show guitar/bass lanes.\nIf Guitar=ON and Drums=OFF,\n the playing screen becomes\n guitar-only mode.");
 			this.list項目リスト.Add( this.iSystemGuitar );
-			this.iSystemDrums = new CItemToggle( "Drums", CDTXMania.ConfigIni.bDrums有効 );
-			this.iSystemDrums.str説明文 = "ドラム有効：\nこれを OFF にすると、ドラムに関する\nすべてが無効になります。\nつまりは DTXMania がギター専用の\nゲームとなります。";
+			this.iSystemDrums = new CItemToggle( "Drums", CDTXMania.ConfigIni.bDrums有効,
+				"ドラム有効：\nこれを OFF にすると、ドラムに関する\nすべてが無効になります。\nつまりは DTXMania がギター専用の\nゲームとなります。",
+				"To use drums lanes.\nIf Guitar=ON and Drums=OFF,\n the playing screen becomes\n guitar-only mode.");
 			this.list項目リスト.Add( this.iSystemDrums );
-			this.iSystemFullscreen = new CItemToggle( "Fullscreen", CDTXMania.ConfigIni.b全画面モード );
-			this.iSystemFullscreen.str説明文 = "画面モード設定：\nON で全画面モード、OFF でウィンド\nウモードになります。";
+			this.iSystemFullscreen = new CItemToggle( "Fullscreen", CDTXMania.ConfigIni.b全画面モード,
+				"画面モード設定：\nON で全画面モード、OFF でウィンド\nウモードになります。",
+				"Fullscreen mode or window mode.");
 			this.list項目リスト.Add( this.iSystemFullscreen );
-			this.iSystemStageFailed = new CItemToggle( "StageFailed", CDTXMania.ConfigIni.bSTAGEFAILED有効 );
-			this.iSystemStageFailed.str説明文 = "STAGE FAILED 有効：\nON にすると、ゲージがなくなった時\nに STAGE FAILED となり演奏が中断\nされます。OFF の場合は、ゲージが\nなくなっても最後まで演奏できます。";
+			this.iSystemStageFailed = new CItemToggle( "StageFailed", CDTXMania.ConfigIni.bSTAGEFAILED有効,
+				"STAGE FAILED 有効：\nON にすると、ゲージがなくなった時\nに STAGE FAILED となり演奏が中断\nされます。OFF の場合は、ゲージが\nなくなっても最後まで演奏できます。",
+				"Turn OFF if you don't want to encount\n GAME OVER.");
 			this.list項目リスト.Add( this.iSystemStageFailed );
-			this.iSystemRandomFromSubBox = new CItemToggle( "RandSubBox", CDTXMania.ConfigIni.bランダムセレクトで子BOXを検索対象とする );
-			this.iSystemRandomFromSubBox.str説明文 = "子BOXをRANDOMの対象とする：\nON にすると、RANDOM SELECT 時\nに子BOXも選択対象とします。";
+			this.iSystemRandomFromSubBox = new CItemToggle( "RandSubBox", CDTXMania.ConfigIni.bランダムセレクトで子BOXを検索対象とする,
+				"子BOXをRANDOMの対象とする：\nON にすると、RANDOM SELECT 時\nに子BOXも選択対象とします。",
+				"Turn ON to use child BOX (subfolders)\n at RANDOM SELECT.");
 			this.list項目リスト.Add( this.iSystemRandomFromSubBox );
-			this.iSystemHHGroup = new CItemList( "HH Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHHGroup, new string[] { "HH-0", "HH-1", "HH-2", "HH-3" } );
-			this.iSystemHHGroup.str説明文 = "ハイハットレーン打ち分け設定：\n左シンバル、ハイハットオープン、ハ\nイハットクローズの打ち分け方法を指\n定します。\n  HH-0 ... LC | HHC | HHO\n  HH-1 ... LC & ( HHC | HHO )\n  HH-2 ... LC | ( HHC & HHO )\n  HH-3 ... LC & HHC & HHO\n";
+			this.iSystemHHGroup = new CItemList( "HH Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHHGroup,
+				"ハイハットレーン打ち分け設定：\n左シンバル、ハイハットオープン、ハ\nイハットクローズの打ち分け方法を指\n定します。\n  HH-0 ... LC | HHC | HHO\n  HH-1 ... LC & ( HHC | HHO )\n  HH-2 ... LC | ( HHC & HHO )\n  HH-3 ... LC & HHC & HHO\n",
+				"HH-0: LC|HC|HO; all are separated.\nHH-1: LC&(HC|HO);\n HC and HO are separted.\n LC is grouped with HC and HHO.\nHH-2: LC|(HC&HO);\n LC and HHs are separated.\n HC and HO are grouped.\nHH-3: LC&HC&HO; all are grouped.",
+				new string[] { "HH-0", "HH-1", "HH-2", "HH-3" } );
 			this.list項目リスト.Add( this.iSystemHHGroup );
-			this.iSystemFTGroup = new CItemList( "FT Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eFTGroup, new string[] { "FT-0", "FT-1" } );
-			this.iSystemFTGroup.str説明文 = "フロアタム打ち分け設定：\nロータムとフロアタムの打ち分け方法\nを指定します。\n  FT-0 ... LT | FT\n  FT-1 ... LT & FT\n";
+			this.iSystemFTGroup = new CItemList( "FT Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eFTGroup,
+				"フロアタム打ち分け設定：\nロータムとフロアタムの打ち分け方法\nを指定します。\n  FT-0 ... LT | FT\n  FT-1 ... LT & FT\n",
+				"FT-0: LT|FT\n LT and FT are separated.\nFT-1: LT&FT\n LT and FT are grouped.",
+				new string[] { "FT-0", "FT-1" } );
 			this.list項目リスト.Add( this.iSystemFTGroup );
-			this.iSystemCYGroup = new CItemList( "CY Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eCYGroup, new string[] { "CY-0", "CY-1" } );
-			this.iSystemCYGroup.str説明文 = "シンバルレーン打ち分け設定：\n右シンバルとライドシンバルの打ち分\nけ方法を指定します。\n  CY-0 ... CY | RD\n  CY-1 ... CY & RD\n";
+			this.iSystemCYGroup = new CItemList( "CY Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eCYGroup,
+				"シンバルレーン打ち分け設定：\n右シンバルとライドシンバルの打ち分\nけ方法を指定します。\n  CY-0 ... CY | RD\n  CY-1 ... CY & RD\n",
+				"CY-0: CY|RD\n CY and RD are separated.\nCY-1: CY&RD\n CY and RD are grouped.",
+				new string[] { "CY-0", "CY-1" } );
 			this.list項目リスト.Add( this.iSystemCYGroup );
-			this.iSystemHitSoundPriorityHH = new CItemList( "HH Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityHH, new string[] { "C>P", "P>C" } );
-			this.iSystemHitSoundPriorityHH.str説明文 = "発声音決定の優先順位：\nハイハットレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先";
+			this.iSystemHitSoundPriorityHH = new CItemList( "HH Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityHH,
+				"発声音決定の優先順位：\nハイハットレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
+				"To specify playing sound in case you're\n using HH-0,1 and 2.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				new string[] { "C>P", "P>C" } );
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityHH );
-			this.iSystemHitSoundPriorityFT = new CItemList( "FT Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityFT, new string[] { "C>P", "P>C" } );
-			this.iSystemHitSoundPriorityFT.str説明文 = "発声音決定の優先順位：\nフロアタム打ち分け有効時に、チップ\nの発声音をどのように決定するかを\n指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先";
+			this.iSystemHitSoundPriorityFT = new CItemList( "FT Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityFT,
+				"発声音決定の優先順位：\nフロアタム打ち分け有効時に、チップ\nの発声音をどのように決定するかを\n指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
+				"To specify playing sound in case you're\n using FT-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				new string[] { "C>P", "P>C" });
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityFT );
-			this.iSystemHitSoundPriorityCY = new CItemList( "CY Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityCY, new string[] { "C>P", "P>C" } );
-			this.iSystemHitSoundPriorityCY.str説明文 = "発声音決定の優先順位\nシンバルレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先";
+			this.iSystemHitSoundPriorityCY = new CItemList( "CY Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityCY,
+				"発声音決定の優先順位\nシンバルレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
+				"To specify playing sound in case you're\n using CY-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				new string[] { "C>P", "P>C" });
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityCY );
-			this.iSystemAdjustWaves = new CItemToggle( "AdjustWaves", CDTXMania.ConfigIni.bWave再生位置自動調整機能有効 );
-			this.iSystemAdjustWaves.str説明文 = "サウンド再生位置自動補正：\nハードウェアやＯＳに起因するサウン\nドのずれを強制的に補正します。\nBGM のように再生時間の長い音声\nデータが使用されている曲で効果が\nあります。";
+			this.iSystemAdjustWaves = new CItemToggle( "AdjustWaves", CDTXMania.ConfigIni.bWave再生位置自動調整機能有効,
+				"サウンド再生位置自動補正：\nハードウェアやＯＳに起因するサウン\nドのずれを強制的に補正します。\nBGM のように再生時間の長い音声\nデータが使用されている曲で効果が\nあります。",
+				"Automatic wave playing position\n adjustment feature. If you turn it ON,\n it decrease the lag which comes from\n the difference of hardware/OS.\nUsually, you should turn it ON.");
 			this.list項目リスト.Add( this.iSystemAdjustWaves );
-			this.iSystemVSyncWait = new CItemToggle( "VSyncWait", CDTXMania.ConfigIni.b垂直帰線待ちを行う );
-			this.iSystemVSyncWait.str説明文 = "垂直帰線同期：\n画面の描画をディスプレイの垂直帰\n線中に行なう場合には ON を指定し\nます。ON にすると、ガタつきのない\n滑らかな画面描画が実現されます。";
+			this.iSystemVSyncWait = new CItemToggle( "VSyncWait", CDTXMania.ConfigIni.b垂直帰線待ちを行う,
+				"垂直帰線同期：\n画面の描画をディスプレイの垂直帰\n線中に行なう場合には ON を指定し\nます。ON にすると、ガタつきのない\n滑らかな画面描画が実現されます。",
+				"Turn ON to wait VSync (Vertical\n Synchronizing signal) at every\n drawings. (so FPS becomes 60)\nIf you have enough CPU/GPU power,\n the scroll would become smooth.");
 			this.list項目リスト.Add( this.iSystemVSyncWait );
-			this.iSystemAVI = new CItemToggle( "AVI", CDTXMania.ConfigIni.bAVI有効 );
-			this.iSystemAVI.str説明文 = "AVIの使用：\n動画(AVI)を再生可能にする場合に\nON にします。AVI の再生には、それ\nなりのマシンパワーが必要とされます。";
+			this.iSystemAVI = new CItemToggle( "AVI", CDTXMania.ConfigIni.bAVI有効,
+				"AVIの使用：\n動画(AVI)を再生可能にする場合に\nON にします。AVI の再生には、それ\nなりのマシンパワーが必要とされます。",
+				"To use AVI playback or not.");
 			this.list項目リスト.Add( this.iSystemAVI );
-			this.iSystemBGA = new CItemToggle( "BGA", CDTXMania.ConfigIni.bBGA有効 );
-			this.iSystemBGA.str説明文 = "BGAの使用：\n画像(BGA)を表示可能にする場合に\nON にします。BGA の再生には、それ\nなりのマシンパワーが必要とされます。";
+			this.iSystemBGA = new CItemToggle( "BGA", CDTXMania.ConfigIni.bBGA有効,
+				"BGAの使用：\n画像(BGA)を表示可能にする場合に\nON にします。BGA の再生には、それ\nなりのマシンパワーが必要とされます。",
+				"To draw BGA (back ground animations)\n or not.");
 			this.list項目リスト.Add( this.iSystemBGA );
-			this.iSystemFillIn = new CItemToggle( "FillIn", CDTXMania.ConfigIni.bフィルイン有効 );
-			this.iSystemFillIn.str説明文 = "フィルインエフェクトの使用：\nフィルイン区間の爆発パターンに特別\nのエフェクトを使用します。\nフィルインエフェクトの描画にはそれな\nりのマシンパワーが必要とされます。";
+			this.iSystemFillIn = new CItemToggle( "FillIn", CDTXMania.ConfigIni.bフィルイン有効,
+				"フィルインエフェクトの使用：\nフィルイン区間の爆発パターンに特別\nのエフェクトを使用します。\nフィルインエフェクトの描画にはそれな\nりのマシンパワーが必要とされます。",
+				"To show bursting effects at the fill-in\n zone or not.");
 			this.list項目リスト.Add( this.iSystemFillIn );
-			this.iSystemSoundMonitorDrums = new CItemToggle( "DrumsMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Drums );
-			this.iSystemSoundMonitorDrums.str説明文 = "ドラム音モニタ：\nドラム音を他の音より大きめの音量で\n発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。";
+			this.iSystemSoundMonitorDrums = new CItemToggle( "DrumsMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Drums,
+				"ドラム音モニタ：\nドラム音を他の音より大きめの音量で\n発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
+				"To enhance the drums chip sound\n(except autoplay).");
 			this.list項目リスト.Add( this.iSystemSoundMonitorDrums );
-			this.iSystemSoundMonitorGuitar = new CItemToggle( "GuitarMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Guitar );
-			this.iSystemSoundMonitorGuitar.str説明文 = "ギター音モニタ：\nギター音を他の音より大きめの音量\nで発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。";
-			this.list項目リスト.Add( this.iSystemSoundMonitorGuitar );
-			this.iSystemSoundMonitorBass = new CItemToggle( "BassMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Bass );
-			this.iSystemSoundMonitorBass.str説明文 = "ベース音モニタ：\nベース音を他の音より大きめの音量\nで発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。";
+			this.iSystemSoundMonitorGuitar = new CItemToggle( "GuitarMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Guitar,
+				"ギター音モニタ：\nギター音を他の音より大きめの音量\nで発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
+				"To enhance the guitar chip sound\n(except autoplay).");
+			this.list項目リスト.Add(this.iSystemSoundMonitorGuitar);
+			this.iSystemSoundMonitorBass = new CItemToggle( "BassMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Bass,
+				"ベース音モニタ：\nベース音を他の音より大きめの音量\nで発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
+				"To enhance the bass chip sound\n(except autoplay).");
 			this.list項目リスト.Add( this.iSystemSoundMonitorBass );
-			this.iSystemPreviewSoundWait = new CItemInteger( "PreSoundWait", 0, 0x2710, CDTXMania.ConfigIni.n曲が選択されてからプレビュー音が鳴るまでのウェイトms );
-			this.iSystemPreviewSoundWait.str説明文 = "プレビュー音演奏までの時間：\n曲にカーソルが合わされてからプレ\nビュー音が鳴り始めるまでの時間を\n指定します。\n0 ～ 10000 [ms] が指定可能です。";
+			this.iSystemPreviewSoundWait = new CItemInteger( "PreSoundWait", 0, 0x2710, CDTXMania.ConfigIni.n曲が選択されてからプレビュー音が鳴るまでのウェイトms,
+				"プレビュー音演奏までの時間：\n曲にカーソルが合わされてからプレ\nビュー音が鳴り始めるまでの時間を\n指定します。\n0 ～ 10000 [ms] が指定可能です。",
+				"Delay time(ms) to start playing preview\n sound in SELECT MUSIC screen.\nYou can specify from 0ms to 10000ms.");
 			this.list項目リスト.Add( this.iSystemPreviewSoundWait );
-			this.iSystemPreviewImageWait = new CItemInteger( "PreImageWait", 0, 0x2710, CDTXMania.ConfigIni.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms );
-			this.iSystemPreviewImageWait.str説明文 = "プレビュー画像表示までの時間：\n曲にカーソルが合わされてからプレ\nビュー画像が表示されるまでの時間\nを指定します。\n0 ～ 10000 [ms] が指定可能です。";
+			this.iSystemPreviewImageWait = new CItemInteger( "PreImageWait", 0, 0x2710, CDTXMania.ConfigIni.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms,
+				"プレビュー画像表示までの時間：\n曲にカーソルが合わされてからプレ\nビュー画像が表示されるまでの時間\nを指定します。\n0 ～ 10000 [ms] が指定可能です。",
+				"Delay time(ms) to show preview image\n in SELECT MUSIC screen.\nYou can specify from 0ms to 10000ms.");
 			this.list項目リスト.Add( this.iSystemPreviewImageWait );
-			this.iSystemDebugInfo = new CItemToggle( "Debug Info", CDTXMania.ConfigIni.b演奏情報を表示する );
-			this.iSystemDebugInfo.str説明文 = "演奏情報の表示：\n演奏中、BGA領域の下部に演奏情報\n（FPS、BPM、演奏時間など）を表示し\nます。\nまた、小節線の横に小節番号が表示\nされるようになります。";
+			this.iSystemDebugInfo = new CItemToggle( "Debug Info", CDTXMania.ConfigIni.b演奏情報を表示する,
+				"演奏情報の表示：\n演奏中、BGA領域の下部に演奏情報\n（FPS、BPM、演奏時間など）を表示し\nます。\nまた、小節線の横に小節番号が表示\nされるようになります。",
+				"To show song informations on playing\n BGA area. (FPS, BPM, total time etc)\nYou can ON/OFF the indications\n by pushing [Del] while playing drums,\n guitar or bass.");
 			this.list項目リスト.Add( this.iSystemDebugInfo );
-			this.iSystemBGAlpha = new CItemInteger( "BG Alpha", 0, 0xff, CDTXMania.ConfigIni.n背景の透過度 );
-			this.iSystemBGAlpha.str説明文 = "背景画像の半透明割合：\n背景画像をDTXManiaのフレーム画像\nと合成する際の、背景画像の透明度\nを指定します。\n0 が完全透明で、255 が完全不透明\nとなります。";
+			this.iSystemBGAlpha = new CItemInteger( "BG Alpha", 0, 0xff, CDTXMania.ConfigIni.n背景の透過度,
+				"背景画像の半透明割合：\n背景画像をDTXManiaのフレーム画像\nと合成する際の、背景画像の透明度\nを指定します。\n0 が完全透明で、255 が完全不透明\nとなります。",
+				"The degree for transparing playing\n screen and wallpaper.\n\n0=completely transparent,\n255=no transparency");
 			this.list項目リスト.Add( this.iSystemBGAlpha );
-			this.iSystemBGMSound = new CItemToggle( "BGM Sound", CDTXMania.ConfigIni.bBGM音を発声する );
-			this.iSystemBGMSound.str説明文 = "BGMの再生：\nこれをOFFにすると、BGM を再生しな\nくなります。";
+			this.iSystemBGMSound = new CItemToggle( "BGM Sound", CDTXMania.ConfigIni.bBGM音を発声する,
+				"BGMの再生：\nこれをOFFにすると、BGM を再生しな\nくなります。",
+				"Turn OFF if you don't want to play\n BGM.");
 			this.list項目リスト.Add( this.iSystemBGMSound );
-			this.iSystemHitSound = new CItemToggle( "HitSound", CDTXMania.ConfigIni.bドラム打音を発声する );
-			this.iSystemHitSound.str説明文 = "打撃音の再生：\nこれをOFFにすると、パッドを叩いた\nときの音を再生しなくなります（ドラム\nのみ）。\nDTX の音色で演奏したい場合などに\nOFF にします。";
+			this.iSystemHitSound = new CItemToggle( "HitSound", CDTXMania.ConfigIni.bドラム打音を発声する,
+				"打撃音の再生：\nこれをOFFにすると、パッドを叩いた\nときの音を再生しなくなります（ドラム\nのみ）。\nDTX の音色で演奏したい場合などに\nOFF にします。",
+				"Turn OFF if you don't want to play\n hitting chip sound.\nIt is useful to play with real/electric\n drums kit.");
 			this.list項目リスト.Add( this.iSystemHitSound );
-			this.iSystemAudienceSound = new CItemToggle( "Audience", CDTXMania.ConfigIni.b歓声を発声する );
-			this.iSystemAudienceSound.str説明文 = "歓声の再生：\nこれをOFFにすると、歓声を再生しな\nくなります。";
+			this.iSystemAudienceSound = new CItemToggle( "Audience", CDTXMania.ConfigIni.b歓声を発声する,
+				"歓声の再生：\nこれをOFFにすると、歓声を再生しな\nくなります。",
+				"Turn ON if you want to be cheered\n at the end of fill-in zone or not.");
 			this.list項目リスト.Add( this.iSystemAudienceSound );
-			this.iSystemDamageLevel = new CItemList( "DamageLevel", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eダメージレベル, new string[] { "Small", "Normal", "Large" } );
-			this.iSystemDamageLevel.str説明文 = "ゲージ減少割合：\nMiss ヒット時のゲージの減少度合い\nを指定します。\n";
+			this.iSystemDamageLevel = new CItemList( "DamageLevel", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eダメージレベル,
+				"ゲージ減少割合：\nMiss ヒット時のゲージの減少度合い\nを指定します。\n",
+				"Damage level at missing (and\n recovering level) at playing.",
+				new string[] { "Small", "Normal", "Large" } );
 			this.list項目リスト.Add( this.iSystemDamageLevel );
-			this.iSystemSaveScore = new CItemToggle( "SaveScore", CDTXMania.ConfigIni.bScoreIniを出力する );
-			this.iSystemSaveScore.str説明文 = "演奏記録の保存：\nON で演奏記録を ～.score.ini ファイ\nルに保存します。\n";
+			this.iSystemSaveScore = new CItemToggle( "SaveScore", CDTXMania.ConfigIni.bScoreIniを出力する,
+				"演奏記録の保存：\nON で演奏記録を ～.score.ini ファイ\nルに保存します。\n",
+				"To save high-scores/skills, turn it ON.\nTurn OFF in case your song data are\n in read-only media (CD-ROM etc).\nNote that the score files also contain\n 'BGM Adjust' parameter. So if you\n want to keep adjusting parameter,\n you need to set SaveScore=ON.");
 			this.list項目リスト.Add( this.iSystemSaveScore );
-			this.iSystemMinComboDrums = new CItemInteger( "D-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Drums );
-			this.iSystemMinComboDrums.str説明文 = "表示可能な最小コンボ数（ドラム）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。";
+			this.iSystemMinComboDrums = new CItemInteger( "D-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Drums,
+				"表示可能な最小コンボ数（ドラム）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
+				"Initial number to show the combo\n for the drums.\nYou can specify from 1 to 99999.");
 			this.list項目リスト.Add( this.iSystemMinComboDrums );
-			this.iSystemMinComboGuitar = new CItemInteger( "G-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar );
-			this.iSystemMinComboGuitar.str説明文 = "表示可能な最小コンボ数（ギター）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。";
-			this.list項目リスト.Add( this.iSystemMinComboGuitar );
-			this.iSystemMinComboBass = new CItemInteger( "B-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass );
-			this.iSystemMinComboBass.str説明文 = "表示可能な最小コンボ数（ベース）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。";
-			this.list項目リスト.Add( this.iSystemMinComboBass );
-			this.iSystemChipVolume = new CItemInteger( "ChipVolume", 0, 100, CDTXMania.ConfigIni.n手動再生音量 );
-			this.iSystemChipVolume.str説明文 = "打音の音量：\n入力に反応して再生されるチップの音\n量を指定します。\n0 ～ 100 % の値が指定可能です。\n";
+			this.iSystemMinComboGuitar = new CItemInteger( "G-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar,
+				"表示可能な最小コンボ数（ギター）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
+				"Initial number to show the combo\n for the guitar.\nYou can specify from 1 to 99999.");
+			this.list項目リスト.Add(this.iSystemMinComboGuitar);
+			this.iSystemMinComboBass = new CItemInteger( "B-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass,
+				"表示可能な最小コンボ数（ベース）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
+				"Initial number to show the combo\n for the bass.\nYou can specify from 1 to 99999.");
+			this.list項目リスト.Add(this.iSystemMinComboBass);
+			this.iSystemChipVolume = new CItemInteger( "ChipVolume", 0, 100, CDTXMania.ConfigIni.n手動再生音量,
+				"打音の音量：\n入力に反応して再生されるチップの音\n量を指定します。\n0 ～ 100 % の値が指定可能です。\n",
+				"The volumes for chips you hit.\nYou can specify from 0 to 100%.");
 			this.list項目リスト.Add( this.iSystemChipVolume );
-			this.iSystemAutoChipVolume = new CItemInteger( "AutoVolume", 0, 100, CDTXMania.ConfigIni.n自動再生音量 );
-			this.iSystemAutoChipVolume.str説明文 = "自動再生音の音量：\n自動的に再生されるチップの音量を指\n定します。\n0 ～ 100 % の値が指定可能です。\n";
+			this.iSystemAutoChipVolume = new CItemInteger( "AutoVolume", 0, 100, CDTXMania.ConfigIni.n自動再生音量,
+				"自動再生音の音量：\n自動的に再生されるチップの音量を指\n定します。\n0 ～ 100 % の値が指定可能です。\n",
+				"The volumes for AUTO chips.\nYou can specify from 0 to 100%.");
 			this.list項目リスト.Add( this.iSystemAutoChipVolume );
-			this.iSystemStoicMode = new CItemToggle( "StoicMode", CDTXMania.ConfigIni.bストイックモード );
-			this.iSystemStoicMode.str説明文 = "ストイック（禁欲）モード：\n以下をまとめて表示ON/OFFします。\n・プレビュー画像/動画\n・リザルト画像/動画\n・NowLoading画像\n・演奏画面の背景画像\n・BGA 画像\n・AVI 動画\n";
+			this.iSystemStoicMode = new CItemToggle( "StoicMode", CDTXMania.ConfigIni.bストイックモード,
+				"ストイック（禁欲）モード：\n以下をまとめて表示ON/OFFします。\n・プレビュー画像/動画\n・リザルト画像/動画\n・NowLoading画像\n・演奏画面の背景画像\n・BGA 画像\n・AVI 動画\n",
+				"Turn ON to disable drawing\n * preview image / movie\n * result image / movie\n * nowloading image\n * wallpaper (in playing screen)\n * BGA / AVI (in playing screen)");
 			this.list項目リスト.Add( this.iSystemStoicMode );
-			this.iSystemCymbalFree = new CItemToggle( "CymbalFree", CDTXMania.ConfigIni.bシンバルフリー );
-			this.iSystemCymbalFree.str説明文 = "シンバルフリーモード：\n左シンバル・右シンバルの区別をなく\nします。ライドシンバルまで区別をな\nくすか否かは、CYGroup に従います。\n";
+			this.iSystemCymbalFree = new CItemToggle( "CymbalFree", CDTXMania.ConfigIni.bシンバルフリー,
+				"シンバルフリーモード：\n左シンバル・右シンバルの区別をなく\nします。ライドシンバルまで区別をな\nくすか否かは、CYGroup に従います。\n",
+				"Turn ON to group LC (left cymbal) and\n CY (right cymbal).\nWhether RD (ride cymbal) is also\n grouped or not depends on the\n'CY Group' setting.");
 			this.list項目リスト.Add( this.iSystemCymbalFree );
-			this.iSystemBufferedInput = new CItemToggle( "BufferedInput", CDTXMania.ConfigIni.bバッファ入力を行う );
-			this.iSystemBufferedInput.str説明文 = "バッファ入力モード：\nON にすると、FPS を超える入力解像\n度を実現します。\nOFF にすると、入力解像度は FPS に\n等しくなります。";
+			this.iSystemBufferedInput = new CItemToggle( "BufferedInput", CDTXMania.ConfigIni.bバッファ入力を行う,
+				"バッファ入力モード：\nON にすると、FPS を超える入力解像\n度を実現します。\nOFF にすると、入力解像度は FPS に\n等しくなります。",
+				"To select joystick input method.\n\nON=to use buffer input. No lost/lags.\nOFF to use realtime input. It may\n causes lost/lags for input.\n Moreover, input frequency is\n synchronized with FPS.");
 			this.list項目リスト.Add( this.iSystemBufferedInput );
-			this.iLogOutputLog = new CItemToggle( "TraceLog", CDTXMania.ConfigIni.bログ出力 );
-			this.iLogOutputLog.str説明文 = "Traceログ出力：\nDTXManiaLog.txt にログを出力します。\n変更した場合は、DTXMania の再起動\n後に有効となります。";
+			this.iLogOutputLog = new CItemToggle( "TraceLog", CDTXMania.ConfigIni.bログ出力,
+				"Traceログ出力：\nDTXManiaLog.txt にログを出力します。\n変更した場合は、DTXMania の再起動\n後に有効となります。",
+				"Turn ON to put debug log to\n DTXManiaLog.txt\nTo take it effective, you need to\n re-open DTXMania.");
 			this.list項目リスト.Add( this.iLogOutputLog );
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.System;

@@ -15,12 +15,16 @@ namespace DTXMania
 		{
 			get
 			{
-				CItemBase base2 = this.list項目リスト[ this.n現在の選択項目 ];
-				if( ( ( base2 != this.iCommonReturnToMenu ) && ( base2 != this.iDrumsReturnToMenu ) ) && ( base2 != this.iGuitarReturnToMenu ) )
+				CItemBase currentItem = this.list項目リスト[ this.n現在の選択項目 ];
+				if (currentItem == this.iCommonReturnToMenu || currentItem == this.iDrumsReturnToMenu ||
+					currentItem == this.iGuitarReturnToMenu || currentItem == this.iBassReturnToMenu)
 				{
-					return ( base2 == this.iBassReturnToMenu );
+					return true;
 				}
-				return true;
+				else
+				{
+					return false;
+				}
 			}
 		}
 		public CItemBase ib現在の選択項目
@@ -38,36 +42,57 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
-			this.iBassReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他 );
-			this.iBassReturnToMenu.str説明文 = "左側のメニューに戻ります。";
-			this.list項目リスト.Add( this.iBassReturnToMenu );
-			this.iBassAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Bass );
-			this.iBassAutoPlay.str説明文 = "ベースパートを自動で演奏します。";
+
+			this.iBassReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu.");
+			this.list項目リスト.Add(this.iBassReturnToMenu);
+			this.iBassAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Bass,
+				"ベースパートを自動で演奏します。",
+				"To play the bass part automatically.");
 			this.list項目リスト.Add( this.iBassAutoPlay );
-			this.iBassScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Bass );
-			this.iBassScrollSpeed.str説明文 = "演奏時のベース譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。";
+			this.iBassScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Bass,
+				"演奏時のベース譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
+				"To change the scroll speed for the\nbass lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)");
 			this.list項目リスト.Add( this.iBassScrollSpeed );
-			this.iBassSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Bass );
-			this.iBassSudden.str説明文 = "ベースチップがヒットバー付近にくる\nまで表示されなくなります。";
+			this.iBassSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Bass,
+				"ベースチップがヒットバー付近にくる\nまで表示されなくなります。",
+				"Bass chips are disappered until they\ncome near the hit bar, and suddenly\nappears.");
 			this.list項目リスト.Add( this.iBassSudden );
-			this.iBassHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Bass );
-			this.iBassHidden.str説明文 = "ベースチップがヒットバー付近で表示\nされなくなります。";
+			this.iBassHidden = new CItemToggle("Hidden", CDTXMania.ConfigIni.bHidden.Bass,
+				"ベースチップがヒットバー付近で表示\nされなくなります。",
+				"Bass chips are hidden by approaching\nto the hit bar.");
 			this.list項目リスト.Add( this.iBassHidden );
-			this.iBassReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Bass );
-			this.iBassReverse.str説明文 = "ベースチップが譜面の上から下に流\nれるようになります。";
+			this.iBassReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Bass,
+				"ベースチップが譜面の上から下に流\nれるようになります。",
+				"The scroll way is reversed. Bass chips\nflow from the top to the bottom.");
 			this.list項目リスト.Add( this.iBassReverse );
-			this.iBassPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Bass, new string[] { "P-A", "P-B", "OFF" } );
-			this.iBassPosition.str説明文 = "ベースの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない";
+			this.iBassPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常,
+				(int) CDTXMania.ConfigIni.判定文字表示位置.Bass,
+				"ベースの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない",
+				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the COMBO indication.\n OFF: no judgement mark.",
+				new string[] { "P-A", "P-B", "OFF" });
 			this.list項目リスト.Add( this.iBassPosition );
-			this.iBassRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eRandom.Bass, new string[] { "OFF", "Part", "Super", "Hyper" } );
-			this.iBassRandom.str説明文 = "ベースのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更";
+			this.iBassRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常,
+				(int) CDTXMania.ConfigIni.eRandom.Bass,
+				"ベースのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
+				"Bass chips come randomly.\n\n Part: swapping lanes randomly for each\n  measures.\n Super: swapping chip randomly\n Hyper: swapping randomly\n  (number of lanes also changes)",
+				new string[] { "OFF", "Part", "Super", "Hyper" });
 			this.list項目リスト.Add( this.iBassRandom );
-			this.iBassLight = new CItemToggle( "Light", CDTXMania.ConfigIni.bLight.Bass );
-			this.iBassLight.str説明文 = "ベースチップのないところでピッキン\nグしても BAD になりません。";
+			this.iBassLight = new CItemToggle( "Light", CDTXMania.ConfigIni.bLight.Bass,
+				"ベースチップのないところでピッキン\nグしても BAD になりません。",
+				"Even if you pick without any chips,\nit doesn't become BAD.");
 			this.list項目リスト.Add( this.iBassLight );
-			this.iBassLeft = new CItemToggle( "Left", CDTXMania.ConfigIni.bLeft.Bass );
-			this.iBassLeft.str説明文 = "ベースの RGB の並びが左右反転し\nます。（左利きモード）";
+			this.iBassLeft = new CItemToggle( "Left", CDTXMania.ConfigIni.bLeft.Bass,
+				"ベースの RGB の並びが左右反転し\nます。（左利きモード）",
+				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
 			this.list項目リスト.Add( this.iBassLeft );
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+			this.iBassInputAdjustTimeMs = new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs_Bass,
+				"ベースの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
+				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
+			this.list項目リスト.Add(this.iBassInputAdjustTimeMs);
+#endif
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Bass;
 		}
@@ -75,14 +100,18 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
-			this.iCommonReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他 );
-			this.iCommonReturnToMenu.str説明文 = "左側のメニューに戻ります。";
-			this.list項目リスト.Add( this.iCommonReturnToMenu );
-			this.iCommonDark = new CItemList( "DARK", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark, new string[] { "OFF", "HALF", "FULL" } );
-			this.iCommonDark.str説明文 = "HALF: 背景、レーン、ゲージが表示\nされなくなります。\nFULL: さらに小節線、拍線、判定ラ\nイン、パッドも表示されなくなります。";
+			this.iCommonReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu.");
+			this.list項目リスト.Add(this.iCommonReturnToMenu);
+			this.iCommonDark = new CItemList( "DARK", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
+				"HALF: 背景、レーン、ゲージが表示\nされなくなります。\nFULL: さらに小節線、拍線、判定ラ\nイン、パッドも表示されなくなります。",
+				"OFF: all display parts are shown.\nHALF: wallpaper, lanes and gauge are\n disappeared.\nFULL: additionaly to HALF, bar/beat\n lines, hit bar, pads are disappeared.",
+				new string[] { "OFF", "HALF", "FULL" } );
 			this.list項目リスト.Add( this.iCommonDark );
-			this.iCommonPlaySpeed = new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度 );
-			this.iCommonPlaySpeed.str説明文 = "曲の演奏速度を、速くしたり遅くした\nりすることができます。\n（※一部のサウンドカードでは正しく\n 再生できない可能性があります。）";
+			this.iCommonPlaySpeed = new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度,
+				"曲の演奏速度を、速くしたり遅くした\nりすることができます。\n（※一部のサウンドカードでは正しく\n 再生できない可能性があります。）",
+				"It changes the song speed.\nFor example, you can play in half\n speed by setting PlaySpeed = x0.5\n for your practice.\nNote: It also changes the songs' pitch.");
 			this.list項目リスト.Add( this.iCommonPlaySpeed );
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Common;
@@ -91,57 +120,82 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
-			this.iDrumsReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他 );
-			this.iDrumsReturnToMenu.str説明文 = "左側のメニューに戻ります。";
-			this.list項目リスト.Add( this.iDrumsReturnToMenu );
-			this.iDrumsAutoPlayAll = new CItemThreeState( "AutoPlay (All)", CItemThreeState.E状態.不定 );
-			this.iDrumsAutoPlayAll.str説明文 = "全パッドの自動演奏の ON/OFF を\nまとめて切り替えます。";
+			this.iDrumsReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu.");
+			this.list項目リスト.Add(this.iDrumsReturnToMenu);
+			this.iDrumsAutoPlayAll = new CItemThreeState( "AutoPlay (All)", CItemThreeState.E状態.不定,
+				"全パッドの自動演奏の ON/OFF を\nまとめて切り替えます。",
+				"You can change whether Auto or not\n for all drums lanes at once.");
 			this.list項目リスト.Add( this.iDrumsAutoPlayAll );
-			this.iDrumsLeftCymbal = new CItemToggle( "    LeftCymbal", CDTXMania.ConfigIni.bAutoPlay.LC );
-			this.iDrumsLeftCymbal.str説明文 = "左シンバルを自動で演奏します。";
+			this.iDrumsLeftCymbal = new CItemToggle( "    LeftCymbal", CDTXMania.ConfigIni.bAutoPlay.LC,
+				"左シンバルを自動で演奏します。",
+				"To play LeftCymbal automatically.");
 			this.list項目リスト.Add( this.iDrumsLeftCymbal );
-			this.iDrumsHiHat = new CItemToggle( "    HiHat", CDTXMania.ConfigIni.bAutoPlay.HH );
-			this.iDrumsHiHat.str説明文 = "ハイハットを自動で演奏します。\n（クローズ、オープンとも）";
+			this.iDrumsHiHat = new CItemToggle( "    HiHat", CDTXMania.ConfigIni.bAutoPlay.HH,
+				"ハイハットを自動で演奏します。\n（クローズ、オープンとも）",
+				"To play HiHat automatically.\n(It effects to both HH-close and\n HH-open)");
 			this.list項目リスト.Add( this.iDrumsHiHat );
-			this.iDrumsSnare = new CItemToggle( "    Snare", CDTXMania.ConfigIni.bAutoPlay.SD );
-			this.iDrumsSnare.str説明文 = "スネアを自動で演奏します。";
+			this.iDrumsSnare = new CItemToggle( "    Snare", CDTXMania.ConfigIni.bAutoPlay.SD,
+				"スネアを自動で演奏します。",
+				"To play Snare automatically.");
 			this.list項目リスト.Add( this.iDrumsSnare );
-			this.iDrumsBass = new CItemToggle( "    BassDrum", CDTXMania.ConfigIni.bAutoPlay.BD );
-			this.iDrumsBass.str説明文 = "バスドラムを自動で演奏します。";
+			this.iDrumsBass = new CItemToggle( "    BassDrum", CDTXMania.ConfigIni.bAutoPlay.BD,
+				"バスドラムを自動で演奏します。",
+				"To play Bass Drum automatically.");
 			this.list項目リスト.Add( this.iDrumsBass );
-			this.iDrumsHighTom = new CItemToggle( "    HighTom", CDTXMania.ConfigIni.bAutoPlay.HT );
-			this.iDrumsHighTom.str説明文 = "ハイタムを自動で演奏します。";
+			this.iDrumsHighTom = new CItemToggle( "    HighTom", CDTXMania.ConfigIni.bAutoPlay.HT,
+				"ハイタムを自動で演奏します。",
+				"To play High Tom automatically.");
 			this.list項目リスト.Add( this.iDrumsHighTom );
-			this.iDrumsLowTom = new CItemToggle( "    LowTom", CDTXMania.ConfigIni.bAutoPlay.LT );
-			this.iDrumsLowTom.str説明文 = "ロータムを自動で演奏します。";
+			this.iDrumsLowTom = new CItemToggle( "    LowTom", CDTXMania.ConfigIni.bAutoPlay.LT,
+				"ロータムを自動で演奏します。",
+				"To play Low Tom automatically.");
 			this.list項目リスト.Add( this.iDrumsLowTom );
-			this.iDrumsFloorTom = new CItemToggle( "    FloorTom", CDTXMania.ConfigIni.bAutoPlay.FT );
-			this.iDrumsFloorTom.str説明文 = "フロアタムを自動で演奏します。";
+			this.iDrumsFloorTom = new CItemToggle( "    FloorTom", CDTXMania.ConfigIni.bAutoPlay.FT,
+				"フロアタムを自動で演奏します。",
+				"To play Floor Tom automatically.");
 			this.list項目リスト.Add( this.iDrumsFloorTom );
-			this.iDrumsCymbalRide = new CItemToggle( "    Cym/Ride", CDTXMania.ConfigIni.bAutoPlay.CY );
-			this.iDrumsCymbalRide.str説明文 = "右シンバルとライドシンバルを自動で\n演奏します。";
+			this.iDrumsCymbalRide = new CItemToggle( "    Cym/Ride", CDTXMania.ConfigIni.bAutoPlay.CY,
+				"右シンバルとライドシンバルを自動で\n演奏します。",
+				"To play both right- and Ride-Cymbal\n automatically.");
 			this.list項目リスト.Add( this.iDrumsCymbalRide );
-			this.iDrumsScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Drums );
-			this.iDrumsScrollSpeed.str説明文 = "演奏時のドラム譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 を指定可能です。";
+			this.iDrumsScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Drums,
+				"演奏時のドラム譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 を指定可能です。",
+				"To change the scroll speed for the\ndrums lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)");
 			this.list項目リスト.Add( this.iDrumsScrollSpeed );
-			this.iDrumsComboPosition = new CItemList( "ComboPosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.ドラムコンボ文字の表示位置, new string[] { "Left", "Center", "Right", "OFF" } );
-			this.iDrumsComboPosition.str説明文 = "演奏時のドラムコンボ文字列の位置\nを指定します。";
+			this.iDrumsComboPosition = new CItemList( "ComboPosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.ドラムコンボ文字の表示位置,
+				"演奏時のドラムコンボ文字列の位置\nを指定します。",
+				"The display position for Drums Combo.\nNote that it doesn't take effect\n at Autoplay ([Left] is forcely used).",
+				new string[] { "Left", "Center", "Right", "OFF" } );
 			this.list項目リスト.Add( this.iDrumsComboPosition );
-			this.iDrumsSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Drums );
-			this.iDrumsSudden.str説明文 = "ドラムチップが譜面の下の方から表\n示されるようになります。";
+			this.iDrumsSudden = new CItemToggle("Sudden", CDTXMania.ConfigIni.bSudden.Drums,
+				"ドラムチップが譜面の下の方から表\n示されるようになります。",
+				"Drums chips are disappered until they\ncome near the hit bar, and suddenly\nappears.");
 			this.list項目リスト.Add( this.iDrumsSudden );
-			this.iDrumsHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Drums );
-			this.iDrumsHidden.str説明文 = "ドラムチップが譜面の下の方で表示\nされなくなります。";
+			this.iDrumsHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Drums,
+				"ドラムチップが譜面の下の方で表示\nされなくなります。",
+				"Drums chips are hidden by approaching\nto the hit bar. ");
 			this.list項目リスト.Add( this.iDrumsHidden );
-			this.iDrumsReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Drums );
-			this.iDrumsReverse.str説明文 = "ドラムチップが譜面の下から上に流\nれるようになります。";
+			this.iDrumsReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Drums,
+				"ドラムチップが譜面の下から上に流\nれるようになります。",
+				"The scroll way is reversed. Drums chips\nflow from the bottom to the top.");
 			this.list項目リスト.Add( this.iDrumsReverse );
-			this.iDrumsPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Drums, new string[] { "P-A", "P-B", "OFF" } );
-			this.iDrumsPosition.str説明文 = "ドラムの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: 判定ライン下\n  OFF: 表示しない";
+			this.iDrumsPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Drums,
+				"ドラムの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: 判定ライン下\n  OFF: 表示しない",
+				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the hit bar.\n OFF: no judgement mark.",
+				new string[] { "P-A", "P-B", "OFF" } );
 			this.list項目リスト.Add( this.iDrumsPosition );
-			this.iDrumsTight = new CItemToggle( "Tight", CDTXMania.ConfigIni.bTight );
-			this.iDrumsTight.str説明文 = "ドラムチップのないところでパッドを\n叩くとミスになります。";
+			this.iDrumsTight = new CItemToggle( "Tight", CDTXMania.ConfigIni.bTight,
+				"ドラムチップのないところでパッドを\n叩くとミスになります。",
+				"It becomes MISS to hit pad without\n chip.");
 			this.list項目リスト.Add( this.iDrumsTight );
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+			this.iDrumsInputAdjustTimeMs = new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs_Drums,
+				"ドラムの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
+				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
+			this.list項目リスト.Add(this.iDrumsInputAdjustTimeMs);
+#endif
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Drums;
 		}
@@ -154,36 +208,54 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
-			this.iGuitarReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他 );
-			this.iGuitarReturnToMenu.str説明文 = "左側のメニューに戻ります。";
-			this.list項目リスト.Add( this.iGuitarReturnToMenu );
-			this.iGuitarAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Guitar );
-			this.iGuitarAutoPlay.str説明文 = "ギターパートを自動で演奏します。";
+			this.iGuitarReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu.");
+			this.list項目リスト.Add(this.iGuitarReturnToMenu);
+			this.iGuitarAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Guitar,
+				"ギターパートを自動で演奏します。",
+				"To play the guitar part automatically.");
 			this.list項目リスト.Add( this.iGuitarAutoPlay );
-			this.iGuitarScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Guitar );
-			this.iGuitarScrollSpeed.str説明文 = "演奏時のギター譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。";
-			this.list項目リスト.Add( this.iGuitarScrollSpeed );
-			this.iGuitarSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Guitar );
-			this.iGuitarSudden.str説明文 = "ギターチップがヒットバー付近にくる\nまで表示されなくなります。";
+			this.iGuitarScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Guitar,
+				"演奏時のギター譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
+				"To change the scroll speed for the\nguitar lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)");
+			this.list項目リスト.Add(this.iGuitarScrollSpeed);
+			this.iGuitarSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Guitar,
+				"ギターチップがヒットバー付近にくる\nまで表示されなくなります。",
+				"Guitar chips are disappered until they\ncome near the hit bar, and suddenly\nappears.");
 			this.list項目リスト.Add( this.iGuitarSudden );
-			this.iGuitarHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Guitar );
-			this.iGuitarHidden.str説明文 = "ギターチップがヒットバー付近で表示\nされなくなります。";
+			this.iGuitarHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Guitar,
+				"ギターチップがヒットバー付近で表示\nされなくなります。",
+				"Guitar chips are hidden by approaching\nto the hit bar. ");
 			this.list項目リスト.Add( this.iGuitarHidden );
-			this.iGuitarReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Guitar );
-			this.iGuitarReverse.str説明文 = "ギターチップが譜面の上から下に流\nれるようになります。";
+			this.iGuitarReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Guitar,
+				"ギターチップが譜面の上から下に流\nれるようになります。",
+				"The scroll way is reversed. Guitar chips\nflow from the top to the bottom.");
 			this.list項目リスト.Add( this.iGuitarReverse );
-			this.iGuitarPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Guitar, new string[] { "P-A", "P-B", "OFF" } );
-			this.iGuitarPosition.str説明文 = "ギターの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない";
+			this.iGuitarPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Guitar,
+				"ギターの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない",
+				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the COMBO indication.\n OFF: no judgement mark.",
+				new string[] { "P-A", "P-B", "OFF" } );
 			this.list項目リスト.Add( this.iGuitarPosition );
-			this.iGuitarRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eRandom.Guitar, new string[] { "OFF", "Part", "Super", "Hyper" } );
-			this.iGuitarRandom.str説明文 = "ギターのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更";
+			this.iGuitarRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eRandom.Guitar,
+				"ギターのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
+				"Guitar chips come randomly.\n\n Part: swapping lanes randomly for each\n  measures.\n Super: swapping chip randomly\n Hyper: swapping randomly\n  (number of lanes also changes)",
+				new string[] { "OFF", "Part", "Super", "Hyper" } );
 			this.list項目リスト.Add( this.iGuitarRandom );
-			this.iGuitarLight = new CItemToggle( "Light", CDTXMania.ConfigIni.bLight.Guitar );
-			this.iGuitarLight.str説明文 = "ギターチップのないところでピッキン\nグしても BAD になりません。";
+			this.iGuitarLight = new CItemToggle( "Light", CDTXMania.ConfigIni.bLight.Guitar,
+				"ギターチップのないところでピッキン\nグしても BAD になりません。",
+				"Even if you pick without any chips,\nit doesn't become BAD.");
 			this.list項目リスト.Add( this.iGuitarLight );
-			this.iGuitarLeft = new CItemToggle( "Left", CDTXMania.ConfigIni.bLeft.Guitar );
-			this.iGuitarLeft.str説明文 = "ギターの RGB の並びが左右反転し\nます。（左利きモード）";
+			this.iGuitarLeft = new CItemToggle( "Left", CDTXMania.ConfigIni.bLeft.Guitar,
+				"ギターの RGB の並びが左右反転し\nます。（左利きモード）",
+				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
 			this.list項目リスト.Add( this.iGuitarLeft );
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+			this.iGuitarInputAdjustTimeMs= new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs_Guitar,
+				"ギターの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
+				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
+			this.list項目リスト.Add(this.iGuitarInputAdjustTimeMs);
+#endif
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Guitar;
 		}
@@ -527,6 +599,12 @@ namespace DTXMania
 		private CItemToggle iGuitarReverse;
 		private CItemInteger iGuitarScrollSpeed;
 		private CItemToggle iGuitarSudden;
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+		private CItemInteger iDrumsInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
+		private CItemInteger iGuitarInputAdjustTimeMs;		//
+		private CItemInteger iBassInputAdjustTimeMs;		//
+#endif
+
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
 		private int n現在のスクロールカウンタ;
@@ -588,6 +666,9 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eRandom.Bass = (Eランダムモード) this.iBassRandom.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bLight.Bass = this.iBassLight.bON;
 			CDTXMania.ConfigIni.bLeft.Bass = this.iBassLeft.bON;
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+			CDTXMania.ConfigIni.nInputAdjustTimeMs_Bass = this.iBassInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
+#endif
 		}
 		private void tConfigIniへ記録する・Common()
 		{
@@ -611,6 +692,9 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bReverse.Drums = this.iDrumsReverse.bON;
 			CDTXMania.ConfigIni.判定文字表示位置.Drums = (E判定文字表示位置) this.iDrumsPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bTight = this.iDrumsTight.bON;
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+			CDTXMania.ConfigIni.nInputAdjustTimeMs_Drums = this.iDrumsInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
+#endif
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{
@@ -623,6 +707,9 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eRandom.Guitar = (Eランダムモード) this.iGuitarRandom.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bLight.Guitar = this.iGuitarLight.bON;
 			CDTXMania.ConfigIni.bLeft.Guitar = this.iGuitarLeft.bON;
+#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
+			CDTXMania.ConfigIni.nInputAdjustTimeMs_Guitar = this.iGuitarInputAdjustTimeMs.n現在の値;	// #23580 2011.1.3 yyagi
+#endif
 		}
 		//-----------------
 		#endregion

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Reflection;
+using System.Globalization;
 using FDK;
 
 namespace DTXMania
@@ -392,11 +393,11 @@ namespace DTXMania
 			{
 				get
 				{
-					if( this.nチャンネル番号 != 3 )
-					{
-						return ( this.nチャンネル番号 == 8 );
+					if (this.nチャンネル番号 == 3 || this.nチャンネル番号 == 8) {
+						return true;
+					} else {
+						return false;
 					}
-					return true;
 				}
 			}
 			public bool bWAVを使うチャンネルである
@@ -405,11 +406,11 @@ namespace DTXMania
 				{
 					switch( this.nチャンネル番号 )
 					{
-						case 1:
+						case 0x01:
 						case 0x11:
 						case 0x12:
 						case 0x13:
-						case 20:
+						case 0x14:
 						case 0x15:
 						case 0x16:
 						case 0x17:
@@ -427,7 +428,7 @@ namespace DTXMania
 						case 0x27:
 						case 0x2f:
 						case 0x31:
-						case 50:
+						case 0x32:
 						case 0x33:
 						case 0x34:
 						case 0x35:
@@ -439,7 +440,7 @@ namespace DTXMania
 						case 0x61:
 						case 0x62:
 						case 0x63:
-						case 100:
+						case 0x64:
 						case 0x65:
 						case 0x66:
 						case 0x67:
@@ -453,11 +454,11 @@ namespace DTXMania
 						case 0x75:
 						case 0x76:
 						case 0x77:
-						case 120:
+						case 0x78:
 						case 0x79:
 						case 0x80:
 						case 0x81:
-						case 130:
+						case 0x82:
 						case 0x83:
 						case 0x84:
 						case 0x85:
@@ -468,7 +469,7 @@ namespace DTXMania
 						case 0x90:
 						case 0x91:
 						case 0x92:
-						case 160:
+						case 0xa0:
 						case 0xa1:
 						case 0xa2:
 						case 0xa3:
@@ -480,7 +481,7 @@ namespace DTXMania
 						case 0xb1:
 						case 0xb2:
 						case 0xb3:
-						case 180:
+						case 0xb4:
 						case 0xb5:
 						case 0xb6:
 						case 0xb7:
@@ -982,7 +983,7 @@ namespace DTXMania
 						str = "??";
 						break;
 				}
-				return string.Format( "CChip: 位置:{0:D4}.{1:D3}, 時刻{2:D6}, Ch:{3:X2}({4}), Pn:{5}({11})(内部{6}), Pd:{7}, Sz:{8}, UseWav:{9}, Auto:{10}", new object[] { this.n発声位置 / 0x180, this.n発声位置 % 0x180, this.n発声時刻ms, this.nチャンネル番号, str, this.n整数値, this.n整数値・内部番号, this.db実数値, this.dbチップサイズ倍率, this.bWAVを使うチャンネルである, this.b自動再生音チャンネルである, CDTX.tZZ( this.n整数値 ) } );
+				return string.Format( "CChip: 位置:{0:D4}.{1:D3}, 時刻{2:D6}, Ch:{3:X2}({4}), Pn:{5}({11})(内部{6}), Pd:{7}, Sz:{8}, UseWav:{9}, Auto:{10}", new object[] { this.n発声位置 / 384, this.n発声位置 % 384, this.n発声時刻ms, this.nチャンネル番号, str, this.n整数値, this.n整数値・内部番号, this.db実数値, this.dbチップサイズ倍率, this.bWAVを使うチャンネルである, this.b自動再生音チャンネルである, CDTX.tZZ( this.n整数値 ) } );
 			}
 
 			#region [ IComparable 実装 ]
@@ -1230,7 +1231,7 @@ namespace DTXMania
 			{
 				get
 				{
-					return ( ( ( ( ( ( ( ( ( this.HH + this.SD ) + this.BD ) + this.HT ) + this.LT ) + this.CY ) + this.FT ) + this.HHO ) + this.RD ) + this.LC );
+					return this.HH + this.SD + this.BD + this.HT + this.LT + this.CY + this.FT + this.HHO + this.RD + this.LC;
 				}
 			}
 		}
@@ -1430,7 +1431,7 @@ namespace DTXMania
 		public int MIDIレベル;
 		public STLANEINT n可視チップ数;
 		public const int n最大音数 = 4;
-		public const int n小節の解像度 = 0x180;
+		public const int n小節の解像度 = 384;
 		public string PANEL;
 		public string PATH_WAV;
 		public string PREIMAGE;
@@ -1449,8 +1450,11 @@ namespace DTXMania
 		public string strファイル名の絶対パス;
 		public string strフォルダ名;
 		public string TITLE;
-
-
+#if TEST_NOTEOFFMODE
+		public bool bHH演奏で直前のHHを消音する;
+		public bool bGUITAR演奏で直前のGUITARを消音する;
+		public bool bBASS演奏で直前のBASSを消音する;
+#endif
 		// コンストラクタ
 
 		public CDTX()
@@ -1479,6 +1483,14 @@ namespace DTXMania
 			stdgbvalue.Guitar = 0;
 			stdgbvalue.Bass = 0;
 			this.LEVEL = stdgbvalue;
+
+#if true	// 2010.12.31 yyagi #RESULTxxxのリファクタ後。ここはnew()して参照渡ししなくてもいいよね？
+			for (int i = 0; i < 7; i++) {
+				this.RESULTIMAGE[i] = "";
+				this.RESULTMOVIE[i] = "";
+				this.RESULTSOUND[i] = "";
+			}
+#else		// #RESULTxxxのリファクタ前
 			STRESULT stresult4 = new STRESULT();
 			STRESULT stresult = stresult4;
 			stresult.SS = "";
@@ -1508,6 +1520,7 @@ namespace DTXMania
 			stresult3.D = "";
 			stresult3.E = "";
 			this.RESULTSOUND = stresult3;
+#endif
 			this.db再生速度 = 1.0;
 			this.strハッシュofDTXファイル = "";
 			STチップがある stチップがある = new STチップがある();
@@ -1531,7 +1544,33 @@ namespace DTXMania
 			this.nRESULTIMAGE用優先順位 = new int[ 7 ];
 			this.nRESULTMOVIE用優先順位 = new int[ 7 ];
 			this.nRESULTSOUND用優先順位 = new int[ 7 ];
-			STGDAPARAM[] stgdaparamArray = new STGDAPARAM[ 0x3d ];
+
+#if true	// 2011.1.1 yyagi GDA->DTX変換テーブル リファクタ後
+			STGDAPARAM[] stgdaparamArray = new STGDAPARAM[] {		// GDA->DTX conversion table
+				new STGDAPARAM("TC", 0x03),	new STGDAPARAM("BL", 0x02),	new STGDAPARAM("GS", 0x29),
+				new STGDAPARAM("DS", 0x30),	new STGDAPARAM("FI", 0x53),	new STGDAPARAM("HH", 0x11),
+				new STGDAPARAM("SD", 0x12),	new STGDAPARAM("BD", 0x13),	new STGDAPARAM("HT", 0x14),
+				new STGDAPARAM("LT", 0x15),	new STGDAPARAM("CY", 0x16),	new STGDAPARAM("G1", 0x21),
+				new STGDAPARAM("G2", 0x22),	new STGDAPARAM("G3", 0x23),	new STGDAPARAM("G4", 0x24),
+				new STGDAPARAM("G5", 0x25),	new STGDAPARAM("G6", 0x26),	new STGDAPARAM("G7", 0x27),
+				new STGDAPARAM("GW", 0x28),	new STGDAPARAM("01", 0x61),	new STGDAPARAM("02", 0x62),
+				new STGDAPARAM("03", 0x63),	new STGDAPARAM("04", 0x64),	new STGDAPARAM("05", 0x65),
+				new STGDAPARAM("06", 0x66),	new STGDAPARAM("07", 0x67),	new STGDAPARAM("08", 0x68),
+				new STGDAPARAM("09", 0x69),	new STGDAPARAM("0A", 0x70),	new STGDAPARAM("0B", 0x71),
+				new STGDAPARAM("0C", 0x72),	new STGDAPARAM("0D", 0x73),	new STGDAPARAM("0E", 0x74),
+				new STGDAPARAM("0F", 0x75),	new STGDAPARAM("10", 0x76),	new STGDAPARAM("11", 0x77),
+				new STGDAPARAM("12", 0x78),	new STGDAPARAM("13", 0x79),	new STGDAPARAM("14", 0x80),
+				new STGDAPARAM("15", 0x81),	new STGDAPARAM("16", 0x82),	new STGDAPARAM("17", 0x83),
+				new STGDAPARAM("18", 0x84),	new STGDAPARAM("19", 0x85),	new STGDAPARAM("1A", 0x86),
+				new STGDAPARAM("1B", 0x87),	new STGDAPARAM("1C", 0x88),	new STGDAPARAM("1D", 0x89),
+				new STGDAPARAM("1E", 0x90),	new STGDAPARAM("1F", 0x91),	new STGDAPARAM("20", 0x92),
+				new STGDAPARAM("B1", 0xA1),	new STGDAPARAM("B2", 0xA2),	new STGDAPARAM("B3", 0xA3),
+				new STGDAPARAM("B4", 0xA4),	new STGDAPARAM("B5", 0xA5),	new STGDAPARAM("B6", 0xA6),
+				new STGDAPARAM("B7", 0xA7),	new STGDAPARAM("BW", 0xA8),	new STGDAPARAM("G0", 0x20),
+				new STGDAPARAM("B0", 0xA0)
+			};
+#else	// 2011.1.1 yyagi GDA->DTX変換テーブル リファクタ前
+			STGDAPARAM[] stgdaparamArray = new STGDAPARAM[62];
 			STGDAPARAM stgdaparam62 = new STGDAPARAM();
 			STGDAPARAM stgdaparam = stgdaparam62;
 			stgdaparam.s = "TC";
@@ -1836,8 +1875,16 @@ namespace DTXMania
 			stgdaparam61.s = "B0";
 			stgdaparam61.c = 160;
 			stgdaparamArray[ 60 ] = stgdaparam61;
+#endif
 			this.stGDAParam = stgdaparamArray;
 			this.nBGMAdjust = 0;
+
+#if TEST_NOTEOFFMODE
+			this.bHH演奏で直前のHHを消音する = true;
+			this.bGUITAR演奏で直前のGUITARを消音する = true;
+			this.bBASS演奏で直前のBASSを消音する = true;
+#endif
+	
 		}
 		public CDTX( string str全入力文字列 )
 			: this()
@@ -2045,13 +2092,13 @@ namespace DTXMania
 		{
 			for( int i = 0; i < 4; i++ )
 			{
-				if( ( ( wc.rSound[ i ] != null ) && wc.rSound[ i ].b再生中 ) && ( wc.rSound[ i ].n総演奏時間ms >= 0x1388 ) )
+				if( ( ( wc.rSound[ i ] != null ) && wc.rSound[ i ].b再生中 ) && ( wc.rSound[ i ].n総演奏時間ms >= 5000 ) )
 				{
-					long num2 = CDTXMania.Timer.nシステム時刻;
-					if( num2 > wc.n再生開始時刻[ i ] )
+					long nCurrentTime = CDTXMania.Timer.nシステム時刻;
+					if( nCurrentTime > wc.n再生開始時刻[ i ] )
 					{
-						long num3 = num2 - wc.n再生開始時刻[ i ];
-						wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( num3 ) );
+						long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[ i ];
+						wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
 					}
 				}
 			}
@@ -2072,9 +2119,16 @@ namespace DTXMania
 		}
 		public void tWAVの読み込み()
 		{
-			foreach( CWAV cwav in this.listWAV.Values )
+//			Trace.TraceInformation("WAV files={0}", this.listWAV.Count);
+//			int count = 0;
+			foreach (CWAV cwav in this.listWAV.Values)
 			{
-				string str = string.IsNullOrEmpty( this.PATH_WAV ) ? this.strフォルダ名 : this.PATH_WAV;
+//				string strCount = count.ToString() + " / " + this.listWAV.Count.ToString();
+//				Debug.WriteLine(strCount);
+//				CDTXMania.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, strCount);
+//				count++;
+
+				string str = string.IsNullOrEmpty(this.PATH_WAV) ? this.strフォルダ名 : this.PATH_WAV;
 				str = str + cwav.strファイル名;
 				try
 				{
@@ -2082,7 +2136,7 @@ namespace DTXMania
 					{
 						try
 						{
-							cwav.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( str );
+							cwav.rSound[i] = CDTXMania.Sound管理.tサウンドを生成する(str);
 							cwav.rSound[ i ].n音量 = 100;
 							if( ( i == 0 ) && CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 							{
@@ -2120,7 +2174,8 @@ namespace DTXMania
 //								if (m cwav..rSound[j].
 //						}
 //						cwav.rSound[0].Buffer.
-						cwav.rSound[1] = cwav.rSound[0];		// 2010.11.23 yyagi add: to accelerate loading chip sounds
+
+						cwav.rSound[1] = cwav.rSound[0];		// #24007 2010.11.23 yyagi add: to accelerate loading chip sounds
 						cwav.rSound[2] = cwav.rSound[0];		//
 						cwav.rSound[3] = cwav.rSound[0];		//
 						break;									//
@@ -2217,7 +2272,7 @@ namespace DTXMania
 						case (int)Eレーンビットパターン.RxB:	// RxB
 						case (int)Eレーンビットパターン.RGx:	// RGx
 							n新RGBレーンビットパターン = flag ? CDTXMania.Random.Next( 8 ) : ( CDTXMania.Random.Next( 7 ) + 1 );	// OPENあり譜面ならOPENを含むランダム, OPENなし譜面ならOPENを含まないランダム
-							goto Label_02B2;
+							break;	// goto Label_02B2;
 
 						default:
 							if( nRGBレーンビットパターン == (int)Eレーンビットパターン.RGB )	// RGB レーン3本相当
@@ -2239,11 +2294,11 @@ namespace DTXMania
 										{
 											case 0:
 												n新RGBレーンビットパターン = (int)Eレーンビットパターン.xGB;
-												goto Label_02B2;
+												break;	// goto Label_02B2;
 
 											case 1:
 												n新RGBレーンビットパターン = (int)Eレーンビットパターン.RxB;
-												goto Label_02B2;
+												break;	// goto Label_02B2;
 										}
 										n新RGBレーンビットパターン = (int)Eレーンビットパターン.RGx;
 									}
@@ -2253,11 +2308,11 @@ namespace DTXMania
 										{
 											case 0:
 												n新RGBレーンビットパターン = (int)Eレーンビットパターン.xxB;
-												goto Label_02B2;
+												break;	// goto Label_02B2;
 
 											case 1:
 												n新RGBレーンビットパターン = (int)Eレーンビットパターン.xGx;
-												goto Label_02B2;
+												break;	// goto Label_02B2;
 										}
 										n新RGBレーンビットパターン = (int)Eレーンビットパターン.Rxx;
 									}
@@ -2275,11 +2330,11 @@ namespace DTXMania
 										{
 											case 0:
 												n新RGBレーンビットパターン = (int)Eレーンビットパターン.xGB;
-												goto Label_02B2;
+												break;	// goto Label_02B2;
 
 											case 1:
 												n新RGBレーンビットパターン = (int)Eレーンビットパターン.RxB;
-												goto Label_02B2;
+												break;	// goto Label_02B2;
 										}
 										n新RGBレーンビットパターン = (int)Eレーンビットパターン.RGx;
 									}
@@ -2289,17 +2344,17 @@ namespace DTXMania
 										{
 											case 0:
 												n新RGBレーンビットパターン = (int)Eレーンビットパターン.xxB;
-												goto Label_02B2;
+												break;	// goto Label_02B2;
 
 											case 1:
 												n新RGBレーンビットパターン = (int)Eレーンビットパターン.xGx;
-												goto Label_02B2;
+												break;	// goto Label_02B2;
 										}
 										n新RGBレーンビットパターン = (int)Eレーンビットパターン.Rxx;
 									}
 								}
 							}
-							goto Label_02B2;
+							break;	// goto Label_02B2;
 					}
 				Label_02B2:
 					chip.nチャンネル番号 = ( nランダム化前チャンネル番号 & 0xF0 ) | n新RGBレーンビットパターン;
@@ -2362,11 +2417,17 @@ namespace DTXMania
 			this.nBGMAdjust += nBGMAdjustの増減値;
 			for( int i = 0; i < this.listChip.Count; i++ )
 			{
-				int num2 = this.listChip[ i ].nチャンネル番号;
-				if( ( ( ( num2 == 1 ) || ( ( 0x61 <= num2 ) && ( num2 <= 0x69 ) ) ) || ( ( 0x70 <= num2 ) && ( num2 <= 0x79 ) ) ) || ( ( ( 0x80 <= num2 ) && ( num2 <= 0x89 ) ) || ( ( 0x90 <= num2 ) && ( num2 <= 0x92 ) ) ) )
+				int nChannelNumber = this.listChip[ i ].nチャンネル番号;
+				if( ( (
+						( nChannelNumber == 1 ) ||
+						( ( 0x61 <= nChannelNumber ) && ( nChannelNumber <= 0x69 ) )
+					  ) ||
+						( ( 0x70 <= nChannelNumber ) && ( nChannelNumber <= 0x79 ) )
+					) ||
+					( ( ( 0x80 <= nChannelNumber ) && ( nChannelNumber <= 0x89 ) ) || ( ( 0x90 <= nChannelNumber ) && ( nChannelNumber <= 0x92 ) ) )
+				  )
 				{
-					CChip local1 = this.listChip[ i ];
-					local1.n発声時刻ms += nBGMAdjustの増減値;
+					this.listChip[ i ].n発声時刻ms += nBGMAdjustの増減値;
 				}
 			}
 			foreach( CWAV cwav in this.listWAV.Values )
@@ -2630,8 +2691,8 @@ namespace DTXMania
 						{
 							this.listChip.Sort();
 							double num4 = 1.0;
-							int num5 = ( this.listChip[ this.listChip.Count - 1 ].n発声位置 + 0x180 ) - ( this.listChip[ this.listChip.Count - 1 ].n発声位置 % 0x180 );
-							for( int num6 = 0; num6 <= num5; num6 += 0x180 )
+							int num5 = ( this.listChip[ this.listChip.Count - 1 ].n発声位置 + 384 ) - ( this.listChip[ this.listChip.Count - 1 ].n発声位置 % 384 );
+							for( int num6 = 0; num6 <= num5; num6 += 384 )
 							{
 								CChip chip8 = new CChip();
 								chip8.n発声位置 = num6;
@@ -2642,10 +2703,10 @@ namespace DTXMania
 							this.listChip.Sort();
 							int num7 = 0;
 							int num8 = 0;
-							for( int num9 = 0; num9 < num5; num9 += 0x180 )
+							for( int num9 = 0; num9 < num5; num9 += 384 )
 							{
 								int num10 = 0;
-								while( ( num8 < this.listChip.Count ) && ( this.listChip[ num8 ].n発声位置 < ( num9 + 0x180 ) ) )
+								while( ( num8 < this.listChip.Count ) && ( this.listChip[ num8 ].n発声位置 < ( num9 + 384 ) ) )
 								{
 									if( this.listChip[ num8 ].nチャンネル番号 == 0xc1 )
 									{
@@ -2667,17 +2728,17 @@ namespace DTXMania
 								}
 								for( int num11 = 0; num11 < 100; num11++ )
 								{
-									int num12 = (int) ( ( (double) ( 0x180 * num11 ) ) / ( 4.0 * num4 ) );
-									if( ( num12 + num10 ) >= 0x180 )
+									int num12 = (int) ( ( (double) ( 384 * num11 ) ) / ( 4.0 * num4 ) );
+									if( ( num12 + num10 ) >= 384 )
 									{
 										break;
 									}
-									if( ( ( num12 + num10 ) % 0x180 ) != 0 )
+									if( ( ( num12 + num10 ) % 384 ) != 0 )
 									{
 										CChip chip9 = new CChip();
 										chip9.n発声位置 = ( num9 + num12 ) + num10;
 										chip9.nチャンネル番号 = 0x51;
-										chip9.n整数値 = 0x50f;
+										chip9.n整数値 = 36 * 36 - 1;
 										this.listChip.Add( chip9 );
 									}
 								}
@@ -2718,40 +2779,40 @@ namespace DTXMania
 								this.listChip[ i ].b可視 = flag;
 							}
 						}
-						double num14 = 120.0;
+						double bpm = 120.0;
 						double num15 = 1.0;
 						int num16 = 0;
 						int num17 = 0;
 						int num18 = 0;
 						foreach( CChip chip10 in this.listChip )
 						{
-							chip10.n発声時刻ms = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / num14 ) );
-							if( ( ( this.e種別 == E種別.BMS ) || ( this.e種別 == E種別.BME ) ) && ( ( num15 != 1.0 ) && ( ( chip10.n発声位置 / 0x180 ) != num18 ) ) )
+							chip10.n発声時刻ms = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / bpm ) );
+							if( ( ( this.e種別 == E種別.BMS ) || ( this.e種別 == E種別.BME ) ) && ( ( num15 != 1.0 ) && ( ( chip10.n発声位置 / 384) != num18 ) ) )
 							{
 								num16 = chip10.n発声位置;
 								num17 = chip10.n発声時刻ms;
 								num15 = 1.0;
 							}
-							num18 = chip10.n発声位置 / 0x180;
+							num18 = chip10.n発声位置 / 384;
 							num26 = chip10.nチャンネル番号;
 							switch( num26 )
 							{
-								case 2:
+								case 0x02:
 									{
 										num16 = chip10.n発声位置;
 										num17 = chip10.n発声時刻ms;
 										num15 = chip10.db実数値;
 										continue;
 									}
-								case 3:
+								case 0x03:
 									{
 										num16 = chip10.n発声位置;
 										num17 = chip10.n発声時刻ms;
-										num14 = this.BASEBPM + chip10.n整数値;
+										bpm = this.BASEBPM + chip10.n整数値;
 										continue;
 									}
-								case 4:
-								case 7:
+								case 0x04:
+								case 0x07:
 								case 0x55:
 								case 0x56:
 								case 0x57:
@@ -2760,9 +2821,9 @@ namespace DTXMania
 								case 0x60:
 									break;
 
-								case 5:
-								case 6:
-								case 90:
+								case 0x05:
+								case 0x06:
+								case 0x5A:
 								case 0x5b:
 								case 0x5c:
 								case 0x5d:
@@ -2777,7 +2838,7 @@ namespace DTXMania
 										num17 = chip10.n発声時刻ms;
 										if( this.listBPM.ContainsKey( chip10.n整数値・内部番号 ) )
 										{
-											num14 = ( ( this.listBPM[ chip10.n整数値・内部番号 ].n表記上の番号 == 0 ) ? 0.0 : this.BASEBPM ) + this.listBPM[ chip10.n整数値・内部番号 ].dbBPM値;
+											bpm = ( ( this.listBPM[ chip10.n整数値・内部番号 ].n表記上の番号 == 0 ) ? 0.0 : this.BASEBPM ) + this.listBPM[ chip10.n整数値・内部番号 ].dbBPM値;
 										}
 										continue;
 									}
@@ -2785,8 +2846,8 @@ namespace DTXMania
 									{
 										if( this.listAVIPAN.ContainsKey( chip10.n整数値 ) )
 										{
-											int num21 = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / num14 ) );
-											int num22 = num17 + ( (int) ( ( ( 0x271 * ( ( chip10.n発声位置 + this.listAVIPAN[ chip10.n整数値 ].n移動時間ct ) - num16 ) ) * num15 ) / num14 ) );
+											int num21 = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / bpm ) );
+											int num22 = num17 + ( (int) ( ( ( 0x271 * ( ( chip10.n発声位置 + this.listAVIPAN[ chip10.n整数値 ].n移動時間ct ) - num16 ) ) * num15 ) / bpm ) );
 											chip10.n総移動時間 = num22 - num21;
 										}
 										continue;
@@ -2798,8 +2859,8 @@ namespace DTXMania
 							}
 							if( this.listBGAPAN.ContainsKey( chip10.n整数値 ) )
 							{
-								int num19 = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / num14 ) );
-								int num20 = num17 + ( (int) ( ( ( 0x271 * ( ( chip10.n発声位置 + this.listBGAPAN[ chip10.n整数値 ].n移動時間ct ) - num16 ) ) * num15 ) / num14 ) );
+								int num19 = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / bpm ) );
+								int num20 = num17 + ( (int) ( ( ( 0x271 * ( ( chip10.n発声位置 + this.listBGAPAN[ chip10.n整数値 ].n移動時間ct ) - num16 ) ) * num15 ) / bpm ) );
 								chip10.n総移動時間 = num20 - num19;
 							}
 						}
@@ -2827,7 +2888,7 @@ namespace DTXMania
 							{
 								this.n可視チップ数.Guitar++;
 							}
-							if( ( 160 <= num24 ) && ( num24 <= 0xa7 ) )
+							if( ( 0xA0 <= num24 ) && ( num24 <= 0xa7 ) )
 							{
 								this.n可視チップ数.Bass++;
 							}
@@ -2909,7 +2970,6 @@ namespace DTXMania
 				}
 			}
 		}
-
 
 		// CActivity 実装
 
@@ -3030,10 +3090,15 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 		[StructLayout( LayoutKind.Sequential )]
-		private struct STGDAPARAM
+		private struct STGDAPARAM				// GDAチャンネル番号に対応するDTXチャンネル番号
 		{
-			public string s;
-			public int c;
+			public string s;					// GDAチャンネル番号
+			public int c;						// DTXチャンネル番号
+
+			public STGDAPARAM(string _s, int _c) {		// 2011.1.1 yyagi 構造体のコンストラクタ追加(初期化簡易化のため)
+				s = _s;
+				c = _c;
+			}
 		}
 
 		private readonly STGDAPARAM[] stGDAParam;
@@ -3224,172 +3289,163 @@ namespace DTXMania
 				}
 				else if( str.StartsWith( "DLEVEL", StringComparison.OrdinalIgnoreCase ) || str.StartsWith( "PLAYLEVEL", StringComparison.OrdinalIgnoreCase ) )
 				{
-					int num2;
+					int dlevel;
 					this.t入力・パラメータ食い込みチェック( "DLEVEL", ref str, ref str2 );
 					this.t入力・パラメータ食い込みチェック( "PLAYLEVEL", ref str, ref str2 );
-					if( int.TryParse( str2, out num2 ) )
+					if( int.TryParse( str2, out dlevel ) )
 					{
-						if( num2 < 0 )
+						if( dlevel < 0 )
 						{
-							num2 = 0;
+							dlevel = 0;
 						}
-						else if( num2 > 100 )
+						else if( dlevel > 100 )
 						{
-							num2 = 100;
+							dlevel = 100;
 						}
-						this.LEVEL.Drums = num2;
+						this.LEVEL.Drums = dlevel;
 					}
 				}
 				else if( str.StartsWith( "GLEVEL", StringComparison.OrdinalIgnoreCase ) )
 				{
-					int num3;
+					int glevel;
 					this.t入力・パラメータ食い込みチェック( "GLEVEL", ref str, ref str2 );
-					if( int.TryParse( str2, out num3 ) )
+					if( int.TryParse( str2, out glevel ) )
 					{
-						if( num3 < 0 )
+						if( glevel < 0 )
 						{
-							num3 = 0;
+							glevel = 0;
 						}
-						else if( num3 > 100 )
+						else if( glevel > 100 )
 						{
-							num3 = 100;
+							glevel = 100;
 						}
-						this.LEVEL.Guitar = num3;
+						this.LEVEL.Guitar = glevel;
 					}
 				}
 				else if( str.StartsWith( "BLEVEL", StringComparison.OrdinalIgnoreCase ) )
 				{
-					int num4;
+					int blevel;
 					this.t入力・パラメータ食い込みチェック( "BLEVEL", ref str, ref str2 );
-					if( int.TryParse( str2, out num4 ) )
+					if( int.TryParse( str2, out blevel ) )
 					{
-						if( num4 < 0 )
+						if( blevel < 0 )
 						{
-							num4 = 0;
+							blevel = 0;
 						}
-						else if( num4 > 100 )
+						else if( blevel > 100 )
 						{
-							num4 = 100;
+							blevel = 100;
 						}
-						this.LEVEL.Bass = num4;
+						this.LEVEL.Bass = blevel;
 					}
 				}
-				else if( str.StartsWith( "GENRE", StringComparison.OrdinalIgnoreCase ) )
-				{
-					this.t入力・パラメータ食い込みチェック( "GENRE", ref str, ref str2 );
+#if TEST_NOTEOFFMODE
+				else if (str.StartsWith("SUPRESSNOTEOFF_HIHAT", StringComparison.OrdinalIgnoreCase)) {
+					this.t入力・パラメータ食い込みチェック("SUPRESSNOTEOFF_HIHAT", ref str, ref str2);
+					this.bHH演奏で直前のHHを消音する = !str2.ToLower().Equals("on");
+				} 
+				else if (str.StartsWith("SUPRESSNOTEOFF_GUITAR", StringComparison.OrdinalIgnoreCase)) {
+					this.t入力・パラメータ食い込みチェック("SUPRESSNOTEOFF_GUITAR", ref str, ref str2);
+					this.bGUITAR演奏で直前のGUITARを消音する = !str2.ToLower().Equals("on");
+				}
+				else if (str.StartsWith("SUPRESSNOTEOFF_BASS", StringComparison.OrdinalIgnoreCase)) {
+					this.t入力・パラメータ食い込みチェック("SUPRESSNOTEOFF_BASS", ref str, ref str2);
+					this.bBASS演奏で直前のBASSを消音する = !str2.ToLower().Equals("on");
+				}
+#endif
+				else if (str.StartsWith("GENRE", StringComparison.OrdinalIgnoreCase)) {
+					this.t入力・パラメータ食い込みチェック("GENRE", ref str, ref str2);
 					this.GENRE = str2;
-				}
-				else
-				{
-					if( str.StartsWith( "HIDDENLEVEL", StringComparison.OrdinalIgnoreCase ) )
-					{
-						this.t入力・パラメータ食い込みチェック( "HIDDENLEVEL", ref str, ref str2 );
-						this.HIDDENLEVEL = str2.ToLower().Equals( "on" );
+				} else {
+					if (str.StartsWith("HIDDENLEVEL", StringComparison.OrdinalIgnoreCase)) {
+						this.t入力・パラメータ食い込みチェック("HIDDENLEVEL", ref str, ref str2);
+						this.HIDDENLEVEL = str2.ToLower().Equals("on");
 					}
-					if( str.StartsWith( "STAGEFILE", StringComparison.OrdinalIgnoreCase ) )
-					{
-						this.t入力・パラメータ食い込みチェック( "STAGEFILE", ref str, ref str2 );
+					if (str.StartsWith("STAGEFILE", StringComparison.OrdinalIgnoreCase)) {
+						this.t入力・パラメータ食い込みチェック("STAGEFILE", ref str, ref str2);
 						this.STAGEFILE = str2;
-					}
-					else if( str.StartsWith( "PREVIEW", StringComparison.OrdinalIgnoreCase ) )
-					{
-						this.t入力・パラメータ食い込みチェック( "PREVIEW", ref str, ref str2 );
+					} else if (str.StartsWith("PREVIEW", StringComparison.OrdinalIgnoreCase)) {
+						this.t入力・パラメータ食い込みチェック("PREVIEW", ref str, ref str2);
 						this.PREVIEW = str2;
-					}
-					else if( str.StartsWith( "PREIMAGE", StringComparison.OrdinalIgnoreCase ) )
-					{
-						this.t入力・パラメータ食い込みチェック( "PREIMAGE", ref str, ref str2 );
+					} else if (str.StartsWith("PREIMAGE", StringComparison.OrdinalIgnoreCase)) {
+						this.t入力・パラメータ食い込みチェック("PREIMAGE", ref str, ref str2);
 						this.PREIMAGE = str2;
-					}
-					else if( str.StartsWith( "PREMOVIE", StringComparison.OrdinalIgnoreCase ) )
-					{
-						this.t入力・パラメータ食い込みチェック( "PREMOVIE", ref str, ref str2 );
+					} else if (str.StartsWith("PREMOVIE", StringComparison.OrdinalIgnoreCase)) {
+						this.t入力・パラメータ食い込みチェック("PREMOVIE", ref str, ref str2);
 						this.PREMOVIE = str2;
-					}
-					else if( str.StartsWith( "BACKGROUND_GR", StringComparison.OrdinalIgnoreCase ) )
-					{
-						this.t入力・パラメータ食い込みチェック( "BACKGROUND_GR", ref str, ref str2 );
+					} else if (str.StartsWith("BACKGROUND_GR", StringComparison.OrdinalIgnoreCase)) {
+						this.t入力・パラメータ食い込みチェック("BACKGROUND_GR", ref str, ref str2);
 						this.BACKGROUND_GR = str2;
-					}
-					else if( str.StartsWith( "BACKGROUND", StringComparison.OrdinalIgnoreCase ) || str.StartsWith( "WALL", StringComparison.OrdinalIgnoreCase ) )
-					{
-						this.t入力・パラメータ食い込みチェック( "BACKGROUND", ref str, ref str2 );
-						this.t入力・パラメータ食い込みチェック( "WALL", ref str, ref str2 );
+					} else if (str.StartsWith("BACKGROUND", StringComparison.OrdinalIgnoreCase) || str.StartsWith("WALL", StringComparison.OrdinalIgnoreCase)) {
+						this.t入力・パラメータ食い込みチェック("BACKGROUND", ref str, ref str2);
+						this.t入力・パラメータ食い込みチェック("WALL", ref str, ref str2);
 						this.BACKGROUND = str2;
-					}
-					else
-					{
-						if( str.StartsWith( "RANDOM", StringComparison.OrdinalIgnoreCase ) )
-						{
-							this.t入力・パラメータ食い込みチェック( "RANDOM", ref str, ref str2 );
+					} else {
+						if (str.StartsWith("RANDOM", StringComparison.OrdinalIgnoreCase)) {
+							this.t入力・パラメータ食い込みチェック("RANDOM", ref str, ref str2);
 							int num5 = 1;
-							if( !int.TryParse( str2, out num5 ) )
-							{
+							if (!int.TryParse(str2, out num5)) {
 								num5 = 1;
 							}
-							this.n現在の乱数 = CDTXMania.Random.Next( num5 ) + 1;
+							this.n現在の乱数 = CDTXMania.Random.Next(num5) + 1;
 						}
-						if( str.StartsWith( "SOUND_NOWLOADING", StringComparison.OrdinalIgnoreCase ) )
-						{
-							this.t入力・パラメータ食い込みチェック( "SOUND_NOWLOADING", ref str, ref str2 );
+						if (str.StartsWith("SOUND_NOWLOADING", StringComparison.OrdinalIgnoreCase)) {
+							this.t入力・パラメータ食い込みチェック("SOUND_NOWLOADING", ref str, ref str2);
 							this.SOUND_NOWLOADING = str2;
-						}
-						else if( !this.bヘッダのみ )
-						{
-							if( str.StartsWith( "PANEL", StringComparison.OrdinalIgnoreCase ) )
-							{
-								this.t入力・パラメータ食い込みチェック( "PANEL", ref str, ref str2 );
+						} else if (!this.bヘッダのみ) {
+							if (str.StartsWith("PANEL", StringComparison.OrdinalIgnoreCase)) {
+								this.t入力・パラメータ食い込みチェック("PANEL", ref str, ref str2);
 								int dummyResult;								// #23885 2010.12.12 yyagi: not to confuse "#PANEL strings (panel)" and "#PANEL int (panpot of EL)"
-								if (!int.TryParse( str2, out dummyResult) ) {	// 数値じゃないならPANELとみなす
+								if (!int.TryParse(str2, out dummyResult)) {	// 数値じゃないならPANELとみなす
 									this.PANEL = str2;							//
 									goto EOL;									//
 								}												// 数値ならPAN ELとみなす
 
 							}
-							if( str.StartsWith( "MIDIFILE", StringComparison.OrdinalIgnoreCase ) )
-							{
-								this.t入力・パラメータ食い込みチェック( "MIDIFILE", ref str, ref str2 );
+							if (str.StartsWith("MIDIFILE", StringComparison.OrdinalIgnoreCase)) {
+								this.t入力・パラメータ食い込みチェック("MIDIFILE", ref str, ref str2);
 								this.MIDIFILE = str2;
-							}
-							else
-							{
-								if( str.StartsWith( "MIDINOTE", StringComparison.OrdinalIgnoreCase ) )
-								{
-									this.t入力・パラメータ食い込みチェック( "MIDINOTE", ref str, ref str2 );
-									this.MIDINOTE = str2.ToLower().Equals( "on" );
+							} else {
+								if (str.StartsWith("MIDINOTE", StringComparison.OrdinalIgnoreCase)) {
+									this.t入力・パラメータ食い込みチェック("MIDINOTE", ref str, ref str2);
+									this.MIDINOTE = str2.ToLower().Equals("on");
 								}
-								if( str.StartsWith( "BLACKCOLORKEY", StringComparison.OrdinalIgnoreCase ) )
-								{
-									this.t入力・パラメータ食い込みチェック( "BLACKCOLORKEY", ref str, ref str2 );
-									this.BLACKCOLORKEY = str2.ToLower().Equals( "on" );
+								if (str.StartsWith("BLACKCOLORKEY", StringComparison.OrdinalIgnoreCase)) {
+									this.t入力・パラメータ食い込みチェック("BLACKCOLORKEY", ref str, ref str2);
+									this.BLACKCOLORKEY = str2.ToLower().Equals("on");
 								}
-								if( str.StartsWith( "BASEBPM", StringComparison.OrdinalIgnoreCase ) )
-								{
-									this.t入力・パラメータ食い込みチェック( "BASEBPM", ref str, ref str2 );
-									double num6 = 0.0;
-									if( double.TryParse( str2, out num6 ) && ( num6 > 0.0 ) )
+								if (str.StartsWith("BASEBPM", StringComparison.OrdinalIgnoreCase)) {
+									this.t入力・パラメータ食い込みチェック("BASEBPM", ref str, ref str2);
+									double basebpm = 0.0;
+									//if( double.TryParse( str2, out num6 ) && ( num6 > 0.0 ) )
+									if (!TryParse(str2, out basebpm) && (basebpm > 0.0))	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
 									{
-										this.BASEBPM = num6;
+										this.BASEBPM = basebpm;
 									}
-								}
-								else if( str.StartsWith( "SOUND_STAGEFAILED", StringComparison.OrdinalIgnoreCase ) )
-								{
-									this.t入力・パラメータ食い込みチェック( "SOUND_STAGEFAILED", ref str, ref str2 );
+								} else if (str.StartsWith("SOUND_STAGEFAILED", StringComparison.OrdinalIgnoreCase)) {
+									this.t入力・パラメータ食い込みチェック("SOUND_STAGEFAILED", ref str, ref str2);
 									this.SOUND_STAGEFAILED = str2;
-								}
-								else if( str.StartsWith( "SOUND_FULLCOMBO", StringComparison.OrdinalIgnoreCase ) )
-								{
-									this.t入力・パラメータ食い込みチェック( "SOUND_FULLCOMBO", ref str, ref str2 );
+								} else if (str.StartsWith("SOUND_FULLCOMBO", StringComparison.OrdinalIgnoreCase)) {
+									this.t入力・パラメータ食い込みチェック("SOUND_FULLCOMBO", ref str, ref str2);
 									this.SOUND_FULLCOMBO = str2;
-								}
-								else if( str.StartsWith( "SOUND_AUDIENCE", StringComparison.OrdinalIgnoreCase ) )
-								{
-									this.t入力・パラメータ食い込みチェック( "SOUND_AUDIENCE", ref str, ref str2 );
+								} else if (str.StartsWith("SOUND_AUDIENCE", StringComparison.OrdinalIgnoreCase)) {
+									this.t入力・パラメータ食い込みチェック("SOUND_AUDIENCE", ref str, ref str2);
 									this.SOUND_AUDIENCE = str2;
-								}
-								else if( ( ( ( ( ( ( ( ( ( ( ( ( !this.t入力・行解析・WAVVOL_VOLUME( str, str2, str3 ) && !this.t入力・行解析・WAVPAN_PAN( str, str2, str3 ) ) && !this.t入力・行解析・WAV( str, str2, str3 ) ) && !this.t入力・行解析・BMPTEX( str, str2, str3 ) ) && !this.t入力・行解析・BMP( str, str2, str3 ) ) && !this.t入力・行解析・BGAPAN( str, str2, str3 ) ) && !this.t入力・行解析・BGA( str, str2, str3 ) ) && !this.t入力・行解析・AVIPAN( str, str2, str3 ) ) && !this.t入力・行解析・AVI_VIDEO( str, str2, str3 ) ) && !this.t入力・行解析・BPM_BPMzz( str, str2, str3 ) ) && !this.t入力・行解析・RESULTIMAGE( str, str2, str3 ) ) && !this.t入力・行解析・RESULTMOVIE( str, str2, str3 ) ) && !this.t入力・行解析・RESULTSOUND( str, str2, str3 ) ) && !this.t入力・行解析・SIZE( str, str2, str3 ) )
-								{
-									this.t入力・行解析・チップ配置( str, str2, str3 );
+								} else if (!this.t入力・行解析・WAVVOL_VOLUME(str, str2, str3) &&
+									  !this.t入力・行解析・WAVPAN_PAN(str, str2, str3) &&
+									  !this.t入力・行解析・WAV(str, str2, str3) &&
+									  !this.t入力・行解析・BMPTEX(str, str2, str3) &&
+									  !this.t入力・行解析・BMP(str, str2, str3) &&
+									  !this.t入力・行解析・BGAPAN(str, str2, str3) &&
+									  !this.t入力・行解析・BGA(str, str2, str3) &&
+									  !this.t入力・行解析・AVIPAN(str, str2, str3) &&
+									  !this.t入力・行解析・AVI_VIDEO(str, str2, str3) &&
+									  !this.t入力・行解析・BPM_BPMzz(str, str2, str3) &&
+									  !this.t入力・行解析・RESULTIMAGE(str, str2, str3) &&
+									  !this.t入力・行解析・RESULTMOVIE(str, str2, str3) &&
+									  !this.t入力・行解析・RESULTSOUND(str, str2, str3) &&
+									  !this.t入力・行解析・SIZE(str, str2, str3)) {
+									this.t入力・行解析・チップ配置(str, str2, str3);
 								}
 							}
 						EOL:
@@ -3948,7 +4004,8 @@ namespace DTXMania
 				}
 			}
 			double result = 0.0;
-			if( !double.TryParse( strパラメータ, out result ) )
+//			if( !double.TryParse( strパラメータ, out result ) )
+			if ( !TryParse( strパラメータ, out result) )			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
 			{
 				return false;
 			}
@@ -4422,16 +4479,16 @@ namespace DTXMania
 			{
 				this.bチップがある.Guitar = true;
 			}
-			else if( ( c >= 160 ) && ( c <= 0xa7 ) )
+			else if( ( c >= 0xA0 ) && ( c <= 0xa7 ) )
 			{
 				this.bチップがある.Bass = true;
 			}
-			if( c == 0x18 )
-			{
-				this.bチップがある.HHOpen = true;
-			}
 			switch( c )
 			{
+				case 0x18:
+					this.bチップがある.HHOpen = true;
+					break;
+
 				case 0x19:
 					this.bチップがある.Ride = true;
 					break;
@@ -4444,20 +4501,21 @@ namespace DTXMania
 					this.bチップがある.OpenGuitar = true;
 					break;
 
-				case 160:
+				case 0xA0:
 					this.bチップがある.OpenBass = true;
 					break;
 
-				case 2:
+				case 0x02:			// 小節長変更
 					{
 						double result = 0.0;
-						if( !double.TryParse( strパラメータ, out result ) )
+						//if( !double.TryParse( strパラメータ, out result ) )
+						if (!TryParse(strパラメータ, out result))			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
 						{
 							Trace.TraceError( "小節長倍率に不正な値を指定しました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
 							return false;
 						}
 						CChip item = new CChip();
-						item.n発声位置 = num * 0x180;
+						item.n発声位置 = num * 384;
 						item.nチャンネル番号 = c;
 						item.db実数値 = result;
 						this.listChip.Add( item );
@@ -4503,7 +4561,7 @@ namespace DTXMania
 				if( index != 0 )
 				{
 					CChip chip2 = new CChip();
-					chip2.n発声位置 = ( num * 0x180 ) + ( ( 0x180 * i ) / ( num4 / 2 ) );
+					chip2.n発声位置 = ( num * 384 ) + ( ( 384 * i ) / ( num4 / 2 ) );
 					chip2.nチャンネル番号 = c;
 					chip2.n整数値 = index;
 					chip2.n整数値・内部番号 = index;
@@ -4543,6 +4601,59 @@ namespace DTXMania
 			}
 			return true;
 		}
+
+		#region [#23880 2010.12.30 yyagi: コンマとスペースの両方を小数点として扱うTryParse]
+		/// <summary>
+		/// 小数点としてコンマとピリオドの両方を受け付けるTryParse()
+		/// </summary>
+		/// <param name="s">strings convert to double</param>
+		/// <param name="result">parsed double value</param>
+		/// <returns>s が正常に変換された場合は true。それ以外の場合は false。</returns>
+		/// <exception cref="ArgumentException">style が NumberStyles 値でないか、style に NumberStyles.AllowHexSpecifier 値が含まれている</exception>
+		private bool TryParse(string s, out double result) {	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
+																// EU諸国での #BPM 123,45 のような記述に対応するため、
+																// 小数点の最終位置を検出して、それをlocaleにあった
+																// 文字に置き換えてからTryParse()する
+																// 桁区切りの文字はスキップする
+
+			const string DecimalSeparators = ".,";				// 小数点文字
+			const string GroupSeparators = ".,' ";				// 桁区切り文字
+			const string NumberSymbols = "0123456789";			// 数値文字
+
+			int len = s.Length;									// 文字列長
+			int decimalPosition = len;							// 真の小数点の位置 最初は文字列終端位置に仮置きする
+
+			for (int i = 0; i < len; i++) {							// まず、真の小数点(一番最後に現れる小数点)の位置を求める
+				char c = s[i];
+				if (NumberSymbols.IndexOf(c) >= 0) {				// 数値だったらスキップ
+					continue;
+				} else if (DecimalSeparators.IndexOf(c) >= 0) {		// 小数点文字だったら、その都度位置を上書き記憶
+					decimalPosition = i;
+				} else if (GroupSeparators.IndexOf(c) >= 0) {		// 桁区切り文字の場合もスキップ
+					continue;
+				} else {											// 数値・小数点・区切り文字以外がきたらループ終了
+					break;
+				}
+			}
+
+			StringBuilder decimalStr = new StringBuilder(16);
+			for (int i = 0; i < len; i++) {							// 次に、localeにあった数値文字列を生成する
+				char c = s[i];
+				if (NumberSymbols.IndexOf(c) >= 0) {				// 数値だったら
+					decimalStr.Append(c);							// そのままコピー
+				} else if (DecimalSeparators.IndexOf(c) >= 0) {		// 小数点文字だったら
+					if (i == decimalPosition) {						// 最後に出現した小数点文字なら、localeに合った小数点を出力する
+						decimalStr.Append(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+					}
+				} else if (GroupSeparators.IndexOf(c) >= 0) {		// 桁区切り文字だったら
+					continue;										// 何もしない(スキップ)
+				} else {
+					break;
+				}
+			}
+			return double.TryParse(decimalStr.ToString(), out result);	// 最後に、自分のlocale向けの文字列に対してTryParse実行
+		}
+		#endregion
 		//-----------------
 		#endregion
 	}

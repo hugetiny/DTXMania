@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
@@ -413,32 +414,48 @@ namespace DTXMania
 			{
 				Bitmap image = new Bitmap( 440, 0x100 );
 				Graphics graphics = Graphics.FromImage( image );
+				string[,] str = new string[2,2];
 				switch( this.n現在のメニュー番号 )
 				{
 					case 0:
-						graphics.DrawString( "ドラム、ギター、ベースに共通する項", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "目を設定します。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "ドラム、ギター、ベースに共通する項";
+						str[0, 1] = "目を設定します。";
+						str[1, 0] = "Settings for common items about";
+						str[1, 1] = " the drums, guitar and base.";
 						break;
 
 					case 1:
-						graphics.DrawString( "ドラムの演奏に関する項目を設定し", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "ます。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "ドラムの演奏に関する項目を設定し";
+						str[0, 1] = "ます。";
+						str[1, 0] = "Settings to play the drums.";
+						str[1, 1] = "";
 						break;
 
 					case 2:
-						graphics.DrawString( "ギターの演奏に関する項目を設定し", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "ます。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "ギターの演奏に関する項目を設定し";
+						str[0, 1] = "ます。";
+						str[1, 0] = "Settings to play the guitar.";
+						str[1, 1] = "";
 						break;
 
 					case 3:
-						graphics.DrawString( "ベースの演奏に関する項目を設定し", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "ます。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "ベースの演奏に関する項目を設定し";
+						str[0, 1] = "ます。";
+						str[1, 0] = "Settings to play the bass.";
+						str[1, 1] = "";
 						break;
 
 					case 4:
-						graphics.DrawString( "設定を保存し、オプション画面を終了", this.ftフォント, Brushes.White, new PointF( 4f, 0f ) );
-						graphics.DrawString( "します。", this.ftフォント, Brushes.White, new PointF( 4f, 30f ) );
+						str[0, 0] = "設定を保存し、オプション画面を終了";
+						str[0, 1] = "します。";
+						str[1, 0] = "Save the settings and exit from";
+						str[1, 1] = "OPTION menu.";
 						break;
+				}
+				int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja")? 0 : 1;
+				for (int i = 0; i < 2; i++)
+				{
+					graphics.DrawString(str[c, i], this.ftフォント, Brushes.White, new PointF(4f, (i * 30)));
 				}
 				graphics.Dispose();
 				if( this.tx説明文パネル != null )
