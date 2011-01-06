@@ -206,16 +206,9 @@ namespace DTXMania
 			base.On活性化();
 			this.tステータスパネルの選択();
 			this.tパネル文字列の設定();
-#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
 			this.nInputAdjustTimeMs_Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs_Drums;		// #23580 2011.1.3 yyagi
 			this.nInputAdjustTimeMs_Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs_Guitar;		//
 			this.nInputAdjustTimeMs_Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs_Bass;			//
-#else
-			this.nInputAdjustTimeMs_Drums = 0;													// #23580 2011.1.3 yyagi
-			this.nInputAdjustTimeMs_Guitar = 0;													//
-			this.nInputAdjustTimeMs_Bass = 0;													//
-#endif
-
 		}
 		public override void OnManagedリソースの作成()
 		{

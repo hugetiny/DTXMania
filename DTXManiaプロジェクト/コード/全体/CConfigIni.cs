@@ -427,11 +427,9 @@ namespace DTXMania
 		public STDGBVALUE<E判定文字表示位置> 判定文字表示位置;
 		public int nハイハット切り捨て下限Velocity;
 		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
-#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
 		public int nInputAdjustTimeMs_Drums;		// #23580 2011.1.3 yyagi タイミングアジャスト機能
 		public int nInputAdjustTimeMs_Guitar;		// #23580 2011.1.3 yyagi タイミングアジャスト機能
 		public int nInputAdjustTimeMs_Bass;			// #23580 2011.1.3 yyagi タイミングアジャスト機能
-#endif
 		public bool bバッファ入力を行う;
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
@@ -834,11 +832,9 @@ namespace DTXMania
 			this.ConfigIniファイル名 = "";
 			this.dicJoystick = new Dictionary<int, string>( 10 );
 			this.tデフォルトのキーアサインに設定する();
-#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
 			this.nInputAdjustTimeMs_Drums = 0;			// #23580 2011.1.3 yyagi
 			this.nInputAdjustTimeMs_Guitar = 0;			// #23580 2011.1.3 yyagi
 			this.nInputAdjustTimeMs_Bass = 0;			// #23580 2011.1.3 yyagi
-#endif
 			this.nハイハット切り捨て下限Velocity = 20;
 			this.n切り捨て下限Velocity = 0;				// #23857 2010.12.12 yyagi VelocityMin
 			this.bバッファ入力を行う = true;
@@ -907,9 +903,11 @@ namespace DTXMania
             sw.WriteLine();
 
 			sw.WriteLine("; ウインドウモード時の画面幅");				// #23510 2010.10.31 yyagi add
+			sw.WriteLine("; A width size in the window mode.");			//
 			sw.WriteLine("WindowWidth={0}", this.nウインドウwidth);		//
 			sw.WriteLine();												//
 			sw.WriteLine("; ウインドウモード時の画面高さ");				//
+			sw.WriteLine("; A height size in the window mode.");		//
 			sw.WriteLine("WindowHeight={0}", this.nウインドウheight);	//
 			sw.WriteLine();												//
 
@@ -918,7 +916,8 @@ namespace DTXMania
             sw.WriteLine();
 
             sw.WriteLine("; 非フォーカス時のsleep値[ms]");	    			    // #23568 2011.11.04 ikanick add
-            sw.WriteLine("BackSleep={0}", this.n非フォーカス時スリープms);		// そのまま引用（苦笑）
+			sw.WriteLine("; A sleep time[ms] while the window is inactive.");	//
+			sw.WriteLine("BackSleep={0}", this.n非フォーカス時スリープms);		// そのまま引用（苦笑）
             sw.WriteLine();											        	//
 
 			sw.WriteLine( "; ギター/ベース有効(0:OFF,1:ON)" );
@@ -1035,23 +1034,21 @@ namespace DTXMania
 			sw.WriteLine( "; バッファ入力モード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BufferedInput={0}", this.bバッファ入力を行う ? 1 : 0 );
 			sw.WriteLine();
-#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
-			sw.WriteLine("; 判定タイミング調整(ドラム)(-100～100)[ms]");								// #23580 2011.1.3 yyagi
-			sw.WriteLine("; To adjust judgement timing for drums.");
-			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs_Drums);
+			sw.WriteLine("; 判定タイミング調整(ドラム)(-100～100)[ms]");					// #23580 2011.1.3 yyagi
+			sw.WriteLine("; Revision value to adjust judgement timing for the drums.");		//
+			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs_Drums);		//
 			sw.WriteLine();
-			sw.WriteLine("; 判定タイミング調整(ギター)(-100～100)[ms]");								// #23580 2011.1.3 yyagi
-			sw.WriteLine("; To adjust judgement timing for guitar.");
-			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs_Guitar);
+			sw.WriteLine("; 判定タイミング調整(ギター)(-100～100)[ms]");					// #23580 2011.1.3 yyagi
+			sw.WriteLine("; Revision value to adjust judgement timing for the guitar.");	//
+			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs_Guitar);		//
 			sw.WriteLine();
-			sw.WriteLine("; 判定タイミング調整(ベース)(-100～100)[ms]");								// #23580 2011.1.3 yyagi
-			sw.WriteLine("; To adjust judgement timing for bass.");
-			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs_Bass);
+			sw.WriteLine("; 判定タイミング調整(ベース)(-100～100)[ms]");					// #23580 2011.1.3 yyagi
+			sw.WriteLine("; Revision value to adjust judgement timing for the bass.");		//
+			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs_Bass);			//
 			sw.WriteLine();
-#endif
-			sw.WriteLine("; ハイハット入力切り捨て下限Velocity値(0～127)");
-			sw.WriteLine("; Minimum velocity value to accept. (for HiHat)");				// #23857 2010.12.12 yyagi
-			sw.WriteLine("HHVelocityMin={0}", this.nハイハット切り捨て下限Velocity);
+			sw.WriteLine("; ハイハット入力切り捨て下限Velocity値(0～127)");					// #23857 2010.12.12 yyagi
+			sw.WriteLine("; Minimum velocity value to accept. (especially for HiHat)");		//
+			sw.WriteLine("HHVelocityMin={0}", this.nハイハット切り捨て下限Velocity);		//
 			sw.WriteLine();
 			sw.WriteLine("; ハイハット以外の入力切り捨て下限Velocity値(0～127)");			// #23857 2010.12.12 yyagi
 			sw.WriteLine("; Minimum velocity value to accept. (except HiHat)");				//
@@ -1590,7 +1587,6 @@ namespace DTXMania
 												{
 													this.bシンバルフリー = C変換.bONorOFF( str4[ 0 ] );
 												}
-#if TEST_InputAdjustTime	// #23580 2011.1.3 yyagi
 												else if ( str3.Equals("InputAdjustTimeDrums") )		// #23580 2011.1.3 yyagi
 												{
 													this.nInputAdjustTimeMs_Drums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs_Drums);
@@ -1603,7 +1599,6 @@ namespace DTXMania
 												{
 													this.nInputAdjustTimeMs_Bass = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs_Bass);
 												}
-#endif
 												else if ( str3.Equals("BufferedInput") ) {
 													this.bバッファ入力を行う = C変換.bONorOFF(str4[0]);
 												}
