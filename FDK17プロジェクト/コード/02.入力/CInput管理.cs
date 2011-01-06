@@ -141,9 +141,20 @@ namespace FDK
 		{
 			lock( this.objMidiIn排他用 )
 			{
-				foreach( IInputDevice device in this.list入力デバイス )
+//				foreach( IInputDevice device in this.list入力デバイス )
+				for (int i = this.list入力デバイス.Count - 1; i >= 0; i--)	// #24016 2011.1.6 yyagi: change not to use "foreach" to avoid InvalidOperation exception by Remove().
 				{
-					device.tポーリング( bWindowがアクティブ中, bバッファ入力を使用する );
+					IInputDevice device = this.list入力デバイス[i];
+					try
+					{
+						device.tポーリング(bWindowがアクティブ中, bバッファ入力を使用する);
+					}
+					catch (DirectInputException)							// #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
+					{
+						this.list入力デバイス.Remove(device);
+						device.Dispose();
+						Trace.TraceError("tポーリング時に対象deviceが抜かれており例外発生。同deviceをポーリング対象からRemoveしました。");
+					}
 				}
 			}
 		}
