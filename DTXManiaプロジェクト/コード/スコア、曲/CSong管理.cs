@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
@@ -315,8 +316,11 @@ namespace DTXMania
 					c曲リストノード3.arスコア[ 0 ] = new Cスコア();
 					c曲リストノード3.arスコア[ 0 ].ファイル情報.フォルダの絶対パス = info6.FullName + @"\";
 					c曲リストノード3.arスコア[ 0 ].譜面情報.タイトル = c曲リストノード3.strタイトル;
-					c曲リストノード3.arスコア[ 0 ].譜面情報.コメント = "BOX に移動します。";
-					listノードリスト.Add( c曲リストノード3 );
+					c曲リストノード3.arスコア[ 0 ].譜面情報.コメント =
+						(CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
+						"BOX に移動します。" :
+						"Enter into the BOX.";
+					listノードリスト.Add(c曲リストノード3);
 					if( File.Exists( info6.FullName + @"\box.def" ) )
 					{
 						CBoxDef def2 = new CBoxDef( info6.FullName + @"\box.def" );
@@ -792,7 +796,10 @@ namespace DTXMania
 				{
 					item.arスコア[ i ] = new Cスコア();
 					item.arスコア[ i ].譜面情報.タイトル = string.Format( "< RANDOM SELECT Lv.{0} >", i + 1 );
-					item.arスコア[ i ].譜面情報.コメント = string.Format( "難易度レベル {0} 付近の曲をランダムに選択します。難易度レベルを持たない曲も選択候補となります。", i + 1 );
+					item.arスコア[i].譜面情報.コメント =
+						 (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
+						 string.Format("難易度レベル {0} 付近の曲をランダムに選択します。難易度レベルを持たない曲も選択候補となります。", i + 1) :
+						 string.Format("Random select from the songs which has the level about L{0}. Non-leveled songs may also selected.", i + 1);
 					item.ar難易度ラベル[ i ] = string.Format( "L{0}", i + 1 );
 				}
 				ノードリスト.Add( item );
@@ -835,7 +842,10 @@ namespace DTXMania
 					c曲リストノード3.arスコア[ 0 ] = new Cスコア();
 					c曲リストノード3.arスコア[ 0 ].ファイル情報.フォルダの絶対パス = "";
 					c曲リストノード3.arスコア[ 0 ].譜面情報.タイトル = c曲リストノード3.strタイトル;
-					c曲リストノード3.arスコア[ 0 ].譜面情報.コメント = "BOX を出ます。";
+					c曲リストノード3.arスコア[ 0 ].譜面情報.コメント =
+						(CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
+						"BOX を出ます。" :
+						"Exit from the BOX.";
 					c曲リストノード2.list子リスト.Insert( 0, c曲リストノード3 );
 
 					#region [ ログ出力 ]

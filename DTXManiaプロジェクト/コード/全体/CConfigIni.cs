@@ -427,9 +427,7 @@ namespace DTXMania
 		public STDGBVALUE<E判定文字表示位置> 判定文字表示位置;
 		public int nハイハット切り捨て下限Velocity;
 		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
-		public int nInputAdjustTimeMs_Drums;		// #23580 2011.1.3 yyagi タイミングアジャスト機能
-		public int nInputAdjustTimeMs_Guitar;		// #23580 2011.1.3 yyagi タイミングアジャスト機能
-		public int nInputAdjustTimeMs_Bass;			// #23580 2011.1.3 yyagi タイミングアジャスト機能
+		public STDGBVALUE<int> nInputAdjustTimeMs;	// #23580 2011.1.3 yyagi タイミングアジャスト機能
 		public bool bバッファ入力を行う;
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
@@ -754,87 +752,76 @@ namespace DTXMania
 			this.b歓声を発声する = true;
 			this.bScoreIniを出力する = true;
 			this.bランダムセレクトで子BOXを検索対象とする = true;
-			STDGBVALUE<bool> stdgbvalue = new STDGBVALUE<bool>();
-			stdgbvalue.Drums = true;
-			stdgbvalue.Guitar = true;
-			stdgbvalue.Bass = true;
-			this.b演奏音を強調する = stdgbvalue;
-			STDGBVALUE<int> stdgbvalue2 = new STDGBVALUE<int>();
-			stdgbvalue2.Drums = 11;
-			stdgbvalue2.Guitar = 2;
-			stdgbvalue2.Bass = 2;
-			this.n表示可能な最小コンボ数 = stdgbvalue2;
+			this.b演奏音を強調する = new STDGBVALUE<bool>();
+			this.b演奏音を強調する.Drums = true;
+			this.b演奏音を強調する.Guitar = true;
+			this.b演奏音を強調する.Bass = true;
+			this.n表示可能な最小コンボ数 = new STDGBVALUE<int>();
+			this.n表示可能な最小コンボ数.Drums = 11;
+			this.n表示可能な最小コンボ数.Guitar = 2;
+			this.n表示可能な最小コンボ数.Bass = 2;
 			this.str選曲リストフォント = "MS PGothic";
 			this.n選曲リストフォントのサイズdot = 20;
 			this.b選曲リストフォントを太字にする = true;
 			this.n自動再生音量 = 80;
 			this.n手動再生音量 = 100;
 			this.bログ出力 = true;
-			STDGBVALUE<bool> stdgbvalue3 = new STDGBVALUE<bool>();
-			stdgbvalue3.Drums = false;
-			stdgbvalue3.Guitar = false;
-			stdgbvalue3.Bass = false;
-			this.bSudden = stdgbvalue3;
-			STDGBVALUE<bool> stdgbvalue4 = new STDGBVALUE<bool>();
-			stdgbvalue4.Drums = false;
-			stdgbvalue4.Guitar = false;
-			stdgbvalue4.Bass = false;
-			this.bHidden = stdgbvalue4;
-			STDGBVALUE<bool> stdgbvalue5 = new STDGBVALUE<bool>();
-			stdgbvalue5.Drums = false;
-			stdgbvalue5.Guitar = false;
-			stdgbvalue5.Bass = false;
-			this.bReverse = stdgbvalue5;
-			STDGBVALUE<Eランダムモード> stdgbvalue6 = new STDGBVALUE<Eランダムモード>();
-			stdgbvalue6.Drums = Eランダムモード.OFF;
-			stdgbvalue6.Guitar = Eランダムモード.OFF;
-			stdgbvalue6.Bass = Eランダムモード.OFF;
-			this.eRandom = stdgbvalue6;
-			STDGBVALUE<bool> stdgbvalue7 = new STDGBVALUE<bool>();
-			stdgbvalue7.Drums = false;
-			stdgbvalue7.Guitar = false;
-			stdgbvalue7.Bass = false;
-			this.bLight = stdgbvalue7;
-			STDGBVALUE<bool> stdgbvalue8 = new STDGBVALUE<bool>();
-			stdgbvalue8.Drums = false;
-			stdgbvalue8.Guitar = false;
-			stdgbvalue8.Bass = false;
-			this.bLeft = stdgbvalue8;
-			STDGBVALUE<E判定文字表示位置> stdgbvalue9 = new STDGBVALUE<E判定文字表示位置>();
-			stdgbvalue9.Drums = E判定文字表示位置.レーン上;
-			stdgbvalue9.Guitar = E判定文字表示位置.レーン上;
-			stdgbvalue9.Bass = E判定文字表示位置.レーン上;
-			this.判定文字表示位置 = stdgbvalue9;
-			STDGBVALUE<int> stdgbvalue10 = new STDGBVALUE<int>();
-			stdgbvalue10.Drums = 1;
-			stdgbvalue10.Guitar = 1;
-			stdgbvalue10.Bass = 1;
-			this.n譜面スクロール速度 = stdgbvalue10;
+			this.bSudden = new STDGBVALUE<bool>();
+			this.bSudden.Drums = false;
+			this.bSudden.Guitar = false;
+			this.bSudden.Bass = false;
+			this.bHidden = new STDGBVALUE<bool>();
+			this.bHidden.Drums = false;
+			this.bHidden.Guitar = false;
+			this.bHidden.Bass = false;
+			this.bReverse = new STDGBVALUE<bool>();
+			this.bReverse.Drums = false;
+			this.bReverse.Guitar = false;
+			this.bReverse.Bass = false;
+			this.eRandom = new STDGBVALUE<Eランダムモード>();
+			this.eRandom.Drums = Eランダムモード.OFF;
+			this.eRandom.Guitar = Eランダムモード.OFF;
+			this.eRandom.Bass = Eランダムモード.OFF;
+			this.bLight = new STDGBVALUE<bool>();
+			this.bLight.Drums = false;
+			this.bLight.Guitar = false;
+			this.bLight.Bass = false;
+			this.bLeft = new STDGBVALUE<bool>();
+			this.bLeft.Drums = false;
+			this.bLeft.Guitar = false;
+			this.bLeft.Bass = false;
+			this.判定文字表示位置 = new STDGBVALUE<E判定文字表示位置>();
+			this.判定文字表示位置.Drums = E判定文字表示位置.レーン上;
+			this.判定文字表示位置.Guitar = E判定文字表示位置.レーン上;
+			this.判定文字表示位置.Bass = E判定文字表示位置.レーン上;
+			this.n譜面スクロール速度 = new STDGBVALUE<int>();
+			this.n譜面スクロール速度.Drums = 1;
+			this.n譜面スクロール速度.Guitar = 1;
+			this.n譜面スクロール速度.Bass = 1;
 			this.n演奏速度 = 20;
-			STAUTOPLAY stautoplay = new STAUTOPLAY();
-			stautoplay.HH = false;
-			stautoplay.SD = false;
-			stautoplay.BD = false;
-			stautoplay.HT = false;
-			stautoplay.LT = false;
-			stautoplay.FT = false;
-			stautoplay.CY = false;
-			stautoplay.LC = false;
-			stautoplay.Guitar = true;
-			stautoplay.Bass = true;
-			this.bAutoPlay = stautoplay;
-			STRANGE strange = new STRANGE();
-			strange.Perfect = 34;
-			strange.Great = 67;
-			strange.Good = 84;
-			strange.Poor = 117;
-			this.nヒット範囲ms = strange;
+			this.bAutoPlay = new STAUTOPLAY();
+			this.bAutoPlay.HH = false;
+			this.bAutoPlay.SD = false;
+			this.bAutoPlay.BD = false;
+			this.bAutoPlay.HT = false;
+			this.bAutoPlay.LT = false;
+			this.bAutoPlay.FT = false;
+			this.bAutoPlay.CY = false;
+			this.bAutoPlay.LC = false;
+			this.bAutoPlay.Guitar = true;
+			this.bAutoPlay.Bass = true;
+			this.nヒット範囲ms = new STRANGE();
+			this.nヒット範囲ms.Perfect = 34;
+			this.nヒット範囲ms.Great = 67;
+			this.nヒット範囲ms.Good = 84;
+			this.nヒット範囲ms.Poor = 117;
 			this.ConfigIniファイル名 = "";
 			this.dicJoystick = new Dictionary<int, string>( 10 );
 			this.tデフォルトのキーアサインに設定する();
-			this.nInputAdjustTimeMs_Drums = 0;			// #23580 2011.1.3 yyagi
-			this.nInputAdjustTimeMs_Guitar = 0;			// #23580 2011.1.3 yyagi
-			this.nInputAdjustTimeMs_Bass = 0;			// #23580 2011.1.3 yyagi
+			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
+			this.nInputAdjustTimeMs.Drums = 0;
+			this.nInputAdjustTimeMs.Guitar = 0;
+			this.nInputAdjustTimeMs.Bass = 0;
 			this.nハイハット切り捨て下限Velocity = 20;
 			this.n切り捨て下限Velocity = 0;				// #23857 2010.12.12 yyagi VelocityMin
 			this.bバッファ入力を行う = true;
@@ -1036,15 +1023,15 @@ namespace DTXMania
 			sw.WriteLine();
 			sw.WriteLine("; 判定タイミング調整(ドラム)(-100～100)[ms]");					// #23580 2011.1.3 yyagi
 			sw.WriteLine("; Revision value to adjust judgement timing for the drums.");		//
-			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs_Drums);		//
+			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs.Drums);		//
 			sw.WriteLine();
 			sw.WriteLine("; 判定タイミング調整(ギター)(-100～100)[ms]");					// #23580 2011.1.3 yyagi
 			sw.WriteLine("; Revision value to adjust judgement timing for the guitar.");	//
-			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs_Guitar);		//
+			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs.Guitar);		//
 			sw.WriteLine();
 			sw.WriteLine("; 判定タイミング調整(ベース)(-100～100)[ms]");					// #23580 2011.1.3 yyagi
 			sw.WriteLine("; Revision value to adjust judgement timing for the bass.");		//
-			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs_Bass);			//
+			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs.Bass);			//
 			sw.WriteLine();
 			sw.WriteLine("; ハイハット入力切り捨て下限Velocity値(0～127)");					// #23857 2010.12.12 yyagi
 			sw.WriteLine("; Minimum velocity value to accept. (especially for HiHat)");		//
@@ -1589,15 +1576,15 @@ namespace DTXMania
 												}
 												else if ( str3.Equals("InputAdjustTimeDrums") )		// #23580 2011.1.3 yyagi
 												{
-													this.nInputAdjustTimeMs_Drums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs_Drums);
+													this.nInputAdjustTimeMs.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs.Drums);
 												}
 												else if ( str3.Equals("InputAdjustTimeGuitar") )	// #23580 2011.1.3 yyagi
 												{
-													this.nInputAdjustTimeMs_Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs_Guitar);
+													this.nInputAdjustTimeMs.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs.Guitar);
 												}
 												else if ( str3.Equals("InputAdjustTimeBass") )		// #23580 2011.1.3 yyagi
 												{
-													this.nInputAdjustTimeMs_Bass = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs_Bass);
+													this.nInputAdjustTimeMs.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -100, 100, this.nInputAdjustTimeMs.Bass);
 												}
 												else if ( str3.Equals("BufferedInput") ) {
 													this.bバッファ入力を行う = C変換.bONorOFF(str4[0]);

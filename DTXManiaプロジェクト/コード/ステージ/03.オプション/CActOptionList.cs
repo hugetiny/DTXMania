@@ -88,7 +88,7 @@ namespace DTXMania
 				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
 			this.list項目リスト.Add( this.iBassLeft );
 																						// #23580 2011.1.3 yyagi
-			this.iBassInputAdjustTimeMs = new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs_Bass,
+			this.iBassInputAdjustTimeMs = new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass,
 				"ベースの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
 				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
 			this.list項目リスト.Add(this.iBassInputAdjustTimeMs);
@@ -191,7 +191,7 @@ namespace DTXMania
 				"It becomes MISS to hit pad without\n chip.");
 			this.list項目リスト.Add( this.iDrumsTight );
 																					// #23580 2011.1.3 yyagi
-			this.iDrumsInputAdjustTimeMs = new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs_Drums,
+			this.iDrumsInputAdjustTimeMs = new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums,
 				"ドラムの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
 				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
 			this.list項目リスト.Add(this.iDrumsInputAdjustTimeMs);
@@ -251,7 +251,7 @@ namespace DTXMania
 				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
 			this.list項目リスト.Add( this.iGuitarLeft );
 																					// #23580 2011.1.3 yyagi
-			this.iGuitarInputAdjustTimeMs= new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs_Guitar,
+			this.iGuitarInputAdjustTimeMs= new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar,
 				"ギターの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
 				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
 			this.list項目リスト.Add(this.iGuitarInputAdjustTimeMs);
@@ -665,7 +665,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eRandom.Bass = (Eランダムモード) this.iBassRandom.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bLight.Bass = this.iBassLight.bON;
 			CDTXMania.ConfigIni.bLeft.Bass = this.iBassLeft.bON;
-			CDTXMania.ConfigIni.nInputAdjustTimeMs_Bass = this.iBassInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
+			CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass = this.iBassInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
 		}
 		private void tConfigIniへ記録する・Common()
 		{
@@ -689,7 +689,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bReverse.Drums = this.iDrumsReverse.bON;
 			CDTXMania.ConfigIni.判定文字表示位置.Drums = (E判定文字表示位置) this.iDrumsPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bTight = this.iDrumsTight.bON;
-			CDTXMania.ConfigIni.nInputAdjustTimeMs_Drums = this.iDrumsInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
+			CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums = this.iDrumsInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{
@@ -702,7 +702,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eRandom.Guitar = (Eランダムモード) this.iGuitarRandom.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bLight.Guitar = this.iGuitarLight.bON;
 			CDTXMania.ConfigIni.bLeft.Guitar = this.iGuitarLeft.bON;
-			CDTXMania.ConfigIni.nInputAdjustTimeMs_Guitar = this.iGuitarInputAdjustTimeMs.n現在の値;	// #23580 2011.1.3 yyagi
+			CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar = this.iGuitarInputAdjustTimeMs.n現在の値;	// #23580 2011.1.3 yyagi
 		}
 		//-----------------
 		#endregion
