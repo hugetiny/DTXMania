@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using System.Drawing;
 using System.ComponentModel;
@@ -1617,12 +1619,25 @@ namespace DTXCreator
 
 			try
 			{
+				#region [ もし小数点にコンマを使うcultureなら、一時的に(小数点を使う)"en"に切り替える。(DTXVはピリオドしか使えないため) ]
+				string currentCultureEinglishName = CultureInfo.CurrentCulture.EnglishName;
+				if (CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+				{
+					Thread.CurrentThread.CurrentCulture = new CultureInfo("en", false);
+				}
+				#endregion
 				#region [ 一時ファイルにDTXを出力する。 ]
 				//-----------------
 				StreamWriter sw = new StreamWriter( this.strViewer演奏用一時ファイル名, false, Encoding.GetEncoding( 0x3a4 ) );
 				new CDTX入出力( this ).tDTX出力( sw, bBGMのみ出力 );
 				sw.Close();
 				//-----------------
+				#endregion
+				#region [ cultureを元に戻す。 ]
+				if (CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+				{
+					Thread.CurrentThread.CurrentCulture = new CultureInfo(currentCultureEinglishName, false);
+				}
 				#endregion
 			}
 			finally

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
@@ -9,6 +10,7 @@ using DTXCreator.譜面;
 using DTXCreator.UndoRedo;
 using DTXCreator.WAV_BMP_AVI;
 using FDK;
+using System.Diagnostics;
 
 namespace DTXCreator
 {
@@ -446,12 +448,12 @@ namespace DTXCreator
 			{
 				return false;
 			}
-			float result = 0f;
-			if( ( !float.TryParse( strパラメータ, out result ) || ( result < 0f ) ) || ( result > 1000f ) )
+			decimal result = 0;
+			if( ( !this.TryParse( strパラメータ, out result ) || ( result < 0 ) ) || ( result > 1000 ) )		// #23880 2011.1.6 yyagi
 			{
 				return false;
 			}
-			this._Form.mgr譜面管理者.dicBPx.Add( key, result );
+			this._Form.mgr譜面管理者.dicBPx.Add(key, (float)result);
 			return true;
 		}
 		private bool tDTX入力・行解析・DTXC_AVIBACKCOLOR( string strコマンド, string strパラメータ, string strコメント )
@@ -732,7 +734,7 @@ namespace DTXCreator
 			if( strコマンド.Equals( "BPM", StringComparison.OrdinalIgnoreCase ) )
 			{
 				decimal num;
-				if( !decimal.TryParse( strパラメータ, out num ) )
+				if( !this.TryParse( strパラメータ, out num ) )		// #23880 2011.1.6 yyagi
 				{
 					num = 120.0M;
 				}
@@ -931,12 +933,12 @@ namespace DTXCreator
 			}
 			if( num2 == 2 )
 			{
-				float num3;
-				if( !float.TryParse( strパラメータ, out num3 ) )
+				decimal dBarLength;
+				if( !decimal.TryParse( strパラメータ, out dBarLength ) )	// #23880 2011.1.6 yyagi
 				{
-					num3 = 1f;
+					dBarLength = 1m;
 				}
-				this.dic小節長倍率.Add( num, num3 );
+				this.dic小節長倍率.Add( num, (float)dBarLength );
 				return true;
 			}
 			if( ( num2 >= 0x20 ) && ( num2 <= 0x27 ) )
@@ -2062,7 +2064,78 @@ namespace DTXCreator
 			}
 			return true;
 		}
-		//-----------------
+
+		#region [#23880 2010.12.30 yyagi: コンマとスペースの両方を小数点として扱うTryParse]
+		/// <summary>
+		/// 小数点としてコンマとピリオドの両方を受け付けるTryParse()
+		/// </summary>
+		/// <param name="s">strings convert to double</param>
+		/// <param name="result">parsed double value</param>
+		/// <returns>s が正常に変換された場合は true。それ以外の場合は false。</returns>
+		/// <exception cref="ArgumentException">style が NumberStyles 値でないか、style に NumberStyles.AllowHexSpecifier 値が含まれている</exception>
+		private bool TryParse(string s, out decimal result)
+		{	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
+			// EU諸国での #BPM 123,45 のような記述に対応するため、
+			// 小数点の最終位置を検出して、それをlocaleにあった
+			// 文字に置き換えてからTryParse()する
+			// 桁区切りの文字はスキップする
+
+			const string DecimalSeparators = ".,";				// 小数点文字
+			const string GroupSeparators = ".,' ";				// 桁区切り文字
+			const string NumberSymbols = "0123456789";			// 数値文字
+
+			int len = s.Length;									// 文字列長
+			int decimalPosition = len;							// 真の小数点の位置 最初は文字列終端位置に仮置きする
+
+			for (int i = 0; i < len; i++)
+			{							// まず、真の小数点(一番最後に現れる小数点)の位置を求める
+				char c = s[i];
+				if (NumberSymbols.IndexOf(c) >= 0)
+				{				// 数値だったらスキップ
+					continue;
+				}
+				else if (DecimalSeparators.IndexOf(c) >= 0)
+				{		// 小数点文字だったら、その都度位置を上書き記憶
+					decimalPosition = i;
+				}
+				else if (GroupSeparators.IndexOf(c) >= 0)
+				{		// 桁区切り文字の場合もスキップ
+					continue;
+				}
+				else
+				{											// 数値・小数点・区切り文字以外がきたらループ終了
+					break;
+				}
+			}
+
+			StringBuilder decimalStr = new StringBuilder(16);
+			for (int i = 0; i < len; i++)
+			{							// 次に、localeにあった数値文字列を生成する
+				char c = s[i];
+				if (NumberSymbols.IndexOf(c) >= 0)
+				{				// 数値だったら
+					decimalStr.Append(c);							// そのままコピー
+				}
+				else if (DecimalSeparators.IndexOf(c) >= 0)
+				{		// 小数点文字だったら
+					if (i == decimalPosition)
+					{						// 最後に出現した小数点文字なら、localeに合った小数点を出力する
+						decimalStr.Append(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+					}
+				}
+				else if (GroupSeparators.IndexOf(c) >= 0)
+				{		// 桁区切り文字だったら
+					continue;										// 何もしない(スキップ)
+				}
+				else
+				{
+					break;
+				}
+			}
+			return decimal.TryParse(decimalStr.ToString(), out result);	// 最後に、自分のlocale向けの文字列に対してTryParse実行
+		}
+		#endregion
+		//-----------------		//-----------------
 		#endregion
 	}
 }
