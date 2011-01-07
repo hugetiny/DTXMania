@@ -307,9 +307,9 @@ namespace DTXMania
 			this.tステータスパネルの選択();
 			this.tパネル文字列の設定();
 
-			this.nInputAdjustTimeMs_Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums;		// #23580 2011.1.3 yyagi
-			this.nInputAdjustTimeMs_Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
-			this.nInputAdjustTimeMs_Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass;			//
+			this.nInputAdjustTimeMs.Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums;		// #23580 2011.1.3 yyagi
+			this.nInputAdjustTimeMs.Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
+			this.nInputAdjustTimeMs.Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass;			//
 		}
 		public override void On非活性化()
 		{
