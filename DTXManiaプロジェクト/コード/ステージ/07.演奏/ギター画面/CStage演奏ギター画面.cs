@@ -206,6 +206,7 @@ namespace DTXMania
 			base.On活性化();
 			this.tステータスパネルの選択();
 			this.tパネル文字列の設定();
+
 			this.nInputAdjustTimeMs_Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums;		// #23580 2011.1.3 yyagi
             this.nInputAdjustTimeMs_Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
 			this.nInputAdjustTimeMs_Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass;			//
@@ -563,9 +564,7 @@ namespace DTXMania
 		private CTexture txチップ;
 		private CTexture txヒットバー;
 		private CTexture tx背景;
-		private int nInputAdjustTimeMs_Drums;		// #23580 2011.1.3 yyagi
-		private int nInputAdjustTimeMs_Guitar;		//
-		private int nInputAdjustTimeMs_Bass;		//
+		private STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 
 		private E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
 		{
@@ -906,12 +905,12 @@ namespace DTXMania
 			switch (pChip.e楽器パート)
 			{
 				case E楽器パート.GUITAR:
-					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay ? 0 : this.nInputAdjustTimeMs_Guitar);
+					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Guitar);
 					this.actJudgeString.Start(10, bIsAutoPlay ? E判定.Auto : eJudgeResult);
 					break;
 
 				case E楽器パート.BASS:
-					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay ? 0 : this.nInputAdjustTimeMs_Bass);
+					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Bass);
 					this.actJudgeString.Start(11, bIsAutoPlay ? E判定.Auto : eJudgeResult);
 					break;
 			}
@@ -1232,8 +1231,9 @@ namespace DTXMania
 				}
 				else
 				{
-					int[] nInputAdjustTimes = new int[] { this.nInputAdjustTimeMs_Drums, this.nInputAdjustTimeMs_Guitar, this.nInputAdjustTimeMs_Bass };
-					nInputAdjustTime = nInputAdjustTimes[(int)pChip.e楽器パート];
+					//int[] nInputAdjustTimes = new int[] { this.nInputAdjustTimeMs.Drums, this.nInputAdjustTimeMs.Guitar, this.nInputAdjustTimeMs.Bass };
+					//nInputAdjustTime = nInputAdjustTimes[(int)pChip.e楽器パート];
+					nInputAdjustTime = this.nInputAdjustTimeMs[(int)pChip.e楽器パート];
 				}
 				
 				if( ( ( pChip.e楽器パート != E楽器パート.UNKNOWN ) && !pChip.bHit ) &&
@@ -2032,7 +2032,7 @@ namespace DTXMania
 							this.t入力メソッド記憶( E楽器パート.GUITAR );
 							long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
 							CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0x2f );
-							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nTime, pChip, this.nInputAdjustTimeMs_Guitar);
+							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nTime, pChip, this.nInputAdjustTimeMs.Guitar);
 							if (((pChip != null) && ((pChip.nチャンネル番号 & 15) == num4)) && (e判定 != E判定.Miss))
 							{
 								if( ( num != 0 ) || ( num4 == 0 ) )
@@ -2165,7 +2165,7 @@ namespace DTXMania
 							this.t入力メソッド記憶( E楽器パート.BASS );
 							long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
 							CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0xaf );
-							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nTime, pChip, this.nInputAdjustTimeMs_Bass);
+							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nTime, pChip, this.nInputAdjustTimeMs.Bass);
 							if (((pChip != null) && ((pChip.nチャンネル番号 & 15) == num4)) && (e判定 != E判定.Miss))
 							{
 								if( ( num != 0 ) || ( num4 == 0 ) )

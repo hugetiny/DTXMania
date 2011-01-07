@@ -306,6 +306,7 @@ namespace DTXMania
 			base.On活性化();
 			this.tステータスパネルの選択();
 			this.tパネル文字列の設定();
+
 			this.nInputAdjustTimeMs_Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums;		// #23580 2011.1.3 yyagi
 			this.nInputAdjustTimeMs_Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
 			this.nInputAdjustTimeMs_Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass;			//
@@ -652,9 +653,7 @@ namespace DTXMania
 		private CTexture txヒットバーGB;
 		private CTexture txレーンフレームGB;
 		private CTexture tx背景;
-		private int nInputAdjustTimeMs_Drums;		// #23580 2011.1.3 yyagi
-		private int nInputAdjustTimeMs_Guitar;		//
-		private int nInputAdjustTimeMs_Bass;		//
+		private STDGBVALUE<int> nInputAdjustTimeMs;			// #23580 2011.1.3 yyagi
 		private bool bフィルイン区間の最後のChipである( CDTX.CChip pChip )
 		{
 			if( pChip == null )
@@ -1153,17 +1152,17 @@ namespace DTXMania
 			switch (pChip.e楽器パート)
 			{
 				case E楽器パート.DRUMS:
-					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay? 0 : this.nInputAdjustTimeMs_Drums);
+					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay? 0 : this.nInputAdjustTimeMs.Drums);
 					this.actJudgeString.Start(this.nチャンネル0Atoレーン07[pChip.nチャンネル番号 - 0x11], bIsAutoPlay ? E判定.Auto : eJudgeResult);
 					break;
 
 				case E楽器パート.GUITAR:
-					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay? 0 : this.nInputAdjustTimeMs_Guitar);
+					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay? 0 : this.nInputAdjustTimeMs.Guitar);
 					this.actJudgeString.Start(10, bIsAutoPlay ? E判定.Auto : eJudgeResult);
 					break;
 
 				case E楽器パート.BASS:
-					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay? 0 : this.nInputAdjustTimeMs_Bass);
+					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay? 0 : this.nInputAdjustTimeMs.Bass);
 					this.actJudgeString.Start(11, bIsAutoPlay ? E判定.Auto : eJudgeResult);
 					break;
 			}
@@ -1344,7 +1343,7 @@ namespace DTXMania
 			{
 				return false;
 			}
-			E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTimeMs_Drums );
+			E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTimeMs.Drums );
 			if( e判定 == E判定.Miss )
 			{
 				return false;
@@ -1683,8 +1682,9 @@ namespace DTXMania
 				}
 				else
 				{
-					int[] nInputAdjustTimes = new int[] { this.nInputAdjustTimeMs_Drums, this.nInputAdjustTimeMs_Guitar, this.nInputAdjustTimeMs_Bass };
-					nInputAdjustTime = nInputAdjustTimes[(int)pChip.e楽器パート];
+					// int[] nInputAdjustTimes = new int[] { this.nInputAdjustTimeMs_Drums, this.nInputAdjustTimeMs_Guitar, this.nInputAdjustTimeMs_Bass };
+					// nInputAdjustTime = nInputAdjustTimes[(int)pChip.e楽器パート];
+					nInputAdjustTime = this.nInputAdjustTimeMs[(int)pChip.e楽器パート];
 				}
 				if( ( ( pChip.e楽器パート != E楽器パート.UNKNOWN ) && !pChip.bHit ) &&
 					( ( pChip.nバーからの距離dot.Drums < 0 ) && ( this.e指定時刻からChipのJUDGEを返す( CDTXMania.Timer.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss ) ) )
@@ -2742,7 +2742,7 @@ namespace DTXMania
 							}
 							long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
 							CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0x2f );
-							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs_Guitar );
+							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs.Guitar );
 							if( ( ( pChip != null ) && ( ( pChip.nチャンネル番号 & 15 ) == num4 ) ) && ( e判定 != E判定.Miss ) )
 							{
 								if( ( num != 0 ) || ( num4 == 0 ) )
@@ -2880,42 +2880,42 @@ namespace DTXMania
 								if( event2.nVelocity <= CDTXMania.ConfigIni.nハイハット切り捨て下限Velocity )
 									continue;	// 電子ドラムによる意図的なクロストークを無効にする
 
-								CDTX.CChip chip1 = this.r指定時刻に一番近い未ヒットChip( nTime, 0x11 );	// HiHat Close
-								CDTX.CChip chip2 = this.r指定時刻に一番近い未ヒットChip( nTime, 0x18 );	// HiHat Open
-								CDTX.CChip chip3 = this.r指定時刻に一番近い未ヒットChip( nTime, 0x1a );	// LC
-								E判定 e判定1 = (chip1 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip1, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
-								E判定 e判定2 = (chip2 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip2, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
-								E判定 e判定3 = (chip3 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip3, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
+								CDTX.CChip chipHC = this.r指定時刻に一番近い未ヒットChip( nTime, 0x11 );	// HiHat Close
+								CDTX.CChip chipHO = this.r指定時刻に一番近い未ヒットChip( nTime, 0x18 );	// HiHat Open
+								CDTX.CChip chipLC = this.r指定時刻に一番近い未ヒットChip( nTime, 0x1a );	// LC
+								E判定 e判定HC = (chipHC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHC, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
+								E判定 e判定HO = (chipHO != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHO, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
+								E判定 e判定LC = (chipLC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLC, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
 								switch( eHHGroup )
 								{
 									case EHHGroup.ハイハットのみ打ち分ける:
 										#region [ *** ]
 										//-----------------------------
-										if( ( e判定1 != E判定.Miss ) && ( e判定3 != E判定.Miss ) )
+										if( ( e判定HC != E判定.Miss ) && ( e判定LC != E判定.Miss ) )
 										{
-											if( chip1.n発声位置 < chip3.n発声位置 )
+											if( chipHC.n発声位置 < chipLC.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
 											}
-											else if( chip1.n発声位置 > chip3.n発声位置 )
+											else if( chipHC.n発声位置 > chipLC.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip3, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipLC, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip3, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipLC, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( e判定1 != E判定.Miss )
+										else if( e判定HC != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定3 != E判定.Miss )
+										else if( e判定LC != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HH, chip3, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HH, chipLC, event2.nVelocity );
 											flag = true;
 										}
 										if( !flag )
@@ -2927,31 +2927,31 @@ namespace DTXMania
 									case EHHGroup.左シンバルのみ打ち分ける:
 										#region [ *** ]
 										//-----------------------------
-										if( ( e判定1 != E判定.Miss ) && ( e判定2 != E判定.Miss ) )
+										if( ( e判定HC != E判定.Miss ) && ( e判定HO != E判定.Miss ) )
 										{
-											if( chip1.n発声位置 < chip2.n発声位置 )
+											if( chipHC.n発声位置 < chipHO.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
 											}
-											else if( chip1.n発声位置 > chip2.n発声位置 )
+											else if( chipHC.n発声位置 > chipHO.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip2, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHO, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip2, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHO, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( e判定1 != E判定.Miss )
+										else if( e判定HC != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定2 != E判定.Miss )
+										else if( e判定HO != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HH, chip2, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HH, chipHO, event2.nVelocity );
 											flag = true;
 										}
 										if( !flag )
@@ -2963,10 +2963,10 @@ namespace DTXMania
 									case EHHGroup.全部共通:
 										#region [ *** ]
 										//-----------------------------
-										if( ( ( e判定1 != E判定.Miss ) && ( e判定2 != E判定.Miss ) ) && ( e判定3 != E判定.Miss ) )
+										if( ( ( e判定HC != E判定.Miss ) && ( e判定HO != E判定.Miss ) ) && ( e判定LC != E判定.Miss ) )
 										{
 											CDTX.CChip chip4;
-											CDTX.CChip[] chipArray = new CDTX.CChip[] { chip1, chip2, chip3 };
+											CDTX.CChip[] chipArray = new CDTX.CChip[] { chipHC, chipHO, chipLC };
 											if( chipArray[ 1 ].n発声位置 > chipArray[ 2 ].n発声位置 )
 											{
 												chip4 = chipArray[ 1 ];
@@ -2996,70 +2996,70 @@ namespace DTXMania
 											}
 											flag = true;
 										}
-										else if( ( e判定1 != E判定.Miss ) && ( e判定2 != E判定.Miss ) )
+										else if( ( e判定HC != E判定.Miss ) && ( e判定HO != E判定.Miss ) )
 										{
-											if( chip1.n発声位置 < chip2.n発声位置 )
+											if( chipHC.n発声位置 < chipHO.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
 											}
-											else if( chip1.n発声位置 > chip2.n発声位置 )
+											else if( chipHC.n発声位置 > chipHO.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip2, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHO, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip2, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHO, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( ( e判定1 != E判定.Miss ) && ( e判定3 != E判定.Miss ) )
+										else if( ( e判定HC != E判定.Miss ) && ( e判定LC != E判定.Miss ) )
 										{
-											if( chip1.n発声位置 < chip3.n発声位置 )
+											if( chipHC.n発声位置 < chipLC.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
 											}
-											else if( chip1.n発声位置 > chip3.n発声位置 )
+											else if( chipHC.n発声位置 > chipLC.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip3, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipLC, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip3, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipLC, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( ( e判定2 != E判定.Miss ) && ( e判定3 != E判定.Miss ) )
+										else if( ( e判定HO != E判定.Miss ) && ( e判定LC != E判定.Miss ) )
 										{
-											if( chip2.n発声位置 < chip3.n発声位置 )
+											if( chipHO.n発声位置 < chipLC.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip2, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHO, event2.nVelocity );
 											}
-											else if( chip2.n発声位置 > chip3.n発声位置 )
+											else if( chipHO.n発声位置 > chipLC.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip3, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipLC, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip2, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HH, chip3, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipHO, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HH, chipLC, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( e判定1 != E判定.Miss )
+										else if( e判定HC != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定2 != E判定.Miss )
+										else if( e判定HO != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HH, chip2, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HH, chipHO, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定3 != E判定.Miss )
+										else if( e判定LC != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HH, chip3, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HH, chipLC, event2.nVelocity );
 											flag = true;
 										}
 										if( !flag )
@@ -3071,9 +3071,9 @@ namespace DTXMania
 									default:
 										#region [ *** ]
 										//-----------------------------
-										if( e判定1 != E判定.Miss )
+										if( e判定HC != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HH, chip1, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HH, chipHC, event2.nVelocity );
 											flag = true;
 										}
 										if( !flag )
@@ -3126,18 +3126,18 @@ namespace DTXMania
 								//-----------------------------
 								if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
 									continue;	// 電子ドラムによる意図的なクロストークを無効にする
-								CDTX.CChip chip15 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x15);	// LT
-								CDTX.CChip chip16 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x17);	// FT
-								E判定 e判定13 = (chip15 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip15, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
-								E判定 e判定14 = (chip16 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip16, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
+								CDTX.CChip chipLT = this.r指定時刻に一番近い未ヒットChip(nTime, 0x15);	// LT
+								CDTX.CChip chipFT = this.r指定時刻に一番近い未ヒットChip(nTime, 0x17);	// FT
+								E判定 e判定LT = (chipLT != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLT, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
+								E判定 e判定FT = (chipFT != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipFT, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
 								switch( eFTGroup )
 								{
 									case EFTGroup.打ち分ける:
 										#region [ *** ]
 										//-----------------------------
-										if( e判定13 != E判定.Miss )
+										if( e判定LT != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.LT, chip15, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.LT, chipLT, event2.nVelocity );
 											flag = true;
 										}
 										break;
@@ -3147,31 +3147,31 @@ namespace DTXMania
 									case EFTGroup.共通:
 										#region [ *** ]
 										//-----------------------------
-										if( ( e判定13 != E判定.Miss ) && ( e判定14 != E判定.Miss ) )
+										if( ( e判定LT != E判定.Miss ) && ( e判定FT != E判定.Miss ) )
 										{
-											if( chip15.n発声位置 < chip16.n発声位置 )
+											if( chipLT.n発声位置 < chipFT.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.LT, chip15, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.LT, chipLT, event2.nVelocity );
 											}
-											else if( chip15.n発声位置 > chip16.n発声位置 )
+											else if( chipLT.n発声位置 > chipFT.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.LT, chip16, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.LT, chipFT, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.LT, chip15, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.LT, chip16, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.LT, chipLT, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.LT, chipFT, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( e判定13 != E判定.Miss )
+										else if( e判定LT != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.LT, chip15, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.LT, chipLT, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定14 != E判定.Miss )
+										else if( e判定FT != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.LT, chip16, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.LT, chipFT, event2.nVelocity );
 											flag = true;
 										}
 										break;
@@ -3189,18 +3189,18 @@ namespace DTXMania
 								//-----------------------------
 								if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
 									continue;	// 電子ドラムによる意図的なクロストークを無効にする
-								CDTX.CChip chip17 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x15);
-								CDTX.CChip chip18 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x17);
-								E判定 e判定15 = (chip17 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip17, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
-								E判定 e判定16 = (chip18 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip18, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
+								CDTX.CChip chipLT_ = this.r指定時刻に一番近い未ヒットChip(nTime, 0x15);	// LT
+								CDTX.CChip chipFT_ = this.r指定時刻に一番近い未ヒットChip(nTime, 0x17);	// FT
+								E判定 e判定LT_ = (chipLT_ != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLT_, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
+								E判定 e判定FT_ = (chipFT_ != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipFT_, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
 								switch( eFTGroup )
 								{
 									case EFTGroup.打ち分ける:
 										#region [ *** ]
 										//-----------------------------
-										if( e判定16 != E判定.Miss )
+										if( e判定FT_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.FT, chip18, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.FT, chipFT_, event2.nVelocity );
 											flag = true;
 										}
 										//-----------------------------
@@ -3210,31 +3210,31 @@ namespace DTXMania
 									case EFTGroup.共通:
 										#region [ *** ]
 										//-----------------------------
-										if( ( e判定15 != E判定.Miss ) && ( e判定16 != E判定.Miss ) )
+										if( ( e判定LT_ != E判定.Miss ) && ( e判定FT_ != E判定.Miss ) )
 										{
-											if( chip17.n発声位置 < chip18.n発声位置 )
+											if( chipLT_.n発声位置 < chipFT_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.FT, chip17, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.FT, chipLT_, event2.nVelocity );
 											}
-											else if( chip17.n発声位置 > chip18.n発声位置 )
+											else if( chipLT_.n発声位置 > chipFT_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.FT, chip18, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.FT, chipFT_, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.FT, chip17, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.FT, chip18, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.FT, chipLT_, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.FT, chipFT_, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( e判定15 != E判定.Miss )
+										else if( e判定LT_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.FT, chip17, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.FT, chipLT_, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定16 != E判定.Miss )
+										else if( e判定FT_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.FT, chip18, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.FT, chipFT_, event2.nVelocity );
 											flag = true;
 										}
 										//-----------------------------
@@ -3253,14 +3253,14 @@ namespace DTXMania
 								{
 									if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
-									CDTX.CChip chip19 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x16);
-									CDTX.CChip chip20 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x19);
+									CDTX.CChip chipCY = this.r指定時刻に一番近い未ヒットChip(nTime, 0x16);	// CY
+									CDTX.CChip chipRD = this.r指定時刻に一番近い未ヒットChip(nTime, 0x19);	// RD
 									CDTX.CChip chip21 = CDTXMania.ConfigIni.bシンバルフリー ? this.r指定時刻に一番近い未ヒットChip(nTime, 0x1a) : null;
-									E判定 e判定17 = ( chip19 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip19, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
-									E判定 e判定18 = ( chip20 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip20, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
-									E判定 e判定19 = ( chip21 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip21, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
-									CDTX.CChip[] chipArray4 = new CDTX.CChip[] { chip19, chip20, chip21 };
-									E判定[] e判定Array2 = new E判定[] { e判定17, e判定18, e判定19 };
+									E判定 e判定CY = ( chipCY != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chipCY, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									E判定 e判定RD = ( chipRD != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chipRD, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									E判定 e判定19 = ( chip21 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip21, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									CDTX.CChip[] chipArray4 = new CDTX.CChip[] { chipCY, chipRD, chip21 };
+									E判定[] e判定Array2 = new E判定[] { e判定CY, e判定RD, e判定19 };
 									num8 = 0;
 									while( num8 < 2 )
 									{
@@ -3285,9 +3285,9 @@ namespace DTXMania
 										case ECYGroup.打ち分ける:
 											if( !CDTXMania.ConfigIni.bシンバルフリー )
 											{
-												if( e判定17 != E判定.Miss )
+												if( e判定CY != E判定.Miss )
 												{
-													this.tドラムヒット処理( nTime, Eパッド.CY, chip19, event2.nVelocity );
+													this.tドラムヒット処理( nTime, Eパッド.CY, chipCY, event2.nVelocity );
 													flag = true;
 												}
 												if( !flag )
@@ -3297,7 +3297,7 @@ namespace DTXMania
 											num10 = 0;
 											while( num10 < 3 )
 											{
-												if( ( e判定Array2[ num10 ] != E判定.Miss ) && ( ( chipArray4[ num10 ] == chip19 ) || ( chipArray4[ num10 ] == chip21 ) ) )
+												if( ( e判定Array2[ num10 ] != E判定.Miss ) && ( ( chipArray4[ num10 ] == chipCY ) || ( chipArray4[ num10 ] == chip21 ) ) )
 												{
 													this.tドラムヒット処理( nTime, Eパッド.CY, chipArray4[ num10 ], event2.nVelocity );
 													flag = true;
@@ -3305,9 +3305,9 @@ namespace DTXMania
 												}
 												num10++;
 											}
-											if( e判定17 != E判定.Miss )
+											if( e判定CY != E判定.Miss )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.CY, chip19, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.CY, chipCY, event2.nVelocity );
 												flag = true;
 											}
 											if( !flag )
@@ -3320,7 +3320,7 @@ namespace DTXMania
 												num12 = 0;
 												while( num12 < 3 )
 												{
-													if( ( e判定Array2[ num12 ] != E判定.Miss ) && ( ( chipArray4[ num12 ] == chip19 ) || ( chipArray4[ num12 ] == chip20 ) ) )
+													if( ( e判定Array2[ num12 ] != E判定.Miss ) && ( ( chipArray4[ num12 ] == chipCY ) || ( chipArray4[ num12 ] == chipRD ) ) )
 													{
 														this.tドラムヒット処理( nTime, Eパッド.CY, chipArray4[ num12 ], event2.nVelocity );
 														flag = true;
@@ -3360,18 +3360,18 @@ namespace DTXMania
 								if( event2.nVelocity <= CDTXMania.ConfigIni.nハイハット切り捨て下限Velocity )
 									continue;	// 電子ドラムによる意図的なクロストークを無効にする
 
-								CDTX.CChip chip5 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x11);
-								CDTX.CChip chip6 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x18);
-								CDTX.CChip chip7 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x1a);
-								E判定 e判定4 = (chip5 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip5, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
-								E判定 e判定5 = (chip6 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip6, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
-								E判定 e判定6 = (chip7 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip7, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
+								CDTX.CChip chipHC_ = this.r指定時刻に一番近い未ヒットChip(nTime, 0x11);	// HC
+								CDTX.CChip chipHO_ = this.r指定時刻に一番近い未ヒットChip(nTime, 0x18);	// HO
+								CDTX.CChip chipLC_ = this.r指定時刻に一番近い未ヒットChip(nTime, 0x1a);	// LC
+								E判定 e判定HC_ = (chipHC_ != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHC_, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
+								E判定 e判定HO_ = (chipHO_ != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHO_, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
+								E判定 e判定LC_ = (chipLC_ != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLC_, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
 								switch( eHHGroup )
 								{
 									case EHHGroup.全部打ち分ける:
-										if( e判定5 != E判定.Miss )
+										if( e判定HO_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											flag = true;
 										}
 										if( !flag )
@@ -3379,31 +3379,31 @@ namespace DTXMania
 										continue;
 
 									case EHHGroup.ハイハットのみ打ち分ける:
-										if( ( e判定5 != E判定.Miss ) && ( e判定6 != E判定.Miss ) )
+										if( ( e判定HO_ != E判定.Miss ) && ( e判定LC_ != E判定.Miss ) )
 										{
-											if( chip6.n発声位置 < chip7.n発声位置 )
+											if( chipHO_.n発声位置 < chipLC_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											}
-											else if( chip6.n発声位置 > chip7.n発声位置 )
+											else if( chipHO_.n発声位置 > chipLC_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip7, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipLC_, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip7, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipLC_, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( e判定5 != E判定.Miss )
+										else if( e判定HO_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定6 != E判定.Miss )
+										else if( e判定LC_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HHO, chip7, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HHO, chipLC_, event2.nVelocity );
 											flag = true;
 										}
 										if( !flag )
@@ -3411,31 +3411,31 @@ namespace DTXMania
 										continue;
 
 									case EHHGroup.左シンバルのみ打ち分ける:
-										if( ( e判定4 != E判定.Miss ) && ( e判定5 != E判定.Miss ) )
+										if( ( e判定HC_ != E判定.Miss ) && ( e判定HO_ != E判定.Miss ) )
 										{
-											if( chip5.n発声位置 < chip6.n発声位置 )
+											if( chipHC_.n発声位置 < chipHO_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip5, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHC_, event2.nVelocity );
 											}
-											else if( chip5.n発声位置 > chip6.n発声位置 )
+											else if( chipHC_.n発声位置 > chipHO_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip5, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHC_, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( e判定4 != E判定.Miss )
+										else if( e判定HC_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HHO, chip5, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HHO, chipHC_, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定5 != E判定.Miss )
+										else if( e判定HO_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											flag = true;
 										}
 										if( !flag )
@@ -3443,10 +3443,10 @@ namespace DTXMania
 										continue;
 
 									case EHHGroup.全部共通:
-										if( ( ( e判定4 != E判定.Miss ) && ( e判定5 != E判定.Miss ) ) && ( e判定6 != E判定.Miss ) )
+										if( ( ( e判定HC_ != E判定.Miss ) && ( e判定HO_ != E判定.Miss ) ) && ( e判定LC_ != E判定.Miss ) )
 										{
 											CDTX.CChip chip8;
-											CDTX.CChip[] chipArray2 = new CDTX.CChip[] { chip5, chip6, chip7 };
+											CDTX.CChip[] chipArray2 = new CDTX.CChip[] { chipHC_, chipHO_, chipLC_ };
 											if( chipArray2[ 1 ].n発声位置 > chipArray2[ 2 ].n発声位置 )
 											{
 												chip8 = chipArray2[ 1 ];
@@ -3476,70 +3476,70 @@ namespace DTXMania
 											}
 											flag = true;
 										}
-										else if( ( e判定4 != E判定.Miss ) && ( e判定5 != E判定.Miss ) )
+										else if( ( e判定HC_ != E判定.Miss ) && ( e判定HO_ != E判定.Miss ) )
 										{
-											if( chip5.n発声位置 < chip6.n発声位置 )
+											if( chipHC_.n発声位置 < chipHO_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip5, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHC_, event2.nVelocity );
 											}
-											else if( chip5.n発声位置 > chip6.n発声位置 )
+											else if( chipHC_.n発声位置 > chipHO_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip5, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHC_, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( ( e判定4 != E判定.Miss ) && ( e判定6 != E判定.Miss ) )
+										else if( ( e判定HC_ != E判定.Miss ) && ( e判定LC_ != E判定.Miss ) )
 										{
-											if( chip5.n発声位置 < chip7.n発声位置 )
+											if( chipHC_.n発声位置 < chipLC_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip5, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHC_, event2.nVelocity );
 											}
-											else if( chip5.n発声位置 > chip7.n発声位置 )
+											else if( chipHC_.n発声位置 > chipLC_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip7, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipLC_, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip5, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip7, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHC_, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipLC_, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( ( e判定5 != E判定.Miss ) && ( e判定6 != E判定.Miss ) )
+										else if( ( e判定HO_ != E判定.Miss ) && ( e判定LC_ != E判定.Miss ) )
 										{
-											if( chip6.n発声位置 < chip7.n発声位置 )
+											if( chipHO_.n発声位置 < chipLC_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											}
-											else if( chip6.n発声位置 > chip7.n発声位置 )
+											else if( chipHO_.n発声位置 > chipLC_.n発声位置 )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip7, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipLC_, event2.nVelocity );
 											}
 											else
 											{
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
-												this.tドラムヒット処理( nTime, Eパッド.HHO, chip7, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.HHO, chipLC_, event2.nVelocity );
 											}
 											flag = true;
 										}
-										else if( e判定4 != E判定.Miss )
+										else if( e判定HC_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HHO, chip5, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HHO, chipHC_, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定5 != E判定.Miss )
+										else if( e判定HO_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HHO, chip6, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HHO, chipHO_, event2.nVelocity );
 											flag = true;
 										}
-										else if( e判定6 != E判定.Miss )
+										else if( e判定LC_ != E判定.Miss )
 										{
-											this.tドラムヒット処理( nTime, Eパッド.HHO, chip7, event2.nVelocity );
+											this.tドラムヒット処理( nTime, Eパッド.HHO, chipLC_, event2.nVelocity );
 											flag = true;
 										}
 										if( !flag )
@@ -3558,14 +3558,14 @@ namespace DTXMania
 								{
 									if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
-									CDTX.CChip chip23 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x16);
-									CDTX.CChip chip24 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x19);
+									CDTX.CChip chipCY_ = this.r指定時刻に一番近い未ヒットChip(nTime, 0x16);	// CY
+									CDTX.CChip chipRD_ = this.r指定時刻に一番近い未ヒットChip(nTime, 0x19);	// RD
 									CDTX.CChip pChip = CDTXMania.ConfigIni.bシンバルフリー ? this.r指定時刻に一番近い未ヒットChip( nTime, 0x1a ) : null;
-									E判定 e判定21 = ( chip23 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip23, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
-									E判定 e判定22 = (chip24 != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip24, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
-									E判定 e判定23 = ( pChip != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
-									CDTX.CChip[] chipArray5 = new CDTX.CChip[] { chip23, chip24, pChip };
-									E判定[] e判定Array3 = new E判定[] { e判定21, e判定22, e判定23 };
+									E判定 e判定CY_ = ( chipCY_ != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chipCY_, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									E判定 e判定RD_ = ( chipRD_ != null) ? this.e指定時刻からChipのJUDGEを返す( nTime, chipRD_, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									E判定 e判定23 = ( pChip != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									CDTX.CChip[] chipArray5 = new CDTX.CChip[] { chipCY_, chipRD_, pChip };
+									E判定[] e判定Array3 = new E判定[] { e判定CY_, e判定RD_, e判定23 };
 									num13 = 0;
 									while( num13 < 2 )
 									{
@@ -3588,9 +3588,9 @@ namespace DTXMania
 									switch( eCYGroup )
 									{
 										case ECYGroup.打ち分ける:
-											if( e判定22 != E判定.Miss )
+											if( e判定RD_ != E判定.Miss )
 											{
-												this.tドラムヒット処理( nTime, Eパッド.RD, chip24, event2.nVelocity );
+												this.tドラムヒット処理( nTime, Eパッド.RD, chipRD_, event2.nVelocity );
 												flag = true;
 											}
 											break;
@@ -3601,7 +3601,7 @@ namespace DTXMania
 												num16 = 0;
 												while( num16 < 3 )
 												{
-													if( ( e判定Array3[ num16 ] != E判定.Miss ) && ( ( chipArray5[ num16 ] == chip23 ) || ( chipArray5[ num16 ] == chip24 ) ) )
+													if( ( e判定Array3[ num16 ] != E判定.Miss ) && ( ( chipArray5[ num16 ] == chipCY_ ) || ( chipArray5[ num16 ] == chipRD_ ) ) )
 													{
 														this.tドラムヒット処理( nTime, Eパッド.CY, chipArray5[ num16 ], event2.nVelocity );
 														flag = true;
@@ -3639,16 +3639,16 @@ namespace DTXMania
 								{
 									if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
-									CDTX.CChip chip9 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x11);
-									CDTX.CChip chip10 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x18);
-									CDTX.CChip chip11 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x1a);
+									CDTX.CChip chip9 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x11);	// HC
+									CDTX.CChip chip10 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x18);	// HO
+									CDTX.CChip chip11 = this.r指定時刻に一番近い未ヒットChip(nTime, 0x1a);	// LC
 									CDTX.CChip chip12 = CDTXMania.ConfigIni.bシンバルフリー ? this.r指定時刻に一番近い未ヒットChip(nTime, 0x16) : null;
 									CDTX.CChip chip13 = CDTXMania.ConfigIni.bシンバルフリー ? this.r指定時刻に一番近い未ヒットChip(nTime, 0x19) : null;
-									E判定 e判定7 = ( chip9 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip9, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
-									E判定 e判定8 = ( chip10 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip10, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
-									E判定 e判定9 = ( chip11 != null ) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip11, this.nInputAdjustTimeMs_Drums) : E判定.Miss;
-									E判定 e判定10 = ( chip12 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip12, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
-									E判定 e判定11 = ( chip13 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip13, this.nInputAdjustTimeMs_Drums ) : E判定.Miss;
+									E判定 e判定7 = ( chip9 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip9, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									E判定 e判定8 = ( chip10 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip10, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									E判定 e判定9 = ( chip11 != null ) ? this.e指定時刻からChipのJUDGEを返す(nTime, chip11, this.nInputAdjustTimeMs.Drums) : E判定.Miss;
+									E判定 e判定10 = ( chip12 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip12, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
+									E判定 e判定11 = ( chip13 != null ) ? this.e指定時刻からChipのJUDGEを返す( nTime, chip13, this.nInputAdjustTimeMs.Drums ) : E判定.Miss;
 									CDTX.CChip[] chipArray3 = new CDTX.CChip[] { chip9, chip10, chip11, chip12, chip13 };
 									E判定[]  e判定Array = new E判定[] { e判定7, e判定8, e判定9, e判定10, e判定11 };
 									num3 = 0;
@@ -3786,9 +3786,9 @@ namespace DTXMania
 							case Eパッド.HH:
 								#region [ *** ]
 								//-----------------------------
-								chip28 = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 0 ] );
-								chip29 = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 7 ] );
-								chip30 = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 9 ] );
+								chip28 = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[0]);
+								chip29 = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[7]);
+								chip30 = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[9]);
 								switch( CDTXMania.ConfigIni.eHHGroup )
 								{
 									case EHHGroup.ハイハットのみ打ち分ける:
@@ -4069,7 +4069,7 @@ namespace DTXMania
 							this.t入力メソッド記憶( E楽器パート.BASS );
 							long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
 							CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0xaf );
-							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs_Bass );
+							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs.Bass );
 							if( ( ( pChip != null ) && ( ( pChip.nチャンネル番号 & 15 ) == num4 ) ) && ( e判定 != E判定.Miss ) )
 							{
 								if( ( num != 0 ) || ( num4 == 0 ) )
