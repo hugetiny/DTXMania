@@ -2324,37 +2324,79 @@ namespace DTXMania
 			}
 			image.Dispose();
 		}
-		private void t判定にあわせてゲージを増減する( E楽器パート part, E判定 e今回の判定 )
+#if DAMAGELEVELTUNING
+		// ----------------------------------
+		public float[,] fDamageGaugeDelta = {			// #23625 ickw_284: tuned damege/recover factors
+			// drums,   guitar,  bass
+			{  0.005f,  0.001f,  0.001f  },
+			{  0.002f,  0.0005f, 0.0005f },
+			{  0.000f,  0.000f,  0.000f  },
+			{ -0.020f, -0.020f,	-0.020f  },
+			{ -0.030f, -0.050f, -0.050f  }
+		};
+		public float[] fDamageLevelFactor = {
+			0.5f, 1.0f, 1.5f
+		};
+		// ----------------------------------
+#endif
+		private void t判定にあわせてゲージを増減する(E楽器パート part, E判定 e今回の判定)
 		{
-			double num;
-			switch( e今回の判定 )
+			double fDamage;
+
+#if DAMAGELEVELTUNING
+			switch (e今回の判定)
 			{
 				case E判定.Perfect:
-					num = ( part == E楽器パート.DRUMS ) ? 0.01 : 0.015;
+				case E判定.Great:
+				case E判定.Good:
+				case E判定.Poor:
+					fDamage = fDamageGaugeDelta[(int)e今回の判定, (int)part];
+					break;
+				case E判定.Miss:
+					fDamage = fDamageGaugeDelta[(int)e今回の判定, (int)part];
+					switch (CDTXMania.ConfigIni.eダメージレベル)
+					{
+						case Eダメージレベル.少ない:
+						case Eダメージレベル.普通:
+						case Eダメージレベル.大きい:
+							fDamage *= fDamageLevelFactor[(int)CDTXMania.ConfigIni.eダメージレベル];
+							break;
+					}
+					break;
+
+				default:
+					fDamage = 0.0;
+					break;
+			}
+#else
+			switch (e今回の判定)
+			{
+				case E判定.Perfect:
+					fDamage = ( part == E楽器パート.DRUMS ) ? 0.01 : 0.015;
 					break;
 
 				case E判定.Great:
-					num = ( part == E楽器パート.DRUMS ) ? 0.006 : 0.009;
+					fDamage = ( part == E楽器パート.DRUMS ) ? 0.006 : 0.009;
 					break;
 
 				case E判定.Good:
-					num = ( part == E楽器パート.DRUMS ) ? 0.002 : 0.003;
+					fDamage = ( part == E楽器パート.DRUMS ) ? 0.002 : 0.003;
 					break;
 
 				case E判定.Poor:
-					num = ( part == E楽器パート.DRUMS ) ? 0.0 : 0.0;
+					fDamage = ( part == E楽器パート.DRUMS ) ? 0.0 : 0.0;
 					break;
 
 				case E判定.Miss:
-					num = ( part == E楽器パート.DRUMS ) ? -0.035 : -0.035;
+					fDamage = ( part == E楽器パート.DRUMS ) ? -0.035 : -0.035;
 					switch( CDTXMania.ConfigIni.eダメージレベル )
 					{
 						case Eダメージレベル.少ない:
-							num *= 0.6;
+							fDamage *= 0.6;
 							break;
 
 						case Eダメージレベル.普通:
-							num *= 1.0;
+							fDamage *= 1.0;
 							break;
 
 						case Eダメージレベル.大きい:
@@ -2367,7 +2409,8 @@ namespace DTXMania
 					num = 0.0;
 					break;
 			}
-			this.actGauge.db現在のゲージ値[ (int) part ] += num;
+#endif
+			this.actGauge.db現在のゲージ値[(int)part] += fDamage;
 
 			if( this.actGauge.db現在のゲージ値[ (int) part ] > 1.0 )
 				this.actGauge.db現在のゲージ値[ (int) part ] = 1.0;

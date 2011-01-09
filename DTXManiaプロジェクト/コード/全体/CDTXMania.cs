@@ -770,11 +770,11 @@ for (int i = 0; i < 5; i++)
 {
 	for (int j = 0; j < 2; j++)
 	{
-		stage演奏ドラム画面.gaugeDelta[i, j] = ConfigIni.fGaugeFactor[i, j];
+		stage演奏ドラム画面.fDamageGaugeDelta[i, j] = ConfigIni.fGaugeFactor[i, j];
 	}
 }
 for (int i = 0; i < 3; i++) {
-	stage演奏ドラム画面.damageLevelFactor[i] = ConfigIni.fDamageLevelFactor[i];
+	stage演奏ドラム画面.fDamageLevelFactor[i] = ConfigIni.fDamageLevelFactor[i];
 }		
 #endif
 								r直前のステージ = r現在のステージ;
@@ -784,6 +784,18 @@ for (int i = 0; i < 3; i++) {
 							{
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 演奏（ギター画面）" );
+#if DAMAGELEVELTUNING
+for (int i = 0; i < 5; i++)
+{
+	for (int j = 0; j < 2; j++)
+	{
+		stage演奏ギター画面.fDamageGaugeDelta[i, j] = ConfigIni.fGaugeFactor[i, j];
+	}
+}
+for (int i = 0; i < 3; i++) {
+	stage演奏ギター画面.fDamageLevelFactor[i] = ConfigIni.fDamageLevelFactor[i];
+}		
+#endif
 								r直前のステージ = r現在のステージ;
 								r現在のステージ = stage演奏ギター画面;
 							}

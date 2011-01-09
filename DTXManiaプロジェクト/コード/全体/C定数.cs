@@ -30,9 +30,9 @@ namespace DTXMania
 	}
 	public enum Eダメージレベル
 	{
-		少ない,
-		普通,
-		大きい
+		少ない	= 0,
+		普通	= 1,
+		大きい	= 2
 	}
 	public enum Eパッド
 	{
@@ -84,12 +84,12 @@ namespace DTXMania
 	}
 	internal enum E判定
 	{
-		Perfect,
-		Great,
-		Good,
-		Poor,
-		Miss,
-		Bad,
+		Perfect	= 0,
+		Great	= 1,
+		Good	= 2,
+		Poor	= 3,
+		Miss	= 4,
+		Bad		= 5,
 		Auto
 	}
 	internal enum E判定文字表示位置
