@@ -13,7 +13,6 @@ namespace DTXMania
 		public STDGBVALUE<bool> b新記録スキル;
 		public STDGBVALUE<bool> b新記録スコア;
         public STDGBVALUE<bool> b新記録ランク;
-        public STDGBVALUE<bool> b新記録ラスト;
 		public STDGBVALUE<float> fPerfect率;
 		public STDGBVALUE<float> fGreat率;
 		public STDGBVALUE<float> fGood率;
