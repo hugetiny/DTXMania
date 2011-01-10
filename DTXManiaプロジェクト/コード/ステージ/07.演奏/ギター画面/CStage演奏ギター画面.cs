@@ -2330,19 +2330,20 @@ namespace DTXMania
 		}
 #if DAMAGELEVELTUNING
 		// ----------------------------------
-		public float[,] fDamageGaugeDelta = {			// #23625 ickw_284: tuned damege/recover factors
+		public float[,] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damege/recover factors
 			// drums,   guitar,  bass
-			{  0.006f,  0.008f,  0.008f  },
+			{  0.004f,  0.006f,  0.006f  },
 			{  0.002f,  0.003f,  0.003f  },
 			{  0.000f,  0.000f,  0.000f  },
-			{ -0.020f, -0.040f,	-0.040f  },
-			{ -0.030f, -0.060f, -0.060f  }
+			{ -0.020f, -0.030f,	-0.030f  },
+			{ -0.050f, -0.050f, -0.050f  }
 		};
 		public float[] fDamageLevelFactor = {
 			0.5f, 1.0f, 1.5f
 		};
 		// ----------------------------------
 #endif
+
 		private void t判定にあわせてゲージを増減する(E楽器パート part, E判定 e今回の判定)
 		{
 			double fDamage;
@@ -2410,7 +2411,7 @@ namespace DTXMania
 					break;
 
 				default:
-					num = 0.0;
+					fDamage = 0.0;
 					break;
 			}
 #endif
