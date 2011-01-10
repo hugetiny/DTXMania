@@ -28,7 +28,7 @@ using System.Windows.Forms;
 using SlimDX;
 using SlimDX.Direct3D9;
 using SlimDX.DXGI;
-
+using System.Diagnostics;
 namespace SampleFramework
 {
     /// <summary>
@@ -404,7 +404,15 @@ namespace SampleFramework
 
 		void game_FrameEnd( object sender, EventArgs e )
 		{
-			Result result = Direct3D9.Device.Present();
+			Result result = SlimDX.Direct3D9.ResultCode.Success;
+			try
+			{
+				result = Direct3D9.Device.Present();
+			}
+			catch (Direct3D9Exception)				// #23842 2011.1.6 yyagi: catch D3D9Exception to avoid unexpected termination by changing VSyncWait in fullscreen.
+			{
+				deviceLost = true;
+			}
 			if( result == SlimDX.Direct3D9.ResultCode.DeviceLost )
 				deviceLost = true;
 		}
