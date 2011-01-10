@@ -1173,9 +1173,11 @@ namespace DTXMania
 							case E判定.Miss:
 							case E判定.Bad:
 								this.nヒット数・Auto含まない.Drums.Miss++;
-								break;
+                                break;
+                            default:    // #24068 2011.1.10 ikanick changed
+                                this.nヒット数・Auto含まない.Drums[(int)eJudgeResult]++;
+                                break;
 						}
-						this.nヒット数・Auto含まない.Drums[(int)eJudgeResult]++;
 					}
 					if (CDTXMania.ConfigIni.bドラムが全部オートプレイである || !bIsAutoPlay)
 					{
@@ -1210,9 +1212,11 @@ namespace DTXMania
 							case E判定.Miss:
 							case E判定.Bad:
 								this.nヒット数・Auto含まない.Guitar.Miss++;
-								break;
+                                break;
+                            default:    // #24068 2011.1.10 ikanick changed
+                                this.nヒット数・Auto含まない.Guitar[(int)eJudgeResult]++;
+                                break;
 						}
-						this.nヒット数・Auto含まない.Guitar[(int)eJudgeResult]++;
 					}
 					switch (eJudgeResult)
 					{
@@ -1245,8 +1249,10 @@ namespace DTXMania
 							case E判定.Bad:
 								this.nヒット数・Auto含まない.Bass.Miss++;
 								break;
+                            default:    // #24068 2011.1.10 ikanick changed
+                                this.nヒット数・Auto含まない.Bass[(int)eJudgeResult]++;
+                                break;
 						}
-						this.nヒット数・Auto含まない.Bass[(int)eJudgeResult]++;
 					}
 					switch( eJudgeResult )
 					{
