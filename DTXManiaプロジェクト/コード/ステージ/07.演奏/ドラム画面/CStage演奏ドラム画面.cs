@@ -4286,7 +4286,7 @@ namespace DTXMania
 							break;
 
 						case Eダメージレベル.大きい:
-							num *= 1.6;
+							fDamage *= 1.6;
 							break;
 					}
 					break;
