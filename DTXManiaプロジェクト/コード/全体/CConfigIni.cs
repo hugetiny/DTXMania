@@ -713,16 +713,16 @@ namespace DTXMania
 		{
 #if DAMAGELEVELTUNING
 			//----------------------------------------
-			this.fGaugeFactor[0,0] =  0.003f;
-			this.fGaugeFactor[0,1] =  0.005f;
-			this.fGaugeFactor[1,0] =  0.001f;
-			this.fGaugeFactor[1,1] =  0.002f;
+			this.fGaugeFactor[0,0] =  0.004f;
+			this.fGaugeFactor[0,1] =  0.006f;
+			this.fGaugeFactor[1,0] =  0.002f;
+			this.fGaugeFactor[1,1] =  0.003f;
 			this.fGaugeFactor[2,0] =  0.000f;
 			this.fGaugeFactor[2,1] =  0.000f;
-			this.fGaugeFactor[3,0] = -0.025f;
-			this.fGaugeFactor[3,1] = -0.020f;
+			this.fGaugeFactor[3,0] = -0.020f;
+			this.fGaugeFactor[3,1] = -0.030f;
 			this.fGaugeFactor[4,0] = -0.050f;
-			this.fGaugeFactor[4,1] = -0.030f;
+			this.fGaugeFactor[4,1] = -0.050f;
 
 			this.fDamageLevelFactor[0] = 0.5f;
 			this.fDamageLevelFactor[1] = 1.0f;
