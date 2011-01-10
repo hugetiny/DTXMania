@@ -10,8 +10,8 @@ using System.Resources;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct( "FDKライブラリ ver.17" )]
-[assembly: AssemblyCopyright( "Copyright 2000-2010 DTXMania Group" )]
+[assembly: AssemblyProduct("FDKライブラリ ver.18")]
+[assembly: AssemblyCopyright("Copyright(C) 2000-2011 DTXMania Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 //[assembly: AssemblyKeyName( "FROMsCspContainer" )]
@@ -34,6 +34,6 @@ using System.Resources;
 // すべての値を指定するか、下のように '*' を使ってビルドおよびリビジョン番号を 
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "17.0.0.0" )]
-[assembly: AssemblyFileVersion( "17.0.0.5" )]
+[assembly: AssemblyVersion("18.0.0.0")]
+[assembly: AssemblyFileVersion("18.0.0.0")]
 [assembly: NeutralResourcesLanguageAttribute("ja-JP")]
