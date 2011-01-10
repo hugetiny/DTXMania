@@ -12,7 +12,8 @@ namespace DTXMania
 
 		public STDGBVALUE<bool> b新記録スキル;
 		public STDGBVALUE<bool> b新記録スコア;
-		public STDGBVALUE<bool> b新記録ランク;
+        public STDGBVALUE<bool> b新記録ランク;
+        public STDGBVALUE<bool> b新記録ラスト;
 		public STDGBVALUE<float> fPerfect率;
 		public STDGBVALUE<float> fGreat率;
 		public STDGBVALUE<float> fGood率;
@@ -69,8 +70,8 @@ namespace DTXMania
 				for( int i = 0; i < 3; i++ )
 				{
 					this.b新記録スキル[ i ] = false;
-					this.b新記録スコア[ i ] = false;
-					this.b新記録ランク[ i ] = false;
+                    this.b新記録スコア[ i ] = false;
+                    this.b新記録ランク[ i ] = false;
 				}
 				//---------------------
 				#endregion
@@ -137,12 +138,18 @@ namespace DTXMania
 						ini.stセクション[ k * 2 ] = this.st演奏記録[ k ];
 					}
 
-					// 新記録スキルチェック
-					if( this.st演奏記録[ k ].db演奏型スキル値 > ini.stセクション[ ( k * 2 ) + 1 ].db演奏型スキル値 )
-					{
-						this.b新記録スキル[ k ] = true;
-						ini.stセクション[ ( k * 2 ) + 1 ] = this.st演奏記録[ k ];
-					}
+                    // 新記録スキルチェック
+                    if (this.st演奏記録[k].db演奏型スキル値 > ini.stセクション[(k * 2) + 1].db演奏型スキル値)
+                    {
+                        this.b新記録スキル[ k ] = true;
+                        ini.stセクション[(k * 2) + 1] = this.st演奏記録[ k ];
+                    }
+                    // ラストプレイ #23595 2011.1.9 ikanick
+                    // オートじゃなければプレイ結果を書き込む
+                    if (this.bオート[ k ] == false) {
+                        ini.stセクション[k + 6] = this.st演奏記録[ k ];
+                    }
+
                     // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
                     //        10.11.17 change (nオート to bオート)
                     //                 add default..throw           ikanick
@@ -187,12 +194,12 @@ namespace DTXMania
 							if( this.b新記録スキル[ m ] )
 							{
 								cスコア.譜面情報.最大スキル[ m ] = this.st演奏記録[ m ].db演奏型スキル値;
-							}
+                            }
 
-							if( this.b新記録ランク[ m ] )
-							{
-								cスコア.譜面情報.最大ランク[ m ] = this.nランク値[ m ];
-							}
+                            if (this.b新記録ランク[ m ])
+                            {
+                                cスコア.譜面情報.最大ランク[ m ] = this.nランク値[ m ];
+                            }
 						}
 					}
 				}

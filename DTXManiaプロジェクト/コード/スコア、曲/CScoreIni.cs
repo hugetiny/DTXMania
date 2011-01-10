@@ -36,17 +36,20 @@ namespace DTXMania
 			public int BGMAdjust;
 		}
 
-		// 演奏記録セクション（6種類）
+		// 演奏記録セクション（9種類）
 		public STセクション stセクション;
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STセクション
 		{
-			public CScoreIni.C演奏記録 HiScoreDrums;
-			public CScoreIni.C演奏記録 HiSkillDrums;
+            public CScoreIni.C演奏記録 HiScoreDrums;
+            public CScoreIni.C演奏記録 HiSkillDrums;
 			public CScoreIni.C演奏記録 HiScoreGuitar;
-			public CScoreIni.C演奏記録 HiSkillGuitar;
+            public CScoreIni.C演奏記録 HiSkillGuitar;
 			public CScoreIni.C演奏記録 HiScoreBass;
-			public CScoreIni.C演奏記録 HiSkillBass;
+            public CScoreIni.C演奏記録 HiSkillBass;
+            public CScoreIni.C演奏記録 LastPlayDrums;   // #23595 2011.1.9 ikanick
+            public CScoreIni.C演奏記録 LastPlayGuitar;  //
+            public CScoreIni.C演奏記録 LastPlayBass;    //
 			public CScoreIni.C演奏記録 this[ int index ]
 			{
 				get
@@ -68,8 +71,19 @@ namespace DTXMania
 						case 4:
 							return this.HiScoreBass;
 
-						case 5:
-							return this.HiSkillBass;
+                        case 5:
+                            return this.HiSkillBass;
+
+                        // #23595 2011.1.9 ikanick
+                        case 6:
+                            return this.LastPlayDrums;
+
+                        case 7:
+                            return this.LastPlayGuitar;
+
+                        case 8:
+                            return this.LastPlayBass;
+                        //------------
 					}
 					throw new IndexOutOfRangeException();
 				}
@@ -95,11 +109,24 @@ namespace DTXMania
 
 						case 4:
 							this.HiScoreBass = value;
-							return;
+                            return;
 
-						case 5:
-							this.HiSkillBass = value;
-							return;
+                        case 5:
+                            this.HiSkillBass = value;
+                            return;
+                        // #23595 2011.1.9 ikanick
+                        case 6:
+                            this.LastPlayDrums = value;
+                            return;
+
+                        case 7:
+                            this.LastPlayGuitar = value;
+                            return;
+
+                        case 8:
+                            this.LastPlayBass = value;
+                            return;
+                        //------------------
 					}
 					throw new IndexOutOfRangeException();
 				}
@@ -114,7 +141,10 @@ namespace DTXMania
 			HiScoreGuitar = 2,
 			HiSkillGuitar = 3,
 			HiScoreBass = 4,
-			HiSkillBass = 5,
+            HiSkillBass = 5,
+            LastPlayDrums = 6,  // #23595 2011.1.9 ikanick
+            LastPlayGuitar = 7, //
+            LastPlayBass = 8,   //
 		}
 		public class C演奏記録
 		{
@@ -381,9 +411,12 @@ namespace DTXMania
 			stセクション.HiScoreDrums = new C演奏記録();
 			stセクション.HiSkillDrums = new C演奏記録();
 			stセクション.HiScoreGuitar = new C演奏記録();
-			stセクション.HiSkillGuitar = new C演奏記録();
-			stセクション.HiScoreBass = new C演奏記録();
-			stセクション.HiSkillBass = new C演奏記録();
+            stセクション.HiSkillGuitar = new C演奏記録();
+            stセクション.HiScoreBass = new C演奏記録();
+            stセクション.HiSkillBass = new C演奏記録();
+            stセクション.LastPlayDrums = new C演奏記録();
+            stセクション.LastPlayGuitar = new C演奏記録();
+            stセクション.LastPlayBass = new C演奏記録();
 			this.stセクション = stセクション;
 		}
 
@@ -489,11 +522,25 @@ namespace DTXMania
 								else if( str2.Equals( "HiScore.Bass" ) )
 								{
 									unknown = Eセクション種別.HiScoreBass;
-								}
-								else if( str2.Equals( "HiSkill.Bass" ) )
-								{
-									unknown = Eセクション種別.HiSkillBass;
-								}
+                                }
+                                else if (str2.Equals("HiSkill.Bass"))
+                                {
+                                    unknown = Eセクション種別.HiSkillBass;
+                                }
+                                // #23595 2011.1.9 ikanick
+                                else if (str2.Equals("LastPlay.Drums"))
+                                {
+                                    unknown = Eセクション種別.LastPlayDrums;
+                                }
+                                else if (str2.Equals("LastPlay.Guitar"))
+                                {
+                                    unknown = Eセクション種別.LastPlayGuitar;
+                                }
+                                else if (str2.Equals("LastPlay.Bass"))
+                                {
+                                    unknown = Eセクション種別.LastPlayBass;
+                                }
+                                //----------------------------------------------------
 								else
 								{
 									unknown = Eセクション種別.Unknown;
@@ -522,7 +569,10 @@ namespace DTXMania
 										case Eセクション種別.HiScoreGuitar:
 										case Eセクション種別.HiSkillGuitar:
 										case Eセクション種別.HiScoreBass:
-										case Eセクション種別.HiSkillBass:
+                                        case Eセクション種別.HiSkillBass:
+                                        case Eセクション種別.LastPlayDrums:// #23595 2011.1.9 ikanick
+                                        case Eセクション種別.LastPlayGuitar:
+                                        case Eセクション種別.LastPlayBass:
 											{
 												c演奏記録 = this.stセクション[ (int) unknown ];
 												if( !str3.Equals( "Score" ) )
@@ -1038,8 +1088,8 @@ namespace DTXMania
 			writer.WriteLine( "PlayCountGuitars={0}", this.stファイル.PlayCountGuitar );
             writer.WriteLine( "PlayCountBass={0}", this.stファイル.PlayCountBass );
             writer.WriteLine( "ClearCountDrums={0}", this.stファイル.ClearCountDrums );       // #23596 10.11.16 add ikanick
-            writer.WriteLine( "ClearCountGuitars={0}", this.stファイル.ClearCountGuitar );    // #23596 10.11.16 add ikanick
-            writer.WriteLine( "ClearCountBass={0}", this.stファイル.ClearCountBass );         // #23596 10.11.16 add ikanick
+            writer.WriteLine( "ClearCountGuitars={0}", this.stファイル.ClearCountGuitar );    //
+            writer.WriteLine( "ClearCountBass={0}", this.stファイル.ClearCountBass );         //
 			writer.WriteLine( "HistoryCount={0}", this.stファイル.HistoryCount );
 			writer.WriteLine( "History0={0}", this.stファイル.History[ 0 ] );
 			writer.WriteLine( "History1={0}", this.stファイル.History[ 1 ] );
@@ -1048,9 +1098,9 @@ namespace DTXMania
 			writer.WriteLine( "History4={0}", this.stファイル.History[ 4 ] );
 			writer.WriteLine( "BGMAdjust={0}", this.stファイル.BGMAdjust );
 			writer.WriteLine();
-			for( int i = 0; i < 6; i++ )
+			for( int i = 0; i < 9; i++ )
 			{
-				string[] strArray = new string[] { "HiScore.Drums", "HiSkill.Drums", "HiScore.Guitar", "HiSkill.Guitar", "HiScore.Bass", "HiSkill.Bass" };
+                string[] strArray = new string[] { "HiScore.Drums", "HiSkill.Drums", "HiScore.Guitar", "HiSkill.Guitar", "HiScore.Bass", "HiSkill.Bass", "LastPlay.Drums", "LastPlay.Guitar", "LastPlay.Bass" };
 				writer.WriteLine( "[{0}]", strArray[ i ] );
 				writer.WriteLine( "Score={0}", this.stセクション[ i ].nスコア );
 				writer.WriteLine( "PlaySkill={0}", this.stセクション[ i ].db演奏型スキル値 );
@@ -1115,7 +1165,7 @@ namespace DTXMania
 		}
 		internal void t全演奏記録セクションの整合性をチェックし不整合があればリセットする()
 		{
-			for( int i = 0; i < 6; i++ )
+			for( int i = 0; i < 9; i++ )
 			{
 				if( !this.b整合性がある( (Eセクション種別) i ) )
 					this.stセクション[ i ] = new C演奏記録();
