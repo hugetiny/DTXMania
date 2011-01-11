@@ -143,6 +143,7 @@
     <Compile Include="コード\ステージ\07.演奏\ドラム画面\CAct演奏DrumsDanger.cs" />
     <Compile Include="コード\ステージ\07.演奏\ドラム画面\CAct演奏DrumsRGB.cs" />
     <Compile Include="コード\ステージ\07.演奏\ドラム画面\CAct演奏DrumsWailingBonus.cs" />
+    <Compile Include="コード\ステージ\07.演奏\ドラム画面\CAct演奏Drumsグラフ.cs" />
     <Compile Include="コード\ステージ\07.演奏\ドラム画面\CAct演奏Drumsゲージ.cs" />
     <Compile Include="コード\ステージ\07.演奏\ドラム画面\CAct演奏DrumsコンボDGB.cs" />
     <Compile Include="コード\ステージ\07.演奏\ドラム画面\CAct演奏Drumsスコア.cs" />

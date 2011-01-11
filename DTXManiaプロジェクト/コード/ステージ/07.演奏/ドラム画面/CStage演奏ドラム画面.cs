@@ -48,8 +48,9 @@ namespace DTXMania
 			base.list子Activities.Add( this.actCOMBO = new CAct演奏DrumsコンボDGB() );
 			base.list子Activities.Add( this.actDANGER = new CAct演奏DrumsDanger() );
 			base.list子Activities.Add( this.actChipFireD = new CAct演奏DrumsチップファイアD() );
-			base.list子Activities.Add( this.actChipFireGB = new CAct演奏DrumsチップファイアGB() );
-			base.list子Activities.Add( this.actGauge = new CAct演奏Drumsゲージ() );
+            base.list子Activities.Add( this.actChipFireGB = new CAct演奏DrumsチップファイアGB());
+            base.list子Activities.Add( this.actGauge = new CAct演奏Drumsゲージ() );
+            base.list子Activities.Add( this.actGraph = new CAct演奏Drumsグラフ() );
 			base.list子Activities.Add( this.actJudgeString = new CAct演奏Drums判定文字列() );
 			base.list子Activities.Add( this.actLaneFlushD = new CAct演奏DrumsレーンフラッシュD() );
 			base.list子Activities.Add( this.actLaneFlushGB = new CAct演奏DrumsレーンフラッシュGB() );
@@ -295,6 +296,9 @@ namespace DTXMania
 			this.nInputAdjustTimeMs.Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums;		// #23580 2011.1.3 yyagi
 			this.nInputAdjustTimeMs.Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
 			this.nInputAdjustTimeMs.Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass;			//
+
+            Cスコア cスコア = CDTXMania.stage選曲.r確定されたスコア;
+            this.actGraph.dbグラフ値2 = cスコア.譜面情報.最大スキル[0];
 		}
 		public override void On非活性化()
 		{
@@ -372,8 +376,9 @@ namespace DTXMania
 				this.t進行描画・ステータスパネル();
 				this.t進行描画・ギターベースフレーム();
 				this.t進行描画・レーンフラッシュGB();
-				this.t進行描画・ギターベース判定ライン();
-				this.t進行描画・ゲージ();
+                this.t進行描画・ギターベース判定ライン();
+                this.t進行描画・ゲージ();
+                this.t進行描画・グラフ();
 				this.t進行描画・レーンフラッシュD();
 				this.t進行描画・DANGER();
 				this.t進行描画・判定ライン();
@@ -586,8 +591,9 @@ namespace DTXMania
 		private CAct演奏DrumsDanger actDANGER;
 		private CActFIFOBlack actFI;
 		private CActFIFOBlack actFO;
-		private CActFIFOWhite actFOClear;
-		private CAct演奏Drumsゲージ actGauge;
+        private CActFIFOWhite actFOClear;
+        private CAct演奏Drumsゲージ actGauge;
+		private CAct演奏Drumsグラフ actGraph;
 		private CAct演奏Drums判定文字列 actJudgeString;
 		private CAct演奏DrumsレーンフラッシュD actLaneFlushD;
 		private CAct演奏DrumsレーンフラッシュGB actLaneFlushGB;
@@ -1297,6 +1303,7 @@ namespace DTXMania
 				}
 				this.actScore.Set( pChip.e楽器パート, nScore );
 			}
+            this.actGraph.dbグラフ値 = CScoreIni.t演奏型スキルを計算して返す(CDTXMania.DTX.n可視チップ数.Drums, this.nヒット数・Auto含まない.Drums.Perfect, this.nヒット数・Auto含まない.Drums.Great, this.nヒット数・Auto含まない.Drums.Good, this.nヒット数・Auto含まない.Drums.Poor, this.nヒット数・Auto含まない.Drums.Miss);
 			return eJudgeResult;
 		}
 		private void tチップのヒット処理・BadならびにTight時のMiss( E楽器パート part )
@@ -1595,7 +1602,14 @@ namespace DTXMania
 			{
 				this.actGauge.On進行描画();
 			}
-		}
+        }
+        private void t進行描画・グラフ()
+        {
+            if (!CDTXMania.ConfigIni.bストイックモード && CDTXMania.ConfigIni.bGraph有効)
+            {
+                this.actGraph.On進行描画();
+            }
+        }
 		private void t進行描画・コンボ()
 		{
 			this.actCOMBO.On進行描画();
@@ -4230,7 +4244,7 @@ namespace DTXMania
 			double fDamage;
 
 #if true	// DAMAGELEVELTUNING
-			switch (e今回の判定)						// #23625 2011.1.10 ickw_284
+			switch (e今回の判定)
 			{
 				case E判定.Perfect:
 				case E判定.Great:
@@ -4300,7 +4314,7 @@ namespace DTXMania
 
 			if( this.actGauge.db現在のゲージ値 > 1.0 )
 				this.actGauge.db現在のゲージ値 = 1.0;
-		}
+        }
 		//-----------------
 		#endregion
 	}

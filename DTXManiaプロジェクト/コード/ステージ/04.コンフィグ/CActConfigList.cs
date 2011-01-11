@@ -382,6 +382,10 @@ namespace DTXMania
 				"BGAの使用：\n画像(BGA)を表示可能にする場合に\nON にします。BGA の再生には、それ\nなりのマシンパワーが必要とされます。",
 				"To draw BGA (back ground animations)\n or not.");
 			this.list項目リスト.Add( this.iSystemBGA );
+			this.iSystemGraph = new CItemToggle( "Graph", CDTXMania.ConfigIni.bGraph有効,
+				"達成率グラフの使用：\n最高スキル達成率と比較できるグラフ\nを表示する場合にON にします。\n現バージョンではドラムのみとなって\nいます。",
+				"To draw Graph \n or not.");
+			this.list項目リスト.Add( this.iSystemGraph );
 			this.iSystemFillIn = new CItemToggle( "FillIn", CDTXMania.ConfigIni.bフィルイン有効,
 				"フィルインエフェクトの使用：\nフィルイン区間の爆発パターンに特別\nのエフェクトを使用します。\nフィルインエフェクトの描画にはそれな\nりのマシンパワーが必要とされます。",
 				"To show bursting effects at the fill-in\n zone or not.");
@@ -770,6 +774,7 @@ namespace DTXMania
 		private CItemInteger iSystemAutoChipVolume;
 		private CItemToggle iSystemAVI;
 		private CItemToggle iSystemBGA;
+		private CItemToggle iSystemGraph;
 		private CItemInteger iSystemBGAlpha;
 		private CItemToggle iSystemBGMSound;
 		private CItemInteger iSystemChipVolume;
@@ -875,6 +880,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bバッファ入力を行う = this.iSystemBufferedInput.bON;
 			CDTXMania.ConfigIni.bAVI有効 = this.iSystemAVI.bON;
 			CDTXMania.ConfigIni.bBGA有効 = this.iSystemBGA.bON;
+			CDTXMania.ConfigIni.bGraph有効 = this.iSystemGraph.bON;
 			CDTXMania.ConfigIni.bフィルイン有効 = this.iSystemFillIn.bON;
 			CDTXMania.ConfigIni.b演奏音を強調する.Drums = this.iSystemSoundMonitorDrums.bON;
 			CDTXMania.ConfigIni.b演奏音を強調する.Guitar = this.iSystemSoundMonitorGuitar.bON;

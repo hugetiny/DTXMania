@@ -372,6 +372,7 @@ namespace DTXMania
 		public int nBGAlpha;
 		public bool bAVI有効;
 		public bool bBGA有効;
+		public bool bGraph有効;
 		public bool bBGM音を発声する;
 		public STDGBVALUE<bool> bHidden;
 		public STDGBVALUE<bool> bLeft;
