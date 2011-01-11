@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Diagnostics;
+using System.Windows.Forms;
+
+namespace DTXMania
+{
+	internal class Program
+	{
+		#region [ 二重機動チェック、DLL存在チェック ]
+		//-----------------------------
+		private static Mutex mutex二重起動防止用;
+
+		private static bool tDLLの存在チェック( string strDll名, string str存在しないときに表示するエラー文字列jp, string str存在しないときに表示するエラー文字列en )
+		{
+			string str存在しないときに表示するエラー文字列 = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
+				str存在しないときに表示するエラー文字列jp : str存在しないときに表示するエラー文字列en;
+			IntPtr hModule = LoadLibrary( strDll名 );
+			if( hModule == IntPtr.Zero )
+			{
+				MessageBox.Show( str存在しないときに表示するエラー文字列, "DTXMania runtime error", MessageBoxButtons.OK, MessageBoxIcon.Hand );
+				return false;
+			}
+			FreeLibrary( hModule );
+			return true;
+		}
+
+		[DllImport( "kernel32", CharSet = CharSet.Unicode, SetLastError = true )]
+		internal static extern void FreeLibrary( IntPtr hModule );
+
+		[DllImport( "kernel32", CharSet = CharSet.Unicode, SetLastError = true )]
+		internal static extern IntPtr LoadLibrary( string lpFileName );
+		//-----------------------------
+		#endregion
+
+		[STAThread]
+		private static void Main()
+		{
+			mutex二重起動防止用 = new Mutex( false, "DTXManiaMutex" );
+
+			if( mutex二重起動防止用.WaitOne( 0, false ) )
+			{
+				string newLine = Environment.NewLine;
+				bool flag = false;
+
+				if (!tDLLの存在チェック("SlimDX" + CDTXMania.SLIMDXDLL,
+					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
+					)) flag = true;
+				if (!tDLLの存在チェック("FDK.dll",
+					"FDK.dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"FDK.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
+				if( !tDLLの存在チェック( "xadec.dll",
+					"xadec.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"xadec.dll is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
+				if( !tDLLの存在チェック( "SoundDecoder.dll",
+					"SoundDecoder.dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"SoundDecoder.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
+				if (!tDLLの存在チェック(CDTXMania.D3DXDLL,
+					CDTXMania.D3DXDLL + " が存在しません。" + newLine + "DirectX Redist フォルダの DXSETUP.exe を実行し、" + newLine + "必要な DirectX ランタイムをインストールしてください。",
+					CDTXMania.D3DXDLL + " is not found." + newLine + "Please execute DXSETUP.exe in \"DirectX Redist\" folder, to install DirectX runtimes required for DTXMania."
+					)) flag = true;
+				if (!flag)
+				{
+					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
+					try
+					{
+						using( var mania = new CDTXMania() )
+							mania.Run();
+
+						Trace.WriteLine( "" );
+						Trace.WriteLine( "遊んでくれてありがとう！" );
+					}
+					catch( Exception e )
+					{
+						Trace.WriteLine( "" );
+						Trace.Write( e.ToString() );
+						Trace.WriteLine( "" );
+						Trace.WriteLine( "エラーだゴメン！（涙" );
+					}
+					// END #23670 2010.11.13 from
+					
+					if( Trace.Listeners.Count > 1 )
+						Trace.Listeners.RemoveAt( 1 );
+				}
+			}
+		}
+	}
+}
