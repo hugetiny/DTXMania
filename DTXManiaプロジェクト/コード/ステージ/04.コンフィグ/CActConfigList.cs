@@ -383,7 +383,7 @@ namespace DTXMania
 				"To draw BGA (back ground animations)\n or not.");
 			this.list項目リスト.Add( this.iSystemBGA );
 			this.iSystemGraph = new CItemToggle( "Graph", CDTXMania.ConfigIni.bGraph有効,
-				"達成率グラフの使用：\n最高スキル達成率と比較できるグラフ\nを表示する場合にON にします。\n現バージョンではドラムのみとなって\nいます。",
+				"達成率グラフの使用：\n最高スキル達成率と比較できるグラフ\nを表示する場合にON にします。\nオートプレイだと表示されません。\n現バージョンではドラムのみとなって\nいます。",
 				"To draw Graph \n or not.");
 			this.list項目リスト.Add( this.iSystemGraph );
 			this.iSystemFillIn = new CItemToggle( "FillIn", CDTXMania.ConfigIni.bフィルイン有効,
@@ -460,7 +460,7 @@ namespace DTXMania
 				"The volumes for AUTO chips.\nYou can specify from 0 to 100%.");
 			this.list項目リスト.Add( this.iSystemAutoChipVolume );
 			this.iSystemStoicMode = new CItemToggle( "StoicMode", CDTXMania.ConfigIni.bストイックモード,
-				"ストイック（禁欲）モード：\n以下をまとめて表示ON/OFFします。\n・プレビュー画像/動画\n・リザルト画像/動画\n・NowLoading画像\n・演奏画面の背景画像\n・BGA 画像\n・AVI 動画\n",
+				"ストイック（禁欲）モード：\n以下をまとめて表示ON/OFFします。\n・プレビュー画像/動画\n・リザルト画像/動画\n・NowLoading画像\n・演奏画面の背景画像\n・BGA 画像 / AVI 動画\n・グラフ画像\n",
 				"Turn ON to disable drawing\n * preview image / movie\n * result image / movie\n * nowloading image\n * wallpaper (in playing screen)\n * BGA / AVI (in playing screen)");
 			this.list項目リスト.Add( this.iSystemStoicMode );
 			this.iSystemCymbalFree = new CItemToggle( "CymbalFree", CDTXMania.ConfigIni.bシンバルフリー,

@@ -1605,7 +1605,7 @@ namespace DTXMania
         }
         private void t進行描画・グラフ()
         {
-            if (!CDTXMania.ConfigIni.bストイックモード && CDTXMania.ConfigIni.bGraph有効)
+            if (!CDTXMania.ConfigIni.bストイックモード && !CDTXMania.ConfigIni.bドラムが全部オートプレイである && CDTXMania.ConfigIni.bGraph有効)
             {
                 this.actGraph.On進行描画();
             }

@@ -109,15 +109,28 @@ namespace DTXMania
                 }
 
                 // グラフ
+                // --現在値
                 if (this.txグラフ != null)
                 {
                     this.txグラフ.n透明度 = 192;
                     this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
                 }
-                // --現在値
                 rectangle = new Rectangle(0, 0, 10, (int)(230f * this.dbグラフ値現在 / 100));
                 this.txグラフ.t2D描画(CDTXMania.app.Device, 350, 318 - (int)(230f * this.dbグラフ値現在 / 100), rectangle);
+                if (dbグラフ値現在 >= dbグラフ値目標)
+                {
+                    this.txグラフ.vc拡大縮小倍率 = new Vector3(1.2f, 1f, 1f);
+                    this.txグラフ.n透明度 = 64;
+                    this.txグラフ.b加算合成 = true;
+                    this.txグラフ.t2D描画(CDTXMania.app.Device, 349, 318 - (int)(230f * this.dbグラフ値現在 / 100), rectangle);
+                }
                 // --目標値
+                if (this.txグラフ != null)
+                {
+                    this.txグラフ.n透明度 = 192;
+                    this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
+                    this.txグラフ.b加算合成 = false;
+                }
                 rectangle = new Rectangle(10, 0, 10, (int)(230f * this.dbグラフ値目標 / 100));
                 this.txグラフ.t2D描画(CDTXMania.app.Device, 368, 318 - (int)(230f * this.dbグラフ値目標 / 100), rectangle);
                 
