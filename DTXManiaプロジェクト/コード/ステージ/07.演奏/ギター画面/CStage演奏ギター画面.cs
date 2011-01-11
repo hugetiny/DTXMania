@@ -2328,7 +2328,7 @@ namespace DTXMania
 			}
 			image.Dispose();
 		}
-#if DAMAGELEVELTUNING
+#if true	// DAMAGELEVELTUNING
 		// ----------------------------------
 		public float[,] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damege/recover factors
 			// drums,   guitar,  bass
@@ -2348,8 +2348,8 @@ namespace DTXMania
 		{
 			double fDamage;
 
-#if DAMAGELEVELTUNING
-			switch (e今回の判定)
+#if true	// DAMAGELEVELTUNING
+			switch (e今回の判定)						// #23625 2011.1.10 ickw_284
 			{
 				case E判定.Perfect:
 				case E判定.Great:
@@ -2373,7 +2373,7 @@ namespace DTXMania
 					fDamage = 0.0;
 					break;
 			}
-#else
+#else													// before applying #23625 modifications
 			switch (e今回の判定)
 			{
 				case E判定.Perfect:

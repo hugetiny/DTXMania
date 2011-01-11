@@ -359,11 +359,11 @@ namespace DTXMania
 				}
 			}
 		}
-		
+
 
 		// プロパティ
 
-#if DAMAGELEVELTUNING
+#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
 		//----------------------------------------
 		public float[,] fGaugeFactor = new float[5,2];
 		public float[] fDamageLevelFactor = new float[3];
@@ -711,7 +711,7 @@ namespace DTXMania
 
 		public CConfigIni()
 		{
-#if DAMAGELEVELTUNING
+#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
 			//----------------------------------------
 			this.fGaugeFactor[0,0] =  0.004f;
 			this.fGaugeFactor[0,1] =  0.006f;
@@ -865,7 +865,7 @@ namespace DTXMania
 			sw.WriteLine( "[System]" );
 			sw.WriteLine();
 
-#if DAMAGELEVELTUNING
+#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
 	//------------------------------
 			sw.WriteLine("; ライフゲージのパラメータ調整(調整完了後削除予定)");
 			sw.WriteLine("; GaugeFactorD: ドラムのPerfect, Great,... の回復量(ライフMAXを1.0としたときの値を指定)");
@@ -877,7 +877,7 @@ namespace DTXMania
 			sw.WriteLine();
 	//------------------------------
 #endif
-			
+
 			sw.WriteLine( "; リリースバージョン" );
 			sw.WriteLine( "Version={0}", CDTXMania.VERSION );
 			sw.WriteLine();
@@ -1358,7 +1358,7 @@ namespace DTXMania
 										//-----------------------------
 										case Eセクション種別.System:
 											{
-#if DAMAGELEVELTUNING
+#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
 										//----------------------------------------
 												if (str3.Equals("GaugeFactorD"))
 												{

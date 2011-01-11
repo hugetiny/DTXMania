@@ -766,7 +766,7 @@ namespace DTXMania
 							{
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 演奏（ドラム画面）" );
-#if DAMAGELEVELTUNING
+#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
 for (int i = 0; i < 5; i++)
 {
 	for (int j = 0; j < 2; j++)
@@ -785,7 +785,7 @@ for (int i = 0; i < 3; i++) {
 							{
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 演奏（ギター画面）" );
-#if DAMAGELEVELTUNING
+#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
 for (int i = 0; i < 5; i++)
 {
 	for (int j = 0; j < 2; j++)
