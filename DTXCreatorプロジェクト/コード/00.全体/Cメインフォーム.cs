@@ -112,6 +112,8 @@ namespace DTXCreator
 
 				if( this._b未保存 != value )
 				{
+					this._b未保存 = value;		// #24133 2011.1.14 yyagi: 「代入後にif文分岐」するよう、代入を頭に移動。
+
 					// タイトル文字列を取得。
 
 					string strタイトル = Resources.strデフォルトウィンドウタイトル;
@@ -138,8 +140,6 @@ namespace DTXCreator
 						this.toolStripMenuItem上書き保存.Enabled = false;
 						this.toolStripButton上書き保存.Enabled = false;
 					}
-
-					this._b未保存 = value;
 				}
 			}
 		}
