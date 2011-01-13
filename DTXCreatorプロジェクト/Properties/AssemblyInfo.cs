@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "DTXCreator" )]
-[assembly: AssemblyCopyright( "Copyright (C) 2000 2010 DTXMania Group" )]
+[assembly: AssemblyCopyright("Copyright (C) 2000 2011 DTXMania Group")]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
@@ -33,6 +33,6 @@ using System.Resources;
 // すべての値を指定するか、下のように '*' を使ってビルドおよびリビジョン番号を 
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "21.0.0.0" )]
-[assembly: AssemblyFileVersion( "21.0.0.0" )]
-[assembly: NeutralResourcesLanguageAttribute( "ja-JP" )]
+[assembly: AssemblyVersion("22.0.0.0")]
+[assembly: AssemblyFileVersion("22.0.0.0")]
+[assembly: NeutralResourcesLanguageAttribute("")]
