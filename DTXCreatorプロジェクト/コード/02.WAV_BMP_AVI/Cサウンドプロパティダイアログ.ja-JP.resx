@@ -117,62 +117,175 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBoxラベル.ToolTip" xml:space="preserve">
+    <value>サウンドファイルに名前を自由に設定できます。</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="checkBox小節範囲指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 16</value>
+  <data name="labelラベル.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 12</value>
   </data>
-  <data name="checkBox小節範囲指定.Text" xml:space="preserve">
-    <value>小節範囲指定(&amp;S)</value>
+  <data name="labelラベル.Text" xml:space="preserve">
+    <value>ラベル</value>
   </data>
-  <data name="checkBox小節範囲指定.ToolTip" xml:space="preserve">
-    <value>検索したい小節の番号を範囲指定します。</value>
+  <data name="labelラベル.ToolTip" xml:space="preserve">
+    <value>サウンドファイルに名前を自由に設定できます。</value>
   </data>
-  <data name="checkBoxチップ範囲指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 16</value>
+  <data name="textBoxファイル.ToolTip" xml:space="preserve">
+    <value>サウンドファイルのパス。</value>
   </data>
-  <data name="checkBoxチップ範囲指定.Text" xml:space="preserve">
-    <value>チップ範囲指定(&amp;C)</value>
+  <data name="labelファイル.Size" type="System.Drawing.Size, System.Drawing">
+    <value>51, 12</value>
   </data>
-  <data name="checkBoxチップ範囲指定.ToolTip" xml:space="preserve">
-    <value>検索したいチップの番号を範囲指定します。</value>
+  <data name="labelファイル.Text" xml:space="preserve">
+    <value>ファイル名</value>
   </data>
-  <data name="checkBoxレーン指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 16</value>
+  <data name="labelファイル.ToolTip" xml:space="preserve">
+    <value>サウンドファイル名</value>
   </data>
-  <data name="checkBoxレーン指定.Text" xml:space="preserve">
-    <value>レーン指定(&amp;L)</value>
+  <data name="label音量.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
   </data>
-  <data name="checkBoxレーン指定.ToolTip" xml:space="preserve">
-    <value>指定したレーンのみ検索します。</value>
+  <data name="label音量.Text" xml:space="preserve">
+    <value>音量</value>
   </data>
-  <data name="checkBox表チップ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 16</value>
+  <data name="label音量.ToolTip" xml:space="preserve">
+    <value>サウンドの音量を設定します。</value>
   </data>
-  <data name="checkBox表チップ.Text" xml:space="preserve">
-    <value>表チップから検索する(&amp;F)</value>
+  <data name="label位置.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
   </data>
-  <data name="checkBox表チップ.ToolTip" xml:space="preserve">
-    <value>表チップだけを検索対象にします。</value>
+  <data name="label位置.Text" xml:space="preserve">
+    <value>位置</value>
   </data>
-  <data name="checkBox裏チップ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 16</value>
+  <data name="label位置.ToolTip" xml:space="preserve">
+    <value>サウンドの位置を設定します。</value>
   </data>
-  <data name="checkBox裏チップ.Text" xml:space="preserve">
-    <value>裏チップから検索する(&amp;B)</value>
+  <data name="button参照.Text" xml:space="preserve">
+    <value>参照...
+</value>
+  </data>
+  <data name="button参照.ToolTip" xml:space="preserve">
+    <value>サウンドファイルをダイアログから選択します。</value>
+  </data>
+  <data name="hScrollBar音量.ToolTip" xml:space="preserve">
+    <value>サウンドの音量を設定します。</value>
+  </data>
+  <data name="textBox音量.ToolTip" xml:space="preserve">
+    <value>サウンドの音量を設定します。</value>
+  </data>
+  <data name="textBox位置.ToolTip" xml:space="preserve">
+    <value>サウンドの位置を設定します。</value>
+  </data>
+  <data name="hScrollBar位置.ToolTip" xml:space="preserve">
+    <value>サウンドの位置を設定します。</value>
+  </data>
+  <data name="button背景色.Text" xml:space="preserve">
+    <value>背景色</value>
+  </data>
+  <data name="button背景色.ToolTip" xml:space="preserve">
+    <value>WAV行の背景色を設定します。</value>
+  </data>
+  <data name="button文字色.Text" xml:space="preserve">
+    <value>文字色</value>
+  </data>
+  <data name="button文字色.ToolTip" xml:space="preserve">
+    <value>WAV行の文字色を設定します。</value>
+  </data>
+  <data name="button標準色に戻す.Text" xml:space="preserve">
+    <value>標準色に戻す</value>
+  </data>
+  <data name="button標準色に戻す.ToolTip" xml:space="preserve">
+    <value>WAV行の背景色と文字色を標準色に戻します。</value>
+  </data>
+  <data name="button試聴.Text" xml:space="preserve">
+    <value>試聴</value>
+  </data>
+  <data name="button試聴.ToolTip" xml:space="preserve">
+    <value>現在のサウンドファイルを試聴します。</value>
+  </data>
+  <data name="checkBoxBGM.Size" type="System.Drawing.Size, System.Drawing">
+    <value>182, 16</value>
+  </data>
+  <data name="checkBoxBGM.Text" xml:space="preserve">
+    <value>このサウンドをBGMとして使用する</value>
+  </data>
+  <data name="checkBoxBGM.ToolTip" xml:space="preserve">
+    <value>このサウンドをBGMとして使用する場合に ON にします。</value>
+  </data>
+  <data name="buttonOK.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="buttonキャンセル.Text" xml:space="preserve">
     <value>キャンセル</value>
   </data>
-  <data name="buttonOK.Text" xml:space="preserve">
-    <value>検索実行</value>
+  <data name="buttonキャンセル.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="label説明.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 12</value>
+  <data name="textBoxWAV番号.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="label説明.Text" xml:space="preserve">
-    <value>以下の条件に合うチップを選択します。</value>
+  <data name="labelWAV番号.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 12</value>
+  </data>
+  <data name="labelWAV番号.Text" xml:space="preserve">
+    <value>WAV番号
+</value>
+  </data>
+  <data name="labelWAV番号.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label音量無音.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
+  <data name="label音量無音.Text" xml:space="preserve">
+    <value>無音</value>
+  </data>
+  <data name="label音量無音.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label位置左.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 12</value>
+  </data>
+  <data name="label位置左.Text" xml:space="preserve">
+    <value>左</value>
+  </data>
+  <data name="label位置左.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="labe音量原音.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
+  <data name="labe音量原音.Text" xml:space="preserve">
+    <value>原音</value>
+  </data>
+  <data name="labe音量原音.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label位置右.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 12</value>
+  </data>
+  <data name="label位置右.Text" xml:space="preserve">
+    <value>右</value>
+  </data>
+  <data name="label位置右.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label位置中央.Location" type="System.Drawing.Point, System.Drawing">
+    <value>208, 142</value>
+  </data>
+  <data name="label位置中央.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 12</value>
+  </data>
+  <data name="label位置中央.Text" xml:space="preserve">
+    <value>中央</value>
+  </data>
+  <data name="label位置中央.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>検索</value>
+    <value>サウンドプロパティ</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

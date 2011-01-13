@@ -118,61 +118,49 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="checkBox小節範囲指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 16</value>
+  <data name="checkBoxPlaySoundOnChip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>283, 16</value>
   </data>
-  <data name="checkBox小節範囲指定.Text" xml:space="preserve">
-    <value>小節範囲指定(&amp;S)</value>
+  <data name="checkBoxPlaySoundOnChip.Text" xml:space="preserve">
+    <value>WAVチップを譜面に配置したときにチップの音を再生する</value>
   </data>
-  <data name="checkBox小節範囲指定.ToolTip" xml:space="preserve">
-    <value>検索したい小節の番号を範囲指定します。</value>
+  <data name="checkBoxPreviewBGM.Size" type="System.Drawing.Size, System.Drawing">
+    <value>227, 16</value>
   </data>
-  <data name="checkBoxチップ範囲指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 16</value>
+  <data name="checkBoxPreviewBGM.Text" xml:space="preserve">
+    <value>BGMサウンドのプレビューは自動再生しない</value>
   </data>
-  <data name="checkBoxチップ範囲指定.Text" xml:space="preserve">
-    <value>チップ範囲指定(&amp;C)</value>
+  <data name="checkBoxオートフォーカス.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 16</value>
   </data>
-  <data name="checkBoxチップ範囲指定.ToolTip" xml:space="preserve">
-    <value>検索したいチップの番号を範囲指定します。</value>
+  <data name="checkBoxオートフォーカス.Text" xml:space="preserve">
+    <value>オートフォーカス(&amp;F)</value>
   </data>
-  <data name="checkBoxレーン指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 16</value>
+  <data name="label個まで表示する.Location" type="System.Drawing.Point, System.Drawing">
+    <value>257, 29</value>
   </data>
-  <data name="checkBoxレーン指定.Text" xml:space="preserve">
-    <value>レーン指定(&amp;L)</value>
+  <data name="label個まで表示する.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 12</value>
   </data>
-  <data name="checkBoxレーン指定.ToolTip" xml:space="preserve">
-    <value>指定したレーンのみ検索します。</value>
+  <data name="label個まで表示する.Text" xml:space="preserve">
+    <value>個まで表示する(&amp;T)</value>
   </data>
-  <data name="checkBox表チップ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 16</value>
+  <data name="checkBox最近使用したファイル.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 16</value>
   </data>
-  <data name="checkBox表チップ.Text" xml:space="preserve">
-    <value>表チップから検索する(&amp;F)</value>
+  <data name="checkBox最近使用したファイル.Text" xml:space="preserve">
+    <value>最近使用したファイルの一覧(&amp;R)：</value>
   </data>
-  <data name="checkBox表チップ.ToolTip" xml:space="preserve">
-    <value>表チップだけを検索対象にします。</value>
+  <data name="numericUpDown最近使用したファイルの最大表示個数.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 25</value>
   </data>
-  <data name="checkBox裏チップ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 16</value>
+  <data name="tabPage全般.Text" xml:space="preserve">
+    <value>全般</value>
   </data>
-  <data name="checkBox裏チップ.Text" xml:space="preserve">
-    <value>裏チップから検索する(&amp;B)</value>
-  </data>
-  <data name="buttonキャンセル.Text" xml:space="preserve">
+  <data name="button1.Text" xml:space="preserve">
     <value>キャンセル</value>
   </data>
-  <data name="buttonOK.Text" xml:space="preserve">
-    <value>検索実行</value>
-  </data>
-  <data name="label説明.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 12</value>
-  </data>
-  <data name="label説明.Text" xml:space="preserve">
-    <value>以下の条件に合うチップを選択します。</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>検索</value>
+    <value>オプション</value>
   </data>
 </root>

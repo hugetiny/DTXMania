@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( C数値入力ダイアログ ) );
 			this.numericUpDown数値 = new System.Windows.Forms.NumericUpDown();
 			this.labelメッセージ = new System.Windows.Forms.Label();
 			this.buttonキャンセル = new System.Windows.Forms.Button();
@@ -37,9 +38,10 @@
 			// 
 			// numericUpDown数値
 			// 
+			this.numericUpDown数値.AccessibleDescription = null;
+			this.numericUpDown数値.AccessibleName = null;
+			resources.ApplyResources( this.numericUpDown数値, "numericUpDown数値" );
 			this.numericUpDown数値.DecimalPlaces = 4;
-			this.numericUpDown数値.Font = new System.Drawing.Font( "MS UI Gothic", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ( (byte) ( 128 ) ) );
-			this.numericUpDown数値.Location = new System.Drawing.Point( 16, 45 );
 			this.numericUpDown数値.Maximum = new decimal( new int[] {
             1000,
             0,
@@ -51,9 +53,6 @@
             0,
             262144} );
 			this.numericUpDown数値.Name = "numericUpDown数値";
-			this.numericUpDown数値.Size = new System.Drawing.Size( 120, 26 );
-			this.numericUpDown数値.TabIndex = 1;
-			this.numericUpDown数値.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.numericUpDown数値.Value = new decimal( new int[] {
             1,
             0,
@@ -63,53 +62,54 @@
 			// 
 			// labelメッセージ
 			// 
-			this.labelメッセージ.AutoSize = true;
-			this.labelメッセージ.Location = new System.Drawing.Point( 14, 11 );
+			this.labelメッセージ.AccessibleDescription = null;
+			this.labelメッセージ.AccessibleName = null;
+			resources.ApplyResources( this.labelメッセージ, "labelメッセージ" );
+			this.labelメッセージ.Font = null;
 			this.labelメッセージ.Name = "labelメッセージ";
-			this.labelメッセージ.Size = new System.Drawing.Size( 121, 12 );
-			this.labelメッセージ.TabIndex = 0;
-			this.labelメッセージ.Text = "数値を入力してください。\r\n";
 			// 
 			// buttonキャンセル
 			// 
-			this.buttonキャンセル.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.buttonキャンセル.AccessibleDescription = null;
+			this.buttonキャンセル.AccessibleName = null;
+			resources.ApplyResources( this.buttonキャンセル, "buttonキャンセル" );
+			this.buttonキャンセル.BackgroundImage = null;
 			this.buttonキャンセル.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonキャンセル.Location = new System.Drawing.Point( 92, 90 );
+			this.buttonキャンセル.Font = null;
 			this.buttonキャンセル.Name = "buttonキャンセル";
-			this.buttonキャンセル.Size = new System.Drawing.Size( 75, 23 );
-			this.buttonキャンセル.TabIndex = 3;
-			this.buttonキャンセル.Text = "キャンセル";
 			this.buttonキャンセル.UseVisualStyleBackColor = true;
 			// 
 			// buttonOK
 			// 
-			this.buttonOK.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right ) ) );
+			this.buttonOK.AccessibleDescription = null;
+			this.buttonOK.AccessibleName = null;
+			resources.ApplyResources( this.buttonOK, "buttonOK" );
+			this.buttonOK.BackgroundImage = null;
 			this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonOK.Location = new System.Drawing.Point( 11, 90 );
+			this.buttonOK.Font = null;
 			this.buttonOK.Name = "buttonOK";
-			this.buttonOK.Size = new System.Drawing.Size( 75, 23 );
-			this.buttonOK.TabIndex = 2;
-			this.buttonOK.Text = "OK";
 			this.buttonOK.UseVisualStyleBackColor = true;
 			// 
 			// C数値入力ダイアログ
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 12F );
+			this.AccessibleDescription = null;
+			this.AccessibleName = null;
+			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size( 179, 125 );
+			this.BackgroundImage = null;
 			this.ControlBox = false;
 			this.Controls.Add( this.buttonOK );
 			this.Controls.Add( this.buttonキャンセル );
 			this.Controls.Add( this.labelメッセージ );
 			this.Controls.Add( this.numericUpDown数値 );
+			this.Font = null;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Icon = null;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "C数値入力ダイアログ";
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-			this.Text = "数値入力";
 			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown数値 ) ).EndInit();
 			this.ResumeLayout( false );
 			this.PerformLayout();

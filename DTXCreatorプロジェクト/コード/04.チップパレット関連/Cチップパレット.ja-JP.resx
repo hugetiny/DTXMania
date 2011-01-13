@@ -118,173 +118,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="toolStripSplitButton表示形式.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 22</value>
-  </data>
-  <data name="toolStripMenuItem詳細.Text" xml:space="preserve">
-    <value>&amp;Details</value>
-  </data>
-  <data name="&gt;&gt;toolStripツールバー.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="columnHeader番号.Width" type="System.Int32, mscorlib">
-    <value>28</value>
-  </data>
-  <data name="&gt;&gt;columnHeaderファイル.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripツールバー.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;toolStripツールバー.Name" xml:space="preserve">
-    <value>toolStripツールバー</value>
-  </data>
-  <data name="toolStripButton下移動.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;listViewチップリスト.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem一覧.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton上移動.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="toolStripMenuItem大きなアイコン.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
+    <value>179, 22</value>
   </data>
-  <data name="&gt;&gt;toolStripButton下移動.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="columnHeaderラベル.Text" xml:space="preserve">
-    <value>Label</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>284, 262</value>
-  </data>
-  <data name="toolStripツールバー.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;toolStripSplitButton表示形式.Name" xml:space="preserve">
-    <value>toolStripSplitButton表示形式</value>
-  </data>
-  <data name="toolStripButton上移動.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;columnHeaderラベル.Name" xml:space="preserve">
-    <value>columnHeaderラベル</value>
-  </data>
-  <data name="&gt;&gt;imageList大きなアイコン.Name" xml:space="preserve">
-    <value>imageList大きなアイコン</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemパレットから削除する.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripツールバー.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="toolStripMenuItem大きなアイコン.Text" xml:space="preserve">
+    <value>大きいアイコン(&amp;N)</value>
   </data>
   <data name="toolStripMenuItem小さなアイコン.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
-  </data>
-  <data name="&gt;&gt;imageList小さなアイコン.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
-    <value>toolStripSeparator1</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
-  </data>
-  <data name="columnHeader番号.Text" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="columnHeaderラベル.Width" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="&gt;&gt;imageList大きなアイコン.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripSplitButton表示形式.Text" xml:space="preserve">
-    <value>&amp;View</value>
-  </data>
-  <data name="listViewチップリスト.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 237</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="listViewチップリスト.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;columnHeader番号.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripMenuItem詳細.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
-  </data>
-  <data name="toolStripButton上移動.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="toolStripButton下移動.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="&gt;&gt;listViewチップリスト.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="toolStripMenuItemパレットから削除する.Size" type="System.Drawing.Size, System.Drawing">
-    <value>216, 22</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStripリスト用.Name" xml:space="preserve">
-    <value>contextMenuStripリスト用</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem大きなアイコン.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripSplitButton表示形式.ToolTipText" xml:space="preserve">
-    <value>Change view style</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem小さなアイコン.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="listViewチップリスト.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="toolStripMenuItem一覧.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>Cチップパレット</value>
-  </data>
-  <data name="columnHeaderファイル.Text" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Chip palette</value>
+    <value>179, 22</value>
   </data>
   <data name="toolStripMenuItem小さなアイコン.Text" xml:space="preserve">
-    <value>&amp;Small Icons</value>
+    <value>小さいアイコン(&amp;S)</value>
   </data>
-  <data name="toolStripButton下移動.Text" xml:space="preserve">
-    <value>toolStripButton1</value>
+  <data name="toolStripMenuItem一覧.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem詳細.Name" xml:space="preserve">
-    <value>toolStripMenuItem詳細</value>
+  <data name="toolStripMenuItem一覧.Text" xml:space="preserve">
+    <value>一覧(&amp;L)</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripMenuItem詳細.Size" type="System.Drawing.Size, System.Drawing">
+    <value>179, 22</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem一覧.Name" xml:space="preserve">
-    <value>toolStripMenuItem一覧</value>
+  <data name="toolStripMenuItem詳細.Text" xml:space="preserve">
+    <value>詳細(&amp;D)</value>
+  </data>
+  <data name="toolStripSplitButton表示形式.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 22</value>
+  </data>
+  <data name="toolStripSplitButton表示形式.Text" xml:space="preserve">
+    <value>表示形式(&amp;V)</value>
+  </data>
+  <data name="toolStripSplitButton表示形式.ToolTipText" xml:space="preserve">
+    <value>表示形式を変更します。</value>
+  </data>
+  <data name="toolStripButton上移動.ToolTipText" xml:space="preserve">
+    <value>行を１つ上に移動します。</value>
+  </data>
+  <data name="toolStripButton下移動.ToolTipText" xml:space="preserve">
+    <value>行を１つ下に移動します。</value>
   </data>
   <data name="imageList大きなアイコン.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADg
-        CAAAAk1TRnQBSQFMAgEBAwEAAUABAAFIAQABEAEAARABAAT/ARkBEAj/AUIBTQE2BwABNgMAASgDAAFA
+        CAAAAk1TRnQBSQFMAgEBAwEAAUgBAAFIAQABEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABEAMAAQEBAAEYBgABDBgAD/gD/h4AD/gD/h4AD/gD/ksAA/cD7APWBtID1wPrA/cYAAP3A+wD1gbS
         A9cD6wP3GAAD9wPsA9YG0gPXA+sD90gAAywBWAGQAawBTQGFAaEBRAF8AZgBRAF8AZgDjwOqA9UD/RUA
         AywBWAGQAawBTQGFAaEBRAF8AZgBRAF8AZgDjwOqA9UD/RUAAywBWAGQAawBTQGFAaEBRAF8AZgBRAF8
@@ -321,45 +199,15 @@
         ASgDAAFAAwABEAMAAQEBAAEBBQABgBcAA/8BAAHAAf8BwAH/AcAB/wIAAYABfwGAAX8BgAF/AgABgAE/
         AYABPwGAAT8CAAGAAR8BgAEfAYABHwIAAYABDwGAAQ8BgAEPAgABgAEDAYABAwGAAQMCAAGAAQEBgAEB
         AYABAQIAAYABAQGAAQEBgAEBAgABwAEAAcABAAHAAwAB4AEAAeABAAHgAwAB8AEAAfABAAHwAwAB+AEB
-        AfgBAQH4AQECAAH8AQEB/AEBAfwBAQIAAf4BAwH+AQMB/gEDAgAB/wEHAf8BBwH/AQcCAAb/GAAL
+        AfgBAQH4AQECAAH8AQEB/AEBAfwBAQIAAf4BAwH+AQMB/gEDAgAB/wEHAf8BBwH/AQcCAAb/AgAL
 </value>
-  </data>
-  <data name="&gt;&gt;imageList小さなアイコン.Name" xml:space="preserve">
-    <value>imageList小さなアイコン</value>
-  </data>
-  <data name="&gt;&gt;columnHeader番号.Name" xml:space="preserve">
-    <value>columnHeader番号</value>
-  </data>
-  <data name="toolStripButton上移動.ToolTipText" xml:space="preserve">
-    <value>Move up</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton下移動.Name" xml:space="preserve">
-    <value>toolStripButton下移動</value>
-  </data>
-  <data name="listViewチップリスト.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;listViewチップリスト.Name" xml:space="preserve">
-    <value>listViewチップリスト</value>
-  </data>
-  <data name="&gt;&gt;contextMenuStripリスト用.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripButton上移動.Text" xml:space="preserve">
-    <value>toolStripButton1</value>
-  </data>
-  <data name="toolStripMenuItemパレットから削除する.Text" xml:space="preserve">
-    <value>&amp;Delete from this palette</value>
   </data>
   <data name="imageList小さなアイコン.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAAW
-        DQAAAk1TRnQBSQFMAgEBAwEAAUABAAFIAQABEAEAARABAAT/ARkBEAj/AUIBTQE2BwABNgMAASgDAAFA
+        DQAAAk1TRnQBSQFMAgEBAwEAAUgBAAFIAQABEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABEAMAAQEBAAEYBgABDBsAA1geQANYDAADWB5AA1gMAANYHkADWDkAAccBtQG3AdkByAHHAdcBxgHE
         AdUBxQHCAbQBnwGgAa8BmwGdAcYBtgGzAc4BvgG6AcwBvQG4AcoBuwG2AckBugG0AawBmwGTA1gJAAHE
         AbEBswHZAccBxgHVAcMBwgHTAcIBvwHQAcABvgHOAb0BvAHMAb0BugHLAbsBuAHJAboBtgHIAbgBtAHJ
@@ -414,79 +262,19 @@
         BQABgBcAA/8BAAHgAQEB4AEBAeABAQIAAcABAQHAAQEBwAEBAgABwAEBAcABAQHAAQECAAHAAQEBwAEB
         AcABAQIAAcABAQHAAQEBwAEBAgABwAEBAcABAQHAAQECAAHAAQEBwAEBAcABAQIAAcABAQHAAQEBwAEB
         AgABwAEBAcABAQHAAQECAAHAAQEBwAEBAcABAQIAAcABAQHAAQEBwAEBAgABwAEBAcABAQHAAQECAAHA
-        AQEBwAEBAcABAQIAAcABAQHAAQEBwAEBAgABwAEDAcABAwHAAQMCAAHAAQcBwAEHAcABBxgACw==
+        AQEBwAEBAcABAQIAAcABAQHAAQEBwAEBAgABwAEDAcABAwHAAQMCAAHAAQcBwAEHAcABBwIACw==
 </value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemパレットから削除する.Name" xml:space="preserve">
-    <value>toolStripMenuItemパレットから削除する</value>
+  <data name="toolStripMenuItemパレットから削除する.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
   </data>
-  <data name="toolStripツールバー.Size" type="System.Drawing.Size, System.Drawing">
-    <value>284, 25</value>
-  </data>
-  <data name="&gt;&gt;toolStripButton上移動.Name" xml:space="preserve">
-    <value>toolStripButton上移動</value>
-  </data>
-  <data name="toolStripツールバー.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="toolStripMenuItem大きなアイコン.Text" xml:space="preserve">
-    <value>Large Ico&amp;ns</value>
-  </data>
-  <data name="toolStripMenuItem一覧.Text" xml:space="preserve">
-    <value>&amp;List</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem大きなアイコン.Name" xml:space="preserve">
-    <value>toolStripMenuItem大きなアイコン</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem詳細.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="columnHeaderファイル.Width" type="System.Int32, mscorlib">
-    <value>150</value>
+  <data name="toolStripMenuItemパレットから削除する.Text" xml:space="preserve">
+    <value>パレットから削除(&amp;D)</value>
   </data>
   <data name="contextMenuStripリスト用.Size" type="System.Drawing.Size, System.Drawing">
-    <value>217, 26</value>
+    <value>192, 26</value>
   </data>
-  <data name="toolStripButton下移動.ToolTipText" xml:space="preserve">
-    <value>Move down</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>チップパレット</value>
   </data>
-  <data name="&gt;&gt;columnHeaderラベル.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSplitButton表示形式.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSplitButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="toolStripSplitButton表示形式.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="&gt;&gt;toolStripツールバー.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem小さなアイコン.Name" xml:space="preserve">
-    <value>toolStripMenuItem小さなアイコン</value>
-  </data>
-  <data name="listViewチップリスト.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 9pt</value>
-  </data>
-  <data name="&gt;&gt;columnHeaderファイル.Name" xml:space="preserve">
-    <value>columnHeaderファイル</value>
-  </data>
-  <data name="&gt;&gt;listViewチップリスト.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <metadata name="imageList小さなアイコン.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>181, 17</value>
-  </metadata>
-  <metadata name="imageList大きなアイコン.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>377, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="contextMenuStripリスト用.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>573, 17</value>
-  </metadata>
-  <metadata name="toolStripツールバー.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 0</value>
-  </metadata>
 </root>

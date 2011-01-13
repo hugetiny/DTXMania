@@ -30,6 +30,80 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( Cメインフォーム ) );
+			this.splitContainerタブと譜面を分割 = new System.Windows.Forms.SplitContainer();
+			this.tabControl情報パネル = new System.Windows.Forms.TabControl();
+			this.tabPage基本情報 = new System.Windows.Forms.TabPage();
+			this.buttonRESULTIMAGE参照 = new System.Windows.Forms.Button();
+			this.buttonBACKGROUND参照 = new System.Windows.Forms.Button();
+			this.buttonSTAGEFILE参照 = new System.Windows.Forms.Button();
+			this.buttonPREIMAGE参照 = new System.Windows.Forms.Button();
+			this.buttonPREVIEW参照 = new System.Windows.Forms.Button();
+			this.labeRESULTIMAGE = new System.Windows.Forms.Label();
+			this.labelBACKGROUND = new System.Windows.Forms.Label();
+			this.labelSTAGEFILE = new System.Windows.Forms.Label();
+			this.labelPREIMAGE = new System.Windows.Forms.Label();
+			this.labelPREVIEW = new System.Windows.Forms.Label();
+			this.textBoxRESULTIMAGE = new System.Windows.Forms.TextBox();
+			this.textBoxBACKGROUND = new System.Windows.Forms.TextBox();
+			this.textBoxSTAGEFILE = new System.Windows.Forms.TextBox();
+			this.textBoxPREIMAGE = new System.Windows.Forms.TextBox();
+			this.textBoxPREVIEW = new System.Windows.Forms.TextBox();
+			this.textBoxパネル = new System.Windows.Forms.TextBox();
+			this.labelパネル = new System.Windows.Forms.Label();
+			this.labelBLEVEL = new System.Windows.Forms.Label();
+			this.textBoxBLEVEL = new System.Windows.Forms.TextBox();
+			this.hScrollBarBLEVEL = new System.Windows.Forms.HScrollBar();
+			this.labelGLEVEL = new System.Windows.Forms.Label();
+			this.textBoxGLEVEL = new System.Windows.Forms.TextBox();
+			this.hScrollBarGLEVEL = new System.Windows.Forms.HScrollBar();
+			this.labelDLEVEL = new System.Windows.Forms.Label();
+			this.textBoxDLEVEL = new System.Windows.Forms.TextBox();
+			this.hScrollBarDLEVEL = new System.Windows.Forms.HScrollBar();
+			this.labelBPM = new System.Windows.Forms.Label();
+			this.labelコメント = new System.Windows.Forms.Label();
+			this.label製作者 = new System.Windows.Forms.Label();
+			this.label曲名 = new System.Windows.Forms.Label();
+			this.numericUpDownBPM = new System.Windows.Forms.NumericUpDown();
+			this.textBoxコメント = new System.Windows.Forms.TextBox();
+			this.textBox製作者 = new System.Windows.Forms.TextBox();
+			this.textBox曲名 = new System.Windows.Forms.TextBox();
+			this.tabPageWAV = new System.Windows.Forms.TabPage();
+			this.listViewWAVリスト = new System.Windows.Forms.ListView();
+			this.columnHeaderWAV_ラベル = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderWAV_番号 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderWAV_ファイル名 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderWAV_音量 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderWAV_位置 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderWAV_BGM = new System.Windows.Forms.ColumnHeader();
+			this.toolStripWAVツールバー = new System.Windows.Forms.ToolStrip();
+			this.toolStripButtonWAVリスト上移動 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButtonWAVリスト下移動 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripButtonWAVリストプレビュー再生開始 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButtonWAVリストプレビュー再生停止 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripButtonWAVリストプレビュースイッチ = new System.Windows.Forms.ToolStripButton();
+			this.tabPageBMP = new System.Windows.Forms.TabPage();
+			this.listViewBMPリスト = new System.Windows.Forms.ListView();
+			this.columnHeaderBMP_TEX = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderBMP_ラベル = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderBMP_BMP番号 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderBMP_ファイル名 = new System.Windows.Forms.ColumnHeader();
+			this.toolStripBMPツールバー = new System.Windows.Forms.ToolStrip();
+			this.toolStripButtonBMPリスト上移動 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButtonBMPリスト下移動 = new System.Windows.Forms.ToolStripButton();
+			this.tabPageAVI = new System.Windows.Forms.TabPage();
+			this.listViewAVIリスト = new System.Windows.Forms.ListView();
+			this.columnHeaderAVI_ラベル = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderAVI_AVI番号 = new System.Windows.Forms.ColumnHeader();
+			this.columnHeaderAVI_ファイル名 = new System.Windows.Forms.ColumnHeader();
+			this.toolStripAVIツールバー = new System.Windows.Forms.ToolStrip();
+			this.toolStripButtonAVIリスト上移動 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButtonAVIリスト下移動 = new System.Windows.Forms.ToolStripButton();
+			this.tabPage自由入力 = new System.Windows.Forms.TabPage();
+			this.textBox自由入力欄 = new System.Windows.Forms.TextBox();
+			this.pictureBox譜面パネル = new System.Windows.Forms.PictureBox();
+			this.hScrollBar譜面用水平スクロールバー = new System.Windows.Forms.HScrollBar();
 			this.statusStripステータスバー = new System.Windows.Forms.StatusStrip();
 			this.menuStripメニューバー = new System.Windows.Forms.MenuStrip();
 			this.toolStripMenuItemファイル = new System.Windows.Forms.ToolStripMenuItem();
@@ -108,80 +182,6 @@
 			this.toolStripComboBox演奏速度 = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
 			this.vScrollBar譜面用垂直スクロールバー = new System.Windows.Forms.VScrollBar();
-			this.splitContainerタブと譜面を分割 = new System.Windows.Forms.SplitContainer();
-			this.tabControl情報パネル = new System.Windows.Forms.TabControl();
-			this.tabPage基本情報 = new System.Windows.Forms.TabPage();
-			this.buttonRESULTIMAGE参照 = new System.Windows.Forms.Button();
-			this.buttonBACKGROUND参照 = new System.Windows.Forms.Button();
-			this.buttonSTAGEFILE参照 = new System.Windows.Forms.Button();
-			this.buttonPREIMAGE参照 = new System.Windows.Forms.Button();
-			this.buttonPREVIEW参照 = new System.Windows.Forms.Button();
-			this.labeRESULTIMAGE = new System.Windows.Forms.Label();
-			this.labelBACKGROUND = new System.Windows.Forms.Label();
-			this.labelSTAGEFILE = new System.Windows.Forms.Label();
-			this.labelPREIMAGE = new System.Windows.Forms.Label();
-			this.labelPREVIEW = new System.Windows.Forms.Label();
-			this.textBoxRESULTIMAGE = new System.Windows.Forms.TextBox();
-			this.textBoxBACKGROUND = new System.Windows.Forms.TextBox();
-			this.textBoxSTAGEFILE = new System.Windows.Forms.TextBox();
-			this.textBoxPREIMAGE = new System.Windows.Forms.TextBox();
-			this.textBoxPREVIEW = new System.Windows.Forms.TextBox();
-			this.textBoxパネル = new System.Windows.Forms.TextBox();
-			this.labelパネル = new System.Windows.Forms.Label();
-			this.labelBLEVEL = new System.Windows.Forms.Label();
-			this.textBoxBLEVEL = new System.Windows.Forms.TextBox();
-			this.hScrollBarBLEVEL = new System.Windows.Forms.HScrollBar();
-			this.labelGLEVEL = new System.Windows.Forms.Label();
-			this.textBoxGLEVEL = new System.Windows.Forms.TextBox();
-			this.hScrollBarGLEVEL = new System.Windows.Forms.HScrollBar();
-			this.labelDLEVEL = new System.Windows.Forms.Label();
-			this.textBoxDLEVEL = new System.Windows.Forms.TextBox();
-			this.hScrollBarDLEVEL = new System.Windows.Forms.HScrollBar();
-			this.labelBPM = new System.Windows.Forms.Label();
-			this.labelコメント = new System.Windows.Forms.Label();
-			this.label製作者 = new System.Windows.Forms.Label();
-			this.label曲名 = new System.Windows.Forms.Label();
-			this.numericUpDownBPM = new System.Windows.Forms.NumericUpDown();
-			this.textBoxコメント = new System.Windows.Forms.TextBox();
-			this.textBox製作者 = new System.Windows.Forms.TextBox();
-			this.textBox曲名 = new System.Windows.Forms.TextBox();
-			this.tabPageWAV = new System.Windows.Forms.TabPage();
-			this.listViewWAVリスト = new System.Windows.Forms.ListView();
-			this.columnHeaderWAV_ラベル = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderWAV_番号 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderWAV_ファイル名 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderWAV_音量 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderWAV_位置 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderWAV_BGM = new System.Windows.Forms.ColumnHeader();
-			this.toolStripWAVツールバー = new System.Windows.Forms.ToolStrip();
-			this.toolStripButtonWAVリスト上移動 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButtonWAVリスト下移動 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripButtonWAVリストプレビュー再生開始 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButtonWAVリストプレビュー再生停止 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripButtonWAVリストプレビュースイッチ = new System.Windows.Forms.ToolStripButton();
-			this.tabPageBMP = new System.Windows.Forms.TabPage();
-			this.listViewBMPリスト = new System.Windows.Forms.ListView();
-			this.columnHeaderBMP_TEX = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderBMP_ラベル = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderBMP_BMP番号 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderBMP_ファイル名 = new System.Windows.Forms.ColumnHeader();
-			this.toolStripBMPツールバー = new System.Windows.Forms.ToolStrip();
-			this.toolStripButtonBMPリスト上移動 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButtonBMPリスト下移動 = new System.Windows.Forms.ToolStripButton();
-			this.tabPageAVI = new System.Windows.Forms.TabPage();
-			this.listViewAVIリスト = new System.Windows.Forms.ListView();
-			this.columnHeaderAVI_ラベル = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderAVI_AVI番号 = new System.Windows.Forms.ColumnHeader();
-			this.columnHeaderAVI_ファイル名 = new System.Windows.Forms.ColumnHeader();
-			this.toolStripAVIツールバー = new System.Windows.Forms.ToolStrip();
-			this.toolStripButtonAVIリスト上移動 = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButtonAVIリスト下移動 = new System.Windows.Forms.ToolStripButton();
-			this.tabPage自由入力 = new System.Windows.Forms.TabPage();
-			this.textBox自由入力欄 = new System.Windows.Forms.TextBox();
-			this.pictureBox譜面パネル = new System.Windows.Forms.PictureBox();
-			this.hScrollBar譜面用水平スクロールバー = new System.Windows.Forms.HScrollBar();
 			this.toolTipツールチップ = new System.Windows.Forms.ToolTip( this.components );
 			this.contextMenuStrip譜面右メニュー = new System.Windows.Forms.ContextMenuStrip( this.components );
 			this.toolStripMenuItem選択チップの切り取り = new System.Windows.Forms.ToolStripMenuItem();
@@ -195,8 +195,6 @@
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItem小節の挿入 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem小節の削除 = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuStripメニューバー.SuspendLayout();
-			this.toolStripツールバー.SuspendLayout();
 			this.splitContainerタブと譜面を分割.Panel1.SuspendLayout();
 			this.splitContainerタブと譜面を分割.Panel2.SuspendLayout();
 			this.splitContainerタブと譜面を分割.SuspendLayout();
@@ -211,802 +209,66 @@
 			this.toolStripAVIツールバー.SuspendLayout();
 			this.tabPage自由入力.SuspendLayout();
 			( (System.ComponentModel.ISupportInitialize) ( this.pictureBox譜面パネル ) ).BeginInit();
+			this.menuStripメニューバー.SuspendLayout();
+			this.toolStripツールバー.SuspendLayout();
 			this.contextMenuStrip譜面右メニュー.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// statusStripステータスバー
-			// 
-			this.statusStripステータスバー.Location = new System.Drawing.Point( 0, 493 );
-			this.statusStripステータスバー.Name = "statusStripステータスバー";
-			this.statusStripステータスバー.Size = new System.Drawing.Size( 731, 22 );
-			this.statusStripステータスバー.TabIndex = 0;
-			this.statusStripステータスバー.Text = "ステータスバー";
-			// 
-			// menuStripメニューバー
-			// 
-			this.menuStripメニューバー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemファイル,
-            this.toolStripMenuItem編集,
-            this.toolStripMenuItem表示,
-            this.toolStripMenuItem再生,
-            this.toolStripMenuItemツール,
-            this.toolStripMenuItemヘルプ} );
-			this.menuStripメニューバー.Location = new System.Drawing.Point( 0, 0 );
-			this.menuStripメニューバー.Name = "menuStripメニューバー";
-			this.menuStripメニューバー.Size = new System.Drawing.Size( 731, 26 );
-			this.menuStripメニューバー.TabIndex = 1;
-			this.menuStripメニューバー.Text = "メニューバー";
-			// 
-			// toolStripMenuItemファイル
-			// 
-			this.toolStripMenuItemファイル.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem新規,
-            this.toolStripMenuItem開く,
-            this.toolStripMenuItem上書き保存,
-            this.toolStripMenuItem名前を付けて保存,
-            this.toolStripSeparator1,
-            this.toolStripMenuItem終了} );
-			this.toolStripMenuItemファイル.Name = "toolStripMenuItemファイル";
-			this.toolStripMenuItemファイル.Size = new System.Drawing.Size( 85, 22 );
-			this.toolStripMenuItemファイル.Text = "ファイル(&F)";
-			// 
-			// toolStripMenuItem新規
-			// 
-			this.toolStripMenuItem新規.Image = global::DTXCreator.Properties.Resources.新規作成;
-			this.toolStripMenuItem新規.Name = "toolStripMenuItem新規";
-			this.toolStripMenuItem新規.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem新規.Text = "新規(&N)";
-			this.toolStripMenuItem新規.Click += new System.EventHandler( this.toolStripMenuItem新規_Click );
-			// 
-			// toolStripMenuItem開く
-			// 
-			this.toolStripMenuItem開く.Image = global::DTXCreator.Properties.Resources.開く;
-			this.toolStripMenuItem開く.Name = "toolStripMenuItem開く";
-			this.toolStripMenuItem開く.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O ) ) );
-			this.toolStripMenuItem開く.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem開く.Text = "開く(&O)";
-			this.toolStripMenuItem開く.Click += new System.EventHandler( this.toolStripMenuItem開く_Click );
-			// 
-			// toolStripMenuItem上書き保存
-			// 
-			this.toolStripMenuItem上書き保存.Image = global::DTXCreator.Properties.Resources.保存;
-			this.toolStripMenuItem上書き保存.Name = "toolStripMenuItem上書き保存";
-			this.toolStripMenuItem上書き保存.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S ) ) );
-			this.toolStripMenuItem上書き保存.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem上書き保存.Text = "上書き保存(&S)";
-			this.toolStripMenuItem上書き保存.Click += new System.EventHandler( this.toolStripMenuItem上書き保存_Click );
-			// 
-			// toolStripMenuItem名前を付けて保存
-			// 
-			this.toolStripMenuItem名前を付けて保存.Name = "toolStripMenuItem名前を付けて保存";
-			this.toolStripMenuItem名前を付けて保存.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem名前を付けて保存.Text = "名前を付けて保存(&A)";
-			this.toolStripMenuItem名前を付けて保存.Click += new System.EventHandler( this.toolStripMenuItem名前を付けて保存_Click );
-			// 
-			// toolStripSeparator1
-			// 
-			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size( 198, 6 );
-			// 
-			// toolStripMenuItem終了
-			// 
-			this.toolStripMenuItem終了.Name = "toolStripMenuItem終了";
-			this.toolStripMenuItem終了.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem終了.Text = "終了(&X)";
-			this.toolStripMenuItem終了.Click += new System.EventHandler( this.toolStripMenuItem終了_Click );
-			// 
-			// toolStripMenuItem編集
-			// 
-			this.toolStripMenuItem編集.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemアンドゥ,
-            this.toolStripMenuItemリドゥ,
-            this.toolStripSeparator2,
-            this.toolStripMenuItem切り取り,
-            this.toolStripMenuItemコピー,
-            this.toolStripMenuItem貼り付け,
-            this.toolStripMenuItem削除,
-            this.toolStripSeparator3,
-            this.toolStripMenuItemすべて選択,
-            this.toolStripSeparator4,
-            this.toolStripMenuItem選択モード,
-            this.toolStripMenuItem編集モード,
-            this.toolStripMenuItemモード切替,
-            this.toolStripSeparator5,
-            this.toolStripMenuItem検索,
-            this.toolStripMenuItem置換} );
-			this.toolStripMenuItem編集.Name = "toolStripMenuItem編集";
-			this.toolStripMenuItem編集.Size = new System.Drawing.Size( 61, 22 );
-			this.toolStripMenuItem編集.Text = "編集(&E)";
-			// 
-			// toolStripMenuItemアンドゥ
-			// 
-			this.toolStripMenuItemアンドゥ.Image = global::DTXCreator.Properties.Resources.Undo;
-			this.toolStripMenuItemアンドゥ.Name = "toolStripMenuItemアンドゥ";
-			this.toolStripMenuItemアンドゥ.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z ) ) );
-			this.toolStripMenuItemアンドゥ.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItemアンドゥ.Text = "元に戻す(&U)";
-			this.toolStripMenuItemアンドゥ.Click += new System.EventHandler( this.toolStripMenuItemアンドゥ_Click );
-			// 
-			// toolStripMenuItemリドゥ
-			// 
-			this.toolStripMenuItemリドゥ.Image = global::DTXCreator.Properties.Resources.Redo;
-			this.toolStripMenuItemリドゥ.Name = "toolStripMenuItemリドゥ";
-			this.toolStripMenuItemリドゥ.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y ) ) );
-			this.toolStripMenuItemリドゥ.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItemリドゥ.Text = "やり直す(&R)";
-			this.toolStripMenuItemリドゥ.Click += new System.EventHandler( this.toolStripMenuItemリドゥ_Click );
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size( 198, 6 );
-			// 
-			// toolStripMenuItem切り取り
-			// 
-			this.toolStripMenuItem切り取り.Enabled = false;
-			this.toolStripMenuItem切り取り.Image = global::DTXCreator.Properties.Resources.切り取り;
-			this.toolStripMenuItem切り取り.Name = "toolStripMenuItem切り取り";
-			this.toolStripMenuItem切り取り.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X ) ) );
-			this.toolStripMenuItem切り取り.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem切り取り.Text = "切り取り(&T)";
-			this.toolStripMenuItem切り取り.Click += new System.EventHandler( this.toolStripMenuItem切り取り_Click );
-			// 
-			// toolStripMenuItemコピー
-			// 
-			this.toolStripMenuItemコピー.Enabled = false;
-			this.toolStripMenuItemコピー.Image = global::DTXCreator.Properties.Resources.コピー;
-			this.toolStripMenuItemコピー.Name = "toolStripMenuItemコピー";
-			this.toolStripMenuItemコピー.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C ) ) );
-			this.toolStripMenuItemコピー.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItemコピー.Text = "コピー(&C)";
-			this.toolStripMenuItemコピー.Click += new System.EventHandler( this.toolStripMenuItemコピー_Click );
-			// 
-			// toolStripMenuItem貼り付け
-			// 
-			this.toolStripMenuItem貼り付け.Enabled = false;
-			this.toolStripMenuItem貼り付け.Image = global::DTXCreator.Properties.Resources.貼り付け;
-			this.toolStripMenuItem貼り付け.Name = "toolStripMenuItem貼り付け";
-			this.toolStripMenuItem貼り付け.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V ) ) );
-			this.toolStripMenuItem貼り付け.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem貼り付け.Text = "貼り付け(&P)";
-			this.toolStripMenuItem貼り付け.Click += new System.EventHandler( this.toolStripMenuItem貼り付け_Click );
-			// 
-			// toolStripMenuItem削除
-			// 
-			this.toolStripMenuItem削除.Enabled = false;
-			this.toolStripMenuItem削除.Image = global::DTXCreator.Properties.Resources.削除;
-			this.toolStripMenuItem削除.Name = "toolStripMenuItem削除";
-			this.toolStripMenuItem削除.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-			this.toolStripMenuItem削除.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem削除.Text = "削除(&D)";
-			this.toolStripMenuItem削除.Click += new System.EventHandler( this.toolStripMenuItem削除_Click );
-			// 
-			// toolStripSeparator3
-			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size( 198, 6 );
-			// 
-			// toolStripMenuItemすべて選択
-			// 
-			this.toolStripMenuItemすべて選択.Name = "toolStripMenuItemすべて選択";
-			this.toolStripMenuItemすべて選択.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A ) ) );
-			this.toolStripMenuItemすべて選択.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItemすべて選択.Text = "すべて選択(&A)";
-			this.toolStripMenuItemすべて選択.Click += new System.EventHandler( this.toolStripMenuItemすべて選択_Click );
-			// 
-			// toolStripSeparator4
-			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size( 198, 6 );
-			// 
-			// toolStripMenuItem選択モード
-			// 
-			this.toolStripMenuItem選択モード.Image = global::DTXCreator.Properties.Resources.矢印ポインタ;
-			this.toolStripMenuItem選択モード.Name = "toolStripMenuItem選択モード";
-			this.toolStripMenuItem選択モード.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem選択モード.Text = "選択モード(&S)";
-			this.toolStripMenuItem選択モード.Click += new System.EventHandler( this.toolStripMenuItem選択モード_Click );
-			// 
-			// toolStripMenuItem編集モード
-			// 
-			this.toolStripMenuItem編集モード.Image = global::DTXCreator.Properties.Resources.鉛筆;
-			this.toolStripMenuItem編集モード.Name = "toolStripMenuItem編集モード";
-			this.toolStripMenuItem編集モード.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem編集モード.Text = "編集モード(&E)";
-			this.toolStripMenuItem編集モード.Click += new System.EventHandler( this.toolStripMenuItem編集モード_Click );
-			// 
-			// toolStripMenuItemモード切替
-			// 
-			this.toolStripMenuItemモード切替.Name = "toolStripMenuItemモード切替";
-			this.toolStripMenuItemモード切替.ShortcutKeys = System.Windows.Forms.Keys.F8;
-			this.toolStripMenuItemモード切替.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItemモード切替.Text = "モード切替(&M)";
-			this.toolStripMenuItemモード切替.Click += new System.EventHandler( this.toolStripMenuItemモード切替_Click );
-			// 
-			// toolStripSeparator5
-			// 
-			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size( 198, 6 );
-			// 
-			// toolStripMenuItem検索
-			// 
-			this.toolStripMenuItem検索.Name = "toolStripMenuItem検索";
-			this.toolStripMenuItem検索.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F ) ) );
-			this.toolStripMenuItem検索.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem検索.Text = "検索(&F)";
-			this.toolStripMenuItem検索.Click += new System.EventHandler( this.toolStripMenuItem検索_Click );
-			// 
-			// toolStripMenuItem置換
-			// 
-			this.toolStripMenuItem置換.Name = "toolStripMenuItem置換";
-			this.toolStripMenuItem置換.ShortcutKeys = ( (System.Windows.Forms.Keys) ( ( System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H ) ) );
-			this.toolStripMenuItem置換.Size = new System.Drawing.Size( 201, 22 );
-			this.toolStripMenuItem置換.Text = "置換(&Q)";
-			this.toolStripMenuItem置換.Click += new System.EventHandler( this.toolStripMenuItem置換_Click );
-			// 
-			// toolStripMenuItem表示
-			// 
-			this.toolStripMenuItem表示.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemチップパレット,
-            this.toolStripMenuItemガイド間隔} );
-			this.toolStripMenuItem表示.Name = "toolStripMenuItem表示";
-			this.toolStripMenuItem表示.Size = new System.Drawing.Size( 62, 22 );
-			this.toolStripMenuItem表示.Text = "表示(&V)";
-			// 
-			// toolStripMenuItemチップパレット
-			// 
-			this.toolStripMenuItemチップパレット.CheckOnClick = true;
-			this.toolStripMenuItemチップパレット.Image = global::DTXCreator.Properties.Resources.ﾁｯﾌﾟﾊﾟﾚｯﾄ;
-			this.toolStripMenuItemチップパレット.Name = "toolStripMenuItemチップパレット";
-			this.toolStripMenuItemチップパレット.Size = new System.Drawing.Size( 177, 22 );
-			this.toolStripMenuItemチップパレット.Text = "チップパレット(&P)";
-			this.toolStripMenuItemチップパレット.Click += new System.EventHandler( this.toolStripMenuItemチップパレット_Click );
-			// 
-			// toolStripMenuItemガイド間隔
-			// 
-			this.toolStripMenuItemガイド間隔.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemガイド間隔4分,
-            this.toolStripMenuItemガイド間隔8分,
-            this.toolStripMenuItemガイド間隔12分,
-            this.toolStripMenuItemガイド間隔16分,
-            this.toolStripMenuItemガイド間隔24分,
-            this.toolStripMenuItemガイド間隔32分,
-            this.toolStripMenuItemガイド間隔48分,
-            this.toolStripMenuItemガイド間隔64分,
-            this.toolStripMenuItemガイド間隔フリー,
-            this.toolStripSeparator6,
-            this.toolStripMenuItemガイド間隔拡大,
-            this.toolStripMenuItemガイド間隔縮小} );
-			this.toolStripMenuItemガイド間隔.Name = "toolStripMenuItemガイド間隔";
-			this.toolStripMenuItemガイド間隔.Size = new System.Drawing.Size( 177, 22 );
-			this.toolStripMenuItemガイド間隔.Text = "ガイド間隔(&G)";
-			// 
-			// toolStripMenuItemガイド間隔4分
-			// 
-			this.toolStripMenuItemガイド間隔4分.Name = "toolStripMenuItemガイド間隔4分";
-			this.toolStripMenuItemガイド間隔4分.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔4分.Text = "1/4";
-			this.toolStripMenuItemガイド間隔4分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔4分_Click );
-			// 
-			// toolStripMenuItemガイド間隔8分
-			// 
-			this.toolStripMenuItemガイド間隔8分.Name = "toolStripMenuItemガイド間隔8分";
-			this.toolStripMenuItemガイド間隔8分.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔8分.Text = "1/8";
-			this.toolStripMenuItemガイド間隔8分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔8分_Click );
-			// 
-			// toolStripMenuItemガイド間隔12分
-			// 
-			this.toolStripMenuItemガイド間隔12分.Name = "toolStripMenuItemガイド間隔12分";
-			this.toolStripMenuItemガイド間隔12分.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔12分.Text = "1/12";
-			this.toolStripMenuItemガイド間隔12分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔12分_Click );
-			// 
-			// toolStripMenuItemガイド間隔16分
-			// 
-			this.toolStripMenuItemガイド間隔16分.Name = "toolStripMenuItemガイド間隔16分";
-			this.toolStripMenuItemガイド間隔16分.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔16分.Text = "1/16";
-			this.toolStripMenuItemガイド間隔16分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔16分_Click );
-			// 
-			// toolStripMenuItemガイド間隔24分
-			// 
-			this.toolStripMenuItemガイド間隔24分.Name = "toolStripMenuItemガイド間隔24分";
-			this.toolStripMenuItemガイド間隔24分.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔24分.Text = "1/24";
-			this.toolStripMenuItemガイド間隔24分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔24分_Click );
-			// 
-			// toolStripMenuItemガイド間隔32分
-			// 
-			this.toolStripMenuItemガイド間隔32分.Name = "toolStripMenuItemガイド間隔32分";
-			this.toolStripMenuItemガイド間隔32分.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔32分.Text = "1/32";
-			this.toolStripMenuItemガイド間隔32分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔32分_Click );
-			// 
-			// toolStripMenuItemガイド間隔48分
-			// 
-			this.toolStripMenuItemガイド間隔48分.Name = "toolStripMenuItemガイド間隔48分";
-			this.toolStripMenuItemガイド間隔48分.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔48分.Text = "1/48";
-			this.toolStripMenuItemガイド間隔48分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔48分_Click );
-			// 
-			// toolStripMenuItemガイド間隔64分
-			// 
-			this.toolStripMenuItemガイド間隔64分.Name = "toolStripMenuItemガイド間隔64分";
-			this.toolStripMenuItemガイド間隔64分.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔64分.Text = "1/64";
-			this.toolStripMenuItemガイド間隔64分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔64分_Click );
-			// 
-			// toolStripMenuItemガイド間隔フリー
-			// 
-			this.toolStripMenuItemガイド間隔フリー.Name = "toolStripMenuItemガイド間隔フリー";
-			this.toolStripMenuItemガイド間隔フリー.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔フリー.Text = "フリー";
-			this.toolStripMenuItemガイド間隔フリー.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔フリー_Click );
-			// 
-			// toolStripSeparator6
-			// 
-			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size( 141, 6 );
-			// 
-			// toolStripMenuItemガイド間隔拡大
-			// 
-			this.toolStripMenuItemガイド間隔拡大.Name = "toolStripMenuItemガイド間隔拡大";
-			this.toolStripMenuItemガイド間隔拡大.ShortcutKeys = System.Windows.Forms.Keys.F3;
-			this.toolStripMenuItemガイド間隔拡大.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔拡大.Text = "拡大(&W)";
-			this.toolStripMenuItemガイド間隔拡大.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔拡大_Click );
-			// 
-			// toolStripMenuItemガイド間隔縮小
-			// 
-			this.toolStripMenuItemガイド間隔縮小.Name = "toolStripMenuItemガイド間隔縮小";
-			this.toolStripMenuItemガイド間隔縮小.ShortcutKeys = System.Windows.Forms.Keys.F4;
-			this.toolStripMenuItemガイド間隔縮小.Size = new System.Drawing.Size( 144, 22 );
-			this.toolStripMenuItemガイド間隔縮小.Text = "縮小(&N)";
-			this.toolStripMenuItemガイド間隔縮小.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔縮小_Click );
-			// 
-			// toolStripMenuItem再生
-			// 
-			this.toolStripMenuItem再生.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem先頭から再生,
-            this.toolStripMenuItem現在位置から再生,
-            this.toolStripMenuItem現在位置からBGMのみ再生,
-            this.toolStripMenuItem再生停止} );
-			this.toolStripMenuItem再生.Name = "toolStripMenuItem再生";
-			this.toolStripMenuItem再生.Size = new System.Drawing.Size( 61, 22 );
-			this.toolStripMenuItem再生.Text = "再生(&P)";
-			// 
-			// toolStripMenuItem先頭から再生
-			// 
-			this.toolStripMenuItem先頭から再生.Image = global::DTXCreator.Properties.Resources.最初から再生;
-			this.toolStripMenuItem先頭から再生.Name = "toolStripMenuItem先頭から再生";
-			this.toolStripMenuItem先頭から再生.ShortcutKeys = System.Windows.Forms.Keys.F5;
-			this.toolStripMenuItem先頭から再生.Size = new System.Drawing.Size( 253, 22 );
-			this.toolStripMenuItem先頭から再生.Text = "先頭から再生(&T)";
-			this.toolStripMenuItem先頭から再生.Click += new System.EventHandler( this.toolStripMenuItem先頭から再生_Click );
-			// 
-			// toolStripMenuItem現在位置から再生
-			// 
-			this.toolStripMenuItem現在位置から再生.Image = global::DTXCreator.Properties.Resources.再生;
-			this.toolStripMenuItem現在位置から再生.Name = "toolStripMenuItem現在位置から再生";
-			this.toolStripMenuItem現在位置から再生.ShortcutKeys = System.Windows.Forms.Keys.F6;
-			this.toolStripMenuItem現在位置から再生.Size = new System.Drawing.Size( 253, 22 );
-			this.toolStripMenuItem現在位置から再生.Text = "現在の位置から再生(&P)";
-			this.toolStripMenuItem現在位置から再生.Click += new System.EventHandler( this.toolStripMenuItem現在位置から再生_Click );
-			// 
-			// toolStripMenuItem現在位置からBGMのみ再生
-			// 
-			this.toolStripMenuItem現在位置からBGMのみ再生.Image = global::DTXCreator.Properties.Resources.BGMのみ再生;
-			this.toolStripMenuItem現在位置からBGMのみ再生.Name = "toolStripMenuItem現在位置からBGMのみ再生";
-			this.toolStripMenuItem現在位置からBGMのみ再生.Size = new System.Drawing.Size( 253, 22 );
-			this.toolStripMenuItem現在位置からBGMのみ再生.Text = "現在の位置からBGMのみ再生(&B)";
-			this.toolStripMenuItem現在位置からBGMのみ再生.Click += new System.EventHandler( this.toolStripMenuItem現在位置からBGMのみ再生_Click );
-			// 
-			// toolStripMenuItem再生停止
-			// 
-			this.toolStripMenuItem再生停止.Image = global::DTXCreator.Properties.Resources.再生停止;
-			this.toolStripMenuItem再生停止.Name = "toolStripMenuItem再生停止";
-			this.toolStripMenuItem再生停止.ShortcutKeys = System.Windows.Forms.Keys.F7;
-			this.toolStripMenuItem再生停止.Size = new System.Drawing.Size( 253, 22 );
-			this.toolStripMenuItem再生停止.Text = "再生停止(&S)";
-			this.toolStripMenuItem再生停止.Click += new System.EventHandler( this.toolStripMenuItem再生停止_Click );
-			// 
-			// toolStripMenuItemツール
-			// 
-			this.toolStripMenuItemツール.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemオプション} );
-			this.toolStripMenuItemツール.Name = "toolStripMenuItemツール";
-			this.toolStripMenuItemツール.Size = new System.Drawing.Size( 74, 22 );
-			this.toolStripMenuItemツール.Text = "ツール(&T)";
-			// 
-			// toolStripMenuItemオプション
-			// 
-			this.toolStripMenuItemオプション.Name = "toolStripMenuItemオプション";
-			this.toolStripMenuItemオプション.Size = new System.Drawing.Size( 155, 22 );
-			this.toolStripMenuItemオプション.Text = "オプション(&O)";
-			this.toolStripMenuItemオプション.Click += new System.EventHandler( this.toolStripMenuItemオプション_Click );
-			// 
-			// toolStripMenuItemヘルプ
-			// 
-			this.toolStripMenuItemヘルプ.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemDTXCreaterマニュアル,
-            this.toolStripMenuItemバージョン} );
-			this.toolStripMenuItemヘルプ.Name = "toolStripMenuItemヘルプ";
-			this.toolStripMenuItemヘルプ.Size = new System.Drawing.Size( 75, 22 );
-			this.toolStripMenuItemヘルプ.Text = "ヘルプ(&H)";
-			// 
-			// toolStripMenuItemDTXCreaterマニュアル
-			// 
-			this.toolStripMenuItemDTXCreaterマニュアル.Image = global::DTXCreator.Properties.Resources.ヘルプ;
-			this.toolStripMenuItemDTXCreaterマニュアル.Name = "toolStripMenuItemDTXCreaterマニュアル";
-			this.toolStripMenuItemDTXCreaterマニュアル.ShortcutKeys = System.Windows.Forms.Keys.F1;
-			this.toolStripMenuItemDTXCreaterマニュアル.Size = new System.Drawing.Size( 251, 22 );
-			this.toolStripMenuItemDTXCreaterマニュアル.Text = "DTXCreator マニュアル(&M)";
-			this.toolStripMenuItemDTXCreaterマニュアル.Click += new System.EventHandler( this.toolStripMenuItemDTXCreaterマニュアル_Click );
-			// 
-			// toolStripMenuItemバージョン
-			// 
-			this.toolStripMenuItemバージョン.Name = "toolStripMenuItemバージョン";
-			this.toolStripMenuItemバージョン.Size = new System.Drawing.Size( 251, 22 );
-			this.toolStripMenuItemバージョン.Text = "バージョン情報(&V)";
-			this.toolStripMenuItemバージョン.Click += new System.EventHandler( this.toolStripMenuItemバージョン_Click );
-			// 
-			// toolStripツールバー
-			// 
-			this.toolStripツールバー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton新規作成,
-            this.toolStripButton開く,
-            this.toolStripButton上書き保存,
-            this.toolStripSeparator7,
-            this.toolStripButton切り取り,
-            this.toolStripButtonコピー,
-            this.toolStripButton貼り付け,
-            this.toolStripButton削除,
-            this.toolStripSeparator8,
-            this.toolStripButtonアンドゥ,
-            this.toolStripButtonリドゥ,
-            this.toolStripSeparator9,
-            this.toolStripButtonチップパレット,
-            this.toolStripSeparator10,
-            this.toolStripComboBox譜面拡大率,
-            this.toolStripComboBoxガイド間隔,
-            this.toolStripButton選択モード,
-            this.toolStripButton編集モード,
-            this.toolStripSeparator11,
-            this.toolStripButton先頭から再生,
-            this.toolStripButton現在位置から再生,
-            this.toolStripButton現在位置からBGMのみ再生,
-            this.toolStripButton再生停止,
-            this.toolStripComboBox演奏速度,
-            this.toolStripSeparator12} );
-			this.toolStripツールバー.Location = new System.Drawing.Point( 0, 26 );
-			this.toolStripツールバー.Name = "toolStripツールバー";
-			this.toolStripツールバー.Size = new System.Drawing.Size( 731, 26 );
-			this.toolStripツールバー.TabIndex = 2;
-			this.toolStripツールバー.Text = "toolStrip1";
-			// 
-			// toolStripButton新規作成
-			// 
-			this.toolStripButton新規作成.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton新規作成.Image = global::DTXCreator.Properties.Resources.新規作成;
-			this.toolStripButton新規作成.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton新規作成.Name = "toolStripButton新規作成";
-			this.toolStripButton新規作成.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton新規作成.Text = "toolStripButton1";
-			this.toolStripButton新規作成.ToolTipText = "新しい譜面を作成します。\r\n";
-			this.toolStripButton新規作成.Click += new System.EventHandler( this.toolStripButton新規作成_Click );
-			// 
-			// toolStripButton開く
-			// 
-			this.toolStripButton開く.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton開く.Image = global::DTXCreator.Properties.Resources.開く;
-			this.toolStripButton開く.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton開く.Name = "toolStripButton開く";
-			this.toolStripButton開く.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton開く.Text = "toolStripButton1";
-			this.toolStripButton開く.ToolTipText = "新しいDTXファイルを開きます。\r\n";
-			this.toolStripButton開く.Click += new System.EventHandler( this.toolStripButton開く_Click );
-			// 
-			// toolStripButton上書き保存
-			// 
-			this.toolStripButton上書き保存.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton上書き保存.Image = global::DTXCreator.Properties.Resources.保存;
-			this.toolStripButton上書き保存.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton上書き保存.Name = "toolStripButton上書き保存";
-			this.toolStripButton上書き保存.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton上書き保存.Text = "toolStripButton1";
-			this.toolStripButton上書き保存.ToolTipText = "上書き保存します。\r\n";
-			this.toolStripButton上書き保存.Click += new System.EventHandler( this.toolStripButton上書き保存_Click );
-			// 
-			// toolStripSeparator7
-			// 
-			this.toolStripSeparator7.Name = "toolStripSeparator7";
-			this.toolStripSeparator7.Size = new System.Drawing.Size( 6, 26 );
-			// 
-			// toolStripButton切り取り
-			// 
-			this.toolStripButton切り取り.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton切り取り.Enabled = false;
-			this.toolStripButton切り取り.Image = global::DTXCreator.Properties.Resources.切り取り;
-			this.toolStripButton切り取り.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton切り取り.Name = "toolStripButton切り取り";
-			this.toolStripButton切り取り.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton切り取り.Text = "toolStripButton1";
-			this.toolStripButton切り取り.ToolTipText = "選択されているチップをクリップボードへ切り取ります。\r\n";
-			this.toolStripButton切り取り.Click += new System.EventHandler( this.toolStripButton切り取り_Click );
-			// 
-			// toolStripButtonコピー
-			// 
-			this.toolStripButtonコピー.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButtonコピー.Enabled = false;
-			this.toolStripButtonコピー.Image = global::DTXCreator.Properties.Resources.コピー;
-			this.toolStripButtonコピー.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButtonコピー.Name = "toolStripButtonコピー";
-			this.toolStripButtonコピー.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButtonコピー.Text = "toolStripButton1";
-			this.toolStripButtonコピー.ToolTipText = "選択されているチップをクリップボードにコピーします。\r\n";
-			this.toolStripButtonコピー.Click += new System.EventHandler( this.toolStripButtonコピー_Click );
-			// 
-			// toolStripButton貼り付け
-			// 
-			this.toolStripButton貼り付け.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton貼り付け.Enabled = false;
-			this.toolStripButton貼り付け.Image = global::DTXCreator.Properties.Resources.貼り付け;
-			this.toolStripButton貼り付け.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton貼り付け.Name = "toolStripButton貼り付け";
-			this.toolStripButton貼り付け.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton貼り付け.Text = "toolStripButton1";
-			this.toolStripButton貼り付け.ToolTipText = "クリップボードのチップを譜面に貼り付けます。\r\n";
-			this.toolStripButton貼り付け.Click += new System.EventHandler( this.toolStripButton貼り付け_Click );
-			// 
-			// toolStripButton削除
-			// 
-			this.toolStripButton削除.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton削除.Enabled = false;
-			this.toolStripButton削除.Image = global::DTXCreator.Properties.Resources.削除;
-			this.toolStripButton削除.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton削除.Name = "toolStripButton削除";
-			this.toolStripButton削除.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton削除.Text = "toolStripButton1";
-			this.toolStripButton削除.ToolTipText = "選択されているチップを削除します。\r\n";
-			this.toolStripButton削除.Click += new System.EventHandler( this.toolStripButton削除_Click );
-			// 
-			// toolStripSeparator8
-			// 
-			this.toolStripSeparator8.Name = "toolStripSeparator8";
-			this.toolStripSeparator8.Size = new System.Drawing.Size( 6, 26 );
-			// 
-			// toolStripButtonアンドゥ
-			// 
-			this.toolStripButtonアンドゥ.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButtonアンドゥ.Enabled = false;
-			this.toolStripButtonアンドゥ.Image = global::DTXCreator.Properties.Resources.Undo;
-			this.toolStripButtonアンドゥ.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButtonアンドゥ.Name = "toolStripButtonアンドゥ";
-			this.toolStripButtonアンドゥ.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButtonアンドゥ.Text = "toolStripButton1";
-			this.toolStripButtonアンドゥ.ToolTipText = "作業を１つ元に戻します。";
-			this.toolStripButtonアンドゥ.Click += new System.EventHandler( this.toolStripButtonアンドゥ_Click );
-			// 
-			// toolStripButtonリドゥ
-			// 
-			this.toolStripButtonリドゥ.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButtonリドゥ.Enabled = false;
-			this.toolStripButtonリドゥ.Image = global::DTXCreator.Properties.Resources.Redo;
-			this.toolStripButtonリドゥ.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButtonリドゥ.Name = "toolStripButtonリドゥ";
-			this.toolStripButtonリドゥ.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButtonリドゥ.Text = "toolStripButton1";
-			this.toolStripButtonリドゥ.ToolTipText = "作業を１つやり直します。\r\n";
-			this.toolStripButtonリドゥ.Click += new System.EventHandler( this.toolStripButtonリドゥ_Click );
-			// 
-			// toolStripSeparator9
-			// 
-			this.toolStripSeparator9.Name = "toolStripSeparator9";
-			this.toolStripSeparator9.Size = new System.Drawing.Size( 6, 26 );
-			// 
-			// toolStripButtonチップパレット
-			// 
-			this.toolStripButtonチップパレット.CheckOnClick = true;
-			this.toolStripButtonチップパレット.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButtonチップパレット.Image = global::DTXCreator.Properties.Resources.ﾁｯﾌﾟﾊﾟﾚｯﾄ;
-			this.toolStripButtonチップパレット.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButtonチップパレット.Name = "toolStripButtonチップパレット";
-			this.toolStripButtonチップパレット.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButtonチップパレット.Text = "toolStripButton1";
-			this.toolStripButtonチップパレット.ToolTipText = "チップパレットを表示します。";
-			this.toolStripButtonチップパレット.Click += new System.EventHandler( this.toolStripButtonチップパレット_Click );
-			// 
-			// toolStripSeparator10
-			// 
-			this.toolStripSeparator10.Name = "toolStripSeparator10";
-			this.toolStripSeparator10.Size = new System.Drawing.Size( 6, 26 );
-			// 
-			// toolStripComboBox譜面拡大率
-			// 
-			this.toolStripComboBox譜面拡大率.DropDownHeight = 200;
-			this.toolStripComboBox譜面拡大率.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.toolStripComboBox譜面拡大率.IntegralHeight = false;
-			this.toolStripComboBox譜面拡大率.Items.AddRange( new object[] {
-            "標準",
-            "x2",
-            "x3",
-            "x4",
-            "x5",
-            "x6",
-            "x7",
-            "x8",
-            "x9",
-            "x10"} );
-			this.toolStripComboBox譜面拡大率.Name = "toolStripComboBox譜面拡大率";
-			this.toolStripComboBox譜面拡大率.Size = new System.Drawing.Size( 75, 26 );
-			this.toolStripComboBox譜面拡大率.ToolTipText = "譜面の縦方向の表示倍率を指定します。";
-			this.toolStripComboBox譜面拡大率.SelectedIndexChanged += new System.EventHandler( this.toolStripComboBox譜面拡大率_SelectedIndexChanged );
-			// 
-			// toolStripComboBoxガイド間隔
-			// 
-			this.toolStripComboBoxガイド間隔.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.toolStripComboBoxガイド間隔.Items.AddRange( new object[] {
-            "1/4",
-            "1/8",
-            "1/12",
-            "1/16",
-            "1/24",
-            "1/32",
-            "1/48",
-            "1/64",
-            "フリー"} );
-			this.toolStripComboBoxガイド間隔.MaxDropDownItems = 20;
-			this.toolStripComboBoxガイド間隔.Name = "toolStripComboBoxガイド間隔";
-			this.toolStripComboBoxガイド間隔.Size = new System.Drawing.Size( 75, 26 );
-			this.toolStripComboBoxガイド間隔.ToolTipText = "ガイド線の間隔を指定します。";
-			this.toolStripComboBoxガイド間隔.SelectedIndexChanged += new System.EventHandler( this.toolStripComboBoxガイド間隔_SelectedIndexChanged );
-			// 
-			// toolStripButton選択モード
-			// 
-			this.toolStripButton選択モード.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton選択モード.Image = global::DTXCreator.Properties.Resources.矢印ポインタ;
-			this.toolStripButton選択モード.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton選択モード.Name = "toolStripButton選択モード";
-			this.toolStripButton選択モード.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton選択モード.Text = "toolStripButton1";
-			this.toolStripButton選択モード.ToolTipText = "選択モードに切り替えます。\r\n";
-			this.toolStripButton選択モード.Click += new System.EventHandler( this.toolStripButton選択モード_Click );
-			// 
-			// toolStripButton編集モード
-			// 
-			this.toolStripButton編集モード.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton編集モード.Image = global::DTXCreator.Properties.Resources.鉛筆;
-			this.toolStripButton編集モード.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton編集モード.Name = "toolStripButton編集モード";
-			this.toolStripButton編集モード.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton編集モード.Text = "toolStripButton1";
-			this.toolStripButton編集モード.ToolTipText = "編集モードに切り替えます。\r\n";
-			this.toolStripButton編集モード.Click += new System.EventHandler( this.toolStripButton編集モード_Click );
-			// 
-			// toolStripSeparator11
-			// 
-			this.toolStripSeparator11.Name = "toolStripSeparator11";
-			this.toolStripSeparator11.Size = new System.Drawing.Size( 6, 26 );
-			// 
-			// toolStripButton先頭から再生
-			// 
-			this.toolStripButton先頭から再生.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton先頭から再生.Image = global::DTXCreator.Properties.Resources.最初から再生;
-			this.toolStripButton先頭から再生.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton先頭から再生.Name = "toolStripButton先頭から再生";
-			this.toolStripButton先頭から再生.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton先頭から再生.Text = "toolStripButton1";
-			this.toolStripButton先頭から再生.ToolTipText = "Viewerで先頭から再生します。\r\n";
-			this.toolStripButton先頭から再生.Click += new System.EventHandler( this.toolStripButton先頭から再生_Click );
-			// 
-			// toolStripButton現在位置から再生
-			// 
-			this.toolStripButton現在位置から再生.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton現在位置から再生.Image = global::DTXCreator.Properties.Resources.再生;
-			this.toolStripButton現在位置から再生.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton現在位置から再生.Name = "toolStripButton現在位置から再生";
-			this.toolStripButton現在位置から再生.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton現在位置から再生.Text = "toolStripButton1";
-			this.toolStripButton現在位置から再生.ToolTipText = "Viewer で現在の位置から再生します。\r\n";
-			this.toolStripButton現在位置から再生.Click += new System.EventHandler( this.toolStripButton現在位置から再生_Click );
-			// 
-			// toolStripButton現在位置からBGMのみ再生
-			// 
-			this.toolStripButton現在位置からBGMのみ再生.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton現在位置からBGMのみ再生.Image = global::DTXCreator.Properties.Resources.BGMのみ再生;
-			this.toolStripButton現在位置からBGMのみ再生.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton現在位置からBGMのみ再生.Name = "toolStripButton現在位置からBGMのみ再生";
-			this.toolStripButton現在位置からBGMのみ再生.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton現在位置からBGMのみ再生.Text = "toolStripButton1";
-			this.toolStripButton現在位置からBGMのみ再生.ToolTipText = "Viewer で現在の位置からBGMのみ再生します。\r\n";
-			this.toolStripButton現在位置からBGMのみ再生.Click += new System.EventHandler( this.toolStripButton現在位置からBGMのみ再生_Click );
-			// 
-			// toolStripButton再生停止
-			// 
-			this.toolStripButton再生停止.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.toolStripButton再生停止.Image = global::DTXCreator.Properties.Resources.再生停止;
-			this.toolStripButton再生停止.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButton再生停止.Name = "toolStripButton再生停止";
-			this.toolStripButton再生停止.Size = new System.Drawing.Size( 23, 23 );
-			this.toolStripButton再生停止.Text = "toolStripButton1";
-			this.toolStripButton再生停止.ToolTipText = "Viewer での再生を停止します。\r\n";
-			this.toolStripButton再生停止.Click += new System.EventHandler( this.toolStripButton再生停止_Click );
-			// 
-			// toolStripComboBox演奏速度
-			// 
-			this.toolStripComboBox演奏速度.DropDownHeight = 150;
-			this.toolStripComboBox演奏速度.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.toolStripComboBox演奏速度.DropDownWidth = 35;
-			this.toolStripComboBox演奏速度.IntegralHeight = false;
-			this.toolStripComboBox演奏速度.Items.AddRange( new object[] {
-            "x1.5",
-            "x1.4",
-            "x1.3",
-            "x1.2",
-            "x1.1",
-            "x1.0",
-            "x0.9",
-            "x0.8",
-            "x0.7",
-            "x0.6",
-            "x0.5"} );
-			this.toolStripComboBox演奏速度.Name = "toolStripComboBox演奏速度";
-			this.toolStripComboBox演奏速度.Size = new System.Drawing.Size( 75, 26 );
-			this.toolStripComboBox演奏速度.ToolTipText = "Viewer での再生速度を指定します。(#DTXVPLAYSPEED)";
-			// 
-			// toolStripSeparator12
-			// 
-			this.toolStripSeparator12.Name = "toolStripSeparator12";
-			this.toolStripSeparator12.Size = new System.Drawing.Size( 6, 26 );
-			// 
-			// vScrollBar譜面用垂直スクロールバー
-			// 
-			this.vScrollBar譜面用垂直スクロールバー.Dock = System.Windows.Forms.DockStyle.Right;
-			this.vScrollBar譜面用垂直スクロールバー.LargeChange = 64;
-			this.vScrollBar譜面用垂直スクロールバー.Location = new System.Drawing.Point( 714, 52 );
-			this.vScrollBar譜面用垂直スクロールバー.Name = "vScrollBar譜面用垂直スクロールバー";
-			this.vScrollBar譜面用垂直スクロールバー.Size = new System.Drawing.Size( 17, 441 );
-			this.vScrollBar譜面用垂直スクロールバー.SmallChange = 4;
-			this.vScrollBar譜面用垂直スクロールバー.TabIndex = 3;
-			this.vScrollBar譜面用垂直スクロールバー.ValueChanged += new System.EventHandler( this.vScrollBar譜面用垂直スクロールバー_ValueChanged );
-			// 
 			// splitContainerタブと譜面を分割
 			// 
-			this.splitContainerタブと譜面を分割.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.splitContainerタブと譜面を分割.Location = new System.Drawing.Point( 0, 52 );
+			this.splitContainerタブと譜面を分割.AccessibleDescription = null;
+			this.splitContainerタブと譜面を分割.AccessibleName = null;
+			resources.ApplyResources( this.splitContainerタブと譜面を分割, "splitContainerタブと譜面を分割" );
+			this.splitContainerタブと譜面を分割.BackgroundImage = null;
+			this.splitContainerタブと譜面を分割.Font = null;
 			this.splitContainerタブと譜面を分割.Name = "splitContainerタブと譜面を分割";
 			// 
 			// splitContainerタブと譜面を分割.Panel1
 			// 
+			this.splitContainerタブと譜面を分割.Panel1.AccessibleDescription = null;
+			this.splitContainerタブと譜面を分割.Panel1.AccessibleName = null;
+			resources.ApplyResources( this.splitContainerタブと譜面を分割.Panel1, "splitContainerタブと譜面を分割.Panel1" );
+			this.splitContainerタブと譜面を分割.Panel1.BackgroundImage = null;
 			this.splitContainerタブと譜面を分割.Panel1.Controls.Add( this.tabControl情報パネル );
+			this.splitContainerタブと譜面を分割.Panel1.Font = null;
+			this.toolTipツールチップ.SetToolTip( this.splitContainerタブと譜面を分割.Panel1, resources.GetString( "splitContainerタブと譜面を分割.Panel1.ToolTip" ) );
 			// 
 			// splitContainerタブと譜面を分割.Panel2
 			// 
+			this.splitContainerタブと譜面を分割.Panel2.AccessibleDescription = null;
+			this.splitContainerタブと譜面を分割.Panel2.AccessibleName = null;
+			resources.ApplyResources( this.splitContainerタブと譜面を分割.Panel2, "splitContainerタブと譜面を分割.Panel2" );
+			this.splitContainerタブと譜面を分割.Panel2.BackgroundImage = null;
 			this.splitContainerタブと譜面を分割.Panel2.Controls.Add( this.pictureBox譜面パネル );
 			this.splitContainerタブと譜面を分割.Panel2.Controls.Add( this.hScrollBar譜面用水平スクロールバー );
+			this.splitContainerタブと譜面を分割.Panel2.Font = null;
+			this.toolTipツールチップ.SetToolTip( this.splitContainerタブと譜面を分割.Panel2, resources.GetString( "splitContainerタブと譜面を分割.Panel2.ToolTip" ) );
 			this.splitContainerタブと譜面を分割.Panel2.SizeChanged += new System.EventHandler( this.splitContainerタブと譜面を分割_Panel2_SizeChanged );
-			this.splitContainerタブと譜面を分割.Size = new System.Drawing.Size( 714, 441 );
-			this.splitContainerタブと譜面を分割.SplitterDistance = 286;
-			this.splitContainerタブと譜面を分割.TabIndex = 4;
+			this.toolTipツールチップ.SetToolTip( this.splitContainerタブと譜面を分割, resources.GetString( "splitContainerタブと譜面を分割.ToolTip" ) );
 			// 
 			// tabControl情報パネル
 			// 
+			this.tabControl情報パネル.AccessibleDescription = null;
+			this.tabControl情報パネル.AccessibleName = null;
+			resources.ApplyResources( this.tabControl情報パネル, "tabControl情報パネル" );
+			this.tabControl情報パネル.BackgroundImage = null;
 			this.tabControl情報パネル.Controls.Add( this.tabPage基本情報 );
 			this.tabControl情報パネル.Controls.Add( this.tabPageWAV );
 			this.tabControl情報パネル.Controls.Add( this.tabPageBMP );
 			this.tabControl情報パネル.Controls.Add( this.tabPageAVI );
 			this.tabControl情報パネル.Controls.Add( this.tabPage自由入力 );
-			this.tabControl情報パネル.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl情報パネル.Location = new System.Drawing.Point( 0, 0 );
+			this.tabControl情報パネル.Font = null;
 			this.tabControl情報パネル.Name = "tabControl情報パネル";
 			this.tabControl情報パネル.SelectedIndex = 0;
-			this.tabControl情報パネル.Size = new System.Drawing.Size( 286, 441 );
-			this.tabControl情報パネル.TabIndex = 0;
+			this.toolTipツールチップ.SetToolTip( this.tabControl情報パネル, resources.GetString( "tabControl情報パネル.ToolTip" ) );
 			// 
 			// tabPage基本情報
 			// 
+			this.tabPage基本情報.AccessibleDescription = null;
+			this.tabPage基本情報.AccessibleName = null;
+			resources.ApplyResources( this.tabPage基本情報, "tabPage基本情報" );
 			this.tabPage基本情報.BackColor = System.Drawing.SystemColors.Window;
+			this.tabPage基本情報.BackgroundImage = null;
 			this.tabPage基本情報.Controls.Add( this.buttonRESULTIMAGE参照 );
 			this.tabPage基本情報.Controls.Add( this.buttonBACKGROUND参照 );
 			this.tabPage基本情報.Controls.Add( this.buttonSTAGEFILE参照 );
@@ -1041,370 +303,345 @@
 			this.tabPage基本情報.Controls.Add( this.textBoxコメント );
 			this.tabPage基本情報.Controls.Add( this.textBox製作者 );
 			this.tabPage基本情報.Controls.Add( this.textBox曲名 );
-			this.tabPage基本情報.Location = new System.Drawing.Point( 4, 22 );
+			this.tabPage基本情報.Font = null;
 			this.tabPage基本情報.Name = "tabPage基本情報";
-			this.tabPage基本情報.Padding = new System.Windows.Forms.Padding( 3 );
-			this.tabPage基本情報.Size = new System.Drawing.Size( 278, 415 );
-			this.tabPage基本情報.TabIndex = 0;
-			this.tabPage基本情報.Text = "基本情報";
+			this.toolTipツールチップ.SetToolTip( this.tabPage基本情報, resources.GetString( "tabPage基本情報.ToolTip" ) );
 			// 
 			// buttonRESULTIMAGE参照
 			// 
-			this.buttonRESULTIMAGE参照.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.buttonRESULTIMAGE参照.Location = new System.Drawing.Point( 247, 308 );
+			this.buttonRESULTIMAGE参照.AccessibleDescription = null;
+			this.buttonRESULTIMAGE参照.AccessibleName = null;
+			resources.ApplyResources( this.buttonRESULTIMAGE参照, "buttonRESULTIMAGE参照" );
+			this.buttonRESULTIMAGE参照.BackgroundImage = null;
+			this.buttonRESULTIMAGE参照.Font = null;
 			this.buttonRESULTIMAGE参照.Name = "buttonRESULTIMAGE参照";
-			this.buttonRESULTIMAGE参照.Size = new System.Drawing.Size( 25, 23 );
-			this.buttonRESULTIMAGE参照.TabIndex = 25;
-			this.buttonRESULTIMAGE参照.Text = "...";
-			this.toolTipツールチップ.SetToolTip( this.buttonRESULTIMAGE参照, "ファイルをダイアログから選択します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.buttonRESULTIMAGE参照, resources.GetString( "buttonRESULTIMAGE参照.ToolTip" ) );
 			this.buttonRESULTIMAGE参照.UseVisualStyleBackColor = true;
 			this.buttonRESULTIMAGE参照.Click += new System.EventHandler( this.buttonRESULTIMAGE参照_Click );
 			// 
 			// buttonBACKGROUND参照
 			// 
-			this.buttonBACKGROUND参照.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.buttonBACKGROUND参照.Location = new System.Drawing.Point( 247, 283 );
+			this.buttonBACKGROUND参照.AccessibleDescription = null;
+			this.buttonBACKGROUND参照.AccessibleName = null;
+			resources.ApplyResources( this.buttonBACKGROUND参照, "buttonBACKGROUND参照" );
+			this.buttonBACKGROUND参照.BackgroundImage = null;
+			this.buttonBACKGROUND参照.Font = null;
 			this.buttonBACKGROUND参照.Name = "buttonBACKGROUND参照";
-			this.buttonBACKGROUND参照.Size = new System.Drawing.Size( 25, 23 );
-			this.buttonBACKGROUND参照.TabIndex = 23;
-			this.buttonBACKGROUND参照.Text = "...";
-			this.toolTipツールチップ.SetToolTip( this.buttonBACKGROUND参照, "ファイルをダイアログから選択します。" );
+			this.toolTipツールチップ.SetToolTip( this.buttonBACKGROUND参照, resources.GetString( "buttonBACKGROUND参照.ToolTip" ) );
 			this.buttonBACKGROUND参照.UseVisualStyleBackColor = true;
 			this.buttonBACKGROUND参照.Click += new System.EventHandler( this.buttonBACKGROUND参照_Click );
 			// 
 			// buttonSTAGEFILE参照
 			// 
-			this.buttonSTAGEFILE参照.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.buttonSTAGEFILE参照.Location = new System.Drawing.Point( 247, 258 );
+			this.buttonSTAGEFILE参照.AccessibleDescription = null;
+			this.buttonSTAGEFILE参照.AccessibleName = null;
+			resources.ApplyResources( this.buttonSTAGEFILE参照, "buttonSTAGEFILE参照" );
+			this.buttonSTAGEFILE参照.BackgroundImage = null;
+			this.buttonSTAGEFILE参照.Font = null;
 			this.buttonSTAGEFILE参照.Name = "buttonSTAGEFILE参照";
-			this.buttonSTAGEFILE参照.Size = new System.Drawing.Size( 25, 23 );
-			this.buttonSTAGEFILE参照.TabIndex = 21;
-			this.buttonSTAGEFILE参照.Text = "...";
+			this.toolTipツールチップ.SetToolTip( this.buttonSTAGEFILE参照, resources.GetString( "buttonSTAGEFILE参照.ToolTip" ) );
 			this.buttonSTAGEFILE参照.UseVisualStyleBackColor = true;
 			this.buttonSTAGEFILE参照.Click += new System.EventHandler( this.buttonSTAGEFILE参照_Click );
 			// 
 			// buttonPREIMAGE参照
 			// 
-			this.buttonPREIMAGE参照.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.buttonPREIMAGE参照.Location = new System.Drawing.Point( 247, 233 );
+			this.buttonPREIMAGE参照.AccessibleDescription = null;
+			this.buttonPREIMAGE参照.AccessibleName = null;
+			resources.ApplyResources( this.buttonPREIMAGE参照, "buttonPREIMAGE参照" );
+			this.buttonPREIMAGE参照.BackgroundImage = null;
+			this.buttonPREIMAGE参照.Font = null;
 			this.buttonPREIMAGE参照.Name = "buttonPREIMAGE参照";
-			this.buttonPREIMAGE参照.Size = new System.Drawing.Size( 25, 23 );
-			this.buttonPREIMAGE参照.TabIndex = 19;
-			this.buttonPREIMAGE参照.Text = "...";
-			this.toolTipツールチップ.SetToolTip( this.buttonPREIMAGE参照, "ファイルをダイアログから選択します。" );
+			this.toolTipツールチップ.SetToolTip( this.buttonPREIMAGE参照, resources.GetString( "buttonPREIMAGE参照.ToolTip" ) );
 			this.buttonPREIMAGE参照.UseVisualStyleBackColor = true;
 			this.buttonPREIMAGE参照.Click += new System.EventHandler( this.buttonPREIMAGE参照_Click );
 			// 
 			// buttonPREVIEW参照
 			// 
-			this.buttonPREVIEW参照.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.buttonPREVIEW参照.Location = new System.Drawing.Point( 247, 208 );
+			this.buttonPREVIEW参照.AccessibleDescription = null;
+			this.buttonPREVIEW参照.AccessibleName = null;
+			resources.ApplyResources( this.buttonPREVIEW参照, "buttonPREVIEW参照" );
+			this.buttonPREVIEW参照.BackgroundImage = null;
+			this.buttonPREVIEW参照.Font = null;
 			this.buttonPREVIEW参照.Name = "buttonPREVIEW参照";
-			this.buttonPREVIEW参照.Size = new System.Drawing.Size( 25, 23 );
-			this.buttonPREVIEW参照.TabIndex = 17;
-			this.buttonPREVIEW参照.Text = "...\r\n";
-			this.toolTipツールチップ.SetToolTip( this.buttonPREVIEW参照, "ファイルをダイアログから選択します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.buttonPREVIEW参照, resources.GetString( "buttonPREVIEW参照.ToolTip" ) );
 			this.buttonPREVIEW参照.UseVisualStyleBackColor = true;
 			this.buttonPREVIEW参照.Click += new System.EventHandler( this.buttonPREVIEW参照_Click );
 			// 
 			// labeRESULTIMAGE
 			// 
-			this.labeRESULTIMAGE.AutoSize = true;
-			this.labeRESULTIMAGE.Location = new System.Drawing.Point( 26, 311 );
+			this.labeRESULTIMAGE.AccessibleDescription = null;
+			this.labeRESULTIMAGE.AccessibleName = null;
+			resources.ApplyResources( this.labeRESULTIMAGE, "labeRESULTIMAGE" );
+			this.labeRESULTIMAGE.Font = null;
 			this.labeRESULTIMAGE.Name = "labeRESULTIMAGE";
-			this.labeRESULTIMAGE.Size = new System.Drawing.Size( 53, 12 );
-			this.labeRESULTIMAGE.TabIndex = 27;
-			this.labeRESULTIMAGE.Text = "結果画像\r\n";
-			this.labeRESULTIMAGE.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labeRESULTIMAGE, "リザルト画像を設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.labeRESULTIMAGE, resources.GetString( "labeRESULTIMAGE.ToolTip" ) );
 			// 
 			// labelBACKGROUND
 			// 
-			this.labelBACKGROUND.AutoSize = true;
-			this.labelBACKGROUND.Location = new System.Drawing.Point( 26, 286 );
+			this.labelBACKGROUND.AccessibleDescription = null;
+			this.labelBACKGROUND.AccessibleName = null;
+			resources.ApplyResources( this.labelBACKGROUND, "labelBACKGROUND" );
+			this.labelBACKGROUND.Font = null;
 			this.labelBACKGROUND.Name = "labelBACKGROUND";
-			this.labelBACKGROUND.Size = new System.Drawing.Size( 53, 12 );
-			this.labelBACKGROUND.TabIndex = 29;
-			this.labelBACKGROUND.Text = "背景画像\r\n";
-			this.labelBACKGROUND.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelBACKGROUND, "背景画像を設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.labelBACKGROUND, resources.GetString( "labelBACKGROUND.ToolTip" ) );
 			// 
 			// labelSTAGEFILE
 			// 
-			this.labelSTAGEFILE.AutoSize = true;
-			this.labelSTAGEFILE.Location = new System.Drawing.Point( 11, 261 );
+			this.labelSTAGEFILE.AccessibleDescription = null;
+			this.labelSTAGEFILE.AccessibleName = null;
+			resources.ApplyResources( this.labelSTAGEFILE, "labelSTAGEFILE" );
+			this.labelSTAGEFILE.Font = null;
 			this.labelSTAGEFILE.Name = "labelSTAGEFILE";
-			this.labelSTAGEFILE.Size = new System.Drawing.Size( 68, 12 );
-			this.labelSTAGEFILE.TabIndex = 28;
-			this.labelSTAGEFILE.Text = "Loading画像\r\n";
-			this.labelSTAGEFILE.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelSTAGEFILE, "STAGEFILEを設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.labelSTAGEFILE, resources.GetString( "labelSTAGEFILE.ToolTip" ) );
 			// 
 			// labelPREIMAGE
 			// 
-			this.labelPREIMAGE.AutoSize = true;
-			this.labelPREIMAGE.Location = new System.Drawing.Point( 26, 236 );
+			this.labelPREIMAGE.AccessibleDescription = null;
+			this.labelPREIMAGE.AccessibleName = null;
+			resources.ApplyResources( this.labelPREIMAGE, "labelPREIMAGE" );
+			this.labelPREIMAGE.Font = null;
 			this.labelPREIMAGE.Name = "labelPREIMAGE";
-			this.labelPREIMAGE.Size = new System.Drawing.Size( 53, 12 );
-			this.labelPREIMAGE.TabIndex = 27;
-			this.labelPREIMAGE.Text = "選曲画像\r\n";
-			this.labelPREIMAGE.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelPREIMAGE, "選曲画像を指定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.labelPREIMAGE, resources.GetString( "labelPREIMAGE.ToolTip" ) );
 			// 
 			// labelPREVIEW
 			// 
-			this.labelPREVIEW.AutoSize = true;
-			this.labelPREVIEW.Location = new System.Drawing.Point( 18, 211 );
+			this.labelPREVIEW.AccessibleDescription = null;
+			this.labelPREVIEW.AccessibleName = null;
+			resources.ApplyResources( this.labelPREVIEW, "labelPREVIEW" );
+			this.labelPREVIEW.Font = null;
 			this.labelPREVIEW.Name = "labelPREVIEW";
-			this.labelPREVIEW.Size = new System.Drawing.Size( 61, 12 );
-			this.labelPREVIEW.TabIndex = 26;
-			this.labelPREVIEW.Text = "プレビュー音\r\n";
-			this.labelPREVIEW.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelPREVIEW, "プレビューサウンドを設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.labelPREVIEW, resources.GetString( "labelPREVIEW.ToolTip" ) );
 			// 
 			// textBoxRESULTIMAGE
 			// 
-			this.textBoxRESULTIMAGE.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBoxRESULTIMAGE.Location = new System.Drawing.Point( 85, 308 );
+			this.textBoxRESULTIMAGE.AccessibleDescription = null;
+			this.textBoxRESULTIMAGE.AccessibleName = null;
+			resources.ApplyResources( this.textBoxRESULTIMAGE, "textBoxRESULTIMAGE" );
+			this.textBoxRESULTIMAGE.BackgroundImage = null;
+			this.textBoxRESULTIMAGE.Font = null;
 			this.textBoxRESULTIMAGE.Name = "textBoxRESULTIMAGE";
-			this.textBoxRESULTIMAGE.Size = new System.Drawing.Size( 156, 19 );
-			this.textBoxRESULTIMAGE.TabIndex = 24;
-			this.toolTipツールチップ.SetToolTip( this.textBoxRESULTIMAGE, "リザルト画像を設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxRESULTIMAGE, resources.GetString( "textBoxRESULTIMAGE.ToolTip" ) );
 			this.textBoxRESULTIMAGE.TextChanged += new System.EventHandler( this.textBoxRESULTIMAGE_TextChanged );
 			this.textBoxRESULTIMAGE.Leave += new System.EventHandler( this.textBoxRESULTIMAGE_Leave );
 			// 
 			// textBoxBACKGROUND
 			// 
-			this.textBoxBACKGROUND.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBoxBACKGROUND.Location = new System.Drawing.Point( 85, 283 );
+			this.textBoxBACKGROUND.AccessibleDescription = null;
+			this.textBoxBACKGROUND.AccessibleName = null;
+			resources.ApplyResources( this.textBoxBACKGROUND, "textBoxBACKGROUND" );
+			this.textBoxBACKGROUND.BackgroundImage = null;
+			this.textBoxBACKGROUND.Font = null;
 			this.textBoxBACKGROUND.Name = "textBoxBACKGROUND";
-			this.textBoxBACKGROUND.Size = new System.Drawing.Size( 156, 19 );
-			this.textBoxBACKGROUND.TabIndex = 22;
-			this.toolTipツールチップ.SetToolTip( this.textBoxBACKGROUND, "背景画像を設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxBACKGROUND, resources.GetString( "textBoxBACKGROUND.ToolTip" ) );
 			this.textBoxBACKGROUND.TextChanged += new System.EventHandler( this.textBoxBACKGROUND_TextChanged );
 			this.textBoxBACKGROUND.Leave += new System.EventHandler( this.textBoxBACKGROUND_Leave );
 			// 
 			// textBoxSTAGEFILE
 			// 
-			this.textBoxSTAGEFILE.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBoxSTAGEFILE.Location = new System.Drawing.Point( 85, 258 );
+			this.textBoxSTAGEFILE.AccessibleDescription = null;
+			this.textBoxSTAGEFILE.AccessibleName = null;
+			resources.ApplyResources( this.textBoxSTAGEFILE, "textBoxSTAGEFILE" );
+			this.textBoxSTAGEFILE.BackgroundImage = null;
+			this.textBoxSTAGEFILE.Font = null;
 			this.textBoxSTAGEFILE.Name = "textBoxSTAGEFILE";
-			this.textBoxSTAGEFILE.Size = new System.Drawing.Size( 156, 19 );
-			this.textBoxSTAGEFILE.TabIndex = 20;
-			this.toolTipツールチップ.SetToolTip( this.textBoxSTAGEFILE, "STAGEFILEを設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxSTAGEFILE, resources.GetString( "textBoxSTAGEFILE.ToolTip" ) );
 			this.textBoxSTAGEFILE.TextChanged += new System.EventHandler( this.textBoxSTAGEFILE_TextChanged );
 			this.textBoxSTAGEFILE.Leave += new System.EventHandler( this.textBoxSTAGEFILE_Leave );
 			// 
 			// textBoxPREIMAGE
 			// 
-			this.textBoxPREIMAGE.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBoxPREIMAGE.Location = new System.Drawing.Point( 85, 233 );
+			this.textBoxPREIMAGE.AccessibleDescription = null;
+			this.textBoxPREIMAGE.AccessibleName = null;
+			resources.ApplyResources( this.textBoxPREIMAGE, "textBoxPREIMAGE" );
+			this.textBoxPREIMAGE.BackgroundImage = null;
+			this.textBoxPREIMAGE.Font = null;
 			this.textBoxPREIMAGE.Name = "textBoxPREIMAGE";
-			this.textBoxPREIMAGE.Size = new System.Drawing.Size( 156, 19 );
-			this.textBoxPREIMAGE.TabIndex = 18;
-			this.toolTipツールチップ.SetToolTip( this.textBoxPREIMAGE, "選曲画像を指定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxPREIMAGE, resources.GetString( "textBoxPREIMAGE.ToolTip" ) );
 			this.textBoxPREIMAGE.TextChanged += new System.EventHandler( this.textBoxPREIMAGE_TextChanged );
 			this.textBoxPREIMAGE.Leave += new System.EventHandler( this.textBoxPREIMAGE_Leave );
 			// 
 			// textBoxPREVIEW
 			// 
-			this.textBoxPREVIEW.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBoxPREVIEW.Location = new System.Drawing.Point( 85, 208 );
+			this.textBoxPREVIEW.AccessibleDescription = null;
+			this.textBoxPREVIEW.AccessibleName = null;
+			resources.ApplyResources( this.textBoxPREVIEW, "textBoxPREVIEW" );
+			this.textBoxPREVIEW.BackgroundImage = null;
+			this.textBoxPREVIEW.Font = null;
 			this.textBoxPREVIEW.Name = "textBoxPREVIEW";
-			this.textBoxPREVIEW.Size = new System.Drawing.Size( 156, 19 );
-			this.textBoxPREVIEW.TabIndex = 16;
-			this.toolTipツールチップ.SetToolTip( this.textBoxPREVIEW, "プレビューサウンドを設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxPREVIEW, resources.GetString( "textBoxPREVIEW.ToolTip" ) );
 			this.textBoxPREVIEW.TextChanged += new System.EventHandler( this.textBoxPREVIEW_TextChanged );
 			this.textBoxPREVIEW.Leave += new System.EventHandler( this.textBoxPREVIEW_Leave );
 			// 
 			// textBoxパネル
 			// 
-			this.textBoxパネル.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBoxパネル.Location = new System.Drawing.Point( 85, 182 );
+			this.textBoxパネル.AccessibleDescription = null;
+			this.textBoxパネル.AccessibleName = null;
+			resources.ApplyResources( this.textBoxパネル, "textBoxパネル" );
+			this.textBoxパネル.BackgroundImage = null;
+			this.textBoxパネル.Font = null;
 			this.textBoxパネル.Name = "textBoxパネル";
-			this.textBoxパネル.Size = new System.Drawing.Size( 187, 19 );
-			this.textBoxパネル.TabIndex = 14;
-			this.toolTipツールチップ.SetToolTip( this.textBoxパネル, "パネル文を設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxパネル, resources.GetString( "textBoxパネル.ToolTip" ) );
 			this.textBoxパネル.TextChanged += new System.EventHandler( this.textBoxパネル_TextChanged );
 			this.textBoxパネル.Leave += new System.EventHandler( this.textBoxパネル_Leave );
 			// 
 			// labelパネル
 			// 
-			this.labelパネル.AutoSize = true;
-			this.labelパネル.Location = new System.Drawing.Point( 32, 185 );
+			this.labelパネル.AccessibleDescription = null;
+			this.labelパネル.AccessibleName = null;
+			resources.ApplyResources( this.labelパネル, "labelパネル" );
+			this.labelパネル.Font = null;
 			this.labelパネル.Name = "labelパネル";
-			this.labelパネル.Size = new System.Drawing.Size( 47, 12 );
-			this.labelパネル.TabIndex = 15;
-			this.labelパネル.Text = "パネル文";
-			this.labelパネル.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelパネル, "パネル文を設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.labelパネル, resources.GetString( "labelパネル.ToolTip" ) );
 			// 
 			// labelBLEVEL
 			// 
-			this.labelBLEVEL.AutoSize = true;
-			this.labelBLEVEL.Location = new System.Drawing.Point( 34, 157 );
+			this.labelBLEVEL.AccessibleDescription = null;
+			this.labelBLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.labelBLEVEL, "labelBLEVEL" );
+			this.labelBLEVEL.Font = null;
 			this.labelBLEVEL.Name = "labelBLEVEL";
-			this.labelBLEVEL.Size = new System.Drawing.Size( 45, 12 );
-			this.labelBLEVEL.TabIndex = 13;
-			this.labelBLEVEL.Text = "BassLv.";
-			this.labelBLEVEL.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelBLEVEL, "ベースの難易度を、（易）1～100（難）で設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.labelBLEVEL, resources.GetString( "labelBLEVEL.ToolTip" ) );
 			// 
 			// textBoxBLEVEL
 			// 
-			this.textBoxBLEVEL.Location = new System.Drawing.Point( 85, 154 );
+			this.textBoxBLEVEL.AccessibleDescription = null;
+			this.textBoxBLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.textBoxBLEVEL, "textBoxBLEVEL" );
+			this.textBoxBLEVEL.BackgroundImage = null;
+			this.textBoxBLEVEL.Font = null;
 			this.textBoxBLEVEL.Name = "textBoxBLEVEL";
-			this.textBoxBLEVEL.Size = new System.Drawing.Size( 36, 19 );
-			this.textBoxBLEVEL.TabIndex = 9;
-			this.textBoxBLEVEL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.toolTipツールチップ.SetToolTip( this.textBoxBLEVEL, "ベースの難易度を、（易）1～100（難）で設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxBLEVEL, resources.GetString( "textBoxBLEVEL.ToolTip" ) );
 			this.textBoxBLEVEL.TextChanged += new System.EventHandler( this.textBoxBLEVEL_TextChanged );
 			this.textBoxBLEVEL.Leave += new System.EventHandler( this.textBoxBLEVEL_Leave );
 			// 
 			// hScrollBarBLEVEL
 			// 
-			this.hScrollBarBLEVEL.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.hScrollBarBLEVEL.Location = new System.Drawing.Point( 124, 154 );
+			this.hScrollBarBLEVEL.AccessibleDescription = null;
+			this.hScrollBarBLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.hScrollBarBLEVEL, "hScrollBarBLEVEL" );
+			this.hScrollBarBLEVEL.BackgroundImage = null;
+			this.hScrollBarBLEVEL.Font = null;
 			this.hScrollBarBLEVEL.Maximum = 109;
 			this.hScrollBarBLEVEL.Name = "hScrollBarBLEVEL";
-			this.hScrollBarBLEVEL.Size = new System.Drawing.Size( 148, 17 );
-			this.hScrollBarBLEVEL.TabIndex = 10;
-			this.toolTipツールチップ.SetToolTip( this.hScrollBarBLEVEL, "ベースの難易度を、（易）1～100（難）で設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.hScrollBarBLEVEL, resources.GetString( "hScrollBarBLEVEL.ToolTip" ) );
 			this.hScrollBarBLEVEL.ValueChanged += new System.EventHandler( this.hScrollBarBLEVEL_ValueChanged );
 			// 
 			// labelGLEVEL
 			// 
-			this.labelGLEVEL.AutoSize = true;
-			this.labelGLEVEL.Location = new System.Drawing.Point( 29, 136 );
+			this.labelGLEVEL.AccessibleDescription = null;
+			this.labelGLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.labelGLEVEL, "labelGLEVEL" );
+			this.labelGLEVEL.Font = null;
 			this.labelGLEVEL.Name = "labelGLEVEL";
-			this.labelGLEVEL.Size = new System.Drawing.Size( 50, 12 );
-			this.labelGLEVEL.TabIndex = 12;
-			this.labelGLEVEL.Text = "GuitarLv.\r\n";
-			this.labelGLEVEL.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelGLEVEL, "ギターの難易度を、（易）1～100（難）で設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.labelGLEVEL, resources.GetString( "labelGLEVEL.ToolTip" ) );
 			// 
 			// textBoxGLEVEL
 			// 
-			this.textBoxGLEVEL.Location = new System.Drawing.Point( 85, 133 );
+			this.textBoxGLEVEL.AccessibleDescription = null;
+			this.textBoxGLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.textBoxGLEVEL, "textBoxGLEVEL" );
+			this.textBoxGLEVEL.BackgroundImage = null;
+			this.textBoxGLEVEL.Font = null;
 			this.textBoxGLEVEL.Name = "textBoxGLEVEL";
-			this.textBoxGLEVEL.Size = new System.Drawing.Size( 36, 19 );
-			this.textBoxGLEVEL.TabIndex = 7;
-			this.textBoxGLEVEL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.toolTipツールチップ.SetToolTip( this.textBoxGLEVEL, "ギターの難易度を、（易）1～100（難）で設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxGLEVEL, resources.GetString( "textBoxGLEVEL.ToolTip" ) );
 			this.textBoxGLEVEL.TextChanged += new System.EventHandler( this.textBoxGLEVEL_TextChanged );
 			this.textBoxGLEVEL.Leave += new System.EventHandler( this.textBoxGLEVEL_Leave );
 			// 
 			// hScrollBarGLEVEL
 			// 
-			this.hScrollBarGLEVEL.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.hScrollBarGLEVEL.Location = new System.Drawing.Point( 124, 133 );
+			this.hScrollBarGLEVEL.AccessibleDescription = null;
+			this.hScrollBarGLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.hScrollBarGLEVEL, "hScrollBarGLEVEL" );
+			this.hScrollBarGLEVEL.BackgroundImage = null;
+			this.hScrollBarGLEVEL.Font = null;
 			this.hScrollBarGLEVEL.Maximum = 109;
 			this.hScrollBarGLEVEL.Name = "hScrollBarGLEVEL";
-			this.hScrollBarGLEVEL.Size = new System.Drawing.Size( 148, 17 );
-			this.hScrollBarGLEVEL.TabIndex = 8;
-			this.toolTipツールチップ.SetToolTip( this.hScrollBarGLEVEL, "ギターの難易度を、（易）1～100（難）で設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.hScrollBarGLEVEL, resources.GetString( "hScrollBarGLEVEL.ToolTip" ) );
 			this.hScrollBarGLEVEL.ValueChanged += new System.EventHandler( this.hScrollBarGLEVEL_ValueChanged );
 			// 
 			// labelDLEVEL
 			// 
-			this.labelDLEVEL.AutoSize = true;
-			this.labelDLEVEL.Location = new System.Drawing.Point( 33, 115 );
+			this.labelDLEVEL.AccessibleDescription = null;
+			this.labelDLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.labelDLEVEL, "labelDLEVEL" );
+			this.labelDLEVEL.Font = null;
 			this.labelDLEVEL.Name = "labelDLEVEL";
-			this.labelDLEVEL.Size = new System.Drawing.Size( 46, 12 );
-			this.labelDLEVEL.TabIndex = 11;
-			this.labelDLEVEL.Text = "DrumLv.";
-			this.labelDLEVEL.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelDLEVEL, "ドラムの難易度を、（易）1～100（難）で設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.labelDLEVEL, resources.GetString( "labelDLEVEL.ToolTip" ) );
 			// 
 			// textBoxDLEVEL
 			// 
-			this.textBoxDLEVEL.Location = new System.Drawing.Point( 85, 112 );
+			this.textBoxDLEVEL.AccessibleDescription = null;
+			this.textBoxDLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.textBoxDLEVEL, "textBoxDLEVEL" );
+			this.textBoxDLEVEL.BackgroundImage = null;
+			this.textBoxDLEVEL.Font = null;
 			this.textBoxDLEVEL.Name = "textBoxDLEVEL";
-			this.textBoxDLEVEL.Size = new System.Drawing.Size( 36, 19 );
-			this.textBoxDLEVEL.TabIndex = 5;
-			this.textBoxDLEVEL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.toolTipツールチップ.SetToolTip( this.textBoxDLEVEL, "ドラムの難易度を、（易）1～100（難）で設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxDLEVEL, resources.GetString( "textBoxDLEVEL.ToolTip" ) );
 			this.textBoxDLEVEL.TextChanged += new System.EventHandler( this.textBoxDLEVEL_TextChanged );
 			this.textBoxDLEVEL.Leave += new System.EventHandler( this.textBoxDLEVEL_Leave );
 			// 
 			// hScrollBarDLEVEL
 			// 
-			this.hScrollBarDLEVEL.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.hScrollBarDLEVEL.Location = new System.Drawing.Point( 124, 112 );
+			this.hScrollBarDLEVEL.AccessibleDescription = null;
+			this.hScrollBarDLEVEL.AccessibleName = null;
+			resources.ApplyResources( this.hScrollBarDLEVEL, "hScrollBarDLEVEL" );
+			this.hScrollBarDLEVEL.BackgroundImage = null;
+			this.hScrollBarDLEVEL.Font = null;
 			this.hScrollBarDLEVEL.Maximum = 109;
 			this.hScrollBarDLEVEL.Name = "hScrollBarDLEVEL";
-			this.hScrollBarDLEVEL.Size = new System.Drawing.Size( 148, 17 );
-			this.hScrollBarDLEVEL.TabIndex = 6;
-			this.toolTipツールチップ.SetToolTip( this.hScrollBarDLEVEL, "ドラムの難易度を、（易）1～100（難）で設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.hScrollBarDLEVEL, resources.GetString( "hScrollBarDLEVEL.ToolTip" ) );
 			this.hScrollBarDLEVEL.ValueChanged += new System.EventHandler( this.hScrollBarDLEVEL_ValueChanged );
 			// 
 			// labelBPM
 			// 
-			this.labelBPM.AutoSize = true;
-			this.labelBPM.Location = new System.Drawing.Point( 50, 83 );
+			this.labelBPM.AccessibleDescription = null;
+			this.labelBPM.AccessibleName = null;
+			resources.ApplyResources( this.labelBPM, "labelBPM" );
+			this.labelBPM.Font = null;
 			this.labelBPM.Name = "labelBPM";
-			this.labelBPM.Size = new System.Drawing.Size( 29, 12 );
-			this.labelBPM.TabIndex = 8;
-			this.labelBPM.Text = "BPM";
-			this.labelBPM.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelBPM, "曲の速さを BPM （Beats / Minute）で指定します。" );
+			this.toolTipツールチップ.SetToolTip( this.labelBPM, resources.GetString( "labelBPM.ToolTip" ) );
 			// 
 			// labelコメント
 			// 
-			this.labelコメント.AutoSize = true;
-			this.labelコメント.Location = new System.Drawing.Point( 41, 59 );
+			this.labelコメント.AccessibleDescription = null;
+			this.labelコメント.AccessibleName = null;
+			resources.ApplyResources( this.labelコメント, "labelコメント" );
+			this.labelコメント.Font = null;
 			this.labelコメント.Name = "labelコメント";
-			this.labelコメント.Size = new System.Drawing.Size( 38, 12 );
-			this.labelコメント.TabIndex = 7;
-			this.labelコメント.Text = "コメント";
-			this.labelコメント.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.labelコメント, "演奏データに対するコメント文を設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.labelコメント, resources.GetString( "labelコメント.ToolTip" ) );
 			// 
 			// label製作者
 			// 
-			this.label製作者.AutoSize = true;
-			this.label製作者.Location = new System.Drawing.Point( 38, 34 );
+			this.label製作者.AccessibleDescription = null;
+			this.label製作者.AccessibleName = null;
+			resources.ApplyResources( this.label製作者, "label製作者" );
+			this.label製作者.Font = null;
 			this.label製作者.Name = "label製作者";
-			this.label製作者.Size = new System.Drawing.Size( 41, 12 );
-			this.label製作者.TabIndex = 6;
-			this.label製作者.Text = "製作者";
-			this.label製作者.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.label製作者, "データの製作者名を設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.label製作者, resources.GetString( "label製作者.ToolTip" ) );
 			// 
 			// label曲名
 			// 
-			this.label曲名.AutoSize = true;
-			this.label曲名.Location = new System.Drawing.Point( 50, 9 );
+			this.label曲名.AccessibleDescription = null;
+			this.label曲名.AccessibleName = null;
+			resources.ApplyResources( this.label曲名, "label曲名" );
+			this.label曲名.Font = null;
 			this.label曲名.Name = "label曲名";
-			this.label曲名.Size = new System.Drawing.Size( 29, 12 );
-			this.label曲名.TabIndex = 5;
-			this.label曲名.Text = "曲名";
-			this.label曲名.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.toolTipツールチップ.SetToolTip( this.label曲名, "演奏データのタイトルを設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.label曲名, resources.GetString( "label曲名.ToolTip" ) );
 			// 
 			// numericUpDownBPM
 			// 
+			this.numericUpDownBPM.AccessibleDescription = null;
+			this.numericUpDownBPM.AccessibleName = null;
+			resources.ApplyResources( this.numericUpDownBPM, "numericUpDownBPM" );
 			this.numericUpDownBPM.DecimalPlaces = 2;
-			this.numericUpDownBPM.Location = new System.Drawing.Point( 85, 81 );
+			this.numericUpDownBPM.Font = null;
 			this.numericUpDownBPM.Maximum = new decimal( new int[] {
             9999,
             0,
             0,
             0} );
 			this.numericUpDownBPM.Name = "numericUpDownBPM";
-			this.numericUpDownBPM.Size = new System.Drawing.Size( 68, 19 );
-			this.numericUpDownBPM.TabIndex = 4;
-			this.numericUpDownBPM.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			this.toolTipツールチップ.SetToolTip( this.numericUpDownBPM, "曲の速さを BPM （Beats / Minute）で指定します。" );
+			this.toolTipツールチップ.SetToolTip( this.numericUpDownBPM, resources.GetString( "numericUpDownBPM.ToolTip" ) );
 			this.numericUpDownBPM.Value = new decimal( new int[] {
             120,
             0,
@@ -1415,55 +652,60 @@
 			// 
 			// textBoxコメント
 			// 
-			this.textBoxコメント.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBoxコメント.Location = new System.Drawing.Point( 85, 56 );
+			this.textBoxコメント.AccessibleDescription = null;
+			this.textBoxコメント.AccessibleName = null;
+			resources.ApplyResources( this.textBoxコメント, "textBoxコメント" );
+			this.textBoxコメント.BackgroundImage = null;
+			this.textBoxコメント.Font = null;
 			this.textBoxコメント.Name = "textBoxコメント";
-			this.textBoxコメント.Size = new System.Drawing.Size( 187, 19 );
-			this.textBoxコメント.TabIndex = 3;
-			this.toolTipツールチップ.SetToolTip( this.textBoxコメント, "演奏データに対するコメント文を設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.textBoxコメント, resources.GetString( "textBoxコメント.ToolTip" ) );
 			this.textBoxコメント.TextChanged += new System.EventHandler( this.textBoxコメント_TextChanged );
 			this.textBoxコメント.Leave += new System.EventHandler( this.textBoxコメント_Leave );
 			// 
 			// textBox製作者
 			// 
-			this.textBox製作者.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBox製作者.Location = new System.Drawing.Point( 85, 31 );
+			this.textBox製作者.AccessibleDescription = null;
+			this.textBox製作者.AccessibleName = null;
+			resources.ApplyResources( this.textBox製作者, "textBox製作者" );
+			this.textBox製作者.BackgroundImage = null;
+			this.textBox製作者.Font = null;
 			this.textBox製作者.Name = "textBox製作者";
-			this.textBox製作者.Size = new System.Drawing.Size( 187, 19 );
-			this.textBox製作者.TabIndex = 2;
-			this.toolTipツールチップ.SetToolTip( this.textBox製作者, "データの製作者名を設定します。\r\n" );
+			this.toolTipツールチップ.SetToolTip( this.textBox製作者, resources.GetString( "textBox製作者.ToolTip" ) );
 			this.textBox製作者.TextChanged += new System.EventHandler( this.textBox製作者_TextChanged );
 			this.textBox製作者.Leave += new System.EventHandler( this.textBox製作者_Leave );
 			// 
 			// textBox曲名
 			// 
-			this.textBox曲名.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left )
-						| System.Windows.Forms.AnchorStyles.Right ) ) );
-			this.textBox曲名.Location = new System.Drawing.Point( 85, 6 );
+			this.textBox曲名.AccessibleDescription = null;
+			this.textBox曲名.AccessibleName = null;
+			resources.ApplyResources( this.textBox曲名, "textBox曲名" );
+			this.textBox曲名.BackgroundImage = null;
+			this.textBox曲名.Font = null;
 			this.textBox曲名.MinimumSize = new System.Drawing.Size( 10, 19 );
 			this.textBox曲名.Name = "textBox曲名";
-			this.textBox曲名.Size = new System.Drawing.Size( 187, 19 );
-			this.textBox曲名.TabIndex = 1;
-			this.toolTipツールチップ.SetToolTip( this.textBox曲名, "演奏データのタイトルを設定します。" );
+			this.toolTipツールチップ.SetToolTip( this.textBox曲名, resources.GetString( "textBox曲名.ToolTip" ) );
 			this.textBox曲名.TextChanged += new System.EventHandler( this.textBox曲名_TextChanged );
 			this.textBox曲名.Leave += new System.EventHandler( this.textBox曲名_Leave );
 			// 
 			// tabPageWAV
 			// 
+			this.tabPageWAV.AccessibleDescription = null;
+			this.tabPageWAV.AccessibleName = null;
+			resources.ApplyResources( this.tabPageWAV, "tabPageWAV" );
+			this.tabPageWAV.BackgroundImage = null;
 			this.tabPageWAV.Controls.Add( this.listViewWAVリスト );
 			this.tabPageWAV.Controls.Add( this.toolStripWAVツールバー );
-			this.tabPageWAV.Location = new System.Drawing.Point( 4, 22 );
+			this.tabPageWAV.Font = null;
 			this.tabPageWAV.Name = "tabPageWAV";
-			this.tabPageWAV.Padding = new System.Windows.Forms.Padding( 3 );
-			this.tabPageWAV.Size = new System.Drawing.Size( 266, 339 );
-			this.tabPageWAV.TabIndex = 1;
-			this.tabPageWAV.Text = "WAV";
+			this.toolTipツールチップ.SetToolTip( this.tabPageWAV, resources.GetString( "tabPageWAV.ToolTip" ) );
 			this.tabPageWAV.UseVisualStyleBackColor = true;
 			// 
 			// listViewWAVリスト
 			// 
+			this.listViewWAVリスト.AccessibleDescription = null;
+			this.listViewWAVリスト.AccessibleName = null;
+			resources.ApplyResources( this.listViewWAVリスト, "listViewWAVリスト" );
+			this.listViewWAVリスト.BackgroundImage = null;
 			this.listViewWAVリスト.Columns.AddRange( new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderWAV_ラベル,
             this.columnHeaderWAV_番号,
@@ -1471,16 +713,12 @@
             this.columnHeaderWAV_音量,
             this.columnHeaderWAV_位置,
             this.columnHeaderWAV_BGM} );
-			this.listViewWAVリスト.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listViewWAVリスト.Font = new System.Drawing.Font( "ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ( (byte) ( 128 ) ) );
 			this.listViewWAVリスト.FullRowSelect = true;
 			this.listViewWAVリスト.GridLines = true;
 			this.listViewWAVリスト.HideSelection = false;
-			this.listViewWAVリスト.Location = new System.Drawing.Point( 3, 3 );
 			this.listViewWAVリスト.MultiSelect = false;
 			this.listViewWAVリスト.Name = "listViewWAVリスト";
-			this.listViewWAVリスト.Size = new System.Drawing.Size( 260, 308 );
-			this.listViewWAVリスト.TabIndex = 0;
+			this.toolTipツールチップ.SetToolTip( this.listViewWAVリスト, resources.GetString( "listViewWAVリスト.ToolTip" ) );
 			this.listViewWAVリスト.UseCompatibleStateImageBehavior = false;
 			this.listViewWAVリスト.View = System.Windows.Forms.View.Details;
 			this.listViewWAVリスト.VirtualListSize = 1295;
@@ -1495,37 +733,35 @@
 			// 
 			// columnHeaderWAV_ラベル
 			// 
-			this.columnHeaderWAV_ラベル.Text = "ラベル";
-			this.columnHeaderWAV_ラベル.Width = 80;
+			resources.ApplyResources( this.columnHeaderWAV_ラベル, "columnHeaderWAV_ラベル" );
 			// 
 			// columnHeaderWAV_番号
 			// 
-			this.columnHeaderWAV_番号.Text = "No";
-			this.columnHeaderWAV_番号.Width = 28;
+			resources.ApplyResources( this.columnHeaderWAV_番号, "columnHeaderWAV_番号" );
 			// 
 			// columnHeaderWAV_ファイル名
 			// 
-			this.columnHeaderWAV_ファイル名.Text = "ファイル";
-			this.columnHeaderWAV_ファイル名.Width = 80;
+			resources.ApplyResources( this.columnHeaderWAV_ファイル名, "columnHeaderWAV_ファイル名" );
 			// 
 			// columnHeaderWAV_音量
 			// 
-			this.columnHeaderWAV_音量.Text = "音量";
-			this.columnHeaderWAV_音量.Width = 40;
+			resources.ApplyResources( this.columnHeaderWAV_音量, "columnHeaderWAV_音量" );
 			// 
 			// columnHeaderWAV_位置
 			// 
-			this.columnHeaderWAV_位置.Text = "位置";
-			this.columnHeaderWAV_位置.Width = 40;
+			resources.ApplyResources( this.columnHeaderWAV_位置, "columnHeaderWAV_位置" );
 			// 
 			// columnHeaderWAV_BGM
 			// 
-			this.columnHeaderWAV_BGM.Text = "BPM";
-			this.columnHeaderWAV_BGM.Width = 34;
+			resources.ApplyResources( this.columnHeaderWAV_BGM, "columnHeaderWAV_BGM" );
 			// 
 			// toolStripWAVツールバー
 			// 
-			this.toolStripWAVツールバー.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.toolStripWAVツールバー.AccessibleDescription = null;
+			this.toolStripWAVツールバー.AccessibleName = null;
+			resources.ApplyResources( this.toolStripWAVツールバー, "toolStripWAVツールバー" );
+			this.toolStripWAVツールバー.BackgroundImage = null;
+			this.toolStripWAVツールバー.Font = null;
 			this.toolStripWAVツールバー.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStripWAVツールバー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonWAVリスト上移動,
@@ -1535,109 +771,111 @@
             this.toolStripButtonWAVリストプレビュー再生停止,
             this.toolStripSeparator14,
             this.toolStripButtonWAVリストプレビュースイッチ} );
-			this.toolStripWAVツールバー.Location = new System.Drawing.Point( 3, 311 );
 			this.toolStripWAVツールバー.Name = "toolStripWAVツールバー";
-			this.toolStripWAVツールバー.Size = new System.Drawing.Size( 260, 25 );
-			this.toolStripWAVツールバー.TabIndex = 0;
-			this.toolStripWAVツールバー.Text = "WAVリストパネル\r\n";
+			this.toolTipツールチップ.SetToolTip( this.toolStripWAVツールバー, resources.GetString( "toolStripWAVツールバー.ToolTip" ) );
 			// 
 			// toolStripButtonWAVリスト上移動
 			// 
+			this.toolStripButtonWAVリスト上移動.AccessibleDescription = null;
+			this.toolStripButtonWAVリスト上移動.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonWAVリスト上移動, "toolStripButtonWAVリスト上移動" );
+			this.toolStripButtonWAVリスト上移動.BackgroundImage = null;
 			this.toolStripButtonWAVリスト上移動.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonWAVリスト上移動.Image = global::DTXCreator.Properties.Resources.上移動;
-			this.toolStripButtonWAVリスト上移動.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonWAVリスト上移動.Name = "toolStripButtonWAVリスト上移動";
-			this.toolStripButtonWAVリスト上移動.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonWAVリスト上移動.Text = "toolStripButton1";
-			this.toolStripButtonWAVリスト上移動.ToolTipText = "選択行を１つ上に移動します。\r\n";
 			this.toolStripButtonWAVリスト上移動.Click += new System.EventHandler( this.toolStripButtonWAVリスト上移動_Click );
 			// 
 			// toolStripButtonWAVリスト下移動
 			// 
+			this.toolStripButtonWAVリスト下移動.AccessibleDescription = null;
+			this.toolStripButtonWAVリスト下移動.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonWAVリスト下移動, "toolStripButtonWAVリスト下移動" );
+			this.toolStripButtonWAVリスト下移動.BackgroundImage = null;
 			this.toolStripButtonWAVリスト下移動.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonWAVリスト下移動.Image = global::DTXCreator.Properties.Resources.下移動;
-			this.toolStripButtonWAVリスト下移動.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonWAVリスト下移動.Name = "toolStripButtonWAVリスト下移動";
-			this.toolStripButtonWAVリスト下移動.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonWAVリスト下移動.Text = "toolStripButton1";
-			this.toolStripButtonWAVリスト下移動.ToolTipText = "選択行を１つ下へ移動します。\r\n";
 			this.toolStripButtonWAVリスト下移動.Click += new System.EventHandler( this.toolStripButtonWAVリスト下移動_Click );
 			// 
 			// toolStripSeparator13
 			// 
+			this.toolStripSeparator13.AccessibleDescription = null;
+			this.toolStripSeparator13.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator13, "toolStripSeparator13" );
 			this.toolStripSeparator13.Name = "toolStripSeparator13";
-			this.toolStripSeparator13.Size = new System.Drawing.Size( 6, 25 );
 			// 
 			// toolStripButtonWAVリストプレビュー再生開始
 			// 
+			this.toolStripButtonWAVリストプレビュー再生開始.AccessibleDescription = null;
+			this.toolStripButtonWAVリストプレビュー再生開始.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonWAVリストプレビュー再生開始, "toolStripButtonWAVリストプレビュー再生開始" );
+			this.toolStripButtonWAVリストプレビュー再生開始.BackgroundImage = null;
 			this.toolStripButtonWAVリストプレビュー再生開始.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonWAVリストプレビュー再生開始.Image = global::DTXCreator.Properties.Resources.再生;
-			this.toolStripButtonWAVリストプレビュー再生開始.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonWAVリストプレビュー再生開始.Name = "toolStripButtonWAVリストプレビュー再生開始";
-			this.toolStripButtonWAVリストプレビュー再生開始.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonWAVリストプレビュー再生開始.Text = "toolStripButton1";
-			this.toolStripButtonWAVリストプレビュー再生開始.ToolTipText = "選択されている行のプレビュー音を再生します。\r\n";
 			this.toolStripButtonWAVリストプレビュー再生開始.Click += new System.EventHandler( this.toolStripButtonWAVリストプレビュー再生開始_Click );
 			// 
 			// toolStripButtonWAVリストプレビュー再生停止
 			// 
+			this.toolStripButtonWAVリストプレビュー再生停止.AccessibleDescription = null;
+			this.toolStripButtonWAVリストプレビュー再生停止.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonWAVリストプレビュー再生停止, "toolStripButtonWAVリストプレビュー再生停止" );
+			this.toolStripButtonWAVリストプレビュー再生停止.BackgroundImage = null;
 			this.toolStripButtonWAVリストプレビュー再生停止.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonWAVリストプレビュー再生停止.Image = global::DTXCreator.Properties.Resources.再生停止;
-			this.toolStripButtonWAVリストプレビュー再生停止.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonWAVリストプレビュー再生停止.Name = "toolStripButtonWAVリストプレビュー再生停止";
-			this.toolStripButtonWAVリストプレビュー再生停止.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonWAVリストプレビュー再生停止.Text = "toolStripButton1";
-			this.toolStripButtonWAVリストプレビュー再生停止.ToolTipText = "プレビュー音の再生を停止します。\r\n";
 			this.toolStripButtonWAVリストプレビュー再生停止.Click += new System.EventHandler( this.toolStripButtonWAVリストプレビュー再生停止_Click );
 			// 
 			// toolStripSeparator14
 			// 
+			this.toolStripSeparator14.AccessibleDescription = null;
+			this.toolStripSeparator14.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator14, "toolStripSeparator14" );
 			this.toolStripSeparator14.Name = "toolStripSeparator14";
-			this.toolStripSeparator14.Size = new System.Drawing.Size( 6, 25 );
 			// 
 			// toolStripButtonWAVリストプレビュースイッチ
 			// 
+			this.toolStripButtonWAVリストプレビュースイッチ.AccessibleDescription = null;
+			this.toolStripButtonWAVリストプレビュースイッチ.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonWAVリストプレビュースイッチ, "toolStripButtonWAVリストプレビュースイッチ" );
+			this.toolStripButtonWAVリストプレビュースイッチ.BackgroundImage = null;
 			this.toolStripButtonWAVリストプレビュースイッチ.Checked = true;
 			this.toolStripButtonWAVリストプレビュースイッチ.CheckOnClick = true;
 			this.toolStripButtonWAVリストプレビュースイッチ.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.toolStripButtonWAVリストプレビュースイッチ.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonWAVリストプレビュースイッチ.Image = global::DTXCreator.Properties.Resources.スピーカー;
-			this.toolStripButtonWAVリストプレビュースイッチ.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonWAVリストプレビュースイッチ.Name = "toolStripButtonWAVリストプレビュースイッチ";
-			this.toolStripButtonWAVリストプレビュースイッチ.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonWAVリストプレビュースイッチ.Text = "toolStripButton1";
-			this.toolStripButtonWAVリストプレビュースイッチ.ToolTipText = "行をクリックしたときにプレビュー音を再生します。\r\n";
 			this.toolStripButtonWAVリストプレビュースイッチ.CheckStateChanged += new System.EventHandler( this.toolStripButtonWAVリストプレビュースイッチ_CheckStateChanged );
 			// 
 			// tabPageBMP
 			// 
+			this.tabPageBMP.AccessibleDescription = null;
+			this.tabPageBMP.AccessibleName = null;
+			resources.ApplyResources( this.tabPageBMP, "tabPageBMP" );
+			this.tabPageBMP.BackgroundImage = null;
 			this.tabPageBMP.Controls.Add( this.listViewBMPリスト );
 			this.tabPageBMP.Controls.Add( this.toolStripBMPツールバー );
-			this.tabPageBMP.Location = new System.Drawing.Point( 4, 22 );
+			this.tabPageBMP.Font = null;
 			this.tabPageBMP.Name = "tabPageBMP";
-			this.tabPageBMP.Padding = new System.Windows.Forms.Padding( 3 );
-			this.tabPageBMP.Size = new System.Drawing.Size( 266, 339 );
-			this.tabPageBMP.TabIndex = 2;
-			this.tabPageBMP.Text = "BMP";
+			this.toolTipツールチップ.SetToolTip( this.tabPageBMP, resources.GetString( "tabPageBMP.ToolTip" ) );
 			this.tabPageBMP.UseVisualStyleBackColor = true;
 			// 
 			// listViewBMPリスト
 			// 
+			this.listViewBMPリスト.AccessibleDescription = null;
+			this.listViewBMPリスト.AccessibleName = null;
+			resources.ApplyResources( this.listViewBMPリスト, "listViewBMPリスト" );
+			this.listViewBMPリスト.BackgroundImage = null;
 			this.listViewBMPリスト.Columns.AddRange( new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderBMP_TEX,
             this.columnHeaderBMP_ラベル,
             this.columnHeaderBMP_BMP番号,
             this.columnHeaderBMP_ファイル名} );
-			this.listViewBMPリスト.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listViewBMPリスト.Font = new System.Drawing.Font( "ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ( (byte) ( 128 ) ) );
 			this.listViewBMPリスト.FullRowSelect = true;
 			this.listViewBMPリスト.GridLines = true;
 			this.listViewBMPリスト.HideSelection = false;
-			this.listViewBMPリスト.Location = new System.Drawing.Point( 3, 3 );
 			this.listViewBMPリスト.MultiSelect = false;
 			this.listViewBMPリスト.Name = "listViewBMPリスト";
-			this.listViewBMPリスト.Size = new System.Drawing.Size( 260, 308 );
-			this.listViewBMPリスト.TabIndex = 1;
+			this.toolTipツールチップ.SetToolTip( this.listViewBMPリスト, resources.GetString( "listViewBMPリスト.ToolTip" ) );
 			this.listViewBMPリスト.UseCompatibleStateImageBehavior = false;
 			this.listViewBMPリスト.View = System.Windows.Forms.View.Details;
 			this.listViewBMPリスト.VirtualListSize = 1295;
@@ -1652,86 +890,86 @@
 			// 
 			// columnHeaderBMP_TEX
 			// 
-			this.columnHeaderBMP_TEX.Text = "Tex";
-			this.columnHeaderBMP_TEX.Width = 34;
+			resources.ApplyResources( this.columnHeaderBMP_TEX, "columnHeaderBMP_TEX" );
 			// 
 			// columnHeaderBMP_ラベル
 			// 
-			this.columnHeaderBMP_ラベル.Text = "ラベル";
-			this.columnHeaderBMP_ラベル.Width = 127;
+			resources.ApplyResources( this.columnHeaderBMP_ラベル, "columnHeaderBMP_ラベル" );
 			// 
 			// columnHeaderBMP_BMP番号
 			// 
-			this.columnHeaderBMP_BMP番号.Text = "No";
-			this.columnHeaderBMP_BMP番号.Width = 28;
+			resources.ApplyResources( this.columnHeaderBMP_BMP番号, "columnHeaderBMP_BMP番号" );
 			// 
 			// columnHeaderBMP_ファイル名
 			// 
-			this.columnHeaderBMP_ファイル名.Text = "ファイル";
-			this.columnHeaderBMP_ファイル名.Width = 120;
+			resources.ApplyResources( this.columnHeaderBMP_ファイル名, "columnHeaderBMP_ファイル名" );
 			// 
 			// toolStripBMPツールバー
 			// 
-			this.toolStripBMPツールバー.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.toolStripBMPツールバー.AccessibleDescription = null;
+			this.toolStripBMPツールバー.AccessibleName = null;
+			resources.ApplyResources( this.toolStripBMPツールバー, "toolStripBMPツールバー" );
+			this.toolStripBMPツールバー.BackgroundImage = null;
+			this.toolStripBMPツールバー.Font = null;
 			this.toolStripBMPツールバー.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStripBMPツールバー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonBMPリスト上移動,
             this.toolStripButtonBMPリスト下移動} );
-			this.toolStripBMPツールバー.Location = new System.Drawing.Point( 3, 311 );
 			this.toolStripBMPツールバー.Name = "toolStripBMPツールバー";
 			this.toolStripBMPツールバー.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-			this.toolStripBMPツールバー.Size = new System.Drawing.Size( 260, 25 );
-			this.toolStripBMPツールバー.TabIndex = 2;
-			this.toolStripBMPツールバー.Text = "BMPリストツールバー\r\n";
+			this.toolTipツールチップ.SetToolTip( this.toolStripBMPツールバー, resources.GetString( "toolStripBMPツールバー.ToolTip" ) );
 			// 
 			// toolStripButtonBMPリスト上移動
 			// 
+			this.toolStripButtonBMPリスト上移動.AccessibleDescription = null;
+			this.toolStripButtonBMPリスト上移動.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonBMPリスト上移動, "toolStripButtonBMPリスト上移動" );
+			this.toolStripButtonBMPリスト上移動.BackgroundImage = null;
 			this.toolStripButtonBMPリスト上移動.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonBMPリスト上移動.Image = global::DTXCreator.Properties.Resources.上移動;
-			this.toolStripButtonBMPリスト上移動.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonBMPリスト上移動.Name = "toolStripButtonBMPリスト上移動";
-			this.toolStripButtonBMPリスト上移動.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonBMPリスト上移動.Text = "toolStripButton1";
 			this.toolStripButtonBMPリスト上移動.Click += new System.EventHandler( this.toolStripButtonBMPリスト上移動_Click );
 			// 
 			// toolStripButtonBMPリスト下移動
 			// 
+			this.toolStripButtonBMPリスト下移動.AccessibleDescription = null;
+			this.toolStripButtonBMPリスト下移動.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonBMPリスト下移動, "toolStripButtonBMPリスト下移動" );
+			this.toolStripButtonBMPリスト下移動.BackgroundImage = null;
 			this.toolStripButtonBMPリスト下移動.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonBMPリスト下移動.Image = global::DTXCreator.Properties.Resources.下移動;
-			this.toolStripButtonBMPリスト下移動.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonBMPリスト下移動.Name = "toolStripButtonBMPリスト下移動";
-			this.toolStripButtonBMPリスト下移動.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonBMPリスト下移動.Text = "toolStripButton1";
 			this.toolStripButtonBMPリスト下移動.Click += new System.EventHandler( this.toolStripButtonBMPリスト下移動_Click );
 			// 
 			// tabPageAVI
 			// 
+			this.tabPageAVI.AccessibleDescription = null;
+			this.tabPageAVI.AccessibleName = null;
+			resources.ApplyResources( this.tabPageAVI, "tabPageAVI" );
+			this.tabPageAVI.BackgroundImage = null;
 			this.tabPageAVI.Controls.Add( this.listViewAVIリスト );
 			this.tabPageAVI.Controls.Add( this.toolStripAVIツールバー );
-			this.tabPageAVI.Location = new System.Drawing.Point( 4, 22 );
+			this.tabPageAVI.Font = null;
 			this.tabPageAVI.Name = "tabPageAVI";
-			this.tabPageAVI.Padding = new System.Windows.Forms.Padding( 3 );
-			this.tabPageAVI.Size = new System.Drawing.Size( 266, 339 );
-			this.tabPageAVI.TabIndex = 3;
-			this.tabPageAVI.Text = "AVI";
+			this.toolTipツールチップ.SetToolTip( this.tabPageAVI, resources.GetString( "tabPageAVI.ToolTip" ) );
 			this.tabPageAVI.UseVisualStyleBackColor = true;
 			// 
 			// listViewAVIリスト
 			// 
+			this.listViewAVIリスト.AccessibleDescription = null;
+			this.listViewAVIリスト.AccessibleName = null;
+			resources.ApplyResources( this.listViewAVIリスト, "listViewAVIリスト" );
+			this.listViewAVIリスト.BackgroundImage = null;
 			this.listViewAVIリスト.Columns.AddRange( new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderAVI_ラベル,
             this.columnHeaderAVI_AVI番号,
             this.columnHeaderAVI_ファイル名} );
-			this.listViewAVIリスト.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.listViewAVIリスト.Font = new System.Drawing.Font( "ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ( (byte) ( 128 ) ) );
 			this.listViewAVIリスト.FullRowSelect = true;
 			this.listViewAVIリスト.GridLines = true;
 			this.listViewAVIリスト.HideSelection = false;
-			this.listViewAVIリスト.Location = new System.Drawing.Point( 3, 3 );
 			this.listViewAVIリスト.MultiSelect = false;
 			this.listViewAVIリスト.Name = "listViewAVIリスト";
-			this.listViewAVIリスト.Size = new System.Drawing.Size( 260, 308 );
-			this.listViewAVIリスト.TabIndex = 1;
+			this.toolTipツールチップ.SetToolTip( this.listViewAVIリスト, resources.GetString( "listViewAVIリスト.ToolTip" ) );
 			this.listViewAVIリスト.UseCompatibleStateImageBehavior = false;
 			this.listViewAVIリスト.View = System.Windows.Forms.View.Details;
 			this.listViewAVIリスト.VirtualListSize = 1295;
@@ -1746,91 +984,90 @@
 			// 
 			// columnHeaderAVI_ラベル
 			// 
-			this.columnHeaderAVI_ラベル.Text = "ラベル";
-			this.columnHeaderAVI_ラベル.Width = 127;
+			resources.ApplyResources( this.columnHeaderAVI_ラベル, "columnHeaderAVI_ラベル" );
 			// 
 			// columnHeaderAVI_AVI番号
 			// 
-			this.columnHeaderAVI_AVI番号.Text = "No";
-			this.columnHeaderAVI_AVI番号.Width = 28;
+			resources.ApplyResources( this.columnHeaderAVI_AVI番号, "columnHeaderAVI_AVI番号" );
 			// 
 			// columnHeaderAVI_ファイル名
 			// 
-			this.columnHeaderAVI_ファイル名.Text = "ファイル";
-			this.columnHeaderAVI_ファイル名.Width = 120;
+			resources.ApplyResources( this.columnHeaderAVI_ファイル名, "columnHeaderAVI_ファイル名" );
 			// 
 			// toolStripAVIツールバー
 			// 
-			this.toolStripAVIツールバー.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.toolStripAVIツールバー.AccessibleDescription = null;
+			this.toolStripAVIツールバー.AccessibleName = null;
+			resources.ApplyResources( this.toolStripAVIツールバー, "toolStripAVIツールバー" );
+			this.toolStripAVIツールバー.BackgroundImage = null;
+			this.toolStripAVIツールバー.Font = null;
 			this.toolStripAVIツールバー.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStripAVIツールバー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonAVIリスト上移動,
             this.toolStripButtonAVIリスト下移動} );
-			this.toolStripAVIツールバー.Location = new System.Drawing.Point( 3, 311 );
 			this.toolStripAVIツールバー.Name = "toolStripAVIツールバー";
-			this.toolStripAVIツールバー.Size = new System.Drawing.Size( 260, 25 );
-			this.toolStripAVIツールバー.TabIndex = 0;
-			this.toolStripAVIツールバー.Text = "toolStrip1";
+			this.toolTipツールチップ.SetToolTip( this.toolStripAVIツールバー, resources.GetString( "toolStripAVIツールバー.ToolTip" ) );
 			// 
 			// toolStripButtonAVIリスト上移動
 			// 
+			this.toolStripButtonAVIリスト上移動.AccessibleDescription = null;
+			this.toolStripButtonAVIリスト上移動.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonAVIリスト上移動, "toolStripButtonAVIリスト上移動" );
+			this.toolStripButtonAVIリスト上移動.BackgroundImage = null;
 			this.toolStripButtonAVIリスト上移動.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonAVIリスト上移動.Image = global::DTXCreator.Properties.Resources.上移動;
-			this.toolStripButtonAVIリスト上移動.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonAVIリスト上移動.Name = "toolStripButtonAVIリスト上移動";
-			this.toolStripButtonAVIリスト上移動.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonAVIリスト上移動.Text = "toolStripButton1";
-			this.toolStripButtonAVIリスト上移動.ToolTipText = "選択行を１つ上に移動します。\r\n";
 			this.toolStripButtonAVIリスト上移動.Click += new System.EventHandler( this.toolStripButtonAVIリスト上移動_Click );
 			// 
 			// toolStripButtonAVIリスト下移動
 			// 
+			this.toolStripButtonAVIリスト下移動.AccessibleDescription = null;
+			this.toolStripButtonAVIリスト下移動.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonAVIリスト下移動, "toolStripButtonAVIリスト下移動" );
+			this.toolStripButtonAVIリスト下移動.BackgroundImage = null;
 			this.toolStripButtonAVIリスト下移動.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButtonAVIリスト下移動.Image = global::DTXCreator.Properties.Resources.下移動;
-			this.toolStripButtonAVIリスト下移動.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonAVIリスト下移動.Name = "toolStripButtonAVIリスト下移動";
-			this.toolStripButtonAVIリスト下移動.Size = new System.Drawing.Size( 23, 22 );
-			this.toolStripButtonAVIリスト下移動.Text = "toolStripButton1";
-			this.toolStripButtonAVIリスト下移動.ToolTipText = "選択行を１つ下へ移動します。\r\n";
 			this.toolStripButtonAVIリスト下移動.Click += new System.EventHandler( this.toolStripButtonAVIリスト下移動_Click );
 			// 
 			// tabPage自由入力
 			// 
+			this.tabPage自由入力.AccessibleDescription = null;
+			this.tabPage自由入力.AccessibleName = null;
+			resources.ApplyResources( this.tabPage自由入力, "tabPage自由入力" );
+			this.tabPage自由入力.BackgroundImage = null;
 			this.tabPage自由入力.Controls.Add( this.textBox自由入力欄 );
-			this.tabPage自由入力.Location = new System.Drawing.Point( 4, 22 );
+			this.tabPage自由入力.Font = null;
 			this.tabPage自由入力.Name = "tabPage自由入力";
-			this.tabPage自由入力.Padding = new System.Windows.Forms.Padding( 3 );
-			this.tabPage自由入力.Size = new System.Drawing.Size( 266, 339 );
-			this.tabPage自由入力.TabIndex = 4;
-			this.tabPage自由入力.Text = "自由入力";
+			this.toolTipツールチップ.SetToolTip( this.tabPage自由入力, resources.GetString( "tabPage自由入力.ToolTip" ) );
 			this.tabPage自由入力.UseVisualStyleBackColor = true;
 			// 
 			// textBox自由入力欄
 			// 
 			this.textBox自由入力欄.AcceptsReturn = true;
 			this.textBox自由入力欄.AcceptsTab = true;
-			this.textBox自由入力欄.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.textBox自由入力欄.Location = new System.Drawing.Point( 3, 3 );
-			this.textBox自由入力欄.Margin = new System.Windows.Forms.Padding( 10 );
-			this.textBox自由入力欄.Multiline = true;
+			this.textBox自由入力欄.AccessibleDescription = null;
+			this.textBox自由入力欄.AccessibleName = null;
+			resources.ApplyResources( this.textBox自由入力欄, "textBox自由入力欄" );
+			this.textBox自由入力欄.BackgroundImage = null;
+			this.textBox自由入力欄.Font = null;
 			this.textBox自由入力欄.Name = "textBox自由入力欄";
-			this.textBox自由入力欄.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.textBox自由入力欄.Size = new System.Drawing.Size( 260, 333 );
-			this.textBox自由入力欄.TabIndex = 0;
+			this.toolTipツールチップ.SetToolTip( this.textBox自由入力欄, resources.GetString( "textBox自由入力欄.ToolTip" ) );
 			this.textBox自由入力欄.TextChanged += new System.EventHandler( this.textBox自由入力欄_TextChanged );
 			this.textBox自由入力欄.Leave += new System.EventHandler( this.textBox自由入力欄_Leave );
 			// 
 			// pictureBox譜面パネル
 			// 
-			this.pictureBox譜面パネル.Anchor = ( (System.Windows.Forms.AnchorStyles) ( ( ( System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom )
-						| System.Windows.Forms.AnchorStyles.Left ) ) );
+			this.pictureBox譜面パネル.AccessibleDescription = null;
+			this.pictureBox譜面パネル.AccessibleName = null;
+			resources.ApplyResources( this.pictureBox譜面パネル, "pictureBox譜面パネル" );
 			this.pictureBox譜面パネル.BackColor = System.Drawing.Color.Black;
-			this.pictureBox譜面パネル.Location = new System.Drawing.Point( 0, 0 );
-			this.pictureBox譜面パネル.Margin = new System.Windows.Forms.Padding( 0 );
+			this.pictureBox譜面パネル.BackgroundImage = null;
+			this.pictureBox譜面パネル.Font = null;
+			this.pictureBox譜面パネル.ImageLocation = null;
 			this.pictureBox譜面パネル.Name = "pictureBox譜面パネル";
-			this.pictureBox譜面パネル.Size = new System.Drawing.Size( 184, 424 );
-			this.pictureBox譜面パネル.TabIndex = 1;
 			this.pictureBox譜面パネル.TabStop = false;
+			this.toolTipツールチップ.SetToolTip( this.pictureBox譜面パネル, resources.GetString( "pictureBox譜面パネル.ToolTip" ) );
 			this.pictureBox譜面パネル.MouseLeave += new System.EventHandler( this.pictureBox譜面パネル_MouseLeave );
 			this.pictureBox譜面パネル.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler( this.pictureBox譜面パネル_PreviewKeyDown );
 			this.pictureBox譜面パネル.MouseMove += new System.Windows.Forms.MouseEventHandler( this.pictureBox譜面パネル_MouseMove );
@@ -1841,16 +1078,913 @@
 			// 
 			// hScrollBar譜面用水平スクロールバー
 			// 
-			this.hScrollBar譜面用水平スクロールバー.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.hScrollBar譜面用水平スクロールバー.Location = new System.Drawing.Point( 0, 424 );
+			this.hScrollBar譜面用水平スクロールバー.AccessibleDescription = null;
+			this.hScrollBar譜面用水平スクロールバー.AccessibleName = null;
+			resources.ApplyResources( this.hScrollBar譜面用水平スクロールバー, "hScrollBar譜面用水平スクロールバー" );
+			this.hScrollBar譜面用水平スクロールバー.BackgroundImage = null;
+			this.hScrollBar譜面用水平スクロールバー.Font = null;
 			this.hScrollBar譜面用水平スクロールバー.Name = "hScrollBar譜面用水平スクロールバー";
-			this.hScrollBar譜面用水平スクロールバー.Size = new System.Drawing.Size( 424, 17 );
 			this.hScrollBar譜面用水平スクロールバー.SmallChange = 5;
-			this.hScrollBar譜面用水平スクロールバー.TabIndex = 0;
+			this.toolTipツールチップ.SetToolTip( this.hScrollBar譜面用水平スクロールバー, resources.GetString( "hScrollBar譜面用水平スクロールバー.ToolTip" ) );
 			this.hScrollBar譜面用水平スクロールバー.ValueChanged += new System.EventHandler( this.hScrollBar譜面用水平スクロールバー_ValueChanged );
+			// 
+			// statusStripステータスバー
+			// 
+			this.statusStripステータスバー.AccessibleDescription = null;
+			this.statusStripステータスバー.AccessibleName = null;
+			resources.ApplyResources( this.statusStripステータスバー, "statusStripステータスバー" );
+			this.statusStripステータスバー.BackgroundImage = null;
+			this.statusStripステータスバー.Font = null;
+			this.statusStripステータスバー.Name = "statusStripステータスバー";
+			this.toolTipツールチップ.SetToolTip( this.statusStripステータスバー, resources.GetString( "statusStripステータスバー.ToolTip" ) );
+			// 
+			// menuStripメニューバー
+			// 
+			this.menuStripメニューバー.AccessibleDescription = null;
+			this.menuStripメニューバー.AccessibleName = null;
+			resources.ApplyResources( this.menuStripメニューバー, "menuStripメニューバー" );
+			this.menuStripメニューバー.BackgroundImage = null;
+			this.menuStripメニューバー.Font = null;
+			this.menuStripメニューバー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemファイル,
+            this.toolStripMenuItem編集,
+            this.toolStripMenuItem表示,
+            this.toolStripMenuItem再生,
+            this.toolStripMenuItemツール,
+            this.toolStripMenuItemヘルプ} );
+			this.menuStripメニューバー.Name = "menuStripメニューバー";
+			this.toolTipツールチップ.SetToolTip( this.menuStripメニューバー, resources.GetString( "menuStripメニューバー.ToolTip" ) );
+			// 
+			// toolStripMenuItemファイル
+			// 
+			this.toolStripMenuItemファイル.AccessibleDescription = null;
+			this.toolStripMenuItemファイル.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemファイル, "toolStripMenuItemファイル" );
+			this.toolStripMenuItemファイル.BackgroundImage = null;
+			this.toolStripMenuItemファイル.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem新規,
+            this.toolStripMenuItem開く,
+            this.toolStripMenuItem上書き保存,
+            this.toolStripMenuItem名前を付けて保存,
+            this.toolStripSeparator1,
+            this.toolStripMenuItem終了} );
+			this.toolStripMenuItemファイル.Name = "toolStripMenuItemファイル";
+			this.toolStripMenuItemファイル.ShortcutKeyDisplayString = null;
+			// 
+			// toolStripMenuItem新規
+			// 
+			this.toolStripMenuItem新規.AccessibleDescription = null;
+			this.toolStripMenuItem新規.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem新規, "toolStripMenuItem新規" );
+			this.toolStripMenuItem新規.BackgroundImage = null;
+			this.toolStripMenuItem新規.Image = global::DTXCreator.Properties.Resources.新規作成;
+			this.toolStripMenuItem新規.Name = "toolStripMenuItem新規";
+			this.toolStripMenuItem新規.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem新規.Click += new System.EventHandler( this.toolStripMenuItem新規_Click );
+			// 
+			// toolStripMenuItem開く
+			// 
+			this.toolStripMenuItem開く.AccessibleDescription = null;
+			this.toolStripMenuItem開く.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem開く, "toolStripMenuItem開く" );
+			this.toolStripMenuItem開く.BackgroundImage = null;
+			this.toolStripMenuItem開く.Image = global::DTXCreator.Properties.Resources.開く;
+			this.toolStripMenuItem開く.Name = "toolStripMenuItem開く";
+			this.toolStripMenuItem開く.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem開く.Click += new System.EventHandler( this.toolStripMenuItem開く_Click );
+			// 
+			// toolStripMenuItem上書き保存
+			// 
+			this.toolStripMenuItem上書き保存.AccessibleDescription = null;
+			this.toolStripMenuItem上書き保存.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem上書き保存, "toolStripMenuItem上書き保存" );
+			this.toolStripMenuItem上書き保存.BackgroundImage = null;
+			this.toolStripMenuItem上書き保存.Image = global::DTXCreator.Properties.Resources.保存;
+			this.toolStripMenuItem上書き保存.Name = "toolStripMenuItem上書き保存";
+			this.toolStripMenuItem上書き保存.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem上書き保存.Click += new System.EventHandler( this.toolStripMenuItem上書き保存_Click );
+			// 
+			// toolStripMenuItem名前を付けて保存
+			// 
+			this.toolStripMenuItem名前を付けて保存.AccessibleDescription = null;
+			this.toolStripMenuItem名前を付けて保存.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem名前を付けて保存, "toolStripMenuItem名前を付けて保存" );
+			this.toolStripMenuItem名前を付けて保存.BackgroundImage = null;
+			this.toolStripMenuItem名前を付けて保存.Name = "toolStripMenuItem名前を付けて保存";
+			this.toolStripMenuItem名前を付けて保存.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem名前を付けて保存.Click += new System.EventHandler( this.toolStripMenuItem名前を付けて保存_Click );
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.AccessibleDescription = null;
+			this.toolStripSeparator1.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator1, "toolStripSeparator1" );
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			// 
+			// toolStripMenuItem終了
+			// 
+			this.toolStripMenuItem終了.AccessibleDescription = null;
+			this.toolStripMenuItem終了.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem終了, "toolStripMenuItem終了" );
+			this.toolStripMenuItem終了.BackgroundImage = null;
+			this.toolStripMenuItem終了.Name = "toolStripMenuItem終了";
+			this.toolStripMenuItem終了.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem終了.Click += new System.EventHandler( this.toolStripMenuItem終了_Click );
+			// 
+			// toolStripMenuItem編集
+			// 
+			this.toolStripMenuItem編集.AccessibleDescription = null;
+			this.toolStripMenuItem編集.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem編集, "toolStripMenuItem編集" );
+			this.toolStripMenuItem編集.BackgroundImage = null;
+			this.toolStripMenuItem編集.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemアンドゥ,
+            this.toolStripMenuItemリドゥ,
+            this.toolStripSeparator2,
+            this.toolStripMenuItem切り取り,
+            this.toolStripMenuItemコピー,
+            this.toolStripMenuItem貼り付け,
+            this.toolStripMenuItem削除,
+            this.toolStripSeparator3,
+            this.toolStripMenuItemすべて選択,
+            this.toolStripSeparator4,
+            this.toolStripMenuItem選択モード,
+            this.toolStripMenuItem編集モード,
+            this.toolStripMenuItemモード切替,
+            this.toolStripSeparator5,
+            this.toolStripMenuItem検索,
+            this.toolStripMenuItem置換} );
+			this.toolStripMenuItem編集.Name = "toolStripMenuItem編集";
+			this.toolStripMenuItem編集.ShortcutKeyDisplayString = null;
+			// 
+			// toolStripMenuItemアンドゥ
+			// 
+			this.toolStripMenuItemアンドゥ.AccessibleDescription = null;
+			this.toolStripMenuItemアンドゥ.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemアンドゥ, "toolStripMenuItemアンドゥ" );
+			this.toolStripMenuItemアンドゥ.BackgroundImage = null;
+			this.toolStripMenuItemアンドゥ.Image = global::DTXCreator.Properties.Resources.Undo;
+			this.toolStripMenuItemアンドゥ.Name = "toolStripMenuItemアンドゥ";
+			this.toolStripMenuItemアンドゥ.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemアンドゥ.Click += new System.EventHandler( this.toolStripMenuItemアンドゥ_Click );
+			// 
+			// toolStripMenuItemリドゥ
+			// 
+			this.toolStripMenuItemリドゥ.AccessibleDescription = null;
+			this.toolStripMenuItemリドゥ.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemリドゥ, "toolStripMenuItemリドゥ" );
+			this.toolStripMenuItemリドゥ.BackgroundImage = null;
+			this.toolStripMenuItemリドゥ.Image = global::DTXCreator.Properties.Resources.Redo;
+			this.toolStripMenuItemリドゥ.Name = "toolStripMenuItemリドゥ";
+			this.toolStripMenuItemリドゥ.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemリドゥ.Click += new System.EventHandler( this.toolStripMenuItemリドゥ_Click );
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.AccessibleDescription = null;
+			this.toolStripSeparator2.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator2, "toolStripSeparator2" );
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			// 
+			// toolStripMenuItem切り取り
+			// 
+			this.toolStripMenuItem切り取り.AccessibleDescription = null;
+			this.toolStripMenuItem切り取り.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem切り取り, "toolStripMenuItem切り取り" );
+			this.toolStripMenuItem切り取り.BackgroundImage = null;
+			this.toolStripMenuItem切り取り.Image = global::DTXCreator.Properties.Resources.切り取り;
+			this.toolStripMenuItem切り取り.Name = "toolStripMenuItem切り取り";
+			this.toolStripMenuItem切り取り.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem切り取り.Click += new System.EventHandler( this.toolStripMenuItem切り取り_Click );
+			// 
+			// toolStripMenuItemコピー
+			// 
+			this.toolStripMenuItemコピー.AccessibleDescription = null;
+			this.toolStripMenuItemコピー.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemコピー, "toolStripMenuItemコピー" );
+			this.toolStripMenuItemコピー.BackgroundImage = null;
+			this.toolStripMenuItemコピー.Image = global::DTXCreator.Properties.Resources.コピー;
+			this.toolStripMenuItemコピー.Name = "toolStripMenuItemコピー";
+			this.toolStripMenuItemコピー.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemコピー.Click += new System.EventHandler( this.toolStripMenuItemコピー_Click );
+			// 
+			// toolStripMenuItem貼り付け
+			// 
+			this.toolStripMenuItem貼り付け.AccessibleDescription = null;
+			this.toolStripMenuItem貼り付け.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem貼り付け, "toolStripMenuItem貼り付け" );
+			this.toolStripMenuItem貼り付け.BackgroundImage = null;
+			this.toolStripMenuItem貼り付け.Image = global::DTXCreator.Properties.Resources.貼り付け;
+			this.toolStripMenuItem貼り付け.Name = "toolStripMenuItem貼り付け";
+			this.toolStripMenuItem貼り付け.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem貼り付け.Click += new System.EventHandler( this.toolStripMenuItem貼り付け_Click );
+			// 
+			// toolStripMenuItem削除
+			// 
+			this.toolStripMenuItem削除.AccessibleDescription = null;
+			this.toolStripMenuItem削除.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem削除, "toolStripMenuItem削除" );
+			this.toolStripMenuItem削除.BackgroundImage = null;
+			this.toolStripMenuItem削除.Image = global::DTXCreator.Properties.Resources.削除;
+			this.toolStripMenuItem削除.Name = "toolStripMenuItem削除";
+			this.toolStripMenuItem削除.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem削除.Click += new System.EventHandler( this.toolStripMenuItem削除_Click );
+			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.AccessibleDescription = null;
+			this.toolStripSeparator3.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator3, "toolStripSeparator3" );
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			// 
+			// toolStripMenuItemすべて選択
+			// 
+			this.toolStripMenuItemすべて選択.AccessibleDescription = null;
+			this.toolStripMenuItemすべて選択.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemすべて選択, "toolStripMenuItemすべて選択" );
+			this.toolStripMenuItemすべて選択.BackgroundImage = null;
+			this.toolStripMenuItemすべて選択.Name = "toolStripMenuItemすべて選択";
+			this.toolStripMenuItemすべて選択.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemすべて選択.Click += new System.EventHandler( this.toolStripMenuItemすべて選択_Click );
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.AccessibleDescription = null;
+			this.toolStripSeparator4.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator4, "toolStripSeparator4" );
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			// 
+			// toolStripMenuItem選択モード
+			// 
+			this.toolStripMenuItem選択モード.AccessibleDescription = null;
+			this.toolStripMenuItem選択モード.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem選択モード, "toolStripMenuItem選択モード" );
+			this.toolStripMenuItem選択モード.BackgroundImage = null;
+			this.toolStripMenuItem選択モード.Image = global::DTXCreator.Properties.Resources.矢印ポインタ;
+			this.toolStripMenuItem選択モード.Name = "toolStripMenuItem選択モード";
+			this.toolStripMenuItem選択モード.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem選択モード.Click += new System.EventHandler( this.toolStripMenuItem選択モード_Click );
+			// 
+			// toolStripMenuItem編集モード
+			// 
+			this.toolStripMenuItem編集モード.AccessibleDescription = null;
+			this.toolStripMenuItem編集モード.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem編集モード, "toolStripMenuItem編集モード" );
+			this.toolStripMenuItem編集モード.BackgroundImage = null;
+			this.toolStripMenuItem編集モード.Image = global::DTXCreator.Properties.Resources.鉛筆;
+			this.toolStripMenuItem編集モード.Name = "toolStripMenuItem編集モード";
+			this.toolStripMenuItem編集モード.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem編集モード.Click += new System.EventHandler( this.toolStripMenuItem編集モード_Click );
+			// 
+			// toolStripMenuItemモード切替
+			// 
+			this.toolStripMenuItemモード切替.AccessibleDescription = null;
+			this.toolStripMenuItemモード切替.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemモード切替, "toolStripMenuItemモード切替" );
+			this.toolStripMenuItemモード切替.BackgroundImage = null;
+			this.toolStripMenuItemモード切替.Name = "toolStripMenuItemモード切替";
+			this.toolStripMenuItemモード切替.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemモード切替.Click += new System.EventHandler( this.toolStripMenuItemモード切替_Click );
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.AccessibleDescription = null;
+			this.toolStripSeparator5.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator5, "toolStripSeparator5" );
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			// 
+			// toolStripMenuItem検索
+			// 
+			this.toolStripMenuItem検索.AccessibleDescription = null;
+			this.toolStripMenuItem検索.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem検索, "toolStripMenuItem検索" );
+			this.toolStripMenuItem検索.BackgroundImage = null;
+			this.toolStripMenuItem検索.Name = "toolStripMenuItem検索";
+			this.toolStripMenuItem検索.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem検索.Click += new System.EventHandler( this.toolStripMenuItem検索_Click );
+			// 
+			// toolStripMenuItem置換
+			// 
+			this.toolStripMenuItem置換.AccessibleDescription = null;
+			this.toolStripMenuItem置換.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem置換, "toolStripMenuItem置換" );
+			this.toolStripMenuItem置換.BackgroundImage = null;
+			this.toolStripMenuItem置換.Name = "toolStripMenuItem置換";
+			this.toolStripMenuItem置換.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem置換.Click += new System.EventHandler( this.toolStripMenuItem置換_Click );
+			// 
+			// toolStripMenuItem表示
+			// 
+			this.toolStripMenuItem表示.AccessibleDescription = null;
+			this.toolStripMenuItem表示.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem表示, "toolStripMenuItem表示" );
+			this.toolStripMenuItem表示.BackgroundImage = null;
+			this.toolStripMenuItem表示.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemチップパレット,
+            this.toolStripMenuItemガイド間隔} );
+			this.toolStripMenuItem表示.Name = "toolStripMenuItem表示";
+			this.toolStripMenuItem表示.ShortcutKeyDisplayString = null;
+			// 
+			// toolStripMenuItemチップパレット
+			// 
+			this.toolStripMenuItemチップパレット.AccessibleDescription = null;
+			this.toolStripMenuItemチップパレット.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemチップパレット, "toolStripMenuItemチップパレット" );
+			this.toolStripMenuItemチップパレット.BackgroundImage = null;
+			this.toolStripMenuItemチップパレット.CheckOnClick = true;
+			this.toolStripMenuItemチップパレット.Image = global::DTXCreator.Properties.Resources.ﾁｯﾌﾟﾊﾟﾚｯﾄ;
+			this.toolStripMenuItemチップパレット.Name = "toolStripMenuItemチップパレット";
+			this.toolStripMenuItemチップパレット.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemチップパレット.Click += new System.EventHandler( this.toolStripMenuItemチップパレット_Click );
+			// 
+			// toolStripMenuItemガイド間隔
+			// 
+			this.toolStripMenuItemガイド間隔.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔, "toolStripMenuItemガイド間隔" );
+			this.toolStripMenuItemガイド間隔.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemガイド間隔4分,
+            this.toolStripMenuItemガイド間隔8分,
+            this.toolStripMenuItemガイド間隔12分,
+            this.toolStripMenuItemガイド間隔16分,
+            this.toolStripMenuItemガイド間隔24分,
+            this.toolStripMenuItemガイド間隔32分,
+            this.toolStripMenuItemガイド間隔48分,
+            this.toolStripMenuItemガイド間隔64分,
+            this.toolStripMenuItemガイド間隔フリー,
+            this.toolStripSeparator6,
+            this.toolStripMenuItemガイド間隔拡大,
+            this.toolStripMenuItemガイド間隔縮小} );
+			this.toolStripMenuItemガイド間隔.Name = "toolStripMenuItemガイド間隔";
+			this.toolStripMenuItemガイド間隔.ShortcutKeyDisplayString = null;
+			// 
+			// toolStripMenuItemガイド間隔4分
+			// 
+			this.toolStripMenuItemガイド間隔4分.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔4分.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔4分, "toolStripMenuItemガイド間隔4分" );
+			this.toolStripMenuItemガイド間隔4分.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔4分.Name = "toolStripMenuItemガイド間隔4分";
+			this.toolStripMenuItemガイド間隔4分.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔4分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔4分_Click );
+			// 
+			// toolStripMenuItemガイド間隔8分
+			// 
+			this.toolStripMenuItemガイド間隔8分.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔8分.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔8分, "toolStripMenuItemガイド間隔8分" );
+			this.toolStripMenuItemガイド間隔8分.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔8分.Name = "toolStripMenuItemガイド間隔8分";
+			this.toolStripMenuItemガイド間隔8分.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔8分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔8分_Click );
+			// 
+			// toolStripMenuItemガイド間隔12分
+			// 
+			this.toolStripMenuItemガイド間隔12分.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔12分.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔12分, "toolStripMenuItemガイド間隔12分" );
+			this.toolStripMenuItemガイド間隔12分.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔12分.Name = "toolStripMenuItemガイド間隔12分";
+			this.toolStripMenuItemガイド間隔12分.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔12分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔12分_Click );
+			// 
+			// toolStripMenuItemガイド間隔16分
+			// 
+			this.toolStripMenuItemガイド間隔16分.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔16分.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔16分, "toolStripMenuItemガイド間隔16分" );
+			this.toolStripMenuItemガイド間隔16分.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔16分.Name = "toolStripMenuItemガイド間隔16分";
+			this.toolStripMenuItemガイド間隔16分.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔16分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔16分_Click );
+			// 
+			// toolStripMenuItemガイド間隔24分
+			// 
+			this.toolStripMenuItemガイド間隔24分.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔24分.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔24分, "toolStripMenuItemガイド間隔24分" );
+			this.toolStripMenuItemガイド間隔24分.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔24分.Name = "toolStripMenuItemガイド間隔24分";
+			this.toolStripMenuItemガイド間隔24分.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔24分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔24分_Click );
+			// 
+			// toolStripMenuItemガイド間隔32分
+			// 
+			this.toolStripMenuItemガイド間隔32分.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔32分.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔32分, "toolStripMenuItemガイド間隔32分" );
+			this.toolStripMenuItemガイド間隔32分.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔32分.Name = "toolStripMenuItemガイド間隔32分";
+			this.toolStripMenuItemガイド間隔32分.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔32分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔32分_Click );
+			// 
+			// toolStripMenuItemガイド間隔48分
+			// 
+			this.toolStripMenuItemガイド間隔48分.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔48分.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔48分, "toolStripMenuItemガイド間隔48分" );
+			this.toolStripMenuItemガイド間隔48分.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔48分.Name = "toolStripMenuItemガイド間隔48分";
+			this.toolStripMenuItemガイド間隔48分.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔48分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔48分_Click );
+			// 
+			// toolStripMenuItemガイド間隔64分
+			// 
+			this.toolStripMenuItemガイド間隔64分.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔64分.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔64分, "toolStripMenuItemガイド間隔64分" );
+			this.toolStripMenuItemガイド間隔64分.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔64分.Name = "toolStripMenuItemガイド間隔64分";
+			this.toolStripMenuItemガイド間隔64分.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔64分.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔64分_Click );
+			// 
+			// toolStripMenuItemガイド間隔フリー
+			// 
+			this.toolStripMenuItemガイド間隔フリー.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔フリー.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔フリー, "toolStripMenuItemガイド間隔フリー" );
+			this.toolStripMenuItemガイド間隔フリー.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔フリー.Name = "toolStripMenuItemガイド間隔フリー";
+			this.toolStripMenuItemガイド間隔フリー.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔フリー.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔フリー_Click );
+			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.AccessibleDescription = null;
+			this.toolStripSeparator6.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator6, "toolStripSeparator6" );
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			// 
+			// toolStripMenuItemガイド間隔拡大
+			// 
+			this.toolStripMenuItemガイド間隔拡大.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔拡大.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔拡大, "toolStripMenuItemガイド間隔拡大" );
+			this.toolStripMenuItemガイド間隔拡大.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔拡大.Name = "toolStripMenuItemガイド間隔拡大";
+			this.toolStripMenuItemガイド間隔拡大.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔拡大.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔拡大_Click );
+			// 
+			// toolStripMenuItemガイド間隔縮小
+			// 
+			this.toolStripMenuItemガイド間隔縮小.AccessibleDescription = null;
+			this.toolStripMenuItemガイド間隔縮小.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemガイド間隔縮小, "toolStripMenuItemガイド間隔縮小" );
+			this.toolStripMenuItemガイド間隔縮小.BackgroundImage = null;
+			this.toolStripMenuItemガイド間隔縮小.Name = "toolStripMenuItemガイド間隔縮小";
+			this.toolStripMenuItemガイド間隔縮小.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemガイド間隔縮小.Click += new System.EventHandler( this.toolStripMenuItemガイド間隔縮小_Click );
+			// 
+			// toolStripMenuItem再生
+			// 
+			this.toolStripMenuItem再生.AccessibleDescription = null;
+			this.toolStripMenuItem再生.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem再生, "toolStripMenuItem再生" );
+			this.toolStripMenuItem再生.BackgroundImage = null;
+			this.toolStripMenuItem再生.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem先頭から再生,
+            this.toolStripMenuItem現在位置から再生,
+            this.toolStripMenuItem現在位置からBGMのみ再生,
+            this.toolStripMenuItem再生停止} );
+			this.toolStripMenuItem再生.Name = "toolStripMenuItem再生";
+			this.toolStripMenuItem再生.ShortcutKeyDisplayString = null;
+			// 
+			// toolStripMenuItem先頭から再生
+			// 
+			this.toolStripMenuItem先頭から再生.AccessibleDescription = null;
+			this.toolStripMenuItem先頭から再生.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem先頭から再生, "toolStripMenuItem先頭から再生" );
+			this.toolStripMenuItem先頭から再生.BackgroundImage = null;
+			this.toolStripMenuItem先頭から再生.Image = global::DTXCreator.Properties.Resources.最初から再生;
+			this.toolStripMenuItem先頭から再生.Name = "toolStripMenuItem先頭から再生";
+			this.toolStripMenuItem先頭から再生.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem先頭から再生.Click += new System.EventHandler( this.toolStripMenuItem先頭から再生_Click );
+			// 
+			// toolStripMenuItem現在位置から再生
+			// 
+			this.toolStripMenuItem現在位置から再生.AccessibleDescription = null;
+			this.toolStripMenuItem現在位置から再生.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem現在位置から再生, "toolStripMenuItem現在位置から再生" );
+			this.toolStripMenuItem現在位置から再生.BackgroundImage = null;
+			this.toolStripMenuItem現在位置から再生.Image = global::DTXCreator.Properties.Resources.再生;
+			this.toolStripMenuItem現在位置から再生.Name = "toolStripMenuItem現在位置から再生";
+			this.toolStripMenuItem現在位置から再生.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem現在位置から再生.Click += new System.EventHandler( this.toolStripMenuItem現在位置から再生_Click );
+			// 
+			// toolStripMenuItem現在位置からBGMのみ再生
+			// 
+			this.toolStripMenuItem現在位置からBGMのみ再生.AccessibleDescription = null;
+			this.toolStripMenuItem現在位置からBGMのみ再生.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem現在位置からBGMのみ再生, "toolStripMenuItem現在位置からBGMのみ再生" );
+			this.toolStripMenuItem現在位置からBGMのみ再生.BackgroundImage = null;
+			this.toolStripMenuItem現在位置からBGMのみ再生.Image = global::DTXCreator.Properties.Resources.BGMのみ再生;
+			this.toolStripMenuItem現在位置からBGMのみ再生.Name = "toolStripMenuItem現在位置からBGMのみ再生";
+			this.toolStripMenuItem現在位置からBGMのみ再生.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem現在位置からBGMのみ再生.Click += new System.EventHandler( this.toolStripMenuItem現在位置からBGMのみ再生_Click );
+			// 
+			// toolStripMenuItem再生停止
+			// 
+			this.toolStripMenuItem再生停止.AccessibleDescription = null;
+			this.toolStripMenuItem再生停止.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem再生停止, "toolStripMenuItem再生停止" );
+			this.toolStripMenuItem再生停止.BackgroundImage = null;
+			this.toolStripMenuItem再生停止.Image = global::DTXCreator.Properties.Resources.再生停止;
+			this.toolStripMenuItem再生停止.Name = "toolStripMenuItem再生停止";
+			this.toolStripMenuItem再生停止.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItem再生停止.Click += new System.EventHandler( this.toolStripMenuItem再生停止_Click );
+			// 
+			// toolStripMenuItemツール
+			// 
+			this.toolStripMenuItemツール.AccessibleDescription = null;
+			this.toolStripMenuItemツール.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemツール, "toolStripMenuItemツール" );
+			this.toolStripMenuItemツール.BackgroundImage = null;
+			this.toolStripMenuItemツール.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemオプション} );
+			this.toolStripMenuItemツール.Name = "toolStripMenuItemツール";
+			this.toolStripMenuItemツール.ShortcutKeyDisplayString = null;
+			// 
+			// toolStripMenuItemオプション
+			// 
+			this.toolStripMenuItemオプション.AccessibleDescription = null;
+			this.toolStripMenuItemオプション.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemオプション, "toolStripMenuItemオプション" );
+			this.toolStripMenuItemオプション.BackgroundImage = null;
+			this.toolStripMenuItemオプション.Name = "toolStripMenuItemオプション";
+			this.toolStripMenuItemオプション.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemオプション.Click += new System.EventHandler( this.toolStripMenuItemオプション_Click );
+			// 
+			// toolStripMenuItemヘルプ
+			// 
+			this.toolStripMenuItemヘルプ.AccessibleDescription = null;
+			this.toolStripMenuItemヘルプ.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemヘルプ, "toolStripMenuItemヘルプ" );
+			this.toolStripMenuItemヘルプ.BackgroundImage = null;
+			this.toolStripMenuItemヘルプ.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemDTXCreaterマニュアル,
+            this.toolStripMenuItemバージョン} );
+			this.toolStripMenuItemヘルプ.Name = "toolStripMenuItemヘルプ";
+			this.toolStripMenuItemヘルプ.ShortcutKeyDisplayString = null;
+			// 
+			// toolStripMenuItemDTXCreaterマニュアル
+			// 
+			this.toolStripMenuItemDTXCreaterマニュアル.AccessibleDescription = null;
+			this.toolStripMenuItemDTXCreaterマニュアル.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemDTXCreaterマニュアル, "toolStripMenuItemDTXCreaterマニュアル" );
+			this.toolStripMenuItemDTXCreaterマニュアル.BackgroundImage = null;
+			this.toolStripMenuItemDTXCreaterマニュアル.Image = global::DTXCreator.Properties.Resources.ヘルプ;
+			this.toolStripMenuItemDTXCreaterマニュアル.Name = "toolStripMenuItemDTXCreaterマニュアル";
+			this.toolStripMenuItemDTXCreaterマニュアル.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemDTXCreaterマニュアル.Click += new System.EventHandler( this.toolStripMenuItemDTXCreaterマニュアル_Click );
+			// 
+			// toolStripMenuItemバージョン
+			// 
+			this.toolStripMenuItemバージョン.AccessibleDescription = null;
+			this.toolStripMenuItemバージョン.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemバージョン, "toolStripMenuItemバージョン" );
+			this.toolStripMenuItemバージョン.BackgroundImage = null;
+			this.toolStripMenuItemバージョン.Name = "toolStripMenuItemバージョン";
+			this.toolStripMenuItemバージョン.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemバージョン.Click += new System.EventHandler( this.toolStripMenuItemバージョン_Click );
+			// 
+			// toolStripツールバー
+			// 
+			this.toolStripツールバー.AccessibleDescription = null;
+			this.toolStripツールバー.AccessibleName = null;
+			resources.ApplyResources( this.toolStripツールバー, "toolStripツールバー" );
+			this.toolStripツールバー.BackgroundImage = null;
+			this.toolStripツールバー.Font = null;
+			this.toolStripツールバー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton新規作成,
+            this.toolStripButton開く,
+            this.toolStripButton上書き保存,
+            this.toolStripSeparator7,
+            this.toolStripButton切り取り,
+            this.toolStripButtonコピー,
+            this.toolStripButton貼り付け,
+            this.toolStripButton削除,
+            this.toolStripSeparator8,
+            this.toolStripButtonアンドゥ,
+            this.toolStripButtonリドゥ,
+            this.toolStripSeparator9,
+            this.toolStripButtonチップパレット,
+            this.toolStripSeparator10,
+            this.toolStripComboBox譜面拡大率,
+            this.toolStripComboBoxガイド間隔,
+            this.toolStripButton選択モード,
+            this.toolStripButton編集モード,
+            this.toolStripSeparator11,
+            this.toolStripButton先頭から再生,
+            this.toolStripButton現在位置から再生,
+            this.toolStripButton現在位置からBGMのみ再生,
+            this.toolStripButton再生停止,
+            this.toolStripComboBox演奏速度,
+            this.toolStripSeparator12} );
+			this.toolStripツールバー.Name = "toolStripツールバー";
+			this.toolTipツールチップ.SetToolTip( this.toolStripツールバー, resources.GetString( "toolStripツールバー.ToolTip" ) );
+			// 
+			// toolStripButton新規作成
+			// 
+			this.toolStripButton新規作成.AccessibleDescription = null;
+			this.toolStripButton新規作成.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton新規作成, "toolStripButton新規作成" );
+			this.toolStripButton新規作成.BackgroundImage = null;
+			this.toolStripButton新規作成.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton新規作成.Image = global::DTXCreator.Properties.Resources.新規作成;
+			this.toolStripButton新規作成.Name = "toolStripButton新規作成";
+			this.toolStripButton新規作成.Click += new System.EventHandler( this.toolStripButton新規作成_Click );
+			// 
+			// toolStripButton開く
+			// 
+			this.toolStripButton開く.AccessibleDescription = null;
+			this.toolStripButton開く.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton開く, "toolStripButton開く" );
+			this.toolStripButton開く.BackgroundImage = null;
+			this.toolStripButton開く.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton開く.Image = global::DTXCreator.Properties.Resources.開く;
+			this.toolStripButton開く.Name = "toolStripButton開く";
+			this.toolStripButton開く.Click += new System.EventHandler( this.toolStripButton開く_Click );
+			// 
+			// toolStripButton上書き保存
+			// 
+			this.toolStripButton上書き保存.AccessibleDescription = null;
+			this.toolStripButton上書き保存.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton上書き保存, "toolStripButton上書き保存" );
+			this.toolStripButton上書き保存.BackgroundImage = null;
+			this.toolStripButton上書き保存.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton上書き保存.Image = global::DTXCreator.Properties.Resources.保存;
+			this.toolStripButton上書き保存.Name = "toolStripButton上書き保存";
+			this.toolStripButton上書き保存.Click += new System.EventHandler( this.toolStripButton上書き保存_Click );
+			// 
+			// toolStripSeparator7
+			// 
+			this.toolStripSeparator7.AccessibleDescription = null;
+			this.toolStripSeparator7.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator7, "toolStripSeparator7" );
+			this.toolStripSeparator7.Name = "toolStripSeparator7";
+			// 
+			// toolStripButton切り取り
+			// 
+			this.toolStripButton切り取り.AccessibleDescription = null;
+			this.toolStripButton切り取り.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton切り取り, "toolStripButton切り取り" );
+			this.toolStripButton切り取り.BackgroundImage = null;
+			this.toolStripButton切り取り.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton切り取り.Image = global::DTXCreator.Properties.Resources.切り取り;
+			this.toolStripButton切り取り.Name = "toolStripButton切り取り";
+			this.toolStripButton切り取り.Click += new System.EventHandler( this.toolStripButton切り取り_Click );
+			// 
+			// toolStripButtonコピー
+			// 
+			this.toolStripButtonコピー.AccessibleDescription = null;
+			this.toolStripButtonコピー.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonコピー, "toolStripButtonコピー" );
+			this.toolStripButtonコピー.BackgroundImage = null;
+			this.toolStripButtonコピー.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButtonコピー.Image = global::DTXCreator.Properties.Resources.コピー;
+			this.toolStripButtonコピー.Name = "toolStripButtonコピー";
+			this.toolStripButtonコピー.Click += new System.EventHandler( this.toolStripButtonコピー_Click );
+			// 
+			// toolStripButton貼り付け
+			// 
+			this.toolStripButton貼り付け.AccessibleDescription = null;
+			this.toolStripButton貼り付け.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton貼り付け, "toolStripButton貼り付け" );
+			this.toolStripButton貼り付け.BackgroundImage = null;
+			this.toolStripButton貼り付け.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton貼り付け.Image = global::DTXCreator.Properties.Resources.貼り付け;
+			this.toolStripButton貼り付け.Name = "toolStripButton貼り付け";
+			this.toolStripButton貼り付け.Click += new System.EventHandler( this.toolStripButton貼り付け_Click );
+			// 
+			// toolStripButton削除
+			// 
+			this.toolStripButton削除.AccessibleDescription = null;
+			this.toolStripButton削除.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton削除, "toolStripButton削除" );
+			this.toolStripButton削除.BackgroundImage = null;
+			this.toolStripButton削除.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton削除.Image = global::DTXCreator.Properties.Resources.削除;
+			this.toolStripButton削除.Name = "toolStripButton削除";
+			this.toolStripButton削除.Click += new System.EventHandler( this.toolStripButton削除_Click );
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.AccessibleDescription = null;
+			this.toolStripSeparator8.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator8, "toolStripSeparator8" );
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			// 
+			// toolStripButtonアンドゥ
+			// 
+			this.toolStripButtonアンドゥ.AccessibleDescription = null;
+			this.toolStripButtonアンドゥ.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonアンドゥ, "toolStripButtonアンドゥ" );
+			this.toolStripButtonアンドゥ.BackgroundImage = null;
+			this.toolStripButtonアンドゥ.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButtonアンドゥ.Image = global::DTXCreator.Properties.Resources.Undo;
+			this.toolStripButtonアンドゥ.Name = "toolStripButtonアンドゥ";
+			this.toolStripButtonアンドゥ.Click += new System.EventHandler( this.toolStripButtonアンドゥ_Click );
+			// 
+			// toolStripButtonリドゥ
+			// 
+			this.toolStripButtonリドゥ.AccessibleDescription = null;
+			this.toolStripButtonリドゥ.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonリドゥ, "toolStripButtonリドゥ" );
+			this.toolStripButtonリドゥ.BackgroundImage = null;
+			this.toolStripButtonリドゥ.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButtonリドゥ.Image = global::DTXCreator.Properties.Resources.Redo;
+			this.toolStripButtonリドゥ.Name = "toolStripButtonリドゥ";
+			this.toolStripButtonリドゥ.Click += new System.EventHandler( this.toolStripButtonリドゥ_Click );
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.AccessibleDescription = null;
+			this.toolStripSeparator9.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator9, "toolStripSeparator9" );
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			// 
+			// toolStripButtonチップパレット
+			// 
+			this.toolStripButtonチップパレット.AccessibleDescription = null;
+			this.toolStripButtonチップパレット.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButtonチップパレット, "toolStripButtonチップパレット" );
+			this.toolStripButtonチップパレット.BackgroundImage = null;
+			this.toolStripButtonチップパレット.CheckOnClick = true;
+			this.toolStripButtonチップパレット.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButtonチップパレット.Image = global::DTXCreator.Properties.Resources.ﾁｯﾌﾟﾊﾟﾚｯﾄ;
+			this.toolStripButtonチップパレット.Name = "toolStripButtonチップパレット";
+			this.toolStripButtonチップパレット.Click += new System.EventHandler( this.toolStripButtonチップパレット_Click );
+			// 
+			// toolStripSeparator10
+			// 
+			this.toolStripSeparator10.AccessibleDescription = null;
+			this.toolStripSeparator10.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator10, "toolStripSeparator10" );
+			this.toolStripSeparator10.Name = "toolStripSeparator10";
+			// 
+			// toolStripComboBox譜面拡大率
+			// 
+			this.toolStripComboBox譜面拡大率.AccessibleDescription = null;
+			this.toolStripComboBox譜面拡大率.AccessibleName = null;
+			resources.ApplyResources( this.toolStripComboBox譜面拡大率, "toolStripComboBox譜面拡大率" );
+			this.toolStripComboBox譜面拡大率.DropDownHeight = 200;
+			this.toolStripComboBox譜面拡大率.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.toolStripComboBox譜面拡大率.Items.AddRange( new object[] {
+            resources.GetString("toolStripComboBox譜面拡大率.Items"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items1"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items2"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items3"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items4"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items5"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items6"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items7"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items8"),
+            resources.GetString("toolStripComboBox譜面拡大率.Items9")} );
+			this.toolStripComboBox譜面拡大率.Name = "toolStripComboBox譜面拡大率";
+			this.toolStripComboBox譜面拡大率.SelectedIndexChanged += new System.EventHandler( this.toolStripComboBox譜面拡大率_SelectedIndexChanged );
+			// 
+			// toolStripComboBoxガイド間隔
+			// 
+			this.toolStripComboBoxガイド間隔.AccessibleDescription = null;
+			this.toolStripComboBoxガイド間隔.AccessibleName = null;
+			resources.ApplyResources( this.toolStripComboBoxガイド間隔, "toolStripComboBoxガイド間隔" );
+			this.toolStripComboBoxガイド間隔.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.toolStripComboBoxガイド間隔.Items.AddRange( new object[] {
+            resources.GetString("toolStripComboBoxガイド間隔.Items"),
+            resources.GetString("toolStripComboBoxガイド間隔.Items1"),
+            resources.GetString("toolStripComboBoxガイド間隔.Items2"),
+            resources.GetString("toolStripComboBoxガイド間隔.Items3"),
+            resources.GetString("toolStripComboBoxガイド間隔.Items4"),
+            resources.GetString("toolStripComboBoxガイド間隔.Items5"),
+            resources.GetString("toolStripComboBoxガイド間隔.Items6"),
+            resources.GetString("toolStripComboBoxガイド間隔.Items7"),
+            resources.GetString("toolStripComboBoxガイド間隔.Items8")} );
+			this.toolStripComboBoxガイド間隔.Name = "toolStripComboBoxガイド間隔";
+			this.toolStripComboBoxガイド間隔.SelectedIndexChanged += new System.EventHandler( this.toolStripComboBoxガイド間隔_SelectedIndexChanged );
+			// 
+			// toolStripButton選択モード
+			// 
+			this.toolStripButton選択モード.AccessibleDescription = null;
+			this.toolStripButton選択モード.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton選択モード, "toolStripButton選択モード" );
+			this.toolStripButton選択モード.BackgroundImage = null;
+			this.toolStripButton選択モード.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton選択モード.Image = global::DTXCreator.Properties.Resources.矢印ポインタ;
+			this.toolStripButton選択モード.Name = "toolStripButton選択モード";
+			this.toolStripButton選択モード.Click += new System.EventHandler( this.toolStripButton選択モード_Click );
+			// 
+			// toolStripButton編集モード
+			// 
+			this.toolStripButton編集モード.AccessibleDescription = null;
+			this.toolStripButton編集モード.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton編集モード, "toolStripButton編集モード" );
+			this.toolStripButton編集モード.BackgroundImage = null;
+			this.toolStripButton編集モード.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton編集モード.Image = global::DTXCreator.Properties.Resources.鉛筆;
+			this.toolStripButton編集モード.Name = "toolStripButton編集モード";
+			this.toolStripButton編集モード.Click += new System.EventHandler( this.toolStripButton編集モード_Click );
+			// 
+			// toolStripSeparator11
+			// 
+			this.toolStripSeparator11.AccessibleDescription = null;
+			this.toolStripSeparator11.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator11, "toolStripSeparator11" );
+			this.toolStripSeparator11.Name = "toolStripSeparator11";
+			// 
+			// toolStripButton先頭から再生
+			// 
+			this.toolStripButton先頭から再生.AccessibleDescription = null;
+			this.toolStripButton先頭から再生.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton先頭から再生, "toolStripButton先頭から再生" );
+			this.toolStripButton先頭から再生.BackgroundImage = null;
+			this.toolStripButton先頭から再生.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton先頭から再生.Image = global::DTXCreator.Properties.Resources.最初から再生;
+			this.toolStripButton先頭から再生.Name = "toolStripButton先頭から再生";
+			this.toolStripButton先頭から再生.Click += new System.EventHandler( this.toolStripButton先頭から再生_Click );
+			// 
+			// toolStripButton現在位置から再生
+			// 
+			this.toolStripButton現在位置から再生.AccessibleDescription = null;
+			this.toolStripButton現在位置から再生.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton現在位置から再生, "toolStripButton現在位置から再生" );
+			this.toolStripButton現在位置から再生.BackgroundImage = null;
+			this.toolStripButton現在位置から再生.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton現在位置から再生.Image = global::DTXCreator.Properties.Resources.再生;
+			this.toolStripButton現在位置から再生.Name = "toolStripButton現在位置から再生";
+			this.toolStripButton現在位置から再生.Click += new System.EventHandler( this.toolStripButton現在位置から再生_Click );
+			// 
+			// toolStripButton現在位置からBGMのみ再生
+			// 
+			this.toolStripButton現在位置からBGMのみ再生.AccessibleDescription = null;
+			this.toolStripButton現在位置からBGMのみ再生.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton現在位置からBGMのみ再生, "toolStripButton現在位置からBGMのみ再生" );
+			this.toolStripButton現在位置からBGMのみ再生.BackgroundImage = null;
+			this.toolStripButton現在位置からBGMのみ再生.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton現在位置からBGMのみ再生.Image = global::DTXCreator.Properties.Resources.BGMのみ再生;
+			this.toolStripButton現在位置からBGMのみ再生.Name = "toolStripButton現在位置からBGMのみ再生";
+			this.toolStripButton現在位置からBGMのみ再生.Click += new System.EventHandler( this.toolStripButton現在位置からBGMのみ再生_Click );
+			// 
+			// toolStripButton再生停止
+			// 
+			this.toolStripButton再生停止.AccessibleDescription = null;
+			this.toolStripButton再生停止.AccessibleName = null;
+			resources.ApplyResources( this.toolStripButton再生停止, "toolStripButton再生停止" );
+			this.toolStripButton再生停止.BackgroundImage = null;
+			this.toolStripButton再生停止.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton再生停止.Image = global::DTXCreator.Properties.Resources.再生停止;
+			this.toolStripButton再生停止.Name = "toolStripButton再生停止";
+			this.toolStripButton再生停止.Click += new System.EventHandler( this.toolStripButton再生停止_Click );
+			// 
+			// toolStripComboBox演奏速度
+			// 
+			this.toolStripComboBox演奏速度.AccessibleDescription = null;
+			this.toolStripComboBox演奏速度.AccessibleName = null;
+			resources.ApplyResources( this.toolStripComboBox演奏速度, "toolStripComboBox演奏速度" );
+			this.toolStripComboBox演奏速度.DropDownHeight = 150;
+			this.toolStripComboBox演奏速度.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.toolStripComboBox演奏速度.DropDownWidth = 35;
+			this.toolStripComboBox演奏速度.Items.AddRange( new object[] {
+            resources.GetString("toolStripComboBox演奏速度.Items"),
+            resources.GetString("toolStripComboBox演奏速度.Items1"),
+            resources.GetString("toolStripComboBox演奏速度.Items2"),
+            resources.GetString("toolStripComboBox演奏速度.Items3"),
+            resources.GetString("toolStripComboBox演奏速度.Items4"),
+            resources.GetString("toolStripComboBox演奏速度.Items5"),
+            resources.GetString("toolStripComboBox演奏速度.Items6"),
+            resources.GetString("toolStripComboBox演奏速度.Items7"),
+            resources.GetString("toolStripComboBox演奏速度.Items8"),
+            resources.GetString("toolStripComboBox演奏速度.Items9"),
+            resources.GetString("toolStripComboBox演奏速度.Items10")} );
+			this.toolStripComboBox演奏速度.Name = "toolStripComboBox演奏速度";
+			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.AccessibleDescription = null;
+			this.toolStripSeparator12.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator12, "toolStripSeparator12" );
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			// 
+			// vScrollBar譜面用垂直スクロールバー
+			// 
+			this.vScrollBar譜面用垂直スクロールバー.AccessibleDescription = null;
+			this.vScrollBar譜面用垂直スクロールバー.AccessibleName = null;
+			resources.ApplyResources( this.vScrollBar譜面用垂直スクロールバー, "vScrollBar譜面用垂直スクロールバー" );
+			this.vScrollBar譜面用垂直スクロールバー.BackgroundImage = null;
+			this.vScrollBar譜面用垂直スクロールバー.Font = null;
+			this.vScrollBar譜面用垂直スクロールバー.LargeChange = 64;
+			this.vScrollBar譜面用垂直スクロールバー.Name = "vScrollBar譜面用垂直スクロールバー";
+			this.vScrollBar譜面用垂直スクロールバー.SmallChange = 4;
+			this.toolTipツールチップ.SetToolTip( this.vScrollBar譜面用垂直スクロールバー, resources.GetString( "vScrollBar譜面用垂直スクロールバー.ToolTip" ) );
+			this.vScrollBar譜面用垂直スクロールバー.ValueChanged += new System.EventHandler( this.vScrollBar譜面用垂直スクロールバー_ValueChanged );
 			// 
 			// contextMenuStrip譜面右メニュー
 			// 
+			this.contextMenuStrip譜面右メニュー.AccessibleDescription = null;
+			this.contextMenuStrip譜面右メニュー.AccessibleName = null;
+			resources.ApplyResources( this.contextMenuStrip譜面右メニュー, "contextMenuStrip譜面右メニュー" );
+			this.contextMenuStrip譜面右メニュー.BackgroundImage = null;
+			this.contextMenuStrip譜面右メニュー.Font = null;
 			this.contextMenuStrip譜面右メニュー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem選択チップの切り取り,
             this.toolStripMenuItem選択チップのコピー,
@@ -1864,107 +1998,134 @@
             this.toolStripMenuItem小節の挿入,
             this.toolStripMenuItem小節の削除} );
 			this.contextMenuStrip譜面右メニュー.Name = "contextMenuStrip譜面右メニュー";
-			this.contextMenuStrip譜面右メニュー.Size = new System.Drawing.Size( 215, 198 );
+			this.toolTipツールチップ.SetToolTip( this.contextMenuStrip譜面右メニュー, resources.GetString( "contextMenuStrip譜面右メニュー.ToolTip" ) );
 			// 
 			// toolStripMenuItem選択チップの切り取り
 			// 
+			this.toolStripMenuItem選択チップの切り取り.AccessibleDescription = null;
+			this.toolStripMenuItem選択チップの切り取り.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem選択チップの切り取り, "toolStripMenuItem選択チップの切り取り" );
+			this.toolStripMenuItem選択チップの切り取り.BackgroundImage = null;
 			this.toolStripMenuItem選択チップの切り取り.Image = global::DTXCreator.Properties.Resources.切り取り;
 			this.toolStripMenuItem選択チップの切り取り.Name = "toolStripMenuItem選択チップの切り取り";
-			this.toolStripMenuItem選択チップの切り取り.Size = new System.Drawing.Size( 214, 22 );
-			this.toolStripMenuItem選択チップの切り取り.Text = "選択チップの切り取り(&T)";
+			this.toolStripMenuItem選択チップの切り取り.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItem選択チップの切り取り.Click += new System.EventHandler( this.toolStripMenuItem選択チップの切り取り_Click );
 			// 
 			// toolStripMenuItem選択チップのコピー
 			// 
+			this.toolStripMenuItem選択チップのコピー.AccessibleDescription = null;
+			this.toolStripMenuItem選択チップのコピー.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem選択チップのコピー, "toolStripMenuItem選択チップのコピー" );
+			this.toolStripMenuItem選択チップのコピー.BackgroundImage = null;
 			this.toolStripMenuItem選択チップのコピー.Image = global::DTXCreator.Properties.Resources.コピー;
 			this.toolStripMenuItem選択チップのコピー.Name = "toolStripMenuItem選択チップのコピー";
-			this.toolStripMenuItem選択チップのコピー.Size = new System.Drawing.Size( 214, 22 );
-			this.toolStripMenuItem選択チップのコピー.Text = "選択チップのコピー(&C)";
+			this.toolStripMenuItem選択チップのコピー.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItem選択チップのコピー.Click += new System.EventHandler( this.toolStripMenuItem選択チップのコピー_Click );
 			// 
 			// toolStripMenuItem選択チップの貼り付け
 			// 
+			this.toolStripMenuItem選択チップの貼り付け.AccessibleDescription = null;
+			this.toolStripMenuItem選択チップの貼り付け.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem選択チップの貼り付け, "toolStripMenuItem選択チップの貼り付け" );
+			this.toolStripMenuItem選択チップの貼り付け.BackgroundImage = null;
 			this.toolStripMenuItem選択チップの貼り付け.Image = global::DTXCreator.Properties.Resources.貼り付け;
 			this.toolStripMenuItem選択チップの貼り付け.Name = "toolStripMenuItem選択チップの貼り付け";
-			this.toolStripMenuItem選択チップの貼り付け.Size = new System.Drawing.Size( 214, 22 );
-			this.toolStripMenuItem選択チップの貼り付け.Text = "選択チップの貼り付け(&P)";
+			this.toolStripMenuItem選択チップの貼り付け.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItem選択チップの貼り付け.Click += new System.EventHandler( this.toolStripMenuItem選択チップの貼り付け_Click );
 			// 
 			// toolStripMenuItem選択チップの削除
 			// 
+			this.toolStripMenuItem選択チップの削除.AccessibleDescription = null;
+			this.toolStripMenuItem選択チップの削除.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem選択チップの削除, "toolStripMenuItem選択チップの削除" );
+			this.toolStripMenuItem選択チップの削除.BackgroundImage = null;
 			this.toolStripMenuItem選択チップの削除.Image = global::DTXCreator.Properties.Resources.削除;
 			this.toolStripMenuItem選択チップの削除.Name = "toolStripMenuItem選択チップの削除";
-			this.toolStripMenuItem選択チップの削除.Size = new System.Drawing.Size( 214, 22 );
-			this.toolStripMenuItem選択チップの削除.Text = "選択チップの削除(&D)";
+			this.toolStripMenuItem選択チップの削除.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItem選択チップの削除.Click += new System.EventHandler( this.toolStripMenuItem選択チップの削除_Click );
 			// 
 			// toolStripSeparator15
 			// 
+			this.toolStripSeparator15.AccessibleDescription = null;
+			this.toolStripSeparator15.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator15, "toolStripSeparator15" );
 			this.toolStripSeparator15.Name = "toolStripSeparator15";
-			this.toolStripSeparator15.Size = new System.Drawing.Size( 211, 6 );
 			// 
 			// toolStripMenuItemすべてのチップの選択
 			// 
+			this.toolStripMenuItemすべてのチップの選択.AccessibleDescription = null;
+			this.toolStripMenuItemすべてのチップの選択.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemすべてのチップの選択, "toolStripMenuItemすべてのチップの選択" );
+			this.toolStripMenuItemすべてのチップの選択.BackgroundImage = null;
 			this.toolStripMenuItemすべてのチップの選択.Name = "toolStripMenuItemすべてのチップの選択";
-			this.toolStripMenuItemすべてのチップの選択.Size = new System.Drawing.Size( 214, 22 );
-			this.toolStripMenuItemすべてのチップの選択.Text = "すべてのチップの選択(&A)";
+			this.toolStripMenuItemすべてのチップの選択.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItemすべてのチップの選択.Click += new System.EventHandler( this.toolStripMenuItemすべてのチップの選択_Click );
 			// 
 			// toolStripSeparator16
 			// 
+			this.toolStripSeparator16.AccessibleDescription = null;
+			this.toolStripSeparator16.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator16, "toolStripSeparator16" );
 			this.toolStripSeparator16.Name = "toolStripSeparator16";
-			this.toolStripSeparator16.Size = new System.Drawing.Size( 211, 6 );
 			// 
 			// toolStripMenuItem小節長変更
 			// 
+			this.toolStripMenuItem小節長変更.AccessibleDescription = null;
+			this.toolStripMenuItem小節長変更.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem小節長変更, "toolStripMenuItem小節長変更" );
+			this.toolStripMenuItem小節長変更.BackgroundImage = null;
 			this.toolStripMenuItem小節長変更.Name = "toolStripMenuItem小節長変更";
-			this.toolStripMenuItem小節長変更.Size = new System.Drawing.Size( 214, 22 );
-			this.toolStripMenuItem小節長変更.Text = "小節長の変更(&B)";
+			this.toolStripMenuItem小節長変更.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItem小節長変更.Click += new System.EventHandler( this.toolStripMenuItem小節長変更_Click );
 			// 
 			// toolStripSeparator17
 			// 
+			this.toolStripSeparator17.AccessibleDescription = null;
+			this.toolStripSeparator17.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator17, "toolStripSeparator17" );
 			this.toolStripSeparator17.Name = "toolStripSeparator17";
-			this.toolStripSeparator17.Size = new System.Drawing.Size( 211, 6 );
 			// 
 			// toolStripMenuItem小節の挿入
 			// 
+			this.toolStripMenuItem小節の挿入.AccessibleDescription = null;
+			this.toolStripMenuItem小節の挿入.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem小節の挿入, "toolStripMenuItem小節の挿入" );
+			this.toolStripMenuItem小節の挿入.BackgroundImage = null;
 			this.toolStripMenuItem小節の挿入.Name = "toolStripMenuItem小節の挿入";
-			this.toolStripMenuItem小節の挿入.Size = new System.Drawing.Size( 214, 22 );
-			this.toolStripMenuItem小節の挿入.Text = "小節の挿入(&I)";
+			this.toolStripMenuItem小節の挿入.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItem小節の挿入.Click += new System.EventHandler( this.toolStripMenuItem小節の挿入_Click );
 			// 
 			// toolStripMenuItem小節の削除
 			// 
+			this.toolStripMenuItem小節の削除.AccessibleDescription = null;
+			this.toolStripMenuItem小節の削除.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItem小節の削除, "toolStripMenuItem小節の削除" );
+			this.toolStripMenuItem小節の削除.BackgroundImage = null;
 			this.toolStripMenuItem小節の削除.Name = "toolStripMenuItem小節の削除";
-			this.toolStripMenuItem小節の削除.Size = new System.Drawing.Size( 214, 22 );
-			this.toolStripMenuItem小節の削除.Text = "小節の削除(&E)";
+			this.toolStripMenuItem小節の削除.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItem小節の削除.Click += new System.EventHandler( this.toolStripMenuItem小節の削除_Click );
 			// 
 			// Cメインフォーム
 			// 
+			this.AccessibleDescription = null;
+			this.AccessibleName = null;
 			this.AllowDrop = true;
-			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 12F );
+			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size( 731, 515 );
+			this.BackgroundImage = null;
 			this.Controls.Add( this.splitContainerタブと譜面を分割 );
 			this.Controls.Add( this.vScrollBar譜面用垂直スクロールバー );
 			this.Controls.Add( this.toolStripツールバー );
 			this.Controls.Add( this.statusStripステータスバー );
 			this.Controls.Add( this.menuStripメニューバー );
-			this.Icon = ( (System.Drawing.Icon) ( resources.GetObject( "$this.Icon" ) ) );
+			this.Font = null;
 			this.MainMenuStrip = this.menuStripメニューバー;
-			this.MinimumSize = new System.Drawing.Size( 16, 38 );
 			this.Name = "Cメインフォーム";
-			this.Text = "DTXCreator";
+			this.toolTipツールチップ.SetToolTip( this, resources.GetString( "$this.ToolTip" ) );
 			this.Load += new System.EventHandler( this.Cメインフォーム_Load );
 			this.DragDrop += new System.Windows.Forms.DragEventHandler( this.Cメインフォーム_DragDrop );
 			this.DragEnter += new System.Windows.Forms.DragEventHandler( this.Cメインフォーム_DragEnter );
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler( this.Cメインフォーム_FormClosing );
-			this.menuStripメニューバー.ResumeLayout( false );
-			this.menuStripメニューバー.PerformLayout();
-			this.toolStripツールバー.ResumeLayout( false );
-			this.toolStripツールバー.PerformLayout();
 			this.splitContainerタブと譜面を分割.Panel1.ResumeLayout( false );
 			this.splitContainerタブと譜面を分割.Panel2.ResumeLayout( false );
 			this.splitContainerタブと譜面を分割.ResumeLayout( false );
@@ -1987,6 +2148,10 @@
 			this.tabPage自由入力.ResumeLayout( false );
 			this.tabPage自由入力.PerformLayout();
 			( (System.ComponentModel.ISupportInitialize) ( this.pictureBox譜面パネル ) ).EndInit();
+			this.menuStripメニューバー.ResumeLayout( false );
+			this.menuStripメニューバー.PerformLayout();
+			this.toolStripツールバー.ResumeLayout( false );
+			this.toolStripツールバー.PerformLayout();
 			this.contextMenuStrip譜面右メニュー.ResumeLayout( false );
 			this.ResumeLayout( false );
 			this.PerformLayout();

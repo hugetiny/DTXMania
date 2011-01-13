@@ -118,61 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="checkBox小節範囲指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 16</value>
+  <data name="labelメッセージ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 12</value>
   </data>
-  <data name="checkBox小節範囲指定.Text" xml:space="preserve">
-    <value>小節範囲指定(&amp;S)</value>
-  </data>
-  <data name="checkBox小節範囲指定.ToolTip" xml:space="preserve">
-    <value>検索したい小節の番号を範囲指定します。</value>
-  </data>
-  <data name="checkBoxチップ範囲指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 16</value>
-  </data>
-  <data name="checkBoxチップ範囲指定.Text" xml:space="preserve">
-    <value>チップ範囲指定(&amp;C)</value>
-  </data>
-  <data name="checkBoxチップ範囲指定.ToolTip" xml:space="preserve">
-    <value>検索したいチップの番号を範囲指定します。</value>
-  </data>
-  <data name="checkBoxレーン指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 16</value>
-  </data>
-  <data name="checkBoxレーン指定.Text" xml:space="preserve">
-    <value>レーン指定(&amp;L)</value>
-  </data>
-  <data name="checkBoxレーン指定.ToolTip" xml:space="preserve">
-    <value>指定したレーンのみ検索します。</value>
-  </data>
-  <data name="checkBox表チップ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 16</value>
-  </data>
-  <data name="checkBox表チップ.Text" xml:space="preserve">
-    <value>表チップから検索する(&amp;F)</value>
-  </data>
-  <data name="checkBox表チップ.ToolTip" xml:space="preserve">
-    <value>表チップだけを検索対象にします。</value>
-  </data>
-  <data name="checkBox裏チップ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 16</value>
-  </data>
-  <data name="checkBox裏チップ.Text" xml:space="preserve">
-    <value>裏チップから検索する(&amp;B)</value>
+  <data name="labelメッセージ.Text" xml:space="preserve">
+    <value>数値を設定して下さい。</value>
   </data>
   <data name="buttonキャンセル.Text" xml:space="preserve">
     <value>キャンセル</value>
   </data>
-  <data name="buttonOK.Text" xml:space="preserve">
-    <value>検索実行</value>
-  </data>
-  <data name="label説明.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 12</value>
-  </data>
-  <data name="label説明.Text" xml:space="preserve">
-    <value>以下の条件に合うチップを選択します。</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>検索</value>
+    <value>数値入力</value>
   </data>
 </root>

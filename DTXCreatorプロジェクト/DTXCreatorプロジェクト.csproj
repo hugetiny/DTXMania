@@ -64,26 +64,51 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="コード\00.全体\Cメインフォーム.ja-JP.resx">
+      <DependentUpon>Cメインフォーム.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="コード\00.全体\Cメインフォーム.resx">
       <DependentUpon>Cメインフォーム.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="コード\02.WAV_BMP_AVI\Cサウンドプロパティダイアログ.ja-JP.resx">
+      <DependentUpon>Cサウンドプロパティダイアログ.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="コード\02.WAV_BMP_AVI\Cサウンドプロパティダイアログ.resx">
       <DependentUpon>Cサウンドプロパティダイアログ.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="コード\02.WAV_BMP_AVI\C動画プロパティダイアログ.ja-JP.resx">
+      <DependentUpon>C動画プロパティダイアログ.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="コード\02.WAV_BMP_AVI\C動画プロパティダイアログ.resx">
       <DependentUpon>C動画プロパティダイアログ.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="コード\02.WAV_BMP_AVI\C画像プロパティダイアログ.ja-JP.resx">
+      <DependentUpon>C画像プロパティダイアログ.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="コード\02.WAV_BMP_AVI\C画像プロパティダイアログ.resx">
       <DependentUpon>C画像プロパティダイアログ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="コード\03.オプション関連\Cオプションダイアログ.ja-JP.resx">
+      <DependentUpon>Cオプションダイアログ.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="コード\03.オプション関連\Cオプションダイアログ.resx">
       <DependentUpon>Cオプションダイアログ.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="コード\04.チップパレット関連\Cチップパレット.ja-JP.resx">
+      <DependentUpon>Cチップパレット.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="コード\04.チップパレット関連\Cチップパレット.resx">
       <DependentUpon>Cチップパレット.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="コード\05.譜面\C小節長変更ダイアログ.ja-JP.resx">
+      <DependentUpon>C小節長変更ダイアログ.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="コード\05.譜面\C小節長変更ダイアログ.resx">
       <DependentUpon>C小節長変更ダイアログ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="コード\05.譜面\C数値入力ダイアログ.ja-JP.resx">
+      <DependentUpon>C数値入力ダイアログ.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="コード\05.譜面\C数値入力ダイアログ.resx">
       <DependentUpon>C数値入力ダイアログ.cs</DependentUpon>
@@ -94,8 +119,14 @@
     <EmbeddedResource Include="コード\05.譜面\C検索ダイアログ.resx">
       <DependentUpon>C検索ダイアログ.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="コード\05.譜面\C置換ダイアログ.ja-JP.resx">
+      <DependentUpon>C置換ダイアログ.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="コード\05.譜面\C置換ダイアログ.resx">
       <DependentUpon>C置換ダイアログ.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="コード\06.汎用\Cメッセージポップアップ.ja-JP.resx">
+      <DependentUpon>Cメッセージポップアップ.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="コード\06.汎用\Cメッセージポップアップ.resx">
       <DependentUpon>Cメッセージポップアップ.cs</DependentUpon>
@@ -251,6 +282,8 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ(DTXCreator)"
+mkdir "$(SolutionDir)..\実行時フォルダ(DTXCreator)\ja-JP"
+copy /Y "$(TargetDir)ja-JP" "$(SolutionDir)..\実行時フォルダ(DTXCreator)\ja-JP"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( Cメッセージポップアップ ) );
 			this.panelメッセージ = new System.Windows.Forms.Panel();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			( (System.ComponentModel.ISupportInitialize) ( this.pictureBox1 ) ).BeginInit();
@@ -35,35 +36,41 @@
 			// 
 			// panelメッセージ
 			// 
-			this.panelメッセージ.Location = new System.Drawing.Point( 113, 12 );
+			this.panelメッセージ.AccessibleDescription = null;
+			this.panelメッセージ.AccessibleName = null;
+			resources.ApplyResources( this.panelメッセージ, "panelメッセージ" );
+			this.panelメッセージ.BackgroundImage = null;
+			this.panelメッセージ.Font = null;
 			this.panelメッセージ.Name = "panelメッセージ";
-			this.panelメッセージ.Size = new System.Drawing.Size( 212, 86 );
-			this.panelメッセージ.TabIndex = 1;
 			this.panelメッセージ.Paint += new System.Windows.Forms.PaintEventHandler( this.panelメッセージ_Paint );
 			// 
 			// pictureBox1
 			// 
-			this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+			this.pictureBox1.AccessibleDescription = null;
+			this.pictureBox1.AccessibleName = null;
+			resources.ApplyResources( this.pictureBox1, "pictureBox1" );
+			this.pictureBox1.BackgroundImage = null;
+			this.pictureBox1.Font = null;
 			this.pictureBox1.Image = global::DTXCreator.Properties.Resources.りらちょー;
-			this.pictureBox1.Location = new System.Drawing.Point( 12, 12 );
+			this.pictureBox1.ImageLocation = null;
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size( 95, 80 );
-			this.pictureBox1.TabIndex = 2;
 			this.pictureBox1.TabStop = false;
 			// 
 			// Cメッセージポップアップ
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 12F );
+			this.AccessibleDescription = null;
+			this.AccessibleName = null;
+			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Window;
-			this.ClientSize = new System.Drawing.Size( 337, 110 );
+			this.BackgroundImage = null;
 			this.ControlBox = false;
 			this.Controls.Add( this.pictureBox1 );
 			this.Controls.Add( this.panelメッセージ );
+			this.Font = null;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.Icon = null;
 			this.Name = "Cメッセージポップアップ";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Cメッセージポップアップ";
 			this.Load += new System.EventHandler( this.Cメッセージポップアップ_Load );
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler( this.Cメッセージポップアップ_FormClosing );
 			( (System.ComponentModel.ISupportInitialize) ( this.pictureBox1 ) ).EndInit();

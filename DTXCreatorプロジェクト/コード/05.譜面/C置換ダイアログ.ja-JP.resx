@@ -117,62 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="checkBox小節範囲指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 16</value>
-  </data>
-  <data name="checkBox小節範囲指定.Text" xml:space="preserve">
-    <value>小節範囲指定(&amp;S)</value>
-  </data>
-  <data name="checkBox小節範囲指定.ToolTip" xml:space="preserve">
-    <value>検索したい小節の番号を範囲指定します。</value>
-  </data>
-  <data name="checkBoxチップ範囲指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 16</value>
-  </data>
-  <data name="checkBoxチップ範囲指定.Text" xml:space="preserve">
-    <value>チップ範囲指定(&amp;C)</value>
-  </data>
-  <data name="checkBoxチップ範囲指定.ToolTip" xml:space="preserve">
-    <value>検索したいチップの番号を範囲指定します。</value>
-  </data>
-  <data name="checkBoxレーン指定.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 16</value>
-  </data>
-  <data name="checkBoxレーン指定.Text" xml:space="preserve">
-    <value>レーン指定(&amp;L)</value>
-  </data>
-  <data name="checkBoxレーン指定.ToolTip" xml:space="preserve">
-    <value>指定したレーンのみ検索します。</value>
-  </data>
-  <data name="checkBox表チップ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>137, 16</value>
-  </data>
-  <data name="checkBox表チップ.Text" xml:space="preserve">
-    <value>表チップから検索する(&amp;F)</value>
-  </data>
-  <data name="checkBox表チップ.ToolTip" xml:space="preserve">
-    <value>表チップだけを検索対象にします。</value>
-  </data>
-  <data name="checkBox裏チップ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 16</value>
-  </data>
-  <data name="checkBox裏チップ.Text" xml:space="preserve">
-    <value>裏チップから検索する(&amp;B)</value>
-  </data>
   <data name="buttonキャンセル.Text" xml:space="preserve">
     <value>キャンセル</value>
   </data>
-  <data name="buttonOK.Text" xml:space="preserve">
-    <value>検索実行</value>
+  <data name="button置換.Text" xml:space="preserve">
+    <value>置換実行</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label説明.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 12</value>
+    <value>224, 12</value>
   </data>
   <data name="label説明.Text" xml:space="preserve">
-    <value>以下の条件に合うチップを選択します。</value>
+    <value>現在選択中のチップを対象に置換を行います。</value>
+  </data>
+  <data name="radioButton表裏反転.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 16</value>
+  </data>
+  <data name="radioButton表裏反転.Text" xml:space="preserve">
+    <value>チップの表裏を反転(&amp;A)</value>
+  </data>
+  <data name="radioButton単純置換.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 16</value>
+  </data>
+  <data name="radioButton単純置換.Text" xml:space="preserve">
+    <value>チップの置き換え(&amp;R)</value>
+  </data>
+  <data name="textBox元番号.Location" type="System.Drawing.Point, System.Drawing">
+    <value>44, 57</value>
+  </data>
+  <data name="textBox先番号.Location" type="System.Drawing.Point, System.Drawing">
+    <value>123, 57</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>100, 60</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>14, 12</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>を</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>179, 60</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 12</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>に置き換える</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>検索</value>
+    <value>置換</value>
   </data>
 </root>

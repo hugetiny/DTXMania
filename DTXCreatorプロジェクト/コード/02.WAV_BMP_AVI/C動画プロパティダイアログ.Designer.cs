@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( C動画プロパティダイアログ ) );
 			this.textBoxAVI番号 = new System.Windows.Forms.TextBox();
 			this.labelAVI番号 = new System.Windows.Forms.Label();
 			this.buttonOK = new System.Windows.Forms.Button();
@@ -46,134 +47,96 @@
 			// 
 			// textBoxAVI番号
 			// 
-			this.textBoxAVI番号.Location = new System.Drawing.Point( 70, 11 );
+			resources.ApplyResources( this.textBoxAVI番号, "textBoxAVI番号" );
 			this.textBoxAVI番号.Name = "textBoxAVI番号";
 			this.textBoxAVI番号.ReadOnly = true;
-			this.textBoxAVI番号.Size = new System.Drawing.Size( 58, 19 );
-			this.textBoxAVI番号.TabIndex = 1;
 			this.textBoxAVI番号.TabStop = false;
-			this.textBoxAVI番号.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// labelAVI番号
 			// 
-			this.labelAVI番号.AutoSize = true;
-			this.labelAVI番号.Location = new System.Drawing.Point( 10, 14 );
+			resources.ApplyResources( this.labelAVI番号, "labelAVI番号" );
 			this.labelAVI番号.Name = "labelAVI番号";
-			this.labelAVI番号.Size = new System.Drawing.Size( 48, 12 );
-			this.labelAVI番号.TabIndex = 0;
-			this.labelAVI番号.Text = "AVI番号\r\n";
 			// 
 			// buttonOK
 			// 
 			this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonOK.Location = new System.Drawing.Point( 208, 98 );
+			resources.ApplyResources( this.buttonOK, "buttonOK" );
 			this.buttonOK.Name = "buttonOK";
-			this.buttonOK.Size = new System.Drawing.Size( 75, 23 );
-			this.buttonOK.TabIndex = 7;
-			this.buttonOK.Text = "OK";
 			this.buttonOK.UseVisualStyleBackColor = true;
 			// 
 			// buttonキャンセル
 			// 
 			this.buttonキャンセル.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonキャンセル.Location = new System.Drawing.Point( 289, 98 );
+			resources.ApplyResources( this.buttonキャンセル, "buttonキャンセル" );
 			this.buttonキャンセル.Name = "buttonキャンセル";
-			this.buttonキャンセル.Size = new System.Drawing.Size( 75, 23 );
-			this.buttonキャンセル.TabIndex = 8;
-			this.buttonキャンセル.Text = "キャンセル\r\n";
 			this.buttonキャンセル.UseVisualStyleBackColor = true;
 			// 
 			// textBoxラベル
 			// 
-			this.textBoxラベル.Location = new System.Drawing.Point( 70, 36 );
+			resources.ApplyResources( this.textBoxラベル, "textBoxラベル" );
 			this.textBoxラベル.Name = "textBoxラベル";
-			this.textBoxラベル.Size = new System.Drawing.Size( 294, 19 );
-			this.textBoxラベル.TabIndex = 3;
-			this.toolTip1.SetToolTip( this.textBoxラベル, "動画ファイルに名前を自由に設定できます。" );
+			this.toolTip1.SetToolTip( this.textBoxラベル, resources.GetString( "textBoxラベル.ToolTip" ) );
 			this.textBoxラベル.KeyDown += new System.Windows.Forms.KeyEventHandler( this.textBoxラベル_KeyDown );
 			// 
 			// labelラベル
 			// 
-			this.labelラベル.AutoSize = true;
-			this.labelラベル.Location = new System.Drawing.Point( 10, 39 );
+			resources.ApplyResources( this.labelラベル, "labelラベル" );
 			this.labelラベル.Name = "labelラベル";
-			this.labelラベル.Size = new System.Drawing.Size( 33, 12 );
-			this.labelラベル.TabIndex = 2;
-			this.labelラベル.Text = "ラベル";
-			this.toolTip1.SetToolTip( this.labelラベル, "動画ファイルに名前を自由に設定できます。\r\n" );
+			this.toolTip1.SetToolTip( this.labelラベル, resources.GetString( "labelラベル.ToolTip" ) );
 			// 
 			// textBoxファイル
 			// 
-			this.textBoxファイル.Location = new System.Drawing.Point( 70, 61 );
+			resources.ApplyResources( this.textBoxファイル, "textBoxファイル" );
 			this.textBoxファイル.Name = "textBoxファイル";
-			this.textBoxファイル.Size = new System.Drawing.Size( 217, 19 );
-			this.textBoxファイル.TabIndex = 5;
-			this.toolTip1.SetToolTip( this.textBoxファイル, "画像ファイル名。\r\n" );
+			this.toolTip1.SetToolTip( this.textBoxファイル, resources.GetString( "textBoxファイル.ToolTip" ) );
 			this.textBoxファイル.KeyDown += new System.Windows.Forms.KeyEventHandler( this.textBoxファイル_KeyDown );
 			// 
 			// labelファイル
 			// 
-			this.labelファイル.AutoSize = true;
-			this.labelファイル.Location = new System.Drawing.Point( 10, 64 );
+			resources.ApplyResources( this.labelファイル, "labelファイル" );
 			this.labelファイル.Name = "labelファイル";
-			this.labelファイル.Size = new System.Drawing.Size( 51, 12 );
-			this.labelファイル.TabIndex = 4;
-			this.labelファイル.Text = "ファイル名\r\n";
-			this.toolTip1.SetToolTip( this.labelファイル, "動画ファイル名。\r\n" );
+			this.toolTip1.SetToolTip( this.labelファイル, resources.GetString( "labelファイル.ToolTip" ) );
 			// 
 			// button参照
 			// 
-			this.button参照.Location = new System.Drawing.Point( 293, 57 );
+			resources.ApplyResources( this.button参照, "button参照" );
 			this.button参照.Name = "button参照";
-			this.button参照.Size = new System.Drawing.Size( 71, 23 );
-			this.button参照.TabIndex = 6;
-			this.button参照.Text = "参照...\r\n";
-			this.toolTip1.SetToolTip( this.button参照, "動画ファイルをダイアログから選択します。\r\n" );
+			this.toolTip1.SetToolTip( this.button参照, resources.GetString( "button参照.ToolTip" ) );
 			this.button参照.UseVisualStyleBackColor = true;
 			this.button参照.Click += new System.EventHandler( this.button参照_Click );
 			this.button参照.KeyDown += new System.Windows.Forms.KeyEventHandler( this.button参照_KeyDown );
 			// 
 			// button背景色
 			// 
-			this.button背景色.Location = new System.Drawing.Point( 134, 9 );
+			resources.ApplyResources( this.button背景色, "button背景色" );
 			this.button背景色.Name = "button背景色";
-			this.button背景色.Size = new System.Drawing.Size( 51, 23 );
-			this.button背景色.TabIndex = 9;
-			this.button背景色.Text = "背景色\r\n";
-			this.toolTip1.SetToolTip( this.button背景色, "AVIリスト行の背景色を設定します。\r\n" );
+			this.toolTip1.SetToolTip( this.button背景色, resources.GetString( "button背景色.ToolTip" ) );
 			this.button背景色.UseVisualStyleBackColor = true;
 			this.button背景色.Click += new System.EventHandler( this.button背景色_Click );
 			this.button背景色.KeyDown += new System.Windows.Forms.KeyEventHandler( this.button背景色_KeyDown );
 			// 
 			// button文字色
 			// 
-			this.button文字色.Location = new System.Drawing.Point( 191, 9 );
+			resources.ApplyResources( this.button文字色, "button文字色" );
 			this.button文字色.Name = "button文字色";
-			this.button文字色.Size = new System.Drawing.Size( 51, 23 );
-			this.button文字色.TabIndex = 10;
-			this.button文字色.Text = "文字色\r\n";
-			this.toolTip1.SetToolTip( this.button文字色, "AVIリスト行の文字色を設定します。\r\n" );
+			this.toolTip1.SetToolTip( this.button文字色, resources.GetString( "button文字色.ToolTip" ) );
 			this.button文字色.UseVisualStyleBackColor = true;
 			this.button文字色.Click += new System.EventHandler( this.button文字色_Click );
 			this.button文字色.KeyDown += new System.Windows.Forms.KeyEventHandler( this.button文字色_KeyDown );
 			// 
 			// button標準色に戻す
 			// 
-			this.button標準色に戻す.Location = new System.Drawing.Point( 248, 9 );
+			resources.ApplyResources( this.button標準色に戻す, "button標準色に戻す" );
 			this.button標準色に戻す.Name = "button標準色に戻す";
-			this.button標準色に戻す.Size = new System.Drawing.Size( 92, 23 );
-			this.button標準色に戻す.TabIndex = 11;
-			this.button標準色に戻す.Text = "標準色に戻す\r\n";
-			this.toolTip1.SetToolTip( this.button標準色に戻す, "AVIリスト行の背景色と文字色を標準色に戻します。\r\n" );
+			this.toolTip1.SetToolTip( this.button標準色に戻す, resources.GetString( "button標準色に戻す.ToolTip" ) );
 			this.button標準色に戻す.UseVisualStyleBackColor = true;
 			this.button標準色に戻す.Click += new System.EventHandler( this.button標準色に戻す_Click );
 			this.button標準色に戻す.KeyDown += new System.Windows.Forms.KeyEventHandler( this.button標準色に戻す_KeyDown );
 			// 
 			// C動画プロパティダイアログ
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 12F );
+			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size( 368, 135 );
 			this.ControlBox = false;
 			this.Controls.Add( this.button標準色に戻す );
 			this.Controls.Add( this.button文字色 );
@@ -191,8 +154,6 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "C動画プロパティダイアログ";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "動画プロパティ";
 			this.TopMost = true;
 			this.ResumeLayout( false );
 			this.PerformLayout();
