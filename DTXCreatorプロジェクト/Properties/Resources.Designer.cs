@@ -68,7 +68,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   021 に類似しているローカライズされた文字列を検索します。
+        ///   022 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string DTXC_VERSION {
             get {
