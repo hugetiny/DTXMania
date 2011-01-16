@@ -114,7 +114,7 @@ namespace DTXMania
 			{
 				if( this.bキー入力待ち )
 				{
-					if( CDTXMania.Input管理.Keyboard.bキーが押された( 0x35 ) )
+					if( CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Escape ) )
 					{
 						CDTXMania.Skin.sound取消音.t再生する();
 						this.bキー入力待ち = false;
@@ -126,7 +126,7 @@ namespace DTXMania
 						CDTXMania.Input管理.tポーリング( CDTXMania.app.bApplicationActive, false );
 					}
 				}
-				else if( ( CDTXMania.Input管理.Keyboard.bキーが押された( 0x31 ) && ( this.n現在の選択行 >= 0 ) ) && ( this.n現在の選択行 <= 15 ) )
+				else if( ( CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Delete ) && ( this.n現在の選択行 >= 0 ) ) && ( this.n現在の選択行 <= 15 ) )
 				{
 					CDTXMania.Skin.sound決定音.t再生する();
 					CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ][ this.n現在の選択行 ].入力デバイス = E入力デバイス.不明;
@@ -334,7 +334,13 @@ namespace DTXMania
 		{
 			for( int i = 0; i < 0x100; i++ )
 			{
-				if( ( ( ( i != 0x35 ) && ( i != 0x84 ) ) && ( ( i != 50 ) && ( i != 0x4c ) ) ) && ( ( ( i != 0x76 ) && ( i != 0x31 ) ) && CDTXMania.Input管理.Keyboard.bキーが押された( i ) ) )
+				if( i != (int)SlimDX.DirectInput.Key.Escape &&
+					i != (int)SlimDX.DirectInput.Key.UpArrow &&
+					i != (int)SlimDX.DirectInput.Key.DownArrow &&
+					i != (int)SlimDX.DirectInput.Key.LeftArrow &&
+					i != (int)SlimDX.DirectInput.Key.RightArrow &&
+					i != (int)SlimDX.DirectInput.Key.Delete &&
+					 CDTXMania.Input管理.Keyboard.bキーが押された( i ) )
 				{
 					CDTXMania.Skin.sound決定音.t再生する();
 					CDTXMania.ConfigIni.t指定した入力が既にアサイン済みである場合はそれを全削除する( E入力デバイス.キーボード, 0, i );

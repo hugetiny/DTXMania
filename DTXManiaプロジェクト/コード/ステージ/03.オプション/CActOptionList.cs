@@ -88,9 +88,9 @@ namespace DTXMania
 				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
 			this.list項目リスト.Add( this.iBassLeft );
 																						// #23580 2011.1.3 yyagi
-			this.iBassInputAdjustTimeMs = new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass,
-				"ベースの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
-				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
+			this.iBassInputAdjustTimeMs = new CItemInteger("InputAdjust", -99, 99, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass,
+				"ベースの入力タイミングの微調整を\n行います。\n-99 ～ 99ms まで指定可能です。",
+				"To adjust the bass input timing.\nYou can set from -99 to 99ms.");
 			this.list項目リスト.Add(this.iBassInputAdjustTimeMs);
 
 			this.n現在の選択項目 = 0;
@@ -191,9 +191,9 @@ namespace DTXMania
 				"It becomes MISS to hit pad without\n chip.");
 			this.list項目リスト.Add( this.iDrumsTight );
 																					// #23580 2011.1.3 yyagi
-			this.iDrumsInputAdjustTimeMs = new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums,
-				"ドラムの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
-				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
+			this.iDrumsInputAdjustTimeMs = new CItemInteger("InputAdjust", -99, 99, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums,
+				"ドラムの入力タイミングの微調整を\n行います。\n-99 ～ 99ms まで指定可能です。",
+				"To adjust the bass input timing.\nYou can set from -99 to 99ms.");
 			this.list項目リスト.Add(this.iDrumsInputAdjustTimeMs);
 
 			this.n現在の選択項目 = 0;
@@ -251,9 +251,9 @@ namespace DTXMania
 				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
 			this.list項目リスト.Add( this.iGuitarLeft );
 																					// #23580 2011.1.3 yyagi
-			this.iGuitarInputAdjustTimeMs= new CItemInteger("InputAdjust", -100, 100, CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar,
-				"ギターの入力タイミングの微調整を\n行います。\n-100 ～ 100ms まで指定可能です。",
-				"To adjust the bass input timing.\nYou can set from -100 to 100ms.");
+			this.iGuitarInputAdjustTimeMs= new CItemInteger("InputAdjust", -99, 99, CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar,
+				"ギターの入力タイミングの微調整を\n行います。\n-99 ～ 99ms まで指定可能です。",
+				"To adjust the bass input timing.\nYou can set from -99 to 99ms.");
 			this.list項目リスト.Add(this.iGuitarInputAdjustTimeMs);
 
 			this.n現在の選択項目 = 0;
