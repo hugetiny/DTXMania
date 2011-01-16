@@ -68,6 +68,7 @@ namespace FDK
 			if( ( ( bWindowがアクティブ中 && ( this.devKeyboard != null ) ) && !this.devKeyboard.Acquire().IsFailure ) && !this.devKeyboard.Poll().IsFailure )
 			{
 				this.list入力イベント = new List<STInputEvent>( 32 );
+				int posEnter = -1;
 
 				if( bバッファ入力を使用する )
 				{
@@ -78,33 +79,35 @@ namespace FDK
 					{
 						foreach( KeyboardState data in bufferedData )
 						{
-							foreach( Key key3 in data.PressedKeys )
+							foreach( Key key in data.PressedKeys )
 							{
-								STInputEvent event4 = new STInputEvent();
-								STInputEvent item = event4;
-								item.nKey = (int) key3;
+								STInputEvent item = new STInputEvent();
+								item.nKey = (int) key;
 								item.b押された = true;
 								item.b離された = false;
 								item.nTimeStamp = data.TimeStamp;
 								item.nVelocity = CInput管理.n通常音量;
 								this.list入力イベント.Add( item );
 
-								this.bKeyState[ (int) key3 ] = true;
-								this.bKeyPushDown[ (int) key3 ] = true;
+								this.bKeyState[ (int) key ] = true;
+								this.bKeyPushDown[ (int) key ] = true;
+								if ( (int)key == (int)SlimDX.DirectInput.Key.Return )
+								{
+									posEnter = this.list入力イベント.Count - 1;	//  #23708 2011.1.16 yyagiEnterのlist位置を記憶
+								}
 							}
-							foreach( Key key4 in data.ReleasedKeys )
+							foreach( Key key in data.ReleasedKeys )
 							{
-								STInputEvent event5 = new STInputEvent();
-								STInputEvent event3 = event5;
-								event3.nKey = (int) key4;
+								STInputEvent event3 = new STInputEvent();
+								event3.nKey = (int) key;
 								event3.b押された = false;
 								event3.b離された = true;
 								event3.nTimeStamp = data.TimeStamp;
 								event3.nVelocity = CInput管理.n通常音量;
 								this.list入力イベント.Add( event3 );
 
-								this.bKeyState[ (int) key4 ] = false;
-								this.bKeyPullUp[ (int) key4 ] = true;
+								this.bKeyState[ (int) key ] = false;
+								this.bKeyPullUp[ (int) key ] = true;
 							}
 						}
 					}
@@ -133,14 +136,19 @@ namespace FDK
 
 								this.bKeyState[ (int) key ] = true;
 								this.bKeyPushDown[ (int) key ] = true;
+
+								if ( (int)key == (int)SlimDX.DirectInput.Key.Return )
+								{
+									posEnter = this.list入力イベント.Count - 1;	//  #23708 2011.1.16 yyagi Enterのlist位置を記憶
+								}
 							}
 						}
-						foreach( Key key2 in currentState.ReleasedKeys )
+						foreach( Key key in currentState.ReleasedKeys )
 						{
-							if( this.bKeyState[ (int) key2 ] == true )
+							if( this.bKeyState[ (int) key ] == true )
 							{
 								var ev = new STInputEvent() {
-									nKey = (int) key2,
+									nKey = (int) key,
 									b押された = false,
 									b離された = true,
 									nTimeStamp = this.timer.nシステム時刻,
@@ -148,14 +156,38 @@ namespace FDK
 								};
 								this.list入力イベント.Add( ev );
 
-								this.bKeyState[ (int) key2 ] = false;
-								this.bKeyPullUp[ (int) key2 ] = true;
+								this.bKeyState[ (int) key ] = false;
+								this.bKeyPullUp[ (int) key ] = true;
 							}
 						}
 					}
 					//-----------------------------
 					#endregion
 				}
+				#region [#23708 2011.1.16 yyagi Alt+Enter発生時、Enter押下情報を削除する]
+				if ( this.bKeyPushDown[ (int) SlimDX.DirectInput.Key.Return ] == true )
+				{
+					if ( this.bKeyPullUp[ (int) SlimDX.DirectInput.Key.Return ] == true )
+					{
+						// #23708 2011.1.16 yyagi
+						// フルスクリーンとウインドウを切り替える際、バッファ内でEnterのPushDownとPullUpが両方ともtrueとなることがある。
+						// その際はどちらもfalseにして、Enter入力を無かったことにし、フルスクリーンとウインドウ切り替え時の
+						// 余分なEnter動作を回避する。(対処療法的なやり方だが・・・)
+						this.bKeyPushDown[ (int) SlimDX.DirectInput.Key.Return ] =
+						this.bKeyPullUp[ (int) SlimDX.DirectInput.Key.Return ] = false;
+					}
+					if ( this.bKeyState[ (int) SlimDX.DirectInput.Key.LeftAlt ] == true || this.bKeyState[ (int) SlimDX.DirectInput.Key.RightAlt ] == true )
+					{
+						// #23708 2011.1.16 yyagi
+						// alt-enter押下時は、DTXMania内部としては Enter押下を無かったことにする。
+						// (しかしFormの処理としてはEnter押下が残るので、フルスクリーンとウインドウの切り替えのみ実行され、
+						//  選曲画面等での実行動作は無くなる。)
+						this.bKeyState[ (int) SlimDX.DirectInput.Key.Return ] = false;
+						this.bKeyPushDown[ (int) SlimDX.DirectInput.Key.Return ] = false;
+						this.list入力イベント.RemoveAt( posEnter );
+					}
+				}
+				#endregion
 			}
 		}
 		public bool bキーが押された( int nKey )
