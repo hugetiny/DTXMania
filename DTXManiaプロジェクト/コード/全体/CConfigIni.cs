@@ -1174,14 +1174,14 @@ namespace DTXMania
 			sw.WriteLine( "; キーアサイン" );
 			sw.WriteLine( ";   項　目：Keyboard → 'K'＋'0'＋キーコード(10進数)" );
 			sw.WriteLine( ";           Mouse    → 'N'＋'0'＋ボタン番号(0～7)" );
-			sw.WriteLine( ";           MIDI In  → 'M'＋デバイス番号1桁(0～9)＋ノート番号(10進数)" );
-			sw.WriteLine( ";           Joystick → 'J'＋デバイス番号1桁(0～9)＋ 0 ...... Ｘ減少(左)ボタン" );
-			sw.WriteLine( ";                                                    1 ...... Ｘ増加(右)ボタン" );
-			sw.WriteLine( ";                                                    2 ...... Ｙ減少(上)ボタン" );
-			sw.WriteLine( ";                                                    3 ...... Ｙ増加(下)ボタン" );
-			sw.WriteLine( ";                                                    4 ...... Ｚ減少(前)ボタン" );
-			sw.WriteLine( ";                                                    5 ...... Ｚ増加(後)ボタン" );
-			sw.WriteLine( ";                                                    6～133.. ボタン1～128" );
+			sw.WriteLine( ";           MIDI In  → 'M'＋デバイス番号1桁(0～9,A～Z)＋ノート番号(10進数)" );
+			sw.WriteLine( ";           Joystick → 'J'＋デバイス番号1桁(0～9,A～Z)＋ 0 ...... Ｘ減少(左)ボタン" );
+			sw.WriteLine( ";                                                         1 ...... Ｘ増加(右)ボタン" );
+			sw.WriteLine( ";                                                         2 ...... Ｙ減少(上)ボタン" );
+			sw.WriteLine( ";                                                         3 ...... Ｙ増加(下)ボタン" );
+			sw.WriteLine( ";                                                         4 ...... Ｚ減少(前)ボタン" );
+			sw.WriteLine( ";                                                         5 ...... Ｚ増加(後)ボタン" );
+			sw.WriteLine( ";                                                         6～133.. ボタン1～128" );
 			sw.WriteLine( ";           これらの項目を 16 個まで指定可能(',' で区切って記述）。" );
 			sw.WriteLine( ";" );
 			sw.WriteLine( ";   表記例：HH=K044,M042,J16" );
@@ -1958,7 +1958,7 @@ namespace DTXMania
 					}
 				}
 				CDTXVersion version = new CDTXVersion( this.strDTXManiaのバージョン );
-				if( version.n整数部 <= 0x45 )
+				if( version.n整数部 <= 69 )
 				{
 					this.tデフォルトのキーアサインに設定する();
 				}
@@ -2052,7 +2052,7 @@ namespace DTXMania
 						sw.Write( 'N' );
 						break;
 				}
-				sw.Write( "{0}{1}", assign[ i ].ID, assign[ i ].コード );
+				sw.Write( "{0}{1}", "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".Substring( assign[ i ].ID, 1 ), assign[ i ].コード );	// #24166 2011.1.15 yyagi: to support ID > 10, change 2nd character from Decimal to 36-numeral system. (e.g. J1023 -> JA23)
 			}
 		}
 		private void tキーの読み出しと設定( string strキー記述, CKeyAssign.STKEYASSIGN[] assign )
@@ -2061,44 +2061,45 @@ namespace DTXMania
 			for( int i = 0; ( i < strArray.Length ) && ( i < 0x10 ); i++ )
 			{
 				E入力デバイス e入力デバイス;
-				int num2;
-				int num3;
+				int id;
+				int code;
 				string str = strArray[ i ].Trim().ToUpper();
-				if( str.Length >= 3 )
+				if ( str.Length >= 3 )
 				{
 					e入力デバイス = E入力デバイス.不明;
-					switch( str[ 0 ] )
+					switch ( str[ 0 ] )
 					{
 						case 'J':
 							e入力デバイス = E入力デバイス.ジョイパッド;
-							goto Label_0071;
+							break;
 
 						case 'K':
 							e入力デバイス = E入力デバイス.キーボード;
-							goto Label_0071;
+							break;
 
 						case 'L':
-							{
-								continue;
-							}
+							continue;
+
 						case 'M':
 							e入力デバイス = E入力デバイス.MIDI入力;
-							goto Label_0071;
+							break;
 
 						case 'N':
 							e入力デバイス = E入力デバイス.マウス;
-							goto Label_0071;
+							break;
 					}
 				}
-				continue;
-			Label_0071:
-				num2 = "0123456789".IndexOf( str[ 1 ] );
-				if( ( ( num2 >= 0 ) && int.TryParse( str.Substring( 2 ), out num3 ) ) && ( ( num3 >= 0 ) && ( num3 <= 0xff ) ) )
+				else
 				{
-					this.t指定した入力が既にアサイン済みである場合はそれを全削除する( e入力デバイス, num2, num3 );
+					continue;
+				}
+				id = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".IndexOf( str[ 1 ] );	// #24166 2011.1.15 yyagi: to support ID > 10, change 2nd character from Decimal to 36-numeral system. (e.g. J1023 -> JA23)
+				if( ( ( id >= 0 ) && int.TryParse( str.Substring( 2 ), out code ) ) && ( ( code >= 0 ) && ( code <= 0xff ) ) )
+				{
+					this.t指定した入力が既にアサイン済みである場合はそれを全削除する( e入力デバイス, id, code );
 					assign[ i ].入力デバイス = e入力デバイス;
-					assign[ i ].ID = num2;
-					assign[ i ].コード = num3;
+					assign[ i ].ID = id;
+					assign[ i ].コード = code;
 				}
 			}
 		}
