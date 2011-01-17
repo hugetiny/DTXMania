@@ -69,6 +69,7 @@ namespace FDK
 			{
 				this.list入力イベント = new List<STInputEvent>( 32 );
 				int posEnter = -1;
+				string d = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ffff");
 
 				if( bバッファ入力を使用する )
 				{
@@ -91,10 +92,15 @@ namespace FDK
 
 								this.bKeyState[ (int) key ] = true;
 								this.bKeyPushDown[ (int) key ] = true;
+#if TEST_CancelEnterCodeInAltEnter
 								if ( (int)key == (int)SlimDX.DirectInput.Key.Return )
 								{
-									posEnter = this.list入力イベント.Count - 1;	//  #23708 2011.1.16 yyagiEnterのlist位置を記憶
+									posEnter = this.list入力イベント.Count - 1;	//  #23708 2011.1.16 yyagi Enterのlist位置を記憶
 								}
+if ( (int)key == (int)SlimDX.DirectInput.Key.RightAlt) {
+Debug.WriteLine( d + ": RAlt State/PushDown=true");
+}
+#endif
 							}
 							foreach( Key key in data.ReleasedKeys )
 							{
@@ -108,6 +114,11 @@ namespace FDK
 
 								this.bKeyState[ (int) key ] = false;
 								this.bKeyPullUp[ (int) key ] = true;
+#if TEST_CancelEnterCodeInAltEnter
+if ( (int)key == (int)SlimDX.DirectInput.Key.RightAlt) {
+Debug.WriteLine( d + ": RAlt State = false PullUp=true");
+}
+#endif
 							}
 						}
 					}
@@ -137,10 +148,12 @@ namespace FDK
 								this.bKeyState[ (int) key ] = true;
 								this.bKeyPushDown[ (int) key ] = true;
 
+#if TEST_CancelEnterCodeInAltEnter
 								if ( (int)key == (int)SlimDX.DirectInput.Key.Return )
 								{
 									posEnter = this.list入力イベント.Count - 1;	//  #23708 2011.1.16 yyagi Enterのlist位置を記憶
 								}
+#endif
 							}
 						}
 						foreach( Key key in currentState.ReleasedKeys )
@@ -164,11 +177,14 @@ namespace FDK
 					//-----------------------------
 					#endregion
 				}
+#if TEST_CancelEnterCodeInAltEnter
 				#region [#23708 2011.1.16 yyagi Alt+Enter発生時、Enter押下情報を削除する]
 				if ( this.bKeyPushDown[ (int) SlimDX.DirectInput.Key.Return ] == true )
 				{
+Debug.WriteLine( d + ": Enter PushDown=true" );
 					if ( this.bKeyPullUp[ (int) SlimDX.DirectInput.Key.Return ] == true )
 					{
+Debug.WriteLine( d + ": Enter PullUp=true" );
 						// #23708 2011.1.16 yyagi
 						// フルスクリーンとウインドウを切り替える際、バッファ内でEnterのPushDownとPullUpが両方ともtrueとなることがある。
 						// その際はどちらもfalseにして、Enter入力を無かったことにし、フルスクリーンとウインドウ切り替え時の
@@ -178,16 +194,24 @@ namespace FDK
 					}
 					if ( this.bKeyState[ (int) SlimDX.DirectInput.Key.LeftAlt ] == true || this.bKeyState[ (int) SlimDX.DirectInput.Key.RightAlt ] == true )
 					{
+Debug.WriteLine( d + ": Alt LALTstate=" + this.bKeyState[ (int)SlimDX.DirectInput.Key.LeftAlt] + ", RALTstate=" + this.bKeyState[ (int)SlimDX.DirectInput.Key.RightAlt] );
+Debug.WriteLine( d + ": Alt LALTPushDown=" + this.bKeyPushDown[ (int) SlimDX.DirectInput.Key.LeftAlt ] + ", RALTPushDown=" + this.bKeyPushDown[ (int) SlimDX.DirectInput.Key.RightAlt ] );
+Debug.WriteLine( d + ": Alt LALTPullUp=" + this.bKeyPullUp[ (int) SlimDX.DirectInput.Key.LeftAlt ] + ", RALTPullUp=" + this.bKeyPullUp[ (int) SlimDX.DirectInput.Key.RightAlt ] );
+
 						// #23708 2011.1.16 yyagi
 						// alt-enter押下時は、DTXMania内部としては Enter押下を無かったことにする。
 						// (しかしFormの処理としてはEnter押下が残るので、フルスクリーンとウインドウの切り替えのみ実行され、
 						//  選曲画面等での実行動作は無くなる。)
-						this.bKeyState[ (int) SlimDX.DirectInput.Key.Return ] = false;
-						this.bKeyPushDown[ (int) SlimDX.DirectInput.Key.Return ] = false;
-						this.list入力イベント.RemoveAt( posEnter );
+						if ( posEnter >= 0 )
+						{
+							this.bKeyState[ (int) SlimDX.DirectInput.Key.Return ] = false;
+							this.bKeyPushDown[ (int) SlimDX.DirectInput.Key.Return ] = false;
+							this.list入力イベント.RemoveAt( posEnter );
+						}
 					}
 				}
 				#endregion
+#endif
 			}
 		}
 		public bool bキーが押された( int nKey )
