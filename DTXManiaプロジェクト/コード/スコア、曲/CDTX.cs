@@ -3418,7 +3418,7 @@ namespace DTXMania
 									this.t入力・パラメータ食い込みチェック("BASEBPM", ref str, ref str2);
 									double basebpm = 0.0;
 									//if( double.TryParse( str2, out num6 ) && ( num6 > 0.0 ) )
-									if (!TryParse(str2, out basebpm) && (basebpm > 0.0))	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
+									if (!TryParse(str2, out basebpm) && basebpm > 0.0)	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
 									{
 										this.BASEBPM = basebpm;
 									}
