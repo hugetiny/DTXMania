@@ -820,7 +820,8 @@ namespace DTXCreator
 				if( string.IsNullOrEmpty( str絶対パスファイル名 ) )
 					return;	// ファイル保存ダイアログがキャンセルされたのならここで打ち切り。
 
-				this.str作業フォルダ名 = Directory.GetCurrentDirectory() + @"\";	// ダイアログでディレクトリを変更した場合、カレントディレクトリも変更されている。
+				//this.str作業フォルダ名 = Directory.GetCurrentDirectory() + @"\";	// ダイアログでディレクトリを変更した場合、カレントディレクトリも変更されている。
+				this.str作業フォルダ名 = Path.GetDirectoryName(str絶対パスファイル名) + @"\";
 				this.strDTXファイル名 = Path.GetFileName( str絶対パスファイル名 );
 
 
@@ -888,7 +889,8 @@ namespace DTXCreator
 
 			// フォルダ名とファイル名を更新。
 
-			this.str作業フォルダ名 = Directory.GetCurrentDirectory() + @"\";	// ダイアログでディレクトリを変更した場合は、カレントディレクトリも変更されている。
+			//this.str作業フォルダ名 = Directory.GetCurrentDirectory() + @"\";	// ダイアログでディレクトリを変更した場合は、カレントディレクトリも変更されている。
+			this.str作業フォルダ名 = Path.GetDirectoryName(str絶対パスファイル名) + @"\";
 			this.strDTXファイル名 = Path.GetFileName( str絶対パスファイル名 );
 			//-----------------
 			#endregion
