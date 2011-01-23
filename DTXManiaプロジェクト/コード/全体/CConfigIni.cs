@@ -372,7 +372,6 @@ namespace DTXMania
 		public int nBGAlpha;
 		public bool bAVI有効;
 		public bool bBGA有効;
-		public bool bGraph有効;
 		public bool bBGM音を発声する;
 		public STDGBVALUE<bool> bHidden;
 		public STDGBVALUE<bool> bLeft;
@@ -385,6 +384,7 @@ namespace DTXMania
 		public bool bSTAGEFAILED有効;
 		public STDGBVALUE<bool> bSudden;
 		public bool bTight;
+		public STDGBVALUE<bool> bGraph;     // #24074 2011.01.23 add ikanick
 		public bool bWave再生位置自動調整機能有効;
 		public bool bシンバルフリー;
 		public bool bストイックモード;
@@ -1137,6 +1137,12 @@ namespace DTXMania
 			sw.WriteLine( "; ドラムCOMBO文字表示位置(0:左, 1:中, 2:右, 3:OFF)" );
 			sw.WriteLine( "ComboPosition={0}", (int) this.ドラムコンボ文字の表示位置 );
 			sw.WriteLine();
+
+            // #24074 2011.01.23 add ikanick
+			sw.WriteLine( "; ドラムグラフ表示(0:OFF, 1:ON)" );
+			sw.WriteLine( "DrumsGraph={0}", this.bGraph.Drums ? 1 : 0 );
+			sw.WriteLine();
+
 			sw.WriteLine( ";-------------------" );
 			sw.WriteLine( "[AutoPlay]" );
 			sw.WriteLine();
@@ -1643,6 +1649,10 @@ namespace DTXMania
 												else if( str3.Equals( "DrumsTight" ) )
 												{
 													this.bTight = C変換.bONorOFF( str4[ 0 ] );
+												}
+												else if( str3.Equals( "DrumsGraph" ) )  // #24074 2011.01.23 addikanick
+												{
+													this.bGraph.Drums = C変換.bONorOFF( str4[ 0 ] );
 												}
 												else if( str3.Equals( "DrumsSudden" ) )
 												{

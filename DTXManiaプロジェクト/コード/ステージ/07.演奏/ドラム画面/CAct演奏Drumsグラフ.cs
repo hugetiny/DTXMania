@@ -10,9 +10,19 @@ namespace DTXMania
 {
 	internal class CAct演奏Drumsグラフ : CActivity
 	{
+        // #24074 2011.01.23 ikanick グラフの描画
+        // 実装内容
+        // ・左を現在、右を目標
+        // ・基準線(60,70,80,90,100%)を超えると線が黄色くなる（元は白）
+        // ・目標を超えると現在が光る
+        // ・オート時には描画しない
+        // 要望・実装予定
+        // ・グラフを波打たせるなどの視覚の向上
+
+
 		// プロパティ
 
-        public double dbグラフ値
+        public double dbグラフ値現在_渡
         {
             get
             {
@@ -23,7 +33,7 @@ namespace DTXMania
                 this.dbグラフ値現在 = value;
             }
         }
-        public double dbグラフ値2
+        public double dbグラフ値目標_渡
         {
             get
             {
@@ -59,7 +69,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-                this.txグラフ = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\Z_GraphTest.png"));
+                this.txグラフ = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlay graph.png"));
 				base.OnManagedリソースの作成();
 			}
 		}

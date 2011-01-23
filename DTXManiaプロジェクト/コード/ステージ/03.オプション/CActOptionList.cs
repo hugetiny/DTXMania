@@ -195,6 +195,11 @@ namespace DTXMania
 				"ドラムの入力タイミングの微調整を\n行います。\n-99 ～ 99ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
 				"To adjust the drums input timing.\nYou can set from -99 to 99ms.\nTo decrease input lag, set minus value.");
 			this.list項目リスト.Add(this.iDrumsInputAdjustTimeMs);
+            // #24074 2011.01.23 add ikanick
+			this.iDrumsGraph = new CItemToggle( "Graph", CDTXMania.ConfigIni.bGraph.Drums,
+				"最高スキルと比較できるグラフを\n表示します。\nオートプレイだと表示されません。",
+				"To draw Graph \n or not.");
+			this.list項目リスト.Add( this.iDrumsGraph );
 
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Drums;
@@ -589,6 +594,7 @@ namespace DTXMania
 		private CItemToggle iDrumsSnare;
 		private CItemToggle iDrumsSudden;
 		private CItemToggle iDrumsTight;
+		private CItemToggle iDrumsGraph;        // #24074 2011.01.23 add ikanick
 		private CItemToggle iGuitarAutoPlay;
 		private CItemToggle iGuitarHidden;
 		private CItemToggle iGuitarLeft;
@@ -690,6 +696,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.判定文字表示位置.Drums = (E判定文字表示位置) this.iDrumsPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bTight = this.iDrumsTight.bON;
 			CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums = this.iDrumsInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
+            CDTXMania.ConfigIni.bGraph.Drums = this.iDrumsGraph.bON;// #24074 2011.01.23 add ikanick
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{
