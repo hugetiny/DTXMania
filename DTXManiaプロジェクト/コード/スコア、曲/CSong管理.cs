@@ -42,8 +42,8 @@ namespace DTXMania
 			get; 
 			set;
 		}
-		public List<Cスコア> listSongsDB;
-		public List<C曲リストノード> list曲ルート;
+		public List<Cスコア> listSongsDB;					// songs.dbから構築されるlist
+		public List<C曲リストノード> list曲ルート;			// 起動時にフォルダ検索して構築されるlist
 
 
 		// コンストラクタ

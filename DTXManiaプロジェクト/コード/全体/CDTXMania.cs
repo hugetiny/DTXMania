@@ -1749,6 +1749,10 @@ for (int i = 0; i < 3; i++) {
 				#region [ Config.iniの出力 ]
 				//---------------------
 				Trace.TraceInformation("Config.ini を出力します。");
+				if ( ConfigIni.bIsSwappedGuitarBass )			// #24063 2011.1.16 yyagi ギターベースがスワップしているときは元に戻す
+				{
+					ConfigIni.SwapGuitarBassKeyAssign();
+				}
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
 				try
@@ -1797,18 +1801,6 @@ for (int i = 0; i < 3; i++) {
 				}
 				e.Handled = true;
 				e.SuppressKeyPress = true;
-/*
- * while (Input管理.Keyboard.bキーが押されている(0x75))
-				{
-					Trace.TraceInformation("Enterが押されている");
-					Thread.Sleep(100);
-					if (Input管理.Keyboard.bキーが離された(0x75))
-					{
-						Trace.TraceInformation("Enterが離された");
-						break;
-					}
-				}
-*/
 			}
 		}
 		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)

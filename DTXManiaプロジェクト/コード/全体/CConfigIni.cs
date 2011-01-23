@@ -552,7 +552,11 @@ namespace DTXMania
 				}
 			}
 		}
-
+		public bool bIsSwappedGuitarBass			// #24063 2011.1.16 yyagi ギターとベースの切り替え中か否か
+		{
+			get;
+			private set;
+		}
 		public STAUTOPLAY bAutoPlay;
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY
@@ -826,6 +830,7 @@ namespace DTXMania
 			this.nハイハット切り捨て下限Velocity = 20;
 			this.n切り捨て下限Velocity = 0;				// #23857 2010.12.12 yyagi VelocityMin
 			this.bバッファ入力を行う = true;
+			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1963,6 +1968,24 @@ namespace DTXMania
 					this.tデフォルトのキーアサインに設定する();
 				}
 			}
+		}
+
+		/// <summary>
+		/// ギターとベースのキーアサイン入れ替え
+		/// </summary>
+		public void SwapGuitarBassKeyAssign()		// #24063 2011.1.16 yyagi
+		{
+			for ( int j = 0; j < 10; j++ )
+			{
+				CKeyAssign.STKEYASSIGN t; //= new CConfigIni.CKeyAssign.STKEYASSIGN();
+				for ( int k = 0; k < 16; k++ )
+				{
+					t = this.KeyAssign[ 1 ][ j ][ k ];
+					this.KeyAssign[ 1 ][ j ][ k ] = this.KeyAssign[ 2 ][ j ][ k ];
+					this.KeyAssign[ 2 ][ j ][ k ] = t;
+				}
+			}
+			this.bIsSwappedGuitarBass = !bIsSwappedGuitarBass;
 		}
 
 

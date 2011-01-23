@@ -1453,11 +1453,11 @@ namespace DTXMania
 				{	// del (debug info)
 					CDTXMania.ConfigIni.b演奏情報を表示する = !CDTXMania.ConfigIni.b演奏情報を表示する;
 				}
-				else if ( keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.LeftArrow ) )		// #23580 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
+				else if ( keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.LeftArrow ) )		// #24243 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
 				{
 					ChangeInputAdjustTimeInPlaying( keyboard, -1 );
 				}
-				else if ( keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.RightArrow ) )		// #23580 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
+				else if ( keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.RightArrow ) )		// #24243 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
 				{
 					ChangeInputAdjustTimeInPlaying( keyboard, +1 );
 				}
@@ -1469,7 +1469,7 @@ namespace DTXMania
 				}
 			}
 		}
-		private void ChangeInputAdjustTimeInPlaying( IInputDevice keyboard, int plusminus )		// #23580 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
+		private void ChangeInputAdjustTimeInPlaying( IInputDevice keyboard, int plusminus )		// #24243 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
 		{
 			int part, offset = plusminus;
 			if ( keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftShift ) || keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightShift ) )	// Guitar InputAdjustTime
@@ -4257,7 +4257,7 @@ namespace DTXMania
 
 #if true		// DAMAGELEVELTUNING
 		// ----------------------------------
-		public float[,] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damege/recover factors
+		public float[,] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damage/recover factors
 			// drums,   guitar,  bass
 			{  0.004f,  0.006f,  0.006f  },
 			{  0.002f,  0.003f,  0.003f  },

@@ -2367,7 +2367,7 @@ namespace DTXMania
 		}
 #if true	// DAMAGELEVELTUNING
 		// ----------------------------------
-		public float[,] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damege/recover factors
+		public float[,] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damage/recover factors
 			// drums,   guitar,  bass
 			{  0.004f,  0.006f,  0.006f  },
 			{  0.002f,  0.003f,  0.003f  },

@@ -3396,7 +3396,7 @@ namespace DTXMania
 							if (str.StartsWith("PANEL", StringComparison.OrdinalIgnoreCase)) {
 								this.t入力・パラメータ食い込みチェック("PANEL", ref str, ref str2);
 								int dummyResult;								// #23885 2010.12.12 yyagi: not to confuse "#PANEL strings (panel)" and "#PANEL int (panpot of EL)"
-								if (!int.TryParse(str2, out dummyResult)) {	// 数値じゃないならPANELとみなす
+								if (!int.TryParse(str2, out dummyResult)) {		// 数値じゃないならPANELとみなす
 									this.PANEL = str2;							//
 									goto EOL;									//
 								}												// 数値ならPAN ELとみなす
@@ -3418,8 +3418,8 @@ namespace DTXMania
 									this.t入力・パラメータ食い込みチェック("BASEBPM", ref str, ref str2);
 									double basebpm = 0.0;
 									//if( double.TryParse( str2, out num6 ) && ( num6 > 0.0 ) )
-									if (!TryParse(str2, out basebpm) && basebpm > 0.0)	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
-									{
+									if (TryParse(str2, out basebpm) && basebpm > 0.0)	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
+									{													// #24204 2011.01.21 yyagi: Fix the condition correctly
 										this.BASEBPM = basebpm;
 									}
 								} else if (str.StartsWith("SOUND_STAGEFAILED", StringComparison.OrdinalIgnoreCase)) {
@@ -4063,34 +4063,33 @@ namespace DTXMania
 				{
 					case "_SS":
 						this.t入力・行解析・RESULTIMAGE・ファイルを設定する( 0, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_S":
 						this.t入力・行解析・RESULTIMAGE・ファイルを設定する( 1, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_A":
 						this.t入力・行解析・RESULTIMAGE・ファイルを設定する( 2, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_B":
 						this.t入力・行解析・RESULTIMAGE・ファイルを設定する( 3, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_C":
 						this.t入力・行解析・RESULTIMAGE・ファイルを設定する( 4, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_D":
 						this.t入力・行解析・RESULTIMAGE・ファイルを設定する( 5, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_E":
 						this.t入力・行解析・RESULTIMAGE・ファイルを設定する( 6, strパラメータ );
-						goto Label_0142;
+						break;
 				}
 			}
-		Label_0142:
 			return true;
 		}
 		private void t入力・行解析・RESULTIMAGE・ファイルを設定する( int nランク0to6, string strファイル名 )

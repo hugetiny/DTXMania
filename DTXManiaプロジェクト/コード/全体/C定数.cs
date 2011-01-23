@@ -55,6 +55,29 @@ namespace DTXMania
 		UNKNOWN = 0x63,
 		Wail = 4
 	}
+	[Flags]
+	public enum EパッドFlag		// #24063 2011.1.16 yyagi コマンド入力用 パッド入力のフラグ化
+	{
+		None=0,
+		HH = 1,
+		R = 1,
+		SD = 2,
+		G = 2,
+		B = 4,
+		BD = 4,
+		HT = 8,
+		Pick = 8,
+		LT = 16,
+		Wail = 16,
+		FT = 32,
+		Cancel = 32,
+		CY = 64,
+		Decide = 128,
+		HHO = 128,
+		RD = 256,
+		LC = 512,
+		UNKNOWN = 1024
+	}
 	public enum Eランダムモード
 	{
 		OFF,
