@@ -1621,10 +1621,12 @@ namespace DTXCreator
 			try
 			{
 				#region [ もし小数点にコンマを使うcultureなら、一時的に(小数点を使う)"en"に切り替える。(DTXVはピリオドしか使えないため) ]
-				string currentCultureEinglishName = CultureInfo.CurrentCulture.EnglishName;
+				string currentCultureEnglishName = CultureInfo.CurrentCulture.Name;
+				bool bSwitchCulture = false;
 				if (CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
 				{
-					Thread.CurrentThread.CurrentCulture = new CultureInfo("en", false);
+					Thread.CurrentThread.CurrentUICulture = new CultureInfo("en", false);
+					bSwitchCulture = true;
 				}
 				#endregion
 				#region [ 一時ファイルにDTXを出力する。 ]
@@ -1635,9 +1637,9 @@ namespace DTXCreator
 				//-----------------
 				#endregion
 				#region [ cultureを元に戻す。 ]
-				if (CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
+				if (bSwitchCulture)
 				{
-					Thread.CurrentThread.CurrentCulture = new CultureInfo(currentCultureEinglishName, false);
+					Thread.CurrentThread.CurrentUICulture = new CultureInfo(currentCultureEnglishName, false);
 				}
 				#endregion
 			}

@@ -925,25 +925,24 @@ namespace DTXCreator
 		}
 		private bool tDTX入力・行解析・チャンネル( string strコマンド, string strパラメータ, string strコメント )
 		{
-			int num;
-			int num2;
-			if( !this.tDTX入力・行解析・チャンネル・コマンドから小節番号とチャンネル番号を抜き出す( strコマンド, out num, out num2 ) )
+			int nBar, nCh;
+			if( !this.tDTX入力・行解析・チャンネル・コマンドから小節番号とチャンネル番号を抜き出す( strコマンド, out nBar, out nCh ) )
 			{
 				return false;
 			}
-			if( num2 == 2 )
+			if( nCh == 2 )
 			{
 				decimal dBarLength;
-				if( !decimal.TryParse( strパラメータ, out dBarLength ) )	// #23880 2011.1.6 yyagi
+				if( !this.TryParse( strパラメータ, out dBarLength ) )	// #23880 2011.1.6 yyagi
 				{
 					dBarLength = 1m;
 				}
-				this.dic小節長倍率.Add( num, (float)dBarLength );
+				this.dic小節長倍率.Add( nBar, (float)dBarLength );
 				return true;
 			}
-			if( ( num2 >= 0x20 ) && ( num2 <= 0x27 ) )
+			if( ( nCh >= 0x20 ) && ( nCh <= 0x27 ) )
 			{
-				C小節 c小節 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( num );
+				C小節 c小節 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );
 				int startIndex = 0;
 				while( ( startIndex = strパラメータ.IndexOf( '_' ) ) != -1 )
 				{
@@ -965,7 +964,7 @@ namespace DTXCreator
 						item.n値・整数1to1295 = num7;
 						item.n読み込み時の解像度 = num5;
 						c小節.listチップ.Add( item );
-						switch( num2 )
+						switch( nCh )
 						{
 							case 0x20:
 								item = new Cチップ();
@@ -1073,9 +1072,9 @@ namespace DTXCreator
 				}
 				return true;
 			}
-			if( ( num2 >= 160 ) && ( num2 <= 0xa7 ) )
+			if( ( nCh >= 0xa0 ) && ( nCh <= 0xa7 ) )
 			{
-				C小節 c小節2 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( num );
+				C小節 c小節2 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );
 				int num12 = 0;
 				while( ( num12 = strパラメータ.IndexOf( '_' ) ) != -1 )
 				{
@@ -1097,7 +1096,7 @@ namespace DTXCreator
 						cチップ2.n値・整数1to1295 = num15;
 						cチップ2.n読み込み時の解像度 = num13;
 						c小節2.listチップ.Add( cチップ2 );
-						switch( num2 )
+						switch( nCh )
 						{
 							case 160:
 								cチップ2 = new Cチップ();
@@ -1207,9 +1206,9 @@ namespace DTXCreator
 			}
 			int num20 = -1;
 			bool flag = false;
-			if( this.tDTX入力・行解析・チャンネル・チャンネルに該当するレーン番号を返す( num2, out num20, out flag ) )
+			if( this.tDTX入力・行解析・チャンネル・チャンネルに該当するレーン番号を返す( nCh, out num20, out flag ) )
 			{
-				C小節 c小節3 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( num );
+				C小節 c小節3 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );
 				int num21 = 0;
 				while( ( num21 = strパラメータ.IndexOf( '_' ) ) != -1 )
 				{
@@ -1218,11 +1217,11 @@ namespace DTXCreator
 				int num22 = strパラメータ.Length / 2;
 				for( int k = 0; k < num22; k++ )
 				{
-					int num24 = ( num2 == 3 ) ? C変換.n16進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( k * 2, 2 ) ) : C変換.n36進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( k * 2, 2 ) );
+					int num24 = ( nCh == 3 ) ? C変換.n16進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( k * 2, 2 ) ) : C変換.n36進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( k * 2, 2 ) );
 					if( num24 > 0 )
 					{
 						Cチップ cチップ3 = new Cチップ();
-						cチップ3.nチャンネル番号00toFF = num2;
+						cチップ3.nチャンネル番号00toFF = nCh;
 						cチップ3.nレーン番号0to = num20;
 						cチップ3.n位置grid = k;
 						cチップ3.n読み込み時の解像度 = num22;
@@ -1234,7 +1233,7 @@ namespace DTXCreator
 				return true;
 			}
 			StringBuilder builder = new StringBuilder( 0x400 );
-			builder.Append( "#" + C変換.str小節番号を文字列3桁に変換して返す( num ) + C変換.str数値を16進数2桁に変換して返す( num2 ) + ": " + strパラメータ );
+			builder.Append( "#" + C変換.str小節番号を文字列3桁に変換して返す( nBar ) + C変換.str数値を16進数2桁に変換して返す( nCh ) + ": " + strパラメータ );
 			if( strコメント.Length > 0 )
 			{
 				builder.Append( " ;" + strコメント );
@@ -2135,7 +2134,7 @@ namespace DTXCreator
 			return decimal.TryParse(decimalStr.ToString(), out result);	// 最後に、自分のlocale向けの文字列に対してTryParse実行
 		}
 		#endregion
-		//-----------------		//-----------------
+		//-----------------
 		#endregion
 	}
 }
