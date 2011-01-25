@@ -243,6 +243,10 @@ namespace DTXMania
 						Trace.TraceInformation( "FILE: {0}", new object[] { CDTXMania.DTX.strファイル名の絶対パス } );
 						Trace.TraceInformation( "---------------------------" );
 
+						if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsのチップ入れ替え
+						{
+							CDTXMania.DTX.SwapGuitarBassNotes();
+						}
 						if( CDTXMania.bコンパクトモード )
 							CDTXMania.DTX.MIDIレベル = 1;
 						else
