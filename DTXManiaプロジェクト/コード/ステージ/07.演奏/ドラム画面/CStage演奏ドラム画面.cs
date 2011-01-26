@@ -2859,13 +2859,14 @@ namespace DTXMania
 							long num6 = event3.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
 							while( ( this.queWailing.Guitar.Count > 0 ) && ( ( chip5 = this.queWailing.Guitar.Dequeue() ) != null ) )
 							{
-								if( ( num6 - chip5.n発声時刻ms ) <= 800 )
+								if( ( num6 - chip5.n発声時刻ms ) <= 800 )		// #24245 2011.1.26 yyagi: 800 -> 1000
 								{
 									chip5.bHit = true;
 									this.actWailingBonus.Start( E楽器パート.GUITAR, this.r現在の歓声Chip.Guitar );
 									if( !bIsAutoPlay.Guitar )
 									{
-										this.actScore.Set( E楽器パート.GUITAR, this.actScore.Get( E楽器パート.GUITAR ) + ( this.actCOMBO.n現在のコンボ数.Guitar * 3000L ) );
+										int nCombo = ( this.actCOMBO.n現在のコンボ数.Guitar < 500 ) ? this.actCOMBO.n現在のコンボ数.Guitar : 500;
+										this.actScore.Set( E楽器パート.GUITAR, this.actScore.Get( E楽器パート.GUITAR ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->GUITAR, add nCombo conditions
 									}
 								}
 							}
@@ -4204,13 +4205,14 @@ namespace DTXMania
 							long num6 = event3.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
 							while( ( this.queWailing.Bass.Count > 0 ) && ( ( chip5 = this.queWailing.Bass.Dequeue() ) != null ) )
 							{
-								if( ( num6 - chip5.n発声時刻ms ) <= 800 )
+								if( ( num6 - chip5.n発声時刻ms ) <= 1000 )		// #24245 2011.1.26 yyagi: 800 -> 1000
 								{
 									chip5.bHit = true;
 									this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
 									if( !bIsAutoPlay.Bass )
 									{
-										this.actScore.Set( E楽器パート.BASS, this.actScore.Get( E楽器パート.BASS ) + ( this.actCOMBO.n現在のコンボ数.Bass * 3000L ) );
+										int nCombo = ( this.actCOMBO.n現在のコンボ数.Bass < 500 ) ? this.actCOMBO.n現在のコンボ数.Bass : 500;
+										this.actScore.Set( E楽器パート.BASS, this.actScore.Get( E楽器パート.BASS ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->BASS, add nCombo conditions
 									}
 								}
 							}
