@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 using DTXCreator.UndoRedo;
 using DTXCreator.WAV_BMP_AVI;
 using DTXCreator.Properties;
@@ -69,17 +70,28 @@ namespace DTXCreator.譜面
 			Rectangle rectangle = new Rectangle( this.rc現在のチップカーソル領域.Location, this.rc現在のチップカーソル領域.Size );
 			this.n現在のチップカーソルがあるレーン番号0to = this.mgr譜面管理者ref.nX座標dotが位置するレーン番号を返す( e.X );
 			this.n現在のチップカーソルの譜面先頭からの位置grid = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す・ガイド幅単位( e.Y );
+			bool bOutOfLanes = false;
 			if( e.Y < ( C譜面管理.nレーン割付チップ番号表示高さdot + 10 ) )
 			{
 				this.rc現在のチップカーソル領域 = new Rectangle( 0, 0, 0, 0 );
 			}
 			else
 			{
-				this.rc現在のチップカーソル領域 = new Rectangle( this.mgr譜面管理者ref.nレーンの左端X座標dotを返す( this.n現在のチップカーソルがあるレーン番号0to ), this.mgr譜面管理者ref.n譜面先頭からの位置gridから描画領域内のY座標dotを返す( this.n現在のチップカーソルの譜面先頭からの位置grid, this._Form.pictureBox譜面パネル.ClientSize ) - Cチップ.nチップの高さdot, this.mgr譜面管理者ref.listレーン[ this.n現在のチップカーソルがあるレーン番号0to ].n幅dot, Cチップ.nチップの高さdot );
+				int nLaneNo = this.n現在のチップカーソルがあるレーン番号0to;
+				if ( nLaneNo < 0 )				// #24264 2011.1.27 yyagi; to avoid ArgumentOutOfExceptions in x and width.
+				{
+					bOutOfLanes = true;
+					nLaneNo = 0;
+				}
+				int x = this.mgr譜面管理者ref.nレーンの左端X座標dotを返す( nLaneNo );
+				int y = this.mgr譜面管理者ref.n譜面先頭からの位置gridから描画領域内のY座標dotを返す( this.n現在のチップカーソルの譜面先頭からの位置grid, this._Form.pictureBox譜面パネル.ClientSize ) - Cチップ.nチップの高さdot;
+				int width = this.mgr譜面管理者ref.listレーン[ nLaneNo ].n幅dot;
+				int height = Cチップ.nチップの高さdot;
+				this.rc現在のチップカーソル領域 = new Rectangle( x, y, width, height );
 			}
-			if( !rectangle.Equals( this.rc現在のチップカーソル領域 ) )
+			if ( !rectangle.Equals( this.rc現在のチップカーソル領域 ) && !bOutOfLanes )	// #24264 2011.1.27 yyagi add condition !bOutOfLanes to avoid ArgumentOutOfException in Refresh().
 			{
-				this._Form.pictureBox譜面パネル.Refresh();
+				this._Form.pictureBox譜面パネル.Refresh(); 
 			}
 		}
 		internal void Paint( PaintEventArgs e )
