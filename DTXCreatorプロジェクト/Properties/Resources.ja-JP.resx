@@ -117,45 +117,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BGMのみ再生" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\datacontainer_newrecordhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dtxcreator" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\DTXC.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="DTXC_VERSION" xml:space="preserve">
-    <value>022</value>
-  </data>
-  <data name="Redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\edit_redohs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="strBPM選択ダイアログの説明文" xml:space="preserve">
-    <value>Specify a BPM value.</value>
+    <value>BPM値を設定して下さい。</value>
   </data>
   <data name="strDTXファイルではありませんMSG" xml:space="preserve">
     <value>DTXファイルではありません。</value>
   </data>
   <data name="strDTXファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>Open a DTX file</value>
+    <value>読み込むDTXファイルの選択</value>
   </data>
   <data name="strDTXファイル選択ダイアログのフィルタ" xml:space="preserve">
-    <value>DTX file (*.dtx;*.gda;*.g2d;*.bms;*.bme)|*.dtx;*.gda;*.g2d;*.bms;*.bme|All files(*.*)|*.*</value>
+    <value>DTXファイル (*.dtx;*.gda;*.g2d;*.bms;*.bme)|*.dtx;*.gda;*.g2d;*.bms;*.bme|すべてのファイル(*.*)|*.*</value>
   </data>
   <data name="strしばらくお待ち下さいMSG" xml:space="preserve">
-    <value>Wait a moment...</value>
+    <value>しばらくお待ち下さい。</value>
   </data>
   <data name="strエラーダイアログのタイトル" xml:space="preserve">
-    <value>Error</value>
+    <value>エラー</value>
   </data>
   <data name="strコンフィグ読み込み失敗エラーMSG" xml:space="preserve">
-    <value>Failed to load DTXCreator.config.</value>
+    <value>DTXCreator.config の読み込みに失敗しました。</value>
   </data>
   <data name="strサウンドファイル選択ダイアログのタイトル" xml:space="preserve">
     <value>サウンドファイルの選択</value>
   </data>
   <data name="strサウンドファイル選択ダイアログのフィルタ" xml:space="preserve">
-    <value>Soud files(*.wav;*.ogg;*.mp3;*.xa)|*.wav;*.ogg;*.mp3;*.xa|All files(*.*)|*.*</value>
+    <value>サウンドファイル(*.wav;*.ogg;*.mp3;*.xa)|*.wav;*.ogg;*.mp3;*.xa|すべてのファイル(*.*)|*.*</value>
   </data>
   <data name="strステージ画像ファイル選択ダイアログのタイトル" xml:space="preserve">
     <value>Loadingファイルの選択</value>
@@ -164,7 +151,7 @@
     <value>チップ番号に誤りがあります。</value>
   </data>
   <data name="strデフォルトウィンドウタイトル" xml:space="preserve">
-    <value>New</value>
+    <value>新規</value>
   </data>
   <data name="strファイルが存在しませんMSG" xml:space="preserve">
     <value>ファイルが存在しません。</value>
@@ -179,7 +166,7 @@
     <value>プロセスの起動に失敗しました。</value>
   </data>
   <data name="str保存中ですMSG" xml:space="preserve">
-    <value>Saving...</value>
+    <value>保存中です。</value>
   </data>
   <data name="str個のチップが選択されましたMSG" xml:space="preserve">
     <value> 個のチップが選択されました。</value>
@@ -188,7 +175,7 @@
     <value> 個のチップを置換しました。</value>
   </data>
   <data name="str初期化中ですMSG" xml:space="preserve">
-    <value>Initializing...</value>
+    <value>初期化中です。</value>
   </data>
   <data name="str動画ファイル選択ダイアログのタイトル" xml:space="preserve">
     <value>動画ファイルの選択</value>
@@ -197,13 +184,16 @@
     <value>動画ファイル(*.avi)|*.avi|すべてのファイル(*.*)|*.*</value>
   </data>
   <data name="str名前を付けて保存ダイアログのタイトル" xml:space="preserve">
-    <value>Save As</value>
+    <value>名前を付けて保存</value>
+  </data>
+  <data name="str名前を付けて保存ダイアログのフィルタ" xml:space="preserve">
+    <value>DTXファイル(*.dtx)|*.dtx</value>
   </data>
   <data name="str小節番号に誤りがありますMSG" xml:space="preserve">
     <value>小節番号に誤りがあります。</value>
   </data>
   <data name="str検索結果ダイアログのタイトル" xml:space="preserve">
-    <value>Find results</value>
+    <value>検索結果</value>
   </data>
   <data name="str画像ファイル選択ダイアログのタイトル" xml:space="preserve">
     <value>画像ファイルの選択</value>
@@ -212,14 +202,13 @@
     <value>画像ファイル(*.bmp;*.jpg;*.jpeg;*.png)|*.bmp;*.jpg;*.jpeg;*.png|すべてのファイル(*.*)|*.*</value>
   </data>
   <data name="str確認ダイアログのタイトル" xml:space="preserve">
-    <value>Confirmation</value>
+    <value>確認</value>
   </data>
   <data name="str結果画像ファイル選択ダイアログのタイトル" xml:space="preserve">
     <value>結果画像ファイルの選択</value>
   </data>
   <data name="str編集中のデータを保存しますかMSG" xml:space="preserve">
-    <value>The dtx data has changed.
-Do you want to save the changes?</value>
+    <value>編集中のデータを保存しますか？</value>
   </data>
   <data name="str置換結果ダイアログのタイトル" xml:space="preserve">
     <value>置換結果</value>
@@ -231,84 +220,6 @@ Do you want to save the changes?</value>
     <value>該当するチップはありませんでした。</value>
   </data>
   <data name="str読み込み中ですMSG" xml:space="preserve">
-    <value>Now loading...</value>
-  </data>
-  <data name="Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\edit_undohs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="りらちょー" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\りらちょー.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="コピー" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\copyhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="スピーカー" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\audiohs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="バージョン情報" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\バージョン情報.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ヘルプ" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\help.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="上移動" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\moveup.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="下移動" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\movedown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="保存" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\savehs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="再生" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\datacontainer_movenexths.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="再生一時停止" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\pausehs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="再生停止" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\stophs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="切り取り" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\cuths.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="削除" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\deletehs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="動画ドキュメント" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\videodoc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="新規作成" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\documenths.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="最初から再生" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\最初から再生.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="画像ドキュメント" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\picdoc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="矢印ポインタ" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\pointerhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="表示形式選択" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\表示形式.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="貼り付け" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\pastehs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="鉛筆" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\pencil.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="開く" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\openhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="音楽ドキュメント" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\musicdoc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ﾁｯﾌﾟﾊﾟﾚｯﾄ" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\editinformationhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="str名前を付けて保存ダイアログのフィルタ" xml:space="preserve">
-    <value>DTX files(*.dtx)|*.dtx</value>
+    <value>読み込み中です。</value>
   </data>
 </root>

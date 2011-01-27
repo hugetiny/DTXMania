@@ -91,7 +91,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   BPM値を設定して下さい。 に類似しているローカライズされた文字列を検索します。
+        ///   Specify a BPM value. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strBPM選択ダイアログの説明文 {
             get {
@@ -109,7 +109,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   読み込むDTXファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Open a DTX file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strDTXファイル選択ダイアログのタイトル {
             get {
@@ -118,7 +118,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   DTXファイル (*.dtx;*.gda;*.g2d;*.bms;*.bme)|*.dtx;*.gda;*.g2d;*.bms;*.bme|すべてのファイル(*.*)|*.* に類似しているローカライズされた文字列を検索します。
+        ///   DTX file (*.dtx;*.gda;*.g2d;*.bms;*.bme)|*.dtx;*.gda;*.g2d;*.bms;*.bme|All files(*.*)|*.* に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strDTXファイル選択ダイアログのフィルタ {
             get {
@@ -127,7 +127,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   エラー に類似しているローカライズされた文字列を検索します。
+        ///   Error に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strエラーダイアログのタイトル {
             get {
@@ -136,7 +136,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   DTXCreator.config の読み込みに失敗しました。 に類似しているローカライズされた文字列を検索します。
+        ///   Failed to load DTXCreator.config. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strコンフィグ読み込み失敗エラーMSG {
             get {
@@ -154,7 +154,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   サウンドファイル(*.wav;*.ogg;*.mp3;*.xa)|*.wav;*.ogg;*.mp3;*.xa|すべてのファイル(*.*)|*.* に類似しているローカライズされた文字列を検索します。
+        ///   Soud files(*.wav;*.ogg;*.mp3;*.xa)|*.wav;*.ogg;*.mp3;*.xa|All files(*.*)|*.* に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strサウンドファイル選択ダイアログのフィルタ {
             get {
@@ -163,7 +163,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   しばらくお待ち下さい。 に類似しているローカライズされた文字列を検索します。
+        ///   Wait a moment... に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strしばらくお待ち下さいMSG {
             get {
@@ -190,7 +190,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   新規 に類似しているローカライズされた文字列を検索します。
+        ///   New に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strデフォルトウィンドウタイトル {
             get {
@@ -235,7 +235,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   保存中です。 に類似しているローカライズされた文字列を検索します。
+        ///   Saving... に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str保存中ですMSG {
             get {
@@ -262,7 +262,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   初期化中です。 に類似しているローカライズされた文字列を検索します。
+        ///   Initializing... に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str初期化中ですMSG {
             get {
@@ -289,7 +289,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   名前を付けて保存 に類似しているローカライズされた文字列を検索します。
+        ///   Save As に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str名前を付けて保存ダイアログのタイトル {
             get {
@@ -298,7 +298,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   DTXファイル(*.dtx)|*.dtx に類似しているローカライズされた文字列を検索します。
+        ///   DTX files(*.dtx)|*.dtx に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str名前を付けて保存ダイアログのフィルタ {
             get {
@@ -316,7 +316,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   検索結果 に類似しているローカライズされた文字列を検索します。
+        ///   Find results に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str検索結果ダイアログのタイトル {
             get {
@@ -343,7 +343,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   確認 に類似しているローカライズされた文字列を検索します。
+        ///   Confirmation に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str確認ダイアログのタイトル {
             get {
@@ -361,7 +361,8 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   編集中のデータを保存しますか？ に類似しているローカライズされた文字列を検索します。
+        ///   The dtx data has changed.
+        ///Do you want to save the changes? に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str編集中のデータを保存しますかMSG {
             get {
@@ -397,7 +398,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   読み込み中です。 に類似しているローカライズされた文字列を検索します。
+        ///   Now loading... に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str読み込み中ですMSG {
             get {
