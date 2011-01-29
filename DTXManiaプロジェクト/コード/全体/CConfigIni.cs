@@ -555,7 +555,7 @@ namespace DTXMania
 		public bool bIsSwappedGuitarBass			// #24063 2011.1.16 yyagi ギターとベースの切り替え中か否か
 		{
 			get;
-			private set;
+			set;
 		}
 		public STAUTOPLAY bAutoPlay;
 		[StructLayout( LayoutKind.Sequential )]

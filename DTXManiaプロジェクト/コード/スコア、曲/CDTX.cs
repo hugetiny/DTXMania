@@ -2972,9 +2972,9 @@ namespace DTXMania
 		}
 
 		/// <summary>
-		/// Swap notes between Guitar and Bass
+		/// Swap infos between Guitar and Bass
 		/// </summary>
-		public void SwapGuitarBassNotes()						// #24063 2011.1.24 yyagi ギターとベースのチップ入替
+		public void SwapGuitarBassInfos()						// #24063 2011.1.24 yyagi ギターとベースの譜面情報入替
 		{
 			for (int i = this.listChip.Count - 1; i >= 0; i--) {
 				if (listChip[i].e楽器パート == E楽器パート.BASS) {
@@ -2992,9 +2992,14 @@ namespace DTXMania
 			this.LEVEL.Bass = this.LEVEL.Guitar;
 			this.LEVEL.Guitar = t;
 
+			t = this.n可視チップ数.Bass;
+			this.n可視チップ数.Bass = this.n可視チップ数.Guitar;
+			this.n可視チップ数.Guitar = t;
+
 			bool ts = this.bチップがある.Bass;
 			this.bチップがある.Bass = this.bチップがある.Guitar;
 			this.bチップがある.Guitar = ts;
+
 		}
 
 		// CActivity 実装

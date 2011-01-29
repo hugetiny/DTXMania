@@ -195,63 +195,55 @@ namespace DTXMania
 
 			public C演奏記録()
 			{
-				STAUTOPLAY stautoplay = new STAUTOPLAY();
-				stautoplay.LC = false;
-				stautoplay.HH = false;
-				stautoplay.SD = false;
-				stautoplay.BD = false;
-				stautoplay.HT = false;
-				stautoplay.LT = false;
-				stautoplay.FT = false;
-				stautoplay.CY = false;
-				stautoplay.Guitar = false;
-				stautoplay.Bass = false;
-				this.bAutoPlay = stautoplay;
-				STDGBVALUE<bool> stdgbvalue = new STDGBVALUE<bool>();
-				stdgbvalue.Drums = false;
-				stdgbvalue.Guitar = false;
-				stdgbvalue.Bass = false;
-				this.bSudden = stdgbvalue;
-				STDGBVALUE<bool> stdgbvalue2 = new STDGBVALUE<bool>();
-				stdgbvalue2.Drums = false;
-				stdgbvalue2.Guitar = false;
-				stdgbvalue2.Bass = false;
-				this.bHidden = stdgbvalue2;
-				STDGBVALUE<bool> stdgbvalue3 = new STDGBVALUE<bool>();
-				stdgbvalue3.Drums = false;
-				stdgbvalue3.Guitar = false;
-				stdgbvalue3.Bass = false;
-				this.bReverse = stdgbvalue3;
-				STDGBVALUE<Eランダムモード> stdgbvalue4 = new STDGBVALUE<Eランダムモード>();
-				stdgbvalue4.Drums = Eランダムモード.OFF;
-				stdgbvalue4.Guitar = Eランダムモード.OFF;
-				stdgbvalue4.Bass = Eランダムモード.OFF;
-				this.eRandom = stdgbvalue4;
-				STDGBVALUE<bool> stdgbvalue5 = new STDGBVALUE<bool>();
-				stdgbvalue5.Drums = false;
-				stdgbvalue5.Guitar = false;
-				stdgbvalue5.Bass = false;
-				this.bLight = stdgbvalue5;
-				STDGBVALUE<bool> stdgbvalue6 = new STDGBVALUE<bool>();
-				stdgbvalue6.Drums = false;
-				stdgbvalue6.Guitar = false;
-				stdgbvalue6.Bass = false;
-				this.bLeft = stdgbvalue6;
-				STDGBVALUE<float> stdgbvalue7 = new STDGBVALUE<float>();
-				stdgbvalue7.Drums = 1f;
-				stdgbvalue7.Guitar = 1f;
-				stdgbvalue7.Bass = 1f;
-				this.f譜面スクロール速度 = stdgbvalue7;
+				this.bAutoPlay = new STAUTOPLAY();
+				this.bAutoPlay.LC = false;
+				this.bAutoPlay.HH = false;
+				this.bAutoPlay.SD = false;
+				this.bAutoPlay.BD = false;
+				this.bAutoPlay.HT = false;
+				this.bAutoPlay.LT = false;
+				this.bAutoPlay.FT = false;
+				this.bAutoPlay.CY = false;
+				this.bAutoPlay.Guitar = false;
+				this.bAutoPlay.Bass = false;
+				this.bSudden = new STDGBVALUE<bool>();
+				this.bSudden.Drums = false;
+				this.bSudden.Guitar = false;
+				this.bSudden.Bass = false;
+				this.bHidden = new STDGBVALUE<bool>();
+				this.bHidden.Drums = false;
+				this.bHidden.Guitar = false;
+				this.bHidden.Bass = false;
+				this.bReverse = new STDGBVALUE<bool>();
+				this.bReverse.Drums = false;
+				this.bReverse.Guitar = false;
+				this.bReverse.Bass = false;
+				this.eRandom = new STDGBVALUE<Eランダムモード>();
+				this.eRandom.Drums = Eランダムモード.OFF;
+				this.eRandom.Guitar = Eランダムモード.OFF;
+				this.eRandom.Bass = Eランダムモード.OFF;
+				this.bLight = new STDGBVALUE<bool>();
+				this.bLight.Drums = false;
+				this.bLight.Guitar = false;
+				this.bLight.Bass = false;
+				this.bLeft = new STDGBVALUE<bool>();
+				this.bLeft.Drums = false;
+				this.bLeft.Guitar = false;
+				this.bLeft.Bass = false;
+				this.f譜面スクロール速度 = new STDGBVALUE<float>();
+				this.f譜面スクロール速度.Drums = 1f;
+				this.f譜面スクロール速度.Guitar = 1f;
+				this.f譜面スクロール速度.Bass = 1f;
 				this.n演奏速度分子 = 20;
 				this.n演奏速度分母 = 20;
 				this.bGuitar有効 = true;
 				this.bDrums有効 = true;
 				this.bSTAGEFAILED有効 = true;
 				this.eダメージレベル = Eダメージレベル.普通;
-				this.nPerfectになる範囲ms = 0x22;
-				this.nGreatになる範囲ms = 0x43;
-				this.nGoodになる範囲ms = 0x54;
-				this.nPoorになる範囲ms = 0x75;
+				this.nPerfectになる範囲ms = 34;
+				this.nGreatになる範囲ms = 67;
+				this.nGoodになる範囲ms = 84;
+				this.nPoorになる範囲ms = 117;
 				this.strDTXManiaのバージョン = "Unknown";
 				this.最終更新日時 = "";
 				this.Hash = "00000000000000000000000000000000";
@@ -269,7 +261,7 @@ namespace DTXMania
 			{
 				get
 				{
-					return ( ( this.n最大コンボ数 > 0 ) && ( this.n最大コンボ数 == ( ( ( ( this.nPerfect数 + this.nGreat数 ) + this.nGood数 ) + this.nPoor数 ) + this.nMiss数 ) ) );
+					return ( ( this.n最大コンボ数 > 0 ) && ( this.n最大コンボ数 == ( this.nPerfect数 + this.nGreat数 + this.nGood数 + this.nPoor数 + this.nMiss数 ) ) );
 				}
 			}
 

@@ -69,7 +69,7 @@ namespace DTXMania
 				Guitar.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Miss : this.nヒット数・Auto含まない.Guitar.Miss;
 				Guitar.n最大コンボ数 = this.actCombo.n現在のコンボ数.Guitar最高値;
 				Guitar.n全チップ数 = CDTXMania.DTX.n可視チップ数.Guitar;
-				for( int i = 0; i < 10; i++ )
+				for ( int i = 0; i < 10; i++ )
 				{
 					Guitar.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
 				}
@@ -149,10 +149,10 @@ namespace DTXMania
 				Bass.bDrums有効 = CDTXMania.ConfigIni.bDrums有効;
 				Bass.bSTAGEFAILED有効 = CDTXMania.ConfigIni.bSTAGEFAILED有効;
 				Bass.eダメージレベル = CDTXMania.ConfigIni.eダメージレベル;
-				Bass.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Guitar;
-				Bass.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Guitar;
-				Bass.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Guitar;
-				Bass.b演奏にマウスを使用した = this.b演奏にマウスを使った.Guitar;
+				Bass.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Bass;			// #24280 2011.1.29 yyagi
+				Bass.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Bass;				//
+				Bass.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Bass;		//
+				Bass.b演奏にマウスを使用した = this.b演奏にマウスを使った.Bass;					//
 				Bass.nPerfectになる範囲ms = CDTXMania.nPerfect範囲ms;
 				Bass.nGreatになる範囲ms = CDTXMania.nGreat範囲ms;
 				Bass.nGoodになる範囲ms = CDTXMania.nGood範囲ms;
@@ -167,6 +167,8 @@ namespace DTXMania
 				t = Guitar;
 				Guitar = Bass;
 				Bass = t;
+
+				CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
 			}
 		}
 		
@@ -220,6 +222,13 @@ namespace DTXMania
 			this.bIsAutoPlay.Drums = false;
 			this.bIsAutoPlay.Guitar = CDTXMania.ConfigIni.bAutoPlay.Guitar;
 			this.bIsAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Bass;
+
+			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
+			{
+				CDTXMania.DTX.SwapGuitarBassInfos();
+
+			}
+
 		}
 		public override void OnManagedリソースの作成()
 		{

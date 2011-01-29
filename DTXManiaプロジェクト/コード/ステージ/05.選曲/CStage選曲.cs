@@ -435,8 +435,8 @@ Debug.WriteLine( "ベース難易度変更" );
 Debug.WriteLine( "ギターとベースの入れ替え1" );
 								CDTXMania.Skin.sound変更音.t再生する();
 								// ギターとベースのキーを入れ替え
-								CDTXMania.ConfigIni.SwapGuitarBassKeyAssign();
-								//CDTXMania.ConfigIni.bIsSwappedGuitarBass = !CDTXMania.ConfigIni.bIsSwappedGuitarBass;
+								//CDTXMania.ConfigIni.SwapGuitarBassKeyAssign();
+								CDTXMania.ConfigIni.bIsSwappedGuitarBass = !CDTXMania.ConfigIni.bIsSwappedGuitarBass;
 							}
 						}
 						if ( CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.Pick )  && !CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.G ) )
@@ -449,7 +449,8 @@ Debug.WriteLine( "ギターとベースの入れ替え1" );
 Debug.WriteLine( "ギターとベースの入れ替え2" );
 								CDTXMania.Skin.sound変更音.t再生する();
 								// ギターとベースのキーを入れ替え
-								CDTXMania.ConfigIni.SwapGuitarBassKeyAssign();
+								//CDTXMania.ConfigIni.SwapGuitarBassKeyAssign();
+								CDTXMania.ConfigIni.bIsSwappedGuitarBass = !CDTXMania.ConfigIni.bIsSwappedGuitarBass;
 							}
 						}
 						if ( CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.G ) )

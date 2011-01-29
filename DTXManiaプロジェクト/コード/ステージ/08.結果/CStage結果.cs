@@ -31,11 +31,11 @@ namespace DTXMania
 
 		public CStage結果()
 		{
-			STDGBVALUE<CScoreIni.C演奏記録> stdgbvalue = new STDGBVALUE<CScoreIni.C演奏記録>();
-			stdgbvalue.Drums = new CScoreIni.C演奏記録();
-			stdgbvalue.Guitar = new CScoreIni.C演奏記録();
-			stdgbvalue.Bass = new CScoreIni.C演奏記録();
-			this.st演奏記録 = stdgbvalue;
+//			STDGBVALUE<CScoreIni.C演奏記録> stdgbvalue = new STDGBVALUE<CScoreIni.C演奏記録>();
+			this.st演奏記録.Drums = new CScoreIni.C演奏記録();
+			this.st演奏記録.Guitar = new CScoreIni.C演奏記録();
+			this.st演奏記録.Bass = new CScoreIni.C演奏記録();
+//			this.st演奏記録 = stdgbvalue;
 			this.r空うちドラムチップ = new CDTX.CChip[ 10 ];
 			this.n総合ランク値 = -1;
 			this.nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
@@ -83,28 +83,28 @@ namespace DTXMania
 					if( ( ( ( j != 0 ) || ( CDTXMania.DTX.bチップがある.Drums && !CDTXMania.ConfigIni.bギタレボモード ) ) && ( ( j != 1 ) || CDTXMania.DTX.bチップがある.Guitar ) ) && ( ( j != 2 ) || CDTXMania.DTX.bチップがある.Bass ) )
 					{
 						CScoreIni.C演奏記録 part = this.st演奏記録[ j ];
-						bool guitar = true;
+						bool bIsAutoPlay = true;
 						switch( j )
 						{
 							case 0:
-                                guitar = CDTXMania.ConfigIni.bドラムが全部オートプレイである;
+                                bIsAutoPlay = CDTXMania.ConfigIni.bドラムが全部オートプレイである;
 								break;
 
 							case 1:
-								guitar = CDTXMania.ConfigIni.bAutoPlay.Guitar;
+								bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay.Guitar;
 								break;
 
 							case 2:
-								guitar = CDTXMania.ConfigIni.bAutoPlay.Bass;
+								bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay.Bass;
 								break;
 						}
-						this.fPerfect率[ j ] = guitar ? 0f : ( ( 100f * part.nPerfect数 ) / ( (float) part.n全チップ数 ) );
-						this.fGreat率[ j ] = guitar ? 0f : ( ( 100f * part.nGreat数 ) / ( (float) part.n全チップ数 ) );
-						this.fGood率[ j ] = guitar ? 0f : ( ( 100f * part.nGood数 ) / ( (float) part.n全チップ数 ) );
-						this.fPoor率[ j ] = guitar ? 0f : ( ( 100f * part.nPoor数 ) / ( (float) part.n全チップ数 ) );
-						this.fMiss率[ j ] = guitar ? 0f : ( ( 100f * part.nMiss数 ) / ( (float) part.n全チップ数 ) );
-                        this.bオート[ j ] = guitar ;    // #23596 10.11.16 add ikanick そのパートがオートなら1
-                                                        //        10.11.17 change (int to bool) ikanick
+						this.fPerfect率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPerfect数 ) / ( (float) part.n全チップ数 ) );
+						this.fGreat率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nGreat数 ) / ( (float) part.n全チップ数 ) );
+						this.fGood率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nGood数 ) / ( (float) part.n全チップ数 ) );
+						this.fPoor率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPoor数 ) / ( (float) part.n全チップ数 ) );
+						this.fMiss率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nMiss数 ) / ( (float) part.n全チップ数 ) );
+						this.bオート[ j ] = bIsAutoPlay;	// #23596 10.11.16 add ikanick そのパートがオートなら1
+															//        10.11.17 change (int to bool) ikanick
 						this.nランク値[ j ] = CScoreIni.tランク値を計算して返す( part );
 					}
 				}
@@ -180,11 +180,11 @@ namespace DTXMania
 				if( !CDTXMania.bコンパクトモード )
 				{
 					Cスコア cスコア = CDTXMania.stage選曲.r確定されたスコア;
-					bool[] flagArray = new bool[ 3 ];
-					CScoreIni.t更新条件を取得する( out flagArray[ 0 ], out flagArray[ 1 ], out flagArray[ 2 ] );
+					bool[] b更新が必要か否か = new bool[ 3 ];
+					CScoreIni.t更新条件を取得する( out b更新が必要か否か[ 0 ], out b更新が必要か否か[ 1 ], out b更新が必要か否か[ 2 ] );
 					for( int m = 0; m < 3; m++ )
 					{
-						if( flagArray[ m ] )
+						if( b更新が必要か否か[ m ] )
 						{
 							// FullCombo した記録を FullCombo なしで超えた場合、FullCombo マークが消えてしまう。
 							// → FullCombo は、最新記録と関係なく、一度達成したらずっとつくようにする。(2010.9.11)
@@ -435,7 +435,7 @@ namespace DTXMania
 							}
 						}
 					}
-					if( ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.Input管理.Keyboard.bキーが押された( 0x75 ) ) ) && !this.bアニメが完了 )
+					if( ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Return ) ) ) && !this.bアニメが完了 )
 					{
 						this.actResultImage.tアニメを完了させる();
 						this.actParameterPanel.tアニメを完了させる();
@@ -445,14 +445,14 @@ namespace DTXMania
 					}
 					if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 )
 					{
-						if( CDTXMania.Input管理.Keyboard.bキーが押された( 0x35 ) )
+						if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Escape ) )
 						{
 							CDTXMania.Skin.sound取消音.t再生する();
 							this.actFO.tフェードアウト開始();
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 							this.eフェードアウト完了時の戻り値 = E戻り値.完了;
 						}
-						if( ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.Input管理.Keyboard.bキーが押された( 0x75 ) ) ) && this.bアニメが完了 )
+						if ( ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) && this.bアニメが完了 )
 						{
 							CDTXMania.Skin.sound取消音.t再生する();
 							this.actFO.tフェードアウト開始();

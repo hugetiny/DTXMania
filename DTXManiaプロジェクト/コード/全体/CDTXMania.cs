@@ -1751,7 +1751,7 @@ for (int i = 0; i < 3; i++) {
 				Trace.TraceInformation("Config.ini を出力します。");
 				if ( ConfigIni.bIsSwappedGuitarBass )			// #24063 2011.1.16 yyagi ギターベースがスワップしているときは元に戻す
 				{
-					ConfigIni.SwapGuitarBassKeyAssign();
+					// ConfigIni.SwapGuitarBassKeyAssign();
 				}
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
