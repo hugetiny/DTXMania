@@ -90,20 +90,20 @@ namespace DTXMania
 				Drums.nMiss数 = CDTXMania.ConfigIni.bドラムが全部オートプレイである ? this.nヒット数・Auto含む.Drums.Miss : this.nヒット数・Auto含まない.Drums.Miss;
 				Drums.n最大コンボ数 = this.actCOMBO.n現在のコンボ数.Drums最高値;
 				Drums.n全チップ数 = CDTXMania.DTX.n可視チップ数.Drums;
-				for( int j = 0; j < 10; j++ )
+				for( int i = 0; i < 10; i++ )
 				{
-					Drums.bAutoPlay[ j ] = CDTXMania.ConfigIni.bAutoPlay[ j ];
+					Drums.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
 				}
 				Drums.bTight = CDTXMania.ConfigIni.bTight;
-				for( int k = 0; k < 3; k++ )
+				for( int i = 0; i < 3; i++ )
 				{
-					Drums.bSudden[ k ] = CDTXMania.ConfigIni.bSudden[ k ];
-					Drums.bHidden[ k ] = CDTXMania.ConfigIni.bHidden[ k ];
-					Drums.bReverse[ k ] = CDTXMania.ConfigIni.bReverse[ k ];
-					Drums.eRandom[ k ] = CDTXMania.ConfigIni.eRandom[ k ];
-					Drums.bLight[ k ] = CDTXMania.ConfigIni.bLight[ k ];
-					Drums.bLeft[ k ] = CDTXMania.ConfigIni.bLeft[ k ];
-					Drums.f譜面スクロール速度[ k ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ k ] + 1 ) ) * 0.5f;
+					Drums.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
+					Drums.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
+					Drums.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
+					Drums.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
+					Drums.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
+					Drums.bLeft[ i ] = CDTXMania.ConfigIni.bLeft[ i ];
+					Drums.f譜面スクロール速度[ i ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ i ] + 1 ) ) * 0.5f;
 				}
 				Drums.eDark = CDTXMania.ConfigIni.eDark;
 				Drums.n演奏速度分子 = CDTXMania.ConfigIni.n演奏速度;
@@ -142,20 +142,20 @@ namespace DTXMania
 				Guitar.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Miss : this.nヒット数・Auto含まない.Guitar.Miss;
 				Guitar.n最大コンボ数 = this.actCOMBO.n現在のコンボ数.Guitar最高値;
 				Guitar.n全チップ数 = CDTXMania.DTX.n可視チップ数.Guitar;
-				for( int m = 0; m < 10; m++ )
+				for( int i = 0; i < 10; i++ )
 				{
-					Guitar.bAutoPlay[ m ] = CDTXMania.ConfigIni.bAutoPlay[ m ];
+					Guitar.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
 				}
 				Guitar.bTight = CDTXMania.ConfigIni.bTight;
-				for( int n = 0; n < 3; n++ )
+				for( int i = 0; i < 3; i++ )
 				{
-					Guitar.bSudden[ n ] = CDTXMania.ConfigIni.bSudden[ n ];
-					Guitar.bHidden[ n ] = CDTXMania.ConfigIni.bHidden[ n ];
-					Guitar.bReverse[ n ] = CDTXMania.ConfigIni.bReverse[ n ];
-					Guitar.eRandom[ n ] = CDTXMania.ConfigIni.eRandom[ n ];
-					Guitar.bLight[ n ] = CDTXMania.ConfigIni.bLight[ n ];
-					Guitar.bLeft[ n ] = CDTXMania.ConfigIni.bLeft[ n ];
-					Guitar.f譜面スクロール速度[ n ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ n ] + 1 ) ) * 0.5f;
+					Guitar.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
+					Guitar.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
+					Guitar.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
+					Guitar.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
+					Guitar.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
+					Guitar.bLeft[ i ] = CDTXMania.ConfigIni.bLeft[ i ];
+					Guitar.f譜面スクロール速度[ i ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ i ] + 1 ) ) * 0.5f;
 				}
 				Guitar.eDark = CDTXMania.ConfigIni.eDark;
 				Guitar.n演奏速度分子 = CDTXMania.ConfigIni.n演奏速度;
@@ -194,20 +194,20 @@ namespace DTXMania
 				Bass.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Miss : this.nヒット数・Auto含まない.Bass.Miss;
 				Bass.n最大コンボ数 = this.actCOMBO.n現在のコンボ数.Bass最高値;
 				Bass.n全チップ数 = CDTXMania.DTX.n可視チップ数.Bass;
-				for( int num5 = 0; num5 < 10; num5++ )
+				for( int i = 0; i < 10; i++ )
 				{
-					Bass.bAutoPlay[ num5 ] = CDTXMania.ConfigIni.bAutoPlay[ num5 ];
+					Bass.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
 				}
 				Bass.bTight = CDTXMania.ConfigIni.bTight;
-				for( int num6 = 0; num6 < 3; num6++ )
+				for( int i = 0; i < 3; i++ )
 				{
-					Bass.bSudden[ num6 ] = CDTXMania.ConfigIni.bSudden[ num6 ];
-					Bass.bHidden[ num6 ] = CDTXMania.ConfigIni.bHidden[ num6 ];
-					Bass.bReverse[ num6 ] = CDTXMania.ConfigIni.bReverse[ num6 ];
-					Bass.eRandom[ num6 ] = CDTXMania.ConfigIni.eRandom[ num6 ];
-					Bass.bLight[ num6 ] = CDTXMania.ConfigIni.bLight[ num6 ];
-					Bass.bLeft[ num6 ] = CDTXMania.ConfigIni.bLeft[ num6 ];
-					Bass.f譜面スクロール速度[ num6 ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ num6 ] + 1 ) ) * 0.5f;
+					Bass.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
+					Bass.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
+					Bass.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
+					Bass.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
+					Bass.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
+					Bass.bLeft[ i ] = CDTXMania.ConfigIni.bLeft[ i ];
+					Bass.f譜面スクロール速度[ i ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ i ] + 1 ) ) * 0.5f;
 				}
 				Bass.eDark = CDTXMania.ConfigIni.eDark;
 				Bass.n演奏速度分子 = CDTXMania.ConfigIni.n演奏速度;

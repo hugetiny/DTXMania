@@ -175,6 +175,11 @@ namespace DTXMania
 				//---------------------
 				#endregion
 
+				#region [ リザルト画面への演奏回数の更新 #24281 2011.1.30 yyagi]
+				this.n演奏回数.Drums = ini.stファイル.PlayCountDrums;
+				this.n演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
+				this.n演奏回数.Bass = ini.stファイル.PlayCountBass;
+				#endregion
 				#region [ 選曲画面の譜面情報の更新 ]
 				//---------------------
 				if( !CDTXMania.bコンパクトモード )

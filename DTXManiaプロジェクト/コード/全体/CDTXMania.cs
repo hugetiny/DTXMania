@@ -1057,13 +1057,16 @@ for (int i = 0; i < 3; i++) {
 			}
 
 			this.Device.EndScene();
-			if( this.b次のタイミングで全画面・ウィンドウ切り替えを行う )
+			#region [ 全画面・ウインドウ切り替え ]
+			if ( this.b次のタイミングで全画面・ウィンドウ切り替えを行う )
 			{
 				ConfigIni.b全画面モード = !ConfigIni.b全画面モード;
 				app.t全画面・ウィンドウモード切り替え();
 				this.b次のタイミングで全画面・ウィンドウ切り替えを行う = false;
 			}
-			if( this.b次のタイミングで垂直帰線同期切り替えを行う )
+			#endregion
+			#region [ 垂直基線同期切り替え ]
+			if ( this.b次のタイミングで垂直帰線同期切り替えを行う )
 			{
 				bool bIsMaximized = this.Window.IsMaximized;											// #23510 2010.11.3 yyagi: to backup current window mode before changing VSyncWait
 				currentClientSize = this.Window.ClientSize;												// #23510 2010.11.3 yyagi: to backup current window size before changing VSyncWait
@@ -1077,6 +1080,7 @@ for (int i = 0; i < 3; i++) {
 					this.Window.WindowState = FormWindowState.Maximized;								// #23510 2010.11.3 yyagi: to resume window mode after changing VSyncWait
 				}
 			}
+			#endregion
 		}
 
 
@@ -1805,12 +1809,10 @@ for (int i = 0; i < 3; i++) {
 		}
 		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
 		{
-			bool flag;
-			bool flag2;
-			bool flag3;
-			string str = DTX.strファイル名の絶対パス + ".score.ini";
-			CScoreIni ini = new CScoreIni( str );
-			if( !File.Exists( str ) )
+			bool bIsUpdatedDrums, bIsUpdatedGuitar, bIsUpdatedBass;
+			string strFilename = DTX.strファイル名の絶対パス + ".score.ini";
+			CScoreIni ini = new CScoreIni( strFilename );
+			if( !File.Exists( strFilename ) )
 			{
 				ini.stファイル.Title = DTX.TITLE;
 				ini.stファイル.Name = DTX.strファイル名;
@@ -1824,18 +1826,18 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 			ini.stファイル.BGMAdjust = DTX.nBGMAdjust;
-			CScoreIni.t更新条件を取得する( out flag, out flag2, out flag3 );
-			if( ( flag || flag2 ) || flag3 )
+			CScoreIni.t更新条件を取得する( out bIsUpdatedDrums, out bIsUpdatedGuitar, out bIsUpdatedBass );
+			if( bIsUpdatedDrums || bIsUpdatedGuitar || bIsUpdatedBass )
 			{
-				if( flag )
+				if( bIsUpdatedDrums )
 				{
 					ini.stファイル.PlayCountDrums++;
 				}
-				if( flag2 )
+				if( bIsUpdatedGuitar )
 				{
 					ini.stファイル.PlayCountGuitar++;
 				}
-				if( flag3 )
+				if( bIsUpdatedBass )
 				{
 					ini.stファイル.PlayCountBass++;
 				}
@@ -1853,7 +1855,7 @@ for (int i = 0; i < 3; i++) {
 			}
 			if( ConfigIni.bScoreIniを出力する )
 			{
-				ini.t書き出し( str );
+				ini.t書き出し( strFilename );
 			}
 
 			return ini;
