@@ -2959,7 +2959,7 @@ namespace DTXMania
 								#region [ *** ]
 								//-----------------------------
 								{
-									if ( event2.nVelocity <= CDTXMania.ConfigIni.nハイハット切り捨て下限Velocity )
+									if ( event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.HH )
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
 
 									CDTX.CChip chipHC = this.r指定時刻に一番近い未ヒットChip( nTime, 0x11, nInputAdjustTime );	// HiHat Close
@@ -3174,7 +3174,7 @@ namespace DTXMania
 							case Eパッド.SD:
 								#region [ *** ]
 								//-----------------------------
-								if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
+								if (event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.SD)	// #23857 2010.12.12 yyagi: to support VelocityMin
 									continue;	// 電子ドラムによる意図的なクロストークを無効にする
 								if( !this.tドラムヒット処理(nTime, Eパッド.SD, this.r指定時刻に一番近い未ヒットChip(nTime, 0x12, nInputAdjustTime ), event2.nVelocity ) )
 									break;
@@ -3185,7 +3185,7 @@ namespace DTXMania
 							case Eパッド.BD:
 								#region [ *** ]
 								//-----------------------------
-								if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
+								if (event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.BD)	// #23857 2010.12.12 yyagi: to support VelocityMin
 									continue;	// 電子ドラムによる意図的なクロストークを無効にする
 								if ( !this.tドラムヒット処理( nTime, Eパッド.BD, this.r指定時刻に一番近い未ヒットChip( nTime, 0x13, nInputAdjustTime ), event2.nVelocity ) )
 									break;
@@ -3196,7 +3196,7 @@ namespace DTXMania
 							case Eパッド.HT:
 								#region [ *** ]
 								//-----------------------------
-								if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
+								if (event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.HT)	// #23857 2010.12.12 yyagi: to support VelocityMin
 									continue;	// 電子ドラムによる意図的なクロストークを無効にする
 								if ( this.tドラムヒット処理( nTime, Eパッド.HT, this.r指定時刻に一番近い未ヒットChip( nTime, 20, nInputAdjustTime ), event2.nVelocity ) )
 									continue;
@@ -3208,7 +3208,7 @@ namespace DTXMania
 								#region [ *** ]
 								//-----------------------------
 								{
-									if ( event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity )	// #23857 2010.12.12 yyagi: to support VelocityMin
+									if ( event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.LT )	// #23857 2010.12.12 yyagi: to support VelocityMin
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
 									CDTX.CChip chipLT = this.r指定時刻に一番近い未ヒットChip( nTime, 0x15, nInputAdjustTime );	// LT
 									CDTX.CChip chipFT = this.r指定時刻に一番近い未ヒットChip( nTime, 0x17, nInputAdjustTime );	// FT
@@ -3273,7 +3273,7 @@ namespace DTXMania
 								#region [ *** ]
 								//-----------------------------
 								{
-									if ( event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity )	// #23857 2010.12.12 yyagi: to support VelocityMin
+									if ( event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.FT )	// #23857 2010.12.12 yyagi: to support VelocityMin
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
 									CDTX.CChip chipLT = this.r指定時刻に一番近い未ヒットChip( nTime, 0x15, nInputAdjustTime );	// LT
 									CDTX.CChip chipFT = this.r指定時刻に一番近い未ヒットChip( nTime, 0x17, nInputAdjustTime );	// FT
@@ -3338,7 +3338,7 @@ namespace DTXMania
 								#region [ *** ]
 								//-----------------------------
 								{
-									if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
+									if (event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.CY)	// #23857 2010.12.12 yyagi: to support VelocityMin
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
 									CDTX.CChip chipCY = this.r指定時刻に一番近い未ヒットChip( nTime, 0x16, nInputAdjustTime );	// CY
 									CDTX.CChip chipRD = this.r指定時刻に一番近い未ヒットChip( nTime, 0x19, nInputAdjustTime );	// RD
@@ -3445,7 +3445,7 @@ namespace DTXMania
 								#region [ *** ]
 								//-----------------------------
 								{
-									if ( event2.nVelocity <= CDTXMania.ConfigIni.nハイハット切り捨て下限Velocity )
+									if ( event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.HH )
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
 
 									CDTX.CChip chipHC = this.r指定時刻に一番近い未ヒットChip( nTime, 0x11, nInputAdjustTime );	// HC
@@ -3645,7 +3645,7 @@ namespace DTXMania
 								#region [ *** ]
 								//-----------------------------
 								{
-									if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
+									if (event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.RD)	// #23857 2010.12.12 yyagi: to support VelocityMin
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
 									CDTX.CChip chipCY = this.r指定時刻に一番近い未ヒットChip( nTime, 0x16, nInputAdjustTime );	// CY
 									CDTX.CChip chipRD = this.r指定時刻に一番近い未ヒットChip( nTime, 0x19, nInputAdjustTime );	// RD
@@ -3726,7 +3726,7 @@ namespace DTXMania
 								#region [ *** ]
 								//-----------------------------
 								{
-									if (event2.nVelocity <= CDTXMania.ConfigIni.n切り捨て下限Velocity)	// #23857 2010.12.12 yyagi: to support VelocityMin
+									if (event2.nVelocity <= CDTXMania.ConfigIni.nVelocityMin.LC)	// #23857 2010.12.12 yyagi: to support VelocityMin
 										continue;	// 電子ドラムによる意図的なクロストークを無効にする
 									CDTX.CChip chipHC = this.r指定時刻に一番近い未ヒットChip( nTime, 0x11, nInputAdjustTime );	// HC
 									CDTX.CChip chipHO = this.r指定時刻に一番近い未ヒットChip( nTime, 0x18, nInputAdjustTime );	// HO

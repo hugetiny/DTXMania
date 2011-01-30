@@ -426,8 +426,8 @@ namespace DTXMania
 		public string str選曲リストフォント;
 		public Eドラムコンボ文字の表示位置 ドラムコンボ文字の表示位置;
 		public STDGBVALUE<E判定文字表示位置> 判定文字表示位置;
-		public int nハイハット切り捨て下限Velocity;
-		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
+//		public int nハイハット切り捨て下限Velocity;
+//		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
 		public STDGBVALUE<int> nInputAdjustTimeMs;	// #23580 2011.1.3 yyagi タイミングアジャスト機能
 		public bool bバッファ入力を行う;
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
@@ -710,7 +710,116 @@ namespace DTXMania
 				}
 			}
 		}
-		
+
+		public STLANEVALUE nVelocityMin;
+		[StructLayout( LayoutKind.Sequential )]
+		public struct STLANEVALUE
+		{
+			public int LC;
+			public int HH;
+			public int SD;
+			public int BD;
+			public int HT;
+			public int LT;
+			public int FT;
+			public int CY;
+			public int RD;
+			public int Guitar;
+			public int Bass;
+			public int this[ int index ]
+			{
+				get
+				{
+					switch( index )
+					{
+						case 0:
+							return this.LC;
+
+						case 1:
+							return this.HH;
+
+						case 2:
+							return this.SD;
+
+						case 3:
+							return this.BD;
+
+						case 4:
+							return this.HT;
+
+						case 5:
+							return this.LT;
+
+						case 6:
+							return this.FT;
+
+						case 7:
+							return this.CY;
+
+						case 8:
+							return this.RD;
+
+						case 9:
+							return this.Guitar;
+
+						case 10:
+							return this.Bass;
+					}
+					throw new IndexOutOfRangeException();
+				}
+				set
+				{
+					switch( index )
+					{
+						case 0:
+							this.LC = value;
+							return;
+
+						case 1:
+							this.HH = value;
+							return;
+
+						case 2:
+							this.SD = value;
+							return;
+
+						case 3:
+							this.BD = value;
+							return;
+
+						case 4:
+							this.HT = value;
+							return;
+
+						case 5:
+							this.LT = value;
+							return;
+
+						case 6:
+							this.FT = value;
+							return;
+
+						case 7:
+							this.CY = value;
+							return;
+
+						case 8:
+							this.RD = value;
+							return;
+
+						case 9:
+							this.Guitar = value;
+							return;
+
+						case 10:
+							this.Bass = value;
+							return;
+					}
+					throw new IndexOutOfRangeException();
+				}
+			}
+		}
+
 
 		// コンストラクタ
 
@@ -827,8 +936,18 @@ namespace DTXMania
 			this.nInputAdjustTimeMs.Drums = 0;
 			this.nInputAdjustTimeMs.Guitar = 0;
 			this.nInputAdjustTimeMs.Bass = 0;
-			this.nハイハット切り捨て下限Velocity = 20;
-			this.n切り捨て下限Velocity = 0;				// #23857 2010.12.12 yyagi VelocityMin
+//			this.nハイハット切り捨て下限Velocity = 20;
+//			this.n切り捨て下限Velocity = 0;				// #23857 2010.12.12 yyagi VelocityMin
+			this.nVelocityMin.LC = 0;					// #23857 2011.1.31 yyagi VelocityMin
+			this.nVelocityMin.HH = 20;
+			this.nVelocityMin.SD = 0;
+			this.nVelocityMin.BD = 0;
+			this.nVelocityMin.HT = 0;
+			this.nVelocityMin.LT = 0;
+			this.nVelocityMin.FT = 0;
+			this.nVelocityMin.CY = 0;
+			this.nVelocityMin.RD = 0;
+
 			this.bバッファ入力を行う = true;
 			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
 		}
@@ -1039,15 +1158,47 @@ namespace DTXMania
 			sw.WriteLine("; Revision value to adjust judgement timing for the bass.");		//
 			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs.Bass);			//
 			sw.WriteLine();
-			sw.WriteLine("; ハイハット入力切り捨て下限Velocity値(0～127)");					// #23857 2010.12.12 yyagi
-			sw.WriteLine("; Minimum velocity value to accept. (especially for HiHat)");		//
-			sw.WriteLine("HHVelocityMin={0}", this.nハイハット切り捨て下限Velocity);		//
-			sw.WriteLine();
-			sw.WriteLine("; ハイハット以外の入力切り捨て下限Velocity値(0～127)");			// #23857 2010.12.12 yyagi
-			sw.WriteLine("; Minimum velocity value to accept. (except HiHat)");				//
-			sw.WriteLine("VelocityMin={0}", this.n切り捨て下限Velocity);					//
+			sw.WriteLine( "; LCの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for LC to accept." );						//
+			sw.WriteLine( "LCVelocityMin={0}", this.nVelocityMin.LC );						//
 			sw.WriteLine();																	//
-			sw.WriteLine(";-------------------");
+			sw.WriteLine( "; ハイハット入力切り捨て下限Velocity値(0～127)" );					// #23857 2010.12.12 yyagi
+			sw.WriteLine("; Minimum velocity value for HH to accept.");						//
+			sw.WriteLine("HHVelocityMin={0}", this.nVelocityMin.HH );						//
+			sw.WriteLine();
+//			sw.WriteLine("; ハイハット以外の入力切り捨て下限Velocity値(0～127)");			// #23857 2010.12.12 yyagi
+//			sw.WriteLine("; Minimum velocity value to accept. (except HiHat)");				//
+//			sw.WriteLine("VelocityMin={0}", this.n切り捨て下限Velocity);					//
+//			sw.WriteLine();																	//
+			sw.WriteLine( "; SDの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for SD to accept." );					//
+			sw.WriteLine( "SDVelocityMin={0}", this.nVelocityMin.SD );						//
+			sw.WriteLine();																	//
+			sw.WriteLine( "; BDの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for BD to accept." );					//
+			sw.WriteLine( "BDVelocityMin={0}", this.nVelocityMin.BD );						//
+			sw.WriteLine();																	//
+			sw.WriteLine( "; HTの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for HT to accept." );					//
+			sw.WriteLine( "HTVelocityMin={0}", this.nVelocityMin.HT );						//
+			sw.WriteLine();																	//
+			sw.WriteLine( "; LTの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for LT to accept." );					//
+			sw.WriteLine( "LTVelocityMin={0}", this.nVelocityMin.LT );						//
+			sw.WriteLine();																	//
+			sw.WriteLine( "; FTの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for FT to accept." );					//
+			sw.WriteLine( "FTVelocityMin={0}", this.nVelocityMin.FT );						//
+			sw.WriteLine();																	//
+			sw.WriteLine( "; CYの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for CY to accept." );					//
+			sw.WriteLine( "CYVelocityMin={0}", this.nVelocityMin.CY );						//
+			sw.WriteLine();																	//
+			sw.WriteLine( "; RDの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for RD to accept." );					//
+			sw.WriteLine( "RDVelocityMin={0}", this.nVelocityMin.RD );						//
+			sw.WriteLine();																	//
+			sw.WriteLine( ";-------------------" );
 			sw.WriteLine( "[Log]" );
 			sw.WriteLine();
 			sw.WriteLine( "; Log出力(0:OFF, 1:ON)" );
@@ -1601,12 +1752,41 @@ namespace DTXMania
 												else if ( str3.Equals("BufferedInput") ) {
 													this.bバッファ入力を行う = C変換.bONorOFF(str4[0]);
 												}
-												else if ( str3.Equals("HHVelocityMin") ) {
-													this.nハイハット切り捨て下限Velocity = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 127, this.nハイハット切り捨て下限Velocity);
-												}
-												else if ( str3.Equals("VelocityMin") )				// #23857 2010 12.12 yyagi
+												else if ( str3.Equals( "LCVelocityMin" ) )			// #23857 2010.12.12 yyagi
 												{
-													this.n切り捨て下限Velocity = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 127, this.n切り捨て下限Velocity);
+													this.nVelocityMin.LC = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LC );
+												}
+												else if ( str3.Equals( "HHVelocityMin" ) )
+												{
+													this.nVelocityMin.HH = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 127, this.nVelocityMin.HH);
+												}
+												else if ( str3.Equals( "SDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+												{
+													this.nVelocityMin.SD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.SD );
+												}
+												else if ( str3.Equals( "BDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+												{
+													this.nVelocityMin.BD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.BD );
+												}
+												else if ( str3.Equals( "HTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+												{
+													this.nVelocityMin.HT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.HT );
+												}
+												else if ( str3.Equals( "LTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+												{
+													this.nVelocityMin.LT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LT );
+												}
+												else if ( str3.Equals( "FTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+												{
+													this.nVelocityMin.FT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.FT );
+												}
+												else if ( str3.Equals( "CYVelocityMin" ) )			// #23857 2011.1.31 yyagi
+												{
+													this.nVelocityMin.CY = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.CY );
+												}
+												else if ( str3.Equals( "RDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+												{
+													this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
 												}
 												continue;
 											}
