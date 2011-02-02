@@ -383,6 +383,7 @@ namespace DTXMania
 			public int n透明度 = 0xff;
 			public int n発声位置;
 			public int n発声時刻ms;
+			public int nLag;				// 2011.2.1 yyagi
 			public CDTX.CAVI rAVI;
 			public CDTX.CAVIPAN rAVIPan;
 			public CDTX.CBGA rBGA;
@@ -510,11 +511,10 @@ namespace DTXMania
 
 			public CChip()
 			{
-				STDGBVALUE<int> stdgbvalue = new STDGBVALUE<int>();
-				stdgbvalue.Drums = 0;
-				stdgbvalue.Guitar = 0;
-				stdgbvalue.Bass = 0;
-				this.nバーからの距離dot = stdgbvalue;
+				this.nバーからの距離dot = new STDGBVALUE<int>();
+				this.nバーからの距離dot.Drums = 0;
+				this.nバーからの距離dot.Guitar = 0;
+				this.nバーからの距離dot.Bass = 0;
 			}
 			public void t初期化()
 			{
@@ -524,6 +524,7 @@ namespace DTXMania
 				this.db実数値 = 0.0;
 				this.n発声位置 = 0;
 				this.n発声時刻ms = 0;
+				this.nLag = -999;
 				this.dbチップサイズ倍率 = 1.0;
 				this.bHit = false;
 				this.b可視 = true;

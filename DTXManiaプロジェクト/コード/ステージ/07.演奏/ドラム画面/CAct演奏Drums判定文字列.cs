@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Runtime.InteropServices;
 using SlimDX;
@@ -12,56 +13,28 @@ namespace DTXMania
 
 		public CAct演奏Drums判定文字列()
 		{
-			STレーンサイズ[] stレーンサイズArray = new STレーンサイズ[ 12 ];
+			this.stレーンサイズ = new STレーンサイズ[ 12 ];
 			STレーンサイズ stレーンサイズ = new STレーンサイズ();
-			stレーンサイズ.x = 0x24;
-			stレーンサイズ.w = 0x24;
-			stレーンサイズArray[ 0 ] = stレーンサイズ;
-			STレーンサイズ stレーンサイズ2 = new STレーンサイズ();
-			stレーンサイズ2.x = 0x4d;
-			stレーンサイズ2.w = 30;
-			stレーンサイズArray[ 1 ] = stレーンサイズ2;
-			STレーンサイズ stレーンサイズ3 = new STレーンサイズ();
-			stレーンサイズ3.x = 0x6f;
-			stレーンサイズ3.w = 30;
-			stレーンサイズArray[ 2 ] = stレーンサイズ3;
-			STレーンサイズ stレーンサイズ4 = new STレーンサイズ();
-			stレーンサイズ4.x = 0x92;
-			stレーンサイズ4.w = 0x2a;
-			stレーンサイズArray[ 3 ] = stレーンサイズ4;
-			STレーンサイズ stレーンサイズ5 = new STレーンサイズ();
-			stレーンサイズ5.x = 0xc1;
-			stレーンサイズ5.w = 30;
-			stレーンサイズArray[ 4 ] = stレーンサイズ5;
-			STレーンサイズ stレーンサイズ6 = new STレーンサイズ();
-			stレーンサイズ6.x = 0xe3;
-			stレーンサイズ6.w = 30;
-			stレーンサイズArray[ 5 ] = stレーンサイズ6;
-			STレーンサイズ stレーンサイズ7 = new STレーンサイズ();
-			stレーンサイズ7.x = 0x105;
-			stレーンサイズ7.w = 30;
-			stレーンサイズArray[ 6 ] = stレーンサイズ7;
-			STレーンサイズ stレーンサイズ8 = new STレーンサイズ();
-			stレーンサイズ8.x = 0x127;
-			stレーンサイズ8.w = 0x24;
-			stレーンサイズArray[ 7 ] = stレーンサイズ8;
-			STレーンサイズ stレーンサイズ9 = new STレーンサイズ();
-			stレーンサイズ9.x = 0;
-			stレーンサイズ9.w = 0;
-			stレーンサイズArray[ 8 ] = stレーンサイズ9;
-			STレーンサイズ stレーンサイズ10 = new STレーンサイズ();
-			stレーンサイズ10.x = 0;
-			stレーンサイズ10.w = 0;
-			stレーンサイズArray[ 9 ] = stレーンサイズ10;
-			STレーンサイズ stレーンサイズ11 = new STレーンサイズ();
-			stレーンサイズ11.x = 0x1fb;
-			stレーンサイズ11.w = 80;
-			stレーンサイズArray[ 10 ] = stレーンサイズ11;
-			STレーンサイズ stレーンサイズ12 = new STレーンサイズ();
-			stレーンサイズ12.x = 0x18e;
-			stレーンサイズ12.w = 80;
-			stレーンサイズArray[ 11 ] = stレーンサイズ12;
-			this.stレーンサイズ = stレーンサイズArray;
+			int[,] sizeXW = new int[,] {
+				{ 0x24, 0x24 },
+				{ 0x4d, 30 },
+				{ 0x6f, 30 },
+				{ 0x92, 0x2a },
+				{ 0xc1, 30 },
+				{ 0xe3, 30 },
+				{ 0x105, 30 },
+				{ 0x127, 0x24 },
+				{ 0, 0 },
+				{ 0, 0 },
+				{ 0x1fb, 80 },
+				{ 0x18e, 80 }
+			};
+			for ( int i = 0; i < 12; i++ )
+			{
+				this.stレーンサイズ[i] = new STレーンサイズ();
+				this.stレーンサイズ[i].x = sizeXW[i, 0];
+				this.stレーンサイズ[i].w = sizeXW[i, 1];
+			}
 			base.b活性化してない = true;
 		}
 		
@@ -181,13 +154,33 @@ namespace DTXMania
 								num6 = CDTXMania.ConfigIni.bReverse.Guitar ? ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
 							}
 						}
-						int x = ( ( num5 + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) ) - ( (int) ( ( 64f * base.st状態[ j ].fX方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) );
+						int xc = ( ( num5 + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) );	// Xcenter座標
+						int x = xc - ( (int) ( ( 64f * base.st状態[ j ].fX方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) );
 						int y = ( num6 + base.st状態[ j ].n相対Y座標 ) - ( (int) ( ( ( 43f * base.st状態[ j ].fY方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) / 2.0 ) );
 						if( base.tx判定文字列[ index ] != null )
 						{
 							base.tx判定文字列[ index ].n透明度 = base.st状態[ j ].n透明度;
 							base.tx判定文字列[ index ].vc拡大縮小倍率 = new Vector3( (float) ( base.st状態[ j ].fX方向拡大率 * ( ( j < 10 ) ? 1.0 : 0.7 ) ), (float) ( base.st状態[ j ].fY方向拡大率 * ( ( j < 10 ) ? 1.0 : 0.7 ) ), 1f );
 							base.tx判定文字列[ index ].t2D描画( CDTXMania.app.Device, x, y, base.st判定文字列[ (int) base.st状態[ j ].judge ].rc );
+#if TEST_SHOWLAG
+							if (base.txlag数値 != null)		// 2011.2.1 yyagi
+							{
+								bool minus = false;
+								int offsetX = 0;
+								string strDispLag = base.st状態[j].nLag.ToString();
+								if (strDispLag[0] == '-') {
+									minus = true;
+								}
+								x = xc - strDispLag.Length * 15 / 2;
+								for ( int i = 0; i < strDispLag.Length; i++ )
+								{
+									int p = ( strDispLag[ i ] == '-' ) ? 11 : (int) ( strDispLag[ i ] - '0' );	//int.Parse(strDispLag[i]);
+									p += minus ? 0 : 12;
+									base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX, y + 37, base.stLag数値[ p ].rc );
+									offsetX += 15;
+								}
+							}
+#endif
 						}
 					Label_07FC: ;
 					}

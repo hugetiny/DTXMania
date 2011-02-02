@@ -687,7 +687,8 @@ namespace DTXMania
 		{
 			if( pChip != null )
 			{
-				int nDeltaTime = Math.Abs( (int) ( nTime + nInputAdjustTime - pChip.n発声時刻ms ) );		// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
+				pChip.nLag = (int) ( nTime + nInputAdjustTime - pChip.n発声時刻ms );		// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
+				int nDeltaTime = Math.Abs( pChip.nLag);
 //Debug.WriteLine("nAbsTime=" + (nTime - pChip.n発声時刻ms) + ", nDeltaTime=" + (nTime + nInputAdjustTime - pChip.n発声時刻ms));
 				if( nDeltaTime <= CDTXMania.nPerfect範囲ms )
 				{
@@ -1169,7 +1170,7 @@ namespace DTXMania
 					{
 						int nInputAdjustTime = bIsAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ? 0 : this.nInputAdjustTimeMs.Drums;
 						eJudgeResult = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTime );
-						this.actJudgeString.Start( this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ], bIsAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ? E判定.Auto : eJudgeResult );
+						this.actJudgeString.Start( this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ], bIsAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ? E判定.Auto : eJudgeResult, pChip.nLag );
 					}
 					break;
 
@@ -1177,7 +1178,7 @@ namespace DTXMania
 					{
 						int nInputAdjustTime = bIsAutoPlay.Guitar ? 0 : this.nInputAdjustTimeMs.Guitar;
 						eJudgeResult = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTime );
-						this.actJudgeString.Start( 10, bIsAutoPlay.Guitar ? E判定.Auto : eJudgeResult );
+						this.actJudgeString.Start( 10, bIsAutoPlay.Guitar ? E判定.Auto : eJudgeResult, pChip.nLag );
 					}
 					break;
 
@@ -1185,7 +1186,7 @@ namespace DTXMania
 					{
 						int nInputAdjustTime = bIsAutoPlay.Bass ? 0 : this.nInputAdjustTimeMs.Bass;
 						eJudgeResult = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTime );
-						this.actJudgeString.Start( 11, bIsAutoPlay.Bass ? E判定.Auto : eJudgeResult );
+						this.actJudgeString.Start( 11, bIsAutoPlay.Bass ? E判定.Auto : eJudgeResult, pChip.nLag );
 					}
 					break;
 			}
@@ -1346,18 +1347,18 @@ namespace DTXMania
 				case E楽器パート.DRUMS:
 					if( ( nLane >= 0 ) && ( nLane <= 7 ) )
 					{
-						this.actJudgeString.Start( nLane, CDTXMania.ConfigIni.bAutoPlay[ nLane ] ? E判定.Auto : E判定.Miss );
+						this.actJudgeString.Start( nLane, CDTXMania.ConfigIni.bAutoPlay[ nLane ] ? E判定.Auto : E判定.Miss, 999 );
 					}
 					this.actCOMBO.n現在のコンボ数.Drums = 0;
 					return;
 
 				case E楽器パート.GUITAR:
-					this.actJudgeString.Start( 10, E判定.Bad );
+					this.actJudgeString.Start( 10, E判定.Bad, 999 );
 					this.actCOMBO.n現在のコンボ数.Guitar = 0;
 					return;
 
 				case E楽器パート.BASS:
-					this.actJudgeString.Start( 11, E判定.Bad );
+					this.actJudgeString.Start( 11, E判定.Bad, 999 );
 					this.actCOMBO.n現在のコンボ数.Bass = 0;
 					return;
 			}

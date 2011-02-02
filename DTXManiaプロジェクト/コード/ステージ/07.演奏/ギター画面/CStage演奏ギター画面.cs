@@ -627,23 +627,24 @@ namespace DTXMania
 
 		private E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
 		{
-			if( pChip != null )
+			if ( pChip != null )
 			{
-				int nDeltaTime = Math.Abs( (int) ( nTime + nInputAdjustTime - pChip.n発声時刻ms ) );		// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
-//Debug.WriteLine("nAbsTime=" + (nTime - pChip.n発声時刻ms) + ", nDeltaTime=" + (nTime + nInputAdjustTime - pChip.n発声時刻ms));
-				if( nDeltaTime <= CDTXMania.nPerfect範囲ms )
+				pChip.nLag = (int) ( nTime + nInputAdjustTime - pChip.n発声時刻ms );		// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
+				int nDeltaTime = Math.Abs( pChip.nLag );
+				//Debug.WriteLine("nAbsTime=" + (nTime - pChip.n発声時刻ms) + ", nDeltaTime=" + (nTime + nInputAdjustTime - pChip.n発声時刻ms));
+				if ( nDeltaTime <= CDTXMania.nPerfect範囲ms )
 				{
 					return E判定.Perfect;
 				}
-				if( nDeltaTime <= CDTXMania.nGreat範囲ms )
+				if ( nDeltaTime <= CDTXMania.nGreat範囲ms )
 				{
 					return E判定.Great;
 				}
-				if( nDeltaTime <= CDTXMania.nGood範囲ms )
+				if ( nDeltaTime <= CDTXMania.nGood範囲ms )
 				{
 					return E判定.Good;
 				}
-				if( nDeltaTime <= CDTXMania.nPoor範囲ms )
+				if ( nDeltaTime <= CDTXMania.nPoor範囲ms )
 				{
 					return E判定.Poor;
 				}
@@ -974,13 +975,13 @@ namespace DTXMania
 			switch (pChip.e楽器パート)
 			{
 				case E楽器パート.GUITAR:
-					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Guitar);
-					this.actJudgeString.Start(10, bIsAutoPlay ? E判定.Auto : eJudgeResult);
+					eJudgeResult = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, bIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Guitar );
+					this.actJudgeString.Start( 10, bIsAutoPlay ? E判定.Auto : eJudgeResult, pChip.nLag );
 					break;
 
 				case E楽器パート.BASS:
-					eJudgeResult = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, bIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Bass);
-					this.actJudgeString.Start(11, bIsAutoPlay ? E判定.Auto : eJudgeResult);
+					eJudgeResult = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, bIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Bass );
+					this.actJudgeString.Start( 11, bIsAutoPlay ? E判定.Auto : eJudgeResult, pChip.nLag );
 					break;
 			}
 			if( !bIsAutoPlay )
@@ -1112,12 +1113,12 @@ namespace DTXMania
 					break;
 
 				case E楽器パート.GUITAR:
-					this.actJudgeString.Start( 10, E判定.Bad );
+					this.actJudgeString.Start( 10, E判定.Bad, 999 );
 					this.actCombo.n現在のコンボ数.Guitar = 0;
 					return;
 
 				case E楽器パート.BASS:
-					this.actJudgeString.Start( 11, E判定.Bad );
+					this.actJudgeString.Start( 11, E判定.Bad, 999 );
 					this.actCombo.n現在のコンボ数.Bass = 0;
 					break;
 
@@ -1306,9 +1307,9 @@ namespace DTXMania
 					//nInputAdjustTime = nInputAdjustTimes[(int)pChip.e楽器パート];
 					nInputAdjustTime = this.nInputAdjustTimeMs[(int)pChip.e楽器パート];
 				}
-				
+
 				if( ( ( pChip.e楽器パート != E楽器パート.UNKNOWN ) && !pChip.bHit ) &&
-					((pChip.nバーからの距離dot.Drums < 0) && (this.e指定時刻からChipのJUDGEを返す(CDTXMania.Timer.n現在時刻, pChip, nInputAdjustTime) == E判定.Miss)))
+					((pChip.nバーからの距離dot.Drums < 0) && (this.e指定時刻からChipのJUDGEを返す(CDTXMania.Timer.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss)))
 				{
 					this.tチップのヒット処理( CDTXMania.Timer.n現在時刻, pChip );
 				}
@@ -2104,7 +2105,7 @@ namespace DTXMania
 							this.t入力メソッド記憶( E楽器パート.GUITAR );
 							long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
 							CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0x2f, this.nInputAdjustTimeMs.Guitar, 0 );
-							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nTime, pChip, this.nInputAdjustTimeMs.Guitar);
+							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nTime, pChip, this.nInputAdjustTimeMs.Guitar );
 							if (((pChip != null) && ((pChip.nチャンネル番号 & 15) == flagRGB)) && (e判定 != E判定.Miss))
 							{
 								if( ( flagR != 0 ) || ( flagRGB == 0 ) )
@@ -2239,7 +2240,7 @@ namespace DTXMania
 							this.t入力メソッド記憶( E楽器パート.BASS );
 							long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
 							CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0xaf, this.nInputAdjustTimeMs.Bass, 0 );
-							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nTime, pChip, this.nInputAdjustTimeMs.Bass);
+							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nTime, pChip, this.nInputAdjustTimeMs.Bass );
 							if (((pChip != null) && ((pChip.nチャンネル番号 & 15) == flagRGB)) && (e判定 != E判定.Miss))
 							{
 								if( ( flagR != 0 ) || ( flagRGB == 0 ) )

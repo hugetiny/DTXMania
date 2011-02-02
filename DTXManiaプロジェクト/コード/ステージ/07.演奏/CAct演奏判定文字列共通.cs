@@ -22,6 +22,7 @@ namespace DTXMania
 			public int n相対X座標;
 			public int n相対Y座標;
 			public int n透明度;
+			public int nLag;								// 2011.2.1 yyagi
 		}
 
 		protected readonly ST判定文字列[] st判定文字列;
@@ -31,51 +32,53 @@ namespace DTXMania
 			public int n画像番号;
 			public Rectangle rc;
 		}
+
+		protected readonly STlag数値[] stLag数値;			// 2011.2.1 yyagi
+		[StructLayout( LayoutKind.Sequential )]
+		protected struct STlag数値
+		{
+			public Rectangle rc;
+		}
+
 		
 		protected CTexture[] tx判定文字列 = new CTexture[ 3 ];
+		protected CTexture txlag数値 = new CTexture();		// 2011.2.1 yyagi
 
 
 		// コンストラクタ
 
 		public CAct演奏判定文字列共通()
 		{
-			ST判定文字列[] st判定文字列Array = new ST判定文字列[ 7 ];
-			ST判定文字列 st判定文字列 = new ST判定文字列();
-			st判定文字列.n画像番号 = 0;
-			st判定文字列.rc = new Rectangle( 0, 0, 0x80, 0x2a );
-			st判定文字列Array[ 0 ] = st判定文字列;
-			ST判定文字列 st判定文字列2 = new ST判定文字列();
-			st判定文字列2.n画像番号 = 0;
-			st判定文字列2.rc = new Rectangle( 0, 0x2b, 0x80, 0x2a );
-			st判定文字列Array[ 1 ] = st判定文字列2;
-			ST判定文字列 st判定文字列3 = new ST判定文字列();
-			st判定文字列3.n画像番号 = 0;
-			st判定文字列3.rc = new Rectangle( 0, 0x56, 0x80, 0x2a );
-			st判定文字列Array[ 2 ] = st判定文字列3;
-			ST判定文字列 st判定文字列4 = new ST判定文字列();
-			st判定文字列4.n画像番号 = 1;
-			st判定文字列4.rc = new Rectangle( 0, 0, 0x80, 0x2a );
-			st判定文字列Array[ 3 ] = st判定文字列4;
-			ST判定文字列 st判定文字列5 = new ST判定文字列();
-			st判定文字列5.n画像番号 = 1;
-			st判定文字列5.rc = new Rectangle( 0, 0x2b, 0x80, 0x2a );
-			st判定文字列Array[ 4 ] = st判定文字列5;
-			ST判定文字列 st判定文字列6 = new ST判定文字列();
-			st判定文字列6.n画像番号 = 1;
-			st判定文字列6.rc = new Rectangle( 0, 0x56, 0x80, 0x2a );
-			st判定文字列Array[ 5 ] = st判定文字列6;
-			ST判定文字列 st判定文字列7 = new ST判定文字列();
-			st判定文字列7.n画像番号 = 2;
-			st判定文字列7.rc = new Rectangle( 0, 0, 0x80, 0x2a );
-			st判定文字列Array[ 6 ] = st判定文字列7;
-			this.st判定文字列 = st判定文字列Array;
+			this.st判定文字列 = new ST判定文字列[ 7 ];
+			Rectangle[] r = new Rectangle[] {
+				new Rectangle( 0, 0,    0x80, 0x2a ),
+				new Rectangle( 0, 0x2b, 0x80, 0x2a ),
+				new Rectangle( 0, 0x56, 0x80, 0x2a ),
+				new Rectangle( 0, 0,    0x80, 0x2a ),
+				new Rectangle( 0, 0x2b, 0x80, 0x2a ),
+				new Rectangle( 0, 0x56, 0x80, 0x2a ),
+				new Rectangle( 0, 0,    0x80, 0x2a )
+			};
+			for ( int i = 0; i < 7; i++ )
+			{
+				this.st判定文字列[ i ] = new ST判定文字列();
+				this.st判定文字列[ i ].n画像番号 = i / 3;
+				this.st判定文字列[ i ].rc = r[i];
+			}
+
+			this.stLag数値 = new STlag数値[ 12 * 2 ];		// 2011.2.1 yyagi
+			for ( int i = 0; i < 12; i++ )
+			{
+				this.stLag数値[ i      ].rc = new Rectangle( ( i % 4 ) * 15     , ( i / 4 ) * 19     , 15, 19 );
+				this.stLag数値[ i + 12 ].rc = new Rectangle( ( i % 4 ) * 15 + 64, ( i / 4 ) * 19 + 64, 15, 19 );
+			}
 			base.b活性化してない = true;
 		}
 
 
 		// メソッド
 
-		public virtual void Start( int nLane, E判定 judge )
+		public virtual void Start( int nLane, E判定 judge, int lag )
 		{
 			if( ( nLane < 0 ) || ( nLane > 11 ) )
 			{
@@ -90,6 +93,7 @@ namespace DTXMania
 				this.st状態[ nLane ].n相対X座標 = 0;
 				this.st状態[ nLane ].n相対Y座標 = 0;
 				this.st状態[ nLane ].n透明度 = 0xff;
+				this.st状態[ nLane ].nLag = lag;
 			}
 		}
 
@@ -119,6 +123,7 @@ namespace DTXMania
 				this.tx判定文字列[ 0 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 1.png" ) );
 				this.tx判定文字列[ 1 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 2.png" ) );
 				this.tx判定文字列[ 2 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 3.png" ) );
+				this.txlag数値 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect level numbers.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -129,6 +134,7 @@ namespace DTXMania
 				CDTXMania.tテクスチャの解放( ref this.tx判定文字列[ 0 ] );
 				CDTXMania.tテクスチャの解放( ref this.tx判定文字列[ 1 ] );
 				CDTXMania.tテクスチャの解放( ref this.tx判定文字列[ 2 ] );
+				CDTXMania.tテクスチャの解放( ref this.txlag数値 );
 				base.OnManagedリソースの解放();
 			}
 		}
