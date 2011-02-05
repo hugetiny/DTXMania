@@ -150,9 +150,11 @@ namespace DTXMania
                     }
 
                     // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
-                    //        10.11.17 change (nオート to bオート)
-                    //                 add default..throw           ikanick
-                    if (this.bオート[ k ] == false)
+                    //        11.02.05 bオート to t更新条件を取得する use      ikanick
+					bool[] b更新が必要か否か = new bool[ 3 ];
+					CScoreIni.t更新条件を取得する( out b更新が必要か否か[ 0 ], out b更新が必要か否か[ 1 ], out b更新が必要か否か[ 2 ] );
+
+                    if (b更新が必要か否か[ k ])
                     {
                         switch ( k )
                         {

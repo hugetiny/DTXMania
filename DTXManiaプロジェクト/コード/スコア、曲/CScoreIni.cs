@@ -591,7 +591,7 @@ namespace DTXMania
 							{
 								this.stファイル.PlayCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x5f5e0ff, 0 );
 							}
-							else if( str3.Equals( "PlayCountGuitar" ) )
+							else if( str3.Equals( "PlayCountGuitars" ) )// #23596 11.2.5 changed ikanick
 							{
 								this.stファイル.PlayCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x5f5e0ff, 0 );
 							}
@@ -604,7 +604,7 @@ namespace DTXMania
                             {
                                 this.stファイル.ClearCountDrums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 0x5f5e0ff, 0);
                             }
-                            else if (str3.Equals("ClearCountGuitar"))
+                            else if (str3.Equals("ClearCountGuitars"))// #23596 11.2.5 changed ikanick
                             {
                                 this.stファイル.ClearCountGuitar = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 0x5f5e0ff, 0);
                             }
