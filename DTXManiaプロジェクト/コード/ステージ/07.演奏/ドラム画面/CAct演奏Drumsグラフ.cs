@@ -146,12 +146,18 @@ namespace DTXMania
                     if (this.dbグラフ値現在 >= (100 - i * 10))
                     {
                         rectangle = new Rectangle(21, 0, 1, 1);//黄色
-                        this.txグラフ.n透明度 = 224;
+                        if (this.txグラフ != null)
+                        {
+                            this.txグラフ.n透明度 = 224;
+                        }
                     }
                     else
                     {
                         rectangle = new Rectangle(20, 0, 1, 1);
-                        this.txグラフ.n透明度 = 160;
+                        if (this.txグラフ != null)
+                        {
+                            this.txグラフ.n透明度 = 160;
+                        }
                     }
 
                     if (this.txグラフ != null)
