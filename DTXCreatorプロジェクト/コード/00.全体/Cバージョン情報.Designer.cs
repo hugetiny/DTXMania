@@ -30,31 +30,32 @@ namespace DTXCreator
 		/// </summary>
 		private void InitializeComponent()
 		{
-			base.SuspendLayout();
+			this.SuspendLayout();
 			// 
 			// Cバージョン情報
 			// 
-			base.AutoScaleDimensions = new System.Drawing.SizeF( 6f, 12f );
-			base.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 12F );
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::DTXCreator.Properties.Resources.バージョン情報;
 			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			base.ClientSize = new System.Drawing.Size( 450, 250 );
-			base.ControlBox = false;
-			base.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			base.MaximizeBox = false;
-			base.MinimizeBox = false;
-			base.Name = "Cバージョン情報";
-			base.Padding = new System.Windows.Forms.Padding( 8 );
-			base.ShowIcon = false;
-			base.ShowInTaskbar = false;
-			base.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			base.Paint += new System.Windows.Forms.PaintEventHandler( this.Cバージョン情報_Paint );
-			base.Click += new System.EventHandler( this.Cバージョン情報_Click );
-			base.KeyDown += new System.Windows.Forms.KeyEventHandler( this.Cバージョン情報_KeyDown );
-			base.ResumeLayout( false );
+			this.ClientSize = new System.Drawing.Size( 450, 250 );
+			this.ControlBox = false;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.Name = "Cバージョン情報";
+			this.Padding = new System.Windows.Forms.Padding( 8 );
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.Paint += new System.Windows.Forms.PaintEventHandler( this.Cバージョン情報_Paint );
+			this.Click += new System.EventHandler( this.Cバージョン情報_Click );
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler( this.Cバージョン情報_KeyDown );
+			this.ResumeLayout( false );
 
 		}
 		
 		#endregion
+
 	}
 }

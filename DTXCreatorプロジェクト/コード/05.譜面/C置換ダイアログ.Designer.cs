@@ -42,41 +42,26 @@
 			// 
 			// buttonキャンセル
 			// 
-			this.buttonキャンセル.AccessibleDescription = null;
-			this.buttonキャンセル.AccessibleName = null;
 			resources.ApplyResources( this.buttonキャンセル, "buttonキャンセル" );
-			this.buttonキャンセル.BackgroundImage = null;
 			this.buttonキャンセル.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonキャンセル.Font = null;
 			this.buttonキャンセル.Name = "buttonキャンセル";
 			this.buttonキャンセル.UseVisualStyleBackColor = true;
 			// 
 			// button置換
 			// 
-			this.button置換.AccessibleDescription = null;
-			this.button置換.AccessibleName = null;
 			resources.ApplyResources( this.button置換, "button置換" );
-			this.button置換.BackgroundImage = null;
 			this.button置換.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.button置換.Font = null;
 			this.button置換.Name = "button置換";
 			this.button置換.UseVisualStyleBackColor = true;
 			// 
 			// label説明
 			// 
-			this.label説明.AccessibleDescription = null;
-			this.label説明.AccessibleName = null;
 			resources.ApplyResources( this.label説明, "label説明" );
-			this.label説明.Font = null;
 			this.label説明.Name = "label説明";
 			// 
 			// radioButton表裏反転
 			// 
-			this.radioButton表裏反転.AccessibleDescription = null;
-			this.radioButton表裏反転.AccessibleName = null;
 			resources.ApplyResources( this.radioButton表裏反転, "radioButton表裏反転" );
-			this.radioButton表裏反転.BackgroundImage = null;
-			this.radioButton表裏反転.Font = null;
 			this.radioButton表裏反転.Name = "radioButton表裏反転";
 			this.radioButton表裏反転.TabStop = true;
 			this.radioButton表裏反転.UseVisualStyleBackColor = true;
@@ -84,11 +69,7 @@
 			// 
 			// radioButton単純置換
 			// 
-			this.radioButton単純置換.AccessibleDescription = null;
-			this.radioButton単純置換.AccessibleName = null;
 			resources.ApplyResources( this.radioButton単純置換, "radioButton単純置換" );
-			this.radioButton単純置換.BackgroundImage = null;
-			this.radioButton単純置換.Font = null;
 			this.radioButton単純置換.Name = "radioButton単純置換";
 			this.radioButton単純置換.TabStop = true;
 			this.radioButton単純置換.UseVisualStyleBackColor = true;
@@ -96,47 +77,30 @@
 			// 
 			// textBox元番号
 			// 
-			this.textBox元番号.AccessibleDescription = null;
-			this.textBox元番号.AccessibleName = null;
 			resources.ApplyResources( this.textBox元番号, "textBox元番号" );
-			this.textBox元番号.BackgroundImage = null;
-			this.textBox元番号.Font = null;
 			this.textBox元番号.Name = "textBox元番号";
 			this.textBox元番号.KeyDown += new System.Windows.Forms.KeyEventHandler( this.textBox元番号_KeyDown );
 			// 
 			// textBox先番号
 			// 
-			this.textBox先番号.AccessibleDescription = null;
-			this.textBox先番号.AccessibleName = null;
 			resources.ApplyResources( this.textBox先番号, "textBox先番号" );
-			this.textBox先番号.BackgroundImage = null;
-			this.textBox先番号.Font = null;
 			this.textBox先番号.Name = "textBox先番号";
 			this.textBox先番号.KeyDown += new System.Windows.Forms.KeyEventHandler( this.textBox先番号_KeyDown );
 			// 
 			// label1
 			// 
-			this.label1.AccessibleDescription = null;
-			this.label1.AccessibleName = null;
 			resources.ApplyResources( this.label1, "label1" );
-			this.label1.Font = null;
 			this.label1.Name = "label1";
 			// 
 			// label2
 			// 
-			this.label2.AccessibleDescription = null;
-			this.label2.AccessibleName = null;
 			resources.ApplyResources( this.label2, "label2" );
-			this.label2.Font = null;
 			this.label2.Name = "label2";
 			// 
 			// C置換ダイアログ
 			// 
-			this.AccessibleDescription = null;
-			this.AccessibleName = null;
 			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackgroundImage = null;
 			this.ControlBox = false;
 			this.Controls.Add( this.label2 );
 			this.Controls.Add( this.label1 );
@@ -147,9 +111,7 @@
 			this.Controls.Add( this.label説明 );
 			this.Controls.Add( this.button置換 );
 			this.Controls.Add( this.buttonキャンセル );
-			this.Font = null;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Icon = null;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "C置換ダイアログ";

@@ -132,7 +132,7 @@
     <value>5</value>
   </data>
   <data name="checkBoxPlaySoundOnChip.Text" xml:space="preserve">
-    <value>Play sound when WAV chip is placed</value>
+    <value>&amp;Play sound when WAV chip is placed</value>
   </data>
   <data name="&gt;&gt;checkBoxPlaySoundOnChip.Name" xml:space="preserve">
     <value>checkBoxPlaySoundOnChip</value>

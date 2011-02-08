@@ -68,7 +68,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   022 に類似しているローカライズされた文字列を検索します。
+        ///   023 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string DTXC_VERSION {
             get {
@@ -100,7 +100,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   DTXファイルではありません。 に類似しているローカライズされた文字列を検索します。
+        ///   It is not DTX file. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strDTXファイルではありませんMSG {
             get {
@@ -145,7 +145,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   サウンドファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Select a sound file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strサウンドファイル選択ダイアログのタイトル {
             get {
@@ -154,7 +154,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   Soud files(*.wav;*.ogg;*.mp3;*.xa)|*.wav;*.ogg;*.mp3;*.xa|All files(*.*)|*.* に類似しているローカライズされた文字列を検索します。
+        ///   Sound files(*.wav;*.ogg;*.mp3;*.xa)|*.wav;*.ogg;*.mp3;*.xa|All files(*.*)|*.* に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strサウンドファイル選択ダイアログのフィルタ {
             get {
@@ -172,7 +172,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   Loadingファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Select a loading image file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strステージ画像ファイル選択ダイアログのタイトル {
             get {
@@ -181,7 +181,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   チップ番号に誤りがあります。 に類似しているローカライズされた文字列を検索します。
+        ///   Illegal chip number  に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strチップ番号に誤りがありますMSG {
             get {
@@ -199,7 +199,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   ファイルが存在しません。 に類似しているローカライズされた文字列を検索します。
+        ///   Specified file is not found. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strファイルが存在しませんMSG {
             get {
@@ -208,7 +208,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   選曲画像ファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Select a preview image file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strプレビュー画像ファイル選択ダイアログのタイトル {
             get {
@@ -217,7 +217,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   プレビュー音ファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Select a preview sound file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strプレビュー音ファイル選択ダイアログのタイトル {
             get {
@@ -226,7 +226,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   プロセスの起動に失敗しました。 に類似しているローカライズされた文字列を検索します。
+        ///   Failed to boot. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strプロセスの起動に失敗しましたMSG {
             get {
@@ -244,7 +244,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///    個のチップが選択されました。 に類似しているローカライズされた文字列を検索します。
+        ///    chip(s) are selected. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str個のチップが選択されましたMSG {
             get {
@@ -253,7 +253,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///    個のチップを置換しました。 に類似しているローカライズされた文字列を検索します。
+        ///    chip(s) are replaced. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str個のチップを置換しましたMSG {
             get {
@@ -271,7 +271,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   動画ファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Select an AVI file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str動画ファイル選択ダイアログのタイトル {
             get {
@@ -280,7 +280,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   動画ファイル(*.avi)|*.avi|すべてのファイル(*.*)|*.* に類似しているローカライズされた文字列を検索します。
+        ///   AVI files(*.avi)|*.avi|All files(*.*)|*.* に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str動画ファイル選択ダイアログのフィルタ {
             get {
@@ -307,7 +307,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   小節番号に誤りがあります。 に類似しているローカライズされた文字列を検索します。
+        ///   Illegal bar number. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str小節番号に誤りがありますMSG {
             get {
@@ -325,7 +325,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   画像ファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Select Image File に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str画像ファイル選択ダイアログのタイトル {
             get {
@@ -334,7 +334,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   画像ファイル(*.bmp;*.jpg;*.jpeg;*.png)|*.bmp;*.jpg;*.jpeg;*.png|すべてのファイル(*.*)|*.* に類似しているローカライズされた文字列を検索します。
+        ///   Image files(*.bmp;*.jpg;*.jpeg;*.png)|*.bmp;*.jpg;*.jpeg;*.png|All files(*.*)|*.* に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str画像ファイル選択ダイアログのフィルタ {
             get {
@@ -352,7 +352,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   結果画像ファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Select Reult Screen image file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str結果画像ファイル選択ダイアログのタイトル {
             get {
@@ -371,7 +371,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   置換結果 に類似しているローカライズされた文字列を検索します。
+        ///   Replace result に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str置換結果ダイアログのタイトル {
             get {
@@ -380,7 +380,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   背景画像ファイルの選択 に類似しているローカライズされた文字列を検索します。
+        ///   Select background image file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str背景画像ファイル選択ダイアログのタイトル {
             get {
@@ -389,7 +389,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   該当するチップはありませんでした。 に類似しているローカライズされた文字列を検索します。
+        ///   No chips are found in the specified conditions. に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str該当するチップはありませんでしたMSG {
             get {

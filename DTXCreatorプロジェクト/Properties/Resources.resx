@@ -125,7 +125,7 @@
     <value>..\コード\99.リソース\DTXC.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DTXC_VERSION" xml:space="preserve">
-    <value>022</value>
+    <value>023</value>
   </data>
   <data name="Redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\コード\99.リソース\edit_redohs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -134,7 +134,7 @@
     <value>Specify a BPM value.</value>
   </data>
   <data name="strDTXファイルではありませんMSG" xml:space="preserve">
-    <value>DTXファイルではありません。</value>
+    <value>It is not DTX file.</value>
   </data>
   <data name="strDTXファイル選択ダイアログのタイトル" xml:space="preserve">
     <value>Open a DTX file</value>
@@ -152,83 +152,83 @@
     <value>Failed to load DTXCreator.config.</value>
   </data>
   <data name="strサウンドファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>サウンドファイルの選択</value>
+    <value>Select a sound file</value>
   </data>
   <data name="strサウンドファイル選択ダイアログのフィルタ" xml:space="preserve">
-    <value>Soud files(*.wav;*.ogg;*.mp3;*.xa)|*.wav;*.ogg;*.mp3;*.xa|All files(*.*)|*.*</value>
+    <value>Sound files(*.wav;*.ogg;*.mp3;*.xa)|*.wav;*.ogg;*.mp3;*.xa|All files(*.*)|*.*</value>
   </data>
   <data name="strステージ画像ファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>Loadingファイルの選択</value>
+    <value>Select a loading image file</value>
   </data>
   <data name="strチップ番号に誤りがありますMSG" xml:space="preserve">
-    <value>チップ番号に誤りがあります。</value>
+    <value>Illegal chip number </value>
   </data>
   <data name="strデフォルトウィンドウタイトル" xml:space="preserve">
     <value>New</value>
   </data>
   <data name="strファイルが存在しませんMSG" xml:space="preserve">
-    <value>ファイルが存在しません。</value>
+    <value>Specified file is not found.</value>
   </data>
   <data name="strプレビュー画像ファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>選曲画像ファイルの選択</value>
+    <value>Select a preview image file</value>
   </data>
   <data name="strプレビュー音ファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>プレビュー音ファイルの選択</value>
+    <value>Select a preview sound file</value>
   </data>
   <data name="strプロセスの起動に失敗しましたMSG" xml:space="preserve">
-    <value>プロセスの起動に失敗しました。</value>
+    <value>Failed to boot.</value>
   </data>
   <data name="str保存中ですMSG" xml:space="preserve">
     <value>Saving...</value>
   </data>
   <data name="str個のチップが選択されましたMSG" xml:space="preserve">
-    <value> 個のチップが選択されました。</value>
+    <value> chip(s) are selected.</value>
   </data>
   <data name="str個のチップを置換しましたMSG" xml:space="preserve">
-    <value> 個のチップを置換しました。</value>
+    <value> chip(s) are replaced.</value>
   </data>
   <data name="str初期化中ですMSG" xml:space="preserve">
     <value>Initializing...</value>
   </data>
   <data name="str動画ファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>動画ファイルの選択</value>
+    <value>Select an AVI file</value>
   </data>
   <data name="str動画ファイル選択ダイアログのフィルタ" xml:space="preserve">
-    <value>動画ファイル(*.avi)|*.avi|すべてのファイル(*.*)|*.*</value>
+    <value>AVI files(*.avi)|*.avi|All files(*.*)|*.*</value>
   </data>
   <data name="str名前を付けて保存ダイアログのタイトル" xml:space="preserve">
     <value>Save As</value>
   </data>
   <data name="str小節番号に誤りがありますMSG" xml:space="preserve">
-    <value>小節番号に誤りがあります。</value>
+    <value>Illegal bar number.</value>
   </data>
   <data name="str検索結果ダイアログのタイトル" xml:space="preserve">
     <value>Find results</value>
   </data>
   <data name="str画像ファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>画像ファイルの選択</value>
+    <value>Select Image File</value>
   </data>
   <data name="str画像ファイル選択ダイアログのフィルタ" xml:space="preserve">
-    <value>画像ファイル(*.bmp;*.jpg;*.jpeg;*.png)|*.bmp;*.jpg;*.jpeg;*.png|すべてのファイル(*.*)|*.*</value>
+    <value>Image files(*.bmp;*.jpg;*.jpeg;*.png)|*.bmp;*.jpg;*.jpeg;*.png|All files(*.*)|*.*</value>
   </data>
   <data name="str確認ダイアログのタイトル" xml:space="preserve">
     <value>Confirmation</value>
   </data>
   <data name="str結果画像ファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>結果画像ファイルの選択</value>
+    <value>Select Reult Screen image file</value>
   </data>
   <data name="str編集中のデータを保存しますかMSG" xml:space="preserve">
     <value>The dtx data has changed.
 Do you want to save the changes?</value>
   </data>
   <data name="str置換結果ダイアログのタイトル" xml:space="preserve">
-    <value>置換結果</value>
+    <value>Replace result</value>
   </data>
   <data name="str背景画像ファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>背景画像ファイルの選択</value>
+    <value>Select background image file</value>
   </data>
   <data name="str該当するチップはありませんでしたMSG" xml:space="preserve">
-    <value>該当するチップはありませんでした。</value>
+    <value>No chips are found in the specified conditions.</value>
   </data>
   <data name="str読み込み中ですMSG" xml:space="preserve">
     <value>Now loading...</value>

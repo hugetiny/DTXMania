@@ -340,8 +340,7 @@
     <value>6</value>
   </data>
   <data name="button参照.Text" xml:space="preserve">
-    <value>Ref...
-</value>
+    <value>&amp;Browse...</value>
   </data>
   <data name="button参照.ToolTip" xml:space="preserve">
     <value>Select movie file</value>

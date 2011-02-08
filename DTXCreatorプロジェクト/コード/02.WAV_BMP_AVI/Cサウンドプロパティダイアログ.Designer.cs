@@ -60,69 +60,45 @@
 			// 
 			// textBoxラベル
 			// 
-			this.textBoxラベル.AccessibleDescription = null;
-			this.textBoxラベル.AccessibleName = null;
 			resources.ApplyResources( this.textBoxラベル, "textBoxラベル" );
-			this.textBoxラベル.BackgroundImage = null;
-			this.textBoxラベル.Font = null;
 			this.textBoxラベル.Name = "textBoxラベル";
 			this.toolTip1.SetToolTip( this.textBoxラベル, resources.GetString( "textBoxラベル.ToolTip" ) );
 			this.textBoxラベル.KeyDown += new System.Windows.Forms.KeyEventHandler( this.textBoxラベル_KeyDown );
 			// 
 			// labelラベル
 			// 
-			this.labelラベル.AccessibleDescription = null;
-			this.labelラベル.AccessibleName = null;
 			resources.ApplyResources( this.labelラベル, "labelラベル" );
-			this.labelラベル.Font = null;
 			this.labelラベル.Name = "labelラベル";
 			this.toolTip1.SetToolTip( this.labelラベル, resources.GetString( "labelラベル.ToolTip" ) );
 			// 
 			// textBoxファイル
 			// 
-			this.textBoxファイル.AccessibleDescription = null;
-			this.textBoxファイル.AccessibleName = null;
 			resources.ApplyResources( this.textBoxファイル, "textBoxファイル" );
-			this.textBoxファイル.BackgroundImage = null;
-			this.textBoxファイル.Font = null;
 			this.textBoxファイル.Name = "textBoxファイル";
 			this.toolTip1.SetToolTip( this.textBoxファイル, resources.GetString( "textBoxファイル.ToolTip" ) );
 			this.textBoxファイル.KeyDown += new System.Windows.Forms.KeyEventHandler( this.textBoxファイル_KeyDown );
 			// 
 			// labelファイル
 			// 
-			this.labelファイル.AccessibleDescription = null;
-			this.labelファイル.AccessibleName = null;
 			resources.ApplyResources( this.labelファイル, "labelファイル" );
-			this.labelファイル.Font = null;
 			this.labelファイル.Name = "labelファイル";
 			this.toolTip1.SetToolTip( this.labelファイル, resources.GetString( "labelファイル.ToolTip" ) );
 			// 
 			// label音量
 			// 
-			this.label音量.AccessibleDescription = null;
-			this.label音量.AccessibleName = null;
 			resources.ApplyResources( this.label音量, "label音量" );
-			this.label音量.Font = null;
 			this.label音量.Name = "label音量";
 			this.toolTip1.SetToolTip( this.label音量, resources.GetString( "label音量.ToolTip" ) );
 			// 
 			// label位置
 			// 
-			this.label位置.AccessibleDescription = null;
-			this.label位置.AccessibleName = null;
 			resources.ApplyResources( this.label位置, "label位置" );
-			this.label位置.Font = null;
 			this.label位置.Name = "label位置";
 			this.toolTip1.SetToolTip( this.label位置, resources.GetString( "label位置.ToolTip" ) );
 			// 
 			// button参照
 			// 
-			this.button参照.AccessibleDescription = null;
-			this.button参照.AccessibleName = null;
 			resources.ApplyResources( this.button参照, "button参照" );
-			this.button参照.BackgroundImage = null;
-			this.button参照.Font = null;
 			this.button参照.Name = "button参照";
 			this.toolTip1.SetToolTip( this.button参照, resources.GetString( "button参照.ToolTip" ) );
 			this.button参照.UseVisualStyleBackColor = true;
@@ -131,11 +107,7 @@
 			// 
 			// hScrollBar音量
 			// 
-			this.hScrollBar音量.AccessibleDescription = null;
-			this.hScrollBar音量.AccessibleName = null;
 			resources.ApplyResources( this.hScrollBar音量, "hScrollBar音量" );
-			this.hScrollBar音量.BackgroundImage = null;
-			this.hScrollBar音量.Font = null;
 			this.hScrollBar音量.Maximum = 109;
 			this.hScrollBar音量.Name = "hScrollBar音量";
 			this.toolTip1.SetToolTip( this.hScrollBar音量, resources.GetString( "hScrollBar音量.ToolTip" ) );
@@ -144,11 +116,7 @@
 			// 
 			// textBox音量
 			// 
-			this.textBox音量.AccessibleDescription = null;
-			this.textBox音量.AccessibleName = null;
 			resources.ApplyResources( this.textBox音量, "textBox音量" );
-			this.textBox音量.BackgroundImage = null;
-			this.textBox音量.Font = null;
 			this.textBox音量.Name = "textBox音量";
 			this.toolTip1.SetToolTip( this.textBox音量, resources.GetString( "textBox音量.ToolTip" ) );
 			this.textBox音量.KeyDown += new System.Windows.Forms.KeyEventHandler( this.textBox音量_KeyDown );
@@ -156,11 +124,7 @@
 			// 
 			// textBox位置
 			// 
-			this.textBox位置.AccessibleDescription = null;
-			this.textBox位置.AccessibleName = null;
 			resources.ApplyResources( this.textBox位置, "textBox位置" );
-			this.textBox位置.BackgroundImage = null;
-			this.textBox位置.Font = null;
 			this.textBox位置.Name = "textBox位置";
 			this.toolTip1.SetToolTip( this.textBox位置, resources.GetString( "textBox位置.ToolTip" ) );
 			this.textBox位置.KeyDown += new System.Windows.Forms.KeyEventHandler( this.textBox位置_KeyDown );
@@ -168,11 +132,7 @@
 			// 
 			// hScrollBar位置
 			// 
-			this.hScrollBar位置.AccessibleDescription = null;
-			this.hScrollBar位置.AccessibleName = null;
 			resources.ApplyResources( this.hScrollBar位置, "hScrollBar位置" );
-			this.hScrollBar位置.BackgroundImage = null;
-			this.hScrollBar位置.Font = null;
 			this.hScrollBar位置.Maximum = 209;
 			this.hScrollBar位置.Name = "hScrollBar位置";
 			this.toolTip1.SetToolTip( this.hScrollBar位置, resources.GetString( "hScrollBar位置.ToolTip" ) );
@@ -181,11 +141,7 @@
 			// 
 			// button背景色
 			// 
-			this.button背景色.AccessibleDescription = null;
-			this.button背景色.AccessibleName = null;
 			resources.ApplyResources( this.button背景色, "button背景色" );
-			this.button背景色.BackgroundImage = null;
-			this.button背景色.Font = null;
 			this.button背景色.Name = "button背景色";
 			this.toolTip1.SetToolTip( this.button背景色, resources.GetString( "button背景色.ToolTip" ) );
 			this.button背景色.UseVisualStyleBackColor = true;
@@ -194,11 +150,7 @@
 			// 
 			// button文字色
 			// 
-			this.button文字色.AccessibleDescription = null;
-			this.button文字色.AccessibleName = null;
 			resources.ApplyResources( this.button文字色, "button文字色" );
-			this.button文字色.BackgroundImage = null;
-			this.button文字色.Font = null;
 			this.button文字色.Name = "button文字色";
 			this.toolTip1.SetToolTip( this.button文字色, resources.GetString( "button文字色.ToolTip" ) );
 			this.button文字色.UseVisualStyleBackColor = true;
@@ -207,11 +159,7 @@
 			// 
 			// button標準色に戻す
 			// 
-			this.button標準色に戻す.AccessibleDescription = null;
-			this.button標準色に戻す.AccessibleName = null;
 			resources.ApplyResources( this.button標準色に戻す, "button標準色に戻す" );
-			this.button標準色に戻す.BackgroundImage = null;
-			this.button標準色に戻す.Font = null;
 			this.button標準色に戻す.Name = "button標準色に戻す";
 			this.toolTip1.SetToolTip( this.button標準色に戻す, resources.GetString( "button標準色に戻す.ToolTip" ) );
 			this.button標準色に戻す.UseVisualStyleBackColor = true;
@@ -220,11 +168,7 @@
 			// 
 			// button試聴
 			// 
-			this.button試聴.AccessibleDescription = null;
-			this.button試聴.AccessibleName = null;
 			resources.ApplyResources( this.button試聴, "button試聴" );
-			this.button試聴.BackgroundImage = null;
-			this.button試聴.Font = null;
 			this.button試聴.Name = "button試聴";
 			this.toolTip1.SetToolTip( this.button試聴, resources.GetString( "button試聴.ToolTip" ) );
 			this.button試聴.UseVisualStyleBackColor = true;
@@ -233,112 +177,66 @@
 			// 
 			// checkBoxBGM
 			// 
-			this.checkBoxBGM.AccessibleDescription = null;
-			this.checkBoxBGM.AccessibleName = null;
 			resources.ApplyResources( this.checkBoxBGM, "checkBoxBGM" );
-			this.checkBoxBGM.BackgroundImage = null;
-			this.checkBoxBGM.Font = null;
 			this.checkBoxBGM.Name = "checkBoxBGM";
 			this.toolTip1.SetToolTip( this.checkBoxBGM, resources.GetString( "checkBoxBGM.ToolTip" ) );
 			this.checkBoxBGM.UseVisualStyleBackColor = true;
 			// 
 			// buttonOK
 			// 
-			this.buttonOK.AccessibleDescription = null;
-			this.buttonOK.AccessibleName = null;
-			resources.ApplyResources( this.buttonOK, "buttonOK" );
-			this.buttonOK.BackgroundImage = null;
 			this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonOK.Font = null;
+			resources.ApplyResources( this.buttonOK, "buttonOK" );
 			this.buttonOK.Name = "buttonOK";
-			this.toolTip1.SetToolTip( this.buttonOK, resources.GetString( "buttonOK.ToolTip" ) );
 			this.buttonOK.UseVisualStyleBackColor = true;
 			// 
 			// buttonキャンセル
 			// 
-			this.buttonキャンセル.AccessibleDescription = null;
-			this.buttonキャンセル.AccessibleName = null;
-			resources.ApplyResources( this.buttonキャンセル, "buttonキャンセル" );
-			this.buttonキャンセル.BackgroundImage = null;
 			this.buttonキャンセル.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonキャンセル.Font = null;
+			resources.ApplyResources( this.buttonキャンセル, "buttonキャンセル" );
 			this.buttonキャンセル.Name = "buttonキャンセル";
-			this.toolTip1.SetToolTip( this.buttonキャンセル, resources.GetString( "buttonキャンセル.ToolTip" ) );
 			this.buttonキャンセル.UseVisualStyleBackColor = true;
 			// 
 			// textBoxWAV番号
 			// 
-			this.textBoxWAV番号.AccessibleDescription = null;
-			this.textBoxWAV番号.AccessibleName = null;
 			resources.ApplyResources( this.textBoxWAV番号, "textBoxWAV番号" );
-			this.textBoxWAV番号.BackgroundImage = null;
-			this.textBoxWAV番号.Font = null;
 			this.textBoxWAV番号.Name = "textBoxWAV番号";
 			this.textBoxWAV番号.ReadOnly = true;
 			this.textBoxWAV番号.TabStop = false;
-			this.toolTip1.SetToolTip( this.textBoxWAV番号, resources.GetString( "textBoxWAV番号.ToolTip" ) );
 			// 
 			// labelWAV番号
 			// 
-			this.labelWAV番号.AccessibleDescription = null;
-			this.labelWAV番号.AccessibleName = null;
 			resources.ApplyResources( this.labelWAV番号, "labelWAV番号" );
-			this.labelWAV番号.Font = null;
 			this.labelWAV番号.Name = "labelWAV番号";
-			this.toolTip1.SetToolTip( this.labelWAV番号, resources.GetString( "labelWAV番号.ToolTip" ) );
 			// 
 			// label音量無音
 			// 
-			this.label音量無音.AccessibleDescription = null;
-			this.label音量無音.AccessibleName = null;
 			resources.ApplyResources( this.label音量無音, "label音量無音" );
-			this.label音量無音.Font = null;
 			this.label音量無音.Name = "label音量無音";
-			this.toolTip1.SetToolTip( this.label音量無音, resources.GetString( "label音量無音.ToolTip" ) );
 			// 
 			// label位置左
 			// 
-			this.label位置左.AccessibleDescription = null;
-			this.label位置左.AccessibleName = null;
 			resources.ApplyResources( this.label位置左, "label位置左" );
-			this.label位置左.Font = null;
 			this.label位置左.Name = "label位置左";
-			this.toolTip1.SetToolTip( this.label位置左, resources.GetString( "label位置左.ToolTip" ) );
 			// 
 			// labe音量原音
 			// 
-			this.labe音量原音.AccessibleDescription = null;
-			this.labe音量原音.AccessibleName = null;
 			resources.ApplyResources( this.labe音量原音, "labe音量原音" );
-			this.labe音量原音.Font = null;
 			this.labe音量原音.Name = "labe音量原音";
-			this.toolTip1.SetToolTip( this.labe音量原音, resources.GetString( "labe音量原音.ToolTip" ) );
 			// 
 			// label位置右
 			// 
-			this.label位置右.AccessibleDescription = null;
-			this.label位置右.AccessibleName = null;
 			resources.ApplyResources( this.label位置右, "label位置右" );
-			this.label位置右.Font = null;
 			this.label位置右.Name = "label位置右";
-			this.toolTip1.SetToolTip( this.label位置右, resources.GetString( "label位置右.ToolTip" ) );
 			// 
 			// label位置中央
 			// 
-			this.label位置中央.AccessibleDescription = null;
-			this.label位置中央.AccessibleName = null;
 			resources.ApplyResources( this.label位置中央, "label位置中央" );
-			this.label位置中央.Font = null;
 			this.label位置中央.Name = "label位置中央";
-			this.toolTip1.SetToolTip( this.label位置中央, resources.GetString( "label位置中央.ToolTip" ) );
 			// 
 			// Cサウンドプロパティダイアログ
 			// 
-			this.AccessibleDescription = null;
-			this.AccessibleName = null;
 			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackgroundImage = null;
 			this.ControlBox = false;
 			this.Controls.Add( this.checkBoxBGM );
 			this.Controls.Add( this.button試聴 );
@@ -365,13 +263,10 @@
 			this.Controls.Add( this.textBoxラベル );
 			this.Controls.Add( this.buttonキャンセル );
 			this.Controls.Add( this.buttonOK );
-			this.Font = null;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.Icon = null;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Cサウンドプロパティダイアログ";
-			this.toolTip1.SetToolTip( this, resources.GetString( "$this.ToolTip" ) );
 			this.TopMost = true;
 			this.ResumeLayout( false );
 			this.PerformLayout();

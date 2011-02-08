@@ -41,10 +41,8 @@
 			// 
 			// numericUpDown小節長の倍率
 			// 
-			this.numericUpDown小節長の倍率.AccessibleDescription = null;
-			this.numericUpDown小節長の倍率.AccessibleName = null;
-			resources.ApplyResources( this.numericUpDown小節長の倍率, "numericUpDown小節長の倍率" );
 			this.numericUpDown小節長の倍率.DecimalPlaces = 3;
+			resources.ApplyResources( this.numericUpDown小節長の倍率, "numericUpDown小節長の倍率" );
 			this.numericUpDown小節長の倍率.Increment = new decimal( new int[] {
             5,
             0,
@@ -65,81 +63,54 @@
 			// 
 			// buttonOK
 			// 
-			this.buttonOK.AccessibleDescription = null;
-			this.buttonOK.AccessibleName = null;
 			resources.ApplyResources( this.buttonOK, "buttonOK" );
-			this.buttonOK.BackgroundImage = null;
 			this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonOK.Font = null;
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.UseVisualStyleBackColor = true;
 			// 
 			// buttonキャンセル
 			// 
-			this.buttonキャンセル.AccessibleDescription = null;
-			this.buttonキャンセル.AccessibleName = null;
 			resources.ApplyResources( this.buttonキャンセル, "buttonキャンセル" );
-			this.buttonキャンセル.BackgroundImage = null;
 			this.buttonキャンセル.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonキャンセル.Font = null;
 			this.buttonキャンセル.Name = "buttonキャンセル";
 			this.buttonキャンセル.UseVisualStyleBackColor = true;
 			// 
 			// textBox小節番号
 			// 
-			this.textBox小節番号.AccessibleDescription = null;
-			this.textBox小節番号.AccessibleName = null;
-			resources.ApplyResources( this.textBox小節番号, "textBox小節番号" );
-			this.textBox小節番号.BackgroundImage = null;
 			this.textBox小節番号.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.textBox小節番号.Font = null;
+			resources.ApplyResources( this.textBox小節番号, "textBox小節番号" );
 			this.textBox小節番号.Name = "textBox小節番号";
 			this.textBox小節番号.ReadOnly = true;
 			// 
 			// checkBox後続設定
 			// 
-			this.checkBox後続設定.AccessibleDescription = null;
-			this.checkBox後続設定.AccessibleName = null;
 			resources.ApplyResources( this.checkBox後続設定, "checkBox後続設定" );
-			this.checkBox後続設定.BackgroundImage = null;
-			this.checkBox後続設定.Font = null;
 			this.checkBox後続設定.Name = "checkBox後続設定";
 			this.checkBox後続設定.UseVisualStyleBackColor = true;
 			this.checkBox後続設定.KeyDown += new System.Windows.Forms.KeyEventHandler( this.checkBox後続設定_KeyDown );
 			// 
 			// label小節長倍率
 			// 
-			this.label小節長倍率.AccessibleDescription = null;
-			this.label小節長倍率.AccessibleName = null;
 			resources.ApplyResources( this.label小節長倍率, "label小節長倍率" );
-			this.label小節長倍率.Font = null;
 			this.label小節長倍率.Name = "label小節長倍率";
 			// 
 			// label小節番号
 			// 
-			this.label小節番号.AccessibleDescription = null;
-			this.label小節番号.AccessibleName = null;
 			resources.ApplyResources( this.label小節番号, "label小節番号" );
-			this.label小節番号.Font = null;
 			this.label小節番号.Name = "label小節番号";
 			// 
 			// C小節長変更ダイアログ
 			// 
-			this.AccessibleDescription = null;
-			this.AccessibleName = null;
 			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackgroundImage = null;
 			this.ControlBox = false;
-			this.Controls.Add( this.label小節番号 );
 			this.Controls.Add( this.label小節長倍率 );
+			this.Controls.Add( this.numericUpDown小節長の倍率 );
+			this.Controls.Add( this.label小節番号 );
 			this.Controls.Add( this.checkBox後続設定 );
 			this.Controls.Add( this.textBox小節番号 );
 			this.Controls.Add( this.buttonキャンセル );
 			this.Controls.Add( this.buttonOK );
-			this.Controls.Add( this.numericUpDown小節長の倍率 );
-			this.Font = null;
-			this.Icon = null;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "C小節長変更ダイアログ";
