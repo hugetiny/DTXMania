@@ -638,26 +638,27 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 				{
 					if ( _ePad[ i ] != stct[ j ].ePad )
 					{
-Debug.WriteLine( "CMD解析: false targetCount=" + targetCount + ", i=" + i + ", j=" + j + ": ePad[]=" + _ePad[i] + ", stci[j] = " + stct[j].ePad );
+//Debug.WriteLine( "CMD解析: false targetCount=" + targetCount + ", i=" + i + ", j=" + j + ": ePad[]=" + _ePad[i] + ", stci[j] = " + stct[j].ePad );
 						return false;
 					}
 					if ( stct[ j ].eInst != _eInst )
 					{
-Debug.WriteLine( "CMD解析: false " + i );
+//Debug.WriteLine( "CMD解析: false " + i );
 						return false;
 					}
 					if ( curTime - stct[ j ].time > 500 )
 					{
-Debug.WriteLine( "CMD解析: false " + i + "; over 500ms" );
+//Debug.WriteLine( "CMD解析: false " + i + "; over 500ms" );
 						return false;
 					}
 					curTime = stct[ j ].time;
 				}
 
-Debug.Write( "CMD解析: 成功!(" + _ePad.Length + ") " );
-for ( int i = 0; i < _ePad.Length; i++ ) Debug.Write( _ePad[ i ] + ", " );
-Debug.WriteLine( "" );
-				stct.RemoveRange( 0, targetCount );
+//Debug.Write( "CMD解析: 成功!(" + _ePad.Length + ") " );
+//for ( int i = 0; i < _ePad.Length; i++ ) Debug.Write( _ePad[ i ] + ", " );
+//Debug.WriteLine( "" );
+				//stct.RemoveRange( 0, targetCount );			// #24396 2011.2.13 yyagi 
+				stct.Clear();									// #24396 2011.2.13 yyagi Clear all command input history in case you succeeded inputting some command
 
 				return true;
 			}
