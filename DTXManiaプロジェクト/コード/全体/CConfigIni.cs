@@ -1146,56 +1146,26 @@ namespace DTXMania
 			sw.WriteLine( "; バッファ入力モード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BufferedInput={0}", this.bバッファ入力を行う ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine("; 判定タイミング調整(ドラム)(-99～99)[ms]");						// #23580 2011.1.3 yyagi
-			sw.WriteLine("; Revision value to adjust judgement timing for the drums.");		//
+			sw.WriteLine("; 判定タイミング調整(ドラム, ギター, ベース)(-99～0)[ms]");		// #23580 2011.1.3 yyagi
+			sw.WriteLine("; Revision value to adjust judgement timing for the drums, guitar and bass.");	//
 			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs.Drums);		//
-			sw.WriteLine();
-			sw.WriteLine("; 判定タイミング調整(ギター)(-99～99)[ms]");						// #23580 2011.1.3 yyagi
-			sw.WriteLine("; Revision value to adjust judgement timing for the guitar.");	//
 			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs.Guitar);		//
-			sw.WriteLine();
-			sw.WriteLine("; 判定タイミング調整(ベース)(-99～99)[ms]");						// #23580 2011.1.3 yyagi
-			sw.WriteLine("; Revision value to adjust judgement timing for the bass.");		//
 			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs.Bass);			//
 			sw.WriteLine();
-			sw.WriteLine( "; LCの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
-			sw.WriteLine( "; Minimum velocity value for LC to accept." );						//
+			sw.WriteLine( "; LC, HH, SD,...の入力切り捨て下限Velocity値(0～127)" );			// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; Minimum velocity value for LC, HH, SD, ... to accept." );		//
 			sw.WriteLine( "LCVelocityMin={0}", this.nVelocityMin.LC );						//
-			sw.WriteLine();																	//
-			sw.WriteLine( "; ハイハット入力切り捨て下限Velocity値(0～127)" );					// #23857 2010.12.12 yyagi
-			sw.WriteLine("; Minimum velocity value for HH to accept.");						//
 			sw.WriteLine("HHVelocityMin={0}", this.nVelocityMin.HH );						//
-			sw.WriteLine();
 //			sw.WriteLine("; ハイハット以外の入力切り捨て下限Velocity値(0～127)");			// #23857 2010.12.12 yyagi
 //			sw.WriteLine("; Minimum velocity value to accept. (except HiHat)");				//
 //			sw.WriteLine("VelocityMin={0}", this.n切り捨て下限Velocity);					//
 //			sw.WriteLine();																	//
-			sw.WriteLine( "; SDの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
-			sw.WriteLine( "; Minimum velocity value for SD to accept." );					//
 			sw.WriteLine( "SDVelocityMin={0}", this.nVelocityMin.SD );						//
-			sw.WriteLine();																	//
-			sw.WriteLine( "; BDの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
-			sw.WriteLine( "; Minimum velocity value for BD to accept." );					//
 			sw.WriteLine( "BDVelocityMin={0}", this.nVelocityMin.BD );						//
-			sw.WriteLine();																	//
-			sw.WriteLine( "; HTの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
-			sw.WriteLine( "; Minimum velocity value for HT to accept." );					//
 			sw.WriteLine( "HTVelocityMin={0}", this.nVelocityMin.HT );						//
-			sw.WriteLine();																	//
-			sw.WriteLine( "; LTの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
-			sw.WriteLine( "; Minimum velocity value for LT to accept." );					//
 			sw.WriteLine( "LTVelocityMin={0}", this.nVelocityMin.LT );						//
-			sw.WriteLine();																	//
-			sw.WriteLine( "; FTの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
-			sw.WriteLine( "; Minimum velocity value for FT to accept." );					//
 			sw.WriteLine( "FTVelocityMin={0}", this.nVelocityMin.FT );						//
-			sw.WriteLine();																	//
-			sw.WriteLine( "; CYの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
-			sw.WriteLine( "; Minimum velocity value for CY to accept." );					//
 			sw.WriteLine( "CYVelocityMin={0}", this.nVelocityMin.CY );						//
-			sw.WriteLine();																	//
-			sw.WriteLine( "; RDの入力切り捨て下限Velocity値(0～127)" );						// #23857 2011.1.31 yyagi
-			sw.WriteLine( "; Minimum velocity value for RD to accept." );					//
 			sw.WriteLine( "RDVelocityMin={0}", this.nVelocityMin.RD );						//
 			sw.WriteLine();																	//
 			sw.WriteLine( ";-------------------" );
@@ -1739,15 +1709,15 @@ namespace DTXMania
 												}
 												else if ( str3.Equals("InputAdjustTimeDrums") )		// #23580 2011.1.3 yyagi
 												{
-													this.nInputAdjustTimeMs.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 99, this.nInputAdjustTimeMs.Drums);
+													this.nInputAdjustTimeMs.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 0, this.nInputAdjustTimeMs.Drums);
 												}
 												else if ( str3.Equals("InputAdjustTimeGuitar") )	// #23580 2011.1.3 yyagi
 												{
-													this.nInputAdjustTimeMs.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 99, this.nInputAdjustTimeMs.Guitar);
+													this.nInputAdjustTimeMs.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 0, this.nInputAdjustTimeMs.Guitar);
 												}
 												else if ( str3.Equals("InputAdjustTimeBass") )		// #23580 2011.1.3 yyagi
 												{
-													this.nInputAdjustTimeMs.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 99, this.nInputAdjustTimeMs.Bass);
+													this.nInputAdjustTimeMs.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 0, this.nInputAdjustTimeMs.Bass);
 												}
 												else if ( str3.Equals("BufferedInput") ) {
 													this.bバッファ入力を行う = C変換.bONorOFF(str4[0]);

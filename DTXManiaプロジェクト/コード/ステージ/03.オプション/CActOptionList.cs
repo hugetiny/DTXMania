@@ -88,9 +88,9 @@ namespace DTXMania
 				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
 			this.list項目リスト.Add( this.iBassLeft );
 																						// #23580 2011.1.3 yyagi
-			this.iBassInputAdjustTimeMs = new CItemInteger("InputAdjust", -99, 99, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass,
-				"ベースの入力タイミングの微調整を\n行います。\n-99 ～ 99ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
-				"To adjust the bass input timing.\nYou can set from -99 to 99ms.\nTo decrease input lag, set minus value.");
+			this.iBassInputAdjustTimeMs = new CItemInteger("InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass,
+				"ベースの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。入力ラグを軽減するためには、負の\n値を指定してください。",
+				"To adjust the bass input timing.\nYou can set from -99 to 0ms.\nTo decrease input lag, set minus value.");
 			this.list項目リスト.Add(this.iBassInputAdjustTimeMs);
 
 			this.n現在の選択項目 = 0;
@@ -191,9 +191,9 @@ namespace DTXMania
 				"It becomes MISS to hit pad without\n chip.");
 			this.list項目リスト.Add( this.iDrumsTight );
 																					// #23580 2011.1.3 yyagi
-			this.iDrumsInputAdjustTimeMs = new CItemInteger("InputAdjust", -99, 99, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums,
-				"ドラムの入力タイミングの微調整を\n行います。\n-99 ～ 99ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
-				"To adjust the drums input timing.\nYou can set from -99 to 99ms.\nTo decrease input lag, set minus value.");
+			this.iDrumsInputAdjustTimeMs = new CItemInteger("InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums,
+				"ドラムの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
+				"To adjust the drums input timing.\nYou can set from -99 to 0ms.\nTo decrease input lag, set minus value.");
 			this.list項目リスト.Add(this.iDrumsInputAdjustTimeMs);
             // #24074 2011.01.23 add ikanick
 			this.iDrumsGraph = new CItemToggle( "Graph", CDTXMania.ConfigIni.bGraph.Drums,
@@ -256,9 +256,9 @@ namespace DTXMania
 				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
 			this.list項目リスト.Add( this.iGuitarLeft );
 																					// #23580 2011.1.3 yyagi
-			this.iGuitarInputAdjustTimeMs= new CItemInteger("InputAdjust", -99, 99, CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar,
-				"ギターの入力タイミングの微調整を\n行います。\n-99 ～ 99ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
-				"To adjust the guitar input timing.\nYou can set from -99 to 99ms.\nTo decrease input lag, set minus value." );
+			this.iGuitarInputAdjustTimeMs= new CItemInteger("InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar,
+				"ギターの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
+				"To adjust the guitar input timing.\nYou can set from -99 to 0ms.\nTo decrease input lag, set minus value." );
 			this.list項目リスト.Add( this.iGuitarInputAdjustTimeMs );
 
 			this.n現在の選択項目 = 0;
