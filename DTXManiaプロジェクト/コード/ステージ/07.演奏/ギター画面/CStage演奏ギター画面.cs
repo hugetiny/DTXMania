@@ -13,6 +13,13 @@ namespace DTXMania
 {
 	internal class CStage演奏ギター画面 : CStage演奏画面共通
 	{
+		// プロパティ
+
+		public bool bAUTOでないチップが１つでもバーを通過した
+		{
+			get;
+			private set;
+		}
 
 		// コンストラクタ
 
