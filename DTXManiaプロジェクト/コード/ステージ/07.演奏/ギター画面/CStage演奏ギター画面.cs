@@ -11,16 +11,8 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CStage演奏ギター画面 : CStage
+	internal class CStage演奏ギター画面 : CStage演奏画面共通
 	{
-		// プロパティ
-
-		public bool bAUTOでないチップが１つでもバーを通過した
-		{
-			get;
-			private set;
-		}
-
 
 		// コンストラクタ
 
@@ -393,9 +385,9 @@ namespace DTXMania
 			}
 
 			this.nInputAdjustTimeMs[ part ] += offset;
-			if ( this.nInputAdjustTimeMs[ part ] > 99 )
+			if ( this.nInputAdjustTimeMs[ part ] > 0 )
 			{
-				this.nInputAdjustTimeMs[ part ] = 99;
+				this.nInputAdjustTimeMs[ part ] = 0;
 			}
 			else if ( this.nInputAdjustTimeMs[ part ] < -99 )
 			{
