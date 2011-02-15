@@ -215,6 +215,17 @@ namespace FDK
 		{
 //Trace.TraceInformation("tデコード後のサイズを調べる、を開始。");
 			_nHandle = -1;
+
+			#region [ #24416 2011.2.15 yyagi; to avoid application error in case filesize==0 ]
+			FileInfo fi = new FileInfo( strファイル名 );
+			long filesize = fi.Length;
+			if ( filesize <= 0 )
+			{
+				return -1;
+			}
+			fi = null;
+			#endregion
+
 			int nHandle = this.Open(strファイル名);
 			if( nHandle < 0 )
 			{
