@@ -6,11 +6,11 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CAct演奏Guitarゲージ : CActivity
+	internal class CAct演奏Guitarゲージ : CAct演奏ゲージ
 	{
 		// プロパティ
 
-		public STDGBVALUE<double> db現在のゲージ値;
+//		public STDGBVALUE<double> db現在のゲージ値;
 
 
 		// コンストラクタ
@@ -203,9 +203,9 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private CCounter ct本体移動;
-		private CCounter ct本体振動;
-		private CTexture txゲージ;
+		//private CCounter ct本体移動;
+		//private CCounter ct本体振動;
+		//private CTexture txゲージ;
 		//-----------------
 		#endregion
 	}

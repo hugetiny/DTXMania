@@ -8,25 +8,25 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CAct演奏Drumsゲージ : CActivity
+	internal class CAct演奏Drumsゲージ : CAct演奏ゲージ
 	{
 		// プロパティ
 
-		public double db現在のゲージ値
-		{
-			get
-			{
-				return this.dbゲージ値;
-			}
-			set
-			{
-				this.dbゲージ値 = value;
-				if( this.dbゲージ値 > 1.0 )
-				{
-					this.dbゲージ値 = 1.0;
-				}
-			}
-		}
+//		public double db現在のゲージ値
+//		{
+//			get
+//			{
+//				return this.dbゲージ値;
+//			}
+//			set
+//			{
+//				this.dbゲージ値 = value;
+//				if( this.dbゲージ値 > 1.0 )
+//				{
+//					this.dbゲージ値 = 1.0;
+//				}
+//			}
+//		}
 
 		
 		// コンストラクタ
@@ -211,12 +211,12 @@ namespace DTXMania
 			public CCounter ct進行;
 		}
 
-		private CCounter ct本体移動;
-		private CCounter ct本体振動;
-		private double dbゲージ値;
+		//private CCounter ct本体移動;
+		//private CCounter ct本体振動;
+		//private double dbゲージ値;
 		private const int STAR_MAX = 0x18;
 		private ST白い星[] st白い星 = new ST白い星[ 0x18 ];
-		private CTexture txゲージ;
+		//private CTexture txゲージ;
 		//-----------------
 		#endregion
 	}
