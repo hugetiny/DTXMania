@@ -225,10 +225,10 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.t背景テクスチャの生成();
+				//this.t背景テクスチャの生成();
 				this.txチップ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayGuitar chips.png" ) );
 				this.txヒットバー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayGuitar hit-bar.png" ) );
-				this.txWailing枠 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay wailing cursor.png" ) );
+				//this.txWailing枠 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay wailing cursor.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -236,10 +236,10 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.tx背景 );
+				//CDTXMania.tテクスチャの解放( ref this.tx背景 );
 				CDTXMania.tテクスチャの解放( ref this.txチップ );
 				CDTXMania.tテクスチャの解放( ref this.txヒットバー );
-				CDTXMania.tテクスチャの解放( ref this.txWailing枠 );
+				//CDTXMania.tテクスチャの解放( ref this.txWailing枠 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -534,8 +534,8 @@ namespace DTXMania
 		//    }
 		//}
 
-		private CAct演奏AVI actAVI;
-		private CAct演奏BGA actBGA;
+		//private CAct演奏AVI actAVI;
+		//private CAct演奏BGA actBGA;
 		private CAct演奏Guitarチップファイア actChipFire;
 		private CAct演奏Guitarコンボ actCombo;
 		//private CActFIFOBlack actFI;
@@ -544,14 +544,14 @@ namespace DTXMania
 		//private CAct演奏Guitarゲージ actGauge;
 		private CAct演奏Guitar判定文字列 actJudgeString;
 		private CAct演奏GuitarレーンフラッシュGB actLaneFlushGB;
-		private CAct演奏パネル文字列 actPanel;
-		private CAct演奏演奏情報 actPlayInfo;
+		//private CAct演奏パネル文字列 actPanel;
+		//private CAct演奏演奏情報 actPlayInfo;
 		private CAct演奏GuitarRGB actRGB;
 		private CAct演奏Guitarスコア actScore;
-		private CAct演奏ステージ失敗 actStageFailed;
+		//private CAct演奏ステージ失敗 actStageFailed;
 		private CAct演奏Guitarステータスパネル actStatusPanels;
-		private CAct演奏GuitarWailingBonus actWailingBonus;
-		private CAct演奏スクロール速度 act譜面スクロール速度;
+		//private CAct演奏GuitarWailingBonus actWailingBonus;
+		//private CAct演奏スクロール速度 act譜面スクロール速度;
 		//private bool bPAUSE;
 		//private STDGBVALUE<bool> b演奏にMIDI入力を使った;
 		//private STDGBVALUE<bool> b演奏にキーボードを使った;
@@ -581,10 +581,10 @@ namespace DTXMania
 		private CDTX.CChip r現在の空うちベースChip;
 		//private CDTX.CChip r次にくるギターChip;
 		//private CDTX.CChip r次にくるベースChip;
-		private CTexture txWailing枠;
+		//private CTexture txWailing枠;
 		private CTexture txチップ;
 		private CTexture txヒットバー;
-		private CTexture tx背景;
+		//private CTexture tx背景;
 		// private STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 		//private STDGBVALUE<bool> bIsAutoPlay;				// #24239 2011.1.23 yyagi
 
@@ -1089,34 +1089,28 @@ namespace DTXMania
 					return;
 			}
 		}
-		private void tパネル文字列の設定()
+		//private void tパネル文字列の設定()
+		//{
+		//    this.actPanel.SetPanelString( string.IsNullOrEmpty( CDTXMania.DTX.PANEL ) ? CDTXMania.DTX.TITLE : CDTXMania.DTX.PANEL );
+		//}
+		protected override void t進行描画・AVI()
 		{
-			this.actPanel.SetPanelString( string.IsNullOrEmpty( CDTXMania.DTX.PANEL ) ? CDTXMania.DTX.TITLE : CDTXMania.DTX.PANEL );
+			base.t進行描画・AVI( 0xb5, 50 );
 		}
-		private void t進行描画・AVI()
+		protected override void t進行描画・BGA()
 		{
-			if( ( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) && ( !CDTXMania.ConfigIni.bストイックモード && CDTXMania.ConfigIni.bAVI有効 ) )
-			{
-				this.actAVI.t進行描画( 0xb5, 50 );
-			}
-		}
-		private void t進行描画・BGA()
-		{
-			if( ( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) && ( !CDTXMania.ConfigIni.bストイックモード && CDTXMania.ConfigIni.bBGA有効 ) )
-			{
-				this.actBGA.t進行描画( 0xb5, 50 );
-			}
+			base.t進行描画・BGA( 0xb5, 50 );
 		}
 		private void t進行描画・DANGER()
 		{
 		}
-		private void t進行描画・MIDIBGM()
-		{
-			if( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED )
-			{
-				CStage.Eフェーズ eフェーズid1 = base.eフェーズID;
-			}
-		}
+		//private void t進行描画・MIDIBGM()
+		//{
+		//    if( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED )
+		//    {
+		//        CStage.Eフェーズ eフェーズid1 = base.eフェーズID;
+		//    }
+		//}
 		private void t進行描画・RGBボタン()
 		{
 			if( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
@@ -1124,35 +1118,28 @@ namespace DTXMania
 				this.actRGB.On進行描画();
 			}
 		}
-		private void t進行描画・STAGEFAILED()
+		//private void t進行描画・STAGEFAILED()
+		//{
+		//    if( ( ( base.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED ) || ( base.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) && ( ( this.actStageFailed.On進行描画() != 0 ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) )
+		//    {
+		//        this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.ステージ失敗;
+		//        base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト;
+		//        this.actFO.tフェードアウト開始();
+		//    }
+		//}
+		//private void t進行描画・WailingBonus()
+		//{
+		//    if( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )
+		//    {
+		//        this.actWailingBonus.On進行描画();
+		//    }
+		//}
+		protected override void t進行描画・Wailing枠()
 		{
-			if( ( ( base.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED ) || ( base.eフェーズID == CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) && ( ( this.actStageFailed.On進行描画() != 0 ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) )
-			{
-				this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.ステージ失敗;
-				base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト;
-				this.actFO.tフェードアウト開始();
-			}
-		}
-		private void t進行描画・WailingBonus()
-		{
-			if( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )
-			{
-				this.actWailingBonus.On進行描画();
-			}
-		}
-		private void t進行描画・Wailing枠()
-		{
-			if( ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL ) && CDTXMania.ConfigIni.bGuitar有効 )
-			{
-				if( CDTXMania.DTX.bチップがある.Guitar && ( this.txWailing枠 != null ) )
-				{
-					this.txWailing枠.t2D描画( CDTXMania.app.Device, 0x8b, CDTXMania.ConfigIni.bReverse.Guitar ? 340 : 11 );
-				}
-				if( CDTXMania.DTX.bチップがある.Bass && ( this.txWailing枠 != null ) )
-				{
-					this.txWailing枠.t2D描画( CDTXMania.app.Device, 0x251, CDTXMania.ConfigIni.bReverse.Bass ? 340 : 11 );
-				}
-			}
+			base.t進行描画・Wailing枠( 0x8b, 0x251,
+				CDTXMania.ConfigIni.bReverse.Guitar ? 340 : 11,
+				CDTXMania.ConfigIni.bReverse.Bass ?   340 : 11
+			);
 		}
 		private void t進行描画・ギターベース判定ライン()
 		{
@@ -1182,13 +1169,13 @@ namespace DTXMania
 				}
 			}
 		}
-		private void t進行描画・ゲージ()
-		{
-			if( ( ( CDTXMania.ConfigIni.eDark != Eダークモード.HALF ) && ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL ) ) && ( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) )
-			{
-				this.actGauge.On進行描画();
-			}
-		}
+		//private void t進行描画・ゲージ()
+		//{
+		//    if( ( ( CDTXMania.ConfigIni.eDark != Eダークモード.HALF ) && ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL ) ) && ( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) )
+		//    {
+		//        this.actGauge.On進行描画();
+		//    }
+		//}
 		private void t進行描画・コンボ()
 		{
 			this.actCombo.On進行描画();
@@ -1906,12 +1893,9 @@ namespace DTXMania
 		{
 			this.actChipFire.On進行描画();
 		}
-		private void t進行描画・パネル文字列()
+		protected override void t進行描画・パネル文字列()
 		{
-			if( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )
-			{
-				this.actPanel.t進行描画( 0xb5, 430 );
-			}
+			base.t進行描画・パネル文字列( 0xb5, 430 );
 		}
 		//private bool t進行描画・フェードイン・アウト()
 		//{
@@ -1948,35 +1932,32 @@ namespace DTXMania
 				this.actLaneFlushGB.On進行描画();
 			}
 		}
-		private void t進行描画・演奏情報()
+		protected override void t進行描画・演奏情報()
 		{
-			if( !CDTXMania.ConfigIni.b演奏情報を表示しない )
-			{
-				this.actPlayInfo.t進行描画( 0xb5, 50 );
-			}
+			base.t進行描画・演奏情報( 0xb5, 50 );
 		}
-		private void t進行描画・背景()
-		{
-			if( CDTXMania.ConfigIni.eDark == Eダークモード.OFF )
-			{
-				if( this.tx背景 != null )
-				{
-					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
-				}
-			}
-			else
-			{
-				CDTXMania.app.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 0f, 0 );
-			}
-		}
+		//private void t進行描画・背景()
+		//{
+		//    if( CDTXMania.ConfigIni.eDark == Eダークモード.OFF )
+		//    {
+		//        if( this.tx背景 != null )
+		//        {
+		//            this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
+		//        }
+		//    }
+		//    else
+		//    {
+		//        CDTXMania.app.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 0f, 0 );
+		//    }
+		//}
 		private void t進行描画・判定文字列()
 		{
 			this.actJudgeString.On進行描画();
 		}
-		private void t進行描画・譜面スクロール速度()
-		{
-			this.act譜面スクロール速度.On進行描画();
-		}
+		//private void t進行描画・譜面スクロール速度()
+		//{
+		//    this.act譜面スクロール速度.On進行描画();
+		//}
 		//private void t入力メソッド記憶( E楽器パート part )
 		//{
 		//    if( CDTXMania.Pad.st検知したデバイス.Keyboard )
@@ -2281,103 +2262,126 @@ namespace DTXMania
 				}
 			}
 		}
-		private void t背景テクスチャの生成()
+
+		protected override void t背景テクスチャの生成()
 		{
-			Bitmap image = null;
-			string path = "";
-			bool flag = true;
-			if( !CDTXMania.ConfigIni.bストイックモード )
+			Rectangle bgrect = new Rectangle( 181, 50, 278, 355 );
+			string DefaultBgFilename = @"Graphics\ScreenPlayGuitar background.jpg";
+			string BgFilename = "";
+			string BACKGROUND = null;
+			if ( ( CDTXMania.DTX.BACKGROUND_GR != null ) && ( CDTXMania.DTX.BACKGROUND_GR.Length > 0 ) )
 			{
-				string bACKGROUND = null;
-				if( ( CDTXMania.DTX.BACKGROUND_GR != null ) && ( CDTXMania.DTX.BACKGROUND_GR.Length > 0 ) )
-				{
-					bACKGROUND = CDTXMania.DTX.BACKGROUND_GR;
-				}
-				else if( ( CDTXMania.DTX.BACKGROUND != null ) && ( CDTXMania.DTX.BACKGROUND.Length > 0 ) )
-				{
-					bACKGROUND = CDTXMania.DTX.BACKGROUND;
-				}
-				if( ( bACKGROUND != null ) && ( bACKGROUND.Length > 0 ) )
-				{
-					path = CDTXMania.DTX.strフォルダ名 + bACKGROUND;
-					if( File.Exists( path ) )
-					{
-						try
-						{
-							Bitmap bitmap2 = null;
-							bitmap2 = new Bitmap( path );
-							if( ( bitmap2.Size.Width == 0 ) && ( bitmap2.Size.Height == 0 ) )
-							{
-								this.tx背景 = null;
-								return;
-							}
-							Bitmap bitmap3 = new Bitmap( 640, 480 );
-							Graphics graphics = Graphics.FromImage( bitmap3 );
-							for( int i = 0; i < 480; i += bitmap2.Size.Height )
-							{
-								for( int j = 0; j < 640; j += bitmap2.Size.Width )
-								{
-									graphics.DrawImage( bitmap2, j, i, bitmap2.Width, bitmap2.Height );
-								}
-							}
-							graphics.Dispose();
-							bitmap2.Dispose();
-							image = new Bitmap( CSkin.Path( @"Graphics\\ScreenPlayGuitar background.jpg" ) );
-							graphics = Graphics.FromImage( image );
-							ColorMatrix matrix2 = new ColorMatrix();
-							matrix2.Matrix00 = 1f;
-							matrix2.Matrix11 = 1f;
-							matrix2.Matrix22 = 1f;
-							matrix2.Matrix33 = ( (float) CDTXMania.ConfigIni.n背景の透過度 ) / 255f;
-							matrix2.Matrix44 = 1f;
-							ColorMatrix newColorMatrix = matrix2;
-							ImageAttributes imageAttr = new ImageAttributes();
-							imageAttr.SetColorMatrix( newColorMatrix );
-							graphics.DrawImage( bitmap3, new Rectangle( 0, 0, 640, 480 ), 0, 0, 640, 480, GraphicsUnit.Pixel, imageAttr );
-							imageAttr.Dispose();
-							graphics.DrawImage( bitmap3, new Rectangle( 0xb5, 50, 0x116, 0x163 ), 0xb5, 50, 0x116, 0x163, GraphicsUnit.Pixel );
-							graphics.Dispose();
-							bitmap3.Dispose();
-							flag = false;
-						}
-						catch
-						{
-							Trace.TraceError( "背景画像の読み込みに失敗しました。({0})", new object[] { path } );
-						}
-					}
-				}
+				BACKGROUND = CDTXMania.DTX.BACKGROUND_GR;
 			}
-			if( flag )
+			else if ( ( CDTXMania.DTX.BACKGROUND != null ) && ( CDTXMania.DTX.BACKGROUND.Length > 0 ) )
 			{
-				path = CSkin.Path( @"Graphics\ScreenPlayGuitar background.jpg" );
-				try
-				{
-					image = new Bitmap( path );
-				}
-				catch
-				{
-					Trace.TraceError( "背景画像の読み込みに失敗しました。({0})", new object[] { path } );
-					this.tx背景 = null;
-					return;
-				}
+				BACKGROUND = CDTXMania.DTX.BACKGROUND;
 			}
-			if( ( CDTXMania.DTX.listBMP.Count > 0 ) || ( CDTXMania.DTX.listBMPTEX.Count > 0 ) )
+			if ( ( BACKGROUND != null ) && ( BACKGROUND.Length > 0 ) )
 			{
-				Graphics graphics2 = Graphics.FromImage( image );
-				graphics2.FillRectangle( Brushes.Black, 0xb5, 50, 0x116, 0x163 );
-				graphics2.Dispose();
+				BgFilename = CDTXMania.DTX.strフォルダ名 + BACKGROUND;
 			}
-			try
-			{
-				this.tx背景 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
-			}
-			catch( CTextureCreateFailedException )
-			{
-				Trace.TraceError( "背景テクスチャの生成に失敗しました。" );
-				this.tx背景 = null;
-			}
-			image.Dispose();
+			base.t背景テクスチャの生成( DefaultBgFilename, bgrect, BgFilename );
 		}
+
+
+		//private void t背景テクスチャの生成()
+		//{
+		//    Bitmap image = null;
+		//    string path = "";
+		//    bool flag = true;
+		//    if( !CDTXMania.ConfigIni.bストイックモード )
+		//    {
+		//        string bACKGROUND = null;
+		//        if( ( CDTXMania.DTX.BACKGROUND_GR != null ) && ( CDTXMania.DTX.BACKGROUND_GR.Length > 0 ) )
+		//        {
+		//            bACKGROUND = CDTXMania.DTX.BACKGROUND_GR;
+		//        }
+		//        else if( ( CDTXMania.DTX.BACKGROUND != null ) && ( CDTXMania.DTX.BACKGROUND.Length > 0 ) )
+		//        {
+		//            bACKGROUND = CDTXMania.DTX.BACKGROUND;
+		//        }
+		//        if( ( bACKGROUND != null ) && ( bACKGROUND.Length > 0 ) )
+		//        {
+		//            path = CDTXMania.DTX.strフォルダ名 + bACKGROUND;
+		//            if( File.Exists( path ) )
+		//            {
+		//                try
+		//                {
+		//                    Bitmap bitmap2 = null;
+		//                    bitmap2 = new Bitmap( path );
+		//                    if( ( bitmap2.Size.Width == 0 ) && ( bitmap2.Size.Height == 0 ) )
+		//                    {
+		//                        this.tx背景 = null;
+		//                        return;
+		//                    }
+		//                    Bitmap bitmap3 = new Bitmap( 640, 480 );
+		//                    Graphics graphics = Graphics.FromImage( bitmap3 );
+		//                    for( int i = 0; i < 480; i += bitmap2.Size.Height )
+		//                    {
+		//                        for( int j = 0; j < 640; j += bitmap2.Size.Width )
+		//                        {
+		//                            graphics.DrawImage( bitmap2, j, i, bitmap2.Width, bitmap2.Height );
+		//                        }
+		//                    }
+		//                    graphics.Dispose();
+		//                    bitmap2.Dispose();
+		//                    image = new Bitmap( CSkin.Path( @"Graphics\\ScreenPlayGuitar background.jpg" ) );
+		//                    graphics = Graphics.FromImage( image );
+		//                    ColorMatrix matrix2 = new ColorMatrix();
+		//                    matrix2.Matrix00 = 1f;
+		//                    matrix2.Matrix11 = 1f;
+		//                    matrix2.Matrix22 = 1f;
+		//                    matrix2.Matrix33 = ( (float) CDTXMania.ConfigIni.n背景の透過度 ) / 255f;
+		//                    matrix2.Matrix44 = 1f;
+		//                    ColorMatrix newColorMatrix = matrix2;
+		//                    ImageAttributes imageAttr = new ImageAttributes();
+		//                    imageAttr.SetColorMatrix( newColorMatrix );
+		//                    graphics.DrawImage( bitmap3, new Rectangle( 0, 0, 640, 480 ), 0, 0, 640, 480, GraphicsUnit.Pixel, imageAttr );
+		//                    imageAttr.Dispose();
+		//                    graphics.DrawImage( bitmap3, new Rectangle( 0xb5, 50, 0x116, 0x163 ), 0xb5, 50, 0x116, 0x163, GraphicsUnit.Pixel );
+		//                    graphics.Dispose();
+		//                    bitmap3.Dispose();
+		//                    flag = false;
+		//                }
+		//                catch
+		//                {
+		//                    Trace.TraceError( "背景画像の読み込みに失敗しました。({0})", new object[] { path } );
+		//                }
+		//            }
+		//        }
+		//    }
+		//    if( flag )
+		//    {
+		//        path = CSkin.Path( @"Graphics\ScreenPlayGuitar background.jpg" );
+		//        try
+		//        {
+		//            image = new Bitmap( path );
+		//        }
+		//        catch
+		//        {
+		//            Trace.TraceError( "背景画像の読み込みに失敗しました。({0})", new object[] { path } );
+		//            this.tx背景 = null;
+		//            return;
+		//        }
+		//    }
+		//    if( ( CDTXMania.DTX.listBMP.Count > 0 ) || ( CDTXMania.DTX.listBMPTEX.Count > 0 ) )
+		//    {
+		//        Graphics graphics2 = Graphics.FromImage( image );
+		//        graphics2.FillRectangle( Brushes.Black, 0xb5, 50, 0x116, 0x163 );
+		//        graphics2.Dispose();
+		//    }
+		//    try
+		//    {
+		//        this.tx背景 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+		//    }
+		//    catch( CTextureCreateFailedException )
+		//    {
+		//        Trace.TraceError( "背景テクスチャの生成に失敗しました。" );
+		//        this.tx背景 = null;
+		//    }
+		//    image.Dispose();
+		//}
 //#if true	// DAMAGELEVELTUNING
 //        // ----------------------------------
 //        public float[,] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damage/recover factors

@@ -6,7 +6,7 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CAct演奏DrumsWailingBonus : CActivity
+	internal class CAct演奏DrumsWailingBonus : CAct演奏WailingBonus
 	{
 		// コンストラクタ
 
@@ -18,11 +18,11 @@ namespace DTXMania
 		
 		// メソッド
 
-		public void Start( E楽器パート part )
-		{
-			this.Start( part, null );
-		}
-		public void Start( E楽器パート part, CDTX.CChip r歓声Chip )
+		//public override void Start( E楽器パート part )
+		//{
+		//    this.Start( part, null );
+		//}
+		public override void Start( E楽器パート part, CDTX.CChip r歓声Chip )
 		{
 			if( ( part == E楽器パート.GUITAR ) || ( part == E楽器パート.BASS ) )
 			{
@@ -73,22 +73,7 @@ namespace DTXMania
 			}
 			base.On非活性化();
 		}
-		public override void OnManagedリソースの作成()
-		{
-			if( !base.b活性化してない )
-			{
-				this.txWailingBonus = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay wailing bonus.png" ) );
-				base.OnManagedリソースの作成();
-			}
-		}
-		public override void OnManagedリソースの解放()
-		{
-			if( !base.b活性化してない )
-			{
-				CDTXMania.tテクスチャの解放( ref this.txWailingBonus );
-				base.OnManagedリソースの解放();
-			}
-		}
+
 		public override int On進行描画()
 		{
 			if( !base.b活性化してない )
@@ -167,15 +152,5 @@ namespace DTXMania
 			}
 			return 0;
 		}
-
-
-		// その他
-
-		#region [ private ]
-		//-----------------
-		private CCounter[,] ct進行用 = new CCounter[ 3, 4 ];
-		private CTexture txWailingBonus;
-		//-----------------
-		#endregion
 	}
 }
