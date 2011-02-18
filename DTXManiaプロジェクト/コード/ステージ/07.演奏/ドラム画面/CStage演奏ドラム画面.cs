@@ -31,7 +31,7 @@ namespace DTXMania
 			eパッドArray[ 10 ] = Eパッド.UNKNOWN;
 			eパッドArray[ 11 ] = Eパッド.LC;
 			this.eチャンネルtoパッド = eパッドArray;
-			this.nBGAスコープチャンネルマップ = new int[ , ] { { 0xc4, 0xc7, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xe0 }, { 4, 7, 0x55, 0x56, 0x57, 0x58, 0x59, 0x60 } };
+			//this.nBGAスコープチャンネルマップ = new int[ , ] { { 0xc4, 0xc7, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xe0 }, { 4, 7, 0x55, 0x56, 0x57, 0x58, 0x59, 0x60 } };
 			base.eステージID = CStage.Eステージ.演奏;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 			base.b活性化してない = true;
@@ -252,7 +252,7 @@ namespace DTXMania
 		{
 			//this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.継続;
 			this.bフィルイン中 = false;
-			this.n現在のトップChip = ( CDTXMania.DTX.listChip.Count > 0 ) ? 0 : -1;
+			//this.n現在のトップChip = ( CDTXMania.DTX.listChip.Count > 0 ) ? 0 : -1;
 			// this.n最後に再生したHHの実WAV番号 = -1;					// #23921 2011.1.4 yyagi
 			this.L最後に再生したHHの実WAV番号 = new List<int>(16);
 
@@ -271,16 +271,16 @@ namespace DTXMania
 			}
 			this.r現在の空うちギターChip = null;
 			this.r現在の空うちベースChip = null;
-			for ( int k = 0; k < 3; k++ )
-			{
-				for ( int n = 0; n < 5; n++ )
-				{
-					this.nヒット数・Auto含まない[ k ] = new STHITCOUNTOFRANK();
-					this.nヒット数・Auto含む[ k ] = new STHITCOUNTOFRANK();
-				}
-				this.queWailing[ k ] = new Queue<CDTX.CChip>();
-				this.r現在の歓声Chip[ k ] = null;
-			}
+			//for ( int k = 0; k < 3; k++ )
+			//{
+			//    for ( int n = 0; n < 5; n++ )
+			//    {
+			//        this.nヒット数・Auto含まない[ k ] = new STHITCOUNTOFRANK();
+			//        this.nヒット数・Auto含む[ k ] = new STHITCOUNTOFRANK();
+			//    }
+			//    this.queWailing[ k ] = new Queue<CDTX.CChip>();
+			//    this.r現在の歓声Chip[ k ] = null;
+			//}
 			//for( int m = 0; m < 3; m++ )
 			//{
 			//    this.b演奏にキーボードを使った[ m ] = false;
@@ -288,10 +288,10 @@ namespace DTXMania
 			//    this.b演奏にMIDI入力を使った[ m ] = false;
 			//    this.b演奏にマウスを使った[ m ] = false;
 			//}
-			this.bAUTOでないチップが１つでもバーを通過した = false;
+			//this.bAUTOでないチップが１つでもバーを通過した = false;
 			base.On活性化();
-			this.tステータスパネルの選択();
-			this.tパネル文字列の設定();
+			//this.tステータスパネルの選択();
+			//this.tパネル文字列の設定();
 
 			// this.nInputAdjustTimeMs.Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums;		// #23580 2011.1.3 yyagi
 			// this.nInputAdjustTimeMs.Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
@@ -311,10 +311,10 @@ namespace DTXMania
 		{
 			this.L最後に再生したHHの実WAV番号.Clear();	// #23921 2011.1.4 yyagi
 			this.L最後に再生したHHの実WAV番号 = null;	//
-			for( int i = 0; i < 3; i++ )
-			{
-				this.queWailing[ i ] = null;
-			}
+			//for( int i = 0; i < 3; i++ )
+			//{
+			//    this.queWailing[ i ] = null;
+			//}
 			this.ctWailingチップ模様アニメ = null;
 			this.ctチップ模様アニメ.Drums = null;
 			this.ctチップ模様アニメ.Guitar = null;
@@ -601,45 +601,46 @@ namespace DTXMania
 		//private CActFIFOWhite actFOClear;
 		//private CAct演奏Drumsゲージ actGauge;
 		private CAct演奏Drumsグラフ actGraph;   // #24074 2011.01.23 add ikanick
-		private CAct演奏Drums判定文字列 actJudgeString;
+		//private CAct演奏Drums判定文字列 actJudgeString;
 		private CAct演奏DrumsレーンフラッシュD actLaneFlushD;
 		private CAct演奏DrumsレーンフラッシュGB actLaneFlushGB;
 		private CAct演奏Drumsパッド actPad;
 		//private CAct演奏パネル文字列 actPanel;
 		//private CAct演奏演奏情報 actPlayInfo;
 		private CAct演奏DrumsRGB actRGB;
-		private CAct演奏Drumsスコア actScore;
+		//private CAct演奏Drumsスコア actScore;
 		//private CAct演奏ステージ失敗 actStageFailed;
-		private CAct演奏Drumsステータスパネル actStatusPanels;
+		//private CAct演奏Drumsステータスパネル actStatusPanels;
 		//private CAct演奏DrumsWailingBonus actWailingBonus;
 		//private CAct演奏スクロール速度 act譜面スクロール速度;
 		//private bool bPAUSE;
 		private bool bフィルイン中;
-//		private STDGBVALUE<bool> b演奏にMIDI入力を使った;
-//		private STDGBVALUE<bool> b演奏にキーボードを使った;
-//		private STDGBVALUE<bool> b演奏にジョイパッドを使った;
-//		private STDGBVALUE<bool> b演奏にマウスを使った;
-		private CCounter ctWailingチップ模様アニメ;
-		private STDGBVALUE<CCounter> ctチップ模様アニメ;
+		//private STDGBVALUE<bool> b演奏にMIDI入力を使った;
+		//private STDGBVALUE<bool> b演奏にキーボードを使った;
+		//private STDGBVALUE<bool> b演奏にジョイパッドを使った;
+		//private STDGBVALUE<bool> b演奏にマウスを使った;
+		//private CCounter ctWailingチップ模様アニメ;
+		//private STDGBVALUE<CCounter> ctチップ模様アニメ;
 		private readonly Eパッド[] eチャンネルtoパッド;
 		//private E演奏画面の戻り値 eフェードアウト完了時の戻り値;
-		private readonly int[,] nBGAスコープチャンネルマップ;
-		private readonly int[] nチャンネル0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 8, 0 };
-		private readonly int[] nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
+		//private readonly int[,] nBGAスコープチャンネルマップ;
+		//private readonly int[,] nBGAスコープチャンネルマップ = new int[ , ] { { 0xc4, 0xc7, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xe0 }, { 4, 7, 0x55, 0x56, 0x57, 0x58, 0x59, 0x60 } };
+		//private readonly int[] nチャンネル0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 8, 0 };
+		//private readonly int[] nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
 		private readonly int[] nチャンネルtoX座標 = new int[] { 0x4c, 110, 0x91, 0xc0, 0xe2, 0x126, 260, 0x4f, 300, 0x23 };
-		private readonly int[] nパッド0Atoチャンネル0A = new int[] { 0x11, 0x12, 0x13, 20, 0x15, 0x17, 0x16, 0x18, 0x19, 0x1a };
-		private readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };
-		private readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };
-		private STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含まない;
-		private STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含む;
+		//private readonly int[] nパッド0Atoチャンネル0A = new int[] { 0x11, 0x12, 0x13, 20, 0x15, 0x17, 0x16, 0x18, 0x19, 0x1a };
+		//private readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };
+		//private readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };
+		//private STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含まない;
+		//private STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含む;
 		// private int n現在のトップChip = -1;
 		private int[] n最後に再生したBGMの実WAV番号 = new int[ 50 ];
 		private int n最後に再生したHHのチャンネル番号;
 		private List<int> L最後に再生したHHの実WAV番号;		// #23921 2011.1.4 yyagi: change "int" to "List<int>", for recording multiple wav No.
 		private int n最後に再生したギターの実WAV番号;
 		private int n最後に再生したベースの実WAV番号;
-		private STDGBVALUE<Queue<CDTX.CChip>> queWailing;
-		private STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
+		//private STDGBVALUE<Queue<CDTX.CChip>> queWailing;
+		//private STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
 		private CDTX.CChip r現在の空うちギターChip;
 		private STKARAUCHI r現在の空うちドラムChip;
 		private CDTX.CChip r現在の空うちベースChip;
@@ -1127,17 +1128,17 @@ namespace DTXMania
 				}
 			}
 		}
-		private void tステータスパネルの選択()
-		{
-			if( CDTXMania.bコンパクトモード )
-			{
-				this.actStatusPanels.tラベル名からステータスパネルを決定する( null );
-			}
-			else if( CDTXMania.stage選曲.r確定された曲 != null )
-			{
-				this.actStatusPanels.tラベル名からステータスパネルを決定する( CDTXMania.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.stage選曲.n確定された曲の難易度 ] );
-			}
-		}
+		//private void tステータスパネルの選択()
+		//{
+		//    if( CDTXMania.bコンパクトモード )
+		//    {
+		//        this.actStatusPanels.tラベル名からステータスパネルを決定する( null );
+		//    }
+		//    else if( CDTXMania.stage選曲.r確定された曲 != null )
+		//    {
+		//        this.actStatusPanels.tラベル名からステータスパネルを決定する( CDTXMania.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.stage選曲.n確定された曲の難易度 ] );
+		//    }
+		//}
 		private E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip )
 		{
 			pChip.bHit = true;
@@ -1645,10 +1646,10 @@ namespace DTXMania
 		{
 			this.actCOMBO.On進行描画();
 		}
-		private void t進行描画・スコア()
-		{
-			this.actScore.On進行描画();
-		}
+		//private void t進行描画・スコア()
+		//{
+		//    this.actScore.On進行描画();
+		//}
 		private void t進行描画・ステータスパネル()
 		{
 			this.actStatusPanels.On進行描画();
@@ -2563,14 +2564,14 @@ namespace DTXMania
 			}
 			return false;
 		}
-		private void t進行描画・チップアニメ()
-		{
-			for( int i = 0; i < 3; i++ )
-			{
-				this.ctチップ模様アニメ[ i ].t進行Loop();
-			}
-			this.ctWailingチップ模様アニメ.t進行Loop();
-		}
+		//private void t進行描画・チップアニメ()
+		//{
+		//    for ( int i = 0; i < 3; i++ )
+		//    {
+		//        this.ctチップ模様アニメ[ i ].t進行Loop();
+		//    }
+		//    this.ctWailingチップ模様アニメ.t進行Loop();
+		//}
 		private void t進行描画・チップファイアD()
 		{
 			this.actChipFireD.On進行描画();
@@ -2664,20 +2665,20 @@ namespace DTXMania
 				}
 			}
 		}
-		private void t進行描画・判定文字列1・通常位置指定の場合()
-		{
-			if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) != E判定文字表示位置.判定ライン上または横 )
-			{
-				this.actJudgeString.On進行描画();
-			}
-		}
-		private void t進行描画・判定文字列2・判定ライン上指定の場合()
-		{
-			if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.判定ライン上または横 )
-			{
-				this.actJudgeString.On進行描画();
-			}
-		}
+		//private void t進行描画・判定文字列1・通常位置指定の場合()
+		//{
+		//    if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) != E判定文字表示位置.判定ライン上または横 )
+		//    {
+		//        this.actJudgeString.On進行描画();
+		//    }
+		//}
+		//private void t進行描画・判定文字列2・判定ライン上指定の場合()
+		//{
+		//    if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.判定ライン上または横 )
+		//    {
+		//        this.actJudgeString.On進行描画();
+		//    }
+		//}
 		//private void t進行描画・譜面スクロール速度()
 		//{
 		//    this.act譜面スクロール速度.On進行描画();
@@ -4194,7 +4195,6 @@ namespace DTXMania
 			}
 			base.t背景テクスチャの生成( DefaultBgFilename, bgrect, BgFilename );
 		}
-
 		//private void t背景テクスチャの生成()
 		//{
 		//    Bitmap image = null;

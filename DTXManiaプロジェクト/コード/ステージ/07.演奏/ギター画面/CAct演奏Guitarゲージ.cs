@@ -6,7 +6,7 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CAct演奏Guitarゲージ : CAct演奏ゲージ
+	internal class CAct演奏Guitarゲージ : CAct演奏ゲージ共通
 	{
 		// プロパティ
 

@@ -11,7 +11,7 @@ namespace DTXMania
 	/// <summary>
 	/// CAct演奏Drumsゲージ と CAct演奏Gutiarゲージ のbaseクラス
 	/// </summary>
-	public class CAct演奏ゲージ : CActivity
+	public class CAct演奏ゲージ共通 : CActivity
 	{
 		public double dbゲージ値	// Drums専用
 		{

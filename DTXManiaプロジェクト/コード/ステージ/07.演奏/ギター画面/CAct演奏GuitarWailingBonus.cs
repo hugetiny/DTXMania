@@ -6,7 +6,7 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CAct演奏GuitarWailingBonus : CAct演奏WailingBonus
+	internal class CAct演奏GuitarWailingBonus : CAct演奏WailingBonus共通
 	{
 		// メソッド
 
