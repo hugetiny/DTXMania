@@ -6,31 +6,31 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CAct演奏DrumsDanger : CActivity
+	internal class CAct演奏DrumsDanger : CAct演奏Danger共通
 	{
 		// コンストラクタ
 
-		public CAct演奏DrumsDanger()
-		{
-			base.b活性化してない = true;
-		}
+		//public CAct演奏DrumsDanger()
+		//{
+		//    base.b活性化してない = true;
+		//}
 
 
 		// CActivity 実装
 
-		public override void On活性化()
-		{
-			this.bDanger中 = false;
-			this.ct移動用 = new CCounter();
-			this.ct透明度用 = new CCounter();
-			base.On活性化();
-		}
-		public override void On非活性化()
-		{
-			this.ct移動用 = null;
-			this.ct透明度用 = null;
-			base.On非活性化();
-		}
+		//public override void On活性化()
+		//{
+		//    this.bDanger中 = false;
+		//    this.ct移動用 = new CCounter();
+		//    this.ct透明度用 = new CCounter();
+		//    base.On活性化();
+		//}
+		//public override void On非活性化()
+		//{
+		//    this.ct移動用 = null;
+		//    this.ct透明度用 = null;
+		//    base.On非活性化();
+		//}
 		public override void OnManagedリソースの作成()
 		{
 			if( !base.b活性化してない )
@@ -51,7 +51,7 @@ namespace DTXMania
 		{
 			throw new InvalidOperationException( "t進行描画(bool)のほうを使用してください。" );
 		}
-		public int t進行描画( bool bDangerである )
+		public override int t進行描画( bool bDangerである )
 		{
 			if( !base.b活性化してない )
 			{
@@ -98,9 +98,9 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private bool bDanger中;
-		private CCounter ct移動用;
-		private CCounter ct透明度用;
+		//private bool bDanger中;
+		//private CCounter ct移動用;
+		//private CCounter ct透明度用;
 		private const int n右位置 = 0x12a;
 		private const int n左位置 = 0x26;
 		private readonly Rectangle[] rc領域 = new Rectangle[] { new Rectangle( 0, 0, 0x20, 0x40 ), new Rectangle( 0x20, 0, 0x20, 0x40 ) };

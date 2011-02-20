@@ -98,7 +98,7 @@ namespace DTXMania
 			{
 				foreach ( STATUSPANEL statuspanel in this.stパネルマップ )
 				{
-					if ( strラベル名.Equals( statuspanel.label, StringComparison.CurrentCultureIgnoreCase ) )	// 2011.2.17 yyagi ignore case
+					if ( strラベル名.Equals( statuspanel.label, StringComparison.CurrentCultureIgnoreCase ) )	// #24482 2011.2.17 yyagi ignore case
 					{
 						this.nStatus = statuspanel.status;
 						return;

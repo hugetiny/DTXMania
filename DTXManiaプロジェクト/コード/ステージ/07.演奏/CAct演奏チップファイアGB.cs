@@ -7,7 +7,7 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CAct演奏チップファイアGB : CActivity
+	internal abstract class CAct演奏チップファイアGB : CActivity
 	{
 		// コンストラクタ
 
@@ -25,10 +25,11 @@ namespace DTXMania
 			{
 				this.pt中央位置[ nLane ].X = n中央X;
 				this.pt中央位置[ nLane ].Y = n中央Y;
-				this.ct進行[ nLane ].t開始( 0, 0x38, 4, CDTXMania.Timer );
+				this.ct進行[ nLane ].t開始( 24, 0x38, 8, CDTXMania.Timer );		// 2011.2.17 yyagi: (0, 0x38, 4,..) -> (24, 0x38, 8) に変更 ギターチップの光り始めを早くするため
 			}
 		}
 
+		public abstract void Start( int nLane );
 
 		// CActivity 実装
 

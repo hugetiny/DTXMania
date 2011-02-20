@@ -17,7 +17,7 @@ namespace DTXMania
 		
 		// メソッド
 
-		public void Start( int nLane )
+		public override void Start( int nLane )
 		{
 			if( ( nLane < 0 ) && ( nLane > 5 ) )
 			{
