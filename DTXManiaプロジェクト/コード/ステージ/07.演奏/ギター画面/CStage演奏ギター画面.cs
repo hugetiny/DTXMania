@@ -170,22 +170,23 @@ namespace DTXMania
 		{
 			//this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.継続;
 			//this.n現在のトップChip = ( CDTXMania.DTX.listChip.Count > 0 ) ? 0 : -1;
-			this.n最後に再生したHHの実WAV番号 = -1;
-			this.n最後に再生したHHのチャンネル番号 = 0;
-			this.n最後に再生したギターの実WAV番号 = -1;
-			this.n最後に再生したベースの実WAV番号 = -1;
-			for( int i = 0; i < 50; i++ )
-			{
-				this.n最後に再生したBGMの実WAV番号[ i ] = -1;
-			}
+			//this.n最後に再生したHHの実WAV番号 = -1;
+			this.L最後に再生したHHの実WAV番号 = new List<int>( 16 );
+			//this.n最後に再生したHHのチャンネル番号 = 0;
+			//this.n最後に再生したギターの実WAV番号 = -1;
+			//this.n最後に再生したベースの実WAV番号 = -1;
+			//for( int i = 0; i < 50; i++ )
+			//{
+			//    this.n最後に再生したBGMの実WAV番号[ i ] = -1;
+			//}
 			//this.r次にくるギターChip = null;
 			//this.r次にくるベースChip = null;
-			for( int j = 0; j < 10; j++ )
-			{
-				this.r現在の空うちドラムChip[ j ] = null;
-			}
-			this.r現在の空うちギターChip = null;
-			this.r現在の空うちベースChip = null;
+			//for( int j = 0; j < 10; j++ )
+			//{
+			//    this.r現在の空うちドラムChip[ j ] = null;
+			//}
+			//this.r現在の空うちギターChip = null;
+			//this.r現在の空うちベースChip = null;
 			//for( int k = 0; k < 3; k++ )
 			//{
 			//    for( int n = 0; n < 5; n++ )
@@ -214,12 +215,10 @@ namespace DTXMania
 			//this.bIsAutoPlay.Guitar = CDTXMania.ConfigIni.bAutoPlay.Guitar;
 			//this.bIsAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Bass;
 
-			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
-			{
-				CDTXMania.DTX.SwapGuitarBassInfos();
-
-			}
-
+			//if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
+			//{
+			//    CDTXMania.DTX.SwapGuitarBassInfos();
+			//}
 		}
 		public override void OnManagedリソースの作成()
 		{
@@ -238,7 +237,7 @@ namespace DTXMania
 			{
 				//CDTXMania.tテクスチャの解放( ref this.tx背景 );
 				CDTXMania.tテクスチャの解放( ref this.txチップ );
-				CDTXMania.tテクスチャの解放( ref this.txヒットバー );
+				//CDTXMania.tテクスチャの解放( ref this.txヒットバー );
 				//CDTXMania.tテクスチャの解放( ref this.txWailing枠 );
 				base.OnManagedリソースの解放();
 			}
@@ -255,6 +254,7 @@ namespace DTXMania
 					CDTXMania.Timer.tリセット();
 					this.ctチップ模様アニメ.Guitar = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
 					this.ctチップ模様アニメ.Bass = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
+					this.ctチップ模様アニメ[ 0 ] = null;
 					this.ctWailingチップ模様アニメ = new CCounter( 0, 4, 50, CDTXMania.Timer );
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					this.actFI.tフェードイン開始();
@@ -537,7 +537,7 @@ namespace DTXMania
 		//private CAct演奏AVI actAVI;
 		//private CAct演奏BGA actBGA;
 		private CAct演奏Guitarチップファイア actChipFire;
-		private CAct演奏Guitarコンボ actCombo;
+		//private CAct演奏Guitarコンボ actCombo;
 		//private CActFIFOBlack actFI;
 		//private CActFIFOBlack actFO;
 		//private CActFIFOWhite actFOClear;
@@ -569,21 +569,22 @@ namespace DTXMania
 		//private STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含まない;
 		//private STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含む;
 		// private int n現在のトップChip = -1;
-		private int[] n最後に再生したBGMの実WAV番号 = new int[ 50 ];
-		private int n最後に再生したHHのチャンネル番号;
-		private int n最後に再生したHHの実WAV番号;
-		private int n最後に再生したギターの実WAV番号;
-		private int n最後に再生したベースの実WAV番号;
+		//private int[] n最後に再生したBGMの実WAV番号 = new int[ 50 ];
+		//private int n最後に再生したHHのチャンネル番号;
+		//private int n最後に再生したHHの実WAV番号;
+		private List<int> L最後に再生したHHの実WAV番号;		// #23921 2011.1.4 yyagi: change "int" to "List<int>", for recording multiple wav No.
+		//private int n最後に再生したギターの実WAV番号;
+		//private int n最後に再生したベースの実WAV番号;
 		//private STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		//private STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
-		private CDTX.CChip r現在の空うちギターChip;
-		private STKARAUCHI r現在の空うちドラムChip;
-		private CDTX.CChip r現在の空うちベースChip;
+		//private CDTX.CChip r現在の空うちギターChip;
+		//private STKARAUCHI r現在の空うちドラムChip;
+		//private CDTX.CChip r現在の空うちベースChip;
 		//private CDTX.CChip r次にくるギターChip;
 		//private CDTX.CChip r次にくるベースChip;
 		//private CTexture txWailing枠;
 		private CTexture txチップ;
-		private CTexture txヒットバー;
+		//private CTexture txヒットバー;
 		//private CTexture tx背景;
 		// private STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 		//private STDGBVALUE<bool> bIsAutoPlay;				// #24239 2011.1.23 yyagi
@@ -851,38 +852,65 @@ namespace DTXMania
 				switch( part )
 				{
 					case E楽器パート.DRUMS:
-						if( CDTXMania.ConfigIni.bドラム打音を発声する )
 						{
 							int index = pChip.nチャンネル番号;
-							if( ( index >= 0x11 ) && ( index <= 0x1a ) )
+							if ( ( index >= 0x11 ) && ( index <= 0x1a ) )
 							{
 								index -= 0x11;
 							}
 							else
 							{
-								if( ( index < 0x31 ) || ( index > 0x3a ) )
+								if ( ( index < 0x31 ) || ( index > 0x3a ) )
 								{
 									return;
 								}
 								index -= 0x31;
 							}
 							int nLane = this.nチャンネル0Atoレーン07[ index ];
-							if( ( nLane == 1 ) && ( ( index == 0 ) || ( ( ( index == 7 ) && ( this.n最後に再生したHHのチャンネル番号 != 0x18 ) ) && ( this.n最後に再生したHHのチャンネル番号 != 0x38 ) ) ) )
+							if ( ( nLane == 1 ) &&	// 今回演奏するのがHC or HO
+								( index == 0 || ( index == 7 && this.n最後に再生したHHのチャンネル番号 != 0x18 && this.n最後に再生したHHのチャンネル番号 != 0x38 ) )
+								// HCを演奏するか、またはHO演奏＆以前HO演奏でない＆以前不可視HO演奏でない
+							)
 							{
-#if TEST_NOTEOFFMODE	// 2011.1.1 yyagi TEST
-								if (CDTXMania.DTX.bHH演奏で直前のHHを消音する) {
+								// #23921 2011.1.4 yyagi: 2種類以上のオープンハイハットが発音済みだと、最後のHHOしか消せない問題に対応。
+#if TEST_NOTEOFFMODE	// 2011.1.1 yyagi test
+								if (CDTXMania.DTX.bHH演奏で直前のHHを消音する)
+								{
 #endif
-									CDTXMania.DTX.tWavの再生停止(this.n最後に再生したHHの実WAV番号);
-#if TEST_NOTEOFFMODE	// 2011.1.1 yyagi TEST
+								for ( int i = 0; i < this.L最後に再生したHHの実WAV番号.Count; i++ )		// #23921 2011.1.4 yyagi
+								{
+									// CDTXMania.DTX.tWavの再生停止(this.L最後に再生したHHの実WAV番号);
+									CDTXMania.DTX.tWavの再生停止( this.L最後に再生したHHの実WAV番号[ i ] );	// #23921 yyagi ストック分全て消音する
+								}
+								this.L最後に再生したHHの実WAV番号.Clear();
+#if TEST_NOTEOFFMODE	// 2011.1.1 yyagi test
 								}
 #endif
-								this.n最後に再生したHHの実WAV番号 = pChip.n整数値・内部番号;
+								//this.n最後に再生したHHの実WAV番号 = pChip.n整数値・内部番号;
 								this.n最後に再生したHHのチャンネル番号 = pChip.nチャンネル番号;
 							}
+#if TEST_NOTEOFFMODE	// 2011.1.4 yyagi test
+							if (CDTXMania.DTX.bHH演奏で直前のHHを消音する)
+							{
+#endif
+							if ( index == 7 || index == 0x27 )						// #23921 HOまたは不可視HO演奏時はそのチップ番号をストックしておく
+							{
+								if ( this.L最後に再生したHHの実WAV番号.Count >= 16 )	// #23921 ただしストック数が16以上になるようなら、頭の1個を削って常に16未満に抑える
+								{													// (ストックが増えてList<>のrealloc()が発生するのを予防する)
+									this.L最後に再生したHHの実WAV番号.RemoveAt( 0 );
+								}
+								if ( this.L最後に再生したHHの実WAV番号.IndexOf( pChip.n整数値・内部番号 ) < 0 )	// チップ音がまだストックされてなければ
+								{
+									this.L最後に再生したHHの実WAV番号.Add( pChip.n整数値・内部番号 );			// ストックする
+								}
+							}
+#if TEST_NOTEOFFMODE	// 2011.1.4 yyagi test
+							}
+#endif
 							CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, nLane, n音量, bモニタ );
 							return;
 						}
-						return;
+
 
 					case E楽器パート.GUITAR:
 #if TEST_NOTEOFFMODE	// 2011.1.1 yyagi TEST
@@ -1143,25 +1171,25 @@ namespace DTXMania
 		}
 		private void t進行描画・ギターベース判定ライン()
 		{
-			if( ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL ) && CDTXMania.ConfigIni.bGuitar有効 )
+			if ( ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL ) && CDTXMania.ConfigIni.bGuitar有効 )
 			{
-				if( CDTXMania.DTX.bチップがある.Guitar )
+				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
 					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 0x171 : 40 ) - 3;
-					for( int i = 0; i < 4; i++ )
+					for ( int i = 0; i < 4; i++ )
 					{
-						if( this.txヒットバー != null )
+						if ( this.txヒットバー != null )
 						{
 							this.txヒットバー.t2D描画( CDTXMania.app.Device, 0x17 + ( 0x1c * i ), y, new Rectangle( 0, i * 8, 0x1c, 8 ) );
 						}
 					}
 				}
-				if( CDTXMania.DTX.bチップがある.Bass )
+				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
 					int num3 = ( CDTXMania.ConfigIni.bReverse.Bass ? 0x171 : 40 ) - 3;
-					for( int j = 0; j < 4; j++ )
+					for ( int j = 0; j < 4; j++ )
 					{
-						if( this.txヒットバー != null )
+						if ( this.txヒットバー != null )
 						{
 							this.txヒットバー.t2D描画( CDTXMania.app.Device, 0x1dd + ( 0x1c * j ), num3, new Rectangle( 0, j * 8, 0x1c, 8 ) );
 						}
@@ -1176,10 +1204,10 @@ namespace DTXMania
 		//        this.actGauge.On進行描画();
 		//    }
 		//}
-		private void t進行描画・コンボ()
-		{
-			this.actCombo.On進行描画();
-		}
+		//private void t進行描画・コンボ()
+		//{
+		//    this.actCombo.On進行描画();
+		//}
 		//private void t進行描画・スコア()
 		//{
 		//    this.actScore.On進行描画();

@@ -10,12 +10,11 @@ namespace DTXMania
 
 		protected override void tコンボ表示・ギター( int nCombo値, int nジャンプインデックス )
 		{
-			int num;
-			int num2;
+			int x, y;
 			if( CDTXMania.DTX.bチップがある.Bass )
 			{
-				num = 0x222;
-				num2 = CDTXMania.ConfigIni.bReverse.Guitar ? 0xaf : 270;
+				x = 0x222;
+				y = CDTXMania.ConfigIni.bReverse.Guitar ? 0xaf : 270;
 				if( base.txCOMBOギター != null )
 				{
 					base.txCOMBOギター.n透明度 = 120;
@@ -23,14 +22,14 @@ namespace DTXMania
 			}
 			else
 			{
-				num = 0x1c0;
-				num2 = CDTXMania.ConfigIni.bReverse.Guitar ? 0xee : 0xcf;
+				x = 0x1c0;
+				y = CDTXMania.ConfigIni.bReverse.Guitar ? 0xee : 0xcf;
 				if( base.txCOMBOギター != null )
 				{
 					base.txCOMBOギター.n透明度 = 0xff;
 				}
 			}
-			base.tコンボ表示・ギター( nCombo値, num, num2, nジャンプインデックス );
+			base.tコンボ表示・ギター( nCombo値, x, y, nジャンプインデックス );
 		}
 		protected override void tコンボ表示・ドラム( int nCombo値, int nジャンプインデックス )
 		{
@@ -38,13 +37,13 @@ namespace DTXMania
 		}
 		protected override void tコンボ表示・ベース( int nCombo値, int nジャンプインデックス )
 		{
-			int num = 0x1b5;
-			int num2 = CDTXMania.ConfigIni.bReverse.Bass ? 0xaf : 270;
+			int x = 0x1b5;
+			int y = CDTXMania.ConfigIni.bReverse.Bass ? 0xaf : 270;
 			if( base.txCOMBOギター != null )
 			{
 				base.txCOMBOギター.n透明度 = 120;
 			}
-			base.tコンボ表示・ベース( nCombo値, num, num2, nジャンプインデックス );
+			base.tコンボ表示・ベース( nCombo値, x, y, nジャンプインデックス );
 		}
 	}
 }

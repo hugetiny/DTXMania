@@ -32,10 +32,21 @@ namespace DTXMania
 		{
 			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.継続;
 			this.n現在のトップChip = ( CDTXMania.DTX.listChip.Count > 0 ) ? 0 : -1;
-			
+			this.n最後に再生したHHのチャンネル番号 = 0;
+			this.n最後に再生したギターの実WAV番号 = -1;
+			this.n最後に再生したベースの実WAV番号 = -1;
+			for ( int i = 0; i < 50; i++ )
+			{
+				this.n最後に再生したBGMの実WAV番号[ i ] = -1;
+			}
 			this.r次にくるギターChip = null;
 			this.r次にくるベースChip = null;
-
+			for ( int j = 0; j < 10; j++ )
+			{
+				this.r現在の空うちドラムChip[ j ] = null;
+			}
+			this.r現在の空うちギターChip = null;
+			this.r現在の空うちベースChip = null;
 			for ( int k = 0; k < 3; k++ )
 			{
 				for ( int n = 0; n < 5; n++ )
@@ -65,6 +76,11 @@ namespace DTXMania
 			//this.bIsAutoPlay.Guitar = CDTXMania.ConfigIni.bAutoPlay.Guitar;
 			//this.bIsAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Bass;
 			this.bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay;									// #24239 2011.1.23 yyagi
+
+			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
+			{
+				CDTXMania.DTX.SwapGuitarBassInfos();
+			}
 		}
 		public override void On非活性化()
 		{
@@ -90,6 +106,8 @@ namespace DTXMania
 			if ( !base.b活性化してない )
 			{
 				CDTXMania.tテクスチャの解放( ref this.tx背景 );
+
+				CDTXMania.tテクスチャの解放( ref this.txヒットバー );
 				CDTXMania.tテクスチャの解放( ref this.txWailing枠 );
 				base.OnManagedリソースの解放();
 			}
@@ -263,6 +281,8 @@ namespace DTXMania
 
 		protected CAct演奏AVI actAVI;
 		protected CAct演奏BGA actBGA;
+
+		protected CAct演奏Combo共通 actCombo;
 		protected CActFIFOBlack actFI;
 		protected CActFIFOBlack actFO;
 		protected CActFIFOWhite actFOClear;
@@ -296,15 +316,25 @@ namespace DTXMania
 		protected STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含まない;
 		protected STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含む;
 		protected int n現在のトップChip = -1;
+		protected int[] n最後に再生したBGMの実WAV番号 = new int[ 50 ];
+		protected int n最後に再生したHHのチャンネル番号;
 
+		protected int n最後に再生したギターの実WAV番号;
+		protected int n最後に再生したベースの実WAV番号;
+	
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
-
+		protected CDTX.CChip r現在の空うちギターChip;
+		protected STKARAUCHI r現在の空うちドラムChip;
+		protected CDTX.CChip r現在の空うちベースChip;
 		protected CDTX.CChip r次にくるギターChip;
 		protected CDTX.CChip r次にくるベースChip;
 		protected CTexture txWailing枠;
 
+		protected CTexture txヒットバー;
+
 		protected CTexture tx背景;
+
 		protected STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 		protected CConfigIni.STAUTOPLAY bIsAutoPlay;		// #24239 2011.1.23 yyagi
 
@@ -751,7 +781,10 @@ namespace DTXMania
 				this.actGauge.On進行描画();
 			}
 		}
-
+		protected void t進行描画・コンボ()
+		{
+			this.actCombo.On進行描画();
+		}
 		protected void t進行描画・スコア()
 		{
 			this.actScore.On進行描画();
@@ -759,9 +792,12 @@ namespace DTXMania
 
 		protected void t進行描画・チップアニメ()
 		{
-			for ( int i = 0; i < 3; i++ )
+			for ( int i = 0; i < 3; i++ )			// drums: 0-3 gt/bs: 1-3
 			{
-				this.ctチップ模様アニメ[ i ].t進行Loop();
+				if ( this.ctチップ模様アニメ[ i ] != null )
+				{
+					this.ctチップ模様アニメ[ i ].t進行Loop();
+				}
 			}
 			this.ctWailingチップ模様アニメ.t進行Loop();
 		}
@@ -816,6 +852,21 @@ namespace DTXMania
 			else
 			{
 				CDTXMania.app.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 0f, 0 );
+			}
+		}
+
+		protected void t進行描画・判定ライン()
+		{
+			if ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
+			{
+				int y = CDTXMania.ConfigIni.bReverse.Drums ? 0x35 : 0x1a3;
+				for ( int i = 0x20; i < 0x14f; i += 8 )
+				{
+					if ( this.txヒットバー != null )
+					{
+						this.txヒットバー.t2D描画( CDTXMania.app.Device, i, y, new Rectangle( 0, 0, ( ( i + 8 ) >= 0x14f ) ? ( 7 - ( ( i + 8 ) - 0x14f ) ) : 8, 8 ) );
+					}
+				}
 			}
 		}
 		protected void t進行描画・判定文字列()
