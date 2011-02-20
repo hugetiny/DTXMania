@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
@@ -1163,7 +1164,20 @@ for (int i = 0; i < 3; i++) {
 			Trace.AutoFlush = true;
 			if( ConfigIni.bログ出力 )
 			{
-				Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( "DTXManiaLog.txt", false, Encoding.GetEncoding( "shift-jis" ) ) ) );
+				try
+				{
+					Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( "DTXManiaLog.txt", false, Encoding.GetEncoding( "shift-jis" ) ) ) );
+				}
+				catch ( System.UnauthorizedAccessException )			// #24481 2011.2.20 yyagi
+				{
+					int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja")? 0 : 1;
+					string[] mes_writeErr = {
+						"DTXManiaLog.txtへの書き込みができませんでした。書き込みできるようにしてから、再度起動してください。",
+						"Failed to write DTXManiaLog.txt. Please set it writable and try again."
+					};
+					MessageBox.Show( mes_writeErr[c], "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					Environment.Exit(1);
+				}
 			}
 			Trace.WriteLine("");
 			Trace.WriteLine( "DTXMania powered by YAMAHA Silent Session Drums" );
