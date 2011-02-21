@@ -46,112 +46,120 @@ namespace DTXMania
 		public void t演奏結果を格納する( out CScoreIni.C演奏記録 Drums, out CScoreIni.C演奏記録 Guitar, out CScoreIni.C演奏記録 Bass )
 		{
 			Drums = new CScoreIni.C演奏記録();
-			Guitar = new CScoreIni.C演奏記録();
-			Bass = new CScoreIni.C演奏記録();
-			if( CDTXMania.DTX.bチップがある.Guitar )
-			{
-				Guitar.nスコア = this.actScore.Get( E楽器パート.GUITAR );
-				Guitar.dbゲーム型スキル値 = CScoreIni.tゲーム型スキルを計算して返す( CDTXMania.DTX.LEVEL.Guitar, CDTXMania.DTX.n可視チップ数.Guitar, this.nヒット数・Auto含まない.Guitar.Perfect, this.actCombo.n現在のコンボ数.Guitar最高値 );
-				Guitar.db演奏型スキル値 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Guitar, this.nヒット数・Auto含まない.Guitar.Perfect, this.nヒット数・Auto含まない.Guitar.Great, this.nヒット数・Auto含まない.Guitar.Good, this.nヒット数・Auto含まない.Guitar.Poor, this.nヒット数・Auto含まない.Guitar.Miss );
-				Guitar.nPerfect数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Perfect : this.nヒット数・Auto含まない.Guitar.Perfect;
-				Guitar.nGreat数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Great : this.nヒット数・Auto含まない.Guitar.Great;
-				Guitar.nGood数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Good : this.nヒット数・Auto含まない.Guitar.Good;
-				Guitar.nPoor数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Poor : this.nヒット数・Auto含まない.Guitar.Poor;
-				Guitar.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Miss : this.nヒット数・Auto含まない.Guitar.Miss;
-				Guitar.n最大コンボ数 = this.actCombo.n現在のコンボ数.Guitar最高値;
-				Guitar.n全チップ数 = CDTXMania.DTX.n可視チップ数.Guitar;
-				for ( int i = 0; i < 10; i++ )
-				{
-					Guitar.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
-				}
-				Guitar.bTight = CDTXMania.ConfigIni.bTight;
-				for( int i = 0; i < 3; i++ )
-				{
-					Guitar.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
-					Guitar.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
-					Guitar.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
-					Guitar.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
-					Guitar.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
-					Guitar.bLeft[ i ] = CDTXMania.ConfigIni.bLeft[ i ];
-					Guitar.f譜面スクロール速度[ i ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ i ] + 1 ) ) * 0.5f;
-				}
-				Guitar.eDark = CDTXMania.ConfigIni.eDark;
-				Guitar.n演奏速度分子 = CDTXMania.ConfigIni.n演奏速度;
-				Guitar.n演奏速度分母 = 20;
-				Guitar.eHHGroup = CDTXMania.ConfigIni.eHHGroup;
-				Guitar.eFTGroup = CDTXMania.ConfigIni.eFTGroup;
-				Guitar.eCYGroup = CDTXMania.ConfigIni.eCYGroup;
-				Guitar.eHitSoundPriorityHH = CDTXMania.ConfigIni.eHitSoundPriorityHH;
-				Guitar.eHitSoundPriorityFT = CDTXMania.ConfigIni.eHitSoundPriorityFT;
-				Guitar.eHitSoundPriorityCY = CDTXMania.ConfigIni.eHitSoundPriorityCY;
-				Guitar.bGuitar有効 = CDTXMania.ConfigIni.bGuitar有効;
-				Guitar.bDrums有効 = CDTXMania.ConfigIni.bDrums有効;
-				Guitar.bSTAGEFAILED有効 = CDTXMania.ConfigIni.bSTAGEFAILED有効;
-				Guitar.eダメージレベル = CDTXMania.ConfigIni.eダメージレベル;
-				Guitar.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Guitar;
-				Guitar.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Guitar;
-				Guitar.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Guitar;
-				Guitar.b演奏にマウスを使用した = this.b演奏にマウスを使った.Guitar;
-				Guitar.nPerfectになる範囲ms = CDTXMania.nPerfect範囲ms;
-				Guitar.nGreatになる範囲ms = CDTXMania.nGreat範囲ms;
-				Guitar.nGoodになる範囲ms = CDTXMania.nGood範囲ms;
-				Guitar.nPoorになる範囲ms = CDTXMania.nPoor範囲ms;
-				Guitar.strDTXManiaのバージョン = CDTXMania.VERSION;
-				Guitar.最終更新日時 = DateTime.Now.ToString();
-				Guitar.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Guitar );
-			}
-			if( CDTXMania.DTX.bチップがある.Bass )
-			{
-				Bass.nスコア = this.actScore.Get( E楽器パート.BASS );
-				Bass.dbゲーム型スキル値 = CScoreIni.tゲーム型スキルを計算して返す( CDTXMania.DTX.LEVEL.Bass, CDTXMania.DTX.n可視チップ数.Bass, this.nヒット数・Auto含まない.Bass.Perfect, this.actCombo.n現在のコンボ数.Bass最高値 );
-				Bass.db演奏型スキル値 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Bass, this.nヒット数・Auto含まない.Bass.Perfect, this.nヒット数・Auto含まない.Bass.Great, this.nヒット数・Auto含まない.Bass.Good, this.nヒット数・Auto含まない.Bass.Poor, this.nヒット数・Auto含まない.Bass.Miss );
-				Bass.nPerfect数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Perfect : this.nヒット数・Auto含まない.Bass.Perfect;
-				Bass.nGreat数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Great : this.nヒット数・Auto含まない.Bass.Great;
-				Bass.nGood数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Good : this.nヒット数・Auto含まない.Bass.Good;
-				Bass.nPoor数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Poor : this.nヒット数・Auto含まない.Bass.Poor;
-				Bass.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Miss : this.nヒット数・Auto含まない.Bass.Miss;
-				Bass.n最大コンボ数 = this.actCombo.n現在のコンボ数.Bass最高値;
-				Bass.n全チップ数 = CDTXMania.DTX.n可視チップ数.Bass;
-				for( int i = 0; i < 10; i++ )
-				{
-					Bass.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
-				}
-				Bass.bTight = CDTXMania.ConfigIni.bTight;
-				for( int i = 0; i < 3; i++ )
-				{
-					Bass.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
-					Bass.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
-					Bass.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
-					Bass.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
-					Bass.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
-					Bass.bLeft[ i ] = CDTXMania.ConfigIni.bLeft[ i ];
-					Bass.f譜面スクロール速度[ i ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ i ] + 1 ) ) * 0.5f;
-				}
-				Bass.eDark = CDTXMania.ConfigIni.eDark;
-				Bass.n演奏速度分子 = CDTXMania.ConfigIni.n演奏速度;
-				Bass.n演奏速度分母 = 20;
-				Bass.eHHGroup = CDTXMania.ConfigIni.eHHGroup;
-				Bass.eFTGroup = CDTXMania.ConfigIni.eFTGroup;
-				Bass.eCYGroup = CDTXMania.ConfigIni.eCYGroup;
-				Bass.eHitSoundPriorityHH = CDTXMania.ConfigIni.eHitSoundPriorityHH;
-				Bass.eHitSoundPriorityFT = CDTXMania.ConfigIni.eHitSoundPriorityFT;
-				Bass.eHitSoundPriorityCY = CDTXMania.ConfigIni.eHitSoundPriorityCY;
-				Bass.bGuitar有効 = CDTXMania.ConfigIni.bGuitar有効;
-				Bass.bDrums有効 = CDTXMania.ConfigIni.bDrums有効;
-				Bass.bSTAGEFAILED有効 = CDTXMania.ConfigIni.bSTAGEFAILED有効;
-				Bass.eダメージレベル = CDTXMania.ConfigIni.eダメージレベル;
-				Bass.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Bass;			// #24280 2011.1.29 yyagi
-				Bass.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Bass;				//
-				Bass.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Bass;		//
-				Bass.b演奏にマウスを使用した = this.b演奏にマウスを使った.Bass;					//
-				Bass.nPerfectになる範囲ms = CDTXMania.nPerfect範囲ms;
-				Bass.nGreatになる範囲ms = CDTXMania.nGreat範囲ms;
-				Bass.nGoodになる範囲ms = CDTXMania.nGood範囲ms;
-				Bass.nPoorになる範囲ms = CDTXMania.nPoor範囲ms;
-				Bass.strDTXManiaのバージョン = CDTXMania.VERSION;
-				Bass.最終更新日時 = DateTime.Now.ToString();
-				Bass.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Bass );
-			}
+			//Guitar = new CScoreIni.C演奏記録();
+			//Bass = new CScoreIni.C演奏記録();
+
+			base.t演奏結果を格納する・ギター( out Guitar );
+			base.t演奏結果を格納する・ベース( out Bass );
+
+			#region [Guitar処理(注釈化)]
+			//if( CDTXMania.DTX.bチップがある.Guitar )
+			//{
+			//    Guitar.nスコア = this.actScore.Get( E楽器パート.GUITAR );
+			//    Guitar.dbゲーム型スキル値 = CScoreIni.tゲーム型スキルを計算して返す( CDTXMania.DTX.LEVEL.Guitar, CDTXMania.DTX.n可視チップ数.Guitar, this.nヒット数・Auto含まない.Guitar.Perfect, this.actCombo.n現在のコンボ数.Guitar最高値 );
+			//    Guitar.db演奏型スキル値 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Guitar, this.nヒット数・Auto含まない.Guitar.Perfect, this.nヒット数・Auto含まない.Guitar.Great, this.nヒット数・Auto含まない.Guitar.Good, this.nヒット数・Auto含まない.Guitar.Poor, this.nヒット数・Auto含まない.Guitar.Miss );
+			//    Guitar.nPerfect数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Perfect : this.nヒット数・Auto含まない.Guitar.Perfect;
+			//    Guitar.nGreat数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Great : this.nヒット数・Auto含まない.Guitar.Great;
+			//    Guitar.nGood数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Good : this.nヒット数・Auto含まない.Guitar.Good;
+			//    Guitar.nPoor数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Poor : this.nヒット数・Auto含まない.Guitar.Poor;
+			//    Guitar.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Miss : this.nヒット数・Auto含まない.Guitar.Miss;
+			//    Guitar.n最大コンボ数 = this.actCombo.n現在のコンボ数.Guitar最高値;
+			//    Guitar.n全チップ数 = CDTXMania.DTX.n可視チップ数.Guitar;
+			//    for ( int i = 0; i < 10; i++ )
+			//    {
+			//        Guitar.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
+			//    }
+			//    Guitar.bTight = CDTXMania.ConfigIni.bTight;
+			//    for( int i = 0; i < 3; i++ )
+			//    {
+			//        Guitar.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
+			//        Guitar.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
+			//        Guitar.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
+			//        Guitar.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
+			//        Guitar.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
+			//        Guitar.bLeft[ i ] = CDTXMania.ConfigIni.bLeft[ i ];
+			//        Guitar.f譜面スクロール速度[ i ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ i ] + 1 ) ) * 0.5f;
+			//    }
+			//    Guitar.eDark = CDTXMania.ConfigIni.eDark;
+			//    Guitar.n演奏速度分子 = CDTXMania.ConfigIni.n演奏速度;
+			//    Guitar.n演奏速度分母 = 20;
+			//    Guitar.eHHGroup = CDTXMania.ConfigIni.eHHGroup;
+			//    Guitar.eFTGroup = CDTXMania.ConfigIni.eFTGroup;
+			//    Guitar.eCYGroup = CDTXMania.ConfigIni.eCYGroup;
+			//    Guitar.eHitSoundPriorityHH = CDTXMania.ConfigIni.eHitSoundPriorityHH;
+			//    Guitar.eHitSoundPriorityFT = CDTXMania.ConfigIni.eHitSoundPriorityFT;
+			//    Guitar.eHitSoundPriorityCY = CDTXMania.ConfigIni.eHitSoundPriorityCY;
+			//    Guitar.bGuitar有効 = CDTXMania.ConfigIni.bGuitar有効;
+			//    Guitar.bDrums有効 = CDTXMania.ConfigIni.bDrums有効;
+			//    Guitar.bSTAGEFAILED有効 = CDTXMania.ConfigIni.bSTAGEFAILED有効;
+			//    Guitar.eダメージレベル = CDTXMania.ConfigIni.eダメージレベル;
+			//    Guitar.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Guitar;
+			//    Guitar.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Guitar;
+			//    Guitar.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Guitar;
+			//    Guitar.b演奏にマウスを使用した = this.b演奏にマウスを使った.Guitar;
+			//    Guitar.nPerfectになる範囲ms = CDTXMania.nPerfect範囲ms;
+			//    Guitar.nGreatになる範囲ms = CDTXMania.nGreat範囲ms;
+			//    Guitar.nGoodになる範囲ms = CDTXMania.nGood範囲ms;
+			//    Guitar.nPoorになる範囲ms = CDTXMania.nPoor範囲ms;
+			//    Guitar.strDTXManiaのバージョン = CDTXMania.VERSION;
+			//    Guitar.最終更新日時 = DateTime.Now.ToString();
+			//    Guitar.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Guitar );
+			//}
+			#endregion
+			#region [Bass処理(注釈化)]
+			//if( CDTXMania.DTX.bチップがある.Bass )
+			//{
+			//    Bass.nスコア = this.actScore.Get( E楽器パート.BASS );
+			//    Bass.dbゲーム型スキル値 = CScoreIni.tゲーム型スキルを計算して返す( CDTXMania.DTX.LEVEL.Bass, CDTXMania.DTX.n可視チップ数.Bass, this.nヒット数・Auto含まない.Bass.Perfect, this.actCombo.n現在のコンボ数.Bass最高値 );
+			//    Bass.db演奏型スキル値 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Bass, this.nヒット数・Auto含まない.Bass.Perfect, this.nヒット数・Auto含まない.Bass.Great, this.nヒット数・Auto含まない.Bass.Good, this.nヒット数・Auto含まない.Bass.Poor, this.nヒット数・Auto含まない.Bass.Miss );
+			//    Bass.nPerfect数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Perfect : this.nヒット数・Auto含まない.Bass.Perfect;
+			//    Bass.nGreat数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Great : this.nヒット数・Auto含まない.Bass.Great;
+			//    Bass.nGood数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Good : this.nヒット数・Auto含まない.Bass.Good;
+			//    Bass.nPoor数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Poor : this.nヒット数・Auto含まない.Bass.Poor;
+			//    Bass.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Miss : this.nヒット数・Auto含まない.Bass.Miss;
+			//    Bass.n最大コンボ数 = this.actCombo.n現在のコンボ数.Bass最高値;
+			//    Bass.n全チップ数 = CDTXMania.DTX.n可視チップ数.Bass;
+			//    for( int i = 0; i < 10; i++ )
+			//    {
+			//        Bass.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
+			//    }
+			//    Bass.bTight = CDTXMania.ConfigIni.bTight;
+			//    for( int i = 0; i < 3; i++ )
+			//    {
+			//        Bass.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
+			//        Bass.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
+			//        Bass.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
+			//        Bass.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
+			//        Bass.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
+			//        Bass.bLeft[ i ] = CDTXMania.ConfigIni.bLeft[ i ];
+			//        Bass.f譜面スクロール速度[ i ] = ( (float) ( CDTXMania.ConfigIni.n譜面スクロール速度[ i ] + 1 ) ) * 0.5f;
+			//    }
+			//    Bass.eDark = CDTXMania.ConfigIni.eDark;
+			//    Bass.n演奏速度分子 = CDTXMania.ConfigIni.n演奏速度;
+			//    Bass.n演奏速度分母 = 20;
+			//    Bass.eHHGroup = CDTXMania.ConfigIni.eHHGroup;
+			//    Bass.eFTGroup = CDTXMania.ConfigIni.eFTGroup;
+			//    Bass.eCYGroup = CDTXMania.ConfigIni.eCYGroup;
+			//    Bass.eHitSoundPriorityHH = CDTXMania.ConfigIni.eHitSoundPriorityHH;
+			//    Bass.eHitSoundPriorityFT = CDTXMania.ConfigIni.eHitSoundPriorityFT;
+			//    Bass.eHitSoundPriorityCY = CDTXMania.ConfigIni.eHitSoundPriorityCY;
+			//    Bass.bGuitar有効 = CDTXMania.ConfigIni.bGuitar有効;
+			//    Bass.bDrums有効 = CDTXMania.ConfigIni.bDrums有効;
+			//    Bass.bSTAGEFAILED有効 = CDTXMania.ConfigIni.bSTAGEFAILED有効;
+			//    Bass.eダメージレベル = CDTXMania.ConfigIni.eダメージレベル;
+			//    Bass.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Bass;			// #24280 2011.1.29 yyagi
+			//    Bass.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Bass;				//
+			//    Bass.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Bass;		//
+			//    Bass.b演奏にマウスを使用した = this.b演奏にマウスを使った.Bass;					//
+			//    Bass.nPerfectになる範囲ms = CDTXMania.nPerfect範囲ms;
+			//    Bass.nGreatになる範囲ms = CDTXMania.nGreat範囲ms;
+			//    Bass.nGoodになる範囲ms = CDTXMania.nGood範囲ms;
+			//    Bass.nPoorになる範囲ms = CDTXMania.nPoor範囲ms;
+			//    Bass.strDTXManiaのバージョン = CDTXMania.VERSION;
+			//    Bass.最終更新日時 = DateTime.Now.ToString();
+			//    Bass.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Bass );
+			//}
+			#endregion
 			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
 			{
 				CScoreIni.C演奏記録 t;
