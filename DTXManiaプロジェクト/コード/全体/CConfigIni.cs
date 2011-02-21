@@ -557,6 +557,11 @@ namespace DTXMania
 			get;
 			set;
 		}
+		public bool bIsSwappedGuitarBass_AutoFlagsAreSwapped	// #24415 2011.2.21 yyagi FLIP中にalt-f4終了で、AUTOフラグがswapした状態でconfig.iniが出力されてしまうことを避けるためのフラグ
+		{
+			get;
+			set;
+		}
 		public STAUTOPLAY bAutoPlay;
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY

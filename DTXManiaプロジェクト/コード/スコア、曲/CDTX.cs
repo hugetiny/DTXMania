@@ -2973,7 +2973,7 @@ namespace DTXMania
 		}
 
 		/// <summary>
-		/// Swap infos between Guitar and Bass
+		/// Swap infos between Guitar and Bass (notes, level, n可視チップ数, bチップがある)
 		/// </summary>
 		public void SwapGuitarBassInfos()						// #24063 2011.1.24 yyagi ギターとベースの譜面情報入替
 		{
@@ -2988,7 +2988,6 @@ namespace DTXMania
 					listChip[i].nチャンネル番号 += ( 0xA0 - 0x20 );
 				}
 			}
-
 			int t = this.LEVEL.Bass;
 			this.LEVEL.Bass = this.LEVEL.Guitar;
 			this.LEVEL.Guitar = t;
@@ -3001,6 +3000,15 @@ namespace DTXMania
 			this.bチップがある.Bass = this.bチップがある.Guitar;
 			this.bチップがある.Guitar = ts;
 
+			SwapGuitarBassInfos_AutoFlags();
+		}
+		public void SwapGuitarBassInfos_AutoFlags()
+		{
+			bool ts = CDTXMania.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
+			CDTXMania.ConfigIni.bAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Guitar;
+			CDTXMania.ConfigIni.bAutoPlay.Guitar = ts;
+
+			CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
 		}
 
 		// CActivity 実装
