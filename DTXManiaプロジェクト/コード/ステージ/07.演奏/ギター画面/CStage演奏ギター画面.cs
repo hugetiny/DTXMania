@@ -2446,6 +2446,30 @@ namespace DTXMania
 			{
 				pChip.bHit = true;
 			}
+#if TEST_NOTEOFFMODE	// 2011.1.1 yyagi TEST
+			switch ( pChip.n整数値 )
+			{
+				case 0x04:	// HH消音あり(従来同等)
+					CDTXMania.DTX.bHH演奏で直前のHHを消音する = true;
+					break;
+				case 0x05:	// HH消音無し
+					CDTXMania.DTX.bHH演奏で直前のHHを消音する = false;
+					break;
+				case 0x06:	// ギター消音あり(従来同等)
+					CDTXMania.DTX.bGUITAR演奏で直前のGUITARを消音する = true;
+					break;
+				case 0x07:	// ギター消音無し
+					CDTXMania.DTX.bGUITAR演奏で直前のGUITARを消音する = false;
+					break;
+				case 0x08:	// ベース消音あり(従来同等)
+					CDTXMania.DTX.bBASS演奏で直前のBASSを消音する = true;
+					break;
+				case 0x09:	// ベース消音無し
+					CDTXMania.DTX.bBASS演奏で直前のBASSを消音する = false;
+					break;
+			}
+#endif
+
 		}
 		protected override void t進行描画・チップ・ベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
