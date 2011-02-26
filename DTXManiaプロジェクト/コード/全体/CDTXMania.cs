@@ -1768,10 +1768,10 @@ for (int i = 0; i < 3; i++) {
 				//---------------------
 				Trace.TraceInformation("Config.ini を出力します。");
 //				if ( ConfigIni.bIsSwappedGuitarBass )			// #24063 2011.1.16 yyagi ギターベースがスワップしているときは元に戻す
-				if ( ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped )	// #24415 2011.2.21 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、AUTOのフラグをswapして戻す
-				{
-					DTX.SwapGuitarBassInfos_AutoFlags();
-				}
+				//if ( ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped )	// #24415 2011.2.21 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、AUTOのフラグをswapして戻す
+				//{
+				//    DTX.SwapGuitarBassInfos_AutoFlags();
+				//}
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
 				try

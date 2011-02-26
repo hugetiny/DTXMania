@@ -2489,28 +2489,28 @@ namespace DTXMania
 			this.strファイル名の絶対パス = Path.GetFullPath( strファイル名 );
 			this.strファイル名 = Path.GetFileName( this.strファイル名の絶対パス );
 			this.strフォルダ名 = Path.GetDirectoryName( this.strファイル名の絶対パス ) + @"\";
-			string str3 = Path.GetExtension( this.strファイル名 ).ToLower();
-			if( str3 != null )
+			string ext = Path.GetExtension( this.strファイル名 ).ToLower();
+			if( ext != null )
 			{
-				if( !( str3 == ".dtx" ) )
+				if( !( ext == ".dtx" ) )
 				{
-					if( str3 == ".gda" )
+					if( ext == ".gda" )
 					{
 						this.e種別 = E種別.GDA;
 					}
-					else if( str3 == ".g2d" )
+					else if( ext == ".g2d" )
 					{
 						this.e種別 = E種別.G2D;
 					}
-					else if( str3 == ".bms" )
+					else if( ext == ".bms" )
 					{
 						this.e種別 = E種別.BMS;
 					}
-					else if( str3 == ".bme" )
+					else if( ext == ".bme" )
 					{
 						this.e種別 = E種別.BME;
 					}
-					else if( str3 == ".mid" )
+					else if( ext == ".mid" )
 					{
 						this.e種別 = E種別.SMF;
 					}
@@ -2784,17 +2784,17 @@ namespace DTXMania
 						double num15 = 1.0;
 						int num16 = 0;
 						int num17 = 0;
-						int num18 = 0;
+						int nBar = 0;
 						foreach( CChip chip10 in this.listChip )
 						{
 							chip10.n発声時刻ms = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / bpm ) );
-							if( ( ( this.e種別 == E種別.BMS ) || ( this.e種別 == E種別.BME ) ) && ( ( num15 != 1.0 ) && ( ( chip10.n発声位置 / 384) != num18 ) ) )
+							if( ( ( this.e種別 == E種別.BMS ) || ( this.e種別 == E種別.BME ) ) && ( ( num15 != 1.0 ) && ( ( chip10.n発声位置 / 384) != nBar ) ) )
 							{
 								num16 = chip10.n発声位置;
 								num17 = chip10.n発声時刻ms;
 								num15 = 1.0;
 							}
-							num18 = chip10.n発声位置 / 384;
+							nBar = chip10.n発声位置 / 384;
 							num26 = chip10.nチャンネル番号;
 							switch( num26 )
 							{
@@ -3000,16 +3000,16 @@ namespace DTXMania
 			this.bチップがある.Bass = this.bチップがある.Guitar;
 			this.bチップがある.Guitar = ts;
 
-			SwapGuitarBassInfos_AutoFlags();
+//			SwapGuitarBassInfos_AutoFlags();
 		}
-		public void SwapGuitarBassInfos_AutoFlags()
-		{
-			bool ts = CDTXMania.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
-			CDTXMania.ConfigIni.bAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Guitar;
-			CDTXMania.ConfigIni.bAutoPlay.Guitar = ts;
+		//public void SwapGuitarBassInfos_AutoFlags()
+		//{
+		//    bool ts = CDTXMania.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
+		//    CDTXMania.ConfigIni.bAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Guitar;
+		//    CDTXMania.ConfigIni.bAutoPlay.Guitar = ts;
 
-			CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
-		}
+		//    CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
+		//}
 
 		// CActivity 実装
 
