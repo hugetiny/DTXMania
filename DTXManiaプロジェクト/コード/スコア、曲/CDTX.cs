@@ -1524,16 +1524,15 @@ namespace DTXMania
 #endif
 			this.db再生速度 = 1.0;
 			this.strハッシュofDTXファイル = "";
-			STチップがある stチップがある = new STチップがある();
-			stチップがある.Drums = false;
-			stチップがある.Guitar = false;
-			stチップがある.Bass = false;
-			stチップがある.HHOpen = false;
-			stチップがある.Ride = false;
-			stチップがある.LeftCymbal = false;
-			stチップがある.OpenGuitar = false;
-			stチップがある.OpenBass = false;
-			this.bチップがある = stチップがある;
+			this.bチップがある = new STチップがある();
+			this.bチップがある.Drums = false;
+			this.bチップがある.Guitar = false;
+			this.bチップがある.Bass = false;
+			this.bチップがある.HHOpen = false;
+			this.bチップがある.Ride = false;
+			this.bチップがある.LeftCymbal = false;
+			this.bチップがある.OpenGuitar = false;
+			this.bチップがある.OpenBass = false;
 			this.strファイル名 = "";
 			this.strフォルダ名 = "";
 			this.strファイル名の絶対パス = "";
@@ -2928,7 +2927,8 @@ namespace DTXMania
 						{
 							this.strハッシュofDTXファイル = "00000000000000000000000000000000";
 						}
-						if( CDTXMania.ConfigIni.bLogDTX詳細ログ出力 )
+						#region [ bLogDTX詳細ログ出力 ]
+						if ( CDTXMania.ConfigIni.bLogDTX詳細ログ出力 )
 						{
 							foreach( CWAV cwav3 in this.listWAV.Values )
 							{
@@ -2967,6 +2967,7 @@ namespace DTXMania
 								Trace.TraceInformation( chip14.ToString() );
 							}
 						}
+						#endregion
 					}
 				}
 			}
@@ -3002,14 +3003,14 @@ namespace DTXMania
 
 //			SwapGuitarBassInfos_AutoFlags();
 		}
-		//public void SwapGuitarBassInfos_AutoFlags()
-		//{
-		//    bool ts = CDTXMania.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
-		//    CDTXMania.ConfigIni.bAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Guitar;
-		//    CDTXMania.ConfigIni.bAutoPlay.Guitar = ts;
+		public void SwapGuitarBassInfos_AutoFlags()
+		{
+		    bool ts = CDTXMania.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
+		    CDTXMania.ConfigIni.bAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Guitar;
+		    CDTXMania.ConfigIni.bAutoPlay.Guitar = ts;
 
-		//    CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
-		//}
+		    CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
+		}
 
 		// CActivity 実装
 

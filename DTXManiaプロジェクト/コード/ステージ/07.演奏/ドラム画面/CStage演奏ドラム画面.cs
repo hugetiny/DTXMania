@@ -233,15 +233,15 @@ namespace DTXMania
 				}
 			}
 
-			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
-			{
-				CScoreIni.C演奏記録 t;
-				t = Guitar;
-				Guitar = Bass;
-				Bass = t;
-
-				CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
-			}
+//			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
+//			{
+//				CScoreIni.C演奏記録 t;
+//				t = Guitar;
+//				Guitar = Bass;
+//				Bass = t;
+//			
+//				CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
+//			}
 		}
 
 
@@ -621,9 +621,9 @@ namespace DTXMania
 		//private STDGBVALUE<CCounter> ctチップ模様アニメ;
 		private readonly Eパッド[] eチャンネルtoパッド = new Eパッド[]
 		{
-			Eパッド.SD, Eパッド.BD, Eパッド.HT, Eパッド.LT,
-			Eパッド.CY, Eパッド.FT, Eパッド.HHO, Eパッド.RD,
-			Eパッド.UNKNOWN, Eパッド.UNKNOWN, Eパッド.LC
+			Eパッド.HH, Eパッド.SD, Eパッド.BD, Eパッド.HT,
+			Eパッド.LT, Eパッド.CY, Eパッド.FT, Eパッド.HHO,
+			Eパッド.RD, Eパッド.UNKNOWN, Eパッド.UNKNOWN, Eパッド.LC
 		};
 		//private E演奏画面の戻り値 eフェードアウト完了時の戻り値;
 		//private readonly int[,] nBGAスコープチャンネルマップ;

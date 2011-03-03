@@ -386,9 +386,7 @@ namespace DTXMania
 		}
 		protected override void Draw( GameTime gameTime )
 		{
-			CScoreIni.C演奏記録 c演奏記録;
-			CScoreIni.C演奏記録 c演奏記録2;
-			CScoreIni.C演奏記録 c演奏記録3;
+			CScoreIni.C演奏記録 c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass;
 			CDTX.CChip[] chipArray;
 			string str;
 
@@ -925,14 +923,28 @@ for (int i = 0; i < 3; i++) {
 								chipArray = new CDTX.CChip[ 10 ];
 								if( ConfigIni.bギタレボモード )
 								{
-									stage演奏ギター画面.t演奏結果を格納する( out c演奏記録, out c演奏記録2, out c演奏記録3 );
+									stage演奏ギター画面.t演奏結果を格納する( out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass );
 								}
 								else
 								{
-									stage演奏ドラム画面.t演奏結果を格納する( out c演奏記録, out c演奏記録2, out c演奏記録3, out chipArray );
+									stage演奏ドラム画面.t演奏結果を格納する( out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass, out chipArray );
 								}
+
+								if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
+								{
+									CScoreIni.C演奏記録 t;
+									t = c演奏記録_Guitar;
+									c演奏記録_Guitar = c演奏記録_Bass;
+									c演奏記録_Bass = t;
+
+									CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
+									CDTXMania.DTX.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
+																					// リザルト集計時のみ、Auto系のフラグを入れ替え
+																					// これを戻すのは、リザルト集計後。
+								}													// "case CStage.Eステージ.結果:"のところ。
+
 								str = "Cleared";
-								switch( CScoreIni.t総合ランク値を計算して返す( c演奏記録, c演奏記録2, c演奏記録3 ) )
+								switch( CScoreIni.t総合ランク値を計算して返す( c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass ) )
 								{
 									case 0:
 										str = "Cleared (Rank:SS)";
@@ -983,9 +995,9 @@ for (int i = 0; i < 3; i++) {
 								r現在のステージ.On非活性化();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 結果" );
-								stage結果.st演奏記録.Drums = c演奏記録;
-								stage結果.st演奏記録.Guitar = c演奏記録2;
-								stage結果.st演奏記録.Bass = c演奏記録3;
+								stage結果.st演奏記録.Drums = c演奏記録_Drums;
+								stage結果.st演奏記録.Guitar = c演奏記録_Guitar;
+								stage結果.st演奏記録.Bass = c演奏記録_Bass;
 								stage結果.r空うちドラムチップ = chipArray;
 								stage結果.On活性化();
 								r直前のステージ = r現在のステージ;
@@ -1015,6 +1027,11 @@ for (int i = 0; i < 3; i++) {
 						//-----------------------------
 						if( this.n進行描画の戻り値 != 0 )
 						{
+							if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24415 2011.2.27 yyagi Gt/Bsを入れ替えていたなら、Auto状態をリザルト画面終了後に元に戻す
+							{
+								CDTXMania.DTX.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
+							}
+
 							DTX.t全チップの再生一時停止();
 							DTX.On非活性化();
 							r現在のステージ.On非活性化();
@@ -1768,10 +1785,10 @@ for (int i = 0; i < 3; i++) {
 				//---------------------
 				Trace.TraceInformation("Config.ini を出力します。");
 //				if ( ConfigIni.bIsSwappedGuitarBass )			// #24063 2011.1.16 yyagi ギターベースがスワップしているときは元に戻す
-				//if ( ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped )	// #24415 2011.2.21 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、AUTOのフラグをswapして戻す
-				//{
-				//    DTX.SwapGuitarBassInfos_AutoFlags();
-				//}
+				if ( ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped )	// #24415 2011.2.21 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、AUTOのフラグをswapして戻す
+				{
+				    DTX.SwapGuitarBassInfos_AutoFlags();
+				}
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
 				try

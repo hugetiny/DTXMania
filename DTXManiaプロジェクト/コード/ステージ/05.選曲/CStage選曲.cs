@@ -314,6 +314,7 @@ namespace DTXMania
 					{	// [SHIFT] + [F1] OPTION
 						this.actPresound.tサウンド停止();
 						this.eフェードアウト完了時の戻り値 = E戻り値.オプション呼び出し;
+//						this.eフェードアウト完了時の戻り値 = E戻り値.コンフィグ呼び出し;	// #24525 yyagi OPTION選択時もCONFIG呼び出し
 						this.actFIFO.tフェードアウト開始();
 						base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 						CDTXMania.Skin.sound取消音.t再生する();

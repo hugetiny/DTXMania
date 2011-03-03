@@ -147,7 +147,7 @@ namespace DTXMania
 					}
 					set
 					{
-						if( ( value < 0 ) || ( ( value != 0x63 ) && ( value > 6 ) ) )
+						if ( ( value < (int)CScoreIni.ERANK.SS ) || ( ( value != (int)CScoreIni.ERANK.UNKNOWN ) && ( value > (int)CScoreIni.ERANK.E ) ) )
 						{
 							throw new ArgumentOutOfRangeException();
 						}
@@ -236,34 +236,31 @@ namespace DTXMania
 			this.ScoreIni情報 = new STScoreIni情報( DateTime.MinValue, 0L );
 			this.bSongDBにキャッシュがあった = false;
 			this.ファイル情報 = new STファイル情報( "", "", DateTime.MinValue, 0L );
-			ST譜面情報 st譜面情報 = new ST譜面情報();
-			st譜面情報.タイトル = "";
-			st譜面情報.アーティスト名 = "";
-			st譜面情報.コメント = "";
-			st譜面情報.ジャンル = "";
-			st譜面情報.Preimage = "";
-			st譜面情報.Premovie = "";
-			st譜面情報.Presound = "";
-			st譜面情報.Backgound = "";
-			st譜面情報.レベル = new STDGBVALUE<int>();
-			ST譜面情報.STRANK strank = new ST譜面情報.STRANK();
-			strank.Drums = 0x63;
-			strank.Guitar = 0x63;
-			strank.Bass = 0x63;
-			st譜面情報.最大ランク = strank;
-			st譜面情報.フルコンボ = new STDGBVALUE<bool>();
-			st譜面情報.演奏回数 = new STDGBVALUE<int>();
-			ST譜面情報.STHISTORY sthistory = new ST譜面情報.STHISTORY();
-			sthistory.行1 = "";
-			sthistory.行2 = "";
-			sthistory.行3 = "";
-			sthistory.行4 = "";
-			sthistory.行5 = "";
-			st譜面情報.演奏履歴 = sthistory;
-			st譜面情報.レベルを非表示にする = false;
-			st譜面情報.最大スキル = new ST譜面情報.STSKILL();
-			st譜面情報.曲種別 = CDTX.E種別.DTX;
-			this.譜面情報 = st譜面情報;
+			this.譜面情報 = new ST譜面情報();
+			this.譜面情報.タイトル = "";
+			this.譜面情報.アーティスト名 = "";
+			this.譜面情報.コメント = "";
+			this.譜面情報.ジャンル = "";
+			this.譜面情報.Preimage = "";
+			this.譜面情報.Premovie = "";
+			this.譜面情報.Presound = "";
+			this.譜面情報.Backgound = "";
+			this.譜面情報.レベル = new STDGBVALUE<int>();
+			this.譜面情報.最大ランク = new ST譜面情報.STRANK();
+			this.譜面情報.最大ランク.Drums =  (int)CScoreIni.ERANK.UNKNOWN;
+			this.譜面情報.最大ランク.Guitar = (int)CScoreIni.ERANK.UNKNOWN;
+			this.譜面情報.最大ランク.Bass =   (int)CScoreIni.ERANK.UNKNOWN;
+			this.譜面情報.フルコンボ = new STDGBVALUE<bool>();
+			this.譜面情報.演奏回数 = new STDGBVALUE<int>();
+			this.譜面情報.演奏履歴 = new ST譜面情報.STHISTORY();
+			this.譜面情報.演奏履歴.行1 = "";
+			this.譜面情報.演奏履歴.行2 = "";
+			this.譜面情報.演奏履歴.行3 = "";
+			this.譜面情報.演奏履歴.行4 = "";
+			this.譜面情報.演奏履歴.行5 = "";
+			this.譜面情報.レベルを非表示にする = false;
+			this.譜面情報.最大スキル = new ST譜面情報.STSKILL();
+			this.譜面情報.曲種別 = CDTX.E種別.DTX;
 		}
 	}
 }

@@ -34,6 +34,10 @@ namespace DTXMania
 
 		[DllImport( "kernel32", CharSet = CharSet.Unicode, SetLastError = true )]
 		internal static extern IntPtr LoadLibrary( string lpFileName );
+
+//		[DllImport("dwmapi.dll", PreserveSig = false)]
+//		public static extern int DwmEnableComposition(bool fEnable);
+		
 		//-----------------------------
 		#endregion
 
@@ -69,6 +73,16 @@ namespace DTXMania
 					)) flag = true;
 				if (!flag)
 				{
+					// turn off Aero Glass
+//					try
+//					{
+//						DwmEnableComposition( false );
+//					}
+//					catch ( DllNotFoundException )
+//					{
+//						// DLLがなければXP以下とみなし何もしない
+//					}
+
 					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
 					try
 					{
@@ -84,6 +98,7 @@ namespace DTXMania
 						Trace.Write( e.ToString() );
 						Trace.WriteLine( "" );
 						Trace.WriteLine( "エラーだゴメン！（涙" );
+						MessageBox.Show( e.ToString(), "DTXMania Error", MessageBoxButtons.OK, MessageBoxIcon.Error );	// #23670 2011.2.28 yyagi to show error dialog
 					}
 					// END #23670 2010.11.13 from
 					

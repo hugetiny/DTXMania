@@ -36,24 +36,24 @@ namespace DTXMania
 	}
 	public enum Eパッド
 	{
-		B = 2,
+		HH = 0,
+		R = 0,
+		SD = 1,
+		G = 1,
 		BD = 2,
+		B = 2,
+		HT = 3,
+		Pick = 3,
+		LT = 4,
+		Wail = 4,
+		FT = 5,
 		Cancel = 5,
 		CY = 6,
 		Decide = 6,
-		FT = 5,
-		G = 1,
-		HH = 0,
 		HHO = 7,
-		HT = 3,
-		LC = 9,
-		LT = 4,
-		Pick = 3,
-		R = 0,
 		RD = 8,
-		SD = 1,
-		UNKNOWN = 0x63,
-		Wail = 4
+		LC = 9,
+		UNKNOWN = 99
 	}
 	[Flags]
 	public enum EパッドFlag		// #24063 2011.1.16 yyagi コマンド入力用 パッド入力のフラグ化

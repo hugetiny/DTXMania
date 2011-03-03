@@ -41,6 +41,11 @@ namespace DTXMania
 				Drums.nGood数 = CDTXMania.ConfigIni.bドラムが全部オートプレイである ? this.nヒット数・Auto含む.Drums.Good : this.nヒット数・Auto含まない.Drums.Good;
 				Drums.nPoor数 = CDTXMania.ConfigIni.bドラムが全部オートプレイである ? this.nヒット数・Auto含む.Drums.Poor : this.nヒット数・Auto含まない.Drums.Poor;
 				Drums.nMiss数 = CDTXMania.ConfigIni.bドラムが全部オートプレイである ? this.nヒット数・Auto含む.Drums.Miss : this.nヒット数・Auto含まない.Drums.Miss;
+				Drums.nPerfect数・Auto含まない = this.nヒット数・Auto含まない.Drums.Perfect;
+				Drums.nGreat数・Auto含まない = this.nヒット数・Auto含まない.Drums.Great;
+				Drums.nGood数・Auto含まない = this.nヒット数・Auto含まない.Drums.Good;
+				Drums.nPoor数・Auto含まない = this.nヒット数・Auto含まない.Drums.Poor;
+				Drums.nMiss数・Auto含まない = this.nヒット数・Auto含まない.Drums.Miss;
 				Drums.n最大コンボ数 = this.actCombo.n現在のコンボ数.Drums最高値;
 				Drums.n全チップ数 = CDTXMania.DTX.n可視チップ数.Drums;
 				for ( int i = 0; i < 10; i++ )
@@ -98,6 +103,11 @@ namespace DTXMania
 				Guitar.nGood数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Good : this.nヒット数・Auto含まない.Guitar.Good;
 				Guitar.nPoor数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Poor : this.nヒット数・Auto含まない.Guitar.Poor;
 				Guitar.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Miss : this.nヒット数・Auto含まない.Guitar.Miss;
+				Guitar.nPerfect数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Perfect;
+				Guitar.nGreat数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Great;
+				Guitar.nGood数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Good;
+				Guitar.nPoor数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Poor;
+				Guitar.nMiss数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Miss;
 				Guitar.n最大コンボ数 = this.actCombo.n現在のコンボ数.Guitar最高値;
 				Guitar.n全チップ数 = CDTXMania.DTX.n可視チップ数.Guitar;
 				for ( int i = 0; i < 10; i++ )
@@ -155,6 +165,11 @@ namespace DTXMania
 				Bass.nGood数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Good : this.nヒット数・Auto含まない.Bass.Good;
 				Bass.nPoor数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Poor : this.nヒット数・Auto含まない.Bass.Poor;
 				Bass.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Miss : this.nヒット数・Auto含まない.Bass.Miss;
+				Bass.nPerfect数・Auto含まない = this.nヒット数・Auto含まない.Bass.Perfect;
+				Bass.nGreat数・Auto含まない = this.nヒット数・Auto含まない.Bass.Great;
+				Bass.nGood数・Auto含まない = this.nヒット数・Auto含まない.Bass.Good;
+				Bass.nPoor数・Auto含まない = this.nヒット数・Auto含まない.Bass.Poor;
+				Bass.nMiss数・Auto含まない = this.nヒット数・Auto含まない.Bass.Miss;
 				Bass.n最大コンボ数 = this.actCombo.n現在のコンボ数.Bass最高値;
 				Bass.n全チップ数 = CDTXMania.DTX.n可視チップ数.Bass;
 				for ( int i = 0; i < 10; i++ )

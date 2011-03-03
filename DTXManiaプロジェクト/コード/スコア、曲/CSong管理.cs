@@ -587,11 +587,13 @@ namespace DTXMania
 												int num3 = ( i * 2 ) + 1;
 												if( ( ini.stセクション[ num3 ].b演奏にMIDI入力を使用した || ini.stセクション[ num3 ].b演奏にキーボードを使用した ) || ( ini.stセクション[ num3 ].b演奏にジョイパッドを使用した || ini.stセクション[ num3 ].b演奏にマウスを使用した ) )
 												{
-													node.arスコア[ lv ].譜面情報.最大ランク[ i ] = CScoreIni.tランク値を計算して返す( ini.stセクション[ num3 ] );
+													node.arスコア[ lv ].譜面情報.最大ランク[ i ] = 
+														(ini.stファイル.BestRank[i] != (int)CScoreIni.ERANK.UNKNOWN)?
+														(int)ini.stファイル.BestRank[i] : CScoreIni.tランク値を計算して返す( ini.stセクション[ num3 ] );
 												}
 												else
 												{
-													node.arスコア[ lv ].譜面情報.最大ランク[ i ] = 0x63;
+													node.arスコア[ lv ].譜面情報.最大ランク[ i ] = (int)CScoreIni.ERANK.UNKNOWN;
 												}
 												node.arスコア[ lv ].譜面情報.最大スキル[ i ] = ini.stセクション[ num3 ].db演奏型スキル値;
 												node.arスコア[ lv ].譜面情報.フルコンボ[ i ] = ini.stセクション[ num3 ].bフルコンボである;

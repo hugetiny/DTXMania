@@ -77,14 +77,14 @@ namespace DTXMania
 
 				#region [ 結果の計算 ]
 				//---------------------
-				for( int j = 0; j < 3; j++ )
+				for( int i = 0; i < 3; i++ )
 				{
-					this.nランク値[ j ] = -1;
-					if( ( ( ( j != 0 ) || ( CDTXMania.DTX.bチップがある.Drums && !CDTXMania.ConfigIni.bギタレボモード ) ) && ( ( j != 1 ) || CDTXMania.DTX.bチップがある.Guitar ) ) && ( ( j != 2 ) || CDTXMania.DTX.bチップがある.Bass ) )
+					this.nランク値[ i ] = -1;
+					if ( ( ( ( i != 0 ) || ( CDTXMania.DTX.bチップがある.Drums && !CDTXMania.ConfigIni.bギタレボモード ) ) && ( ( i != 1 ) || CDTXMania.DTX.bチップがある.Guitar ) ) && ( ( i != 2 ) || CDTXMania.DTX.bチップがある.Bass ) )
 					{
-						CScoreIni.C演奏記録 part = this.st演奏記録[ j ];
+						CScoreIni.C演奏記録 part = this.st演奏記録[ i ];
 						bool bIsAutoPlay = true;
-						switch( j )
+						switch( i )
 						{
 							case 0:
                                 bIsAutoPlay = CDTXMania.ConfigIni.bドラムが全部オートプレイである;
@@ -98,14 +98,19 @@ namespace DTXMania
 								bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay.Bass;
 								break;
 						}
-						this.fPerfect率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPerfect数 ) / ( (float) part.n全チップ数 ) );
-						this.fGreat率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nGreat数 ) / ( (float) part.n全チップ数 ) );
-						this.fGood率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nGood数 ) / ( (float) part.n全チップ数 ) );
-						this.fPoor率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPoor数 ) / ( (float) part.n全チップ数 ) );
-						this.fMiss率[ j ] = bIsAutoPlay ? 0f : ( ( 100f * part.nMiss数 ) / ( (float) part.n全チップ数 ) );
-						this.bオート[ j ] = bIsAutoPlay;	// #23596 10.11.16 add ikanick そのパートがオートなら1
+						this.fPerfect率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPerfect数 ) / ( (float) part.n全チップ数 ) );
+						this.fGreat率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nGreat数 ) / ( (float) part.n全チップ数 ) );
+						this.fGood率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nGood数 ) / ( (float) part.n全チップ数 ) );
+						this.fPoor率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPoor数 ) / ( (float) part.n全チップ数 ) );
+						this.fMiss率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nMiss数 ) / ( (float) part.n全チップ数 ) );
+						this.bオート[ i ] = bIsAutoPlay;	// #23596 10.11.16 add ikanick そのパートがオートなら1
 															//        10.11.17 change (int to bool) ikanick
-						this.nランク値[ j ] = CScoreIni.tランク値を計算して返す( part );
+						this.nランク値[ i ] = CScoreIni.tランク値を計算して返す( part );
+//Debug.WriteLine( "rank[" + i + "]=" + this.nランク値[ i ] );
+//if ( this.nランク値[ i ] != -1 )
+//{
+//	this.n総合ランク値 = Math.Min( this.n総合ランク値, this.nランク値[ i ] );
+//}
 					}
 				}
 				this.n総合ランク値 = CScoreIni.t総合ランク値を計算して返す( this.st演奏記録.Drums, this.st演奏記録.Guitar, this.st演奏記録.Bass );
@@ -119,34 +124,40 @@ namespace DTXMania
 
 				bool[] b今までにフルコンボしたことがある = new bool[] { false, false, false };
 
-				for( int k = 0; k < 3; k++ )
+				for( int i = 0; i < 3; i++ )
 				{
 					// フルコンボチェックならびに新記録ランクチェックは、ini.Record[] が、スコアチェックや演奏型スキルチェックの IF 内で書き直されてしまうよりも前に行う。(2010.9.10)
 					
-					b今までにフルコンボしたことがある[ k ] = ini.stセクション[ k * 2 ].bフルコンボである | ini.stセクション[ k * 2 + 1 ].bフルコンボである;
+					b今までにフルコンボしたことがある[ i ] = ini.stセクション[ i * 2 ].bフルコンボである | ini.stセクション[ i * 2 + 1 ].bフルコンボである;
 
-					if( this.nランク値[ k ] <= CScoreIni.tランク値を計算して返す( ini.stセクション[ ( k * 2 ) + 1 ] ) )
+			//		if( this.nランク値[ i ] <= CScoreIni.tランク値を計算して返す( ini.stセクション[ ( i * 2 ) + 1 ] ) )
+			//		{
+			//			this.b新記録ランク[ i ] = true;
+			//		}
+					// 上記の条件だと[HiSkill.***]でのランクしかチェックしていないので、BestRankと比較するよう変更
+					if ( this.nランク値[ i ] >= 0 && ini.stファイル.BestRank[ i ] > this.nランク値[ i ] )		// #24459 2011.3.1 yyagi update BestRank
 					{
-						this.b新記録ランク[ k ] = true;
+						this.b新記録ランク[ i ] = true;
+						ini.stファイル.BestRank[ i ] = this.nランク値[ i ];
 					}
 
 					// 新記録スコアチェック
-					if( this.st演奏記録[ k ].nスコア > ini.stセクション[ k * 2 ].nスコア )
+					if( this.st演奏記録[ i ].nスコア > ini.stセクション[ i * 2 ].nスコア )
 					{
-						this.b新記録スコア[ k ] = true;
-						ini.stセクション[ k * 2 ] = this.st演奏記録[ k ];
+						this.b新記録スコア[ i ] = true;
+						ini.stセクション[ i * 2 ] = this.st演奏記録[ i ];
 					}
 
                     // 新記録スキルチェック
-                    if (this.st演奏記録[k].db演奏型スキル値 > ini.stセクション[(k * 2) + 1].db演奏型スキル値)
+                    if (this.st演奏記録[i].db演奏型スキル値 > ini.stセクション[(i * 2) + 1].db演奏型スキル値)
                     {
-                        this.b新記録スキル[ k ] = true;
-                        ini.stセクション[(k * 2) + 1] = this.st演奏記録[ k ];
+                        this.b新記録スキル[ i ] = true;
+                        ini.stセクション[(i * 2) + 1] = this.st演奏記録[ i ];
                     }
                     // ラストプレイ #23595 2011.1.9 ikanick
                     // オートじゃなければプレイ結果を書き込む
-                    if (this.bオート[ k ] == false) {
-                        ini.stセクション[k + 6] = this.st演奏記録[ k ];
+                    if (this.bオート[ i ] == false) {
+                        ini.stセクション[i + 6] = this.st演奏記録[ i ];
                     }
 
                     // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
@@ -154,9 +165,9 @@ namespace DTXMania
 					bool[] b更新が必要か否か = new bool[ 3 ];
 					CScoreIni.t更新条件を取得する( out b更新が必要か否か[ 0 ], out b更新が必要か否か[ 1 ], out b更新が必要か否か[ 2 ] );
 
-                    if (b更新が必要か否か[ k ])
+                    if (b更新が必要か否か[ i ])
                     {
-                        switch ( k )
+                        switch ( i )
                         {
                             case 0:
                                 ini.stファイル.ClearCountDrums++;

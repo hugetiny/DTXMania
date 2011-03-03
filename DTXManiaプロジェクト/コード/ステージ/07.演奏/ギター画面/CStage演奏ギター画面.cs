@@ -160,15 +160,15 @@ namespace DTXMania
 			//    Bass.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Bass );
 			//}
 			#endregion
-			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
-			{
-				CScoreIni.C演奏記録 t;
-				t = Guitar;
-				Guitar = Bass;
-				Bass = t;
-
-				CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
-			}
+//			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
+//			{
+//				CScoreIni.C演奏記録 t;
+//				t = Guitar;
+//				Guitar = Bass;
+//				Bass = t;
+//			
+//				CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
+//			}
 		}
 		
 

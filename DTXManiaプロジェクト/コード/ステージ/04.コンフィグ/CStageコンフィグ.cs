@@ -283,7 +283,7 @@ namespace DTXMania
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 				}
 			}
-			else if( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( 0x75 ) ) ) )
+			else if( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Return) ) ) )
 			{
 				if( this.n現在のメニュー番号 == 4 )
 				{
@@ -308,22 +308,22 @@ namespace DTXMania
 								this.bメニューにフォーカス中 = true;
 								this.t説明文パネルに現在選択されているメニューの説明を描画する();
 							}
-							goto Label_0505;
+							break;	// goto Label_0505;
 
 						case EItemPanelモード.キーコード一覧:
 							this.actKeyAssign.tEnter押下();
-							goto Label_0505;
+							break;	// goto Label_0505;
 					}
 				}
 			}
-		Label_0505:
-			this.ctキー反復用.Up.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( 0x84 ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
+//		Label_0505:
+			this.ctキー反復用.Up.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 			this.ctキー反復用.R.tキー反復( CDTXMania.Pad.b押されているGB( Eパッド.HH ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 			if( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
 			{
 				this.tカーソルを上へ移動する();
 			}
-			this.ctキー反復用.Down.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( 50 ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
+			this.ctキー反復用.Down.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.DownArrow ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
 			this.ctキー反復用.B.tキー反復( CDTXMania.Pad.b押されているGB( Eパッド.BD ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
 			if( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LT ) )
 			{
