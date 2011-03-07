@@ -84,7 +84,10 @@ namespace DTXMania
 //					}
 
 					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
+					// BEGIM #24606 2011.03.08 from: DEBUG 時は例外発生箇所を直接デバッグできるようにするため、例外をキャッチしないようにする。
+#if !DEBUG
 					try
+#endif
 					{
 						using( var mania = new CDTXMania() )
 							mania.Run();
@@ -92,6 +95,7 @@ namespace DTXMania
 						Trace.WriteLine( "" );
 						Trace.WriteLine( "遊んでくれてありがとう！" );
 					}
+#if !DEBUG
 					catch( Exception e )
 					{
 						Trace.WriteLine( "" );
@@ -100,8 +104,10 @@ namespace DTXMania
 						Trace.WriteLine( "エラーだゴメン！（涙" );
 						MessageBox.Show( e.ToString(), "DTXMania Error", MessageBoxButtons.OK, MessageBoxIcon.Error );	// #23670 2011.2.28 yyagi to show error dialog
 					}
+#endif
+					// END #24606 2011.03.08 from
 					// END #23670 2010.11.13 from
-					
+
 					if( Trace.Listeners.Count > 1 )
 						Trace.Listeners.RemoveAt( 1 );
 				}
