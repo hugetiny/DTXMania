@@ -111,6 +111,13 @@ namespace DTXMania
 					if( Trace.Listeners.Count > 1 )
 						Trace.Listeners.RemoveAt( 1 );
 				}
+
+				// BEGIN #24615 2011.03.09 from: Mutex.WaitOne() が true を返した場合は、Mutex のリリースが必要である。
+				
+				mutex二重起動防止用.ReleaseMutex();
+				mutex二重起動防止用 = null;
+				
+				// END #24615 2011.03.09 from
 			}
 		}
 	}
