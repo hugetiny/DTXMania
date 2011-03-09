@@ -41,7 +41,7 @@ namespace DirectInput
 	{
 		timeStamp = 0;
 		sliders = gcnew array<int>( 2 );
-		povs = gcnew array<int>( 4 );
+		povs = gcnew array<int>( 4 ) { -1, -1, -1, -1};		// 2011.3.9 yyagi add initializer to "-1".
 		pressedButtons = gcnew array<bool>( 128 );
 		releasedButtons = gcnew array<bool>( 128 );
 		vsliders = gcnew array<int>( 2 );
