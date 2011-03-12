@@ -95,7 +95,6 @@ namespace FDK
 
 			if( ( bWindowがアクティブ中 && !this.devJoystick.Acquire().IsFailure ) && !this.devJoystick.Poll().IsFailure )
 			{
-				STInputEvent event29;
 				this.list入力イベント = new List<STInputEvent>( 32 );
 
 				if( bバッファ入力を使用する )
@@ -103,7 +102,6 @@ namespace FDK
 					#region [ a.バッファ入力 ]
 					//-----------------------------
 					var bufferedData = this.devJoystick.GetBufferedData();
-
 					if( Result.Last.IsSuccess && bufferedData != null )
 					{
 						foreach( JoystickState data in bufferedData )
@@ -112,8 +110,7 @@ namespace FDK
 							//-----------------------------
 							if( data.X < -500 )
 							{
-								STInputEvent event43 = new STInputEvent();
-								STInputEvent event16 = event43;
+								STInputEvent event16 = new STInputEvent();
 								event16.nKey = 0;
 								event16.b押された = true;
 								event16.nTimeStamp = data.TimeStamp;
@@ -125,8 +122,7 @@ namespace FDK
 							}
 							else
 							{
-								STInputEvent event44 = new STInputEvent();
-								STInputEvent event17 = event44;
+								STInputEvent event17 = new STInputEvent();
 								event17.nKey = 0;
 								event17.b押された = false;
 								event17.nTimeStamp = data.TimeStamp;
@@ -142,8 +138,7 @@ namespace FDK
 							//-----------------------------
 							if( data.X > 500 )
 							{
-								STInputEvent event45 = new STInputEvent();
-								STInputEvent event18 = event45;
+								STInputEvent event18 = new STInputEvent();
 								event18.nKey = 1;
 								event18.b押された = true;
 								event18.nTimeStamp = data.TimeStamp;
@@ -155,8 +150,7 @@ namespace FDK
 							}
 							else
 							{
-								STInputEvent event46 = new STInputEvent();
-								STInputEvent event19 = event46;
+								STInputEvent event19 = new STInputEvent();
 								event19.nKey = 1;
 								event19.b押された = false;
 								event19.nTimeStamp = data.TimeStamp;
@@ -172,8 +166,7 @@ namespace FDK
 							//-----------------------------
 							if( data.Y < -500 )
 							{
-								STInputEvent event47 = new STInputEvent();
-								STInputEvent event20 = event47;
+								STInputEvent event20 = new STInputEvent();
 								event20.nKey = 2;
 								event20.b押された = true;
 								event20.nTimeStamp = data.TimeStamp;
@@ -185,8 +178,7 @@ namespace FDK
 							}
 							else
 							{
-								STInputEvent event48 = new STInputEvent();
-								STInputEvent event21 = event48;
+								STInputEvent event21 = new STInputEvent();
 								event21.nKey = 2;
 								event21.b押された = false;
 								event21.nTimeStamp = data.TimeStamp;
@@ -202,8 +194,7 @@ namespace FDK
 							//-----------------------------
 							if( data.Y > 500 )
 							{
-								event29 = new STInputEvent();
-								STInputEvent event22 = event29;
+								STInputEvent event22 = new STInputEvent();
 								event22.nKey = 3;
 								event22.b押された = true;
 								event22.nTimeStamp = data.TimeStamp;
@@ -215,8 +206,7 @@ namespace FDK
 							}
 							else
 							{
-								event29 = new STInputEvent();
-								STInputEvent event23 = event29;
+								STInputEvent event23 = new STInputEvent();
 								event23.nKey = 3;
 								event23.b押された = false;
 								event23.nTimeStamp = data.TimeStamp;
@@ -232,8 +222,7 @@ namespace FDK
 							//-----------------------------
 							if( data.Z < -500 )
 							{
-								event29 = new STInputEvent();
-								STInputEvent event24 = event29;
+								STInputEvent event24 = new STInputEvent();
 								event24.nKey = 4;
 								event24.b押された = true;
 								event24.nTimeStamp = data.TimeStamp;
@@ -245,8 +234,7 @@ namespace FDK
 							}
 							else
 							{
-								event29 = new STInputEvent();
-								STInputEvent event25 = event29;
+								STInputEvent event25 = new STInputEvent();
 								event25.nKey = 4;
 								event25.b押された = false;
 								event25.nTimeStamp = data.TimeStamp;
@@ -262,8 +250,7 @@ namespace FDK
 							//-----------------------------
 							if( data.Z > 500 )
 							{
-								event29 = new STInputEvent();
-								STInputEvent event26 = event29;
+								STInputEvent event26 = new STInputEvent();
 								event26.nKey = 5;
 								event26.b押された = true;
 								event26.nTimeStamp = data.TimeStamp;
@@ -275,8 +262,7 @@ namespace FDK
 							}
 							else
 							{
-								event29 = new STInputEvent();
-								STInputEvent event27 = event29;
+								STInputEvent event27 = new STInputEvent();
 								event27.nKey = 5;
 								event27.b押された = false;
 								event27.nTimeStamp = data.TimeStamp;
@@ -288,14 +274,56 @@ namespace FDK
 							}
 							//-----------------------------
 							#endregion
+							// #24341 2011.3.12 yyagi: POV support
+							#region [ POV HAT 4/8way (only single POV switch is supported)]
+							int[] povs = data.GetPointOfViewControllers();
+							if (povs != null) {
+								if (povs[0] >= 0) {
+									STInputEvent stevent = new STInputEvent();
+									int nPovDegree = povs[ 0 ];
+									int nWay = ( nPovDegree + 2250 ) / 4500;
+									if ( nWay == 8 ) nWay = 0;
+									stevent.nKey = 6 + 128 + nWay;
+//Debug.WriteLine( "POVS:" + povs[ 0 ].ToString( CultureInfo.CurrentCulture ) + ", " +stevent.nKey );
+									stevent.b押された = true;
+									stevent.nTimeStamp = data.TimeStamp;
+									stevent.nVelocity = CInput管理.n通常音量;
+									this.list入力イベント.Add( stevent );
+
+									this.bButtonState[ stevent.nKey ] = true;
+									this.bButtonPushDown[ stevent.nKey ] = true;
+								}
+								else
+								{
+									int pos = 0;
+									for ( int i = 6 + 0x80; i < 6 + 0x80 + 8; i++ )
+									{											// 離されたボタンを調べるために、元々押されていたボタンを探す。
+										if ( this.bButtonState[ i ] == true )	// DirectInputを直接いじるならこんなことしなくて良いのに、あぁ面倒。
+										{										// この処理が必要なために、POVを1個しかサポートできない。無念。
+											pos = i;
+											break;
+										}
+									}
+									STInputEvent stevent = new STInputEvent();
+									stevent.nKey = pos;
+									stevent.b押された = false;
+									stevent.nTimeStamp = data.TimeStamp;
+									stevent.nVelocity = 0;
+									this.list入力イベント.Add( stevent );
+
+									this.bButtonState[ pos ] = false;
+									this.bButtonPullUp[ pos ] = true;
+								}
+							}
+							#endregion
+
 							#region [ ボタン ]
 							//-----------------------------
 							for( int i = 0; i < 32; i++ )
 							{
 								if( data.IsPressed( i ) )
 								{
-									event29 = new STInputEvent();
-									STInputEvent event28 = event29;
+									STInputEvent event28 = new STInputEvent();
 									event28.nKey = 6 + i;
 									event28.b押された = true;
 									event28.b離された = false;
@@ -539,6 +567,57 @@ namespace FDK
 						}
 						//-----------------------------
 						#endregion
+						// #24341 2011.3.12 yyagi: POV support
+						#region [ POV HAT 4/8way (only single POV switch is supported)]
+						int[] povs = currentState.GetPointOfViewControllers();
+						if ( povs != null )
+						{
+							if ( povs[ 0 ] >= 0)
+							{
+								int nPovDegree = povs[ 0 ];
+								int nWay = ( nPovDegree + 2250 ) / 4500;
+								if ( nWay == 8 ) nWay = 0;
+
+								if ( this.bButtonState[ 6 + 128 + nWay ] == false )
+								{
+									STInputEvent stevent = new STInputEvent();
+									stevent.nKey = 6 + 128 + nWay;
+									//Debug.WriteLine( "POVS:" + povs[ 0 ].ToString( CultureInfo.CurrentCulture ) + ", " +stevent.nKey );
+									stevent.b押された = true;
+									stevent.nTimeStamp = currentState.TimeStamp;
+									stevent.nVelocity = CInput管理.n通常音量;
+									this.list入力イベント.Add( stevent );
+
+									this.bButtonState[ stevent.nKey ] = true;
+									this.bButtonPushDown[ stevent.nKey ] = true;
+								}
+							}
+							else
+							{
+								int nWay = 0;
+								for ( int i = 6 + 0x80; i < 6 + 0x80 + 8; i++ )
+								{											// 離されたボタンを調べるために、元々押されていたボタンを探す。
+									if ( this.bButtonState[ i ] == true )	// DirectInputを直接いじるならこんなことしなくて良いのに、あぁ面倒。
+									{										// この処理が必要なために、POVを1個しかサポートできない。無念。
+										nWay = i;
+										break;
+									}
+								}
+								if ( this.bButtonState[ nWay ] == true )
+								{
+									STInputEvent stevent = new STInputEvent();
+									stevent.nKey = nWay;
+									stevent.b押された = false;
+									stevent.nTimeStamp = currentState.TimeStamp;
+									stevent.nVelocity = 0;
+									this.list入力イベント.Add( stevent );
+
+									this.bButtonState[ nWay ] = false;
+									this.bButtonPullUp[ nWay ] = true;
+								}
+							}
+						}
+						#endregion
 						#region [ ボタン ]
 						//-----------------------------
 						bool[] buttons = currentState.GetButtons();
@@ -546,8 +625,7 @@ namespace FDK
 						{
 							if( this.bButtonState[ 6 + j ] == false && buttons[ j ] )
 							{
-								event29 = new STInputEvent();
-								STInputEvent item = event29;
+								STInputEvent item = new STInputEvent();
 								item.nKey = 6 + j;
 								item.b押された = true;
 								item.nTimeStamp = this.timer.nシステム時刻;
@@ -559,8 +637,7 @@ namespace FDK
 							}
 							else if( this.bButtonState[ 6 + j ] == true && !buttons[ j ] )
 							{
-								STInputEvent event30 = new STInputEvent();
-								STInputEvent event3 = event30;
+								STInputEvent event3 = new STInputEvent();
 								event3.nKey = 6 + j;
 								event3.b押された = false;
 								event3.nTimeStamp = this.timer.nシステム時刻;

@@ -259,9 +259,13 @@ namespace DTXMania
 					break;
 
 				default:
-					if( ( nCode >= 6 ) && ( nCode <= 0x85 ) )
+					if( ( 6 <= nCode ) && ( nCode < 6 + 128 ) )				// other buttons (128 types)
 					{
 						str = string.Format( "Button{0}", nCode - 5 );
+					}
+					else if ( ( 6 + 128 <= nCode ) && ( nCode < 6 + 128 + 8 ) )		// POV HAT ( 8 types; 45 degrees per HATs)
+					{
+						str = string.Format( "POV {0}", ( nCode - 6 - 128 ) * 45 );
 					}
 					else
 					{
@@ -314,15 +318,27 @@ namespace DTXMania
 							return true;
 						}
 					}
-					for( int j = 0; j < 6; j++ )
+					for( int i = 0; i < 6; i++ )
 					{
-						if( device.bキーが押された( j ) )
+						if( device.bキーが押された( i ) )
 						{
 							CDTXMania.Skin.sound決定音.t再生する();
-							CDTXMania.ConfigIni.t指定した入力が既にアサイン済みである場合はそれを全削除する( E入力デバイス.ジョイパッド, device.ID, j );
+							CDTXMania.ConfigIni.t指定した入力が既にアサイン済みである場合はそれを全削除する( E入力デバイス.ジョイパッド, device.ID, i );
 							CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ][ this.n現在の選択行 ].入力デバイス = E入力デバイス.ジョイパッド;
 							CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ][ this.n現在の選択行 ].ID = device.ID;
-							CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ][ this.n現在の選択行 ].コード = j;
+							CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ][ this.n現在の選択行 ].コード = i;
+							return true;
+						}
+					}
+					for ( int i = 6 + 0x80; i < 6 + 0x80 + 8; i++ )		// #24341 2011.3.10 yyagi; to supoprt HAT switch
+					{
+						if ( device.bキーが押された( i ) )
+						{
+							CDTXMania.Skin.sound決定音.t再生する();
+							CDTXMania.ConfigIni.t指定した入力が既にアサイン済みである場合はそれを全削除する( E入力デバイス.ジョイパッド, device.ID, 6 );
+							CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ][ this.n現在の選択行 ].入力デバイス = E入力デバイス.ジョイパッド;
+							CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ][ this.n現在の選択行 ].ID = device.ID;
+							CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ][ this.n現在の選択行 ].コード = i;
 							return true;
 						}
 					}
