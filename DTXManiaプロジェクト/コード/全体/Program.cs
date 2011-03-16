@@ -29,6 +29,7 @@ namespace DTXMania
 			return true;
 		}
 
+		#region [DllImport]
 		[DllImport( "kernel32", CharSet = CharSet.Unicode, SetLastError = true )]
 		internal static extern void FreeLibrary( IntPtr hModule );
 
@@ -36,8 +37,8 @@ namespace DTXMania
 		internal static extern IntPtr LoadLibrary( string lpFileName );
 
 //		[DllImport("dwmapi.dll", PreserveSig = false)]
-//		public static extern int DwmEnableComposition(bool fEnable);
-		
+		//		public static extern int DwmEnableComposition(bool fEnable);
+		#endregion
 		//-----------------------------
 		#endregion
 
@@ -51,6 +52,7 @@ namespace DTXMania
 				string newLine = Environment.NewLine;
 				bool flag = false;
 
+				#region [DLLの存在チェック]
 				if (!tDLLの存在チェック("SlimDX" + CDTXMania.SLIMDXDLL,
 					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
@@ -71,8 +73,13 @@ namespace DTXMania
 					CDTXMania.D3DXDLL + " が存在しません。" + newLine + "DirectX Redist フォルダの DXSETUP.exe を実行し、" + newLine + "必要な DirectX ランタイムをインストールしてください。",
 					CDTXMania.D3DXDLL + " is not found." + newLine + "Please execute DXSETUP.exe in \"DirectX Redist\" folder, to install DirectX runtimes required for DTXMania."
 					)) flag = true;
+				#endregion
 				if (!flag)
 				{
+//#if TEST_ENGLISH
+//					Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
+//#endif
+		
 					// turn off Aero Glass
 //					try
 //					{
