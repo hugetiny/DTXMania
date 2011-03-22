@@ -38,64 +38,6 @@ namespace DTXMania
 
 		// メソッド
 
-		public void t項目リストの設定・Bass()
-		{
-			this.tConfigIniへ記録する();
-			this.list項目リスト.Clear();
-
-			this.iBassReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
-				"左側のメニューに戻ります。",
-				"Return to left menu.");
-			this.list項目リスト.Add(this.iBassReturnToMenu);
-			this.iBassAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Bass,
-				"ベースパートを自動で演奏します。",
-				"To play the bass part automatically.");
-			this.list項目リスト.Add( this.iBassAutoPlay );
-			this.iBassScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Bass,
-				"演奏時のベース譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
-				"To change the scroll speed for the\nbass lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)");
-			this.list項目リスト.Add( this.iBassScrollSpeed );
-			this.iBassSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Bass,
-				"ベースチップがヒットバー付近にくる\nまで表示されなくなります。",
-				"Bass chips are disappered until they\ncome near the hit bar, and suddenly\nappears.");
-			this.list項目リスト.Add( this.iBassSudden );
-			this.iBassHidden = new CItemToggle("Hidden", CDTXMania.ConfigIni.bHidden.Bass,
-				"ベースチップがヒットバー付近で表示\nされなくなります。",
-				"Bass chips are hidden by approaching\nto the hit bar.");
-			this.list項目リスト.Add( this.iBassHidden );
-			this.iBassReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Bass,
-				"ベースチップが譜面の上から下に流\nれるようになります。",
-				"The scroll way is reversed. Bass chips\nflow from the top to the bottom.");
-			this.list項目リスト.Add( this.iBassReverse );
-			this.iBassPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常,
-				(int) CDTXMania.ConfigIni.判定文字表示位置.Bass,
-				"ベースの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない",
-				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the COMBO indication.\n OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "OFF" });
-			this.list項目リスト.Add( this.iBassPosition );
-			this.iBassRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常,
-				(int) CDTXMania.ConfigIni.eRandom.Bass,
-				"ベースのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
-				"Bass chips come randomly.\n\n Part: swapping lanes randomly for each\n  measures.\n Super: swapping chip randomly\n Hyper: swapping randomly\n  (number of lanes also changes)",
-				new string[] { "OFF", "Part", "Super", "Hyper" });
-			this.list項目リスト.Add( this.iBassRandom );
-			this.iBassLight = new CItemToggle( "Light", CDTXMania.ConfigIni.bLight.Bass,
-				"ベースチップのないところでピッキン\nグしても BAD になりません。",
-				"Even if you pick without any chips,\nit doesn't become BAD.");
-			this.list項目リスト.Add( this.iBassLight );
-			this.iBassLeft = new CItemToggle( "Left", CDTXMania.ConfigIni.bLeft.Bass,
-				"ベースの RGB の並びが左右反転し\nます。（左利きモード）",
-				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty.");
-			this.list項目リスト.Add( this.iBassLeft );
-																						// #23580 2011.1.3 yyagi
-			this.iBassInputAdjustTimeMs = new CItemInteger("InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass,
-				"ベースの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。入力ラグを軽減するためには、負の\n値を指定してください。",
-				"To adjust the bass input timing.\nYou can set from -99 to 0ms.\nTo decrease input lag, set minus value.");
-			this.list項目リスト.Add(this.iBassInputAdjustTimeMs);
-
-			this.n現在の選択項目 = 0;
-			this.eメニュー種別 = Eメニュー種別.Bass;
-		}
 		public void t項目リストの設定・Common()
 		{
 			this.tConfigIniへ記録する();
@@ -263,6 +205,64 @@ namespace DTXMania
 
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Guitar;
+		}
+		public void t項目リストの設定・Bass()
+		{
+			this.tConfigIniへ記録する();
+			this.list項目リスト.Clear();
+
+			this.iBassReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu." );
+			this.list項目リスト.Add( this.iBassReturnToMenu );
+			this.iBassAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Bass,
+				"ベースパートを自動で演奏します。",
+				"To play the bass part automatically." );
+			this.list項目リスト.Add( this.iBassAutoPlay );
+			this.iBassScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Bass,
+				"演奏時のベース譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
+				"To change the scroll speed for the\nbass lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)" );
+			this.list項目リスト.Add( this.iBassScrollSpeed );
+			this.iBassSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Bass,
+				"ベースチップがヒットバー付近にくる\nまで表示されなくなります。",
+				"Bass chips are disappered until they\ncome near the hit bar, and suddenly\nappears." );
+			this.list項目リスト.Add( this.iBassSudden );
+			this.iBassHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Bass,
+				"ベースチップがヒットバー付近で表示\nされなくなります。",
+				"Bass chips are hidden by approaching\nto the hit bar." );
+			this.list項目リスト.Add( this.iBassHidden );
+			this.iBassReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Bass,
+				"ベースチップが譜面の上から下に流\nれるようになります。",
+				"The scroll way is reversed. Bass chips\nflow from the top to the bottom." );
+			this.list項目リスト.Add( this.iBassReverse );
+			this.iBassPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常,
+				(int) CDTXMania.ConfigIni.判定文字表示位置.Bass,
+				"ベースの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない",
+				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the COMBO indication.\n OFF: no judgement mark.",
+				new string[] { "P-A", "P-B", "OFF" } );
+			this.list項目リスト.Add( this.iBassPosition );
+			this.iBassRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常,
+				(int) CDTXMania.ConfigIni.eRandom.Bass,
+				"ベースのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
+				"Bass chips come randomly.\n\n Part: swapping lanes randomly for each\n  measures.\n Super: swapping chip randomly\n Hyper: swapping randomly\n  (number of lanes also changes)",
+				new string[] { "OFF", "Part", "Super", "Hyper" } );
+			this.list項目リスト.Add( this.iBassRandom );
+			this.iBassLight = new CItemToggle( "Light", CDTXMania.ConfigIni.bLight.Bass,
+				"ベースチップのないところでピッキン\nグしても BAD になりません。",
+				"Even if you pick without any chips,\nit doesn't become BAD." );
+			this.list項目リスト.Add( this.iBassLight );
+			this.iBassLeft = new CItemToggle( "Left", CDTXMania.ConfigIni.bLeft.Bass,
+				"ベースの RGB の並びが左右反転し\nます。（左利きモード）",
+				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty." );
+			this.list項目リスト.Add( this.iBassLeft );
+			// #23580 2011.1.3 yyagi
+			this.iBassInputAdjustTimeMs = new CItemInteger( "InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass,
+				"ベースの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。入力ラグを軽減するためには、負の\n値を指定してください。",
+				"To adjust the bass input timing.\nYou can set from -99 to 0ms.\nTo decrease input lag, set minus value." );
+			this.list項目リスト.Add( this.iBassInputAdjustTimeMs );
+
+			this.n現在の選択項目 = 0;
+			this.eメニュー種別 = Eメニュー種別.Bass;
 		}
 		public void tEnter押下()
 		{
@@ -553,11 +553,12 @@ namespace DTXMania
 		//-----------------
 		private enum Eメニュー種別
 		{
-			Common,
-			Drums,
-			Guitar,
-			Bass,
-			Unknown
+			Common=0,
+			System=0,
+			Drums=1,
+			Guitar=2,
+			Bass=3,
+			Unknown=4
 		}
 
 		private bool b項目リスト側にフォーカスがある;

@@ -23,17 +23,17 @@ namespace DTXMania
 			CActDFPFont font;
 			base.eステージID = CStage.Eステージ.オプション;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
-			base.b活性化してない = true;
 			this.actFont = font = new CActDFPFont();
 			base.list子Activities.Add( font );
 			base.list子Activities.Add( this.actFIFO = new CActFIFOWhite() );
 			base.list子Activities.Add( this.actList = new CActOptionList() );
 			base.list子Activities.Add( this.actオプションパネル = new CActオプションパネル() );
+			base.b活性化してない = true;
 		}
-		public void t項目変更通知()
-		{
-			this.t説明文パネルに現在選択されている項目の説明を描画する();
-		}
+		public void t項目変更通知()																// CONFIGと共通
+		{																						//
+			this.t説明文パネルに現在選択されている項目の説明を描画する();						//
+		}																						//
 
 		
 		// CStage 実装

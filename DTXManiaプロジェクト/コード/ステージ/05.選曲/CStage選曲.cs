@@ -313,13 +313,15 @@ namespace DTXMania
 						CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.F1 ) )
 					{	// [SHIFT] + [F1] OPTION
 						this.actPresound.tサウンド停止();
-						this.eフェードアウト完了時の戻り値 = E戻り値.オプション呼び出し;
-//						this.eフェードアウト完了時の戻り値 = E戻り値.コンフィグ呼び出し;	// #24525 yyagi OPTION選択時もCONFIG呼び出し
+//						this.eフェードアウト完了時の戻り値 = E戻り値.オプション呼び出し;
+						this.eフェードアウト完了時の戻り値 = E戻り値.コンフィグ呼び出し;	// #24525 2011.3.16 yyagi: [SHIFT]-[F1]でCONFIG呼び出し
 						this.actFIFO.tフェードアウト開始();
 						base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 						CDTXMania.Skin.sound取消音.t再生する();
 						return 0;
 					}
+					// #24525 2011.3.16 yyagi: [SHIFT]+[F2]は廃止(将来発生するかもしれない別用途のためにキープ)
+/*
 					if ( ( CDTXMania.Input管理.Keyboard.bキーが押されている( (int)SlimDX.DirectInput.Key.RightShift ) || CDTXMania.Input管理.Keyboard.bキーが押されている( (int)SlimDX.DirectInput.Key.LeftShift ) ) &&
 						CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.F2 ) )
 					{	// [SHIFT] + [F2] CONFIGURATION
@@ -330,6 +332,7 @@ namespace DTXMania
 						CDTXMania.Skin.sound取消音.t再生する();
 						return 0;
 					}
+*/
 					if( this.act曲リスト.r現在選択中の曲 != null )
 					{
 						if( ( CDTXMania.Pad.b押されたDGB( Eパッド.Decide ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) ||

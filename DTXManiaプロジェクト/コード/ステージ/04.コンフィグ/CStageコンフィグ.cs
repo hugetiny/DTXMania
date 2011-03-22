@@ -35,19 +35,19 @@ namespace DTXMania
 		
 		// メソッド
 
-		public void tアサイン完了通知()
-		{
-			this.eItemPanelモード = EItemPanelモード.パッド一覧;
-		}
-		public void tパッド選択通知( E楽器パート part, Eパッド pad )
-		{
-			this.actKeyAssign.t開始( part, pad, this.actList.ib現在の選択項目.str項目名 );
-			this.eItemPanelモード = EItemPanelモード.キーコード一覧;
-		}
-		public void t項目変更通知()
-		{
-			this.t説明文パネルに現在選択されている項目の説明を描画する();
-		}
+		public void tアサイン完了通知()															// CONFIGにのみ存在
+		{																						//
+			this.eItemPanelモード = EItemPanelモード.パッド一覧;								//
+		}																						//
+		public void tパッド選択通知( E楽器パート part, Eパッド pad )							//
+		{																						//
+			this.actKeyAssign.t開始( part, pad, this.actList.ib現在の選択項目.str項目名 );		//
+			this.eItemPanelモード = EItemPanelモード.キーコード一覧;							//
+		}																						//
+		public void t項目変更通知()																// OPTIONと共通
+		{																						//
+			this.t説明文パネルに現在選択されている項目の説明を描画する();						//
+		}																						//
 
 		
 		// CStage 実装
@@ -58,21 +58,21 @@ namespace DTXMania
 			Trace.Indent();
 			try
 			{
-				this.n現在のメニュー番号 = 0;
-				this.ftフォント = new Font( "MS PGothic", 26f, GraphicsUnit.Pixel );
-				for( int i = 0; i < 4; i++ )
-				{
-					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.Timer );
-				}
-				this.bメニューにフォーカス中 = true;
+				this.n現在のメニュー番号 = 0;													//
+				this.ftフォント = new Font( "MS PGothic", 26f, GraphicsUnit.Pixel );			//
+				for( int i = 0; i < 4; i++ )													//
+				{																				//
+					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.Timer );			//
+				}																				//
+				this.bメニューにフォーカス中 = true;											// ここまでOPTIONと共通
 				this.eItemPanelモード = EItemPanelモード.パッド一覧;
-				base.On活性化();
 			}
 			finally
 			{
 				Trace.TraceInformation( "コンフィグステージの活性化を完了しました。" );
 				Trace.Unindent();
 			}
+			base.On活性化();		// 2011.3.14 yyagi: On活性化()をtryの中から外に移動
 		}
 		public override void On非活性化()
 		{
@@ -80,8 +80,8 @@ namespace DTXMania
 			Trace.Indent();
 			try
 			{
-				CDTXMania.ConfigIni.t書き出し( CDTXMania.strEXEのあるフォルダ + "Config.ini" );
-				if( this.ftフォント != null )
+				CDTXMania.ConfigIni.t書き出し( CDTXMania.strEXEのあるフォルダ + "Config.ini" );	// CONFIGだけ
+				if( this.ftフォント != null )													// 以下OPTIONと共通
 				{
 					this.ftフォント.Dispose();
 					this.ftフォント = null;
@@ -98,7 +98,7 @@ namespace DTXMania
 				Trace.Unindent();
 			}
 		}
-		public override void OnManagedリソースの作成()
+		public override void OnManagedリソースの作成()											// OPTIONと画像以外共通
 		{
 			if( !base.b活性化してない )
 			{
@@ -117,7 +117,7 @@ namespace DTXMania
 				base.OnManagedリソースの作成();
 			}
 		}
-		public override void OnManagedリソースの解放()
+		public override void OnManagedリソースの解放()											// OPTIONと同じ(COnfig.iniの書き出しタイミングのみ異なるが、無視して良い)
 		{
 			if( !base.b活性化してない )
 			{
@@ -180,15 +180,31 @@ namespace DTXMania
 			int num4 = this.actFont.n文字列長dot( str );
 			bool flag = this.n現在のメニュー番号 == 0;
 			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 100, str, flag );
-			str = "Drums Keys";
+			//str = "Drums Keys";
+			//num4 = this.actFont.n文字列長dot( str );
+			//flag = this.n現在のメニュー番号 == 1;
+			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0x7d, str, flag );
+			//str = "Guitar Keys";
+			//num4 = this.actFont.n文字列長dot( str );
+			//flag = this.n現在のメニュー番号 == 2;
+			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 150, str, flag );
+			//str = "Bass Keys";
+			//num4 = this.actFont.n文字列長dot( str );
+			//flag = this.n現在のメニュー番号 == 3;
+			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0xaf, str, flag );
+			//str = "Exit";
+			//num4 = this.actFont.n文字列長dot( str );
+			//flag = this.n現在のメニュー番号 == 4;
+			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 200, str, flag );
+			str = "Drums";
 			num4 = this.actFont.n文字列長dot( str );
 			flag = this.n現在のメニュー番号 == 1;
 			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0x7d, str, flag );
-			str = "Guitar Keys";
+			str = "Guitar";
 			num4 = this.actFont.n文字列長dot( str );
 			flag = this.n現在のメニュー番号 == 2;
 			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 150, str, flag );
-			str = "Bass Keys";
+			str = "Bass";
 			num4 = this.actFont.n文字列長dot( str );
 			flag = this.n現在のメニュー番号 == 3;
 			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0xaf, str, flag );
@@ -196,6 +212,7 @@ namespace DTXMania
 			num4 = this.actFont.n文字列長dot( str );
 			flag = this.n現在のメニュー番号 == 4;
 			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 200, str, flag );
+
 			//---------------------
 			#endregion
 			#region [ 説明文パネル ]
@@ -264,7 +281,7 @@ namespace DTXMania
 				|| CDTXMania.act現在入力を占有中のプラグイン != null )
 				return 0;
 
-			if( ( CDTXMania.Input管理.Keyboard.bキーが押された( 0x35 ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT ) ) || CDTXMania.Pad.b押されたGB( Eパッド.FT ) )
+			if( ( CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Escape ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT ) ) || CDTXMania.Pad.b押されたGB( Eパッド.FT ) )
 			{
 				CDTXMania.Skin.sound取消音.t再生する();
 				if( !this.bメニューにフォーカス中 )
@@ -274,8 +291,12 @@ namespace DTXMania
 						CDTXMania.stageコンフィグ.tアサイン完了通知();
 						return 0;
 					}
-					this.bメニューにフォーカス中 = true;
+					if ( this.actList.bIsKeyAssignSelected == false )		// #24525 2011.3.15 yyagi
+					{
+						this.bメニューにフォーカス中 = true;
+					}
 					this.t説明文パネルに現在選択されているメニューの説明を描画する();
+					this.actList.tEsc押下();								// #24525 2011.3.15 yyagi ESC押下時の右メニュー描画用
 				}
 				else
 				{
@@ -302,21 +323,24 @@ namespace DTXMania
 					switch( this.eItemPanelモード )
 					{
 						case EItemPanelモード.パッド一覧:
+							bool bIsKeyAssignSelectedBeforeHitEnter = this.actList.bIsKeyAssignSelected;	// #24525 2011.3.15 yyagi
 							this.actList.tEnter押下();
 							if( this.actList.b現在選択されている項目はReturnToMenuである )
 							{
-								this.bメニューにフォーカス中 = true;
 								this.t説明文パネルに現在選択されているメニューの説明を描画する();
+								if ( bIsKeyAssignSelectedBeforeHitEnter == false )							// #24525 2011.3.15 yyagi
+								{
+									this.bメニューにフォーカス中 = true;
+								}
 							}
-							break;	// goto Label_0505;
+							break;
 
 						case EItemPanelモード.キーコード一覧:
 							this.actKeyAssign.tEnter押下();
-							break;	// goto Label_0505;
+							break;
 					}
 				}
 			}
-//		Label_0505:
 			this.ctキー反復用.Up.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 			this.ctキー反復用.R.tキー反復( CDTXMania.Pad.b押されているGB( Eパッド.HH ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 			if( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
@@ -437,16 +461,28 @@ namespace DTXMania
 						this.actList.t項目リストの設定・System();
 						break;
 
+					//case 1:
+					//    this.actList.t項目リストの設定・KeyAssignDrums();
+					//    break;
+
+					//case 2:
+					//    this.actList.t項目リストの設定・KeyAssignGuitar();
+					//    break;
+
+					//case 3:
+					//    this.actList.t項目リストの設定・KeyAssignBass();
+					//    break;
+
 					case 1:
-						this.actList.t項目リストの設定・KeyAssignDrums();
+						this.actList.t項目リストの設定・Drums();
 						break;
 
 					case 2:
-						this.actList.t項目リストの設定・KeyAssignGuitar();
+						this.actList.t項目リストの設定・Guitar();
 						break;
 
 					case 3:
-						this.actList.t項目リストの設定・KeyAssignBass();
+						this.actList.t項目リストの設定・Bass();
 						break;
 
 					case 4:
@@ -481,16 +517,27 @@ namespace DTXMania
 						this.actList.t項目リストの設定・System();
 						break;
 
+					//case 1:
+					//    this.actList.t項目リストの設定・KeyAssignDrums();
+					//    break;
+
+					//case 2:
+					//    this.actList.t項目リストの設定・KeyAssignGuitar();
+					//    break;
+
+					//case 3:
+					//    this.actList.t項目リストの設定・KeyAssignBass();
+					//    break;
 					case 1:
-						this.actList.t項目リストの設定・KeyAssignDrums();
+						this.actList.t項目リストの設定・Drums();
 						break;
 
 					case 2:
-						this.actList.t項目リストの設定・KeyAssignGuitar();
+						this.actList.t項目リストの設定・Guitar();
 						break;
 
 					case 3:
-						this.actList.t項目リストの設定・KeyAssignBass();
+						this.actList.t項目リストの設定・Bass();
 						break;
 
 					case 4:
@@ -515,25 +562,45 @@ namespace DTXMania
 						str[1, 0] = "Settings for an overall systems.";
 						break;
 
+					//case 1:
+					//    str[0, 0] = "ドラムのキー入力に関する項目を設";
+					//    str[0, 1] = "定します。";
+					//    str[1, 0] = "Settings for the drums key/pad inputs.";
+					//    str[1, 1] = "";
+					//    break;
+
+					//case 2:
+					//    str[0, 0] = "ギターのキー入力に関する項目を設";
+					//    str[0, 1] = "定します。";
+					//    str[1, 0] = "Settings for the guitar key/pad inputs.";
+					//    str[1, 1] = "";
+					//    break;
+
+					//case 3:
+					//    str[0, 0] = "ベースのキー入力に関する項目を設";
+					//    str[0, 1] = "定します。";
+					//    str[1, 0] = "Settings for the bass key/pad inputs.";
+					//    str[1, 1] = "";
+					//    break;
 					case 1:
-						str[0, 0] = "ドラムのキー入力に関する項目を設";
-						str[0, 1] = "定します。";
-						str[1, 0] = "Settings for the drums key/pad inputs.";
-						str[1, 1] = "";
+						str[ 0, 0 ] = "ドラムの演奏に関する項目を設定し";
+						str[ 0, 1 ] = "ます。";
+						str[ 1, 0 ] = "Settings to play the drums.";
+						str[ 1, 1 ] = "";
 						break;
 
 					case 2:
-						str[0, 0] = "ギターのキー入力に関する項目を設";
-						str[0, 1] = "定します。";
-						str[1, 0] = "Settings for the guitar key/pad inputs.";
-						str[1, 1] = "";
+						str[ 0, 0 ] = "ギターの演奏に関する項目を設定し";
+						str[ 0, 1 ] = "ます。";
+						str[ 1, 0 ] = "Settings to play the guitar.";
+						str[ 1, 1 ] = "";
 						break;
 
 					case 3:
-						str[0, 0] = "ベースのキー入力に関する項目を設";
-						str[0, 1] = "定します。";
-						str[1, 0] = "Settings for the bass key/pad inputs.";
-						str[1, 1] = "";
+						str[ 0, 0 ] = "ベースの演奏に関する項目を設定し";
+						str[ 0, 1 ] = "ます。";
+						str[ 1, 0 ] = "Settings to play the bass.";
+						str[ 1, 1 ] = "";
 						break;
 
 					case 4:
