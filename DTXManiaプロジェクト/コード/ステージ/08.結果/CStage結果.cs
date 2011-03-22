@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Diagnostics;
 using FDK;
+using SlimDX.Direct3D9;
 
 namespace DTXMania
 {
@@ -31,11 +33,9 @@ namespace DTXMania
 
 		public CStage結果()
 		{
-//			STDGBVALUE<CScoreIni.C演奏記録> stdgbvalue = new STDGBVALUE<CScoreIni.C演奏記録>();
 			this.st演奏記録.Drums = new CScoreIni.C演奏記録();
 			this.st演奏記録.Guitar = new CScoreIni.C演奏記録();
 			this.st演奏記録.Bass = new CScoreIni.C演奏記録();
-//			this.st演奏記録 = stdgbvalue;
 			this.r空うちドラムチップ = new CDTX.CChip[ 10 ];
 			this.n総合ランク値 = -1;
 			this.nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
@@ -64,6 +64,7 @@ namespace DTXMania
 				//---------------------
 				this.eフェードアウト完了時の戻り値 = E戻り値.継続;
 				this.bアニメが完了 = false;
+				this.bIsCheckedWhetherResultScreenShouldSaveOrNot = false;				// #24609 2011.3.14 yyagi
 				this.n最後に再生したHHのWAV番号 = -1;
 				this.n最後に再生したHHのチャンネル番号 = 0;
 				for( int i = 0; i < 3; i++ )
@@ -106,11 +107,6 @@ namespace DTXMania
 						this.bオート[ i ] = bIsAutoPlay;	// #23596 10.11.16 add ikanick そのパートがオートなら1
 															//        10.11.17 change (int to bool) ikanick
 						this.nランク値[ i ] = CScoreIni.tランク値を計算して返す( part );
-//Debug.WriteLine( "rank[" + i + "]=" + this.nランク値[ i ] );
-//if ( this.nランク値[ i ] != -1 )
-//{
-//	this.n総合ランク値 = Math.Min( this.n総合ランク値, this.nランク値[ i ] );
-//}
 					}
 				}
 				this.n総合ランク値 = CScoreIni.t総合ランク値を計算して返す( this.st演奏記録.Drums, this.st演奏記録.Guitar, this.st演奏記録.Bass );
@@ -130,11 +126,13 @@ namespace DTXMania
 					
 					b今までにフルコンボしたことがある[ i ] = ini.stセクション[ i * 2 ].bフルコンボである | ini.stセクション[ i * 2 + 1 ].bフルコンボである;
 
+					#region [deleted by #24459]
 			//		if( this.nランク値[ i ] <= CScoreIni.tランク値を計算して返す( ini.stセクション[ ( i * 2 ) + 1 ] ) )
 			//		{
 			//			this.b新記録ランク[ i ] = true;
-			//		}
-					// 上記の条件だと[HiSkill.***]でのランクしかチェックしていないので、BestRankと比較するよう変更
+					//		}
+					#endregion
+					// #24459 上記の条件だと[HiSkill.***]でのランクしかチェックしていないので、BestRankと比較するよう変更。
 					if ( this.nランク値[ i ] >= 0 && ini.stファイル.BestRank[ i ] > this.nランク値[ i ] )		// #24459 2011.3.1 yyagi update BestRank
 					{
 						this.b新記録ランク[ i ] = true;
@@ -378,6 +376,28 @@ namespace DTXMania
 				{
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
+				#region [ #24609 ランク更新or演奏型スキル更新時、リザルト画像をpngで保存する ]
+				if ( this.bアニメが完了 == true && this.bIsCheckedWhetherResultScreenShouldSaveOrNot == false )	// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
+				{
+					// http://www.gamedev.net/topic/594369-dx9slimdxati-incorrect-saving-surface-to-file/
+					using ( Surface pSurface = CDTXMania.app.Device.GetRenderTarget( 0 ) )
+					{
+						string path = Path.GetDirectoryName( CDTXMania.DTX.strファイル名の絶対パス);
+						string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
+						for ( int i = 0; i < 3; i++ )
+						{
+							if ( this.b新記録ランク[ i ] == true || this.b新記録スキル[i] == true )
+							{
+								string strPart = ( (E楽器パート)(i)).ToString();
+								string strRank = ( (CScoreIni.ERANK) ( this.nランク値[ i ] ) ).ToString();
+								string strFullPath = CDTXMania.DTX.strファイル名の絶対パス + "." + datetime + "_" + strPart + "_" + strRank + ".png";
+								Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
+							}
+						}
+					}
+					bIsCheckedWhetherResultScreenShouldSaveOrNot = true;
+				}
+				#endregion
 
 				// キー入力
 
@@ -503,6 +523,7 @@ namespace DTXMania
 		private CActResultImage actResultImage;
 		private CActResultSongBar actSongBar;
 		private bool bアニメが完了;
+		private bool bIsCheckedWhetherResultScreenShouldSaveOrNot;				// #24509 2011.3.14 yyagi
 		private readonly int[] nチャンネル0Atoレーン07;
 		private int n最後に再生したHHのWAV番号;
 		private int n最後に再生したHHのチャンネル番号;
