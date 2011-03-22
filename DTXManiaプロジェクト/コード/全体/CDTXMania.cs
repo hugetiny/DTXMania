@@ -479,7 +479,7 @@ namespace DTXMania
 						//-----------------------------
 						switch( this.n進行描画の戻り値 )
 						{
-							case 1:
+							case (int)CStageタイトル.E戻り値.GAMESTART:
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.On非活性化();
@@ -492,20 +492,20 @@ namespace DTXMania
 								#endregion
 								break;
 
-							case 2:
-								#region [ *** ]
-								//-----------------------------
-								r現在のステージ.On非活性化();
-								Trace.TraceInformation( "----------------------" );
-								Trace.TraceInformation( "■ オプション" );
-								stageオプション.On活性化();
-								r直前のステージ = r現在のステージ;
-								r現在のステージ = stageオプション;
-								//-----------------------------
-								#endregion
-								break;
+//							case 2:									// #24525 OPTIONとCONFIGの統合に伴い、OPTIONは廃止
+//								#region [ *** ]
+//								//-----------------------------
+//								r現在のステージ.On非活性化();
+//								Trace.TraceInformation( "----------------------" );
+//								Trace.TraceInformation( "■ オプション" );
+//								stageオプション.On活性化();
+//								r直前のステージ = r現在のステージ;
+//								r現在のステージ = stageオプション;
+//								//-----------------------------
+//								#endregion
+//								break;
 
-							case 3:
+							case (int)CStageタイトル.E戻り値.CONFIG:
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.On非活性化();
@@ -518,7 +518,7 @@ namespace DTXMania
 								#endregion
 								break;
 
-							case 4:
+							case (int)CStageタイトル.E戻り値.EXIT:
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.On非活性化();
