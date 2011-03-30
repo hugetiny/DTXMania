@@ -24,23 +24,23 @@ namespace DTXMania
 				this.n現在選択中の曲の難易度 = CDTXMania.stage選曲.n現在選択中の曲の難易度;
 				for( int i = 0; i < 3; i++ )
 				{
-					int num2 = cスコア.譜面情報.レベル[ i ];
-					if( num2 < 0 )
+					int nLevel = cスコア.譜面情報.レベル[ i ];
+					if( nLevel < 0 )
 					{
-						num2 = 0;
+						nLevel = 0;
 					}
-					if( num2 > 0x63 )
+					if( nLevel > 99 )
 					{
-						num2 = 0x63;
+						nLevel = 99;
 					}
-					this.n現在選択中の曲のレベル[ i ] = num2;
+					this.n現在選択中の曲のレベル[ i ] = nLevel;
 					this.n現在選択中の曲の最高ランク[ i ] = cスコア.譜面情報.最大ランク[ i ];
 					this.b現在選択中の曲がフルコンボ[ i ] = cスコア.譜面情報.フルコンボ[ i ];
 					this.db現在選択中の曲の最高スキル値[ i ] = cスコア.譜面情報.最大スキル[ i ];
 				}
-				for( int j = 0; j < 5; j++ )
+				for( int i = 0; i < 5; i++ )
 				{
-					this.str難易度ラベル[ j ] = c曲リストノード.ar難易度ラベル[ j ];
+					this.str難易度ラベル[ i ] = c曲リストノード.ar難易度ラベル[ i ];
 				}
 				if( this.r直前の曲 != c曲リストノード )
 				{
@@ -61,7 +61,7 @@ namespace DTXMania
 			for( int i = 0; i < 3; i++ )
 			{
 				this.n現在選択中の曲のレベル[ i ] = 0;
-				this.n現在選択中の曲の最高ランク[ i ] = 99;
+				this.n現在選択中の曲の最高ランク[ i ] = (int)CScoreIni.ERANK.UNKNOWN;
 				this.b現在選択中の曲がフルコンボ[ i ] = false;
 				this.db現在選択中の曲の最高スキル値[ i ] = 0.0;
 			}

@@ -76,10 +76,10 @@ namespace DTXMania
 				#endregion
 				if (!flag)
 				{
-//#if TEST_ENGLISH
-//					Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
-//#endif
-		
+#if DEBUG && TEST_ENGLISH
+					Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
+#endif
+
 					// turn off Aero Glass
 //					try
 //					{

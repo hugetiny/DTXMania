@@ -270,12 +270,12 @@ namespace DTXMania
 
 				case CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ:
 					{
-						long num2 = CDTXMania.Timer.n現在時刻;
+						long nCurrentTime = CDTXMania.Timer.n現在時刻;
 
-						if( num2 < this.nBGM再生開始時刻 )
-							this.nBGM再生開始時刻 = num2;
+						if( nCurrentTime < this.nBGM再生開始時刻 )
+							this.nBGM再生開始時刻 = nCurrentTime;
 
-						if( ( num2 - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms - 0x3e8 ) )
+						if( ( nCurrentTime - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms - 1000 ) )
 						{
 							this.actFO.tフェードアウト開始();
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;

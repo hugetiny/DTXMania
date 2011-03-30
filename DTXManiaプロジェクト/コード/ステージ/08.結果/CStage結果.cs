@@ -377,7 +377,8 @@ namespace DTXMania
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
 				#region [ #24609 ランク更新or演奏型スキル更新時、リザルト画像をpngで保存する ]
-				if ( this.bアニメが完了 == true && this.bIsCheckedWhetherResultScreenShouldSaveOrNot == false )	// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
+				if ( this.bアニメが完了 == true && this.bIsCheckedWhetherResultScreenShouldSaveOrNot == false	// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
+					&& CDTXMania.ConfigIni.bScoreIniを出力する)
 				{
 					// http://www.gamedev.net/topic/594369-dx9slimdxati-incorrect-saving-surface-to-file/
 					using ( Surface pSurface = CDTXMania.app.Device.GetRenderTarget( 0 ) )
