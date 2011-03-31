@@ -79,10 +79,10 @@ namespace DTXMania
 
 
 			int nDGmode = ( CDTXMania.ConfigIni.bGuitar有効 ? 2 : 0 ) + ( CDTXMania.ConfigIni.bDrums有効 ? 1 : 0 ) - 1;
-			this.iSystemGRmode = new CItemList( "DrGRMode", CItemBase.Eパネル種別.通常, nDGmode,
-				"DrOnly: ドラムのみ有効にします。\nGROnly: ギター/ベースのみの\n専用画面を用います。\nDr&GR: ドラムとギター/ベースの\n両方を有効にします。\n",
-				"DrOnly: Only Drums is available.\nGROnly: Only Guitar/Bass are available.\n You can play them in GR screen.\nDr&GR: Both Drums and Guitar/bass\n are available.",
-				new string[] { "DrOnly", "GROnly", "Dr&GR"} );
+			this.iSystemGRmode = new CItemList( "Drums & GR", CItemBase.Eパネル種別.通常, nDGmode,
+				"使用楽器の選択：\nDrOnly: ドラムのみ有効にします。\nGROnly: ギター/ベースのみの\n専用画面を用います。\nBoth: ドラムとギター/ベースの\n両方を有効にします。\n",
+				"DrOnly: Only Drums is available.\nGROnly: Only Guitar/Bass are available.\n You can play them in GR screen.\nBoth: Both Drums and Guitar/bass\n are available.",
+				new string[] { "DrOnly", "GROnly", "Both"} );
 			this.list項目リスト.Add( this.iSystemGRmode );
 
 			
@@ -135,7 +135,7 @@ namespace DTXMania
 				new string[] { "C>P", "P>C" } );
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityFT );
 			this.iSystemHitSoundPriorityCY = new CItemList( "CY Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityCY,
-				"発声音決定の優先順位\nシンバルレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
+				"発声音決定の優先順位：\nシンバルレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
 				"To specify playing sound in case you're\n using CY-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
 				new string[] { "C>P", "P>C" } );
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityCY );
