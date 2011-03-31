@@ -1,0 +1,435 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Runtime.InteropServices;
+using SlimDX;
+using FDK;
+
+namespace DTXMania
+{
+	internal class CAct演奏DrumsチップファイアD : CActivity
+	{
+		// コンストラクタ
+
+		public CAct演奏DrumsチップファイアD()
+		{
+			base.b活性化してない = true;
+		}
+		
+		
+		// メソッド
+
+		public void Start( Eドラムレーン lane )
+		{
+			this.Start( lane, false, false, false );
+		}
+		public void Start( Eドラムレーン lane, bool bフィルイン )
+		{
+			this.Start( lane, bフィルイン, false, false );
+		}
+		public void Start( Eドラムレーン lane, bool bフィルイン, bool b大波 )
+		{
+			this.Start( lane, bフィルイン, b大波, false );
+		}
+		public void Start( Eドラムレーン lane, bool bフィルイン, bool b大波, bool b細波 )
+		{
+			if( this.tx火花 != null )
+			{
+				float num = CDTXMania.Random.Next( 360 );
+				for( int i = 0; i < 8; i++ )
+				{
+					for( int j = 0; j < 0x40; j++ )
+					{
+						if( !this.st火花[ j ].b使用中 )
+						{
+							this.st火花[ j ].b使用中 = true;
+							this.st火花[ j ].nLane = (int) lane;
+							this.st火花[ j ].ct進行 = new CCounter( 0, 70, 3, CDTXMania.Timer );
+							this.st火花[ j ].f回転単位 = C変換.DegreeToRadian( (float) ( num + ( i * 90f ) ) );
+							this.st火花[ j ].f回転方向 = ( i < 4 ) ? 1f : -2f;
+							this.st火花[ j ].fサイズ = ( i < 4 ) ? 1f : 0.5f;
+							break;
+						}
+					}
+				}
+			}
+			if( bフィルイン && ( this.tx青い星 != null ) )
+			{
+				for( int k = 0; k < 0x10; k++ )
+				{
+					for( int m = 0; m < 0x100; m++ )
+					{
+						if( !this.st青い星[ m ].b使用中 )
+						{
+							this.st青い星[ m ].b使用中 = true;
+							int num6 = CDTXMania.Random.Next( 360 );
+							double num7 = 0.9 + ( ( (double) CDTXMania.Random.Next( 40 ) ) / 100.0 );
+							this.st青い星[ m ].nLane = (int) lane;
+							this.st青い星[ m ].ct進行 = new CCounter( 0, 100, 7, CDTXMania.Timer );
+							this.st青い星[ m ].fX = this.nレーンの中央X座標[ (int) lane ];
+							this.st青い星[ m ].fY = CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 0x37 ) : ( (float) 0x1a9 );
+							this.st青い星[ m ].f加速度X = (float) ( num7 * Math.Cos( ( 6.2831853071795862 * num6 ) / 360.0 ) );
+							this.st青い星[ m ].f加速度Y = (float) ( num7 * ( Math.Sin( ( 6.2831853071795862 * num6 ) / 360.0 ) - 0.2 ) );
+							this.st青い星[ m ].f加速度の加速度X = 0.995f;
+							this.st青い星[ m ].f加速度の加速度Y = 0.995f;
+							this.st青い星[ m ].f重力加速度 = 0.00355f;
+							this.st青い星[ m ].f半径 = (float) ( 0.5 + ( ( (double) CDTXMania.Random.Next( 30 ) ) / 100.0 ) );
+							break;
+						}
+					}
+				}
+			}
+			if( b大波 && ( this.tx大波 != null ) )
+			{
+				for( int n = 0; n < 4; n++ )
+				{
+					for( int num9 = 0; num9 < 20; num9++ )
+					{
+						if( !this.st大波[ num9 ].b使用中 )
+						{
+							this.st大波[ num9 ].b使用中 = true;
+							this.st大波[ num9 ].nLane = (int) lane;
+							this.st大波[ num9 ].f半径 = ( (float) ( ( 20 - CDTXMania.Random.Next( 40 ) ) + 100 ) ) / 100f;
+							this.st大波[ num9 ].n進行速度ms = 10;
+							this.st大波[ num9 ].ct進行 = new CCounter( 0, 100, this.st大波[ num9 ].n進行速度ms, CDTXMania.Timer );
+							this.st大波[ num9 ].ct進行.n現在の値 = n * 10;
+							this.st大波[ num9 ].f角度X = C変換.DegreeToRadian( (float) ( ( ( (double) ( CDTXMania.Random.Next( 100 ) * 50 ) ) / 100.0 ) + 30.0 ) );
+							this.st大波[ num9 ].f角度Y = C変換.DegreeToRadian( this.b大波Balance ? ( this.fY波の最小仰角[ (int) lane ] + CDTXMania.Random.Next( 30 ) ) : ( this.fY波の最大仰角[ (int) lane ] - CDTXMania.Random.Next( 30 ) ) );
+							this.st大波[ num9 ].f回転単位 = C変換.DegreeToRadian( (float) 0f );
+							this.st大波[ num9 ].f回転方向 = 1f;
+							this.b大波Balance = !this.b大波Balance;
+							break;
+						}
+					}
+				}
+			}
+			if( b細波 && ( this.tx細波 != null ) )
+			{
+				for( int num10 = 0; num10 < 1; num10++ )
+				{
+					for( int num11 = 0; num11 < 20; num11++ )
+					{
+						if( !this.st細波[ num11 ].b使用中 )
+						{
+							this.st細波[ num11 ].b使用中 = true;
+							this.st細波[ num11 ].nLane = (int) lane;
+							this.st細波[ num11 ].f半径 = ( (float) ( ( 20 - CDTXMania.Random.Next( 40 ) ) + 100 ) ) / 100f;
+							this.st細波[ num11 ].n進行速度ms = 8;
+							this.st細波[ num11 ].ct進行 = new CCounter( 0, 100, this.st細波[ num11 ].n進行速度ms, CDTXMania.Timer );
+							this.st細波[ num11 ].ct進行.n現在の値 = 0;
+							this.st細波[ num11 ].f角度X = C変換.DegreeToRadian( (float) ( ( ( (double) ( CDTXMania.Random.Next( 100 ) * 50 ) ) / 100.0 ) + 30.0 ) );
+							this.st細波[ num11 ].f角度Y = C変換.DegreeToRadian( this.b細波Balance ? ( this.fY波の最小仰角[ (int) lane ] + CDTXMania.Random.Next( 30 ) ) : ( this.fY波の最大仰角[ (int) lane ] - CDTXMania.Random.Next( 30 ) ) );
+							this.b細波Balance = !this.b細波Balance;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+
+		// CActivity 実装
+
+		public override void On活性化()
+		{
+			for( int i = 0; i < 0x40; i++ )
+			{
+				ST火花 st火花2 = new ST火花();
+				ST火花 st火花 = st火花2;
+				st火花.b使用中 = false;
+				st火花.ct進行 = new CCounter();
+				this.st火花[ i ] = st火花;
+			}
+			for( int j = 0; j < 0x100; j++ )
+			{
+				ST青い星 st青い星2 = new ST青い星();
+				ST青い星 st青い星 = st青い星2;
+				st青い星.b使用中 = false;
+				st青い星.ct進行 = new CCounter();
+				this.st青い星[ j ] = st青い星;
+			}
+			for( int k = 0; k < 20; k++ )
+			{
+				ST大波 st大波2 = new ST大波();
+				ST大波 st大波 = st大波2;
+				st大波.b使用中 = false;
+				st大波.ct進行 = new CCounter();
+				this.st大波[ k ] = st大波;
+				ST細波 st細波2 = new ST細波();
+				ST細波 st細波 = st細波2;
+				st細波.b使用中 = false;
+				st細波.ct進行 = new CCounter();
+				this.st細波[ k ] = st細波;
+			}
+			base.On活性化();
+		}
+		public override void On非活性化()
+		{
+			for( int i = 0; i < 0x40; i++ )
+			{
+				this.st火花[ i ].ct進行 = null;
+			}
+			for( int j = 0; j < 0x100; j++ )
+			{
+				this.st青い星[ j ].ct進行 = null;
+			}
+			for( int k = 0; k < 20; k++ )
+			{
+				this.st大波[ k ].ct進行 = null;
+				this.st細波[ k ].ct進行 = null;
+			}
+			base.On非活性化();
+		}
+		public override void OnManagedリソースの作成()
+		{
+			if( !base.b活性化してない )
+			{
+				this.tx火花 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip fire.png" ) );
+				if( this.tx火花 != null )
+				{
+					this.tx火花.b加算合成 = true;
+				}
+				this.tx青い星 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip star.png" ) );
+				if( this.tx青い星 != null )
+				{
+					this.tx青い星.b加算合成 = true;
+				}
+				this.tx大波 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip wave.png" ) );
+				if( this.tx大波 != null )
+				{
+					this.tx大波.b加算合成 = true;
+				}
+				this.tx細波 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip wave2.png" ) );
+				if( this.tx細波 != null )
+				{
+					this.tx細波.b加算合成 = true;
+				}
+				base.OnManagedリソースの作成();
+			}
+		}
+		public override void OnManagedリソースの解放()
+		{
+			if( !base.b活性化してない )
+			{
+				CDTXMania.tテクスチャの解放( ref this.tx火花 );
+				CDTXMania.tテクスチャの解放( ref this.tx青い星 );
+				CDTXMania.tテクスチャの解放( ref this.tx大波 );
+				CDTXMania.tテクスチャの解放( ref this.tx細波 );
+				base.OnManagedリソースの解放();
+			}
+		}
+		public override int On進行描画()
+		{
+			if( !base.b活性化してない )
+			{
+				for( int i = 0; i < 0x40; i++ )
+				{
+					if( this.st火花[ i ].b使用中 )
+					{
+						this.st火花[ i ].ct進行.t進行();
+						if( this.st火花[ i ].ct進行.b終了値に達した )
+						{
+							this.st火花[ i ].ct進行.t停止();
+							this.st火花[ i ].b使用中 = false;
+						}
+						Matrix identity = Matrix.Identity;
+						float num2 = ( (float) this.st火花[ i ].ct進行.n現在の値 ) / 70f;
+						float num3 = this.st火花[ i ].f回転単位 + ( this.st火花[ i ].f回転方向 * C変換.DegreeToRadian( (float) ( 60f * num2 ) ) );
+						float num4 = ( (float) ( 0.2 + ( 0.8 * Math.Cos( ( ( (double) this.st火花[ i ].ct進行.n現在の値 ) / 50.0 ) * 1.5707963267948966 ) ) ) ) * this.st火花[ i ].fサイズ;
+						identity *= Matrix.Scaling( 0.2f + num4, 0.2f + this.st火花[ i ].fサイズ, 1f );
+						identity *= Matrix.RotationZ( num3 + ( (float) 1.5707963267948966 ) );
+						float num5 = ( (float) ( 0.8 * Math.Sin( num2 * 1.5707963267948966 ) ) ) * this.st火花[ i ].fサイズ;
+						identity *= Matrix.Translation( ( this.nレーンの中央X座標[ this.st火花[ i ].nLane ] + ( ( (float) Math.Cos( (double) num3 ) ) * num5 ) ) - 320f, -( ( ( CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 0x37 ) : ( (float) 0x1a9 ) ) + ( ( (float) Math.Sin( (double) num3 ) ) * num5 ) ) - 240f ), 0f );
+						if( this.tx火花 != null )
+						{
+							this.tx火花.t3D描画( CDTXMania.app.Device, identity );
+						}
+					}
+				}
+				for( int j = 0; j < 0x100; j++ )
+				{
+					if( this.st青い星[ j ].b使用中 )
+					{
+						this.st青い星[ j ].n前回のValue = this.st青い星[ j ].ct進行.n現在の値;
+						this.st青い星[ j ].ct進行.t進行();
+						if( this.st青い星[ j ].ct進行.b終了値に達した )
+						{
+							this.st青い星[ j ].ct進行.t停止();
+							this.st青い星[ j ].b使用中 = false;
+						}
+						for( int n = this.st青い星[ j ].n前回のValue; n < this.st青い星[ j ].ct進行.n現在の値; n++ )
+						{
+							this.st青い星[ j ].fX += this.st青い星[ j ].f加速度X;
+							this.st青い星[ j ].fY -= this.st青い星[ j ].f加速度Y;
+							this.st青い星[ j ].f加速度X *= this.st青い星[ j ].f加速度の加速度X;
+							this.st青い星[ j ].f加速度Y *= this.st青い星[ j ].f加速度の加速度Y;
+							this.st青い星[ j ].f加速度Y -= this.st青い星[ j ].f重力加速度;
+						}
+						Matrix mat = Matrix.Identity;
+						float x = (float) ( this.st青い星[ j ].f半径 * Math.Cos( ( 1.5707963267948966 * this.st青い星[ j ].ct進行.n現在の値 ) / 100.0 ) );
+						mat *= Matrix.Scaling( x, x, 1f );
+						mat *= Matrix.Translation( this.st青い星[ j ].fX - 320f, -( this.st青い星[ j ].fY - 240f ), 0f );
+						if( this.tx青い星 != null )
+						{
+							this.tx青い星.t3D描画( CDTXMania.app.Device, mat );
+						}
+					}
+				}
+				for( int k = 0; k < 20; k++ )
+				{
+					if( this.st大波[ k ].b使用中 )
+					{
+						this.st大波[ k ].ct進行.t進行();
+						if( this.st大波[ k ].ct進行.b終了値に達した )
+						{
+							this.st大波[ k ].ct進行.t停止();
+							this.st大波[ k ].b使用中 = false;
+						}
+						if( this.st大波[ k ].ct進行.n現在の値 >= 0 )
+						{
+							Matrix matrix3 = Matrix.Identity;
+							float num10 = ( (float) this.st大波[ k ].ct進行.n現在の値 ) / 100f;
+							float angle = this.st大波[ k ].f回転単位 + ( this.st大波[ k ].f回転方向 * C変換.DegreeToRadian( (float) ( 60f * num10 ) ) );
+							float num12 = 1f;
+							if( num10 < 0.4f )
+							{
+								num12 = 2.5f * num10;
+							}
+							else if( num10 < 0.8f )
+							{
+								num12 = (float) ( 1.0 + ( 10.1 * ( 1.0 - Math.Cos( ( 1.5707963267948966 * ( num10 - 0.4 ) ) * 2.5 ) ) ) );
+							}
+							else
+							{
+								num12 = 11.1f + ( 12.5f * ( num10 - 0.8f ) );
+							}
+							int num13 = 0xff;
+							if( num10 < 0.75f )
+							{
+								num13 = 0x37;
+							}
+							else
+							{
+								num13 = (int) ( ( 55f * ( 1f - num10 ) ) / 0.25f );
+							}
+							matrix3 *= Matrix.Scaling( num12 * this.st大波[ k ].f半径, num12 * this.st大波[ k ].f半径, 1f );
+							matrix3 *= Matrix.RotationZ( angle );
+							matrix3 *= Matrix.RotationX( this.st大波[ k ].f角度X );
+							matrix3 *= Matrix.RotationY( this.st大波[ k ].f角度Y );
+							matrix3 *= Matrix.Translation( this.nレーンの中央X座標[ this.st大波[ k ].nLane ] - 320f, -( ( CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 0x37 ) : ( (float) 0x1a9 ) ) - 240f ), 0f );
+							if( this.tx大波 != null )
+							{
+								this.tx大波.n透明度 = num13;
+								this.tx大波.t3D描画( CDTXMania.app.Device, matrix3 );
+							}
+						}
+					}
+				}
+				for( int m = 0; m < 20; m++ )
+				{
+					if( this.st細波[ m ].b使用中 )
+					{
+						this.st細波[ m ].ct進行.t進行();
+						if( this.st細波[ m ].ct進行.b終了値に達した )
+						{
+							this.st細波[ m ].ct進行.t停止();
+							this.st細波[ m ].b使用中 = false;
+						}
+						if( this.st細波[ m ].ct進行.n現在の値 >= 0 )
+						{
+							Matrix matrix4 = Matrix.Identity;
+							float num15 = ( (float) this.st細波[ m ].ct進行.n現在の値 ) / 100f;
+							float num16 = 14f * num15;
+							int num17 = ( num15 < 0.5f ) ? 0x9b : ( (int) ( ( 155f * ( 1f - num15 ) ) / 1f ) );
+							matrix4 *= Matrix.Scaling( num16 * this.st細波[ m ].f半径, num16 * this.st細波[ m ].f半径, 1f );
+							matrix4 *= Matrix.RotationX( this.st細波[ m ].f角度X );
+							matrix4 *= Matrix.RotationY( this.st細波[ m ].f角度Y );
+							matrix4 *= Matrix.Translation( this.nレーンの中央X座標[ this.st細波[ m ].nLane ] - 320f, -( ( CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 0x37 ) : ( (float) 0x1a9 ) ) - 240f ), 0f );
+							if( this.tx細波 != null )
+							{
+								this.tx細波.n透明度 = num17;
+								this.tx細波.t3D描画( CDTXMania.app.Device, matrix4 );
+							}
+						}
+					}
+				}
+			}
+			return 0;
+		}
+		
+
+		// その他
+
+		#region [ private ]
+		//-----------------
+		[StructLayout( LayoutKind.Sequential )]
+		private struct ST火花
+		{
+			public int nLane;
+			public bool b使用中;
+			public CCounter ct進行;
+			public float f回転単位;
+			public float f回転方向;
+			public float fサイズ;
+		}
+		[StructLayout( LayoutKind.Sequential )]
+		private struct ST細波
+		{
+			public int nLane;
+			public bool b使用中;
+			public CCounter ct進行;
+			public float f角度X;
+			public float f角度Y;
+			public float f半径;
+			public int n進行速度ms;
+		}
+		[StructLayout( LayoutKind.Sequential )]
+		private struct ST青い星
+		{
+			public int nLane;
+			public bool b使用中;
+			public CCounter ct進行;
+			public int n前回のValue;
+			public float fX;
+			public float fY;
+			public float f加速度X;
+			public float f加速度Y;
+			public float f加速度の加速度X;
+			public float f加速度の加速度Y;
+			public float f重力加速度;
+			public float f半径;
+		}
+		[StructLayout( LayoutKind.Sequential )]
+		private struct ST大波
+		{
+			public int nLane;
+			public bool b使用中;
+			public CCounter ct進行;
+			public float f角度X;
+			public float f角度Y;
+			public float f半径;
+			public int n進行速度ms;
+			public float f回転単位;
+			public float f回転方向;
+		}
+
+		private const int BIGWAVE_MAX = 20;
+		private bool b細波Balance;
+		private bool b大波Balance;
+		private const int FIRE_MAX = 0x40;
+		private readonly float[] fY波の最小仰角 = new float[] { -130f, -126f, -120f, -118f, -110f, -108f, -103f, -97f };
+		private readonly float[] fY波の最大仰角 = new float[] { 70f, 72f, 77f, 84f, 89f, 91f, 99f, 107f };
+		private readonly int[] nレーンの中央X座標 = new int[] { 0x36, 0x5c, 0x7e, 0xa7, 0xd0, 0xf2, 0x114, 0x139 };
+		private const int STAR_MAX = 0x100;
+		private ST火花[] st火花 = new ST火花[ 0x40 ];
+		private ST細波[] st細波 = new ST細波[ 20 ];
+		private ST青い星[] st青い星 = new ST青い星[ 0x100 ];
+		private ST大波[] st大波 = new ST大波[ 20 ];
+		private CTexture tx火花;
+		private CTexture tx細波;
+		private CTexture tx青い星;
+		private CTexture tx大波;
+		//-----------------
+		#endregion
+	}
+}
