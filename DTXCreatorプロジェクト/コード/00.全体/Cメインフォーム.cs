@@ -51,6 +51,8 @@ namespace DTXCreator
 		internal CUndoRedo管理 mgrUndoRedo管理者 = null;
 		internal Cクリップボード cbクリップボード = null;
 
+		internal MakeTempDTX makeTempDTX = null;
+
 		public bool b選択モードである
 		{
 			get
@@ -191,6 +193,10 @@ namespace DTXCreator
 			//-----------------
 			#endregion
 
+			#region [ Viewer再生用一時DTX生成オブジェクトを生成する。 ]
+			makeTempDTX = new MakeTempDTX();
+			#endregion
+
 			#region [ 譜面を初期化する。]
 			//-----------------
 			this.t譜面を初期化する();
@@ -239,6 +245,11 @@ namespace DTXCreator
 			//-----------------
 			this.mgrWAVリスト管理者.tDirectSoundの解放();
 			//-----------------
+			#endregion
+
+			#region [ Viewer再生用一時DTX生成オブジェクトの終了処理を行う。 ]
+			makeTempDTX.Dispose();
+			makeTempDTX = null;
 			#endregion
 		}
 		private void tアプリ設定の読み込み()
@@ -1611,8 +1622,8 @@ namespace DTXCreator
 		{
 			// 一時ファイル名を自動生成。
 
-			this.strViewer演奏用一時ファイル名 = Path.GetTempFileName();
-			
+			//this.strViewer演奏用一時ファイル名 = Path.GetTempFileName();			//
+			this.strViewer演奏用一時ファイル名 = makeTempDTX.GetTempFileName();		// #24746 2011.4.1 yyagi add; a countermeasure for temp-flooding
 			
 			// 一時ファイルにDTXを出力。
 
