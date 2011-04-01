@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
@@ -33,6 +34,7 @@ namespace DTXMania
 			this.n現在の選択行 = 0;
 			nSortType = (int) ESortItem.Default;
 			nSortOrder = (int) ESortOrder.Descend;
+			bIsJapanLocale = ( CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" );	// #24758 2011.4.1 yyagi add; To check JP locale
 		}
 
 
@@ -40,6 +42,8 @@ namespace DTXMania
 		public void tActivateSortMenu( ref CActSelect曲リスト ca )
 		{
 			this.act曲リスト = ca;
+			nSortType = (int) ESortItem.Default;		// #24757 2011.4.1 yyagi: Clear sorting status in each stating menu.
+			nSortOrder = (int) ESortOrder.Descend;		//
 			this.bIsActiveSortMenu = true;
 		}
 		public void tDeativateSortMenu()
@@ -62,7 +66,6 @@ namespace DTXMania
 				switch( this.n現在の選択行 )
 				{
 					case (int) ESortItem.Title:
-//						this.act曲リスト.t曲リストのソート2_タイトル順( eInst, nSortOrder );
 						this.act曲リスト.t曲リストのソート(
 							CDTXMania.Songs管理.t曲リストのソート2_タイトル順, eInst, nSortOrder
 						);
@@ -161,6 +164,7 @@ namespace DTXMania
 			{
 				this.txCursor = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
 				this.txSortMenuBackground = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sort menu background.png" ), false );
+				this.txSortMenuChoices = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sort menu choices.png" ), false );	// #24758 2011.4.1 yyagi; for JP locale, Japanese 昇順/降順 (ascend/descend) png parts.
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -168,6 +172,7 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
+				CDTXMania.tテクスチャの解放( ref this.txSortMenuChoices );
 				CDTXMania.tテクスチャの解放( ref this.txSortMenuBackground );
 				CDTXMania.tテクスチャの解放( ref this.txCursor );
 			}
@@ -209,7 +214,8 @@ namespace DTXMania
 						eAction = ESortAction.Decide;
 					}
 					else if (
-						CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) 
+						CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.Decide )	// #24756 2011.4.1 yyagi: Add condition "Drum-Decide" to enable CY in Sort Menu.
+						|| CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) 
 						|| CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC )
 						|| ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) )
 					{
@@ -284,7 +290,15 @@ namespace DTXMania
 					if ( bBold )
 					{
 						// nSortOder+1 == 0(Ascend), (1,) 2(Descend)
-						font.t文字列描画( 350, 80 + i * 32, strSortOrder[ nSortOrder + 1 ], bBold, 1.0f );
+						if ( bIsJapanLocale )
+						{	// #24758 2011.4.1 yyagi: for JP locale, 昇順/降順 is used instead of ascend/descend.
+							Rectangle rect = new Rectangle( 0, this.txSortMenuChoices.sz画像サイズ.Height / 2 * (nSortOrder+1)/2, this.txSortMenuChoices.sz画像サイズ.Width, this.txSortMenuChoices.sz画像サイズ.Height / 2 );
+							this.txSortMenuChoices.t2D描画( CDTXMania.app.Device, 350, 78 + i * 32, rect );
+						}
+						else
+						{
+							font.t文字列描画( 350, 80 + i * 32, strSortOrder[ nSortOrder + 1 ], bBold, 1.0f );
+						}
 					}
 				}
 				#endregion
@@ -303,9 +317,11 @@ namespace DTXMania
 
 		private int n現在の選択行;
 		private CTexture txSortMenuBackground;
+		private CTexture txSortMenuChoices;
 		private CTexture txCursor;
 		private CActDFPFont font;
 		private CActSelect曲リスト act曲リスト;
+		private bool bIsJapanLocale;
 
 		[StructLayout( LayoutKind.Sequential )]
 		private struct STキー反復用カウンタ
