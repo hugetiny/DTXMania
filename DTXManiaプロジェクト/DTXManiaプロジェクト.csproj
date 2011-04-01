@@ -39,7 +39,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;_TEST_SHOWLAG TEST_ENGLISH_</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -57,9 +57,9 @@
     <NoWarn>0219</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, PublicKeyToken=bd5d7f5e586685f5, processorArchitecture=x86">
+    <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, PublicKeyToken=53d0e4ef1f1579f5, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\実行時フォルダ\SlimDXc_net20x86_Jun2010.dll</HintPath>
+      <HintPath>..\SlimDXc_Jun2010(VC++2008)\build\x86\Public\SlimDXc_net20x86_Jun2010.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -116,20 +116,26 @@
     <Compile Include="コード\ステージ\05.選曲\CActSelectステータスパネル.cs" />
     <Compile Include="コード\ステージ\05.選曲\CActSelect曲リスト.cs" />
     <Compile Include="コード\ステージ\05.選曲\CActSelect演奏履歴パネル.cs" />
+    <Compile Include="コード\ステージ\05.選曲\CActSortSongs.cs" />
     <Compile Include="コード\ステージ\05.選曲\CStage選曲.cs" />
     <Compile Include="コード\ステージ\06.曲読み込み\CStage曲読み込み.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏AVI.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏BGA.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏Combo共通.cs" />
+    <Compile Include="コード\ステージ\07.演奏\CAct演奏Danger共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏RGB共通.cs" />
+    <Compile Include="コード\ステージ\07.演奏\CAct演奏WailingBonus共通.cs" />
+    <Compile Include="コード\ステージ\07.演奏\CAct演奏ゲージ共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏スクロール速度.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏スコア共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏ステージ失敗.cs" />
+    <Compile Include="コード\ステージ\07.演奏\CAct演奏ステータスパネル共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏チップファイアGB.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏パネル文字列.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏レーンフラッシュGB共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏判定文字列共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏演奏情報.cs" />
+    <Compile Include="コード\ステージ\07.演奏\CStage演奏画面共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\ギター画面\CAct演奏GuitarRGB.cs" />
     <Compile Include="コード\ステージ\07.演奏\ギター画面\CAct演奏GuitarWailingBonus.cs" />
     <Compile Include="コード\ステージ\07.演奏\ギター画面\CAct演奏Guitarゲージ.cs" />
@@ -209,9 +215,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FDK17プロジェクト\FDK17.csproj">
+    <ProjectReference Include="..\FDK17プロジェクト\FDK18.csproj">
       <Project>{BCD40908-F3E2-4707-BFAA-1DD99DF6357D}</Project>
-      <Name>FDK17</Name>
+      <Name>FDK18</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
