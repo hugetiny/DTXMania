@@ -2175,10 +2175,10 @@ namespace DTXMania
 //						}
 //						cwav.rSound[0].Buffer.
 
-						cwav.rSound[1] = cwav.rSound[0];		// #24007 2010.11.23 yyagi add: to accelerate loading chip sounds
-						cwav.rSound[2] = cwav.rSound[0];		//
-						cwav.rSound[3] = cwav.rSound[0];		//
-						break;									//
+//						cwav.rSound[1] = cwav.rSound[0];		// #24007 2010.11.23 yyagi add: to accelerate loading chip sounds
+//						cwav.rSound[2] = cwav.rSound[0];		//
+//						cwav.rSound[3] = cwav.rSound[0];		//
+//						break;									//
 					}
 					continue;
 				}
