@@ -1376,7 +1376,18 @@ namespace DTXMania
 			{
 				return false;
 			}
-			bool bPChipIsAutoPlay = bIsAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ];
+			int index = pChip.nチャンネル番号;
+			if ( ( index >= 0x11 ) && ( index <= 0x1a ) )
+			{
+				index -= 0x11;
+			}
+			else if ( ( index >= 0x31 ) && ( index <= 0x3a ) )
+			{
+				index -= 0x31;
+			}
+			int num2 = this.nチャンネル0Atoレーン07[ index ];
+			int nLane = this.nチャンネル0Atoパッド08[ index ];
+			bool bPChipIsAutoPlay = bIsAutoPlay[ num2 ];
 			int nInputAdjustTime = bPChipIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Drums;
 			E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTime );
 			if( e判定 == E判定.Miss )
@@ -1384,17 +1395,6 @@ namespace DTXMania
 				return false;
 			}
 			this.tチップのヒット処理( nHitTime, pChip );
-			int index = pChip.nチャンネル番号;
-			if( ( index >= 0x11 ) && ( index <= 0x1a ) )
-			{
-				index -= 0x11;
-			}
-			else if( ( index >= 0x31 ) && ( index <= 0x3a ) )
-			{
-				index -= 0x31;
-			}
-			int num2 = this.nチャンネル0Atoレーン07[ index ];
-			int nLane = this.nチャンネル0Atoパッド08[ index ];
 			this.actLaneFlushD.Start( (Eドラムレーン) num2, ( (float) n強弱度合い0to127 ) / 127f );
 			this.actPad.Hit( nLane );
 			if( ( e判定 != E判定.Poor ) && ( e判定 != E判定.Miss ) )
