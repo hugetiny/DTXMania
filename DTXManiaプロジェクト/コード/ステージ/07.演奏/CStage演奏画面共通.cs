@@ -814,6 +814,12 @@ namespace DTXMania
 								( index == 0 || ( index == 7 && this.n最後に再生したHHのチャンネル番号 != 0x18 && this.n最後に再生したHHのチャンネル番号 != 0x38 ) )
 								// HCを演奏するか、またはHO演奏＆以前HO演奏でない＆以前不可視HO演奏でない
 							)
+							// #24772 2011.4.4 yyagi
+							// == HH mute condition == 
+							//			current HH		So, the mute logics are:
+							//				HC	HO		1) All played HC/HOs should be queueing
+							// last HH	HC  Yes	Yes		2) If you aren't in "both current/last HH are HO", queued HH should be muted.
+							//			HO	Yes	No
 							{
 								// #23921 2011.1.4 yyagi: 2種類以上のオープンハイハットが発音済みだと、最後のHHOしか消せない問題に対応。
 #if TEST_NOTEOFFMODE	// 2011.1.1 yyagi test
@@ -836,8 +842,8 @@ namespace DTXMania
 							if (CDTXMania.DTX.bHH演奏で直前のHHを消音する)
 							{
 #endif
-							if ( index == 7 || index == 0x27 )						// #23921 HOまたは不可視HO演奏時はそのチップ番号をストックしておく
-							{
+							if ( index == 0 || index == 7 || index == 0x20 || index == 0x27 )			// #23921 HOまたは不可視HO演奏時はそのチップ番号をストックしておく
+							{																			// #24772 HC, 不可視HCも消音キューに追加
 								if ( this.L最後に再生したHHの実WAV番号.Count >= 16 )	// #23921 ただしストック数が16以上になるようなら、頭の1個を削って常に16未満に抑える
 								{													// (ストックが増えてList<>のrealloc()が発生するのを予防する)
 									this.L最後に再生したHHの実WAV番号.RemoveAt( 0 );
@@ -850,6 +856,7 @@ namespace DTXMania
 #if TEST_NOTEOFFMODE	// 2011.1.4 yyagi test
 							}
 #endif
+Debug.WriteLine( "at " + pChip.n発声時刻ms + " : " + pChip.n整数値 + ":発音しました" );
 							CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, nLane, n音量, bモニタ );
 							return;
 						}
