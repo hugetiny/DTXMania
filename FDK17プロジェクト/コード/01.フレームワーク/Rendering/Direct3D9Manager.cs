@@ -40,8 +40,12 @@ namespace SampleFramework
         /// Gets the graphics device.
         /// </summary>
         /// <value>The graphics device.</value>
-        public Device Device
-        {
+#if TEST_Direct3D9Ex
+		public DeviceEx Device							//yyagi
+#else
+		public Device Device
+#endif
+		{
             get;
             internal set;
         }

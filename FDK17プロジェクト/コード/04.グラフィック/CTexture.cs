@@ -102,7 +102,11 @@ namespace FDK
 					stream.Seek( 0L, SeekOrigin.Begin );
 					int colorKey = 0;
 					colorKey = -16777216;
+#if TEST_Direct3D9Ex
+					this.texture = Texture.FromStream( device, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, Pool.Default, Filter.Point, Filter.None, colorKey );
+#else
 					this.texture = Texture.FromStream( device, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, Pool.Managed, Filter.Point, Filter.None, colorKey );
+#endif
 				}
 				this.t頂点バッファの作成( device );
 			}
@@ -176,7 +180,11 @@ namespace FDK
 					{
 						bitmap.Save( stream, ImageFormat.Bmp );
 						stream.Seek( 0L, SeekOrigin.Begin );
+#if TEST_Direct3D9Ex
+						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, Usage.None, format, Pool.Default, Filter.Point, Filter.None, 0 );
+#else
 						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, Usage.None, format, pool, Filter.Point, Filter.None, 0 );
+#endif
 					}
 				}
 				this.t頂点バッファの作成( device );
@@ -209,7 +217,11 @@ namespace FDK
 				ImageInformation information = ImageInformation.FromFile( strファイル名 );
 				this.sz画像サイズ = new Size( information.Width, information.Height );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
+#if TEST_Direct3D9Ex
+				this.texture = Texture.FromFile( device, strファイル名, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, Pool.Default, Filter.Point, Filter.None, b黒を透過する ? -16777216 : 0 );
+#else
 				this.texture = Texture.FromFile( device, strファイル名, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, b黒を透過する ? -16777216 : 0 );
+#endif
 				this.t頂点バッファの作成( device );
 			}
 			catch
@@ -472,7 +484,11 @@ namespace FDK
 		}
 		private void t頂点バッファの作成( Device device )
 		{
+#if TEST_Direct3D9Ex
+			this.vbPositionColoredVertexBuffer = new VertexBuffer( device, 4 * PositionColoredTexturedVertex.SizeInBytes, Usage.WriteOnly, VertexFormat.None, Pool.Default );
+#else
 			this.vbPositionColoredVertexBuffer = new VertexBuffer( device, 4 * PositionColoredTexturedVertex.SizeInBytes, Usage.WriteOnly, VertexFormat.None, Pool.Managed );
+#endif
 		}
 		//-----------------
 		#endregion

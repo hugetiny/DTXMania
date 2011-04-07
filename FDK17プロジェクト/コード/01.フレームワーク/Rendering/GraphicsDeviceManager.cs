@@ -50,8 +50,12 @@ namespace SampleFramework
         long windowedStyle;
         bool savedTopmost;
 
-        internal static Direct3D Direct3D9Object
-        {
+#if TEST_Direct3D9Ex
+		internal static Direct3DEx Direct3D9Object			// yyagi
+#else
+		internal static Direct3D Direct3D9Object
+#endif
+		{
             get;
             private set;
         }
@@ -481,15 +485,24 @@ namespace SampleFramework
 			{
 				EnsureD3D9();
 
+#if TEST_Direct3D9Ex
+				Direct3D9.Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
+					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
+					CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters );
+// yyagi
+#else
 				Direct3D9.Device = new SlimDX.Direct3D9.Device( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
 					CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters );
-
-				if( Result.Last == SlimDX.Direct3D9.ResultCode.DeviceLost )
+#endif
+				if ( Result.Last == SlimDX.Direct3D9.ResultCode.DeviceLost )
 				{
 					deviceLost = true;
 					return;
 				}
+#if TEST_Direct3D9Ex
+				Direct3D9.Device.MaximumFrameLatency = 0;			// yyagi
+#endif
 			}
 			catch( Exception e )
 			{
@@ -651,8 +664,12 @@ namespace SampleFramework
 
         internal static void EnsureD3D9()
         {
-            if (Direct3D9Object == null)
-                Direct3D9Object = new Direct3D();
+			if ( Direct3D9Object == null )
+#if TEST_Direct3D9Ex
+				Direct3D9Object = new Direct3DEx();		// yyagi
+#else
+				Direct3D9Object = new Direct3D();
+#endif
         }
     }
 }

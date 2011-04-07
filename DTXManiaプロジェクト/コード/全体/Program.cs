@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
+using FDK;
 
 namespace DTXMania
 {
@@ -80,15 +81,7 @@ namespace DTXMania
 					Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
 #endif
 
-					// turn off Aero Glass
-//					try
-//					{
-//						DwmEnableComposition( false );
-//					}
-//					catch ( DllNotFoundException )
-//					{
-//						// DLLがなければXP以下とみなし何もしない
-//					}
+					DWM.EnableComposition(false);
 
 					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
 					// BEGIM #24606 2011.03.08 from: DEBUG 時は例外発生箇所を直接デバッグできるようにするため、例外をキャッチしないようにする。
