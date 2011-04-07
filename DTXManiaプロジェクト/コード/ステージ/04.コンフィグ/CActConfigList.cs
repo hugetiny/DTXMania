@@ -85,18 +85,6 @@ namespace DTXMania
 				new string[] { "DrOnly", "GROnly", "Both"} );
 			this.list項目リスト.Add( this.iSystemGRmode );
 
-			
-//			this.iSystemGuitar = new CItemToggle( "Guitar", CDTXMania.ConfigIni.bGuitar有効,
-//				"ギター有効：\nこれを OFF にすると、ギターとベース\nに関するすべてが無効になります。\nつまりは DTXMania がドラム専用の\nゲームとなります。",
-//				"To show guitar/bass lanes.\nIf Guitar=ON and Drums=OFF,\n the playing screen becomes\n guitar-only mode." );
-//			this.list項目リスト.Add( this.iSystemGuitar );
-//			this.iSystemDrums = new CItemToggle( "Drums", CDTXMania.ConfigIni.bDrums有効,
-//				"ドラム有効：\nこれを OFF にすると、ドラムに関する\nすべてが無効になります。\nつまりは DTXMania がギター専用の\nゲームとなります。",
-//				"To use drums lanes.\nIf Guitar=ON and Drums=OFF,\n the playing screen becomes\n guitar-only mode." );
-//			this.list項目リスト.Add( this.iSystemDrums );
-
-
-
 			this.iSystemFullscreen = new CItemToggle( "Fullscreen", CDTXMania.ConfigIni.b全画面モード,
 				"画面モード設定：\nON で全画面モード、OFF でウィンド\nウモードになります。",
 				"Fullscreen mode or window mode." );
@@ -109,36 +97,9 @@ namespace DTXMania
 				"子BOXをRANDOMの対象とする：\nON にすると、RANDOM SELECT 時\nに子BOXも選択対象とします。",
 				"Turn ON to use child BOX (subfolders)\n at RANDOM SELECT." );
 			this.list項目リスト.Add( this.iSystemRandomFromSubBox );
-			this.iSystemHHGroup = new CItemList( "HH Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHHGroup,
-				"ハイハットレーン打ち分け設定：\n左シンバル、ハイハットオープン、ハ\nイハットクローズの打ち分け方法を指\n定します。\n  HH-0 ... LC | HHC | HHO\n  HH-1 ... LC & ( HHC | HHO )\n  HH-2 ... LC | ( HHC & HHO )\n  HH-3 ... LC & HHC & HHO\n",
-				"HH-0: LC|HC|HO; all are separated.\nHH-1: LC&(HC|HO);\n HC and HO are separted.\n LC is grouped with HC and HHO.\nHH-2: LC|(HC&HO);\n LC and HHs are separated.\n HC and HO are grouped.\nHH-3: LC&HC&HO; all are grouped.",
-				new string[] { "HH-0", "HH-1", "HH-2", "HH-3" } );
-			this.list項目リスト.Add( this.iSystemHHGroup );
-			this.iSystemFTGroup = new CItemList( "FT Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eFTGroup,
-				"フロアタム打ち分け設定：\nロータムとフロアタムの打ち分け方法\nを指定します。\n  FT-0 ... LT | FT\n  FT-1 ... LT & FT\n",
-				"FT-0: LT|FT\n LT and FT are separated.\nFT-1: LT&FT\n LT and FT are grouped.",
-				new string[] { "FT-0", "FT-1" } );
-			this.list項目リスト.Add( this.iSystemFTGroup );
-			this.iSystemCYGroup = new CItemList( "CY Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eCYGroup,
-				"シンバルレーン打ち分け設定：\n右シンバルとライドシンバルの打ち分\nけ方法を指定します。\n  CY-0 ... CY | RD\n  CY-1 ... CY & RD\n",
-				"CY-0: CY|RD\n CY and RD are separated.\nCY-1: CY&RD\n CY and RD are grouped.",
-				new string[] { "CY-0", "CY-1" } );
-			this.list項目リスト.Add( this.iSystemCYGroup );
-			this.iSystemHitSoundPriorityHH = new CItemList( "HH Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityHH,
-				"発声音決定の優先順位：\nハイハットレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
-				"To specify playing sound in case you're\n using HH-0,1 and 2.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
-				new string[] { "C>P", "P>C" } );
-			this.list項目リスト.Add( this.iSystemHitSoundPriorityHH );
-			this.iSystemHitSoundPriorityFT = new CItemList( "FT Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityFT,
-				"発声音決定の優先順位：\nフロアタム打ち分け有効時に、チップ\nの発声音をどのように決定するかを\n指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
-				"To specify playing sound in case you're\n using FT-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
-				new string[] { "C>P", "P>C" } );
-			this.list項目リスト.Add( this.iSystemHitSoundPriorityFT );
-			this.iSystemHitSoundPriorityCY = new CItemList( "CY Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityCY,
-				"発声音決定の優先順位：\nシンバルレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
-				"To specify playing sound in case you're\n using CY-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
-				new string[] { "C>P", "P>C" } );
-			this.list項目リスト.Add( this.iSystemHitSoundPriorityCY );
+
+
+	
 			this.iSystemAdjustWaves = new CItemToggle( "AdjustWaves", CDTXMania.ConfigIni.bWave再生位置自動調整機能有効,
 				"サウンド再生位置自動補正：\nハードウェアやＯＳに起因するサウン\nドのずれを強制的に補正します。\nBGM のように再生時間の長い音声\nデータが使用されている曲で効果が\nあります。",
 				"Automatic wave playing position\n adjustment feature. If you turn it ON,\n it decrease the lag which comes from\n the difference of hardware/OS.\nUsually, you should turn it ON." );
@@ -160,22 +121,7 @@ namespace DTXMania
 			//				"達成率グラフの使用：\n最高スキル達成率と比較できるグラフ\nを表示する場合にON にします。\nオートプレイだと表示されません。\n現バージョンではドラムのみとなって\nいます。",
 			//				"To draw Graph \n or not.");
 			//			this.list項目リスト.Add( this.iSystemGraph );
-			this.iSystemFillIn = new CItemToggle( "FillIn", CDTXMania.ConfigIni.bフィルイン有効,
-				"フィルインエフェクトの使用：\nフィルイン区間の爆発パターンに特別\nのエフェクトを使用します。\nフィルインエフェクトの描画にはそれな\nりのマシンパワーが必要とされます。",
-				"To show bursting effects at the fill-in\n zone or not." );
-			this.list項目リスト.Add( this.iSystemFillIn );
-			this.iSystemSoundMonitorDrums = new CItemToggle( "DrumsMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Drums,
-				"ドラム音モニタ：\nドラム音を他の音より大きめの音量で\n発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
-				"To enhance the drums chip sound\n(except autoplay)." );
-			this.list項目リスト.Add( this.iSystemSoundMonitorDrums );
-			this.iSystemSoundMonitorGuitar = new CItemToggle( "GuitarMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Guitar,
-				"ギター音モニタ：\nギター音を他の音より大きめの音量\nで発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
-				"To enhance the guitar chip sound\n(except autoplay)." );
-			this.list項目リスト.Add( this.iSystemSoundMonitorGuitar );
-			this.iSystemSoundMonitorBass = new CItemToggle( "BassMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Bass,
-				"ベース音モニタ：\nベース音を他の音より大きめの音量\nで発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
-				"To enhance the bass chip sound\n(except autoplay)." );
-			this.list項目リスト.Add( this.iSystemSoundMonitorBass );
+
 			this.iSystemPreviewSoundWait = new CItemInteger( "PreSoundWait", 0, 0x2710, CDTXMania.ConfigIni.n曲が選択されてからプレビュー音が鳴るまでのウェイトms,
 				"プレビュー音演奏までの時間：\n曲にカーソルが合わされてからプレ\nビュー音が鳴り始めるまでの時間を\n指定します。\n0 ～ 10000 [ms] が指定可能です。",
 				"Delay time(ms) to start playing preview\n sound in SELECT MUSIC screen.\nYou can specify from 0ms to 10000ms." );
@@ -196,10 +142,6 @@ namespace DTXMania
 				"BGMの再生：\nこれをOFFにすると、BGM を再生しな\nくなります。",
 				"Turn OFF if you don't want to play\n BGM." );
 			this.list項目リスト.Add( this.iSystemBGMSound );
-			this.iSystemHitSound = new CItemToggle( "HitSound", CDTXMania.ConfigIni.bドラム打音を発声する,
-				"打撃音の再生：\nこれをOFFにすると、パッドを叩いた\nときの音を再生しなくなります（ドラム\nのみ）。\nDTX の音色で演奏したい場合などに\nOFF にします。",
-				"Turn OFF if you don't want to play\n hitting chip sound.\nIt is useful to play with real/electric\n drums kit." );
-			this.list項目リスト.Add( this.iSystemHitSound );
 			this.iSystemAudienceSound = new CItemToggle( "Audience", CDTXMania.ConfigIni.b歓声を発声する,
 				"歓声の再生：\nこれをOFFにすると、歓声を再生しな\nくなります。",
 				"Turn ON if you want to be cheered\n at the end of fill-in zone or not." );
@@ -213,18 +155,8 @@ namespace DTXMania
 				"演奏記録の保存：\nON で演奏記録を ～.score.ini ファイ\nルに保存します。\n",
 				"To save high-scores/skills, turn it ON.\nTurn OFF in case your song data are\n in read-only media (CD-ROM etc).\nNote that the score files also contain\n 'BGM Adjust' parameter. So if you\n want to keep adjusting parameter,\n you need to set SaveScore=ON." );
 			this.list項目リスト.Add( this.iSystemSaveScore );
-			this.iSystemMinComboDrums = new CItemInteger( "D-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Drums,
-				"表示可能な最小コンボ数（ドラム）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
-				"Initial number to show the combo\n for the drums.\nYou can specify from 1 to 99999." );
-			this.list項目リスト.Add( this.iSystemMinComboDrums );
-			this.iSystemMinComboGuitar = new CItemInteger( "G-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar,
-				"表示可能な最小コンボ数（ギター）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
-				"Initial number to show the combo\n for the guitar.\nYou can specify from 1 to 99999." );
-			this.list項目リスト.Add( this.iSystemMinComboGuitar );
-			this.iSystemMinComboBass = new CItemInteger( "B-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass,
-				"表示可能な最小コンボ数（ベース）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
-				"Initial number to show the combo\n for the bass.\nYou can specify from 1 to 99999." );
-			this.list項目リスト.Add( this.iSystemMinComboBass );
+
+
 			this.iSystemChipVolume = new CItemInteger( "ChipVolume", 0, 100, CDTXMania.ConfigIni.n手動再生音量,
 				"打音の音量：\n入力に反応して再生されるチップの音\n量を指定します。\n0 ～ 100 % の値が指定可能です。\n",
 				"The volumes for chips you hit.\nYou can specify from 0 to 100%." );
@@ -237,10 +169,7 @@ namespace DTXMania
 				"ストイック（禁欲）モード：\n以下をまとめて表示ON/OFFします。\n・プレビュー画像/動画\n・リザルト画像/動画\n・NowLoading画像\n・演奏画面の背景画像\n・BGA 画像 / AVI 動画\n・グラフ画像\n",
 				"Turn ON to disable drawing\n * preview image / movie\n * result image / movie\n * nowloading image\n * wallpaper (in playing screen)\n * BGA / AVI (in playing screen)" );
 			this.list項目リスト.Add( this.iSystemStoicMode );
-			this.iSystemCymbalFree = new CItemToggle( "CymbalFree", CDTXMania.ConfigIni.bシンバルフリー,
-				"シンバルフリーモード：\n左シンバル・右シンバルの区別をなく\nします。ライドシンバルまで区別をな\nくすか否かは、CYGroup に従います。\n",
-				"Turn ON to group LC (left cymbal) and\n CY (right cymbal).\nWhether RD (ride cymbal) is also\n grouped or not depends on the\n'CY Group' setting." );
-			this.list項目リスト.Add( this.iSystemCymbalFree );
+
 			this.iSystemBufferedInput = new CItemToggle( "BufferedInput", CDTXMania.ConfigIni.bバッファ入力を行う,
 				"バッファ入力モード：\nON にすると、FPS を超える入力解像\n度を実現します。\nOFF にすると、入力解像度は FPS に\n等しくなります。",
 				"To select joystick input method.\n\nON=to use buffer input. No lost/lags.\nOFF to use realtime input. It may\n causes lost/lags for input.\n Moreover, input frequency is\n synchronized with FPS." );
@@ -297,6 +226,50 @@ namespace DTXMania
 				"右シンバルとライドシンバルを自動で\n演奏します。",
 				"To play both right- and Ride-Cymbal\n automatically." );
 			this.list項目リスト.Add( this.iDrumsCymbalRide );
+
+			this.iSystemHHGroup = new CItemList( "HH Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHHGroup,
+			"ハイハットレーン打ち分け設定：\n左シンバル、ハイハットオープン、ハ\nイハットクローズの打ち分け方法を指\n定します。\n  HH-0 ... LC | HHC | HHO\n  HH-1 ... LC & ( HHC | HHO )\n  HH-2 ... LC | ( HHC & HHO )\n  HH-3 ... LC & HHC & HHO\n",
+			"HH-0: LC|HC|HO; all are separated.\nHH-1: LC&(HC|HO);\n HC and HO are separted.\n LC is grouped with HC and HHO.\nHH-2: LC|(HC&HO);\n LC and HHs are separated.\n HC and HO are grouped.\nHH-3: LC&HC&HO; all are grouped.",
+			new string[] { "HH-0", "HH-1", "HH-2", "HH-3" } );
+			this.list項目リスト.Add( this.iSystemHHGroup );
+			this.iSystemFTGroup = new CItemList( "FT Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eFTGroup,
+				"フロアタム打ち分け設定：\nロータムとフロアタムの打ち分け方法\nを指定します。\n  FT-0 ... LT | FT\n  FT-1 ... LT & FT\n",
+				"FT-0: LT|FT\n LT and FT are separated.\nFT-1: LT&FT\n LT and FT are grouped.",
+				new string[] { "FT-0", "FT-1" } );
+			this.list項目リスト.Add( this.iSystemFTGroup );
+			this.iSystemCYGroup = new CItemList( "CY Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eCYGroup,
+				"シンバルレーン打ち分け設定：\n右シンバルとライドシンバルの打ち分\nけ方法を指定します。\n  CY-0 ... CY | RD\n  CY-1 ... CY & RD\n",
+				"CY-0: CY|RD\n CY and RD are separated.\nCY-1: CY&RD\n CY and RD are grouped.",
+				new string[] { "CY-0", "CY-1" } );
+			this.list項目リスト.Add( this.iSystemCYGroup );
+
+			this.iSystemCymbalFree = new CItemToggle( "CymbalFree", CDTXMania.ConfigIni.bシンバルフリー,
+			"シンバルフリーモード：\n左シンバル・右シンバルの区別をなく\nします。ライドシンバルまで区別をな\nくすか否かは、CYGroup に従います。\n",
+			"Turn ON to group LC (left cymbal) and\n CY (right cymbal).\nWhether RD (ride cymbal) is also\n grouped or not depends on the\n'CY Group' setting." );
+			this.list項目リスト.Add( this.iSystemCymbalFree );
+
+			
+			this.iSystemHitSoundPriorityHH = new CItemList( "HH Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityHH,
+				"発声音決定の優先順位：\nハイハットレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
+				"To specify playing sound in case you're\n using HH-0,1 and 2.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				new string[] { "C>P", "P>C" } );
+			this.list項目リスト.Add( this.iSystemHitSoundPriorityHH );
+			this.iSystemHitSoundPriorityFT = new CItemList( "FT Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityFT,
+				"発声音決定の優先順位：\nフロアタム打ち分け有効時に、チップ\nの発声音をどのように決定するかを\n指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
+				"To specify playing sound in case you're\n using FT-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				new string[] { "C>P", "P>C" } );
+			this.list項目リスト.Add( this.iSystemHitSoundPriorityFT );
+			this.iSystemHitSoundPriorityCY = new CItemList( "CY Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityCY,
+				"発声音決定の優先順位：\nシンバルレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
+				"To specify playing sound in case you're\n using CY-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				new string[] { "C>P", "P>C" } );
+			this.list項目リスト.Add( this.iSystemHitSoundPriorityCY );
+			this.iSystemFillIn = new CItemToggle( "FillIn", CDTXMania.ConfigIni.bフィルイン有効,
+				"フィルインエフェクトの使用：\nフィルイン区間の爆発パターンに特別\nのエフェクトを使用します。\nフィルインエフェクトの描画にはそれな\nりのマシンパワーが必要とされます。",
+				"To show bursting effects at the fill-in\n zone or not." );
+			this.list項目リスト.Add( this.iSystemFillIn );
+
+
 			this.iDrumsScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Drums,
 				"演奏時のドラム譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 を指定可能です。",
 				"To change the scroll speed for the\ndrums lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)" );
@@ -327,6 +300,21 @@ namespace DTXMania
 				"ドラムチップのないところでパッドを\n叩くとミスになります。",
 				"It becomes MISS to hit pad without\n chip." );
 			this.list項目リスト.Add( this.iDrumsTight );
+
+			this.iSystemHitSound = new CItemToggle( "HitSound", CDTXMania.ConfigIni.bドラム打音を発声する,
+			"打撃音の再生：\nこれをOFFにすると、パッドを叩いた\nときの音を再生しなくなります（ドラム\nのみ）。\nDTX の音色で演奏したい場合などに\nOFF にします。",
+			"Turn OFF if you don't want to play\n hitting chip sound.\nIt is useful to play with real/electric\n drums kit." );
+			this.list項目リスト.Add( this.iSystemHitSound );
+			this.iSystemSoundMonitorDrums = new CItemToggle( "DrumsMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Drums,
+				"ドラム音モニタ：\nドラム音を他の音より大きめの音量で\n発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
+				"To enhance the drums chip sound\n(except autoplay)." );
+			this.list項目リスト.Add( this.iSystemSoundMonitorDrums );
+			this.iSystemMinComboDrums = new CItemInteger( "D-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Drums,
+				"表示可能な最小コンボ数（ドラム）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
+				"Initial number to show the combo\n for the drums.\nYou can specify from 1 to 99999." );
+			this.list項目リスト.Add( this.iSystemMinComboDrums );
+
+			
 			// #23580 2011.1.3 yyagi
 			this.iDrumsInputAdjustTimeMs = new CItemInteger( "InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums,
 				"ドラムの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
@@ -393,6 +381,17 @@ namespace DTXMania
 				"ギターの RGB の並びが左右反転し\nます。（左利きモード）",
 				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty." );
 			this.list項目リスト.Add( this.iGuitarLeft );
+
+			this.iSystemSoundMonitorGuitar = new CItemToggle( "GuitarMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Guitar,
+			"ギター音モニタ：\nギター音を他の音より大きめの音量\nで発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
+			"To enhance the guitar chip sound\n(except autoplay)." );
+			this.list項目リスト.Add( this.iSystemSoundMonitorGuitar );
+			this.iSystemMinComboGuitar = new CItemInteger( "G-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar,
+				"表示可能な最小コンボ数（ギター）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
+				"Initial number to show the combo\n for the guitar.\nYou can specify from 1 to 99999." );
+			this.list項目リスト.Add( this.iSystemMinComboGuitar );
+
+			
 			// #23580 2011.1.3 yyagi
 			this.iGuitarInputAdjustTimeMs = new CItemInteger( "InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar,
 				"ギターの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
@@ -457,6 +456,18 @@ namespace DTXMania
 				"ベースの RGB の並びが左右反転し\nます。（左利きモード）",
 				"Lane order 'R-G-B' becomes 'B-G-R'\nfor lefty." );
 			this.list項目リスト.Add( this.iBassLeft );
+
+			this.iSystemSoundMonitorBass = new CItemToggle( "BassMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Bass,
+			"ベース音モニタ：\nベース音を他の音より大きめの音量\nで発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
+			"To enhance the bass chip sound\n(except autoplay)." );
+			this.list項目リスト.Add( this.iSystemSoundMonitorBass );
+
+			this.iSystemMinComboBass = new CItemInteger( "B-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass,
+				"表示可能な最小コンボ数（ベース）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
+				"Initial number to show the combo\n for the bass.\nYou can specify from 1 to 99999." );
+			this.list項目リスト.Add( this.iSystemMinComboBass );
+
+			
 			// #23580 2011.1.3 yyagi
 			this.iBassInputAdjustTimeMs = new CItemInteger( "InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass,
 				"ベースの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。入力ラグを軽減するためには、負の\n値を指定してください。",
@@ -1000,8 +1011,23 @@ namespace DTXMania
 							}
 							break;
 
-						case CItemBase.E種別.整数:
-							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値.ToString(), ( j == 0 ) && this.b要素値にフォーカス中 );
+						case CItemBase.E種別.整数:		// #24789 2011.4.8 yyagi: add PlaySpeed supports (copied them from OPTION)
+							{
+								if ( this.list項目リスト[ nItem ] == this.iCommonPlaySpeed )
+								{
+									double d = ( (double) ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値 ) / 20.0;
+									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, d.ToString( "0.000" ), ( j == 0 ) && this.b要素値にフォーカス中 );
+								}
+								else if ( this.list項目リスト[ nItem ] == this.iDrumsScrollSpeed || this.list項目リスト[ nItem ] == this.iGuitarScrollSpeed || this.list項目リスト[ nItem ] == this.iBassScrollSpeed )
+								{
+									float f = ( ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値 + 1 ) * 0.5f;
+									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, f.ToString( "x0.0" ), ( j == 0 ) && this.b要素値にフォーカス中 );
+								}
+								else
+								{
+									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値.ToString(), ( j == 0 ) && this.b要素値にフォーカス中 );
+								}
+							}
 							break;
 
 						case CItemBase.E種別.リスト:
@@ -1011,8 +1037,6 @@ namespace DTXMania
 								break;
 							}
 					}
-
-
 					nItem = this.t次の項目( nItem );
 				}
 				if( this.b項目リスト側にフォーカスがある && ( this.n目標のスクロールカウンタ == 0 ) )
@@ -1257,39 +1281,26 @@ namespace DTXMania
 			CDTXMania.ConfigIni.b全画面モード = this.iSystemFullscreen.bON;
 			CDTXMania.ConfigIni.bSTAGEFAILED有効 = this.iSystemStageFailed.bON;
 			CDTXMania.ConfigIni.bランダムセレクトで子BOXを検索対象とする = this.iSystemRandomFromSubBox.bON;
-			CDTXMania.ConfigIni.eHHGroup = (EHHGroup) this.iSystemHHGroup.n現在選択されている項目番号;
-			CDTXMania.ConfigIni.eFTGroup = (EFTGroup) this.iSystemFTGroup.n現在選択されている項目番号;
-			CDTXMania.ConfigIni.eCYGroup = (ECYGroup) this.iSystemCYGroup.n現在選択されている項目番号;
-			CDTXMania.ConfigIni.eHitSoundPriorityHH = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityHH.n現在選択されている項目番号;
-			CDTXMania.ConfigIni.eHitSoundPriorityFT = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityFT.n現在選択されている項目番号;
-			CDTXMania.ConfigIni.eHitSoundPriorityCY = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityCY.n現在選択されている項目番号;
+
 			CDTXMania.ConfigIni.bWave再生位置自動調整機能有効 = this.iSystemAdjustWaves.bON;
 			CDTXMania.ConfigIni.b垂直帰線待ちを行う = this.iSystemVSyncWait.bON;
 			CDTXMania.ConfigIni.bバッファ入力を行う = this.iSystemBufferedInput.bON;
 			CDTXMania.ConfigIni.bAVI有効 = this.iSystemAVI.bON;
 			CDTXMania.ConfigIni.bBGA有効 = this.iSystemBGA.bON;
 //			CDTXMania.ConfigIni.bGraph有効 = this.iSystemGraph.bON;#24074 2011.01.23 comment-out ikanick オプション(Drums)へ移行
-			CDTXMania.ConfigIni.bフィルイン有効 = this.iSystemFillIn.bON;
-			CDTXMania.ConfigIni.b演奏音を強調する.Drums = this.iSystemSoundMonitorDrums.bON;
-			CDTXMania.ConfigIni.b演奏音を強調する.Guitar = this.iSystemSoundMonitorGuitar.bON;
-			CDTXMania.ConfigIni.b演奏音を強調する.Bass = this.iSystemSoundMonitorBass.bON;
 			CDTXMania.ConfigIni.n曲が選択されてからプレビュー音が鳴るまでのウェイトms = this.iSystemPreviewSoundWait.n現在の値;
 			CDTXMania.ConfigIni.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms = this.iSystemPreviewImageWait.n現在の値;
 			CDTXMania.ConfigIni.b演奏情報を表示する = this.iSystemDebugInfo.bON;
 			CDTXMania.ConfigIni.n背景の透過度 = this.iSystemBGAlpha.n現在の値;
 			CDTXMania.ConfigIni.bBGM音を発声する = this.iSystemBGMSound.bON;
-			CDTXMania.ConfigIni.bドラム打音を発声する = this.iSystemHitSound.bON;
 			CDTXMania.ConfigIni.b歓声を発声する = this.iSystemAudienceSound.bON;
 			CDTXMania.ConfigIni.eダメージレベル = (Eダメージレベル) this.iSystemDamageLevel.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bScoreIniを出力する = this.iSystemSaveScore.bON;
-			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Drums = this.iSystemMinComboDrums.n現在の値;
-			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar = this.iSystemMinComboGuitar.n現在の値;
-			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass = this.iSystemMinComboBass.n現在の値;
+
 			CDTXMania.ConfigIni.bログ出力 = this.iLogOutputLog.bON;
 			CDTXMania.ConfigIni.n手動再生音量 = this.iSystemChipVolume.n現在の値;
 			CDTXMania.ConfigIni.n自動再生音量 = this.iSystemAutoChipVolume.n現在の値;
 			CDTXMania.ConfigIni.bストイックモード = this.iSystemStoicMode.bON;
-			CDTXMania.ConfigIni.bシンバルフリー = this.iSystemCymbalFree.bON;
 		}
 		private void tConfigIniへ記録する・Bass()
 		{
@@ -1303,10 +1314,13 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bLight.Bass = this.iBassLight.bON;
 			CDTXMania.ConfigIni.bLeft.Bass = this.iBassLeft.bON;
 			CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass = this.iBassInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
+
+			CDTXMania.ConfigIni.b演奏音を強調する.Bass = this.iSystemSoundMonitorBass.bON;
+			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass = this.iSystemMinComboBass.n現在の値;
 		}
-		private void tConfigIniへ記録する・Common()
-		{
-		}
+//		private void tConfigIniへ記録する・Common()
+//		{
+//		}
 		private void tConfigIniへ記録する・Drums()
 		{
 			CDTXMania.ConfigIni.bAutoPlay.LC = this.iDrumsLeftCymbal.bON;
@@ -1326,6 +1340,19 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bTight = this.iDrumsTight.bON;
 			CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums = this.iDrumsInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
 			CDTXMania.ConfigIni.bGraph.Drums = this.iDrumsGraph.bON;// #24074 2011.01.23 add ikanick
+
+			CDTXMania.ConfigIni.eHHGroup = (EHHGroup) this.iSystemHHGroup.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eFTGroup = (EFTGroup) this.iSystemFTGroup.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eCYGroup = (ECYGroup) this.iSystemCYGroup.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eHitSoundPriorityHH = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityHH.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eHitSoundPriorityFT = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityFT.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eHitSoundPriorityCY = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityCY.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.bフィルイン有効 = this.iSystemFillIn.bON;
+			CDTXMania.ConfigIni.b演奏音を強調する.Drums = this.iSystemSoundMonitorDrums.bON;
+			CDTXMania.ConfigIni.bドラム打音を発声する = this.iSystemHitSound.bON;
+			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Drums = this.iSystemMinComboDrums.n現在の値;
+			CDTXMania.ConfigIni.bシンバルフリー = this.iSystemCymbalFree.bON;
+
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{
@@ -1339,6 +1366,9 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bLight.Guitar = this.iGuitarLight.bON;
 			CDTXMania.ConfigIni.bLeft.Guitar = this.iGuitarLeft.bON;
 			CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar = this.iGuitarInputAdjustTimeMs.n現在の値;	// #23580 2011.1.3 yyagi
+
+			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar = this.iSystemMinComboGuitar.n現在の値;
+			CDTXMania.ConfigIni.b演奏音を強調する.Guitar = this.iSystemSoundMonitorGuitar.bON;
 		}
 		//-----------------
 		#endregion
