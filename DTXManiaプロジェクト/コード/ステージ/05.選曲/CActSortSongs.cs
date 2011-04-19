@@ -272,33 +272,45 @@ namespace DTXMania
 				}
 				#endregion
 				#region [ ソート候補文字列描画 ]
-				string[] strSortItem = {
-					"Title", "Level", "Best Rank", "PlayCount",
-					//"Author",
-					"SkillPoint",
-					//"BPM",
-					"Date",
-					"Return"
+				//string[] strSortItem = {
+				//    "Title", "Level", "Best Rank", "PlayCount",
+				//    //"Author",
+				//    "SkillPoint",
+				//    //"BPM",
+				//    "Date",
+				//    "Return"
+				//};
+				//string[] strSortOrder = {
+				//    "Descend", "", "Ascend"
+				//};
+				string[ , ] strSortItem = {
+					{ "Title",		"Z,Y,X,...",	"A,B,C,..." },
+					{ "Level",		"99,98,97,...",	"1,2,3,..." },
+					{ "Best Rank",	"E,D,C,...",	"SS,S,A,..." },
+					{ "PlayCount",	"10,9,8,...",	"1,2,3,..." },
+				//	{ "Author",		"Z,Y,X,...",	"A,B,C,..." },
+					{ "SkillPoint",	"100,99,98,...","1,2,3,..." },
+				//	{ "BPM",		"300,200,...",	"70,80,90,..." },
+					{ "Date",		"Dec.31,30,...","Jan.1,2,..." },
+					{ "Return",		"",				"" }
 				};
-				string[] strSortOrder = {
-					"Descend", "", "Ascend"
-				};
-				for ( int i = 0; i < strSortItem.Length; i++ )
+
+				for ( int i = 0; i < strSortItem.GetLength(0); i++ )
 				{
 					bool bBold = ( i == nSortType ) ? true : false;
-					font.t文字列描画( 190, 80 + i * 32, strSortItem[ i ], bBold, 1.0f );
+					font.t文字列描画( 190, 80 + i * 32, strSortItem[ i, 0 ], bBold, 1.0f );
 					if ( bBold )
 					{
 						// nSortOder+1 == 0(Ascend), (1,) 2(Descend)
-						if ( bIsJapanLocale )
-						{	// #24758 2011.4.1 yyagi: for JP locale, 昇順/降順 is used instead of ascend/descend.
-							Rectangle rect = new Rectangle( 0, this.txSortMenuChoices.sz画像サイズ.Height / 2 * (nSortOrder+1)/2, this.txSortMenuChoices.sz画像サイズ.Width, this.txSortMenuChoices.sz画像サイズ.Height / 2 );
-							this.txSortMenuChoices.t2D描画( CDTXMania.app.Device, 350, 78 + i * 32, rect );
-						}
-						else
-						{
-							font.t文字列描画( 350, 80 + i * 32, strSortOrder[ nSortOrder + 1 ], bBold, 1.0f );
-						}
+//						if ( bIsJapanLocale )
+//						{	// #24758 2011.4.1 yyagi: for JP locale, 昇順/降順 is used instead of ascend/descend.
+//							Rectangle rect = new Rectangle( 0, this.txSortMenuChoices.sz画像サイズ.Height / 2 * (nSortOrder+1)/2, this.txSortMenuChoices.sz画像サイズ.Width, this.txSortMenuChoices.sz画像サイズ.Height / 2 );
+//							this.txSortMenuChoices.t2D描画( CDTXMania.app.Device, 350, 78 + i * 32, rect );
+//						}
+//						else
+//						{
+							font.t文字列描画( 340, 80 + i * 32, strSortItem[ i, (nSortOrder + 1)/2+1 ], bBold, 1.0f );
+//						}
 					}
 				}
 				#endregion
