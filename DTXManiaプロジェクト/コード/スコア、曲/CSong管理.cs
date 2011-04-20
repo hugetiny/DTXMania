@@ -70,7 +70,7 @@ namespace DTXMania
 				try
 				{
 					br = new BinaryReader( File.OpenRead( SongsDBファイル名 ) );
-					if( !br.ReadString().Equals( "SongsDB2" ) )
+					if ( !br.ReadString().Equals( SONGSDB_VERSION ) )
 					{
 						throw new InvalidDataException( "ヘッダが異なります。" );
 					}
@@ -661,6 +661,7 @@ namespace DTXMania
 			cスコア.譜面情報.演奏履歴.行5 = br.ReadString();
 			cスコア.譜面情報.レベルを非表示にする = br.ReadBoolean();
 			cスコア.譜面情報.曲種別 = (CDTX.E種別) br.ReadInt32();
+//			cスコア.譜面情報.bpm = br.ReadDouble();
 			return cスコア;
 		}
 		//-----------------
@@ -705,6 +706,7 @@ namespace DTXMania
 									c曲リストノード.arスコア[ i ].譜面情報.レベル.Bass = cdtx.LEVEL.Bass;
 									c曲リストノード.arスコア[ i ].譜面情報.レベルを非表示にする = cdtx.HIDDENLEVEL;
 									c曲リストノード.arスコア[ i ].譜面情報.曲種別 = cdtx.e種別;
+//									c曲リストノード.arスコア[ i ].譜面情報.bpm = cdtx.BPM;
 									this.nファイルから反映できたスコア数++;
 									cdtx.On非活性化();
 									if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
@@ -724,6 +726,7 @@ namespace DTXMania
 										builder.Append( ", lvBs=" + c曲リストノード.arスコア[ i ].譜面情報.レベル.Bass );
 										builder.Append( ", lvHide=" + c曲リストノード.arスコア[ i ].譜面情報.レベルを非表示にする );
 										builder.Append( ", type=" + c曲リストノード.arスコア[ i ].譜面情報.曲種別 );
+//										builder.Append( ", bpm=" + c曲リストノード.arスコア[ i ].譜面情報.bpm );
 										Trace.TraceInformation( builder.ToString() );
 									}
 								}
@@ -913,7 +916,7 @@ namespace DTXMania
 			try
 			{
 				BinaryWriter bw = new BinaryWriter( new FileStream( SongsDBファイル名, FileMode.Create, FileAccess.Write ) );
-				bw.Write( "SongsDB2" );
+				bw.Write( SONGSDB_VERSION );
 				this.tSongsDBにリストを１つ出力する( bw, this.list曲ルート );
 				bw.Close();
 			}
@@ -964,6 +967,7 @@ namespace DTXMania
 					bw.Write( node.arスコア[ i ].譜面情報.演奏履歴.行5 );
 					bw.Write( node.arスコア[ i ].譜面情報.レベルを非表示にする );
 					bw.Write( (int) node.arスコア[ i ].譜面情報.曲種別 );
+//					bw.Write( node.arスコア[ i ].譜面情報.bpm );
 					this.nSongsDBへ出力できたスコア数++;
 				}
 			}
@@ -1137,7 +1141,7 @@ namespace DTXMania
 							nSumPlayCountN1 += c曲リストノード.arスコア[ nL12345 ].譜面情報.演奏回数[ (int) part ];
 						}
 //					}
-					Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
+// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
 				}
 
 //				foreach( C曲リストノード c曲リストノード in ノードリスト )
@@ -1195,7 +1199,7 @@ namespace DTXMania
 					{
 						nSumPlayCountN1 = c曲リストノード.arスコア[ nL12345 ].譜面情報.レベル[ (int) part ];
 					}
-					Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
+// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
 				}
 			}
 		}
@@ -1252,7 +1256,7 @@ namespace DTXMania
 					{
 						nSumPlayCountN1 = c曲リストノード.arスコア[ nL12345 ].譜面情報.最大ランク[ (int) part ];
 					}
-					Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
+// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
 				}
 			}
 		}
@@ -1302,7 +1306,7 @@ namespace DTXMania
 					{
 						nSumPlayCountN1 = c曲リストノード.arスコア[ nL12345 ].譜面情報.最大スキル[ (int) part ];
 					}
-					Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
+// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
 				}
 			}
 		}
@@ -1352,10 +1356,98 @@ namespace DTXMania
 					{
 						nSumPlayCountN1 = c曲リストノード.arスコア[ nL12345 ].ファイル情報.最終更新日時;
 					}
-					Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
+// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
 				}
 			}
 		}
+		public void t曲リストのソート8_アーティスト名順( List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p )
+		{
+			int nL12345 = (int) p[ 0 ]; 
+			ノードリスト.Sort( delegate( C曲リストノード n1, C曲リストノード n2 )
+			{
+				if ( n1 == n2 )
+				{
+					return 0;
+				}
+				int num = this.t比較0_共通( n1, n2 );
+				if ( num != 0 )
+				{
+					return order * System.Math.Sign( num );
+				}
+				string strAuthorN1 = "";
+				string strAuthorN2 = "";
+				if (n1.arスコア[ nL12345 ] != null ) {
+					strAuthorN1 = n1.arスコア[ nL12345 ].譜面情報.アーティスト名;
+				}
+				if ( n2.arスコア[ nL12345 ] != null )
+				{
+					strAuthorN2 = n2.arスコア[ nL12345 ].譜面情報.アーティスト名;
+				}
+
+				return order * strAuthorN1.CompareTo( strAuthorN2 );
+			} );
+			foreach ( C曲リストノード c曲リストノード in ノードリスト )
+			{
+				string s = "";
+				if ( c曲リストノード.arスコア[ nL12345 ] != null )
+				{
+					s = c曲リストノード.arスコア[ nL12345 ].譜面情報.アーティスト名;
+				}
+Debug.WriteLine( s + ":" + c曲リストノード.strタイトル );
+			}
+		}
+#if TEST_SORTBGM
+		public void t曲リストのソート9_BPM順( List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p )
+		{
+			order = -order;
+			int nL12345 = (int) p[ 0 ];
+			if ( part != E楽器パート.UNKNOWN )
+			{
+				ノードリスト.Sort( delegate( C曲リストノード n1, C曲リストノード n2 )
+				{
+					#region [ 共通処理 ]
+					if ( n1 == n2 )
+					{
+						return 0;
+					}
+					int num = this.t比較0_共通( n1, n2 );
+					if ( num != 0 )
+					{
+						return order * num;
+					}
+					if ( ( n1.eノード種別 == C曲リストノード.Eノード種別.BOX ) && ( n2.eノード種別 == C曲リストノード.Eノード種別.BOX ) )
+					{
+						return order * n1.arスコア[ 0 ].ファイル情報.フォルダの絶対パス.CompareTo( n2.arスコア[ 0 ].ファイル情報.フォルダの絶対パス );
+					}
+					#endregion
+					double dBPMn1 = 0.0, dBPMn2 = 0.0;
+					if ( n1.arスコア[ nL12345 ] != null )
+					{
+						dBPMn1 = n1.arスコア[ nL12345 ].譜面情報.bpm;
+					}
+					if ( n2.arスコア[ nL12345 ] != null )
+					{
+						dBPMn2 = n2.arスコア[ nL12345 ].譜面情報.bpm;
+					}
+					double d = dBPMn1- dBPMn2;
+					if ( d != 0 )
+					{
+						return order * System.Math.Sign( d );
+					}
+					return order * n1.strタイトル.CompareTo( n2.strタイトル );
+				} );
+				foreach ( C曲リストノード c曲リストノード in ノードリスト )
+				{
+					double dBPM = 0;
+					if ( c曲リストノード.arスコア[ nL12345 ] != null )
+					{
+						dBPM = c曲リストノード.arスコア[ nL12345 ].譜面情報.bpm;
+					}
+Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
+				}
+			}
+		}
+#endif
 		//-----------------
 		#endregion
 

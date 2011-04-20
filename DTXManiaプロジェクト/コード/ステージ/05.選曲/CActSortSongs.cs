@@ -89,16 +89,26 @@ namespace DTXMania
 							this.act曲リスト.n現在のアンカ難易度レベル
 						);
 						break;
-//					case (int) ESortItem.Author:
-//						break;
+					case (int) ESortItem.Author:
+						this.act曲リスト.t曲リストのソート(
+							CDTXMania.Songs管理.t曲リストのソート8_アーティスト名順, eInst, nSortOrder,
+							this.act曲リスト.n現在のアンカ難易度レベル
+						);
+						break;
 					case (int) ESortItem.SkillPoint:
 						this.act曲リスト.t曲リストのソート(
 							CDTXMania.Songs管理.t曲リストのソート6_SkillPoint順, eInst, nSortOrder,
 							this.act曲リスト.n現在のアンカ難易度レベル
 						);
 						break;
-//					case (int) ESortItem.BPM:
-//						break;
+#if TEST_SORTBGM
+						case (int) ESortItem.BPM:
+						this.act曲リスト.t曲リストのソート(
+							CDTXMania.Songs管理.t曲リストのソート9_BPM順, eInst, nSortOrder,
+							this.act曲リスト.n現在のアンカ難易度レベル
+						);
+						break;
+#endif
 					case (int) ESortItem.Date:
 						this.act曲リスト.t曲リストのソート(
 							CDTXMania.Songs管理.t曲リストのソート7_更新日時順, eInst, nSortOrder,
@@ -288,9 +298,11 @@ namespace DTXMania
 					{ "Level",		"99,98,97,...",	"1,2,3,..." },
 					{ "Best Rank",	"E,D,C,...",	"SS,S,A,..." },
 					{ "PlayCount",	"10,9,8,...",	"1,2,3,..." },
-				//	{ "Author",		"Z,Y,X,...",	"A,B,C,..." },
+					{ "Author",		"Z,Y,X,...",	"A,B,C,..." },
 					{ "SkillPoint",	"100,99,98,...","1,2,3,..." },
-				//	{ "BPM",		"300,200,...",	"70,80,90,..." },
+#if TEST_SORTBGM
+					{ "BPM",		"300,200,...",	"70,80,90,..." },
+#endif
 					{ "Date",		"Dec.31,30,...","Jan.1,2,..." },
 					{ "Return",		"",				"" }
 				};
@@ -395,9 +407,11 @@ namespace DTXMania
 		private enum ESortItem : int
 		{
 			Title = 0, Level, BestRank, PlayCount,
-			//Author,
+			Author,
 			SkillPoint,
-			//BPM,
+#if TEST_SORTBGM
+			BPM,
+#endif
 			Date,
 			Return, END,
 			Default = 99
