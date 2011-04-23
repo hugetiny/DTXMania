@@ -136,6 +136,7 @@
     <Compile Include="コード\ステージ\07.演奏\CAct演奏判定文字列共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏演奏情報.cs" />
     <Compile Include="コード\ステージ\07.演奏\CStage演奏画面共通.cs" />
+    <Compile Include="コード\ステージ\07.演奏\ギター画面\CAct演奏GuitarDanger.cs" />
     <Compile Include="コード\ステージ\07.演奏\ギター画面\CAct演奏GuitarRGB.cs" />
     <Compile Include="コード\ステージ\07.演奏\ギター画面\CAct演奏GuitarWailingBonus.cs" />
     <Compile Include="コード\ステージ\07.演奏\ギター画面\CAct演奏Guitarゲージ.cs" />
@@ -215,9 +216,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FDK17プロジェクト\FDK18.csproj">
+    <ProjectReference Include="..\FDK17プロジェクト\FDK19.csproj">
       <Project>{BCD40908-F3E2-4707-BFAA-1DD99DF6357D}</Project>
-      <Name>FDK18</Name>
+      <Name>FDK19</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

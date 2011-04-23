@@ -1535,7 +1535,7 @@ namespace DTXMania
 		}
 		protected override void t進行描画・DANGER()
 		{
-		    this.actDANGER.t進行描画( this.actGauge.db現在のゲージ値.Drums < 0.3 );
+		    this.actDANGER.t進行描画( this.actGauge.db現在のゲージ値.Drums < 0.3, false, false );
 		}
 		//private void t進行描画・MIDIBGM()
 		//{

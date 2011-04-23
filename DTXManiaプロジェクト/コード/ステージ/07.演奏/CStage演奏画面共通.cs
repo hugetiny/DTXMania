@@ -856,7 +856,6 @@ namespace DTXMania
 #if TEST_NOTEOFFMODE	// 2011.1.4 yyagi test
 							}
 #endif
-Debug.WriteLine( "at " + pChip.n発声時刻ms + " : " + pChip.n整数値 + ":発音しました" );
 							CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, nLane, n音量, bモニタ );
 							return;
 						}

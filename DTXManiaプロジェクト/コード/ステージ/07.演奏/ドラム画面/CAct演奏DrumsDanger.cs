@@ -51,24 +51,31 @@ namespace DTXMania
 		{
 			throw new InvalidOperationException( "t進行描画(bool)のほうを使用してください。" );
 		}
-		public override int t進行描画( bool bDangerである )
+		/// <summary>
+		/// ドラム画面のDANGER描画
+		/// </summary>
+		/// <param name="bIsDangerDrums">DrumsのゲージがDangerかどうか(Guitar/Bassと共用のゲージ)</param>
+		/// <param name="bIsDangerGuitar">Guitarのゲージ(未使用)</param>
+		/// <param name="bIsDangerBass">Bassのゲージ(未使用)</param>
+		/// <returns></returns>
+		public override int t進行描画( bool bIsDangerDrums, bool bIsDangerGuitar, bool bIsDangerBass )
 		{
 			if( !base.b活性化してない )
 			{
-				if( !bDangerである )
+				if( !bIsDangerDrums )
 				{
-					this.bDanger中 = false;
+					this.bDanger中[(int)E楽器パート.DRUMS] = false;
 					return 0;
 				}
-				if( !this.bDanger中 )
+				if( !this.bDanger中[(int)E楽器パート.DRUMS] )
 				{
 					this.ct移動用 = new CCounter( 0, 0x7f, 7, CDTXMania.Timer );
 					this.ct透明度用 = new CCounter( 0, 0x167, 4, CDTXMania.Timer );
 				}
-				this.bDanger中 = bDangerである;
+				this.bDanger中[(int)E楽器パート.DRUMS] = bIsDangerDrums;
 				this.ct移動用.t進行Loop();
 				this.ct透明度用.t進行Loop();
-				if( !this.bDanger中 )
+				if( !this.bDanger中[(int)E楽器パート.DRUMS] )
 				{
 					return 0;
 				}
@@ -101,8 +108,8 @@ namespace DTXMania
 		//private bool bDanger中;
 		//private CCounter ct移動用;
 		//private CCounter ct透明度用;
-		private const int n右位置 = 0x12a;
-		private const int n左位置 = 0x26;
+//		private const int n右位置 = 0x12a;
+//		private const int n左位置 = 0x26;
 		private readonly Rectangle[] rc領域 = new Rectangle[] { new Rectangle( 0, 0, 0x20, 0x40 ), new Rectangle( 0x20, 0, 0x20, 0x40 ) };
 		private CTexture txDANGER;
 		//-----------------

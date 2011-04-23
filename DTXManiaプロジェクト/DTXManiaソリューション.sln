@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTXManiaプロジェクト", "DTXManiaプロジェクト.csproj", "{81BEC512-8074-4BD1-8A3C-AC73BC7BF846}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FDK18", "..\FDK17プロジェクト\FDK18.csproj", "{BCD40908-F3E2-4707-BFAA-1DD99DF6357D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FDK19", "..\FDK17プロジェクト\FDK19.csproj", "{BCD40908-F3E2-4707-BFAA-1DD99DF6357D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

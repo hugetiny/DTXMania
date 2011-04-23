@@ -21,6 +21,7 @@ namespace DTXMania
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 			base.b活性化してない = true;
 			base.list子Activities.Add( this.actStageFailed = new CAct演奏ステージ失敗() );
+			base.list子Activities.Add( this.actDANGER = new CAct演奏GuitarDanger() );
 			base.list子Activities.Add( this.actAVI = new CAct演奏AVI() );
 			base.list子Activities.Add( this.actBGA = new CAct演奏BGA() );
 			base.list子Activities.Add( this.actPanel = new CAct演奏パネル文字列() );
@@ -1198,8 +1199,9 @@ namespace DTXMania
 		{
 		    base.t進行描画・BGA( 0xb5, 50 );
 		}
-		protected override void t進行描画・DANGER()			// 現在、ギター画面でのDANGER実装は無し
+		protected override void t進行描画・DANGER()			// #23631 2011.4.19 yyagi
 		{
+			this.actDANGER.t進行描画( false, this.actGauge.db現在のゲージ値.Guitar < 0.3, this.actGauge.db現在のゲージ値.Bass < 0.3 );
 		}
 		////private void t進行描画・MIDIBGM()
 		////{
