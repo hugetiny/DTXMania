@@ -333,7 +333,7 @@ namespace DTXMania
 				if( this.ct登場用.b進行中 && ( this.tx上部パネル != null ) )
 				{
 					double num2 = ( (double) this.ct登場用.n現在の値 ) / 100.0;
-					double num3 = Math.Sin( 1.5707963267948966 * num2 );
+					double num3 = Math.Sin( Math.PI / 2 * num2 );
 					num = ( (int) ( this.tx上部パネル.sz画像サイズ.Height * num3 ) ) - this.tx上部パネル.sz画像サイズ.Height;
 				}
 				else
@@ -353,15 +353,15 @@ namespace DTXMania
 				{
 					this.bアニメが完了 = false;
 				}
-				if( this.actParameterPanel.On進行描画() == 0 )
+				if ( this.actParameterPanel.On進行描画() == 0 )
 				{
 					this.bアニメが完了 = false;
 				}
-				if( this.actRank.On進行描画() == 0 )
+				if ( this.actRank.On進行描画() == 0 )
 				{
 					this.bアニメが完了 = false;
 				}
-				if( this.actSongBar.On進行描画() == 0 )
+				if ( this.actSongBar.On進行描画() == 0 )
 				{
 					this.bアニメが完了 = false;
 				}
@@ -376,27 +376,12 @@ namespace DTXMania
 				{
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
-				#region [ #24609 ランク更新or演奏型スキル更新時、リザルト画像をpngで保存する ]
+				#region [ #24609 2011.3.14 yyagi ランク更新or演奏型スキル更新時、リザルト画像をpngで保存する ]
 				if ( this.bアニメが完了 == true && this.bIsCheckedWhetherResultScreenShouldSaveOrNot == false	// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
 					&& CDTXMania.ConfigIni.bScoreIniを出力する)
 				{
-					// http://www.gamedev.net/topic/594369-dx9slimdxati-incorrect-saving-surface-to-file/
-					using ( Surface pSurface = CDTXMania.app.Device.GetRenderTarget( 0 ) )
-					{
-						string path = Path.GetDirectoryName( CDTXMania.DTX.strファイル名の絶対パス);
-						string datetime = DateTime.Now.ToString("yyyyMMddHHmmss");
-						for ( int i = 0; i < 3; i++ )
-						{
-							if ( this.b新記録ランク[ i ] == true || this.b新記録スキル[i] == true )
-							{
-								string strPart = ( (E楽器パート)(i)).ToString();
-								string strRank = ( (CScoreIni.ERANK) ( this.nランク値[ i ] ) ).ToString();
-								string strFullPath = CDTXMania.DTX.strファイル名の絶対パス + "." + datetime + "_" + strPart + "_" + strRank + ".png";
-								Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
-							}
-						}
-					}
-					bIsCheckedWhetherResultScreenShouldSaveOrNot = true;
+					CheckAndSaveResultScreen(true);
+					this.bIsCheckedWhetherResultScreenShouldSaveOrNot = true;
 				}
 				#endregion
 
@@ -482,7 +467,15 @@ namespace DTXMania
 						this.actSongBar.tアニメを完了させる();
 						this.ct登場用.t停止();
 					}
-					if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 )
+					#region [ #24609 2011.4.7 yyagi リザルト画面で[F12]を押下すると、リザルト画像をpngで保存する機能は、CDTXManiaに移管。 ]
+//					if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F12 ) &&
+//						CDTXMania.ConfigIni.bScoreIniを出力する )
+//					{
+//						CheckAndSaveResultScreen(false);
+//						this.bIsCheckedWhetherResultScreenShouldSaveOrNot = true;
+//					}
+					#endregion
+					if ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 )
 					{
 						if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Escape ) )
 						{
@@ -503,6 +496,7 @@ namespace DTXMania
 			}
 			return 0;
 		}
+
 		public enum E戻り値 : int
 		{
 			継続,
@@ -533,6 +527,62 @@ namespace DTXMania
 		private CTexture tx下部パネル;
 		private CTexture tx上部パネル;
 		private CTexture tx背景;
+
+		#region [ #24609 リザルト画像をpngで保存する ]		// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
+		/// <summary>
+		/// リザルト画像のキャプチャと保存。
+		/// 自動保存モード時は、ランク更新or演奏型スキル更新時に自動保存。
+		/// 手動保存モード時は、ランクに依らず保存。
+		/// </summary>
+		/// <param name="bIsAutoSave">true=自動保存モード, false=手動保存モード</param>
+		private void CheckAndSaveResultScreen(bool bIsAutoSave)
+		{
+			string path = Path.GetDirectoryName( CDTXMania.DTX.strファイル名の絶対パス );
+			string datetime = DateTime.Now.ToString( "yyyyMMddHHmmss" );
+			if ( bIsAutoSave )
+			{
+				// リザルト画像を自動保存するときは、dtxファイル名.yyMMddHHmmss_DRUMS_SS.png という形式で保存。
+				for ( int i = 0; i < 3; i++ )
+				{
+					if ( this.b新記録ランク[ i ] == true || this.b新記録スキル[ i ] == true )
+					{
+						string strPart = ( (E楽器パート) ( i ) ).ToString();
+						string strRank = ( (CScoreIni.ERANK) ( this.nランク値[ i ] ) ).ToString();
+						string strFullPath = CDTXMania.DTX.strファイル名の絶対パス + "." + datetime + "_" + strPart + "_" + strRank + ".png";
+						//Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
+						CDTXMania.app.SaveResultScreen( strFullPath );
+					}
+				}
+			}
+			#region [ #24609 2011.4.11 yyagi; リザルトの手動保存ロジックは、CDTXManiaに移管した。]
+//			else
+//			{
+//				// リザルト画像を手動保存するときは、dtxファイル名.yyMMddHHmmss_SS.png という形式で保存。(楽器名無し)
+//				string strRank = ( (CScoreIni.ERANK) ( CDTXMania.stage結果.n総合ランク値 ) ).ToString();
+//				string strSavePath = CDTXMania.strEXEのあるフォルダ + "\\" + "Capture_img";
+//				if ( !Directory.Exists( strSavePath ) )
+//				{
+//					try
+//					{
+//						Directory.CreateDirectory( strSavePath );
+//					}
+//					catch
+//					{
+//					}
+//				}
+//				string strSetDefDifficulty = CDTXMania.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.stage選曲.n確定された曲の難易度 ];
+//				if ( strSetDefDifficulty != null )
+//				{
+//					strSetDefDifficulty = "(" + strSetDefDifficulty + ")";
+//				}
+//				string strFullPath = strSavePath + "\\" + CDTXMania.DTX.TITLE + strSetDefDifficulty +
+//					"." + datetime + "_" + strRank + ".png";
+//				// Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
+//				CDTXMania.app.SaveResultScreen( strFullPath );
+//			}
+			#endregion
+		}
+		#endregion
 		//-----------------
 		#endregion
 	}

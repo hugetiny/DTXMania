@@ -22,9 +22,9 @@ namespace DTXMania
 
 		// メソッド
 
-		public void t開始( E楽器パート part, Eパッド pad, string strパッド名 )
+		public void t開始( EKeyConfigPart part, EKeyConfigPad pad, string strパッド名 )
 		{
-			if( part != E楽器パート.UNKNOWN )
+			if( part != EKeyConfigPart.UNKNOWN )
 			{
 				this.part = part;
 				this.pad = pad;
@@ -37,6 +37,7 @@ namespace DTXMania
 				}
 			}
 		}
+		
 		public void tEnter押下()
 		{
 			if( !this.bキー入力待ち )
@@ -82,8 +83,8 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.part = E楽器パート.UNKNOWN;
-			this.pad = Eパッド.UNKNOWN;
+			this.part = EKeyConfigPart.UNKNOWN;
+			this.pad = EKeyConfigPad.UNKNOWN;
 			this.strパッド名 = "";
 			this.n現在の選択行 = 0;
 			this.bキー入力待ち = false;
@@ -222,8 +223,8 @@ namespace DTXMania
 			new STKEYLABEL(0x27, "[APP]"), new STKEYLABEL(0x71, "[Power]"), new STKEYLABEL(0x7d, "[Sleep]"), new STKEYLABEL(0x87, "[Wake]")
 		};
 		private int n現在の選択行;
-		private Eパッド pad;
-		private E楽器パート part;
+		private EKeyConfigPad pad;
+		private EKeyConfigPart part;
 		private CConfigIni.CKeyAssign.STKEYASSIGN[] structReset用KeyAssign;
 		private string strパッド名;
 		private CTexture txHitKeyダイアログ;

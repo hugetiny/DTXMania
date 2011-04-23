@@ -16,15 +16,48 @@ namespace DTXMania
 		{
 			public class CKeyAssignPad
 			{
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] B
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] HH
 				{
 					get
 					{
-						return this.padBD_B;
+						return this.padHH_R;
 					}
 					set
 					{
-						this.padBD_B = value;
+						this.padHH_R = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] R
+				{
+					get
+					{
+						return this.padHH_R;
+					}
+					set
+					{
+						this.padHH_R = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] SD
+				{
+					get
+					{
+						return this.padSD_G;
+					}
+					set
+					{
+						this.padSD_G = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] G
+				{
+					get
+					{
+						return this.padSD_G;
+					}
+					set
+					{
+						this.padSD_G = value;
 					}
 				}
 				public CConfigIni.CKeyAssign.STKEYASSIGN[] BD
@@ -36,6 +69,72 @@ namespace DTXMania
 					set
 					{
 						this.padBD_B = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] B
+				{
+					get
+					{
+						return this.padBD_B;
+					}
+					set
+					{
+						this.padBD_B = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] HT
+				{
+					get
+					{
+						return this.padHT_Pick;
+					}
+					set
+					{
+						this.padHT_Pick = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] Pick
+				{
+					get
+					{
+						return this.padHT_Pick;
+					}
+					set
+					{
+						this.padHT_Pick = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] LT
+				{
+					get
+					{
+						return this.padLT_Wail;
+					}
+					set
+					{
+						this.padLT_Wail = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] Wail
+				{
+					get
+					{
+						return this.padLT_Wail;
+					}
+					set
+					{
+						this.padLT_Wail = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] FT
+				{
+					get
+					{
+						return this.padFT_Cancel;
+					}
+					set
+					{
+						this.padFT_Cancel = value;
 					}
 				}
 				public CConfigIni.CKeyAssign.STKEYASSIGN[] Cancel
@@ -71,39 +170,6 @@ namespace DTXMania
 						this.padCY_Decide = value;
 					}
 				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] FT
-				{
-					get
-					{
-						return this.padFT_Cancel;
-					}
-					set
-					{
-						this.padFT_Cancel = value;
-					}
-				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] G
-				{
-					get
-					{
-						return this.padSD_G;
-					}
-					set
-					{
-						this.padSD_G = value;
-					}
-				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] HH
-				{
-					get
-					{
-						return this.padHH_R;
-					}
-					set
-					{
-						this.padHH_R = value;
-					}
-				}
 				public CConfigIni.CKeyAssign.STKEYASSIGN[] HHO
 				{
 					get
@@ -113,146 +179,6 @@ namespace DTXMania
 					set
 					{
 						this.padHHO = value;
-					}
-				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] HT
-				{
-					get
-					{
-						return this.padHT_Pick;
-					}
-					set
-					{
-						this.padHT_Pick = value;
-					}
-				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] this[ int index ]
-				{
-					get
-					{
-						switch( index )
-						{
-							case 0:
-								return this.padHH_R;
-
-							case 1:
-								return this.padSD_G;
-
-							case 2:
-								return this.padBD_B;
-
-							case 3:
-								return this.padHT_Pick;
-
-							case 4:
-								return this.padLT_Wail;
-
-							case 5:
-								return this.padFT_Cancel;
-
-							case 6:
-								return this.padCY_Decide;
-
-							case 7:
-								return this.padHHO;
-
-							case 8:
-								return this.padRD;
-
-							case 9:
-								return this.padLC;
-						}
-						throw new IndexOutOfRangeException();
-					}
-					set
-					{
-						switch( index )
-						{
-							case 0:
-								this.padHH_R = value;
-								return;
-
-							case 1:
-								this.padSD_G = value;
-								return;
-
-							case 2:
-								this.padBD_B = value;
-								return;
-
-							case 3:
-								this.padHT_Pick = value;
-								return;
-
-							case 4:
-								this.padLT_Wail = value;
-								return;
-
-							case 5:
-								this.padFT_Cancel = value;
-								return;
-
-							case 6:
-								this.padCY_Decide = value;
-								return;
-
-							case 7:
-								this.padHHO = value;
-								return;
-
-							case 8:
-								this.padRD = value;
-								return;
-
-							case 9:
-								this.padLC = value;
-								return;
-						}
-						throw new IndexOutOfRangeException();
-					}
-				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] LC
-				{
-					get
-					{
-						return this.padLC;
-					}
-					set
-					{
-						this.padLC = value;
-					}
-				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] LT
-				{
-					get
-					{
-						return this.padLT_Wail;
-					}
-					set
-					{
-						this.padLT_Wail = value;
-					}
-				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] Pick
-				{
-					get
-					{
-						return this.padHT_Pick;
-					}
-					set
-					{
-						this.padHT_Pick = value;
-					}
-				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] R
-				{
-					get
-					{
-						return this.padHH_R;
-					}
-					set
-					{
-						this.padHH_R = value;
 					}
 				}
 				public CConfigIni.CKeyAssign.STKEYASSIGN[] RD
@@ -266,26 +192,118 @@ namespace DTXMania
 						this.padRD = value;
 					}
 				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] SD
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] LC
 				{
 					get
 					{
-						return this.padSD_G;
+						return this.padLC;
 					}
 					set
 					{
-						this.padSD_G = value;
+						this.padLC = value;
 					}
 				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] Wail
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] Capture
 				{
 					get
 					{
-						return this.padLT_Wail;
+						return this.padCapture;
 					}
 					set
 					{
-						this.padLT_Wail = value;
+						this.padCapture = value;
+					}
+				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] this[ int index ]
+				{
+					get
+					{
+						switch ( index )
+						{
+							case (int) EKeyConfigPad.HH:
+								return this.padHH_R;
+
+							case (int) EKeyConfigPad.SD:
+								return this.padSD_G;
+
+							case (int) EKeyConfigPad.BD:
+								return this.padBD_B;
+
+							case (int) EKeyConfigPad.HT:
+								return this.padHT_Pick;
+
+							case (int) EKeyConfigPad.LT:
+								return this.padLT_Wail;
+
+							case (int) EKeyConfigPad.FT:
+								return this.padFT_Cancel;
+
+							case (int) EKeyConfigPad.CY:
+								return this.padCY_Decide;
+
+							case (int) EKeyConfigPad.HHO:
+								return this.padHHO;
+
+							case (int) EKeyConfigPad.RD:
+								return this.padRD;
+
+							case (int) EKeyConfigPad.LC:
+								return this.padLC;
+
+							case (int) EKeyConfigPad.Capture:
+								return this.padCapture;
+						}
+						throw new IndexOutOfRangeException();
+					}
+					set
+					{
+						switch ( index )
+						{
+							case (int) EKeyConfigPad.HH:
+								this.padHH_R = value;
+								return;
+
+							case (int) EKeyConfigPad.SD:
+								this.padSD_G = value;
+								return;
+
+							case (int) EKeyConfigPad.BD:
+								this.padBD_B = value;
+								return;
+
+							case (int) EKeyConfigPad.Pick:
+								this.padHT_Pick = value;
+								return;
+
+							case (int) EKeyConfigPad.LT:
+								this.padLT_Wail = value;
+								return;
+
+							case (int) EKeyConfigPad.FT:
+								this.padFT_Cancel = value;
+								return;
+
+							case (int) EKeyConfigPad.CY:
+								this.padCY_Decide = value;
+								return;
+
+							case (int) EKeyConfigPad.HHO:
+								this.padHHO = value;
+								return;
+
+							case (int) EKeyConfigPad.RD:
+								this.padRD = value;
+								return;
+
+							case (int) EKeyConfigPad.LC:
+								this.padLC = value;
+								return;
+
+							case (int) EKeyConfigPad.Capture:
+								this.padCapture = value;
+								return;
+						}
+						throw new IndexOutOfRangeException();
 					}
 				}
 
@@ -301,6 +319,7 @@ namespace DTXMania
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padLT_Wail;
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padRD;
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padSD_G;
+				private CConfigIni.CKeyAssign.STKEYASSIGN[] padCapture;
 				//-----------------
 				#endregion
 			}
@@ -322,20 +341,24 @@ namespace DTXMania
 			public CKeyAssignPad Bass = new CKeyAssignPad();
 			public CKeyAssignPad Drums = new CKeyAssignPad();
 			public CKeyAssignPad Guitar = new CKeyAssignPad();
+			public CKeyAssignPad System = new CKeyAssignPad();
 			public CKeyAssignPad this[ int index ]
 			{
 				get
 				{
 					switch( index )
 					{
-						case 0:
+						case (int) EKeyConfigPart.DRUMS:
 							return this.Drums;
 
-						case 1:
+						case (int) EKeyConfigPart.GUITAR:
 							return this.Guitar;
 
-						case 2:
+						case (int) EKeyConfigPart.BASS:
 							return this.Bass;
+
+						case (int) EKeyConfigPart.SYSTEM:
+							return this.System;
 					}
 					throw new IndexOutOfRangeException();
 				}
@@ -343,16 +366,20 @@ namespace DTXMania
 				{
 					switch( index )
 					{
-						case 0:
+						case (int) EKeyConfigPart.DRUMS:
 							this.Drums = value;
 							return;
 
-						case 1:
+						case (int) EKeyConfigPart.GUITAR:
 							this.Guitar = value;
 							return;
 
-						case 2:
+						case (int) EKeyConfigPart.BASS:
 							this.Bass = value;
+							return;
+
+						case (int) EKeyConfigPart.SYSTEM:
+							this.System = value;
 							return;
 					}
 					throw new IndexOutOfRangeException();
@@ -582,34 +609,34 @@ namespace DTXMania
 				{
 					switch( index )
 					{
-						case 0:
+						case (int) Eドラムレーン.LC:
 							return this.LC;
 
-						case 1:
+						case (int) Eドラムレーン.HH:
 							return this.HH;
 
-						case 2:
+						case (int) Eドラムレーン.SD:
 							return this.SD;
 
-						case 3:
+						case (int) Eドラムレーン.BD:
 							return this.BD;
 
-						case 4:
+						case (int) Eドラムレーン.HT:
 							return this.HT;
 
-						case 5:
+						case (int) Eドラムレーン.LT:
 							return this.LT;
 
-						case 6:
+						case (int) Eドラムレーン.FT:
 							return this.FT;
 
-						case 7:
+						case (int) Eドラムレーン.CY:
 							return this.CY;
 
-						case 8:
+						case (int) Eドラムレーン.CY + 1:
 							return this.Guitar;
 
-						case 9:
+						case (int) Eドラムレーン.CY + 2:
 							return this.Bass;
 					}
 					throw new IndexOutOfRangeException();
@@ -618,43 +645,43 @@ namespace DTXMania
 				{
 					switch( index )
 					{
-						case 0:
+						case (int) Eドラムレーン.LC:
 							this.LC = value;
 							return;
 
-						case 1:
+						case (int) Eドラムレーン.HH:
 							this.HH = value;
 							return;
 
-						case 2:
+						case (int) Eドラムレーン.SD:
 							this.SD = value;
 							return;
 
-						case 3:
+						case (int) Eドラムレーン.BD:
 							this.BD = value;
 							return;
 
-						case 4:
+						case (int) Eドラムレーン.HT:
 							this.HT = value;
 							return;
 
-						case 5:
+						case (int) Eドラムレーン.LT:
 							this.LT = value;
 							return;
 
-						case 6:
+						case (int) Eドラムレーン.FT:
 							this.FT = value;
 							return;
 
-						case 7:
+						case (int) Eドラムレーン.CY:
 							this.CY = value;
 							return;
 
-						case 8:
+						case (int) Eドラムレーン.CY + 1:
 							this.Guitar = value;
 							return;
 
-						case 9:
+						case (int) Eドラムレーン.CY + 2:
 							this.Bass = value;
 							return;
 					}
@@ -959,7 +986,7 @@ namespace DTXMania
 		public CConfigIni( string iniファイル名 )
 			: this()
 		{
-			this.t読み込み( iniファイル名 );
+			this.tファイルから読み込み( iniファイル名 );
 		}
 
 
@@ -967,9 +994,9 @@ namespace DTXMania
 
 		public void t指定した入力が既にアサイン済みである場合はそれを全削除する( E入力デバイス DeviceType, int nID, int nCode )
 		{
-			for( int i = 0; i < 3; i++ )
+			for( int i = 0; i <= (int)EKeyConfigPart.SYSTEM; i++ )
 			{
-				for( int j = 0; j < 10; j++ )
+				for( int j = 0; j <= (int)EKeyConfigPad.Capture; j++ )
 				{
 					for( int k = 0; k < 0x10; k++ )
 					{
@@ -1408,9 +1435,15 @@ namespace DTXMania
 			this.tキーの書き出し( sw, this.KeyAssign.Bass.Cancel );
 			sw.WriteLine();
 			sw.WriteLine();
+			sw.WriteLine( "[SystemKeyAssign]" );
+			sw.WriteLine();
+			sw.Write( "Capture=" );
+			this.tキーの書き出し( sw, this.KeyAssign.System.Capture );
+			sw.WriteLine();
+			sw.WriteLine();
 			sw.Close();
 		}
-		public void t読み込み( string iniファイル名 )
+		public void tファイルから読み込み( string iniファイル名 )
 		{
 			this.ConfigIniファイル名 = iniファイル名;
 			this.bConfigIniが存在している = File.Exists( this.ConfigIniファイル名 );
@@ -1418,84 +1451,102 @@ namespace DTXMania
 			{
 				string str;
 				this.tキーアサインを全部クリアする();
-				Eセクション種別 unknown = Eセクション種別.Unknown;
 				StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "shift-jis" ) );
-				while( ( str = reader.ReadLine() ) != null )
+				str = reader.ReadToEnd();
+				t文字列から読み込み( str );
+				CDTXVersion version = new CDTXVersion( this.strDTXManiaのバージョン );
+				if( version.n整数部 <= 69 )
 				{
-					str = str.Replace( '\t', ' ' ).TrimStart( new char[] { '\t', ' ' } );
-					if( ( str.Length != 0 ) && ( str[ 0 ] != ';' ) )
+					this.tデフォルトのキーアサインに設定する();
+				}
+			}
+		}
+
+		private void t文字列から読み込み( string strAllSettings )	// 2011.4.13 yyagi; refactored to make initial KeyConfig easier.
+		{
+			Eセクション種別 unknown = Eセクション種別.Unknown;
+			string[] delimiter = { "\n" };
+			string[] strSingleLine = strAllSettings.Split( delimiter, StringSplitOptions.RemoveEmptyEntries );
+			foreach ( string s in strSingleLine )
+			{
+				string str = s.Replace( '\t', ' ' ).TrimStart( new char[] { '\t', ' ' } );
+				if ( ( str.Length != 0 ) && ( str[ 0 ] != ';' ) )
+				{
+					try
 					{
-						try
+						string str3;
+						string str4;
+						if ( str[ 0 ] == '[' )
 						{
-							string str3;
-							string str4;
-							if( str[ 0 ] == '[' )
+							#region [ セクションの変更 ]
+							//-----------------------------
+							StringBuilder builder = new StringBuilder( 0x20 );
+							int num = 1;
+							while ( ( num < str.Length ) && ( str[ num ] != ']' ) )
 							{
-								#region [ セクションの変更 ]
-								//-----------------------------
-								StringBuilder builder = new StringBuilder( 0x20 );
-								int num = 1;
-								while( ( num < str.Length ) && ( str[ num ] != ']' ) )
-								{
-									builder.Append( str[ num++ ] );
-								}
-								string str2 = builder.ToString();
-								if( str2.Equals( "System" ) )
-								{
-									unknown = Eセクション種別.System;
-								}
-								else if( str2.Equals( "Log" ) )
-								{
-									unknown = Eセクション種別.Log;
-								}
-								else if( str2.Equals( "PlayOption" ) )
-								{
-									unknown = Eセクション種別.PlayOption;
-								}
-								else if( str2.Equals( "AutoPlay" ) )
-								{
-									unknown = Eセクション種別.AutoPlay;
-								}
-								else if( str2.Equals( "HitRange" ) )
-								{
-									unknown = Eセクション種別.HitRange;
-								}
-								else if( str2.Equals( "GUID" ) )
-								{
-									unknown = Eセクション種別.GUID;
-								}
-								else if( str2.Equals( "DrumsKeyAssign" ) )
-								{
-									unknown = Eセクション種別.DrumsKeyAssign;
-								}
-								else if( str2.Equals( "GuitarKeyAssign" ) )
-								{
-									unknown = Eセクション種別.GuitarKeyAssign;
-								}
-								else if( str2.Equals( "BassKeyAssign" ) )
-								{
-									unknown = Eセクション種別.BassKeyAssign;
-								}
-								else
-								{
-									unknown = Eセクション種別.Unknown;
-								}
-								//-----------------------------
-								#endregion
+								builder.Append( str[ num++ ] );
+							}
+							string str2 = builder.ToString();
+							if ( str2.Equals( "System" ) )
+							{
+								unknown = Eセクション種別.System;
+							}
+							else if ( str2.Equals( "Log" ) )
+							{
+								unknown = Eセクション種別.Log;
+							}
+							else if ( str2.Equals( "PlayOption" ) )
+							{
+								unknown = Eセクション種別.PlayOption;
+							}
+							else if ( str2.Equals( "AutoPlay" ) )
+							{
+								unknown = Eセクション種別.AutoPlay;
+							}
+							else if ( str2.Equals( "HitRange" ) )
+							{
+								unknown = Eセクション種別.HitRange;
+							}
+							else if ( str2.Equals( "GUID" ) )
+							{
+								unknown = Eセクション種別.GUID;
+							}
+							else if ( str2.Equals( "DrumsKeyAssign" ) )
+							{
+								unknown = Eセクション種別.DrumsKeyAssign;
+							}
+							else if ( str2.Equals( "GuitarKeyAssign" ) )
+							{
+								unknown = Eセクション種別.GuitarKeyAssign;
+							}
+							else if ( str2.Equals( "BassKeyAssign" ) )
+							{
+								unknown = Eセクション種別.BassKeyAssign;
+							}
+							else if ( str2.Equals( "SystemKeyAssign" ) )
+							{
+								unknown = Eセクション種別.SystemKeyAssign;
 							}
 							else
 							{
-								string[] strArray = str.Split( new char[] { '=' } );
-								if( strArray.Length == 2 )
+								unknown = Eセクション種別.Unknown;
+							}
+							//-----------------------------
+							#endregion
+						}
+						else
+						{
+							string[] strArray = str.Split( new char[] { '=' } );
+							if ( strArray.Length == 2 )
+							{
+								str3 = strArray[ 0 ].Trim();
+								str4 = strArray[ 1 ].Trim();
+								switch ( unknown )
 								{
-									str3 = strArray[ 0 ].Trim();
-									str4 = strArray[ 1 ].Trim();
-									switch( unknown )
-									{
-										#region [ [System] ]
-										//-----------------------------
-										case Eセクション種別.System:
-											{
+									#region [ [System] ]
+									//-----------------------------
+									case Eセクション種別.System:
+										{
 #if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
 										//----------------------------------------
 												if (str3.Equals("GaugeFactorD"))
@@ -1528,609 +1579,617 @@ namespace DTXMania
 												else
 										//----------------------------------------
 #endif
-												if( str3.Equals( "Version" ) )
-												{
-													this.strDTXManiaのバージョン = str4;
-												}
-												else if( str3.Equals( "DTXPath" ) )
-												{
-													this.str曲データ検索パス = str4;
-												}
-												else if( str3.Equals( "FullScreen" ) )
-												{
-													this.b全画面モード = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if (str3.Equals("WindowWidth"))		// #23510 2010.10.31 yyagi add
-												{
-													this.nウインドウwidth = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 1, 65535, this.nウインドウwidth);
-													if (this.nウインドウwidth <= 0)
-													{
-														this.nウインドウwidth = 640;
-													}
-												}
-												else if (str3.Equals("WindowHeight"))		// #23510 2010.10.31 yyagi add
-												{
-													this.nウインドウheight = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 1, 65535, this.nウインドウheight);
-													if (this.nウインドウheight <= 0)
-													{
-														this.nウインドウheight = 480;
-													}
-												}
-												else if (str3.Equals("VSyncWait"))
-												{
-													this.b垂直帰線待ちを行う = C変換.bONorOFF( str4[ 0 ] );
-                                                }
-                                                else if (str3.Equals("BackSleep"))		// #23568 2010.11.04 ikanick add
-                                                {
-                                                    this.n非フォーカス時スリープms = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す(str4, 0, 50, this.n非フォーカス時スリープms);
-                                                }
-												else if( str3.Equals( "Guitar" ) )
-												{
-													this.bGuitar有効 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "Drums" ) )
-												{
-													this.bDrums有効 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BGAlpha" ) )
-												{
-													this.n背景の透過度 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0xff, this.n背景の透過度 );
-												}
-												else if( str3.Equals( "DamageLevel" ) )
-												{
-													this.eダメージレベル = (Eダメージレベル) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eダメージレベル );
-												}
-												else if( str3.Equals( "HHGroup" ) )
-												{
-													this.eHHGroup = (EHHGroup) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.eHHGroup );
-												}
-												else if( str3.Equals( "FTGroup" ) )
-												{
-													this.eFTGroup = (EFTGroup) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eFTGroup );
-												}
-												else if( str3.Equals( "CYGroup" ) )
-												{
-													this.eCYGroup = (ECYGroup) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eCYGroup );
-												}
-												else if( str3.Equals( "HitSoundPriorityHH" ) )
-												{
-													this.eHitSoundPriorityHH = (E打ち分け時の再生の優先順位) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eHitSoundPriorityHH );
-												}
-												else if( str3.Equals( "HitSoundPriorityFT" ) )
-												{
-													this.eHitSoundPriorityFT = (E打ち分け時の再生の優先順位) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eHitSoundPriorityFT );
-												}
-												else if( str3.Equals( "HitSoundPriorityCY" ) )
-												{
-													this.eHitSoundPriorityCY = (E打ち分け時の再生の優先順位) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eHitSoundPriorityCY );
-												}
-												else if( str3.Equals( "StageFailed" ) )
-												{
-													this.bSTAGEFAILED有効 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "AVI" ) )
-												{
-													this.bAVI有効 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BGA" ) )
-												{
-													this.bBGA有効 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "FillInEffect" ) )
-												{
-													this.bフィルイン有効 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "PreviewSoundWait" ) )
-												{
-													this.n曲が選択されてからプレビュー音が鳴るまでのウェイトms = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x5f5e0ff, this.n曲が選択されてからプレビュー音が鳴るまでのウェイトms );
-												}
-												else if( str3.Equals( "PreviewImageWait" ) )
-												{
-													this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x5f5e0ff, this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms );
-												}
-												else if( str3.Equals( "AdjustWaves" ) )
-												{
-													this.bWave再生位置自動調整機能有効 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BGMSound" ) )
-												{
-													this.bBGM音を発声する = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "HitSound" ) )
-												{
-													this.bドラム打音を発声する = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "AudienceSound" ) )
-												{
-													this.b歓声を発声する = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "SaveScoreIni" ) )
-												{
-													this.bScoreIniを出力する = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "RandomFromSubBox" ) )
-												{
-													this.bランダムセレクトで子BOXを検索対象とする = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "SoundMonitorDrums" ) )
-												{
-													this.b演奏音を強調する.Drums = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "SoundMonitorGuitar" ) )
-												{
-													this.b演奏音を強調する.Guitar = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "SoundMonitorBass" ) )
-												{
-													this.b演奏音を強調する.Bass = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "MinComboDrums" ) )
-												{
-													this.n表示可能な最小コンボ数.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 0x1869f, this.n表示可能な最小コンボ数.Drums );
-												}
-												else if( str3.Equals( "MinComboGuitar" ) )
-												{
-													this.n表示可能な最小コンボ数.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 0x1869f, this.n表示可能な最小コンボ数.Guitar );
-												}
-												else if( str3.Equals( "MinComboBass" ) )
-												{
-													this.n表示可能な最小コンボ数.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 0x1869f, this.n表示可能な最小コンボ数.Bass );
-												}
-												else if( str3.Equals( "ShowDebugStatus" ) )
-												{
-													this.b演奏情報を表示する = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "SelectListFontName" ) )
-												{
-													this.str選曲リストフォント = str4;
-												}
-												else if( str3.Equals( "SelectListFontSize" ) )
-												{
-													this.n選曲リストフォントのサイズdot = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 0x3e7, this.n選曲リストフォントのサイズdot );
-												}
-												else if( str3.Equals( "SelectListFontItalic" ) )
-												{
-													this.b選曲リストフォントを斜体にする = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "SelectListFontBold" ) )
-												{
-													this.b選曲リストフォントを太字にする = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "ChipVolume" ) )
-												{
-													this.n手動再生音量 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.n手動再生音量 );
-												}
-												else if( str3.Equals( "AutoChipVolume" ) )
-												{
-													this.n自動再生音量 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.n自動再生音量 );
-												}
-												else if( str3.Equals( "StoicMode" ) )
-												{
-													this.bストイックモード = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "CymbalFree" ) )
-												{
-													this.bシンバルフリー = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if ( str3.Equals("InputAdjustTimeDrums") )		// #23580 2011.1.3 yyagi
-												{
-													this.nInputAdjustTimeMs.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 0, this.nInputAdjustTimeMs.Drums);
-												}
-												else if ( str3.Equals("InputAdjustTimeGuitar") )	// #23580 2011.1.3 yyagi
-												{
-													this.nInputAdjustTimeMs.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 0, this.nInputAdjustTimeMs.Guitar);
-												}
-												else if ( str3.Equals("InputAdjustTimeBass") )		// #23580 2011.1.3 yyagi
-												{
-													this.nInputAdjustTimeMs.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, -99, 0, this.nInputAdjustTimeMs.Bass);
-												}
-												else if ( str3.Equals("BufferedInput") ) {
-													this.bバッファ入力を行う = C変換.bONorOFF(str4[0]);
-												}
-												else if ( str3.Equals( "LCVelocityMin" ) )			// #23857 2010.12.12 yyagi
-												{
-													this.nVelocityMin.LC = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LC );
-												}
-												else if ( str3.Equals( "HHVelocityMin" ) )
-												{
-													this.nVelocityMin.HH = C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 127, this.nVelocityMin.HH);
-												}
-												else if ( str3.Equals( "SDVelocityMin" ) )			// #23857 2011.1.31 yyagi
-												{
-													this.nVelocityMin.SD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.SD );
-												}
-												else if ( str3.Equals( "BDVelocityMin" ) )			// #23857 2011.1.31 yyagi
-												{
-													this.nVelocityMin.BD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.BD );
-												}
-												else if ( str3.Equals( "HTVelocityMin" ) )			// #23857 2011.1.31 yyagi
-												{
-													this.nVelocityMin.HT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.HT );
-												}
-												else if ( str3.Equals( "LTVelocityMin" ) )			// #23857 2011.1.31 yyagi
-												{
-													this.nVelocityMin.LT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LT );
-												}
-												else if ( str3.Equals( "FTVelocityMin" ) )			// #23857 2011.1.31 yyagi
-												{
-													this.nVelocityMin.FT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.FT );
-												}
-												else if ( str3.Equals( "CYVelocityMin" ) )			// #23857 2011.1.31 yyagi
-												{
-													this.nVelocityMin.CY = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.CY );
-												}
-												else if ( str3.Equals( "RDVelocityMin" ) )			// #23857 2011.1.31 yyagi
-												{
-													this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
-												}
-												continue;
-											}
-										//-----------------------------
-										#endregion
-
-										#region [ [Log] ]
-										//-----------------------------
-										case Eセクション種別.Log:
+											if ( str3.Equals( "Version" ) )
 											{
-												if( str3.Equals( "OutputLog" ) )
-												{
-													this.bログ出力 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "TraceCreatedDisposed" ) )
-												{
-													this.bLog作成解放ログ出力 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "TraceDTXDetails" ) )
-												{
-													this.bLogDTX詳細ログ出力 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "TraceSongSearch" ) )
-												{
-													this.bLog曲検索ログ出力 = C変換.bONorOFF( str4[ 0 ] );
-												}
-												continue;
+												this.strDTXManiaのバージョン = str4;
 											}
-										//-----------------------------
-										#endregion
-
-										#region [ [PlayOption] ]
-										//-----------------------------
-										case Eセクション種別.PlayOption:
+											else if ( str3.Equals( "DTXPath" ) )
 											{
-												if( str3.Equals( "Dark" ) )
-												{
-													this.eDark = (Eダークモード) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eDark );
-												}
-												else if( str3.Equals( "DrumsTight" ) )
-												{
-													this.bTight = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "DrumsGraph" ) )  // #24074 2011.01.23 addikanick
-												{
-													this.bGraph.Drums = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "DrumsSudden" ) )
-												{
-													this.bSudden.Drums = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "GuitarSudden" ) )
-												{
-													this.bSudden.Guitar = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BassSudden" ) )
-												{
-													this.bSudden.Bass = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "DrumsHidden" ) )
-												{
-													this.bHidden.Drums = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "GuitarHidden" ) )
-												{
-													this.bHidden.Guitar = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BassHidden" ) )
-												{
-													this.bHidden.Bass = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "DrumsReverse" ) )
-												{
-													this.bReverse.Drums = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "GuitarReverse" ) )
-												{
-													this.bReverse.Guitar = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BassReverse" ) )
-												{
-													this.bReverse.Bass = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "GuitarRandom" ) )
-												{
-													this.eRandom.Guitar = (Eランダムモード) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.eRandom.Guitar );
-												}
-												else if( str3.Equals( "BassRandom" ) )
-												{
-													this.eRandom.Bass = (Eランダムモード) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.eRandom.Bass );
-												}
-												else if( str3.Equals( "GuitarLight" ) )
-												{
-													this.bLight.Guitar = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BassLight" ) )
-												{
-													this.bLight.Bass = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "GuitarLeft" ) )
-												{
-													this.bLeft.Guitar = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BassLeft" ) )
-												{
-													this.bLeft.Bass = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "DrumsPosition" ) )
-												{
-													this.判定文字表示位置.Drums = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Drums );
-												}
-												else if( str3.Equals( "GuitarPosition" ) )
-												{
-													this.判定文字表示位置.Guitar = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Guitar );
-												}
-												else if( str3.Equals( "BassPosition" ) )
-												{
-													this.判定文字表示位置.Bass = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Bass );
-												}
-												else if( str3.Equals( "DrumsScrollSpeed" ) )
-												{
-													this.n譜面スクロール速度.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x7cf, this.n譜面スクロール速度.Drums );
-												}
-												else if( str3.Equals( "GuitarScrollSpeed" ) )
-												{
-													this.n譜面スクロール速度.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x7cf, this.n譜面スクロール速度.Guitar );
-												}
-												else if( str3.Equals( "BassScrollSpeed" ) )
-												{
-													this.n譜面スクロール速度.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x7cf, this.n譜面スクロール速度.Bass );
-												}
-												else if( str3.Equals( "PlaySpeed" ) )
-												{
-													this.n演奏速度 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 5, 40, this.n演奏速度 );
-												}
-												else if( str3.Equals( "ComboPosition" ) )
-												{
-													this.ドラムコンボ文字の表示位置 = (Eドラムコンボ文字の表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.ドラムコンボ文字の表示位置 );
-												}
-												continue;
+												this.str曲データ検索パス = str4;
 											}
-										//-----------------------------
-										#endregion
-
-										#region [ [AutoPlay] ]
-										//-----------------------------
-										case Eセクション種別.AutoPlay:
+											else if ( str3.Equals( "FullScreen" ) )
 											{
-												if( str3.Equals( "LC" ) )
-												{
-													this.bAutoPlay.LC = C変換.bONorOFF( str4[ 0 ] );
-												}
-												if( str3.Equals( "HH" ) )
-												{
-													this.bAutoPlay.HH = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "SD" ) )
-												{
-													this.bAutoPlay.SD = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "BD" ) )
-												{
-													this.bAutoPlay.BD = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "HT" ) )
-												{
-													this.bAutoPlay.HT = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "LT" ) )
-												{
-													this.bAutoPlay.LT = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "FT" ) )
-												{
-													this.bAutoPlay.FT = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "CY" ) )
-												{
-													this.bAutoPlay.CY = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "Guitar" ) )
-												{
-													this.bAutoPlay.Guitar = C変換.bONorOFF( str4[ 0 ] );
-												}
-												else if( str3.Equals( "Bass" ) )
-												{
-													this.bAutoPlay.Bass = C変換.bONorOFF( str4[ 0 ] );
-												}
-												continue;
+												this.b全画面モード = C変換.bONorOFF( str4[ 0 ] );
 											}
-										//-----------------------------
-										#endregion
-
-										#region [ [HitRange] ]
-										//-----------------------------
-										case Eセクション種別.HitRange:
+											else if ( str3.Equals( "WindowWidth" ) )		// #23510 2010.10.31 yyagi add
 											{
-												if( str3.Equals( "Perfect" ) )
+												this.nウインドウwidth = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 65535, this.nウインドウwidth );
+												if ( this.nウインドウwidth <= 0 )
 												{
-													this.nヒット範囲ms.Perfect = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x3e7, this.nヒット範囲ms.Perfect );
+													this.nウインドウwidth = 640;
 												}
-												else if( str3.Equals( "Great" ) )
-												{
-													this.nヒット範囲ms.Great = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x3e7, this.nヒット範囲ms.Great );
-												}
-												else if( str3.Equals( "Good" ) )
-												{
-													this.nヒット範囲ms.Good = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x3e7, this.nヒット範囲ms.Good );
-												}
-												else if( str3.Equals( "Poor" ) )
-												{
-													this.nヒット範囲ms.Poor = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x3e7, this.nヒット範囲ms.Poor );
-												}
-												continue;
 											}
-										//-----------------------------
-										#endregion
-
-										#region [ [GUID] ]
-										//-----------------------------
-										case Eセクション種別.GUID:
+											else if ( str3.Equals( "WindowHeight" ) )		// #23510 2010.10.31 yyagi add
 											{
-												if( str3.Equals( "JoystickID" ) )
+												this.nウインドウheight = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 65535, this.nウインドウheight );
+												if ( this.nウインドウheight <= 0 )
 												{
-													this.tJoystickIDの取得( str4 );
+													this.nウインドウheight = 480;
 												}
-												continue;
 											}
-										//-----------------------------
-										#endregion
-
-										#region [ [DrumsKeyAssign] ]
-										//-----------------------------
-										case Eセクション種別.DrumsKeyAssign:
+											else if ( str3.Equals( "VSyncWait" ) )
 											{
-												if( str3.Equals( "HH" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HH );
-												}
-												else if( str3.Equals( "SD" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.SD );
-												}
-												else if( str3.Equals( "BD" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.BD );
-												}
-												else if( str3.Equals( "HT" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HT );
-												}
-												else if( str3.Equals( "LT" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.LT );
-												}
-												else if( str3.Equals( "FT" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.FT );
-												}
-												else if( str3.Equals( "CY" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.CY );
-												}
-												else if( str3.Equals( "HO" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HHO );
-												}
-												else if( str3.Equals( "RD" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.RD );
-												}
-												else if( str3.Equals( "LC" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.LC );
-												}
-												continue;
+												this.b垂直帰線待ちを行う = C変換.bONorOFF( str4[ 0 ] );
 											}
-										//-----------------------------
-										#endregion
-
-										#region [ GuitarKeyAssign ]
-										//-----------------------------
-										case Eセクション種別.GuitarKeyAssign:
+											else if ( str3.Equals( "BackSleep" ) )		// #23568 2010.11.04 ikanick add
 											{
-												if( str3.Equals( "R" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.R );
-												}
-												else if( str3.Equals( "G" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.G );
-												}
-												else if( str3.Equals( "B" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.B );
-												}
-												else if( str3.Equals( "Pick" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.Pick );
-												}
-												else if( str3.Equals( "Wail" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.Wail );
-												}
-												else if( str3.Equals( "Decide" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.Decide );
-												}
-												else if( str3.Equals( "Cancel" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.Cancel );
-												}
-												continue;
+												this.n非フォーカス時スリープms = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す( str4, 0, 50, this.n非フォーカス時スリープms );
 											}
-										//-----------------------------
-										#endregion
-
-										#region [ [BassKeyAssign ]
-										//-----------------------------
-										case Eセクション種別.BassKeyAssign:
+											else if ( str3.Equals( "Guitar" ) )
 											{
-												if( str3.Equals( "R" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.R );
-												}
-												else if( str3.Equals( "G" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.G );
-												}
-												else if( str3.Equals( "B" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.B );
-												}
-												else if( str3.Equals( "Pick" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.Pick );
-												}
-												else if( str3.Equals( "Wail" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.Wail );
-												}
-												else if( str3.Equals( "Decide" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.Decide );
-												}
-												else if( str3.Equals( "Cancel" ) )
-												{
-													this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.Cancel );
-												}
-												continue;
+												this.bGuitar有効 = C変換.bONorOFF( str4[ 0 ] );
 											}
-										//-----------------------------
-										#endregion
-									}
+											else if ( str3.Equals( "Drums" ) )
+											{
+												this.bDrums有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BGAlpha" ) )
+											{
+												this.n背景の透過度 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0xff, this.n背景の透過度 );
+											}
+											else if ( str3.Equals( "DamageLevel" ) )
+											{
+												this.eダメージレベル = (Eダメージレベル) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eダメージレベル );
+											}
+											else if ( str3.Equals( "HHGroup" ) )
+											{
+												this.eHHGroup = (EHHGroup) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.eHHGroup );
+											}
+											else if ( str3.Equals( "FTGroup" ) )
+											{
+												this.eFTGroup = (EFTGroup) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eFTGroup );
+											}
+											else if ( str3.Equals( "CYGroup" ) )
+											{
+												this.eCYGroup = (ECYGroup) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eCYGroup );
+											}
+											else if ( str3.Equals( "HitSoundPriorityHH" ) )
+											{
+												this.eHitSoundPriorityHH = (E打ち分け時の再生の優先順位) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eHitSoundPriorityHH );
+											}
+											else if ( str3.Equals( "HitSoundPriorityFT" ) )
+											{
+												this.eHitSoundPriorityFT = (E打ち分け時の再生の優先順位) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eHitSoundPriorityFT );
+											}
+											else if ( str3.Equals( "HitSoundPriorityCY" ) )
+											{
+												this.eHitSoundPriorityCY = (E打ち分け時の再生の優先順位) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eHitSoundPriorityCY );
+											}
+											else if ( str3.Equals( "StageFailed" ) )
+											{
+												this.bSTAGEFAILED有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "AVI" ) )
+											{
+												this.bAVI有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BGA" ) )
+											{
+												this.bBGA有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "FillInEffect" ) )
+											{
+												this.bフィルイン有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "PreviewSoundWait" ) )
+											{
+												this.n曲が選択されてからプレビュー音が鳴るまでのウェイトms = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x5f5e0ff, this.n曲が選択されてからプレビュー音が鳴るまでのウェイトms );
+											}
+											else if ( str3.Equals( "PreviewImageWait" ) )
+											{
+												this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x5f5e0ff, this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms );
+											}
+											else if ( str3.Equals( "AdjustWaves" ) )
+											{
+												this.bWave再生位置自動調整機能有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BGMSound" ) )
+											{
+												this.bBGM音を発声する = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "HitSound" ) )
+											{
+												this.bドラム打音を発声する = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "AudienceSound" ) )
+											{
+												this.b歓声を発声する = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SaveScoreIni" ) )
+											{
+												this.bScoreIniを出力する = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "RandomFromSubBox" ) )
+											{
+												this.bランダムセレクトで子BOXを検索対象とする = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SoundMonitorDrums" ) )
+											{
+												this.b演奏音を強調する.Drums = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SoundMonitorGuitar" ) )
+											{
+												this.b演奏音を強調する.Guitar = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SoundMonitorBass" ) )
+											{
+												this.b演奏音を強調する.Bass = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "MinComboDrums" ) )
+											{
+												this.n表示可能な最小コンボ数.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 0x1869f, this.n表示可能な最小コンボ数.Drums );
+											}
+											else if ( str3.Equals( "MinComboGuitar" ) )
+											{
+												this.n表示可能な最小コンボ数.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 0x1869f, this.n表示可能な最小コンボ数.Guitar );
+											}
+											else if ( str3.Equals( "MinComboBass" ) )
+											{
+												this.n表示可能な最小コンボ数.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 0x1869f, this.n表示可能な最小コンボ数.Bass );
+											}
+											else if ( str3.Equals( "ShowDebugStatus" ) )
+											{
+												this.b演奏情報を表示する = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SelectListFontName" ) )
+											{
+												this.str選曲リストフォント = str4;
+											}
+											else if ( str3.Equals( "SelectListFontSize" ) )
+											{
+												this.n選曲リストフォントのサイズdot = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 0x3e7, this.n選曲リストフォントのサイズdot );
+											}
+											else if ( str3.Equals( "SelectListFontItalic" ) )
+											{
+												this.b選曲リストフォントを斜体にする = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SelectListFontBold" ) )
+											{
+												this.b選曲リストフォントを太字にする = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ChipVolume" ) )
+											{
+												this.n手動再生音量 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.n手動再生音量 );
+											}
+											else if ( str3.Equals( "AutoChipVolume" ) )
+											{
+												this.n自動再生音量 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.n自動再生音量 );
+											}
+											else if ( str3.Equals( "StoicMode" ) )
+											{
+												this.bストイックモード = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "CymbalFree" ) )
+											{
+												this.bシンバルフリー = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "InputAdjustTimeDrums" ) )		// #23580 2011.1.3 yyagi
+											{
+												this.nInputAdjustTimeMs.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 0, this.nInputAdjustTimeMs.Drums );
+											}
+											else if ( str3.Equals( "InputAdjustTimeGuitar" ) )	// #23580 2011.1.3 yyagi
+											{
+												this.nInputAdjustTimeMs.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 0, this.nInputAdjustTimeMs.Guitar );
+											}
+											else if ( str3.Equals( "InputAdjustTimeBass" ) )		// #23580 2011.1.3 yyagi
+											{
+												this.nInputAdjustTimeMs.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 0, this.nInputAdjustTimeMs.Bass );
+											}
+											else if ( str3.Equals( "BufferedInput" ) )
+											{
+												this.bバッファ入力を行う = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "LCVelocityMin" ) )			// #23857 2010.12.12 yyagi
+											{
+												this.nVelocityMin.LC = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LC );
+											}
+											else if ( str3.Equals( "HHVelocityMin" ) )
+											{
+												this.nVelocityMin.HH = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.HH );
+											}
+											else if ( str3.Equals( "SDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											{
+												this.nVelocityMin.SD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.SD );
+											}
+											else if ( str3.Equals( "BDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											{
+												this.nVelocityMin.BD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.BD );
+											}
+											else if ( str3.Equals( "HTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											{
+												this.nVelocityMin.HT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.HT );
+											}
+											else if ( str3.Equals( "LTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											{
+												this.nVelocityMin.LT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LT );
+											}
+											else if ( str3.Equals( "FTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											{
+												this.nVelocityMin.FT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.FT );
+											}
+											else if ( str3.Equals( "CYVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											{
+												this.nVelocityMin.CY = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.CY );
+											}
+											else if ( str3.Equals( "RDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											{
+												this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [Log] ]
+									//-----------------------------
+									case Eセクション種別.Log:
+										{
+											if ( str3.Equals( "OutputLog" ) )
+											{
+												this.bログ出力 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "TraceCreatedDisposed" ) )
+											{
+												this.bLog作成解放ログ出力 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "TraceDTXDetails" ) )
+											{
+												this.bLogDTX詳細ログ出力 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "TraceSongSearch" ) )
+											{
+												this.bLog曲検索ログ出力 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [PlayOption] ]
+									//-----------------------------
+									case Eセクション種別.PlayOption:
+										{
+											if ( str3.Equals( "Dark" ) )
+											{
+												this.eDark = (Eダークモード) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eDark );
+											}
+											else if ( str3.Equals( "DrumsTight" ) )
+											{
+												this.bTight = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "DrumsGraph" ) )  // #24074 2011.01.23 addikanick
+											{
+												this.bGraph.Drums = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "DrumsSudden" ) )
+											{
+												this.bSudden.Drums = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "GuitarSudden" ) )
+											{
+												this.bSudden.Guitar = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BassSudden" ) )
+											{
+												this.bSudden.Bass = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "DrumsHidden" ) )
+											{
+												this.bHidden.Drums = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "GuitarHidden" ) )
+											{
+												this.bHidden.Guitar = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BassHidden" ) )
+											{
+												this.bHidden.Bass = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "DrumsReverse" ) )
+											{
+												this.bReverse.Drums = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "GuitarReverse" ) )
+											{
+												this.bReverse.Guitar = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BassReverse" ) )
+											{
+												this.bReverse.Bass = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "GuitarRandom" ) )
+											{
+												this.eRandom.Guitar = (Eランダムモード) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.eRandom.Guitar );
+											}
+											else if ( str3.Equals( "BassRandom" ) )
+											{
+												this.eRandom.Bass = (Eランダムモード) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.eRandom.Bass );
+											}
+											else if ( str3.Equals( "GuitarLight" ) )
+											{
+												this.bLight.Guitar = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BassLight" ) )
+											{
+												this.bLight.Bass = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "GuitarLeft" ) )
+											{
+												this.bLeft.Guitar = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BassLeft" ) )
+											{
+												this.bLeft.Bass = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "DrumsPosition" ) )
+											{
+												this.判定文字表示位置.Drums = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Drums );
+											}
+											else if ( str3.Equals( "GuitarPosition" ) )
+											{
+												this.判定文字表示位置.Guitar = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Guitar );
+											}
+											else if ( str3.Equals( "BassPosition" ) )
+											{
+												this.判定文字表示位置.Bass = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Bass );
+											}
+											else if ( str3.Equals( "DrumsScrollSpeed" ) )
+											{
+												this.n譜面スクロール速度.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x7cf, this.n譜面スクロール速度.Drums );
+											}
+											else if ( str3.Equals( "GuitarScrollSpeed" ) )
+											{
+												this.n譜面スクロール速度.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x7cf, this.n譜面スクロール速度.Guitar );
+											}
+											else if ( str3.Equals( "BassScrollSpeed" ) )
+											{
+												this.n譜面スクロール速度.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x7cf, this.n譜面スクロール速度.Bass );
+											}
+											else if ( str3.Equals( "PlaySpeed" ) )
+											{
+												this.n演奏速度 = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 5, 40, this.n演奏速度 );
+											}
+											else if ( str3.Equals( "ComboPosition" ) )
+											{
+												this.ドラムコンボ文字の表示位置 = (Eドラムコンボ文字の表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.ドラムコンボ文字の表示位置 );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [AutoPlay] ]
+									//-----------------------------
+									case Eセクション種別.AutoPlay:
+										{
+											if ( str3.Equals( "LC" ) )
+											{
+												this.bAutoPlay.LC = C変換.bONorOFF( str4[ 0 ] );
+											}
+											if ( str3.Equals( "HH" ) )
+											{
+												this.bAutoPlay.HH = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SD" ) )
+											{
+												this.bAutoPlay.SD = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BD" ) )
+											{
+												this.bAutoPlay.BD = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "HT" ) )
+											{
+												this.bAutoPlay.HT = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "LT" ) )
+											{
+												this.bAutoPlay.LT = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "FT" ) )
+											{
+												this.bAutoPlay.FT = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "CY" ) )
+											{
+												this.bAutoPlay.CY = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "Guitar" ) )
+											{
+												this.bAutoPlay.Guitar = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "Bass" ) )
+											{
+												this.bAutoPlay.Bass = C変換.bONorOFF( str4[ 0 ] );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [HitRange] ]
+									//-----------------------------
+									case Eセクション種別.HitRange:
+										{
+											if ( str3.Equals( "Perfect" ) )
+											{
+												this.nヒット範囲ms.Perfect = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x3e7, this.nヒット範囲ms.Perfect );
+											}
+											else if ( str3.Equals( "Great" ) )
+											{
+												this.nヒット範囲ms.Great = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x3e7, this.nヒット範囲ms.Great );
+											}
+											else if ( str3.Equals( "Good" ) )
+											{
+												this.nヒット範囲ms.Good = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x3e7, this.nヒット範囲ms.Good );
+											}
+											else if ( str3.Equals( "Poor" ) )
+											{
+												this.nヒット範囲ms.Poor = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x3e7, this.nヒット範囲ms.Poor );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [GUID] ]
+									//-----------------------------
+									case Eセクション種別.GUID:
+										{
+											if ( str3.Equals( "JoystickID" ) )
+											{
+												this.tJoystickIDの取得( str4 );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [DrumsKeyAssign] ]
+									//-----------------------------
+									case Eセクション種別.DrumsKeyAssign:
+										{
+											if ( str3.Equals( "HH" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HH );
+											}
+											else if ( str3.Equals( "SD" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.SD );
+											}
+											else if ( str3.Equals( "BD" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.BD );
+											}
+											else if ( str3.Equals( "HT" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HT );
+											}
+											else if ( str3.Equals( "LT" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.LT );
+											}
+											else if ( str3.Equals( "FT" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.FT );
+											}
+											else if ( str3.Equals( "CY" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.CY );
+											}
+											else if ( str3.Equals( "HO" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HHO );
+											}
+											else if ( str3.Equals( "RD" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.RD );
+											}
+											else if ( str3.Equals( "LC" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.LC );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [GuitarKeyAssign] ]
+									//-----------------------------
+									case Eセクション種別.GuitarKeyAssign:
+										{
+											if ( str3.Equals( "R" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.R );
+											}
+											else if ( str3.Equals( "G" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.G );
+											}
+											else if ( str3.Equals( "B" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.B );
+											}
+											else if ( str3.Equals( "Pick" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.Pick );
+											}
+											else if ( str3.Equals( "Wail" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.Wail );
+											}
+											else if ( str3.Equals( "Decide" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.Decide );
+											}
+											else if ( str3.Equals( "Cancel" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Guitar.Cancel );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [BassKeyAssign] ]
+									//-----------------------------
+									case Eセクション種別.BassKeyAssign:
+										{
+											if ( str3.Equals( "R" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.R );
+											}
+											else if ( str3.Equals( "G" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.G );
+											}
+											else if ( str3.Equals( "B" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.B );
+											}
+											else if ( str3.Equals( "Pick" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.Pick );
+											}
+											else if ( str3.Equals( "Wail" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.Wail );
+											}
+											else if ( str3.Equals( "Decide" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.Decide );
+											}
+											else if ( str3.Equals( "Cancel" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Bass.Cancel );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [SystemKeyAssign] ]
+									//-----------------------------
+									case Eセクション種別.SystemKeyAssign:
+										{
+											if ( str3.Equals( "Capture" ) )
+											{
+												this.tキーの読み出しと設定( str4, this.KeyAssign.System.Capture );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
 								}
 							}
-							continue;
 						}
-						catch( Exception exception )
-						{
-							Trace.TraceError( exception.Message );
-							continue;
-						}
+						continue;
 					}
-				}
-				CDTXVersion version = new CDTXVersion( this.strDTXManiaのバージョン );
-				if( version.n整数部 <= 69 )
-				{
-					this.tデフォルトのキーアサインに設定する();
+					catch ( Exception exception )
+					{
+						Trace.TraceError( exception.Message );
+						continue;
+					}
 				}
 			}
 		}
@@ -2140,14 +2199,14 @@ namespace DTXMania
 		/// </summary>
 		public void SwapGuitarBassKeyAssign()		// #24063 2011.1.16 yyagi
 		{
-			for ( int j = 0; j < 10; j++ )
+			for ( int j = 0; j <= (int)EKeyConfigPad.Capture; j++ )
 			{
 				CKeyAssign.STKEYASSIGN t; //= new CConfigIni.CKeyAssign.STKEYASSIGN();
 				for ( int k = 0; k < 16; k++ )
 				{
-					t = this.KeyAssign[ 1 ][ j ][ k ];
-					this.KeyAssign[ 1 ][ j ][ k ] = this.KeyAssign[ 2 ][ j ][ k ];
-					this.KeyAssign[ 2 ][ j ][ k ] = t;
+					t = this.KeyAssign[ (int)EKeyConfigPart.GUITAR ][ j ][ k ];
+					this.KeyAssign[ (int)EKeyConfigPart.GUITAR ][ j ][ k ] = this.KeyAssign[ (int)EKeyConfigPart.BASS ][ j ][ k ];
+					this.KeyAssign[ (int)EKeyConfigPart.BASS ][ j ][ k ] = t;
 				}
 			}
 			this.bIsSwappedGuitarBass = !bIsSwappedGuitarBass;
@@ -2169,7 +2228,8 @@ namespace DTXMania
 			GUID,
 			DrumsKeyAssign,
 			GuitarKeyAssign,
-			BassKeyAssign
+			BassKeyAssign,
+			SystemKeyAssign
 		}
 
 		private bool _bDrums有効;
@@ -2196,9 +2256,9 @@ namespace DTXMania
 		private void tキーアサインを全部クリアする()
 		{
 			this.KeyAssign = new CKeyAssign();
-			for( int i = 0; i < 3; i++ )
+			for( int i = 0; i <= (int)EKeyConfigPart.SYSTEM; i++ )
 			{
-				for( int j = 0; j < 10; j++ )
+				for( int j = 0; j <= (int)EKeyConfigPad.Capture; j++ )
 				{
 					this.KeyAssign[ i ][ j ] = new CKeyAssign.STKEYASSIGN[ 0x10 ];
 					for( int k = 0; k < 0x10; k++ )
@@ -2294,759 +2354,45 @@ namespace DTXMania
 		private void tデフォルトのキーアサインに設定する()
 		{
 			this.tキーアサインを全部クリアする();
-			CKeyAssign.STKEYASSIGN[] stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			CKeyAssign.STKEYASSIGN stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign = stkeyassign63;
-			stkeyassign.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign.ID = 0;
-			stkeyassign.コード = 0x23;
-			stkeyassignArray[ 0 ] = stkeyassign;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign2 = stkeyassign63;
-			stkeyassign2.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign2.ID = 0;
-			stkeyassign2.コード = 0x2a;
-			stkeyassignArray[ 1 ] = stkeyassign2;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign3 = stkeyassign63;
-			stkeyassign3.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign3.ID = 0;
-			stkeyassign3.コード = 0x5d;
-			stkeyassignArray[ 2 ] = stkeyassign3;
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.HH = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign4 = stkeyassign63;
-			stkeyassign4.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign4.ID = 0;
-			stkeyassign4.コード = 0x21;
-			stkeyassignArray[ 0 ] = stkeyassign4;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign5 = stkeyassign63;
-			stkeyassign5.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign5.ID = 0;
-			stkeyassign5.コード = 0x19;
-			stkeyassignArray[ 1 ] = stkeyassign5;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign6 = stkeyassign63;
-			stkeyassign6.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign6.ID = 0;
-			stkeyassign6.コード = 0x1a;
-			stkeyassignArray[ 2 ] = stkeyassign6;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign7 = stkeyassign63;
-			stkeyassign7.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign7.ID = 0;
-			stkeyassign7.コード = 0x1b;
-			stkeyassignArray[ 3 ] = stkeyassign7;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign8 = stkeyassign63;
-			stkeyassign8.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign8.ID = 0;
-			stkeyassign8.コード = 0x1c;
-			stkeyassignArray[ 4 ] = stkeyassign8;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign9 = stkeyassign63;
-			stkeyassign9.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign9.ID = 0;
-			stkeyassign9.コード = 0x1d;
-			stkeyassignArray[ 5 ] = stkeyassign9;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign10 = stkeyassign63;
-			stkeyassign10.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign10.ID = 0;
-			stkeyassign10.コード = 0x1f;
-			stkeyassignArray[ 6 ] = stkeyassign10;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign11 = stkeyassign63;
-			stkeyassign11.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign11.ID = 0;
-			stkeyassign11.コード = 0x20;
-			stkeyassignArray[ 7 ] = stkeyassign11;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign12 = stkeyassign63;
-			stkeyassign12.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign12.ID = 0;
-			stkeyassign12.コード = 0x22;
-			stkeyassignArray[ 8 ] = stkeyassign12;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign13 = stkeyassign63;
-			stkeyassign13.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign13.ID = 0;
-			stkeyassign13.コード = 0x25;
-			stkeyassignArray[ 9 ] = stkeyassign13;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign14 = stkeyassign63;
-			stkeyassign14.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign14.ID = 0;
-			stkeyassign14.コード = 0x26;
-			stkeyassignArray[ 10 ] = stkeyassign14;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign15 = stkeyassign63;
-			stkeyassign15.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign15.ID = 0;
-			stkeyassign15.コード = 40;
-			stkeyassignArray[ 11 ] = stkeyassign15;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign16 = stkeyassign63;
-			stkeyassign16.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign16.ID = 0;
-			stkeyassign16.コード = 0x71;
-			stkeyassignArray[ 12 ] = stkeyassign16;
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.SD = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign17 = stkeyassign63;
-			stkeyassign17.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign17.ID = 0;
-			stkeyassign17.コード = 12;
-			stkeyassignArray[ 0 ] = stkeyassign17;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign18 = stkeyassign63;
-			stkeyassign18.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign18.ID = 0;
-			stkeyassign18.コード = 0x7e;
-			stkeyassignArray[ 1 ] = stkeyassign18;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign19 = stkeyassign63;
-			stkeyassign19.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign19.ID = 0;
-			stkeyassign19.コード = 0x21;
-			stkeyassignArray[ 2 ] = stkeyassign19;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign20 = stkeyassign63;
-			stkeyassign20.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign20.ID = 0;
-			stkeyassign20.コード = 0x23;
-			stkeyassignArray[ 3 ] = stkeyassign20;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign21 = stkeyassign63;
-			stkeyassign21.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign21.ID = 0;
-			stkeyassign21.コード = 0x24;
-			stkeyassignArray[ 4 ] = stkeyassign21;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign22 = stkeyassign63;
-			stkeyassign22.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign22.ID = 0;
-			stkeyassign22.コード = 0x70;
-			stkeyassignArray[ 5 ] = stkeyassign22;
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.BD = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign23 = stkeyassign63;
-			stkeyassign23.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign23.ID = 0;
-			stkeyassign23.コード = 0x1f;
-			stkeyassignArray[ 0 ] = stkeyassign23;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign24 = stkeyassign63;
-			stkeyassign24.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign24.ID = 0;
-			stkeyassign24.コード = 0x30;
-			stkeyassignArray[ 1 ] = stkeyassign24;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign25 = stkeyassign63;
-			stkeyassign25.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign25.ID = 0;
-			stkeyassign25.コード = 50;
-			stkeyassignArray[ 2 ] = stkeyassign25;
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.HT = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign26 = stkeyassign63;
-			stkeyassign26.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign26.ID = 0;
-			stkeyassign26.コード = 11;
-			stkeyassignArray[ 0 ] = stkeyassign26;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign27 = stkeyassign63;
-			stkeyassign27.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign27.ID = 0;
-			stkeyassign27.コード = 0x2f;
-			stkeyassignArray[ 1 ] = stkeyassign27;
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.LT = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign28 = stkeyassign63;
-			stkeyassign28.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign28.ID = 0;
-			stkeyassign28.コード = 0x17;
-			stkeyassignArray[ 0 ] = stkeyassign28;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign29 = stkeyassign63;
-			stkeyassign29.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign29.ID = 0;
-			stkeyassign29.コード = 0x29;
-			stkeyassignArray[ 1 ] = stkeyassign29;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign30 = stkeyassign63;
-			stkeyassign30.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign30.ID = 0;
-			stkeyassign30.コード = 0x2b;
-			stkeyassignArray[ 2 ] = stkeyassign30;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign31 = stkeyassign63;
-			stkeyassign31.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign31.ID = 0;
-			stkeyassign31.コード = 0x2d;
-			stkeyassignArray[ 3 ] = stkeyassign31;
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.FT = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign32 = stkeyassign63;
-			stkeyassign32.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign32.ID = 0;
-			stkeyassign32.コード = 0x16;
-			stkeyassignArray[ 0 ] = stkeyassign32;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign33 = stkeyassign63;
-			stkeyassign33.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign33.ID = 0;
-			stkeyassign33.コード = 0x31;
-			stkeyassignArray[ 1 ] = stkeyassign33;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign34 = stkeyassign63;
-			stkeyassign34.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign34.ID = 0;
-			stkeyassign34.コード = 0x34;
-			stkeyassignArray[ 2 ] = stkeyassign34;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign35 = stkeyassign63;
-			stkeyassign35.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign35.ID = 0;
-			stkeyassign35.コード = 0x37;
-			stkeyassignArray[ 3 ] = stkeyassign35;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign36 = stkeyassign63;
-			stkeyassign36.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign36.ID = 0;
-			stkeyassign36.コード = 0x39;
-			stkeyassignArray[ 4 ] = stkeyassign36;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign37 = stkeyassign63;
-			stkeyassign37.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign37.ID = 0;
-			stkeyassign37.コード = 0x5b;
-			stkeyassignArray[ 5 ] = stkeyassign37;
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.CY = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign38 = stkeyassign63;
-			stkeyassign38.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign38.ID = 0;
-			stkeyassign38.コード = 10;
-			stkeyassignArray[ 0 ] = stkeyassign38;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign39 = stkeyassign63;
-			stkeyassign39.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign39.ID = 0;
-			stkeyassign39.コード = 0x2e;
-			stkeyassignArray[ 1 ] = stkeyassign39;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign40 = stkeyassign63;
-			stkeyassign40.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign40.ID = 0;
-			stkeyassign40.コード = 0x5c;
-			stkeyassignArray[ 2 ] = stkeyassign40;
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.HHO = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign41 = stkeyassign63;
-			stkeyassign41.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign41.ID = 0;
-			stkeyassign41.コード = 20;
-			stkeyassignArray[ 0 ] = stkeyassign41;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign42 = stkeyassign63;
-			stkeyassign42.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign42.ID = 0;
-			stkeyassign42.コード = 0x33;
-			stkeyassignArray[ 1 ] = stkeyassign42;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign43 = stkeyassign63;
-			stkeyassign43.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign43.ID = 0;
-			stkeyassign43.コード = 0x35;
-			stkeyassignArray[ 2 ] = stkeyassign43;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign44 = stkeyassign63;
-			stkeyassign44.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign44.ID = 0;
-			stkeyassign44.コード = 0x3b;
-			stkeyassignArray[ 3 ] = stkeyassign44;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign45 = stkeyassign63;
-			stkeyassign45.入力デバイス = E入力デバイス.MIDI入力;
-			stkeyassign45.ID = 0;
-			stkeyassign45.コード = 0x59;
-			stkeyassignArray[ 4 ] = stkeyassign45;
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.RD = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign46 = stkeyassign63;
-			stkeyassign46.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign46.ID = 0;
-			stkeyassign46.コード = 0x1a;
-			stkeyassignArray[ 0 ] = stkeyassign46;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Drums.LC = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign47 = stkeyassign63;
-			stkeyassign47.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign47.ID = 0;
-			stkeyassign47.コード = 0x37;
-			stkeyassignArray[ 0 ] = stkeyassign47;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Guitar.R = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign48 = stkeyassign63;
-			stkeyassign48.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign48.ID = 0;
-			stkeyassign48.コード = 0x38;
-			stkeyassignArray[ 0 ] = stkeyassign48;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Guitar.G = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign49 = stkeyassign63;
-			stkeyassign49.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign49.ID = 0;
-			stkeyassign49.コード = 0x39;
-			stkeyassignArray[ 0 ] = stkeyassign49;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Guitar.B = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign50 = stkeyassign63;
-			stkeyassign50.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign50.ID = 0;
-			stkeyassign50.コード = 0x73;
-			stkeyassignArray[ 0 ] = stkeyassign50;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign51 = stkeyassign63;
-			stkeyassign51.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign51.ID = 0;
-			stkeyassign51.コード = 0x2e;
-			stkeyassignArray[ 1 ] = stkeyassign51;
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Guitar.Pick = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign52 = stkeyassign63;
-			stkeyassign52.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign52.ID = 0;
-			stkeyassign52.コード = 0x74;
-			stkeyassignArray[ 0 ] = stkeyassign52;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Guitar.Wail = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign53 = stkeyassign63;
-			stkeyassign53.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign53.ID = 0;
-			stkeyassign53.コード = 0x3d;
-			stkeyassignArray[ 0 ] = stkeyassign53;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Guitar.Cancel = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign54 = stkeyassign63;
-			stkeyassign54.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign54.ID = 0;
-			stkeyassign54.コード = 60;
-			stkeyassignArray[ 0 ] = stkeyassign54;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Guitar.Decide = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[] { new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ) };
-			this.KeyAssign.Guitar[ 7 ] = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[] { new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ) };
-			this.KeyAssign.Guitar[ 8 ] = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[] { new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ) };
-			this.KeyAssign.Guitar[ 9 ] = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign55 = stkeyassign63;
-			stkeyassign55.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign55.ID = 0;
-			stkeyassign55.コード = 90;
-			stkeyassignArray[ 0 ] = stkeyassign55;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Bass.R = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign56 = stkeyassign63;
-			stkeyassign56.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign56.ID = 0;
-			stkeyassign56.コード = 0x5b;
-			stkeyassignArray[ 0 ] = stkeyassign56;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Bass.G = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign57 = stkeyassign63;
-			stkeyassign57.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign57.ID = 0;
-			stkeyassign57.コード = 0x5c;
-			stkeyassignArray[ 0 ] = stkeyassign57;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Bass.B = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign58 = stkeyassign63;
-			stkeyassign58.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign58.ID = 0;
-			stkeyassign58.コード = 0x67;
-			stkeyassignArray[ 0 ] = stkeyassign58;
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign59 = stkeyassign63;
-			stkeyassign59.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign59.ID = 0;
-			stkeyassign59.コード = 100;
-			stkeyassignArray[ 1 ] = stkeyassign59;
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Bass.Pick = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign60 = stkeyassign63;
-			stkeyassign60.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign60.ID = 0;
-			stkeyassign60.コード = 0x59;
-			stkeyassignArray[ 0 ] = stkeyassign60;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Bass.Wail = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			stkeyassign63 = new CKeyAssign.STKEYASSIGN();
-			CKeyAssign.STKEYASSIGN stkeyassign61 = stkeyassign63;
-			stkeyassign61.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign61.ID = 0;
-			stkeyassign61.コード = 0x61;
-			stkeyassignArray[ 0 ] = stkeyassign61;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Bass.Cancel = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-			CKeyAssign.STKEYASSIGN stkeyassign62 = new CKeyAssign.STKEYASSIGN();
-			stkeyassign62.入力デバイス = E入力デバイス.キーボード;
-			stkeyassign62.ID = 0;
-			stkeyassign62.コード = 0x60;
-			stkeyassignArray[ 0 ] = stkeyassign62;
-			stkeyassignArray[ 1 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 2 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 3 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 4 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 5 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 6 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 7 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 8 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 9 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 10 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 11 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 12 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 13 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 14 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			stkeyassignArray[ 15 ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
-			this.KeyAssign.Bass.Decide = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[] { new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ) };
-			this.KeyAssign.Bass[ 7 ] = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[] { new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ) };
-			this.KeyAssign.Bass[ 8 ] = stkeyassignArray;
-			stkeyassignArray = new CKeyAssign.STKEYASSIGN[] { new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ), new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 ) };
-			this.KeyAssign.Bass[ 9 ] = stkeyassignArray;
+
+			string strDefaultKeyAssign = @"
+[DrumsKeyAssign]
+
+HH=K035,M042,M093
+SD=K033,M025,M026,M027,M028,M029,M031,M032,M034,M037,M038,M040,M0113
+BD=K012,K0126,M033,M035,M036,M0112
+HT=K031,M048,M050
+LT=K011,M047
+FT=K023,M041,M043,M045
+CY=K022,M049,M052,M055,M057,M091
+HO=K010,M046,M092
+RD=K020,M051,M053,M059,M089
+LC=K026
+
+[GuitarKeyAssign]
+
+R=K055
+G=K056,J012
+B=K057
+Pick=K0115,K046,J06
+Wail=K0116
+Decide=K060
+Cancel=K061
+
+[BassKeyAssign]
+
+R=K090
+G=K091,J013
+B=K092
+Pick=K0103,K0100,J08
+Wail=K089
+Decide=K096
+Cancel=K097
+
+[SystemKeyAssign]
+Capture=K065
+";
+			t文字列から読み込み( strDefaultKeyAssign );
 		}
 		//-----------------
 		#endregion

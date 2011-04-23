@@ -36,46 +36,68 @@ namespace DTXMania
 	}
 	public enum Eパッド
 	{
-		HH = 0,
-		R = 0,
-		SD = 1,
-		G = 1,
-		BD = 2,
-		B = 2,
-		HT = 3,
-		Pick = 3,
-		LT = 4,
-		Wail = 4,
-		FT = 5,
-		Cancel = 5,
-		CY = 6,
-		Decide = 6,
-		HHO = 7,
-		RD = 8,
-		LC = 9,
+		HH		= 0,
+		R		= 0,
+		SD		= 1,
+		G		= 1,
+		BD		= 2,
+		B		= 2,
+		HT		= 3,
+		Pick	= 3,
+		LT		= 4,
+		Wail	= 4,
+		FT		= 5,
+		Cancel	= 5,
+		CY		= 6,
+		Decide	= 6,
+		HHO		= 7,
+		RD		= 8,
+		LC		= 9,
 		UNKNOWN = 99
+	}
+	public enum EKeyConfigPad		// # 24609 
+	{
+		HH		= Eパッド.HH,
+		R		= Eパッド.R,
+		SD		= Eパッド.SD,
+		G		= Eパッド.G,
+		BD		= Eパッド.BD,
+		B		= Eパッド.B,
+		HT		= Eパッド.HT,
+		Pick	= Eパッド.Pick,
+		LT		= Eパッド.LT,
+		Wail	= Eパッド.Wail,
+		FT		= Eパッド.FT,
+		Cancel	= Eパッド.Cancel,
+		CY		= Eパッド.CY,
+		Decide	= Eパッド.Decide,
+		HHO		= Eパッド.HHO,
+		RD		= Eパッド.RD,
+		LC		= Eパッド.LC,
+		Capture,
+		UNKNOWN = Eパッド.UNKNOWN
 	}
 	[Flags]
 	public enum EパッドFlag		// #24063 2011.1.16 yyagi コマンド入力用 パッド入力のフラグ化
 	{
-		None=0,
-		HH = 1,
-		R = 1,
-		SD = 2,
-		G = 2,
-		B = 4,
-		BD = 4,
-		HT = 8,
-		Pick = 8,
-		LT = 16,
-		Wail = 16,
-		FT = 32,
-		Cancel = 32,
-		CY = 64,
-		Decide = 128,
-		HHO = 128,
-		RD = 256,
-		LC = 512,
+		None	= 0,
+		HH		= 1,
+		R		= 1,
+		SD		= 2,
+		G		= 2,
+		B		= 4,
+		BD		= 4,
+		HT		= 8,
+		Pick	= 8,
+		LT		= 16,
+		Wail	= 16,
+		FT		= 32,
+		Cancel	= 32,
+		CY		= 64,
+		Decide	= 128,
+		HHO		= 128,
+		RD		= 256,
+		LC		= 512,
 		UNKNOWN = 1024
 	}
 	public enum Eランダムモード
@@ -87,11 +109,20 @@ namespace DTXMania
 	}
 	public enum E楽器パート
 	{
-		BASS = 2,
-		DRUMS = 0,
-		GUITAR = 1,
-		UNKNOWN = 0x63
+		DRUMS	= 0,
+		GUITAR	= 1,
+		BASS	= 2,
+		UNKNOWN	= 0x63
 	}
+	public enum EKeyConfigPart	// : E楽器パート
+	{
+		DRUMS	= E楽器パート.DRUMS,
+		GUITAR	= E楽器パート.GUITAR,
+		BASS	= E楽器パート.BASS,
+		SYSTEM,
+		UNKNOWN	= E楽器パート.UNKNOWN
+	}
+
 	public enum E打ち分け時の再生の優先順位
 	{
 		ChipがPadより優先,
@@ -99,11 +130,11 @@ namespace DTXMania
 	}
 	internal enum E入力デバイス
 	{
-		MIDI入力 = 1,
-		キーボード = 0,
-		ジョイパッド = 2,
-		マウス = 3,
-		不明 = -1
+		キーボード		= 0,
+		MIDI入力		= 1,
+		ジョイパッド	= 2,
+		マウス			= 3,
+		不明			= -1
 	}
 	internal enum E判定
 	{

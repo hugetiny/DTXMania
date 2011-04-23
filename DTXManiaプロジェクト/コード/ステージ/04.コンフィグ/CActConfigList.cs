@@ -16,7 +16,8 @@ namespace DTXMania
 			get
 			{
 				Eメニュー種別 e = this.eメニュー種別;
-				if ( e == Eメニュー種別.KeyAssignBass || e == Eメニュー種別.KeyAssignDrums || e == Eメニュー種別.KeyAssignGuitar )
+				if ( e == Eメニュー種別.KeyAssignBass || e == Eメニュー種別.KeyAssignDrums ||
+					e == Eメニュー種別.KeyAssignGuitar || e == Eメニュー種別.KeyAssignSystem )
 				{
 					return true;
 				}
@@ -178,6 +179,13 @@ namespace DTXMania
 				"Traceログ出力：\nDTXManiaLog.txt にログを出力します。\n変更した場合は、DTXMania の再起動\n後に有効となります。",
 				"Turn ON to put debug log to\n DTXManiaLog.txt\nTo take it effective, you need to\n re-open DTXMania." );
 			this.list項目リスト.Add( this.iLogOutputLog );
+
+			this.iSystemGoToKeyAssign = new CItemBase( "System Keys", CItemBase.Eパネル種別.通常,
+			"システムのキー入力に関する項目を設\n定します。",
+			"Settings for the system key/pad inputs." );
+			this.list項目リスト.Add( this.iSystemGoToKeyAssign );
+
+			
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.System;
 		}
@@ -489,7 +497,11 @@ namespace DTXMania
 		/// </summary>
 		public void tEsc押下()
 		{
-			if ( this.eメニュー種別 == Eメニュー種別.KeyAssignDrums )
+			if ( this.eメニュー種別 == Eメニュー種別.KeyAssignSystem )
+			{
+				t項目リストの設定・System();
+			}
+			else if ( this.eメニュー種別 == Eメニュー種別.KeyAssignDrums )
 			{
 				t項目リストの設定・Drums();
 			}
@@ -536,99 +548,103 @@ namespace DTXMania
 //			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsLC )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.LC );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.LC );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsHHC )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.HH );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.HH );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsHHO )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.HHO );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.HHO );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsSD )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.SD );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.SD );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsBD )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.BD );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.BD );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsHT )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.HT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.HT );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsLT )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.LT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.LT );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsFT )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.FT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.FT );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsCY )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.CY );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.CY );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsRD )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.DRUMS, Eパッド.RD );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.RD );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarR )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.GUITAR, Eパッド.HH );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.R );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarG )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.GUITAR, Eパッド.SD );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.G );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarB )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.GUITAR, Eパッド.BD );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.B );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarPick )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.GUITAR, Eパッド.HT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.Pick );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarWail )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.GUITAR, Eパッド.LT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.Wail );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarDecide )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.GUITAR, Eパッド.CY );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.Decide );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarCancel )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.GUITAR, Eパッド.FT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.Cancel );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignBassR )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.BASS, Eパッド.HH );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.BASS, EKeyConfigPad.R );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignBassG )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.BASS, Eパッド.SD );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.BASS, EKeyConfigPad.G );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignBassB )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.BASS, Eパッド.BD );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.BASS, EKeyConfigPad.B );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignBassPick )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.BASS, Eパッド.HT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.BASS, EKeyConfigPad.Pick );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignBassWail )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.BASS, Eパッド.LT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.BASS, EKeyConfigPad.Wail );
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignBassDecide )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.BASS, Eパッド.CY );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.BASS, EKeyConfigPad.Decide );
 			}
-			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignBassCancel )
+			else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignBassCancel )
 			{
-				CDTXMania.stageコンフィグ.tパッド選択通知( E楽器パート.BASS, Eパッド.FT );
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.BASS, EKeyConfigPad.Cancel );
+			}
+			else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignSystemCapture )
+			{
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.SYSTEM, EKeyConfigPad.Capture);
 			}
 			else
 			{
@@ -645,6 +661,14 @@ namespace DTXMania
 				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iDrumsAutoPlayAll )
 				{
 					this.t全部のドラムパッドのAutoを切り替える( this.iDrumsAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
+				}
+				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemGoToKeyAssign )			// #24609 2011.4.12 yyagi
+				{
+					t項目リストの設定・KeyAssignSystem();
+				}
+				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignSystemReturnToMenu )	// #24609 2011.4.12 yyagi
+				{
+					t項目リストの設定・System();
 				}
 				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iDrumsGoToKeyAssign )				// #24525 2011.3.15 yyagi
 				{
@@ -676,6 +700,22 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.eメニュー種別 = Eメニュー種別.Unknown;
+		}
+		public void t項目リストの設定・KeyAssignSystem()
+		{
+			//			this.tConfigIniへ記録する();
+			this.list項目リスト.Clear();
+			this.iKeyAssignSystemReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
+				"左側のメニューに戻ります。",
+				"Return to left menu." );
+			this.list項目リスト.Add( this.iKeyAssignSystemReturnToMenu );
+			this.iKeyAssignSystemCapture = new CItemBase( "Capture",
+				"キャプチャキー設定：\n画面キャプチャのキーの割り当てを設\n定します。",
+				"Capture key assign:\nTo assign key for screen capture.\n (You can use keyboard only. You can't\nuse pads to capture screenshot." );
+			this.list項目リスト.Add( this.iKeyAssignSystemCapture );
+
+			this.n現在の選択項目 = 0;
+			this.eメニュー種別 = Eメニュー種別.KeyAssignSystem;
 		}
 		public void t項目リストの設定・KeyAssignDrums()
 		{
@@ -1077,6 +1117,7 @@ namespace DTXMania
 			Drums,
 			Guitar,
 			Bass,
+			KeyAssignSystem,		// #24609 2011.4.12 yyagi: 画面キャプチャキーのアサイン
 			KeyAssignDrums,
 			KeyAssignGuitar,
 			KeyAssignBass,
@@ -1088,6 +1129,8 @@ namespace DTXMania
 		private bool b要素値にフォーカス中;
 		private CCounter ct三角矢印アニメ;
 		private Eメニュー種別 eメニュー種別;
+		private CItemBase iKeyAssignSystemCapture;			// #24609
+		private CItemBase iKeyAssignSystemReturnToMenu;		// #24609
 		private CItemBase iKeyAssignBassB;
 		private CItemBase iKeyAssignBassCancel;
 		private CItemBase iKeyAssignBassDecide;
@@ -1166,6 +1209,7 @@ namespace DTXMania
 		private CItemBase iDrumsGoToKeyAssign;
 		private CItemBase iGuitarGoToKeyAssign;
 		private CItemBase iBassGoToKeyAssign;
+		private CItemBase iSystemGoToKeyAssign;		// #24609
 
 		private CItemList iSystemGRmode;
 
@@ -1241,6 +1285,7 @@ namespace DTXMania
 			{
 				case Eメニュー種別.System:
 					this.tConfigIniへ記録する・System();
+					this.tConfigIniへ記録する・KeyAssignSystem();
 					return;
 
 				case Eメニュー種別.Drums:
@@ -1266,6 +1311,9 @@ namespace DTXMania
 		{
 		}
 		private void tConfigIniへ記録する・KeyAssignGuitar()
+		{
+		}
+		private void tConfigIniへ記録する・KeyAssignSystem()
 		{
 		}
 		private void tConfigIniへ記録する・System()

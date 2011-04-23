@@ -300,6 +300,34 @@ namespace DTXMania
 			}
 		}
 
+		#region [ #24609 リザルト画像をpngで保存する ]		// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
+		/// <summary>
+		/// リザルト画像のキャプチャと保存。
+		/// </summary>
+		/// <param name="strFilename">保存するファイル名(フルパス)</param>
+		public bool SaveResultScreen( string strFullPath )
+		{
+			string strSavePath = Path.GetDirectoryName( strFullPath );
+			if ( !Directory.Exists( strSavePath ) )
+			{
+				try
+				{
+					Directory.CreateDirectory( strSavePath );
+				}
+				catch
+				{
+					return false;
+				}
+			}
+
+			// http://www.gamedev.net/topic/594369-dx9slimdxati-incorrect-saving-surface-to-file/
+			using ( Surface pSurface = CDTXMania.app.Device.GetRenderTarget( 0 ) )
+			{
+				Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
+			}
+			return true;
+		}
+		#endregion
 
 		// Game 実装
 
@@ -480,7 +508,7 @@ namespace DTXMania
 						switch( this.n進行描画の戻り値 )
 						{
 							case (int)CStageタイトル.E戻り値.GAMESTART:
-								#region [ *** ]
+								#region [ 選曲処理へ ]
 								//-----------------------------
 								r現在のステージ.On非活性化();
 								Trace.TraceInformation( "----------------------" );
@@ -544,61 +572,61 @@ namespace DTXMania
 						#endregion
 						break;
 
-					case CStage.Eステージ.オプション:
+//					case CStage.Eステージ.オプション:
 						#region [ *** ]
-						//-----------------------------
-						if( this.n進行描画の戻り値 != 0 )
-						{
-							switch( r直前のステージ.eステージID )
-							{
-								case CStage.Eステージ.タイトル:
-									#region [ *** ]
-									//-----------------------------
-									r現在のステージ.On非活性化();
-									Trace.TraceInformation( "----------------------" );
-									Trace.TraceInformation( "■ タイトル" );
-									stageタイトル.On活性化();
-									r直前のステージ = r現在のステージ;
-									r現在のステージ = stageタイトル;
-
-									foreach( STPlugin pg in this.listプラグイン )
-									{
-										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-										pg.plugin.Onステージ変更();
-										Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
-									}
-
-									this.tガベージコレクションを実行する();
-									break;
-								//-----------------------------
-									#endregion
-
-								case CStage.Eステージ.選曲:
-									#region [ *** ]
-									//-----------------------------
-									r現在のステージ.On非活性化();
-									Trace.TraceInformation( "----------------------" );
-									Trace.TraceInformation( "■ 選曲" );
-									stage選曲.On活性化();
-									r直前のステージ = r現在のステージ;
-									r現在のステージ = stage選曲;
-
-									foreach( STPlugin pg in this.listプラグイン )
-									{
-										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-										pg.plugin.Onステージ変更();
-										Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
-									}
-
-									this.tガベージコレクションを実行する();
-									break;
-								//-----------------------------
-									#endregion
-							}
-						}
-						//-----------------------------
+//						//-----------------------------
+//						if( this.n進行描画の戻り値 != 0 )
+//						{
+//							switch( r直前のステージ.eステージID )
+//							{
+//								case CStage.Eステージ.タイトル:
+//									#region [ *** ]
+//									//-----------------------------
+//									r現在のステージ.On非活性化();
+//									Trace.TraceInformation( "----------------------" );
+//									Trace.TraceInformation( "■ タイトル" );
+//									stageタイトル.On活性化();
+//									r直前のステージ = r現在のステージ;
+//									r現在のステージ = stageタイトル;
+//						
+//									foreach( STPlugin pg in this.listプラグイン )
+//									{
+//										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
+//										pg.plugin.Onステージ変更();
+//										Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
+//									}
+//						
+//									this.tガベージコレクションを実行する();
+//									break;
+//								//-----------------------------
+//									#endregion
+//
+//								case CStage.Eステージ.選曲:
+//									#region [ *** ]
+//									//-----------------------------
+//									r現在のステージ.On非活性化();
+//									Trace.TraceInformation( "----------------------" );
+//									Trace.TraceInformation( "■ 選曲" );
+//									stage選曲.On活性化();
+//									r直前のステージ = r現在のステージ;
+//									r現在のステージ = stage選曲;
+//
+//									foreach( STPlugin pg in this.listプラグイン )
+//									{
+//										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
+//										pg.plugin.Onステージ変更();
+//										Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
+//									}
+//
+//									this.tガベージコレクションを実行する();
+//									break;
+//								//-----------------------------
+//									#endregion
+//							}
+//						}
+//						//-----------------------------
 						#endregion
-						break;
+//						break;
 
 					case CStage.Eステージ.コンフィグ:
 						#region [ *** ]
@@ -705,26 +733,26 @@ namespace DTXMania
 							//-----------------------------
 								#endregion
 
-							case 3:
+//							case 3:
 								#region [ *** ]
-								//-----------------------------
-								r現在のステージ.On非活性化();
-								Trace.TraceInformation( "----------------------" );
-								Trace.TraceInformation( "■ オプション" );
-								stageオプション.On活性化();
-								r直前のステージ = r現在のステージ;
-								r現在のステージ = stageオプション;
-
-								foreach( STPlugin pg in this.listプラグイン )
-								{
-									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-									pg.plugin.Onステージ変更();
-									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
-								}
-
-								this.tガベージコレクションを実行する();
-								break;
-							//-----------------------------
+//								//-----------------------------
+//								r現在のステージ.On非活性化();
+//								Trace.TraceInformation( "----------------------" );
+//								Trace.TraceInformation( "■ オプション" );
+//								stageオプション.On活性化();
+//								r直前のステージ = r現在のステージ;
+//								r現在のステージ = stageオプション;
+//
+//								foreach( STPlugin pg in this.listプラグイン )
+//								{
+//									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
+//									pg.plugin.Onステージ変更();
+//									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
+//								}
+//
+//								this.tガベージコレクションを実行する();
+//								break;
+//							//-----------------------------
 								#endregion
 
 							case 4:
@@ -1167,7 +1195,7 @@ for (int i = 0; i < 3; i++) {
 			{
 				try
 				{
-					ConfigIni.t読み込み( path );
+					ConfigIni.tファイルから読み込み( path );
 				}
 				catch
 				{
@@ -1259,6 +1287,7 @@ for (int i = 0; i < 3; i++) {
 			}
 
 			base.IsFixedTimeStep = false;
+//			base.TargetElapsedTime = TimeSpan.FromTicks( 10000000 / 75 );
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
 			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
 																												// #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
@@ -1837,6 +1866,20 @@ for (int i = 0; i < 3; i++) {
 				}
 				e.Handled = true;
 				e.SuppressKeyPress = true;
+			}
+			else
+			{
+				for ( int i = 0; i < 0x10; i++ )
+				{
+					if ( e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
+					{
+// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
+						string strFullPath =
+						   Path.Combine( CDTXMania.strEXEのあるフォルダ, "Capture_img" );
+						strFullPath = Path.Combine( strFullPath, DateTime.Now.ToString( "yyyyMMddHHmmss" ) + ".png" );
+						SaveResultScreen( strFullPath );
+					}
+				}
 			}
 		}
 		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
