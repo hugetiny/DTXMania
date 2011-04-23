@@ -14,7 +14,7 @@ namespace DTXMania
 
 		public CActDFPFont()
 		{
-			ST文字領域[] st文字領域Array = new ST文字領域[ 0x5d ];
+			ST文字領域[] st文字領域Array = new ST文字領域[ 0x5d+2 ];
 			ST文字領域 st文字領域94 = new ST文字領域();
 			ST文字領域 st文字領域 = st文字領域94;
 			st文字領域.ch = ' ';
@@ -479,6 +479,15 @@ namespace DTXMania
 			st文字領域93.ch = '~';
 			st文字領域93.rc = new Rectangle( 0x12, 0xe3, 0x12, 0x1b );
 			st文字領域Array[ 0x5c ] = st文字領域93;
+
+			st文字領域Array[ 0x5d ] = new ST文字領域();						// #24954 2011.4.23 yyagi
+			st文字領域Array[ 0x5d ].ch = '@';
+			st文字領域Array[ 0x5d ].rc = new Rectangle( 38, 227, 28, 28 );
+			st文字領域Array[ 0x5e ] = new ST文字領域();
+			st文字領域Array[ 0x5e ].ch = '`';
+			st文字領域Array[ 0x5e ].rc = new Rectangle( 69, 226, 14, 29 );
+
+	
 			this.st文字領域 = st文字領域Array;
 		}
 
