@@ -36,9 +36,6 @@ namespace DTXMania
 
 		[DllImport( "kernel32", CharSet = CharSet.Unicode, SetLastError = true )]
 		internal static extern IntPtr LoadLibrary( string lpFileName );
-
-//		[DllImport("dwmapi.dll", PreserveSig = false)]
-		//		public static extern int DwmEnableComposition(bool fEnable);
 		#endregion
 		//-----------------------------
 		#endregion
@@ -81,7 +78,7 @@ namespace DTXMania
 					Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
 #endif
 
-					DWM.EnableComposition(false);
+					DWM.EnableComposition(false);	// Disable AeroGrass temporally
 
 					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
 					// BEGIM #24606 2011.03.08 from: DEBUG 時は例外発生箇所を直接デバッグできるようにするため、例外をキャッチしないようにする。

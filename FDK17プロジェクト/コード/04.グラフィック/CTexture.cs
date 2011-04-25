@@ -100,13 +100,11 @@ namespace FDK
 				{
 					bitmap.Save( stream, ImageFormat.Bmp );
 					stream.Seek( 0L, SeekOrigin.Begin );
-					int colorKey = 0;
-					colorKey = -16777216;
-#if TEST_Direct3D9Ex
-					this.texture = Texture.FromStream( device, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, Pool.Default, Filter.Point, Filter.None, colorKey );
-#else
-					this.texture = Texture.FromStream( device, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, Pool.Managed, Filter.Point, Filter.None, colorKey );
-#endif
+					unchecked
+					{
+						int colorKey = (int) 0xFF000000;	// -16777216;
+						this.texture = Texture.FromStream( device, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, poolvar, Filter.Point, Filter.None, colorKey );
+					}
 				}
 				this.t頂点バッファの作成( device );
 			}
@@ -164,27 +162,31 @@ namespace FDK
 		/// <param name="pool">テクスチャの管理方法。</param>
 		/// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
 		public CTexture( Device device, int n幅, int n高さ, Format format, Pool pool )
+			: this( device, n幅, n高さ, format, pool, Usage.None )
+		{
+		}
+		public CTexture( Device device, int n幅, int n高さ, Format format, Pool pool, Usage usage )
 			: this()
 		{
 			try
 			{
 				this.sz画像サイズ = new Size( n幅, n高さ );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
-				using( Bitmap bitmap = new Bitmap( 1, 1 ) )
+				using ( Bitmap bitmap = new Bitmap( 1, 1 ) )
 				{
-					using( Graphics graphics = Graphics.FromImage( bitmap ) )
+					using ( Graphics graphics = Graphics.FromImage( bitmap ) )
 					{
 						graphics.FillRectangle( Brushes.Black, 0, 0, 1, 1 );
 					}
-					using( MemoryStream stream = new MemoryStream() )
+					using ( MemoryStream stream = new MemoryStream() )
 					{
 						bitmap.Save( stream, ImageFormat.Bmp );
 						stream.Seek( 0L, SeekOrigin.Begin );
 #if TEST_Direct3D9Ex
-						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, Usage.None, format, Pool.Default, Filter.Point, Filter.None, 0 );
-#else
-						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, Usage.None, format, pool, Filter.Point, Filter.None, 0 );
+						pool = poolvar;
 #endif
+						// 中で更にメモリ読み込みし直していて無駄なので、Streamを使うのは止めたいところ
+						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, usage, format, pool, Filter.Point, Filter.None, 0 );
 					}
 				}
 				this.t頂点バッファの作成( device );
@@ -218,10 +220,9 @@ namespace FDK
 				this.sz画像サイズ = new Size( information.Width, information.Height );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
 #if TEST_Direct3D9Ex
-				this.texture = Texture.FromFile( device, strファイル名, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, Pool.Default, Filter.Point, Filter.None, b黒を透過する ? -16777216 : 0 );
-#else
-				this.texture = Texture.FromFile( device, strファイル名, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, b黒を透過する ? -16777216 : 0 );
+				pool = poolvar;
 #endif
+				this.texture = Texture.FromFile( device, strファイル名, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, b黒を透過する ? -16777216 : 0 );
 				this.t頂点バッファの作成( device );
 			}
 			catch
@@ -263,22 +264,22 @@ namespace FDK
 					float num6 = ( (float) rc画像内の描画領域.Right ) / ( (float) this.szテクスチャサイズ.Width );
 					float num7 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 					float num8 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
-					int num9 = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
+					int color4 = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
 					if( this.cvTransformedColoredVertexies == null )
 					{
 						this.cvTransformedColoredVertexies = new TransformedColoredTexturedVertex[ 4 ];
 					}
 					this.cvTransformedColoredVertexies[ 0 ].Position = new Vector4( x + num, y + num2, depth, 1f );
-					this.cvTransformedColoredVertexies[ 0 ].Color = num9;
+					this.cvTransformedColoredVertexies[ 0 ].Color = color4;
 					this.cvTransformedColoredVertexies[ 0 ].TextureCoordinates = new Vector2( num5, num7 );
 					this.cvTransformedColoredVertexies[ 1 ].Position = new Vector4( ( x + ( width * this.vc拡大縮小倍率.X ) ) + num, y + num2, depth, 1f );
-					this.cvTransformedColoredVertexies[ 1 ].Color = num9;
+					this.cvTransformedColoredVertexies[ 1 ].Color = color4;
 					this.cvTransformedColoredVertexies[ 1 ].TextureCoordinates = new Vector2( num6, num7 );
 					this.cvTransformedColoredVertexies[ 2 ].Position = new Vector4( x + num, ( y + ( height * this.vc拡大縮小倍率.Y ) ) + num2, depth, 1f );
-					this.cvTransformedColoredVertexies[ 2 ].Color = num9;
+					this.cvTransformedColoredVertexies[ 2 ].Color = color4;
 					this.cvTransformedColoredVertexies[ 2 ].TextureCoordinates = new Vector2( num5, num8 );
 					this.cvTransformedColoredVertexies[ 3 ].Position = new Vector4( ( x + ( width * this.vc拡大縮小倍率.X ) ) + num, ( y + ( height * this.vc拡大縮小倍率.Y ) ) + num2, depth, 1f );
-					this.cvTransformedColoredVertexies[ 3 ].Color = num9;
+					this.cvTransformedColoredVertexies[ 3 ].Color = color4;
 					this.cvTransformedColoredVertexies[ 3 ].TextureCoordinates = new Vector2( num6, num8 );
 					device.SetTexture( 0, this.texture );
 					device.VertexFormat = TransformedColoredTexturedVertex.Format;
@@ -296,24 +297,24 @@ namespace FDK
 					float num15 = ( (float) rc画像内の描画領域.Right ) / ( (float) this.szテクスチャサイズ.Width );
 					float num16 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 					float num17 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
-					int num18 = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
+					int color4 = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
 					if( this.cvPositionColoredVertexies == null )
 					{
 						this.cvPositionColoredVertexies = new PositionColoredTexturedVertex[ 4 ];
 					}
 					this.cvPositionColoredVertexies[ 0 ].Position = new Vector3( -num12 + num10, num13 + num11, depth );
-					this.cvPositionColoredVertexies[ 0 ].Color = num18;
+					this.cvPositionColoredVertexies[ 0 ].Color = color4;
 					this.cvPositionColoredVertexies[ 0 ].TextureCoordinates = new Vector2( num14, num16 );
 					this.cvPositionColoredVertexies[ 1 ].Position = new Vector3( num12 + num10, num13 + num11, depth );
-					this.cvPositionColoredVertexies[ 1 ].Color = num18;
+					this.cvPositionColoredVertexies[ 1 ].Color = color4;
 					this.cvPositionColoredVertexies[ 1 ].TextureCoordinates = new Vector2( num15, num16 );
 					this.cvPositionColoredVertexies[ 2 ].Position = new Vector3( -num12 + num10, -num13 + num11, depth );
-					this.cvPositionColoredVertexies[ 2 ].Color = num18;
+					this.cvPositionColoredVertexies[ 2 ].Color = color4;
 					this.cvPositionColoredVertexies[ 2 ].TextureCoordinates = new Vector2( num14, num17 );
 					this.cvPositionColoredVertexies[ 3 ].Position = new Vector3( num12 + num10, -num13 + num11, depth );
-					this.cvPositionColoredVertexies[ 3 ].Color = num18;
+					this.cvPositionColoredVertexies[ 3 ].Color = color4;
 					this.cvPositionColoredVertexies[ 3 ].TextureCoordinates = new Vector2( num15, num17 );
-					using( DataStream stream = this.vbPositionColoredVertexBuffer.Lock( 0, 0, LockFlags.None ) )
+					using( DataStream stream = this.vbPositionColoredVertexBuffer.Lock( 0, 0, LockFlags.NoOverwrite ) )	// LockFlags.None
 					{
 						stream.WriteRange<PositionColoredTexturedVertex>( this.cvPositionColoredVertexies );
 						this.vbPositionColoredVertexBuffer.Unlock();
@@ -352,25 +353,25 @@ namespace FDK
 				float num4 = ( (float) rc画像内の描画領域.Right ) / ( (float) this.szテクスチャサイズ.Width );
 				float num5 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 				float num6 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
-				int num7 = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
+				int color4 = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
 				if( this.cvPositionColoredVertexies == null )
 				{
 					this.cvPositionColoredVertexies = new PositionColoredTexturedVertex[ 4 ];
 				}
 				float z = 0f;
 				this.cvPositionColoredVertexies[ 0 ].Position = new Vector3( -x, y, z );
-				this.cvPositionColoredVertexies[ 0 ].Color = num7;
+				this.cvPositionColoredVertexies[ 0 ].Color = color4;
 				this.cvPositionColoredVertexies[ 0 ].TextureCoordinates = new Vector2( num3, num5 );
 				this.cvPositionColoredVertexies[ 1 ].Position = new Vector3( x, y, z );
-				this.cvPositionColoredVertexies[ 1 ].Color = num7;
+				this.cvPositionColoredVertexies[ 1 ].Color = color4;
 				this.cvPositionColoredVertexies[ 1 ].TextureCoordinates = new Vector2( num4, num5 );
 				this.cvPositionColoredVertexies[ 2 ].Position = new Vector3( -x, -y, z );
-				this.cvPositionColoredVertexies[ 2 ].Color = num7;
+				this.cvPositionColoredVertexies[ 2 ].Color = color4;
 				this.cvPositionColoredVertexies[ 2 ].TextureCoordinates = new Vector2( num3, num6 );
 				this.cvPositionColoredVertexies[ 3 ].Position = new Vector3( x, -y, z );
-				this.cvPositionColoredVertexies[ 3 ].Color = num7;
+				this.cvPositionColoredVertexies[ 3 ].Color = color4;
 				this.cvPositionColoredVertexies[ 3 ].TextureCoordinates = new Vector2( num4, num6 );
-				using( DataStream stream = this.vbPositionColoredVertexBuffer.Lock( 0, 0, LockFlags.None ) )
+				using( DataStream stream = this.vbPositionColoredVertexBuffer.Lock( 0, 0, LockFlags.NoOverwrite ) )		// LockFlags.None
 				{
 					stream.WriteRange<PositionColoredTexturedVertex>( this.cvPositionColoredVertexies );
 					this.vbPositionColoredVertexBuffer.Unlock();
@@ -419,20 +420,27 @@ namespace FDK
 		private PositionColoredTexturedVertex[] cvPositionColoredVertexies;
 		private TransformedColoredTexturedVertex[] cvTransformedColoredVertexies;
 		private VertexBuffer vbPositionColoredVertexBuffer;
+		private const Pool poolvar =												// 2011.4.25 yyagi
+#if TEST_Direct3D9Ex
+			Pool.Default;
+#else
+			Pool.Managed;
+#endif
+
 
 		private void tレンダリングステートの設定( Device device )
 		{
 			if( this.b加算合成 )
 			{
 				device.SetRenderState( RenderState.AlphaBlendEnable, true );
-				device.SetRenderState( RenderState.SourceBlend, 5 );
-				device.SetRenderState( RenderState.DestinationBlend, 2 );
+				device.SetRenderState( RenderState.SourceBlend, SlimDX.Direct3D9.Blend.SourceAlpha );				// 5
+				device.SetRenderState( RenderState.DestinationBlend, SlimDX.Direct3D9.Blend.One );					// 2
 			}
 			else
 			{
 				device.SetRenderState( RenderState.AlphaBlendEnable, true );
-				device.SetRenderState( RenderState.SourceBlend, 5 );
-				device.SetRenderState( RenderState.DestinationBlend, 6 );
+				device.SetRenderState( RenderState.SourceBlend, SlimDX.Direct3D9.Blend.SourceAlpha );				// 5
+				device.SetRenderState( RenderState.DestinationBlend, SlimDX.Direct3D9.Blend.InverseSourceAlpha );	// 6
 			}
 		}
 		private Size t指定されたサイズを超えない最適なテクスチャサイズを返す( Device device, Size sz指定サイズ )
@@ -484,11 +492,7 @@ namespace FDK
 		}
 		private void t頂点バッファの作成( Device device )
 		{
-#if TEST_Direct3D9Ex
-			this.vbPositionColoredVertexBuffer = new VertexBuffer( device, 4 * PositionColoredTexturedVertex.SizeInBytes, Usage.WriteOnly, VertexFormat.None, Pool.Default );
-#else
-			this.vbPositionColoredVertexBuffer = new VertexBuffer( device, 4 * PositionColoredTexturedVertex.SizeInBytes, Usage.WriteOnly, VertexFormat.None, Pool.Managed );
-#endif
+			this.vbPositionColoredVertexBuffer = new VertexBuffer( device, 4 * PositionColoredTexturedVertex.SizeInBytes, Usage.WriteOnly, VertexFormat.None, poolvar );
 		}
 		//-----------------
 		#endregion

@@ -271,7 +271,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx描画用 = new CTexture( CDTXMania.app.Device, 0x116, 0x163, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
+#if TEST_Direct3D9Ex
+				this.tx描画用 = new CTexture( CDTXMania.app.Device, 320, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
+#else
+				this.tx描画用 = new CTexture( CDTXMania.app.Device, 278, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
+#endif
 				base.OnManagedリソースの作成();
 			}
 		}
