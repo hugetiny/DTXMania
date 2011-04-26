@@ -39,8 +39,8 @@ namespace SampleFramework
         Game game;
         bool ignoreSizeChanges;
         bool deviceLost;
-        bool doNotStoreBufferSize;
-        bool renderingOccluded;
+//        bool doNotStoreBufferSize;
+//        bool renderingOccluded;
 
         int fullscreenWindowWidth;
         int fullscreenWindowHeight;
@@ -485,19 +485,33 @@ namespace SampleFramework
 			{
 				EnsureD3D9();
 
-#if TEST_Direct3D9Ex		// 2011.4.26 yyagi
-				DisplayModeEx fullScreenDisplayMode = new DisplayModeEx();
+#if TEST_Direct3D9Ex
+				// 2011.4.26 yyagi
+				// Direct3D9.DeviceExを呼ぶ際(IDirect3D9Ex::CreateDeviceExを呼ぶ際)、
+				// フルスクリーンモードで初期化する場合はDisplayModeEx(D3DDISPLAYMODEEX *pFullscreenDisplayMode)に
+				// 適切な値を設定する必要あり。
+				// 一方、ウインドウモードで初期化する場合は、D3DDISPLAYMODEEXをNULLにする必要があるが、
+				// DisplayModeExがNULL不可と定義されているため、DeviceExのoverloadの中でDisplayModeExを引数に取らないものを
+				// 使う。(DeviceEx側でD3DDISPLAYMODEEXをNULLにしてくれる)
+				// 結局、DeviceExの呼び出しの際に、フルスクリーンかどうかで場合分けが必要となる。
 				if ( CurrentSettings.Direct3D9.PresentParameters.Windowed == false )
 				{
+					DisplayModeEx fullScreenDisplayMode = new DisplayModeEx();
 					fullScreenDisplayMode.Width = CurrentSettings.Direct3D9.PresentParameters.BackBufferWidth;
 					fullScreenDisplayMode.Height = CurrentSettings.Direct3D9.PresentParameters.BackBufferHeight;
 					fullScreenDisplayMode.RefreshRate = CurrentSettings.Direct3D9.PresentParameters.FullScreenRefreshRateInHertz;
 					fullScreenDisplayMode.Format = CurrentSettings.Direct3D9.PresentParameters.BackBufferFormat;
+
+					Direct3D9.Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
+						CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
+						CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters, fullScreenDisplayMode );
 				}
-				Direct3D9.Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
-					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
-					CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters, fullScreenDisplayMode );
-				// yyagi
+				else
+				{
+					Direct3D9.Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
+						CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
+						CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters );
+				}
 #else
 				Direct3D9.Device = new SlimDX.Direct3D9.Device( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
