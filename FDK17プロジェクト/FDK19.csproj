@@ -28,7 +28,7 @@
     </DocumentationFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>0219</NoWarn>
-    <DefineConstants>TRACE;DEBUG;TEST_Direct3D9Ex TEST_CancelEnterCodeInAltEnter2</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEST_Direct3D9Ex_ TEST_CancelEnterCodeInAltEnter2</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
