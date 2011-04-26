@@ -485,11 +485,19 @@ namespace SampleFramework
 			{
 				EnsureD3D9();
 
-#if TEST_Direct3D9Ex
+#if TEST_Direct3D9Ex		// 2011.4.26 yyagi
+				DisplayModeEx fullScreenDisplayMode = new DisplayModeEx();
+				if ( CurrentSettings.Direct3D9.PresentParameters.Windowed == false )
+				{
+					fullScreenDisplayMode.Width = CurrentSettings.Direct3D9.PresentParameters.BackBufferWidth;
+					fullScreenDisplayMode.Height = CurrentSettings.Direct3D9.PresentParameters.BackBufferHeight;
+					fullScreenDisplayMode.RefreshRate = CurrentSettings.Direct3D9.PresentParameters.FullScreenRefreshRateInHertz;
+					fullScreenDisplayMode.Format = CurrentSettings.Direct3D9.PresentParameters.BackBufferFormat;
+				}
 				Direct3D9.Device = new SlimDX.Direct3D9.DeviceEx( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
-					CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters );
-// yyagi
+					CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters, fullScreenDisplayMode );
+				// yyagi
 #else
 				Direct3D9.Device = new SlimDX.Direct3D9.Device( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
