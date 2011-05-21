@@ -2696,8 +2696,8 @@ namespace DTXMania
 							{
 								CChip chip8 = new CChip();
 								chip8.n発声位置 = num6;
-								chip8.nチャンネル番号 = 80;
-								chip8.n整数値 = 0x50f;
+								chip8.nチャンネル番号 = 0x50;
+								chip8.n整数値 = 36 * 36 - 1;
 								this.listChip.Add( chip8 );
 							}
 							this.listChip.Sort();
@@ -2987,6 +2987,14 @@ namespace DTXMania
 				{
 					listChip[i].e楽器パート = E楽器パート.BASS;
 					listChip[i].nチャンネル番号 += ( 0xA0 - 0x20 );
+				}
+				else if ( listChip[ i ].nチャンネル番号 == 0x28 )		// #25215 2011.5.21 yyagi wailingはE楽器パート.UNKNOWNが割り当てられているので個別に対応
+				{
+					listChip[ i ].nチャンネル番号 += ( 0xA0 - 0x20 );
+				}
+				else if ( listChip[ i ].nチャンネル番号 == 0xA8 )		// #25215 2011.5.21 yyagi wailingはE楽器パート.UNKNOWNが割り当てられているので個別に対応
+				{
+					listChip[ i ].nチャンネル番号 -= ( 0xA0 - 0x20 );
 				}
 			}
 			int t = this.LEVEL.Bass;
