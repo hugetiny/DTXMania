@@ -122,7 +122,7 @@ namespace DTXMania
 				try
 				{
 					this.sound = CDTXMania.Sound管理.tサウンドを生成する( str );
-					this.sound.n音量 = CDTXMania.ConfigIni.n自動再生音量;
+					this.sound.n音量 = 80;	// CDTXMania.ConfigIni.n自動再生音量;			// #25217 changed preview volume from AutoVolume
 					this.sound.t再生を開始する( true );
 					this.str現在のファイル名 = str;
 					this.tBGMフェードアウト開始();
