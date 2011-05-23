@@ -152,6 +152,13 @@ namespace DTXMania
 				"Damage level at missing (and\n recovering level) at playing.",
 				new string[] { "Small", "Normal", "Large" } );
 			this.list項目リスト.Add( this.iSystemDamageLevel );
+
+			this.iSystemSkillPointType = new CItemList( "SkillPointType", CItemBase.Eパネル種別.通常, CDTXMania.ConfigIni.nSkillPointType,		// #23624 2011.5.22 yyagi
+				"SP Type：\n表示するSPの種類を指定します。\nPlaying: 演奏型(Perfect重視)\nGame: ゲーム型(Comboも加味)",
+				"Select the Skill Point type to show.\nPlaying: for playing(no Combo value is used to calc SP)\nGame: for game(also Combo is used to calc SP))",
+				new string[] { "Playing", "Game" } );
+			this.list項目リスト.Add( this.iSystemSkillPointType );
+
 			this.iSystemSaveScore = new CItemToggle( "SaveScore", CDTXMania.ConfigIni.bScoreIniを出力する,
 				"演奏記録の保存：\nON で演奏記録を ～.score.ini ファイ\nルに保存します。\n",
 				"To save high-scores/skills, turn it ON.\nTurn OFF in case your song data are\n in read-only media (CD-ROM etc).\nNote that the score files also contain\n 'BGM Adjust' parameter. So if you\n want to keep adjusting parameter,\n you need to set SaveScore=ON." );
@@ -1258,6 +1265,7 @@ namespace DTXMania
 		private CItemInteger iGuitarInputAdjustTimeMs;		//
 		private CItemInteger iBassInputAdjustTimeMs;		//
 
+		private CItemList iSystemSkillPointType;			// #23624 2011.5.22 yyagi
 
 		private int t前の項目( int nItem )
 		{
@@ -1344,6 +1352,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.b歓声を発声する = this.iSystemAudienceSound.bON;
 			CDTXMania.ConfigIni.eダメージレベル = (Eダメージレベル) this.iSystemDamageLevel.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bScoreIniを出力する = this.iSystemSaveScore.bON;
+			CDTXMania.ConfigIni.nSkillPointType = (int) this.iSystemSkillPointType.n現在選択されている項目番号;
 
 			CDTXMania.ConfigIni.bログ出力 = this.iLogOutputLog.bON;
 			CDTXMania.ConfigIni.n手動再生音量 = this.iSystemChipVolume.n現在の値;

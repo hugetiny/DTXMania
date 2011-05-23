@@ -183,69 +183,69 @@ namespace DTXMania
 			{
 				this.txパネル本体.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y );
 			}
-			int num = this.ct表示用.n現在の値;
+			int t = this.ct表示用.n現在の値;
 			Point[] pointArray = new Point[] { new Point( 0x68, 0x29 ), new Point( 0xc7, 0x29 ), new Point( 0x129, 0x29 ) };
 			for( int i = 0; i < 3; i++ )
 			{
 				int x = this.n本体X + pointArray[ i ].X;
 				int y = this.n本体Y + pointArray[ i ].Y;
-				if( num >= 0 )
+				if( t >= 0 )
 				{
 					this.t大文字表示( x, y, CDTXMania.stage結果.st演奏記録[ i ].nPerfect数.ToString( "00000" ) );
 				}
-				if( num >= 100 )
+				if( t >= 100 )
 				{
 					this.t大文字表示( x, y + 0x16, CDTXMania.stage結果.st演奏記録[ i ].nGreat数.ToString( "00000" ) );
 				}
-				if( num >= 200 )
+				if( t >= 200 )
 				{
 					this.t大文字表示( x, y + 0x2c, CDTXMania.stage結果.st演奏記録[ i ].nGood数.ToString( "00000" ) );
 				}
-				if( num >= 300 )
+				if( t >= 300 )
 				{
 					this.t大文字表示( x, y + 0x42, CDTXMania.stage結果.st演奏記録[ i ].nPoor数.ToString( "00000" ) );
 				}
-				if( num >= 400 )
+				if( t >= 400 )
 				{
 					this.t大文字表示( x, y + 0x58, CDTXMania.stage結果.st演奏記録[ i ].nMiss数.ToString( "00000" ) );
 				}
-				if( num >= 0 )
+				if( t >= 0 )
 				{
 					this.t小文字表示( x + 0x30, y, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fPerfect率[ i ] ) );
 				}
-				if( num >= 100 )
+				if( t >= 100 )
 				{
 					this.t小文字表示( x + 0x30, y + 0x16, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fGreat率[ i ] ) );
 				}
-				if( num >= 200 )
+				if( t >= 200 )
 				{
 					this.t小文字表示( x + 0x30, y + 0x2c, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fGood率[ i ] ) );
 				}
-				if( num >= 300 )
+				if( t >= 300 )
 				{
 					this.t小文字表示( x + 0x30, y + 0x42, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fPoor率[ i ] ) );
 				}
-				if( num >= 400 )
+				if( t >= 400 )
 				{
 					this.t小文字表示( x + 0x30, y + 0x58, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fMiss率[ i ] ) );
 				}
-				if( num >= 500 )
+				if( t >= 500 )
 				{
 					this.t大文字表示( x, y + 110, string.Format( "{0,9:########0}", CDTXMania.stage結果.st演奏記録[ i ].n最大コンボ数 ) );
 				}
-				if( num >= 600 )
+				if( t >= 600 )
 				{
 					this.t大文字表示( x, y + 0x84, CDTXMania.stage結果.st演奏記録[ i ].nスコア.ToString( "000000000" ), CDTXMania.stage結果.b新記録スコア[ i ] );
 				}
-				if( num >= 700 )
+				if( t >= 700 )
 				{
-					this.t大文字表示( x, y + 0x9a, string.Format( "{0,9:#####0.00}", CDTXMania.stage結果.st演奏記録[ i ].db演奏型スキル値 ), CDTXMania.stage結果.b新記録スキル[ i ] );
+					this.t大文字表示( x, y + 0x9a, string.Format( "{0,9:#####0.00}", CDTXMania.stage結果.st演奏記録[ i ].dbスキル値), CDTXMania.stage結果.b新記録スキル[ i ] );	// #23624 2011.5.10 yyagi db演奏型スキル値 -> dbスキル値, b新記録演奏型スキル -> b新記録スキル
 				}
-				if( num >= 700 )
+				if( t >= 700 )
 				{
 					this.t小文字表示( x + 0x48, y + 0x9a, "%" );
 				}
-				if( num >= 800 )
+				if( t >= 800 )
 				{
 					this.t大文字表示( x, y + 0xb0, string.Format( "{0,9:########0}", CDTXMania.stage結果.n演奏回数[ i ] ) );
 				}

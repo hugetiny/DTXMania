@@ -298,7 +298,7 @@ namespace DTXMania
 			//this.bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay;									// #24239 2011.1.23 yyagi
 
             Cスコア cスコア = CDTXMania.stage選曲.r確定されたスコア;            // #24074 2011.01.23 add ikanick
-            this.actGraph.dbグラフ値目標_渡 = cスコア.譜面情報.最大スキル[0];
+			this.actGraph.dbグラフ値目標_渡 = cスコア.譜面情報.最大スキル[ 0 ];	// #23624 2011.05.10 yyagi 最大演奏型スキル -> 最大スキル
 
 			//if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
 			//{
@@ -1146,7 +1146,7 @@ namespace DTXMania
 		{
 			E判定 eJudgeResult = tチップのヒット処理( nHitTime, pChip, E楽器パート.DRUMS );
 			// #24074 2011.01.23 add ikanick
-			this.actGraph.dbグラフ値現在_渡 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Drums, this.nヒット数・Auto含まない.Drums.Perfect, this.nヒット数・Auto含まない.Drums.Great, this.nヒット数・Auto含まない.Drums.Good, this.nヒット数・Auto含まない.Drums.Poor, this.nヒット数・Auto含まない.Drums.Miss );
+			this.actGraph.dbグラフ値現在_渡 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Drums, CDTXMania.DTX.LEVEL.Drums, this.nヒット数・Auto含まない.Drums.Perfect, this.nヒット数・Auto含まない.Drums.Great, this.nヒット数・Auto含まない.Drums.Good, this.nヒット数・Auto含まない.Drums.Poor, this.nヒット数・Auto含まない.Drums.Miss, this.actCombo.n現在のコンボ数.Drums最高値 );
 			return eJudgeResult;
 		}
 		//private E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip )

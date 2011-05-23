@@ -55,12 +55,14 @@ namespace DTXMania
 			public string Backgound;
 			public STDGBVALUE<int> レベル;
 			public STRANK 最大ランク;
-			public STSKILL 最大スキル;
+			public STSKILL 最大演奏型スキル;
+			public STSKILL 最大ゲーム型スキル;					// #23624 2011.4.26 yyagi
 			public STDGBVALUE<bool> フルコンボ;
 			public STDGBVALUE<int> 演奏回数;
 			public STHISTORY 演奏履歴;
 			public bool レベルを非表示にする;
 			public CDTX.E種別 曲種別;
+			public double bpm;									// 2011.5.23 yyagi
 
 			[StructLayout( LayoutKind.Sequential )]
 			public struct STHISTORY
@@ -217,6 +219,22 @@ namespace DTXMania
 					}
 				}
 			}
+
+			public STSKILL 最大スキル
+			{
+				get
+				{
+					switch ( CDTXMania.ConfigIni.nSkillPointType )		// 少々スコープが遠いので性能面で難アリだが、まずはこれで試してみる。
+					{
+						case (int) CConfigIni.ESPTYPE.PLAY:
+							return this.最大演奏型スキル;
+						case (int) CConfigIni.ESPTYPE.GAME:
+							return this.最大ゲーム型スキル;
+						default:
+							throw new ArgumentException();
+					}
+				}
+			}
 		}
 
 		public bool bSongDBにキャッシュがあった;
@@ -259,8 +277,10 @@ namespace DTXMania
 			this.譜面情報.演奏履歴.行4 = "";
 			this.譜面情報.演奏履歴.行5 = "";
 			this.譜面情報.レベルを非表示にする = false;
-			this.譜面情報.最大スキル = new ST譜面情報.STSKILL();
+			this.譜面情報.最大演奏型スキル = new ST譜面情報.STSKILL();
+			this.譜面情報.最大ゲーム型スキル = new ST譜面情報.STSKILL();	// #23624 2011.4.26 yyagi
 			this.譜面情報.曲種別 = CDTX.E種別.DTX;
+			this.譜面情報.bpm = 120.0;
 		}
 	}
 }

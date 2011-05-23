@@ -12,7 +12,8 @@ namespace DTXMania
 	{
 		// プロパティ
 
-		public STDGBVALUE<bool> b新記録スキル;
+		public STDGBVALUE<bool> b新記録演奏型スキル;
+		public STDGBVALUE<bool> b新記録ゲーム型スキル;
 		public STDGBVALUE<bool> b新記録スコア;
         public STDGBVALUE<bool> b新記録ランク;
 		public STDGBVALUE<float> fPerfect率;
@@ -28,6 +29,21 @@ namespace DTXMania
 		public CDTX.CChip[] r空うちドラムチップ;
 		public STDGBVALUE<CScoreIni.C演奏記録> st演奏記録;
 
+		public STDGBVALUE<bool> b新記録スキル	// #23624 2011.5.10 yyagi 演奏型/ゲーム型スキルの首振り
+		{
+			get
+			{
+				switch ( CDTXMania.ConfigIni.nSkillPointType )		// 少々スコープが遠いので性能面で難アリだが、まずはこれで試してみる。
+				{
+					case (int) CConfigIni.ESPTYPE.PLAY:
+						return this.b新記録演奏型スキル;
+					case (int) CConfigIni.ESPTYPE.GAME:
+						return this.b新記録ゲーム型スキル;
+					default:
+						throw new ArgumentException();
+				}
+			}
+		}
 
 		// コンストラクタ
 
@@ -69,8 +85,9 @@ namespace DTXMania
 				this.n最後に再生したHHのチャンネル番号 = 0;
 				for( int i = 0; i < 3; i++ )
 				{
-					this.b新記録スキル[ i ] = false;
-                    this.b新記録スコア[ i ] = false;
+					this.b新記録演奏型スキル[ i ] = false;
+					this.b新記録ゲーム型スキル[ i ] = false;
+					this.b新記録スコア[ i ] = false;
                     this.b新記録ランク[ i ] = false;
 				}
 				//---------------------
@@ -123,8 +140,9 @@ namespace DTXMania
 				for( int i = 0; i < 3; i++ )
 				{
 					// フルコンボチェックならびに新記録ランクチェックは、ini.Record[] が、スコアチェックや演奏型スキルチェックの IF 内で書き直されてしまうよりも前に行う。(2010.9.10)
-					
-					b今までにフルコンボしたことがある[ i ] = ini.stセクション[ i * 2 ].bフルコンボである | ini.stセクション[ i * 2 + 1 ].bフルコンボである;
+
+					b今までにフルコンボしたことがある[ i ] =
+						ini.stセクション[ i * 3 ].bフルコンボである | ini.stセクション[ i * 3 + 1 ].bフルコンボである | ini.stセクション[ i * 3 + 2 ].bフルコンボである;
 
 					#region [deleted by #24459]
 			//		if( this.nランク値[ i ] <= CScoreIni.tランク値を計算して返す( ini.stセクション[ ( i * 2 ) + 1 ] ) )
@@ -140,22 +158,30 @@ namespace DTXMania
 					}
 
 					// 新記録スコアチェック
-					if( this.st演奏記録[ i ].nスコア > ini.stセクション[ i * 2 ].nスコア )
+					if( this.st演奏記録[ i ].nスコア > ini.stセクション[ i * 3 ].nスコア )
 					{
 						this.b新記録スコア[ i ] = true;
-						ini.stセクション[ i * 2 ] = this.st演奏記録[ i ];
+						ini.stセクション[ i * 3 ] = this.st演奏記録[ i ];
 					}
 
-                    // 新記録スキルチェック
-                    if (this.st演奏記録[i].db演奏型スキル値 > ini.stセクション[(i * 2) + 1].db演奏型スキル値)
+                    // 新記録演奏型スキルチェック
+                    if (this.st演奏記録[i].db演奏型スキル値 > ini.stセクション[ i * 3 + 1 ].db演奏型スキル値)
                     {
-                        this.b新記録スキル[ i ] = true;
-                        ini.stセクション[(i * 2) + 1] = this.st演奏記録[ i ];
+                        this.b新記録演奏型スキル[ i ] = true;
+                        ini.stセクション[ i * 3 + 1 ] = this.st演奏記録[ i ];
                     }
-                    // ラストプレイ #23595 2011.1.9 ikanick
+
+					// 新記録ゲーム型スキルチェック
+					if ( this.st演奏記録[ i ].dbゲーム型スキル値 > ini.stセクション[ i * 3 + 2 ].dbゲーム型スキル値 )
+					{
+						this.b新記録ゲーム型スキル[ i ] = true;
+						ini.stセクション[ i * 3 + 2 ] = this.st演奏記録[ i ];
+					}
+					
+					// ラストプレイ #23595 2011.1.9 ikanick
                     // オートじゃなければプレイ結果を書き込む
                     if (this.bオート[ i ] == false) {
-                        ini.stセクション[i + 6] = this.st演奏記録[ i ];
+                        ini.stセクション[ i + 3 * 3 ] = this.st演奏記録[ i ];
                     }
 
                     // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
@@ -206,12 +232,17 @@ namespace DTXMania
 							// → FullCombo は、最新記録と関係なく、一度達成したらずっとつくようにする。(2010.9.11)
 							cスコア.譜面情報.フルコンボ[ m ] = this.st演奏記録[ m ].bフルコンボである | b今までにフルコンボしたことがある[ m ];
 
-							if( this.b新記録スキル[ m ] )
+							if( this.b新記録演奏型スキル[ m ] )
 							{
-								cスコア.譜面情報.最大スキル[ m ] = this.st演奏記録[ m ].db演奏型スキル値;
+								cスコア.譜面情報.最大演奏型スキル[ m ] = this.st演奏記録[ m ].db演奏型スキル値;
                             }
 
-                            if (this.b新記録ランク[ m ])
+							if ( this.b新記録ゲーム型スキル[ m ] )
+							{
+								cスコア.譜面情報.最大ゲーム型スキル[ m ] = this.st演奏記録[ m ].dbゲーム型スキル値;
+							}
+
+							if ( this.b新記録ランク[ m ] )
                             {
                                 cスコア.譜面情報.最大ランク[ m ] = this.nランク値[ m ];
                             }
@@ -544,7 +575,7 @@ namespace DTXMania
 				// リザルト画像を自動保存するときは、dtxファイル名.yyMMddHHmmss_DRUMS_SS.png という形式で保存。
 				for ( int i = 0; i < 3; i++ )
 				{
-					if ( this.b新記録ランク[ i ] == true || this.b新記録スキル[ i ] == true )
+					if ( this.b新記録ランク[ i ] == true || this.b新記録演奏型スキル[ i ] == true || this.b新記録ゲーム型スキル[ i ] == true )
 					{
 						string strPart = ( (E楽器パート) ( i ) ).ToString();
 						string strRank = ( (CScoreIni.ERANK) ( this.nランク値[ i ] ) ).ToString();

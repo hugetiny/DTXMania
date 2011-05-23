@@ -238,7 +238,7 @@ namespace DTXMania
 					int index = ( k + 13 ) % 13;
 					for( int m = 0; m < 3; m++ )
 					{
-						this.stバー情報[ index ].nスキル値[ m ] = (int) song.arスコア[ this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( song ) ].譜面情報.最大スキル[ m ];
+						this.stバー情報[ index ].nスキル値[ m ] = (int) song.arスコア[ this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( song ) ].譜面情報.最大スキル[ m ];	// #23624 2011.5.10 yyagi 最大演奏型スキル -> 最大スキル
 					}
 					song = this.r次の曲( song );
 				}
@@ -464,7 +464,7 @@ namespace DTXMania
 							}
 							for( int n = 0; n < 3; n++ )
 							{
-								this.stバー情報[ index ].nスキル値[ n ] = (int) song.arスコア[ this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( song ) ].譜面情報.最大スキル[ n ];
+								this.stバー情報[ index ].nスキル値[ n ] = (int) song.arスコア[ this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( song ) ].譜面情報.最大スキル[ n ];	// #23624 2011.5.10 yyagi 最大演奏型スキル -> 最大スキル
 							}
 							this.n現在のスクロールカウンタ -= 100;
 							this.n目標のスクロールカウンタ -= 100;
@@ -499,7 +499,7 @@ namespace DTXMania
 							}
 							for( int num17 = 0; num17 < 3; num17++ )
 							{
-								this.stバー情報[ num13 ].nスキル値[ num17 ] = (int) c曲リストノード3.arスコア[ this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( c曲リストノード3 ) ].譜面情報.最大スキル[ num17 ];
+								this.stバー情報[ num13 ].nスキル値[ num17 ] = (int) c曲リストノード3.arスコア[ this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( c曲リストノード3 ) ].譜面情報.最大スキル[ num17 ];	// #23624 2011.5.10 yyagi 最大演奏型スキル -> 最大スキル
 							}
 							this.n現在のスクロールカウンタ += 100;
 							this.n目標のスクロールカウンタ += 100;
@@ -876,7 +876,7 @@ namespace DTXMania
 					this.stバー情報[ j ].eバー種別 = this.e曲のバー種別を返す( song );
 					for( int k = 0; k < 3; k++ )
 					{
-						this.stバー情報[ j ].nスキル値[ k ] = (int) song.arスコア[ this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( song ) ].譜面情報.最大スキル[ k ];
+						this.stバー情報[ j ].nスキル値[ k ] = (int) song.arスコア[ this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( song ) ].譜面情報.最大スキル[ k ];	// #23624 2011.5.10 yyagi 最大演奏型スキル -> 最大スキル
 					}
 					song = this.r次の曲( song );
 				}

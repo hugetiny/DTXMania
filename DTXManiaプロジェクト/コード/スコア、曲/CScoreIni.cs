@@ -44,12 +44,15 @@ namespace DTXMania
 		public struct STセクション
 		{
             public CScoreIni.C演奏記録 HiScoreDrums;
-            public CScoreIni.C演奏記録 HiSkillDrums;
+			public CScoreIni.C演奏記録 HiSkillDrums;
+			public CScoreIni.C演奏記録 HiGameSkillDrums;
 			public CScoreIni.C演奏記録 HiScoreGuitar;
-            public CScoreIni.C演奏記録 HiSkillGuitar;
+			public CScoreIni.C演奏記録 HiSkillGuitar;
+			public CScoreIni.C演奏記録 HiGameSkillGuitar;
 			public CScoreIni.C演奏記録 HiScoreBass;
-            public CScoreIni.C演奏記録 HiSkillBass;
-            public CScoreIni.C演奏記録 LastPlayDrums;   // #23595 2011.1.9 ikanick
+			public CScoreIni.C演奏記録 HiSkillBass;
+			public CScoreIni.C演奏記録 HiGameSkillBass;
+			public CScoreIni.C演奏記録 LastPlayDrums;   // #23595 2011.1.9 ikanick
             public CScoreIni.C演奏記録 LastPlayGuitar;  //
             public CScoreIni.C演奏記録 LastPlayBass;    //
 			public CScoreIni.C演奏記録 this[ int index ]
@@ -58,33 +61,42 @@ namespace DTXMania
 				{
 					switch( index )
 					{
-						case 0:
+						case (int) Eセクション種別.HiScoreDrums:
 							return this.HiScoreDrums;
 
-						case 1:
+						case (int) Eセクション種別.HiSkillDrums:
 							return this.HiSkillDrums;
 
-						case 2:
+						case (int) Eセクション種別.HiGameSkillDrums:
+							return this.HiGameSkillDrums;
+
+						case (int) Eセクション種別.HiScoreGuitar:
 							return this.HiScoreGuitar;
 
-						case 3:
+						case (int) Eセクション種別.HiSkillGuitar:
 							return this.HiSkillGuitar;
 
-						case 4:
+						case (int) Eセクション種別.HiGameSkillGuitar:
+							return this.HiGameSkillGuitar;
+
+						case (int) Eセクション種別.HiScoreBass:
 							return this.HiScoreBass;
 
-                        case 5:
-                            return this.HiSkillBass;
+						case (int) Eセクション種別.HiSkillBass:
+						    return this.HiSkillBass;
 
-                        // #23595 2011.1.9 ikanick
-                        case 6:
+						case (int) Eセクション種別.HiGameSkillBass:
+							return this.HiGameSkillBass;
+						
+						// #23595 2011.1.9 ikanick
+						case (int) Eセクション種別.LastPlayDrums:
                             return this.LastPlayDrums;
 
-                        case 7:
-                            return this.LastPlayGuitar;
+						case (int) Eセクション種別.LastPlayGuitar:
+							return this.LastPlayGuitar;
 
-                        case 8:
-                            return this.LastPlayBass;
+						case (int) Eセクション種別.LastPlayBass:
+							return this.LastPlayBass;
                         //------------
 					}
 					throw new IndexOutOfRangeException();
@@ -93,40 +105,53 @@ namespace DTXMania
 				{
 					switch( index )
 					{
-						case 0:
+						case (int) Eセクション種別.HiScoreDrums:
 							this.HiScoreDrums = value;
 							return;
 
-						case 1:
+						case (int) Eセクション種別.HiSkillDrums:
 							this.HiSkillDrums = value;
 							return;
 
-						case 2:
+						case (int) Eセクション種別.HiGameSkillDrums:
+							this.HiGameSkillDrums = value;
+							return;
+
+						case (int) Eセクション種別.HiScoreGuitar:
 							this.HiScoreGuitar = value;
 							return;
 
-						case 3:
+						case (int) Eセクション種別.HiSkillGuitar:
 							this.HiSkillGuitar = value;
 							return;
 
-						case 4:
+						case (int) Eセクション種別.HiGameSkillGuitar:
+							this.HiGameSkillGuitar = value;
+							return;
+
+						case (int) Eセクション種別.HiScoreBass:
 							this.HiScoreBass = value;
                             return;
 
-                        case 5:
-                            this.HiSkillBass = value;
-                            return;
-                        // #23595 2011.1.9 ikanick
-                        case 6:
-                            this.LastPlayDrums = value;
+						case (int) Eセクション種別.HiSkillBass:
+							this.HiSkillBass = value;
                             return;
 
-                        case 7:
-                            this.LastPlayGuitar = value;
+						case (int) Eセクション種別.HiGameSkillBass:
+							this.HiGameSkillBass = value;
+							return;
+						
+						// #23595 2011.1.9 ikanick
+						case (int) Eセクション種別.LastPlayDrums:
+							this.LastPlayDrums = value;
                             return;
 
-                        case 8:
-                            this.LastPlayBass = value;
+						case (int) Eセクション種別.LastPlayGuitar:
+							this.LastPlayGuitar = value;
+                            return;
+
+						case (int) Eセクション種別.LastPlayBass:
+							this.LastPlayBass = value;
                             return;
                         //------------------
 					}
@@ -136,17 +161,21 @@ namespace DTXMania
 		}
 		public enum Eセクション種別 : int
 		{
-			Unknown = -2,
-			File = -1,
-			HiScoreDrums = 0,
-			HiSkillDrums = 1,
-			HiScoreGuitar = 2,
-			HiSkillGuitar = 3,
-			HiScoreBass = 4,
-			HiSkillBass = 5,
-			LastPlayDrums = 6,  // #23595 2011.1.9 ikanick
-			LastPlayGuitar = 7, //
-			LastPlayBass = 8,   //
+			Unknown =			-2,
+			File =				-1,
+			HiScoreDrums =		 0,
+			HiSkillDrums =		 1,
+			HiGameSkillDrums =	 2,		// 2011.4.26 yyagi
+			HiScoreGuitar =		 3,
+			HiSkillGuitar =		 4,
+			HiGameSkillGuitar =	 5,		// 2011.4.26 yyagi
+			HiScoreBass =		 6,
+			HiSkillBass =		 7,
+			HiGameSkillBass =	 8,		// 2011.4.26 yyagi
+			LastPlayDrums =		 9,		// #23595 2011.1.9 ikanick
+			LastPlayGuitar =	10,		//
+			LastPlayBass =		11,		//
+			END
 		}
 		public enum ERANK : int		// #24459 yyagi
 		{
@@ -159,7 +188,8 @@ namespace DTXMania
 			E = 6,
 			UNKNOWN = 99
 		}
-		public class C演奏記録
+
+		public class C演奏記録 : ICloneable
 		{
 			public STAUTOPLAY bAutoPlay;
 			public bool bDrums有効;
@@ -282,6 +312,21 @@ namespace DTXMania
 					return ( ( this.n最大コンボ数 > 0 ) && ( this.n最大コンボ数 == ( this.nPerfect数 + this.nGreat数 + this.nGood数 + this.nPoor数 + this.nMiss数 ) ) );
 				}
 			}
+			public double dbスキル値
+			{
+				get
+				{
+					switch ( CDTXMania.ConfigIni.nSkillPointType )		// 少々スコープが遠いので性能面で難アリだが、まずはこれで試してみる。
+					{
+						case (int) CConfigIni.ESPTYPE.PLAY:
+							return this.db演奏型スキル値;
+						case (int) CConfigIni.ESPTYPE.GAME:
+							return this.dbゲーム型スキル値;
+						default:
+							throw new ArgumentException();
+					}
+				}
+			}
 
 			[StructLayout( LayoutKind.Sequential )]
 			public struct STAUTOPLAY
@@ -382,6 +427,15 @@ namespace DTXMania
 					}
 				}
 			}
+
+			/// <summary>
+			/// クローンメソッド
+			/// </summary>
+			/// <returns></returns>
+			public object Clone()
+			{
+				return this.MemberwiseClone();	// 2011.5.20 yyagi: フィールドに値型とジェネリック(値型)しか使ってないので、shallow copyでcloneできる
+			}
 		}
 
 		/// <summary>
@@ -423,11 +477,14 @@ namespace DTXMania
 			this.stセクション = new STセクション();
 			stセクション.HiScoreDrums = new C演奏記録();
 			stセクション.HiSkillDrums = new C演奏記録();
+			stセクション.HiGameSkillDrums = new C演奏記録();
 			stセクション.HiScoreGuitar = new C演奏記録();
-            stセクション.HiSkillGuitar = new C演奏記録();
-            stセクション.HiScoreBass = new C演奏記録();
-            stセクション.HiSkillBass = new C演奏記録();
-            stセクション.LastPlayDrums = new C演奏記録();
+			stセクション.HiSkillGuitar = new C演奏記録();
+			stセクション.HiGameSkillGuitar = new C演奏記録();
+			stセクション.HiScoreBass = new C演奏記録();
+			stセクション.HiSkillBass = new C演奏記録();
+			stセクション.HiGameSkillBass = new C演奏記録();
+			stセクション.LastPlayDrums = new C演奏記録();
             stセクション.LastPlayGuitar = new C演奏記録();
             stセクション.LastPlayBass = new C演奏記録();
 		}
@@ -487,9 +544,10 @@ namespace DTXMania
 			this.iniファイルのあるフォルダ名 = Path.GetDirectoryName( iniファイル名 );
 			this.iniファイル名 = Path.GetFileName( iniファイル名 );
 
-			Eセクション種別 unknown = Eセクション種別.Unknown;
+			Eセクション種別 section = Eセクション種別.Unknown;
 			if( File.Exists( iniファイル名 ) )
 			{
+				bool IsHiGameSkillSectionLoaded = false;			// #23624 2011.5.10 yyagi (従来の[HiGameSkill.Drums/Guitar/Bass]セクションがないscore.iniを読み込んだときの対応用)
 				string str;
 				StreamReader reader = new StreamReader( iniファイル名, Encoding.GetEncoding( "shift-jis" ) );
 				while( ( str = reader.ReadLine() ) != null )
@@ -513,49 +571,64 @@ namespace DTXMania
 								string str2 = builder.ToString();
 								if( str2.Equals( "File" ) )
 								{
-									unknown = Eセクション種別.File;
+									section = Eセクション種別.File;
 								}
 								else if( str2.Equals( "HiScore.Drums" ) )
 								{
-									unknown = Eセクション種別.HiScoreDrums;
+									section = Eセクション種別.HiScoreDrums;
 								}
-								else if( str2.Equals( "HiSkill.Drums" ) )
+								else if ( str2.Equals( "HiSkill.Drums" ) )
 								{
-									unknown = Eセクション種別.HiSkillDrums;
+									section = Eセクション種別.HiSkillDrums;
 								}
-								else if( str2.Equals( "HiScore.Guitar" ) )
+								else if ( str2.Equals( "HiGameSkill.Drums" ) )
 								{
-									unknown = Eセクション種別.HiScoreGuitar;
+									section = Eセクション種別.HiGameSkillDrums;
+									IsHiGameSkillSectionLoaded = true;
+								}
+								else if ( str2.Equals( "HiScore.Guitar" ) )
+								{
+									section = Eセクション種別.HiScoreGuitar;
 								}
 								else if( str2.Equals( "HiSkill.Guitar" ) )
 								{
-									unknown = Eセクション種別.HiSkillGuitar;
+									section = Eセクション種別.HiSkillGuitar;
 								}
-								else if( str2.Equals( "HiScore.Bass" ) )
+								else if ( str2.Equals( "HiGameSkill.Guitar" ) )
 								{
-									unknown = Eセクション種別.HiScoreBass;
+									section = Eセクション種別.HiGameSkillGuitar;
+									IsHiGameSkillSectionLoaded = true;
+								}
+								else if ( str2.Equals( "HiScore.Bass" ) )
+								{
+									section = Eセクション種別.HiScoreBass;
                                 }
-                                else if (str2.Equals("HiSkill.Bass"))
-                                {
-                                    unknown = Eセクション種別.HiSkillBass;
-                                }
-                                // #23595 2011.1.9 ikanick
+								else if ( str2.Equals( "HiSkill.Bass" ) )
+								{
+									section = Eセクション種別.HiSkillBass;
+								}
+								else if ( str2.Equals( "HiGameSkill.Bass" ) )
+								{
+									section = Eセクション種別.HiSkillBass;
+									IsHiGameSkillSectionLoaded = true;
+								}
+								// #23595 2011.1.9 ikanick
                                 else if (str2.Equals("LastPlay.Drums"))
                                 {
-                                    unknown = Eセクション種別.LastPlayDrums;
+                                    section = Eセクション種別.LastPlayDrums;
                                 }
                                 else if (str2.Equals("LastPlay.Guitar"))
                                 {
-                                    unknown = Eセクション種別.LastPlayGuitar;
+                                    section = Eセクション種別.LastPlayGuitar;
                                 }
                                 else if (str2.Equals("LastPlay.Bass"))
                                 {
-                                    unknown = Eセクション種別.LastPlayBass;
+                                    section = Eセクション種別.LastPlayBass;
                                 }
                                 //----------------------------------------------------
 								else
 								{
-									unknown = Eセクション種別.Unknown;
+									section = Eセクション種別.Unknown;
 								}
 							}
 							else
@@ -565,7 +638,7 @@ namespace DTXMania
 								{
 									item = strArray[ 0 ].Trim();
 									para = strArray[ 1 ].Trim();
-									switch( unknown )
+									switch( section )
 									{
 										case Eセクション種別.File:
 											{
@@ -578,15 +651,18 @@ namespace DTXMania
 											}
 										case Eセクション種別.HiScoreDrums:
 										case Eセクション種別.HiSkillDrums:
+										case Eセクション種別.HiGameSkillDrums:
 										case Eセクション種別.HiScoreGuitar:
 										case Eセクション種別.HiSkillGuitar:
+										case Eセクション種別.HiGameSkillGuitar:
 										case Eセクション種別.HiScoreBass:
-                                        case Eセクション種別.HiSkillBass:
-                                        case Eセクション種別.LastPlayDrums:// #23595 2011.1.9 ikanick
+										case Eセクション種別.HiSkillBass:
+										case Eセクション種別.HiGameSkillBass:
+										case Eセクション種別.LastPlayDrums:// #23595 2011.1.9 ikanick
                                         case Eセクション種別.LastPlayGuitar:
                                         case Eセクション種別.LastPlayBass:
 											{
-												c演奏記録 = this.stセクション[ (int) unknown ];
+												c演奏記録 = this.stセクション[ (int) section ];
 												if( !item.Equals( "Score" ) )
 												{
 													goto Label_03B9;
@@ -1088,6 +1164,12 @@ namespace DTXMania
 					}
 				}
 				reader.Close();
+				if ( !IsHiGameSkillSectionLoaded )	// #23624 2011.5.10 yyagi [HiGameSkill.*]が無い、従来のscore.iniを読み込んだときは
+				{									// [HiSkill.*] の内容を [HiGameSkill.*] にコピーする
+					this.stセクション[ (int) Eセクション種別.HiGameSkillDrums ] = (C演奏記録) this.stセクション[ (int) Eセクション種別.HiScoreDrums ].Clone();
+					this.stセクション[ (int) Eセクション種別.HiGameSkillGuitar ] = (C演奏記録) this.stセクション[ (int) Eセクション種別.HiScoreGuitar ].Clone();
+					this.stセクション[ (int) Eセクション種別.HiGameSkillBass ] = (C演奏記録) this.stセクション[ (int) Eセクション種別.HiScoreBass ].Clone();
+				}
 			}
 		}
 
@@ -1126,9 +1208,15 @@ namespace DTXMania
 			writer.WriteLine( "History4={0}", this.stファイル.History[ 4 ] );
 			writer.WriteLine( "BGMAdjust={0}", this.stファイル.BGMAdjust );
 			writer.WriteLine();
-			for( int i = 0; i < 9; i++ )
+
+			for( int i = (int)Eセクション種別.HiScoreDrums; i < (int)Eセクション種別.END; i++ )
 			{
-                string[] strArray = new string[] { "HiScore.Drums", "HiSkill.Drums", "HiScore.Guitar", "HiSkill.Guitar", "HiScore.Bass", "HiSkill.Bass", "LastPlay.Drums", "LastPlay.Guitar", "LastPlay.Bass" };
+                string[] strArray = new string[] {
+					"HiScore.Drums", "HiSkill.Drums", "HiGameSkill.Drums",
+					"HiScore.Guitar", "HiSkill.Guitar", "HiGameSkill.Guitar",
+					"HiScore.Bass", "HiSkill.Bass", "HiGameSkill.Bass",
+					"LastPlay.Drums", "LastPlay.Guitar", "LastPlay.Bass"
+				};
 				writer.WriteLine( "[{0}]", strArray[ i ] );
 				writer.WriteLine( "Score={0}", this.stセクション[ i ].nスコア );
 				writer.WriteLine( "PlaySkill={0}", this.stセクション[ i ].db演奏型スキル値 );
@@ -1193,7 +1281,7 @@ namespace DTXMania
 		}
 		internal void t全演奏記録セクションの整合性をチェックし不整合があればリセットする()
 		{
-			for( int i = 0; i < 9; i++ )
+			for ( int i = (int) Eセクション種別.HiScoreDrums; i < (int) Eセクション種別.END; i++ )
 			{
 				if( !this.b整合性がある( (Eセクション種別) i ) )
 					this.stセクション[ i ] = new C演奏記録();
@@ -1246,14 +1334,20 @@ namespace DTXMania
 			}
 			return (int)ERANK.E;
 		}
-		internal static double tゲーム型スキルを計算して返す( int nLevel, int nTotal, int nPerfect, int nCombo )
+		internal static double tゲーム型スキルを計算して返す( int nTotal,int nLevel, int nPerfect, int nGreat, int nGood, int nPoor, int nMiss, int nCombo )
+//		internal static double tゲーム型スキルを計算して返す( int nLevel, int nTotal, int nPerfect, int nCombo )
 		{
 			if( ( nTotal == 0 ) || ( ( nPerfect == 0 ) && ( nCombo == 0 ) ) )
 				return 0.0;
 
+			int nAuto = nTotal - ( nPerfect + nGreat + nGood + nPoor + nMiss );
+			if ( nAuto == nTotal )
+				return 0.0;
+
 			return ( ( nLevel * ( ( nPerfect * 0.8 + nCombo * 0.2 ) / ( (double) nTotal ) ) ) / 2.0 );
 		}
-		internal static double t演奏型スキルを計算して返す( int nTotal, int nPerfect, int nGreat, int nGood, int nPoor, int nMiss )
+		internal static double t演奏型スキルを計算して返す( int nTotal, int nLevel, int nPerfect, int nGreat, int nGood, int nPoor, int nMiss, int nCombo )
+//		internal static double t演奏型スキルを計算して返す( int nTotal, int nPerfect, int nGreat, int nGood, int nPoor, int nMiss )
 		{
 			if( nTotal == 0 )
 				return 0.0;

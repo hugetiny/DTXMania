@@ -446,6 +446,7 @@ namespace DTXMania
 		public int n自動再生音量;
 		public int n手動再生音量;
 		public int n選曲リストフォントのサイズdot;
+		public int nSkillPointType;					// #23624 2011.4.26 yyagi
 		public STDGBVALUE<int> n表示可能な最小コンボ数;
 		public STDGBVALUE<int> n譜面スクロール速度;
 		public string strDTXManiaのバージョン;
@@ -762,7 +763,7 @@ namespace DTXMania
 			{
 				get
 				{
-					switch( index )
+					switch ( index )
 					{
 						case 0:
 							return this.LC;
@@ -801,7 +802,7 @@ namespace DTXMania
 				}
 				set
 				{
-					switch( index )
+					switch ( index )
 					{
 						case 0:
 							this.LC = value;
@@ -852,7 +853,13 @@ namespace DTXMania
 			}
 		}
 
+		public enum ESPTYPE
+		{
+			PLAY	= 0,
+			GAME	= 1
+		}
 
+		
 		// コンストラクタ
 
 		public CConfigIni()
@@ -909,6 +916,7 @@ namespace DTXMania
 			this.str選曲リストフォント = "MS PGothic";
 			this.n選曲リストフォントのサイズdot = 20;
 			this.b選曲リストフォントを太字にする = true;
+			this.nSkillPointType = (int) ESPTYPE.PLAY;			// #23624 2011.4.26 yyagi
 			this.n自動再生音量 = 80;
 			this.n手動再生音量 = 100;
 			this.bログ出力 = true;
@@ -1059,7 +1067,7 @@ namespace DTXMania
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
             sw.WriteLine();
 
-            sw.WriteLine("; 非フォーカス時のsleep値[ms]");	    			    // #23568 2011.11.04 ikanick add
+			sw.WriteLine( "; 非フォーカス時のsleep値(0-50ms)" );	  		    // #23568 2011.11.04 ikanick add
 			sw.WriteLine("; A sleep time[ms] while the window is inactive.");	//
 			sw.WriteLine("BackSleep={0}", this.n非フォーカス時スリープms);		// そのまま引用（苦笑）
             sw.WriteLine();											        	//
@@ -1070,7 +1078,7 @@ namespace DTXMania
 			sw.WriteLine( "; ドラム有効(0:OFF,1:ON)" );
 			sw.WriteLine( "Drums={0}", this.bDrums有効 ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine( "; 背景画像の半透明割合(0:透明～255:不透明)" );
+			sw.WriteLine( "; 背景画像の半透明割合(0:透明 - 255:不透明)" );
 			sw.WriteLine( "BGAlpha={0}", this.nBGAlpha );
 			sw.WriteLine();
 			sw.WriteLine( "; Missヒット時のゲージ減少割合(0:少, 1:普通, 2:大)" );
@@ -1139,13 +1147,13 @@ namespace DTXMania
 			sw.WriteLine( "; ベース演奏時にベース音を強調する (0:OFF, 1:ON)" );
 			sw.WriteLine( "SoundMonitorBass={0}", this.b演奏音を強調する.Bass ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine( "; ドラムの表示可能な最小コンボ数(1～99999)" );
+			sw.WriteLine( "; ドラムの表示可能な最小コンボ数(1-99999)" );
 			sw.WriteLine( "MinComboDrums={0}", this.n表示可能な最小コンボ数.Drums );
 			sw.WriteLine();
-			sw.WriteLine( "; ギターの表示可能な最小コンボ数(1～99999)" );
+			sw.WriteLine( "; ギターの表示可能な最小コンボ数(1-99999)" );
 			sw.WriteLine( "MinComboGuitar={0}", this.n表示可能な最小コンボ数.Guitar );
 			sw.WriteLine();
-			sw.WriteLine( "; ベースの表示可能な最小コンボ数(1～99999)" );
+			sw.WriteLine( "; ベースの表示可能な最小コンボ数(1-99999)" );
 			sw.WriteLine( "MinComboBass={0}", this.n表示可能な最小コンボ数.Bass );
 			sw.WriteLine();
 			sw.WriteLine( "; 演奏情報を表示する (0:OFF, 1:ON)" );
@@ -1163,10 +1171,10 @@ namespace DTXMania
 			sw.WriteLine( "; 選曲リストのフォントを太字にする (0:OFF, 1:ON)" );
 			sw.WriteLine( "SelectListFontBold={0}", this.b選曲リストフォントを太字にする ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine( "; 打音の音量(0～100%)" );
+			sw.WriteLine( "; 打音の音量(0-100%)" );
 			sw.WriteLine( "ChipVolume={0}", this.n手動再生音量 );
 			sw.WriteLine();
-			sw.WriteLine( "; 自動再生音の音量(0～100%)" );
+			sw.WriteLine( "; 自動再生音の音量(0-100%)" );
 			sw.WriteLine( "AutoChipVolume={0}", this.n自動再生音量 );
 			sw.WriteLine();
 			sw.WriteLine( "; ストイックモード(0:OFF, 1:ON)" );
@@ -1175,23 +1183,24 @@ namespace DTXMania
 			sw.WriteLine( "; シンバルフリーモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "CymbalFree={0}", this.bシンバルフリー ? 1 : 0 );
 			sw.WriteLine();
+			sw.WriteLine( "; 表示するスキルポイントの種類(0:演奏型スキル(Perfect重視), 1:ゲーム型スキル(Comboも加味))" );	// #23624 2011.4.26 yyagi
+			sw.WriteLine( "; Type of skill point to show." );
+			sw.WriteLine( "; (0:for playing(no Combo value is used to calc SP), 1:for game(also Combo is used to calc SP))" );
+			sw.WriteLine( "SkillPointType={0}", this.nSkillPointType );
+			sw.WriteLine();
 			sw.WriteLine( "; バッファ入力モード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BufferedInput={0}", this.bバッファ入力を行う ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine("; 判定タイミング調整(ドラム, ギター, ベース)(-99～0)[ms]");		// #23580 2011.1.3 yyagi
-			sw.WriteLine("; Revision value to adjust judgement timing for the drums, guitar and bass.");	//
+			sw.WriteLine("; 判定タイミング調整(ドラム, ギター, ベース)(-99-0ms)");		// #23580 2011.1.3 yyagi
+			sw.WriteLine("; Offset value to adjust judgement timing for the drums, guitar and bass.");	//
 			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs.Drums);		//
 			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs.Guitar);		//
 			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs.Bass);			//
 			sw.WriteLine();
-			sw.WriteLine( "; LC, HH, SD,...の入力切り捨て下限Velocity値(0～127)" );			// #23857 2011.1.31 yyagi
+			sw.WriteLine( "; LC, HH, SD,...の入力切り捨て下限Velocity値(0-127)" );			// #23857 2011.1.31 yyagi
 			sw.WriteLine( "; Minimum velocity value for LC, HH, SD, ... to accept." );		//
 			sw.WriteLine( "LCVelocityMin={0}", this.nVelocityMin.LC );						//
-			sw.WriteLine("HHVelocityMin={0}", this.nVelocityMin.HH );						//
-//			sw.WriteLine("; ハイハット以外の入力切り捨て下限Velocity値(0～127)");			// #23857 2010.12.12 yyagi
-//			sw.WriteLine("; Minimum velocity value to accept. (except HiHat)");				//
-//			sw.WriteLine("VelocityMin={0}", this.n切り捨て下限Velocity);					//
-//			sw.WriteLine();																	//
+			sw.WriteLine( "HHVelocityMin={0}", this.nVelocityMin.HH );						//
 			sw.WriteLine( "SDVelocityMin={0}", this.nVelocityMin.SD );						//
 			sw.WriteLine( "BDVelocityMin={0}", this.nVelocityMin.BD );						//
 			sw.WriteLine( "HTVelocityMin={0}", this.nVelocityMin.HT );						//
@@ -1284,7 +1293,7 @@ namespace DTXMania
 			sw.WriteLine( "; ベース譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)" );
 			sw.WriteLine( "BassScrollSpeed={0}", this.n譜面スクロール速度.Bass );
 			sw.WriteLine();
-			sw.WriteLine( "; 演奏速度(5～40)(→x5/20～x40/20)" );
+			sw.WriteLine( "; 演奏速度(5-40)(-> x5/20 - x40/20)" );
 			sw.WriteLine( "PlaySpeed={0}", this.n演奏速度 );
 			sw.WriteLine();
 			sw.WriteLine( "; ドラムCOMBO文字表示位置(0:左, 1:中, 2:右, 3:OFF)" );
@@ -1320,7 +1329,7 @@ namespace DTXMania
 			sw.WriteLine( ";-------------------" );
 			sw.WriteLine( "[HitRange]" );
 			sw.WriteLine();
-			sw.WriteLine( "; Perfect～Poor とみなされる範囲[ms]" );
+			sw.WriteLine( "; Perfect-Poor とみなされる範囲[ms]" );
 			sw.WriteLine( "Perfect={0}", this.nヒット範囲ms.Perfect );
 			sw.WriteLine( "Great={0}", this.nヒット範囲ms.Great );
 			sw.WriteLine( "Good={0}", this.nヒット範囲ms.Good );
@@ -1762,6 +1771,10 @@ namespace DTXMania
 											else if ( str3.Equals( "CymbalFree" ) )
 											{
 												this.bシンバルフリー = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SkillPointType" ) )				// #23624 2011.4.26 yyagi
+											{
+												this.nSkillPointType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, this.nSkillPointType );
 											}
 											else if ( str3.Equals( "InputAdjustTimeDrums" ) )		// #23580 2011.1.3 yyagi
 											{

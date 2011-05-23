@@ -595,15 +595,16 @@ namespace DTXMania
 												{
 													node.arスコア[ lv ].譜面情報.最大ランク[ i ] = (int)CScoreIni.ERANK.UNKNOWN;
 												}
-												node.arスコア[ lv ].譜面情報.最大スキル[ i ] = ini.stセクション[ num3 ].db演奏型スキル値;
+												node.arスコア[ lv ].譜面情報.最大演奏型スキル[ i ] = ini.stセクション[ num3 ].db演奏型スキル値;
+												node.arスコア[ lv ].譜面情報.最大ゲーム型スキル[ i ] = ini.stセクション[ num3 ].dbゲーム型スキル値;	// #23624 2011.5.10 yyagi
 												node.arスコア[ lv ].譜面情報.フルコンボ[ i ] = ini.stセクション[ num3 ].bフルコンボである;
 											}
 											node.arスコア[ lv ].譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
 											node.arスコア[ lv ].譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
 											node.arスコア[ lv ].譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
-											for( int j = 0; j < 5; j++ )
+											for( int i = 0; i < 5; i++ )
 											{
-												node.arスコア[ lv ].譜面情報.演奏履歴[ j ] = ini.stファイル.History[ j ];
+												node.arスコア[ lv ].譜面情報.演奏履歴[ i ] = ini.stファイル.History[ i ];
 											}
 											if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
 											{
@@ -645,9 +646,12 @@ namespace DTXMania
 			cスコア.譜面情報.最大ランク.Drums = br.ReadInt32();
 			cスコア.譜面情報.最大ランク.Guitar = br.ReadInt32();
 			cスコア.譜面情報.最大ランク.Bass = br.ReadInt32();
-			cスコア.譜面情報.最大スキル.Drums = br.ReadDouble();
-			cスコア.譜面情報.最大スキル.Guitar = br.ReadDouble();
-			cスコア.譜面情報.最大スキル.Bass = br.ReadDouble();
+			cスコア.譜面情報.最大演奏型スキル.Drums = br.ReadDouble();
+			cスコア.譜面情報.最大演奏型スキル.Guitar = br.ReadDouble();
+			cスコア.譜面情報.最大演奏型スキル.Bass = br.ReadDouble();
+			cスコア.譜面情報.最大ゲーム型スキル.Drums = br.ReadDouble();		// #23624 2011.5.10 yyagi
+			cスコア.譜面情報.最大ゲーム型スキル.Guitar = br.ReadDouble();		//
+			cスコア.譜面情報.最大ゲーム型スキル.Bass = br.ReadDouble();			//
 			cスコア.譜面情報.フルコンボ.Drums = br.ReadBoolean();
 			cスコア.譜面情報.フルコンボ.Guitar = br.ReadBoolean();
 			cスコア.譜面情報.フルコンボ.Bass = br.ReadBoolean();
@@ -661,7 +665,7 @@ namespace DTXMania
 			cスコア.譜面情報.演奏履歴.行5 = br.ReadString();
 			cスコア.譜面情報.レベルを非表示にする = br.ReadBoolean();
 			cスコア.譜面情報.曲種別 = (CDTX.E種別) br.ReadInt32();
-//			cスコア.譜面情報.bpm = br.ReadDouble();
+			cスコア.譜面情報.bpm = br.ReadDouble();
 			return cスコア;
 		}
 		//-----------------
@@ -706,7 +710,7 @@ namespace DTXMania
 									c曲リストノード.arスコア[ i ].譜面情報.レベル.Bass = cdtx.LEVEL.Bass;
 									c曲リストノード.arスコア[ i ].譜面情報.レベルを非表示にする = cdtx.HIDDENLEVEL;
 									c曲リストノード.arスコア[ i ].譜面情報.曲種別 = cdtx.e種別;
-//									c曲リストノード.arスコア[ i ].譜面情報.bpm = cdtx.BPM;
+									c曲リストノード.arスコア[ i ].譜面情報.bpm = cdtx.BPM;
 									this.nファイルから反映できたスコア数++;
 									cdtx.On非活性化();
 									if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
@@ -726,7 +730,7 @@ namespace DTXMania
 										builder.Append( ", lvBs=" + c曲リストノード.arスコア[ i ].譜面情報.レベル.Bass );
 										builder.Append( ", lvHide=" + c曲リストノード.arスコア[ i ].譜面情報.レベルを非表示にする );
 										builder.Append( ", type=" + c曲リストノード.arスコア[ i ].譜面情報.曲種別 );
-//										builder.Append( ", bpm=" + c曲リストノード.arスコア[ i ].譜面情報.bpm );
+										builder.Append( ", bpm=" + c曲リストノード.arスコア[ i ].譜面情報.bpm );
 										Trace.TraceInformation( builder.ToString() );
 									}
 								}
@@ -748,24 +752,25 @@ namespace DTXMania
 									ini.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
 									for( int j = 0; j < 3; j++ )
 									{
-										int num3 = ( j * 2 ) + 1;
-										if( ( ini.stセクション[ num3 ].b演奏にMIDI入力を使用した || ini.stセクション[ num3 ].b演奏にキーボードを使用した ) || ( ini.stセクション[ num3 ].b演奏にジョイパッドを使用した || ini.stセクション[ num3 ].b演奏にマウスを使用した ) )
+										int hiskill = ( j * 3 ) + 1;
+										if( ( ini.stセクション[ hiskill ].b演奏にMIDI入力を使用した || ini.stセクション[ hiskill ].b演奏にキーボードを使用した ) || ( ini.stセクション[ hiskill ].b演奏にジョイパッドを使用した || ini.stセクション[ hiskill ].b演奏にマウスを使用した ) )
 										{
-											c曲リストノード.arスコア[ i ].譜面情報.最大ランク[ j ] = CScoreIni.tランク値を計算して返す( ini.stセクション[ num3 ].n全チップ数, ini.stセクション[ num3 ].nPerfect数, ini.stセクション[ num3 ].nGreat数, ini.stセクション[ num3 ].nGood数, ini.stセクション[ num3 ].nPoor数, ini.stセクション[ num3 ].nMiss数 );
+											c曲リストノード.arスコア[ i ].譜面情報.最大ランク[ j ] = CScoreIni.tランク値を計算して返す( ini.stセクション[ hiskill ].n全チップ数, ini.stセクション[ hiskill ].nPerfect数, ini.stセクション[ hiskill ].nGreat数, ini.stセクション[ hiskill ].nGood数, ini.stセクション[ hiskill ].nPoor数, ini.stセクション[ hiskill ].nMiss数 );
 										}
 										else
 										{
-											c曲リストノード.arスコア[ i ].譜面情報.最大ランク[ j ] = 0x63;
+											c曲リストノード.arスコア[ i ].譜面情報.最大ランク[ j ] = (int) CScoreIni.ERANK.UNKNOWN;	// 0x63;
 										}
-										c曲リストノード.arスコア[ i ].譜面情報.最大スキル[ j ] = ini.stセクション[ num3 ].db演奏型スキル値;
-										c曲リストノード.arスコア[ i ].譜面情報.フルコンボ[ j ] = ini.stセクション[ num3 ].bフルコンボである;
+										c曲リストノード.arスコア[ i ].譜面情報.最大演奏型スキル[ j ] = ini.stセクション[ hiskill ].db演奏型スキル値;
+										c曲リストノード.arスコア[ i ].譜面情報.最大ゲーム型スキル[ j ] = ini.stセクション[ hiskill ].dbゲーム型スキル値;	// #23624 2011.5.10 yyagi
+										c曲リストノード.arスコア[ i ].譜面情報.フルコンボ[ j ] = ini.stセクション[ hiskill ].bフルコンボである;
 									}
 									c曲リストノード.arスコア[ i ].譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
 									c曲リストノード.arスコア[ i ].譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
 									c曲リストノード.arスコア[ i ].譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
-									for( int k = 0; k < 5; k++ )
+									for( int j = 0; j < 5; j++ )
 									{
-										c曲リストノード.arスコア[ i ].譜面情報.演奏履歴[ k ] = ini.stファイル.History[ k ];
+										c曲リストノード.arスコア[ i ].譜面情報.演奏履歴[ j ] = ini.stファイル.History[ j ];
 									}
 								}
 								catch
@@ -951,9 +956,12 @@ namespace DTXMania
 					bw.Write( node.arスコア[ i ].譜面情報.最大ランク.Drums );
 					bw.Write( node.arスコア[ i ].譜面情報.最大ランク.Guitar );
 					bw.Write( node.arスコア[ i ].譜面情報.最大ランク.Bass );
-					bw.Write( node.arスコア[ i ].譜面情報.最大スキル.Drums );
-					bw.Write( node.arスコア[ i ].譜面情報.最大スキル.Guitar );
-					bw.Write( node.arスコア[ i ].譜面情報.最大スキル.Bass );
+					bw.Write( node.arスコア[ i ].譜面情報.最大演奏型スキル.Drums );
+					bw.Write( node.arスコア[ i ].譜面情報.最大演奏型スキル.Guitar );
+					bw.Write( node.arスコア[ i ].譜面情報.最大演奏型スキル.Bass );
+					bw.Write( node.arスコア[ i ].譜面情報.最大ゲーム型スキル.Drums );	// #23624 2011.5.10 yyagi
+					bw.Write( node.arスコア[ i ].譜面情報.最大ゲーム型スキル.Guitar );	//
+					bw.Write( node.arスコア[ i ].譜面情報.最大ゲーム型スキル.Bass );	//
 					bw.Write( node.arスコア[ i ].譜面情報.フルコンボ.Drums );
 					bw.Write( node.arスコア[ i ].譜面情報.フルコンボ.Guitar );
 					bw.Write( node.arスコア[ i ].譜面情報.フルコンボ.Bass );
@@ -967,7 +975,7 @@ namespace DTXMania
 					bw.Write( node.arスコア[ i ].譜面情報.演奏履歴.行5 );
 					bw.Write( node.arスコア[ i ].譜面情報.レベルを非表示にする );
 					bw.Write( (int) node.arスコア[ i ].譜面情報.曲種別 );
-//					bw.Write( node.arスコア[ i ].譜面情報.bpm );
+					bw.Write( node.arスコア[ i ].譜面情報.bpm );
 					this.nSongsDBへ出力できたスコア数++;
 				}
 			}
@@ -1332,8 +1340,8 @@ namespace DTXMania
 						return order * n1.arスコア[ 0 ].ファイル情報.フォルダの絶対パス.CompareTo( n2.arスコア[ 0 ].ファイル情報.フォルダの絶対パス );
 					}
 					#endregion
-					DateTime nSumPlayCountN1 = DateTime.Parse("0001/01/01 12:00:01.000");
-					DateTime nSumPlayCountN2 = DateTime.Parse("0001/01/01 12:00:01.000");
+					DateTime nSumPlayCountN1 = DateTime.MinValue;
+					DateTime nSumPlayCountN2 = DateTime.MinValue;
 					if ( n1.arスコア[ nL12345 ] != null )
 					{
 						nSumPlayCountN1 = n1.arスコア[ nL12345 ].ファイル情報.最終更新日時;
@@ -1351,7 +1359,7 @@ namespace DTXMania
 				} );
 				foreach ( C曲リストノード c曲リストノード in ノードリスト )
 				{
-					DateTime nSumPlayCountN1 = DateTime.Parse( "0001/01/01 12:00:01.000" );
+					DateTime nSumPlayCountN1 = DateTime.MinValue;
 					if ( c曲リストノード.arスコア[ nL12345 ] != null )
 					{
 						nSumPlayCountN1 = c曲リストノード.arスコア[ nL12345 ].ファイル情報.最終更新日時;
@@ -1456,7 +1464,7 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 
 		#region [ private ]
 		//-----------------
-		private const string SONGSDB_VERSION = "SongsDB2";
+		private const string SONGSDB_VERSION = "SongsDB3";		// #23624 2011.5.23 yyagi: BPMとゲーム型スキル追加に伴い、バージョンをインクリメント
 
 		private int t比較0_共通( C曲リストノード n1, C曲リストノード n2 )
 		{
