@@ -29,6 +29,14 @@ namespace DTXMania
 		{
 			get { return (CDTXMania.app != null ) ? CDTXMania.app.Device : null; }
 		}
+		public Format TextureFormat
+		{
+			get { return CDTXMania.TextureFormat; }
+		}
+		public CTimer Timer
+		{
+			get { return CDTXMania.Timer; }
+		}
 		public CSound管理 Sound管理
 		{
 			get { return CDTXMania.Sound管理; }
