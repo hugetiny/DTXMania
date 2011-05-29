@@ -438,8 +438,8 @@ namespace DTXMania
 							{	// ギター[Pick]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.GUITAR, EパッドFlag.Pick );
 								// Pick, G, G, Pick で、ギターとベースを入れ替え
-								EパッドFlag[] comSwapGtBs = new EパッドFlag[ 4 ] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
-								if ( CommandHistory.CheckCommand( comSwapGtBs, E楽器パート.GUITAR ) )
+								EパッドFlag[] comSwapGtBs1 = new EパッドFlag[ 4 ] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
+								if ( CommandHistory.CheckCommand( comSwapGtBs1, E楽器パート.GUITAR ) )
 								{
 									Debug.WriteLine( "ギターとベースの入れ替え1" );
 									CDTXMania.Skin.sound変更音.t再生する();
@@ -448,12 +448,12 @@ namespace DTXMania
 									CDTXMania.ConfigIni.bIsSwappedGuitarBass = !CDTXMania.ConfigIni.bIsSwappedGuitarBass;
 								}
 							}
-							if ( CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.Pick ) && !CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.G ) )
+							if ( CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.Pick ) && !CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.G ) )
 							{	// ベース[Pick]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.BASS, EパッドFlag.Pick );
 								// Pick, G, G, Pick で、ギターとベースを入れ替え
-								EパッドFlag[] comSwapGtBs = new EパッドFlag[ 4 ] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
-								if ( CommandHistory.CheckCommand( comSwapGtBs, E楽器パート.BASS ) )
+								EパッドFlag[] comSwapGtBs1 = new EパッドFlag[ 4 ] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
+								if ( CommandHistory.CheckCommand( comSwapGtBs1, E楽器パート.BASS ) )
 								{
 									Debug.WriteLine( "ギターとベースの入れ替え2" );
 									CDTXMania.Skin.sound変更音.t再生する();
@@ -483,7 +483,7 @@ namespace DTXMania
 								if ( CommandHistory.CheckCommand( comSortBs, E楽器パート.BASS ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
-									Debug.WriteLine( "ソート画面発動(gt)" );
+									Debug.WriteLine( "ソート画面発動(bs)" );
 									//this.actSortSongs.bIsActiveSortMenu = !this.actSortSongs.bIsActiveSortMenu;
 									this.actSortSongs.tActivateSortMenu( ref this.act曲リスト );
 								}
@@ -656,10 +656,12 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 				int stciCount = stct.Count;
 				if ( stciCount < targetCount )
 				{
+//Debug.WriteLine("NOT start checking...stciCount=" + stciCount + ", targetCount=" + targetCount);
 					return false;
 				}
 
 				long curTime = CDTXMania.Timer.n現在時刻;
+//Debug.WriteLine("Start checking...targetCount=" + targetCount);
 				for ( int i = targetCount - 1, j = stciCount - 1; i >= 0; i--, j-- )
 				{
 					if ( _ePad[ i ] != stct[ j ].ePad )
