@@ -1854,11 +1854,76 @@ namespace DTXMania
 		}
 		protected abstract void t進行描画・チップ・ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected abstract void t進行描画・チップ・ギター( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
-		protected abstract void t進行描画・チップ・ギター・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
+		protected virtual void t進行描画・チップ・ギター・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		{
+			if ( configIni.bGuitar有効 )
+			{
+				if ( configIni.bSudden.Guitar )
+				{
+					pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
+				}
+				if ( configIni.bHidden.Guitar && ( pChip.nバーからの距離dot.Guitar < 100 ) )
+				{
+					pChip.b可視 = false;
+				}
+				//
+				// ここにチップ更新処理が入る(overrideで入れる)。といっても座標とチップサイズが違うだけで処理はまるまる同じ。
+				//
+				if ( !pChip.bHit && ( pChip.nバーからの距離dot.Guitar < 0 ) )
+				{
+					if ( pChip.nバーからの距離dot.Guitar < -234 )	// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec). 
+					{
+						pChip.bHit = true;
+					}
+					if ( configIni.bAutoPlay.Guitar )
+					{
+						pChip.bHit = true;							// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
+						this.actWailingBonus.Start( E楽器パート.GUITAR, this.r現在の歓声Chip.Guitar );
+					}
+				}
+				return;
+			}
+			pChip.bHit = true;
+
+		}
 		protected abstract void t進行描画・チップ・フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected abstract void t進行描画・チップ・小節線( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected abstract void t進行描画・チップ・ベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
-		protected abstract void t進行描画・チップ・ベース・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
+		protected virtual void t進行描画・チップ・ベース・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		{
+			if ( configIni.bGuitar有効 )
+			{
+				if ( configIni.bSudden.Bass)
+				{
+					pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;
+				}
+				if ( configIni.bHidden.Bass && ( pChip.nバーからの距離dot.Bass < 100 ) )
+				{
+					pChip.b可視 = false;
+				}
+				//
+				// ここにチップ更新処理が入る(overrideで入れる)。といっても座標とチップサイズが違うだけで処理はまるまる同じ。
+				//
+				if ( !pChip.bHit && ( pChip.nバーからの距離dot.Bass < 0 ) )
+				{
+					if ( pChip.nバーからの距離dot.Bass < -234 )		// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec).
+					{
+						pChip.bHit = true;
+					}
+					//
+					// ここにチップ更新処理が入る(overrideで入れる)。といっても座標とチップサイズが違うだけで処理はまるまる同じ。
+					//
+					
+					if ( configIni.bAutoPlay.Bass )
+					{
+						this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
+						pChip.bHit = true;							// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
+					}
+				}
+				return;
+			}
+			pChip.bHit = true;
+		}
 		protected abstract void t進行描画・チップ・空打ち音設定・ドラム( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected void t進行描画・チップアニメ()
 		{

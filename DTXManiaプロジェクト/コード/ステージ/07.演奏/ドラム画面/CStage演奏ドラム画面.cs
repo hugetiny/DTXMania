@@ -4140,14 +4140,16 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.bSudden.Guitar )
-				{
-					pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
-				}
-				if ( configIni.bHidden.Guitar && ( pChip.nバーからの距離dot.Guitar < 100 ) )
-				{
-					pChip.b可視 = false;
-				}
+				//if ( configIni.bSudden.Guitar )
+				//{
+				//    pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
+				//}
+				//if ( configIni.bHidden.Guitar && ( pChip.nバーからの距離dot.Guitar < 100 ) )
+				//{
+				//    pChip.b可視 = false;
+				//}
+
+				// 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
 				if ( !pChip.bHit && pChip.b可視 )
 				{
 					int num14 = 0x19;
@@ -4174,17 +4176,23 @@ namespace DTXMania
 						}
 					}
 				}
-				if ( !pChip.bHit && ( pChip.nバーからの距離dot.Guitar < 0 ) )
-				{
-					pChip.bHit = true;
-					if ( configIni.bAutoPlay.Guitar )
-					{
-						this.actWailingBonus.Start( E楽器パート.GUITAR, this.r現在の歓声Chip.Guitar );
-					}
-				}
-				return;
+				//    if ( !pChip.bHit && ( pChip.nバーからの距離dot.Guitar < 0 ) )
+				//    {
+				//        if ( pChip.nバーからの距離dot.Guitar < -234 )	// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec). 
+				//        {
+				//            pChip.bHit = true;
+				//        }
+				//        if ( configIni.bAutoPlay.Guitar )
+				//        {
+				//            pChip.bHit = true;						// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
+				//            this.actWailingBonus.Start( E楽器パート.GUITAR, this.r現在の歓声Chip.Guitar );
+				//        }
+				//    }
+				//    return;
+				//}
+				//pChip.bHit = true;
 			}
-			pChip.bHit = true;
+			base.t進行描画・チップ・ギター・ウェイリング( configIni, ref dTX, ref pChip );
 		}
 		protected override void t進行描画・チップ・フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
@@ -4335,51 +4343,63 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.bSudden.Bass )
-				{
-					pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;
-				}
-				if ( configIni.bHidden.Bass && ( pChip.nバーからの距離dot.Bass < 100 ) )
-				{
-					pChip.b可視 = false;
-				}
+				//if ( configIni.bSudden.Bass )
+				//{
+				//    pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;
+				//}
+				//if ( configIni.bHidden.Bass && ( pChip.nバーからの距離dot.Bass < 100 ) )
+				//{
+				//    pChip.b可視 = false;
+				//}
+
+				//
+				// 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
+				//
 				if ( !pChip.bHit && pChip.b可視 )
 				{
-					int num19 = 0x19;
-					int num20 = configIni.bReverse.Bass ? ( 0x176 - pChip.nバーからの距離dot.Bass ) : ( 0x5f + pChip.nバーからの距離dot.Bass );
-					int num21 = num20 - 0x39;
-					int num22 = 0;
-					if ( ( num21 < ( 0x163 + num19 ) ) && ( num21 > -num19 ) )
+					int[] y_base = { 0x5f, 0x176 };
+
+					const int num15 = 0x19;
+					int y = configIni.bReverse.Bass ? ( y_base[1] - pChip.nバーからの距離dot.Bass ) : ( y_base[1] + pChip.nバーからの距離dot.Bass );
+					int num17 = y - 0x39;
+					int num18 = 0;
+					if ( ( num17 < ( 0x163 + num15 ) ) && ( num17 > -num15 ) )
 					{
-						int num23 = this.ctWailingチップ模様アニメ.n現在の値;
-						Rectangle rectangle6 = new Rectangle( 0x10c + ( num23 * 20 ), 0xae, 20, 50 );
-						if ( num21 < num19 )
+						int c = this.ctWailingチップ模様アニメ.n現在の値;
+						Rectangle rectangle6 = new Rectangle( 0x10c + ( c * 20 ), 0xae, 20, 50 );
+						if ( num17 < num15 )
 						{
-							rectangle6.Y += num19 - num21;
-							rectangle6.Height -= num19 - num21;
-							num22 = num19 - num21;
+							rectangle6.Y += num15 - num17;
+							rectangle6.Height -= num15 - num17;
+							num18 = num15 - num17;
 						}
-						if ( num21 > ( 0x163 - num19 ) )
+						if ( num17 > ( 0x163 - num15 ) )
 						{
-							rectangle6.Height -= num21 - ( 0x163 - num19 );
+							rectangle6.Height -= num17 - ( 0x163 - num15 );
 						}
 						if ( ( rectangle6.Bottom > rectangle6.Top ) && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, 0x1df, ( num20 - num19 ) + num22, rectangle6 );
+							this.txチップ.t2D描画( CDTXMania.app.Device, 0x1df, ( y - num15 ) + num18, rectangle6 );
 						}
 					}
 				}
-				if ( !pChip.bHit && ( pChip.nバーからの距離dot.Bass < 0 ) )
-				{
-					pChip.bHit = true;
-					if ( configIni.bAutoPlay.Bass )
-					{
-						this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
-					}
-				}
-				return;
+				//    if ( !pChip.bHit && ( pChip.nバーからの距離dot.Bass < 0 ) )
+				//    {
+				//        if ( pChip.nバーからの距離dot.Bass < -234 )	// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec).
+				//        {
+				//            pChip.bHit = true;
+				//        }
+				//        if ( configIni.bAutoPlay.Bass )
+				//        {
+				//            this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
+				//            pChip.bHit = true;						// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
+				//        }
+				//    }
+				//    return;
+				//}
+				//pChip.bHit = true;
 			}
-			pChip.bHit = true;
+				base.t進行描画・チップ・ベース・ウェイリング( configIni, ref dTX, ref pChip);
 		}
 		protected override void t進行描画・チップ・空打ち音設定・ドラム( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{

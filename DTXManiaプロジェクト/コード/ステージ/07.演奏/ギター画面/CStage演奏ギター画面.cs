@@ -2395,53 +2395,59 @@ namespace DTXMania
 		}
 		protected override void t進行描画・チップ・ギター・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
-			if( configIni.bGuitar有効 )
+			if ( configIni.bGuitar有効 )
 			{
-				if( configIni.bSudden.Guitar )
-				{
-					pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
-				}
-				if( configIni.bHidden.Guitar && ( pChip.nバーからの距離dot.Guitar < 100 ) )
-				{
-					pChip.b可視 = false;
-				}
-				if( !pChip.bHit && pChip.b可視 )
+				//if ( configIni.bSudden.Guitar )
+				//{
+				//    pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
+				//}
+				//if ( configIni.bHidden.Guitar && ( pChip.nバーからの距離dot.Guitar < 100 ) )
+				//{
+				//    pChip.b可視 = false;
+				//}
+
+				//
+				// 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
+				//
+				if ( !pChip.bHit && pChip.b可視 )
 				{
 					int num10 = 0x19;
 					int num11 = configIni.bReverse.Guitar ? ( 0x171 - pChip.nバーからの距離dot.Guitar ) : ( 40 + pChip.nバーからの距離dot.Guitar );
 					int num12 = num11;
 					int num13 = 0;
-					if( ( num12 < ( 0x199 + num10 ) ) && ( num12 > -num10 ) )
+					if ( ( num12 < ( 0x199 + num10 ) ) && ( num12 > -num10 ) )
 					{
 						int num14 = this.ctWailingチップ模様アニメ.n現在の値;
 						Rectangle rectangle5 = new Rectangle( 0x60 + ( num14 * 20 ), 0, 20, 50 );
-						if( num12 < num10 )
+						if ( num12 < num10 )
 						{
 							rectangle5.Y += num10 - num12;
 							rectangle5.Height -= num10 - num12;
 							num13 = num10 - num12;
 						}
-						if( num12 > ( 0x199 - num10 ) )
+						if ( num12 > ( 0x199 - num10 ) )
 						{
 							rectangle5.Height -= num12 - ( 0x199 - num10 );
 						}
-						if( ( rectangle5.Bottom > rectangle5.Top ) && ( this.txチップ != null ) )
+						if ( ( rectangle5.Bottom > rectangle5.Top ) && ( this.txチップ != null ) )
 						{
 							this.txチップ.t2D描画( CDTXMania.app.Device, 0x8b, ( num11 - num10 ) + num13, rectangle5 );
 						}
 					}
 				}
-				if( !pChip.bHit && ( pChip.nバーからの距離dot.Guitar < 0 ) )
-				{
-					pChip.bHit = true;
-					if( configIni.bAutoPlay.Guitar )
-					{
-						this.actWailingBonus.Start( E楽器パート.GUITAR, this.r現在の歓声Chip.Guitar );
-					}
-				}
-				return;
+				//    if( !pChip.bHit && ( pChip.nバーからの距離dot.Guitar < 0 ) )
+				//    {
+				//        pChip.bHit = true;
+				//        if( configIni.bAutoPlay.Guitar )
+				//        {
+				//            this.actWailingBonus.Start( E楽器パート.GUITAR, this.r現在の歓声Chip.Guitar );
+				//        }
+				//    }
+				//    return;
+				//}
+				//pChip.bHit = true;
 			}
-			pChip.bHit = true;
+			base.t進行描画・チップ・ギター・ウェイリング( configIni, ref dTX, ref pChip );
 		}
 		protected override void t進行描画・チップ・フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
@@ -2568,24 +2574,30 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.bSudden.Bass )
-				{
-					pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;
-				}
-				if ( configIni.bHidden.Bass && ( pChip.nバーからの距離dot.Bass < 100 ) )
-				{
-					pChip.b可視 = false;
-				}
+				//if ( configIni.bSudden.Bass )
+				//{
+				//    pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;
+				//}
+				//if ( configIni.bHidden.Bass && ( pChip.nバーからの距離dot.Bass < 100 ) )
+				//{
+				//    pChip.b可視 = false;
+				//}
+
+				//
+				// 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
+				//
 				if ( !pChip.bHit && pChip.b可視 )
 				{
-					int num15 = 0x19;
-					int num16 = configIni.bReverse.Bass ? ( 0x171 - pChip.nバーからの距離dot.Bass ) : ( 40 + pChip.nバーからの距離dot.Bass );
-					int num17 = num16;
+					int[] y_base = { 40, 0x171 };
+
+					const int num15 = 0x19;
+					int y = configIni.bReverse.Bass ? ( y_base[1] - pChip.nバーからの距離dot.Bass ) : ( y_base[0] + pChip.nバーからの距離dot.Bass );
+					int num17 = y;
 					int num18 = 0;
 					if ( ( num17 < ( 0x199 + num15 ) ) && ( num17 > -num15 ) )
 					{
-						int num19 = this.ctWailingチップ模様アニメ.n現在の値;
-						Rectangle rectangle6 = new Rectangle( 0x60 + ( num19 * 20 ), 0, 20, 50 );
+						int c = this.ctWailingチップ模様アニメ.n現在の値;
+						Rectangle rectangle6 = new Rectangle( 0x60 + ( c * 20 ), 0, 20, 50 );
 						if ( num17 < num15 )
 						{
 							rectangle6.Y += num15 - num17;
@@ -2598,21 +2610,23 @@ namespace DTXMania
 						}
 						if ( ( rectangle6.Bottom > rectangle6.Top ) && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, 0x251, ( num16 - num15 ) + num18, rectangle6 );
+							this.txチップ.t2D描画( CDTXMania.app.Device, 0x251, ( y - num15 ) + num18, rectangle6 );
 						}
 					}
 				}
-				if ( !pChip.bHit && ( pChip.nバーからの距離dot.Bass < 0 ) )
-				{
-					pChip.bHit = true;
-					if ( configIni.bAutoPlay.Bass )
-					{
-						this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
-					}
-				}
-				return;
+				//    if ( !pChip.bHit && ( pChip.nバーからの距離dot.Bass < 0 ) )
+				//    {
+				//        pChip.bHit = true;
+				//        if ( configIni.bAutoPlay.Bass )
+				//        {
+				//            this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
+				//        }
+				//    }
+				//    return;
+				//}
+				//pChip.bHit = true;
+				base.t進行描画・チップ・ベース・ウェイリング( configIni, ref dTX, ref pChip );
 			}
-			pChip.bHit = true;
 		}
 		protected override void t進行描画・チップ・空打ち音設定・ドラム( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
