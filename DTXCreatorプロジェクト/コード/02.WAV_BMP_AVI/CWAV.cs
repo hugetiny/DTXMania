@@ -29,7 +29,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public void tコピーfrom( CWAV wc )
 		{
 			this.strラベル名 = wc.strラベル名;
-			if( ( wc.nWAV番号1to1295 < 1 ) || ( wc.nWAV番号1to1295 > 0x50f ) )
+			if( ( wc.nWAV番号1to1295 < 1 ) || ( wc.nWAV番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "WAV番号が範囲を超えています。-> [" + this.nWAV番号1to1295 + "]" );
 			}

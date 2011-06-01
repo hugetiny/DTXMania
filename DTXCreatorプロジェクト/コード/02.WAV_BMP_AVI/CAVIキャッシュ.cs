@@ -23,7 +23,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public CAVI tAVIをキャッシュから検索して返す( int nAVI番号1to1295 )
 		{
 			CAVI cavi;
-			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 0x50f ) )
+			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "AVI番号が範囲を超えています。-> [" + nAVI番号1to1295 + "]" );
 			}
@@ -35,7 +35,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		public CAVI tAVIをキャッシュから検索して返す・なければ新規生成する( int nAVI番号1to1295 )
 		{
-			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 0x50f ) )
+			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "AVI番号が範囲を超えています。-> [" + nAVI番号1to1295 + "]" );
 			}
@@ -50,7 +50,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		public void tAVIをキャッシュから削除する( int nAVI番号1to1295 )
 		{
-			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 0x50f ) )
+			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "AVI番号が範囲を超えています。-> [" + nAVI番号1to1295 + "]" );
 			}

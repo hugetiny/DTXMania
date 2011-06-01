@@ -113,38 +113,38 @@ namespace DTXCreator.譜面
 		}
 		public int nレーン名に対応するレーン番号を返す( string strレーン名 )
 		{
-			int num = 0;
+			int nLaneNo = 0;
 			foreach( Cレーン cレーン in this.listレーン )
 			{
 				if( cレーン.strレーン名.Equals( strレーン名 ) )
 				{
-					return num;
+					return nLaneNo;
 				}
-				num++;
+				nLaneNo++;
 			}
 			return -1;
 		}
 		public int n現在の最大の小節番号を返す()
 		{
-			int num = -1;
+			int nBar = -1;
 			foreach( KeyValuePair<int, C小節> pair in this.dic小節 )
 			{
 				C小節 c小節 = pair.Value;
-				if( c小節.n小節番号0to3599 > num )
+				if( c小節.n小節番号0to3599 > nBar )
 				{
-					num = c小節.n小節番号0to3599;
+					nBar = c小節.n小節番号0to3599;
 				}
 			}
-			return num;
+			return nBar;
 		}
 		public int n全小節の高さdotの合計を返す()
 		{
-			int num = 0;
+			int nHeights = 0;
 			foreach( KeyValuePair<int, C小節> pair in this.dic小節 )
 			{
-				num += pair.Value.n小節長倍率を考慮した現在の小節の高さdot;
+				nHeights += pair.Value.n小節長倍率を考慮した現在の小節の高さdot;
 			}
-			return num;
+			return nHeights;
 		}
 		public int n全小節の高さgridの合計を返す()
 		{

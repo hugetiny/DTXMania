@@ -536,11 +536,11 @@ namespace DTXCreator.譜面
 			if( c検索ダイアログ.ShowDialog() == DialogResult.OK )
 			{
 				int num3 = c検索ダイアログ.bチップ範囲指定CheckBoxがチェックされている ? c検索ダイアログ.nチップ範囲開始番号 : 0;
-				int num4 = c検索ダイアログ.bチップ範囲指定CheckBoxがチェックされている ? c検索ダイアログ.nチップ範囲終了番号 : 0x50f;
+				int num4 = c検索ダイアログ.bチップ範囲指定CheckBoxがチェックされている ? c検索ダイアログ.nチップ範囲終了番号 : 36 * 36 - 1;
 				if( ( c検索ダイアログ.bチップ範囲指定CheckBoxがチェックされている && ( num3 < 0 ) ) && ( num4 < 0 ) )
 				{
 					num3 = 0;
-					num4 = 0x50f;
+					num4 = 36 * 36 - 1;
 				}
 				int num5 = c検索ダイアログ.b小節範囲指定CheckBoxがチェックされている ? c検索ダイアログ.n小節範囲開始番号 : 0;
 				int num6 = c検索ダイアログ.b小節範囲指定CheckBoxがチェックされている ? c検索ダイアログ.n小節範囲終了番号 : this._Form.mgr譜面管理者.n現在の最大の小節番号を返す();

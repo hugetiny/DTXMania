@@ -28,7 +28,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			this.bテクスチャ = bc.bテクスチャ;
 			this.strラベル名 = bc.strラベル名;
-			if( ( bc.nBMP番号1to1295 < 1 ) || ( bc.nBMP番号1to1295 > 0x50f ) )
+			if( ( bc.nBMP番号1to1295 < 1 ) || ( bc.nBMP番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "BMP番号が範囲を超えています。-> [" + this.nBMP番号1to1295 + "]" );
 			}

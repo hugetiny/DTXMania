@@ -26,7 +26,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public void tコピーfrom( CAVI ac )
 		{
 			this.strラベル名 = ac.strラベル名;
-			if( ( ac.nAVI番号1to1295 < 1 ) || ( ac.nAVI番号1to1295 > 0x50f ) )
+			if( ( ac.nAVI番号1to1295 < 1 ) || ( ac.nAVI番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "AVI番号が範囲を超えています。-> [" + this.nAVI番号1to1295 + "]" );
 			}

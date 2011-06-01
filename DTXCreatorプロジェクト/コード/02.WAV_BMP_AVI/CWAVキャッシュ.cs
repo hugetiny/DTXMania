@@ -23,7 +23,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public CWAV tWAVをキャッシュから検索して返す( int nWAV番号1to1295 )
 		{
 			CWAV cwav;
-			if( ( nWAV番号1to1295 < 1 ) || ( nWAV番号1to1295 > 0x50f ) )
+			if( ( nWAV番号1to1295 < 1 ) || ( nWAV番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "WAV番号が範囲を超えています。-> [" + nWAV番号1to1295 + "]" );
 			}
@@ -35,7 +35,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		public CWAV tWAVをキャッシュから検索して返す・なければ新規生成する( int nWAV番号1to1295 )
 		{
-			if( ( nWAV番号1to1295 < 1 ) || ( nWAV番号1to1295 > 0x50f ) )
+			if( ( nWAV番号1to1295 < 1 ) || ( nWAV番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "WAV番号が範囲を超えています。-> [" + nWAV番号1to1295 + "]" );
 			}
@@ -55,7 +55,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		public void tWAVをキャッシュから削除する( int nWAV番号1to1295 )
 		{
-			if( ( nWAV番号1to1295 < 1 ) || ( nWAV番号1to1295 > 0x50f ) )
+			if( ( nWAV番号1to1295 < 1 ) || ( nWAV番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "WAV番号が範囲を超えています。-> [" + nWAV番号1to1295 + "]" );
 			}

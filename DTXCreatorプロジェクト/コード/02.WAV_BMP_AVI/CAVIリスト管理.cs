@@ -31,7 +31,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		public ListViewItem tAVI番号に対応するListViewItemを返す( int nAVI番号1to1295 )
 		{
-			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 0x50f ) )
+			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "AVI番号が範囲外です。--->[" + nAVI番号1to1295 + "]" );
 			}
@@ -87,7 +87,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		public void tファイル名の相対パス化( string str基本フォルダ名 )
 		{
-			for( int i = 1; i <= 0x50f; i++ )
+			for( int i = 1; i <= 36 * 36 - 1; i++ )
 			{
 				CAVI cavi = this.AVIキャッシュ.tAVIをキャッシュから検索して返す( i );
 				if( ( cavi != null ) && ( cavi.strファイル名.Length > 0 ) )

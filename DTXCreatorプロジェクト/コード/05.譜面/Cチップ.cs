@@ -67,7 +67,7 @@ namespace DTXCreator.譜面
 			}
 			set
 			{
-				if( ( value < 0 ) || ( value > 0x50f ) )
+				if( ( value < 0 ) || ( value > 36 * 36 - 1 ) )
 				{
 					throw new Exception( "値が範囲(0～1295)を超えています。-->[" + value + "]" );
 				}

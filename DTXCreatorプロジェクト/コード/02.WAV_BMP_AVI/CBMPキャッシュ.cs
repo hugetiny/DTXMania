@@ -23,7 +23,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public CBMP tBMPをキャッシュから検索して返す( int nBMP番号1to1295 )
 		{
 			CBMP cbmp;
-			if( ( nBMP番号1to1295 < 1 ) || ( nBMP番号1to1295 > 0x50f ) )
+			if( ( nBMP番号1to1295 < 1 ) || ( nBMP番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "BMP番号が範囲を超えています。-> [" + nBMP番号1to1295 + "]" );
 			}
@@ -35,7 +35,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		public CBMP tBMPをキャッシュから検索して返す・なければ新規生成する( int nBMP番号1to1295 )
 		{
-			if( ( nBMP番号1to1295 < 1 ) || ( nBMP番号1to1295 > 0x50f ) )
+			if( ( nBMP番号1to1295 < 1 ) || ( nBMP番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "BMP番号が範囲を超えています。-> [" + nBMP番号1to1295 + "]" );
 			}
@@ -50,7 +50,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		public void tBMPをキャッシュから削除する( int nBMP番号1to1295 )
 		{
-			if( ( nBMP番号1to1295 < 1 ) || ( nBMP番号1to1295 > 0x50f ) )
+			if( ( nBMP番号1to1295 < 1 ) || ( nBMP番号1to1295 > 36 * 36 - 1 ) )
 			{
 				throw new Exception( "BMP番号が範囲を超えています。-> [" + nBMP番号1to1295 + "]" );
 			}

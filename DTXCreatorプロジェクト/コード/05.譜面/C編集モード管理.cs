@@ -265,7 +265,7 @@ namespace DTXCreator.譜面
 						}
 						if( key == -1 )
 						{
-							for( int k = 1; k < 0x510; k++ )
+							for( int k = 1; k < 36 * 36; k++ )
 							{
 								if( !this.mgr譜面管理者ref.dicBPx.ContainsKey( k ) )
 								{
