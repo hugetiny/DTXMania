@@ -1631,13 +1631,13 @@ namespace DTXCreator
 
 			try
 			{
-				#region [ もし小数点にコンマを使うcultureなら、一時的に(小数点を使う)"en"に切り替える。(DTXVはピリオドしか使えないため) ]
+				#region [ もし小数点にコンマを使うcultureなら、一時的に(小数点を使う)"en-GB"に切り替える。(DTXVはピリオドしか使えないため) ]
 				string currentCultureEnglishName = CultureInfo.CurrentCulture.Name;
 				bool bSwitchCulture = false;
 				if (CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator == ",")
 				{
-					Thread.CurrentThread.CurrentUICulture = new CultureInfo("en", false);
-					bSwitchCulture = true;
+					Thread.CurrentThread.CurrentCulture = new CultureInfo("en-GB", false);	// #24241, #24790 2011.4.8 yyagi: switch culture where the country uses period as the decimal point
+					bSwitchCulture = true;													// I mistook here using CurrentUICulture. Use CurrentCulture to work correctly.
 				}
 				#endregion
 				#region [ 一時ファイルにDTXを出力する。 ]
@@ -1650,7 +1650,7 @@ namespace DTXCreator
 				#region [ cultureを元に戻す。 ]
 				if (bSwitchCulture)
 				{
-					Thread.CurrentThread.CurrentUICulture = new CultureInfo(currentCultureEnglishName, false);
+					Thread.CurrentThread.CurrentCulture = new CultureInfo(currentCultureEnglishName, false);
 				}
 				#endregion
 			}
