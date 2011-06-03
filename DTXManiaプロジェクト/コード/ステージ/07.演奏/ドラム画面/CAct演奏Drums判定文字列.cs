@@ -123,25 +123,27 @@ namespace DTXMania
 						int index = base.st判定文字列[ (int) base.st状態[ j ].judge ].n画像番号;
 						int num5 = 0;
 						int num6 = 0;
-						if( j < 8 )
+						if( j < 8 )			// Drums
 						{
 							num5 = this.stレーンサイズ[ j ].x;
 							num6 = CDTXMania.ConfigIni.bReverse.Drums ? ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 240 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 50 ) : ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 180 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 450 );
 						}
-						else if( j == 11 )
+						else if( j == 11 )	// Bass
 						{
 							if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
 							{
-								goto Label_07FC;
+								// goto Label_07FC;
+								continue;
 							}
 							num5 = this.stレーンサイズ[ j ].x;
 							num6 = CDTXMania.ConfigIni.bReverse.Bass ? ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
 						}
-						else if( j == 10 )
+						else if( j == 10 )	// Guitar
 						{
 							if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
 							{
-								goto Label_07FC;
+								// goto Label_07FC;
+								continue;
 							}
 							if( !CDTXMania.DTX.bチップがある.Bass && ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.判定ライン上または横 ) )
 							{
@@ -162,27 +164,29 @@ namespace DTXMania
 							base.tx判定文字列[ index ].n透明度 = base.st状態[ j ].n透明度;
 							base.tx判定文字列[ index ].vc拡大縮小倍率 = new Vector3( (float) ( base.st状態[ j ].fX方向拡大率 * ( ( j < 10 ) ? 1.0 : 0.7 ) ), (float) ( base.st状態[ j ].fY方向拡大率 * ( ( j < 10 ) ? 1.0 : 0.7 ) ), 1f );
 							base.tx判定文字列[ index ].t2D描画( CDTXMania.app.Device, x, y, base.st判定文字列[ (int) base.st状態[ j ].judge ].rc );
-#if TEST_SHOWLAG
-							if (base.txlag数値 != null)		// 2011.2.1 yyagi
+
+							#region [ #25370 2011.6.3 yyagi ShowLag support ]
+							if ( base.bIsShowingLag && base.st状態[ j ].judge != E判定.Auto && base.txlag数値 != null )		// #25370 2011.2.1 yyagi
 							{
 								bool minus = false;
 								int offsetX = 0;
 								string strDispLag = base.st状態[j].nLag.ToString();
-								if (strDispLag[0] == '-') {
+								if ( st状態[ j ].nLag < 0 )
+								{
 									minus = true;
 								}
 								x = xc - strDispLag.Length * 15 / 2;
 								for ( int i = 0; i < strDispLag.Length; i++ )
 								{
 									int p = ( strDispLag[ i ] == '-' ) ? 11 : (int) ( strDispLag[ i ] - '0' );	//int.Parse(strDispLag[i]);
-									p += minus ? 0 : 12;
-									base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX, y + 37, base.stLag数値[ p ].rc );
+									p += minus ? 0 : 12;		// change color if it is minus value
+									base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX, y + 34, base.stLag数値[ p ].rc );
 									offsetX += 15;
 								}
 							}
-#endif
+							#endregion
 						}
-					Label_07FC: ;
+					// Label_07FC: ;
 					}
 				}
 			}

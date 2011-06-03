@@ -75,14 +75,14 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iCommonDark );
 			this.iCommonPlaySpeed = new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度,
 				"曲の演奏速度を、速くしたり遅くした\nりすることができます。\n（※一部のサウンドカードでは正しく\n 再生できない可能性があります。）",
-				"It changes the song speed.\nFor example, you can play in half\n speed by setting PlaySpeed = x0.5\n for your practice.\nNote: It also changes the songs' pitch." );
+				"It changes the song speed.\nFor example, you can play in half\n speed by setting PlaySpeed = 0.500\n for your practice.\nNote: It also changes the songs' pitch." );
 			this.list項目リスト.Add( this.iCommonPlaySpeed );
 
 
 			int nDGmode = ( CDTXMania.ConfigIni.bGuitar有効 ? 2 : 0 ) + ( CDTXMania.ConfigIni.bDrums有効 ? 1 : 0 ) - 1;
 			this.iSystemGRmode = new CItemList( "Drums & GR", CItemBase.Eパネル種別.通常, nDGmode,
 				"使用楽器の選択：\nDrOnly: ドラムのみ有効にします。\nGROnly: ギター/ベースのみの\n専用画面を用います。\nBoth: ドラムとギター/ベースの\n両方を有効にします。\n",
-				"DrOnly: Only Drums is available.\nGROnly: Only Guitar/Bass are available.\n You can play them in GR screen.\nBoth: Both Drums and Guitar/bass\n are available.",
+				"DrOnly: Only Drums is available.\nGROnly: Only Guitar/Bass are available.\n You can play them in GR screen.\nBoth: Both Drums and Guitar/Bass\n are available.",
 				new string[] { "DrOnly", "GROnly", "Both"} );
 			this.list項目リスト.Add( this.iSystemGRmode );
 
@@ -171,9 +171,15 @@ namespace DTXMania
 				"Turn ON to disable drawing\n * preview image / movie\n * result image / movie\n * nowloading image\n * wallpaper (in playing screen)\n * BGA / AVI (in playing screen)" );
 			this.list項目リスト.Add( this.iSystemStoicMode );
 
+			this.iSystemShowLag = new CItemToggle( "ShowLagTime", CDTXMania.ConfigIni.bIsShowingLag,
+				"ズレ時間表示：\nONにすると、ジャストタイミングからの\nズレ時間(ms)を表示します。",
+				"Turn ON to display the lag from\n the \"just timing\"." );
+			this.list項目リスト.Add( this.iSystemShowLag );
+
+	
 			this.iSystemBufferedInput = new CItemToggle( "BufferedInput", CDTXMania.ConfigIni.bバッファ入力を行う,
 				"バッファ入力モード：\nON にすると、FPS を超える入力解像\n度を実現します。\nOFF にすると、入力解像度は FPS に\n等しくなります。",
-				"To select joystick input method.\n\nON=to use buffer input. No lost/lags.\nOFF to use realtime input. It may\n causes lost/lags for input.\n Moreover, input frequency is\n synchronized with FPS." );
+				"To select joystick input method.\n\nON to use buffer input. No lost/lags.\nOFF to use realtime input. It may\n causes lost/lags for input.\n Moreover, input frequency is\n synchronized with FPS." );
 			this.list項目リスト.Add( this.iSystemBufferedInput );
 			this.iLogOutputLog = new CItemToggle( "TraceLog", CDTXMania.ConfigIni.bログ出力,
 				"Traceログ出力：\nDTXManiaLog.txt にログを出力します。\n変更した場合は、DTXMania の再起動\n後に有効となります。",
@@ -1196,6 +1202,7 @@ namespace DTXMania
 		private CItemToggle iSystemStageFailed;
 		private CItemToggle iSystemStoicMode;
 		private CItemToggle iSystemVSyncWait;
+		private CItemToggle iSystemShowLag;			// #25370 2011.6.3 yyagi
 		private CItemToggle iSystemBufferedInput;
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -1349,6 +1356,8 @@ namespace DTXMania
 			CDTXMania.ConfigIni.n手動再生音量 = this.iSystemChipVolume.n現在の値;
 			CDTXMania.ConfigIni.n自動再生音量 = this.iSystemAutoChipVolume.n現在の値;
 			CDTXMania.ConfigIni.bストイックモード = this.iSystemStoicMode.bON;
+
+			CDTXMania.ConfigIni.bIsShowingLag = this.iSystemShowLag.bON;		// #25370 2011.6.3 yyagi
 		}
 		private void tConfigIniへ記録する・Bass()
 		{

@@ -456,6 +456,7 @@ namespace DTXMania
 //		public int nハイハット切り捨て下限Velocity;
 //		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
 		public STDGBVALUE<int> nInputAdjustTimeMs;	// #23580 2011.1.3 yyagi タイミングアジャスト機能
+		public bool bIsShowingLag;					// #25370 2011.6.5 yyagi ズレ時間表示機能
 		public bool bバッファ入力を行う;
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
@@ -483,13 +484,13 @@ namespace DTXMania
 		{
 			get
 			{
-				for( int i = 0; i < 3; i++ )
+				for( int i = 0; i <= (int)EKeyConfigPart.SYSTEM; i++ )
 				{
-					for( int j = 0; j < 10; j++ )
+					for( int j = 0; j <= (int)EKeyConfigPad.Capture; j++ )
 					{
 						for( int k = 0; k < 0x10; k++ )
 						{
-							if( ( this.KeyAssign[ i ][ j ][ k ].入力デバイス == E入力デバイス.キーボード ) && ( this.KeyAssign[ i ][ j ][ k ].コード == 0x75 ) )
+							if( ( this.KeyAssign[ i ][ j ][ k ].入力デバイス == E入力デバイス.キーボード ) && ( this.KeyAssign[ i ][ j ][ k ].コード == (int) SlimDX.DirectInput.Key.Return ) )
 							{
 								return false;
 							}
@@ -979,6 +980,7 @@ namespace DTXMania
 			this.nVelocityMin.FT = 0;
 			this.nVelocityMin.CY = 0;
 			this.nVelocityMin.RD = 0;
+			this.bIsShowingLag = false;					// #25370 2011.6.3 yyagi ズレ時間表示
 
 			this.bバッファ入力を行う = true;
 			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
@@ -1177,6 +1179,10 @@ namespace DTXMania
 			sw.WriteLine();
 			sw.WriteLine( "; バッファ入力モード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BufferedInput={0}", this.bバッファ入力を行う ? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; 判定ズレ時間表示(0:OFF, 1:ON)" );								// #25370 2011.6.3 yyagi
+			sw.WriteLine( "; Whether displaying the lag times from the just timing or not." );	//
+			sw.WriteLine( "ShowLagTime={0}", this.bIsShowingLag ? 1 : 0 );					//
 			sw.WriteLine();
 			sw.WriteLine("; 判定タイミング調整(ドラム, ギター, ベース)(-99～0)[ms]");		// #23580 2011.1.3 yyagi
 			sw.WriteLine("; Revision value to adjust judgement timing for the drums, guitar and bass.");	//
@@ -1762,6 +1768,10 @@ namespace DTXMania
 											else if ( str3.Equals( "CymbalFree" ) )
 											{
 												this.bシンバルフリー = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ShowLagTime" ) )				// #25370 2011.6.3 yyagi
+											{
+												this.bIsShowingLag = C変換.bONorOFF( str4[ 0 ] );
 											}
 											else if ( str3.Equals( "InputAdjustTimeDrums" ) )		// #23580 2011.1.3 yyagi
 											{

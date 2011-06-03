@@ -128,7 +128,8 @@ namespace DTXMania
 							{
 								if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
 								{
-									goto Label_06B7;
+									// goto Label_06B7;
+									continue;
 								}
 								num5 = ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? this.stレーンサイズ[ j ].x : 0x163;
 								num6 = CDTXMania.ConfigIni.bReverse.Bass ? 0x12b : 190;
@@ -137,7 +138,8 @@ namespace DTXMania
 							{
 								if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
 								{
-									goto Label_06B7;
+									// goto Label_06B7;
+									continue;
 								}
 								num5 = ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? this.stレーンサイズ[ j ].x : 0xaf;
 								num6 = CDTXMania.ConfigIni.bReverse.Guitar ? 0x12b : 190;
@@ -150,28 +152,29 @@ namespace DTXMania
 								base.tx判定文字列[ index ].n透明度 = base.st状態[ j ].n透明度;
 								base.tx判定文字列[ index ].vc拡大縮小倍率 = new Vector3( (float) ( base.st状態[ j ].fX方向拡大率 * 0.8 ), (float) ( base.st状態[ j ].fY方向拡大率 * 0.8 ), 1f );
 								base.tx判定文字列[ index ].t2D描画( CDTXMania.app.Device, x, y, base.st判定文字列[ (int) base.st状態[ j ].judge ].rc );
-#if TEST_SHOWLAG
-							if (base.txlag数値 != null)		// 2011.2.1 yyagi
-							{
-								bool minus = false;
-								int offsetX = 0;
-								string strDispLag = base.st状態[j].nLag.ToString();
-								if (strDispLag[0] == '-') {
-									minus = true;
-								}
-								x = xc - strDispLag.Length * 15 / 2;
-								for ( int i = 0; i < strDispLag.Length; i++ )
-								{
-									int p = ( strDispLag[ i ] == '-' ) ? 11 : (int) ( strDispLag[ i ] - '0' );	//int.Parse(strDispLag[i]);
-									p += minus ? 0 : 12;
-									base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX, y + 35, base.stLag数値[ p ].rc );
-									offsetX += 15;
-								}
-							}
-#endif
 
+								#region [ #25370 2011.6.3 yyagi ShowLag support ]
+								if ( base.bIsShowingLag && base.st状態[ j ].judge != E判定.Auto && base.txlag数値 != null )		// #25370 2011.2.1 yyagi
+								{
+									bool minus = false;
+									int offsetX = 0;
+									string strDispLag = base.st状態[j].nLag.ToString();
+									if ( st状態[ j ].nLag < 0 )
+									{
+										minus = true;
+									}
+									x = xc - strDispLag.Length * 15 / 2;
+									for ( int i = 0; i < strDispLag.Length; i++ )
+									{
+										int p = ( strDispLag[ i ] == '-' ) ? 11 : (int) ( strDispLag[ i ] - '0' );	//int.Parse(strDispLag[i]);
+										p += minus ? 0 : 12;		// change color if it is minus value
+										base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX, y + 35, base.stLag数値[ p ].rc );
+										offsetX += 15;
+									}
+								}
+								#endregion
 							}
-						Label_06B7: ;
+						// Label_06B7: ;
 						}
 					}
 				}
