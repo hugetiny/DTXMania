@@ -260,10 +260,10 @@ namespace FDK
 					float num2 = -0.5f;
 					float width = rc画像内の描画領域.Width;
 					float height = rc画像内の描画領域.Height;
-					float num5 = ( (float) rc画像内の描画領域.Left ) / ( (float) this.szテクスチャサイズ.Width );
-					float num6 = ( (float) rc画像内の描画領域.Right ) / ( (float) this.szテクスチャサイズ.Width );
-					float num7 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
-					float num8 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
+					float x1 = ( (float) rc画像内の描画領域.Left ) / ( (float) this.szテクスチャサイズ.Width );
+					float x2 = ( (float) rc画像内の描画領域.Right ) / ( (float) this.szテクスチャサイズ.Width );
+					float y1 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
+					float y2 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
 					int color4 = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
 					if( this.cvTransformedColoredVertexies == null )
 					{
@@ -271,16 +271,16 @@ namespace FDK
 					}
 					this.cvTransformedColoredVertexies[ 0 ].Position = new Vector4( x + num, y + num2, depth, 1f );
 					this.cvTransformedColoredVertexies[ 0 ].Color = color4;
-					this.cvTransformedColoredVertexies[ 0 ].TextureCoordinates = new Vector2( num5, num7 );
+					this.cvTransformedColoredVertexies[ 0 ].TextureCoordinates = new Vector2( x1, y1 );
 					this.cvTransformedColoredVertexies[ 1 ].Position = new Vector4( ( x + ( width * this.vc拡大縮小倍率.X ) ) + num, y + num2, depth, 1f );
 					this.cvTransformedColoredVertexies[ 1 ].Color = color4;
-					this.cvTransformedColoredVertexies[ 1 ].TextureCoordinates = new Vector2( num6, num7 );
+					this.cvTransformedColoredVertexies[ 1 ].TextureCoordinates = new Vector2( x2, y1 );
 					this.cvTransformedColoredVertexies[ 2 ].Position = new Vector4( x + num, ( y + ( height * this.vc拡大縮小倍率.Y ) ) + num2, depth, 1f );
 					this.cvTransformedColoredVertexies[ 2 ].Color = color4;
-					this.cvTransformedColoredVertexies[ 2 ].TextureCoordinates = new Vector2( num5, num8 );
+					this.cvTransformedColoredVertexies[ 2 ].TextureCoordinates = new Vector2( x1, y2 );
 					this.cvTransformedColoredVertexies[ 3 ].Position = new Vector4( ( x + ( width * this.vc拡大縮小倍率.X ) ) + num, ( y + ( height * this.vc拡大縮小倍率.Y ) ) + num2, depth, 1f );
 					this.cvTransformedColoredVertexies[ 3 ].Color = color4;
-					this.cvTransformedColoredVertexies[ 3 ].TextureCoordinates = new Vector2( num6, num8 );
+					this.cvTransformedColoredVertexies[ 3 ].TextureCoordinates = new Vector2( x2, y2 );
 					device.SetTexture( 0, this.texture );
 					device.VertexFormat = TransformedColoredTexturedVertex.Format;
 					device.DrawUserPrimitives<TransformedColoredTexturedVertex>( PrimitiveType.TriangleStrip, 0, 2, this.cvTransformedColoredVertexies );
@@ -445,13 +445,13 @@ namespace FDK
 		}
 		private Size t指定されたサイズを超えない最適なテクスチャサイズを返す( Device device, Size sz指定サイズ )
 		{
-			bool flag = ( device.Capabilities.TextureCaps & TextureCaps.NonPow2Conditional ) != 0;
-			bool flag2 = ( device.Capabilities.TextureCaps & TextureCaps.Pow2 ) != 0;
-			bool flag3 = ( device.Capabilities.TextureCaps & TextureCaps.SquareOnly ) != 0;
+			bool NonPow2Conditional = ( device.Capabilities.TextureCaps & TextureCaps.NonPow2Conditional ) != 0;
+			bool pow2 = ( device.Capabilities.TextureCaps & TextureCaps.Pow2 ) != 0;
+			bool SquareOnly = ( device.Capabilities.TextureCaps & TextureCaps.SquareOnly ) != 0;
 			int maxTextureWidth = device.Capabilities.MaxTextureWidth;
 			int maxTextureHeight = device.Capabilities.MaxTextureHeight;
 			Size size = new Size( sz指定サイズ.Width, sz指定サイズ.Height );
-			if( flag2 && !flag )
+			if( pow2 && !NonPow2Conditional )
 			{
 				int num3 = 1;
 				do
@@ -476,7 +476,7 @@ namespace FDK
 			{
 				sz指定サイズ.Height = maxTextureHeight;
 			}
-			if( flag3 )
+			if( SquareOnly )
 			{
 				if( size.Width > size.Height )
 				{

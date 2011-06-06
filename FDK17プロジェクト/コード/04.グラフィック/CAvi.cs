@@ -105,60 +105,70 @@ namespace FDK
 			return AVIStreamLength( this.aviStream );
 		}
 		
-		public unsafe void tBitmap24ToGraphicsStreamR5G6B5( BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER, DataStream gs, int nWidth, int nHeight )
+		public unsafe void tBitmap24ToGraphicsStreamR5G6B5( BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER, DataStream gs, int textureWidth, int textureHeight )
 		{
-			int num = pBITMAPINFOHEADER->biWidthビットマップの幅dot;
-			int num2 = pBITMAPINFOHEADER->biHeightビットマップの高さdot;
-			int num3 = ( num * 3 ) + ( ( 4 - ( ( num * 3 ) % 4 ) ) % 4 );
-			ushort* numPtr = (ushort*) gs.DataPointer.ToPointer();
+			int aviWidth = pBITMAPINFOHEADER->biWidthビットマップの幅dot;
+			int aviHeight = pBITMAPINFOHEADER->biHeightビットマップの高さdot;
+			int num3 = ( aviWidth * 3 ) + ( ( 4 - ( ( aviWidth * 3 ) % 4 ) ) % 4 );
+			ushort* dsPtr = (ushort*) gs.DataPointer.ToPointer();
 			byte* numPtr2 = (byte*) ( pBITMAPINFOHEADER + 1 );
-			for( int i = 0; i < num2; i++ )
-			{
-				if( i >= nHeight )
-				{
-					return;
-				}
-				for( int j = 0; j < num; j++ )
-				{
-					if( j >= nWidth )
-					{
-						break;
-					}
-					ushort num6 = (ushort) ( ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) )[ j * 3 ] >> 3 ) & 0x1f );
-					ushort num5 = (ushort) ( ( ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 1 ] >> 2 ) & 0x3f );
-					ushort num4 = (ushort) ( ( ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 2 ] >> 3 ) & 0x1f );
-					( numPtr + ( i * nWidth ) )[ j ] = (ushort) ( ( ( num4 << 11 ) | ( num5 << 5 ) ) | num6 );
-				}
-			}
-		}
-		public unsafe void tBitmap24ToGraphicsStreamX8R8G8B8( BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER, DataStream ds, int nWidth, int nHeight )
-		{
-			int num = pBITMAPINFOHEADER->biWidthビットマップの幅dot;
-			int num2 = pBITMAPINFOHEADER->biHeightビットマップの高さdot;
-			int num3 = ( num * 3 ) + ( ( 4 - ( ( num * 3 ) % 4 ) ) % 4 );
-			uint* numPtr = (uint*) ds.DataPointer.ToPointer();
-			byte* numPtr2 = (byte*) ( pBITMAPINFOHEADER + 1 );
-			for( int i = 0; i < num2; i++ )
-			{
-				if( i >= nHeight )
-				{
-					return;
-				}
-				for( int j = 0; j < num; j++ )
-				{
-					if( j >= nWidth )
-					{
-						break;
-					}
-					uint num6 = ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) )[ j * 3 ];
-					uint num5 = ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 1 ];
-					uint num4 = ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 2 ];
-					( numPtr + ( i * nWidth ) )[ j ] = ( ( num4 << 0x10 ) | ( num5 << 8 ) ) | num6;
-				}
-			}
-		}
+			bool bIsHeightOver = false;
 
-		#region [ IDisposable＋α 実装 ]
+			for ( int h = 0; h < aviHeight; h++ )
+			{
+				if( h >= textureHeight )
+				{
+					bIsHeightOver = true;
+//					break;
+				}
+				for( int w = 0; w < aviWidth; w++ )
+				{
+					if ( w >= textureWidth || bIsHeightOver )
+					{
+						( dsPtr + ( h * textureWidth ) )[ w ] = 0;
+//						break;
+					}
+					else
+					{
+						ushort r = (ushort) ( ( ( numPtr2 + ( ( ( aviHeight - h ) - 1 ) * num3 ) )[ w * 3 ] >> 3 ) & 0x1f );
+						ushort g = (ushort) ( ( ( ( numPtr2 + ( ( ( aviHeight - h ) - 1 ) * num3 ) ) + ( w * 3 ) )[ 1 ] >> 2 ) & 0x3f );
+						ushort b = (ushort) ( ( ( ( numPtr2 + ( ( ( aviHeight - h ) - 1 ) * num3 ) ) + ( w * 3 ) )[ 2 ] >> 3 ) & 0x1f );
+						( dsPtr + ( h * textureWidth ) )[ w ] = (ushort) ( ( ( b << 11 ) | ( g << 5 ) ) | r );
+					}
+				}
+			}
+		}
+		public unsafe void tBitmap24ToGraphicsStreamX8R8G8B8( BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER, DataStream ds, int textureWidth, int textureHeight )
+		{
+			int aviWidth = pBITMAPINFOHEADER->biWidthビットマップの幅dot;
+			int aviHeight = pBITMAPINFOHEADER->biHeightビットマップの高さdot;
+			int num3 = ( aviWidth * 3 ) + ( ( 4 - ( ( aviWidth * 3 ) % 4 ) ) % 4 );
+
+			uint* dsPtr = (uint*) ds.DataPointer.ToPointer();
+			byte* numPtr2 = (byte*) ( pBITMAPINFOHEADER + 1 );
+			bool bIsHeightOver = false;
+
+			for ( int i = 0; i < aviHeight; i++ )
+			{
+				if ( i >= textureHeight )
+				{
+					return;
+				}
+				for ( int j = 0; j < aviWidth; j++ )
+				{
+					if ( j >= textureWidth )
+					{
+						break;
+					}
+					uint num6 = ( numPtr2 + ( ( ( aviHeight - i ) - 1 ) * num3 ) )[ j * 3 ];
+					uint num5 = ( ( numPtr2 + ( ( ( aviHeight - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 1 ];
+					uint num4 = ( ( numPtr2 + ( ( ( aviHeight - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 2 ];
+					( dsPtr + ( i * textureWidth ) )[ j ] = ( ( num4 << 0x10 ) | ( num5 << 8 ) ) | num6;
+				}
+			}
+		}
+			
+			#region [ IDisposable＋α 実装 ]
 		//-----------------
 		public void Dispose()
 		{
