@@ -10,7 +10,7 @@ using SlimDX.Multimedia;
 
 namespace FDK
 {
-	public class CSound : IDisposable
+	public class CSound : IDisposable, ICloneable
 	{
 		// (1) 以下は全子クラスに共通
 
@@ -19,8 +19,14 @@ namespace FDK
 
 		public SecondarySoundBuffer Buffer
 		{
-			get;
-			private set;
+			get
+			{
+				return _Buffer;
+			}
+			private set
+			{
+				_Buffer = value;
+			}
 		}
 		public bool bストリーム再生する
 		{
@@ -210,6 +216,24 @@ namespace FDK
 
 
 		// メソッド
+
+		public object Clone()
+		{
+			CSound clone = (CSound)MemberwiseClone();	// これだけだとCY連打が途切れる＆タイトルに戻る際にNullRef例外発生
+
+			SlimDX.DirectSound.DirectSound ds = new SlimDX.DirectSound.DirectSound();
+			SlimDX.DirectSound.SoundBuffer sb;	// = clone._Buffer;
+
+
+			ds.DuplicateSoundBuffer(	// ここで例外発生してしまう
+				this._Buffer,
+				out sb
+			);
+//'SlimDX.DirectSound.DirectSoundException' の初回例外が SlimDXc_net20x86_Jun2010.dll で発生しました。
+// DTXManiaGR.vshost.exe Error: 0 : サウンドの生成に失敗しました。(DSERR_INVALIDCALL: This call is not valid for the current state of this object (-2005401550))()(サウンドファイル名)
+
+			return clone;
+		}
 
 		public int tデコード後のサイズを調べる( string strファイル名, out int _nHandle )
 		{
@@ -588,6 +612,7 @@ namespace FDK
 		private int n一時停止回数;
 		private int n現在のPCM側の位置byte;
 		private int n現在書き込み許可待ちのバッファ番号;
+		private SecondarySoundBuffer _Buffer;
 
 		private void tストリーム再生位置リセット()
 		{

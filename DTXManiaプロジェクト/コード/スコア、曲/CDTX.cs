@@ -2179,6 +2179,10 @@ namespace DTXMania
 //						cwav.rSound[2] = cwav.rSound[0];		//
 //						cwav.rSound[3] = cwav.rSound[0];		//
 //						break;									//
+						cwav.rSound[ 1 ] = (CSound) cwav.rSound[ 0 ].Clone();
+						cwav.rSound[ 2 ] = (CSound) cwav.rSound[ 0 ].Clone();
+						cwav.rSound[ 3 ] = (CSound) cwav.rSound[ 0 ].Clone();
+						break;
 					}
 					continue;
 				}
