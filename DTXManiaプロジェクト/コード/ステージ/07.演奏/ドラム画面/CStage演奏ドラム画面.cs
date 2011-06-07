@@ -84,8 +84,18 @@ namespace DTXMania
 			this.bフィルイン中 = false;
 			base.On活性化();
 
-            Cスコア cスコア = CDTXMania.stage選曲.r確定されたスコア;            // #24074 2011.01.23 add ikanick
-            this.actGraph.dbグラフ値目標_渡 = cスコア.譜面情報.最大スキル[0];
+			// MODIFY_BEGIN #25398 2011.06.07 FROM
+			if( CDTXMania.bコンパクトモード )
+			{
+				var score = new Cスコア();
+				CDTXMania.Songs管理.tScoreIniを読み込んで譜面情報を設定する( CDTXMania.strコンパクトモードファイル + ".score.ini", ref score );
+				this.actGraph.dbグラフ値目標_渡 = score.譜面情報.最大スキル[ 0 ];
+			}
+			else
+			{
+				this.actGraph.dbグラフ値目標_渡 = CDTXMania.stage選曲.r確定されたスコア.譜面情報.最大スキル[ 0 ];	// #24074 2011.01.23 add ikanick
+			}
+			// MODIFY_END #25398
 		}
 		public override void On非活性化()
 		{

@@ -687,6 +687,8 @@ namespace DTXMania
 					{
 						if( ( c曲リストノード.arスコア[ i ] != null ) && !c曲リストノード.arスコア[ i ].bSongDBにキャッシュがあった )
 						{
+							#region [ DTX ファイルのヘッダだけ読み込み、Cスコア.譜面情報 を設定する ]
+							//-----------------
 							string path = c曲リストノード.arスコア[ i ].ファイル情報.ファイルの絶対パス;
 							if( File.Exists( path ) )
 							{
@@ -709,6 +711,9 @@ namespace DTXMania
 //									c曲リストノード.arスコア[ i ].譜面情報.bpm = cdtx.BPM;
 									this.nファイルから反映できたスコア数++;
 									cdtx.On非活性化();
+
+									#region [ 曲検索ログ出力 ]
+									//-----------------
 									if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
 									{
 										StringBuilder builder = new StringBuilder( 0x400 );
@@ -729,6 +734,8 @@ namespace DTXMania
 //										builder.Append( ", bpm=" + c曲リストノード.arスコア[ i ].譜面情報.bpm );
 										Trace.TraceInformation( builder.ToString() );
 									}
+									//-----------------
+									#endregion
 								}
 								catch( Exception exception )
 								{
@@ -739,40 +746,14 @@ namespace DTXMania
 									Trace.TraceError( "曲データファイルの読み込みに失敗しました。({0})", new object[] { path } );
 								}
 							}
-							string str2 = c曲リストノード.arスコア[ i ].ファイル情報.ファイルの絶対パス + ".score.ini";
-							if( File.Exists( str2 ) )
-							{
-								try
-								{
-									CScoreIni ini = new CScoreIni( str2 );
-									ini.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
-									for( int j = 0; j < 3; j++ )
-									{
-										int num3 = ( j * 2 ) + 1;
-										if( ( ini.stセクション[ num3 ].b演奏にMIDI入力を使用した || ini.stセクション[ num3 ].b演奏にキーボードを使用した ) || ( ini.stセクション[ num3 ].b演奏にジョイパッドを使用した || ini.stセクション[ num3 ].b演奏にマウスを使用した ) )
-										{
-											c曲リストノード.arスコア[ i ].譜面情報.最大ランク[ j ] = CScoreIni.tランク値を計算して返す( ini.stセクション[ num3 ].n全チップ数, ini.stセクション[ num3 ].nPerfect数, ini.stセクション[ num3 ].nGreat数, ini.stセクション[ num3 ].nGood数, ini.stセクション[ num3 ].nPoor数, ini.stセクション[ num3 ].nMiss数 );
-										}
-										else
-										{
-											c曲リストノード.arスコア[ i ].譜面情報.最大ランク[ j ] = 0x63;
-										}
-										c曲リストノード.arスコア[ i ].譜面情報.最大スキル[ j ] = ini.stセクション[ num3 ].db演奏型スキル値;
-										c曲リストノード.arスコア[ i ].譜面情報.フルコンボ[ j ] = ini.stセクション[ num3 ].bフルコンボである;
-									}
-									c曲リストノード.arスコア[ i ].譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
-									c曲リストノード.arスコア[ i ].譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
-									c曲リストノード.arスコア[ i ].譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
-									for( int k = 0; k < 5; k++ )
-									{
-										c曲リストノード.arスコア[ i ].譜面情報.演奏履歴[ k ] = ini.stファイル.History[ k ];
-									}
-								}
-								catch
-								{
-									Trace.TraceError( "演奏記録ファイルの読み込みに失敗しました。[{0}]", new object[] { str2 } );
-								}
-							}
+							//-----------------
+							#endregion
+
+							#region [ 対応する .score.ini が存在していれば読み込み、Cスコア.譜面情報 に追加設定する ]
+							//-----------------
+							this.tScoreIniを読み込んで譜面情報を設定する( c曲リストノード.arスコア[ i ].ファイル情報.ファイルの絶対パス + ".score.ini", ref c曲リストノード.arスコア[ i ] );
+							//-----------------
+							#endregion
 						}
 					}
 				}
@@ -988,7 +969,7 @@ namespace DTXMania
 		}
 		//-----------------
 		#endregion
-
+		
 		#region [ 曲リストソート ]
 		//-----------------
 		public void t曲リストのソート1_絶対パス順( List<C曲リストノード> ノードリスト )
@@ -1448,6 +1429,64 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 			}
 		}
 #endif
+		//-----------------
+		#endregion
+		#region [ .score.ini を読み込んで Cスコア.譜面情報に設定する ]
+		//-----------------
+		public void tScoreIniを読み込んで譜面情報を設定する( string strScoreIniファイルパス, ref Cスコア score )
+		{
+			if( !File.Exists( strScoreIniファイルパス ) )
+				return;
+
+			try
+			{
+				var ini = new CScoreIni( strScoreIniファイルパス );
+				ini.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
+
+				for( int n楽器番号 = 0; n楽器番号 < 3; n楽器番号++ )
+				{
+					int n = ( n楽器番号 * 2 ) + 1;	// n = 0～5
+
+					#region socre.譜面情報.最大ランク[ n楽器番号 ] = ... 
+					//-----------------
+					if( ini.stセクション[ n ].b演奏にMIDI入力を使用した ||
+						ini.stセクション[ n ].b演奏にキーボードを使用した ||
+						ini.stセクション[ n ].b演奏にジョイパッドを使用した ||
+						ini.stセクション[ n ].b演奏にマウスを使用した )
+					{
+						// (A) 全オートじゃないようなので、演奏結果情報を有効としてランクを算出する。
+
+						score.譜面情報.最大ランク[ n楽器番号 ] =
+							CScoreIni.tランク値を計算して返す( 
+								ini.stセクション[ n ].n全チップ数,
+								ini.stセクション[ n ].nPerfect数, 
+								ini.stセクション[ n ].nGreat数,
+								ini.stセクション[ n ].nGood数, 
+								ini.stセクション[ n ].nPoor数,
+								ini.stセクション[ n ].nMiss数 );
+					}
+					else
+					{
+						// (B) 全オートらしいので、ランクは無効とする。
+
+						score.譜面情報.最大ランク[ n楽器番号 ] = (int) CScoreIni.ERANK.UNKNOWN;
+					}
+					//-----------------
+					#endregion
+					score.譜面情報.最大スキル[ n楽器番号 ] = ini.stセクション[ n ].db演奏型スキル値;
+					score.譜面情報.フルコンボ[ n楽器番号 ] = ini.stセクション[ n ].bフルコンボである;
+				}
+				score.譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
+				score.譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
+				score.譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
+				for( int i = 0; i < 5; i++ )
+					score.譜面情報.演奏履歴[ i ] = ini.stファイル.History[ i ];
+			}
+			catch
+			{
+				Trace.TraceError( "演奏記録ファイルの読み込みに失敗しました。[{0}]", strScoreIniファイルパス );
+			}
+		}
 		//-----------------
 		#endregion
 

@@ -31,7 +31,6 @@ namespace DTXMania
 			Trace.Indent();
 			try
 			{
-				string str;
 				this.str曲タイトル = "";
 				this.strSTAGEFILE = "";
 				this.b音符を表示する = false;
@@ -44,15 +43,11 @@ namespace DTXMania
 					CDTXMania.Sound管理.tサウンドを破棄する( this.sd読み込み音 );
 					this.sd読み込み音 = null;
 				}
-				if( CDTXMania.bコンパクトモード )
-				{
-					str = CDTXMania.strコンパクトモードファイル;
-				}
-				else
-				{
-					str = CDTXMania.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
-				}
-				CDTX cdtx = new CDTX( str, true );
+
+				string strDTXファイルパス = ( CDTXMania.bコンパクトモード ) ?
+					CDTXMania.strコンパクトモードファイル : CDTXMania.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
+				
+				CDTX cdtx = new CDTX( strDTXファイルパス, true );
 				this.str曲タイトル = cdtx.TITLE;
 				if( ( ( cdtx.STAGEFILE != null ) && ( cdtx.STAGEFILE.Length > 0 ) ) && ( File.Exists( cdtx.strフォルダ名 + cdtx.STAGEFILE ) && !CDTXMania.ConfigIni.bストイックモード ) )
 				{
@@ -66,14 +61,14 @@ namespace DTXMania
 				}
 				if( ( ( cdtx.SOUND_NOWLOADING != null ) && ( cdtx.SOUND_NOWLOADING.Length > 0 ) ) && File.Exists( cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING ) )
 				{
-					string str2 = cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING;
+					string strNowLoading画像ファイルパス = cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING;
 					try
 					{
-						this.sd読み込み音 = CDTXMania.Sound管理.tサウンドを生成する( str2 );
+						this.sd読み込み音 = CDTXMania.Sound管理.tサウンドを生成する( strNowLoading画像ファイルパス );
 					}
 					catch
 					{
-						Trace.TraceError( "#SOUND_NOWLOADING に指定されたサウンドファイルの読み込みに失敗しました。({0})", new object[] { str2 } );
+						Trace.TraceError( "#SOUND_NOWLOADING に指定されたサウンドファイルの読み込みに失敗しました。({0})", strNowLoading画像ファイルパス );
 					}
 				}
 				cdtx.On非活性化();
