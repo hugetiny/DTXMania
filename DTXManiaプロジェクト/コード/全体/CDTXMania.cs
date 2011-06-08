@@ -171,11 +171,11 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		public static CStageオプション stageオプション
-		{ 
-			get;
-			private set;
-		}
+//		public static CStageオプション stageオプション
+//		{ 
+//			get;
+//			private set;
+//		}
 		public static CStageコンフィグ stageコンフィグ 
 		{ 
 			get; 
@@ -333,6 +333,7 @@ namespace DTXMania
 
 		protected override void Initialize()
 		{
+//			new GCBeep();
 			if( this.listトップレベルActivities != null )
 			{
 				foreach( CActivity activity in this.listトップレベルActivities )
@@ -974,35 +975,35 @@ for (int i = 0; i < 3; i++) {
 								str = "Cleared";
 								switch( CScoreIni.t総合ランク値を計算して返す( c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass ) )
 								{
-									case 0:
+									case (int)CScoreIni.ERANK.SS:
 										str = "Cleared (Rank:SS)";
 										break;
 
-									case 1:
+									case (int) CScoreIni.ERANK.S:
 										str = "Cleared (Rank:S)";
 										break;
 
-									case 2:
+									case (int) CScoreIni.ERANK.A:
 										str = "Cleared (Rank:A)";
 										break;
 
-									case 3:
+									case (int) CScoreIni.ERANK.B:
 										str = "Cleared (Rank:B)";
 										break;
 
-									case 4:
+									case (int) CScoreIni.ERANK.C:
 										str = "Cleared (Rank:C)";
 										break;
 
-									case 5:
+									case (int) CScoreIni.ERANK.D:
 										str = "Cleared (Rank:D)";
 										break;
 
-									case 6:
+									case (int) CScoreIni.ERANK.E:
 										str = "Cleared (Rank:E)";
 										break;
 
-									case 99:	// #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
+									case (int)CScoreIni.ERANK.UNKNOWN:	// #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
 										str = "Cleared (No chips)";
 										break;
 								}
@@ -1268,13 +1269,17 @@ for (int i = 0; i < 3; i++) {
 			base.Window.ApplicationDeactivated += new EventHandler( this.Window_ApplicationDeactivated );
 			//---------------------
 			#endregion
+			#region [ Direct3D9Exを使うかどうか判定 ]
+			#endregion
 			#region [ Direct3D9 デバイスの生成 ]
 			//---------------------
 			DeviceSettings settings = new DeviceSettings();
 			settings.Windowed = ConfigIni.bウィンドウモード;
 			settings.BackBufferWidth = 640;
 			settings.BackBufferHeight = 480;
+//			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
+
 			try
 			{
 				base.GraphicsDeviceManager.ChangeDevice(settings);
@@ -1282,7 +1287,7 @@ for (int i = 0; i < 3; i++) {
 			catch (DeviceCreationException e)
 			{
 				Trace.TraceError(e.ToString());
-				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Initialize Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(-1);
 			}
 
@@ -1493,7 +1498,7 @@ for (int i = 0; i < 3; i++) {
 			r直前のステージ = null;
 			stage起動 = new CStage起動();
 			stageタイトル = new CStageタイトル();
-			stageオプション = new CStageオプション();
+//			stageオプション = new CStageオプション();
 			stageコンフィグ = new CStageコンフィグ();
 			stage選曲 = new CStage選曲();
 			stage曲読み込み = new CStage曲読み込み();
@@ -1505,7 +1510,7 @@ for (int i = 0; i < 3; i++) {
 			this.listトップレベルActivities.Add( act文字コンソール );
 			this.listトップレベルActivities.Add( stage起動 );
 			this.listトップレベルActivities.Add( stageタイトル );
-			this.listトップレベルActivities.Add( stageオプション );
+//			this.listトップレベルActivities.Add( stageオプション );
 			this.listトップレベルActivities.Add( stageコンフィグ );
 			this.listトップレベルActivities.Add( stage選曲 );
 			this.listトップレベルActivities.Add( stage曲読み込み );
@@ -2014,6 +2019,19 @@ for (int i = 0; i < 3; i++) {
 			ConfigIni.nウインドウwidth = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
 			ConfigIni.nウインドウheight = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Height : currentClientSize.Height;
 		}
+
+		//internal sealed class GCBeep	// GC発生の度にbeep
+		//{
+		//    ~GCBeep()
+		//    {
+		//        Console.Beep();
+		//        if ( !AppDomain.CurrentDomain.IsFinalizingForUnload()
+		//            && !Environment.HasShutdownStarted )
+		//        {
+		//            new GCBeep();
+		//        }
+		//    }
+		//}
 		#endregion
 	}
 }
