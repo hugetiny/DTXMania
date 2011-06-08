@@ -457,6 +457,7 @@ namespace DTXMania
 //		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
 		public STDGBVALUE<int> nInputAdjustTimeMs;	// #23580 2011.1.3 yyagi タイミングアジャスト機能
 		public bool bIsShowingLag;					// #25370 2011.6.5 yyagi ズレ時間表示機能
+		public bool bIsAutoResultCapture;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能のON/OFF制御
 		public bool bバッファ入力を行う;
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
@@ -981,6 +982,7 @@ namespace DTXMania
 			this.nVelocityMin.CY = 0;
 			this.nVelocityMin.RD = 0;
 			this.bIsShowingLag = false;					// #25370 2011.6.3 yyagi ズレ時間表示
+			this.bIsAutoResultCapture = false;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能ON/OFF
 
 			this.bバッファ入力を行う = true;
 			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
@@ -1184,7 +1186,12 @@ namespace DTXMania
 			sw.WriteLine( "; Whether displaying the lag times from the just timing or not." );	//
 			sw.WriteLine( "ShowLagTime={0}", this.bIsShowingLag ? 1 : 0 );					//
 			sw.WriteLine();
-			sw.WriteLine("; 判定タイミング調整(ドラム, ギター, ベース)(-99～0)[ms]");		// #23580 2011.1.3 yyagi
+			sw.WriteLine( "; リザルト画像自動保存機能(0:OFF, 1:ON)" );						// #25399 2011.6.9 yyagi
+			sw.WriteLine( "; Set ON if you'd like to save result screen image automatically");	//
+			sw.WriteLine( "; when you get hiscore/hiskill.");								//
+			sw.WriteLine( "AutoResultCapture={0}", this.bIsAutoResultCapture? 1 : 0 );		//
+			sw.WriteLine();
+			sw.WriteLine( "; 判定タイミング調整(ドラム, ギター, ベース)(-99～0)[ms]" );		// #23580 2011.1.3 yyagi
 			sw.WriteLine("; Revision value to adjust judgement timing for the drums, guitar and bass.");	//
 			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs.Drums);		//
 			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs.Guitar);		//
@@ -1772,6 +1779,10 @@ namespace DTXMania
 											else if ( str3.Equals( "ShowLagTime" ) )				// #25370 2011.6.3 yyagi
 											{
 												this.bIsShowingLag = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "AutoResultCapture" ) )			// #25399 2011.6.9 yyagi
+											{
+												this.bIsAutoResultCapture = C変換.bONorOFF( str4[ 0 ] );
 											}
 											else if ( str3.Equals( "InputAdjustTimeDrums" ) )		// #23580 2011.1.3 yyagi
 											{

@@ -378,7 +378,8 @@ namespace DTXMania
 				}
 				#region [ #24609 2011.3.14 yyagi ランク更新or演奏型スキル更新時、リザルト画像をpngで保存する ]
 				if ( this.bアニメが完了 == true && this.bIsCheckedWhetherResultScreenShouldSaveOrNot == false	// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
-					&& CDTXMania.ConfigIni.bScoreIniを出力する)
+					&& CDTXMania.ConfigIni.bScoreIniを出力する
+					&& CDTXMania.ConfigIni.bIsAutoResultCapture)												// #25399 2011.6.9 yyagi
 				{
 					CheckAndSaveResultScreen(true);
 					this.bIsCheckedWhetherResultScreenShouldSaveOrNot = true;

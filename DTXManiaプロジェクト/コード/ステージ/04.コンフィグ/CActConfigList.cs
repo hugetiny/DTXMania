@@ -175,6 +175,10 @@ namespace DTXMania
 				"ズレ時間表示：\nONにすると、ジャストタイミングからの\nズレ時間(ms)を表示します。",
 				"Turn ON to display the lag from\n the \"just timing\"." );
 			this.list項目リスト.Add( this.iSystemShowLag );
+			this.iSystemAutoResultCapture = new CItemToggle( "Autosaveresult", CDTXMania.ConfigIni.bIsAutoResultCapture,
+				"リザルト画像自動保存機能：\nONにすると、ハイスコア/ハイスキル時に\n自動でリザルト画像を曲データと同じ\nフォルダに保存します。",
+				"AutoSaveResult:\nTurn ON to save your result screen\n image automatically when you get\n hiscore/hiskill." );
+			this.list項目リスト.Add( this.iSystemAutoResultCapture );
 
 	
 			this.iSystemBufferedInput = new CItemToggle( "BufferedInput", CDTXMania.ConfigIni.bバッファ入力を行う,
@@ -1203,6 +1207,7 @@ namespace DTXMania
 		private CItemToggle iSystemStoicMode;
 		private CItemToggle iSystemVSyncWait;
 		private CItemToggle iSystemShowLag;			// #25370 2011.6.3 yyagi
+		private CItemToggle iSystemAutoResultCapture;	// #25399 2011.6.9 yyagi
 		private CItemToggle iSystemBufferedInput;
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -1358,6 +1363,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bストイックモード = this.iSystemStoicMode.bON;
 
 			CDTXMania.ConfigIni.bIsShowingLag = this.iSystemShowLag.bON;		// #25370 2011.6.3 yyagi
+			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;	// #25399 2011.6.9 yyagi
 		}
 		private void tConfigIniへ記録する・Bass()
 		{
