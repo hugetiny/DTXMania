@@ -321,6 +321,7 @@ namespace DTXMania
 			}
 
 			// http://www.gamedev.net/topic/594369-dx9slimdxati-incorrect-saving-surface-to-file/
+			System.Threading.Thread.Sleep( 300 );			// 2011.6.9 yyagi: To avoid capturing white-outed screen, wait 300ms simply.
 			using ( Surface pSurface = CDTXMania.app.Device.GetRenderTarget( 0 ) )
 			{
 				Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
