@@ -39,7 +39,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;TEST_SHOWLAG_ TEST_ENGLISH_ TEST_Direct3D9Ex_</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEST_ENGLISH_ TEST_Direct3D9Ex_</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -104,8 +104,6 @@
     <Compile Include="コード\スコア、曲\C曲リストノード.cs" />
     <Compile Include="コード\ステージ\01.起動\CStage起動.cs" />
     <Compile Include="コード\ステージ\02.タイトル\CStageタイトル.cs" />
-    <Compile Include="コード\ステージ\03.オプション\CActOptionList.cs" />
-    <Compile Include="コード\ステージ\03.オプション\CStageオプション.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CActConfigKeyAssign.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CActConfigList.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CStageコンフィグ.cs" />
