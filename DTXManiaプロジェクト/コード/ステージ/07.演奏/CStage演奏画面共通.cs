@@ -1139,7 +1139,7 @@ namespace DTXMania
 			}
 			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToFuture;
 //			while ( nIndex_NearestChip_Future < count )	// 未来方向への検索
-			for ( ; nIndex_InitialPositionSearchingToFuture < count; nIndex_InitialPositionSearchingToFuture++ )
+			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++ )
 			{
 				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
 				if ( ( !chip.bHit && ( nChannel >= 0x11 ) ) && ( nChannel <= 0x1a ) )
@@ -1173,7 +1173,7 @@ namespace DTXMania
 			}
 			int nIndex_NearestChip_Past = nIndex_InitialPositionSearchingToPast;
 //			while ( nIndex_NearestChip_Past >= 0 )		// 過去方向への検索
-			for ( ; nIndex_InitialPositionSearchingToPast >= 0; nIndex_InitialPositionSearchingToPast-- )
+			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
 			{
 				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
 				if ( ( ( ( !chip.bHit && ( nChannel >= 0x11 ) ) && ( ( nChannel <= 0x1a ) && ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) ) ) ) || ( !chip.bHit && ( ( ( nChannel == 0x2f ) && ( chip.e楽器パート == E楽器パート.GUITAR ) ) || ( ( ( nChannel >= 0x20 ) && ( nChannel <= 0x2A ) ) && ( chip.nチャンネル番号 == nChannel ) ) ) ) ) || ( !chip.bHit && ( ( ( nChannel == 0xaf ) && ( chip.e楽器パート == E楽器パート.BASS ) ) || ( ( ( nChannel >= 0xA0 ) && ( nChannel <= 0xa8 ) ) && ( chip.nチャンネル番号 == nChannel ) ) ) ) )
