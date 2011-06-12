@@ -50,7 +50,7 @@ namespace DTXMania
 				Drums.n全チップ数 = CDTXMania.DTX.n可視チップ数.Drums;
 				for ( int i = 0; i < 10; i++ )
 				{
-					Drums.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
+					Drums.bAutoPlay[ i ] = bIsAutoPlay[ i ];
 				}
 				Drums.bTight = CDTXMania.ConfigIni.bTight;
 				for ( int i = 0; i < 3; i++ )
@@ -98,11 +98,11 @@ namespace DTXMania
 				Guitar.nスコア = this.actScore.Get( E楽器パート.GUITAR );
 				Guitar.dbゲーム型スキル値 = CScoreIni.tゲーム型スキルを計算して返す( CDTXMania.DTX.LEVEL.Guitar, CDTXMania.DTX.n可視チップ数.Guitar, this.nヒット数・Auto含まない.Guitar.Perfect, this.actCombo.n現在のコンボ数.Guitar最高値 );
 				Guitar.db演奏型スキル値 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Guitar, this.nヒット数・Auto含まない.Guitar.Perfect, this.nヒット数・Auto含まない.Guitar.Great, this.nヒット数・Auto含まない.Guitar.Good, this.nヒット数・Auto含まない.Guitar.Poor, this.nヒット数・Auto含まない.Guitar.Miss );
-				Guitar.nPerfect数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Perfect : this.nヒット数・Auto含まない.Guitar.Perfect;
-				Guitar.nGreat数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Great : this.nヒット数・Auto含まない.Guitar.Great;
-				Guitar.nGood数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Good : this.nヒット数・Auto含まない.Guitar.Good;
-				Guitar.nPoor数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Poor : this.nヒット数・Auto含まない.Guitar.Poor;
-				Guitar.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Miss : this.nヒット数・Auto含まない.Guitar.Miss;
+				Guitar.nPerfect数 = bIsAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Perfect : this.nヒット数・Auto含まない.Guitar.Perfect;
+				Guitar.nGreat数 = bIsAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Great : this.nヒット数・Auto含まない.Guitar.Great;
+				Guitar.nGood数 = bIsAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Good : this.nヒット数・Auto含まない.Guitar.Good;
+				Guitar.nPoor数 = bIsAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Poor : this.nヒット数・Auto含まない.Guitar.Poor;
+				Guitar.nMiss数 = bIsAutoPlay.Guitar ? this.nヒット数・Auto含む.Guitar.Miss : this.nヒット数・Auto含まない.Guitar.Miss;
 				Guitar.nPerfect数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Perfect;
 				Guitar.nGreat数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Great;
 				Guitar.nGood数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Good;
@@ -112,7 +112,7 @@ namespace DTXMania
 				Guitar.n全チップ数 = CDTXMania.DTX.n可視チップ数.Guitar;
 				for ( int i = 0; i < 10; i++ )
 				{
-					Guitar.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
+					Guitar.bAutoPlay[ i ] = bIsAutoPlay[ i ];
 				}
 				Guitar.bTight = CDTXMania.ConfigIni.bTight;
 				for ( int i = 0; i < 3; i++ )
@@ -160,11 +160,11 @@ namespace DTXMania
 				Bass.nスコア = this.actScore.Get( E楽器パート.BASS );
 				Bass.dbゲーム型スキル値 = CScoreIni.tゲーム型スキルを計算して返す( CDTXMania.DTX.LEVEL.Bass, CDTXMania.DTX.n可視チップ数.Bass, this.nヒット数・Auto含まない.Bass.Perfect, this.actCombo.n現在のコンボ数.Bass最高値 );
 				Bass.db演奏型スキル値 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Bass, this.nヒット数・Auto含まない.Bass.Perfect, this.nヒット数・Auto含まない.Bass.Great, this.nヒット数・Auto含まない.Bass.Good, this.nヒット数・Auto含まない.Bass.Poor, this.nヒット数・Auto含まない.Bass.Miss );
-				Bass.nPerfect数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Perfect : this.nヒット数・Auto含まない.Bass.Perfect;
-				Bass.nGreat数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Great : this.nヒット数・Auto含まない.Bass.Great;
-				Bass.nGood数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Good : this.nヒット数・Auto含まない.Bass.Good;
-				Bass.nPoor数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Poor : this.nヒット数・Auto含まない.Bass.Poor;
-				Bass.nMiss数 = CDTXMania.ConfigIni.bAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Miss : this.nヒット数・Auto含まない.Bass.Miss;
+				Bass.nPerfect数 = bIsAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Perfect : this.nヒット数・Auto含まない.Bass.Perfect;
+				Bass.nGreat数 = bIsAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Great : this.nヒット数・Auto含まない.Bass.Great;
+				Bass.nGood数 = bIsAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Good : this.nヒット数・Auto含まない.Bass.Good;
+				Bass.nPoor数 = bIsAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Poor : this.nヒット数・Auto含まない.Bass.Poor;
+				Bass.nMiss数 = bIsAutoPlay.Bass ? this.nヒット数・Auto含む.Bass.Miss : this.nヒット数・Auto含まない.Bass.Miss;
 				Bass.nPerfect数・Auto含まない = this.nヒット数・Auto含まない.Bass.Perfect;
 				Bass.nGreat数・Auto含まない = this.nヒット数・Auto含まない.Bass.Great;
 				Bass.nGood数・Auto含まない = this.nヒット数・Auto含まない.Bass.Good;
@@ -174,7 +174,7 @@ namespace DTXMania
 				Bass.n全チップ数 = CDTXMania.DTX.n可視チップ数.Bass;
 				for ( int i = 0; i < 10; i++ )
 				{
-					Bass.bAutoPlay[ i ] = CDTXMania.ConfigIni.bAutoPlay[ i ];
+					Bass.bAutoPlay[ i ] = bIsAutoPlay[ i ];
 				}
 				Bass.bTight = CDTXMania.ConfigIni.bTight;
 				for ( int i = 0; i < 3; i++ )
@@ -899,10 +899,10 @@ namespace DTXMania
 			pChip.bHit = true;
 			bool bPChipIsAutoPlay = false;
 			if ( (
-					( ( pChip.e楽器パート == E楽器パート.DRUMS ) && CDTXMania.ConfigIni.bAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ) ||
-					( ( pChip.e楽器パート == E楽器パート.GUITAR ) && CDTXMania.ConfigIni.bAutoPlay.Guitar )
+					( ( pChip.e楽器パート == E楽器パート.DRUMS ) && bIsAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ) ||
+					( ( pChip.e楽器パート == E楽器パート.GUITAR ) && bIsAutoPlay.Guitar )
 				) ||
-					( ( pChip.e楽器パート == E楽器パート.BASS ) && CDTXMania.ConfigIni.bAutoPlay.Bass )
+					( ( pChip.e楽器パート == E楽器パート.BASS ) && bIsAutoPlay.Bass )
 			  )
 			{
 				bPChipIsAutoPlay = true;
@@ -1097,7 +1097,7 @@ namespace DTXMania
 				case E楽器パート.DRUMS:
 					if ( ( nLane >= 0 ) && ( nLane <= 7 ) )
 					{
-						this.actJudgeString.Start( nLane, CDTXMania.ConfigIni.bAutoPlay[ nLane ] ? E判定.Auto : E判定.Miss, 999 );
+						this.actJudgeString.Start( nLane, bIsAutoPlay[ nLane ] ? E判定.Auto : E判定.Miss, 999 );
 					}
 					this.actCombo.n現在のコンボ数.Drums = 0;
 					return;
@@ -1497,12 +1497,12 @@ namespace DTXMania
 
 				bool bPChipIsAutoPlay = false;
 				if ( (
-						( ( pChip.e楽器パート == E楽器パート.DRUMS ) && CDTXMania.ConfigIni.bAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ) ||
-						( ( pChip.e楽器パート == E楽器パート.GUITAR ) && CDTXMania.ConfigIni.bAutoPlay.Guitar )
+						( ( pChip.e楽器パート == E楽器パート.DRUMS ) && bIsAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ) ||
+						( ( pChip.e楽器パート == E楽器パート.GUITAR ) && bIsAutoPlay.Guitar )
 					) ||
-						( ( pChip.e楽器パート == E楽器パート.BASS ) && CDTXMania.ConfigIni.bAutoPlay.Bass )
+						( ( pChip.e楽器パート == E楽器パート.BASS ) && bIsAutoPlay.Bass )
 				  )
-				//				if ((pChip.e楽器パート == E楽器パート.DRUMS) && CDTXMania.ConfigIni.bAutoPlay[this.nチャンネル0Atoレーン07[pChip.nチャンネル番号 - 0x11]])
+				//				if ((pChip.e楽器パート == E楽器パート.DRUMS) && bIsAutoPlay[this.nチャンネル0Atoレーン07[pChip.nチャンネル番号 - 0x11]])
 				{
 					bPChipIsAutoPlay = true;
 				}
