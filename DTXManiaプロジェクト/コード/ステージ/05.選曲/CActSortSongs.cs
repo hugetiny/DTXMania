@@ -34,7 +34,7 @@ namespace DTXMania
 			this.n現在の選択行 = 0;
 			nSortType = (int) ESortItem.Default;
 			nSortOrder = (int) ESortOrder.Descend;
-			bIsJapanLocale = ( CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" );	// #24758 2011.4.1 yyagi add; To check JP locale
+//			bIsJapanLocale = ( CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" );	// #24758 2011.4.1 yyagi add; To check JP locale
 		}
 
 
@@ -174,7 +174,7 @@ namespace DTXMania
 			{
 				this.txCursor = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
 				this.txSortMenuBackground = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sort menu background.png" ), false );
-				this.txSortMenuChoices = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sort menu choices.png" ), false );	// #24758 2011.4.1 yyagi; for JP locale, Japanese 昇順/降順 (ascend/descend) png parts.
+				// this.txSortMenuChoices = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sort menu choices.png" ), false );	// #24758 2011.4.1 yyagi; for JP locale, Japanese 昇順/降順 (ascend/descend) png parts.
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -182,7 +182,7 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txSortMenuChoices );
+//				CDTXMania.tテクスチャの解放( ref this.txSortMenuChoices );
 				CDTXMania.tテクスチャの解放( ref this.txSortMenuBackground );
 				CDTXMania.tテクスチャの解放( ref this.txCursor );
 			}
@@ -341,11 +341,11 @@ namespace DTXMania
 
 		private int n現在の選択行;
 		private CTexture txSortMenuBackground;
-		private CTexture txSortMenuChoices;
+//		private CTexture txSortMenuChoices;
 		private CTexture txCursor;
 		private CActDFPFont font;
 		private CActSelect曲リスト act曲リスト;
-		private bool bIsJapanLocale;
+//		private bool bIsJapanLocale;
 
 		[StructLayout( LayoutKind.Sequential )]
 		private struct STキー反復用カウンタ
