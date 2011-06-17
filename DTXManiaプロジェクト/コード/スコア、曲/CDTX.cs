@@ -508,7 +508,7 @@ namespace DTXMania
 					return true;
 				}
 			}
-
+			public bool bIsAutoPlayed;						// 2011.6.10 yyagi
 			public CChip()
 			{
 				this.nバーからの距離dot = new STDGBVALUE<int>();
@@ -525,6 +525,7 @@ namespace DTXMania
 				this.n発声位置 = 0;
 				this.n発声時刻ms = 0;
 				this.nLag = -999;
+				this.bIsAutoPlayed = false;
 				this.dbチップサイズ倍率 = 1.0;
 				this.bHit = false;
 				this.b可視 = true;
