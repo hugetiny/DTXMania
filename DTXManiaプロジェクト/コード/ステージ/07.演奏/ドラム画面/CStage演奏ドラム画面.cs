@@ -2225,7 +2225,7 @@ namespace DTXMania
 					int[] y_base = { 0x5f, 0x176 };
 
 					const int num15 = 0x19;
-					int y = configIni.bReverse.Bass ? ( y_base[1] - pChip.nバーからの距離dot.Bass ) : ( y_base[1] + pChip.nバーからの距離dot.Bass );
+					int y = configIni.bReverse.Bass ? ( y_base[1] - pChip.nバーからの距離dot.Bass ) : ( y_base[0] + pChip.nバーからの距離dot.Bass );
 					int num17 = y - 0x39;
 					int num18 = 0;
 					if ( ( num17 < ( 0x163 + num15 ) ) && ( num17 > -num15 ) )
