@@ -1240,6 +1240,19 @@ namespace DTXMania
 			}
 			return nearestChip;
 		}
+
+		protected CDTX.CChip r次に来る指定楽器Chipを更新して返す( E楽器パート inst )
+		{
+			switch ( (int) inst )
+			{
+				case (int)E楽器パート.GUITAR:
+					return r次にくるギターChipを更新して返す();
+				case (int)E楽器パート.BASS:
+					return r次にくるベースChipを更新して返す();
+				default:
+					return null;
+			}
+		}
 		protected CDTX.CChip r次にくるギターChipを更新して返す()
 		{
 			int nInputAdjustTime = this.bIsAutoPlay.Guitar ? 0 : this.nInputAdjustTimeMs.Guitar;
@@ -1945,10 +1958,6 @@ namespace DTXMania
 					{
 						pChip.bHit = true;
 					}
-					//
-					// ここにチップ更新処理が入る(overrideで入れる)。といっても座標とチップサイズが違うだけで処理はまるまる同じ。
-					//
-					
 					if ( configIni.bAutoPlay.Bass )
 					{
 						this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
@@ -2161,282 +2170,436 @@ namespace DTXMania
 
 		protected virtual void t入力処理・ギター()
 		{
-			#region [ スクロール速度変更 ]
-			if ( CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.Decide ) && CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.B ) )
-			{
-				CDTXMania.ConfigIni.n譜面スクロール速度.Guitar = Math.Min( CDTXMania.ConfigIni.n譜面スクロール速度.Guitar + 1, 0x7cf );
-			}
-			if ( CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.Decide ) && CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.R ) )
-			{
-				CDTXMania.ConfigIni.n譜面スクロール速度.Guitar = Math.Max( CDTXMania.ConfigIni.n譜面スクロール速度.Guitar - 1, 0 );
-			}
-			#endregion
+			t入力処理・ギターベース( E楽器パート.GUITAR );
 
-			if ( !CDTXMania.ConfigIni.bGuitar有効 || !CDTXMania.DTX.bチップがある.Guitar )
-			{
-				return;
-			}
-				if ( bIsAutoPlay.Guitar )
-				{
-					CDTX.CChip chip = this.r次にくるギターChipを更新して返す();
-					if ( chip != null )
-					{
-						if ( ( chip.nチャンネル番号 & 4 ) != 0 )
-						{
-							this.actLaneFlushGB.Start( 0 );
-							this.actRGB.Push( 0 );
-						}
-						if ( ( chip.nチャンネル番号 & 2 ) != 0 )
-						{
-							this.actLaneFlushGB.Start( 1 );
-							this.actRGB.Push( 1 );
-						}
-						if ( ( chip.nチャンネル番号 & 1 ) != 0 )
-						{
-							this.actLaneFlushGB.Start( 2 );
-							this.actRGB.Push( 2 );
-						}
-					}
-				}
-				else
-				{
-					int flagR = CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.R ) ? 4 : 0;
-					this.t入力メソッド記憶( E楽器パート.GUITAR );
-					int flagG = CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.G ) ? 2 : 0;
-					this.t入力メソッド記憶( E楽器パート.GUITAR );
-					int flagB = CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.B ) ? 1 : 0;
-					this.t入力メソッド記憶( E楽器パート.GUITAR );
-					int flagRGB = flagR | flagG | flagB;
-					if ( flagR != 0 )
-					{
-						this.actLaneFlushGB.Start( 0 );
-						this.actRGB.Push( 0 );
-					}
-					if ( flagG != 0 )
-					{
-						this.actLaneFlushGB.Start( 1 );
-						this.actRGB.Push( 1 );
-					}
-					if ( flagB != 0 )
-					{
-						this.actLaneFlushGB.Start( 2 );
-						this.actRGB.Push( 2 );
-					}
-					List<STInputEvent> events = CDTXMania.Pad.GetEvents( E楽器パート.GUITAR, Eパッド.Pick );
-					if ( ( events != null ) && ( events.Count > 0 ) )
-					{
-						foreach ( STInputEvent event2 in events )
-						{
-							if ( !event2.b押された )
-							{
-								continue;
-							}
-							this.t入力メソッド記憶( E楽器パート.GUITAR );
-							long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
-							CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0x2f, this.nInputAdjustTimeMs.Guitar );
-							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs.Guitar );
-							if ( ( ( pChip != null ) && ( ( pChip.nチャンネル番号 & 15 ) == flagRGB ) ) && ( e判定 != E判定.Miss ) )
-							{
-								if ( ( flagR != 0 ) || ( flagRGB == 0 ) )
-								{
-									this.actChipFireGB.Start( 0 );
-								}
-								if ( ( flagG != 0 ) || ( flagRGB == 0 ) )
-								{
-									this.actChipFireGB.Start( 1 );
-								}
-								if ( ( flagB != 0 ) || ( flagRGB == 0 ) )
-								{
-									this.actChipFireGB.Start( 2 );
-								}
-								this.tチップのヒット処理( nTime, pChip );
-								this.tサウンド再生( pChip, CDTXMania.Timer.nシステム時刻, E楽器パート.GUITAR, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Guitar, e判定 == E判定.Poor );
-								CDTX.CChip item = this.r指定時刻に一番近い未ヒットChip( nTime, 0x28, this.nInputAdjustTimeMs.Guitar, 140 );
-								if ( item != null )
-								{
-									this.queWailing.Guitar.Enqueue( item );
-								}
-								continue;
-							}
+			//#region [ スクロール速度変更 ]
+			//if ( CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.Decide ) && CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.B ) )
+			//{
+			//    CDTXMania.ConfigIni.n譜面スクロール速度.Guitar = Math.Min( CDTXMania.ConfigIni.n譜面スクロール速度.Guitar + 1, 0x7cf );
+			//}
+			//if ( CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.Decide ) && CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.R ) )
+			//{
+			//    CDTXMania.ConfigIni.n譜面スクロール速度.Guitar = Math.Max( CDTXMania.ConfigIni.n譜面スクロール速度.Guitar - 1, 0 );
+			//}
+			//#endregion
 
-							CDTX.CChip chipPicked;
-							if ( ( ( chipPicked = this.r現在の空うちギターChip ) != null ) || ( ( chipPicked = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, 0x2f, this.nInputAdjustTimeMs.Guitar ) ) != null ) )
-							{
-								this.tサウンド再生( chipPicked, CDTXMania.Timer.nシステム時刻, E楽器パート.GUITAR, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Guitar, true );
-							}
-							if ( !CDTXMania.ConfigIni.bLight.Guitar )
-							{
-								this.tチップのヒット処理・BadならびにTight時のMiss( E楽器パート.GUITAR );
-							}
-						}
-					}
-					List<STInputEvent> list = CDTXMania.Pad.GetEvents( E楽器パート.GUITAR, Eパッド.Wail );
-					if ( ( list != null ) && ( list.Count > 0 ) )
-					{
-						foreach ( STInputEvent eventWailed in list )
-						{
-							if ( !eventWailed.b押された )
-							{
-								continue;
-							}
-							long nTimeWailed = eventWailed.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
-							CDTX.CChip chipWailing;
-							while ( ( this.queWailing.Guitar.Count > 0 ) && ( ( chipWailing = this.queWailing.Guitar.Dequeue() ) != null ) )
-							{
-								if ( ( nTimeWailed - chipWailing.n発声時刻ms ) <= 1000 )		// #24245 2011.1.26 yyagi: 800 -> 1000
-								{
-									chipWailing.bHit = true;
-									this.actWailingBonus.Start( E楽器パート.GUITAR, this.r現在の歓声Chip.Guitar );
-									if ( !bIsAutoPlay.Guitar )
-									{
-										int nCombo = ( this.actCombo.n現在のコンボ数.Guitar < 500 ) ? this.actCombo.n現在のコンボ数.Guitar : 500;
-										this.actScore.Set( E楽器パート.GUITAR, this.actScore.Get( E楽器パート.GUITAR ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->GUITAR, add nCombo conditions
-									}
-								}
-							}
-						}
-					}
-				}
+			//if ( !CDTXMania.ConfigIni.bGuitar有効 || !CDTXMania.DTX.bチップがある.Guitar )
+			//{
+			//    return;
+			//}
+			//    if ( bIsAutoPlay.Guitar )
+			//    {
+			//        CDTX.CChip chip = this.r次にくるギターChipを更新して返す();
+			//        if ( chip != null )
+			//        {
+			//            if ( ( chip.nチャンネル番号 & 4 ) != 0 )
+			//            {
+			//                this.actLaneFlushGB.Start( 0 );
+			//                this.actRGB.Push( 0 );
+			//            }
+			//            if ( ( chip.nチャンネル番号 & 2 ) != 0 )
+			//            {
+			//                this.actLaneFlushGB.Start( 1 );
+			//                this.actRGB.Push( 1 );
+			//            }
+			//            if ( ( chip.nチャンネル番号 & 1 ) != 0 )
+			//            {
+			//                this.actLaneFlushGB.Start( 2 );
+			//                this.actRGB.Push( 2 );
+			//            }
+			//        }
+			//    }
+			//    else
+			//    {
+			//        int flagR = CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.R ) ? 4 : 0;
+			//        this.t入力メソッド記憶( E楽器パート.GUITAR );
+			//        int flagG = CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.G ) ? 2 : 0;
+			//        this.t入力メソッド記憶( E楽器パート.GUITAR );
+			//        int flagB = CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.B ) ? 1 : 0;
+			//        this.t入力メソッド記憶( E楽器パート.GUITAR );
+			//        int flagRGB = flagR | flagG | flagB;
+			//        if ( flagR != 0 )
+			//        {
+			//            this.actLaneFlushGB.Start( 0 );
+			//            this.actRGB.Push( 0 );
+			//        }
+			//        if ( flagG != 0 )
+			//        {
+			//            this.actLaneFlushGB.Start( 1 );
+			//            this.actRGB.Push( 1 );
+			//        }
+			//        if ( flagB != 0 )
+			//        {
+			//            this.actLaneFlushGB.Start( 2 );
+			//            this.actRGB.Push( 2 );
+			//        }
+			//        List<STInputEvent> events = CDTXMania.Pad.GetEvents( E楽器パート.GUITAR, Eパッド.Pick );
+			//        if ( ( events != null ) && ( events.Count > 0 ) )
+			//        {
+			//            foreach ( STInputEvent event2 in events )
+			//            {
+			//                if ( !event2.b押された )
+			//                {
+			//                    continue;
+			//                }
+			//                this.t入力メソッド記憶( E楽器パート.GUITAR );
+			//                long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
+			//                CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0x2f, this.nInputAdjustTimeMs.Guitar );
+			//                E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs.Guitar );
+			//                if ( ( ( pChip != null ) && ( ( pChip.nチャンネル番号 & 15 ) == flagRGB ) ) && ( e判定 != E判定.Miss ) )
+			//                {
+			//                    if ( ( flagR != 0 ) || ( flagRGB == 0 ) )
+			//                    {
+			//                        this.actChipFireGB.Start( 0 );
+			//                    }
+			//                    if ( ( flagG != 0 ) || ( flagRGB == 0 ) )
+			//                    {
+			//                        this.actChipFireGB.Start( 1 );
+			//                    }
+			//                    if ( ( flagB != 0 ) || ( flagRGB == 0 ) )
+			//                    {
+			//                        this.actChipFireGB.Start( 2 );
+			//                    }
+			//                    this.tチップのヒット処理( nTime, pChip );
+			//                    this.tサウンド再生( pChip, CDTXMania.Timer.nシステム時刻, E楽器パート.GUITAR, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Guitar, e判定 == E判定.Poor );
+			//                    CDTX.CChip item = this.r指定時刻に一番近い未ヒットChip( nTime, 0x28, this.nInputAdjustTimeMs.Guitar, 140 );
+			//                    if ( item != null )
+			//                    {
+			//                        this.queWailing.Guitar.Enqueue( item );
+			//                    }
+			//                    continue;
+			//                }
+
+			//                CDTX.CChip chipPicked;
+			//                if ( ( ( chipPicked = this.r現在の空うちギターChip ) != null ) || ( ( chipPicked = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, 0x2f, this.nInputAdjustTimeMs.Guitar ) ) != null ) )
+			//                {
+			//                    this.tサウンド再生( chipPicked, CDTXMania.Timer.nシステム時刻, E楽器パート.GUITAR, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Guitar, true );
+			//                }
+			//                if ( !CDTXMania.ConfigIni.bLight.Guitar )
+			//                {
+			//                    this.tチップのヒット処理・BadならびにTight時のMiss( E楽器パート.GUITAR );
+			//                }
+			//            }
+			//        }
+			//        List<STInputEvent> list = CDTXMania.Pad.GetEvents( E楽器パート.GUITAR, Eパッド.Wail );
+			//        if ( ( list != null ) && ( list.Count > 0 ) )
+			//        {
+			//            foreach ( STInputEvent eventWailed in list )
+			//            {
+			//                if ( !eventWailed.b押された )
+			//                {
+			//                    continue;
+			//                }
+			//                long nTimeWailed = eventWailed.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
+			//                CDTX.CChip chipWailing;
+			//                while ( ( this.queWailing.Guitar.Count > 0 ) && ( ( chipWailing = this.queWailing.Guitar.Dequeue() ) != null ) )
+			//                {
+			//                    if ( ( nTimeWailed - chipWailing.n発声時刻ms ) <= 1000 )		// #24245 2011.1.26 yyagi: 800 -> 1000
+			//                    {
+			//                        chipWailing.bHit = true;
+			//                        this.actWailingBonus.Start( E楽器パート.GUITAR, this.r現在の歓声Chip.Guitar );
+			//                        if ( !bIsAutoPlay.Guitar )
+			//                        {
+			//                            int nCombo = ( this.actCombo.n現在のコンボ数.Guitar < 500 ) ? this.actCombo.n現在のコンボ数.Guitar : 500;
+			//                            this.actScore.Set( E楽器パート.GUITAR, this.actScore.Get( E楽器パート.GUITAR ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->GUITAR, add nCombo conditions
+			//                        }
+			//                    }
+			//                }
+			//            }
+			//        }
+			//    }
 		}
 		protected virtual void t入力処理・ベース()
 		{
+			t入力処理・ギターベース( E楽器パート.BASS );
+
+			//#region [ スクロール速度変更 ]
+			//if ( CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.Decide ) && CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.B ) )
+			//{
+			//    CDTXMania.ConfigIni.n譜面スクロール速度.Bass = Math.Min( CDTXMania.ConfigIni.n譜面スクロール速度.Bass + 1, 0x7cf );
+			//}
+			//if ( CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.Decide ) && CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.R ) )
+			//{
+			//    CDTXMania.ConfigIni.n譜面スクロール速度.Bass = Math.Max( CDTXMania.ConfigIni.n譜面スクロール速度.Bass - 1, 0 );
+			//}
+			//#endregion
+
+			//if ( !CDTXMania.ConfigIni.bGuitar有効 || !CDTXMania.DTX.bチップがある.Bass )
+			//{
+			//    return;
+			//}
+			//    if ( bIsAutoPlay.Bass )
+			//    {
+			//        CDTX.CChip chip = this.r次にくるベースChipを更新して返す();
+			//        if ( chip != null )
+			//        {
+			//            if ( ( chip.nチャンネル番号 & 4 ) != 0 )
+			//            {
+			//                this.actLaneFlushGB.Start( 3 );
+			//                this.actRGB.Push( 3 );
+			//            }
+			//            if ( ( chip.nチャンネル番号 & 2 ) != 0 )
+			//            {
+			//                this.actLaneFlushGB.Start( 4 );
+			//                this.actRGB.Push( 4 );
+			//            }
+			//            if ( ( chip.nチャンネル番号 & 1 ) != 0 )
+			//            {
+			//                this.actLaneFlushGB.Start( 5 );
+			//                this.actRGB.Push( 5 );
+			//            }
+			//        }
+			//    }
+			//    else
+			//    {
+			//        int flagR = CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.R ) ? 4 : 0;
+			//        this.t入力メソッド記憶( E楽器パート.BASS );
+			//        int flagG = CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.G ) ? 2 : 0;
+			//        this.t入力メソッド記憶( E楽器パート.BASS );
+			//        int flagB = CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.B ) ? 1 : 0;
+			//        this.t入力メソッド記憶( E楽器パート.BASS );
+			//        int flagRGB = flagR | flagG | flagB;
+			//        if ( flagR != 0 )
+			//        {
+			//            this.actLaneFlushGB.Start( 3 );
+			//            this.actRGB.Push( 3 );
+			//        }
+			//        if ( flagG != 0 )
+			//        {
+			//            this.actLaneFlushGB.Start( 4 );
+			//            this.actRGB.Push( 4 );
+			//        }
+			//        if ( flagB != 0 )
+			//        {
+			//            this.actLaneFlushGB.Start( 5 );
+			//            this.actRGB.Push( 5 );
+			//        }
+			//        List<STInputEvent> events = CDTXMania.Pad.GetEvents( E楽器パート.BASS, Eパッド.Pick );
+			//        if ( ( events != null ) && ( events.Count > 0 ) )
+			//        {
+			//            foreach ( STInputEvent event2 in events )
+			//            {
+			//                if ( !event2.b押された )
+			//                {
+			//                    continue;
+			//                }
+			//                this.t入力メソッド記憶( E楽器パート.BASS );
+			//                long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
+			//                CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0xaf, this.nInputAdjustTimeMs.Bass );
+			//                E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs.Bass );
+			//                if ( ( ( pChip != null ) && ( ( pChip.nチャンネル番号 & 15 ) == flagRGB ) ) && ( e判定 != E判定.Miss ) )
+			//                {
+			//                    if ( ( flagR != 0 ) || ( flagRGB == 0 ) )
+			//                    {
+			//                        this.actChipFireGB.Start( 3 );
+			//                    }
+			//                    if ( ( flagG != 0 ) || ( flagRGB == 0 ) )
+			//                    {
+			//                        this.actChipFireGB.Start( 4 );
+			//                    }
+			//                    if ( ( flagB != 0 ) || ( flagRGB == 0 ) )
+			//                    {
+			//                        this.actChipFireGB.Start( 5 );
+			//                    }
+			//                    this.tチップのヒット処理( nTime, pChip );
+			//                    this.tサウンド再生( pChip, CDTXMania.Timer.nシステム時刻, E楽器パート.BASS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Bass, e判定 == E判定.Poor );
+			//                    CDTX.CChip item = this.r指定時刻に一番近い未ヒットChip( nTime, 0xa8, this.nInputAdjustTimeMs.Bass, 140 );
+			//                    if ( item != null )
+			//                    {
+			//                        this.queWailing.Bass.Enqueue( item );
+			//                    }
+			//                    continue;
+			//                }
+
+			//                CDTX.CChip chipPicked;
+			//                if ( ( ( chipPicked = this.r現在の空うちベースChip ) != null ) || ( ( chipPicked = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, 0xaf, this.nInputAdjustTimeMs.Bass ) ) != null ) )
+			//                {
+			//                    this.tサウンド再生( chipPicked, CDTXMania.Timer.nシステム時刻, E楽器パート.BASS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Bass, true );
+			//                }
+			//                if ( !CDTXMania.ConfigIni.bLight.Bass )
+			//                {
+			//                    this.tチップのヒット処理・BadならびにTight時のMiss( E楽器パート.BASS );
+			//                }
+			//            }
+			//        }
+			//        List<STInputEvent> list = CDTXMania.Pad.GetEvents( E楽器パート.BASS, Eパッド.Wail );
+			//        if ( ( list != null ) && ( list.Count > 0 ) )
+			//        {
+			//            foreach ( STInputEvent eventWailed in list )
+			//            {
+			//                if ( !eventWailed.b押された )
+			//                {
+			//                    continue;
+			//                }
+			//                long nTimeWailed = eventWailed.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
+			//                CDTX.CChip chipWailing;
+			//                while ( ( this.queWailing.Bass.Count > 0 ) && ( ( chipWailing = this.queWailing.Bass.Dequeue() ) != null ) )
+			//                {
+			//                    if ( ( nTimeWailed - chipWailing.n発声時刻ms ) <= 1000 )		// #24245 2011.1.26 yyagi: 800 -> 1000
+			//                    {
+			//                        chipWailing.bHit = true;
+			//                        this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
+			//                        if ( !bIsAutoPlay.Bass )
+			//                        {
+			//                            int nCombo = ( this.actCombo.n現在のコンボ数.Bass < 500 ) ? this.actCombo.n現在のコンボ数.Bass : 500;
+			//                            this.actScore.Set( E楽器パート.BASS, this.actScore.Get( E楽器パート.BASS ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->BASS, add nCombo conditions
+			//                        }
+			//                    }
+			//                }
+			//            }
+			//        }
+			//    }
+		}
+
+
+		protected virtual void t入力処理・ギターベース(E楽器パート inst)
+		{
+			int indexInst = (int) inst;
 			#region [ スクロール速度変更 ]
-			if ( CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.Decide ) && CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.B ) )
+			if ( CDTXMania.Pad.b押されている( inst, Eパッド.Decide ) && CDTXMania.Pad.b押された( inst, Eパッド.B ) )
 			{
-				CDTXMania.ConfigIni.n譜面スクロール速度.Bass = Math.Min( CDTXMania.ConfigIni.n譜面スクロール速度.Bass + 1, 0x7cf );
+				CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] = Math.Min( CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] + 1, 0x7cf );
 			}
-			if ( CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.Decide ) && CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.R ) )
+			if ( CDTXMania.Pad.b押されている( inst, Eパッド.Decide ) && CDTXMania.Pad.b押された( inst, Eパッド.R ) )
 			{
-				CDTXMania.ConfigIni.n譜面スクロール速度.Bass = Math.Max( CDTXMania.ConfigIni.n譜面スクロール速度.Bass - 1, 0 );
+				CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] = Math.Max( CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] - 1, 0 );
 			}
 			#endregion
 
-			if ( !CDTXMania.ConfigIni.bGuitar有効 || !CDTXMania.DTX.bチップがある.Bass )
+			if ( !CDTXMania.ConfigIni.bGuitar有効 || !CDTXMania.DTX.bチップがある[indexInst] )
 			{
 				return;
 			}
-				if ( bIsAutoPlay.Bass )
-				{
-					CDTX.CChip chip = this.r次にくるベースChipを更新して返す();
-					if ( chip != null )
-					{
-						if ( ( chip.nチャンネル番号 & 4 ) != 0 )
-						{
-							this.actLaneFlushGB.Start( 3 );
-							this.actRGB.Push( 3 );
-						}
-						if ( ( chip.nチャンネル番号 & 2 ) != 0 )
-						{
-							this.actLaneFlushGB.Start( 4 );
-							this.actRGB.Push( 4 );
-						}
-						if ( ( chip.nチャンネル番号 & 1 ) != 0 )
-						{
-							this.actLaneFlushGB.Start( 5 );
-							this.actRGB.Push( 5 );
-						}
-					}
-				}
-				else
-				{
-					int flagR = CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.R ) ? 4 : 0;
-					this.t入力メソッド記憶( E楽器パート.BASS );
-					int flagG = CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.G ) ? 2 : 0;
-					this.t入力メソッド記憶( E楽器パート.BASS );
-					int flagB = CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.B ) ? 1 : 0;
-					this.t入力メソッド記憶( E楽器パート.BASS );
-					int flagRGB = flagR | flagG | flagB;
-					if ( flagR != 0 )
-					{
-						this.actLaneFlushGB.Start( 3 );
-						this.actRGB.Push( 3 );
-					}
-					if ( flagG != 0 )
-					{
-						this.actLaneFlushGB.Start( 4 );
-						this.actRGB.Push( 4 );
-					}
-					if ( flagB != 0 )
-					{
-						this.actLaneFlushGB.Start( 5 );
-						this.actRGB.Push( 5 );
-					}
-					List<STInputEvent> events = CDTXMania.Pad.GetEvents( E楽器パート.BASS, Eパッド.Pick );
-					if ( ( events != null ) && ( events.Count > 0 ) )
-					{
-						foreach ( STInputEvent event2 in events )
-						{
-							if ( !event2.b押された )
-							{
-								continue;
-							}
-							this.t入力メソッド記憶( E楽器パート.BASS );
-							long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
-							CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, 0xaf, this.nInputAdjustTimeMs.Bass );
-							E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs.Bass );
-							if ( ( ( pChip != null ) && ( ( pChip.nチャンネル番号 & 15 ) == flagRGB ) ) && ( e判定 != E判定.Miss ) )
-							{
-								if ( ( flagR != 0 ) || ( flagRGB == 0 ) )
-								{
-									this.actChipFireGB.Start( 3 );
-								}
-								if ( ( flagG != 0 ) || ( flagRGB == 0 ) )
-								{
-									this.actChipFireGB.Start( 4 );
-								}
-								if ( ( flagB != 0 ) || ( flagRGB == 0 ) )
-								{
-									this.actChipFireGB.Start( 5 );
-								}
-								this.tチップのヒット処理( nTime, pChip );
-								this.tサウンド再生( pChip, CDTXMania.Timer.nシステム時刻, E楽器パート.BASS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Bass, e判定 == E判定.Poor );
-								CDTX.CChip item = this.r指定時刻に一番近い未ヒットChip( nTime, 0xa8, this.nInputAdjustTimeMs.Bass, 140 );
-								if ( item != null )
-								{
-									this.queWailing.Bass.Enqueue( item );
-								}
-								continue;
-							}
 
-							CDTX.CChip chipPicked;
-							if ( ( ( chipPicked = this.r現在の空うちベースChip ) != null ) || ( ( chipPicked = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, 0xaf, this.nInputAdjustTimeMs.Bass ) ) != null ) )
+			int R = ( inst == E楽器パート.GUITAR ) ? 0 : 3;
+			int G = R + 1;
+			int B = R + 2;
+			if ( bIsAutoPlay[ (int)Eドラムレーン.CY + indexInst ] )
+			{
+				CDTX.CChip chip = this.r次に来る指定楽器Chipを更新して返す(inst);
+				if ( chip != null )
+				{
+					if ( ( chip.nチャンネル番号 & 4 ) != 0 )
+					{
+						this.actLaneFlushGB.Start( R );
+						this.actRGB.Push( R );
+					}
+					if ( ( chip.nチャンネル番号 & 2 ) != 0 )
+					{
+						this.actLaneFlushGB.Start( G );
+						this.actRGB.Push( G );
+					}
+					if ( ( chip.nチャンネル番号 & 1 ) != 0 )
+					{
+						this.actLaneFlushGB.Start( B );
+						this.actRGB.Push( B );
+					}
+				}
+			}
+			else
+			{
+				int flagR = CDTXMania.Pad.b押されている( inst, Eパッド.R ) ? 4 : 0;
+				this.t入力メソッド記憶( inst );
+				int flagG = CDTXMania.Pad.b押されている( inst, Eパッド.G ) ? 2 : 0;
+				this.t入力メソッド記憶( inst );
+				int flagB = CDTXMania.Pad.b押されている( inst, Eパッド.B ) ? 1 : 0;
+				this.t入力メソッド記憶( inst );
+				int flagRGB = flagR | flagG | flagB;
+				if ( flagR != 0 )
+				{
+					this.actLaneFlushGB.Start( R );
+					this.actRGB.Push( R );
+				}
+				if ( flagG != 0 )
+				{
+					this.actLaneFlushGB.Start( G );
+					this.actRGB.Push( G );
+				}
+				if ( flagB != 0 )
+				{
+					this.actLaneFlushGB.Start( B );
+					this.actRGB.Push( B );
+				}
+				List<STInputEvent> events = CDTXMania.Pad.GetEvents( inst, Eパッド.Pick );
+				if ( ( events != null ) && ( events.Count > 0 ) )
+				{
+					foreach ( STInputEvent event2 in events )
+					{
+						if ( !event2.b押された )
+						{
+							continue;
+						}
+						this.t入力メソッド記憶( inst );
+						long nTime = event2.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
+						int chWailingSound = ( inst == E楽器パート.GUITAR ) ? 0x2F : 0xAF;
+						CDTX.CChip pChip = this.r指定時刻に一番近い未ヒットChip( nTime, chWailingSound, this.nInputAdjustTimeMs[indexInst] );
+						E判定 e判定 = this.e指定時刻からChipのJUDGEを返す( nTime, pChip, this.nInputAdjustTimeMs[indexInst] );
+						if ( ( ( pChip != null ) && ( ( pChip.nチャンネル番号 & 15 ) == flagRGB ) ) && ( e判定 != E判定.Miss ) )
+						{
+							if ( ( flagR != 0 ) || ( flagRGB == 0 ) )
 							{
-								this.tサウンド再生( chipPicked, CDTXMania.Timer.nシステム時刻, E楽器パート.BASS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Bass, true );
+								this.actChipFireGB.Start( R );
 							}
-							if ( !CDTXMania.ConfigIni.bLight.Bass )
+							if ( ( flagG != 0 ) || ( flagRGB == 0 ) )
 							{
-								this.tチップのヒット処理・BadならびにTight時のMiss( E楽器パート.BASS );
+								this.actChipFireGB.Start( G );
 							}
+							if ( ( flagB != 0 ) || ( flagRGB == 0 ) )
+							{
+								this.actChipFireGB.Start( B );
+							}
+							this.tチップのヒット処理( nTime, pChip );
+							this.tサウンド再生( pChip, CDTXMania.Timer.nシステム時刻, inst, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する[indexInst], e判定 == E判定.Poor );
+							int chWailingChip = ( inst == E楽器パート.GUITAR ) ? 0x28 : 0xA8;
+							CDTX.CChip item = this.r指定時刻に一番近い未ヒットChip( nTime, chWailingChip, this.nInputAdjustTimeMs[ indexInst ], 140 );
+							if ( item != null )
+							{
+								this.queWailing[indexInst].Enqueue( item );
+							}
+							continue;
+						}
+
+						CDTX.CChip chipPicked;
+						CDTX.CChip NoChip = ( inst == E楽器パート.GUITAR ) ? this.r現在の空うちギターChip : this.r現在の空うちベースChip;
+						if ( ( ( chipPicked = NoChip) != null ) || ( ( chipPicked = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, chWailingSound, this.nInputAdjustTimeMs[indexInst] ) ) != null ) )
+						{
+							this.tサウンド再生( chipPicked, CDTXMania.Timer.nシステム時刻, inst, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する[indexInst], true );
+						}
+						if ( !CDTXMania.ConfigIni.bLight[indexInst] )
+						{
+							this.tチップのヒット処理・BadならびにTight時のMiss( inst );
 						}
 					}
-					List<STInputEvent> list = CDTXMania.Pad.GetEvents( E楽器パート.BASS, Eパッド.Wail );
-					if ( ( list != null ) && ( list.Count > 0 ) )
+				}
+				List<STInputEvent> list = CDTXMania.Pad.GetEvents(inst, Eパッド.Wail );
+				if ( ( list != null ) && ( list.Count > 0 ) )
+				{
+					foreach ( STInputEvent eventWailed in list )
 					{
-						foreach ( STInputEvent eventWailed in list )
+						if ( !eventWailed.b押された )
 						{
-							if ( !eventWailed.b押された )
+							continue;
+						}
+						long nTimeWailed = eventWailed.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
+						CDTX.CChip chipWailing;
+						while ( ( this.queWailing[indexInst].Count > 0 ) && ( ( chipWailing = this.queWailing[indexInst].Dequeue() ) != null ) )
+						{
+							if ( ( nTimeWailed - chipWailing.n発声時刻ms ) <= 1000 )		// #24245 2011.1.26 yyagi: 800 -> 1000
 							{
-								continue;
-							}
-							long nTimeWailed = eventWailed.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
-							CDTX.CChip chipWailing;
-							while ( ( this.queWailing.Bass.Count > 0 ) && ( ( chipWailing = this.queWailing.Bass.Dequeue() ) != null ) )
-							{
-								if ( ( nTimeWailed - chipWailing.n発声時刻ms ) <= 1000 )		// #24245 2011.1.26 yyagi: 800 -> 1000
+								chipWailing.bHit = true;
+								this.actWailingBonus.Start( inst, this.r現在の歓声Chip[indexInst] );
+								if ( !bIsAutoPlay[indexInst] )
 								{
-									chipWailing.bHit = true;
-									this.actWailingBonus.Start( E楽器パート.BASS, this.r現在の歓声Chip.Bass );
-									if ( !bIsAutoPlay.Bass )
-									{
-										int nCombo = ( this.actCombo.n現在のコンボ数.Bass < 500 ) ? this.actCombo.n現在のコンボ数.Bass : 500;
-										this.actScore.Set( E楽器パート.BASS, this.actScore.Get( E楽器パート.BASS ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->BASS, add nCombo conditions
-									}
+									int nCombo = ( this.actCombo.n現在のコンボ数[indexInst] < 500 ) ? this.actCombo.n現在のコンボ数[indexInst] : 500;
+									this.actScore.Set( inst, this.actScore.Get( inst ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->BASS, add nCombo conditions
 								}
 							}
 						}
 					}
 				}
+			}
 		}
+
 
 #if true		// DAMAGELEVELTUNING
 #region [ DAMAGELEVELTUNING ]
