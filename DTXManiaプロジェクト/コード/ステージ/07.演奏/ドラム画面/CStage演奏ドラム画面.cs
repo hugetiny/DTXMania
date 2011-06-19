@@ -2017,27 +2017,37 @@ namespace DTXMania
 				// 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
 				if ( !pChip.bHit && pChip.b可視 )
 				{
-					int num14 = 0x19;
-					int num15 = configIni.bReverse.Guitar ? ( 0x176 - pChip.nバーからの距離dot.Guitar ) : ( 0x5f + pChip.nバーからの距離dot.Guitar );
-					int num16 = num15 - 0x39;
-					int num17 = 0;
-					if ( ( num16 < ( 0x163 + num14 ) ) && ( num16 > -num14 ) )
+					int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
+					int offset = 0x39;					// ドラム画面かギター画面かで変わる値
+
+					const int WailingWidth = 20;		// ウェイリングチップ画像の幅: 4種全て同じ値
+					const int WailingHeight = 50;		// ウェイリングチップ画像の高さ: 4種全て同じ値
+					const int baseTextureOffsetX = 268;	// テクスチャ画像中のウェイリングチップ画像の位置X: ドラム画面かギター画面かで変わる値
+					const int baseTextureOffsetY = 174;	// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
+					const int drawX = 588;				// ウェイリングチップ描画位置X座標: 4種全て異なる値
+
+					const int numA = 25;				// 4種全て同じ値
+					int y = configIni.bReverse.Guitar ? ( y_base[1] - pChip.nバーからの距離dot.Guitar ) : ( y_base[0] + pChip.nバーからの距離dot.Guitar );
+					int numB = y - offset;				// 4種全て同じ定義
+					int numC = 0;						// 4種全て同じ初期値
+					const int numD = 355;				// ドラム画面かギター画面かで変わる値
+					if ( ( numB < ( numD + numA ) ) && ( numB > -numA ) )	// 以下のロジックは4種全て同じ
 					{
-						int num18 = this.ctWailingチップ模様アニメ.n現在の値;
-						Rectangle rectangle5 = new Rectangle( 0x10c + ( num18 * 20 ), 0xae, 20, 50 );
-						if ( num16 < num14 )
+						int c = this.ctWailingチップ模様アニメ.n現在の値;
+						Rectangle rect = new Rectangle( baseTextureOffsetX + ( c * WailingWidth ), baseTextureOffsetY, WailingWidth, WailingHeight);
+						if ( numB < numA )
 						{
-							rectangle5.Y += num14 - num16;
-							rectangle5.Height -= num14 - num16;
-							num17 = num14 - num16;
+							rect.Y += numA - numB;
+							rect.Height -= numA - numB;
+							numC = numA - numB;
 						}
-						if ( num16 > ( 0x163 - num14 ) )
+						if ( numB > ( numD - numA ) )
 						{
-							rectangle5.Height -= num16 - ( 0x163 - num14 );
+							rect.Height -= numB - ( numD - numA );
 						}
-						if ( ( rectangle5.Bottom > rectangle5.Top ) && ( this.txチップ != null ) )
+						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, 0x24c, ( num15 - num14 ) + num17, rectangle5 );
+							this.txチップ.t2D描画( CDTXMania.app.Device, drawX, ( y - numA ) + numC, rect );
 						}
 					}
 				}
@@ -2222,29 +2232,37 @@ namespace DTXMania
 				//
 				if ( !pChip.bHit && pChip.b可視 )
 				{
-					int[] y_base = { 0x5f, 0x176 };
+					int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
+					int offset = 0x39;					// ドラム画面かギター画面かで変わる値
 
-					const int num15 = 0x19;
-					int y = configIni.bReverse.Bass ? ( y_base[1] - pChip.nバーからの距離dot.Bass ) : ( y_base[0] + pChip.nバーからの距離dot.Bass );
-					int num17 = y - 0x39;
-					int num18 = 0;
-					if ( ( num17 < ( 0x163 + num15 ) ) && ( num17 > -num15 ) )
+					const int WailingWidth = 20;		// ウェイリングチップ画像の幅: 4種全て同じ値
+					const int WailingHeight = 50;		// ウェイリングチップ画像の高さ: 4種全て同じ値
+					const int baseTextureOffsetX = 268;	// テクスチャ画像中のウェイリングチップ画像の位置X: ドラム画面かギター画面かで変わる値
+					const int baseTextureOffsetY = 174;	// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
+					const int drawX = 479;				// ウェイリングチップ描画位置X座標: 4種全て異なる値
+
+					const int numA = 25;				// 4種全て同じ値
+					int y = configIni.bReverse.Bass ? ( y_base[ 1 ] - pChip.nバーからの距離dot.Bass ) : ( y_base[ 0 ] + pChip.nバーからの距離dot.Bass );
+					int numB = y - offset;				// 4種全て同じ定義
+					int numC = 0;						// 4種全て同じ初期値
+					const int numD = 355;				// ドラム画面かギター画面かで変わる値
+					if ( ( numB < ( numD + numA ) ) && ( numB > -numA ) )	// 以下のロジックは4種全て同じ
 					{
 						int c = this.ctWailingチップ模様アニメ.n現在の値;
-						Rectangle rectangle6 = new Rectangle( 0x10c + ( c * 20 ), 0xae, 20, 50 );
-						if ( num17 < num15 )
+						Rectangle rect = new Rectangle( baseTextureOffsetX + ( c * WailingWidth ), baseTextureOffsetY, WailingWidth, WailingHeight );
+						if ( numB < numA )
 						{
-							rectangle6.Y += num15 - num17;
-							rectangle6.Height -= num15 - num17;
-							num18 = num15 - num17;
+							rect.Y += numA - numB;
+							rect.Height -= numA - numB;
+							numC = numA - numB;
 						}
-						if ( num17 > ( 0x163 - num15 ) )
+						if ( numB > ( numD - numA ) )
 						{
-							rectangle6.Height -= num17 - ( 0x163 - num15 );
+							rect.Height -= numB - ( numD - numA );
 						}
-						if ( ( rectangle6.Bottom > rectangle6.Top ) && ( this.txチップ != null ) )
+						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, 0x1df, ( y - num15 ) + num18, rectangle6 );
+							this.txチップ.t2D描画( CDTXMania.app.Device, drawX, ( y - numA ) + numC, rect );
 						}
 					}
 				}
