@@ -1924,7 +1924,7 @@ namespace DTXMania
 					{
 						pChip.bHit = true;
 					}
-					if ( configIni.bAutoPlay[indexInst] )
+					if ( configIni.bAutoPlay[ ((int) Eドラムレーン.GT - 1) + indexInst ] )	// このような、バグの入りやすい書き方(GT/BSのindex値が他と異なる)はいずれ見直したい
 					{
 						pChip.bHit = true;								// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
 						this.actWailingBonus.Start( inst, this.r現在の歓声Chip[indexInst] );

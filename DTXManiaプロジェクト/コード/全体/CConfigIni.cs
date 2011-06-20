@@ -635,10 +635,10 @@ namespace DTXMania
 						case (int) Eドラムレーン.CY:
 							return this.CY;
 
-						case (int) Eドラムレーン.CY + 1:
+						case (int) Eドラムレーン.GT:
 							return this.Guitar;
 
-						case (int) Eドラムレーン.CY + 2:
+						case (int) Eドラムレーン.BS:
 							return this.Bass;
 					}
 					throw new IndexOutOfRangeException();

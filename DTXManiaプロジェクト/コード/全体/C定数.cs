@@ -187,7 +187,9 @@ namespace DTXMania
 		HT,
 		LT,
 		FT,
-		CY
+		CY,
+		GT,		// AUTOレーン判定を容易にするため、便宜上定義しておく
+		BS
 	}
 	internal enum Eログ出力
 	{
