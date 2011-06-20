@@ -209,6 +209,7 @@ namespace DTXMania
 			public int n全チップ数;
 			public string strDTXManiaのバージョン;
 			public bool レーン9モード;
+			public int nRiskyMode;		// #23559 2011.6.20 yyagi 0=OFF, 1-10=Risky
 			public string 最終更新日時;
 
 			public C演奏記録()
@@ -266,6 +267,7 @@ namespace DTXMania
 				this.最終更新日時 = "";
 				this.Hash = "00000000000000000000000000000000";
 				this.レーン9モード = true;
+				this.nRiskyMode = 0;									// #23559 2011.6.20 yyagi
 			}
 
 			public bool bフルコンボじゃない
@@ -487,7 +489,7 @@ namespace DTXMania
 			this.iniファイルのあるフォルダ名 = Path.GetDirectoryName( iniファイル名 );
 			this.iniファイル名 = Path.GetFileName( iniファイル名 );
 
-			Eセクション種別 unknown = Eセクション種別.Unknown;
+			Eセクション種別 section = Eセクション種別.Unknown;
 			if( File.Exists( iniファイル名 ) )
 			{
 				string str;
@@ -513,49 +515,49 @@ namespace DTXMania
 								string str2 = builder.ToString();
 								if( str2.Equals( "File" ) )
 								{
-									unknown = Eセクション種別.File;
+									section = Eセクション種別.File;
 								}
 								else if( str2.Equals( "HiScore.Drums" ) )
 								{
-									unknown = Eセクション種別.HiScoreDrums;
+									section = Eセクション種別.HiScoreDrums;
 								}
 								else if( str2.Equals( "HiSkill.Drums" ) )
 								{
-									unknown = Eセクション種別.HiSkillDrums;
+									section = Eセクション種別.HiSkillDrums;
 								}
 								else if( str2.Equals( "HiScore.Guitar" ) )
 								{
-									unknown = Eセクション種別.HiScoreGuitar;
+									section = Eセクション種別.HiScoreGuitar;
 								}
 								else if( str2.Equals( "HiSkill.Guitar" ) )
 								{
-									unknown = Eセクション種別.HiSkillGuitar;
+									section = Eセクション種別.HiSkillGuitar;
 								}
 								else if( str2.Equals( "HiScore.Bass" ) )
 								{
-									unknown = Eセクション種別.HiScoreBass;
+									section = Eセクション種別.HiScoreBass;
                                 }
                                 else if (str2.Equals("HiSkill.Bass"))
                                 {
-                                    unknown = Eセクション種別.HiSkillBass;
+                                    section = Eセクション種別.HiSkillBass;
                                 }
                                 // #23595 2011.1.9 ikanick
                                 else if (str2.Equals("LastPlay.Drums"))
                                 {
-                                    unknown = Eセクション種別.LastPlayDrums;
+                                    section = Eセクション種別.LastPlayDrums;
                                 }
                                 else if (str2.Equals("LastPlay.Guitar"))
                                 {
-                                    unknown = Eセクション種別.LastPlayGuitar;
+                                    section = Eセクション種別.LastPlayGuitar;
                                 }
                                 else if (str2.Equals("LastPlay.Bass"))
                                 {
-                                    unknown = Eセクション種別.LastPlayBass;
+                                    section = Eセクション種別.LastPlayBass;
                                 }
                                 //----------------------------------------------------
 								else
 								{
-									unknown = Eセクション種別.Unknown;
+									section = Eセクション種別.Unknown;
 								}
 							}
 							else
@@ -565,7 +567,7 @@ namespace DTXMania
 								{
 									item = strArray[ 0 ].Trim();
 									para = strArray[ 1 ].Trim();
-									switch( unknown )
+									switch( section )
 									{
 										case Eセクション種別.File:
 											{
@@ -586,7 +588,7 @@ namespace DTXMania
                                         case Eセクション種別.LastPlayGuitar:
                                         case Eセクション種別.LastPlayBass:
 											{
-												c演奏記録 = this.stセクション[ (int) unknown ];
+												c演奏記録 = this.stセクション[ (int) section ];
 												if( !item.Equals( "Score" ) )
 												{
 													goto Label_03B9;
@@ -775,17 +777,22 @@ namespace DTXMania
 								{
 									switch( int.Parse( para ) )
 									{
-										case 0:
+										case (int)Eランダムモード.OFF:
 											{
 												c演奏記録.eRandom.Guitar = Eランダムモード.OFF;
 												continue;
 											}
-										case 1:
+										case (int)Eランダムモード.RANDOM:
 											{
 												c演奏記録.eRandom.Guitar = Eランダムモード.RANDOM;
 												continue;
 											}
-										case 2:
+										case (int)Eランダムモード.SUPERRANDOM:
+											{
+												c演奏記録.eRandom.Guitar = Eランダムモード.SUPERRANDOM;
+												continue;
+											}
+										case (int) Eランダムモード.HYPERRANDOM:		// #25452 2011.6.20 yyagi
 											{
 												c演奏記録.eRandom.Guitar = Eランダムモード.SUPERRANDOM;
 												continue;
@@ -797,17 +804,22 @@ namespace DTXMania
 								{
 									switch( int.Parse( para ) )
 									{
-										case 0:
+										case (int)Eランダムモード.OFF:
 											{
 												c演奏記録.eRandom.Bass = Eランダムモード.OFF;
 												continue;
 											}
-										case 1:
+										case (int)Eランダムモード.RANDOM:
 											{
 												c演奏記録.eRandom.Bass = Eランダムモード.RANDOM;
 												continue;
 											}
-										case 2:
+										case (int) Eランダムモード.SUPERRANDOM:
+											{
+												c演奏記録.eRandom.Bass = Eランダムモード.SUPERRANDOM;
+												continue;
+											}
+										case (int) Eランダムモード.HYPERRANDOM:		// #25452 2011.6.20 yyagi
 											{
 												c演奏記録.eRandom.Bass = Eランダムモード.SUPERRANDOM;
 												continue;
