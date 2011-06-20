@@ -98,12 +98,12 @@ namespace DTXMania
 				{
 					if( ( this.ct進行[ j ].n現在の経過時間ms != -1 ) && ( this.tx火花[ j % 3 ] != null ) )
 					{
-						float x = (float) ( 3.0 * Math.Cos( ( 3.1415926535897931 * ( 90.0 - ( 90.0 * ( ( (double) this.ct進行[ j ].n現在の値 ) / 56.0 ) ) ) ) / 180.0 ) );
-						int num4 = this.pt中央位置[ j ].X - ( (int) ( ( this.tx火花[ j % 3 ].sz画像サイズ.Width * x ) / 2f ) );
-						int y = this.pt中央位置[ j ].Y - ( (int) ( ( this.tx火花[ j % 3 ].sz画像サイズ.Height * x ) / 2f ) );
-						this.tx火花[ j % 3 ].n透明度 = ( this.ct進行[ j ].n現在の値 < 0x1c ) ? 0xff : ( 0xff - ( (int) ( 255.0 * Math.Cos( ( 3.1415926535897931 * ( 90.0 - ( 90.0 * ( ( (double) ( this.ct進行[ j ].n現在の値 - 0x1c ) ) / 28.0 ) ) ) ) / 180.0 ) ) ) );
-						this.tx火花[ j % 3 ].vc拡大縮小倍率 = new Vector3( x, x, 1f );
-						this.tx火花[ j % 3 ].t2D描画( CDTXMania.app.Device, num4, y );
+						float scale = (float) ( 3.0 * Math.Cos( ( Math.PI * ( 90.0 - ( 90.0 * ( ( (double) this.ct進行[ j ].n現在の値 ) / 56.0 ) ) ) ) / 180.0 ) );
+						int x = this.pt中央位置[ j ].X - ( (int) ( ( this.tx火花[ j % 3 ].sz画像サイズ.Width * scale ) / 2f ) );
+						int y = this.pt中央位置[ j ].Y - ( (int) ( ( this.tx火花[ j % 3 ].sz画像サイズ.Height * scale ) / 2f ) );
+						this.tx火花[ j % 3 ].n透明度 = ( this.ct進行[ j ].n現在の値 < 0x1c ) ? 0xff : ( 0xff - ( (int) ( 255.0 * Math.Cos( ( Math.PI * ( 90.0 - ( 90.0 * ( ( (double) ( this.ct進行[ j ].n現在の値 - 0x1c ) ) / 28.0 ) ) ) ) / 180.0 ) ) ) );
+						this.tx火花[ j % 3 ].vc拡大縮小倍率 = new Vector3( scale, scale, 1f );
+						this.tx火花[ j % 3 ].t2D描画( CDTXMania.app.Device, x, y );
 					}
 				}
 			}
