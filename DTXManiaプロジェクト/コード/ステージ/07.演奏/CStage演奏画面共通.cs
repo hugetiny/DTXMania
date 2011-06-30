@@ -694,16 +694,29 @@ namespace DTXMania
 				return null;
 			}
 			int count = CDTXMania.DTX.listChip.Count;
-			int nIndex_InitialPositionSearchingToFuture = nIndex_InitialPositionSearchingToPast = this.n現在のトップChip;
+			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToPast = this.n現在のトップChip;
 			if ( this.n現在のトップChip >= count )			// その時点で演奏すべきチップが既に全部無くなっていたら
 			{
-				nIndex_InitialPositionSearchingToFuture = nIndex_InitialPositionSearchingToPast = count - 1;
+				nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToPast = count - 1;
 			}
-			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToFuture;
-			while ( nIndex_NearestChip_Future < count )		// 未来方向への検索
+			//int nIndex_NearestChip_Future;	// = nIndex_InitialPositionSearchingToFuture;
+			//while ( nIndex_NearestChip_Future < count )		// 未来方向への検索
+			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++)
 			{
 				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
-				if ( ( ( nChannel >= 0x11 ) && ( nChannel <= 0x1a ) ) && ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) ) )
+				if ( ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) ) )
+				{
+					if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
+					{
+						if ( chip.n発声時刻ms > nTime )
+						{
+							break;
+						}
+						nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
+					}
+					continue;	// ほんの僅かながら高速化
+				}
+				else if ( ( ( nChannel == 0x2f ) && ( chip.e楽器パート == E楽器パート.GUITAR ) ) || ( ( ( 0x20 <= nChannel ) && ( nChannel <= 0x28 ) ) && ( chip.nチャンネル番号 == nChannel ) ) )
 				{
 					if ( chip.n発声時刻ms > nTime )
 					{
@@ -711,7 +724,7 @@ namespace DTXMania
 					}
 					nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
 				}
-				else if ( ( ( nChannel == 0x2f ) && ( chip.e楽器パート == E楽器パート.GUITAR ) ) || ( ( ( nChannel >= 0x20 ) && ( nChannel <= 0x28 ) ) && ( chip.nチャンネル番号 == nChannel ) ) )
+				else if ( ( ( nChannel == 0xaf ) && ( chip.e楽器パート == E楽器パート.BASS ) ) || ( ( ( 0xa0 <= nChannel ) && ( nChannel <= 0xa8 ) ) && ( chip.nチャンネル番号 == nChannel ) ) )
 				{
 					if ( chip.n発声時刻ms > nTime )
 					{
@@ -719,57 +732,56 @@ namespace DTXMania
 					}
 					nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
 				}
-				else if ( ( ( nChannel == 0xaf ) && ( chip.e楽器パート == E楽器パート.BASS ) ) || ( ( ( nChannel >= 0xa0 ) && ( nChannel <= 0xa8 ) ) && ( chip.nチャンネル番号 == nChannel ) ) )
-				{
-					if ( chip.n発声時刻ms > nTime )
-					{
-						break;
-					}
-					nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
-				}
-				nIndex_NearestChip_Future++;
+				// nIndex_NearestChip_Future++;
 			}
 			int nIndex_NearestChip_Past = nIndex_InitialPositionSearchingToPast;
-			while ( nIndex_NearestChip_Past >= 0 )			// 過去方向への検索
+			//while ( nIndex_NearestChip_Past >= 0 )			// 過去方向への検索
+			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
 			{
-				CDTX.CChip chip2 = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
-				if ( ( nChannel >= 0x11 ) && ( nChannel <= 0x1a ) )
+				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
+				if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) )
 				{
-					if ( ( chip2.nチャンネル番号 == nChannel ) || ( chip2.nチャンネル番号 == ( nChannel + 0x20 ) ) )
+					if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
 					{
 						break;
 					}
 				}
-				else if ( ( ( nChannel == 0x2f ) && ( chip2.e楽器パート == E楽器パート.GUITAR ) ) || ( ( ( nChannel >= 0x20 ) && ( nChannel <= 0x28 ) ) && ( chip2.nチャンネル番号 == nChannel ) ) )
+				else if ( ( ( nChannel == 0x2f ) && ( chip.e楽器パート == E楽器パート.GUITAR ) ) || ( ( ( 0x20 <= nChannel ) && ( nChannel <= 0x28 ) ) && ( chip.nチャンネル番号 == nChannel ) ) )
 				{
-					if ( ( chip2.nチャンネル番号 >= 0x20 ) && ( chip2.nチャンネル番号 <= 0x28 ) )
+					if ( ( 0x20 <= chip.nチャンネル番号 ) && ( chip.nチャンネル番号 <= 0x28 ) )
 					{
 						break;
 					}
 				}
-				else if ( ( ( ( nChannel == 0xaf ) && ( chip2.e楽器パート == E楽器パート.BASS ) ) || ( ( ( nChannel >= 0xa0 ) && ( nChannel <= 0xa8 ) ) && ( chip2.nチャンネル番号 == nChannel ) ) ) && ( ( chip2.nチャンネル番号 >= 0xa0 ) && ( chip2.nチャンネル番号 <= 0xa8 ) ) )
+				else if ( ( ( ( nChannel == 0xaf ) && ( chip.e楽器パート == E楽器パート.BASS ) ) || ( ( ( 0xa0 <= nChannel ) && ( nChannel <= 0xa8 ) ) && ( chip.nチャンネル番号 == nChannel ) ) )
+					&& ( ( 0xa0 <= chip.nチャンネル番号 ) && ( chip.nチャンネル番号 <= 0xa8 ) ) )
 				{
 					break;
 				}
-				nIndex_NearestChip_Past--;
+				// nIndex_NearestChip_Past--;
 			}
-			if ( ( nIndex_NearestChip_Future == count ) && ( nIndex_NearestChip_Past < 0 ) )	// 検索対象が過去未来どちらにも見つからなかった場合
+
+			if ( nIndex_NearestChip_Future >= count )
 			{
-				return null;
+				if ( nIndex_NearestChip_Past < 0 )	// 検索対象が過去未来どちらにも見つからなかった場合
+				{
+					return null;
+				}
+				else 								// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
+				{
+					return CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
+				}
 			}
-			if ( nIndex_NearestChip_Future == count )											// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
-			{
-				return CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
-			}
-			if ( nIndex_NearestChip_Past < 0 )													// 検索対象が過去方向には見つからなかった(しかし未来方向には見つかった)場合
+			else if ( nIndex_NearestChip_Past < 0 )	// 検索対象が過去方向には見つからなかった(しかし未来方向には見つかった)場合
 			{
 				return CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
 			}
+													// 検索対象が過去未来の双方に見つかったなら、より近い方を採用する
 			CDTX.CChip nearestChip_Future = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
 			CDTX.CChip nearestChip_Past   = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
 			int nDiffTime_Future = Math.Abs( (int) ( nTime - nearestChip_Future.n発声時刻ms ) );
-			int nDiffTIme_Past   = Math.Abs( (int) ( nTime - nearestChip_Past.n発声時刻ms ) );
-			if ( nDiffTime_Future >= nDiffTIme_Past )
+			int nDiffTime_Past   = Math.Abs( (int) ( nTime - nearestChip_Past.n発声時刻ms ) );
+			if ( nDiffTime_Future >= nDiffTime_Past )
 			{
 				return nearestChip_Past;
 			}
@@ -1135,21 +1147,31 @@ namespace DTXMania
 				return null;
 			}
 			int count = CDTXMania.DTX.listChip.Count;
-			int nIndex_InitialPositionSearchingToFuture = nIndex_InitialPositionSearchingToPast = this.n現在のトップChip;
+			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToPast = this.n現在のトップChip;
 			if ( this.n現在のトップChip >= count )		// その時点で演奏すべきチップが既に全部無くなっていたら
 			{
-				nIndex_InitialPositionSearchingToFuture = nIndex_InitialPositionSearchingToPast = count - 1;
+				nIndex_NearestChip_Future  = nIndex_InitialPositionSearchingToPast = count - 1;
 			}
-			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToFuture;
+			// int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToFuture;
 //			while ( nIndex_NearestChip_Future < count )	// 未来方向への検索
 			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++ )
 			{
 				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
 				if ( !chip.bHit )
 				{
-					if ( ( nChannel >= 0x11 ) && ( nChannel <= 0x1a ) &&
-						( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
-					)
+					if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) )
+					{
+						if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
+						{
+							if ( chip.n発声時刻ms > nTime )
+							{
+								break;
+							}
+							nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
+						}
+						continue;
+					}
+					else if ( ( ( ( nChannel == 0x2f ) && ( chip.e楽器パート == E楽器パート.GUITAR ) ) || ( ( ( 0x20 <= nChannel ) && ( nChannel <= 0x28 ) ) && ( chip.nチャンネル番号 == nChannel ) ) ) )
 					{
 						if ( chip.n発声時刻ms > nTime )
 						{
@@ -1157,15 +1179,7 @@ namespace DTXMania
 						}
 						nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
 					}
-					else if ( ( ( ( nChannel == 0x2f ) && ( chip.e楽器パート == E楽器パート.GUITAR ) ) || ( ( ( nChannel >= 0x20 ) && ( nChannel <= 0x28 ) ) && ( chip.nチャンネル番号 == nChannel ) ) ) )
-					{
-						if ( chip.n発声時刻ms > nTime )
-						{
-							break;
-						}
-						nIndex_InitialPositionSearchingToPast = nIndex_NearestChip_Future;
-					}
-					else if ( ( ( ( nChannel == 0xaf ) && ( chip.e楽器パート == E楽器パート.BASS ) ) || ( ( ( nChannel >= 0xA0 ) && ( nChannel <= 0xa8 ) ) && ( chip.nチャンネル番号 == nChannel ) ) ) )
+					else if ( ( ( ( nChannel == 0xaf ) && ( chip.e楽器パート == E楽器パート.BASS ) ) || ( ( ( 0xa0 <= nChannel ) && ( nChannel <= 0xa8 ) ) && ( chip.nチャンネル番号 == nChannel ) ) ) )
 					{
 						if ( chip.n発声時刻ms > nTime )
 						{
@@ -1203,12 +1217,12 @@ namespace DTXMania
 					}
 //				nIndex_NearestChip_Past--;
 			}
-			if ( ( nIndex_NearestChip_Future == count ) && ( nIndex_NearestChip_Past < 0 ) )	// 検索対象が過去未来どちらにも見つからなかった場合
+			if ( ( nIndex_NearestChip_Future >= count ) && ( nIndex_NearestChip_Past < 0 ) )	// 検索対象が過去未来どちらにも見つからなかった場合
 			{
 				return null;
 			}
 			CDTX.CChip nearestChip;	// = null;	// 以下のifブロックのいずれかで必ずnearestChipには非nullが代入されるので、null初期化を削除
-			if ( nIndex_NearestChip_Future == count )											// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
+			if ( nIndex_NearestChip_Future >= count )											// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
 			{
 				nearestChip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
 //				nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
