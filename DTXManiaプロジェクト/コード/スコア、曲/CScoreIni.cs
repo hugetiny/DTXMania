@@ -471,12 +471,13 @@ namespace DTXMania
 			buffer = new byte[ stream.Length ];
 			stream.Read( buffer, 0, (int) stream.Length );
 			stream.Close();
-			byte[] buffer2 = new MD5CryptoServiceProvider().ComputeHash( buffer );
-
-			StringBuilder builder = new StringBuilder( 0x21 );
-			foreach( byte num in buffer2 )
-				builder.Append( num.ToString( "x2" ) );
-
+			StringBuilder builder = new StringBuilder(0x21);
+			using (MD5CryptoServiceProvider m = new MD5CryptoServiceProvider())		// #25650 2011.7.7 yyagi; add Dispose() method to avoid resource leak.
+			{
+				byte[] buffer2 = m.ComputeHash(buffer);
+				foreach (byte num in buffer2)
+					builder.Append(num.ToString("x2"));
+			}
 			return builder.ToString();
 		}
 		
@@ -1333,11 +1334,13 @@ namespace DTXMania
 			builder.Append( cc.最終更新日時 );
 
 			byte[] bytes = Encoding.GetEncoding( "shift-jis" ).GetBytes( builder.ToString() );
-			byte[] buffer2 = new MD5CryptoServiceProvider().ComputeHash( bytes );
-			StringBuilder builder2 = new StringBuilder( 0x21 );
-			foreach( byte num2 in buffer2 )
-				builder2.Append( num2.ToString( "x2" ) );
-
+			StringBuilder builder2 = new StringBuilder(0x21);
+			using (MD5CryptoServiceProvider m = new MD5CryptoServiceProvider())		// #25650 2011.7.7 yyagi; add Dispose() method to avoid resource leak.
+			{
+				byte[] buffer2 = m.ComputeHash(bytes);
+				foreach (byte num2 in buffer2)
+					builder2.Append(num2.ToString("x2"));
+			}
 			return builder2.ToString();
 		}
 		internal static void t更新条件を取得する( out bool bDrumsを更新する, out bool bGuitarを更新する, out bool bBassを更新する )
