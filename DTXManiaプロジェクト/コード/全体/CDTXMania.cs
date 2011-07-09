@@ -19,7 +19,7 @@ namespace DTXMania
 	{
 		// プロパティ
 
-		public static readonly string VERSION = "091(110706)";
+		public static readonly string VERSION = "091(110709)";
 //		public static readonly string VERSION = "086(101120)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
@@ -1876,7 +1876,8 @@ for (int i = 0; i < 3; i++) {
 			{
 				for ( int i = 0; i < 0x10; i++ )
 				{
-					if ( e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
+					if ( ConfigIni.KeyAssign.System.Capture[ i ].コード > 0 &&
+						 e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
 					{
 // Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
 						string strFullPath =
