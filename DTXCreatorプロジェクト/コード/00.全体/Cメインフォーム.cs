@@ -283,7 +283,8 @@ namespace DTXCreator
 
 				// 反復要素とか足りなかったりしてもリセットする。
 
-				if( this.appアプリ設定.SoundListColumnWidth.Length != 5
+				if( this.appアプリ設定 == null
+                    || this.appアプリ設定.SoundListColumnWidth.Length != 5
 					|| this.appアプリ設定.GraphicListColumnWidth.Length != 4
 					|| this.appアプリ設定.MovieListColumnWidth.Length != 3
 					|| !this.appアプリ設定.bSameVersion() )
@@ -1203,28 +1204,31 @@ namespace DTXCreator
 
 			#region [ その小節が持っているチップを全て削除する。チップの削除作業は、Undo/Redoリストに記録する。]
 			//-----------------
-			
-			while( c削除する小節.listチップ.Count > 0 )
-			{
-				#region [ UndoRedo リストにこの操作（チップ削除）を記録する。]
-				//-----------------
-				var cc = new Cチップ();
-				cc.tコピーfrom( c削除する小節.listチップ[ 0 ] );
-				var redo = new Cチップ配置用UndoRedo( c削除する小節.n小節番号0to3599, cc );
 
-				this.mgrUndoRedo管理者.tノードを追加する(
-					new CUndoRedoセル<Cチップ配置用UndoRedo>(
-						null,
-						new DGUndoを実行する<Cチップ配置用UndoRedo>( this.mgr譜面管理者.tチップ削除のUndo ),
-						new DGRedoを実行する<Cチップ配置用UndoRedo>( this.mgr譜面管理者.tチップ削除のRedo ),
-						redo, redo ) );
-				//-----------------
-				#endregion
+            if (c削除する小節 != null)
+            {
+                while ( c削除する小節.listチップ.Count > 0 )
+                {
+                    #region [ UndoRedo リストにこの操作（チップ削除）を記録する。]
+                    //-----------------
+                    var cc = new Cチップ();
+                    cc.tコピーfrom( c削除する小節.listチップ[0] );
+                    var redo = new Cチップ配置用UndoRedo(c削除する小節.n小節番号0to3599, cc);
 
-				// 小節からチップを削除する。
+                    this.mgrUndoRedo管理者.tノードを追加する(
+                        new CUndoRedoセル<Cチップ配置用UndoRedo>(
+                            null,
+                            new DGUndoを実行する<Cチップ配置用UndoRedo>(this.mgr譜面管理者.tチップ削除のUndo),
+                            new DGRedoを実行する<Cチップ配置用UndoRedo>(this.mgr譜面管理者.tチップ削除のRedo),
+                            redo, redo ) );
+                    //-----------------
+                    #endregion
 
-				c削除する小節.listチップ.RemoveAt( 0 );
-			}
+                    // 小節からチップを削除する。
+
+                    c削除する小節.listチップ.RemoveAt( 0 );
+                }
+            }
 			
 			//-----------------
 			#endregion
@@ -2146,7 +2150,7 @@ namespace DTXCreator
 		private void Cメインフォーム_DragDrop( object sender, DragEventArgs e )
 		{
 			string[] data = (string[]) e.Data.GetData( DataFormats.FileDrop );
-			if( data.Length >= 1 )
+			if( data != null && data.Length >= 1 )
 			{
 				this.tシナリオ・DragDropされたファイルを開く( data );
 			}

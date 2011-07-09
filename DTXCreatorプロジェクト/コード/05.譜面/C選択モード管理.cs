@@ -23,8 +23,12 @@ namespace DTXCreator.譜面
 		}
 		public void t個別選択解除( Cチップ cc )
 		{
-			Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( this.mgr譜面管理者ref.pチップの存在する小節を返す( cc ).n小節番号0to3599, cc.nレーン番号0to, cc.n位置grid, cc.n値・整数1to1295 );
-			this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択解除のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択解除のRedo ), redo, redo ) );
+            C小節 c = this.mgr譜面管理者ref.pチップの存在する小節を返す( cc );
+            if ( c != null )
+            {
+                Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c.n小節番号0to3599, cc.nレーン番号0to, cc.n位置grid, cc.n値・整数1to1295 );
+                this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択解除のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択解除のRedo ), redo, redo ) );
+            }
 			this._Form.tUndoRedo用GUIの有効・無効を設定する();
 			cc.b確定選択中 = false;
 		}
@@ -232,11 +236,10 @@ namespace DTXCreator.譜面
 			if( num < 0 )
 			{
 				int num2 = csチップのある小節.n小節番号0to3599;
-				C小節 c小節 = null;
+                C小節 c小節 = null;
 				while( num < 0 )
 				{
-					num2--;
-					c小節 = this.mgr譜面管理者ref.p小節を返す( num2 );
+					c小節 = this.mgr譜面管理者ref.p小節を返す( --num2 );
 					if( c小節 == null )
 					{
 						return;

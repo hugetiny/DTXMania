@@ -34,6 +34,7 @@ namespace DTXCreator
 			Brush brush = new SolidBrush( Color.FromArgb( 0xff, 220, 220, 220 ) );
 			Rectangle layoutRectangle = new Rectangle( 330, 220, 150, 20 );
 			e.Graphics.DrawString( "Release " + Resources.DTXC_VERSION, font, brush, layoutRectangle );
+            brush.Dispose();
 			font.Dispose();
 		}
 		//-----------------
