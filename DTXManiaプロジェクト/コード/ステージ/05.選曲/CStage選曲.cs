@@ -238,9 +238,9 @@ namespace DTXMania
 				int y = 0;
 				if( this.ct登場時アニメ用共通.b進行中 )
 				{
-					double num2 = ( (double) this.ct登場時アニメ用共通.n現在の値 ) / 100.0;
-					double num3 = Math.Sin( 1.5707963267948966 * num2 );
-					y = ( (int) ( this.tx上部パネル.sz画像サイズ.Height * num3 ) ) - this.tx上部パネル.sz画像サイズ.Height;
+					double db登場割合 = ( (double) this.ct登場時アニメ用共通.n現在の値 ) / 100.0;	// 100が最終値
+					double dbY表示割合 = Math.Sin( Math.PI / 2 * db登場割合 );
+					y = ( (int) ( this.tx上部パネル.sz画像サイズ.Height * dbY表示割合 ) ) - this.tx上部パネル.sz画像サイズ.Height;
 				}
 				if( this.tx上部パネル != null )
 						this.tx上部パネル.t2D描画( CDTXMania.app.Device, 0, y );

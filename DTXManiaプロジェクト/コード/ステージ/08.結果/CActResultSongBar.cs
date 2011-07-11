@@ -99,19 +99,19 @@ namespace DTXMania
 				if( this.ct登場用.n現在の値 <= 100 )
 				{
 					double num3 = 1.0 - ( ( (double) this.ct登場用.n現在の値 ) / 100.0 );
-					this.n本体X = -( (int) ( num * Math.Sin( 1.5707963267948966 * num3 ) ) );
+					this.n本体X = -( (int) ( num * Math.Sin( Math.PI / 2 * num3 ) ) );
 					this.n本体Y = 0x18b;
 				}
 				else if( this.ct登場用.n現在の値 <= 200 )
 				{
 					double num4 = ( (double) ( this.ct登場用.n現在の値 - 100 ) ) / 100.0;
-					this.n本体X = -( (int) ( ( ( (double) num ) / 6.0 ) * Math.Sin( 3.1415926535897931 * num4 ) ) );
+					this.n本体X = -( (int) ( ( ( (double) num ) / 6.0 ) * Math.Sin( Math.PI * num4 ) ) );
 					this.n本体Y = 0x18b;
 				}
 				else if( this.ct登場用.n現在の値 <= 270 )
 				{
 					double num5 = ( (double) ( this.ct登場用.n現在の値 - 200 ) ) / 70.0;
-					this.n本体X = -( (int) ( ( ( (double) num ) / 18.0 ) * Math.Sin( 3.1415926535897931 * num5 ) ) );
+					this.n本体X = -( (int) ( ( ( (double) num ) / 18.0 ) * Math.Sin( Math.PI * num5 ) ) );
 					this.n本体Y = 0x18b;
 				}
 			}

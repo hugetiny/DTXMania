@@ -73,7 +73,7 @@ namespace DTXMania
 			this.ct進行.t進行();
 			if( this.ct進行.n現在の値 < 100 )
 			{
-				int x = (int) ( 320.0 * Math.Cos( ( 1.5707963267948966 * this.ct進行.n現在の値 ) / 100.0 ) );
+				int x = (int) ( 320.0 * Math.Cos( ( Math.PI / 2 * this.ct進行.n現在の値 ) / 100.0 ) );
 				if( ( x != 320 ) && ( this.txStageFailed != null ) )
 				{
 					this.txStageFailed.t2D描画( CDTXMania.app.Device, 0, 0, new Rectangle( x, 0, 320 - x, 480 ) );

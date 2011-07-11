@@ -93,11 +93,11 @@ namespace DTXMania
 							int num8 = this.ct進行用[ (int) e楽器パート2, m ].n現在の値;
 							if( num8 < 100 )
 							{
-								num6 = (int) ( 64.0 + ( 290.0 * Math.Cos( 1.5707963267948966 * ( ( (double) num8 ) / 100.0 ) ) ) );
+								num6 = (int) ( 64.0 + ( 290.0 * Math.Cos( Math.PI / 2 * ( ( (double) num8 ) / 100.0 ) ) ) );
 							}
 							else if( num8 < 150 )
 							{
-								num6 = (int) ( 64.0 + ( ( 150 - num8 ) * Math.Sin( ( 3.1415926535897931 * ( ( num8 - 100 ) % 0x19 ) ) / 25.0 ) ) );
+								num6 = (int) ( 64.0 + ( ( 150 - num8 ) * Math.Sin( ( Math.PI * ( ( num8 - 100 ) % 0x19 ) ) / 25.0 ) ) );
 							}
 							else if( num8 < 200 )
 							{

@@ -155,7 +155,7 @@ namespace DTXMania
 					else
 					{
 						double num2 = ( (double) ( 100 - this.ct登場アニメ用.n現在の値 ) ) / 100.0;
-						double num3 = Math.Sin( 1.5707963267948966 * num2 );
+						double num3 = Math.Sin( Math.PI / 2 * num2 );
 						this.n本体X = 3 - ( (int) ( ( this.txパネル本体.sz画像サイズ.Width * num3 ) * num3 ) );
 						this.n本体Y = 0x15d;
 					}
