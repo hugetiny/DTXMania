@@ -191,6 +191,7 @@ namespace DTXMania
 
 		public class C演奏記録 : ICloneable
 		{
+			public bool bExist;		// #23624 2011.7.23 yyagi score.ini内に自身のセクションが存在したかどうか
 			public STAUTOPLAY bAutoPlay;
 			public bool bDrums有効;
 			public bool bGuitar有効;
@@ -243,6 +244,7 @@ namespace DTXMania
 
 			public C演奏記録()
 			{
+				this.bExist = false;
 				this.bAutoPlay = new STAUTOPLAY();
 				this.bAutoPlay.LC = false;
 				this.bAutoPlay.HH = false;
@@ -547,7 +549,7 @@ namespace DTXMania
 			Eセクション種別 section = Eセクション種別.Unknown;
 			if( File.Exists( iniファイル名 ) )
 			{
-				bool IsHiGameSkillSectionLoaded = false;			// #23624 2011.5.10 yyagi (従来の[HiGameSkill.Drums/Guitar/Bass]セクションがないscore.iniを読み込んだときの対応用)
+//				bool IsHiGameSkillSectionLoaded = false;			// #23624 2011.5.10 yyagi (従来の[HiGameSkill.Drums/Guitar/Bass]セクションがないscore.iniを読み込んだときの対応用)
 				string str;
 				StreamReader reader = new StreamReader( iniファイル名, Encoding.GetEncoding( "shift-jis" ) );
 				while( ( str = reader.ReadLine() ) != null )
@@ -576,55 +578,67 @@ namespace DTXMania
 								else if( str2.Equals( "HiScore.Drums" ) )
 								{
 									section = Eセクション種別.HiScoreDrums;
+									this.stセクション[(int)section].bExist = true;
 								}
 								else if ( str2.Equals( "HiSkill.Drums" ) )
 								{
 									section = Eセクション種別.HiSkillDrums;
+									this.stセクション[(int)section].bExist = true;
 								}
 								else if ( str2.Equals( "HiGameSkill.Drums" ) )
 								{
 									section = Eセクション種別.HiGameSkillDrums;
-									IsHiGameSkillSectionLoaded = true;
+									this.stセクション[(int)section].bExist = true;
+									//IsHiGameSkillSectionLoaded = true;
 								}
 								else if ( str2.Equals( "HiScore.Guitar" ) )
 								{
 									section = Eセクション種別.HiScoreGuitar;
+									this.stセクション[(int)section].bExist = true;
 								}
 								else if( str2.Equals( "HiSkill.Guitar" ) )
 								{
 									section = Eセクション種別.HiSkillGuitar;
+									this.stセクション[(int)section].bExist = true;
 								}
 								else if ( str2.Equals( "HiGameSkill.Guitar" ) )
 								{
 									section = Eセクション種別.HiGameSkillGuitar;
-									IsHiGameSkillSectionLoaded = true;
+									this.stセクション[(int)section].bExist = true;
+//									IsHiGameSkillSectionLoaded = true;
 								}
 								else if ( str2.Equals( "HiScore.Bass" ) )
 								{
 									section = Eセクション種別.HiScoreBass;
-                                }
+									this.stセクション[(int)section].bExist = true;
+								}
 								else if ( str2.Equals( "HiSkill.Bass" ) )
 								{
 									section = Eセクション種別.HiSkillBass;
+									this.stセクション[(int)section].bExist = true;
 								}
 								else if ( str2.Equals( "HiGameSkill.Bass" ) )
 								{
 									section = Eセクション種別.HiSkillBass;
-									IsHiGameSkillSectionLoaded = true;
+									this.stセクション[(int)section].bExist = true;
+//									IsHiGameSkillSectionLoaded = true;
 								}
 								// #23595 2011.1.9 ikanick
                                 else if (str2.Equals("LastPlay.Drums"))
                                 {
                                     section = Eセクション種別.LastPlayDrums;
-                                }
+									this.stセクション[(int)section].bExist = true;
+								}
                                 else if (str2.Equals("LastPlay.Guitar"))
                                 {
                                     section = Eセクション種別.LastPlayGuitar;
-                                }
+									this.stセクション[(int)section].bExist = true;
+								}
                                 else if (str2.Equals("LastPlay.Bass"))
                                 {
                                     section = Eセクション種別.LastPlayBass;
-                                }
+									this.stセクション[(int)section].bExist = true;
+								}
                                 //----------------------------------------------------
 								else
 								{
@@ -1164,11 +1178,21 @@ namespace DTXMania
 					}
 				}
 				reader.Close();
-				if ( !IsHiGameSkillSectionLoaded )	// #23624 2011.5.10 yyagi [HiGameSkill.*]が無い、従来のscore.iniを読み込んだときは
-				{									// [HiSkill.*] の内容を [HiGameSkill.*] にコピーする
-					this.stセクション[ (int) Eセクション種別.HiGameSkillDrums ] = (C演奏記録) this.stセクション[ (int) Eセクション種別.HiScoreDrums ].Clone();
-					this.stセクション[ (int) Eセクション種別.HiGameSkillGuitar ] = (C演奏記録) this.stセクション[ (int) Eセクション種別.HiScoreGuitar ].Clone();
-					this.stセクション[ (int) Eセクション種別.HiGameSkillBass ] = (C演奏記録) this.stセクション[ (int) Eセクション種別.HiScoreBass ].Clone();
+				Eセクション種別[][] es = {
+					new Eセクション種別[] { Eセクション種別.HiGameSkillDrums,  Eセクション種別.HiSkillDrums  },
+					new Eセクション種別[] { Eセクション種別.HiGameSkillGuitar, Eセクション種別.HiSkillGuitar },
+					new Eセクション種別[] { Eセクション種別.HiGameSkillBass,   Eセクション種別.HiSkillBass   }
+				};
+
+				foreach (Eセクション種別[] ep in es)
+				{
+					int eHiGameSkill = (int) ep[0];
+					int eHiSkill = (int) ep[1];
+					if ( !this.stセクション[ eHiGameSkill ].bExist )	// #23624 2011.5.10 yyagi [HiGameSkill.*]が無い、従来のscore.iniを読み込んだときは
+					{													// [HiSkill.*] の内容を [HiGameSkill.*] にコピーする
+						this.stセクション[ eHiGameSkill ] = (C演奏記録)this.stセクション[ eHiSkill ].Clone();
+						this.stセクション[ eHiGameSkill ].bExist = false;	//
+					}
 				}
 			}
 		}
@@ -1344,7 +1368,8 @@ namespace DTXMania
 			if ( nAuto == nTotal )
 				return 0.0;
 
-			return ( ( nLevel * ( ( nPerfect * 0.8 + nCombo * 0.2 ) / ( (double) nTotal ) ) ) / 2.0 );
+			// return ( ( nLevel * ( ( nPerfect * 0.8 + nCombo * 0.2 ) / ( (double) nTotal ) ) ) / 2.0 );
+			return 10 * (nPerfect * 8 + nGreat * 3 + nCombo * 2) / (double)nTotal; 
 		}
 		internal static double t演奏型スキルを計算して返す( int nTotal, int nLevel, int nPerfect, int nGreat, int nGood, int nPoor, int nMiss, int nCombo )
 //		internal static double t演奏型スキルを計算して返す( int nTotal, int nPerfect, int nGreat, int nGood, int nPoor, int nMiss )

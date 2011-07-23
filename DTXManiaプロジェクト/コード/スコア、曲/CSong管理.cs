@@ -584,20 +584,20 @@ namespace DTXMania
 											ini.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
 											for( int i = 0; i < 3; i++ )
 											{
-												int num3 = ( i * 2 ) + 1;
-												if( ( ini.stセクション[ num3 ].b演奏にMIDI入力を使用した || ini.stセクション[ num3 ].b演奏にキーボードを使用した ) || ( ini.stセクション[ num3 ].b演奏にジョイパッドを使用した || ini.stセクション[ num3 ].b演奏にマウスを使用した ) )
+												int hiskill = ( i * 3 ) + 1;		// i*2 -> i*3
+												if( ( ini.stセクション[ hiskill ].b演奏にMIDI入力を使用した || ini.stセクション[ hiskill ].b演奏にキーボードを使用した ) || ( ini.stセクション[ hiskill ].b演奏にジョイパッドを使用した || ini.stセクション[ hiskill ].b演奏にマウスを使用した ) )
 												{
 													node.arスコア[ lv ].譜面情報.最大ランク[ i ] = 
 														(ini.stファイル.BestRank[i] != (int)CScoreIni.ERANK.UNKNOWN)?
-														(int)ini.stファイル.BestRank[i] : CScoreIni.tランク値を計算して返す( ini.stセクション[ num3 ] );
+														(int)ini.stファイル.BestRank[i] : CScoreIni.tランク値を計算して返す( ini.stセクション[ hiskill ] );
 												}
 												else
 												{
 													node.arスコア[ lv ].譜面情報.最大ランク[ i ] = (int)CScoreIni.ERANK.UNKNOWN;
 												}
-												node.arスコア[ lv ].譜面情報.最大演奏型スキル[ i ] = ini.stセクション[ num3 ].db演奏型スキル値;
-												node.arスコア[ lv ].譜面情報.最大ゲーム型スキル[ i ] = ini.stセクション[ num3 ].dbゲーム型スキル値;	// #23624 2011.5.10 yyagi
-												node.arスコア[ lv ].譜面情報.フルコンボ[ i ] = ini.stセクション[ num3 ].bフルコンボである;
+												node.arスコア[ lv ].譜面情報.最大演奏型スキル[ i ] = ini.stセクション[ hiskill ].db演奏型スキル値;
+												node.arスコア[ lv ].譜面情報.最大ゲーム型スキル[ i ] = ini.stセクション[ hiskill ].dbゲーム型スキル値;	// #23624 2011.5.10 yyagi
+												node.arスコア[ lv ].譜面情報.フルコンボ[ i ] = ini.stセクション[ hiskill ].bフルコンボである;
 											}
 											node.arスコア[ lv ].譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
 											node.arスコア[ lv ].譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
@@ -762,8 +762,20 @@ namespace DTXMania
 											c曲リストノード.arスコア[ i ].譜面情報.最大ランク[ j ] = (int) CScoreIni.ERANK.UNKNOWN;	// 0x63;
 										}
 										c曲リストノード.arスコア[ i ].譜面情報.最大演奏型スキル[ j ] = ini.stセクション[ hiskill ].db演奏型スキル値;
-										c曲リストノード.arスコア[ i ].譜面情報.最大ゲーム型スキル[ j ] = ini.stセクション[ hiskill ].dbゲーム型スキル値;	// #23624 2011.5.10 yyagi
-										c曲リストノード.arスコア[ i ].譜面情報.フルコンボ[ j ] = ini.stセクション[ hiskill ].bフルコンボである;
+										c曲リストノード.arスコア[i].譜面情報.最大ゲーム型スキル[j] =	// #23624 2011.5.10 yyagi
+											ini.stセクション[hiskill + 1].bExist ?						// まだ[HiGameSkill.*]が作られていなければ、ゲーム方スキル値をイチから計算する
+											ini.stセクション[hiskill].dbゲーム型スキル値 : 
+											CScoreIni.tゲーム型スキルを計算して返す(
+												ini.stセクション[hiskill].n全チップ数,
+												0,
+												ini.stセクション[hiskill].nPerfect数,
+												ini.stセクション[hiskill].nGreat数,
+												ini.stセクション[hiskill].nGood数,
+												ini.stセクション[hiskill].nPoor数,
+												ini.stセクション[hiskill].nMiss数,
+												ini.stセクション[hiskill].n最大コンボ数
+											);
+										c曲リストノード.arスコア[i].譜面情報.フルコンボ[j] = ini.stセクション[hiskill].bフルコンボである;
 									}
 									c曲リストノード.arスコア[ i ].譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
 									c曲リストノード.arスコア[ i ].譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
