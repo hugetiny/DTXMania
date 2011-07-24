@@ -112,14 +112,11 @@ namespace DTXCreator.チップパレット関連
 			if( e.Data.GetDataPresent( typeof( Cチップパレット向けDragDropデータ ) ) )
 			{
 				Cチップパレット向けDragDropデータ data = (Cチップパレット向けDragDropデータ) e.Data.GetData( typeof( Cチップパレット向けDragDropデータ ) );
-                if (data != null)
-                {
-                    ListViewItem item = new ListViewItem(new string[] { data.strラベル名, C変換.str数値を36進数2桁に変換して返す(data.n番号1to1295), data.strファイル名 });
-                    item.ImageIndex = data.n種類;
-                    item.ForeColor = data.col文字色;
-                    item.BackColor = data.col背景色;
-                    this.listViewチップリスト.Items.Add(item);
-                }
+				ListViewItem item = new ListViewItem( new string[] { data.strラベル名, C変換.str数値を36進数2桁に変換して返す( data.n番号1to1295 ), data.strファイル名 } );
+				item.ImageIndex = data.n種類;
+				item.ForeColor = data.col文字色;
+				item.BackColor = data.col背景色;
+				this.listViewチップリスト.Items.Add( item );
 			}
 		}
 		private void Cチップパレット_FormClosing( object sender, FormClosingEventArgs e )
