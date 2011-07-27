@@ -472,8 +472,8 @@ namespace DTXMania
 			stream.Read( buffer, 0, (int) stream.Length );
 			stream.Close();
 			StringBuilder builder = new StringBuilder(0x21);
-			using ( MD5CryptoServiceProvider m = new MD5CryptoServiceProvider() )		// #25650 2011.7.7 yyagi; Using "using" structure to clarify the scope for MD5CryptServiceProvider.
 			{
+				MD5CryptoServiceProvider m = new MD5CryptoServiceProvider();
 				byte[] buffer2 = m.ComputeHash(buffer);
 				foreach (byte num in buffer2)
 					builder.Append(num.ToString("x2"));
@@ -1340,8 +1340,8 @@ namespace DTXMania
 
 			byte[] bytes = Encoding.GetEncoding( "shift-jis" ).GetBytes( builder.ToString() );
 			StringBuilder builder2 = new StringBuilder(0x21);
-			using (MD5CryptoServiceProvider m = new MD5CryptoServiceProvider())		// #25650 2011.7.7 yyagi; Using "using" structure to clarify the scope for MD5CryptServiceProvider.
 			{
+				MD5CryptoServiceProvider m = new MD5CryptoServiceProvider();
 				byte[] buffer2 = m.ComputeHash(bytes);
 				foreach (byte num2 in buffer2)
 					builder2.Append(num2.ToString("x2"));
