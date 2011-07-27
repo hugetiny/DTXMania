@@ -41,14 +41,14 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.dbゲージ値 = 0.66666666666666663;
+			this.dbゲージ値 = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
 			base.On活性化();
 		}
 		public override void On非活性化()
 		{
 			this.ct本体振動 = null;
 			this.ct本体移動 = null;
-			for( int i = 0; i < 0x18; i++ )
+			for( int i = 0; i < 24; i++ )
 			{
 				this.st白い星[ i ].ct進行 = null;
 			}
@@ -89,7 +89,7 @@ namespace DTXMania
 				}
 				this.ct本体移動.t進行Loop();
 				this.ct本体振動.t進行Loop();
-				int num2 = ( this.dbゲージ値 == 1.0 ) ? ( (int) ( 352.0 * this.dbゲージ値 ) ) : ( (int) ( ( 352.0 * this.dbゲージ値 ) + ( 2.0 * Math.Sin( 6.2831853071795862 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) ) );
+				int num2 = ( this.dbゲージ値 == 1.0 ) ? ( (int) ( 352.0 * this.dbゲージ値 ) ) : ( (int) ( ( 352.0 * this.dbゲージ値 ) + ( 2.0 * Math.Sin( Math.PI * 2 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) ) );
 				if( num2 <= 0 )
 				{
 					return 0;

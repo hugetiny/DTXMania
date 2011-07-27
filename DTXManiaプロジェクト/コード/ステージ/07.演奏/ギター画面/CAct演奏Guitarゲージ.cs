@@ -25,8 +25,8 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.db現在のゲージ値.Guitar = 0.66666666666666663;
-			this.db現在のゲージ値.Bass = 0.66666666666666663;
+			this.db現在のゲージ値.Guitar = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
+			this.db現在のゲージ値.Bass   = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -65,13 +65,15 @@ namespace DTXMania
 				}
 				this.ct本体移動.t進行Loop();
 				this.ct本体振動.t進行Loop();
-				if( this.db現在のゲージ値.Guitar == 1.0 )
+
+				#region [ ギターのゲージ ]
+				if ( this.db現在のゲージ値.Guitar == 1.0 )	// ギターのゲージ
 				{
 					num = (int) ( 128.0 * this.db現在のゲージ値.Guitar );
 				}
 				else
 				{
-					num = (int) ( ( 128.0 * this.db現在のゲージ値.Guitar ) + ( 2.0 * Math.Sin( 6.2831853071795862 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) );
+					num = (int) ( ( 128.0 * this.db現在のゲージ値.Guitar ) + ( 2.0 * Math.Sin( Math.PI * 2 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) );
 				}
 				if( num > 0 )
 				{
@@ -133,13 +135,16 @@ namespace DTXMania
 						this.txゲージ.t2D描画( CDTXMania.app.Device, x, 8, rectangle );
 					}
 				}
-				if( this.db現在のゲージ値.Bass == 1.0 )
+				#endregion
+
+				#region [ ベースのゲージ ]
+				if ( this.db現在のゲージ値.Bass == 1.0 )
 				{
 					num9 = (int) ( 128.0 * this.db現在のゲージ値.Bass );
 				}
 				else
 				{
-					num9 = (int) ( ( 128.0 * this.db現在のゲージ値.Bass ) + ( 2.0 * Math.Sin( 6.2831853071795862 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) );
+					num9 = (int) ( ( 128.0 * this.db現在のゲージ値.Bass ) + ( 2.0 * Math.Sin( Math.PI * 2 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) );
 				}
 				if( num9 > 0 )
 				{
@@ -194,6 +199,7 @@ namespace DTXMania
 						this.txゲージ.t2D描画( CDTXMania.app.Device, num11, 8, rectangle2 );
 					}
 				}
+				#endregion
 			}
 			return 0;
 		}

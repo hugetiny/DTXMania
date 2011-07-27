@@ -581,6 +581,7 @@ namespace DTXMania
 				}
 			}
 		}
+		public int nRisky;						// #23559 2011.6.20 yyagi Riskyでの残ミス数。0で閉店
 		public bool bIsSwappedGuitarBass			// #24063 2011.1.16 yyagi ギターとベースの切り替え中か否か
 		{
 			get;
@@ -900,10 +901,6 @@ namespace DTXMania
 			this.b歓声を発声する = true;
 			this.bScoreIniを出力する = true;
 			this.bランダムセレクトで子BOXを検索対象とする = true;
-			this.b演奏音を強調する = new STDGBVALUE<bool>();
-			this.b演奏音を強調する.Drums = true;
-			this.b演奏音を強調する.Guitar = true;
-			this.b演奏音を強調する.Bass = true;
 			this.n表示可能な最小コンボ数 = new STDGBVALUE<int>();
 			this.n表示可能な最小コンボ数.Drums = 11;
 			this.n表示可能な最小コンボ数.Guitar = 2;
@@ -914,38 +911,29 @@ namespace DTXMania
 			this.n自動再生音量 = 80;
 			this.n手動再生音量 = 100;
 			this.bログ出力 = true;
+			this.b演奏音を強調する = new STDGBVALUE<bool>();
 			this.bSudden = new STDGBVALUE<bool>();
-			this.bSudden.Drums = false;
-			this.bSudden.Guitar = false;
-			this.bSudden.Bass = false;
 			this.bHidden = new STDGBVALUE<bool>();
-			this.bHidden.Drums = false;
-			this.bHidden.Guitar = false;
-			this.bHidden.Bass = false;
 			this.bReverse = new STDGBVALUE<bool>();
-			this.bReverse.Drums = false;
-			this.bReverse.Guitar = false;
-			this.bReverse.Bass = false;
 			this.eRandom = new STDGBVALUE<Eランダムモード>();
-			this.eRandom.Drums = Eランダムモード.OFF;
-			this.eRandom.Guitar = Eランダムモード.OFF;
-			this.eRandom.Bass = Eランダムモード.OFF;
 			this.bLight = new STDGBVALUE<bool>();
-			this.bLight.Drums = false;
-			this.bLight.Guitar = false;
-			this.bLight.Bass = false;
 			this.bLeft = new STDGBVALUE<bool>();
-			this.bLeft.Drums = false;
-			this.bLeft.Guitar = false;
-			this.bLeft.Bass = false;
 			this.判定文字表示位置 = new STDGBVALUE<E判定文字表示位置>();
-			this.判定文字表示位置.Drums = E判定文字表示位置.レーン上;
-			this.判定文字表示位置.Guitar = E判定文字表示位置.レーン上;
-			this.判定文字表示位置.Bass = E判定文字表示位置.レーン上;
 			this.n譜面スクロール速度 = new STDGBVALUE<int>();
-			this.n譜面スクロール速度.Drums = 1;
-			this.n譜面スクロール速度.Guitar = 1;
-			this.n譜面スクロール速度.Bass = 1;
+			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
+			for ( int i = 0; i < 3; i++ )
+			{
+				this.b演奏音を強調する[ i ] = true;
+				this.bSudden[ i ] = false;
+				this.bHidden[ i ] = false;
+				this.bReverse[ i ] = false;
+				this.eRandom[ i ] = Eランダムモード.OFF;
+				this.bLight[ i ] = false;
+				this.bLeft[ i ] = false;
+				this.判定文字表示位置[ i ] = E判定文字表示位置.レーン上;
+				this.n譜面スクロール速度[ i ] = 1;
+				this.nInputAdjustTimeMs[ i ] = 0;
+			}
 			this.n演奏速度 = 20;
 			this.bAutoPlay = new STAUTOPLAY();
 			this.bAutoPlay.HH = false;
@@ -966,12 +954,6 @@ namespace DTXMania
 			this.ConfigIniファイル名 = "";
 			this.dicJoystick = new Dictionary<int, string>( 10 );
 			this.tデフォルトのキーアサインに設定する();
-			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
-			this.nInputAdjustTimeMs.Drums = 0;
-			this.nInputAdjustTimeMs.Guitar = 0;
-			this.nInputAdjustTimeMs.Bass = 0;
-//			this.nハイハット切り捨て下限Velocity = 20;
-//			this.n切り捨て下限Velocity = 0;				// #23857 2010.12.12 yyagi VelocityMin
 			this.nVelocityMin.LC = 0;					// #23857 2011.1.31 yyagi VelocityMin
 			this.nVelocityMin.HH = 20;
 			this.nVelocityMin.SD = 0;
@@ -981,6 +963,7 @@ namespace DTXMania
 			this.nVelocityMin.FT = 0;
 			this.nVelocityMin.CY = 0;
 			this.nVelocityMin.RD = 0;
+			this.nRisky = 0;						// #23539 2011.7.26 yyagi RISKYモード
 			this.bIsShowingLag = false;					// #25370 2011.6.3 yyagi ズレ時間表示
 			this.bIsAutoResultCapture = false;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能ON/OFF
 
@@ -1278,6 +1261,10 @@ namespace DTXMania
 			sw.WriteLine();
 			sw.WriteLine( "; ベースLEFTモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BassLeft={0}", this.bLeft.Bass ? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; RISKYモード(0:OFF, 1-10)" );									// #23559 2011.6.23 yyagi
+			sw.WriteLine( "; RISKY mode. 0=OFF, 1-10 is the times of misses to be Failed." );	//
+			sw.WriteLine( "Risky={0}", this.nRisky );			//
 			sw.WriteLine();
 			sw.WriteLine( "; ドラム判定文字表示位置(0:レーン上,1:判定ライン上,2:表示OFF)" );
 			sw.WriteLine( "DrumsPosition={0}", (int) this.判定文字表示位置.Drums );
@@ -1974,6 +1961,11 @@ namespace DTXMania
 											{
 												this.ドラムコンボ文字の表示位置 = (Eドラムコンボ文字の表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.ドラムコンボ文字の表示位置 );
 											}
+											else if ( str3.Equals( "Risky" ) )					// #2359 2011.6.23  yyagi
+											{
+												this.nRisky = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 10, this.nRisky );
+											}
+
 											continue;
 										}
 									//-----------------------------

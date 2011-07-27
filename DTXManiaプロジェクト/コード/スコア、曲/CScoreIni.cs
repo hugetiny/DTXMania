@@ -209,7 +209,7 @@ namespace DTXMania
 			public int n全チップ数;
 			public string strDTXManiaのバージョン;
 			public bool レーン9モード;
-			public int nRiskyMode;		// #23559 2011.6.20 yyagi 0=OFF, 1-10=Risky
+			public int nRisky;		// #23559 2011.6.20 yyagi 0=OFF, 1-10=Risky
 			public string 最終更新日時;
 
 			public C演奏記録()
@@ -267,7 +267,7 @@ namespace DTXMania
 				this.最終更新日時 = "";
 				this.Hash = "00000000000000000000000000000000";
 				this.レーン9モード = true;
-				this.nRiskyMode = 0;									// #23559 2011.6.20 yyagi
+				this.nRisky = 0;									// #23559 2011.6.20 yyagi
 			}
 
 			public bool bフルコンボじゃない
@@ -472,7 +472,7 @@ namespace DTXMania
 			stream.Read( buffer, 0, (int) stream.Length );
 			stream.Close();
 			StringBuilder builder = new StringBuilder(0x21);
-			using (MD5CryptoServiceProvider m = new MD5CryptoServiceProvider())		// #25650 2011.7.7 yyagi; add Dispose() method to avoid resource leak.
+			using ( MD5CryptoServiceProvider m = new MD5CryptoServiceProvider() )		// #25650 2011.7.7 yyagi; Using "using" structure to clarify the scope for MD5CryptServiceProvider.
 			{
 				byte[] buffer2 = m.ComputeHash(buffer);
 				foreach (byte num in buffer2)
@@ -732,63 +732,67 @@ namespace DTXMania
 									}
 								}
 							}
-							else if( item.Equals( "TightDrums" ) )
+							else if ( item.Equals( "Risky" ) )
+							{
+								c演奏記録.nRisky = int.Parse( para );
+							}
+							else if ( item.Equals( "TightDrums" ) )
 							{
 								c演奏記録.bTight = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "SuddenDrums" ) )
+							else if ( item.Equals( "SuddenDrums" ) )
 							{
 								c演奏記録.bSudden.Drums = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "SuddenGuitar" ) )
+							else if ( item.Equals( "SuddenGuitar" ) )
 							{
 								c演奏記録.bSudden.Guitar = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "SuddenBass" ) )
+							else if ( item.Equals( "SuddenBass" ) )
 							{
 								c演奏記録.bSudden.Bass = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "HiddenDrums" ) )
+							else if ( item.Equals( "HiddenDrums" ) )
 							{
 								c演奏記録.bHidden.Drums = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "HiddenGuitar" ) )
+							else if ( item.Equals( "HiddenGuitar" ) )
 							{
 								c演奏記録.bHidden.Guitar = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "HiddenBass" ) )
+							else if ( item.Equals( "HiddenBass" ) )
 							{
 								c演奏記録.bHidden.Bass = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "ReverseDrums" ) )
+							else if ( item.Equals( "ReverseDrums" ) )
 							{
 								c演奏記録.bReverse.Drums = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "ReverseGuitar" ) )
+							else if ( item.Equals( "ReverseGuitar" ) )
 							{
 								c演奏記録.bReverse.Guitar = C変換.bONorOFF( para[ 0 ] );
 							}
-							else if( item.Equals( "ReverseBass" ) )
+							else if ( item.Equals( "ReverseBass" ) )
 							{
 								c演奏記録.bReverse.Bass = C変換.bONorOFF( para[ 0 ] );
 							}
 							else
 							{
-								if( item.Equals( "RandomGuitar" ) )
+								if ( item.Equals( "RandomGuitar" ) )
 								{
-									switch( int.Parse( para ) )
+									switch ( int.Parse( para ) )
 									{
-										case (int)Eランダムモード.OFF:
+										case (int) Eランダムモード.OFF:
 											{
 												c演奏記録.eRandom.Guitar = Eランダムモード.OFF;
 												continue;
 											}
-										case (int)Eランダムモード.RANDOM:
+										case (int) Eランダムモード.RANDOM:
 											{
 												c演奏記録.eRandom.Guitar = Eランダムモード.RANDOM;
 												continue;
 											}
-										case (int)Eランダムモード.SUPERRANDOM:
+										case (int) Eランダムモード.SUPERRANDOM:
 											{
 												c演奏記録.eRandom.Guitar = Eランダムモード.SUPERRANDOM;
 												continue;
@@ -801,16 +805,16 @@ namespace DTXMania
 									}
 									throw new Exception( "RandomGuitar の値が無効です。" );
 								}
-								if( item.Equals( "RandomBass" ) )
+								if ( item.Equals( "RandomBass" ) )
 								{
-									switch( int.Parse( para ) )
+									switch ( int.Parse( para ) )
 									{
-										case (int)Eランダムモード.OFF:
+										case (int) Eランダムモード.OFF:
 											{
 												c演奏記録.eRandom.Bass = Eランダムモード.OFF;
 												continue;
 											}
-										case (int)Eランダムモード.RANDOM:
+										case (int) Eランダムモード.RANDOM:
 											{
 												c演奏記録.eRandom.Bass = Eランダムモード.RANDOM;
 												continue;
@@ -828,27 +832,27 @@ namespace DTXMania
 									}
 									throw new Exception( "RandomBass の値が無効です。" );
 								}
-								if( item.Equals( "LightGuitar" ) )
+								if ( item.Equals( "LightGuitar" ) )
 								{
 									c演奏記録.bLight.Guitar = C変換.bONorOFF( para[ 0 ] );
 								}
-								else if( item.Equals( "LightBass" ) )
+								else if ( item.Equals( "LightBass" ) )
 								{
 									c演奏記録.bLight.Bass = C変換.bONorOFF( para[ 0 ] );
 								}
-								else if( item.Equals( "LeftGuitar" ) )
+								else if ( item.Equals( "LeftGuitar" ) )
 								{
 									c演奏記録.bLeft.Guitar = C変換.bONorOFF( para[ 0 ] );
 								}
-								else if( item.Equals( "LeftBass" ) )
+								else if ( item.Equals( "LeftBass" ) )
 								{
 									c演奏記録.bLeft.Bass = C変換.bONorOFF( para[ 0 ] );
 								}
 								else
 								{
-									if( item.Equals( "Dark" ) )
+									if ( item.Equals( "Dark" ) )
 									{
-										switch( int.Parse( para ) )
+										switch ( int.Parse( para ) )
 										{
 											case 0:
 												{
@@ -868,22 +872,22 @@ namespace DTXMania
 										}
 										throw new Exception( "Dark の値が無効です。" );
 									}
-									if( item.Equals( "ScrollSpeedDrums" ) )
+									if ( item.Equals( "ScrollSpeedDrums" ) )
 									{
 										c演奏記録.f譜面スクロール速度.Drums = (float) decimal.Parse( para );
 									}
-									else if( item.Equals( "ScrollSpeedGuitar" ) )
+									else if ( item.Equals( "ScrollSpeedGuitar" ) )
 									{
 										c演奏記録.f譜面スクロール速度.Guitar = (float) decimal.Parse( para );
 									}
-									else if( item.Equals( "ScrollSpeedBass" ) )
+									else if ( item.Equals( "ScrollSpeedBass" ) )
 									{
 										c演奏記録.f譜面スクロール速度.Bass = (float) decimal.Parse( para );
 									}
-									else if( item.Equals( "PlaySpeed" ) )
+									else if ( item.Equals( "PlaySpeed" ) )
 									{
 										string[] strArray2 = para.Split( new char[] { '/' } );
-										if( strArray2.Length == 2 )
+										if ( strArray2.Length == 2 )
 										{
 											c演奏記録.n演奏速度分子 = int.Parse( strArray2[ 0 ] );
 											c演奏記録.n演奏速度分母 = int.Parse( strArray2[ 1 ] );
@@ -891,9 +895,9 @@ namespace DTXMania
 									}
 									else
 									{
-										if( item.Equals( "HHGroup" ) )
+										if ( item.Equals( "HHGroup" ) )
 										{
-											switch( int.Parse( para ) )
+											switch ( int.Parse( para ) )
 											{
 												case 0:
 													{
@@ -918,9 +922,9 @@ namespace DTXMania
 											}
 											throw new Exception( "HHGroup の値が無効です。" );
 										}
-										if( item.Equals( "FTGroup" ) )
+										if ( item.Equals( "FTGroup" ) )
 										{
-											switch( int.Parse( para ) )
+											switch ( int.Parse( para ) )
 											{
 												case 0:
 													{
@@ -935,9 +939,9 @@ namespace DTXMania
 											}
 											throw new Exception( "FTGroup の値が無効です。" );
 										}
-										if( item.Equals( "CYGroup" ) )
+										if ( item.Equals( "CYGroup" ) )
 										{
-											switch( int.Parse( para ) )
+											switch ( int.Parse( para ) )
 											{
 												case 0:
 													{
@@ -952,9 +956,9 @@ namespace DTXMania
 											}
 											throw new Exception( "CYGroup の値が無効です。" );
 										}
-										if( item.Equals( "HitSoundPriorityHH" ) )
+										if ( item.Equals( "HitSoundPriorityHH" ) )
 										{
-											switch( int.Parse( para ) )
+											switch ( int.Parse( para ) )
 											{
 												case 0:
 													{
@@ -969,9 +973,9 @@ namespace DTXMania
 											}
 											throw new Exception( "HitSoundPriorityHH の値が無効です。" );
 										}
-										if( item.Equals( "HitSoundPriorityFT" ) )
+										if ( item.Equals( "HitSoundPriorityFT" ) )
 										{
-											switch( int.Parse( para ) )
+											switch ( int.Parse( para ) )
 											{
 												case 0:
 													{
@@ -986,9 +990,9 @@ namespace DTXMania
 											}
 											throw new Exception( "HitSoundPriorityFT の値が無効です。" );
 										}
-										if( item.Equals( "HitSoundPriorityCY" ) )
+										if ( item.Equals( "HitSoundPriorityCY" ) )
 										{
-											switch( int.Parse( para ) )
+											switch ( int.Parse( para ) )
 											{
 												case 0:
 													{
@@ -1003,23 +1007,23 @@ namespace DTXMania
 											}
 											throw new Exception( "HitSoundPriorityCY の値が無効です。" );
 										}
-										if( item.Equals( "Guitar" ) )
+										if ( item.Equals( "Guitar" ) )
 										{
 											c演奏記録.bGuitar有効 = C変換.bONorOFF( para[ 0 ] );
 										}
-										else if( item.Equals( "Drums" ) )
+										else if ( item.Equals( "Drums" ) )
 										{
 											c演奏記録.bDrums有効 = C変換.bONorOFF( para[ 0 ] );
 										}
-										else if( item.Equals( "StageFailed" ) )
+										else if ( item.Equals( "StageFailed" ) )
 										{
 											c演奏記録.bSTAGEFAILED有効 = C変換.bONorOFF( para[ 0 ] );
 										}
 										else
 										{
-											if( item.Equals( "DamageLevel" ) )
+											if ( item.Equals( "DamageLevel" ) )
 											{
-												switch( int.Parse( para ) )
+												switch ( int.Parse( para ) )
 												{
 													case 0:
 														{
@@ -1039,51 +1043,51 @@ namespace DTXMania
 												}
 												throw new Exception( "DamageLevel の値が無効です。" );
 											}
-											if( item.Equals( "UseKeyboard" ) )
+											if ( item.Equals( "UseKeyboard" ) )
 											{
 												c演奏記録.b演奏にキーボードを使用した = C変換.bONorOFF( para[ 0 ] );
 											}
-											else if( item.Equals( "UseMIDIIN" ) )
+											else if ( item.Equals( "UseMIDIIN" ) )
 											{
 												c演奏記録.b演奏にMIDI入力を使用した = C変換.bONorOFF( para[ 0 ] );
 											}
-											else if( item.Equals( "UseJoypad" ) )
+											else if ( item.Equals( "UseJoypad" ) )
 											{
 												c演奏記録.b演奏にジョイパッドを使用した = C変換.bONorOFF( para[ 0 ] );
 											}
-											else if( item.Equals( "UseMouse" ) )
+											else if ( item.Equals( "UseMouse" ) )
 											{
 												c演奏記録.b演奏にマウスを使用した = C変換.bONorOFF( para[ 0 ] );
 											}
-											else if( item.Equals( "PerfectRange" ) )
+											else if ( item.Equals( "PerfectRange" ) )
 											{
 												c演奏記録.nPerfectになる範囲ms = int.Parse( para );
 											}
-											else if( item.Equals( "GreatRange" ) )
+											else if ( item.Equals( "GreatRange" ) )
 											{
 												c演奏記録.nGreatになる範囲ms = int.Parse( para );
 											}
-											else if( item.Equals( "GoodRange" ) )
+											else if ( item.Equals( "GoodRange" ) )
 											{
 												c演奏記録.nGoodになる範囲ms = int.Parse( para );
 											}
-											else if( item.Equals( "PoorRange" ) )
+											else if ( item.Equals( "PoorRange" ) )
 											{
 												c演奏記録.nPoorになる範囲ms = int.Parse( para );
 											}
-											else if( item.Equals( "DTXManiaVersion" ) )
+											else if ( item.Equals( "DTXManiaVersion" ) )
 											{
 												c演奏記録.strDTXManiaのバージョン = para;
 											}
-											else if( item.Equals( "DateTime" ) )
+											else if ( item.Equals( "DateTime" ) )
 											{
 												c演奏記録.最終更新日時 = para;
 											}
-											else if( item.Equals( "Hash" ) )
+											else if ( item.Equals( "Hash" ) )
 											{
 												c演奏記録.Hash = para;
 											}
-											else if( item.Equals( "9LaneMode" ) )
+											else if ( item.Equals( "9LaneMode" ) )
 											{
 												c演奏記録.レーン9モード = C変換.bONorOFF( para[ 0 ] );
 											}
@@ -1159,6 +1163,7 @@ namespace DTXMania
 					writer.Write( this.stセクション[ i ].bAutoPlay[ j ] ? 1 : 0 );
 				}
 				writer.WriteLine();
+				writer.WriteLine( "Risky={0}", this.stセクション[ i ].nRisky );
 				writer.WriteLine( "SuddenDrums={0}", this.stセクション[ i ].bSudden.Drums ? 1 : 0 );
 				writer.WriteLine( "SuddenGuitar={0}", this.stセクション[ i ].bSudden.Guitar ? 1 : 0 );
 				writer.WriteLine( "SuddenBass={0}", this.stセクション[ i ].bSudden.Bass ? 1 : 0 );
@@ -1335,7 +1340,7 @@ namespace DTXMania
 
 			byte[] bytes = Encoding.GetEncoding( "shift-jis" ).GetBytes( builder.ToString() );
 			StringBuilder builder2 = new StringBuilder(0x21);
-			using (MD5CryptoServiceProvider m = new MD5CryptoServiceProvider())		// #25650 2011.7.7 yyagi; add Dispose() method to avoid resource leak.
+			using (MD5CryptoServiceProvider m = new MD5CryptoServiceProvider())		// #25650 2011.7.7 yyagi; Using "using" structure to clarify the scope for MD5CryptServiceProvider.
 			{
 				byte[] buffer2 = m.ComputeHash(bytes);
 				foreach (byte num2 in buffer2)

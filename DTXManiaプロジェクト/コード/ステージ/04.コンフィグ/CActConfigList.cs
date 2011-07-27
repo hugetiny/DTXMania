@@ -73,6 +73,12 @@ namespace DTXMania
 				"OFF: all display parts are shown.\nHALF: wallpaper, lanes and gauge are\n disappeared.\nFULL: additionaly to HALF, bar/beat\n lines, hit bar, pads are disappeared.",
 				new string[] { "OFF", "HALF", "FULL" } );
 			this.list項目リスト.Add( this.iCommonDark );
+
+			this.iSystemRisky = new CItemInteger( "Risky", 0, 10, CDTXMania.ConfigIni.nRisky,
+				"Riskyモードの設定:\n1以上の値にすると、その回数分の\nPoor/MissでFAILEDとなります。\nOFFにすると無効になり、\nDamageLevelに従ったゲージ増減と\nなります。\nStageFailedの設定と併用できます。",
+				"Risky mode:\nSet over 1, in case you'd like to specify\n the number of Poor/Miss times to be\n FAILED.\nSet OFF to disable Risky mode." );
+			this.list項目リスト.Add( this.iSystemRisky );
+
 			this.iCommonPlaySpeed = new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度,
 				"曲の演奏速度を、速くしたり遅くした\nりすることができます。\n（※一部のサウンドカードでは正しく\n 再生できない可能性があります。）",
 				"It changes the song speed.\nFor example, you can play in half\n speed by setting PlaySpeed = 0.500\n for your practice.\nNote: It also changes the songs' pitch." );
@@ -117,12 +123,6 @@ namespace DTXMania
 				"BGAの使用：\n画像(BGA)を表示可能にする場合に\nON にします。BGA の再生には、それ\nなりのマシンパワーが必要とされます。",
 				"To draw BGA (back ground animations)\n or not." );
 			this.list項目リスト.Add( this.iSystemBGA );
-			// #24074 2011.01.23 comment-out ikanick オプション(Drums)へ移行
-			//			this.iSystemGraph = new CItemToggle( "Graph", CDTXMania.ConfigIni.bGraph有効,
-			//				"達成率グラフの使用：\n最高スキル達成率と比較できるグラフ\nを表示する場合にON にします。\nオートプレイだと表示されません。\n現バージョンではドラムのみとなって\nいます。",
-			//				"To draw Graph \n or not.");
-			//			this.list項目リスト.Add( this.iSystemGraph );
-
 			this.iSystemPreviewSoundWait = new CItemInteger( "PreSoundWait", 0, 0x2710, CDTXMania.ConfigIni.n曲が選択されてからプレビュー音が鳴るまでのウェイトms,
 				"プレビュー音演奏までの時間：\n曲にカーソルが合わされてからプレ\nビュー音が鳴り始めるまでの時間を\n指定します。\n0 ～ 10000 [ms] が指定可能です。",
 				"Delay time(ms) to start playing preview\n sound in SELECT MUSIC screen.\nYou can specify from 0ms to 10000ms." );
@@ -148,8 +148,8 @@ namespace DTXMania
 				"Turn ON if you want to be cheered\n at the end of fill-in zone or not." );
 			this.list項目リスト.Add( this.iSystemAudienceSound );
 			this.iSystemDamageLevel = new CItemList( "DamageLevel", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eダメージレベル,
-				"ゲージ減少割合：\nMiss ヒット時のゲージの減少度合い\nを指定します。\n",
-				"Damage level at missing (and\n recovering level) at playing.",
+				"ゲージ減少割合：\nMiss ヒット時のゲージの減少度合い\nを指定します。\nRiskyが1以上の場合は無効となります",
+				"Damage level at missing (and\n recovering level) at playing.\nThis setting is ignored when Risky >= 1.",
 				new string[] { "Small", "Normal", "Large" } );
 			this.list項目リスト.Add( this.iSystemDamageLevel );
 			this.iSystemSaveScore = new CItemToggle( "SaveScore", CDTXMania.ConfigIni.bScoreIniを出力する,
@@ -541,21 +541,6 @@ namespace DTXMania
 			{
 				this.tConfigIniへ記録する();
 			}
-//			else if( ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemGuitar ) || ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemDrums ) )
-//			{
-//				this.list項目リスト[ this.n現在の選択項目 ].tEnter押下();
-//				if( !this.iSystemGuitar.bON && !this.iSystemDrums.bON )
-//				{
-//					if( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemGuitar )
-//					{
-//						this.iSystemDrums.bON = true;
-//					}
-//					else
-//					{
-//						this.iSystemGuitar.bON = true;
-//					}
-//				}
-//			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsLC )
 			{
 				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.LC );
@@ -1091,25 +1076,25 @@ namespace DTXMania
 				}
 				if( this.b項目リスト側にフォーカスがある && ( this.n目標のスクロールカウンタ == 0 ) )
 				{
-					int num11;
-					int num12;
-					int num13;
+					int x;
+					int y_upper;
+					int y_lower;
 					if( !this.b要素値にフォーカス中 )
 					{
-						num11 = 0x114;
-						num12 = 0xba - this.ct三角矢印アニメ.n現在の値;
-						num13 = 0xfe + this.ct三角矢印アニメ.n現在の値;
+						x = 0x114;
+						y_upper = 0xba - this.ct三角矢印アニメ.n現在の値;
+						y_lower = 0xfe + this.ct三角矢印アニメ.n現在の値;
 					}
 					else
 					{
-						num11 = 0x210;
-						num12 = 0xc6 - this.ct三角矢印アニメ.n現在の値;
-						num13 = 0xf2 + this.ct三角矢印アニメ.n現在の値;
+						x = 0x210;
+						y_upper = 0xc6 - this.ct三角矢印アニメ.n現在の値;
+						y_lower = 0xf2 + this.ct三角矢印アニメ.n現在の値;
 					}
 					if( this.tx三角矢印 != null )
 					{
-						this.tx三角矢印.t2D描画( CDTXMania.app.Device, num11, num12, new Rectangle( 0, 0, 0x20, 0x10 ) );
-						this.tx三角矢印.t2D描画( CDTXMania.app.Device, num11, num13, new Rectangle( 0, 0x10, 0x20, 0x10 ) );
+						this.tx三角矢印.t2D描画( CDTXMania.app.Device, x, y_upper, new Rectangle( 0, 0, 0x20, 0x10 ) );
+						this.tx三角矢印.t2D描画( CDTXMania.app.Device, x, y_lower, new Rectangle( 0, 0x10, 0x20, 0x10 ) );
 					}
 				}
 			}
@@ -1206,9 +1191,11 @@ namespace DTXMania
 		private CItemToggle iSystemStageFailed;
 		private CItemToggle iSystemStoicMode;
 		private CItemToggle iSystemVSyncWait;
-		private CItemToggle iSystemShowLag;			// #25370 2011.6.3 yyagi
-		private CItemToggle iSystemAutoResultCapture;	// #25399 2011.6.9 yyagi
+		private CItemToggle iSystemShowLag;					// #25370 2011.6.3 yyagi
+		private CItemToggle iSystemAutoResultCapture;		// #25399 2011.6.9 yyagi
 		private CItemToggle iSystemBufferedInput;
+		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
+
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
 		private int n現在のスクロールカウンタ;
@@ -1269,7 +1256,6 @@ namespace DTXMania
 		private CItemInteger iDrumsInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 		private CItemInteger iGuitarInputAdjustTimeMs;		//
 		private CItemInteger iBassInputAdjustTimeMs;		//
-
 
 		private int t前の項目( int nItem )
 		{
@@ -1362,8 +1348,10 @@ namespace DTXMania
 			CDTXMania.ConfigIni.n自動再生音量 = this.iSystemAutoChipVolume.n現在の値;
 			CDTXMania.ConfigIni.bストイックモード = this.iSystemStoicMode.bON;
 
-			CDTXMania.ConfigIni.bIsShowingLag = this.iSystemShowLag.bON;		// #25370 2011.6.3 yyagi
-			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;	// #25399 2011.6.9 yyagi
+			CDTXMania.ConfigIni.bIsShowingLag = this.iSystemShowLag.bON;						// #25370 2011.6.3 yyagi
+			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;		// #25399 2011.6.9 yyagi
+
+			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
 		}
 		private void tConfigIniへ記録する・Bass()
 		{
@@ -1381,9 +1369,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.b演奏音を強調する.Bass = this.iSystemSoundMonitorBass.bON;
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass = this.iSystemMinComboBass.n現在の値;
 		}
-//		private void tConfigIniへ記録する・Common()
-//		{
-//		}
+
 		private void tConfigIniへ記録する・Drums()
 		{
 			CDTXMania.ConfigIni.bAutoPlay.LC = this.iDrumsLeftCymbal.bON;
