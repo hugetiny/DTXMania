@@ -150,7 +150,7 @@ namespace DTXMania
 					this.actFI.tフェードイン開始();
 					base.b初めての進行描画 = false;
 				}
-				if( ( CDTXMania.ConfigIni.bSTAGEFAILED有効 && ( this.actGauge.db現在のゲージ値.Drums <= -0.1 ) ) && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
+				if( ( CDTXMania.ConfigIni.bSTAGEFAILED有効 && this.actGauge.IsFailed(E楽器パート.DRUMS) ) && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{
 					this.actStageFailed.Start();
 					CDTXMania.DTX.t全チップの再生停止();
@@ -368,7 +368,8 @@ namespace DTXMania
 		}
 		protected override void t進行描画・DANGER()
 		{
-		    this.actDANGER.t進行描画( this.actGauge.db現在のゲージ値.Drums < 0.3, false, false );
+//			this.actDANGER.t進行描画( this.actGauge.db現在のゲージ値.Drums < 0.3, false, false );
+			this.actDANGER.t進行描画( this.actGauge.IsDanger(E楽器パート.DRUMS), false, false );
 		}
 
 		protected override void t進行描画・Wailing枠()

@@ -75,8 +75,8 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iCommonDark );
 
 			this.iSystemRisky = new CItemInteger( "Risky", 0, 10, CDTXMania.ConfigIni.nRisky,
-				"Riskyモードの設定:\n1以上の値にすると、その回数分の\nPoor/MissでFAILEDとなります。\nOFFにすると無効になり、\nDamageLevelに従ったゲージ増減と\nなります。\nStageFailedの設定と併用できます。",
-				"Risky mode:\nSet over 1, in case you'd like to specify\n the number of Poor/Miss times to be\n FAILED.\nSet OFF to disable Risky mode." );
+				"Riskyモードの設定:\n1以上の値にすると、その回数分の\nPoor/MissでFAILEDとなります。\n0にすると無効になり、\nDamageLevelに従ったゲージ増減と\nなります。\nStageFailedの設定と併用できます。",
+				"Risky mode:\nSet over 1, in case you'd like to specify\n the number of Poor/Miss times to be\n FAILED.\nSet 0 to disable Risky mode." );
 			this.list項目リスト.Add( this.iSystemRisky );
 
 			this.iCommonPlaySpeed = new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度,

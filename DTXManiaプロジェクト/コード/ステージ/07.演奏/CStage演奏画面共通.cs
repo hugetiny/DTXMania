@@ -264,6 +264,8 @@ namespace DTXMania
 			this.nInputAdjustTimeMs.Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
 			this.nInputAdjustTimeMs.Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass;			//
 			this.bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay;									// #24239 2011.1.23 yyagi
+//			this.nRisky = CDTXMania.ConfigIni.nRisky;											// #23559 2011.7.28 yyagi
+			actGauge.Init( CDTXMania.ConfigIni.nRisky );									// #23559 2011.7.28 yyagi
 
 			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
 			{
@@ -537,6 +539,7 @@ namespace DTXMania
 
 		protected STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 		protected CConfigIni.STAUTOPLAY bIsAutoPlay;		// #24239 2011.1.23 yyagi
+//		protected int nRisky_InitialVar, nRiskyTime;		// #23559 2011.7.28 yyagi → CAct演奏ゲージ共通クラスに隠蔽
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 //		protected GCLatencyMode gclatencymode;
@@ -959,7 +962,8 @@ namespace DTXMania
 			}
 			if ( !bPChipIsAutoPlay && ( pChip.e楽器パート != E楽器パート.UNKNOWN ) )
 			{
-				this.t判定にあわせてゲージを増減する( screenmode, pChip.e楽器パート, eJudgeResult );
+				// this.t判定にあわせてゲージを増減する( screenmode, pChip.e楽器パート, eJudgeResult );
+				actGauge.Damage( screenmode, pChip.e楽器パート, eJudgeResult );
 			}
 
 			switch ( pChip.e楽器パート )
@@ -1066,7 +1070,8 @@ namespace DTXMania
 		protected void tチップのヒット処理・BadならびにTight時のMiss( E楽器パート part, int nLane, E楽器パート screenmode )
 		{
 			this.bAUTOでないチップが１つでもバーを通過した = true;
-			this.t判定にあわせてゲージを増減する( screenmode, part, E判定.Miss );
+			//this.t判定にあわせてゲージを増減する( screenmode, part, E判定.Miss );
+			actGauge.Damage( screenmode, part, E判定.Miss );
 			switch ( part )
 			{
 				case E楽器パート.DRUMS:
@@ -2280,117 +2285,123 @@ namespace DTXMania
 			}
 		}
 
+// ダメージ/回復計算は、全部CAct演奏ゲージ共通クラスに隠蔽
+//#if true		// DAMAGELEVELTUNING
+//#region [ DAMAGELEVELTUNING ]
+//        // ----------------------------------
+//        public float[ , ] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damage/recover factors
+//            // drums,   guitar,  bass
+//            {  0.004f,  0.006f,  0.006f  },
+//            {  0.002f,  0.003f,  0.003f  },
+//            {  0.000f,  0.000f,  0.000f  },
+//            { -0.020f, -0.030f,	-0.030f  },
+//            { -0.050f, -0.050f, -0.050f  }
+//        };
+//        public float[] fDamageLevelFactor = {
+//            0.5f, 1.0f, 1.5f
+//        };
+//        // ----------------------------------
+//#endregion
+//#endif
 
-#if true		// DAMAGELEVELTUNING
-#region [ DAMAGELEVELTUNING ]
-		// ----------------------------------
-		public float[ , ] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damage/recover factors
-			// drums,   guitar,  bass
-			{  0.004f,  0.006f,  0.006f  },
-			{  0.002f,  0.003f,  0.003f  },
-			{  0.000f,  0.000f,  0.000f  },
-			{ -0.020f, -0.030f,	-0.030f  },
-			{ -0.050f, -0.050f, -0.050f  }
-		};
-		public float[] fDamageLevelFactor = {
-			0.5f, 1.0f, 1.5f
-		};
-		// ----------------------------------
-#endregion
-#endif
+//        protected void t判定にあわせてゲージを増減する( E楽器パート screenmode, E楽器パート part, E判定 e今回の判定 )
+//        {
+//            double fDamage;
+//            int nRisky = this.nRisky_InitialVar;
 
-		protected void t判定にあわせてゲージを増減する( E楽器パート screenmode, E楽器パート part, E判定 e今回の判定 )
-		{
-			double fDamage;
-			int nRisky = CDTXMania.ConfigIni.nRisky;
+//#if true	// DAMAGELEVELTUNING
+//            switch ( e今回の判定 )
+//            {
+//                case E判定.Perfect:
+//                case E判定.Great:
+//                case E判定.Good:
+//                    fDamage = ( nRisky > 0 ) ? 0 : fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
+//                    break;
+//                case E判定.Poor:
+//                case E判定.Miss:
+//                    if ( nRisky > 0 )
+//                    {
+//                        fDamage = -1.0 / nRisky;
+//                        nRiskyTime--;
+//                    }
+//                    else
+//                    {
+//                        fDamage = fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
+//                    }
+//                    if ( e今回の判定 == E判定.Miss && nRisky == 0 )
+//                    {
+//                        fDamage *= fDamageLevelFactor[ (int) CDTXMania.ConfigIni.eダメージレベル ];
+//                    }
+//                    break;
 
-#if true	// DAMAGELEVELTUNING
-			switch ( e今回の判定 )
-			{
-				case E判定.Perfect:
-				case E判定.Great:
-				case E判定.Good:
-					fDamage = ( nRisky > 0 ) ? 0 : fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
-					break;
-				case E判定.Poor:
-					fDamage = ( nRisky > 0 ) ? ( -1.1 / nRisky ) : fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
-					break;
-				case E判定.Miss:
-					fDamage = ( nRisky > 0 ) ? ( -1.1 / nRisky ) : fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
-					if ( nRisky == 0 )
-					{
-						fDamage *= fDamageLevelFactor[ (int) CDTXMania.ConfigIni.eダメージレベル ];
-					}
-					break;
+//                default:
+//                    fDamage = 0.0f;
+//                    break;
+//            }
+//#else													// before applying #23625 modifications
+//            switch (e今回の判定)
+//            {
+//                case E判定.Perfect:
+//                    fDamage = ( part == E楽器パート.DRUMS ) ? 0.01 : 0.015;
+//                    break;
 
-				default:
-					fDamage = 0.0f;
-					break;
-			}
-#else													// before applying #23625 modifications
-			switch (e今回の判定)
-			{
-				case E判定.Perfect:
-					fDamage = ( part == E楽器パート.DRUMS ) ? 0.01 : 0.015;
-					break;
+//                case E判定.Great:
+//                    fDamage = ( part == E楽器パート.DRUMS ) ? 0.006 : 0.009;
+//                    break;
 
-				case E判定.Great:
-					fDamage = ( part == E楽器パート.DRUMS ) ? 0.006 : 0.009;
-					break;
+//                case E判定.Good:
+//                    fDamage = ( part == E楽器パート.DRUMS ) ? 0.002 : 0.003;
+//                    break;
 
-				case E判定.Good:
-					fDamage = ( part == E楽器パート.DRUMS ) ? 0.002 : 0.003;
-					break;
+//                case E判定.Poor:
+//                    fDamage = ( part == E楽器パート.DRUMS ) ? 0.0 : 0.0;
+//                    break;
 
-				case E判定.Poor:
-					fDamage = ( part == E楽器パート.DRUMS ) ? 0.0 : 0.0;
-					break;
+//                case E判定.Miss:
+//                    fDamage = ( part == E楽器パート.DRUMS ) ? -0.035 : -0.035;
+//                    switch( CDTXMania.ConfigIni.eダメージレベル )
+//                    {
+//                        case Eダメージレベル.少ない:
+//                            fDamage *= 0.6;
+//                            break;
 
-				case E判定.Miss:
-					fDamage = ( part == E楽器パート.DRUMS ) ? -0.035 : -0.035;
-					switch( CDTXMania.ConfigIni.eダメージレベル )
-					{
-						case Eダメージレベル.少ない:
-							fDamage *= 0.6;
-							break;
+//                        case Eダメージレベル.普通:
+//                            fDamage *= 1.0;
+//                            break;
 
-						case Eダメージレベル.普通:
-							fDamage *= 1.0;
-							break;
+//                        case Eダメージレベル.大きい:
+//                            fDamage *= 1.6;
+//                            break;
+//                    }
+//                    break;
 
-						case Eダメージレベル.大きい:
-							fDamage *= 1.6;
-							break;
-					}
-					break;
+//                default:
+//                    fDamage = 0.0;
+//                    break;
+//            }
+//#endif
+//            if ( screenmode == E楽器パート.DRUMS )			// ドラム演奏画面なら、ギター/ベースのダメージも全部ドラムのゲージに集約する
+//            {
+//                part = E楽器パート.DRUMS;
+//                this.actGauge.db現在のゲージ値[ (int) part ] += fDamage;
+//            }
+//            else
+//            {
+//                if ( nRisky > 0 )					// ギター画面且つRISKYなら、ギターとベースのゲージをセットで減少
+//                {
+//                    this.actGauge.db現在のゲージ値[ (int) E楽器パート.GUITAR ] += fDamage;
+//                    this.actGauge.db現在のゲージ値[ (int) E楽器パート.BASS   ] += fDamage;
+//                }
+//                else
+//                {
+//                    this.actGauge.db現在のゲージ値[ (int) part ] += fDamage;
+//                }
+//            }
 
-				default:
-					fDamage = 0.0;
-					break;
-			}
-#endif
-			if ( screenmode == E楽器パート.DRUMS )			// ドラム演奏画面なら、ギター/ベースのダメージも全部ドラムのゲージに集約する
-			{
-				part = E楽器パート.DRUMS;
-				this.actGauge.db現在のゲージ値[ (int) part ] += fDamage;
-			}
-			else
-			{
-				if ( nRisky > 0 )					// ギター画面且つRISKYなら、ギターとベースのゲージをセットで減少
-				{
-					this.actGauge.db現在のゲージ値[ (int) E楽器パート.GUITAR ] += fDamage;
-					this.actGauge.db現在のゲージ値[ (int) E楽器パート.BASS   ] += fDamage;
-				}
-				else
-				{
-					this.actGauge.db現在のゲージ値[ (int) part ] += fDamage;
-				}
-			}
-
-			if ( this.actGauge.db現在のゲージ値[ (int) part ] > 1.0 )		// RISKY時は決してゲージが増加しないので、ギタレボモード時のギター/ベース両チェックはしなくて良い
-				this.actGauge.db現在のゲージ値[ (int) part ] = 1.0;
-		}
-		//-----------------
-		#endregion
+//            if ( this.actGauge.db現在のゲージ値[ (int) part ] > 1.0 )		// RISKY時は決してゲージが増加しないので、ギタレボモード時のギター/ベース両チェックはしなくて良い
+//                this.actGauge.db現在のゲージ値[ (int) part ] = 1.0;
+//        }
+//        //-----------------
+        #endregion
 	}
 }

@@ -136,7 +136,7 @@ namespace DTXMania
 		マウス			= 3,
 		不明			= -1
 	}
-	internal enum E判定
+	public enum E判定
 	{
 		Perfect	= 0,
 		Great	= 1,

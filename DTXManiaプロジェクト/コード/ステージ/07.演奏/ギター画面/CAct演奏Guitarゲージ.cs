@@ -25,8 +25,9 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.db現在のゲージ値.Guitar = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
-			this.db現在のゲージ値.Bass   = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
+			// CAct演奏ゲージ共通.Init()に移動
+//			this.db現在のゲージ値.Guitar = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
+//			this.db現在のゲージ値.Bass   = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
 			base.On活性化();
 		}
 		public override void On非活性化()

@@ -113,8 +113,8 @@ namespace DTXMania
 				{
 //					bool flag3 = ( CDTXMania.ConfigIni.bAutoPlay.Guitar || !CDTXMania.DTX.bチップがある.Guitar ) || ( this.actGauge.db現在のゲージ値.Guitar <= -0.1 );				// #23630
 //					bool flag4 = ( CDTXMania.ConfigIni.bAutoPlay.Bass || !CDTXMania.DTX.bチップがある.Bass ) || ( this.actGauge.db現在のゲージ値.Bass <= -0.1 );					// #23630
-					bool bFailedGuitar = ( this.actGauge.db現在のゲージ値.Guitar <= -0.1 );		// #23630 2011.11.12 yyagi: deleted AutoPlay condition: not to be failed at once
-					bool bFailedBass   = (this.actGauge.db現在のゲージ値.Bass   <= -0.1);		// #23630
+					bool bFailedGuitar = this.actGauge.IsFailed( E楽器パート.GUITAR );		// #23630 2011.11.12 yyagi: deleted AutoPlay condition: not to be failed at once
+					bool bFailedBass   = this.actGauge.IsFailed( E楽器パート.BASS );		// #23630
 					bool bFailedNoChips = (!CDTXMania.DTX.bチップがある.Guitar && !CDTXMania.DTX.bチップがある.Bass);	// #25216 2011.5.21 yyagi add condition
 					if ( bFailedGuitar || bFailedBass || bFailedNoChips )						// #25216 2011.5.21 yyagi: changed codition: && -> ||
 					{
@@ -197,7 +197,8 @@ namespace DTXMania
 		}
 		protected override void t進行描画・DANGER()			// #23631 2011.4.19 yyagi
 		{
-			this.actDANGER.t進行描画( false, this.actGauge.db現在のゲージ値.Guitar < 0.3, this.actGauge.db現在のゲージ値.Bass < 0.3 );
+			//this.actDANGER.t進行描画( false, this.actGauge.db現在のゲージ値.Guitar < 0.3, this.actGauge.db現在のゲージ値.Bass < 0.3 );
+			this.actDANGER.t進行描画( false, this.actGauge.IsDanger(E楽器パート.GUITAR), this.actGauge.IsDanger(E楽器パート.BASS) );
 		}
 
 		protected override void t進行描画・Wailing枠()
