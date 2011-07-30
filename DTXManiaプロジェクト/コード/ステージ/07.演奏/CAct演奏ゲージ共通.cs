@@ -12,8 +12,20 @@ namespace DTXMania
 	/// <summary>
 	/// CAct演奏Drumsゲージ と CAct演奏Gutiarゲージ のbaseクラス。ダメージ計算やDanger/Failed判断もこのクラスで行う。
 	/// </summary>
-	public class CAct演奏ゲージ共通 : CActivity
+	internal class CAct演奏ゲージ共通 : CActivity
 	{
+		// プロパティ
+		public CActLVLNFont actLVLNFont { get; protected set; }
+
+		// コンストラクタ
+		public CAct演奏ゲージ共通()
+		{
+			actLVLNFont = new CActLVLNFont();
+			actLVLNFont.On活性化();
+		}
+
+		
+		
 		const double GAUGE_MAX = 1.0;
 		const double GAUGE_INITIAL =  2.0 / 3;
 		const double GAUGE_MIN = -0.1;

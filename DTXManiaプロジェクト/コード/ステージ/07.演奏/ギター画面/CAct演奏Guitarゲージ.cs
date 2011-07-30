@@ -135,6 +135,12 @@ namespace DTXMania
 						this.txゲージ.b加算合成 = true;
 						this.txゲージ.t2D描画( CDTXMania.app.Device, x, 8, rectangle );
 					}
+					if (this.bRisky && this.actLVLNFont != null)		// #23599 2011.7.30 yyagi Risky残りMiss回数表示
+					{
+						CActLVLNFont.EFontColor efc = this.IsDanger( E楽器パート.GUITAR ) ?
+							CActLVLNFont.EFontColor.Red : CActLVLNFont.EFontColor.Yellow;
+						actLVLNFont.t文字列描画( 196, 6, nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Left );
+					}
 				}
 				#endregion
 
@@ -198,6 +204,12 @@ namespace DTXMania
 					{
 						this.txゲージ.b加算合成 = true;
 						this.txゲージ.t2D描画( CDTXMania.app.Device, num11, 8, rectangle2 );
+					}
+					if (this.bRisky && this.actLVLNFont != null)		// #23599 2011.7.30 yyagi Risky残りMiss回数表示
+					{
+						CActLVLNFont.EFontColor efc = this.IsDanger( E楽器パート.GUITAR ) ?
+							CActLVLNFont.EFontColor.Red : CActLVLNFont.EFontColor.Yellow;
+						actLVLNFont.t文字列描画( 445, 6, nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Right);
 					}
 				}
 				#endregion
