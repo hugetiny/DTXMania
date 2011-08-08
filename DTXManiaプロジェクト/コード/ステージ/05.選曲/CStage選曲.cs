@@ -392,7 +392,7 @@ namespace DTXMania
 							if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.BD ) )
 							{	// [BD]x2 スクロール速度変更
 								CommandHistory.Add( E楽器パート.DRUMS, EパッドFlag.BD );
-								EパッドFlag[] comChangeScrollSpeed = new EパッドFlag[ 2 ] { EパッドFlag.BD, EパッドFlag.BD };
+								EパッドFlag[] comChangeScrollSpeed = new EパッドFlag[] { EパッドFlag.BD, EパッドFlag.BD };
 								if ( CommandHistory.CheckCommand( comChangeScrollSpeed, E楽器パート.DRUMS ) )
 								{
 									Debug.WriteLine( "ドラムススクロール速度変更" );
@@ -403,7 +403,7 @@ namespace DTXMania
 							if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.HH ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.HHO ) )
 							{	// [HH]x2 難易度変更
 								CommandHistory.Add( E楽器パート.DRUMS, EパッドFlag.HH );
-								EパッドFlag[] comChangeDifficulty = new EパッドFlag[ 2 ] { EパッドFlag.HH, EパッドFlag.HH };
+								EパッドFlag[] comChangeDifficulty = new EパッドFlag[] { EパッドFlag.HH, EパッドFlag.HH };
 								if ( CommandHistory.CheckCommand( comChangeDifficulty, E楽器パート.DRUMS ) )
 								{
 									Debug.WriteLine( "ドラムス難易度変更" );
@@ -414,7 +414,7 @@ namespace DTXMania
 							if ( CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.G ) && CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.Pick ) )	// #24177 2011.1.17 yyagi || -> &&
 							{	// [G] + [Pick][Pick] ギター難易度変更
 								CommandHistory.Add( E楽器パート.GUITAR, EパッドFlag.Pick | EパッドFlag.G );
-								EパッドFlag[] comChangeDifficulty = new EパッドFlag[ 2 ] { EパッドFlag.Pick | EパッドFlag.G, EパッドFlag.Pick | EパッドFlag.G };
+								EパッドFlag[] comChangeDifficulty = new EパッドFlag[] { EパッドFlag.Pick | EパッドFlag.G, EパッドFlag.Pick | EパッドFlag.G };
 								if ( CommandHistory.CheckCommand( comChangeDifficulty, E楽器パート.GUITAR ) )
 								{
 									Debug.WriteLine( "ギター難易度変更" );
@@ -425,7 +425,7 @@ namespace DTXMania
 							if ( CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.G ) && CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.Pick ) )		// #24177 2011.1.17 yyagi || -> &&
 							{	// [G] + [Pick][Pick] ベース難易度変更
 								CommandHistory.Add( E楽器パート.BASS, EパッドFlag.Pick | EパッドFlag.G );
-								EパッドFlag[] comChangeDifficulty = new EパッドFlag[ 2 ] { EパッドFlag.Pick | EパッドFlag.G, EパッドFlag.Pick | EパッドFlag.G };
+								EパッドFlag[] comChangeDifficulty = new EパッドFlag[] { EパッドFlag.Pick | EパッドFlag.G, EパッドFlag.Pick | EパッドFlag.G };
 								if ( CommandHistory.CheckCommand( comChangeDifficulty, E楽器パート.BASS ) )
 								{
 									Debug.WriteLine( "ベース難易度変更" );
@@ -438,7 +438,7 @@ namespace DTXMania
 							{	// ギター[Pick]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.GUITAR, EパッドFlag.Pick );
 								// Pick, G, G, Pick で、ギターとベースを入れ替え
-								EパッドFlag[] comSwapGtBs1 = new EパッドFlag[ 4 ] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
+								EパッドFlag[] comSwapGtBs1 = new EパッドFlag[] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
 								if ( CommandHistory.CheckCommand( comSwapGtBs1, E楽器パート.GUITAR ) )
 								{
 									Debug.WriteLine( "ギターとベースの入れ替え1" );
@@ -452,7 +452,7 @@ namespace DTXMania
 							{	// ベース[Pick]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.BASS, EパッドFlag.Pick );
 								// Pick, G, G, Pick で、ギターとベースを入れ替え
-								EパッドFlag[] comSwapGtBs1 = new EパッドFlag[ 4 ] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
+								EパッドFlag[] comSwapGtBs1 = new EパッドFlag[] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
 								if ( CommandHistory.CheckCommand( comSwapGtBs1, E楽器パート.BASS ) )
 								{
 									Debug.WriteLine( "ギターとベースの入れ替え2" );
@@ -466,7 +466,7 @@ namespace DTXMania
 							{	// ギター[G]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.GUITAR, EパッドFlag.G );
 								// ギター G, G, G で、ソート画面に遷移
-								EパッドFlag[] comSortGt = new EパッドFlag[ 3 ] { EパッドFlag.G, EパッドFlag.G, EパッドFlag.G };
+								EパッドFlag[] comSortGt = new EパッドFlag[] { EパッドFlag.G, EパッドFlag.G, EパッドFlag.G };
 								if ( CommandHistory.CheckCommand( comSortGt, E楽器パート.GUITAR ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
@@ -479,7 +479,7 @@ namespace DTXMania
 							{	// ベース[G]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.BASS, EパッドFlag.G );
 								// ベース G, G, G で、ソート画面に遷移
-								EパッドFlag[] comSortBs = new EパッドFlag[ 3 ] { EパッドFlag.G, EパッドFlag.G, EパッドFlag.G };
+								EパッドFlag[] comSortBs = new EパッドFlag[] { EパッドFlag.G, EパッドFlag.G, EパッドFlag.G };
 								if ( CommandHistory.CheckCommand( comSortBs, E楽器パート.BASS ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
@@ -492,7 +492,7 @@ namespace DTXMania
 							{	// [BD]+[HT] 未使用
 								//
 								CommandHistory.Add( E楽器パート.DRUMS, EパッドFlag.HT );
-								EパッドFlag[] comSort = new EパッドFlag[ 2 ] { EパッドFlag.BD, EパッドFlag.HT };
+								EパッドFlag[] comSort = new EパッドFlag[] { EパッドFlag.BD, EパッドFlag.HT };
 								if ( CommandHistory.CheckCommand( comSort, E楽器パート.DRUMS ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
