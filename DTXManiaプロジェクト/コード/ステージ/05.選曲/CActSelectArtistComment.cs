@@ -30,9 +30,9 @@ namespace DTXMania
 					graphics.PageUnit = GraphicsUnit.Pixel;
 					SizeF ef = graphics.MeasureString( this.strArtist, this.ft描画用フォント );
 					graphics.Dispose();
-					if( ef.Width > 640f )
+					if (ef.Width > SampleFramework.GameWindowSize.Width)
 					{
-						ef.Width = 640f;
+						ef.Width = SampleFramework.GameWindowSize.Width;
 					}
 					try
 					{

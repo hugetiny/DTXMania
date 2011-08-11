@@ -198,14 +198,14 @@ namespace DTXMania
 
 			if( this.b音符を表示する )
 			{
-				int y = 0x1b3;
+				int y = 480 - 45;
 				if( this.tx音符 != null )
 				{
 					this.tx音符.t2D描画( CDTXMania.app.Device, this.n音符の表示位置X, y );
 				}
 				if( this.txタイトル != null )
 				{
-					this.txタイトル.t2D描画( CDTXMania.app.Device, (int) ( 640f - ( this.txタイトル.sz画像サイズ.Width * this.txタイトル.vc拡大縮小倍率.X ) ), y );
+					this.txタイトル.t2D描画( CDTXMania.app.Device, (int) ( 640 - ( this.txタイトル.sz画像サイズ.Width * this.txタイトル.vc拡大縮小倍率.X ) ), y );
 				}
 			}
 			//-----------------------------

@@ -2061,11 +2061,11 @@ namespace DTXMania
 						this.tx背景 = null;
 						return;
 					}
-					Bitmap bitmap3 = new Bitmap( 640, 480 );
+					Bitmap bitmap3 = new Bitmap(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
 					Graphics graphics = Graphics.FromImage( bitmap3 );
-					for ( int i = 0; i < 480; i += bitmap2.Size.Height )
+					for ( int i = 0; i < SampleFramework.GameWindowSize.Height; i += bitmap2.Size.Height )
 					{
-						for ( int j = 0; j < 640; j += bitmap2.Size.Width )
+						for ( int j = 0; j < SampleFramework.GameWindowSize.Width; j += bitmap2.Size.Width )
 						{
 							graphics.DrawImage( bitmap2, j, i, bitmap2.Width, bitmap2.Height );
 						}
@@ -2083,7 +2083,7 @@ namespace DTXMania
 					ColorMatrix newColorMatrix = matrix2;
 					ImageAttributes imageAttr = new ImageAttributes();
 					imageAttr.SetColorMatrix( newColorMatrix );
-					graphics.DrawImage( bitmap3, new Rectangle( 0, 0, 640, 480 ), 0, 0, 640, 480, GraphicsUnit.Pixel, imageAttr );
+					graphics.DrawImage( bitmap3, new Rectangle( 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height ), 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, GraphicsUnit.Pixel, imageAttr );
 					imageAttr.Dispose();
 					graphics.DrawImage( bitmap3, bgrect, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height, GraphicsUnit.Pixel );
 					graphics.Dispose();

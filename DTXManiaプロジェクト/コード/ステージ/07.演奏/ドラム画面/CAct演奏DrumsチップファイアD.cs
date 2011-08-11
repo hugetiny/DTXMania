@@ -242,7 +242,7 @@ namespace DTXMania
 						identity *= Matrix.Scaling( 0.2f + num4, 0.2f + this.st火花[ i ].fサイズ, 1f );
 						identity *= Matrix.RotationZ( num3 + ( (float) Math.PI / 2 ) );
 						float num5 = ( (float) ( 0.8 * Math.Sin( num2 * Math.PI / 2 ) ) ) * this.st火花[ i ].fサイズ;
-						identity *= Matrix.Translation( ( this.nレーンの中央X座標[ this.st火花[ i ].nLane ] + ( ( (float) Math.Cos( (double) num3 ) ) * num5 ) ) - 320f, -( ( ( CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 0x37 ) : ( (float) 0x1a9 ) ) + ( ( (float) Math.Sin( (double) num3 ) ) * num5 ) ) - 240f ), 0f );
+						identity *= Matrix.Translation( (this.nレーンの中央X座標[this.st火花[i].nLane] + (((float)Math.Cos((double)num3)) * num5)) - SampleFramework.GameWindowSize.Width / 2, -(((CDTXMania.ConfigIni.bReverse.Drums ? 55f : 425f) + (((float)Math.Sin((double)num3)) * num5)) - SampleFramework.GameWindowSize.Height / 2), 0f );
 						if( this.tx火花 != null )
 						{
 							this.tx火花.t3D描画( CDTXMania.app.Device, identity );
@@ -271,7 +271,7 @@ namespace DTXMania
 						Matrix mat = Matrix.Identity;
 						float x = (float) ( this.st青い星[ i ].f半径 * Math.Cos( ( Math.PI / 2 * this.st青い星[ i ].ct進行.n現在の値 ) / 100.0 ) );
 						mat *= Matrix.Scaling( x, x, 1f );
-						mat *= Matrix.Translation( this.st青い星[ i ].fX - 320f, -( this.st青い星[ i ].fY - 240f ), 0f );
+						mat *= Matrix.Translation( this.st青い星[i].fX - SampleFramework.GameWindowSize.Width / 2, -(this.st青い星[i].fY - SampleFramework.GameWindowSize.Height / 2), 0f );
 						if( this.tx青い星 != null )
 						{
 							this.tx青い星.t3D描画( CDTXMania.app.Device, mat );
@@ -319,7 +319,7 @@ namespace DTXMania
 							matrix3 *= Matrix.RotationZ( angle );
 							matrix3 *= Matrix.RotationX( this.st大波[ i ].f角度X );
 							matrix3 *= Matrix.RotationY( this.st大波[ i ].f角度Y );
-							matrix3 *= Matrix.Translation( this.nレーンの中央X座標[ this.st大波[ i ].nLane ] - 320f, -( ( CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 0x37 ) : ( (float) 0x1a9 ) ) - 240f ), 0f );
+							matrix3 *= Matrix.Translation( this.nレーンの中央X座標[this.st大波[i].nLane] - SampleFramework.GameWindowSize.Width / 2, -((CDTXMania.ConfigIni.bReverse.Drums ? 55f : 425f) - SampleFramework.GameWindowSize.Height / 2), 0f );
 							if( this.tx大波 != null )
 							{
 								this.tx大波.n透明度 = num13;
@@ -343,12 +343,16 @@ namespace DTXMania
 							Matrix matrix4 = Matrix.Identity;
 							float num15 = ( (float) this.st細波[ i ].ct進行.n現在の値 ) / 100f;
 							float num16 = 14f * num15;
-							int num17 = ( num15 < 0.5f ) ? 0x9b : ( (int) ( ( 155f * ( 1f - num15 ) ) / 1f ) );
-							matrix4 *= Matrix.Scaling( num16 * this.st細波[ i ].f半径, num16 * this.st細波[ i ].f半径, 1f );
+							int num17 = ( num15 < 0.5f ) ? 155 : ( (int) ( ( 155f * ( 1f - num15 ) ) / 1f ) );
+							matrix4 *= Matrix.Scaling(
+											num16 * this.st細波[ i ].f半径,
+											num16 * this.st細波[ i ].f半径,
+											1f
+							);
 							matrix4 *= Matrix.RotationX( this.st細波[ i ].f角度X );
 							matrix4 *= Matrix.RotationY( this.st細波[ i ].f角度Y );
-							matrix4 *= Matrix.Translation( this.nレーンの中央X座標[ this.st細波[ i ].nLane ] - 320f, -( ( CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 0x37 ) : ( (float) 0x1a9 ) ) - 240f ), 0f );
-							if( this.tx細波 != null )
+							matrix4 *= Matrix.Translation( this.nレーンの中央X座標[this.st細波[i].nLane] - SampleFramework.GameWindowSize.Width / 2, -((CDTXMania.ConfigIni.bReverse.Drums ? 55f : 425f) - SampleFramework.GameWindowSize.Height / 2), 0f );
+							if (this.tx細波 != null)
 							{
 								this.tx細波.n透明度 = num17;
 								this.tx細波.t3D描画( CDTXMania.app.Device, matrix4 );

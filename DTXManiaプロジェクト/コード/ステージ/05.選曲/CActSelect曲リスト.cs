@@ -584,11 +584,11 @@ namespace DTXMania
 						if( this.ct登場アニメ用[ num26 ].n現在の値 >= 0 )
 						{
 							double num27 = ( (double) this.ct登場アニメ用[ num26 ].n現在の値 ) / 100.0;
-							double num28 = Math.Sin( 1.8849555921538759 * num27 );
+							double num28 = Math.Sin( Math.PI * 3 / 5 * num27 );
 							int num29 = ( ( ( this.n現在の選択行 - 5 ) + num26 ) + 13 ) % 13;
 							if( num26 == 5 )
 							{
-								int num30 = (int) ( 425.0 / Math.Sin( 1.8849555921538759 ) );
+								int num30 = (int) ( 425.0 / Math.Sin( Math.PI * 3 / 5 ) );
 								int num31 = 640 - ( (int) ( num30 * num28 ) );
 								int num32 = 0xb5;
 								this.tバーの描画( num31, num32, this.stバー情報[ num29 ].eバー種別, true );
@@ -603,7 +603,7 @@ namespace DTXMania
 							}
 							else
 							{
-								int num33 = (int) ( ( (double) ( ( 640 - this.ptバーの基本座標[ num26 ].X ) + 1 ) ) / Math.Sin( 1.8849555921538759 ) );
+								int num33 = (int) ( ( (double) ( ( 640 - this.ptバーの基本座標[ num26 ].X ) + 1 ) ) / Math.Sin( Math.PI * 3 / 5 ) );
 								int num34 = 640 - ( (int) ( num33 * num28 ) );
 								int num35 = this.ptバーの基本座標[ num26 ].Y;
 								this.tバーの描画( num34, num35, this.stバー情報[ num29 ].eバー種別, false );
@@ -885,7 +885,7 @@ namespace DTXMania
 		}
 		private void tバーの描画( int x, int y, Eバー種別 type, bool b選択曲 )
 		{
-			if( ( x < 640 ) && ( y < 480 ) )
+			if ((x < SampleFramework.GameWindowSize.Width) && (y < SampleFramework.GameWindowSize.Height))
 			{
 				if( !b選択曲 )
 				{

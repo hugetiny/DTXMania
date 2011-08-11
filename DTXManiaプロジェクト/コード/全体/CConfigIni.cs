@@ -882,8 +882,8 @@ namespace DTXMania
 			this.str曲データ検索パス = @".\";
 			this.b全画面モード = false;
 			this.b垂直帰線待ちを行う = true;
-			this.nウインドウwidth = 640;				// #23510 2010.10.31 yyagi add
-			this.nウインドウheight = 480;				// 
+			this.nウインドウwidth = SampleFramework.GameWindowSize.Width;			// #23510 2010.10.31 yyagi add
+			this.nウインドウheight = SampleFramework.GameWindowSize.Height;			// 
 			this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
 			this._bGuitar有効 = true;
 			this._bDrums有効 = true;
@@ -1596,7 +1596,7 @@ namespace DTXMania
 												this.nウインドウwidth = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 65535, this.nウインドウwidth );
 												if ( this.nウインドウwidth <= 0 )
 												{
-													this.nウインドウwidth = 640;
+													this.nウインドウwidth = SampleFramework.GameWindowSize.Width;
 												}
 											}
 											else if ( str3.Equals( "WindowHeight" ) )		// #23510 2010.10.31 yyagi add
@@ -1604,7 +1604,7 @@ namespace DTXMania
 												this.nウインドウheight = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 65535, this.nウインドウheight );
 												if ( this.nウインドウheight <= 0 )
 												{
-													this.nウインドウheight = 480;
+													this.nウインドウheight = SampleFramework.GameWindowSize.Height;
 												}
 											}
 											else if ( str3.Equals( "VSyncWait" ) )

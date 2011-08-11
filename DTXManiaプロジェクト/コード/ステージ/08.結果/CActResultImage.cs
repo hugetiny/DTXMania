@@ -243,12 +243,12 @@ namespace DTXMania
 			try
 			{
 				image = new Bitmap( bACKGROUND );
-				bitmap2 = new Bitmap( 640, 480 );
+				bitmap2 = new Bitmap(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
 				Graphics graphics = Graphics.FromImage( bitmap2 );
 				int x = 0;
-				for( int i = 0; i < 480; i += image.Height )
+				for (int i = 0; i < SampleFramework.GameWindowSize.Height; i += image.Height)
 				{
-					for( x = 0; x < 640; x += image.Width )
+					for (x = 0; x < SampleFramework.GameWindowSize.Width; x += image.Width)
 					{
 						graphics.DrawImage( image, x, i, image.Width, image.Height );
 					}

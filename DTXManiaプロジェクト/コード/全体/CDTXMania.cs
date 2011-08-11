@@ -362,9 +362,9 @@ namespace DTXMania
 				Cursor.Hide();
 				this.bマウスカーソル表示中 = false;
 			}
-			this.Device.SetTransform( TransformState.View, Matrix.LookAtLH( new Vector3( 0f, 0f, (float) ( -240.0 * Math.Sqrt( 3.0 ) ) ), new Vector3( 0f, 0f, 0f ), new Vector3( 0f, 1f, 0f ) ) );
-			this.Device.SetTransform( TransformState.Projection, Matrix.PerspectiveFovLH( C変換.DegreeToRadian( (float) 60f ), ( (float) this.Device.Viewport.Width ) / ( (float) this.Device.Viewport.Height ), -100f, 100f ) );
-			this.Device.SetRenderState( RenderState.Lighting, false );
+			this.Device.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f, 0f, (float)(-SampleFramework.GameWindowSize.Height / 2 * Math.Sqrt(3.0))), new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f)));
+			this.Device.SetTransform(TransformState.Projection, Matrix.PerspectiveFovLH(C変換.DegreeToRadian((float)60f), ((float)this.Device.Viewport.Width) / ((float)this.Device.Viewport.Height), -100f, 100f));
+			this.Device.SetRenderState(RenderState.Lighting, false);
 			this.Device.SetRenderState( RenderState.ZEnable, false );
 			this.Device.SetRenderState( RenderState.AntialiasedLineEnable, false );
 			this.Device.SetRenderState( RenderState.AlphaTestEnable, true );
@@ -1275,8 +1275,8 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			DeviceSettings settings = new DeviceSettings();
 			settings.Windowed = ConfigIni.bウィンドウモード;
-			settings.BackBufferWidth = 640;
-			settings.BackBufferHeight = 480;
+			settings.BackBufferWidth = SampleFramework.GameWindowSize.Width;
+			settings.BackBufferHeight = SampleFramework.GameWindowSize.Height;
 //			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
 
