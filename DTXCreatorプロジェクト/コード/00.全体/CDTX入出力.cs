@@ -136,6 +136,7 @@ namespace DTXCreator
 			0xe3, 0xe5, 0xe9, 0xef, 0xf1, 0xfb, 0x101, 0x107, 0x10d, 0x10f, 0x115, 0x119, 0x11b, 0x125, 0x133, 0x137, 
 			0x139, 0x13d, 0x14b, 0x151, 0x15b, 0x15d, 0x161, 0x167, 0x16f, 0x175, 0x17b, 0x17f
 		};
+#region [ #25990; for BMS/BME to DTX conversion ]
 		// #25990 2011.8.12 yyagi: DTXのBGM用ch群(正確には効果音用ch群)
 		private readonly int[] DTXbgmChs = new int[] {
 			      0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
@@ -174,12 +175,13 @@ namespace DTXCreator
 			0x1A,	0x11,	0x12,	0x13,	0x14,	0x16,	0x53,	0x15,	0x17
 		//	LC,		HC,		SD,		BD,		HT,		CY,		FI,		LT,		FT
 		};
+		private int nLastBarConverted = -1;	// #25990 2011.8.12 yyagi BMS/BME→DTX変換用
+		private IEnumerator eDTXbgmChs;			// #25990 2011.8.12 yyagi BMS/BME→DTX変換用
+#endregion
 		private Dictionary<int, float> dic小節長倍率;
 		private E種別 e種別;
 		private List<int> listチップパレット;
 		private int nBGMWAV番号 = -1;
-		private int nLastBarConverted = -1;	// #25990 2011.8.12 yyagi BMS/BME→DTX変換用
-		private IEnumerator eDTXbgmChs;			// #25990 2011.8.12 yyagi BMS/BME→DTX変換用
 		
 		private void tDTX入力・BPMチップにBPx数値をバインドする()
 		{
@@ -739,9 +741,13 @@ namespace DTXCreator
 			}
 			if( strコマンド.Equals( "PANEL", StringComparison.OrdinalIgnoreCase ) )
 			{
-				CUndoRedo管理.bUndoRedoした直後 = true;
-				this._Form.textBoxパネル.Text = strパラメータ.Trim();
-				return true;
+				int dummyResult;								// #23885, #26007 2011.8.13 yyagi: not to confuse "#PANEL strings (panel)" and "#PANEL int (panpot of EL)"
+				if ( !int.TryParse( strパラメータ, out dummyResult ) )	// 数値じゃないならPANELとみなす
+				{
+					CUndoRedo管理.bUndoRedoした直後 = true;
+					this._Form.textBoxパネル.Text = strパラメータ.Trim();
+					return true;
+				}												// 数値なら、ここでは何もせず、後で#PANに拾ってもらう (PAN ELとみなす)
 			}
 			if( strコマンド.Equals( "PREVIEW", StringComparison.OrdinalIgnoreCase ) )
 			{
