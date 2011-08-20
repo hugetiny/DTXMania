@@ -47,12 +47,12 @@ namespace FDK
 				this.Release();
 				throw new Exception( "AVIFileGetStream failed." );
 			}
-			AVISTREAMINFO psi = new AVISTREAMINFO();
-			AVIStreamInfo( this.aviStream, ref psi, Marshal.SizeOf( psi ) );
-			this.dwレート = psi.dwRate;
-			this.dwスケール = psi.dwScale;
-			this.nフレーム幅 = psi.rcFrame.right - psi.rcFrame.left;
-			this.nフレーム高さ = psi.rcFrame.bottom - psi.rcFrame.top;
+			var info = new AVISTREAMINFO();
+			AVIStreamInfo( this.aviStream, ref info, Marshal.SizeOf( info ) );
+			this.dwレート = info.dwRate;
+			this.dwスケール = info.dwScale;
+			this.nフレーム幅 = info.rcFrame.right - info.rcFrame.left;
+			this.nフレーム高さ = info.rcFrame.bottom - info.rcFrame.top;
 			try
 			{
 				this.frame = AVIStreamGetFrameOpen( this.aviStream, 0 );
@@ -79,9 +79,8 @@ namespace FDK
 		public Bitmap GetFrame( int no )
 		{
 			if( this.aviStream == IntPtr.Zero )
-			{
 				throw new InvalidOperationException();
-			}
+
 			return BitmapUtil.ToBitmap( AVIStreamGetFrame( this.frame, no ) );
 		}
 		public int GetFrameNoFromTime( int time )
@@ -91,90 +90,95 @@ namespace FDK
 		public IntPtr GetFramePtr( int no )
 		{
 			if( this.aviStream == IntPtr.Zero )
-			{
 				throw new InvalidOperationException();
-			}
+
 			return AVIStreamGetFrame( this.frame, no );
 		}
 		public int GetMaxFrameCount()
 		{
 			if( this.aviStream == IntPtr.Zero )
-			{
 				throw new InvalidOperationException();
-			}
+
 			return AVIStreamLength( this.aviStream );
 		}
 		
 		public unsafe void tBitmap24ToGraphicsStreamR5G6B5( BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER, DataStream gs, int nWidth, int nHeight )
 		{
-			int num = pBITMAPINFOHEADER->biWidthビットマップの幅dot;
-			int num2 = pBITMAPINFOHEADER->biHeightビットマップの高さdot;
-			int num3 = ( num * 3 ) + ( ( 4 - ( ( num * 3 ) % 4 ) ) % 4 );
-			ushort* numPtr = (ushort*) gs.DataPointer.ToPointer();
-			byte* numPtr2 = (byte*) ( pBITMAPINFOHEADER + 1 );
-			for( int i = 0; i < num2; i++ )
+			int nBmpWidth = pBITMAPINFOHEADER->biWidthビットマップの幅dot;
+			int nBmpHeight = pBITMAPINFOHEADER->biHeightビットマップの高さdot;
+			int nBmpLineByte = ( nBmpWidth * 3 ) + ( ( 4 - ( ( nBmpWidth * 3 ) % 4 ) ) % 4 );
+
+			ushort* pTexture = (ushort*) gs.DataPointer.ToPointer();
+			byte* pBitmap = (byte*) ( pBITMAPINFOHEADER + 1 );
+			
+			for( int i = 0; i < nBmpHeight; i++ )
 			{
 				if( i >= nHeight )
-				{
-					return;
-				}
-				for( int j = 0; j < num; j++ )
+					break;
+
+				for( int j = 0; j < nBmpWidth; j++ )
 				{
 					if( j >= nWidth )
-					{
 						break;
-					}
-					ushort num6 = (ushort) ( ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) )[ j * 3 ] >> 3 ) & 0x1f );
-					ushort num5 = (ushort) ( ( ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 1 ] >> 2 ) & 0x3f );
-					ushort num4 = (ushort) ( ( ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 2 ] >> 3 ) & 0x1f );
-					( numPtr + ( i * nWidth ) )[ j ] = (ushort) ( ( ( num4 << 11 ) | ( num5 << 5 ) ) | num6 );
+
+					ushort B = (ushort) ( ( *( ( pBitmap + ( ( ( nBmpHeight - i ) - 1 ) * nBmpLineByte ) ) + ( j * 3 ) + 0 ) >> 3 ) & 0x1f );
+					ushort G = (ushort) ( ( *( ( pBitmap + ( ( ( nBmpHeight - i ) - 1 ) * nBmpLineByte ) ) + ( j * 3 ) + 1 ) >> 2 ) & 0x3f );
+					ushort R = (ushort) ( ( *( ( pBitmap + ( ( ( nBmpHeight - i ) - 1 ) * nBmpLineByte ) ) + ( j * 3 ) + 2 ) >> 3 ) & 0x1f );
+					*( pTexture + ( i * nWidth ) + j ) = (ushort) ( ( R << 11 ) | ( G << 5 ) | B );
 				}
 			}
 		}
 		public unsafe void tBitmap24ToGraphicsStreamX8R8G8B8( BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER, DataStream ds, int nWidth, int nHeight )
 		{
-			int num = pBITMAPINFOHEADER->biWidthビットマップの幅dot;
-			int num2 = pBITMAPINFOHEADER->biHeightビットマップの高さdot;
-			int num3 = ( num * 3 ) + ( ( 4 - ( ( num * 3 ) % 4 ) ) % 4 );
-			uint* numPtr = (uint*) ds.DataPointer.ToPointer();
-			byte* numPtr2 = (byte*) ( pBITMAPINFOHEADER + 1 );
-			for( int i = 0; i < num2; i++ )
+			int nBmpWidth = pBITMAPINFOHEADER->biWidthビットマップの幅dot;
+			int nBmpHeight = pBITMAPINFOHEADER->biHeightビットマップの高さdot;
+			int nBmpLineByte = ( nBmpWidth * 3 ) + ( ( 4 - ( ( nBmpWidth * 3 ) % 4 ) ) % 4 );
+			
+			uint* pTexture = (uint*) ds.DataPointer.ToPointer();
+			byte* pBitmap = (byte*) ( pBITMAPINFOHEADER + 1 );
+			
+			for( int i = 0; i < nBmpHeight; i++ )
 			{
 				if( i >= nHeight )
-				{
-					return;
-				}
-				for( int j = 0; j < num; j++ )
+					break;
+
+				for( int j = 0; j < nBmpWidth; j++ )
 				{
 					if( j >= nWidth )
-					{
 						break;
-					}
-					uint num6 = ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) )[ j * 3 ];
-					uint num5 = ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 1 ];
-					uint num4 = ( ( numPtr2 + ( ( ( num2 - i ) - 1 ) * num3 ) ) + ( j * 3 ) )[ 2 ];
-					( numPtr + ( i * nWidth ) )[ j ] = ( ( num4 << 0x10 ) | ( num5 << 8 ) ) | num6;
+
+					uint B = *( ( pBitmap + ( ( ( nBmpHeight - i ) - 1 ) * nBmpLineByte ) ) + ( j * 3 ) + 0 );
+					uint G = *( ( pBitmap + ( ( ( nBmpHeight - i ) - 1 ) * nBmpLineByte ) ) + ( j * 3 ) + 1 );
+					uint R = *( ( pBitmap + ( ( ( nBmpHeight - i ) - 1 ) * nBmpLineByte ) ) + ( j * 3 ) + 2 );
+					*( pTexture + ( i * nWidth ) + j ) = ( R << 16 ) | ( G << 8 ) | B;
 				}
 			}
 		}
 
-		#region [ IDisposable＋α 実装 ]
+		#region [ Dispose-Finalize パターン実装 ]
 		//-----------------
 		public void Dispose()
 		{
 			this.Dispose( true );
+			GC.SuppressFinalize( this );		// 2011.8.19 from: 忘れてた。
 		}
 		protected void Dispose( bool disposeManagedObjects )
 		{
-			if( !this.bDispose完了済み )
+			if( this.bDispose完了済み )
+				return;
+
+			if( disposeManagedObjects )
 			{
-				if( this.frame != IntPtr.Zero )
-				{
-					AVIStreamGetFrameClose( this.frame );
-				}
-				this.Release();
-				this.bDispose完了済み = true;
+				// (A) Managed リソースの解放
 			}
+
+			// (B) Unamanaged リソースの解放
+
+			if( this.frame != IntPtr.Zero )
+				AVIStreamGetFrameClose( this.frame );
+
+			this.Release();
+			this.bDispose完了済み = true;
 		}
 		~CAvi()
 		{
@@ -281,7 +285,7 @@ namespace FDK
 
 		private static uint mmioFOURCC( char c0, char c1, char c2, char c3 )
 		{
-			return ( ( ( ( (uint) c3 << 0x18 ) | ( (uint) c2 << 0x10 ) ) | ( (uint) c1 << 8 ) ) | (uint) c0 );
+			return ( (uint) c3 << 0x18 ) | ( (uint) c2 << 0x10 ) | ( (uint) c1 << 0x08 ) | (uint) c0;
 		}
 		private void Release()
 		{
