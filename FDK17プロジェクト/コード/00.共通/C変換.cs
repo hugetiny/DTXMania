@@ -6,6 +6,12 @@ namespace FDK
 {
 	public class C変換
 	{
+		// プロパティ
+
+		public static readonly string str16進数文字 = "0123456789ABCDEFabcdef";
+		public static readonly string str36進数文字 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		
+
 		// メソッド
 
 		public static bool bONorOFF( char c )
@@ -79,14 +85,14 @@ namespace FDK
 			if( num.Length < 2 )
 				return -1;
 
-			int index = _16進数文字.IndexOf( num[ 0 ] );
+			int index = str16進数文字.IndexOf( num[ 0 ] );
 			if( index < 0 )
 				return -1;
 
 			if( index >= 16 )
 				index -= 6;
 
-			int num3 = _16進数文字.IndexOf( num[ 1 ] );
+			int num3 = str16進数文字.IndexOf( num[ 1 ] );
 			if( num3 < 0 )
 				return -1;
 
@@ -100,14 +106,14 @@ namespace FDK
 			if( num.Length < 2 )
 				return -1;
 
-			int index = _36進数文字.IndexOf( num[ 0 ] );
+			int index = str36進数文字.IndexOf( num[ 0 ] );
 			if( index < 0 )
 				return -1;
 
 			if( index >= 0x24 )
 				index -= 0x1a;
 
-			int num3 = _36進数文字.IndexOf( num[ 1 ] );
+			int num3 = str36進数文字.IndexOf( num[ 1 ] );
 			if( num3 < 0 )
 				return -1;
 
@@ -120,18 +126,18 @@ namespace FDK
 		{
 			if( num.Length >= 3 )
 			{
-				int index = _36進数文字.IndexOf( num[ 0 ] );
+				int index = str36進数文字.IndexOf( num[ 0 ] );
 				if( index < 0 )
 					return -1;
 
 				if( index >= 0x24 )
 					index -= 0x1a;
 
-				int num3 = _16進数文字.IndexOf( num[ 1 ] );
+				int num3 = str16進数文字.IndexOf( num[ 1 ] );
 				if( ( num3 < 0 ) || ( num3 > 9 ) )
 					return -1;
 
-				int num4 = _16進数文字.IndexOf( num[ 2 ] );
+				int num4 = str16進数文字.IndexOf( num[ 2 ] );
 				if( ( num4 >= 0 ) && ( num4 <= 9 ) )
 					return ( ( ( index * 100 ) + ( num3 * 10 ) ) + num4 );
 			}
@@ -146,9 +152,9 @@ namespace FDK
 			int num2 = num / 100;
 			int num3 = ( num % 100 ) / 10;
 			int num4 = ( num % 100 ) % 10;
-			char ch = _36進数文字[ num2 ];
-			char ch2 = _16進数文字[ num3 ];
-			char ch3 = _16進数文字[ num4 ];
+			char ch = str36進数文字[ num2 ];
+			char ch2 = str16進数文字[ num3 ];
+			char ch3 = str16進数文字[ num4 ];
 			return ( ch.ToString() + ch2.ToString() + ch3.ToString() );
 		}
 		public static string str数値を16進数2桁に変換して返す( int num )
@@ -156,8 +162,8 @@ namespace FDK
 			if( ( num < 0 ) || ( num >= 0x100 ) )
 				return "00";
 
-			char ch = _16進数文字[ num / 0x10 ];
-			char ch2 = _16進数文字[ num % 0x10 ];
+			char ch = str16進数文字[ num / 0x10 ];
+			char ch2 = str16進数文字[ num % 0x10 ];
 			return ( ch.ToString() + ch2.ToString() );
 		}
 		public static string str数値を36進数2桁に変換して返す( int num )
@@ -165,13 +171,10 @@ namespace FDK
 			if( ( num < 0 ) || ( num >= 0x510 ) )
 				return "00";
 
-			char ch = _36進数文字[ num / 0x24 ];
-			char ch2 = _36進数文字[ num % 0x24 ];
+			char ch = str36進数文字[ num / 0x24 ];
+			char ch2 = str36進数文字[ num % 0x24 ];
 			return ( ch.ToString() + ch2.ToString() );
 		}
-
-
-		// その他
 
 		#region [ private ]
 		//-----------------
@@ -180,9 +183,6 @@ namespace FDK
 		private C変換()
 		{
 		}
-
-		private static readonly string _16進数文字 = "0123456789ABCDEFabcdef";
-		private static readonly string _36進数文字 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 		//-----------------
 		#endregion
 	} 
