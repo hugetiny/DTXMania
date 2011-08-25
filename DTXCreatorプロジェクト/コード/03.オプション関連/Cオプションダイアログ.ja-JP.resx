@@ -157,6 +157,15 @@
   <data name="tabPage全般.Text" xml:space="preserve">
     <value>全般</value>
   </data>
+  <data name="labelSelectLanes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 12</value>
+  </data>
+  <data name="labelSelectLanes.Text" xml:space="preserve">
+    <value>使用するレーンを選択して下さい。</value>
+  </data>
+  <data name="tabPageLanes.Text" xml:space="preserve">
+    <value>使用レーン</value>
+  </data>
   <data name="button1.Text" xml:space="preserve">
     <value>キャンセル</value>
   </data>

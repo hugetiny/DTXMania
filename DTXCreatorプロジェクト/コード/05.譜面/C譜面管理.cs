@@ -660,6 +660,68 @@ namespace DTXCreator.譜面
 			this.t譜面を描画する・レーン名を描画する( g, rectangle3 );
 		}
 
+		/// <summary>
+		/// 指定した種類のレーンを非表示にする
+		/// </summary>
+		/// <param name="eLaneType">非表示にするレーンの種類</param>
+		public void tCollapseLanes( Cレーン.ELaneType eLaneType )
+		{
+			// なお、格納/展開状態を、#DTXV_COLLAPSED_LANES とかでDTXファイルに残した方がいいかも。
+			int count = this.listレーン.Count;
+			for ( int i = 0; i < this.listレーン.Count; i++ )
+			{
+				Cレーン c = listレーン[ i ];
+				if ( c.eLaneType == eLaneType && c.bIsVisible == true )	// 対象レーンが見つかったら
+				{
+					this.listレーン[ i ].bIsVisible = false;
+					this.listレーン[ i ].n幅dot = 0;
+				}
+			}
+			this.tRefreshDisplayLanes();
+		}
+		/// <summary>
+		/// 指定した種類のレーンを表示する
+		/// </summary>
+		/// <param name="eLaneType">表示にするレーンの種類</param>
+		public void tExpandLanes( Cレーン.ELaneType eLaneType )
+		{
+			// tCollapseLanes()の反対の処理をする。
+
+			for ( int i = 0; i < this.listレーン.Count; i++ )				// 以下本番
+			{
+				Cレーン c = listレーン[ i ];
+				if ( c.eLaneType == eLaneType && c.bIsVisible == false )	// 対象レーンが見つかったら
+				{
+					this.listレーン[ i ].bIsVisible = true;
+					this.listレーン[ i ].n幅dot = Cレーン.LANEWIDTH;
+				}
+			}
+			this.tRefreshDisplayLanes();
+		}
+
+		/// <summary>
+		/// レーンの表示/非表示を反映する
+		/// </summary>
+		/// <param name="eLaneType">表示にするレーンの種類</param>
+		public void tRefreshDisplayLanes()
+		{
+			this.tRecalc_n位置XdotX();											// レーン位置が変わったので、レーン毎のX座標を再計算
+			this.t初期化・背景画像を生成する();									// レーン数が変わったので、レーン画像を納める背景も再生成
+			this.t水平スクロールバーと譜面パネル左右位置の調整();				// レーン数が変わったので、スクロールバーの長さも再調整
+		}
+
+		private void tRecalc_n位置XdotX()										// n位置Xdotの再計算
+		{
+			int x = 0;
+			int count = this.listレーン.Count;
+			for ( int i = 0; i < count; i++ )
+			{
+				this.listレーン[ i ].n位置Xdot = x;
+				x += this.listレーン[ i ].n幅dot;
+			}
+		}
+
+
 		#region [ private ]
 		//-----------------
 		private Cメインフォーム _Form;
@@ -683,114 +745,85 @@ namespace DTXCreator.譜面
 		private void t初期化・listレーンの生成()
 		{
 			this.listレーン.Clear();
-			int x = 0;
-			int width = 30;
+			int width = Cレーン.LANEWIDTH;
 			int alpha = 0x19;
 
-			Cレーン item;
-			item = new Cレーン( Cレーン.E種別.BPM, "BPM", 0x08, 0x03, true, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 0, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BPM, "BPM", 0x08, 0x03, true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BPM, true ) );
 
-			item = new Cレーン( Cレーン.E種別.WAV, "LC", 0x1a, 0x1a, true, Color.FromArgb( alpha, 0, 0xff, 0xff ), x, width, 1, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "LC",  0x1a, 0x1a, true,  Color.FromArgb( alpha, 0, 0xff, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "HH",  0x11, 0x18, false, Color.FromArgb( alpha, 0, 0xff, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SD",  0x12, 0x12, false, Color.FromArgb( alpha, 0xff, 0xff, 0 ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "BD",  0x13, 0x13, false, Color.FromArgb( alpha, 0xff, 0x7f, 0x7f ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "HT",  0x14, 0x14, false, Color.FromArgb( alpha, 0, 0xff, 0 ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "LT",  0x15, 0x15, false, Color.FromArgb( alpha, 0xff, 0, 0 ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "FT",  0x17, 0x17, false, Color.FromArgb( alpha, 0xff, 0, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "CY",  0x16, 0x19, false, Color.FromArgb( alpha, 0, 0xff, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.FI,  "FI",  0x53, 0x53, true,  Color.FromArgb( alpha, 0xff, 0xff, 0 ), 0, width, Cレーン.ELaneType.Drums, true ) );
 
-			item = new Cレーン( Cレーン.E種別.WAV, "HH", 0x11, 0x18, false, Color.FromArgb( alpha, 0, 0xff, 0xff ), x, width, 1, true);
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "SD", 0x12, 0x12, false, Color.FromArgb( alpha, 0xff, 0xff, 0 ), x, width, 1, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "BD", 0x13, 0x13, false, Color.FromArgb( alpha, 0xff, 0x7f, 0x7f ), x, width, 1, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "HT", 0x14, 0x14, false, Color.FromArgb( alpha, 0, 0xff, 0 ), x, width, 1, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "LT", 0x15, 0x15, false, Color.FromArgb( alpha, 0xff, 0, 0 ), x, width, 1, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "FT", 0x17, 0x17, false, Color.FromArgb( alpha, 0xff, 0, 0xff ), x, width, 1, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "CY", 0x16, 0x19, false, Color.FromArgb( alpha, 0, 0xff, 0xff ), x, width, 1, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.FI, "FI", 0x53, 0x53, true, Color.FromArgb( alpha, 0xff, 0xff, 0 ), x, width, 1, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "BGM", 0x01, 0x01, true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BGM, true ) );
 
-			item = new Cレーン( Cレーン.E種別.WAV, "BGM", 0x01, 0x01, true, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 2, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE1", 0x61, 0x61, true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.SE1_5, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE2", 0x62, 0x62, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.SE1_5, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE3", 0x63, 0x63, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.SE1_5, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE4", 0x64, 0x64, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.SE1_5, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE5", 0x65, 0x65, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.SE1_5, true ) );
 
-			item = new Cレーン( Cレーン.E種別.WAV, "SE1", 0x61, 0x61, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 3, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "SE2", 0x62, 0x62, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 3, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "SE3", 0x63, 0x63, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 3, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "SE4", 0x64, 0x64, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 3, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.WAV, "SE5", 0x65, 0x65, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 3, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
+			// SE6～32は、初期状態では非表示とする。(n幅dotを0にし、bIsVisibleをfalseにする)
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE6", 0x66, 0x66, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE7", 0x67, 0x67, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE8", 0x68, 0x68, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SE9", 0x69, 0x69, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S10", 0x70, 0x70, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S11", 0x71, 0x71, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S12", 0x72, 0x72, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S13", 0x73, 0x73, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S14", 0x74, 0x74, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S15", 0x75, 0x75, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S16", 0x76, 0x76, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S17", 0x77, 0x77, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S18", 0x78, 0x78, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S19", 0x79, 0x79, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S20", 0x80, 0x80, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S21", 0x81, 0x81, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S22", 0x82, 0x82, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S23", 0x83, 0x83, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S24", 0x84, 0x84, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S25", 0x85, 0x85, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S26", 0x86, 0x86, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S27", 0x87, 0x87, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S28", 0x88, 0x88, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S29", 0x89, 0x89, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S30", 0x90, 0x90, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S31", 0x91, 0x91, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "S32", 0x92, 0x92, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.SE6_32, false ) );
 
-			item = new Cレーン( Cレーン.E種別.GtV, "GtV", 0, 0, true, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 4, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.GtR, "GtR", 0, 0, false, Color.FromArgb( alpha, 0xff, 0, 0 ), x, width, 4, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.GtG, "GtG", 0, 0, false, Color.FromArgb( alpha, 0, 0xff, 0 ), x, width, 4, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.GtB, "GtB", 0, 0, false, Color.FromArgb( alpha, 0, 0x80, 0xff ), x, width, 4, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.GtW, "GtW", 0x28, 0x28, true, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 4, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BsV, "BsV", 0, 0, true, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 5, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BsR, "BsR", 0, 0, false, Color.FromArgb( alpha, 0xff, 0, 0 ), x, width, 5, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BsG, "BsG", 0, 0, false, Color.FromArgb( alpha, 0, 0xff, 0 ), x, width, 5, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BsB, "BsB", 0, 0, false, Color.FromArgb( alpha, 0, 0x80, 0xff ), x, width, 5, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BsW, "BsW", 0xa8, 0xa8, true, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 5, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.GtV, "GtV", 0,    0,    true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.Guitar, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.GtR, "GtR", 0,    0,    false, Color.FromArgb( alpha, 0xff, 0, 0 ), 0, width, Cレーン.ELaneType.Guitar, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.GtG, "GtG", 0,    0,    false, Color.FromArgb( alpha, 0, 0xff, 0 ), 0, width, Cレーン.ELaneType.Guitar, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.GtB, "GtB", 0,    0,    false, Color.FromArgb( alpha, 0, 0x80, 0xff ), 0, width, Cレーン.ELaneType.Guitar, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.GtW, "GtW", 0x28, 0x28, true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.Guitar, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BsV, "BsV", 0,    0,    true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.Bass, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BsR, "BsR", 0,    0,    false, Color.FromArgb( alpha, 0xff, 0, 0 ), 0, width, Cレーン.ELaneType.Bass, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BsG, "BsG", 0,    0,    false, Color.FromArgb( alpha, 0, 0xff, 0 ), 0, width, Cレーン.ELaneType.Bass, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BsB, "BsB", 0,    0,    false, Color.FromArgb( alpha, 0, 0x80, 0xff ), 0, width, Cレーン.ELaneType.Bass, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BsW, "BsW", 0xa8, 0xa8, true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.Bass, true ) );
 
-			item = new Cレーン( Cレーン.E種別.AVI, "AVI", 0x54, 0x54, true, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 6, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.AVI, "AVI", 0x54, 0x54, true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.AVI, true ) );
 
-			item = new Cレーン( Cレーン.E種別.BMP, "BG1", 0x04, 0xc4, true, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 7, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BMP, "BG2", 0x07, 0xc7, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 7, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BMP, "BG3", 0x55, 0xd5, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 7, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BMP, "BG4", 0x56, 0xd6, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 7, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
-			item = new Cレーン( Cレーン.E種別.BMP, "BG5", 0x57, 0xd7, false, Color.FromArgb( alpha, 160, 160, 160 ), x, width, 7, true );
-			this.listレーン.Add( item );
-			x += item.n幅dot;
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BMP, "BG1", 0x04, 0xc4, true,  Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BGA1_5, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BMP, "BG2", 0x07, 0xc7, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BGA1_5, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BMP, "BG3", 0x55, 0xd5, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BGA1_5, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BMP, "BG4", 0x56, 0xd6, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BGA1_5, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BMP, "BG5", 0x57, 0xd7, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BGA1_5, true ) );
+
+			// BG6～8も、初期状態では非表示とする。(n幅dotを0にし、bIsVisibleをfalseにする)
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BMP, "BG6", 0x58, 0xd8, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.BGA6_8, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BMP, "BG7", 0x59, 0xd9, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.BGA6_8, false ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BMP, "BG8", 0x60, 0xe0, false, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.BGA6_8, false ) );
+
+			this.tRecalc_n位置XdotX();	// 0で固定初期化していたn位置XdotXを、ここで計算する。
+										// (初期化の際に1つ1つまじめに計算しても良いが、単純にコード記述量が減るのでここでまとめて計算している)
+
 		}
 		private void t初期化・スクロールバーを初期設定する()
 		{
@@ -817,10 +850,10 @@ namespace DTXCreator.譜面
 			this.bmp背景画像 = new Bitmap( width, 1 );
 			Graphics graphics = Graphics.FromImage( this.bmp背景画像 );
 			int x = 0;
-			foreach( Cレーン cレーン2 in this.listレーン )
+			foreach( Cレーン cレーン in this.listレーン )
 			{
-				graphics.FillRectangle( new SolidBrush( cレーン2.col背景色 ), x, 0, cレーン2.n幅dot, this.bmp背景画像.Height );
-				x += cレーン2.n幅dot;
+				graphics.FillRectangle( new SolidBrush( cレーン.col背景色 ), x, 0, cレーン.n幅dot, this.bmp背景画像.Height );
+				x += cレーン.n幅dot;
 			}
 			graphics.Dispose();
 			this._Form.pictureBox譜面パネル.Width = this.bmp背景画像.Width;
@@ -860,6 +893,10 @@ namespace DTXCreator.譜面
 				}
 				int num = cチップ.n位置grid;
 				Cレーン cレーン = this.listレーン[ cチップ.nレーン番号0to ];
+				if ( !cレーン.bIsVisible )
+				{
+					continue;
+				}
 				rectangle.X = cレーン.n位置Xdot;
 				rectangle.Y = ( rc小節のPicBox内描画領域.Bottom - ( num * C小節.n１グリッドの高さdot ) ) - Cチップ.nチップの高さdot;
 				rectangle.Width = cレーン.n幅dot;
@@ -876,21 +913,25 @@ namespace DTXCreator.譜面
 						case Cレーン.E種別.BsB:
 							if( ( ( cレーン.eレーン種別 != Cレーン.E種別.GtR ) || ( cチップ.n値・整数1to1295 != 2 ) ) && ( ( cレーン.eレーン種別 != Cレーン.E種別.BsR ) || ( cチップ.n値・整数1to1295 != 2 ) ) )
 							{
+								Cチップ.t表チップを描画する( g, rectangle, -1, cレーン.col背景色 );
 								break;
 							}
 							rectangle.Width = cレーン.n幅dot * 3;
 							Cチップ.tOPENチップを描画する( g, rectangle );
-							goto Label_0188;
+							break;
 
 						case Cレーン.E種別.BPM:
 							Cチップ.t表チップを描画する( g, rectangle, cチップ.f値・浮動小数, cレーン.col背景色 );
-							goto Label_0188;
+							break;
 
 						default:
 							Cチップ.t表チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色 );
-							goto Label_0188;
+							break;
 					}
-					Cチップ.t表チップを描画する( g, rectangle, -1, cレーン.col背景色 );
+					if( cチップ.bドラッグで選択中 || cチップ.b確定選択中 )
+					{
+						Cチップ.tチップの周囲の太枠を描画する( g, rectangle );
+					}
 				}
 				else if( cレーン.eレーン種別 == Cレーン.E種別.BPM )
 				{
@@ -899,11 +940,6 @@ namespace DTXCreator.譜面
 				else
 				{
 					Cチップ.t裏チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色 );
-				}
-			Label_0188:
-				if( cチップ.bドラッグで選択中 || cチップ.b確定選択中 )
-				{
-					Cチップ.tチップの周囲の太枠を描画する( g, rectangle );
 				}
 			}
 		}
@@ -944,11 +980,15 @@ namespace DTXCreator.譜面
 			Rectangle layoutRectangle = new Rectangle( 0, 0, 0, 0 );
 			foreach( Cレーン cレーン in this.listレーン )
 			{
+				if ( !cレーン.bIsVisible )
+				{
+					continue;
+				}
 				layoutRectangle.X = ( rc小節のPicBox内描画領域.X + cレーン.n位置Xdot ) + 1;
 				layoutRectangle.Y = rc小節のPicBox内描画領域.Y + 1;
 				layoutRectangle.Width = cレーン.n幅dot;
 				layoutRectangle.Height = rc小節のPicBox内描画領域.Height;
-				if( cレーン.nレーン割付チップ・表0or1to1295 > 0 )
+				if ( cレーン.nレーン割付チップ・表0or1to1295 > 0 )
 				{
 					string s = C変換.str数値を36進数2桁に変換して返す( cレーン.nレーン割付チップ・表0or1to1295 );
 					g.DrawString( s, this.ftレーン割付チップ番号文字フォント, this.brレーン割付番号文字ブラシ影, layoutRectangle, this.strfmtレーン割付チップ番号文字フォーマット );
@@ -959,7 +999,7 @@ namespace DTXCreator.譜面
 					layoutRectangle.Y++;
 				}
 				layoutRectangle.X += cレーン.n幅dot / 2;
-				if( cレーン.nレーン割付チップ・裏0or1to1295 > 0 )
+				if ( cレーン.nレーン割付チップ・裏0or1to1295 > 0 )
 				{
 					string str2 = C変換.str数値を36進数2桁に変換して返す( cレーン.nレーン割付チップ・裏0or1to1295 );
 					g.DrawString( str2, this.ftレーン割付チップ番号文字フォント, this.brレーン割付番号文字ブラシ影, layoutRectangle, this.strfmtレーン割付チップ番号文字フォーマット );
@@ -977,6 +1017,10 @@ namespace DTXCreator.譜面
 			Rectangle layoutRectangle = new Rectangle( 0, 0, 0, 0 );
 			foreach( Cレーン cレーン in this.listレーン )
 			{
+				if ( !cレーン.bIsVisible )
+				{
+					continue;
+				}
 				layoutRectangle.X = ( rcレーン名のPicBox内描画領域.X + cレーン.n位置Xdot ) + 2;
 				layoutRectangle.Y = rcレーン名のPicBox内描画領域.Y + 2;
 				layoutRectangle.Width = cレーン.n幅dot;

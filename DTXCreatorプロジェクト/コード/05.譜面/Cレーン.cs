@@ -7,6 +7,8 @@ namespace DTXCreator.譜面
 {
 	public class Cレーン
 	{
+		public const int LANEWIDTH = 30;
+
 		public enum E種別
 		{
 			BPM,
@@ -25,6 +27,20 @@ namespace DTXCreator.譜面
 			BsB,
 			BsW
 		}
+		public enum ELaneType
+		{
+			BPM,
+			Drums,
+			BGM,
+			SE1_5,
+			SE6_32,
+			Guitar,
+			Bass,
+			AVI,
+			BGA1_5,
+			BGA6_8,
+			END			// 何か非値を設定したくなったときのための値(nullの代わり)
+		}
 		
 		public bool b左側の線が太線;
 		public Color col背景色 = Color.Black;
@@ -36,8 +52,18 @@ namespace DTXCreator.譜面
 		public int n位置Xdot;
 		public int n幅dot = 30;
 		public string strレーン名 = "";
-		public int nGroupNo;
-		public bool bIsVisible;
+		public ELaneType eLaneType { get; set; }
+		public bool bIsVisible		// 
+		{
+			get
+			{
+				return ( n幅dot > 0 );
+			}
+			set
+			{
+				n幅dot = ( value == true ) ? LANEWIDTH : 0;
+			}
+		}
 
 
 		/// <summary>
@@ -53,44 +79,41 @@ namespace DTXCreator.譜面
 			this.col背景色 = Color.FromArgb(0, 0, 0, 0);
 			this.n位置Xdot = 0;
 			this.n幅dot = 30;
-			this.nGroupNo = 0;
+			this.eLaneType = ELaneType.SE1_5;
 			this.bIsVisible = true;
 		}
 
 		/// <summary>
 		/// コンストラクタ(初期化用)
 		/// </summary>
-		/// <param name="eレーン種別_"></param>
-		/// <param name="strレーン名_"></param>
-		/// <param name="nチャンネル番号・表00toFF_"></param>
-		/// <param name="nチャンネル番号・裏00toFF_"></param>
-		/// <param name="b左側の線が太線_"></param>
-		/// <param name="col背景色_"></param>
-		/// <param name="n位置Xdot_"></param>
-		/// <param name="n幅dot_"></param>
-		/// <param name="nGroupNo_"></param>
-		/// <param name="bIsVisible_"></param>
+		/// <param name="eレーン種別"></param>
+		/// <param name="strレーン名"></param>
+		/// <param name="nチャンネル番号・表00toFF"></param>
+		/// <param name="nチャンネル番号・裏00toFF"></param>
+		/// <param name="b左側の線が太線"></param>
+		/// <param name="col背景色"></param>
+		/// <param name="n位置Xdot"></param>
+		/// <param name="n幅dot"></param>
+		/// <param name="eLaneType"></param>
+		/// <param name="bIsVisible"></param>
 		public Cレーン(
 			E種別 eレーン種別_, string strレーン名_,
 			int nチャンネル番号・表00toFF_, int nチャンネル番号・裏00toFF_,
-//			int nレーン割付チップ・表0or1to1295_, int nレーン割付チップ・裏0or1to1295_,
 			bool b左側の線が太線_,
 			Color col背景色_,
 			int n位置Xdot_, int n幅dot_,
-			int nGroupNo_,
+			ELaneType eLaneType_,
 			bool bIsVisible_ )
 		{
 			this.eレーン種別 = eレーン種別_;
 			this.strレーン名 = strレーン名_;
 			this.nチャンネル番号・表00toFF = nチャンネル番号・表00toFF_;
 			this.nチャンネル番号・裏00toFF = nチャンネル番号・裏00toFF_;
-//			this.nレーン割付チップ・表0or1to1295 = nレーン割付チップ・表0or1to1295_;
-//			this.nレーン割付チップ・裏0or1to1295 = nレーン割付チップ・裏0or1to1295_;
 			this.b左側の線が太線 = b左側の線が太線_;
 			this.col背景色 = col背景色_;
 			this.n位置Xdot = n位置Xdot_;
 			this.n幅dot = n幅dot_;
-			this.nGroupNo = nGroupNo_;
+			this.eLaneType = eLaneType_;
 			this.bIsVisible = bIsVisible_;
 		}
 

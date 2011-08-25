@@ -37,11 +37,15 @@
 			this.checkBox最近使用したファイル = new System.Windows.Forms.CheckBox();
 			this.numericUpDown最近使用したファイルの最大表示個数 = new System.Windows.Forms.NumericUpDown();
 			this.tabControlオプション = new System.Windows.Forms.TabControl();
+			this.tabPageLanes = new System.Windows.Forms.TabPage();
+			this.labelSelectLanes = new System.Windows.Forms.Label();
+			this.checkedListBoxLaneSelectList = new System.Windows.Forms.CheckedListBox();
 			this.button1 = new System.Windows.Forms.Button();
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.tabPage全般.SuspendLayout();
 			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown最近使用したファイルの最大表示個数 ) ).BeginInit();
 			this.tabControlオプション.SuspendLayout();
+			this.tabPageLanes.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabPage全般
@@ -109,8 +113,28 @@
 			// 
 			resources.ApplyResources( this.tabControlオプション, "tabControlオプション" );
 			this.tabControlオプション.Controls.Add( this.tabPage全般 );
+			this.tabControlオプション.Controls.Add( this.tabPageLanes );
 			this.tabControlオプション.Name = "tabControlオプション";
 			this.tabControlオプション.SelectedIndex = 0;
+			// 
+			// tabPageLanes
+			// 
+			this.tabPageLanes.Controls.Add( this.labelSelectLanes );
+			this.tabPageLanes.Controls.Add( this.checkedListBoxLaneSelectList );
+			resources.ApplyResources( this.tabPageLanes, "tabPageLanes" );
+			this.tabPageLanes.Name = "tabPageLanes";
+			this.tabPageLanes.UseVisualStyleBackColor = true;
+			// 
+			// labelSelectLanes
+			// 
+			resources.ApplyResources( this.labelSelectLanes, "labelSelectLanes" );
+			this.labelSelectLanes.Name = "labelSelectLanes";
+			// 
+			// checkedListBoxLaneSelectList
+			// 
+			this.checkedListBoxLaneSelectList.FormattingEnabled = true;
+			resources.ApplyResources( this.checkedListBoxLaneSelectList, "checkedListBoxLaneSelectList" );
+			this.checkedListBoxLaneSelectList.Name = "checkedListBoxLaneSelectList";
 			// 
 			// button1
 			// 
@@ -141,6 +165,8 @@
 			this.tabPage全般.PerformLayout();
 			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown最近使用したファイルの最大表示個数 ) ).EndInit();
 			this.tabControlオプション.ResumeLayout( false );
+			this.tabPageLanes.ResumeLayout( false );
+			this.tabPageLanes.PerformLayout();
 			this.ResumeLayout( false );
 
 		}
@@ -157,6 +183,9 @@
 		internal System.Windows.Forms.CheckBox checkBoxPlaySoundOnChip;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button buttonOK;
+		private System.Windows.Forms.TabPage tabPageLanes;
+		internal System.Windows.Forms.CheckedListBox checkedListBoxLaneSelectList;
+		private System.Windows.Forms.Label labelSelectLanes;
 
 	}
 }

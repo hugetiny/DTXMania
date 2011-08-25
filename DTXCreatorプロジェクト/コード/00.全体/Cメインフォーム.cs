@@ -4448,6 +4448,7 @@ namespace DTXCreator
 		private void toolStripMenuItemオプション_Click( object sender, EventArgs e )
 		{
 			this.mgrオプション管理者.tオプションダイアログを開いて編集し結果をアプリ設定に格納する();
+			this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
 		}
 		//-----------------
 		#endregion

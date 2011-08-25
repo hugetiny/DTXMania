@@ -117,11 +117,111 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;checkBoxPlaySoundOnChip.Name" xml:space="preserve">
+    <value>checkBoxPlaySoundOnChip</value>
+  </data>
+  <data name="&gt;&gt;checkBoxPlaySoundOnChip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxPlaySoundOnChip.Parent" xml:space="preserve">
+    <value>tabPage全般</value>
+  </data>
+  <data name="&gt;&gt;checkBoxPlaySoundOnChip.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;checkBoxPreviewBGM.Name" xml:space="preserve">
+    <value>checkBoxPreviewBGM</value>
+  </data>
+  <data name="&gt;&gt;checkBoxPreviewBGM.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxPreviewBGM.Parent" xml:space="preserve">
+    <value>tabPage全般</value>
+  </data>
+  <data name="&gt;&gt;checkBoxPreviewBGM.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;checkBoxオートフォーカス.Name" xml:space="preserve">
+    <value>checkBoxオートフォーカス</value>
+  </data>
+  <data name="&gt;&gt;checkBoxオートフォーカス.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBoxオートフォーカス.Parent" xml:space="preserve">
+    <value>tabPage全般</value>
+  </data>
+  <data name="&gt;&gt;checkBoxオートフォーカス.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label個まで表示する.Name" xml:space="preserve">
+    <value>label個まで表示する</value>
+  </data>
+  <data name="&gt;&gt;label個まで表示する.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label個まで表示する.Parent" xml:space="preserve">
+    <value>tabPage全般</value>
+  </data>
+  <data name="&gt;&gt;label個まで表示する.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;checkBox最近使用したファイル.Name" xml:space="preserve">
+    <value>checkBox最近使用したファイル</value>
+  </data>
+  <data name="&gt;&gt;checkBox最近使用したファイル.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox最近使用したファイル.Parent" xml:space="preserve">
+    <value>tabPage全般</value>
+  </data>
+  <data name="&gt;&gt;checkBox最近使用したファイル.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown最近使用したファイルの最大表示個数.Name" xml:space="preserve">
+    <value>numericUpDown最近使用したファイルの最大表示個数</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown最近使用したファイルの最大表示個数.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown最近使用したファイルの最大表示個数.Parent" xml:space="preserve">
+    <value>tabPage全般</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown最近使用したファイルの最大表示個数.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tabPage全般.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tabPage全般.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPage全般.Size" type="System.Drawing.Size, System.Drawing">
+    <value>359, 144</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tabPage全般.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tabPage全般.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="&gt;&gt;tabPage全般.Name" xml:space="preserve">
+    <value>tabPage全般</value>
+  </data>
+  <data name="&gt;&gt;tabPage全般.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPage全般.Parent" xml:space="preserve">
+    <value>tabControlオプション</value>
+  </data>
+  <data name="&gt;&gt;tabPage全般.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="checkBoxPlaySoundOnChip.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="checkBoxPlaySoundOnChip.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 73</value>
   </data>
@@ -275,36 +375,86 @@
   <data name="&gt;&gt;numericUpDown最近使用したファイルの最大表示個数.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="tabPage全般.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="tabPage全般.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabPage全般.Size" type="System.Drawing.Size, System.Drawing">
-    <value>359, 144</value>
-  </data>
-  <data name="tabPage全般.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="tabPage全般.Text" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="&gt;&gt;tabPage全般.Name" xml:space="preserve">
-    <value>tabPage全般</value>
-  </data>
-  <data name="&gt;&gt;tabPage全般.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage全般.Parent" xml:space="preserve">
-    <value>tabControlオプション</value>
-  </data>
-  <data name="&gt;&gt;tabPage全般.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="tabControlオプション.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="labelSelectLanes.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelSelectLanes.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="labelSelectLanes.Location" type="System.Drawing.Point, System.Drawing">
+    <value>133, 7</value>
+  </data>
+  <data name="labelSelectLanes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>161, 12</value>
+  </data>
+  <data name="labelSelectLanes.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="labelSelectLanes.Text" xml:space="preserve">
+    <value>Select Lanes you'd like to use.</value>
+  </data>
+  <data name="&gt;&gt;labelSelectLanes.Name" xml:space="preserve">
+    <value>labelSelectLanes</value>
+  </data>
+  <data name="&gt;&gt;labelSelectLanes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;labelSelectLanes.Parent" xml:space="preserve">
+    <value>tabPageLanes</value>
+  </data>
+  <data name="&gt;&gt;labelSelectLanes.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="checkedListBoxLaneSelectList.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="checkedListBoxLaneSelectList.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 130</value>
+  </data>
+  <data name="checkedListBoxLaneSelectList.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;checkedListBoxLaneSelectList.Name" xml:space="preserve">
+    <value>checkedListBoxLaneSelectList</value>
+  </data>
+  <data name="&gt;&gt;checkedListBoxLaneSelectList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkedListBoxLaneSelectList.Parent" xml:space="preserve">
+    <value>tabPageLanes</value>
+  </data>
+  <data name="&gt;&gt;checkedListBoxLaneSelectList.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabPageLanes.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tabPageLanes.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tabPageLanes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>359, 144</value>
+  </data>
+  <data name="tabPageLanes.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tabPageLanes.Text" xml:space="preserve">
+    <value>Lanes</value>
+  </data>
+  <data name="&gt;&gt;tabPageLanes.Name" xml:space="preserve">
+    <value>tabPageLanes</value>
+  </data>
+  <data name="&gt;&gt;tabPageLanes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPageLanes.Parent" xml:space="preserve">
+    <value>tabControlオプション</value>
+  </data>
+  <data name="&gt;&gt;tabPageLanes.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="tabControlオプション.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
