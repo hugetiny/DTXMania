@@ -132,6 +132,7 @@
 			// 
 			// checkedListBoxLaneSelectList
 			// 
+			this.checkedListBoxLaneSelectList.CheckOnClick = true;
 			this.checkedListBoxLaneSelectList.FormattingEnabled = true;
 			resources.ApplyResources( this.checkedListBoxLaneSelectList, "checkedListBoxLaneSelectList" );
 			this.checkedListBoxLaneSelectList.Name = "checkedListBoxLaneSelectList";

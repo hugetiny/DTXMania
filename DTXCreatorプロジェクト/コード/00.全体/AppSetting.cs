@@ -84,6 +84,23 @@ namespace DTXCreator
 				}
 			}
 		}
+
+		#region [ List<Lanes> LanesInfo - レーンの表示/非表示 ]
+		//-----------------
+		public List<Lanes> LanesInfo
+		{
+			get { return _LanesInfo; }
+			set { _LanesInfo = value; }
+		}
+		private List<Lanes> _LanesInfo = new List<Lanes>();
+		//-----------------
+		#endregion
+
+		public void AddLanesInfo( string Name, bool Checked )
+		{
+			this._LanesInfo.Add( new Lanes( Name, Checked ) );
+		}
+		
 		public bool bSameVersion()
 		{
 			return ( this._ConfigVersion == _ConfigSchemaVersion );
@@ -341,6 +358,27 @@ namespace DTXCreator
 			public string PlayStartFromOption = "-N";
 			public string PlayStartOption = "-N-1";
 			public string PlayStopOption = "-S";
+		}
+
+		/// <summary>
+		/// レーン名と表示/非表示の状態の保持/復元
+		/// </summary>
+		public class Lanes
+		{
+			public string Name;
+			public bool Checked;
+
+			// 引数無しのコンストラクタがないとSerializeできないのでダミー定義する
+			public Lanes()
+			{
+				Name = "";
+				Checked = false;
+			}
+			public Lanes( string Name_, bool Checked_ )
+			{
+				Name = Name_;
+				Checked = Checked_;
+			}
 		}
 
 		#region [ private ]

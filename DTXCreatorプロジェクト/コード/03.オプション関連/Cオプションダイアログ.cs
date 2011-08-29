@@ -23,6 +23,7 @@ namespace DTXCreator.オプション関連
 		{
 			DTXCreator.譜面.Cレーン.ELaneType eLastLaneType = DTXCreator.譜面.Cレーン.ELaneType.END;
 
+			this.checkedListBoxLaneSelectList.BeginUpdate();
 			foreach ( DTXCreator.譜面.Cレーン c in listCLane)
 			{
 				if ( eLastLaneType != c.eLaneType )
@@ -31,6 +32,7 @@ namespace DTXCreator.オプション関連
 					this.checkedListBoxLaneSelectList.Items.Add( eLastLaneType.ToString(), c.bIsVisible );
 				}
 			}
+			this.checkedListBoxLaneSelectList.EndUpdate();
 			bレーンリストの内訳が生成済みである = true;
 		}
 	}

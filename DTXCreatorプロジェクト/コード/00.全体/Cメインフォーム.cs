@@ -368,6 +368,19 @@ namespace DTXCreator
 			}
 			//-----------------
 			#endregion
+			#region [ レーン表示/非表示の反映 #26005 2011.8.29 yyagi; added ]
+			for ( int i = 0; i < this.appアプリ設定.LanesInfo.Count; i++ )
+			{
+				for ( int j = 0; j < this.mgr譜面管理者.listレーン.Count; j++ )
+				{
+					if ( this.mgr譜面管理者.listレーン[ j ].strレーン名 == this.appアプリ設定.LanesInfo[ i ].Name )
+					{
+						this.mgr譜面管理者.listレーン[ j ].bIsVisible = this.appアプリ設定.LanesInfo[ i ].Checked;
+					}
+				}
+			}
+			this.mgr譜面管理者.tRefreshDisplayLanes();
+			#endregion
 		}
 		private void tアプリ設定の保存()
 		{
@@ -432,6 +445,13 @@ namespace DTXCreator
 			this.appアプリ設定.LastWorkFolder =
 				this.str作業フォルダ名;
 			//-----------------
+			#endregion
+			#region [ レーン表示/非表示 #26005 2011.8.29 yyagi; added ]
+			this.appアプリ設定.LanesInfo.Clear();
+			foreach ( DTXCreator.譜面.Cレーン c in this.mgr譜面管理者.listレーン )
+			{
+				this.appアプリ設定.AddLanesInfo( c.strレーン名, c.bIsVisible );
+			}
 			#endregion
 
 
@@ -2176,7 +2196,7 @@ namespace DTXCreator
 		private void Cメインフォーム_Load( object sender, EventArgs e )
 		{
 			this.tアプリ起動時に一度だけ行う初期化処理();
-			this.t譜面を初期化する();
+			// this.t譜面を初期化する();					// 2011.8.29 yyagi; removed this.t譜面を初期化する() because it has already done in this.tアプリ起動時に一度だけ行う初期化処理().
 		}
 		//-----------------
 		#endregion
