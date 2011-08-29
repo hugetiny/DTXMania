@@ -80,6 +80,7 @@
 			// checkedListBoxレーン選択リスト
 			// 
 			resources.ApplyResources( this.checkedListBoxレーン選択リスト, "checkedListBoxレーン選択リスト" );
+			this.checkedListBoxレーン選択リスト.CheckOnClick = true;
 			this.checkedListBoxレーン選択リスト.FormattingEnabled = true;
 			this.checkedListBoxレーン選択リスト.Name = "checkedListBoxレーン選択リスト";
 			this.toolTip1.SetToolTip( this.checkedListBoxレーン選択リスト, resources.GetString( "checkedListBoxレーン選択リスト.ToolTip" ) );
