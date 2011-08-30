@@ -376,6 +376,7 @@ namespace DTXCreator
 					if ( this.mgr譜面管理者.listレーン[ j ].strレーン名 == this.appアプリ設定.LanesInfo[ i ].Name )
 					{
 						this.mgr譜面管理者.listレーン[ j ].bIsVisible = this.appアプリ設定.LanesInfo[ i ].Checked;
+						break;
 					}
 				}
 			}
@@ -572,8 +573,28 @@ namespace DTXCreator
 
 			#region [ 譜面の生成・初期化 ]
 			//-----------------
-			this.mgr譜面管理者 = new C譜面管理( this );
-			this.mgr譜面管理者.t初期化();
+			if ( this.mgr譜面管理者 == null )		// 初回起動時は、レーン表示有無の構成に初期値を使用(して、後でDTXCreatorConfig.settingsのものに置き換える)
+			{
+				this.mgr譜面管理者 = new C譜面管理( this );
+				this.mgr譜面管理者.t初期化();
+			}
+			else									// 起動後のdtxファイル読み込み等の場合は、直前のレーン表示有無の構成を踏襲する
+			{
+				#region [ レーン表示/非表示状態の待避 #26005 2011.8.30 yyagi; added ]
+				List<Cレーン> lc = new List<Cレーン>(this.mgr譜面管理者.listレーン);
+				#endregion
+
+				this.mgr譜面管理者 = new C譜面管理( this );
+				this.mgr譜面管理者.t初期化();
+
+				#region [ レーン表示/非表示の反映 #26005 2011.8.30 yyagi; added ]
+				for ( int i = 0; i < this.mgr譜面管理者.listレーン.Count; i++ )
+				{
+					this.mgr譜面管理者.listレーン[ i ].bIsVisible = lc[ i ].bIsVisible;
+				}
+				this.mgr譜面管理者.tRefreshDisplayLanes();
+				#endregion
+			}
 			//-----------------
 			#endregion
 
