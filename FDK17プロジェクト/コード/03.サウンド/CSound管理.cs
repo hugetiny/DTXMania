@@ -99,6 +99,11 @@ namespace FDK
 			}
 			return item;
 		}
+
+		public void t再生中の処理をする( object o )			// #26122 2011.9.1 yyagi; delegate経由の呼び出し用
+		{
+			t再生中の処理をする();
+		}
 		public void t再生中の処理をする()
 		{
 			lock( this.obj排他用 )

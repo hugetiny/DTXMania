@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 using DTXCreator.UndoRedo;
 using DTXCreator.譜面;
 using FDK;
@@ -21,6 +22,11 @@ namespace DTXCreator.WAV_BMP_AVI
 			this.listViewWAVリスト = pListViewWAVリスト;
 			this.sound管理 = new CSound管理( this._Form.Handle );
 			this.soundPreview = null;
+
+			#region [ #26122 2011.8.31 yyagi; ストリーム再生のために、t再生中の処理をする()を定期的に呼び出す処理を追加 ]
+			timerDelegate = new TimerCallback( this.sound管理.t再生中の処理をする );
+			timer = new System.Threading.Timer( timerDelegate, null, 0, 300 );
+			#endregion
 		}
 		public ListViewItem tCWAVとListViewItemを生成して返す( int n行番号1to1295 )
 		{
@@ -31,6 +37,16 @@ namespace DTXCreator.WAV_BMP_AVI
 			if( this.soundPreview != null )
 			{
 				this.soundPreview.Dispose();
+			}
+			if ( timer != null )
+			{
+				timer.Change( Timeout.Infinite, Timeout.Infinite );
+				timer.Dispose();
+				timer = null;
+			}
+			if ( timerDelegate != null )
+			{
+				timerDelegate = null;
 			}
 			if( this.sound管理 != null )
 			{
@@ -244,6 +260,8 @@ namespace DTXCreator.WAV_BMP_AVI
 		private CSound soundPreview;
 		private CSound管理 sound管理;
 		private CWAVキャッシュ WAVキャッシュ = new CWAVキャッシュ();
+		private TimerCallback timerDelegate;
+		private System.Threading.Timer timer;
 
 		private void tItemを交換する・ListViewItem( int nItem番号1, int nItem番号2 )
 		{
