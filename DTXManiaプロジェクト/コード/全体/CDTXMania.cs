@@ -1133,7 +1133,7 @@ for (int i = 0; i < 3; i++) {
 
 		// その他
 
-		#region [ テクスチャの生成・解放のためのヘルパー ]
+		#region [ 汎用ヘルパー ]
 		//-----------------
 		public static CTexture tテクスチャの生成( string fileName )
 		{
@@ -1157,11 +1157,21 @@ for (int i = 0; i < 3; i++) {
 		}
 		public static void tテクスチャの解放( ref CTexture tx )
 		{
-			if( tx != null )
-			{
-				tx.Dispose();
-				tx = null;
-			}
+			CDTXMania.t安全にDisposeする( ref tx );
+		}
+		
+		/// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
+		public static void t安全にDisposeする<T>( ref T obj )
+		{
+			if( obj == null )
+				return;
+
+			var d = obj as IDisposable;
+
+			if( d != null )
+				d.Dispose();
+
+			obj = default( T );
 		}
 		//-----------------
 		#endregion
