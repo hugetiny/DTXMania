@@ -17,7 +17,17 @@ namespace FDK
 
 		// プロパティ
 
-		public SecondarySoundBuffer Buffer
+		private SlimDX.DirectSound.DirectSound Device;
+		public void setDevice( ref DirectSound Device_ )
+		{
+			Device = Device_;
+		}
+		public DirectSound getDevice()
+		{
+			return Device;
+		}
+
+		public SoundBuffer Buffer
 		{
 			get
 			{
@@ -219,18 +229,9 @@ namespace FDK
 
 		public object Clone()
 		{
-			CSound clone = (CSound)MemberwiseClone();	// これだけだとCY連打が途切れる＆タイトルに戻る際にNullRef例外発生
+			CSound clone = (CSound) MemberwiseClone();	// これだけだとCY連打が途切れる＆タイトルに戻る際にNullRef例外発生
 
-			SlimDX.DirectSound.DirectSound ds = new SlimDX.DirectSound.DirectSound();
-			SlimDX.DirectSound.SoundBuffer sb;	// = clone._Buffer;
-
-
-			ds.DuplicateSoundBuffer(	// ここで例外発生してしまう
-				this._Buffer,
-				out sb
-			);
-//'SlimDX.DirectSound.DirectSoundException' の初回例外が SlimDXc_net20x86_Jun2010.dll で発生しました。
-// DTXManiaGR.vshost.exe Error: 0 : サウンドの生成に失敗しました。(DSERR_INVALIDCALL: This call is not valid for the current state of this object (-2005401550))()(サウンドファイル名)
+			Device.DuplicateSoundBuffer( this._Buffer, out clone._Buffer );
 
 			return clone;
 		}
@@ -612,7 +613,7 @@ namespace FDK
 		private int n一時停止回数;
 		private int n現在のPCM側の位置byte;
 		private int n現在書き込み許可待ちのバッファ番号;
-		private SecondarySoundBuffer _Buffer;
+		private SoundBuffer _Buffer;
 
 		private void tストリーム再生位置リセット()
 		{
@@ -622,7 +623,7 @@ namespace FDK
 				this.n現在のPCM側の位置byte = 0;
 			}
 		}
-		private void tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( SecondarySoundBuffer buffer, int n書込先バッファ番号, bool bPCMの末尾に達したら先頭に戻る )
+		private void tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( SoundBuffer buffer, int n書込先バッファ番号, bool bPCMの末尾に達したら先頭に戻る )
 		{
 			if( !this.bDispose完了済み && ( this.nHandle >= 0 ) )
 			{

@@ -2132,59 +2132,35 @@ namespace DTXMania
 				str = str + cwav.strファイル名;
 				try
 				{
-					for( int i = 0; i < 4; i++ )
-					{
 						try
 						{
-							cwav.rSound[i] = CDTXMania.Sound管理.tサウンドを生成する(str);
-							cwav.rSound[ i ].n音量 = 100;
-							if( ( i == 0 ) && CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+							cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する(str);
+							cwav.rSound[ 0 ].n音量 = 100;
+							if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 							{
-								Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", new object[] { cwav.strコメント文, str, cwav.rSound[ i ].nサウンドバッファサイズ, cwav.rSound[ i ].bストリーム再生する ? "Stream" : "OnMemory" } );
+								Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", new object[] { cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" } );
 							}
 						}
 						catch
 						{
-							cwav.rSound[ i ] = null;
-							if( i == 0 )
+							cwav.rSound[ 0 ] = null;
+							Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", new object[] { cwav.strコメント文, str } );
+						}
+						if ( cwav.rSound[ 0 ] == null || cwav.rSound[ 0 ].bストリーム再生する )
+						{
+							for ( int j = 1; j < 4; j++ )
 							{
-								Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", new object[] { cwav.strコメント文, str } );
+								cwav.rSound[ j ] = null;
 							}
 						}
-						if( ( cwav.rSound[ i ] != null ) && cwav.rSound[ i ].bストリーム再生する )
+						else
 						{
-							break;
+							for ( int j = 1; j < 4; j++ )
+							{
+								cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
+								CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
+							}
 						}
-//						Type t = typeof(CSound);
-//						MethodInfo[] methods = t.GetMethods(
-//							BindingFlags.Public | BindingFlags.NonPublic |
-//							BindingFlags.Instance | BindingFlags.Static
-//						);
-
-//						for (int j = 1; j < 3; j++)
-//						{
-//							SlimDX.DirectSound.SoundBuffer result;
-//							CDTXMania.Sound管理.Device.DuplicateSoundBuffer(
-//								cwav.rSound[0].Buffer,
-//								out result);
-//							cwav.rSound[j].Buffer = (SlimDX.DirectSound.SecondarySoundBuffer)result;
-//							cwav.rSound[j].bストリーム再生する = cwav.rSound[0].bストリーム再生する;
-//							cwav.rSound[j].bループする
-//							foreach(MethodInfo m in methods) {
-//								if (m cwav..rSound[j].
-//						}
-//						cwav.rSound[0].Buffer.
-
-//						cwav.rSound[1] = cwav.rSound[0];		// #24007 2010.11.23 yyagi add: to accelerate loading chip sounds
-//						cwav.rSound[2] = cwav.rSound[0];		//
-//						cwav.rSound[3] = cwav.rSound[0];		//
-//						break;									//
-						cwav.rSound[ 1 ] = (CSound) cwav.rSound[ 0 ].Clone();
-						cwav.rSound[ 2 ] = (CSound) cwav.rSound[ 0 ].Clone();
-						cwav.rSound[ 3 ] = (CSound) cwav.rSound[ 0 ].Clone();
-						break;
-					}
-					continue;
 				}
 				catch( Exception exception )
 				{

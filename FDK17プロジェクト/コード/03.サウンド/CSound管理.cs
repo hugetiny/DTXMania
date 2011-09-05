@@ -20,7 +20,17 @@ namespace FDK
 
 		// プロパティ
 
-		public DirectSound Device { get; private set; }
+//		public DirectSound Device { get; private set; }
+		private DirectSound Device;
+		private void setDevice( DirectSound Device_ )
+		{
+			Device = Device_;
+		}
+		public DirectSound getDevice()
+		{
+			return Device;
+		}
+
 		public int n登録サウンド数
 		{
 			get
@@ -93,12 +103,19 @@ namespace FDK
 			if ( (item = this.tCheckAndDecode(strファイル名)) == null)
 				throw new Exception( "OggVorbis, mp3, XA, RIFF ACM のいずれでもデコードに失敗しました。" );
 
-			lock( this.obj排他用 )
-			{
-				this.listSound.Add( item );
-			}
+			item.setDevice( ref this.Device );
+			tサウンドを登録する( item );
+
 			return item;
 		}
+		public void tサウンドを登録する( CSound sound )
+		{
+			lock ( this.obj排他用 )
+			{
+				this.listSound.Add( sound );
+			}
+		}
+
 		public void t再生中の処理をする()
 		{
 			lock( this.obj排他用 )
