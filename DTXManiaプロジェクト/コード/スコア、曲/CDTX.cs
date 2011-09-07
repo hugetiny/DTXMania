@@ -2148,14 +2148,14 @@ namespace DTXMania
 						}
 						if ( cwav.rSound[ 0 ] == null || cwav.rSound[ 0 ].bストリーム再生する )
 						{
-							for ( int j = 1; j < 4; j++ )
+							for ( int j = 1; j < cwav.rSound.GetLength(0); j++ )
 							{
 								cwav.rSound[ j ] = null;
 							}
 						}
 						else
 						{
-							for ( int j = 1; j < 4; j++ )
+							for ( int j = 1; j < cwav.rSound.GetLength(0); j++ )
 							{
 								cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
 								CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
@@ -2165,7 +2165,7 @@ namespace DTXMania
 				catch( Exception exception )
 				{
 					Trace.TraceError( "サウンドの生成に失敗しました。({0})({1})({2})", new object[] { exception.Message, cwav.strコメント文, str } );
-					for( int j = 0; j < 4; j++ )
+					for( int j = 0; j < cwav.rSound.GetLength(0); j++ )
 					{
 						cwav.rSound[ j ] = null;
 					}
