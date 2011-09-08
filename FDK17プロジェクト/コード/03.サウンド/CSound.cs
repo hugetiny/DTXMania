@@ -10,17 +10,33 @@ using SlimDX.Multimedia;
 
 namespace FDK
 {
-	public class CSound : IDisposable
+	public class CSound : IDisposable, ICloneable
 	{
 		// (1) 以下は全子クラスに共通
 
 
 		// プロパティ
 
-		public SecondarySoundBuffer Buffer
+		private SlimDX.DirectSound.DirectSound Device;
+		public void setDevice( ref DirectSound Device_ )
 		{
-			get;
-			private set;
+			Device = Device_;
+		}
+		public DirectSound getDevice()
+		{
+			return Device;
+		}
+
+		public SoundBuffer Buffer
+		{
+			get
+			{
+				return _Buffer;
+			}
+			private set
+			{
+				_Buffer = value;
+			}
 		}
 		public bool bストリーム再生する
 		{
@@ -210,6 +226,15 @@ namespace FDK
 
 
 		// メソッド
+
+		public object Clone()
+		{
+			CSound clone = (CSound) MemberwiseClone();	// これだけだとCY連打が途切れる＆タイトルに戻る際にNullRef例外発生
+
+			Device.DuplicateSoundBuffer( this._Buffer, out clone._Buffer );
+
+			return clone;
+		}
 
 		public int tデコード後のサイズを調べる( string strファイル名, out int _nHandle )
 		{
@@ -588,6 +613,7 @@ namespace FDK
 		private int n一時停止回数;
 		private int n現在のPCM側の位置byte;
 		private int n現在書き込み許可待ちのバッファ番号;
+		private SoundBuffer _Buffer;
 
 		private void tストリーム再生位置リセット()
 		{
@@ -597,7 +623,7 @@ namespace FDK
 				this.n現在のPCM側の位置byte = 0;
 			}
 		}
-		private void tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( SecondarySoundBuffer buffer, int n書込先バッファ番号, bool bPCMの末尾に達したら先頭に戻る )
+		private void tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( SoundBuffer buffer, int n書込先バッファ番号, bool bPCMの末尾に達したら先頭に戻る )
 		{
 			if( !this.bDispose完了済み && ( this.nHandle >= 0 ) )
 			{
