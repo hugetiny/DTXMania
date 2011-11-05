@@ -204,6 +204,15 @@ namespace DTXMania
 		ステージ失敗,
 		ステージクリア
 	}
+	/// <summary>
+	/// 入力ラグ表示タイプ
+	/// </summary>
+	internal enum EShowLagType
+	{
+		OFF,			// 全く表示しない
+		ON,				// 判定に依らず全て表示する
+		GREAT_POOR		// GREAT-MISSの時のみ表示する(PERFECT時は表示しない)
+	}
 
 	/// <summary>
 	/// Drum/Guitar/Bass の値を扱う汎用の構造体。

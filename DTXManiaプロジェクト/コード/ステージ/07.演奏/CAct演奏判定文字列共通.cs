@@ -44,7 +44,7 @@ namespace DTXMania
 		protected CTexture[] tx判定文字列 = new CTexture[ 3 ];
 		protected CTexture txlag数値 = new CTexture();		// #25370 2011.2.1 yyagi
 
-		public bool bIsShowingLag							// #25370 2011.6.3 yyagi
+		public int nShowLagType							// #25370 2011.6.3 yyagi
 		{
 			get;
 			set;
@@ -112,7 +112,7 @@ namespace DTXMania
 				this.st状態[ i ].ct進行 = new CCounter();
 			}
 			base.On活性化();
-			this.bIsShowingLag = CDTXMania.ConfigIni.bIsShowingLag;
+			this.nShowLagType = CDTXMania.ConfigIni.nShowLagType;
 		}
 		public override void On非活性化()
 		{

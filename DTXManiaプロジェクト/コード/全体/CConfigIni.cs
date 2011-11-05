@@ -456,7 +456,7 @@ namespace DTXMania
 //		public int nハイハット切り捨て下限Velocity;
 //		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
 		public STDGBVALUE<int> nInputAdjustTimeMs;	// #23580 2011.1.3 yyagi タイミングアジャスト機能
-		public bool bIsShowingLag;					// #25370 2011.6.5 yyagi ズレ時間表示機能
+		public int	nShowLagType;					// #25370 2011.6.5 yyagi ズレ時間表示機能
 		public bool bIsAutoResultCapture;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能のON/OFF制御
 		public bool bバッファ入力を行う;
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
@@ -963,8 +963,8 @@ namespace DTXMania
 			this.nVelocityMin.FT = 0;
 			this.nVelocityMin.CY = 0;
 			this.nVelocityMin.RD = 0;
-			this.nRisky = 0;						// #23539 2011.7.26 yyagi RISKYモード
-			this.bIsShowingLag = false;					// #25370 2011.6.3 yyagi ズレ時間表示
+			this.nRisky = 0;							// #23539 2011.7.26 yyagi RISKYモード
+			this.nShowLagType = (int) EShowLagType.OFF;	// #25370 2011.6.3 yyagi ズレ時間表示
 			this.bIsAutoResultCapture = false;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能ON/OFF
 
 			this.bバッファ入力を行う = true;
@@ -1165,9 +1165,9 @@ namespace DTXMania
 			sw.WriteLine( "; バッファ入力モード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BufferedInput={0}", this.bバッファ入力を行う ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine( "; 判定ズレ時間表示(0:OFF, 1:ON)" );								// #25370 2011.6.3 yyagi
+			sw.WriteLine( "; 判定ズレ時間表示(0:OFF, 1:ON, 2=GREAT-POOR)" );				// #25370 2011.6.3 yyagi
 			sw.WriteLine( "; Whether displaying the lag times from the just timing or not." );	//
-			sw.WriteLine( "ShowLagTime={0}", this.bIsShowingLag ? 1 : 0 );					//
+			sw.WriteLine( "ShowLagTime={0}", this.nShowLagType );							//
 			sw.WriteLine();
 			sw.WriteLine( "; リザルト画像自動保存機能(0:OFF, 1:ON)" );						// #25399 2011.6.9 yyagi
 			sw.WriteLine( "; Set ON if you'd like to save result screen image automatically");	//
@@ -1765,7 +1765,7 @@ namespace DTXMania
 											}
 											else if ( str3.Equals( "ShowLagTime" ) )				// #25370 2011.6.3 yyagi
 											{
-												this.bIsShowingLag = C変換.bONorOFF( str4[ 0 ] );
+												this.nShowLagType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nShowLagType );
 											}
 											else if ( str3.Equals( "AutoResultCapture" ) )			// #25399 2011.6.9 yyagi
 											{

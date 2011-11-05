@@ -172,10 +172,10 @@ namespace DTXMania
 				"ストイック（禁欲）モード：\n以下をまとめて表示ON/OFFします。\n・プレビュー画像/動画\n・リザルト画像/動画\n・NowLoading画像\n・演奏画面の背景画像\n・BGA 画像 / AVI 動画\n・グラフ画像\n",
 				"Turn ON to disable drawing\n * preview image / movie\n * result image / movie\n * nowloading image\n * wallpaper (in playing screen)\n * BGA / AVI (in playing screen)" );
 			this.list項目リスト.Add( this.iSystemStoicMode );
-
-			this.iSystemShowLag = new CItemToggle( "ShowLagTime", CDTXMania.ConfigIni.bIsShowingLag,
-				"ズレ時間表示：\nONにすると、ジャストタイミングからの\nズレ時間(ms)を表示します。",
-				"Turn ON to display the lag from\n the \"just timing\"." );
+			this.iSystemShowLag = new CItemList( "ShowLagTime", CItemBase.Eパネル種別.通常, CDTXMania.ConfigIni.nShowLagType,
+				"ズレ時間表示：\nジャストタイミングからのズレ時間(ms)\nを表示します。\n  OFF: ズレ時間を表示しません。\n  ON: ズレ時間を表示します。\n  GREAT-: PERFECT以外の時のみ\n表示します。",
+				"About displaying the lag from\n the \"just timing\".\n  OFF: Don't show it.\n  ON: Show it.\n  GREAT-: Show it except you've\n  gotten PERFECT.",
+				new string[] { "OFF", "ON", "GREAT-" } );
 			this.list項目リスト.Add( this.iSystemShowLag );
 			this.iSystemAutoResultCapture = new CItemToggle( "Autosaveresult", CDTXMania.ConfigIni.bIsAutoResultCapture,
 				"リザルト画像自動保存機能：\nONにすると、ハイスコア/ハイスキル時に\n自動でリザルト画像を曲データと同じ\nフォルダに保存します。",
@@ -1210,7 +1210,7 @@ namespace DTXMania
 		private CItemToggle iSystemStageFailed;
 		private CItemToggle iSystemStoicMode;
 		private CItemToggle iSystemVSyncWait;
-		private CItemToggle iSystemShowLag;					// #25370 2011.6.3 yyagi
+		private CItemList	iSystemShowLag;					// #25370 2011.6.3 yyagi
 		private CItemToggle iSystemAutoResultCapture;		// #25399 2011.6.9 yyagi
 		private CItemToggle iSystemBufferedInput;
 		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
@@ -1367,7 +1367,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.n自動再生音量 = this.iSystemAutoChipVolume.n現在の値;
 			CDTXMania.ConfigIni.bストイックモード = this.iSystemStoicMode.bON;
 
-			CDTXMania.ConfigIni.bIsShowingLag = this.iSystemShowLag.bON;						// #25370 2011.6.3 yyagi
+			CDTXMania.ConfigIni.nShowLagType = this.iSystemShowLag.n現在選択されている項目番号;		// #25370 2011.6.3 yyagi
 			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;		// #25399 2011.6.9 yyagi
 
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
