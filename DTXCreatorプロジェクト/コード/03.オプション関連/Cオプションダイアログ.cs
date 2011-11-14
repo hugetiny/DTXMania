@@ -35,5 +35,21 @@ namespace DTXCreator.オプション関連
 			this.checkedListBoxLaneSelectList.EndUpdate();
 			bレーンリストの内訳が生成済みである = true;
 		}
+
+		private void Cオプションダイアログ_KeyDown( object sender, KeyEventArgs e )
+		{
+			if ( e.KeyCode == Keys.Escape )
+			{
+				this.button1.PerformClick();
+			}
+		}
+
+		private void tabControlオプション_KeyDown( object sender, KeyEventArgs e )
+		{
+			if ( e.KeyCode == Keys.Escape )
+			{
+				this.button1.PerformClick();
+			}
+		}
 	}
 }

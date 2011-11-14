@@ -116,6 +116,7 @@
 			this.tabControlオプション.Controls.Add( this.tabPageLanes );
 			this.tabControlオプション.Name = "tabControlオプション";
 			this.tabControlオプション.SelectedIndex = 0;
+			this.tabControlオプション.KeyDown += new System.Windows.Forms.KeyEventHandler( this.tabControlオプション_KeyDown );
 			// 
 			// tabPageLanes
 			// 
@@ -162,6 +163,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Cオプションダイアログ";
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler( this.Cオプションダイアログ_KeyDown );
 			this.tabPage全般.ResumeLayout( false );
 			this.tabPage全般.PerformLayout();
 			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown最近使用したファイルの最大表示個数 ) ).EndInit();
