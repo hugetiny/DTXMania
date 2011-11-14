@@ -929,10 +929,6 @@ namespace DTXCreator.譜面
 							Cチップ.t表チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色 );
 							break;
 					}
-					if( cチップ.bドラッグで選択中 || cチップ.b確定選択中 )
-					{
-						Cチップ.tチップの周囲の太枠を描画する( g, rectangle );
-					}
 				}
 				else if( cレーン.eレーン種別 == Cレーン.E種別.BPM )
 				{
@@ -941,6 +937,10 @@ namespace DTXCreator.譜面
 				else
 				{
 					Cチップ.t裏チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色 );
+				}
+				if ( cチップ.bドラッグで選択中 || cチップ.b確定選択中 )
+				{
+					Cチップ.tチップの周囲の太枠を描画する( g, rectangle );
 				}
 			}
 		}
