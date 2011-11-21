@@ -50,7 +50,7 @@ namespace DTXCreator
 			{
 				this.dic小節長倍率 = new Dictionary<int, float>();
 				this.listチップパレット = new List<int>();
-				this.nBGMWAV番号 = -1;
+				this.listBGMWAV番号 = new List<int>();											// #26775 2011.11.21 yyagi
 				this.nLastBarConverted = -1;
 				this.eDTXbgmChs = DTXbgmChs.GetEnumerator();
 				this._Form.listViewWAVリスト.BeginUpdate();
@@ -106,9 +106,12 @@ namespace DTXCreator
 					this.tDTX入力・BPMチップにBPx数値をバインドする();
 					this.tDTX入力・キャッシュからListViewを一括構築する();
 					this.tDTX入力・チップパレットのListViewを一括構築する();
-					if( this.nBGMWAV番号 >= 0 )
+					if( this.listBGMWAV番号.Count > 0 )							// #26775 2011.11.21 yyagi
 					{
-						this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す・なければ新規生成する( this.nBGMWAV番号 ).bBGMとして使用 = true;
+						foreach ( int nBGMWAV番号 in listBGMWAV番号 )			// #26775 2011.11.21 yyagi
+						{
+							this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す・なければ新規生成する( nBGMWAV番号 ).bBGMとして使用 = true;
+						}
 					}
 					this._Form.listViewWAVリスト.EndUpdate();
 					this._Form.listViewBMPリスト.EndUpdate();
@@ -181,7 +184,7 @@ namespace DTXCreator
 		private Dictionary<int, float> dic小節長倍率;
 		private E種別 e種別;
 		private List<int> listチップパレット;
-		private int nBGMWAV番号 = -1;
+		private List<int> listBGMWAV番号 = null;			// #26775 2011.11.21 yyagi
 		
 		private void tDTX入力・BPMチップにBPx数値をバインドする()
 		{
@@ -433,7 +436,7 @@ namespace DTXCreator
 			{
 				return false;
 			}
-			this.nBGMWAV番号 = num;
+			this.listBGMWAV番号.Add( num );
 			return true;
 		}
 		private bool tDTX入力・行解析・BMP( string strコマンド, string strパラメータ, string strコメント )
