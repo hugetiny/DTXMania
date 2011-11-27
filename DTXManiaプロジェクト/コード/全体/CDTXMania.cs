@@ -1128,6 +1128,12 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 			#endregion
+			#region [ スリープ ]
+			if ( ConfigIni.nフレーム毎スリープms >= 0 )			// #xxxxx 2011.11.27 yyagi
+			{
+				Thread.Sleep( ConfigIni.nフレーム毎スリープms );
+			}
+			#endregion
 		}
 
 
@@ -1183,6 +1189,7 @@ for (int i = 0; i < 3; i++) {
 		private static CDTX dtx;
 		private List<CActivity> listトップレベルActivities;
 		private int n進行描画の戻り値;
+		private MouseButtons mb = System.Windows.Forms.MouseButtons.Left;
 
 		private void t起動処理()
 		{
@@ -1273,6 +1280,7 @@ for (int i = 0; i < 3; i++) {
 			base.Window.ShowIcon = true;
 			base.Window.Icon = Properties.Resources.dtx;
 			base.Window.KeyDown += new KeyEventHandler( this.Window_KeyDown );
+			base.Window.MouseUp +=new MouseEventHandler( this.Window_MouseUp);
 			base.Window.MouseDoubleClick += new MouseEventHandler(this.Window_MouseDoubleClick);	// #23510 2010.11.13 yyagi: to go fullscreen mode
 			base.Window.ResizeEnd += new EventHandler(this.Window_ResizeEnd);						// #23510 2010.11.20 yyagi: to set resized window size in Config.ini
 			base.Window.ApplicationActivated += new EventHandler(this.Window_ApplicationActivated);
@@ -1591,6 +1599,7 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			#endregion
 		}
+
 		private void t終了処理()
 		{
 			if( !this.b終了処理完了済み )
@@ -2020,10 +2029,18 @@ for (int i = 0; i < 3; i++) {
 				this.t指定フォルダ内でのプラグイン検索と生成( dir + "\\", strプラグイン型名 );
 		}
 		//-----------------
+		private void Window_MouseUp( object sender, MouseEventArgs e )
+		{
+			mb = e.Button;
+		}
+
 		private void Window_MouseDoubleClick( object sender, MouseEventArgs e)	// #23510 2010.11.13 yyagi: to go full screen mode
 		{
-			ConfigIni.bウィンドウモード = false;
-			this.t全画面・ウィンドウモード切り替え();
+			if ( mb.Equals(MouseButtons.Left) && ConfigIni.bIsAllowedDoubleClickFullscreen )	// #26752 2011.11.27 yyagi
+			{
+				ConfigIni.bウィンドウモード = false;
+				this.t全画面・ウィンドウモード切り替え();
+			}
 		}
 		private void Window_ResizeEnd(object sender, EventArgs e)				// #23510 2010.11.20 yyagi: to get resized window size
 		{

@@ -439,7 +439,8 @@ namespace DTXMania
 		public STDGBVALUE<Eランダムモード> eRandom;
 		public Eダメージレベル eダメージレベル;
         public CKeyAssign KeyAssign;
-        public int n非フォーカス時スリープms;       // #23568 2010.11.04 ikanick add
+		public int n非フォーカス時スリープms;       // #23568 2010.11.04 ikanick add
+		public int nフレーム毎スリープms;			// #xxxxx 2011.11.27 yyagi add
 		public int n演奏速度;
 		public int n曲が選択されてからプレビュー音が鳴るまでのウェイトms;
 		public int n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms;
@@ -582,6 +583,7 @@ namespace DTXMania
 			}
 		}
 		public int nRisky;						// #23559 2011.6.20 yyagi Riskyでの残ミス数。0で閉店
+		public bool bIsAllowedDoubleClickFullscreen;	// #26752 2011.11.27 yyagi ダブルクリックしてもフルスクリーンに移行しない
 		public bool bIsSwappedGuitarBass			// #24063 2011.1.16 yyagi ギターとベースの切り替え中か否か
 		{
 			get;
@@ -610,7 +612,7 @@ namespace DTXMania
 			{
 				get
 				{
-					switch( index )
+					switch ( index )
 					{
 						case (int) Eドラムレーン.LC:
 							return this.LC;
@@ -646,7 +648,7 @@ namespace DTXMania
 				}
 				set
 				{
-					switch( index )
+					switch ( index )
 					{
 						case (int) Eドラムレーン.LC:
 							this.LC = value;
@@ -884,6 +886,7 @@ namespace DTXMania
 			this.b垂直帰線待ちを行う = true;
 			this.nウインドウwidth = SampleFramework.GameWindowSize.Width;			// #23510 2010.10.31 yyagi add
 			this.nウインドウheight = SampleFramework.GameWindowSize.Height;			// 
+			this.nフレーム毎スリープms = -1;			// #xxxxx 2011.11.27 yyagi add
 			this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
 			this._bGuitar有効 = true;
 			this._bDrums有効 = true;
@@ -969,6 +972,7 @@ namespace DTXMania
 
 			this.bバッファ入力を行う = true;
 			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
+			this.bIsAllowedDoubleClickFullscreen = true;	// #26752 2011.11.26 ダブルクリックでのフルスクリーンモード移行を許可
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1006,6 +1010,7 @@ namespace DTXMania
 		{
 			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "shift-jis" ) );
 			sw.WriteLine( ";-------------------" );
+			#region [ System ]
 			sw.WriteLine( "[System]" );
 			sw.WriteLine();
 
@@ -1042,6 +1047,11 @@ namespace DTXMania
 			sw.WriteLine("WindowHeight={0}", this.nウインドウheight);	//
 			sw.WriteLine();												//
 
+			sw.WriteLine( "; ウインドウをダブルクリックした時にフルスクリーンに移行するか(0:移行しない,1:移行する)" );	// #26752 2011.11.27 yyagi
+			sw.WriteLine( "; Whether double click to go full screen mode or not." );					//
+			sw.WriteLine( "DoubleClickFullScreen={0}", this.bIsAllowedDoubleClickFullscreen? 1 : 0);	//
+			sw.WriteLine();												//
+
 			sw.WriteLine("; 垂直帰線同期(0:OFF,1:ON)");
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
             sw.WriteLine();
@@ -1049,7 +1059,11 @@ namespace DTXMania
             sw.WriteLine("; 非フォーカス時のsleep値[ms]");	    			    // #23568 2011.11.04 ikanick add
 			sw.WriteLine("; A sleep time[ms] while the window is inactive.");	//
 			sw.WriteLine("BackSleep={0}", this.n非フォーカス時スリープms);		// そのまま引用（苦笑）
-            sw.WriteLine();											        	//
+            sw.WriteLine();											        			//
+			sw.WriteLine( "; フレーム毎のsleep値[ms] (-1でスリープ無し, 0以上で毎フレームスリープ。動画キャプチャ等で活用下さい)" );	// #xxxxx 2011.11.27 yyagi add
+			sw.WriteLine( "; A sleep time[ms] per frame." );							//
+			sw.WriteLine( "SleepTimePerFrame={0}", this.nフレーム毎スリープms);			//
+			sw.WriteLine();											        			//
 
 			sw.WriteLine( "; ギター/ベース有効(0:OFF,1:ON)" );
 			sw.WriteLine( "Guitar={0}", this.bGuitar有効 ? 1 : 0 );
@@ -1197,6 +1211,8 @@ namespace DTXMania
 			sw.WriteLine( "RDVelocityMin={0}", this.nVelocityMin.RD );						//
 			sw.WriteLine();																	//
 			sw.WriteLine( ";-------------------" );
+			#endregion
+			#region [ Log ]
 			sw.WriteLine( "[Log]" );
 			sw.WriteLine();
 			sw.WriteLine( "; Log出力(0:OFF, 1:ON)" );
@@ -1212,6 +1228,9 @@ namespace DTXMania
 			sw.WriteLine( "TraceDTXDetails={0}", this.bLogDTX詳細ログ出力 ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( ";-------------------" );
+			#endregion
+
+			#region [ PlayOption ]
 			sw.WriteLine( "[PlayOption]" );
 			sw.WriteLine();
 			sw.WriteLine( "; DARKモード(0:OFF, 1:HALF, 2:FULL)" );
@@ -1297,6 +1316,9 @@ namespace DTXMania
 			sw.WriteLine();
 
 			sw.WriteLine( ";-------------------" );
+			#endregion
+
+			#region [ AutoPlay ]
 			sw.WriteLine( "[AutoPlay]" );
 			sw.WriteLine();
 			sw.WriteLine( "; 自動演奏(0:OFF, 1:ON)" );
@@ -1318,6 +1340,9 @@ namespace DTXMania
 			sw.WriteLine( "Bass={0}", this.bAutoPlay.Bass ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( ";-------------------" );
+			#endregion
+
+			#region [ HitRange ]
 			sw.WriteLine( "[HitRange]" );
 			sw.WriteLine();
 			sw.WriteLine( "; Perfect～Poor とみなされる範囲[ms]" );
@@ -1327,12 +1352,16 @@ namespace DTXMania
 			sw.WriteLine( "Poor={0}", this.nヒット範囲ms.Poor );
 			sw.WriteLine();
 			sw.WriteLine( ";-------------------" );
+			#endregion
+			#region [ GUID ]
 			sw.WriteLine( "[GUID]" );
 			sw.WriteLine();
 			foreach( KeyValuePair<int, string> pair in this.dicJoystick )
 			{
 				sw.WriteLine( "JoystickID={0},{1}", pair.Key, pair.Value );
 			}
+			#endregion
+			#region [ DrumsKeyAssign ]
 			sw.WriteLine();
 			sw.WriteLine( ";-------------------" );
 			sw.WriteLine( "; キーアサイン" );
@@ -1387,6 +1416,8 @@ namespace DTXMania
 			this.tキーの書き出し( sw, this.KeyAssign.Drums.LC );
 			sw.WriteLine();
 			sw.WriteLine();
+			#endregion
+			#region [ GuitarKeyAssign ]
 			sw.WriteLine( "[GuitarKeyAssign]" );
 			sw.WriteLine();
 			sw.Write( "R=" );
@@ -1411,6 +1442,8 @@ namespace DTXMania
 			this.tキーの書き出し( sw, this.KeyAssign.Guitar.Cancel );
 			sw.WriteLine();
 			sw.WriteLine();
+			#endregion
+			#region [ BassKeyAssign ]
 			sw.WriteLine( "[BassKeyAssign]" );
 			sw.WriteLine();
 			sw.Write( "R=" );
@@ -1435,12 +1468,15 @@ namespace DTXMania
 			this.tキーの書き出し( sw, this.KeyAssign.Bass.Cancel );
 			sw.WriteLine();
 			sw.WriteLine();
+			#endregion
+			#region [ SystemkeyAssign ]
 			sw.WriteLine( "[SystemKeyAssign]" );
 			sw.WriteLine();
 			sw.Write( "Capture=" );
 			this.tキーの書き出し( sw, this.KeyAssign.System.Capture );
 			sw.WriteLine();
 			sw.WriteLine();
+			#endregion
 			sw.Close();
 		}
 		public void tファイルから読み込み( string iniファイル名 )
@@ -1607,6 +1643,10 @@ namespace DTXMania
 													this.nウインドウheight = SampleFramework.GameWindowSize.Height;
 												}
 											}
+											else if ( str3.Equals( "DoubleClickFullScreen" ) )	// #26752 2011.11.27 yyagi
+											{
+												this.bIsAllowedDoubleClickFullscreen= C変換.bONorOFF( str4[ 0 ] );
+											}
 											else if ( str3.Equals( "VSyncWait" ) )
 											{
 												this.b垂直帰線待ちを行う = C変換.bONorOFF( str4[ 0 ] );
@@ -1614,6 +1654,10 @@ namespace DTXMania
 											else if ( str3.Equals( "BackSleep" ) )		// #23568 2010.11.04 ikanick add
 											{
 												this.n非フォーカス時スリープms = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す( str4, 0, 50, this.n非フォーカス時スリープms );
+											}
+											else if ( str3.Equals( "SleepTimePerFrame" ) )		// #23568 2011.11.27 yyagi
+											{
+												this.nフレーム毎スリープms = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す( str4, -1, 50, this.nフレーム毎スリープms );
 											}
 											else if ( str3.Equals( "Guitar" ) )
 											{
