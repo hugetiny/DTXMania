@@ -304,15 +304,18 @@ namespace FDK
 											break;
 										}
 									}
-									STInputEvent stevent = new STInputEvent();
-									stevent.nKey = pos;
-									stevent.b押された = false;
-									stevent.nTimeStamp = data.TimeStamp;
-									stevent.nVelocity = 0;
-									this.list入力イベント.Add( stevent );
+									if (pos != 0)								// #26871 2011.12.2 yyagi 条件追加してbButtonState[0] (-X軸入力)が壊されないよう修正
+									{
+										STInputEvent stevent = new STInputEvent();
+										stevent.nKey = pos;
+										stevent.b押された = false;
+										stevent.nTimeStamp = data.TimeStamp;
+										stevent.nVelocity = 0;
+										this.list入力イベント.Add(stevent);
 
-									this.bButtonState[ pos ] = false;
-									this.bButtonPullUp[ pos ] = true;
+										this.bButtonState[ pos ] = false;
+										this.bButtonPullUp[ pos ] = true;
+									}
 								}
 							}
 							#endregion
@@ -603,7 +606,7 @@ namespace FDK
 										break;
 									}
 								}
-								if ( this.bButtonState[ nWay ] == true )
+								if ( nWay != 0 )
 								{
 									STInputEvent stevent = new STInputEvent();
 									stevent.nKey = nWay;
