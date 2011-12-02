@@ -1978,7 +1978,7 @@ namespace DTXMania
 		}
 		protected void t進行描画・レーンフラッシュGB()
 		{
-			if ( ( CDTXMania.ConfigIni.eDark != Eダークモード.OFF ) && CDTXMania.ConfigIni.bGuitar有効 )
+			if ( ( CDTXMania.ConfigIni.eDark == Eダークモード.OFF ) && CDTXMania.ConfigIni.bGuitar有効 )
 			{
 				this.actLaneFlushGB.On進行描画();
 			}
