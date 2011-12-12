@@ -606,87 +606,95 @@ namespace DTXMania
 			public bool LT;
 			public bool FT;
 			public bool CY;
+			public bool RD;
 			public bool Guitar;
 			public bool Bass;
 			public bool this[ int index ]
 			{
 				get
 				{
-					switch ( index )
+					switch( index )
 					{
-						case (int) Eドラムレーン.LC:
+						case (int) Eレーン.LC:
 							return this.LC;
 
-						case (int) Eドラムレーン.HH:
+						case (int) Eレーン.HH:
 							return this.HH;
 
-						case (int) Eドラムレーン.SD:
+						case (int) Eレーン.SD:
 							return this.SD;
 
-						case (int) Eドラムレーン.BD:
+						case (int) Eレーン.BD:
 							return this.BD;
 
-						case (int) Eドラムレーン.HT:
+						case (int) Eレーン.HT:
 							return this.HT;
 
-						case (int) Eドラムレーン.LT:
+						case (int) Eレーン.LT:
 							return this.LT;
 
-						case (int) Eドラムレーン.FT:
+						case (int) Eレーン.FT:
 							return this.FT;
 
-						case (int) Eドラムレーン.CY:
+						case (int) Eレーン.CY:
 							return this.CY;
 
-						case (int) Eドラムレーン.GT:
+						case (int) Eレーン.RD:
+							return this.RD;
+
+						case (int) Eレーン.Guitar:
 							return this.Guitar;
 
-						case (int) Eドラムレーン.BS:
+						case (int) Eレーン.Bass:
 							return this.Bass;
 					}
 					throw new IndexOutOfRangeException();
 				}
 				set
 				{
-					switch ( index )
+					switch( index )
 					{
-						case (int) Eドラムレーン.LC:
+						case (int) Eレーン.LC:
 							this.LC = value;
 							return;
 
-						case (int) Eドラムレーン.HH:
+						case (int) Eレーン.HH:
 							this.HH = value;
 							return;
 
-						case (int) Eドラムレーン.SD:
+						case (int) Eレーン.SD:
 							this.SD = value;
 							return;
 
-						case (int) Eドラムレーン.BD:
+						case (int) Eレーン.BD:
 							this.BD = value;
 							return;
 
-						case (int) Eドラムレーン.HT:
+						case (int) Eレーン.HT:
 							this.HT = value;
 							return;
 
-						case (int) Eドラムレーン.LT:
+						case (int) Eレーン.LT:
 							this.LT = value;
 							return;
 
-						case (int) Eドラムレーン.FT:
+						case (int) Eレーン.FT:
 							this.FT = value;
 							return;
 
-						case (int) Eドラムレーン.CY:
+						case (int) Eレーン.CY:
 							this.CY = value;
 							return;
 
-						case (int) Eドラムレーン.CY + 1:
+						case (int) Eレーン.RD:
+							this.CY = value;
+							return;
+
+						case (int) Eレーン.Guitar:
 							this.Guitar = value;
 							return;
 
-						case (int) Eドラムレーン.CY + 2:
+						case (int) Eレーン.Bass:
 							this.Bass = value;
 							return;
 					}

@@ -224,8 +224,8 @@ namespace DTXMania
 			this.n現在のトップChip = ( CDTXMania.DTX.listChip.Count > 0 ) ? 0 : -1;
 			this.L最後に再生したHHの実WAV番号 = new List<int>( 16 );
 			this.n最後に再生したHHのチャンネル番号 = 0;
-			this.n最後に再生したギターの実WAV番号 = -1;
-			this.n最後に再生したベースの実WAV番号 = -1;
+			this.n最後に再生した実WAV番号.Guitar = -1;
+			this.n最後に再生した実WAV番号.Bass = -1;
 			for ( int i = 0; i < 50; i++ )
 			{
 				this.n最後に再生したBGMの実WAV番号[ i ] = -1;
@@ -513,16 +513,18 @@ namespace DTXMania
 		protected readonly int[] nチャンネル0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 8, 0 };
 		protected readonly int[] nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
 		protected readonly int[] nパッド0Atoチャンネル0A = new int[] { 0x11, 0x12, 0x13, 20, 0x15, 0x17, 0x16, 0x18, 0x19, 0x1a };
-		protected readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };
-		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };
+		protected readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };	// パッド画像のヒット処理用
+		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };	
 		protected STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含まない;
 		protected STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含む;
 		protected int n現在のトップChip = -1;
 		protected int[] n最後に再生したBGMの実WAV番号 = new int[ 50 ];
 		protected int n最後に再生したHHのチャンネル番号;
 		protected List<int> L最後に再生したHHの実WAV番号;		// #23921 2011.1.4 yyagi: change "int" to "List<int>", for recording multiple wav No.
-		protected int n最後に再生したギターの実WAV番号;
-		protected int n最後に再生したベースの実WAV番号;
+		protected STLANEVALUE<int> n最後に再生した実WAV番号;	// #26388 2011.11.8 yyagi: change "n最後に再生した実WAV番号.GUITAR" and "n最後に再生した実WAV番号.BASS"
+																//							into "n最後に再生した実WAV番号";
+//		protected int n最後に再生した実WAV番号.GUITAR;
+//		protected int n最後に再生した実WAV番号.BASS;
 	
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
@@ -808,24 +810,54 @@ namespace DTXMania
 		}
 		protected void tサウンド再生( CDTX.CChip pChip, long n再生開始システム時刻ms, E楽器パート part, int n音量, bool bモニタ, bool b音程をずらして再生 )
 		{
+			// mute sound (auto)
+			// 4A: HH
+			// 4B: CY
+			// 4C: RD
+			// 4D: LC
+			// 2A: Gt
+			// AA: Bs
+			//
+
 			if ( pChip != null )
 			{
+				bool overwrite = false;
 				switch ( part )
 				{
 					case E楽器パート.DRUMS:
+					#region [ DRUMS ]
 						{
 							int index = pChip.nチャンネル番号;
-							if ( ( index >= 0x11 ) && ( index <= 0x1a ) )
+							if ( ( 0x11 <= index ) && ( index <= 0x1a ) )
 							{
 								index -= 0x11;
 							}
+							else if ( ( 0x31 <= index ) && ( index <= 0x3a ) )
+							{
+								index -= 0x31;
+							}
+							// mute sound (auto)
+							// 4A: 84: HH (HO/HC)
+							// 4B: 85: CY
+							// 4C: 86: RD
+							// 4D: 87: LC
+							// 2A: 88: Gt
+							// AA: 89: Bs
+							else if ( 0x84 == index )	// 仮に今だけ追加 HHは消音処理があるので overwriteフラグ系の処理は改めて不要
+							{
+								index = 0;
+							}
+							else if ( ( 0x85 <= index ) && ( index <= 0x87 ) )	// 仮に今だけ追加
+							{
+								//            CY    RD    LC
+								int[] ch = { 0x16, 0x19, 0x1A };
+								pChip.nチャンネル番号 = ch[ pChip.nチャンネル番号 - 0x85 ];
+								index = pChip.nチャンネル番号 - 0x11;
+								overwrite = true;
+							}
 							else
 							{
-								if ( ( index < 0x31 ) || ( index > 0x3a ) )
-								{
-									return;
-								}
-								index -= 0x31;
+								return;
 							}
 							int nLane = this.nチャンネル0Atoレーン07[ index ];
 							if ( ( nLane == 1 ) &&	// 今回演奏するのがHC or HO
@@ -841,7 +873,7 @@ namespace DTXMania
 							{
 								// #23921 2011.1.4 yyagi: 2種類以上のオープンハイハットが発音済みだと、最後のHHOしか消せない問題に対応。
 #if TEST_NOTEOFFMODE	// 2011.1.1 yyagi test
-								if (CDTXMania.DTX.bHH演奏で直前のHHを消音する)
+								if (CDTXMania.DTX.b演奏で直前の音を消音する.HH)
 								{
 #endif
 								for ( int i = 0; i < this.L最後に再生したHHの実WAV番号.Count; i++ )		// #23921 2011.1.4 yyagi
@@ -857,7 +889,7 @@ namespace DTXMania
 								this.n最後に再生したHHのチャンネル番号 = pChip.nチャンネル番号;
 							}
 #if TEST_NOTEOFFMODE	// 2011.1.4 yyagi test
-							if (CDTXMania.DTX.bHH演奏で直前のHHを消音する)
+							if (CDTXMania.DTX.b演奏で直前の音を消音する.HH)
 							{
 #endif
 							if ( index == 0 || index == 7 || index == 0x20 || index == 0x27 )			// #23921 HOまたは不可視HO演奏時はそのチップ番号をストックしておく
@@ -874,32 +906,44 @@ namespace DTXMania
 #if TEST_NOTEOFFMODE	// 2011.1.4 yyagi test
 							}
 #endif
+							if ( overwrite )
+							{
+								CDTXMania.DTX.tWavの再生停止( this.n最後に再生した実WAV番号[index] );
+							}
 							CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, nLane, n音量, bモニタ );
+							this.n最後に再生した実WAV番号[ nLane ] = pChip.n整数値・内部番号;		// nLaneでなくindexにすると、LC(1A-11=09)とギター(enumで09)がかぶってLC音が消されるので注意
 							return;
 						}
+					#endregion
 					case E楽器パート.GUITAR:
+					#region [ GUITAR ]
 #if TEST_NOTEOFFMODE	// 2011.1.1 yyagi test
-						if (CDTXMania.DTX.bGUITAR演奏で直前のGUITARを消音する) {
+						if (CDTXMania.DTX.b演奏で直前の音を消音する.Guitar) {
 #endif
-						CDTXMania.DTX.tWavの再生停止( this.n最後に再生したギターの実WAV番号 );
+						CDTXMania.DTX.tWavの再生停止( this.n最後に再生した実WAV番号.Guitar );
 #if TEST_NOTEOFFMODE
 						}
 #endif
-						CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, 8, n音量, bモニタ, b音程をずらして再生 );
-						this.n最後に再生したギターの実WAV番号 = pChip.n整数値・内部番号;
+						CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, (int) Eレーン.Guitar, n音量, bモニタ, b音程をずらして再生 );
+						this.n最後に再生した実WAV番号.Guitar = pChip.n整数値・内部番号;
 						return;
-
+					#endregion
 					case E楽器パート.BASS:
+					#region [ BASS ]
 #if TEST_NOTEOFFMODE
-						if (CDTXMania.DTX.bBASS演奏で直前のBASSを消音する) {
+						if (CDTXMania.DTX.b演奏で直前の音を消音する.Bass) {
 #endif
-						CDTXMania.DTX.tWavの再生停止( this.n最後に再生したベースの実WAV番号 );
+						CDTXMania.DTX.tWavの再生停止( this.n最後に再生した実WAV番号.Bass );
 #if TEST_NOTEOFFMODE
 						}
 #endif
-						CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, 9, n音量, bモニタ, b音程をずらして再生 );
-						this.n最後に再生したベースの実WAV番号 = pChip.n整数値・内部番号;
+						CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, (int) Eレーン.Bass, n音量, bモニタ, b音程をずらして再生 );
+						this.n最後に再生した実WAV番号.Bass = pChip.n整数値・内部番号;
 						return;
+					#endregion
+
+					default:
+						break;
 				}
 			}
 		}
@@ -1538,8 +1582,7 @@ namespace DTXMania
 							pChip.bHit = true;
 							if ( configIni.bBGM音を発声する )
 							{
-								// yyagi: 10レーン目(RD?)でBGMを再生するよりは、あまり使われないFTレーンを使った方が負荷が軽くならないか？
-								dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, 10, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+								dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
 							}
 						}
 						break;
@@ -1762,12 +1805,6 @@ namespace DTXMania
 					case 0x81:
 					case 0x82:
 					case 0x83:
-					case 0x84:
-					case 0x85:
-					case 0x86:
-					case 0x87:
-					case 0x88:
-					case 0x89:
 					case 0x90:
 					case 0x91:
 					case 0x92:
@@ -1777,12 +1814,51 @@ namespace DTXMania
 							if ( configIni.bBGM音を発声する )
 							{
 								dTX.tWavの再生停止( this.n最後に再生したBGMの実WAV番号[ pChip.nチャンネル番号 - 0x61 ] );
-								dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, 10, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+								dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
 								this.n最後に再生したBGMの実WAV番号[ pChip.nチャンネル番号 - 0x61 ] = pChip.n整数値・内部番号;
 							}
 						}
 						break;
 					#endregion
+
+
+					#region [ 84-89: 仮: override sound ]	// #26338 2011.11.8 yyagi
+					case 0x84:	// HH (HO/HC)
+					case 0x85:	// CY
+					case 0x86:	// RD
+					case 0x87:	// LC
+					case 0x88:	// Guitar
+					case 0x89:	// Bass
+					// mute sound (auto)
+					// 4A: 84: HH (HO/HC)
+					// 4B: 85: CY
+					// 4C: 86: RD
+					// 4D: 87: LC
+					// 2A: 88: Gt
+					// AA: 89: Bs
+
+					//	CDTXMania.DTX.tWavの再生停止( this.n最後に再生した実WAV番号.Guitar );
+					//	CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, 8, n音量, bモニタ, b音程をずらして再生 );
+					//	this.n最後に再生した実WAV番号.Guitar = pChip.n整数値・内部番号;
+
+					//	protected void tサウンド再生( CDTX.CChip pChip, long n再生開始システム時刻ms, E楽器パート part, int n音量, bool bモニタ, bool b音程をずらして再生 )
+						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
+						{
+							pChip.bHit = true;
+							E楽器パート[] p = { E楽器パート.DRUMS, E楽器パート.DRUMS, E楽器パート.DRUMS, E楽器パート.DRUMS, E楽器パート.GUITAR, E楽器パート.BASS };
+
+							E楽器パート pp =  p[ pChip.nチャンネル番号 - 0x84 ];
+							
+//							if ( pp == E楽器パート.DRUMS ) {			// pChip.nチャンネル番号= ..... HHとか、ドラムの場合は変える。
+//								//            HC    CY    RD    LC
+//								int[] ch = { 0x11, 0x16, 0x19, 0x1A };
+//								pChip.nチャンネル番号 = ch[ pChip.nチャンネル番号 - 0x84 ]; 
+//							}
+							this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, pp, dTX.nモニタを考慮した音量( pp ) );
+						}
+						break;
+					#endregion
+
 					#region [ a0-a7: ベース演奏 ]
 					case 0xa0:	// ベース演奏
 					case 0xa1:
@@ -1906,7 +1982,7 @@ namespace DTXMania
 					{
 						pChip.bHit = true;
 					}
-					if ( configIni.bAutoPlay[ ((int) Eドラムレーン.GT - 1) + indexInst ] )	// このような、バグの入りやすい書き方(GT/BSのindex値が他と異なる)はいずれ見直したい
+					if ( configIni.bAutoPlay[ ((int) Eレーン.Guitar - 1) + indexInst ] )	// このような、バグの入りやすい書き方(GT/BSのindex値が他と異なる)はいずれ見直したい
 					{
 						pChip.bHit = true;								// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
 						this.actWailingBonus.Start( inst, this.r現在の歓声Chip[indexInst] );
@@ -2159,7 +2235,7 @@ namespace DTXMania
 			int R = ( inst == E楽器パート.GUITAR ) ? 0 : 3;
 			int G = R + 1;
 			int B = R + 2;
-			if ( bIsAutoPlay[ (int)Eドラムレーン.CY + indexInst ] )
+			if ( bIsAutoPlay[ (int) Eレーン.Guitar - 1 + indexInst ] )	// このような、バグの入りやすい書き方(GT/BSのindex値が他と異なる)はいずれ見直したい
 			{
 				CDTX.CChip chip = this.r次に来る指定楽器Chipを更新して返す(inst);
 				if ( chip != null )
@@ -2284,124 +2360,6 @@ namespace DTXMania
 				}
 			}
 		}
-
-// ダメージ/回復計算は、全部CAct演奏ゲージ共通クラスに隠蔽
-//#if true		// DAMAGELEVELTUNING
-//#region [ DAMAGELEVELTUNING ]
-//        // ----------------------------------
-//        public float[ , ] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damage/recover factors
-//            // drums,   guitar,  bass
-//            {  0.004f,  0.006f,  0.006f  },
-//            {  0.002f,  0.003f,  0.003f  },
-//            {  0.000f,  0.000f,  0.000f  },
-//            { -0.020f, -0.030f,	-0.030f  },
-//            { -0.050f, -0.050f, -0.050f  }
-//        };
-//        public float[] fDamageLevelFactor = {
-//            0.5f, 1.0f, 1.5f
-//        };
-//        // ----------------------------------
-//#endregion
-//#endif
-
-//        protected void t判定にあわせてゲージを増減する( E楽器パート screenmode, E楽器パート part, E判定 e今回の判定 )
-//        {
-//            double fDamage;
-//            int nRisky = this.nRisky_InitialVar;
-
-//#if true	// DAMAGELEVELTUNING
-//            switch ( e今回の判定 )
-//            {
-//                case E判定.Perfect:
-//                case E判定.Great:
-//                case E判定.Good:
-//                    fDamage = ( nRisky > 0 ) ? 0 : fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
-//                    break;
-//                case E判定.Poor:
-//                case E判定.Miss:
-//                    if ( nRisky > 0 )
-//                    {
-//                        fDamage = -1.0 / nRisky;
-//                        nRiskyTime--;
-//                    }
-//                    else
-//                    {
-//                        fDamage = fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
-//                    }
-//                    if ( e今回の判定 == E判定.Miss && nRisky == 0 )
-//                    {
-//                        fDamage *= fDamageLevelFactor[ (int) CDTXMania.ConfigIni.eダメージレベル ];
-//                    }
-//                    break;
-
-//                default:
-//                    fDamage = 0.0f;
-//                    break;
-//            }
-//#else													// before applying #23625 modifications
-//            switch (e今回の判定)
-//            {
-//                case E判定.Perfect:
-//                    fDamage = ( part == E楽器パート.DRUMS ) ? 0.01 : 0.015;
-//                    break;
-
-//                case E判定.Great:
-//                    fDamage = ( part == E楽器パート.DRUMS ) ? 0.006 : 0.009;
-//                    break;
-
-//                case E判定.Good:
-//                    fDamage = ( part == E楽器パート.DRUMS ) ? 0.002 : 0.003;
-//                    break;
-
-//                case E判定.Poor:
-//                    fDamage = ( part == E楽器パート.DRUMS ) ? 0.0 : 0.0;
-//                    break;
-
-//                case E判定.Miss:
-//                    fDamage = ( part == E楽器パート.DRUMS ) ? -0.035 : -0.035;
-//                    switch( CDTXMania.ConfigIni.eダメージレベル )
-//                    {
-//                        case Eダメージレベル.少ない:
-//                            fDamage *= 0.6;
-//                            break;
-
-//                        case Eダメージレベル.普通:
-//                            fDamage *= 1.0;
-//                            break;
-
-//                        case Eダメージレベル.大きい:
-//                            fDamage *= 1.6;
-//                            break;
-//                    }
-//                    break;
-
-//                default:
-//                    fDamage = 0.0;
-//                    break;
-//            }
-//#endif
-//            if ( screenmode == E楽器パート.DRUMS )			// ドラム演奏画面なら、ギター/ベースのダメージも全部ドラムのゲージに集約する
-//            {
-//                part = E楽器パート.DRUMS;
-//                this.actGauge.db現在のゲージ値[ (int) part ] += fDamage;
-//            }
-//            else
-//            {
-//                if ( nRisky > 0 )					// ギター画面且つRISKYなら、ギターとベースのゲージをセットで減少
-//                {
-//                    this.actGauge.db現在のゲージ値[ (int) E楽器パート.GUITAR ] += fDamage;
-//                    this.actGauge.db現在のゲージ値[ (int) E楽器パート.BASS   ] += fDamage;
-//                }
-//                else
-//                {
-//                    this.actGauge.db現在のゲージ値[ (int) part ] += fDamage;
-//                }
-//            }
-
-//            if ( this.actGauge.db現在のゲージ値[ (int) part ] > 1.0 )		// RISKY時は決してゲージが増加しないので、ギタレボモード時のギター/ベース両チェックはしなくて良い
-//                this.actGauge.db現在のゲージ値[ (int) part ] = 1.0;
-//        }
-//        //-----------------
         #endregion
 	}
 }

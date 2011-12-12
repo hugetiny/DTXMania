@@ -293,14 +293,14 @@ namespace DTXMania
 				return false;
 			}
 			this.tチップのヒット処理( nHitTime, pChip );
-			this.actLaneFlushD.Start( (Eドラムレーン) nLane, ( (float) n強弱度合い0to127 ) / 127f );
+			this.actLaneFlushD.Start( (Eレーン) nLane, ( (float) n強弱度合い0to127 ) / 127f );
 			this.actPad.Hit( nPad );
 			if( ( e判定 != E判定.Poor ) && ( e判定 != E判定.Miss ) )
 			{
 				bool flag = this.bフィルイン中;
 				bool flag2 = this.bフィルイン中 && this.bフィルイン区間の最後のChipである( pChip );
 				// bool flag3 = flag2;
-				this.actChipFireD.Start( (Eドラムレーン) nLane, flag, flag2, flag2 );
+				this.actChipFireD.Start( (Eレーン) nLane, flag, flag2, flag2 );
 			}
 			if( CDTXMania.ConfigIni.bドラム打音を発声する )
 			{
@@ -1443,7 +1443,7 @@ namespace DTXMania
 
 						#region [ *** ]
 						//-----------------------------
-						this.actLaneFlushD.Start( (Eドラムレーン) this.nパッド0Atoレーン07[ nPad ], ( (float) event2.nVelocity ) / 127f );
+						this.actLaneFlushD.Start( (Eレーン) this.nパッド0Atoレーン07[ nPad ], ( (float) event2.nVelocity ) / 127f );
 						this.actPad.Hit( this.nパッド0Atoパッド08[ nPad ] );
 						if( !CDTXMania.ConfigIni.bドラム打音を発声する )
 						{
@@ -1893,11 +1893,11 @@ namespace DTXMania
 				if ( ( configIni.bAutoPlay[ indexSevenLanes ] && !pChip.bHit ) && ( pChip.nバーからの距離dot.Drums < 0 ) )
 				{
 					pChip.bHit = true;
-					this.actLaneFlushD.Start( (Eドラムレーン) indexSevenLanes, ( (float) CInput管理.n通常音量 ) / 127f );
+					this.actLaneFlushD.Start( (Eレーン) indexSevenLanes, ( (float) CInput管理.n通常音量 ) / 127f );
 					bool flag = this.bフィルイン中;
 					bool flag2 = this.bフィルイン中 && this.bフィルイン区間の最後のChipである( pChip );
 					//bool flag3 = flag2;
-					this.actChipFireD.Start( (Eドラムレーン) indexSevenLanes, flag, flag2, flag2 );
+					this.actChipFireD.Start( (Eレーン) indexSevenLanes, flag, flag2, flag2 );
 					this.actPad.Hit( this.nチャンネル0Atoパッド08[ pChip.nチャンネル番号 - 0x11 ] );
 					this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
 					this.tチップのヒット処理( pChip.n発声時刻ms, pChip );
@@ -2093,7 +2093,7 @@ namespace DTXMania
 						{
 							if ( this.r現在の歓声Chip.Drums != null )
 							{
-								dTX.tチップの再生( this.r現在の歓声Chip.Drums, CDTXMania.Timer.nシステム時刻, 10, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+								dTX.tチップの再生( this.r現在の歓声Chip.Drums, CDTXMania.Timer.nシステム時刻, (int) Eレーン.BGM, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
 							}
 							else
 							{
@@ -2104,22 +2104,22 @@ namespace DTXMania
 						break;
 #if TEST_NOTEOFFMODE	// 2011.1.1 yyagi TEST
 								case 0x04:	// HH消音あり(従来同等)
-									CDTXMania.DTX.bHH演奏で直前のHHを消音する = true;
+									CDTXMania.DTX.b演奏で直前の音を消音する.HH = true;
 									break;
 								case 0x05:	// HH消音無し
-									CDTXMania.DTX.bHH演奏で直前のHHを消音する = false;
+									CDTXMania.DTX.b演奏で直前の音を消音する.HH = false;
 									break;
 								case 0x06:	// ギター消音あり(従来同等)
-									CDTXMania.DTX.bGUITAR演奏で直前のGUITARを消音する = true;
+									CDTXMania.DTX.b演奏で直前の音を消音する.Gutiar = true;
 									break;
 								case 0x07:	// ギター消音無し
-									CDTXMania.DTX.bGUITAR演奏で直前のGUITARを消音する = false;
+									CDTXMania.DTX.b演奏で直前の音を消音する.Gutiar = false;
 									break;
 								case 0x08:	// ベース消音あり(従来同等)
-									CDTXMania.DTX.bBASS演奏で直前のBASSを消音する = true;
+									CDTXMania.DTX.b演奏で直前の音を消音する.Bass = true;
 									break;
 								case 0x09:	// ベース消音無し
-									CDTXMania.DTX.bBASS演奏で直前のBASSを消音する = false;
+									CDTXMania.DTX.b演奏で直前の音を消音する.Bass = false;
 									break;
 #endif
 				}

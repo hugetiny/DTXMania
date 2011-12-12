@@ -19,19 +19,19 @@ namespace DTXMania
 		
 		// メソッド
 
-		public void Start( Eドラムレーン lane )
+		public void Start( Eレーン lane )
 		{
 			this.Start( lane, false, false, false );
 		}
-		public void Start( Eドラムレーン lane, bool bフィルイン )
+		public void Start( Eレーン lane, bool bフィルイン )
 		{
 			this.Start( lane, bフィルイン, false, false );
 		}
-		public void Start( Eドラムレーン lane, bool bフィルイン, bool b大波 )
+		public void Start( Eレーン lane, bool bフィルイン, bool b大波 )
 		{
 			this.Start( lane, bフィルイン, b大波, false );
 		}
-		public void Start( Eドラムレーン lane, bool bフィルイン, bool b大波, bool b細波 )
+		public void Start( Eレーン lane, bool bフィルイン, bool b大波, bool b細波 )
 		{
 			if( this.tx火花 != null )
 			{

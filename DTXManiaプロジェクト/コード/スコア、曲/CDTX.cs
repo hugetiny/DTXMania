@@ -1517,9 +1517,10 @@ namespace DTXMania
 		public string strフォルダ名;
 		public string TITLE;
 #if TEST_NOTEOFFMODE
-		public bool bHH演奏で直前のHHを消音する;
-		public bool bGUITAR演奏で直前のGUITARを消音する;
-		public bool bBASS演奏で直前のBASSを消音する;
+		public STLANEVALUE<bool> b演奏で直前の音を消音する;
+//		public bool bHH演奏で直前のHHを消音する;
+//		public bool bGUITAR演奏で直前のGUITARを消音する;
+//		public bool bBASS演奏で直前のBASSを消音する;
 #endif
 		// コンストラクタ
 
@@ -2410,7 +2411,7 @@ namespace DTXMania
 		{
 			if( pChip.n整数値・内部番号 >= 0 )
 			{
-				if( ( nLane < 0 ) || ( nLane > 10 ) )
+				if( ( nLane < (int) Eレーン.LC ) || ( (int) Eレーン.BGM < nLane ) )
 				{
 					throw new ArgumentOutOfRangeException();
 				}

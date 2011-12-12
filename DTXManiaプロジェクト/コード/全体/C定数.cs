@@ -178,9 +178,9 @@ namespace DTXMania
 		RIGHT,
 		OFF
 	}
-	internal enum Eドラムレーン
+	internal enum Eレーン
 	{
-		LC,
+		LC = 0,
 		HH,
 		SD,
 		BD,
@@ -188,8 +188,10 @@ namespace DTXMania
 		LT,
 		FT,
 		CY,
-		GT,		// AUTOレーン判定を容易にするため、便宜上定義しておく
-		BS
+		RD,		// 将来の独立レーン化/独立AUTO設定を見越して追加
+		Guitar,	// AUTOレーン判定を容易にするため、便宜上定義しておく
+		Bass,
+		BGM
 	}
 	internal enum Eログ出力
 	{
@@ -270,6 +272,99 @@ namespace DTXMania
 		}
 	}
 
+	/// <summary>
+	/// レーンの値を扱う汎用の構造体。列挙型"Eドラムレーン"に準拠。
+	/// </summary>
+	/// <typeparam name="T">値の型。</typeparam>
+	[StructLayout( LayoutKind.Sequential )]
+	public struct STLANEVALUE<T>
+	{
+		public T LC;
+		public T HH;
+		public T SD;
+		public T BD;
+		public T HT;
+		public T LT;
+		public T FT;
+		public T CY;
+		public T RD;
+		public T Guitar;
+		public T Bass;
+		public T BGM;
+
+		public T this[ int index ]
+		{
+			get
+			{
+				switch ( index )
+				{
+					case (int) Eレーン.LC:
+						return this.LC;
+					case (int) Eレーン.HH:
+						return this.HH;
+					case (int) Eレーン.SD:
+						return this.SD;
+					case (int) Eレーン.BD:
+						return this.BD;
+					case (int) Eレーン.HT:
+						return this.HT;
+					case (int) Eレーン.LT:
+						return this.LT;
+					case (int) Eレーン.FT:
+						return this.FT;
+					case (int) Eレーン.CY:
+						return this.CY;
+					case (int) Eレーン.RD:
+						return this.RD;
+					case (int) Eレーン.Guitar:
+						return this.Guitar;
+					case (int) Eレーン.Bass:
+						return this.Bass;
+				}
+				throw new IndexOutOfRangeException();
+			}
+			set
+			{
+				switch ( index )
+				{
+					case (int) Eレーン.LC:
+						this.LC = value;
+						return;
+					case (int) Eレーン.HH:
+						this.HH = value;
+						return;
+					case (int) Eレーン.SD:
+						this.SD = value;
+						return;
+					case (int) Eレーン.BD:
+						this.BD = value;
+						return;
+					case (int) Eレーン.HT:
+						this.HT = value;
+						return;
+					case (int) Eレーン.LT:
+						this.LT = value;
+						return;
+					case (int) Eレーン.FT:
+						this.FT = value;
+						return;
+					case (int) Eレーン.CY:
+						this.CY = value;
+						return;
+					case (int) Eレーン.RD:
+						this.RD = value;
+						return;
+					case (int) Eレーン.Guitar:
+						this.Guitar = value;
+						return;
+					case (int) Eレーン.Bass:
+						this.Bass = value;
+						return;
+				}
+				throw new IndexOutOfRangeException();
+			}
+		}
+	}
 
 	internal class C定数
 	{

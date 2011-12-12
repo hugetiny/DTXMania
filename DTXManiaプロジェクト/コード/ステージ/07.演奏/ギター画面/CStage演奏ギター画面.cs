@@ -459,22 +459,22 @@ namespace DTXMania
 			switch ( pChip.n整数値 )
 			{
 				case 0x04:	// HH消音あり(従来同等)
-					CDTXMania.DTX.bHH演奏で直前のHHを消音する = true;
+					CDTXMania.DTX.b演奏で直前の音を消音する.HH = true;
 					break;
 				case 0x05:	// HH消音無し
-					CDTXMania.DTX.bHH演奏で直前のHHを消音する = false;
+					CDTXMania.DTX.b演奏で直前の音を消音する.HH = false;
 					break;
 				case 0x06:	// ギター消音あり(従来同等)
-					CDTXMania.DTX.bGUITAR演奏で直前のGUITARを消音する = true;
+					CDTXMania.DTX.b演奏で直前の音を消音する.Guitar = true;
 					break;
 				case 0x07:	// ギター消音無し
-					CDTXMania.DTX.bGUITAR演奏で直前のGUITARを消音する = false;
+					CDTXMania.DTX.b演奏で直前の音を消音する.Guitar = false;
 					break;
 				case 0x08:	// ベース消音あり(従来同等)
-					CDTXMania.DTX.bBASS演奏で直前のBASSを消音する = true;
+					CDTXMania.DTX.b演奏で直前の音を消音する.Bass = true;
 					break;
 				case 0x09:	// ベース消音無し
-					CDTXMania.DTX.bBASS演奏で直前のBASSを消音する = false;
+					CDTXMania.DTX.b演奏で直前の音を消音する.Bass = false;
 					break;
 			}
 #endif
@@ -546,15 +546,15 @@ namespace DTXMania
 				if ( ( configIni.bAutoPlay.Bass && !pChip.bHit ) && ( pChip.nバーからの距離dot.Bass < 0 ) )
 				{
 					pChip.bHit = true;
-					if ( ( ( pChip.nチャンネル番号 & 4 ) != 0 ) || ( pChip.nチャンネル番号 == 160 ) )
+					if ( ( ( pChip.nチャンネル番号 & 4 ) != 0 ) || ( pChip.nチャンネル番号 == 0xA0 ) )
 					{
 						this.actChipFireGB.Start( 3 );
 					}
-					if ( ( ( pChip.nチャンネル番号 & 2 ) != 0 ) || ( pChip.nチャンネル番号 == 160 ) )
+					if ( ( ( pChip.nチャンネル番号 & 2 ) != 0 ) || ( pChip.nチャンネル番号 == 0xA0 ) )
 					{
 						this.actChipFireGB.Start( 4 );
 					}
-					if ( ( ( pChip.nチャンネル番号 & 1 ) != 0 ) || ( pChip.nチャンネル番号 == 160 ) )
+					if ( ( ( pChip.nチャンネル番号 & 1 ) != 0 ) || ( pChip.nチャンネル番号 == 0xA0 ) )
 					{
 						this.actChipFireGB.Start( 5 );
 					}
