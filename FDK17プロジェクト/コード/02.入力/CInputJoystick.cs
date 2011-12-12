@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -37,7 +37,9 @@ namespace FDK
 			{
 				if( ( instance.ObjectType & ObjectDeviceType.Axis ) != ObjectDeviceType.All )
 				{
-					this.devJoystick.GetObjectPropertiesById( (int) instance.ObjectType ).SetRange( -1000, 0x3e8 );
+					this.devJoystick.GetObjectPropertiesById( (int) instance.ObjectType ).SetRange( -1000, 1000 );
+					this.devJoystick.GetObjectPropertiesById( (int) instance.ObjectType ).DeadZone = 5000;		// 50%をデッドゾーンに設定
+																												// 軸をON/OFFの2値で使うならこれで十分
 				}
 			}
 			try
@@ -50,6 +52,8 @@ namespace FDK
 
 			for( int i = 0; i < this.bButtonState.Length; i++ )
 				this.bButtonState[ i ] = false;
+			for ( int i = 0; i < this.nPovState.Length; i++ )
+				this.nPovState[ i ] = -1;
 
 			this.timer = new CTimer( CTimer.E種別.MultiMedia );
 		}
@@ -87,13 +91,15 @@ namespace FDK
 
 		public void tポーリング( bool bWindowがアクティブ中, bool bバッファ入力を使用する )
 		{
-			for( int i = 0; i < 256; i++ )
+			#region [ bButtonフラグ初期化 ]
+			for ( int i = 0; i < 256; i++ )
 			{
 				this.bButtonPushDown[ i ] = false;
 				this.bButtonPullUp[ i ] = false;
 			}
+			#endregion
 
-			if( ( bWindowがアクティブ中 && !this.devJoystick.Acquire().IsFailure ) && !this.devJoystick.Poll().IsFailure )
+			if ( ( bWindowがアクティブ中 && !this.devJoystick.Acquire().IsFailure ) && !this.devJoystick.Poll().IsFailure )
 			{
 				this.list入力イベント = new List<STInputEvent>( 32 );
 
@@ -104,256 +110,152 @@ namespace FDK
 					var bufferedData = this.devJoystick.GetBufferedData();
 					if( Result.Last.IsSuccess && bufferedData != null )
 					{
-						foreach( JoystickState data in bufferedData )
+						foreach ( JoystickState data in bufferedData )
 						{
-							#region [ X軸－ ]
-							//-----------------------------
-							if( data.X < -500 )
+#if false
+//if ( 0 < data.X && data.X < 128 && 0 < data.Y && data.Y < 128 && 0 < data.Z && data.Z < 128 )
+{
+Trace.TraceInformation( "TS={0}: offset={4}, X={1},Y={2},Z={3}", data.TimeStamp, data.X, data.Y, data.Z, data.JoystickDeviceType);
+if ( data.JoystickDeviceType == (int) JoystickDeviceType.POV0 ||
+	 data.JoystickDeviceType == (int) JoystickDeviceType.POV1 ||
+	 data.JoystickDeviceType == (int) JoystickDeviceType.POV2 ||
+	 data.JoystickDeviceType == (int) JoystickDeviceType.POV3) {
+
+//if ( data.JoystickDeviceType== (int)JoystickDeviceType.POV0 )
+//{
+	 Debug.WriteLine( "POV0です!!" );
+}
+//Trace.TraceInformation( "TS={0}: X={1},Y={2},Z={3}", data.TimeStamp, data.X, data.Y, data.Z );
+string pp = "";
+int[] pp0 = data.GetPointOfViewControllers();
+for ( int ii = 0; ii < pp0.Length; ii++ )
+{
+pp += pp0[ ii ];
+}
+Trace.TraceInformation( "TS={0}: povs={1}", data.TimeStamp, pp );
+string pp2 = "", pp3 = "";
+for ( int ii = 0; ii < 32; ii++ )
+{
+pp2 += ( data.IsPressed( ii ) ) ? "1" : "0";
+pp3 += ( data.IsReleased( ii ) ) ? "1" : "0";
+}
+Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp, pp2, pp3 );
+}
+#endif
+							switch ( data.JoystickDeviceType )
 							{
-								STInputEvent event16 = new STInputEvent();
-								event16.nKey = 0;
-								event16.b押された = true;
-								event16.nTimeStamp = data.TimeStamp;
-								event16.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( event16 );
+								case (int)JoystickDeviceType.X:
+									#region [ X軸－ ]
+									//-----------------------------
+									bButtonUpDown( data, data.X, 0, 1 );
+									//-----------------------------
+									#endregion
+									#region [ X軸＋ ]
+									//-----------------------------
+									bButtonUpDown( data, data.X, 1, 0 );
+									//-----------------------------
+									#endregion
+									break;
+								case (int)JoystickDeviceType.Y:
+									#region [ Y軸－ ]
+									//-----------------------------
+									bButtonUpDown( data, data.Y, 2, 3 );
+									//-----------------------------
+									#endregion
+									#region [ Y軸＋ ]
+									//-----------------------------
+									bButtonUpDown( data, data.Y, 3, 2 );
+									#endregion
+									break;
+								case (int)JoystickDeviceType.Z:
+									#region [ Z軸－ ]
+									//-----------------------------
+									bButtonUpDown( data, data.Z, 4, 5 );
+									//-----------------------------
+									#endregion
+									#region [ Z軸＋ ]
+									//-----------------------------
+									bButtonUpDown( data, data.Z, 5, 4 );
+									#endregion
+									break;
+								case (int)JoystickDeviceType.POV0:
+								case (int)JoystickDeviceType.POV1:
+								case (int)JoystickDeviceType.POV2:
+								case (int)JoystickDeviceType.POV3:
+									// #24341 2011.3.12 yyagi: POV support
+									// #26880 2011.12.6 yyagi: improve to support "pullup" of POV buttons
+									#region [ POV HAT 4/8way ]
+									int[] povs = data.GetPointOfViewControllers();
+									if ( povs != null )
+									{
+										STInputEvent e = new STInputEvent();
+										int p = (int) data.JoystickDeviceType - (int) JoystickDeviceType.POV0;	// p = 0,1,2,3
+										int nPovDegree = povs[ p ];
+										int nWay = ( nPovDegree + 2250 ) / 4500;
+										if ( nWay == 8 ) nWay = 0;
+									//Debug.WriteLine( "POVS:" + povs[ 0 ].ToString( CultureInfo.CurrentCulture ) + ", " +stevent.nKey );
+//Debug.WriteLine( "nPovDegree=" + nPovDegree );
+										if ( nPovDegree == -1 )
+										{
+											e.nKey = 6 + 128 + this.nPovState[ p ];
+											this.nPovState[ p ] = -1;
+//Debug.WriteLine( "POVS離された" + data.TimeStamp + " " + e.nKey );
+											e.b押された = false;
+											e.nVelocity = 0;
+											this.bButtonState[ e.nKey ] = false;
+											this.bButtonPullUp[ e.nKey ] = true;
+										} else {
+											this.nPovState[ p ] = nWay;
+											e.nKey = 6 + 128 + nWay;
+											e.b押された = true;
+											e.nVelocity = CInput管理.n通常音量;
+											this.bButtonState[ e.nKey ] = true;
+											this.bButtonPushDown[ e.nKey ] = true;
+//Debug.WriteLine( "POVS押された" + data.TimeStamp + " " + e.nKey );
+										}
+										e.nTimeStamp = data.TimeStamp;
+										this.list入力イベント.Add( e );
+									}
+									#endregion
+									break;
+								default:
+									#region [ ボタン ]
+									//-----------------------------
+									for ( int i = 0; i < 32; i++ )
+									{
+										if ( data.IsPressed( i ) )
+										{
+											STInputEvent e = new STInputEvent();
+											e.nKey = 6 + i;
+											e.b押された = true;
+											e.b離された = false;
+											e.nTimeStamp = data.TimeStamp;
+											e.nVelocity = CInput管理.n通常音量;
+											this.list入力イベント.Add( e );
 
-								this.bButtonState[ 0 ] = true;
-								this.bButtonPushDown[ 0 ] = true;
-							}
-							else
-							{
-								STInputEvent event17 = new STInputEvent();
-								event17.nKey = 0;
-								event17.b押された = false;
-								event17.nTimeStamp = data.TimeStamp;
-								event17.nVelocity = 0;
-								this.list入力イベント.Add( event17 );
+											this.bButtonState[ 6 + i ] = true;
+											this.bButtonPushDown[ 6 + i ] = true;
+										}
+										else if ( data.IsReleased( i ) )
+										{
+											var ev = new STInputEvent()
+											{
+												nKey = 6 + i,
+												b押された = false,
+												b離された = true,
+												nTimeStamp = data.TimeStamp,
+												nVelocity = CInput管理.n通常音量,
+											};
+											this.list入力イベント.Add( ev );
 
-								this.bButtonState[ 0 ] = false;
-								this.bButtonPullUp[ 0 ] = true;
-							}
-							//-----------------------------
-							#endregion
-							#region [ X軸＋ ]
-							//-----------------------------
-							if( data.X > 500 )
-							{
-								STInputEvent event18 = new STInputEvent();
-								event18.nKey = 1;
-								event18.b押された = true;
-								event18.nTimeStamp = data.TimeStamp;
-								event18.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( event18 );
-
-								this.bButtonState[ 1 ] = true;
-								this.bButtonPushDown[ 1 ] = true;
-							}
-							else
-							{
-								STInputEvent event19 = new STInputEvent();
-								event19.nKey = 1;
-								event19.b押された = false;
-								event19.nTimeStamp = data.TimeStamp;
-								event19.nVelocity = 0;
-								this.list入力イベント.Add( event19 );
-
-								this.bButtonState[ 1 ] = false;
-								this.bButtonPullUp[ 1 ] = true;
-							}
-							//-----------------------------
-							#endregion
-							#region [ Y軸－ ]
-							//-----------------------------
-							if( data.Y < -500 )
-							{
-								STInputEvent event20 = new STInputEvent();
-								event20.nKey = 2;
-								event20.b押された = true;
-								event20.nTimeStamp = data.TimeStamp;
-								event20.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( event20 );
-
-								this.bButtonState[ 2 ] = true;
-								this.bButtonPushDown[ 2 ] = true;
-							}
-							else
-							{
-								STInputEvent event21 = new STInputEvent();
-								event21.nKey = 2;
-								event21.b押された = false;
-								event21.nTimeStamp = data.TimeStamp;
-								event21.nVelocity = 0;
-								this.list入力イベント.Add( event21 );
-
-								this.bButtonState[ 2 ] = false;
-								this.bButtonPullUp[ 2 ] = true;
-							}
-							//-----------------------------
-							#endregion
-							#region [ Y軸＋ ]
-							//-----------------------------
-							if( data.Y > 500 )
-							{
-								STInputEvent event22 = new STInputEvent();
-								event22.nKey = 3;
-								event22.b押された = true;
-								event22.nTimeStamp = data.TimeStamp;
-								event22.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( event22 );
-
-								this.bButtonState[ 3 ] = true;
-								this.bButtonPushDown[ 3 ] = true;
-							}
-							else
-							{
-								STInputEvent event23 = new STInputEvent();
-								event23.nKey = 3;
-								event23.b押された = false;
-								event23.nTimeStamp = data.TimeStamp;
-								event23.nVelocity = 0;
-								this.list入力イベント.Add( event23 );
-
-								this.bButtonState[ 3 ] = false;
-								this.bButtonPullUp[ 3 ] = true;
-							}
-							//-----------------------------
-							#endregion
-							#region [ Z軸－ ]
-							//-----------------------------
-							if( data.Z < -500 )
-							{
-								STInputEvent event24 = new STInputEvent();
-								event24.nKey = 4;
-								event24.b押された = true;
-								event24.nTimeStamp = data.TimeStamp;
-								event24.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( event24 );
-
-								this.bButtonState[ 4 ] = true;
-								this.bButtonPushDown[ 4 ] = true;
-							}
-							else
-							{
-								STInputEvent event25 = new STInputEvent();
-								event25.nKey = 4;
-								event25.b押された = false;
-								event25.nTimeStamp = data.TimeStamp;
-								event25.nVelocity = 0;
-								this.list入力イベント.Add( event25 );
-
-								this.bButtonState[ 4 ] = false;
-								this.bButtonPullUp[ 4 ] = true;
-							}
-							//-----------------------------
-							#endregion
-							#region [ Z軸＋ ]
-							//-----------------------------
-							if( data.Z > 500 )
-							{
-								STInputEvent event26 = new STInputEvent();
-								event26.nKey = 5;
-								event26.b押された = true;
-								event26.nTimeStamp = data.TimeStamp;
-								event26.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( event26 );
-
-								this.bButtonState[ 5 ] = true;
-								this.bButtonPushDown[ 5 ] = true;
-							}
-							else
-							{
-								STInputEvent event27 = new STInputEvent();
-								event27.nKey = 5;
-								event27.b押された = false;
-								event27.nTimeStamp = data.TimeStamp;
-								event27.nVelocity = 0;
-								this.list入力イベント.Add( event27 );
-
-								this.bButtonState[ 5 ] = false;
-								this.bButtonPullUp[ 5 ] = true;
-							}
-							//-----------------------------
-							#endregion
-							// #24341 2011.3.12 yyagi: POV support
-							#region [ POV HAT 4/8way (only single POV switch is supported)]
-							int[] povs = data.GetPointOfViewControllers();
-							if (povs != null) {
-								if (povs[0] >= 0) {
-									STInputEvent stevent = new STInputEvent();
-									int nPovDegree = povs[ 0 ];
-									int nWay = ( nPovDegree + 2250 ) / 4500;
-									if ( nWay == 8 ) nWay = 0;
-									stevent.nKey = 6 + 128 + nWay;
-//Debug.WriteLine( "POVS:" + povs[ 0 ].ToString( CultureInfo.CurrentCulture ) + ", " +stevent.nKey );
-									stevent.b押された = true;
-									stevent.nTimeStamp = data.TimeStamp;
-									stevent.nVelocity = CInput管理.n通常音量;
-									this.list入力イベント.Add( stevent );
-
-									this.bButtonState[ stevent.nKey ] = true;
-									this.bButtonPushDown[ stevent.nKey ] = true;
-								}
-								else
-								{
-									int pos = 0;
-									for ( int i = 6 + 0x80; i < 6 + 0x80 + 8; i++ )
-									{											// 離されたボタンを調べるために、元々押されていたボタンを探す。
-										if ( this.bButtonState[ i ] == true )	// DirectInputを直接いじるならこんなことしなくて良いのに、あぁ面倒。
-										{										// この処理が必要なために、POVを1個しかサポートできない。無念。
-											pos = i;
-											break;
+											this.bButtonState[ 6 + i ] = false;
+											this.bButtonPullUp[ 6 + i ] = true;
 										}
 									}
-									if (pos != 0)								// #26871 2011.12.2 yyagi 条件追加してbButtonState[0] (-X軸入力)が壊されないよう修正
-									{
-										STInputEvent stevent = new STInputEvent();
-										stevent.nKey = pos;
-										stevent.b押された = false;
-										stevent.nTimeStamp = data.TimeStamp;
-										stevent.nVelocity = 0;
-										this.list入力イベント.Add(stevent);
-
-										this.bButtonState[ pos ] = false;
-										this.bButtonPullUp[ pos ] = true;
-									}
-								}
+									//-----------------------------
+									#endregion
+									break;
 							}
-							#endregion
-
-							#region [ ボタン ]
-							//-----------------------------
-							for( int i = 0; i < 32; i++ )
-							{
-								if( data.IsPressed( i ) )
-								{
-									STInputEvent event28 = new STInputEvent();
-									event28.nKey = 6 + i;
-									event28.b押された = true;
-									event28.b離された = false;
-									event28.nTimeStamp = data.TimeStamp;
-									event28.nVelocity = CInput管理.n通常音量;
-									this.list入力イベント.Add( event28 );
-
-									this.bButtonState[ 6 + i ] = true;
-									this.bButtonPushDown[ 6 + i ] = true;
-								}
-								else if( data.IsReleased( i ) )
-								{
-									var ev = new STInputEvent() {
-										nKey = 6 + i,
-										b押された = false,
-										b離された = true,
-										nTimeStamp = data.TimeStamp,
-										nVelocity = CInput管理.n通常音量,
-									};
-									this.list入力イベント.Add( ev );
-
-									this.bButtonState[ 6 + i ] = false;
-									this.bButtonPullUp[ 6 + i ] = true;
-								}
-							}
-							//-----------------------------
-							#endregion
 						}
 					}
 					//-----------------------------
@@ -570,12 +472,47 @@ namespace FDK
 						}
 						//-----------------------------
 						#endregion
+						#region [ ボタン ]
+						//-----------------------------
+						bool bIsButtonPressedReleased = false;
+						bool[] buttons = currentState.GetButtons();
+						for( int j = 0; ( j < buttons.Length ) && ( j < 128 ); j++ )
+						{
+							if( this.bButtonState[ 6 + j ] == false && buttons[ j ] )
+							{
+								STInputEvent item = new STInputEvent();
+								item.nKey = 6 + j;
+								item.b押された = true;
+								item.nTimeStamp = this.timer.nシステム時刻;
+								item.nVelocity = CInput管理.n通常音量;
+								this.list入力イベント.Add( item );
+
+								this.bButtonState[ 6 + j ] = true;
+								this.bButtonPushDown[ 6 + j ] = true;
+								bIsButtonPressedReleased = true;
+							}
+							else if( this.bButtonState[ 6 + j ] == true && !buttons[ j ] )
+							{
+								STInputEvent event3 = new STInputEvent();
+								event3.nKey = 6 + j;
+								event3.b押された = false;
+								event3.nTimeStamp = this.timer.nシステム時刻;
+								event3.nVelocity = CInput管理.n通常音量;
+								this.list入力イベント.Add( event3 );
+
+								this.bButtonState[ 6 + j ] = false;
+								this.bButtonPullUp[ 6 + j ] = true;
+								bIsButtonPressedReleased = true;
+							}
+						}
+						//-----------------------------
+						#endregion
 						// #24341 2011.3.12 yyagi: POV support
 						#region [ POV HAT 4/8way (only single POV switch is supported)]
 						int[] povs = currentState.GetPointOfViewControllers();
 						if ( povs != null )
 						{
-							if ( povs[ 0 ] >= 0)
+							if ( povs[ 0 ] >= 0 )
 							{
 								int nPovDegree = povs[ 0 ];
 								int nWay = ( nPovDegree + 2250 ) / 4500;
@@ -595,7 +532,7 @@ namespace FDK
 									this.bButtonPushDown[ stevent.nKey ] = true;
 								}
 							}
-							else
+							else if ( bIsButtonPressedReleased == false )	// #xxxxx 2011.12.3 yyagi 他のボタンが何も押され/離されてない＝POVが離された
 							{
 								int nWay = 0;
 								for ( int i = 6 + 0x80; i < 6 + 0x80 + 8; i++ )
@@ -621,44 +558,13 @@ namespace FDK
 							}
 						}
 						#endregion
-						#region [ ボタン ]
-						//-----------------------------
-						bool[] buttons = currentState.GetButtons();
-						for( int j = 0; ( j < buttons.Length ) && ( j < 128 ); j++ )
-						{
-							if( this.bButtonState[ 6 + j ] == false && buttons[ j ] )
-							{
-								STInputEvent item = new STInputEvent();
-								item.nKey = 6 + j;
-								item.b押された = true;
-								item.nTimeStamp = this.timer.nシステム時刻;
-								item.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( item );
-
-								this.bButtonState[ 6 + j ] = true;
-								this.bButtonPushDown[ 6 + j ] = true;
-							}
-							else if( this.bButtonState[ 6 + j ] == true && !buttons[ j ] )
-							{
-								STInputEvent event3 = new STInputEvent();
-								event3.nKey = 6 + j;
-								event3.b押された = false;
-								event3.nTimeStamp = this.timer.nシステム時刻;
-								event3.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( event3 );
-
-								this.bButtonState[ 6 + j ] = false;
-								this.bButtonPullUp[ 6 + j ] = true;
-							}
-						}
-						//-----------------------------
-						#endregion
 					}
 					//-----------------------------
 					#endregion
 				}
 			}
 		}
+
 		public bool bキーが押された( int nButton )
 		{
 			return this.bButtonPushDown[ nButton ];
@@ -707,10 +613,72 @@ namespace FDK
 		//-----------------
 		private bool[] bButtonPullUp = new bool[ 0x100 ];
 		private bool[] bButtonPushDown = new bool[ 0x100 ];
-		private bool[] bButtonState = new bool[ 0x100 ];
+		private bool[] bButtonState = new bool[ 0x100 ];		// 0-5: XYZ, 6 - 0x128+5: buttons, 0x128+6 - 0x128+6+8: POV/HAT
+		private int[] nPovState = new int[ 4 ];					// POVの現在値を保持
 		private bool bDispose完了済み;
 		private Joystick devJoystick;
 		private CTimer timer;
+
+		private void bButtonUpDown( JoystickState data, int axisdata, int target, int contrary )	// #26871 2011.12.3 軸の反転に対応するためにリファクタ
+		{
+			int targetsign = ( target < contrary ) ? -1 : 1;
+			if ( Math.Abs( axisdata ) > 500 && ( targetsign == Math.Sign( axisdata ) ) )			// 軸の最大値の半分を超えていて、かつ
+			{
+				if ( bDoUpDownCore( target, data, false ) )											// 直前までは超えていなければ、今回ON
+				{
+					//Debug.WriteLine( "X-ON " + data.TimeStamp + " " + axisdata );
+				}
+				else
+				{
+					//Debug.WriteLine( "X-ONx " + data.TimeStamp + " " + axisdata );
+				}
+				bDoUpDownCore( contrary, data, true );												// X軸+ == ON から X軸-のONレンジに来たら、X軸+はOFF
+			}
+			else if ( ( axisdata < 0 && targetsign < 0 ) || ( axisdata > 0 && targetsign > 0 ) )	// 軸の最大値の半分を超えておらず、かつ  
+			{
+				//Debug.WriteLine( "X-OFF? " + data.TimeStamp + " " + axisdata );
+				if ( bDoUpDownCore( target, data, true ) )											// 直前までは超えていたのならば、今回OFF
+				{
+					//Debug.WriteLine( "X-OFF " + data.TimeStamp + " " + axisdata );
+				}
+				else if ( bDoUpDownCore( contrary, data, true ) )									// X軸+ == ON から X軸-のOFFレンジにきたら、X軸+はOFF
+				{
+					//Debug.WriteLine( "X-OFFx " + data.TimeStamp + " " + axisdata );
+				}
+			}
+		}
+
+		/// <summary>
+		/// 必要に応じて軸ボタンの上げ下げイベントを発生する
+		/// </summary>
+		/// <param name="target">軸ボタン番号 0=-X 1=+X ... 5=+Z</param>
+		/// <param name="data"></param>
+		/// <param name="currentMode">直前のボタン状態 true=押されていた</param>
+		/// <returns>上げ下げイベント発生時true</returns>
+		private bool bDoUpDownCore( int target, JoystickState data, bool lastMode )
+		{
+			if ( this.bButtonState[ target ] == lastMode )
+			{
+				STInputEvent e = new STInputEvent();
+				e.nKey = target;
+				e.b押された = !lastMode;
+				e.nTimeStamp = data.TimeStamp;
+				e.nVelocity = ( lastMode ) ? 0 : CInput管理.n通常音量;
+				this.list入力イベント.Add( e );
+
+				this.bButtonState[ target ] = !lastMode;
+				if ( lastMode )
+				{
+					this.bButtonPullUp[ target ] = true;
+				}
+				else
+				{
+					this.bButtonPushDown[ target ] = true;
+				}
+				return true;
+			}
+			return false;
+		}
 		//-----------------
 		#endregion
 	}
