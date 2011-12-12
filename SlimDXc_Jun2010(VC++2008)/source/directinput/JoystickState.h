@@ -66,6 +66,7 @@ namespace SlimDX
 			int fry;
 			int frz;
 			array<int>^ fsliders;
+			int dwOfs;											// 2011.12.3 yyagi; to get POVS/HAT updaate
 
 			JoystickState( const DIJOYSTATE2 &joystate );
 
@@ -318,6 +319,11 @@ namespace SlimDX
 			property int TorqueZ
 			{
 				int get() { return frz; }
+			}
+
+			property int JoystickDeviceType
+			{
+				int get() { return dwOfs; }
 			}
 
 			bool IsPressed( int button ) { return pressedButtons[button]; }
