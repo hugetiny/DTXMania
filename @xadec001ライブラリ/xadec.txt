@@ -1,0 +1,134 @@
+XA デコードライブラリ xadec.dll
+2001/03/03 by S.Nakamoto
+
+■このDLLは？
+　BandJAMで使用しているXAフォーマットのデータを展開するためのDLLです。
+　コレを使用することで、他のアプリケーションでもXAデータを扱うことが
+　可能になります。
+
+■導入方法
+　xadec.hとxadec.libをプロジェクトに組み込んでください。
+　xadec.dllは実行ファイルと同じフォルダにコピーしてください。
+　なお、xadec.libはVisualC++ 6.0用です。他の開発環境での動作は保証しません。
+　この場合はLoadLibraryとGetProcAddressを駆使して組み込んでください。
+
+■構造体
+　typedef struct _XAHEADER {
+　	ULONG id;
+　	ULONG nDataLen;
+　	ULONG nSamples;
+　	USHORT nSamplesPerSec;
+　	UCHAR nBits;
+　	UCHAR nChannels;
+　	ULONG nLoopPtr;
+　	SHORT befL[2];
+　	SHORT befR[2];
+　	UCHAR pad[4];
+　} XAHEADER;
+
+　XAデータの先頭に付いているヘッダです。
+　主に使用するであろうメンバのみ解説します。
+　▼id
+　　識別用の値です。この値はxadec.hに_XAIDとして定義されています。
+　▼nDataLen
+　　データ部のサイズです。
+　▼nSamples
+　　展開後のサンプル数です。
+　▼nSamplesPerSec
+　　再生レートです。
+　▼nBits
+　　圧縮ビット数です。
+　　4/6/8のいずれかです。
+
+
+　typedef struct _XASTREAMHEADER {
+　	UCHAR *pSrc;
+　	ULONG nSrcLen;
+　	ULONG nSrcUsed;
+　	UCHAR *pDst;
+　	ULONG nDstLen;
+　	ULONG nDstUsed;
+　} XASTREAMHEADER;
+
+　xaDecodeConvertに引き渡す情報です。
+　▼pSrc:
+　　展開元データ
+　▼nSrcLen:
+　　pSrcのサイズ
+　▼nSrcUsed:
+　　展開されたデータサイズ
+　▼pDst:
+　　展開先データ
+　▼nDstLen:
+　　pDstのサイズ
+　▼nDstUsed:
+　　展開されたデータサイズ
+
+
+■関数解説
+　HXASTREAM xaDecodeOpen(XAHEADER *pxah, WAVEFORMATEX *pwfx);
+　▼pxah(in)
+　　XAのヘッダ
+　▼pwfx(out)
+　　WAVEFORMATEX
+　▼返り値
+　　XAストリームハンドル(失敗でNULL)
+
+　XAストリームをopenします。
+　成功すると、ハンドルが返り、pwfxに適切な値が設定されます。
+
+　BOOL xaDecodeClose(HXASTREAM hxas);
+　▼hxas(in)
+　　XAストリームハンドル
+　▼返り値
+　　成功->TRUE 失敗->FALSE
+
+　XAストリームをcloseします。
+　ストリームの使用が終了したら、必ずこの関数でcloseしてください。
+
+　BOOL xaDecodeSize(HXASTREAM hxas, ULONG slen, ULONG *pdlen);
+　▼hxas(in)
+　　XAストリームハンドル
+　▼slen(in)
+　　入力サイズ
+　▼pdlen(out)
+　　出力サイズ
+　▼返り値
+　　成功->TRUE 失敗->FALSE
+
+　指定したXAストリームにおいて、slenのサイズのデータを展開するために
+　必要な配列のサイズを返します。
+　XAヘッダのnDataLenを与えると、全てのデータを展開するために必要な
+　サイズを返します。
+
+BOOL xaDecodeConvert(HXASTREAM hxas, XASTREAMHEADER *psh);
+　▼hxas(in)
+　　XAストリームハンドル
+　▼psh(in/out)
+　　展開情報
+　▼返り値
+　　成功->TRUE 失敗->FALSE
+
+　XAデータを展開します。
+　展開にどれだけのデータが使用されたかは、psh->nSrcUsedで調べることが
+　できます。
+　また、どれだけのデータが展開されたかは、psh->nDstUsedで調べることが
+　できます。
+
+■サンプルについて
+　sample.cにサンプルソースを記述しておきました。
+　ハッキリ言ってこのdoc読むより、サンプルを見ていただいた方が
+　わかりやすいと思います(^^;
+
+■再配布について
+　このDLLを使用している「フリーソフトウェア」に限り、xadec.dll単体を
+　組み込んでの配布を許可します。
+　市販ソフトやシェアウェアなどには絶対に組み込まないでください。
+
+■免責
+　このプログラムは無保証です。
+　当DLLを使用して発生した如何なる不具合もこちらは一切責任を持ちかねます。
+
+■連絡先
+　http://www.bandjam.net/
+　中本 進一(webmaster@bandjam.net)

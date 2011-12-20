@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{9f7723e3-79ee-4377-8884-b3b78e2a7e88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="General">
+      <UniqueIdentifier>{99262fb2-c384-496c-b4dd-e652a8ee5829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{98b536ad-b83f-4836-a1ca-5a014e94ea15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MIDI">
+      <UniqueIdentifier>{ed387006-8c7b-4e57-b740-dcd71971286a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sound">
+      <UniqueIdentifier>{f8ceee0c-8309-42b5-8976-991fa5b2562f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%40作成資料">
+      <UniqueIdentifier>{34d6d94a-668d-4675-8880-e4e94fc40466}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CAvi.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurface.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurfaceManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureManager.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadJPEG.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadPNG.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Activity.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CArrayList.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CCounter.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3DApplication.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CD3DDisplay.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CFile.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CFileMM.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandLineParser.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CSetString.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimer.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="DTX.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="FDKError.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="fifo.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="GetDXVersion.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="MD5.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="SerializeFileIO.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="str2float.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowPositions.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="CDirectInput.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CMIDIInput.cpp">
+      <Filter>MIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="CMIDIOutput.cpp">
+      <Filter>MIDI</Filter>
+    </ClCompile>
+    <ClCompile Include="COgg.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CSound.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundManager.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundStream.cpp">
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CAvi.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CSurface.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CSurfaceManager.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureManager.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadJPEG.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadPNG.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Activity.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CArrayList.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CCounter.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3DApplication.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CD3DDisplay.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CFile.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CFileMM.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandLineParser.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CSet.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CSetString.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimer.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="DTX.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="FDKError.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="fifo.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="GetDXVersion.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="MD5.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="SerializeFileIO.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="str2float.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowPositions.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="CDirectInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="CMIDIInput.h">
+      <Filter>MIDI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMIDIOutput.h">
+      <Filter>MIDI</Filter>
+    </ClInclude>
+    <ClInclude Include="COgg.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="CSound.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoundManager.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoundStream.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="fdk10.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="%40作成資料\FDKのフロー.ppt">
+      <Filter>%40作成資料</Filter>
+    </None>
+    <None Include="%40作成資料\FDKを使うアプリのPJの作り方.txt">
+      <Filter>%40作成資料</Filter>
+    </None>
+  </ItemGroup>
+</Project>
