@@ -1,6 +1,6 @@
 // stdafx.h
 // FDK と利用アプリの両方で不変的な（めったに修正されない）もの。
-// FDK 内部のクラスは stdafx.h だけを include し、利用アプリは fdk9.h を include する。
+// FDK 内部のクラスは stdafx.h だけを include し、利用アプリは fdk10.h を include する。
 
 #pragma once
 
