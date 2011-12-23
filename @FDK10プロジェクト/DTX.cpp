@@ -771,11 +771,24 @@ void DTX::LoadDTX()
 			this->strMIDI = p;
 			continue;
 		}
-		// #PANEL 
+		// #PANEL
+		TCHAR *q = p;
 		if( IsCommand( &p, _T("PANEL") ) )
 		{
-			this->strPanel = p;
-			continue;
+			int isNotNum = 0;								// #26010 2011.12.23 yyagi: #PAN EL (WAV”Ô†=EL‚Ì#PAN)‚ğ#PANEL‚ÆŒë‰ğ‚µ‚È‚¢‚æ‚¤A
+			for( int i = 0; i < strlen(p); i++) {			// ‘±‚«‚ª”’l‚©‚Ç‚¤‚©‚ğ”»’f‚·‚é
+				if( !_istdigit( p[i] ) && p[i] != '-' && p[i] != '+' )
+				{
+					isNotNum = 1;
+					break;
+				}
+			}
+			if( isNotNum )			// •¶š‚ªŠÜ‚Ü‚ê‚Ä‚¢‚½‚È‚ç#PANEL, ”’l‚Ì‚İ‚È‚ç#PAN
+			{
+				this->strPanel = p;
+				continue;
+			}
+			p = q;
 		}
 		// #DTXVPLAYSPEED 
 		if( IsCommand( &p, _T("DTXVPLAYSPEED") ) && this->bDTXV )
