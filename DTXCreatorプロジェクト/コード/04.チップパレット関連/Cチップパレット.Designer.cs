@@ -53,113 +53,80 @@
 			// 
 			// toolStripツールバー
 			// 
-			this.toolStripツールバー.AccessibleDescription = null;
-			this.toolStripツールバー.AccessibleName = null;
-			resources.ApplyResources( this.toolStripツールバー, "toolStripツールバー" );
-			this.toolStripツールバー.BackgroundImage = null;
-			this.toolStripツールバー.Font = null;
 			this.toolStripツールバー.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStripツールバー.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.toolStripSplitButton表示形式,
             this.toolStripSeparator1,
             this.toolStripButton上移動,
             this.toolStripButton下移動} );
+			resources.ApplyResources( this.toolStripツールバー, "toolStripツールバー" );
 			this.toolStripツールバー.Name = "toolStripツールバー";
 			// 
 			// toolStripSplitButton表示形式
 			// 
-			this.toolStripSplitButton表示形式.AccessibleDescription = null;
-			this.toolStripSplitButton表示形式.AccessibleName = null;
-			resources.ApplyResources( this.toolStripSplitButton表示形式, "toolStripSplitButton表示形式" );
-			this.toolStripSplitButton表示形式.BackgroundImage = null;
 			this.toolStripSplitButton表示形式.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem大きなアイコン,
             this.toolStripMenuItem小さなアイコン,
             this.toolStripMenuItem一覧,
             this.toolStripMenuItem詳細} );
 			this.toolStripSplitButton表示形式.Image = global::DTXCreator.Properties.Resources.表示形式選択;
+			resources.ApplyResources( this.toolStripSplitButton表示形式, "toolStripSplitButton表示形式" );
 			this.toolStripSplitButton表示形式.Name = "toolStripSplitButton表示形式";
 			this.toolStripSplitButton表示形式.ButtonClick += new System.EventHandler( this.toolStripSplitButton表示形式_ButtonClick );
 			// 
 			// toolStripMenuItem大きなアイコン
 			// 
-			this.toolStripMenuItem大きなアイコン.AccessibleDescription = null;
-			this.toolStripMenuItem大きなアイコン.AccessibleName = null;
-			resources.ApplyResources( this.toolStripMenuItem大きなアイコン, "toolStripMenuItem大きなアイコン" );
-			this.toolStripMenuItem大きなアイコン.BackgroundImage = null;
 			this.toolStripMenuItem大きなアイコン.Name = "toolStripMenuItem大きなアイコン";
-			this.toolStripMenuItem大きなアイコン.ShortcutKeyDisplayString = null;
+			resources.ApplyResources( this.toolStripMenuItem大きなアイコン, "toolStripMenuItem大きなアイコン" );
 			this.toolStripMenuItem大きなアイコン.Click += new System.EventHandler( this.toolStripMenuItem大きなアイコン_Click );
 			// 
 			// toolStripMenuItem小さなアイコン
 			// 
-			this.toolStripMenuItem小さなアイコン.AccessibleDescription = null;
-			this.toolStripMenuItem小さなアイコン.AccessibleName = null;
-			resources.ApplyResources( this.toolStripMenuItem小さなアイコン, "toolStripMenuItem小さなアイコン" );
-			this.toolStripMenuItem小さなアイコン.BackgroundImage = null;
 			this.toolStripMenuItem小さなアイコン.Name = "toolStripMenuItem小さなアイコン";
-			this.toolStripMenuItem小さなアイコン.ShortcutKeyDisplayString = null;
+			resources.ApplyResources( this.toolStripMenuItem小さなアイコン, "toolStripMenuItem小さなアイコン" );
 			this.toolStripMenuItem小さなアイコン.Click += new System.EventHandler( this.toolStripMenuItem小さなアイコン_Click );
 			// 
 			// toolStripMenuItem一覧
 			// 
-			this.toolStripMenuItem一覧.AccessibleDescription = null;
-			this.toolStripMenuItem一覧.AccessibleName = null;
-			resources.ApplyResources( this.toolStripMenuItem一覧, "toolStripMenuItem一覧" );
-			this.toolStripMenuItem一覧.BackgroundImage = null;
 			this.toolStripMenuItem一覧.Name = "toolStripMenuItem一覧";
-			this.toolStripMenuItem一覧.ShortcutKeyDisplayString = null;
+			resources.ApplyResources( this.toolStripMenuItem一覧, "toolStripMenuItem一覧" );
 			this.toolStripMenuItem一覧.Click += new System.EventHandler( this.toolStripMenuItem一覧_Click );
 			// 
 			// toolStripMenuItem詳細
 			// 
-			this.toolStripMenuItem詳細.AccessibleDescription = null;
-			this.toolStripMenuItem詳細.AccessibleName = null;
-			resources.ApplyResources( this.toolStripMenuItem詳細, "toolStripMenuItem詳細" );
-			this.toolStripMenuItem詳細.BackgroundImage = null;
 			this.toolStripMenuItem詳細.Name = "toolStripMenuItem詳細";
-			this.toolStripMenuItem詳細.ShortcutKeyDisplayString = null;
+			resources.ApplyResources( this.toolStripMenuItem詳細, "toolStripMenuItem詳細" );
 			this.toolStripMenuItem詳細.Click += new System.EventHandler( this.toolStripMenuItem詳細_Click );
 			// 
 			// toolStripSeparator1
 			// 
-			this.toolStripSeparator1.AccessibleDescription = null;
-			this.toolStripSeparator1.AccessibleName = null;
-			resources.ApplyResources( this.toolStripSeparator1, "toolStripSeparator1" );
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			resources.ApplyResources( this.toolStripSeparator1, "toolStripSeparator1" );
 			// 
 			// toolStripButton上移動
 			// 
-			this.toolStripButton上移動.AccessibleDescription = null;
-			this.toolStripButton上移動.AccessibleName = null;
-			resources.ApplyResources( this.toolStripButton上移動, "toolStripButton上移動" );
-			this.toolStripButton上移動.BackgroundImage = null;
 			this.toolStripButton上移動.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButton上移動.Image = global::DTXCreator.Properties.Resources.上移動;
+			resources.ApplyResources( this.toolStripButton上移動, "toolStripButton上移動" );
 			this.toolStripButton上移動.Name = "toolStripButton上移動";
 			this.toolStripButton上移動.Click += new System.EventHandler( this.toolStripButton上移動_Click );
 			// 
 			// toolStripButton下移動
 			// 
-			this.toolStripButton下移動.AccessibleDescription = null;
-			this.toolStripButton下移動.AccessibleName = null;
-			resources.ApplyResources( this.toolStripButton下移動, "toolStripButton下移動" );
-			this.toolStripButton下移動.BackgroundImage = null;
 			this.toolStripButton下移動.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
 			this.toolStripButton下移動.Image = global::DTXCreator.Properties.Resources.下移動;
+			resources.ApplyResources( this.toolStripButton下移動, "toolStripButton下移動" );
 			this.toolStripButton下移動.Name = "toolStripButton下移動";
 			this.toolStripButton下移動.Click += new System.EventHandler( this.toolStripButton下移動_Click );
 			// 
 			// listViewチップリスト
 			// 
-			this.listViewチップリスト.AccessibleDescription = null;
-			this.listViewチップリスト.AccessibleName = null;
-			resources.ApplyResources( this.listViewチップリスト, "listViewチップリスト" );
-			this.listViewチップリスト.BackgroundImage = null;
 			this.listViewチップリスト.Columns.AddRange( new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderラベル,
             this.columnHeader番号,
             this.columnHeaderファイル} );
+			this.listViewチップリスト.ContextMenuStrip = this.contextMenuStripリスト用;
+			resources.ApplyResources( this.listViewチップリスト, "listViewチップリスト" );
 			this.listViewチップリスト.FullRowSelect = true;
 			this.listViewチップリスト.GridLines = true;
 			this.listViewチップリスト.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -202,39 +169,25 @@
 			// 
 			// contextMenuStripリスト用
 			// 
-			this.contextMenuStripリスト用.AccessibleDescription = null;
-			this.contextMenuStripリスト用.AccessibleName = null;
-			resources.ApplyResources( this.contextMenuStripリスト用, "contextMenuStripリスト用" );
-			this.contextMenuStripリスト用.BackgroundImage = null;
-			this.contextMenuStripリスト用.Font = null;
 			this.contextMenuStripリスト用.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItemパレットから削除する} );
 			this.contextMenuStripリスト用.Name = "contextMenuStripリスト用";
+			resources.ApplyResources( this.contextMenuStripリスト用, "contextMenuStripリスト用" );
 			// 
 			// toolStripMenuItemパレットから削除する
 			// 
-			this.toolStripMenuItemパレットから削除する.AccessibleDescription = null;
-			this.toolStripMenuItemパレットから削除する.AccessibleName = null;
-			resources.ApplyResources( this.toolStripMenuItemパレットから削除する, "toolStripMenuItemパレットから削除する" );
-			this.toolStripMenuItemパレットから削除する.BackgroundImage = null;
 			this.toolStripMenuItemパレットから削除する.Name = "toolStripMenuItemパレットから削除する";
-			this.toolStripMenuItemパレットから削除する.ShortcutKeyDisplayString = null;
+			resources.ApplyResources( this.toolStripMenuItemパレットから削除する, "toolStripMenuItemパレットから削除する" );
 			this.toolStripMenuItemパレットから削除する.Click += new System.EventHandler( this.toolStripMenuItemパレットから削除する_Click );
 			// 
 			// Cチップパレット
 			// 
-			this.AccessibleDescription = null;
-			this.AccessibleName = null;
 			this.AllowDrop = true;
 			resources.ApplyResources( this, "$this" );
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackgroundImage = null;
-			this.ControlBox = false;
 			this.Controls.Add( this.listViewチップリスト );
 			this.Controls.Add( this.toolStripツールバー );
-			this.Font = null;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-			this.Icon = null;
 			this.Name = "Cチップパレット";
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
