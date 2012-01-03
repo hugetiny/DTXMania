@@ -19,7 +19,7 @@ namespace DTXMania
 	{
 		// プロパティ
 
-		public static readonly string VERSION = "091(110709)";
+		public static readonly string VERSION = "092(111223)";
 //		public static readonly string VERSION = "086(101120)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
