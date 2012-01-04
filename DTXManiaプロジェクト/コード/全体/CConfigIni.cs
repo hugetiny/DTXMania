@@ -433,6 +433,7 @@ namespace DTXMania
 		public Eダークモード eDark;
 		public EFTGroup eFTGroup;
 		public EHHGroup eHHGroup;
+		public EBDGroup eBDGroup;					// #27029 2012.1.4 from add
 		public E打ち分け時の再生の優先順位 eHitSoundPriorityCY;
 		public E打ち分け時の再生の優先順位 eHitSoundPriorityFT;
 		public E打ち分け時の再生の優先順位 eHitSoundPriorityHH;
@@ -981,6 +982,7 @@ namespace DTXMania
 			this.bバッファ入力を行う = true;
 			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
 			this.bIsAllowedDoubleClickFullscreen = true;	// #26752 2011.11.26 ダブルクリックでのフルスクリーンモード移行を許可
+			this.eBDGroup = EBDGroup.打ち分ける;		// #27029 2012.1.4 from HHPedalとBassPedalのグルーピング
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1094,6 +1096,9 @@ namespace DTXMania
 			sw.WriteLine( "; CY/RD 打ち分けモード(0:CY|RD, 1:CY&RD)" );
 			sw.WriteLine( "CYGroup={0}", (int) this.eCYGroup );
 			sw.WriteLine();
+			sw.WriteLine( "; FP/BD 打ち分けモード(0:FP|BD, 1:FP&BD)" );		// #27029 2012.1.4 from
+			sw.WriteLine( "BDGroup={0}", (int) this.eBDGroup );				// 
+			sw.WriteLine();													//
 			sw.WriteLine( "; 打ち分け時の再生音の優先順位(HHGroup)(0:Chip>Pad, 1:Pad>Chip)" );
 			sw.WriteLine( "HitSoundPriorityHH={0}", (int) this.eHitSoundPriorityHH );
 			sw.WriteLine();
@@ -1695,7 +1700,11 @@ namespace DTXMania
 											{
 												this.eCYGroup = (ECYGroup) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eCYGroup );
 											}
-											else if ( str3.Equals( "HitSoundPriorityHH" ) )
+											else if( str3.Equals( "BDGroup" ) )		// #27029 2012.1.4 from
+											{
+												this.eBDGroup = (EBDGroup) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eBDGroup );
+											}
+											else if( str3.Equals( "HitSoundPriorityHH" ) )
 											{
 												this.eHitSoundPriorityHH = (E打ち分け時の再生の優先順位) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eHitSoundPriorityHH );
 											}

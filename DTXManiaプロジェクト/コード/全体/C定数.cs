@@ -22,6 +22,11 @@ namespace DTXMania
 		左シンバルのみ打ち分ける,
 		全部共通
 	}
+	public enum EBDGroup		// #27029 2012.1.4 from add
+	{
+		打ち分ける,
+		どっちもBD
+	}
 	public enum Eダークモード
 	{
 		OFF,
