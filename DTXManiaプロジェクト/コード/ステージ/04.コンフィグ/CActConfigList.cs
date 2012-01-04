@@ -309,6 +309,11 @@ namespace DTXMania
 				"CY-0: CY|RD\n CY and RD are separated.\nCY-1: CY&RD\n CY and RD are grouped.",
 				new string[] { "CY-0", "CY-1" } );
 			this.list項目リスト.Add( this.iSystemCYGroup );
+			this.iSystemBDGroup = new CItemList( "BD Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eBDGroup,		// #27029 2012.1.4 from
+				"バス数設定：\nハイハットペダルをバスとして利用する\n方法を指定します。\n  BD-0 ... FP | BD\n  BD-1 ... FP & BD\n",	//
+				"BD-0: FP|BD\n HHFootPelda is HiHat.\nBD-1: FP&BD\n HHFootPedal is Bass.",											//
+				new string[] { "BD-0", "BD-1" } );																					//
+			this.list項目リスト.Add( this.iSystemBDGroup );																			//
 
 			this.iSystemCymbalFree = new CItemToggle( "CymbalFree", CDTXMania.ConfigIni.bシンバルフリー,
 			"シンバルフリーモード：\n左シンバル・右シンバルの区別をなく\nします。ライドシンバルまで区別をな\nくすか否かは、CYGroup に従います。\n",
@@ -1201,6 +1206,7 @@ namespace DTXMania
 		private CItemToggle iSystemFullscreen;
 //		private CItemToggle iSystemGuitar;
 		private CItemList iSystemHHGroup;
+		private CItemList iSystemBDGroup;		// #27029 2012.1.4 from
 		private CItemToggle iSystemHitSound;
 		private CItemList iSystemHitSoundPriorityCY;
 		private CItemList iSystemHitSoundPriorityFT;
@@ -1397,7 +1403,6 @@ namespace DTXMania
 			CDTXMania.ConfigIni.b演奏音を強調する.Bass = this.iSystemSoundMonitorBass.bON;
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass = this.iSystemMinComboBass.n現在の値;
 		}
-
 		private void tConfigIniへ記録する・Drums()
 		{
 			CDTXMania.ConfigIni.bAutoPlay.LC = this.iDrumsLeftCymbal.bON;
@@ -1421,6 +1426,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eHHGroup = (EHHGroup) this.iSystemHHGroup.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eFTGroup = (EFTGroup) this.iSystemFTGroup.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eCYGroup = (ECYGroup) this.iSystemCYGroup.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eBDGroup = (EBDGroup) this.iSystemBDGroup.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eHitSoundPriorityHH = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityHH.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eHitSoundPriorityFT = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityFT.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eHitSoundPriorityCY = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityCY.n現在選択されている項目番号;
