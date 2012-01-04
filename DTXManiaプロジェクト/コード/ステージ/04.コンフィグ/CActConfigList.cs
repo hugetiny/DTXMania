@@ -600,6 +600,10 @@ namespace DTXMania
 			{
 				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.RD );
 			}
+			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsFP )			// #27029 2012.1.4 from
+			{																							//
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.FP );	//
+			}																							//
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarR )
 			{
 				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.R );
@@ -779,6 +783,10 @@ namespace DTXMania
 				"ドラムのキー設定：\nライドシンバルへのキーの割り当て\nを設定します。",
 				"Drums key assign:\nTo assign key/pads for RideCymbal\n button.");
 			this.list項目リスト.Add(this.iKeyAssignDrumsRD);
+			this.iKeyAssignDrumsFP = new CItemBase( "FootPedal",									// #27029 2012.1.4 from
+				"ドラムのキー設定：\nハイハットのフットペダルへのキーの\n割り当てを設定します。",	//
+				"Drums key assign:\nTo assign key/pads for HHFootPedal\n button." );				//
+			this.list項目リスト.Add( this.iKeyAssignDrumsFP );										//
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignDrums;
 		}
@@ -1164,6 +1172,7 @@ namespace DTXMania
 		private CItemBase iKeyAssignDrumsRD;
 		private CItemBase iKeyAssignDrumsReturnToMenu;
 		private CItemBase iKeyAssignDrumsSD;
+		private CItemBase iKeyAssignDrumsFP;	// #27029 2012.1.4 from
 		private CItemBase iKeyAssignGuitarB;
 		private CItemBase iKeyAssignGuitarCancel;
 		private CItemBase iKeyAssignGuitarDecide;
