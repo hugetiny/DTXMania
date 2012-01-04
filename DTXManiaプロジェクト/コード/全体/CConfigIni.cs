@@ -203,6 +203,17 @@ namespace DTXMania
 						this.padLC = value;
 					}
 				}
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] FP
+				{
+					get
+					{
+						return this.padFP;
+					}
+					set
+					{
+						this.padFP = value;
+					}
+				}
 				public CConfigIni.CKeyAssign.STKEYASSIGN[] Capture
 				{
 					get
@@ -249,6 +260,9 @@ namespace DTXMania
 
 							case (int) EKeyConfigPad.LC:
 								return this.padLC;
+
+							case (int) EKeyConfigPad.FP:	// #27029 2012.1.4 from
+								return this.padFP;			//
 
 							case (int) EKeyConfigPad.Capture:
 								return this.padCapture;
@@ -299,6 +313,10 @@ namespace DTXMania
 								this.padLC = value;
 								return;
 
+							case (int) EKeyConfigPad.FP:
+								this.padFP = value;
+								return;
+
 							case (int) EKeyConfigPad.Capture:
 								this.padCapture = value;
 								return;
@@ -319,6 +337,7 @@ namespace DTXMania
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padLT_Wail;
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padRD;
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padSD_G;
+				private CConfigIni.CKeyAssign.STKEYASSIGN[] padFP;
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padCapture;
 				//-----------------
 				#endregion
@@ -1428,6 +1447,9 @@ namespace DTXMania
 			sw.Write( "LC=" );
 			this.tキーの書き出し( sw, this.KeyAssign.Drums.LC );
 			sw.WriteLine();
+			sw.Write( "FP=" );										// #27029 2012.1.4 from
+			this.tキーの書き出し( sw, this.KeyAssign.Drums.FP );	//
+			sw.WriteLine();											//
 			sw.WriteLine();
 			#endregion
 			#region [ GuitarKeyAssign ]
@@ -2123,46 +2145,50 @@ namespace DTXMania
 									//-----------------------------
 									case Eセクション種別.DrumsKeyAssign:
 										{
-											if ( str3.Equals( "HH" ) )
+											if( str3.Equals( "HH" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HH );
 											}
-											else if ( str3.Equals( "SD" ) )
+											else if( str3.Equals( "SD" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.SD );
 											}
-											else if ( str3.Equals( "BD" ) )
+											else if( str3.Equals( "BD" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.BD );
 											}
-											else if ( str3.Equals( "HT" ) )
+											else if( str3.Equals( "HT" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HT );
 											}
-											else if ( str3.Equals( "LT" ) )
+											else if( str3.Equals( "LT" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.LT );
 											}
-											else if ( str3.Equals( "FT" ) )
+											else if( str3.Equals( "FT" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.FT );
 											}
-											else if ( str3.Equals( "CY" ) )
+											else if( str3.Equals( "CY" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.CY );
 											}
-											else if ( str3.Equals( "HO" ) )
+											else if( str3.Equals( "HO" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HHO );
 											}
-											else if ( str3.Equals( "RD" ) )
+											else if( str3.Equals( "RD" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.RD );
 											}
-											else if ( str3.Equals( "LC" ) )
+											else if( str3.Equals( "LC" ) )
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.LC );
 											}
+											else if( str3.Equals( "FP" ) )										// #27029 2012.1.4 from
+											{																	//
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.FP );	//
+											}																	//
 											continue;
 										}
 									//-----------------------------
@@ -2334,8 +2360,8 @@ namespace DTXMania
 			{
 				for( int j = 0; j <= (int)EKeyConfigPad.Capture; j++ )
 				{
-					this.KeyAssign[ i ][ j ] = new CKeyAssign.STKEYASSIGN[ 0x10 ];
-					for( int k = 0; k < 0x10; k++ )
+					this.KeyAssign[ i ][ j ] = new CKeyAssign.STKEYASSIGN[ 16 ];
+					for( int k = 0; k < 16; k++ )
 					{
 						this.KeyAssign[ i ][ j ][ k ] = new CKeyAssign.STKEYASSIGN( E入力デバイス.不明, 0, 0 );
 					}
@@ -2442,6 +2468,7 @@ CY=K022,M049,M052,M055,M057,M091
 HO=K010,M046,M092
 RD=K020,M051,M053,M059,M089
 LC=K026
+FP=M044
 
 [GuitarKeyAssign]
 
