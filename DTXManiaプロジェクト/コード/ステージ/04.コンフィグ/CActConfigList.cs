@@ -717,6 +717,18 @@ namespace DTXMania
 				{
 					t項目リストの設定・Bass();
 				}
+				else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemBDGroup )					// #27029 2012.1.4 from
+				{
+					// HH Group ... HH-0 → HH-2 / HH-1 → HH-3 / HH-2 → 変更なし / HH-3 → 変更なし
+					if( this.iSystemHHGroup.n現在選択されている項目番号 == (int) EHHGroup.全部打ち分ける )
+						this.iSystemHHGroup.n現在選択されている項目番号 = (int) EHHGroup.左シンバルのみ打ち分ける;
+					if( this.iSystemHHGroup.n現在選択されている項目番号 == (int) EHHGroup.ハイハットのみ打ち分ける )
+						this.iSystemHHGroup.n現在選択されている項目番号 = (int) EHHGroup.全部共通;
+
+					// HH Priority ... C>P → 変更なし / P>C → C>P
+					if( this.iSystemHitSoundPriorityHH.n現在選択されている項目番号 == (int) E打ち分け時の再生の優先順位.PadがChipより優先 )
+						this.iSystemHitSoundPriorityHH.n現在選択されている項目番号 = (int) E打ち分け時の再生の優先順位.ChipがPadより優先;
+				}
 			}
 		}
 		public void t項目リストの設定・Exit()
