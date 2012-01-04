@@ -203,15 +203,15 @@ namespace DTXMania
 						this.padLC = value;
 					}
 				}
-				public CConfigIni.CKeyAssign.STKEYASSIGN[] FP
+				public CConfigIni.CKeyAssign.STKEYASSIGN[] HP
 				{
 					get
 					{
-						return this.padFP;
+						return this.padHP;
 					}
 					set
 					{
-						this.padFP = value;
+						this.padHP = value;
 					}
 				}
 				public CConfigIni.CKeyAssign.STKEYASSIGN[] Capture
@@ -261,8 +261,8 @@ namespace DTXMania
 							case (int) EKeyConfigPad.LC:
 								return this.padLC;
 
-							case (int) EKeyConfigPad.FP:	// #27029 2012.1.4 from
-								return this.padFP;			//
+							case (int) EKeyConfigPad.HP:	// #27029 2012.1.4 from
+								return this.padHP;			//
 
 							case (int) EKeyConfigPad.Capture:
 								return this.padCapture;
@@ -313,8 +313,8 @@ namespace DTXMania
 								this.padLC = value;
 								return;
 
-							case (int) EKeyConfigPad.FP:
-								this.padFP = value;
+							case (int) EKeyConfigPad.HP:
+								this.padHP = value;
 								return;
 
 							case (int) EKeyConfigPad.Capture:
@@ -337,7 +337,7 @@ namespace DTXMania
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padLT_Wail;
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padRD;
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padSD_G;
-				private CConfigIni.CKeyAssign.STKEYASSIGN[] padFP;
+				private CConfigIni.CKeyAssign.STKEYASSIGN[] padHP;
 				private CConfigIni.CKeyAssign.STKEYASSIGN[] padCapture;
 				//-----------------
 				#endregion
@@ -1115,7 +1115,7 @@ namespace DTXMania
 			sw.WriteLine( "; CY/RD 打ち分けモード(0:CY|RD, 1:CY&RD)" );
 			sw.WriteLine( "CYGroup={0}", (int) this.eCYGroup );
 			sw.WriteLine();
-			sw.WriteLine( "; FP/BD 打ち分けモード(0:FP|BD, 1:FP&BD)" );		// #27029 2012.1.4 from
+			sw.WriteLine( "; HP/BD 打ち分けモード(0:HP|BD, 1:HP&BD)" );		// #27029 2012.1.4 from
 			sw.WriteLine( "BDGroup={0}", (int) this.eBDGroup );				// 
 			sw.WriteLine();													//
 			sw.WriteLine( "; 打ち分け時の再生音の優先順位(HHGroup)(0:Chip>Pad, 1:Pad>Chip)" );
@@ -1447,8 +1447,8 @@ namespace DTXMania
 			sw.Write( "LC=" );
 			this.tキーの書き出し( sw, this.KeyAssign.Drums.LC );
 			sw.WriteLine();
-			sw.Write( "FP=" );										// #27029 2012.1.4 from
-			this.tキーの書き出し( sw, this.KeyAssign.Drums.FP );	//
+			sw.Write( "HP=" );										// #27029 2012.1.4 from
+			this.tキーの書き出し( sw, this.KeyAssign.Drums.HP );	//
 			sw.WriteLine();											//
 			sw.WriteLine();
 			#endregion
@@ -2185,9 +2185,9 @@ namespace DTXMania
 											{
 												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.LC );
 											}
-											else if( str3.Equals( "FP" ) )										// #27029 2012.1.4 from
+											else if( str3.Equals( "HP" ) )										// #27029 2012.1.4 from
 											{																	//
-												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.FP );	//
+												this.tキーの読み出しと設定( str4, this.KeyAssign.Drums.HP );	//
 											}																	//
 											continue;
 										}

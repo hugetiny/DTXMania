@@ -58,7 +58,7 @@ namespace DTXMania
 		HHO		= 7,
 		RD		= 8,
 		LC		= 9,
-		FP		= 10,	// #27029 2012.1.4 from
+		HP		= 10,	// #27029 2012.1.4 from
 		UNKNOWN = 99
 	}
 	public enum EKeyConfigPad		// # 24609 
@@ -80,7 +80,7 @@ namespace DTXMania
 		HHO		= Eパッド.HHO,
 		RD		= Eパッド.RD,
 		LC		= Eパッド.LC,
-		FP		= Eパッド.FP,		// #27029 2012.1.4 from
+		HP		= Eパッド.HP,		// #27029 2012.1.4 from
 		Capture,
 		UNKNOWN = Eパッド.UNKNOWN
 	}

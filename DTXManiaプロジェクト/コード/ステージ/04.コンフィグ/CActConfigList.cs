@@ -310,8 +310,8 @@ namespace DTXMania
 				new string[] { "CY-0", "CY-1" } );
 			this.list項目リスト.Add( this.iSystemCYGroup );
 			this.iSystemBDGroup = new CItemList( "BD Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eBDGroup,		// #27029 2012.1.4 from
-				"バス数設定：\nハイハットペダルをバスとして利用する\n方法を指定します。\n  BD-0 ... FP | BD\n  BD-1 ... FP & BD\n",	//
-				"BD-0: FP|BD\n HHFootPelda is HiHat.\nBD-1: FP&BD\n HHFootPedal is Bass.",											//
+				"バス数設定：\nハイハットペダルをバスとして利用する\n方法を指定します。\n  BD-0 ... HP | BD\n  BD-1 ... FP & BD\n",	//
+				"BD-0: HP|BD\n HiHatPedal is HiHat.\nBD-1: HP&BD\n HiHatPedal is Bass.",											//
 				new string[] { "BD-0", "BD-1" } );																					//
 			this.list項目リスト.Add( this.iSystemBDGroup );																			//
 
@@ -605,9 +605,9 @@ namespace DTXMania
 			{
 				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.RD );
 			}
-			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsFP )			// #27029 2012.1.4 from
+			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsHP )			// #27029 2012.1.4 from
 			{																							//
-				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.FP );	//
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.HP );	//
 			}																							//
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarR )
 			{
@@ -788,10 +788,10 @@ namespace DTXMania
 				"ドラムのキー設定：\nライドシンバルへのキーの割り当て\nを設定します。",
 				"Drums key assign:\nTo assign key/pads for RideCymbal\n button.");
 			this.list項目リスト.Add(this.iKeyAssignDrumsRD);
-			this.iKeyAssignDrumsFP = new CItemBase( "FootPedal",									// #27029 2012.1.4 from
+			this.iKeyAssignDrumsHP = new CItemBase( "HiHatPedal",									// #27029 2012.1.4 from
 				"ドラムのキー設定：\nハイハットのフットペダルへのキーの\n割り当てを設定します。",	//
-				"Drums key assign:\nTo assign key/pads for HHFootPedal\n button." );				//
-			this.list項目リスト.Add( this.iKeyAssignDrumsFP );										//
+				"Drums key assign:\nTo assign key/pads for HiHatPedal\n button." );					//
+			this.list項目リスト.Add( this.iKeyAssignDrumsHP );										//
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignDrums;
 		}
@@ -1177,7 +1177,7 @@ namespace DTXMania
 		private CItemBase iKeyAssignDrumsRD;
 		private CItemBase iKeyAssignDrumsReturnToMenu;
 		private CItemBase iKeyAssignDrumsSD;
-		private CItemBase iKeyAssignDrumsFP;	// #27029 2012.1.4 from
+		private CItemBase iKeyAssignDrumsHP;	// #27029 2012.1.4 from
 		private CItemBase iKeyAssignGuitarB;
 		private CItemBase iKeyAssignGuitarCancel;
 		private CItemBase iKeyAssignGuitarDecide;
