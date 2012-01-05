@@ -478,7 +478,8 @@ namespace DTXMania
 
 		protected override void t入力処理・ドラム()
 		{
-			for( int nPad = 0; nPad <= 10; nPad++ )		// #27029 2012.1.4 from: <10 to <=10; Eパッドの要素が１つ（HP）増えたため。
+			for( int nPad = 0; nPad < (int) Eパッド.MAX; nPad++ )		// #27029 2012.1.4 from: <10 to <=10; Eパッドの要素が１つ（HP）増えたため。
+																		//		  2012.1.5 yyagi: (int)Eパッド.MAX に変更。Eパッドの要素数への依存を無くすため。
 			{
 				List<STInputEvent> listInputEvent = CDTXMania.Pad.GetEvents( E楽器パート.DRUMS, (Eパッド) nPad );
 
@@ -522,7 +523,8 @@ namespace DTXMania
 						continue;
 
 					long nTime = inputEvent.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
-					int nInputAdjustTime = bIsAutoPlay[ this.nチャンネル0Atoレーン07[ (int) nPad ] ] ? 0 : nInputAdjustTimeMs.Drums;
+					int nPad09 = ( nPad == (int) Eパッド.HP ) ? (int) Eパッド.BD : nPad;		// #27029 2012.1.5 yyagi
+					int nInputAdjustTime = bIsAutoPlay[ this.nチャンネル0Atoレーン07[ (int) nPad09 ] ] ? 0 : nInputAdjustTimeMs.Drums;
 
 					bool bHitted = false;
 

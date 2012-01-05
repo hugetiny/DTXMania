@@ -39,7 +39,7 @@ namespace DTXMania
 		普通	= 1,
 		大きい	= 2
 	}
-	public enum Eパッド
+	public enum Eパッド			// 演奏用のenum。ここを修正するときは、次に出てくる EKeyConfigPad と EパッドFlag もセットで修正すること。
 	{
 		HH		= 0,
 		R		= 0,
@@ -59,9 +59,10 @@ namespace DTXMania
 		RD		= 8,
 		LC		= 9,
 		HP		= 10,	// #27029 2012.1.4 from
+		MAX,			// 門番用として定義
 		UNKNOWN = 99
 	}
-	public enum EKeyConfigPad		// # 24609 
+	public enum EKeyConfigPad		// #24609 キーコンフィグで使うenum。capture要素あり。
 	{
 		HH		= Eパッド.HH,
 		R		= Eパッド.R,
@@ -105,7 +106,8 @@ namespace DTXMania
 		HHO		= 128,
 		RD		= 256,
 		LC		= 512,
-		UNKNOWN = 1024
+		HP		= 1024,				// #27029
+		UNKNOWN = 2048
 	}
 	public enum Eランダムモード
 	{
@@ -114,12 +116,12 @@ namespace DTXMania
 		SUPERRANDOM,
 		HYPERRANDOM
 	}
-	public enum E楽器パート
+	public enum E楽器パート		// ここを修正するときは、セットで次の EKeyConfigPart も修正すること。
 	{
 		DRUMS	= 0,
 		GUITAR	= 1,
 		BASS	= 2,
-		UNKNOWN	= 0x63
+		UNKNOWN	= 99
 	}
 	public enum EKeyConfigPart	// : E楽器パート
 	{
