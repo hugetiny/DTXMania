@@ -551,15 +551,16 @@ namespace DTXMania
 		{
 			try
 			{
-				Bitmap image = new Bitmap( 440, 0x100 );
-				Graphics graphics = Graphics.FromImage( image );
-				string[,] str = new string[2, 2];
+				var image = new Bitmap( 220 * 2, 192 * 2 );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
+				var graphics = Graphics.FromImage( image );
+				
+				string[,] str = new string[ 2, 2 ];
 				switch( this.n現在のメニュー番号 )
 				{
 					case 0:
-						str[0, 0] = "システムに関係する項目を設定しま";
-						str[0, 1] = "す。";
-						str[1, 0] = "Settings for an overall systems.";
+						str[ 0, 0 ] = "システムに関係する項目を設定しま";
+						str[ 0, 1 ] = "す。";
+						str[ 1, 0 ] = "Settings for an overall systems.";
 						break;
 
 					//case 1:
@@ -604,12 +605,13 @@ namespace DTXMania
 						break;
 
 					case 4:
-						str[0, 0] = "設定を保存し、コンフィグ画面を終了";
-						str[0, 1] = "します。";
-						str[1, 0] = "Save the settings and exit from";
-						str[1, 1] = "CONFIGURATION menu.";
+						str[ 0, 0 ] = "設定を保存し、コンフィグ画面を終了";
+						str[ 0, 1 ] = "します。";
+						str[ 1, 0 ] = "Save the settings and exit from";
+						str[ 1, 1 ] = "CONFIGURATION menu.";
 						break;
 				}
+				
 				int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
 				for (int i = 0; i < 2; i++)
 				{
@@ -635,13 +637,14 @@ namespace DTXMania
 		{
 			try
 			{
-				Bitmap image = new Bitmap( 440, 0x100 );
-				Graphics graphics = Graphics.FromImage( image );
-				CItemBase base2 = this.actList.ib現在の選択項目;
-				if( ( base2.str説明文 != null ) && ( base2.str説明文.Length > 0 ) )
+				var image = new Bitmap( 220 * 2, 192 * 2 );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
+				var graphics = Graphics.FromImage( image );
+
+				CItemBase item = this.actList.ib現在の選択項目;
+				if( ( item.str説明文 != null ) && ( item.str説明文.Length > 0 ) )
 				{
 					int num = 0;
-					foreach( string str in base2.str説明文.Split( new char[] { '\n' } ) )
+					foreach( string str in item.str説明文.Split( new char[] { '\n' } ) )
 					{
 						graphics.DrawString( str, this.ftフォント, Brushes.White, new PointF( 4f, (float) num ) );
 						num += 30;
