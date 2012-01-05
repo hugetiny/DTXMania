@@ -671,7 +671,21 @@ namespace DTXMania
 			}
 			else
 			{
-				this.list項目リスト[ this.n現在の選択項目 ].tEnter押下();
+		 		// #27029 2012.1.5 from
+				if( ( this.iSystemBDGroup.n現在選択されている項目番号 == (int) EBDGroup.どっちもBD ) &&
+					( ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemHHGroup ) || ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemHitSoundPriorityHH ) ) )
+				{
+					// 変更禁止（何もしない）
+				}
+				else
+				{
+					// 変更許可
+					this.list項目リスト[ this.n現在の選択項目 ].tEnter押下();
+				}
+
+
+				// Enter押下後の後処理
+
 				if( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemFullscreen )
 				{
 					CDTXMania.app.b次のタイミングで全画面・ウィンドウ切り替えを行う = true;
