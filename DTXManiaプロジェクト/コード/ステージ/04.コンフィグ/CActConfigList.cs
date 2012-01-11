@@ -64,6 +64,9 @@ namespace DTXMania
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
+
+			// #27029 2012.1.5 from: 説明文は最大9行→13行に変更。
+
 			this.iSystemReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
@@ -201,181 +204,396 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.System;
 		}
-
 		public void t項目リストの設定・Drums()
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
+
+			// #27029 2012.1.5 from: 説明文は最大9行→13行に変更。
+
 			this.iDrumsReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iDrumsReturnToMenu );
+
 			this.iDrumsAutoPlayAll = new CItemThreeState( "AutoPlay (All)", CItemThreeState.E状態.不定,
-				"全パッドの自動演奏の ON/OFF を\nまとめて切り替えます。",
-				"You can change whether Auto or not\n for all drums lanes at once." );
+				"全パッドの自動演奏の ON/OFF を\n" +
+				"まとめて切り替えます。",
+				"You can change whether Auto or not\n" +
+				" for all drums lanes at once." );
 			this.list項目リスト.Add( this.iDrumsAutoPlayAll );
+
 			this.iDrumsLeftCymbal = new CItemToggle( "    LeftCymbal", CDTXMania.ConfigIni.bAutoPlay.LC,
 				"左シンバルを自動で演奏します。",
 				"To play LeftCymbal automatically." );
 			this.list項目リスト.Add( this.iDrumsLeftCymbal );
+
 			this.iDrumsHiHat = new CItemToggle( "    HiHat", CDTXMania.ConfigIni.bAutoPlay.HH,
-				"ハイハットを自動で演奏します。\n（クローズ、オープンとも）",
-				"To play HiHat automatically.\n(It effects to both HH-close and\n HH-open)" );
+				"ハイハットを自動で演奏します。\n" +
+				"（クローズ、オープンとも）",
+				"To play HiHat automatically.\n" +
+				"(It effects to both HH-close and\n HH-open)" );
 			this.list項目リスト.Add( this.iDrumsHiHat );
+
 			this.iDrumsSnare = new CItemToggle( "    Snare", CDTXMania.ConfigIni.bAutoPlay.SD,
 				"スネアを自動で演奏します。",
 				"To play Snare automatically." );
 			this.list項目リスト.Add( this.iDrumsSnare );
+
 			this.iDrumsBass = new CItemToggle( "    BassDrum", CDTXMania.ConfigIni.bAutoPlay.BD,
 				"バスドラムを自動で演奏します。",
 				"To play Bass Drum automatically." );
 			this.list項目リスト.Add( this.iDrumsBass );
+
 			this.iDrumsHighTom = new CItemToggle( "    HighTom", CDTXMania.ConfigIni.bAutoPlay.HT,
 				"ハイタムを自動で演奏します。",
 				"To play High Tom automatically." );
 			this.list項目リスト.Add( this.iDrumsHighTom );
+
 			this.iDrumsLowTom = new CItemToggle( "    LowTom", CDTXMania.ConfigIni.bAutoPlay.LT,
 				"ロータムを自動で演奏します。",
 				"To play Low Tom automatically." );
 			this.list項目リスト.Add( this.iDrumsLowTom );
+
 			this.iDrumsFloorTom = new CItemToggle( "    FloorTom", CDTXMania.ConfigIni.bAutoPlay.FT,
 				"フロアタムを自動で演奏します。",
 				"To play Floor Tom automatically." );
 			this.list項目リスト.Add( this.iDrumsFloorTom );
+
 			this.iDrumsCymbalRide = new CItemToggle( "    Cym/Ride", CDTXMania.ConfigIni.bAutoPlay.CY,
-				"右シンバルとライドシンバルを自動で\n演奏します。",
-				"To play both right- and Ride-Cymbal\n automatically." );
+				"右シンバルとライドシンバルを自動で\n" +
+				"演奏します。",
+				"To play both right- and Ride-Cymbal\n" +
+				" automatically." );
 			this.list項目リスト.Add( this.iDrumsCymbalRide );
 
-			this.iDrumsScrollSpeed = new CItemInteger("ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Drums,
-				"演奏時のドラム譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 を指定可能です。",
-				"To change the scroll speed for the\ndrums lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)");
-			this.list項目リスト.Add(this.iDrumsScrollSpeed);
-			this.iDrumsSudden = new CItemToggle("Sudden", CDTXMania.ConfigIni.bSudden.Drums,
-				"ドラムチップが譜面の下の方から表\n示されるようになります。",
-				"Drums chips are disappered until they\ncome near the hit bar, and suddenly\nappears.");
-			this.list項目リスト.Add(this.iDrumsSudden);
-			this.iDrumsHidden = new CItemToggle("Hidden", CDTXMania.ConfigIni.bHidden.Drums,
-				"ドラムチップが譜面の下の方で表示\nされなくなります。",
-				"Drums chips are hidden by approaching\nto the hit bar. ");
-			this.list項目リスト.Add(this.iDrumsHidden);
+			this.iDrumsScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Drums,
+				"演奏時のドラム譜面のスクロールの\n" +
+				"速度を指定します。\n" +
+				"x0.5 ～ x1000.0 を指定可能です。",
+				"To change the scroll speed for the\n" +
+				"drums lanes.\n" +
+				"You can set it from x0.5 to x1000.0.\n" +
+				"(ScrollSpeed=x0.5 means half speed)" );
+			this.list項目リスト.Add( this.iDrumsScrollSpeed );
 
-			this.iCommonDark = new CItemList("Dark", CItemBase.Eパネル種別.通常, (int)CDTXMania.ConfigIni.eDark,
-				"HALF: 背景、レーン、ゲージが表示\nされなくなります。\nFULL: さらに小節線、拍線、判定ラ\nイン、パッドも表示されなくなります。",
-				"OFF: all display parts are shown.\nHALF: wallpaper, lanes and gauge are\n disappeared.\nFULL: additionaly to HALF, bar/beat\n lines, hit bar, pads are disappeared.",
-				new string[] { "OFF", "HALF", "FULL" });
-			this.list項目リスト.Add(this.iCommonDark);
+			this.iDrumsSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Drums,
+				"ドラムチップが譜面の下の方から表\n" +
+				"示されるようになります。",
+				"Drums chips are disappered until they\n" +
+				"come near the hit bar, and suddenly\n" +
+				"appears." );
+			this.list項目リスト.Add( this.iDrumsSudden );
+
+			this.iDrumsHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Drums,
+				"ドラムチップが譜面の下の方で表示\n" +
+				"されなくなります。",
+				"Drums chips are hidden by approaching\n" +
+				"to the hit bar. " );
+			this.list項目リスト.Add( this.iDrumsHidden );
+
+			this.iCommonDark = new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
+				"HALF: 背景、レーン、ゲージが表示\n" +
+				"されなくなります。\n" +
+				"FULL: さらに小節線、拍線、判定ラ\n" +
+				"イン、パッドも表示されなくなります。",
+				"OFF: all display parts are shown.\n" +
+				"HALF: wallpaper, lanes and gauge are\n" +
+				" disappeared.\n" +
+				"FULL: additionaly to HALF, bar/beat\n" +
+				" lines, hit bar, pads are disappeared.",
+				new string[] { "OFF", "HALF", "FULL" } );
+			this.list項目リスト.Add( this.iCommonDark );
 
 
-			this.iDrumsReverse = new CItemToggle("Reverse", CDTXMania.ConfigIni.bReverse.Drums,
-				"ドラムチップが譜面の下から上に流\nれるようになります。",
-				"The scroll way is reversed. Drums chips\nflow from the bottom to the top.");
-			this.list項目リスト.Add(this.iDrumsReverse);
+			this.iDrumsReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Drums,
+				"ドラムチップが譜面の下から上に流\n" +
+				"れるようになります。",
+				"The scroll way is reversed. Drums chips\n"
+				+ "flow from the bottom to the top." );
+			this.list項目リスト.Add( this.iDrumsReverse );
 
-			this.iSystemRisky = new CItemInteger("Risky", 0, 10, CDTXMania.ConfigIni.nRisky,
-				"Riskyモードの設定:\n1以上の値にすると、その回数分の\nPoor/MissでFAILEDとなります。\n0にすると無効になり、\nDamageLevelに従ったゲージ増減と\nなります。\nStageFailedの設定と併用できます。",
-				"Risky mode:\nSet over 1, in case you'd like to specify\n the number of Poor/Miss times to be\n FAILED.\nSet 0 to disable Risky mode.");
-			this.list項目リスト.Add(this.iSystemRisky);
+			this.iSystemRisky = new CItemInteger( "Risky", 0, 10, CDTXMania.ConfigIni.nRisky,
+				"Riskyモードの設定:\n" +
+				"1以上の値にすると、その回数分の\n" +
+				"Poor/MissでFAILEDとなります。\n" +
+				"0にすると無効になり、\n" +
+				"DamageLevelに従ったゲージ増減と\n" +
+				"なります。\n" +
+				"StageFailedの設定と併用できます。",
+				"Risky mode:\n" +
+				"Set over 1, in case you'd like to specify\n" +
+				" the number of Poor/Miss times to be\n" +
+				" FAILED.\n" +
+				"Set 0 to disable Risky mode." );
+			this.list項目リスト.Add( this.iSystemRisky );
 
-			this.iDrumsTight = new CItemToggle("Tight", CDTXMania.ConfigIni.bTight,
-				"ドラムチップのないところでパッドを\n叩くとミスになります。",
-				"It becomes MISS to hit pad without\n chip.");
-			this.list項目リスト.Add(this.iDrumsTight);
+			this.iDrumsTight = new CItemToggle( "Tight", CDTXMania.ConfigIni.bTight,
+				"ドラムチップのないところでパッドを\n" +
+				"叩くとミスになります。",
+				"It becomes MISS to hit pad without\n" +
+				" chip." );
+			this.list項目リスト.Add( this.iDrumsTight );
 
-			this.iDrumsComboPosition = new CItemList("ComboPosition", CItemBase.Eパネル種別.通常, (int)CDTXMania.ConfigIni.ドラムコンボ文字の表示位置,
-				"演奏時のドラムコンボ文字列の位置\nを指定します。",
-				"The display position for Drums Combo.\nNote that it doesn't take effect\n at Autoplay ([Left] is forcely used).",
-				new string[] { "Left", "Center", "Right", "OFF" });
-			this.list項目リスト.Add(this.iDrumsComboPosition);
-			this.iDrumsPosition = new CItemList("Position", CItemBase.Eパネル種別.通常, (int)CDTXMania.ConfigIni.判定文字表示位置.Drums,
-				"ドラムの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: 判定ライン下\n  OFF: 表示しない",
-				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the hit bar.\n OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "OFF" });
-			this.list項目リスト.Add(this.iDrumsPosition);
+			this.iDrumsComboPosition = new CItemList( "ComboPosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.ドラムコンボ文字の表示位置,
+				"演奏時のドラムコンボ文字列の位置\n" +
+				"を指定します。",
+				"The display position for Drums Combo.\n" +
+				"Note that it doesn't take effect\n" +
+				" at Autoplay ([Left] is forcely used).",
+				new string[] { "Left", "Center", "Right", "OFF" } );
+			this.list項目リスト.Add( this.iDrumsComboPosition );
 
-	
-			this.iSystemHHGroup = new CItemList("HH Group", CItemBase.Eパネル種別.通常, (int)CDTXMania.ConfigIni.eHHGroup,
-			"ハイハットレーン打ち分け設定：\n左シンバル、ハイハットオープン、ハ\nイハットクローズの打ち分け方法を指\n定します。\n  HH-0 ... LC | HHC | HHO\n  HH-1 ... LC & ( HHC | HHO )\n  HH-2 ... LC | ( HHC & HHO )\n  HH-3 ... LC & HHC & HHO\n",
-			"HH-0: LC|HC|HO; all are separated.\nHH-1: LC&(HC|HO);\n HC and HO are separted.\n LC is grouped with HC and HHO.\nHH-2: LC|(HC&HO);\n LC and HHs are separated.\n HC and HO are grouped.\nHH-3: LC&HC&HO; all are grouped.",
-			new string[] { "HH-0", "HH-1", "HH-2", "HH-3" } );
+			this.iDrumsPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Drums,
+				"ドラムの判定文字の表示位置を指定\n" +
+				"します。\n" +
+				"  P-A: レーン上\n" +
+				"  P-B: 判定ライン下\n" +
+				"  OFF: 表示しない",
+				"The position to show judgement mark.\n" +
+				"(Perfect, Great, ...)\n" +
+				"\n" +
+				" P-A: on the lanes.\n" +
+				" P-B: under the hit bar.\n" +
+				" OFF: no judgement mark.",
+				new string[] { "P-A", "P-B", "OFF" } );
+			this.list項目リスト.Add( this.iDrumsPosition );
+
+
+			this.iSystemHHGroup = new CItemList( "HH Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHHGroup,
+				"ハイハットレーン打ち分け設定：\n" +
+				"左シンバル、ハイハットオープン、ハ\n" +
+				"イハットクローズの打ち分け方法を指\n" +
+				"定します。\n" +
+				"  HH-0 ... LC | HHC | HHO\n" +
+				"  HH-1 ... LC & ( HHC | HHO )\n" +
+				"  HH-2 ... LC | ( HHC & HHO )\n" +
+				"  HH-3 ... LC & HHC & HHO\n" +
+				"\n" +
+				"※BD Group が BD-1 である場合、\n" +
+				"　この項目は変更できません。\n",
+				"HH-0: LC|HC|HO; all are separated.\n" +
+				"HH-1: LC&(HC|HO);\n" +
+				" HC and HO are separted.\n" +
+				" LC is grouped with HC and HHO.\n" +
+				"HH-2: LC|(HC&HO);\n" +
+				" LC and HHs are separated.\n" +
+				" HC and HO are grouped.\n" +
+				"HH-3: LC&HC&HO; all are grouped.\n" +
+				"\n" +
+				"* This value cannot be changed while \n" +
+				"  BD Group is set as BD-1.",
+				new string[] { "HH-0", "HH-1", "HH-2", "HH-3" } );
 			this.list項目リスト.Add( this.iSystemHHGroup );
+
 			this.iSystemFTGroup = new CItemList( "FT Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eFTGroup,
-				"フロアタム打ち分け設定：\nロータムとフロアタムの打ち分け方法\nを指定します。\n  FT-0 ... LT | FT\n  FT-1 ... LT & FT\n",
-				"FT-0: LT|FT\n LT and FT are separated.\nFT-1: LT&FT\n LT and FT are grouped.",
+				"フロアタム打ち分け設定：\n" +
+				"ロータムとフロアタムの打ち分け方法\n" +
+				"を指定します。\n" +
+				"  FT-0 ... LT | FT\n" +
+				"  FT-1 ... LT & FT\n",
+				"FT-0: LT|FT\n" +
+				" LT and FT are separated.\n" +
+				"FT-1: LT&FT\n" +
+				" LT and FT are grouped.",
 				new string[] { "FT-0", "FT-1" } );
 			this.list項目リスト.Add( this.iSystemFTGroup );
+
 			this.iSystemCYGroup = new CItemList( "CY Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eCYGroup,
-				"シンバルレーン打ち分け設定：\n右シンバルとライドシンバルの打ち分\nけ方法を指定します。\n  CY-0 ... CY | RD\n  CY-1 ... CY & RD\n",
-				"CY-0: CY|RD\n CY and RD are separated.\nCY-1: CY&RD\n CY and RD are grouped.",
+				"シンバルレーン打ち分け設定：\n" +
+				"右シンバルとライドシンバルの打ち分\n" +
+				"け方法を指定します。\n" +
+				"  CY-0 ... CY | RD\n" +
+				"  CY-1 ... CY & RD\n",
+				"CY-0: CY|RD\n" +
+				" CY and RD are separated.\n" +
+				"CY-1: CY&RD\n" +
+				" CY and RD are grouped.",
 				new string[] { "CY-0", "CY-1" } );
 			this.list項目リスト.Add( this.iSystemCYGroup );
 
+			this.iSystemBDGroup = new CItemList( "BD Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eBDGroup,		// #27029 2012.1.4 from
+				"バス数設定：\n" +
+				"ハイハットペダルをバスとして利用する\n" +
+				"方法を指定します。\n" +
+				"  BD-0 ... HP | BD\n" +
+				"  BD-1 ... FP & BD\n" + 
+				"\n" +
+				"注意：HitSound が OFF である場合は\n" + 
+				"不具合が生じます。\n" +
+				"また、BD-1 を選択している間はいくつ\n" + 
+				"かのオプションが変更できなくなります。",
+				"BD-0: HP|BD\n" +
+				" HiHatPedal is HiHat.\n" +
+				"BD-1: HP&BD\n" +
+				" HiHatPedal is Bass.\n" +
+				"\n" +
+				"Warning: You should not use BD-1 with \n" +
+				"HitSound OFF.\n" +
+				"And you cannot change some options \n" +
+				"while using BD-1.",
+				new string[] { "BD-0", "BD-1" } );
+			this.list項目リスト.Add( this.iSystemBDGroup );
+
 			this.iSystemCymbalFree = new CItemToggle( "CymbalFree", CDTXMania.ConfigIni.bシンバルフリー,
-			"シンバルフリーモード：\n左シンバル・右シンバルの区別をなく\nします。ライドシンバルまで区別をな\nくすか否かは、CYGroup に従います。\n",
-			"Turn ON to group LC (left cymbal) and\n CY (right cymbal).\nWhether RD (ride cymbal) is also\n grouped or not depends on the\n'CY Group' setting." );
+				"シンバルフリーモード：\n" +
+				"左シンバル・右シンバルの区別をなく\n" +
+				"します。ライドシンバルまで区別をな\n" +
+				"くすか否かは、CYGroup に従います。\n",
+				"Turn ON to group LC (left cymbal) and\n" +
+				" CY (right cymbal).\n" +
+				"Whether RD (ride cymbal) is also\n" +
+				" grouped or not depends on the\n" +
+				"'CY Group' setting." );
 			this.list項目リスト.Add( this.iSystemCymbalFree );
 
-			
+
 			this.iSystemHitSoundPriorityHH = new CItemList( "HH Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityHH,
-				"発声音決定の優先順位：\nハイハットレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
-				"To specify playing sound in case you're\n using HH-0,1 and 2.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				"発声音決定の優先順位：\n" +
+				"ハイハットレーン打ち分け有効時に、\n" +
+				"チップの発声音をどのように決定する\n" +
+				"かを指定します。\n" +
+				"  C > P ... チップの音が優先\n" +
+				"  P > C ... 叩いたパッドの音が優先\n" +
+				"\n" +
+				"※BD Group が BD-1 である場合、\n" +
+				"　この項目は変更できません。\n",
+				"To specify playing sound in case you're\n" +
+				" using HH-0,1 and 2.\n" +
+				"\n" +
+				"C>P:\n" +
+				" Chip sound is prior to the pad sound.\n" +
+				"P>C:\n" +
+				" Pad sound is prior to the chip sound.\n" +
+				"\n" +
+				"* This value cannot be changed while \n" +
+				"  BD Group is set as BD-1.",
 				new string[] { "C>P", "P>C" } );
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityHH );
+
 			this.iSystemHitSoundPriorityFT = new CItemList( "FT Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityFT,
-				"発声音決定の優先順位：\nフロアタム打ち分け有効時に、チップ\nの発声音をどのように決定するかを\n指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
-				"To specify playing sound in case you're\n using FT-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				"発声音決定の優先順位：\n" +
+				"フロアタム打ち分け有効時に、チップ\n" +
+				"の発声音をどのように決定するかを\n" +
+				"指定します。\n" +
+				"  C > P ... チップの音が優先\n" +
+				"  P > C ... 叩いたパッドの音が優先",
+				"To specify playing sound in case you're\n" +
+				" using FT-0.\n" +
+				"\n" +
+				"C>P:\n" +
+				" Chip sound is prior to the pad sound.\n" +
+				"P>C:\n" +
+				" Pad sound is prior to the chip sound.",
 				new string[] { "C>P", "P>C" } );
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityFT );
+
 			this.iSystemHitSoundPriorityCY = new CItemList( "CY Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityCY,
-				"発声音決定の優先順位：\nシンバルレーン打ち分け有効時に、\nチップの発声音をどのように決定する\nかを指定します。\n  C > P ... チップの音が優先\n  P > C ... 叩いたパッドの音が優先",
-				"To specify playing sound in case you're\n using CY-0.\n\nC>P:\n Chip sound is prior to the pad sound.\nP>C:\n Pad sound is prior to the chip sound.",
+				"発声音決定の優先順位：\n" +
+				"シンバルレーン打ち分け有効時に、\n" +
+				"チップの発声音をどのように決定する\n" +
+				"かを指定します。\n" +
+				"  C > P ... チップの音が優先\n" +
+				"  P > C ... 叩いたパッドの音が優先",
+				"To specify playing sound in case you're\n" +
+				" using CY-0.\n" +
+				"\n" +
+				"C>P:\n" +
+				" Chip sound is prior to the pad sound.\n" +
+				"P>C:\n" +
+				" Pad sound is prior to the chip sound.",
 				new string[] { "C>P", "P>C" } );
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityCY );
+
 			this.iSystemFillIn = new CItemToggle( "FillIn", CDTXMania.ConfigIni.bフィルイン有効,
-				"フィルインエフェクトの使用：\nフィルイン区間の爆発パターンに特別\nのエフェクトを使用します。\nフィルインエフェクトの描画にはそれな\nりのマシンパワーが必要とされます。",
-				"To show bursting effects at the fill-in\n zone or not." );
+				"フィルインエフェクトの使用：\n" +
+				"フィルイン区間の爆発パターンに特別\n" +
+				"のエフェクトを使用します。\n" +
+				"フィルインエフェクトの描画にはそれな\n" +
+				"りのマシンパワーが必要とされます。",
+				"To show bursting effects at the fill-in\n" +
+				" zone or not." );
 			this.list項目リスト.Add( this.iSystemFillIn );
 
 
 
 			this.iSystemHitSound = new CItemToggle( "HitSound", CDTXMania.ConfigIni.bドラム打音を発声する,
-			"打撃音の再生：\nこれをOFFにすると、パッドを叩いた\nときの音を再生しなくなります（ドラム\nのみ）。\nDTX の音色で演奏したい場合などに\nOFF にします。",
-			"Turn OFF if you don't want to play\n hitting chip sound.\nIt is useful to play with real/electric\n drums kit." );
+				"打撃音の再生：\n" +
+				"これをOFFにすると、パッドを叩いた\n" +
+				"ときの音を再生しなくなります（ドラム\n" +
+				"のみ）。\n" +
+				"DTX の音色で演奏したい場合などに\n" +
+				"OFF にします。\n" + 
+				"\n" +
+				"注意：BD Group が BD-1 である場合\n" +
+				"は不具合が生じます。\n",
+				"Turn OFF if you don't want to play\n" +
+				" hitting chip sound.\n" +
+				"It is useful to play with real/electric\n" +
+				" drums kit.\n" + 
+				"\n" +
+				"Warning: You should not use BD Group \n" + 
+				"BD-1 with HitSound OFF.\n" );
 			this.list項目リスト.Add( this.iSystemHitSound );
+
 			this.iSystemSoundMonitorDrums = new CItemToggle( "DrumsMonitor", CDTXMania.ConfigIni.b演奏音を強調する.Drums,
-				"ドラム音モニタ：\nドラム音を他の音より大きめの音量で\n発声します。\nただし、オートプレイの場合は通常音\n量で発声されます。",
-				"To enhance the drums chip sound\n(except autoplay)." );
+				"ドラム音モニタ：\n" +
+				"ドラム音を他の音より大きめの音量で\n" +
+				"発声します。\n" +
+				"ただし、オートプレイの場合は通常音\n" +
+				"量で発声されます。",
+				"To enhance the drums chip sound\n" +
+				"(except autoplay)." );
 			this.list項目リスト.Add( this.iSystemSoundMonitorDrums );
+
 			this.iSystemMinComboDrums = new CItemInteger( "D-MinCombo", 1, 0x1869f, CDTXMania.ConfigIni.n表示可能な最小コンボ数.Drums,
-				"表示可能な最小コンボ数（ドラム）：\n画面に表示されるコンボの最小の数\nを指定します。\n1 ～ 99999 の値が指定可能です。",
-				"Initial number to show the combo\n for the drums.\nYou can specify from 1 to 99999." );
+				"表示可能な最小コンボ数（ドラム）：\n" +
+				"画面に表示されるコンボの最小の数\n" +
+				"を指定します。\n" +
+				"1 ～ 99999 の値が指定可能です。",
+				"Initial number to show the combo\n" +
+				" for the drums.\n" +
+				"You can specify from 1 to 99999." );
 			this.list項目リスト.Add( this.iSystemMinComboDrums );
 
-			
+
 			// #23580 2011.1.3 yyagi
 			this.iDrumsInputAdjustTimeMs = new CItemInteger( "InputAdjust", -99, 0, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums,
-				"ドラムの入力タイミングの微調整を\n行います。\n-99 ～ 0ms まで指定可能です。\n入力ラグを軽減するためには、負の\n値を指定してください。",
-				"To adjust the drums input timing.\nYou can set from -99 to 0ms.\nTo decrease input lag, set minus value." );
+				"ドラムの入力タイミングの微調整を\n" +
+				"行います。\n" +
+				"-99 ～ 0ms まで指定可能です。\n" +
+				"入力ラグを軽減するためには、負の\n" +
+				"値を指定してください。",
+				"To adjust the drums input timing.\n" +
+				"You can set from -99 to 0ms.\n" +
+				"To decrease input lag, set minus value." );
 			this.list項目リスト.Add( this.iDrumsInputAdjustTimeMs );
+
 			// #24074 2011.01.23 add ikanick
 			this.iDrumsGraph = new CItemToggle( "Graph", CDTXMania.ConfigIni.bGraph.Drums,
-				"最高スキルと比較できるグラフを\n表示します。\nオートプレイだと表示されません。",
-				"To draw Graph \n or not." );
+				"最高スキルと比較できるグラフを\n" +
+				"表示します。\n" +
+				"オートプレイだと表示されません。",
+				"To draw Graph \n" +
+				" or not." );
 			this.list項目リスト.Add( this.iDrumsGraph );
 
 			this.iDrumsGoToKeyAssign = new CItemBase( "Drums Keys", CItemBase.Eパネル種別.通常,
-				"ドラムのキー入力に関する項目を設\n定します。",
+				"ドラムのキー入力に関する項目を設\n"+
+				"定します。",
 				"Settings for the drums key/pad inputs." );
 			this.list項目リスト.Add( this.iDrumsGoToKeyAssign );
 
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Drums;
 		}
-
 		public void t項目リストの設定・Guitar()
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
+
+			// #27029 2012.1.5 from: 説明文は最大9行→13行に変更。
+
 			this.iGuitarReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
@@ -443,11 +661,12 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Guitar;
 		}
-
 		public void t項目リストの設定・Bass()
 		{
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
+
+			// #27029 2012.1.5 from: 説明文は最大9行→13行に変更。
 
 			this.iBassReturnToMenu = new CItemBase( "<< Return To Menu", CItemBase.Eパネル種別.その他,
 				"左側のメニューに戻ります。",
@@ -544,7 +763,6 @@ namespace DTXMania
 			}
 			// これ以外なら何もしない
 		}
-
 		public void tEnter押下()
 		{
 			CDTXMania.Skin.sound決定音.t再生する();
@@ -600,6 +818,10 @@ namespace DTXMania
 			{
 				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.RD );
 			}
+			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsHP )			// #27029 2012.1.4 from
+			{																							//
+				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.HP );	//
+			}																							//
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignGuitarR )
 			{
 				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.GUITAR, EKeyConfigPad.R );
@@ -662,7 +884,21 @@ namespace DTXMania
 			}
 			else
 			{
-				this.list項目リスト[ this.n現在の選択項目 ].tEnter押下();
+		 		// #27029 2012.1.5 from
+				if( ( this.iSystemBDGroup.n現在選択されている項目番号 == (int) EBDGroup.どっちもBD ) &&
+					( ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemHHGroup ) || ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemHitSoundPriorityHH ) ) )
+				{
+					// 変更禁止（何もしない）
+				}
+				else
+				{
+					// 変更許可
+					this.list項目リスト[ this.n現在の選択項目 ].tEnter押下();
+				}
+
+
+				// Enter押下後の後処理
+
 				if( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemFullscreen )
 				{
 					CDTXMania.app.b次のタイミングで全画面・ウィンドウ切り替えを行う = true;
@@ -708,8 +944,38 @@ namespace DTXMania
 				{
 					t項目リストの設定・Bass();
 				}
+				else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemBDGroup )					// #27029 2012.1.4 from
+				{
+					if( this.iSystemBDGroup.n現在選択されている項目番号 == (int) EBDGroup.どっちもBD )
+					{
+						// #27029 2012.1.5 from: 変更前の状態をバックアップする。
+						CDTXMania.ConfigIni.BackupOf1BD = new CConfigIni.CBackupOf1BD() {
+							eHHGroup = (EHHGroup) this.iSystemHHGroup.n現在選択されている項目番号,
+							eHitSoundPriorityHH = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityHH.n現在選択されている項目番号,
+						};
+
+						// HH Group ... HH-0 → HH-2 / HH-1 → HH-3 / HH-2 → 変更なし / HH-3 → 変更なし
+						if( this.iSystemHHGroup.n現在選択されている項目番号 == (int) EHHGroup.全部打ち分ける )
+							this.iSystemHHGroup.n現在選択されている項目番号 = (int) EHHGroup.左シンバルのみ打ち分ける;
+						if( this.iSystemHHGroup.n現在選択されている項目番号 == (int) EHHGroup.ハイハットのみ打ち分ける )
+							this.iSystemHHGroup.n現在選択されている項目番号 = (int) EHHGroup.全部共通;
+
+						// HH Priority ... C>P → 変更なし / P>C → C>P
+						if( this.iSystemHitSoundPriorityHH.n現在選択されている項目番号 == (int) E打ち分け時の再生の優先順位.PadがChipより優先 )
+							this.iSystemHitSoundPriorityHH.n現在選択されている項目番号 = (int) E打ち分け時の再生の優先順位.ChipがPadより優先;
+					}
+					else
+					{
+						// #27029 2012.1.5 from: 変更前の状態に戻す。
+						this.iSystemHHGroup.n現在選択されている項目番号 = (int) CDTXMania.ConfigIni.BackupOf1BD.eHHGroup;
+						this.iSystemHitSoundPriorityHH.n現在選択されている項目番号 = (int) CDTXMania.ConfigIni.BackupOf1BD.eHitSoundPriorityHH;
+						
+						CDTXMania.ConfigIni.BackupOf1BD = null;
+					}
+				}
 			}
 		}
+
 		public void t項目リストの設定・Exit()
 		{
 			this.tConfigIniへ記録する();
@@ -717,8 +983,11 @@ namespace DTXMania
 		}
 		public void t項目リストの設定・KeyAssignSystem()
 		{
-			//			this.tConfigIniへ記録する();
+			//this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
+
+			// #27029 2012.1.5 from: 説明文は最大9行→13行に変更。
+
 			this.iKeyAssignSystemReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
@@ -735,6 +1004,9 @@ namespace DTXMania
 		{
 //			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
+
+			// #27029 2012.1.5 from: 説明文は最大9行→13行に変更。
+
 			this.iKeyAssignDrumsReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
 				"左側のメニューに戻ります。",
 				"Return to left menu.");
@@ -779,6 +1051,10 @@ namespace DTXMania
 				"ドラムのキー設定：\nライドシンバルへのキーの割り当て\nを設定します。",
 				"Drums key assign:\nTo assign key/pads for RideCymbal\n button.");
 			this.list項目リスト.Add(this.iKeyAssignDrumsRD);
+			this.iKeyAssignDrumsHP = new CItemBase( "HiHatPedal",									// #27029 2012.1.4 from
+				"ドラムのキー設定：\nハイハットのフットペダルへのキーの\n割り当てを設定します。",	//
+				"Drums key assign:\nTo assign key/pads for HiHatPedal\n button." );					//
+			this.list項目リスト.Add( this.iKeyAssignDrumsHP );										//
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignDrums;
 		}
@@ -786,6 +1062,9 @@ namespace DTXMania
 		{
 //			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
+
+			// #27029 2012.1.5 from: 説明文は最大9行→13行に変更。
+
 			this.iKeyAssignGuitarReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
 				"左側のメニューに戻ります。",
 				"Return to left menu.");
@@ -825,6 +1104,9 @@ namespace DTXMania
 		{
 //			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
+
+			// #27029 2012.1.5 from: 説明文は最大9行→13行に変更。
+
 			this.iKeyAssignBassReturnToMenu = new CItemBase( "<< ReturnTo Menu", CItemBase.Eパネル種別.その他,
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
@@ -860,6 +1142,7 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignBass;
 		}
+
 		public void t次に移動()
 		{
 			CDTXMania.Skin.soundカーソル移動音.t再生する();
@@ -890,6 +1173,9 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
+			if( this.b活性化してる )
+				return;
+
 			this.list項目リスト = new List<CItemBase>();
 			this.eメニュー種別 = Eメニュー種別.Unknown;
 			this.t項目リストの設定・System();
@@ -898,30 +1184,40 @@ namespace DTXMania
 			this.n現在のスクロールカウンタ = 0;
 			this.nスクロール用タイマ値 = -1;
 			this.ct三角矢印アニメ = new CCounter();
+			
 			base.On活性化();
 		}
 		public override void On非活性化()
 		{
+			if( this.b活性化してない )
+				return;
+
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
 			this.ct三角矢印アニメ = null;
+			
 			base.On非活性化();
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if( !base.b活性化してない )
-			{
-				this.tx通常項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox.png" ), false );
-				this.txその他項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox other.png" ), false );
-				this.tx三角矢印 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig triangle arrow.png" ), false );
-				base.OnManagedリソースの作成();
-			}
+			if( this.b活性化してない )
+				return;
+
+			this.tx通常項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox.png" ), false );
+			this.txその他項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox other.png" ), false );
+			this.tx三角矢印 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig triangle arrow.png" ), false );
+
+			base.OnManagedリソースの作成();
 		}
 		public override void OnManagedリソースの解放()
 		{
+			if( this.b活性化してない )
+				return;
+
 			CDTXMania.tテクスチャの解放( ref this.tx通常項目行パネル );
 			CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
 			CDTXMania.tテクスチャの解放( ref this.tx三角矢印 );
+		
 			base.OnManagedリソースの解放();
 		}
 		public override int On進行描画()
@@ -930,196 +1226,275 @@ namespace DTXMania
 		}
 		public int t進行描画( bool b項目リスト側にフォーカスがある )
 		{
-			if( !base.b活性化してない )
+			if( this.b活性化してない )
+				return 0;
+
+			// 進行
+
+			#region [ 初めての進行描画 ]
+			//-----------------
+			if( base.b初めての進行描画 )
 			{
-				#region [初めての進行描画]
-				if ( base.b初めての進行描画 )
+				this.nスクロール用タイマ値 = CDTXMania.Timer.n現在時刻;
+				this.ct三角矢印アニメ.t開始( 0, 9, 50, CDTXMania.Timer );
+			
+				base.b初めての進行描画 = false;
+			}
+			//-----------------
+			#endregion
+
+			this.b項目リスト側にフォーカスがある = b項目リスト側にフォーカスがある;		// 記憶
+
+			#region [ 項目スクロールの進行 ]
+			//-----------------
+			long n現在時刻 = CDTXMania.Timer.n現在時刻;
+			if( n現在時刻 < this.nスクロール用タイマ値 ) this.nスクロール用タイマ値 = n現在時刻;
+
+			const int INTERVAL = 2;	// [ms]
+			while( ( n現在時刻 - this.nスクロール用タイマ値 ) >= INTERVAL )
+			{
+				int n目標項目までのスクロール量 = Math.Abs( (int) ( this.n目標のスクロールカウンタ - this.n現在のスクロールカウンタ ) );
+				int n加速度 = 0;
+
+				#region [ n加速度の決定；目標まで遠いほど加速する。]
+				//-----------------
+				if( n目標項目までのスクロール量 <= 100 )
 				{
-					this.nスクロール用タイマ値 = CDTXMania.Timer.n現在時刻;
-					this.ct三角矢印アニメ.t開始( 0, 9, 50, CDTXMania.Timer );
-					base.b初めての進行描画 = false;
+					n加速度 = 2;
 				}
+				else if( n目標項目までのスクロール量 <= 300 )
+				{
+					n加速度 = 3;
+				}
+				else if( n目標項目までのスクロール量 <= 500 )
+				{
+					n加速度 = 4;
+				}
+				else
+				{
+					n加速度 = 8;
+				}
+				//-----------------
 				#endregion
-				this.b項目リスト側にフォーカスがある = b項目リスト側にフォーカスがある;
-				long num = CDTXMania.Timer.n現在時刻;
-				if( num < this.nスクロール用タイマ値 )
+				#region [ this.n現在のスクロールカウンタに n加速度 を加減算。]
+				//-----------------
+				if( this.n現在のスクロールカウンタ < this.n目標のスクロールカウンタ )
 				{
-					this.nスクロール用タイマ値 = num;
+					this.n現在のスクロールカウンタ += n加速度;
+					if( this.n現在のスクロールカウンタ > this.n目標のスクロールカウンタ )
+					{
+						// 目標を超えたら目標値で停止。
+						this.n現在のスクロールカウンタ = this.n目標のスクロールカウンタ;
+					}
 				}
-				while( ( num - this.nスクロール用タイマ値 ) >= 2 )
+				else if( this.n現在のスクロールカウンタ > this.n目標のスクロールカウンタ )
 				{
-					int num2 = Math.Abs( (int) ( this.n目標のスクロールカウンタ - this.n現在のスクロールカウンタ ) );
-					int num3 = 0;
-					if( num2 <= 100 )
-					{
-						num3 = 2;
-					}
-					else if( num2 <= 300 )
-					{
-						num3 = 3;
-					}
-					else if( num2 <= 500 )
-					{
-						num3 = 4;
-					}
-					else
-					{
-						num3 = 8;
-					}
+					this.n現在のスクロールカウンタ -= n加速度;
 					if( this.n現在のスクロールカウンタ < this.n目標のスクロールカウンタ )
 					{
-						this.n現在のスクロールカウンタ += num3;
-						if( this.n現在のスクロールカウンタ > this.n目標のスクロールカウンタ )
-						{
-							this.n現在のスクロールカウンタ = this.n目標のスクロールカウンタ;
-						}
+						// 目標を超えたら目標値で停止。
+						this.n現在のスクロールカウンタ = this.n目標のスクロールカウンタ;
 					}
-					else if( this.n現在のスクロールカウンタ > this.n目標のスクロールカウンタ )
-					{
-						this.n現在のスクロールカウンタ -= num3;
-						if( this.n現在のスクロールカウンタ < this.n目標のスクロールカウンタ )
-						{
-							this.n現在のスクロールカウンタ = this.n目標のスクロールカウンタ;
-						}
-					}
-					if( this.n現在のスクロールカウンタ >= 100 )
-					{
-						this.n現在の選択項目 = this.t次の項目( this.n現在の選択項目 );
-						this.n現在のスクロールカウンタ -= 100;
-						this.n目標のスクロールカウンタ -= 100;
-						if( this.n目標のスクロールカウンタ == 0 )
-						{
-							CDTXMania.stageコンフィグ.t項目変更通知();
-						}
-					}
-					else if( this.n現在のスクロールカウンタ <= -100 )
-					{
-						this.n現在の選択項目 = this.t前の項目( this.n現在の選択項目 );
-						this.n現在のスクロールカウンタ += 100;
-						this.n目標のスクロールカウンタ += 100;
-						if( this.n目標のスクロールカウンタ == 0 )
-						{
-							CDTXMania.stageコンフィグ.t項目変更通知();
-						}
-					}
-					this.nスクロール用タイマ値 += 2;
 				}
-				if( this.b項目リスト側にフォーカスがある && ( this.n目標のスクロールカウンタ == 0 ) )
+				//-----------------
+				#endregion
+				#region [ 行超え処理、ならびに目標位置に到達したらスクロールを停止して項目変更通知を発行。]
+				//-----------------
+				if( this.n現在のスクロールカウンタ >= 100 )
 				{
-					this.ct三角矢印アニメ.t進行Loop();
+					this.n現在の選択項目 = this.t次の項目( this.n現在の選択項目 );
+					this.n現在のスクロールカウンタ -= 100;
+					this.n目標のスクロールカウンタ -= 100;
+					if( this.n目標のスクロールカウンタ == 0 )
+					{
+						CDTXMania.stageコンフィグ.t項目変更通知();
+					}
 				}
-				this.ptパネルの基本座標[ 4 ].X = this.b項目リスト側にフォーカスがある ? 0x114 : 0x12d;
-				int nItem = this.n現在の選択項目;
-				for( int i = 0; i < 4; i++ )
+				else if( this.n現在のスクロールカウンタ <= -100 )
 				{
-					nItem = this.t前の項目( nItem );
+					this.n現在の選択項目 = this.t前の項目( this.n現在の選択項目 );
+					this.n現在のスクロールカウンタ += 100;
+					this.n目標のスクロールカウンタ += 100;
+					if( this.n目標のスクロールカウンタ == 0 )
+					{
+						CDTXMania.stageコンフィグ.t項目変更通知();
+					}
 				}
-				for( int j = -4; j < 6; j++ )
+				//-----------------
+				#endregion
+
+				this.nスクロール用タイマ値 += INTERVAL;
+			}
+			//-----------------
+			#endregion
+			
+			#region [ ▲印アニメの進行 ]
+			//-----------------
+			if( this.b項目リスト側にフォーカスがある && ( this.n目標のスクロールカウンタ == 0 ) )
+				this.ct三角矢印アニメ.t進行Loop();
+			//-----------------
+			#endregion
+
+
+			// 描画
+
+			this.ptパネルの基本座標[ 4 ].X = this.b項目リスト側にフォーカスがある ? 276 : 301;		// メニューにフォーカスがあるなら、項目リストの中央は頭を出さない。
+
+			#region [ 計11個の項目パネルを描画する。]
+			//-----------------
+			int nItem = this.n現在の選択項目;
+			for( int i = 0; i < 4; i++ )
+				nItem = this.t前の項目( nItem );
+
+			for( int n行番号 = -4; n行番号 < 6; n行番号++ )		// n行番号 == 0 がフォーカスされている項目パネル。
+			{
+				#region [ 今まさに画面外に飛びだそうとしている項目パネルは描画しない。]
+				//-----------------
+				if( ( ( n行番号 == -4 ) && ( this.n現在のスクロールカウンタ > 0 ) ) ||		// 上に飛び出そうとしている
+					( ( n行番号 == +5 ) && ( this.n現在のスクロールカウンタ < 0 ) ) )		// 下に飛び出そうとしている
 				{
-					if( ( ( j == -4 ) && ( this.n現在のスクロールカウンタ > 0 ) ) || ( ( j == 5 ) && ( this.n現在のスクロールカウンタ < 0 ) ) )
-					{
-						nItem = this.t次の項目( nItem );
-						continue;
-					}
-					int index = j + 4;
-					int num8 = ( this.n現在のスクロールカウンタ <= 0 ) ? ( ( ( j + 4 ) + 1 ) % 10 ) : ( ( ( ( j + 4 ) - 1 ) + 10 ) % 10 );
-					int x = this.ptパネルの基本座標[ index ].X + ( (int) ( ( this.ptパネルの基本座標[ num8 ].X - this.ptパネルの基本座標[ index ].X ) * ( ( (double) Math.Abs( this.n現在のスクロールカウンタ ) ) / 100.0 ) ) );
-					int y = this.ptパネルの基本座標[ index ].Y + ( (int) ( ( this.ptパネルの基本座標[ num8 ].Y - this.ptパネルの基本座標[ index ].Y ) * ( ( (double) Math.Abs( this.n現在のスクロールカウンタ ) ) / 100.0 ) ) );
-					switch( this.list項目リスト[ nItem ].eパネル種別 )
-					{
-						case CItemBase.Eパネル種別.通常:
-							if( this.tx通常項目行パネル != null )
-							{
-								this.tx通常項目行パネル.t2D描画( CDTXMania.app.Device, x, y );
-							}
-							break;
-
-						case CItemBase.Eパネル種別.その他:
-							if( this.txその他項目行パネル != null )
-							{
-								this.txその他項目行パネル.t2D描画( CDTXMania.app.Device, x, y );
-							}
-							break;
-					}
-					CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 0x12, y + 12, this.list項目リスト[ nItem ].str項目名 );
-					switch( this.list項目リスト[ nItem ].e種別 )
-					{
-						case CItemBase.E種別.ONorOFFトグル:
-							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemToggle) this.list項目リスト[ nItem ] ).bON ? "ON" : "OFF" );
-							break;
-
-						case CItemBase.E種別.ONorOFFor不定スリーステート:
-							switch( ( (CItemThreeState) this.list項目リスト[ nItem ] ).e現在の状態 )
-							{
-								case CItemThreeState.E状態.ON:
-									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "ON" );
-									break;
-
-								case CItemThreeState.E状態.不定:
-									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "- -" );
-									break;
-
-								default:
-									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "OFF" );
-									break;
-							}
-							break;
-
-						case CItemBase.E種別.整数:		// #24789 2011.4.8 yyagi: add PlaySpeed supports (copied them from OPTION)
-							{
-								if ( this.list項目リスト[ nItem ] == this.iCommonPlaySpeed )
-								{
-									double d = ( (double) ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値 ) / 20.0;
-									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, d.ToString( "0.000" ), ( j == 0 ) && this.b要素値にフォーカス中 );
-								}
-								else if ( this.list項目リスト[ nItem ] == this.iDrumsScrollSpeed || this.list項目リスト[ nItem ] == this.iGuitarScrollSpeed || this.list項目リスト[ nItem ] == this.iBassScrollSpeed )
-								{
-									float f = ( ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値 + 1 ) * 0.5f;
-									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, f.ToString( "x0.0" ), ( j == 0 ) && this.b要素値にフォーカス中 );
-								}
-								else
-								{
-									CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値.ToString(), ( j == 0 ) && this.b要素値にフォーカス中 );
-								}
-							}
-							break;
-
-						case CItemBase.E種別.リスト:
-							{
-								CItemList list = (CItemList) this.list項目リスト[ nItem ];
-								CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, list.list項目値[ list.n現在選択されている項目番号 ] );
-								break;
-							}
-					}
 					nItem = this.t次の項目( nItem );
+					continue;
 				}
-				if( this.b項目リスト側にフォーカスがある && ( this.n目標のスクロールカウンタ == 0 ) )
+				//-----------------
+				#endregion
+
+				int n移動元の行の基本位置 = n行番号 + 4;
+				int n移動先の行の基本位置 = ( this.n現在のスクロールカウンタ <= 0 ) ? ( ( n移動元の行の基本位置 + 1 ) % 10 ) : ( ( ( n移動元の行の基本位置 - 1 ) + 10 ) % 10 );
+				int x = this.ptパネルの基本座標[ n移動元の行の基本位置 ].X + ( (int) ( ( this.ptパネルの基本座標[ n移動先の行の基本位置 ].X - this.ptパネルの基本座標[ n移動元の行の基本位置 ].X ) * ( ( (double) Math.Abs( this.n現在のスクロールカウンタ ) ) / 100.0 ) ) );
+				int y = this.ptパネルの基本座標[ n移動元の行の基本位置 ].Y + ( (int) ( ( this.ptパネルの基本座標[ n移動先の行の基本位置 ].Y - this.ptパネルの基本座標[ n移動元の行の基本位置 ].Y ) * ( ( (double) Math.Abs( this.n現在のスクロールカウンタ ) ) / 100.0 ) ) );
+
+				#region [ 現在の行の項目パネル枠を描画。]
+				//-----------------
+				switch( this.list項目リスト[ nItem ].eパネル種別 )
 				{
-					int x;
-					int y_upper;
-					int y_lower;
-					if( !this.b要素値にフォーカス中 )
-					{
-						x = 0x114;
-						y_upper = 0xba - this.ct三角矢印アニメ.n現在の値;
-						y_lower = 0xfe + this.ct三角矢印アニメ.n現在の値;
-					}
-					else
-					{
-						x = 0x210;
-						y_upper = 0xc6 - this.ct三角矢印アニメ.n現在の値;
-						y_lower = 0xf2 + this.ct三角矢印アニメ.n現在の値;
-					}
-					if( this.tx三角矢印 != null )
-					{
-						this.tx三角矢印.t2D描画( CDTXMania.app.Device, x, y_upper, new Rectangle( 0, 0, 0x20, 0x10 ) );
-						this.tx三角矢印.t2D描画( CDTXMania.app.Device, x, y_lower, new Rectangle( 0, 0x10, 0x20, 0x10 ) );
-					}
+					case CItemBase.Eパネル種別.通常:
+						if( this.tx通常項目行パネル != null )
+							this.tx通常項目行パネル.t2D描画( CDTXMania.app.Device, x, y );
+						break;
+
+					case CItemBase.Eパネル種別.その他:
+						if( this.txその他項目行パネル != null )
+							this.txその他項目行パネル.t2D描画( CDTXMania.app.Device, x, y );
+						break;
+				}
+				//-----------------
+				#endregion
+				#region [ 現在の行の項目名を描画。]
+				//-----------------
+				CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 0x12, y + 12, this.list項目リスト[ nItem ].str項目名 );
+				//-----------------
+				#endregion
+				#region [ 現在の行の項目の要素を描画。]
+				//-----------------
+				switch( this.list項目リスト[ nItem ].e種別 )
+				{
+					case CItemBase.E種別.ONorOFFトグル:
+						#region [ *** ]
+						//-----------------
+						CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemToggle) this.list項目リスト[ nItem ] ).bON ? "ON" : "OFF" );
+						break;
+						//-----------------
+						#endregion
+
+					case CItemBase.E種別.ONorOFFor不定スリーステート:
+						#region [ *** ]
+						//-----------------
+						switch( ( (CItemThreeState) this.list項目リスト[ nItem ] ).e現在の状態 )
+						{
+							case CItemThreeState.E状態.ON:
+								CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "ON" );
+								break;
+
+							case CItemThreeState.E状態.不定:
+								CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "- -" );
+								break;
+
+							default:
+								CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "OFF" );
+								break;
+						}
+						break;
+						//-----------------
+						#endregion
+
+					case CItemBase.E種別.整数:		// #24789 2011.4.8 yyagi: add PlaySpeed supports (copied them from OPTION)
+						#region [ *** ]
+						//-----------------
+						if( this.list項目リスト[ nItem ] == this.iCommonPlaySpeed )
+						{
+							double d = ( (double) ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値 ) / 20.0;
+							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, d.ToString( "0.000" ), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+						}
+						else if( this.list項目リスト[ nItem ] == this.iDrumsScrollSpeed || this.list項目リスト[ nItem ] == this.iGuitarScrollSpeed || this.list項目リスト[ nItem ] == this.iBassScrollSpeed )
+						{
+							float f = ( ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値 + 1 ) * 0.5f;
+							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, f.ToString( "x0.0" ), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+						}
+						else
+						{
+							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値.ToString(), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+						}
+						break;
+						//-----------------
+						#endregion
+
+					case CItemBase.E種別.リスト:
+						#region [ *** ]
+						//-----------------
+						{
+							CItemList list = (CItemList) this.list項目リスト[ nItem ];
+							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, list.list項目値[ list.n現在選択されている項目番号 ] );
+							break;
+						}
+						//-----------------
+						#endregion
+				}
+				//-----------------
+				#endregion
+				
+				nItem = this.t次の項目( nItem );
+			}
+			//-----------------
+			#endregion
+			
+			#region [ 項目リストにフォーカスがあって、かつスクロールが停止しているなら、パネルの上下に▲印を描画する。]
+			//-----------------
+			if( this.b項目リスト側にフォーカスがある && ( this.n目標のスクロールカウンタ == 0 ) )
+			{
+				int x;
+				int y_upper;
+				int y_lower;
+			
+				// 位置決定。
+
+				if( this.b要素値にフォーカス中 )
+				{
+					x = 528;	// 要素値の上下あたり。
+					y_upper = 198 - this.ct三角矢印アニメ.n現在の値;
+					y_lower = 242 + this.ct三角矢印アニメ.n現在の値;
+				}
+				else
+				{
+					x = 276;	// 項目名の上下あたり。
+					y_upper = 186 - this.ct三角矢印アニメ.n現在の値;
+					y_lower = 254 + this.ct三角矢印アニメ.n現在の値;
+				}
+
+				// 描画。
+				
+				if( this.tx三角矢印 != null )
+				{
+					this.tx三角矢印.t2D描画( CDTXMania.app.Device, x, y_upper, new Rectangle( 0, 0, 32, 16 ) );
+					this.tx三角矢印.t2D描画( CDTXMania.app.Device, x, y_lower, new Rectangle( 0, 16, 32, 16 ) );
 				}
 			}
+			//-----------------
+			#endregion
+
 			return 0;
 		}
-
+	
 
 		// その他
 
@@ -1164,6 +1539,7 @@ namespace DTXMania
 		private CItemBase iKeyAssignDrumsRD;
 		private CItemBase iKeyAssignDrumsReturnToMenu;
 		private CItemBase iKeyAssignDrumsSD;
+		private CItemBase iKeyAssignDrumsHP;	// #27029 2012.1.4 from
 		private CItemBase iKeyAssignGuitarB;
 		private CItemBase iKeyAssignGuitarCancel;
 		private CItemBase iKeyAssignGuitarDecide;
@@ -1192,6 +1568,7 @@ namespace DTXMania
 		private CItemToggle iSystemFullscreen;
 //		private CItemToggle iSystemGuitar;
 		private CItemList iSystemHHGroup;
+		private CItemList iSystemBDGroup;		// #27029 2012.1.4 from
 		private CItemToggle iSystemHitSound;
 		private CItemList iSystemHitSoundPriorityCY;
 		private CItemList iSystemHitSoundPriorityFT;
@@ -1388,7 +1765,6 @@ namespace DTXMania
 			CDTXMania.ConfigIni.b演奏音を強調する.Bass = this.iSystemSoundMonitorBass.bON;
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass = this.iSystemMinComboBass.n現在の値;
 		}
-
 		private void tConfigIniへ記録する・Drums()
 		{
 			CDTXMania.ConfigIni.bAutoPlay.LC = this.iDrumsLeftCymbal.bON;
@@ -1412,6 +1788,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eHHGroup = (EHHGroup) this.iSystemHHGroup.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eFTGroup = (EFTGroup) this.iSystemFTGroup.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eCYGroup = (ECYGroup) this.iSystemCYGroup.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eBDGroup = (EBDGroup) this.iSystemBDGroup.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eHitSoundPriorityHH = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityHH.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eHitSoundPriorityFT = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityFT.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eHitSoundPriorityCY = (E打ち分け時の再生の優先順位) this.iSystemHitSoundPriorityCY.n現在選択されている項目番号;
