@@ -11,9 +11,9 @@ namespace FDK
 	[StructLayout( LayoutKind.Sequential )]
 	public struct PositionColoredTexturedVertex : IEquatable<PositionColoredTexturedVertex>
 	{
-		public Vector3	Position { get; set; }
-		public int		Color { get; set; }
-		public Vector2	TextureCoordinates { get; set; }
+		public Vector3	Position;
+		public int		Color;
+		public Vector2	TextureCoordinates;
 
 		public static int SizeInBytes
 		{
