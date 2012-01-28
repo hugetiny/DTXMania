@@ -188,6 +188,7 @@ namespace DTXMania
 			string strPathSongsDB2 = CDTXMania.strEXEのあるフォルダ + "songs2.db";
 			bool bIsFastBoot = false;
 			bool bCanFastBoot = false;
+			bool bSucceededFastBoot = false;
 
 			Microsoft.VisualBasic.Devices.Keyboard key = new Microsoft.VisualBasic.Devices.Keyboard();
 			if ( key.CapsLock )		// #27060 2012.1.26 yyagi CapsLock=ONのときは読み込み高速化
@@ -307,6 +308,7 @@ namespace DTXMania
 						{
 							BinaryFormatter formatter = new BinaryFormatter();
 							CDTXMania.Songs管理 = (CSongs管理) formatter.Deserialize( input );
+							bSucceededFastBoot = true;
 						}
 						catch ( Exception )
 						{
@@ -314,9 +316,9 @@ namespace DTXMania
 						}
 					}
 				}
-				if ( !bIsFastBoot || !bCanFastBoot )
+				if ( !bSucceededFastBoot )
 				{
-
+					bCanFastBoot = false;						// 曲データの検索をしたのなら、後で高速起動用にsongs2.dbの書き出しをしておく
 					#region [ 2) 曲データの検索 ]
 					//-----------------------------
 					base.eフェーズID = CStage.Eフェーズ.起動2_曲を検索してリストを作成する;
@@ -379,9 +381,7 @@ namespace DTXMania
 					}
 					//-----------------------------
 					#endregion
-					bCanFastBoot = false;						// 曲データの検索をしたのなら、後で高速起動用にsongs2.dbの書き出しをしておく
-				}
-				#region [ 3) songs.db 情報の曲リストへの反映 ]
+					#region [ 3) songs.db 情報の曲リストへの反映 ]
 				//-----------------------------
 				base.eフェーズID = CStage.Eフェーズ.起動3_スコアキャッシュをリストに反映する;
 
@@ -409,11 +409,12 @@ namespace DTXMania
 				}
 				//-----------------------------
 				#endregion
-				#region [ 4) songs.db になかった曲データをファイルから読み込んで反映 ]
+					#region [ 4) songs.db になかった曲データをファイルから読み込んで反映 ]
 				//-----------------------------
 				base.eフェーズID = CStage.Eフェーズ.起動4_スコアキャッシュになかった曲をファイルから読み込んで反映する;
 
 				int num2 = CDTXMania.Songs管理.n検索されたスコア数 - CDTXMania.Songs管理.nスコアキャッシュから反映できたスコア数;
+				Trace.TraceInformation( "{0}, {1}", CDTXMania.Songs管理.n検索されたスコア数, CDTXMania.Songs管理.nスコアキャッシュから反映できたスコア数 );
 
 				Trace.TraceInformation( "4) songs.db になかった曲データ[{0}スコア]の情報をファイルから読み込んで反映します。", new object[] { num2 } );
 				Trace.Indent();
@@ -439,7 +440,7 @@ namespace DTXMania
 				}
 				//-----------------------------
 				#endregion
-				#region [ 5) 曲リストへの後処理の適用 ]
+					#region [ 5) 曲リストへの後処理の適用 ]
 				//-----------------------------
 				base.eフェーズID = CStage.Eフェーズ.起動5_曲リストへ後処理を適用する;
 
@@ -467,7 +468,7 @@ namespace DTXMania
 				}
 				//-----------------------------
 				#endregion
-				#region [ 6) songs.db への保存 ]
+					#region [ 6) songs.db への保存 ]
 				//-----------------------------
 				base.eフェーズID = CStage.Eフェーズ.起動6_スコアキャッシュをSongsDBに出力する;
 
@@ -493,18 +494,20 @@ namespace DTXMania
 				{
 					this.list進行文字列.Add( string.Format( "{0} ... OK", "Saving songs.db" ) );
 				}
-
-				if ( !bCanFastBoot )		// #27060 2012.1.26 yyagi
+				#endregion
+				}
+				else
 				{
+					#region [ 7) songs2.db への保存 ]		// #27060 2012.1.26 yyagi
 					// シリアライズ動作が遅いため、別スレッドで動かして起動を高速化する
 					// ただし別スレッドに投げた後のフォローは一切していないので注意 (処理時間は3000曲で0.5秒くらいなのでこのままでも大丈夫だとは思いますが)
 					Thread t = new Thread( new ParameterizedThreadStart( SerializeSongsDB2 ) );
 					t.Start( strPathSongsDB2 );
 //					SerializeSongsDB2( strPathSongsDB2 );
+					//-----------------------------
+					#endregion
 				}
 
-				//-----------------------------
-				#endregion
 			}
 			finally
 			{
@@ -523,7 +526,7 @@ namespace DTXMania
 		private static void SerializeSongsDB2(object o)
 		{
 			string strPathSongsDB2 = (string) o;
-			bool bSuccessedSerialize = true;
+			bool bSucceededSerialize = true;
 			Stream output = null;
 			try
 			{
@@ -533,12 +536,12 @@ namespace DTXMania
 			}
 			catch ( Exception )
 			{
-				bSuccessedSerialize = false;
+				bSucceededSerialize = false;
 			}
 			finally
 			{
 				output.Close();
-				if ( !bSuccessedSerialize )
+				if ( !bSucceededSerialize )
 				{
 					try
 					{
