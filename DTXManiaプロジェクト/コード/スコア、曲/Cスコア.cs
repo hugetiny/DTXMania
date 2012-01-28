@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DTXMania
 {
+	[Serializable]
 	internal class Cスコア
 	{
 		// プロパティ
 
 		public STScoreIni情報 ScoreIni情報;
+		[Serializable]
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STScoreIni情報
 		{
@@ -24,6 +27,7 @@ namespace DTXMania
 		}
 
 		public STファイル情報 ファイル情報;
+		[Serializable]
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STファイル情報
 		{
@@ -42,6 +46,7 @@ namespace DTXMania
 		}
 
 		public ST譜面情報 譜面情報;
+		[Serializable]
 		[StructLayout( LayoutKind.Sequential )]
 		public struct ST譜面情報
 		{
@@ -62,6 +67,7 @@ namespace DTXMania
 			public bool レベルを非表示にする;
 			public CDTX.E種別 曲種別;
 
+			[Serializable]
 			[StructLayout( LayoutKind.Sequential )]
 			public struct STHISTORY
 			{
@@ -122,6 +128,7 @@ namespace DTXMania
 				}
 			}
 
+			[Serializable]
 			[StructLayout( LayoutKind.Sequential )]
 			public struct STRANK
 			{
@@ -170,6 +177,7 @@ namespace DTXMania
 				}
 			}
 
+			[Serializable]
 			[StructLayout( LayoutKind.Sequential )]
 			public struct STSKILL
 			{

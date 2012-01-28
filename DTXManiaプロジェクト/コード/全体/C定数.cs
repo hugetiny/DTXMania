@@ -229,7 +229,8 @@ namespace DTXMania
 	/// Drum/Guitar/Bass の値を扱う汎用の構造体。
 	/// </summary>
 	/// <typeparam name="T">値の型。</typeparam>
-	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
+	[StructLayout( LayoutKind.Sequential )]
 	public struct STDGBVALUE<T>
 	{
 		public T Drums;

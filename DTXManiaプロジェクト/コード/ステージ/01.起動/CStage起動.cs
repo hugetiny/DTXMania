@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using FDK;
+using System.Runtime.Serialization.Formatters.Binary;
+
 
 namespace DTXMania
 {
@@ -183,6 +185,19 @@ namespace DTXMania
 
 			DateTime now = DateTime.Now;
 			string str = CDTXMania.strEXEのあるフォルダ + "songs.db";
+			string strPathSongsDB2 = CDTXMania.strEXEのあるフォルダ + "songs2.db";
+			bool bIsFastBoot = false;
+			bool bCanFastBoot = false;
+
+			Microsoft.VisualBasic.Devices.Keyboard key = new Microsoft.VisualBasic.Devices.Keyboard();
+			if ( key.CapsLock )		// #27060 2012.1.26 yyagi CapsLock=ONのときは読み込み高速化
+			{
+				bIsFastBoot = true;
+			}
+			if ( File.Exists( strPathSongsDB2 ) )
+			{
+				bCanFastBoot = true;
+			}
 
 			try
 			{
@@ -265,6 +280,7 @@ namespace DTXMania
 					}
 					else
 					{
+						bIsFastBoot = false;
 						Trace.TraceInformation( "初回の起動であるかまたはDTXManiaのバージョンが上がったため、songs.db の読み込みをスキップします。" );
 						lock( this.list進行文字列 )
 						{
@@ -278,68 +294,93 @@ namespace DTXMania
 				}
 				//-----------------------------
 				#endregion
-				#region [ 2) 曲データの検索 ]
-				//-----------------------------
-				base.eフェーズID = CStage.Eフェーズ.起動2_曲を検索してリストを作成する;
 
-				Trace.TraceInformation( "2) 曲データを検索します。" );
-				Trace.Indent();
-
-				try
+				if ( bIsFastBoot && bCanFastBoot )			// #27060 2012.1.26 yyagi
 				{
-					if( !string.IsNullOrEmpty( CDTXMania.ConfigIni.str曲データ検索パス ) )
+					Trace.TraceInformation( "2') 曲の検索を止めて、読込を高速化します。" );
+
+//					byte[] buf = File.ReadAllBytes( strPathSongsDB2 );			// 一旦メモリにまとめ読みしてからdeserializeした方が高速かと思ったら全く変わらなかったので削除
+//					using ( MemoryStream input = new MemoryStream(buf, false) )
+					using ( Stream input = File.OpenRead( strPathSongsDB2 ) )
 					{
-						string[] strArray = CDTXMania.ConfigIni.str曲データ検索パス.Split( new char[] { ';' } );
-						if( strArray.Length > 0 )
+						try
 						{
-							// 全パスについて…
-							foreach( string str2 in strArray )
+							BinaryFormatter formatter = new BinaryFormatter();
+							CDTXMania.Songs管理 = (CSongs管理) formatter.Deserialize( input );
+						}
+						catch ( Exception )
+						{
+							bCanFastBoot = false;				// deserialize失敗時は、通常通り曲データ検索を行う
+						}
+					}
+				}
+				if ( !bIsFastBoot || !bCanFastBoot )
+				{
+
+					#region [ 2) 曲データの検索 ]
+					//-----------------------------
+					base.eフェーズID = CStage.Eフェーズ.起動2_曲を検索してリストを作成する;
+
+					Trace.TraceInformation( "2) 曲データを検索します。" );
+					Trace.Indent();
+
+					try
+					{
+						if ( !string.IsNullOrEmpty( CDTXMania.ConfigIni.str曲データ検索パス ) )
+						{
+							string[] strArray = CDTXMania.ConfigIni.str曲データ検索パス.Split( new char[] { ';' } );
+							if ( strArray.Length > 0 )
 							{
-								string path = str2;
-								if( !Path.IsPathRooted( path ) )
+								// 全パスについて…
+								foreach ( string str2 in strArray )
 								{
-									path = CDTXMania.strEXEのあるフォルダ + str2;	// 相対パスの場合、絶対パスに直す(2010.9.16)
-								}
-
-								if( !string.IsNullOrEmpty( path ) )
-								{
-									Trace.TraceInformation( "検索パス: " + path );
-									Trace.Indent();
-
-									try
+									string path = str2;
+									if ( !Path.IsPathRooted( path ) )
 									{
-										CDTXMania.Songs管理.t曲を検索してリストを作成する( path, true );
+										path = CDTXMania.strEXEのあるフォルダ + str2;	// 相対パスの場合、絶対パスに直す(2010.9.16)
 									}
-									catch( Exception exception2 )
+
+									if ( !string.IsNullOrEmpty( path ) )
 									{
-										Trace.TraceError( exception2.Message );
-										Trace.TraceError( exception2.StackTrace );
-										Trace.TraceError( "例外が発生しましたが処理を継続します。" );
-									}
-									finally
-									{
-										Trace.Unindent();
+										Trace.TraceInformation( "検索パス: " + path );
+										Trace.Indent();
+
+										try
+										{
+											CDTXMania.Songs管理.t曲を検索してリストを作成する( path, true );
+										}
+										catch ( Exception exception2 )
+										{
+											Trace.TraceError( exception2.Message );
+											Trace.TraceError( exception2.StackTrace );
+											Trace.TraceError( "例外が発生しましたが処理を継続します。" );
+										}
+										finally
+										{
+											Trace.Unindent();
+										}
 									}
 								}
 							}
 						}
+						else
+						{
+							Trace.TraceWarning( "曲データの検索パス(DTXPath)の指定がありません。" );
+						}
 					}
-					else
+					finally
 					{
-						Trace.TraceWarning( "曲データの検索パス(DTXPath)の指定がありません。" );
+						Trace.TraceInformation( "曲データの検索を完了しました。[{0}曲{1}スコア]", new object[] { CDTXMania.Songs管理.n検索された曲ノード数, CDTXMania.Songs管理.n検索されたスコア数 } );
+						Trace.Unindent();
 					}
+					lock ( this.list進行文字列 )
+					{
+						this.list進行文字列.Add( string.Format( "{0} ... {1} scores ({2} songs)", "Enumerating songs", CDTXMania.Songs管理.n検索されたスコア数, CDTXMania.Songs管理.n検索された曲ノード数 ) );
+					}
+					//-----------------------------
+					#endregion
+					bCanFastBoot = false;						// 曲データの検索をしたのなら、後で高速起動用にsongs2.dbの書き出しをしておく
 				}
-				finally
-				{
-					Trace.TraceInformation( "曲データの検索を完了しました。[{0}曲{1}スコア]", new object[] { CDTXMania.Songs管理.n検索された曲ノード数, CDTXMania.Songs管理.n検索されたスコア数 } );
-					Trace.Unindent();
-				}
-				lock( this.list進行文字列 )
-				{
-					this.list進行文字列.Add( string.Format( "{0} ... {1} scores ({2} songs)", "Enumerating songs", CDTXMania.Songs管理.n検索されたスコア数, CDTXMania.Songs管理.n検索された曲ノード数 ) );
-				}
-				//-----------------------------
-				#endregion
 				#region [ 3) songs.db 情報の曲リストへの反映 ]
 				//-----------------------------
 				base.eフェーズID = CStage.Eフェーズ.起動3_スコアキャッシュをリストに反映する;
@@ -452,6 +493,16 @@ namespace DTXMania
 				{
 					this.list進行文字列.Add( string.Format( "{0} ... OK", "Saving songs.db" ) );
 				}
+
+				if ( !bCanFastBoot )		// #27060 2012.1.26 yyagi
+				{
+					// シリアライズ動作が遅いため、別スレッドで動かして起動を高速化する
+					// ただし別スレッドに投げた後のフォローは一切していないので注意 (処理時間は3000曲で0.5秒くらいなのでこのままでも大丈夫だとは思いますが)
+					Thread t = new Thread( new ParameterizedThreadStart( SerializeSongsDB2 ) );
+					t.Start( strPathSongsDB2 );
+//					SerializeSongsDB2( strPathSongsDB2 );
+				}
+
 				//-----------------------------
 				#endregion
 			}
@@ -464,5 +515,42 @@ namespace DTXMania
 		}
 		//-----------------
 		#endregion
+
+		/// <summary>
+		/// 曲リストのserialize
+		/// </summary>
+		/// <param name="o">songs2.dbのファイル名(絶対パス)</param>
+		private static void SerializeSongsDB2(object o)
+		{
+			string strPathSongsDB2 = (string) o;
+			bool bSuccessedSerialize = true;
+			Stream output = null;
+			try
+			{
+				output = File.Create( strPathSongsDB2 );
+				BinaryFormatter formatter = new BinaryFormatter();
+				formatter.Serialize( output, CDTXMania.Songs管理 );
+			}
+			catch ( Exception )
+			{
+				bSuccessedSerialize = false;
+			}
+			finally
+			{
+				output.Close();
+				if ( !bSuccessedSerialize )
+				{
+					try
+					{
+						File.Delete( strPathSongsDB2 );	// serializeに失敗したら、songs2.dbファイルを消しておく
+					}
+					catch ( Exception )
+					{
+						// 特に何もしない
+					}
+				}
+			}
+		}
+
 	}
 }

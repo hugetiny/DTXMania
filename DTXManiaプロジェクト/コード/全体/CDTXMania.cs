@@ -153,7 +153,7 @@ namespace DTXMania
 		public static CSongs管理 Songs管理 
 		{
 			get;
-			private set;
+			set;	// 2012.1.26 yyagi private解除 CStage起動でのdesirialize読み込みのため
 		}
 		public static CSound管理 Sound管理
 		{

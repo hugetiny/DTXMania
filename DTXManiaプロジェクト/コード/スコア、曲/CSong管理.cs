@@ -5,9 +5,11 @@ using System.Text;
 using System.Diagnostics;
 using System.IO;
 using System.Drawing;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DTXMania
 {
+	[Serializable]
 	internal class CSongs管理
 	{
 		// プロパティ

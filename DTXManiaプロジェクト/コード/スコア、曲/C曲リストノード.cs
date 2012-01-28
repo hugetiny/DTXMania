@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DTXMania
 {
+	[Serializable]
 	internal class C曲リストノード
 	{
 		// プロパティ
