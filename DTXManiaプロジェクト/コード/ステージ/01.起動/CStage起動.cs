@@ -12,6 +12,12 @@ namespace DTXMania
 {
 	internal class CStage起動 : CStage
 	{
+		public Thread thSavingSongList
+		{
+			get;
+			private set;
+		}
+
 		// コンストラクタ
 
 		public CStage起動()
@@ -271,6 +277,7 @@ namespace DTXMania
 						}
 						catch
 						{
+							bIsFastBoot = false;
 							Trace.TraceError( "songs.db の読み込みに失敗しました。" );
 						}
 						Trace.TraceInformation( "songs.db の読み込みを完了しました。[{0}スコア]", new object[] { CDTXMania.Songs管理.nSongsDBから取得できたスコア数 } );
@@ -501,8 +508,8 @@ namespace DTXMania
 					#region [ 7) songs2.db への保存 ]		// #27060 2012.1.26 yyagi
 					// シリアライズ動作が遅いため、別スレッドで動かして起動を高速化する
 					// ただし別スレッドに投げた後のフォローは一切していないので注意 (処理時間は3000曲で0.5秒くらいなのでこのままでも大丈夫だとは思いますが)
-					Thread t = new Thread( new ParameterizedThreadStart( SerializeSongsDB2 ) );
-					t.Start( strPathSongsDB2 );
+					thSavingSongList = new Thread( new ParameterizedThreadStart( SerializeSongsDB2 ) );
+					thSavingSongList.Start( strPathSongsDB2 );
 //					SerializeSongsDB2( strPathSongsDB2 );
 					//-----------------------------
 					#endregion

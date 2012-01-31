@@ -78,6 +78,11 @@ namespace DTXMania
 				this.ct時間稼ぎ.t進行();
 				if( this.ct時間稼ぎ.b終了値に達した && !CDTXMania.Skin.soundゲーム終了音.b再生中 )
 				{
+					if ( CDTXMania.stage起動.thSavingSongList != null )			// #27060 2011.1.31 yyagi songs2.db保存最中にアプリ終了した際は、保存スレッドを強制停止する
+					{
+						CDTXMania.stage起動.thSavingSongList.Abort();
+						CDTXMania.stage起動.thSavingSongList.Join();
+					}
 					return 1;
 				}
 				if( this.tx背景 != null )
