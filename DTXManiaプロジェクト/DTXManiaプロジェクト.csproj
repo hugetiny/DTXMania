@@ -100,10 +100,12 @@
     <Compile Include="コード\スコア、曲\CDTX.cs" />
     <Compile Include="コード\スコア、曲\CScoreIni.cs" />
     <Compile Include="コード\スコア、曲\CSetDef.cs" />
+    <Compile Include="コード\ステージ\02.タイトル\CEnumSongs.cs" />
     <Compile Include="コード\スコア、曲\CSong管理.cs" />
     <Compile Include="コード\スコア、曲\Cスコア.cs" />
     <Compile Include="コード\スコア、曲\C曲リストノード.cs" />
     <Compile Include="コード\ステージ\01.起動\CStage起動.cs" />
+    <Compile Include="コード\ステージ\02.タイトル\CActEnumeratingSongs.cs" />
     <Compile Include="コード\ステージ\02.タイトル\CStageタイトル.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CActConfigKeyAssign.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CActConfigList.cs" />

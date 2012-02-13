@@ -138,7 +138,7 @@ namespace DTXMania
 
 //				this.actSortSongs.bIsActiveSortMenu = false;
 
-				//				this.n前回Bassを踏んだ時刻 = -1;
+//				this.n前回Bassを踏んだ時刻 = -1;
 //				this.n前回HHを叩いた時刻 = -1;
 //				this.n前回ギターをPickした時刻 = -1;
 //				this.n前回ベースをPickした時刻 = -1;

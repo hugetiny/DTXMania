@@ -44,6 +44,7 @@ namespace DTXMania
 			get; 
 			set;
 		}
+		[NonSerialized]
 		public List<Cスコア> listSongsDB;					// songs.dbから構築されるlist
 		public List<C曲リストノード> list曲ルート;			// 起動時にフォルダ検索して構築されるlist
 
@@ -101,6 +102,7 @@ namespace DTXMania
 		}
 		//-----------------
 		#endregion
+
 		#region [ 曲を検索してリストを作成する ]
 		//-----------------
 		public void t曲を検索してリストを作成する( string str基点フォルダ, bool b子BOXへ再帰する )
@@ -553,7 +555,9 @@ namespace DTXMania
 								{
 									match = delegate( Cスコア sc )
 									{
-										return ( ( sc.ファイル情報.ファイルの絶対パス.Equals( node.arスコア[ lv ].ファイル情報.ファイルの絶対パス )
+										return
+											(
+											( sc.ファイル情報.ファイルの絶対パス.Equals( node.arスコア[ lv ].ファイル情報.ファイルの絶対パス )
 											&& sc.ファイル情報.ファイルサイズ.Equals( node.arスコア[ lv ].ファイル情報.ファイルサイズ ) )
 											&& ( sc.ファイル情報.最終更新日時.Equals( node.arスコア[ lv ].ファイル情報.最終更新日時 )
 											&& sc.ScoreIni情報.ファイルサイズ.Equals( node.arスコア[ lv ].ScoreIni情報.ファイルサイズ ) ) )
@@ -563,7 +567,8 @@ namespace DTXMania
 								int num = this.listSongsDB.FindIndex( match );
 								if( num == -1 )
 								{
-									if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+//Trace.TraceInformation( "songs.db に存在しません。({0})", node.arスコア[ lv ].ファイル情報.ファイルの絶対パス );
+									if ( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
 									{
 										Trace.TraceInformation( "songs.db に存在しません。({0})", new object[] { node.arスコア[ lv ].ファイル情報.ファイルの絶対パス } );
 									}
@@ -664,6 +669,8 @@ namespace DTXMania
 			cスコア.譜面情報.レベルを非表示にする = br.ReadBoolean();
 			cスコア.譜面情報.曲種別 = (CDTX.E種別) br.ReadInt32();
 //			cスコア.譜面情報.bpm = br.ReadDouble();
+
+//Debug.WriteLine( "songs.db: " + cスコア.ファイル情報.ファイルの絶対パス );
 			return cスコア;
 		}
 		//-----------------
@@ -713,7 +720,7 @@ namespace DTXMania
 //									c曲リストノード.arスコア[ i ].譜面情報.bpm = cdtx.BPM;
 									this.nファイルから反映できたスコア数++;
 									cdtx.On非活性化();
-
+Debug.WriteLine( "★" + this.nファイルから反映できたスコア数 + " " + c曲リストノード.arスコア[ i ].譜面情報.タイトル );
 									#region [ 曲検索ログ出力 ]
 									//-----------------
 									if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
