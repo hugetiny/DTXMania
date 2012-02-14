@@ -95,7 +95,7 @@ namespace DTXMania
 					return 0;
 				}
 
-				CSongs管理 s管理 = CDTXMania.Songs管理;
+				// CSongs管理 s管理 = CDTXMania.Songs管理;
 
 				if( this.tx背景 != null )
 					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
@@ -117,15 +117,15 @@ namespace DTXMania
 						break;
 
 					case CStage.Eフェーズ.起動2_曲を検索してリストを作成する:
-						this.str現在進行中 = string.Format( "{0} ... {1}", "Enumerating songs", s管理.n検索されたスコア数 );
+						this.str現在進行中 = string.Format( "{0} ... {1}", "Enumerating songs", es.Songs管理.n検索されたスコア数 );
 						break;
 
 					case CStage.Eフェーズ.起動3_スコアキャッシュをリストに反映する:
-						this.str現在進行中 = string.Format( "{0} ... {1}/{2}", "Loading score properties from songs.db", CDTXMania.Songs管理.nスコアキャッシュから反映できたスコア数, s管理.n検索されたスコア数 );
+						this.str現在進行中 = string.Format( "{0} ... {1}/{2}", "Loading score properties from songs.db", es.Songs管理.nスコアキャッシュから反映できたスコア数, es.Songs管理.n検索されたスコア数 );
 						break;
 
 					case CStage.Eフェーズ.起動4_スコアキャッシュになかった曲をファイルから読み込んで反映する:
-						this.str現在進行中 = string.Format( "{0} ... {1}/{2}", "Loading score properties from files", CDTXMania.Songs管理.nファイルから反映できたスコア数, CDTXMania.Songs管理.n検索されたスコア数 - s管理.nスコアキャッシュから反映できたスコア数 );
+						this.str現在進行中 = string.Format( "{0} ... {1}/{2}", "Loading score properties from files", es.Songs管理.nファイルから反映できたスコア数, es.Songs管理.n検索されたスコア数 - es.Songs管理.nスコアキャッシュから反映できたスコア数 );
 						break;
 
 					case CStage.Eフェーズ.起動5_曲リストへ後処理を適用する:
@@ -158,7 +158,7 @@ namespace DTXMania
 				//-----------------
 				#endregion
 
-				if( es != null && es.IsSongListEnumDone )					// 曲リスト作成が終わったら
+				if( es != null && es.IsSongListEnumDone )							// 曲リスト作成が終わったら
 				{
 					CDTXMania.Songs管理 = ( es != null ) ? es.Songs管理 : null;		// 最後に、曲リストを拾い上げる
 					return 1;
