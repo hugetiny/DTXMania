@@ -161,7 +161,7 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		public static CActEnumeratingSongs actEnumeratingSongs
+		public static CActEnumSongs actEnumeratingSongs
 		{
 			get;
 			private set;
@@ -1538,7 +1538,7 @@ for (int i = 0; i < 3; i++) {
 				Songs管理 = new CSongs管理();
 //				Songs管理_裏読 = new CSongs管理();
 				EnumeratingSongs = new CEnumSongs();
-				actEnumeratingSongs = new CActEnumeratingSongs();
+				actEnumeratingSongs = new CActEnumSongs();
 				Trace.TraceInformation( "曲リストの初期化を完了しました。" );
 			}
 			catch( Exception e )
