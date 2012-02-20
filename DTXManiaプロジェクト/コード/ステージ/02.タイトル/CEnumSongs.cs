@@ -22,21 +22,31 @@ namespace DTXMania
 			private set;
 		}
 
-		public bool IsSongListEnumDone
+		public bool IsSongListEnumCompletelyDone		// 曲リスト探索と、実際の曲リストへの反映が完了した？
 		{
 			get
 			{
-				return ( this.state == DTXEnumState.Done );
+				return ( this.state == DTXEnumState.CompletelyDone );
 			}
 		}
-		public bool IsSongListEnumStarted
+		public bool IsSongListEnumerated				// 曲リスト探索が完了したが、実際の曲リストへの反映はまだ？
+		{
+			get
+			{
+				return ( this.state == DTXEnumState.Enumeratad );
+			}
+		}
+		public bool IsSongListEnumStarted				// 曲リスト探索開始後？(探索完了も含む)
 		{
 			get
 			{
 				return ( this.state != DTXEnumState.None );
 			}
 		}
-
+		public void SongListEnumCompletelyDone()
+		{
+			this.state = DTXEnumState.CompletelyDone;
+		}
 		private readonly string strPathSongsDB = CDTXMania.strEXEのあるフォルダ + "songs.db";
 		private readonly string strPathSongList = CDTXMania.strEXEのあるフォルダ + "songlist.db";
 
@@ -50,7 +60,8 @@ namespace DTXMania
 			None,
 			Ongoing,
 			Suspended,
-			Done
+			Enumeratad,			// 探索完了、現在の曲リストに未反映
+			CompletelyDone		// 探索完了、現在の曲リストに反映完了
 		}
 		private DTXEnumState state = DTXEnumState.None;
 
@@ -83,6 +94,10 @@ namespace DTXMania
 			this.thDTXFileEnumerate.Start();
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		public delegate void AsyncDelegate();
 
 		/// <summary>
 		/// 曲検索スレッドの開始
@@ -97,6 +112,7 @@ namespace DTXMania
 					state = DTXEnumState.Ongoing;
 				}
 				// this.autoReset = new AutoResetEvent( true );
+
 				this.thDTXFileEnumerate = new Thread( new ThreadStart( this.t曲リストの構築2 ) );
 				this.thDTXFileEnumerate.Name = "曲リストの構築";
 				this.thDTXFileEnumerate.IsBackground = true;
@@ -105,12 +121,13 @@ namespace DTXMania
 			}
 		}
 
+
 		/// <summary>
 		/// 曲探索スレッドのサスペンド
 		/// </summary>
 		public void Suspend()
 		{
-			if ( this.state != DTXEnumState.Done &&
+			if ( this.state != DTXEnumState.CompletelyDone &&
 				( thDTXFileEnumerate.ThreadState == System.Threading.ThreadState.Background ) )
 			{
 				// this.thDTXFileEnumerate.Suspend();		// obsoleteにつき使用中止
@@ -147,7 +164,7 @@ namespace DTXMania
 			// 曲検索が一時中断されるまで待機
 			for ( int i = 0; i < 10; i++ )
 			{
-				if ( this.state == DTXEnumState.Done ||
+				if ( this.state == DTXEnumState.CompletelyDone ||
 					( thDTXFileEnumerate.ThreadState & ( System.Threading.ThreadState.WaitSleepJoin | System.Threading.ThreadState.Background ) ) != 0 )
 				{
 					break;
@@ -319,7 +336,7 @@ namespace DTXMania
 			}
 			lock ( this )
 			{
-				state = DTXEnumState.Done;
+				state = DTXEnumState.CompletelyDone;
 			}
 		}
 
@@ -543,7 +560,8 @@ namespace DTXMania
 			}
 			lock ( this )
 			{
-				state = DTXEnumState.Done;
+				// state = DTXEnumState.Done;		// DoneにするのはCDTXMania.cs側にて。
+				state = DTXEnumState.Enumeratad;
 			}
 		}
 

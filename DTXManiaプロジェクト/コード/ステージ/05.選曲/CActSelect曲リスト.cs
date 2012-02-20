@@ -246,6 +246,18 @@ namespace DTXMania
 			CDTXMania.stage選曲.t選択曲変更通知();
 		}
 
+
+		/// <summary>
+		/// 曲リストをリセットする
+		/// </summary>
+		/// <param name="cs"></param>
+		public void Refresh(CSongs管理 cs)
+		{
+			this.On非活性化();
+			this.r現在選択中の曲 = null;
+			CDTXMania.Songs管理 = cs;
+			this.On活性化();
+		}
 		
 		// CActivity 実装
 

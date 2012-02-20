@@ -127,6 +127,15 @@ namespace DTXMania
 
 		// CStage 実装
 
+		/// <summary>
+		/// 曲リストをリセットする
+		/// </summary>
+		/// <param name="cs"></param>
+		public void Refresh( CSongs管理 cs )
+		{
+			this.act曲リスト.Refresh( cs );
+		}
+
 		public override void On活性化()
 		{
 			Trace.TraceInformation( "選曲ステージを活性化します。" );

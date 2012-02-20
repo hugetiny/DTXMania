@@ -57,8 +57,9 @@ namespace DTXMania
 		public override int On進行描画()
 		{
 			if ( this.b活性化してない )
+			{
 				return 0;
-
+			}
 			if ( this.txNowEnumeratingSongs != null )
 			{
 				this.txNowEnumeratingSongs.t2D描画( CDTXMania.app.Device, 0, 0 );

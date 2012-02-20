@@ -156,12 +156,12 @@ namespace DTXMania
 			get;
 			set;	// 2012.1.26 yyagi private解除 CStage起動でのdesirialize読み込みのため
 		}
-		public static CEnumSongs EnumeratingSongs
+		public static CEnumSongs EnumSongs
 		{
 			get;
 			private set;
 		}
-		public static CActEnumSongs actEnumeratingSongs
+		public static CActEnumSongs actEnumSongs
 		{
 			get;
 			private set;
@@ -471,7 +471,36 @@ namespace DTXMania
 				//---------------------
 				#endregion
 
+//				actEnumSongs.On進行描画();								// "Enumerating Songs..."アイコンの描画
+
 				CScoreIni scoreIni = null;
+
+				switch ( r現在のステージ.eステージID )					// ここに"Enumerating Songs..."表示を集約
+				{
+					case CStage.Eステージ.タイトル:
+					case CStage.Eステージ.コンフィグ:
+					case CStage.Eステージ.選曲:
+					case CStage.Eステージ.曲読み込み:
+						if ( EnumSongs != null )
+						{
+							// "Enumerating Songs..."の表示
+							// 追々、CActEnumSongsの中に閉じ込めたいところ
+							if ( !EnumSongs.IsSongListEnumCompletelyDone && r現在のステージ.eステージID != CStage.Eステージ.曲読み込み )
+							{
+								CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, "Enumerating Songs..." );
+							}
+
+							// 曲検索が完了したら、実際の曲リストに反映する
+							// CStage選曲.On活性化() に回した方がいいかな？
+							if ( EnumSongs.IsSongListEnumerated && r現在のステージ.eステージID != CStage.Eステージ.選曲 )
+							{
+								CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
+								EnumSongs.SongListEnumCompletelyDone();
+							}
+						}
+						break;
+				}
+
 
 				switch( r現在のステージ.eステージID )
 				{
@@ -521,16 +550,12 @@ namespace DTXMania
 						if( this.n進行描画の戻り値 == (int)CStageタイトル.E戻り値.継続 )
 						{
 							if ( r直前のステージ.eステージID == CStage.Eステージ.起動 &&
-								!EnumeratingSongs.IsSongListEnumStarted )
+								!EnumSongs.IsSongListEnumStarted )
 							{
-								// actEnumeratingSongs.On活性化();
-								EnumeratingSongs.Init( CDTXMania.Songs管理.listSongsDB, CDTXMania.Songs管理.nSongsDBから取得できたスコア数 );	// songs.db情報と、取得した曲数を、新インスタンスにも与える
-								EnumeratingSongs.StartEnumFromDisk();		// 曲検索スレッドの起動・開始
+								//actEnumSongs.On活性化();
+								EnumSongs.Init( CDTXMania.Songs管理.listSongsDB, CDTXMania.Songs管理.nSongsDBから取得できたスコア数 );	// songs.db情報と、取得した曲数を、新インスタンスにも与える
+								EnumSongs.StartEnumFromDisk();		// 曲検索スレッドの起動・開始
 							}
-						}
-						if ( !EnumeratingSongs.IsSongListEnumDone )
-						{
-							CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, "Enumerating Songs..." );
 						}
 
 						switch( this.n進行描画の戻り値 )
@@ -661,12 +686,6 @@ namespace DTXMania
 					case CStage.Eステージ.コンフィグ:
 						#region [ *** ]
 						//-----------------------------
-						if ( !EnumeratingSongs.IsSongListEnumDone )
-						{
-							CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, "Enumerating Songs..." );
-						}
-
-
 						if( this.n進行描画の戻り値 != 0 )
 						{
 							switch( r直前のステージ.eステージID )
@@ -726,12 +745,11 @@ namespace DTXMania
 						switch( this.n進行描画の戻り値 )
 						{
 							case 0:											// #27060 2012.2.6 yyagi
-								if ( !EnumeratingSongs.IsSongListEnumDone )
-								{
-									CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, "Enumerating Songs..." );
-								}
-
-								EnumeratingSongs.Resume();
+//								if ( !EnumSongs.IsSongListEnumDone )
+//								{
+//									CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, "Enumerating Songs..." );
+//								}
+								EnumSongs.Resume();
 								break;
 
 							case 1:
@@ -759,7 +777,7 @@ namespace DTXMania
 							case 2:
 								#region [ *** ]
 								//-----------------------------
-								EnumeratingSongs.Suspend();
+								EnumSongs.Suspend();
 		
 								r現在のステージ.On非活性化();
 								Trace.TraceInformation( "----------------------" );
@@ -885,7 +903,7 @@ for (int i = 0; i < 3; i++) {
 							this.tガベージコレクションを実行する();
 
 							// 曲検索が一時中断されるまで待機
-							EnumeratingSongs.WaitUntilSuspended();
+							EnumSongs.WaitUntilSuspended();
 						}
 						//-----------------------------
 						#endregion
@@ -1537,8 +1555,8 @@ for (int i = 0; i < 3; i++) {
 			{
 				Songs管理 = new CSongs管理();
 //				Songs管理_裏読 = new CSongs管理();
-				EnumeratingSongs = new CEnumSongs();
-				actEnumeratingSongs = new CActEnumSongs();
+				EnumSongs = new CEnumSongs();
+				actEnumSongs = new CActEnumSongs();
 				Trace.TraceInformation( "曲リストの初期化を完了しました。" );
 			}
 			catch( Exception e )
@@ -1577,7 +1595,7 @@ for (int i = 0; i < 3; i++) {
 			stage結果 = new CStage結果();
 			stage終了 = new CStage終了();
 			this.listトップレベルActivities = new List<CActivity>();
-			this.listトップレベルActivities.Add( actEnumeratingSongs );
+			this.listトップレベルActivities.Add( actEnumSongs );
 			this.listトップレベルActivities.Add( act文字コンソール );
 			this.listトップレベルActivities.Add( stage起動 );
 			this.listトップレベルActivities.Add( stageタイトル );
@@ -1661,14 +1679,14 @@ for (int i = 0; i < 3; i++) {
 				Trace.TraceInformation( "■ アプリケーションの終了" );
 				#region [ 曲検索の終了処理 ]
 				//---------------------
-				if ( actEnumeratingSongs != null )
+				if ( actEnumSongs != null )
 				{
 					Trace.TraceInformation( "曲検索actの終了処理を行います。" );
 					Trace.Indent();
 					try
 					{
-						actEnumeratingSongs.On非活性化();
-						actEnumeratingSongs= null;
+						actEnumSongs.On非活性化();
+						actEnumSongs= null;
 						Trace.TraceInformation( "曲検索actの終了処理を完了しました。" );
 					}
 					catch ( Exception e )

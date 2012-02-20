@@ -158,7 +158,7 @@ namespace DTXMania
 				//-----------------
 				#endregion
 
-				if( es != null && es.IsSongListEnumDone )							// 曲リスト作成が終わったら
+				if( es != null && es.IsSongListEnumCompletelyDone )							// 曲リスト作成が終わったら
 				{
 					CDTXMania.Songs管理 = ( es != null ) ? es.Songs管理 : null;		// 最後に、曲リストを拾い上げる
 					return 1;
