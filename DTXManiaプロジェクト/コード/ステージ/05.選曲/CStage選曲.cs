@@ -13,6 +13,17 @@ namespace DTXMania
 	{
 		// プロパティ
 
+		public bool bIsEnumeratingSongs
+		{
+			get
+			{
+				return act曲リスト.bIsEnumeratingSongs;
+			}
+			set
+			{
+				act曲リスト.bIsEnumeratingSongs = value;
+			}
+		}
 		public bool bスクロール中
 		{
 			get

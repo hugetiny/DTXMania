@@ -14,6 +14,11 @@ namespace DTXMania
 	{
 		// プロパティ
 
+		public bool bIsEnumeratingSongs
+		{
+			get;
+			set;
+		}
 		public bool bスクロール中
 		{
 			get
@@ -62,6 +67,7 @@ namespace DTXMania
 			this.r現在選択中の曲 = null;
 			this.n現在のアンカ難易度レベル = 0;
 			base.b活性化してない = true;
+			this.bIsEnumeratingSongs = false;
 		}
 
 
@@ -327,6 +333,7 @@ namespace DTXMania
 				{
 					graphics.DrawString( "Song not found...", this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 2f );
 					graphics.DrawString( "Song not found...", this.ft曲リスト用フォント, Brushes.White, (float) 0f, (float) 0f );
+
 					this.txSongNotFound = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
 
 					this.txSongNotFound.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );	// 半分のサイズで表示する。

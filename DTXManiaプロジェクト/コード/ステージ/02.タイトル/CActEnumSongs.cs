@@ -31,18 +31,28 @@ namespace DTXMania
 			if ( this.b活性化してる )
 				return;
 			base.On活性化();
+
+			try
+			{
+				this.ctNowEnumeratingSongs = new CCounter();	// 0, 1000, 17, CDTXMania.Timer );
+				this.ctNowEnumeratingSongs.t開始( 0, 100, 17, CDTXMania.Timer );
+			}
+			finally
+			{
+			}
 		}
 		public override void On非活性化()
 		{
 			if ( this.b活性化してない )
 				return;
 			base.On非活性化();
+			this.ctNowEnumeratingSongs = null;
 		}
 		public override void OnManagedリソースの作成()
 		{
 			if ( this.b活性化してない )
 				return;
-			this.txNowEnumeratingSongs = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
+			this.txNowEnumeratingSongs = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle NowEnumeratingSongs.png" ), false );
 			base.OnManagedリソースの作成();
 		}
 		public override void OnManagedリソースの解放()
@@ -60,8 +70,11 @@ namespace DTXMania
 			{
 				return 0;
 			}
+			this.ctNowEnumeratingSongs.t進行Loop();
 			if ( this.txNowEnumeratingSongs != null )
 			{
+				// this.txNowEnumeratingSongs.n透明度 = (int) ( 255.0 * ( 1.0 - ( ( (double) this.ctNowEnumeratingSongs.n現在の値 ) / 100.0 ) ) );
+				this.txNowEnumeratingSongs.n透明度 = (int) ( 128.0 + 127.0 * Math.Sin( (double) (2 * Math.PI * this.ctNowEnumeratingSongs.n現在の値 / 100.0 ) ) );
 				this.txNowEnumeratingSongs.t2D描画( CDTXMania.app.Device, 0, 0 );
 			}
 
@@ -69,6 +82,7 @@ namespace DTXMania
 		}
 
 
+		private CCounter ctNowEnumeratingSongs;
 		private CTexture txNowEnumeratingSongs = null;
 	}
 }
