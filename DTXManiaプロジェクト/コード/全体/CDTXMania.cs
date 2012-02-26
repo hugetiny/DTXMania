@@ -471,11 +471,12 @@ namespace DTXMania
 				//---------------------
 				#endregion
 
-				actEnumSongs.On進行描画();								// "Enumerating Songs..."アイコンの描画
 
 				CScoreIni scoreIni = null;
 
-				switch ( r現在のステージ.eステージID )					// ここに"Enumerating Songs..."表示を集約
+				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
+				actEnumSongs.On進行描画();								// "Enumerating Songs..."アイコンの描画
+				switch ( r現在のステージ.eステージID )
 				{
 					case CStage.Eステージ.タイトル:
 					case CStage.Eステージ.コンフィグ:
@@ -483,33 +484,71 @@ namespace DTXMania
 					case CStage.Eステージ.曲読み込み:
 						if ( EnumSongs != null )
 						{
-							// "Enumerating Songs..."の表示
+							#region [ (特定条件時) 曲検索スレッドの起動・開始 ]
+							if ( r現在のステージ.eステージID == CStage.Eステージ.タイトル &&
+								 this.n進行描画の戻り値 == (int) CStageタイトル.E戻り値.継続 &&
+								 r直前のステージ.eステージID == CStage.Eステージ.起動 &&
+								 !EnumSongs.IsSongListEnumStarted )
+							{
+								actEnumSongs.On活性化();
+								EnumSongs.Init( CDTXMania.Songs管理.listSongsDB, CDTXMania.Songs管理.nSongsDBから取得できたスコア数 );	// songs.db情報と、取得した曲数を、新インスタンスにも与える
+								EnumSongs.StartEnumFromDisk();		// 曲検索スレッドの起動・開始
+							}
+							#endregion
+							
+							#region [ 曲検索の中断と再開 ]
+							if ( r現在のステージ.eステージID == CStage.Eステージ.選曲 )
+							{
+								switch ( this.n進行描画の戻り値 )
+								{
+									case 0:
+										EnumSongs.Resume();							// #27060 2012.2.6 yyagi 中止していたバックグランド曲検索を再開
+										break;
+
+									case 2:
+										EnumSongs.Suspend();						// #27060 バックグラウンドの曲検索を一時停止
+										actEnumSongs.On非活性化();
+										break;
+								}
+							}
+							#endregion
+
+							#region [ 曲探索中断待ち待機 ]
+							if ( r現在のステージ.eステージID == CStage.Eステージ.曲読み込み )
+							{
+								EnumSongs.WaitUntilSuspended();									// 念のため、曲検索が一時中断されるまで待機
+							}
+							#endregion
+
+							#region ["Enumerating Songs..."の表示 ]
 							// 追々、CActEnumSongsの中に閉じ込めたいところ
 							if ( !EnumSongs.IsSongListEnumCompletelyDone && r現在のステージ.eステージID != CStage.Eステージ.曲読み込み
 								&& actEnumSongs.b活性化してない )
 							{
 								actEnumSongs.On活性化();
 								CDTXMania.stage選曲.bIsEnumeratingSongs = true;
-
-								//CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, "Enumerating Songs..." );
 							}
+							#endregion
 
-							// 曲検索が完了したら、実際の曲リストに反映する
+							#region [ 曲検索が完了したら、実際の曲リストに反映する ]
 							// CStage選曲.On活性化() に回した方がいいかな？
-							if ( EnumSongs.IsSongListEnumerated && r現在のステージ.eステージID != CStage.Eステージ.選曲 )
+							if ( EnumSongs.IsSongListEnumerated )
 							{
-								CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
-								EnumSongs.SongListEnumCompletelyDone();
-								EnumSongs = null;		// GCはシステムに任せる
 								actEnumSongs.On非活性化();
-								CDTXMania.stage選曲.bIsEnumeratingSongs = false;
+								if ( r現在のステージ.eステージID != CStage.Eステージ.選曲 )
+								{
+									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
+									EnumSongs.SongListEnumCompletelyDone();
+									CDTXMania.stage選曲.bIsEnumeratingSongs = false;
+								}
 							}
+							#endregion
 						}
 						break;
 				}
+				#endregion
 
-
-				switch( r現在のステージ.eステージID )
+				switch ( r現在のステージ.eステージID )
 				{
 					case CStage.Eステージ.何もしない:
 						break;
@@ -554,17 +593,6 @@ namespace DTXMania
 					case CStage.Eステージ.タイトル:
 						#region [ *** ]
 						//-----------------------------
-						if( this.n進行描画の戻り値 == (int)CStageタイトル.E戻り値.継続 )
-						{
-							if ( r直前のステージ.eステージID == CStage.Eステージ.起動 &&
-								!EnumSongs.IsSongListEnumStarted )
-							{
-								actEnumSongs.On活性化();
-								EnumSongs.Init( CDTXMania.Songs管理.listSongsDB, CDTXMania.Songs管理.nSongsDBから取得できたスコア数 );	// songs.db情報と、取得した曲数を、新インスタンスにも与える
-								EnumSongs.StartEnumFromDisk();		// 曲検索スレッドの起動・開始
-							}
-						}
-
 						switch( this.n進行描画の戻り値 )
 						{
 							case (int)CStageタイトル.E戻り値.GAMESTART:
@@ -751,14 +779,6 @@ namespace DTXMania
 						//-----------------------------
 						switch( this.n進行描画の戻り値 )
 						{
-							case 0:											// #27060 2012.2.6 yyagi
-//								if ( !EnumSongs.IsSongListEnumDone )
-//								{
-//									CDTXMania.act文字コンソール.tPrint( 0, 0, C文字コンソール.Eフォント種別.灰, "Enumerating Songs..." );
-//								}
-								EnumSongs.Resume();
-								break;
-
 							case 1:
 								#region [ *** ]
 								//-----------------------------
@@ -784,8 +804,6 @@ namespace DTXMania
 							case 2:
 								#region [ *** ]
 								//-----------------------------
-								EnumSongs.Suspend();
-		
 								r現在のステージ.On非活性化();
 								Trace.TraceInformation( "----------------------" );
 								Trace.TraceInformation( "■ 曲読み込み" );
@@ -908,9 +926,6 @@ for (int i = 0; i < 3; i++) {
 							}
 
 							this.tガベージコレクションを実行する();
-
-							// 曲検索が一時中断されるまで待機
-							EnumSongs.WaitUntilSuspended();
 						}
 						//-----------------------------
 						#endregion

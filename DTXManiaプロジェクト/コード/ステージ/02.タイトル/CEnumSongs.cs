@@ -46,6 +46,7 @@ namespace DTXMania
 		public void SongListEnumCompletelyDone()
 		{
 			this.state = DTXEnumState.CompletelyDone;
+			this.Songs管理 = null;						// GCはOSに任せる
 		}
 		private readonly string strPathSongsDB = CDTXMania.strEXEのあるフォルダ + "songs.db";
 		private readonly string strPathSongList = CDTXMania.strEXEのあるフォルダ + "songlist.db";
@@ -60,8 +61,8 @@ namespace DTXMania
 			None,
 			Ongoing,
 			Suspended,
-			Enumeratad,			// 探索完了、現在の曲リストに未反映
-			CompletelyDone		// 探索完了、現在の曲リストに反映完了
+			Enumeratad,				// 探索完了、現在の曲リストに未反映
+			CompletelyDone			// 探索完了、現在の曲リストに反映完了
 		}
 		private DTXEnumState state = DTXEnumState.None;
 
@@ -165,7 +166,7 @@ namespace DTXMania
 			for ( int i = 0; i < 10; i++ )
 			{
 				if ( this.state == DTXEnumState.CompletelyDone ||
-					( thDTXFileEnumerate.ThreadState & ( System.Threading.ThreadState.WaitSleepJoin | System.Threading.ThreadState.Background ) ) != 0 )
+					( thDTXFileEnumerate.ThreadState & ( System.Threading.ThreadState.WaitSleepJoin | System.Threading.ThreadState.Background | System.Threading.ThreadState.Stopped ) ) != 0 )
 				{
 					break;
 				}
