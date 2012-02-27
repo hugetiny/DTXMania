@@ -491,6 +491,7 @@ namespace DTXMania
 								 !EnumSongs.IsSongListEnumStarted )
 							{
 								actEnumSongs.On活性化();
+								CDTXMania.stage選曲.bIsEnumeratingSongs = true;
 								EnumSongs.Init( CDTXMania.Songs管理.listSongsDB, CDTXMania.Songs管理.nSongsDBから取得できたスコア数 );	// songs.db情報と、取得した曲数を、新インスタンスにも与える
 								EnumSongs.StartEnumFromDisk();		// 曲検索スレッドの起動・開始
 							}
@@ -526,7 +527,6 @@ namespace DTXMania
 								&& actEnumSongs.b活性化してない )
 							{
 								actEnumSongs.On活性化();
-								CDTXMania.stage選曲.bIsEnumeratingSongs = true;
 							}
 							#endregion
 
@@ -535,11 +535,16 @@ namespace DTXMania
 							if ( EnumSongs.IsSongListEnumerated )
 							{
 								actEnumSongs.On非活性化();
-								if ( r現在のステージ.eステージID != CStage.Eステージ.選曲 )
+								CDTXMania.stage選曲.bIsEnumeratingSongs = false;
+								if ( CDTXMania.stage選曲.r現在選択中の曲 == null )	// 曲が1曲もないなら、Refreshしちゃう
 								{
 									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
 									EnumSongs.SongListEnumCompletelyDone();
-									CDTXMania.stage選曲.bIsEnumeratingSongs = false;
+								}
+								if ( r現在のステージ.eステージID != CStage.Eステージ.選曲 )	// 曲があるときのRefreshはうまくやらないとね
+								{
+									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
+									EnumSongs.SongListEnumCompletelyDone();
 								}
 							}
 							#endregion
