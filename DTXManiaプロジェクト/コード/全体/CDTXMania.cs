@@ -543,7 +543,7 @@ namespace DTXMania
 									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
 									EnumSongs.SongListEnumCompletelyDone();
 								}
-								if ( r現在のステージ.eステージID != CStage.Eステージ.選曲 )	// 曲があるときのRefreshはうまくやらないとね
+								else if ( r現在のステージ.eステージID != CStage.Eステージ.選曲 )	// 曲があるときのRefreshはうまくやらないとね
 								{
 									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
 									EnumSongs.SongListEnumCompletelyDone();
