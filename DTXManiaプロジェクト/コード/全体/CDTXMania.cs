@@ -504,6 +504,7 @@ namespace DTXMania
 								{
 									case 0:
 										EnumSongs.Resume();							// #27060 2012.2.6 yyagi 中止していたバックグランド曲検索を再開
+										actEnumSongs.On活性化();
 										break;
 
 									case 2:
@@ -521,14 +522,15 @@ namespace DTXMania
 							}
 							#endregion
 
-							#region ["Enumerating Songs..."の表示 ]
-							// 追々、CActEnumSongsの中に閉じ込めたいところ
-							if ( !EnumSongs.IsSongListEnumCompletelyDone && r現在のステージ.eステージID != CStage.Eステージ.曲読み込み
-								&& actEnumSongs.b活性化してない )
-							{
-								actEnumSongs.On活性化();
-							}
-							#endregion
+//							#region ["Enumerating Songs..."の表示 ]
+//							// 追々、CActEnumSongsの中に閉じ込めたいところ
+//							if ( !EnumSongs.IsSongListEnumCompletelyDone
+//								&& r現在のステージ.eステージID != CStage.Eステージ.曲読み込み
+//								&& actEnumSongs.b活性化してない )
+//							{
+//								actEnumSongs.On活性化();
+//							}
+//							#endregion
 
 							#region [ 曲検索が完了したら、実際の曲リストに反映する ]
 							// CStage選曲.On活性化() に回した方がいいかな？
