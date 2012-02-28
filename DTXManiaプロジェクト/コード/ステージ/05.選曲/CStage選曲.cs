@@ -320,6 +320,10 @@ namespace DTXMania
 					this.bBGM再生済み = true;
 				}
 
+
+//Debug.WriteLine( "パンくず=" + this.r現在選択中の曲.strBreadcrumbs );
+
+
 				// キー入力
 				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 
 					&& CDTXMania.act現在入力を占有中のプラグイン == null )

@@ -258,12 +258,32 @@ namespace DTXMania
 		/// 曲リストをリセットする
 		/// </summary>
 		/// <param name="cs"></param>
-		public void Refresh(CSongs管理 cs)
+		public void Refresh(CSongs管理 cs)		// #26070 2012.2.28 yyagi
 		{
-			this.On非活性化();
-			this.r現在選択中の曲 = null;
-			CDTXMania.Songs管理 = cs;
-			this.On活性化();
+//			this.On非活性化();
+
+			if ( cs != null && cs.list曲ルート.Count > 0 )	// 検索して1曲以上あった
+			{
+				CDTXMania.Songs管理 = cs;
+				if ( this.r現在選択中の曲 != null )			// r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
+				{
+					string bc = this.r現在選択中の曲.strBreadcrumbs;
+					Predicate<C曲リストノード> match = delegate( C曲リストノード c )
+					{
+						return ( c.strBreadcrumbs.Equals( bc ) );
+					};
+					int nMatched = cs.list曲ルート.FindIndex( match );
+
+					this.r現在選択中の曲 = ( nMatched == -1 ) ? null : cs.list曲ルート[ nMatched ];
+				}
+			}
+			else
+			{
+				this.On非活性化();
+				this.r現在選択中の曲 = null;
+				this.On活性化();
+			}
+//			this.On活性化();
 		}
 		
 		// CActivity 実装

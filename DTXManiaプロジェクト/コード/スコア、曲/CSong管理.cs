@@ -168,6 +168,10 @@ namespace DTXMania
 						item.SetDefのブロック番号 = i;
 						item.pathSetDefの絶対パス = path;
 						item.r親ノード = node親;
+
+						item.strBreadcrumbs = ( item.r親ノード == null ) ?
+							path + i : item.r親ノード.strBreadcrumbs + " > " + path + i;
+
 						for( int j = 0; j < 5; j++ )
 						{
 							if( !string.IsNullOrEmpty( block.File[ j ] ) )
@@ -281,6 +285,10 @@ namespace DTXMania
 						c曲リストノード.eノード種別 = C曲リストノード.Eノード種別.SCORE;
 						c曲リストノード.nスコア数 = 1;
 						c曲リストノード.r親ノード = node親;
+
+						c曲リストノード.strBreadcrumbs = ( c曲リストノード.r親ノード == null ) ?
+							str基点フォルダ + fileinfo.Name : c曲リストノード.r親ノード.strBreadcrumbs + " > " + str基点フォルダ + fileinfo.Name;
+
 						c曲リストノード.arスコア[ 0 ] = new Cスコア();
 						c曲リストノード.arスコア[ 0 ].ファイル情報.ファイルの絶対パス = str基点フォルダ + fileinfo.Name;
 						c曲リストノード.arスコア[ 0 ].ファイル情報.フォルダの絶対パス = str基点フォルダ;
@@ -348,6 +356,11 @@ namespace DTXMania
 					c曲リストノード.strタイトル = infoDir.Name.Substring( 9 );
 					c曲リストノード.nスコア数 = 1;
 					c曲リストノード.r親ノード = node親;
+
+					c曲リストノード.strBreadcrumbs = ( c曲リストノード.r親ノード == null ) ?
+						c曲リストノード.strタイトル : c曲リストノード.r親ノード.strBreadcrumbs + " > " + c曲リストノード.strタイトル;
+
+		
 					c曲リストノード.list子リスト = new List<C曲リストノード>();
 					c曲リストノード.arスコア[ 0 ] = new Cスコア();
 					c曲リストノード.arスコア[ 0 ].ファイル情報.フォルダの絶対パス = infoDir.FullName + @"\";
@@ -464,6 +477,11 @@ namespace DTXMania
 					c曲リストノード.arスコア[ 0 ].譜面情報.Premovie = boxdef.Premovie;
 					c曲リストノード.arスコア[ 0 ].譜面情報.Presound = boxdef.Presound;
 					c曲リストノード.r親ノード = node親;
+
+					c曲リストノード.strBreadcrumbs = ( c曲リストノード.r親ノード == null ) ?
+						c曲リストノード.strタイトル : c曲リストノード.r親ノード.strBreadcrumbs + " > " + c曲リストノード.strタイトル;
+	
+					
 					c曲リストノード.list子リスト = new List<C曲リストノード>();
 					c曲リストノード.nPerfect範囲ms = boxdef.PerfectRange;
 					c曲リストノード.nGreat範囲ms = boxdef.GreatRange;
@@ -833,6 +851,10 @@ namespace DTXMania
 				itemRandom.strタイトル = "< RANDOM SELECT >";
 				itemRandom.nスコア数 = 5;
 				itemRandom.r親ノード = ノードリスト[ 0 ].r親ノード;
+
+				itemRandom.strBreadcrumbs = ( itemRandom.r親ノード == null ) ?
+					itemRandom.strタイトル :  itemRandom.r親ノード.strBreadcrumbs + " > " + itemRandom.strタイトル;
+
 				for( int i = 0; i < 5; i++ )
 				{
 					itemRandom.arスコア[ i ] = new Cスコア();
@@ -885,6 +907,10 @@ namespace DTXMania
 					itemBack.strタイトル = "<< BACK";
 					itemBack.nスコア数 = 1;
 					itemBack.r親ノード = c曲リストノード;
+
+					itemBack.strBreadcrumbs = ( itemBack.r親ノード == null ) ?
+						itemBack.strタイトル : itemBack.r親ノード.strBreadcrumbs + " > " + itemBack.strタイトル;
+
 					itemBack.arスコア[ 0 ] = new Cスコア();
 					itemBack.arスコア[ 0 ].ファイル情報.フォルダの絶対パス = "";
 					itemBack.arスコア[ 0 ].譜面情報.タイトル = itemBack.strタイトル;

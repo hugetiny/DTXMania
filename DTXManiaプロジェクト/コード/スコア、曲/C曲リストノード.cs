@@ -50,6 +50,7 @@ namespace DTXMania
 		public Stack<int> stackランダム演奏番号 = new Stack<int>();
 		public string strジャンル = "";
 		public string strタイトル = "";
+		public string strBreadcrumbs = "";		// #27060 2011.2.27 yyagi; MUSIC BOXのパンくずリスト (曲リスト構造内の絶対位置捕捉のために使う)
 
 		
 		// コンストラクタ

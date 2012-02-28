@@ -498,7 +498,7 @@ namespace DTXMania
 							#endregion
 							
 							#region [ 曲検索の中断と再開 ]
-							if ( r現在のステージ.eステージID == CStage.Eステージ.選曲 )
+							if ( r現在のステージ.eステージID == CStage.Eステージ.選曲 && !EnumSongs.IsSongListEnumCompletelyDone )
 							{
 								switch ( this.n進行描画の戻り値 )
 								{
@@ -516,7 +516,7 @@ namespace DTXMania
 							#endregion
 
 							#region [ 曲探索中断待ち待機 ]
-							if ( r現在のステージ.eステージID == CStage.Eステージ.曲読み込み )
+							if ( r現在のステージ.eステージID == CStage.Eステージ.曲読み込み && !EnumSongs.IsSongListEnumCompletelyDone )
 							{
 								EnumSongs.WaitUntilSuspended();									// 念のため、曲検索が一時中断されるまで待機
 							}
@@ -538,16 +538,18 @@ namespace DTXMania
 							{
 								actEnumSongs.On非活性化();
 								CDTXMania.stage選曲.bIsEnumeratingSongs = false;
-								if ( CDTXMania.stage選曲.r現在選択中の曲 == null )	// 曲が1曲もないなら、Refreshしちゃう
-								{
+
+//								if ( CDTXMania.stage選曲.r現在選択中の曲 == null )				// 曲が1曲もないなら、Refreshしちゃう
+//								{																// 一度も選曲画面に入っていないばあいもr現在選択中の曲==nullになるが、
+																								// 選曲位置は初期値のままでよいのでここでRefresh()だけすればOK
 									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
 									EnumSongs.SongListEnumCompletelyDone();
-								}
-								else if ( r現在のステージ.eステージID != CStage.Eステージ.選曲 )	// 曲があるときのRefreshはうまくやらないとね
-								{
-									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
-									EnumSongs.SongListEnumCompletelyDone();
-								}
+//								}
+//								else if ( r現在のステージ.eステージID != CStage.Eステージ.選曲 )	// 曲があるときのRefreshはうまくやらないとね
+//								{
+//									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
+//									EnumSongs.SongListEnumCompletelyDone();
+//								}
 							}
 							#endregion
 						}
