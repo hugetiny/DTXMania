@@ -358,6 +358,7 @@ namespace DTXMania
 			bool bIsAvailableSongsDB = false;
 			bool bSucceededFastBoot = false;
 
+Thread.Sleep( 5000 );
 			try
 			{
 

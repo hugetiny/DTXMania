@@ -262,30 +262,62 @@ namespace DTXMania
 		{
 //			this.On非活性化();
 
-			if ( cs != null && cs.list曲ルート.Count > 0 )	// 検索して1曲以上あった
+			if ( cs != null && cs.list曲ルート.Count > 0 )	// 新しい曲リストを検索して、1曲以上あった
 			{
 				CDTXMania.Songs管理 = cs;
+
 				if ( this.r現在選択中の曲 != null )			// r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
 				{
+					string bc = this.r現在選択中の曲.strBreadcrumbs;
+
+					this.r現在選択中の曲 = searchCurrentBreadcrumbsPosition( CDTXMania.Songs管理.list曲ルート, this.r現在選択中の曲.strBreadcrumbs );
+					this.t現在選択中の曲を元に曲バーを再構成する();
+
+#if false			// list子リストの仲間ではmatchしてくれないので、検索ロジックは手書きで実装 (searchCurrentBreadcrumbs())
 					string bc = this.r現在選択中の曲.strBreadcrumbs;
 					Predicate<C曲リストノード> match = delegate( C曲リストノード c )
 					{
 						return ( c.strBreadcrumbs.Equals( bc ) );
 					};
-					int nMatched = cs.list曲ルート.FindIndex( match );
+					int nMatched = CDTXMania.Songs管理.list曲ルート.FindIndex( match );
 
-					this.r現在選択中の曲 = ( nMatched == -1 ) ? null : cs.list曲ルート[ nMatched ];
+					this.r現在選択中の曲 = ( nMatched == -1 ) ? null : CDTXMania.Songs管理.list曲ルート[ nMatched ];
+					this.t現在選択中の曲を元に曲バーを再構成する();
+#endif
+					return;
 				}
 			}
-			else
-			{
-				this.On非活性化();
-				this.r現在選択中の曲 = null;
-				this.On活性化();
-			}
-//			this.On活性化();
+			this.On非活性化();
+			this.r現在選択中の曲 = null;
+			this.On活性化();
 		}
-		
+
+
+		/// <summary>
+		/// 現在選曲している位置を検索する
+		/// (曲一覧クラスを新しいものに入れ替える際に用いる)
+		/// </summary>
+		/// <param name="ln">検索対象のList</param>
+		/// <param name="bc">検索するパンくずリスト(文字列)</param>
+		/// <returns></returns>
+		private C曲リストノード searchCurrentBreadcrumbsPosition( List<C曲リストノード> ln, string bc )
+		{
+			foreach (C曲リストノード n in ln)
+			{
+				if ( n.strBreadcrumbs == bc )
+				{
+					return n;
+				}
+				else if ( n.list子リスト != null && n.list子リスト.Count > 0 )	// 子リストが存在するなら、再帰で探す
+				{
+					C曲リストノード r = searchCurrentBreadcrumbsPosition( n.list子リスト, bc );
+					if ( r != null ) return r;
+				}
+			}
+			return null;
+		}
+
+
 		// CActivity 実装
 
 		public override void On活性化()
@@ -382,7 +414,7 @@ namespace DTXMania
 				using ( Graphics graphics = Graphics.FromImage( image ) )
 				{
 					string[] s1 = { "曲データを検索しています。", "Now enumerating songs." };
-					string[] s2 = { "しばらくお待ち下さい。", "Please wait..." };
+					string[] s2 = { "そのまましばらくお待ち下さい。", "Please wait..." };
 					graphics.DrawString( s1[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 2f );
 					graphics.DrawString( s1[c], this.ft曲リスト用フォント, Brushes.White, (float) 0f, (float) 0f );
 					graphics.DrawString( s2[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 44f );
