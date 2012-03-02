@@ -24,6 +24,13 @@ namespace DTXMania
 			this.b新しいプレビューファイルを読み込んだ = false;
 		}
 
+		public bool bIsPlayingPremovie		// #27060
+		{
+			get
+			{
+				return (this.avi != null);
+			}
+		}
 
 		// CActivity 実装
 

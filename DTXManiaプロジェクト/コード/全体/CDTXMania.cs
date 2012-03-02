@@ -502,12 +502,19 @@ namespace DTXMania
 							{
 								switch ( this.n進行描画の戻り値 )
 								{
-									case 0:
-										EnumSongs.Resume();							// #27060 2012.2.6 yyagi 中止していたバックグランド曲検索を再開
+									case 0:		// 何もない
+										if ( CDTXMania.stage選曲.bIsEnumeratingSongs )
+										{
+											EnumSongs.Resume();						// #27060 2012.2.6 yyagi 中止していたバックグランド曲検索を再開
+										}
+										else
+										{
+											EnumSongs.Suspend();					// #27060 2012.3.2 yyagi #PREMOVIE再生中は曲検索を一時停止
+										}
 										actEnumSongs.On活性化();
 										break;
 
-									case 2:
+									case 2:		// 曲決定
 										EnumSongs.Suspend();						// #27060 バックグラウンドの曲検索を一時停止
 										actEnumSongs.On非活性化();
 										break;

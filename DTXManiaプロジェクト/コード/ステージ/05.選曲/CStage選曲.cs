@@ -254,6 +254,8 @@ namespace DTXMania
 					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
 
 				this.actPreimageパネル.On進行描画();
+				this.bIsEnumeratingSongs = !this.actPreimageパネル.bIsPlayingPremovie;				// #27060 2011.3.2 yyagi: #PREMOVIE再生中は曲検索を中断する
+
 				this.act曲リスト.On進行描画();
 				int y = 0;
 				if( this.ct登場時アニメ用共通.b進行中 )

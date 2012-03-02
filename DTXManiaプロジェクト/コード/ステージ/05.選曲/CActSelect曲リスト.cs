@@ -268,12 +268,10 @@ namespace DTXMania
 
 				if ( this.r現在選択中の曲 != null )			// r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
 				{
-					string bc = this.r現在選択中の曲.strBreadcrumbs;
-
 					this.r現在選択中の曲 = searchCurrentBreadcrumbsPosition( CDTXMania.Songs管理.list曲ルート, this.r現在選択中の曲.strBreadcrumbs );
 					this.t現在選択中の曲を元に曲バーを再構成する();
 
-#if false			// list子リストの仲間ではmatchしてくれないので、検索ロジックは手書きで実装 (searchCurrentBreadcrumbs())
+#if false			// list子リストの中まではmatchしてくれないので、検索ロジックは手書きで実装 (searchCurrentBreadcrumbs())
 					string bc = this.r現在選択中の曲.strBreadcrumbs;
 					Predicate<C曲リストノード> match = delegate( C曲リストノード c )
 					{
