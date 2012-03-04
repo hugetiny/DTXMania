@@ -486,8 +486,8 @@ namespace DTXMania
 						{
 							#region [ (特定条件時) 曲検索スレッドの起動・開始 ]
 							if ( r現在のステージ.eステージID == CStage.Eステージ.タイトル &&
-								 this.n進行描画の戻り値 == (int) CStageタイトル.E戻り値.継続 &&
 								 r直前のステージ.eステージID == CStage.Eステージ.起動 &&
+								 this.n進行描画の戻り値 == (int) CStageタイトル.E戻り値.継続 &&
 								 !EnumSongs.IsSongListEnumStarted )
 							{
 								actEnumSongs.On活性化();
@@ -503,13 +503,16 @@ namespace DTXMania
 								switch ( this.n進行描画の戻り値 )
 								{
 									case 0:		// 何もない
-										if ( CDTXMania.stage選曲.bIsEnumeratingSongs )
+										//if ( CDTXMania.stage選曲.bIsEnumeratingSongs )
+										if ( !CDTXMania.stage選曲.bIsPlayingPremovie )
 										{
 											EnumSongs.Resume();						// #27060 2012.2.6 yyagi 中止していたバックグランド曲検索を再開
+											EnumSongs.IsSlowdown = false;
 										}
 										else
 										{
-											EnumSongs.Suspend();					// #27060 2012.3.2 yyagi #PREMOVIE再生中は曲検索を一時停止
+											// EnumSongs.Suspend();					// #27060 2012.3.2 yyagi #PREMOVIE再生中は曲検索を低速化
+											EnumSongs.IsSlowdown = true;
 										}
 										actEnumSongs.On活性化();
 										break;
@@ -529,16 +532,6 @@ namespace DTXMania
 							}
 							#endregion
 
-//							#region ["Enumerating Songs..."の表示 ]
-//							// 追々、CActEnumSongsの中に閉じ込めたいところ
-//							if ( !EnumSongs.IsSongListEnumCompletelyDone
-//								&& r現在のステージ.eステージID != CStage.Eステージ.曲読み込み
-//								&& actEnumSongs.b活性化してない )
-//							{
-//								actEnumSongs.On活性化();
-//							}
-//							#endregion
-
 							#region [ 曲検索が完了したら、実際の曲リストに反映する ]
 							// CStage選曲.On活性化() に回した方がいいかな？
 							if ( EnumSongs.IsSongListEnumerated )
@@ -546,17 +539,9 @@ namespace DTXMania
 								actEnumSongs.On非活性化();
 								CDTXMania.stage選曲.bIsEnumeratingSongs = false;
 
-//								if ( CDTXMania.stage選曲.r現在選択中の曲 == null )				// 曲が1曲もないなら、Refreshしちゃう
-//								{																// 一度も選曲画面に入っていないばあいもr現在選択中の曲==nullになるが、
-																								// 選曲位置は初期値のままでよいのでここでRefresh()だけすればOK
-									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
-									EnumSongs.SongListEnumCompletelyDone();
-//								}
-//								else if ( r現在のステージ.eステージID != CStage.Eステージ.選曲 )	// 曲があるときのRefreshはうまくやらないとね
-//								{
-//									CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理 );
-//									EnumSongs.SongListEnumCompletelyDone();
-//								}
+								bool bRemakeSongTitleBar = ( r現在のステージ.eステージID == CStage.Eステージ.選曲 ) ? true : false;
+								CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理, bRemakeSongTitleBar );
+								EnumSongs.SongListEnumCompletelyDone();
 							}
 							#endregion
 						}

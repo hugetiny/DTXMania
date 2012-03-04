@@ -52,6 +52,11 @@ namespace DTXMania
 			get;
 			set;
 		}
+		public bool bIsSlowdown								// #PREMOVIE再生時に曲検索を遅くする
+		{
+			get;
+			set;
+		}
 		[NonSerialized]
 		private AutoResetEvent autoReset;
 		public AutoResetEvent AutoReset
@@ -66,6 +71,8 @@ namespace DTXMania
 			}
 		}
 
+		private int searchCount;							// #PREMOVIE中は検索n回実行したら少しスリープする
+
 		// コンストラクタ
 
 		public CSongs管理()
@@ -76,6 +83,7 @@ namespace DTXMania
 			this.n検索されたスコア数 = 0;
 			this.bIsSuspending = false;						// #27060
 			this.autoReset = new AutoResetEvent( true );	// #27060
+			this.searchCount = 0;
 		}
 
 
@@ -152,10 +160,7 @@ namespace DTXMania
 				}
 				try
 				{
-					if ( this.bIsSuspending )		// #27060 中断要求があったら、解除要求が来るまで待機
-					{
-						autoReset.WaitOne();
-					}
+					SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 					for( int i = 0; i < def.blocks.Count; i++ )
 					{
 						CSetDef.CBlock block = def.blocks[ i ];
@@ -274,10 +279,7 @@ namespace DTXMania
 			{
 				foreach( FileInfo fileinfo in info.GetFiles() )
 				{
-					if ( this.bIsSuspending )		// #27060 中断要求があったら、解除要求が来るまで待機
-					{
-						autoReset.WaitOne();
-					}
+					SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 					string strExt = fileinfo.Extension.ToLower();
 					if( ( strExt.Equals( ".dtx" ) || strExt.Equals( ".gda" ) ) || ( ( strExt.Equals( ".g2d" ) || strExt.Equals( ".bms" ) ) || strExt.Equals( ".bme" ) ) )
 					{
@@ -341,10 +343,7 @@ namespace DTXMania
 
 			foreach( DirectoryInfo infoDir in info.GetDirectories() )
 			{
-				if ( this.bIsSuspending )		// #27060 中断要求があったら、解除要求が来るまで待機
-				{
-					autoReset.WaitOne();
-				}
+				SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 
 				#region [ a. "dtxfiles." で始まるフォルダの場合 ]
 				//-----------------------------
@@ -589,10 +588,7 @@ namespace DTXMania
 			{
 				while( enumerator.MoveNext() )
 				{
-					if ( this.bIsSuspending )		// #27060 中断要求があったら、解除要求が来るまで待機
-					{
-						autoReset.WaitOne();
-					}
+					SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 
 					C曲リストノード node = enumerator.Current;
 					if( node.eノード種別 == C曲リストノード.Eノード種別.BOX )
@@ -744,10 +740,7 @@ namespace DTXMania
 		{
 			foreach( C曲リストノード c曲リストノード in ノードリスト )
 			{
-				if ( this.bIsSuspending )		// #27060 中断要求があったら、解除要求が来るまで待機
-				{
-					autoReset.WaitOne();
-				}
+				SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 
 				if( c曲リストノード.eノード種別 == C曲リストノード.Eノード種別.BOX )
 				{
@@ -893,10 +886,7 @@ namespace DTXMania
 			// すべてのノードについて…
 			foreach( C曲リストノード c曲リストノード in ノードリスト )
 			{
-				if ( this.bIsSuspending )		// #27060 中断要求があったら、解除要求が来るまで待機
-				{
-					autoReset.WaitOne();
-				}
+				SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 
 				#region [ BOXノードなら子リストに <<BACK を入れ、子リストに後処理を適用する ]
 				//-----------------------------
@@ -1618,6 +1608,23 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 			}
 			return 0;
 		}
+
+		/// <summary>
+		/// 検索を中断・スローダウンする
+		/// </summary>
+		private void SlowOrSuspendSearchTask()
+		{
+			if ( this.bIsSuspending )		// #27060 中断要求があったら、解除要求が来るまで待機
+			{
+				autoReset.WaitOne();
+			}
+			if ( this.bIsSlowdown && ++this.searchCount > 10 )			// #27060 #PREMOVIE再生中は検索負荷を下げる
+			{
+				Thread.Sleep( 100 );
+				this.searchCount = 0;
+			}
+		}
+
 		//-----------------
 		#endregion
 	}

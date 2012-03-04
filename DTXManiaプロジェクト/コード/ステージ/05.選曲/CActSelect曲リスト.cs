@@ -258,7 +258,7 @@ namespace DTXMania
 		/// 曲リストをリセットする
 		/// </summary>
 		/// <param name="cs"></param>
-		public void Refresh(CSongs管理 cs)		// #26070 2012.2.28 yyagi
+		public void Refresh(CSongs管理 cs, bool bRemakeSongTitleBar )		// #26070 2012.2.28 yyagi
 		{
 //			this.On非活性化();
 
@@ -269,8 +269,10 @@ namespace DTXMania
 				if ( this.r現在選択中の曲 != null )			// r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
 				{
 					this.r現在選択中の曲 = searchCurrentBreadcrumbsPosition( CDTXMania.Songs管理.list曲ルート, this.r現在選択中の曲.strBreadcrumbs );
-					this.t現在選択中の曲を元に曲バーを再構成する();
-
+					if ( bRemakeSongTitleBar )					// 選曲画面以外に居るときには再構成しない (非活性化しているときに実行すると例外となる)
+					{
+						this.t現在選択中の曲を元に曲バーを再構成する();
+					}
 #if false			// list子リストの中まではmatchしてくれないので、検索ロジックは手書きで実装 (searchCurrentBreadcrumbs())
 					string bc = this.r現在選択中の曲.strBreadcrumbs;
 					Predicate<C曲リストノード> match = delegate( C曲リストノード c )

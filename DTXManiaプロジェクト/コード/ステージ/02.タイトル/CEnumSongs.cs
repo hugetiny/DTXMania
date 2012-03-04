@@ -48,6 +48,18 @@ namespace DTXMania
 			this.state = DTXEnumState.CompletelyDone;
 			this.Songs管理 = null;						// GCはOSに任せる
 		}
+		public bool IsSlowdown							// #PREMOVIE再生中は検索負荷を落とす
+		{
+			get
+			{
+				return this.Songs管理.bIsSlowdown;
+			}
+			set
+			{
+				this.Songs管理.bIsSlowdown = value;
+			}
+		}
+
 		private readonly string strPathSongsDB = CDTXMania.strEXEのあるフォルダ + "songs.db";
 		private readonly string strPathSongList = CDTXMania.strEXEのあるフォルダ + "songlist.db";
 
@@ -129,7 +141,7 @@ namespace DTXMania
 		public void Suspend()
 		{
 			if ( this.state != DTXEnumState.CompletelyDone &&
-				( thDTXFileEnumerate.ThreadState == System.Threading.ThreadState.Background ) )
+				( ( thDTXFileEnumerate.ThreadState & ( System.Threading.ThreadState.Background ) ) != 0 ) )
 			{
 				// this.thDTXFileEnumerate.Suspend();		// obsoleteにつき使用中止
 				this.Songs管理.bIsSuspending = true;

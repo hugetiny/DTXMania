@@ -24,6 +24,13 @@ namespace DTXMania
 				act曲リスト.bIsEnumeratingSongs = value;
 			}
 		}
+		public bool bIsPlayingPremovie
+		{
+			get
+			{
+				return this.actPreimageパネル.bIsPlayingPremovie;
+			}
+		}
 		public bool bスクロール中
 		{
 			get
@@ -142,9 +149,9 @@ namespace DTXMania
 		/// 曲リストをリセットする
 		/// </summary>
 		/// <param name="cs"></param>
-		public void Refresh( CSongs管理 cs )
+		public void Refresh( CSongs管理 cs, bool bRemakeSongTitleBar)
 		{
-			this.act曲リスト.Refresh( cs );
+			this.act曲リスト.Refresh( cs, bRemakeSongTitleBar );
 		}
 
 		public override void On活性化()
@@ -254,7 +261,7 @@ namespace DTXMania
 					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
 
 				this.actPreimageパネル.On進行描画();
-				this.bIsEnumeratingSongs = !this.actPreimageパネル.bIsPlayingPremovie;				// #27060 2011.3.2 yyagi: #PREMOVIE再生中は曲検索を中断する
+			//	this.bIsEnumeratingSongs = !this.actPreimageパネル.bIsPlayingPremovie;				// #27060 2011.3.2 yyagi: #PREMOVIE再生中は曲検索を中断する
 
 				this.act曲リスト.On進行描画();
 				int y = 0;
