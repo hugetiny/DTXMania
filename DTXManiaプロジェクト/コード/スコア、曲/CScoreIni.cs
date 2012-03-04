@@ -285,6 +285,21 @@ namespace DTXMania
 				}
 			}
 
+			public bool b全AUTOじゃない
+			{
+				get
+				{
+					return !b全AUTOである;
+				}
+			}
+			public bool b全AUTOである
+			{
+				get
+				{
+					return (this.n全チップ数 - this.nPerfect数・Auto含まない - this.nGreat数・Auto含まない - this.nGood数・Auto含まない - this.nPoor数・Auto含まない - this.nMiss数・Auto含まない) == this.n全チップ数;
+				}
+			}
+
 			[StructLayout( LayoutKind.Sequential )]
 			public struct STAUTOPLAY
 			{
@@ -1114,7 +1129,7 @@ namespace DTXMania
 			for( int i = 3; i >= 0; i-- )
 				this.stファイル.History[ i + 1 ] = this.stファイル.History[ i ];
 			DateTime now = DateTime.Now;
-			this.stファイル.History[ 0 ] = string.Format( "{0:0}.{1:D2}/{2}/{3} {4}", new object[] { this.stファイル.HistoryCount, now.Year % 100, now.Month, now.Day, str追加文字列 } );
+			this.stファイル.History[ 0 ] = string.Format( "{0:0}.{1:D2}/{2}/{3} {4}", this.stファイル.HistoryCount, now.Year % 100, now.Month, now.Day, str追加文字列 );
 		}
 		internal void t書き出し( string iniファイル名 )
 		{
@@ -1364,7 +1379,6 @@ namespace DTXMania
 			int nMiss =    Drums.nMiss数・Auto含まない    + Guitar.nMiss数・Auto含まない    + Bass.nMiss数・Auto含まない;		//
 			return tランク値を計算して返す( nTotal, nPerfect, nGreat, nGood, nPoor, nMiss );
 		}
-
 
 		// その他
 
