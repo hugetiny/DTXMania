@@ -16,55 +16,60 @@ namespace DTXMania
 	{
 		// 定数
 
-		public enum E種別
+		public enum E種別 { DTX, GDA, G2D, BMS, BME, SMF }
+		public enum Eレーンビットパターン
 		{
-			DTX,
-			GDA,
-			G2D,
-			BMS,
-			BME,
-			SMF
-		}
+			OPEN = 0,
+			xxB = 1,
+			xGx = 2,
+			xGB = 3,
+			Rxx = 4,
+			RxB = 5,
+			RGx = 6,
+			RGB = 7
+		};
+
 
 		// クラス
 
 		public class CAVI : IDisposable
 		{
 			public CAvi avi;
-			private bool bDisposed;
+			private bool bDispose済み;
 			public int n番号;
 			public string strコメント文 = "";
 			public string strファイル名 = "";
 
 			public void OnDeviceCreated()
 			{
-				string str;
-				string str2 = CDTXMania.DTX.PATH_WAV;
-				if( ( str2 != null ) && ( str2.Length > 0 ) )
-				{
-					str = str2 + this.strファイル名;
-				}
+				#region [ strAVIファイル名の作成。]
+				//-----------------
+				string strAVIファイル名;
+				if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+					strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
 				else
+					strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				//-----------------
+				#endregion
+
+				if( !File.Exists( strAVIファイル名 ) )
 				{
-					str = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", this.strコメント文, strAVIファイル名 );
+					this.avi = null;
+					return;
 				}
-				if( File.Exists( str ) )
+
+				// AVI の生成。
+
+				try
 				{
-					try
-					{
-						this.avi = new CAvi( str );
-						Trace.TraceInformation( "動画を生成しました。({0})({1})({2}frames)", new object[] { this.strコメント文, str, this.avi.GetMaxFrameCount() } );
-					}
-					catch( Exception exception )
-					{
-						Trace.TraceError( exception.Message );
-						Trace.TraceError( "動画の生成に失敗しました。({0})({1})", new object[] { this.strコメント文, str } );
-						this.avi = null;
-					}
+					this.avi = new CAvi( strAVIファイル名 );
+					Trace.TraceInformation( "動画を生成しました。({0})({1})({2}frames)", this.strコメント文, strAVIファイル名, this.avi.GetMaxFrameCount() );
 				}
-				else
+				catch( Exception e )
 				{
-					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", new object[] { this.strコメント文, str } );
+					Trace.TraceError( e.Message );
+					Trace.TraceError( "動画の生成に失敗しました。({0})({1})", this.strコメント文, strAVIファイル名 );
 					this.avi = null;
 				}
 			}
@@ -77,26 +82,28 @@ namespace DTXMania
 			//-----------------
 			public void Dispose()
 			{
-				if( !this.bDisposed )
+				if( this.bDispose済み )
+					return;
+
+				if( this.avi != null )
 				{
-					if( this.avi != null )
-					{
-						string str;
-						string str2 = CDTXMania.DTX.PATH_WAV;
-						if( ( str2 != null ) && ( str2.Length > 0 ) )
-						{
-							str = str2 + this.strファイル名;
-						}
-						else
-						{
-							str = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
-						}
-						this.avi.Dispose();
-						this.avi = null;
-						Trace.TraceInformation( "動画を解放しました。({0})({1})", new object[] { this.strコメント文, str } );
-					}
-					this.bDisposed = true;
+					#region [ strAVIファイル名 の作成。 ]
+					//-----------------
+					string strAVIファイル名;
+					if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+						strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					else
+						strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					//-----------------
+					#endregion
+
+					this.avi.Dispose();
+					this.avi = null;
+					
+					Trace.TraceInformation( "動画を解放しました。({0})({1})", this.strコメント文, strAVIファイル名 );
 				}
+
+				this.bDispose済み = true;
 			}
 			//-----------------
 			#endregion
@@ -115,7 +122,16 @@ namespace DTXMania
 
 			public override string ToString()
 			{
-				return string.Format( "CAVIPAN{0}: AVI:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 動画側開始位置:{5}x{6}, 動画側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct", new object[] { CDTX.tZZ( this.n番号 ), this.sz開始サイズ.Width, this.sz開始サイズ.Height, this.sz終了サイズ.Width, this.sz終了サイズ.Height, this.pt動画側開始位置.X, this.pt動画側開始位置.Y, this.pt動画側終了位置.X, this.pt動画側終了位置.Y, this.pt表示側開始位置.X, this.pt表示側開始位置.Y, this.pt表示側終了位置.X, this.pt表示側終了位置.Y, this.n移動時間ct, CDTX.tZZ( this.nAVI番号 ) } );
+				return string.Format( "CAVIPAN{0}: AVI:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 動画側開始位置:{5}x{6}, 動画側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct",
+					CDTX.tZZ( this.n番号 ),
+					this.sz開始サイズ.Width, this.sz開始サイズ.Height,
+					this.sz終了サイズ.Width, this.sz終了サイズ.Height,
+					this.pt動画側開始位置.X, this.pt動画側開始位置.Y,
+					this.pt動画側終了位置.X, this.pt動画側終了位置.Y,
+					this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
+					this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
+					this.n移動時間ct,
+					CDTX.tZZ( this.nAVI番号 ) );
 			}
 		}
 		public class CBGA
@@ -128,7 +144,12 @@ namespace DTXMania
 
 			public override string ToString()
 			{
-				return string.Format( "CBGA{0}, BMP:{1}, 画像側左上座標:{2}x{3}, 画像側右下座標:{4}x{5}, 表示座標:{6}x{7}", new object[] { CDTX.tZZ( this.n番号 ), CDTX.tZZ( this.nBMP番号 ), this.pt画像側左上座標.X, this.pt画像側左上座標.Y, this.pt画像側右下座標.X, this.pt画像側右下座標.Y, this.pt表示座標.X, this.pt表示座標.Y } );
+				return string.Format( "CBGA{0}, BMP:{1}, 画像側左上座標:{2}x{3}, 画像側右下座標:{4}x{5}, 表示座標:{6}x{7}",
+					CDTX.tZZ( this.n番号 ),
+					CDTX.tZZ( this.nBMP番号 ),
+					this.pt画像側左上座標.X, this.pt画像側左上座標.Y,
+					this.pt画像側右下座標.X, this.pt画像側右下座標.Y,
+					this.pt表示座標.X, this.pt表示座標.Y );
 			}
 		}
 		public class CBGAPAN
@@ -145,7 +166,16 @@ namespace DTXMania
 
 			public override string ToString()
 			{
-				return string.Format( "CBGAPAN{0}: BMP:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 画像側開始位置:{5}x{6}, 画像側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct", new object[] { CDTX.tZZ( this.nBMP番号 ), this.sz開始サイズ.Width, this.sz開始サイズ.Height, this.sz終了サイズ.Width, this.sz終了サイズ.Height, this.pt画像側開始位置.X, this.pt画像側開始位置.Y, this.pt画像側終了位置.X, this.pt画像側終了位置.Y, this.pt表示側開始位置.X, this.pt表示側開始位置.Y, this.pt表示側終了位置.X, this.pt表示側終了位置.Y, this.n移動時間ct, CDTX.tZZ( this.nBMP番号 ) } );
+				return string.Format( "CBGAPAN{0}: BMP:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 画像側開始位置:{5}x{6}, 画像側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct",
+					CDTX.tZZ( this.nBMP番号 ),
+					this.sz開始サイズ.Width, this.sz開始サイズ.Height,
+					this.sz終了サイズ.Width, this.sz終了サイズ.Height,
+					this.pt画像側開始位置.X, this.pt画像側開始位置.Y,
+					this.pt画像側終了位置.X, this.pt画像側終了位置.Y,
+					this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
+					this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
+					this.n移動時間ct,
+					CDTX.tZZ( this.nBMP番号 ) );
 			}
 		}
 		public class CBMP : IDisposable
@@ -172,36 +202,41 @@ namespace DTXMania
 
 			public void OnDeviceCreated()
 			{
-				string str;
-				string str2 = CDTXMania.DTX.PATH_WAV;
-				if( ( str2 != null ) && ( str2.Length > 0 ) )
+				#region [ strテクスチャファイル名 を作成。]
+				//-----------------
+				string strテクスチャファイル名;
+				if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+					strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+				else
+					strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				//-----------------
+				#endregion
+
+				if( !File.Exists( strテクスチャファイル名 ) )
 				{
-					str = str2 + this.strファイル名;
+					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", this.strコメント文, strテクスチャファイル名 );
+					this.tx画像 = null;
+					return;
+				}
+
+				// テクスチャを作成。
+
+				this.tx画像 = CDTXMania.tテクスチャの生成( strテクスチャファイル名, true );
+
+				if( this.tx画像 != null )
+				{
+					// 作成成功。
+
+					if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+						Trace.TraceInformation( "テクスチャを生成しました。({0})({1})({2}x{3})", this.strコメント文, strテクスチャファイル名, this.n幅, this.n高さ );
+
+					this.bUse = true;
 				}
 				else
 				{
-					str = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
-				}
-				if( File.Exists( str ) )
-				{
-					this.tx画像 = CDTXMania.tテクスチャの生成( str, true );
-					if( this.tx画像 != null )
-					{
-						if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-						{
-							Trace.TraceInformation( "テクスチャを生成しました。({0})({1})({2}x{3})", new object[] { this.strコメント文, str, this.n幅, this.n高さ } );
-						}
-						this.bUse = true;
-					}
-					else
-					{
-						Trace.TraceError( "テクスチャの生成に失敗しました。({0})({1})", new object[] { this.strコメント文, str } );
-						this.tx画像 = null;
-					}
-				}
-				else
-				{
-					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", new object[] { this.strコメント文, str } );
+					// 作成失敗。
+
+					Trace.TraceError( "テクスチャの生成に失敗しました。({0})({1})", this.strコメント文, strテクスチャファイル名 );
 					this.tx画像 = null;
 				}
 			}
@@ -214,29 +249,29 @@ namespace DTXMania
 			//-----------------
 			public void Dispose()
 			{
-				if( !this.bDisposed済み )
+				if( this.bDisposed済み )
+					return;
+
+				if( this.tx画像 != null )
 				{
-					if( this.tx画像 != null )
-					{
-						string str;
-						string str2 = CDTXMania.DTX.PATH_WAV;
-						if( ( str2 != null ) && ( str2.Length > 0 ) )
-						{
-							str = str2 + this.strファイル名;
-						}
-						else
-						{
-							str = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
-						}
-						CDTXMania.tテクスチャの解放( ref this.tx画像 );
-						if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-						{
-							Trace.TraceInformation( "テクスチャを解放しました。({0})({1})", new object[] { this.strコメント文, str } );
-						}
-					}
-					this.bUse = false;
-					this.bDisposed済み = true;
+					#region [ strテクスチャファイル名 を作成。]
+					//-----------------
+					string strテクスチャファイル名;
+					if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+						strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					else
+						strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					//-----------------
+					#endregion
+
+					CDTXMania.tテクスチャの解放( ref this.tx画像 );
+
+					if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+						Trace.TraceInformation( "テクスチャを解放しました。({0})({1})", this.strコメント文, strテクスチャファイル名 );
 				}
+				this.bUse = false;
+
+				this.bDisposed済み = true;
 			}
 			//-----------------
 			#endregion
@@ -271,36 +306,40 @@ namespace DTXMania
 
 			public void OnDeviceCreated()
 			{
-				string str;
-				string str2 = CDTXMania.DTX.PATH_WAV;
-				if( ( str2 != null ) && ( str2.Length > 0 ) )
-				{
-					str = str2 + this.strファイル名;
-				}
+				#region [ strテクスチャファイル名 を作成。]
+				//-----------------
+				string strテクスチャファイル名;
+				if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+					strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
 				else
+					strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				//-----------------
+				#endregion
+
+				if( !File.Exists( strテクスチャファイル名 ) )
 				{
-					str = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
-				}
-				if( File.Exists( str ) )
-				{
-					this.tx画像 = CDTXMania.tテクスチャの生成( str );
-					if( this.tx画像 != null )
-					{
-						if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-						{
-							Trace.TraceInformation( "テクスチャを生成しました。({0})({1})(Gr:{2}x{3})(Tx:{4}x{5})", new object[] { this.strコメント文, str, this.tx画像.sz画像サイズ.Width, this.tx画像.sz画像サイズ.Height, this.tx画像.szテクスチャサイズ.Width, this.tx画像.szテクスチャサイズ.Height } );
-						}
-						this.bUse = true;
-					}
-					else
-					{
-						Trace.TraceError( "テクスチャの生成に失敗しました。({0})({1})", new object[] { this.strコメント文, str } );
-					}
-				}
-				else
-				{
-					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", new object[] { this.strコメント文, str } );
+					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", this.strコメント文, strテクスチャファイル名 );
 					this.tx画像 = null;
+					return;
+				}
+
+				// テクスチャを作成。
+
+				this.tx画像 = CDTXMania.tテクスチャの生成( strテクスチャファイル名 );
+
+				if( this.tx画像 != null )
+				{
+					// 作成成功
+
+					if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+						Trace.TraceInformation( "テクスチャを生成しました。({0})({1})(Gr:{2}x{3})(Tx:{4}x{5})", this.strコメント文, strテクスチャファイル名, this.tx画像.sz画像サイズ.Width, this.tx画像.sz画像サイズ.Height, this.tx画像.szテクスチャサイズ.Width, this.tx画像.szテクスチャサイズ.Height );
+					this.bUse = true;
+				}
+				else
+				{
+					// 作成失敗
+
+					Trace.TraceError( "テクスチャの生成に失敗しました。({0})({1})", this.strコメント文, strテクスチャファイル名 );
 				}
 			}
 			public override string ToString()
@@ -312,29 +351,29 @@ namespace DTXMania
 			//-----------------
 			public void Dispose()
 			{
-				if( !this.bDisposed済み )
+				if( this.bDisposed済み )
+					return;
+
+				if( this.tx画像 != null )
 				{
-					if( this.tx画像 != null )
-					{
-						string str;
-						string str2 = CDTXMania.DTX.PATH_WAV;
-						if( ( str2 != null ) && ( str2.Length > 0 ) )
-						{
-							str = str2 + this.strファイル名;
-						}
-						else
-						{
-							str = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
-						}
-						CDTXMania.tテクスチャの解放( ref this.tx画像 );
-						if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-						{
-							Trace.TraceInformation( "テクスチャを解放しました。({0})({1})", new object[] { this.strコメント文, str } );
-						}
-					}
-					this.bUse = false;
-					this.bDisposed済み = true;
+					#region [ strテクスチャファイル名 を作成。]
+					//-----------------
+					string strテクスチャファイル名;
+					if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+						strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					else
+						strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					//-----------------
+					#endregion
+
+					CDTXMania.tテクスチャの解放( ref this.tx画像 );
+
+					if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+						Trace.TraceInformation( "テクスチャを解放しました。({0})({1})", this.strコメント文, strテクスチャファイル名 );
 				}
+				this.bUse = false;
+
+				this.bDisposed済み = true;
 			}
 			//-----------------
 			#endregion
@@ -508,13 +547,15 @@ namespace DTXMania
 					return true;
 				}
 			}
-
+			public bool bIsAutoPlayed;						// 2011.6.10 yyagi
+			
 			public CChip()
 			{
-				this.nバーからの距離dot = new STDGBVALUE<int>();
-				this.nバーからの距離dot.Drums = 0;
-				this.nバーからの距離dot.Guitar = 0;
-				this.nバーからの距離dot.Bass = 0;
+				this.nバーからの距離dot = new STDGBVALUE<int>() {
+					Drums = 0,
+					Guitar = 0,
+					Bass = 0,
+				};
 			}
 			public void t初期化()
 			{
@@ -525,6 +566,7 @@ namespace DTXMania
 				this.n発声位置 = 0;
 				this.n発声時刻ms = 0;
 				this.nLag = -999;
+				this.bIsAutoPlayed = false;
 				this.dbチップサイズ倍率 = 1.0;
 				this.bHit = false;
 				this.b可視 = true;
@@ -540,27 +582,27 @@ namespace DTXMania
 				string str = "";
 				switch( this.nチャンネル番号 )
 				{
-					case 1:
+					case 0x01:
 						str = "バックコーラス";
 						break;
 
-					case 2:
+					case 0x02:
 						str = "小節長変更";
 						break;
 
-					case 3:
+					case 0x03:
 						str = "BPM変更";
 						break;
 
-					case 4:
+					case 0x04:
 						str = "BMPレイヤ1";
 						break;
 
-					case 7:
+					case 0x07:
 						str = "BMPレイヤ2";
 						break;
 
-					case 8:
+					case 0x08:
 						str = "BPM変更(拡張)";
 						break;
 
@@ -576,7 +618,7 @@ namespace DTXMania
 						str = "Kick";
 						break;
 
-					case 20:
+					case 0x14:
 						str = "HiTom";
 						break;
 
@@ -640,7 +682,7 @@ namespace DTXMania
 						str = "ギター R G B";
 						break;
 
-					case 40:
+					case 0x28:
 						str = "ギターWailing";
 						break;
 
@@ -652,7 +694,7 @@ namespace DTXMania
 						str = "HHClose(不可視)";
 						break;
 
-					case 50:
+					case 0x32:
 						str = "Snare(不可視)";
 						break;
 
@@ -688,7 +730,7 @@ namespace DTXMania
 						str = "LeftCymbal(不可視)";
 						break;
 
-					case 80:
+					case 0x50:
 						str = "小節線";
 						break;
 
@@ -744,7 +786,7 @@ namespace DTXMania
 						str = "SE03";
 						break;
 
-					case 100:
+					case 0x64:
 						str = "SE04";
 						break;
 
@@ -800,7 +842,7 @@ namespace DTXMania
 						str = "SE17";
 						break;
 
-					case 120:
+					case 0x78:
 						str = "SE18";
 						break;
 
@@ -816,7 +858,7 @@ namespace DTXMania
 						str = "SE21";
 						break;
 
-					case 130:
+					case 0x82:
 						str = "SE22";
 						break;
 
@@ -860,7 +902,7 @@ namespace DTXMania
 						str = "SE32";
 						break;
 
-					case 160:
+					case 0xa0:
 						str = "ベースOPEN";
 						break;
 
@@ -912,7 +954,7 @@ namespace DTXMania
 						str = "Kick(空うち)";
 						break;
 
-					case 180:
+					case 0xb4:
 						str = "HiTom(空うち)";
 						break;
 
@@ -984,47 +1026,62 @@ namespace DTXMania
 						str = "??";
 						break;
 				}
-				return string.Format( "CChip: 位置:{0:D4}.{1:D3}, 時刻{2:D6}, Ch:{3:X2}({4}), Pn:{5}({11})(内部{6}), Pd:{7}, Sz:{8}, UseWav:{9}, Auto:{10}", new object[] { this.n発声位置 / 384, this.n発声位置 % 384, this.n発声時刻ms, this.nチャンネル番号, str, this.n整数値, this.n整数値・内部番号, this.db実数値, this.dbチップサイズ倍率, this.bWAVを使うチャンネルである, this.b自動再生音チャンネルである, CDTX.tZZ( this.n整数値 ) } );
+				return string.Format( "CChip: 位置:{0:D4}.{1:D3}, 時刻{2:D6}, Ch:{3:X2}({4}), Pn:{5}({11})(内部{6}), Pd:{7}, Sz:{8}, UseWav:{9}, Auto:{10}",
+					this.n発声位置 / 384, this.n発声位置 % 384,
+					this.n発声時刻ms,
+					this.nチャンネル番号, str,
+					this.n整数値, this.n整数値・内部番号,
+					this.db実数値,
+					this.dbチップサイズ倍率,
+					this.bWAVを使うチャンネルである,
+					this.b自動再生音チャンネルである,
+					CDTX.tZZ( this.n整数値 ) );
 			}
 
 			#region [ IComparable 実装 ]
 			//-----------------
 			public int CompareTo( CDTX.CChip other )
 			{
-				byte[] buffer = new byte[] { 
-                5, 5, 3, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 
-                5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 
-                7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-                5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5
-             };
+				byte[] n優先度 = new byte[] {
+					5, 5, 3, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 
+					5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 
+					7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+				};
+
+
+				// まずは位置で比較。
+
 				if( this.n発声位置 < other.n発声位置 )
-				{
 					return -1;
-				}
+
 				if( this.n発声位置 > other.n発声位置 )
-				{
 					return 1;
-				}
-				if( buffer[ this.nチャンネル番号 ] < buffer[ other.nチャンネル番号 ] )
-				{
+
+
+				// 位置が同じなら優先度で比較。
+
+				if( n優先度[ this.nチャンネル番号 ] < n優先度[ other.nチャンネル番号 ] )
 					return -1;
-				}
-				if( buffer[ this.nチャンネル番号 ] > buffer[ other.nチャンネル番号 ] )
-				{
+
+				if( n優先度[ this.nチャンネル番号 ] > n優先度[ other.nチャンネル番号 ] )
 					return 1;
-				}
+
+
+				// 位置も優先度も同じなら同じと返す。
+
 				return 0;
 			}
 			//-----------------
@@ -1033,7 +1090,7 @@ namespace DTXMania
 		public class CWAV : IDisposable
 		{
 			public bool bBGMとして使う;
-			public List<int> listこのWAVを使用するチャンネル番号の集合 = new List<int>( 0x10 );
+			public List<int> listこのWAVを使用するチャンネル番号の集合 = new List<int>( 16 );
 			public int nチップサイズ = 100;
 			public int n位置;
 			public long[] n一時停止時刻 = new long[ 4 ];
@@ -1059,43 +1116,51 @@ namespace DTXMania
 
 			public override string ToString()
 			{
-				StringBuilder builder = new StringBuilder( 0x80 );
+				var sb = new StringBuilder( 128 );
+				
 				if( this.n表記上の番号 == this.n内部番号 )
 				{
-					builder.Append( string.Format( "CWAV{0}: ", CDTX.tZZ( this.n表記上の番号 ) ) );
+					sb.Append( string.Format( "CWAV{0}: ", CDTX.tZZ( this.n表記上の番号 ) ) );
 				}
 				else
 				{
-					builder.Append( string.Format( "CWAV{0}(内部{1}): ", CDTX.tZZ( this.n表記上の番号 ), this.n内部番号 ) );
+					sb.Append( string.Format( "CWAV{0}(内部{1}): ", CDTX.tZZ( this.n表記上の番号 ), this.n内部番号 ) );
 				}
-				builder.Append( string.Format( "音量:{0}, 位置:{1}, サイズ:{2}, BGM:{3}, File:{4}, Comment:{5}", new object[] { this.n音量, this.n位置, this.nチップサイズ, this.bBGMとして使う ? 'Y' : 'N', this.strファイル名, this.strコメント文 } ) );
-				return builder.ToString();
+				sb.Append( string.Format( "音量:{0}, 位置:{1}, サイズ:{2}, BGM:{3}, File:{4}, Comment:{5}", this.n音量, this.n位置, this.nチップサイズ, this.bBGMとして使う ? 'Y' : 'N', this.strファイル名, this.strコメント文 ) );
+				
+				return sb.ToString();
 			}
 
-			#region [ IDisposable＋α実装 ]
+			#region [ Dispose-Finalize パターン実装 ]
 			//-----------------
 			public void Dispose()
 			{
 				this.Dispose( true );
+				GC.SuppressFinalize( this );
 			}
-			public void Dispose( bool bサウンドのDisposeも行う )
+			public void Dispose( bool bManagedリソースの解放も行う )
 			{
-				if( !this.bDisposed済み )
+				if( this.bDisposed済み )
+					return;
+
+				if( bManagedリソースの解放も行う )
 				{
 					for( int i = 0; i < 4; i++ )
 					{
-						if( bサウンドのDisposeも行う && ( this.rSound[ i ] != null ) )
-						{
+						if( this.rSound[ i ] != null )
 							CDTXMania.Sound管理.tサウンドを破棄する( this.rSound[ i ] );
-						}
 						this.rSound[ i ] = null;
+
 						if( ( i == 0 ) && CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-						{
-							Trace.TraceInformation( "サウンドを解放しました。({0})({1})", new object[] { this.strコメント文, this.strファイル名 } );
-						}
+							Trace.TraceInformation( "サウンドを解放しました。({0})({1})", this.strコメント文, this.strファイル名 );
 					}
-					this.bDisposed済み = true;
 				}
+
+				this.bDisposed済み = true;
+			}
+			~CWAV()
+			{
+				this.Dispose( false );
 			}
 			//-----------------
 			#endregion
@@ -1110,7 +1175,6 @@ namespace DTXMania
 
 		// 構造体
 
-		[StructLayout( LayoutKind.Sequential )]
 		public struct STLANEINT
 		{
 			public int HH;
@@ -1123,8 +1187,17 @@ namespace DTXMania
 			public int HHO;
 			public int RD;
 			public int LC;
+
+			public int Drums
+			{
+				get
+				{
+					return this.HH + this.SD + this.BD + this.HT + this.LT + this.CY + this.FT + this.HHO + this.RD + this.LC;
+				}
+			}
 			public int Guitar;
 			public int Bass;
+
 			public int this[ int index ]
 			{
 				get
@@ -1228,16 +1301,7 @@ namespace DTXMania
 					throw new IndexOutOfRangeException();
 				}
 			}
-			public int Drums
-			{
-				get
-				{
-					return this.HH + this.SD + this.BD + this.HT + this.LT + this.CY + this.FT + this.HHO + this.RD + this.LC;
-				}
-			}
 		}
-		
-		[StructLayout( LayoutKind.Sequential )]
 		public struct STRESULT
 		{
 			public string SS;
@@ -1247,6 +1311,7 @@ namespace DTXMania
 			public string C;
 			public string D;
 			public string E;
+
 			public string this[ int index ]
 			{
 				get
@@ -1312,18 +1377,18 @@ namespace DTXMania
 				}
 			}
 		}
-		
-		[StructLayout( LayoutKind.Sequential )]
 		public struct STチップがある
 		{
 			public bool Drums;
 			public bool Guitar;
 			public bool Bass;
+
 			public bool HHOpen;
 			public bool Ride;
 			public bool LeftCymbal;
 			public bool OpenGuitar;
 			public bool OpenBass;
+			
 			public bool this[ int index ]
 			{
 				get
@@ -1452,9 +1517,10 @@ namespace DTXMania
 		public string strフォルダ名;
 		public string TITLE;
 #if TEST_NOTEOFFMODE
-		public bool bHH演奏で直前のHHを消音する;
-		public bool bGUITAR演奏で直前のGUITARを消音する;
-		public bool bBASS演奏で直前のBASSを消音する;
+		public STLANEVALUE<bool> b演奏で直前の音を消音する;
+//		public bool bHH演奏で直前のHHを消音する;
+//		public bool bGUITAR演奏で直前のGUITARを消音する;
+//		public bool bBASS演奏で直前のBASSを消音する;
 #endif
 		// コンストラクタ
 
@@ -2132,60 +2198,40 @@ namespace DTXMania
 				str = str + cwav.strファイル名;
 				try
 				{
-					for( int i = 0; i < 4; i++ )
-					{
 						try
 						{
-							cwav.rSound[i] = CDTXMania.Sound管理.tサウンドを生成する(str);
-							cwav.rSound[ i ].n音量 = 100;
-							if( ( i == 0 ) && CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+							cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する(str);
+							cwav.rSound[ 0 ].n音量 = 100;
+							if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 							{
-								Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", new object[] { cwav.strコメント文, str, cwav.rSound[ i ].nサウンドバッファサイズ, cwav.rSound[ i ].bストリーム再生する ? "Stream" : "OnMemory" } );
+								Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
 							}
 						}
 						catch
 						{
-							cwav.rSound[ i ] = null;
-							if( i == 0 )
+							cwav.rSound[ 0 ] = null;
+							Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
+						}
+						if ( cwav.rSound[ 0 ] == null || cwav.rSound[ 0 ].bストリーム再生する )
+						{
+							for ( int j = 1; j < cwav.rSound.GetLength(0); j++ )
 							{
-								Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", new object[] { cwav.strコメント文, str } );
+								cwav.rSound[ j ] = null;
 							}
 						}
-						if( ( cwav.rSound[ i ] != null ) && cwav.rSound[ i ].bストリーム再生する )
+						else
 						{
-							break;
+							for ( int j = 1; j < cwav.rSound.GetLength(0); j++ )
+							{
+								cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
+								CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
+							}
 						}
-//						Type t = typeof(CSound);
-//						MethodInfo[] methods = t.GetMethods(
-//							BindingFlags.Public | BindingFlags.NonPublic |
-//							BindingFlags.Instance | BindingFlags.Static
-//						);
-
-//						for (int j = 1; j < 3; j++)
-//						{
-//							SlimDX.DirectSound.SoundBuffer result;
-//							CDTXMania.Sound管理.Device.DuplicateSoundBuffer(
-//								cwav.rSound[0].Buffer,
-//								out result);
-//							cwav.rSound[j].Buffer = (SlimDX.DirectSound.SecondarySoundBuffer)result;
-//							cwav.rSound[j].bストリーム再生する = cwav.rSound[0].bストリーム再生する;
-//							cwav.rSound[j].bループする
-//							foreach(MethodInfo m in methods) {
-//								if (m cwav..rSound[j].
-//						}
-//						cwav.rSound[0].Buffer.
-
-//						cwav.rSound[1] = cwav.rSound[0];		// #24007 2010.11.23 yyagi add: to accelerate loading chip sounds
-//						cwav.rSound[2] = cwav.rSound[0];		//
-//						cwav.rSound[3] = cwav.rSound[0];		//
-//						break;									//
-					}
-					continue;
 				}
 				catch( Exception exception )
 				{
-					Trace.TraceError( "サウンドの生成に失敗しました。({0})({1})({2})", new object[] { exception.Message, cwav.strコメント文, str } );
-					for( int j = 0; j < 4; j++ )
+					Trace.TraceError( "サウンドの生成に失敗しました。({0})({1})({2})", exception.Message, cwav.strコメント文, str );
+					for( int j = 0; j < cwav.rSound.GetLength(0); j++ )
 					{
 						cwav.rSound[ j ] = null;
 					}
@@ -2195,28 +2241,14 @@ namespace DTXMania
 		}
 		public static string tZZ( int n )
 		{
-			if( ( n < 0 ) || ( n >= 36 * 36) )
-			{
-				return "!!";
-			}
+			if( n < 0 || n >= 36 * 36 )
+				return "!!";	// オーバー／アンダーフロー。
+
+			// n を36進数2桁の文字列にして返す。
+
 			string str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 			return new string( new char[] { str[ n / 36 ], str[ n % 36 ] } );
 		}
-
-		/// <summary>
-		/// ギターのレーンビットパターン
-		/// </summary>
-		public enum Eレーンビットパターン
-		{
-			OPEN = 0,
-			xxB = 1,
-			xGx = 2,
-			xGB = 3,
-			Rxx = 4,
-			RxB = 5,
-			RGx = 6,
-			RGB = 7
-		};
 		public void tギターとベースのランダム化(E楽器パート part, Eランダムモード eRandom)
 		{
 			if( ( ( part == E楽器パート.GUITAR ) || ( part == E楽器パート.BASS ) ) && ( eRandom != Eランダムモード.OFF ) )
@@ -2379,7 +2411,7 @@ namespace DTXMania
 		{
 			if( pChip.n整数値・内部番号 >= 0 )
 			{
-				if( ( nLane < 0 ) || ( nLane > 10 ) )
+				if( ( nLane < (int) Eレーン.LC ) || ( (int) Eレーン.BGM < nLane ) )
 				{
 					throw new ArgumentOutOfRangeException();
 				}
@@ -2911,7 +2943,7 @@ namespace DTXMania
 						catch( Exception exception )
 						{
 							Trace.TraceError( exception.Message );
-							Trace.TraceError( "DTXのハッシュの計算に失敗しました。({0})", new object[] { this.strファイル名の絶対パス } );
+							Trace.TraceError( "DTXのハッシュの計算に失敗しました。({0})", this.strファイル名の絶対パス );
 						}
 						if( buffer != null )
 						{
@@ -3138,15 +3170,19 @@ namespace DTXMania
 		
 		#region [ private ]
 		//-----------------
+		/// <summary>
+		/// <para>GDAチャンネル番号に対応するDTXチャンネル番号。</para>
+		/// </summary>
 		[StructLayout( LayoutKind.Sequential )]
-		private struct STGDAPARAM				// GDAチャンネル番号に対応するDTXチャンネル番号
+		private struct STGDAPARAM
 		{
-			public string s;					// GDAチャンネル番号
-			public int c;						// DTXチャンネル番号
+			public string strGDAのチャンネル文字列;	
+			public int nDTXのチャンネル番号;
 
-			public STGDAPARAM(string _s, int _c) {		// 2011.1.1 yyagi 構造体のコンストラクタ追加(初期化簡易化のため)
-				s = _s;
-				c = _c;
+			public STGDAPARAM( string strGDAのチャンネル文字列, int nDTXのチャンネル番号 )		// 2011.1.1 yyagi 構造体のコンストラクタ追加(初期化簡易化のため)
+			{
+				this.strGDAのチャンネル文字列 = strGDAのチャンネル文字列;
+				this.nDTXのチャンネル番号 = nDTXのチャンネル番号;
 			}
 		}
 
@@ -3170,61 +3206,71 @@ namespace DTXMania
 
 		private bool t入力・コマンド文字列を抜き出す( ref CharEnumerator ce, ref StringBuilder sb文字列 )
 		{
-			if( this.t入力・空白をスキップする( ref ce ) )
+			if( !this.t入力・空白をスキップする( ref ce ) )
+				return false;	// 文字が尽きた
+
+			#region [ コマンド終端文字(':')、半角空白、コメント開始文字(';')、改行のいずれかが出現するまでをコマンド文字列と見なし、sb文字列 にコピーする。]
+			//-----------------
+			while( ce.Current != ':' && ce.Current != ' ' && ce.Current != ';' && ce.Current != '\n' )
 			{
-				while( ( ( ce.Current != ':' ) && ( ce.Current != ' ' ) ) && ( ( ce.Current != ';' ) && ( ce.Current != '\n' ) ) )
-				{
-					sb文字列.Append( ce.Current );
-					if( !ce.MoveNext() )
-					{
-						return false;
-					}
-				}
-				if( ce.Current == ':' )
-				{
-					if( !ce.MoveNext() )
-					{
-						return false;
-					}
-					if( !this.t入力・空白をスキップする( ref ce ) )
-					{
-						return false;
-					}
-				}
-				return true;
+				sb文字列.Append( ce.Current );
+
+				if( !ce.MoveNext() )
+					return false;	// 文字が尽きた
 			}
-			return false;
+			//-----------------
+			#endregion
+
+			#region [ コマンド終端文字(':')で終端したなら、その次から空白をスキップしておく。]
+			//-----------------
+			if( ce.Current == ':' )
+			{
+				if( !ce.MoveNext() )
+					return false;	// 文字が尽きた
+
+				if( !this.t入力・空白をスキップする( ref ce ) )
+					return false;	// 文字が尽きた
+			}
+			//-----------------
+			#endregion
+
+			return true;
 		}
 		private bool t入力・コメントをスキップする( ref CharEnumerator ce )
 		{
+			// 改行が現れるまでをコメントと見なしてスキップする。
+
 			while( ce.Current != '\n' )
 			{
 				if( !ce.MoveNext() )
-				{
-					return false;
-				}
+					return false;	// 文字が尽きた
 			}
+
+			// 改行の次の文字へ移動した結果を返す。
+
 			return ce.MoveNext();
 		}
 		private bool t入力・コメント文字列を抜き出す( ref CharEnumerator ce, ref StringBuilder sb文字列 )
 		{
-			if( ce.Current != ';' )
-			{
+			if( ce.Current != ';' )		// コメント開始文字(';')じゃなければ正常帰還。
 				return true;
-			}
-			if( ce.MoveNext() )
+
+			if( !ce.MoveNext() )		// ';' の次で文字列が終わってたら終了帰還。
+				return false;
+
+			#region [ ';' の次の文字から '\n' の１つ前までをコメント文字列と見なし、sb文字列にコピーする。]
+			//-----------------
+			while( ce.Current != '\n' )
 			{
-				while( ce.Current != '\n' )
-				{
-					sb文字列.Append( ce.Current );
-					if( !ce.MoveNext() )
-					{
-						return false;
-					}
-				}
-				return true;
+				sb文字列.Append( ce.Current );
+
+				if( !ce.MoveNext() )
+					return false;
 			}
-			return false;
+			//-----------------
+			#endregion
+
+			return true;
 		}
 		private void t入力・パラメータ食い込みチェック( string strコマンド名, ref string strコマンド, ref string strパラメータ )
 		{
@@ -3236,158 +3282,185 @@ namespace DTXMania
 		}
 		private bool t入力・パラメータ文字列を抜き出す( ref CharEnumerator ce, ref StringBuilder sb文字列 )
 		{
-			if( this.t入力・空白をスキップする( ref ce ) )
+			if( !this.t入力・空白をスキップする( ref ce ) )
+				return false;	// 文字が尽きた
+
+			#region [ 改行またはコメント開始文字(';')が出現するまでをパラメータ文字列と見なし、sb文字列 にコピーする。]
+			//-----------------
+			while( ce.Current != '\n' && ce.Current != ';' )
 			{
-				while( ( ce.Current != '\n' ) && ( ce.Current != ';' ) )
-				{
-					sb文字列.Append( ce.Current );
-					if( !ce.MoveNext() )
-					{
-						return false;
-					}
-				}
-				return true;
+				sb文字列.Append( ce.Current );
+
+				if( !ce.MoveNext() )
+					return false;
 			}
-			return false;
+			//-----------------
+			#endregion
+
+			return true;
 		}
 		private bool t入力・空白と改行をスキップする( ref CharEnumerator ce )
 		{
-			while( ( ce.Current == ' ' ) || ( ce.Current == '\n' ) )
+			// 空白と改行が続く間はこれらをスキップする。
+
+			while( ce.Current == ' ' || ce.Current == '\n' )
 			{
 				if( ce.Current == '\n' )
-				{
-					this.n現在の行数++;
-				}
+					this.n現在の行数++;		// 改行文字では行番号が増える。
+
 				if( !ce.MoveNext() )
-				{
-					return false;
-				}
+					return false;	// 文字が尽きた
 			}
+
 			return true;
 		}
 		private bool t入力・空白をスキップする( ref CharEnumerator ce )
 		{
+			// 空白が続く間はこれをスキップする。
+
 			while( ce.Current == ' ' )
 			{
 				if( !ce.MoveNext() )
-				{
-					return false;
-				}
+					return false;	// 文字が尽きた
 			}
+
 			return true;
 		}
 		private void t入力・行解析( ref StringBuilder sbコマンド, ref StringBuilder sbパラメータ, ref StringBuilder sbコメント )
 		{
-			string str = sbコマンド.ToString();
-			string str2 = sbパラメータ.ToString().Trim();
-			string str3 = sbコメント.ToString();
-			if( str.StartsWith( "IF", StringComparison.OrdinalIgnoreCase ) )
+			string strコマンド = sbコマンド.ToString();
+			string strパラメータ = sbパラメータ.ToString().Trim();
+			string strコメント = sbコメント.ToString();
+
+			// 行頭コマンドの処理
+
+			#region [ IF ]
+			//-----------------
+			if( strコマンド.StartsWith( "IF", StringComparison.OrdinalIgnoreCase ) )
 			{
-				this.t入力・パラメータ食い込みチェック( "IF", ref str, ref str2 );
-				if( this.bstackIFからENDIFをスキップする.Count == 0xff )
+				this.t入力・パラメータ食い込みチェック( "IF", ref strコマンド, ref strパラメータ );
+
+				if( this.bstackIFからENDIFをスキップする.Count == 255 )
 				{
-					Trace.TraceWarning( "#IF の入れ子の数が 255 を超えました。この #IF を無視します。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+					Trace.TraceWarning( "#IF の入れ子の数が 255 を超えました。この #IF を無視します。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				}
 				else if( this.bstackIFからENDIFをスキップする.Peek() )
 				{
-					this.bstackIFからENDIFをスキップする.Push( true );
+					this.bstackIFからENDIFをスキップする.Push( true );	// 親が true ならその入れ子も問答無用で true 。
 				}
-				else
+				else													// 親が false なら入れ子はパラメータと乱数を比較して結果を判断する。
 				{
-					int result = 0;
-					if( !int.TryParse( str2, out result ) )
-					{
-						result = 1;
-					}
-					this.bstackIFからENDIFをスキップする.Push( result != this.n現在の乱数 );
+					int n数値 = 0;
+
+					if( !int.TryParse( strパラメータ, out n数値 ) )
+						n数値 = 1;
+
+					this.bstackIFからENDIFをスキップする.Push( n数値 != this.n現在の乱数 );		// 乱数と数値が一致したら true 。
 				}
 			}
-			else if( str.StartsWith( "ENDIF", StringComparison.OrdinalIgnoreCase ) )
+			//-----------------
+			#endregion
+			#region [ ENDIF ]
+			//-----------------
+			else if( strコマンド.StartsWith( "ENDIF", StringComparison.OrdinalIgnoreCase ) )
 			{
-				this.t入力・パラメータ食い込みチェック( "ENDIF", ref str, ref str2 );
+				this.t入力・パラメータ食い込みチェック( "ENDIF", ref strコマンド, ref strパラメータ );
+
 				if( this.bstackIFからENDIFをスキップする.Count > 1 )
 				{
-					this.bstackIFからENDIFをスキップする.Pop();
+					this.bstackIFからENDIFをスキップする.Pop();		// 入れ子を１つ脱出。
 				}
 				else
 				{
-					Trace.TraceWarning( "#ENDIF に対応する #IF がありません。この #ENDIF を無視します。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+					Trace.TraceWarning( "#ENDIF に対応する #IF がありません。この #ENDIF を無視します。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				}
 			}
-			else if( !this.bstackIFからENDIFをスキップする.Peek() )
+			//-----------------
+			#endregion
+
+			else if( !this.bstackIFからENDIFをスキップする.Peek() )		// IF～ENDIF をスキップするなら以下はすべて無視。
 			{
-				if( str.StartsWith( "PATH_WAV", StringComparison.OrdinalIgnoreCase ) )
+				#region [ PATH_WAV ]
+				//-----------------
+				if( strコマンド.StartsWith( "PATH_WAV", StringComparison.OrdinalIgnoreCase ) )
 				{
-					this.t入力・パラメータ食い込みチェック( "PATH_WAV", ref str, ref str2 );
-					this.PATH_WAV = str2;
+					this.t入力・パラメータ食い込みチェック( "PATH_WAV", ref strコマンド, ref strパラメータ );
+					this.PATH_WAV = strパラメータ;
 				}
-				else if( str.StartsWith( "TITLE", StringComparison.OrdinalIgnoreCase ) )
+				//-----------------
+				#endregion
+				#region [ TITLE ]
+				//-----------------
+				else if( strコマンド.StartsWith( "TITLE", StringComparison.OrdinalIgnoreCase ) )
 				{
-					this.t入力・パラメータ食い込みチェック( "TITLE", ref str, ref str2 );
-					this.TITLE = str2;
+					this.t入力・パラメータ食い込みチェック( "TITLE", ref strコマンド, ref strパラメータ );
+					this.TITLE = strパラメータ;
 				}
-				else if( str.StartsWith( "ARTIST", StringComparison.OrdinalIgnoreCase ) )
+				//-----------------
+				#endregion
+				#region [ ARTIST ]
+				//-----------------
+				else if( strコマンド.StartsWith( "ARTIST", StringComparison.OrdinalIgnoreCase ) )
 				{
-					this.t入力・パラメータ食い込みチェック( "ARTIST", ref str, ref str2 );
-					this.ARTIST = str2;
+					this.t入力・パラメータ食い込みチェック( "ARTIST", ref strコマンド, ref strパラメータ );
+					this.ARTIST = strパラメータ;
 				}
-				else if( str.StartsWith( "COMMENT", StringComparison.OrdinalIgnoreCase ) )
+				//-----------------
+				#endregion
+				#region [ COMMENT ]
+				//-----------------
+				else if( strコマンド.StartsWith( "COMMENT", StringComparison.OrdinalIgnoreCase ) )
 				{
-					this.t入力・パラメータ食い込みチェック( "COMMENT", ref str, ref str2 );
-					this.COMMENT = str2;
+					this.t入力・パラメータ食い込みチェック( "COMMENT", ref strコマンド, ref strパラメータ );
+					this.COMMENT = strパラメータ;
 				}
-				else if( str.StartsWith( "DLEVEL", StringComparison.OrdinalIgnoreCase ) || str.StartsWith( "PLAYLEVEL", StringComparison.OrdinalIgnoreCase ) )
+				//-----------------
+				#endregion
+				#region [ DLEVEL, PLAYLEVEL ]
+				//-----------------
+				else if(
+					strコマンド.StartsWith( "DLEVEL", StringComparison.OrdinalIgnoreCase ) ||
+					strコマンド.StartsWith( "PLAYLEVEL", StringComparison.OrdinalIgnoreCase ) )
 				{
+					this.t入力・パラメータ食い込みチェック( "DLEVEL", ref strコマンド, ref strパラメータ );
+					this.t入力・パラメータ食い込みチェック( "PLAYLEVEL", ref strコマンド, ref strパラメータ );
+
 					int dlevel;
-					this.t入力・パラメータ食い込みチェック( "DLEVEL", ref str, ref str2 );
-					this.t入力・パラメータ食い込みチェック( "PLAYLEVEL", ref str, ref str2 );
-					if( int.TryParse( str2, out dlevel ) )
+					if( int.TryParse( strパラメータ, out dlevel ) )
 					{
-						if( dlevel < 0 )
-						{
-							dlevel = 0;
-						}
-						else if( dlevel > 100 )
-						{
-							dlevel = 100;
-						}
-						this.LEVEL.Drums = dlevel;
+						this.LEVEL.Drums = Math.Min( Math.Max( dlevel, 0 ), 100 );	// 0～100 に丸める
 					}
 				}
-				else if( str.StartsWith( "GLEVEL", StringComparison.OrdinalIgnoreCase ) )
+				//-----------------
+				#endregion
+				#region [ GLEVEL ]
+				//-----------------
+				else if( strコマンド.StartsWith( "GLEVEL", StringComparison.OrdinalIgnoreCase ) )
 				{
+					this.t入力・パラメータ食い込みチェック( "GLEVEL", ref strコマンド, ref strパラメータ );
+
 					int glevel;
-					this.t入力・パラメータ食い込みチェック( "GLEVEL", ref str, ref str2 );
-					if( int.TryParse( str2, out glevel ) )
+					if( int.TryParse( strパラメータ, out glevel ) )
 					{
-						if( glevel < 0 )
-						{
-							glevel = 0;
-						}
-						else if( glevel > 100 )
-						{
-							glevel = 100;
-						}
-						this.LEVEL.Guitar = glevel;
+						this.LEVEL.Guitar = Math.Min( Math.Max( glevel, 0 ), 100 );		// 0～100 に丸める
 					}
 				}
-				else if( str.StartsWith( "BLEVEL", StringComparison.OrdinalIgnoreCase ) )
+				//-----------------
+				#endregion
+				#region [ BLEVEL ]
+				//-----------------
+				else if( strコマンド.StartsWith( "BLEVEL", StringComparison.OrdinalIgnoreCase ) )
 				{
+					this.t入力・パラメータ食い込みチェック( "BLEVEL", ref strコマンド, ref strパラメータ );
+
 					int blevel;
-					this.t入力・パラメータ食い込みチェック( "BLEVEL", ref str, ref str2 );
-					if( int.TryParse( str2, out blevel ) )
+					if( int.TryParse( strパラメータ, out blevel ) )
 					{
-						if( blevel < 0 )
-						{
-							blevel = 0;
-						}
-						else if( blevel > 100 )
-						{
-							blevel = 100;
-						}
-						this.LEVEL.Bass = blevel;
+						this.LEVEL.Bass = Math.Min( Math.Max( blevel, 0 ), 100 );		// 0～100 に丸める
 					}
 				}
+				//-----------------
+				#endregion
 #if TEST_NOTEOFFMODE
 				else if (str.StartsWith("SUPRESSNOTEOFF_HIHAT", StringComparison.OrdinalIgnoreCase)) {
 					this.t入力・パラメータ食い込みチェック("SUPRESSNOTEOFF_HIHAT", ref str, ref str2);
@@ -3402,712 +3475,1139 @@ namespace DTXMania
 					this.bBASS演奏で直前のBASSを消音する = !str2.ToLower().Equals("on");
 				}
 #endif
-				else if (str.StartsWith("GENRE", StringComparison.OrdinalIgnoreCase)) {
-					this.t入力・パラメータ食い込みチェック("GENRE", ref str, ref str2);
-					this.GENRE = str2;
-				} else {
-					if (str.StartsWith("HIDDENLEVEL", StringComparison.OrdinalIgnoreCase)) {
-						this.t入力・パラメータ食い込みチェック("HIDDENLEVEL", ref str, ref str2);
-						this.HIDDENLEVEL = str2.ToLower().Equals("on");
-					}
-					if (str.StartsWith("STAGEFILE", StringComparison.OrdinalIgnoreCase)) {
-						this.t入力・パラメータ食い込みチェック("STAGEFILE", ref str, ref str2);
-						this.STAGEFILE = str2;
-					} else if (str.StartsWith("PREVIEW", StringComparison.OrdinalIgnoreCase)) {
-						this.t入力・パラメータ食い込みチェック("PREVIEW", ref str, ref str2);
-						this.PREVIEW = str2;
-					} else if (str.StartsWith("PREIMAGE", StringComparison.OrdinalIgnoreCase)) {
-						this.t入力・パラメータ食い込みチェック("PREIMAGE", ref str, ref str2);
-						this.PREIMAGE = str2;
-					} else if (str.StartsWith("PREMOVIE", StringComparison.OrdinalIgnoreCase)) {
-						this.t入力・パラメータ食い込みチェック("PREMOVIE", ref str, ref str2);
-						this.PREMOVIE = str2;
-					} else if (str.StartsWith("BACKGROUND_GR", StringComparison.OrdinalIgnoreCase)) {
-						this.t入力・パラメータ食い込みチェック("BACKGROUND_GR", ref str, ref str2);
-						this.BACKGROUND_GR = str2;
-					} else if (str.StartsWith("BACKGROUND", StringComparison.OrdinalIgnoreCase) || str.StartsWith("WALL", StringComparison.OrdinalIgnoreCase)) {
-						this.t入力・パラメータ食い込みチェック("BACKGROUND", ref str, ref str2);
-						this.t入力・パラメータ食い込みチェック("WALL", ref str, ref str2);
-						this.BACKGROUND = str2;
-					} else {
-						if (str.StartsWith("RANDOM", StringComparison.OrdinalIgnoreCase)) {
-							this.t入力・パラメータ食い込みチェック("RANDOM", ref str, ref str2);
-							int num5 = 1;
-							if (!int.TryParse(str2, out num5)) {
-								num5 = 1;
-							}
-							this.n現在の乱数 = CDTXMania.Random.Next(num5) + 1;
-						}
-						if (str.StartsWith("SOUND_NOWLOADING", StringComparison.OrdinalIgnoreCase)) {
-							this.t入力・パラメータ食い込みチェック("SOUND_NOWLOADING", ref str, ref str2);
-							this.SOUND_NOWLOADING = str2;
-						} else if (!this.bヘッダのみ) {
-							if (str.StartsWith("PANEL", StringComparison.OrdinalIgnoreCase)) {
-								this.t入力・パラメータ食い込みチェック("PANEL", ref str, ref str2);
-								int dummyResult;								// #23885 2010.12.12 yyagi: not to confuse "#PANEL strings (panel)" and "#PANEL int (panpot of EL)"
-								if (!int.TryParse(str2, out dummyResult)) {		// 数値じゃないならPANELとみなす
-									this.PANEL = str2;							//
-									goto EOL;									//
-								}												// 数値ならPAN ELとみなす
+				#region [ GENRE ]
+				//-----------------
+				else if( strコマンド.StartsWith( "GENRE", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "GENRE", ref strコマンド, ref strパラメータ );
+					this.GENRE = strパラメータ;
+				}
+				//-----------------
+				#endregion
+				#region [ HIDDENLEVEL ]
+				//-----------------
+				else if( strコマンド.StartsWith( "HIDDENLEVEL", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "HIDDENLEVEL", ref strコマンド, ref strパラメータ );
+					this.HIDDENLEVEL = strパラメータ.ToLower().Equals( "on" );
+				}
+				//-----------------
+				#endregion
+				#region [ STAGEFILE ]
+				//-----------------
+				else if( strコマンド.StartsWith( "STAGEFILE", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "STAGEFILE", ref strコマンド, ref strパラメータ );
+					this.STAGEFILE = strパラメータ;
+				}
+				//-----------------
+				#endregion
+				#region [ PREVIEW ]
+				//-----------------
+				else if( strコマンド.StartsWith( "PREVIEW", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "PREVIEW", ref strコマンド, ref strパラメータ );
+					this.PREVIEW = strパラメータ;
+				}
+				//-----------------
+				#endregion
+				#region [ PREIMAGE ]
+				//-----------------
+				else if( strコマンド.StartsWith( "PREIMAGE", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "PREIMAGE", ref strコマンド, ref strパラメータ );
+					this.PREIMAGE = strパラメータ;
+				}
+				//-----------------
+				#endregion
+				#region [ PREMOVIE ]
+				//-----------------
+				else if( strコマンド.StartsWith( "PREMOVIE", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "PREMOVIE", ref strコマンド, ref strパラメータ );
+					this.PREMOVIE = strパラメータ;
+				}
+				//-----------------
+				#endregion
+				#region [ BACKGROUND_GR ]
+				//-----------------
+				else if( strコマンド.StartsWith( "BACKGROUND_GR", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "BACKGROUND_GR", ref strコマンド, ref strパラメータ );
+					this.BACKGROUND_GR = strパラメータ;
+				}
+				//-----------------
+				#endregion
+				#region [ BACKGROU}ND, WALL ]
+				//-----------------
+				else if(
+					strコマンド.StartsWith( "BACKGROUND", StringComparison.OrdinalIgnoreCase ) ||
+					strコマンド.StartsWith( "WALL", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "BACKGROUND", ref strコマンド, ref strパラメータ );
+					this.t入力・パラメータ食い込みチェック( "WALL", ref strコマンド, ref strパラメータ );
+					this.BACKGROUND = strパラメータ;
+				}
+				//-----------------
+				#endregion
+				#region [ RANDOM ]
+				//-----------------
+				else if( strコマンド.StartsWith( "RANDOM", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "RANDOM", ref strコマンド, ref strパラメータ );
 
-							}
-							if (str.StartsWith("MIDIFILE", StringComparison.OrdinalIgnoreCase)) {
-								this.t入力・パラメータ食い込みチェック("MIDIFILE", ref str, ref str2);
-								this.MIDIFILE = str2;
-							} else {
-								if (str.StartsWith("MIDINOTE", StringComparison.OrdinalIgnoreCase)) {
-									this.t入力・パラメータ食い込みチェック("MIDINOTE", ref str, ref str2);
-									this.MIDINOTE = str2.ToLower().Equals("on");
-								}
-								if (str.StartsWith("BLACKCOLORKEY", StringComparison.OrdinalIgnoreCase)) {
-									this.t入力・パラメータ食い込みチェック("BLACKCOLORKEY", ref str, ref str2);
-									this.BLACKCOLORKEY = str2.ToLower().Equals("on");
-								}
-								if (str.StartsWith("BASEBPM", StringComparison.OrdinalIgnoreCase)) {
-									this.t入力・パラメータ食い込みチェック("BASEBPM", ref str, ref str2);
-									double basebpm = 0.0;
-									//if( double.TryParse( str2, out num6 ) && ( num6 > 0.0 ) )
-									if (TryParse(str2, out basebpm) && basebpm > 0.0)	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
-									{													// #24204 2011.01.21 yyagi: Fix the condition correctly
-										this.BASEBPM = basebpm;
-									}
-								} else if (str.StartsWith("SOUND_STAGEFAILED", StringComparison.OrdinalIgnoreCase)) {
-									this.t入力・パラメータ食い込みチェック("SOUND_STAGEFAILED", ref str, ref str2);
-									this.SOUND_STAGEFAILED = str2;
-								} else if (str.StartsWith("SOUND_FULLCOMBO", StringComparison.OrdinalIgnoreCase)) {
-									this.t入力・パラメータ食い込みチェック("SOUND_FULLCOMBO", ref str, ref str2);
-									this.SOUND_FULLCOMBO = str2;
-								} else if (str.StartsWith("SOUND_AUDIENCE", StringComparison.OrdinalIgnoreCase)) {
-									this.t入力・パラメータ食い込みチェック("SOUND_AUDIENCE", ref str, ref str2);
-									this.SOUND_AUDIENCE = str2;
-								} else if (!this.t入力・行解析・WAVVOL_VOLUME(str, str2, str3) &&
-									  !this.t入力・行解析・WAVPAN_PAN(str, str2, str3) &&
-									  !this.t入力・行解析・WAV(str, str2, str3) &&
-									  !this.t入力・行解析・BMPTEX(str, str2, str3) &&
-									  !this.t入力・行解析・BMP(str, str2, str3) &&
-									  !this.t入力・行解析・BGAPAN(str, str2, str3) &&
-									  !this.t入力・行解析・BGA(str, str2, str3) &&
-									  !this.t入力・行解析・AVIPAN(str, str2, str3) &&
-									  !this.t入力・行解析・AVI_VIDEO(str, str2, str3) &&
-									  !this.t入力・行解析・BPM_BPMzz(str, str2, str3) &&
-									  !this.t入力・行解析・RESULTIMAGE(str, str2, str3) &&
-									  !this.t入力・行解析・RESULTMOVIE(str, str2, str3) &&
-									  !this.t入力・行解析・RESULTSOUND(str, str2, str3) &&
-									  !this.t入力・行解析・SIZE(str, str2, str3)) {
-									this.t入力・行解析・チップ配置(str, str2, str3);
-								}
-							}
-						EOL:
-							int xx = 0;		// #23885 2010.12.12 yyagi: dummy line to exit parsing the line
+					int n数値 = 1;
+					if( !int.TryParse( strパラメータ, out n数値 ) )
+						n数値 = 1;
+
+					this.n現在の乱数 = CDTXMania.Random.Next( n数値 ) + 1;		// 1～数値 までの乱数を生成。
+				}
+				//-----------------
+				#endregion
+				#region [ SOUND_NOWLOADING ]
+				//-----------------
+				else if( strコマンド.StartsWith( "SOUND_NOWLOADING", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "SOUND_NOWLOADING", ref strコマンド, ref strパラメータ );
+					this.SOUND_NOWLOADING = strパラメータ;
+				}
+				//-----------------
+				#endregion
+
+				else if( !this.bヘッダのみ )		// ヘッダのみの解析の場合、以下は無視。
+				{
+					#region [ PANEL ]
+					//-----------------
+					if( strコマンド.StartsWith( "PANEL", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "PANEL", ref strコマンド, ref strパラメータ );
+
+						int dummyResult;								// #23885 2010.12.12 yyagi: not to confuse "#PANEL strings (panel)" and "#PANEL int (panpot of EL)"
+						if( !int.TryParse( strパラメータ, out dummyResult ) )
+						{		// 数値じゃないならPANELとみなす
+							this.PANEL = strパラメータ;							//
+							goto EOL;									//
+						}												// 数値ならPAN ELとみなす
+
+					}
+					//-----------------
+					#endregion
+					#region [ MIDIFILE ]
+					//-----------------
+					else if( strコマンド.StartsWith( "MIDIFILE", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "MIDIFILE", ref strコマンド, ref strパラメータ );
+						this.MIDIFILE = strパラメータ;
+					}
+					//-----------------
+					#endregion
+					#region [ MIDINOTE ]
+					//-----------------
+					else if( strコマンド.StartsWith( "MIDINOTE", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "MIDINOTE", ref strコマンド, ref strパラメータ );
+						this.MIDINOTE = strパラメータ.ToLower().Equals( "on" );
+					}
+					//-----------------
+					#endregion
+					#region [ BLACKCOLORKEY ]
+					//-----------------
+					else if( strコマンド.StartsWith( "BLACKCOLORKEY", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "BLACKCOLORKEY", ref strコマンド, ref strパラメータ );
+						this.BLACKCOLORKEY = strパラメータ.ToLower().Equals( "on" );
+					}
+					//-----------------
+					#endregion
+					#region [ BASEBPM ]
+					//-----------------
+					else if( strコマンド.StartsWith( "BASEBPM", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "BASEBPM", ref strコマンド, ref strパラメータ );
+
+						double basebpm = 0.0;
+						//if( double.TryParse( str2, out num6 ) && ( num6 > 0.0 ) )
+						if( TryParse( strパラメータ, out basebpm ) && basebpm > 0.0 )	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
+						{													// #24204 2011.01.21 yyagi: Fix the condition correctly
+							this.BASEBPM = basebpm;
 						}
 					}
+					//-----------------
+					#endregion
+					#region [ SOUND_STAGEFAILED ]
+					//-----------------
+					else if( strコマンド.StartsWith( "SOUND_STAGEFAILED", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "SOUND_STAGEFAILED", ref strコマンド, ref strパラメータ );
+						this.SOUND_STAGEFAILED = strパラメータ;
+					}
+					//-----------------
+					#endregion
+					#region [ SOUND_FULLCOMBO ]
+					//-----------------
+					else if( strコマンド.StartsWith( "SOUND_FULLCOMBO", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "SOUND_FULLCOMBO", ref strコマンド, ref strパラメータ );
+						this.SOUND_FULLCOMBO = strパラメータ;
+					}
+					//-----------------
+					#endregion
+					#region [ SOUND_AUDIENCE ]
+					//-----------------
+					else if( strコマンド.StartsWith( "SOUND_AUDIENCE", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "SOUND_AUDIENCE", ref strコマンド, ref strパラメータ );
+						this.SOUND_AUDIENCE = strパラメータ;
+					}
+					//-----------------
+					#endregion
+
+					// オブジェクト記述コマンドの処理。
+
+					else if( !this.t入力・行解析・WAVVOL_VOLUME( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・WAVPAN_PAN( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・WAV( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・BMPTEX( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・BMP( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・BGAPAN( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・BGA( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・AVIPAN( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・AVI_VIDEO( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・BPM_BPMzz( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・RESULTIMAGE( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・RESULTMOVIE( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・RESULTSOUND( strコマンド, strパラメータ, strコメント ) &&
+						!this.t入力・行解析・SIZE( strコマンド, strパラメータ, strコメント ) )
+					{
+						this.t入力・行解析・チップ配置( strコマンド, strパラメータ, strコメント );
+					}
+				EOL:
+					Debug.Assert( true );		// #23885 2010.12.12 yyagi: dummy line to exit parsing the line
+												// 2011.8.17 from: "int xx=0;" から変更。毎回警告が出るので。
 				}
 			}
 		}
 		private bool t入力・行解析・AVI_VIDEO( string strコマンド, string strパラメータ, string strコメント )
 		{
+			// (1) コマンドを処理。
+
+			#region [ "AVI" or "VIDEO" で始まらないコマンドは無効。]
+			//-----------------
 			if( strコマンド.StartsWith( "AVI", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 3 );
-			}
+				strコマンド = strコマンド.Substring( 3 );		// strコマンド から先頭の"AVI"文字を除去。
+
 			else if( strコマンド.StartsWith( "VIDEO", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 5 );
-			}
+				strコマンド = strコマンド.Substring( 5 );		// strコマンド から先頭の"VIDEO"文字を除去。
+
 			else
-			{
 				return false;
-			}
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
 			if( strコマンド.Length < 2 )
+				return false;	// AVI番号 zz がないなら無効。
+
+			#region [ AVI番号 zz を取得する。]
+			//-----------------
+			int zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+			if( zz < 0 || zz >= 36 * 36 )
 			{
+				Trace.TraceError( "AVI(VIDEO)番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 36 * 36 ) )
-			{
-				Trace.TraceError( "AVI(VIDEO)番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
-				return false;
-			}
-			CAVI cavi = new CAVI();
-			cavi.n番号 = key;
-			cavi.strファイル名 = strパラメータ;
-			cavi.strコメント文 = strコメント;
-			if( this.listAVI.ContainsKey( key ) )
-			{
-				this.listAVI.Remove( key );
-			}
-			this.listAVI.Add( key, cavi );
+			//-----------------
+			#endregion
+
+			#region [ AVIリストに {zz, avi} の組を登録する。 ]
+			//-----------------
+			var avi = new CAVI() {
+				n番号 = zz,
+				strファイル名 = strパラメータ,
+				strコメント文 = strコメント,
+			};
+
+			if( this.listAVI.ContainsKey( zz ) )	// 既にリスト中に存在しているなら削除。後のものが有効。
+				this.listAVI.Remove( zz );
+
+			this.listAVI.Add( zz, avi );
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・AVIPAN( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "AVIPAN", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 6 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "AVIPAN" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "AVIPAN", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
+
+			strコマンド = strコマンド.Substring( 6 );	// strコマンド から先頭の"AVIPAN"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
 			if( strコマンド.Length < 2 )
+				return false;	// AVIPAN番号 zz がないなら無効。
+
+			#region [ AVIPAN番号 zz を取得する。]
+			//-----------------
+			int zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+			if( zz < 0 || zz >= 36 * 36 )
 			{
+				Trace.TraceError( "AVIPAN番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 36 * 36 ) )
+			//-----------------
+			#endregion
+
+			var avipan = new CAVIPAN() {
+				n番号 = zz,
+			};
+
+			// パラメータ引数（14個）を取得し、avipan に登録していく。
+
+			string[] strParams = strパラメータ.Split( new char[] { ' ', ',', '(', ')', '[', ']', 'x', '|' }, StringSplitOptions.RemoveEmptyEntries );
+
+			#region [ パラメータ引数は全14個ないと無効。]
+			//-----------------
+			if( strParams.Length < 14 )
 			{
-				Trace.TraceError( "AVIPAN番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+				Trace.TraceError( "AVIPAN: 引数が足りません。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			CAVIPAN cavipan = new CAVIPAN();
-			cavipan.n番号 = key;
-			string[] strArray = strパラメータ.Split( new char[] { ' ', ',', '(', ')', '[', ']', 'x', '|' }, StringSplitOptions.RemoveEmptyEntries );
-			if( strArray.Length < 14 )
+			//-----------------
+			#endregion
+
+			int i = 0;
+			int n値 = 0;
+
+			#region [ 1. AVI番号 ]
+			//-----------------
+			if( string.IsNullOrEmpty( strParams[ i ] ) || strParams[ i ].Length > 2 )
 			{
-				Trace.TraceError( "AVIPAN: 引数が足りません。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+				Trace.TraceError( "AVIPAN: {2}番目の数（AVI番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			int index = 0;
-			int result = 0;
-			if( ( strArray[ index ].Length == 0 ) || ( strArray[ index ].Length > 2 ) )
+			avipan.nAVI番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strParams[ i ] );
+			if( avipan.nAVI番号 < 1 || avipan.nAVI番号 >= 36 * 36 )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の数（AVI番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の数（AVI番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.nAVI番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strArray[ index ] );
-			if( ( cavipan.nAVI番号 < 1 ) || ( cavipan.nAVI番号 >= 36 * 36 ) )
+			i++;
+			//-----------------
+			#endregion
+			#region [ 2. 開始転送サイズ・幅 ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の数（AVI番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（開始転送サイズ・幅）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.sz開始サイズ.Width = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 3. 転送サイズ・高さ ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（開始転送サイズ・幅）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（開始転送サイズ・高さ）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.sz開始サイズ.Width = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.sz開始サイズ.Height = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 4. 終了転送サイズ・幅 ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（開始転送サイズ・高さ）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（終了転送サイズ・幅）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.sz開始サイズ.Height = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.sz終了サイズ.Width = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 5. 終了転送サイズ・高さ ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（終了転送サイズ・幅）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（終了転送サイズ・高さ）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.sz終了サイズ.Width = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.sz終了サイズ.Height = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 6. 動画側開始位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（終了転送サイズ・幅）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（動画側開始位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.sz終了サイズ.Height = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.pt動画側開始位置.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 7. 動画側開始位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（画像側開始位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（動画側開始位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.pt動画側開始位置.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.pt動画側開始位置.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 8. 動画側終了位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（画像側開始位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（動画側終了位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.pt動画側開始位置.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.pt動画側終了位置.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 9. 動画側終了位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（画像側終了位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（動画側終了位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.pt動画側終了位置.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.pt動画側終了位置.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 10.表示側開始位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（画像側終了位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（表示側開始位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.pt動画側終了位置.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.pt表示側開始位置.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 11.表示側開始位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（表示側開始位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（表示側開始位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.pt表示側開始位置.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.pt表示側開始位置.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 12.表示側終了位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（表示側開始位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（表示側終了位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.pt表示側開始位置.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.pt表示側終了位置.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 13.表示側終了位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（表示側終了位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（表示側終了位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.pt表示側終了位置.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			avipan.pt表示側終了位置.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 14.移動時間 ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（表示側終了位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "AVIPAN: {2}番目の引数（移動時間）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cavipan.pt表示側終了位置.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
-			{
-				Trace.TraceError( "AVIPAN: {2}番目の引数（移動時間）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
-				return false;
-			}
-			if( result < 0 )
-			{
-				result = 0;
-			}
-			cavipan.n移動時間ct = result;
-			index++;
-			if( this.listAVIPAN.ContainsKey( key ) )
-			{
-				this.listAVIPAN.Remove( key );
-			}
-			this.listAVIPAN.Add( key, cavipan );
+
+			if( n値 < 0 )
+				n値 = 0;
+
+			avipan.n移動時間ct = n値;
+			i++;
+			//-----------------
+			#endregion
+
+			#region [ AVIPANリストに {zz, avipan} の組を登録する。]
+			//-----------------
+			if( this.listAVIPAN.ContainsKey( zz ) )	// 既にリスト中に存在しているなら削除。後のものが有効。
+				this.listAVIPAN.Remove( zz );
+
+			this.listAVIPAN.Add( zz, avipan );
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・BGA( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "BGA", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 3 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "BGA" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "BGA", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
+
+			strコマンド = strコマンド.Substring( 3 );	// strコマンド から先頭の"BGA"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
 			if( strコマンド.Length < 2 )
+				return false;	// BGA番号 zz がないなら無効。
+
+			#region [ BGA番号 zz を取得する。]
+			//-----------------
+			int zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+			if( zz < 0 || zz >= 36 * 36 )
 			{
+				Trace.TraceError( "BGA番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 36 * 36 ) )
+			//-----------------
+			#endregion
+
+			var bga = new CBGA() {
+				n番号 = zz,
+			};
+
+			// パラメータ引数（7個）を取得し、bga に登録していく。
+
+			string[] strParams = strパラメータ.Split( new char[] { ' ', ',', '(', ')', '[', ']', 'x', '|' }, StringSplitOptions.RemoveEmptyEntries );
+
+			#region [ パラメータ引数は全7個ないと無効。]
+			//-----------------
+			if( strParams.Length < 7 )
 			{
-				Trace.TraceError( "BGA番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+				Trace.TraceError( "BGA: 引数が足りません。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			CBGA cbga = new CBGA();
-			cbga.n番号 = key;
-			string[] strArray = strパラメータ.Split( new char[] { ' ', ',', '(', ')', '[', ']', 'x', '|' }, StringSplitOptions.RemoveEmptyEntries );
-			if( strArray.Length < 7 )
+			//-----------------
+			#endregion
+
+			int i = 0;
+			int n値 = 0;
+
+			#region [ 1.BMP番号 ]
+			//-----------------
+			if( string.IsNullOrEmpty( strParams[ i ] ) || strParams[ i ].Length > 2 )
 			{
-				Trace.TraceError( "BGA: 引数が足りません。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+				Trace.TraceError( "BGA: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			int index = 0;
-			int result = 0;
-			if( ( strArray[ index ].Length == 0 ) || ( strArray[ index ].Length > 2 ) )
+			bga.nBMP番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strParams[ i ] );
+			if( bga.nBMP番号 < 1 || bga.nBMP番号 >= 36 * 36 )
 			{
-				Trace.TraceError( "BGA: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGA: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbga.nBMP番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strArray[ index ] );
-			if( ( cbga.nBMP番号 < 1 ) || ( cbga.nBMP番号 >= 36 * 36 ) )
+			i++;
+			//-----------------
+			#endregion
+			#region [ 2.画像側位置１・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGA: {2}番目の引数（画像側位置１・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bga.pt画像側左上座標.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 3.画像側位置１・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGA: {2}番目の引数（画像側位置１・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGA: {2}番目の引数（画像側位置１・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbga.pt画像側左上座標.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bga.pt画像側左上座標.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 4.画像側位置２・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGA: {2}番目の引数（画像側位置１・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGA: {2}番目の引数（画像側位置２・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbga.pt画像側左上座標.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bga.pt画像側右下座標.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 5.画像側位置２・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGA: {2}番目の引数（画像側座標２・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGA: {2}番目の引数（画像側座標２・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbga.pt画像側右下座標.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bga.pt画像側右下座標.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 6.表示位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGA: {2}番目の引数（画像側座標２・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGA: {2}番目の引数（表示位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbga.pt画像側右下座標.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bga.pt表示座標.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 7.表示位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGA: {2}番目の引数（表示位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGA: {2}番目の引数（表示位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbga.pt表示座標.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bga.pt表示座標.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+
+			#region [ 画像側座標の正規化とクリッピング。]
+			//-----------------
+			if( bga.pt画像側左上座標.X > bga.pt画像側右下座標.X )
 			{
-				Trace.TraceError( "BGA: {2}番目の引数（表示位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
-				return false;
+				n値 = bga.pt画像側左上座標.X;
+				bga.pt画像側左上座標.X = bga.pt画像側右下座標.X;
+				bga.pt画像側右下座標.X = n値;
 			}
-			cbga.pt表示座標.Y = result;
-			index++;
-			if( cbga.pt画像側左上座標.X > cbga.pt画像側右下座標.X )
+			if( bga.pt画像側左上座標.Y > bga.pt画像側右下座標.Y )
 			{
-				result = cbga.pt画像側左上座標.X;
-				cbga.pt画像側左上座標.X = cbga.pt画像側右下座標.X;
-				cbga.pt画像側右下座標.X = result;
+				n値 = bga.pt画像側左上座標.Y;
+				bga.pt画像側左上座標.Y = bga.pt画像側右下座標.Y;
+				bga.pt画像側右下座標.Y = n値;
 			}
-			if( cbga.pt画像側左上座標.Y > cbga.pt画像側右下座標.Y )
-			{
-				result = cbga.pt画像側左上座標.Y;
-				cbga.pt画像側左上座標.Y = cbga.pt画像側右下座標.Y;
-				cbga.pt画像側右下座標.Y = result;
-			}
-			if( this.listBGA.ContainsKey( key ) )
-			{
-				this.listBGA.Remove( key );
-			}
-			this.listBGA.Add( key, cbga );
+			//-----------------
+			#endregion
+			#region [ BGAリストに {zz, bga} の組を登録する。]
+			//-----------------
+			if( this.listBGA.ContainsKey( zz ) )	// 既にリスト中に存在しているなら削除。後のものが有効。
+				this.listBGA.Remove( zz );
+
+			this.listBGA.Add( zz, bga );
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・BGAPAN( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "BGAPAN", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 6 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "BGAPAN" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "BGAPAN", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
+
+			strコマンド = strコマンド.Substring( 6 );	// strコマンド から先頭の"BGAPAN"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
 			if( strコマンド.Length < 2 )
+				return false;	// BGAPAN番号 zz がないなら無効。
+
+			#region [ BGAPAN番号 zz を取得する。]
+			//-----------------
+			int zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+			if( zz < 0 || zz >= 36 * 36 )
 			{
+				Trace.TraceError( "BGAPAN番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 36 * 36 ) )
+			//-----------------
+			#endregion
+
+			var bgapan = new CBGAPAN() {
+				n番号 = zz,
+			};
+
+			// パラメータ引数（14個）を取得し、bgapan に登録していく。
+
+			string[] strParams = strパラメータ.Split( new char[] { ' ', ',', '(', ')', '[', ']', 'x', '|' }, StringSplitOptions.RemoveEmptyEntries );
+
+			#region [ パラメータ引数は全14個ないと無効。]
+			//-----------------
+			if( strParams.Length < 14 )
 			{
-				Trace.TraceError( "BGAPAN番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+				Trace.TraceError( "BGAPAN: 引数が足りません。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			CBGAPAN cbgapan = new CBGAPAN();
-			cbgapan.n番号 = key;
-			string[] strArray = strパラメータ.Split( new char[] { ' ', ',', '(', ')', '[', ']', 'x', '|' }, StringSplitOptions.RemoveEmptyEntries );
-			if( strArray.Length < 14 )
+			//-----------------
+			#endregion
+
+			int i = 0;
+			int n値 = 0;
+
+			#region [ 1. BMP番号 ]
+			//-----------------
+			if( string.IsNullOrEmpty( strParams[ i ] ) || strParams[ i ].Length > 2 )
 			{
-				Trace.TraceError( "BGAPAN: 引数が足りません。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+				Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			int index = 0;
-			int result = 0;
-			if( ( strArray[ index ].Length == 0 ) || ( strArray[ index ].Length > 2 ) )
+			bgapan.nBMP番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strParams[ i ] );
+			if( bgapan.nBMP番号 < 1 || bgapan.nBMP番号 >= 36 * 36 )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.nBMP番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strArray[ index ] );
-			if( ( cbgapan.nBMP番号 < 1 ) || ( cbgapan.nBMP番号 >= 36 * 36 ) )
+			i++;
+			//-----------------
+			#endregion
+			#region [ 2. 開始転送サイズ・幅 ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（開始転送サイズ・幅）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.sz開始サイズ.Width = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 3. 開始転送サイズ・高さ ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（開始転送サイズ・幅）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（開始転送サイズ・高さ）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.sz開始サイズ.Width = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.sz開始サイズ.Height = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 4. 終了転送サイズ・幅 ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（開始転送サイズ・高さ）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（終了転送サイズ・幅）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.sz開始サイズ.Height = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.sz終了サイズ.Width = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 5. 終了転送サイズ・高さ ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（終了転送サイズ・幅）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（終了転送サイズ・高さ）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.sz終了サイズ.Width = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.sz終了サイズ.Height = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 6. 画像側開始位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（終了転送サイズ・幅）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（画像側開始位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.sz終了サイズ.Height = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.pt画像側開始位置.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 7. 画像側開始位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（画像側開始位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（画像側開始位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.pt画像側開始位置.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.pt画像側開始位置.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 8. 画像側終了位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（画像側開始位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（画像側終了位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.pt画像側開始位置.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.pt画像側終了位置.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 9. 画像側終了位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（画像側終了位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（画像側終了位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.pt画像側終了位置.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.pt画像側終了位置.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 10.表示側開始位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（画像側終了位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（表示側開始位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.pt画像側終了位置.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.pt表示側開始位置.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 11.表示側開始位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（表示側開始位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（表示側開始位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.pt表示側開始位置.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.pt表示側開始位置.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 12.表示側終了位置・X ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（表示側開始位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（表示側終了位置・X）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.pt表示側開始位置.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.pt表示側終了位置.X = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 13.表示側終了位置・Y ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（表示側終了位置・X）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（表示側終了位置・Y）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.pt表示側終了位置.X = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
+			bgapan.pt表示側終了位置.Y = n値;
+			i++;
+			//-----------------
+			#endregion
+			#region [ 14.移動時間 ]
+			//-----------------
+			n値 = 0;
+			if( !int.TryParse( strParams[ i ], out n値 ) )
 			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（表示側終了位置・Y）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
+				Trace.TraceError( "BGAPAN: {2}番目の引数（移動時間）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
 				return false;
 			}
-			cbgapan.pt表示側終了位置.Y = result;
-			index++;
-			result = 0;
-			if( !int.TryParse( strArray[ index ], out result ) )
-			{
-				Trace.TraceError( "BGAPAN: {2}番目の引数（移動時間）が異常です。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数, index + 1 } );
-				return false;
-			}
-			if( result < 0 )
-			{
-				result = 0;
-			}
-			cbgapan.n移動時間ct = result;
-			index++;
-			if( this.listBGAPAN.ContainsKey( key ) )
-			{
-				this.listBGAPAN.Remove( key );
-			}
-			this.listBGAPAN.Add( key, cbgapan );
+
+			if( n値 < 0 )
+				n値 = 0;
+
+			bgapan.n移動時間ct = n値;
+			i++;
+			//-----------------
+			#endregion
+
+			#region [ BGAPANリストに {zz, bgapan} の組を登録する。]
+			//-----------------
+			if( this.listBGAPAN.ContainsKey( zz ) )	// 既にリスト中に存在しているなら削除。後のものが有効。
+				this.listBGAPAN.Remove( zz );
+
+			this.listBGAPAN.Add( zz, bgapan );
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・BMP( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "BMP", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 3 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "BMP" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "BMP", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
-			int key = 0;
+
+			strコマンド = strコマンド.Substring( 3 );	// strコマンド から先頭の"BMP"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
+			int zz = 0;
+
+			#region [ BMP番号 zz を取得する。]
+			//-----------------
 			if( strコマンド.Length < 2 )
 			{
-				key = 0;
+				#region [ (A) "#BMP:" の場合 → zz = 00 ]
+				//-----------------
+				zz = 0;
+				//-----------------
+				#endregion
 			}
 			else
 			{
-				key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-				if( ( key < 0 ) || ( key >= 36 * 36 ) )
+				#region [ (B) "#BMPzz:" の場合 → zz = 00 ～ ZZ ]
+				//-----------------
+				zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+				if( zz < 0 || zz >= 36 * 36 )
 				{
-					Trace.TraceError( "BMP番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+					Trace.TraceError( "BMP番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 					return false;
 				}
+				//-----------------
+				#endregion
 			}
-			CBMP cbmp = new CBMP();
-			cbmp.n番号 = key;
-			cbmp.strファイル名 = strパラメータ;
-			cbmp.strコメント文 = strコメント;
-			if( this.listBMP.ContainsKey( key ) )
-			{
-				this.listBMP.Remove( key );
-			}
-			this.listBMP.Add( key, cbmp );
+			//-----------------
+			#endregion
+
+
+			var bmp = new CBMP() {
+				n番号 = zz,
+				strファイル名 = strパラメータ,
+				strコメント文 = strコメント,
+			};
+
+			#region [ BMPリストに {zz, bmp} の組を登録。]
+			//-----------------
+			if( this.listBMP.ContainsKey( zz ) )	// 既にリスト中に存在しているなら削除。後のものが有効。
+				this.listBMP.Remove( zz );
+
+			this.listBMP.Add( zz, bmp );
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・BMPTEX( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "BMPTEX", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 6 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "BMPTEX" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "BMPTEX", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
+
+			strコマンド = strコマンド.Substring( 6 );	// strコマンド から先頭の"BMPTEX"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
 			if( strコマンド.Length < 2 )
+				return false;	// BMPTEX番号 zz がないなら無効。
+
+			#region [ BMPTEX番号 zz を取得する。]
+			//-----------------
+			int zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+			if( zz < 0 || zz >= 36 * 36 )
 			{
+				Trace.TraceError( "BMPTEX番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			int key = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( key < 0 ) || ( key >= 36 * 36 ) )
-			{
-				Trace.TraceError( "BMPTEX番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
-				return false;
-			}
-			CBMPTEX cbmptex = new CBMPTEX();
-			cbmptex.n番号 = key;
-			cbmptex.strファイル名 = strパラメータ;
-			cbmptex.strコメント文 = strコメント;
-			if( this.listBMPTEX.ContainsKey( key ) )
-			{
-				this.listBMPTEX.Remove( key );
-			}
-			this.listBMPTEX.Add( key, cbmptex );
+			//-----------------
+			#endregion
+
+			var bmptex = new CBMPTEX() {
+				n番号 = zz,
+				strファイル名 = strパラメータ,
+				strコメント文 = strコメント,
+			};
+
+			#region [ BMPTEXリストに {zz, bmptex} の組を登録する。]
+			//-----------------
+			if( this.listBMPTEX.ContainsKey( zz ) )	// 既にリスト中に存在しているなら削除。後のものが有効。
+				this.listBMPTEX.Remove( zz );
+
+			this.listBMPTEX.Add( zz, bmptex );
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・BPM_BPMzz( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "BPM", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 3 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "BPM" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "BPM", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
-			int index = 0;
+
+			strコマンド = strコマンド.Substring( 3 );	// strコマンド から先頭の"BPM"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
+			int zz = 0;
+
+			#region [ BPM番号 zz を取得する。]
+			//-----------------
 			if( strコマンド.Length < 2 )
 			{
-				index = 0;
+				#region [ (A) "#BPM:" の場合 → zz = 00 ]
+				//-----------------
+				zz = 0;
+				//-----------------
+				#endregion
 			}
 			else
 			{
-				index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-				if( ( index < 0 ) || ( index >= 36 * 36 ) )
+				#region [ (B) "#BPMzz:" の場合 → zz = 00 ～ ZZ ]
+				//-----------------
+				zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+				if( zz < 0 || zz >= 36 * 36 )
 				{
-					Trace.TraceError( "BPM番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
+					Trace.TraceError( "BPM番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 					return false;
 				}
+				//-----------------
+				#endregion
 			}
-			double result = 0.0;
-//			if( !double.TryParse( strパラメータ, out result ) )
-			if ( !TryParse( strパラメータ, out result) )			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
-			{
+			//-----------------
+			#endregion
+
+			double dbBPM = 0.0;
+
+			#region [ BPM値を取得する。]
+			//-----------------
+			//if( !double.TryParse( strパラメータ, out result ) )
+			if( !TryParse( strパラメータ, out dbBPM ) )			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
 				return false;
-			}
-			if( result <= 0.0 )
-			{
+
+			if( dbBPM <= 0.0 )
 				return false;
-			}
-			if( index == 0 )
+			//-----------------
+			#endregion
+
+			if( zz == 0 )			// "#BPM00:" と "#BPM:" は等価。
+				this.BPM = dbBPM;	// この曲の代表 BPM に格納する。
+
+			#region [ BPMリストに {内部番号, zz, dbBPM} の組を登録。]
+			//-----------------
+			this.listBPM.Add(
+				this.n内部番号BPM1to,
+				new CBPM() {
+					n内部番号 = this.n内部番号BPM1to,
+					n表記上の番号 = zz,
+					dbBPM値 = dbBPM,
+				} );
+			//-----------------
+			#endregion
+
+			#region [ BPM番号が zz であるBPM未設定のBPMチップがあれば、そのサイズを変更する。無限管理に対応。]
+			//-----------------
+			if( this.n無限管理BPM[ zz ] == -zz )	// 初期状態では n無限管理BPM[zz] = -zz である。この場合、#BPMzz がまだ出現していないことを意味する。
 			{
-				this.BPM = result;
-			}
-			CBPM cbpm = new CBPM();
-			cbpm.n内部番号 = this.n内部番号BPM1to;
-			cbpm.n表記上の番号 = index;
-			cbpm.dbBPM値 = result;
-			this.listBPM.Add( this.n内部番号BPM1to, cbpm );
-			if( this.n無限管理BPM[ index ] == -index )
-			{
-				for( int i = 0; i < this.listChip.Count; i++ )
+				for( int i = 0; i < this.listChip.Count; i++ )	// これまでに出てきたチップのうち、該当する（BPM値が未設定の）BPMチップの値を変更する（仕組み上、必ず後方参照となる）。
 				{
-					CChip chip = this.listChip[ i ];
-					if( chip.bBPMチップである && ( chip.n整数値・内部番号 == -index ) )
-					{
+					var chip = this.listChip[ i ];
+
+					if( chip.bBPMチップである && chip.n整数値・内部番号 == -zz )	// #BPMzz 行より前の行に出現した #BPMzz では、整数値・内部番号は -zz に初期化されている。
 						chip.n整数値・内部番号 = this.n内部番号BPM1to;
-					}
 				}
 			}
-			this.n無限管理BPM[ index ] = this.n内部番号BPM1to;
-			this.n内部番号BPM1to++;
+			this.n無限管理BPM[ zz ] = this.n内部番号BPM1to;			// 次にこの BPM番号 zz を使うBPMチップが現れたら、このBPM値が格納されることになる。
+			this.n内部番号BPM1to++;		// 内部番号は単純増加連番。
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・RESULTIMAGE( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "RESULTIMAGE", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 11 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "RESULTIMAGE" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "RESULTIMAGE", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
+
+			strコマンド = strコマンド.Substring( 11 );	// strコマンド から先頭の"RESULTIMAGE"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+			//     コマンドには "#RESULTIMAGE:" と "#RESULTIMAGE_SS～E" の2種類があり、パラメータの処理はそれぞれ異なる。
+
 			if( strコマンド.Length < 2 )
 			{
+				#region [ (A) ランク指定がない場合("#RESULTIMAGE:") → 優先順位が設定されていないすべてのランクで同じパラメータを使用する。]
+				//-----------------
 				for( int i = 0; i < 7; i++ )
 				{
 					if( this.nRESULTIMAGE用優先順位[ i ] == 0 )
-					{
 						this.RESULTIMAGE[ i ] = strパラメータ.Trim();
-					}
 				}
+				//-----------------
+				#endregion
 			}
 			else
 			{
+				#region [ (B) ランク指定がある場合("#RESULTIMAGE_SS～E:") → 優先順位に従ってパラメータを記録する。]
+				//-----------------
 				switch( strコマンド.ToUpper() )
 				{
 					case "_SS":
@@ -4138,400 +4638,513 @@ namespace DTXMania
 						this.t入力・行解析・RESULTIMAGE・ファイルを設定する( 6, strパラメータ );
 						break;
 				}
+				//-----------------
+				#endregion
 			}
+
 			return true;
 		}
 		private void t入力・行解析・RESULTIMAGE・ファイルを設定する( int nランク0to6, string strファイル名 )
 		{
-			if( ( nランク0to6 >= 0 ) && ( nランク0to6 <= 6 ) )
+			if( nランク0to6 < 0 || nランク0to6 > 6 )	// 値域チェック。
+				return;
+
+			// 指定されたランクから上位のすべてのランクについて、ファイル名を更新する。
+
+			for( int i = nランク0to6; i >= 0; i-- )
 			{
-				for( int i = nランク0to6; i >= 0; i-- )
+				int n優先順位 = 7 - nランク0to6;
+
+				// 現状より優先順位の低い RESULTIMAGE[] に限り、ファイル名を更新できる。
+				//（例：#RESULTMOVIE_D が #RESULTIMAGE_A より後に出現しても、#RESULTIMAGE_A で指定されたファイル名を上書きすることはできない。しかしその逆は可能。）
+
+				if( this.nRESULTIMAGE用優先順位[ i ] < n優先順位 )
 				{
-					if( this.nRESULTIMAGE用優先順位[ i ] < ( 7 - nランク0to6 ) )
-					{
-						this.nRESULTIMAGE用優先順位[ i ] = 7 - nランク0to6;
-						this.RESULTIMAGE[ i ] = strファイル名;
-					}
+					this.nRESULTIMAGE用優先順位[ i ] = n優先順位;
+					this.RESULTIMAGE[ i ] = strファイル名;
 				}
 			}
 		}
 		private bool t入力・行解析・RESULTMOVIE( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "RESULTMOVIE", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 11 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "RESULTMOVIE" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "RESULTMOVIE", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
+
+			strコマンド = strコマンド.Substring( 11 );	// strコマンド から先頭の"RESULTMOVIE"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+			//     コマンドには "#RESULTMOVIE:" と "#RESULTMOVIE_SS～E" の2種類があり、パラメータの処理はそれぞれ異なる。
+
 			if( strコマンド.Length < 2 )
 			{
+				#region [ (A) ランク指定がない場合("#RESULTMOVIE:") → 優先順位が設定されていないすべてのランクで同じパラメータを使用する。]
+				//-----------------
 				for( int i = 0; i < 7; i++ )
 				{
 					if( this.nRESULTMOVIE用優先順位[ i ] == 0 )
-					{
 						this.RESULTMOVIE[ i ] = strパラメータ.Trim();
-					}
 				}
+				//-----------------
+				#endregion
 			}
 			else
 			{
+				#region [ (B) ランク指定がある場合("#RESULTMOVIE_SS～E:") → 優先順位に従ってパラメータを記録する。]
+				//-----------------
 				switch( strコマンド.ToUpper() )
 				{
 					case "_SS":
 						this.t入力・行解析・RESULTMOVIE・ファイルを設定する( 0, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_S":
 						this.t入力・行解析・RESULTMOVIE・ファイルを設定する( 1, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_A":
 						this.t入力・行解析・RESULTMOVIE・ファイルを設定する( 2, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_B":
 						this.t入力・行解析・RESULTMOVIE・ファイルを設定する( 3, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_C":
 						this.t入力・行解析・RESULTMOVIE・ファイルを設定する( 4, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_D":
 						this.t入力・行解析・RESULTMOVIE・ファイルを設定する( 5, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_E":
 						this.t入力・行解析・RESULTMOVIE・ファイルを設定する( 6, strパラメータ );
-						goto Label_0142;
+						break;
 				}
+				//-----------------
+				#endregion
 			}
-		Label_0142:
+
 			return true;
 		}
 		private void t入力・行解析・RESULTMOVIE・ファイルを設定する( int nランク0to6, string strファイル名 )
 		{
-			if( ( nランク0to6 >= 0 ) && ( nランク0to6 <= 6 ) )
+			if( nランク0to6 < 0 || nランク0to6 > 6 )	// 値域チェック。
+				return;
+
+			// 指定されたランクから上位のすべてのランクについて、ファイル名を更新する。
+
+			for( int i = nランク0to6; i >= 0; i-- )
 			{
-				for( int i = nランク0to6; i >= 0; i-- )
+				int n優先順位 = 7 - nランク0to6;
+
+				// 現状より優先順位の低い RESULTMOVIE[] に限り、ファイル名を更新できる。
+				//（例：#RESULTMOVIE_D が #RESULTMOVIE_A より後に出現しても、#RESULTMOVIE_A で指定されたファイル名を上書きすることはできない。しかしその逆は可能。）
+
+				if( this.nRESULTMOVIE用優先順位[ i ] < n優先順位 )
 				{
-					if( this.nRESULTMOVIE用優先順位[ i ] < ( 7 - nランク0to6 ) )
-					{
-						this.nRESULTMOVIE用優先順位[ i ] = 7 - nランク0to6;
-						this.RESULTMOVIE[ i ] = strファイル名;
-					}
+					this.nRESULTMOVIE用優先順位[ i ] = n優先順位;
+					this.RESULTMOVIE[ i ] = strファイル名;
 				}
 			}
 		}
 		private bool t入力・行解析・RESULTSOUND( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "RESULTSOUND", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 11 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "RESULTSOUND" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "RESULTSOUND", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
+
+			strコマンド = strコマンド.Substring( 11 );	// strコマンド から先頭の"RESULTSOUND"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+			//     コマンドには "#RESULTSOUND:" と "#RESULTSOUND_SS～E" の2種類があり、パラメータの処理はそれぞれ異なる。
+
 			if( strコマンド.Length < 2 )
 			{
+				#region [ (A) ランク指定がない場合("#RESULTSOUND:") → 優先順位が設定されていないすべてのランクで同じパラメータを使用する。]
+				//-----------------
 				for( int i = 0; i < 7; i++ )
 				{
 					if( this.nRESULTSOUND用優先順位[ i ] == 0 )
-					{
 						this.RESULTSOUND[ i ] = strパラメータ.Trim();
-					}
 				}
+				//-----------------
+				#endregion
 			}
 			else
 			{
+				#region [ (B) ランク指定がある場合("#RESULTSOUND_SS～E:") → 優先順位に従ってパラメータを記録する。]
+				//-----------------
 				switch( strコマンド.ToUpper() )
 				{
 					case "_SS":
 						this.t入力・行解析・RESULTSOUND・ファイルを設定する( 0, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_S":
 						this.t入力・行解析・RESULTSOUND・ファイルを設定する( 1, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_A":
 						this.t入力・行解析・RESULTSOUND・ファイルを設定する( 2, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_B":
 						this.t入力・行解析・RESULTSOUND・ファイルを設定する( 3, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_C":
 						this.t入力・行解析・RESULTSOUND・ファイルを設定する( 4, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_D":
 						this.t入力・行解析・RESULTSOUND・ファイルを設定する( 5, strパラメータ );
-						goto Label_0142;
+						break;
 
 					case "_E":
 						this.t入力・行解析・RESULTSOUND・ファイルを設定する( 6, strパラメータ );
-						goto Label_0142;
+						break;
 				}
+				//-----------------
+				#endregion
 			}
-		Label_0142:
+
 			return true;
 		}
 		private void t入力・行解析・RESULTSOUND・ファイルを設定する( int nランク0to6, string strファイル名 )
 		{
-			if( ( nランク0to6 >= 0 ) && ( nランク0to6 <= 6 ) )
+			if( nランク0to6 < 0 || nランク0to6 > 6 )	// 値域チェック。
+				return;
+
+			// 指定されたランクから上位のすべてのランクについて、ファイル名を更新する。
+
+			for( int i = nランク0to6; i >= 0; i-- )
 			{
-				for( int i = nランク0to6; i >= 0; i-- )
+				int n優先順位 = 7 - nランク0to6;
+
+				// 現状より優先順位の低い RESULTSOUND[] に限り、ファイル名を更新できる。
+				//（例：#RESULTSOUND_D が #RESULTSOUND_A より後に出現しても、#RESULTSOUND_A で指定されたファイル名を上書きすることはできない。しかしその逆は可能。）
+
+				if( this.nRESULTSOUND用優先順位[ i ] < n優先順位 )
 				{
-					if( this.nRESULTSOUND用優先順位[ i ] < ( 7 - nランク0to6 ) )
-					{
-						this.nRESULTSOUND用優先順位[ i ] = 7 - nランク0to6;
-						this.RESULTSOUND[ i ] = strファイル名;
-					}
+					this.nRESULTSOUND用優先順位[ i ] = n優先順位;
+					this.RESULTSOUND[ i ] = strファイル名;
 				}
 			}
 		}
 		private bool t入力・行解析・SIZE( string strコマンド, string strパラメータ, string strコメント )
 		{
-			int num2;
-			if( strコマンド.StartsWith( "SIZE", StringComparison.OrdinalIgnoreCase ) )
+			// (1) コマンドを処理。
+
+			#region [ "SIZE" で始まらないコマンドや、その後ろに2文字（番号）が付随してないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "SIZE", StringComparison.OrdinalIgnoreCase ) )
+				return false;
+
+			strコマンド = strコマンド.Substring( 4 );	// strコマンド から先頭の"SIZE"文字を除去。
+
+			if( strコマンド.Length < 2 )	// サイズ番号の指定がない場合は無効。
+				return false;
+			//-----------------
+			#endregion
+
+			#region [ nWAV番号（36進数2桁）を取得。]
+			//-----------------
+			int nWAV番号 = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+
+			if( nWAV番号 < 0 || nWAV番号 >= 36 * 36 )
 			{
-				strコマンド = strコマンド.Substring( 4 );
-			}
-			else
-			{
+				Trace.TraceError( "SIZEのWAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			if( strコマンド.Length < 2 )
+			//-----------------
+			#endregion
+
+
+			// (2) パラメータを処理。
+
+			#region [ nサイズ値 を取得する。値は 0～100 に収める。]
+			//-----------------
+			int nサイズ値;
+
+			if( !int.TryParse( strパラメータ, out nサイズ値 ) )
+				return true;	// int変換に失敗しても、この行自体の処理は終えたのでtrueを返す。
+
+			nサイズ値 = Math.Min( Math.Max( nサイズ値, 0 ), 100 );	// 0未満は0、100超えは100に強制変換。
+			//-----------------
+			#endregion
+
+			#region [ nWAV番号で示されるサイズ未設定のWAVチップがあれば、そのサイズを変更する。無限管理に対応。]
+			//-----------------
+			if( this.n無限管理SIZE[ nWAV番号 ] == -nWAV番号 )	// 初期状態では n無限管理SIZE[xx] = -xx である。この場合、#SIZExx がまだ出現していないことを意味する。
 			{
-				return false;
-			}
-			int index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( index < 0 ) || ( index >= 36 * 36 ) )
-			{
-				Trace.TraceError( "SIZE番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
-				return false;
-			}
-			if( int.TryParse( strパラメータ, out num2 ) )
-			{
-				if( num2 < 0 )
+				foreach( CWAV wav in this.listWAV.Values )		// これまでに出てきたWAVチップのうち、該当する（サイズが未設定の）チップのサイズを変更する（仕組み上、必ず後方参照となる）。
 				{
-					num2 = 0;
+					if( wav.nチップサイズ == -nWAV番号 )		// #SIZExx 行より前の行に出現した #WAVxx では、チップサイズは -xx に初期化されている。
+						wav.nチップサイズ = nサイズ値;
 				}
-				else if( num2 > 100 )
-				{
-					num2 = 100;
-				}
-				if( this.n無限管理SIZE[ index ] == -index )
-				{
-					foreach( CWAV cwav in this.listWAV.Values )
-					{
-						if( cwav.nチップサイズ == -index )
-						{
-							cwav.nチップサイズ = num2;
-						}
-					}
-				}
-				this.n無限管理SIZE[ index ] = num2;
 			}
+			this.n無限管理SIZE[ nWAV番号 ] = nサイズ値;			// 次にこの nWAV番号を使うWAVチップが現れたら、負数の代わりに、このサイズ値が格納されることになる。
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・WAV( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.StartsWith( "WAV", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 3 );
-			}
-			else
-			{
+			// (1) コマンドを処理。
+
+			#region [ "WAV" で始まらないコマンドは無効。]
+			//-----------------
+			if( !strコマンド.StartsWith( "WAV", StringComparison.OrdinalIgnoreCase ) )
 				return false;
-			}
+
+			strコマンド = strコマンド.Substring( 3 );	// strコマンド から先頭の"WAV"文字を除去。
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
 			if( strコマンド.Length < 2 )
+				return false;	// WAV番号 zz がないなら無効。
+
+			#region [ WAV番号 zz を取得する。]
+			//-----------------
+			int zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+			if( zz < 0 || zz >= 36 * 36 )
 			{
+				Trace.TraceError( "WAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			int index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( index < 0 ) || ( index >= 36 * 36 ) )
+			//-----------------
+			#endregion
+
+			var wav = new CWAV() {
+				n内部番号 = this.n内部番号WAV1to,
+				n表記上の番号 = zz,
+				nチップサイズ = this.n無限管理SIZE[ zz ],
+				n位置 = this.n無限管理PAN[ zz ],
+				n音量 = this.n無限管理VOL[ zz ],
+				strファイル名 = strパラメータ,
+				strコメント文 = strコメント,
+			};
+
+			#region [ WAVリストに {内部番号, wav} の組を登録。]
+			//-----------------
+			this.listWAV.Add( this.n内部番号WAV1to, wav );
+			//-----------------
+			#endregion
+
+			#region [ WAV番号が zz である内部番号未設定のWAVチップがあれば、その内部番号を変更する。無限管理対応。]
+			//-----------------
+			if( this.n無限管理WAV[ zz ] == -zz )	// 初期状態では n無限管理WAV[zz] = -zz である。この場合、#WAVzz がまだ出現していないことを意味する。
 			{
-				Trace.TraceError( "WAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
-				return false;
-			}
-			CWAV cwav = new CWAV();
-			cwav.n内部番号 = this.n内部番号WAV1to;
-			cwav.n表記上の番号 = index;
-			cwav.nチップサイズ = this.n無限管理SIZE[ index ];
-			cwav.n位置 = this.n無限管理PAN[ index ];
-			cwav.n音量 = this.n無限管理VOL[ index ];
-			cwav.strファイル名 = strパラメータ;
-			cwav.strコメント文 = strコメント;
-			this.listWAV.Add( this.n内部番号WAV1to, cwav );
-			if( this.n無限管理WAV[ index ] == -index )
-			{
-				for( int i = 0; i < this.listChip.Count; i++ )
+				for( int i = 0; i < this.listChip.Count; i++ )	// これまでに出てきたチップのうち、該当する（内部番号が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
 				{
-					CChip chip = this.listChip[ i ];
-					if( chip.bWAVを使うチャンネルである && ( chip.n整数値・内部番号 == -index ) )
-					{
+					var chip = this.listChip[ i ];
+
+					if( chip.bWAVを使うチャンネルである && ( chip.n整数値・内部番号 == -zz ) )	// この #WAVzz 行より前の行に出現した #WAVzz では、整数値・内部番号は -zz に初期化されている。
 						chip.n整数値・内部番号 = this.n内部番号WAV1to;
-					}
 				}
 			}
-			this.n無限管理WAV[ index ] = this.n内部番号WAV1to;
-			this.n内部番号WAV1to++;
+			this.n無限管理WAV[ zz ] = this.n内部番号WAV1to;			// 次にこの WAV番号 zz を使うWAVチップが現れたら、この内部番号が格納されることになる。
+			this.n内部番号WAV1to++;		// 内部番号は単純増加連番。
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・WAVPAN_PAN( string strコマンド, string strパラメータ, string strコメント )
 		{
-			int num2;
+			// (1) コマンドを処理。
+
+			#region [ "WAVPAN" or "PAN" で始まらないコマンドは無効。]
+			//-----------------
 			if( strコマンド.StartsWith( "WAVPAN", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring(6);
-			}
+				strコマンド = strコマンド.Substring( 6 );		// strコマンド から先頭の"WAVPAN"文字を除去。
+
 			else if( strコマンド.StartsWith( "PAN", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring(3);
-			}
+				strコマンド = strコマンド.Substring( 3 );		// strコマンド から先頭の"PAN"文字を除去。
+
 			else
-			{
 				return false;
-			}
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
 			if( strコマンド.Length < 2 )
+				return false;	// WAV番号 zz がないなら無効。
+
+			#region [ WAV番号 zz を取得する。]
+			//-----------------
+			int zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+			if( zz < 0 || zz >= 36 * 36 )
 			{
+				Trace.TraceError( "WAVPAN(PAN)のWAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			int index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( index < 0 ) || ( index >= 36 * 36 ) )
+			//-----------------
+			#endregion
+
+			#region [ WAV番号 zz を持つWAVチップの位置を変更する。無限定義対応。]
+			//-----------------
+			int n位置;
+			if( int.TryParse( strパラメータ, out n位置 ) )
 			{
-				Trace.TraceError( "WAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
-				return false;
-			}
-			if( int.TryParse( strパラメータ, out num2 ) )
-			{
-				if( num2 < -100 )
+				n位置 = Math.Min( Math.Max( n位置, -100 ), 100 );	// -100～+100 に丸める
+
+				if( this.n無限管理PAN[ zz ] == ( -10000 - zz ) )	// 初期状態では n無限管理PAN[zz] = -10000 - zz である。この場合、#WAVPANzz, #PANzz がまだ出現していないことを意味する。
 				{
-					num2 = -100;
-				}
-				else if( num2 >= 100 )
-				{
-					num2 = 100;
-				}
-				if( this.n無限管理PAN[ index ] == ( -10000 - index ) )
-				{
-					foreach( CWAV cwav in this.listWAV.Values )
+					foreach( CWAV wav in this.listWAV.Values )	// これまでに出てきたチップのうち、該当する（位置が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
 					{
-						if( cwav.n位置 == ( -10000 - index ) )
-						{
-							cwav.n位置 = num2;
-						}
+						if( wav.n位置 == ( -10000 - zz ) )	// #WAVPANzz, #PANzz 行より前の行に出現した #WAVzz では、位置は -10000-zz に初期化されている。
+							wav.n位置 = n位置;
 					}
 				}
-				this.n無限管理PAN[ index ] = num2;
+				this.n無限管理PAN[ zz ] = n位置;			// 次にこの WAV番号 zz を使うWAVチップが現れたら、この位置が格納されることになる。
 			}
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・WAVVOL_VOLUME( string strコマンド, string strパラメータ, string strコメント )
 		{
-			int num2;
+			// (1) コマンドを処理。
+
+			#region [ "WAVCOL" or "VOLUME" で始まらないコマンドは無効。]
+			//-----------------
 			if( strコマンド.StartsWith( "WAVVOL", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 6 );
-			}
+				strコマンド = strコマンド.Substring( 6 );		// strコマンド から先頭の"WAVVOL"文字を除去。
+
 			else if( strコマンド.StartsWith( "VOLUME", StringComparison.OrdinalIgnoreCase ) )
-			{
-				strコマンド = strコマンド.Substring( 6 );
-			}
+				strコマンド = strコマンド.Substring( 6 );		// strコマンド から先頭の"VOLUME"文字を除去。
+
 			else
-			{
 				return false;
-			}
+			//-----------------
+			#endregion
+
+			// (2) パラメータを処理。
+
 			if( strコマンド.Length < 2 )
+				return false;	// WAV番号 zz がないなら無効。
+
+			#region [ WAV番号 zz を取得する。]
+			//-----------------
+			int zz = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
+			if( zz < 0 || zz >= 36 * 36 )
 			{
+				Trace.TraceError( "WAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
 				return false;
 			}
-			int index = C変換.n36進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 0, 2 ) );
-			if( ( index < 0 ) || ( index >= 36 * 36 ) )
+			//-----------------
+			#endregion
+
+			#region [ WAV番号 zz を持つWAVチップの音量を変更する。無限定義対応。]
+			//-----------------
+			int n音量;
+			if( int.TryParse( strパラメータ, out n音量 ) )
 			{
-				Trace.TraceError( "WAV番号に 00～ZZ 以外の値または不正な文字列が指定されました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
-				return false;
-			}
-			if( int.TryParse( strパラメータ, out num2 ) )
-			{
-				if( num2 < 0 )
+				n音量 = Math.Min( Math.Max( n音量, 0 ), 100 );	// 0～100に丸める。
+
+				if( this.n無限管理VOL[ zz ] == -zz )	// 初期状態では n無限管理VOL[zz] = - zz である。この場合、#WAVVOLzz, #VOLUMEzz がまだ出現していないことを意味する。
 				{
-					num2 = 0;
-				}
-				else if( num2 >= 100 )
-				{
-					num2 = 100;
-				}
-				if( this.n無限管理VOL[ index ] == -index )
-				{
-					foreach( CWAV cwav in this.listWAV.Values )
+					foreach( CWAV wav in this.listWAV.Values )	// これまでに出てきたチップのうち、該当する（音量が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
 					{
-						if( cwav.n音量 == -index )
-						{
-							cwav.n音量 = num2;
-						}
+						if( wav.n音量 == -zz )	// #WAVVOLzz, #VOLUMEzz 行より前の行に出現した #WAVzz では、音量は -zz に初期化されている。
+							wav.n音量 = n音量;
 					}
 				}
-				this.n無限管理VOL[ index ] = num2;
+				this.n無限管理VOL[ zz ] = n音量;			// 次にこの WAV番号 zz を使うWAVチップが現れたら、この音量が格納されることになる。
 			}
+			//-----------------
+			#endregion
+
 			return true;
 		}
 		private bool t入力・行解析・チップ配置( string strコマンド, string strパラメータ, string strコメント )
 		{
-			if( strコマンド.Length != 5 )
-			{
+			// (1) コマンドを処理。
+
+			if( strコマンド.Length != 5 )	// コマンドは必ず5文字であること。
 				return false;
-			}
-			int num = C変換.n小節番号の文字列3桁を数値に変換して返す( strコマンド.Substring( 0, 3 ) );
-			if( num < 0 )
-			{
+
+			#region [ n小節番号 を取得する。]
+			//-----------------
+			int n小節番号 = C変換.n小節番号の文字列3桁を数値に変換して返す( strコマンド.Substring( 0, 3 ) );
+			if( n小節番号 < 0 )
 				return false;
-			}
-			num++;
-			int c = -1;
-			if( ( this.e種別 != E種別.GDA ) && ( this.e種別 != E種別.G2D ) )
+
+			n小節番号++;	// 先頭に空の1小節を設ける。
+			//-----------------
+			#endregion
+
+			#region [ nチャンネル番号 を取得する。]
+			//-----------------
+			int nチャンネル番号 = -1;
+
+			// ファイルフォーマットによって処理が異なる。
+
+			if( this.e種別 == E種別.GDA || this.e種別 == E種別.G2D )
 			{
-				c = C変換.n16進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 3, 2 ) );
-				if( c < 0 )
+				#region [ (A) GDA, G2D の場合：チャンネル文字列をDTXのチャンネル番号へ置き換える。]
+				//-----------------
+				string strチャンネル文字列 = strコマンド.Substring( 3, 2 );
+
+				foreach( STGDAPARAM param in this.stGDAParam )
 				{
-					return false;
+					if( strチャンネル文字列.Equals( param.strGDAのチャンネル文字列, StringComparison.OrdinalIgnoreCase ) )
+					{
+						nチャンネル番号 = param.nDTXのチャンネル番号;
+						break;	// 置き換え成功
+					}
 				}
+				if( nチャンネル番号 < 0 )
+					return false;	// 置き換え失敗
+				//-----------------
+				#endregion
 			}
 			else
 			{
-				string str = strコマンド.Substring( 3, 2 );
-				foreach( STGDAPARAM stgdaparam in this.stGDAParam )
-				{
-					if( str.Equals( stgdaparam.s, StringComparison.OrdinalIgnoreCase ) )
-					{
-						c = stgdaparam.c;
-						break;
-					}
-				}
-				if( c < 0 )
-				{
+				#region [ (B) その他の場合：チャンネル番号は16進数2桁。]
+				//-----------------
+				nチャンネル番号 = C変換.n16進数2桁の文字列を数値に変換して返す( strコマンド.Substring( 3, 2 ) );
+
+				if( nチャンネル番号 < 0 )
 					return false;
-				}
+				//-----------------
+				#endregion
 			}
-			if( ( c >= 0x11 ) && ( c <= 0x1a ) )
+			//-----------------
+			#endregion
+			#region [ 取得したチャンネル番号で、this.bチップがある に該当があれば設定する。]
+			//-----------------
+			if( ( nチャンネル番号 >= 0x11 ) && ( nチャンネル番号 <= 0x1a ) )
 			{
 				this.bチップがある.Drums = true;
 			}
-			else if( ( c >= 0x20 ) && ( c <= 0x27 ) )
+			else if( ( nチャンネル番号 >= 0x20 ) && ( nチャンネル番号 <= 0x27 ) )
 			{
 				this.bチップがある.Guitar = true;
 			}
-			else if( ( c >= 0xA0 ) && ( c <= 0xa7 ) )
+			else if( ( nチャンネル番号 >= 0xA0 ) && ( nチャンネル番号 <= 0xa7 ) )
 			{
 				this.bチップがある.Bass = true;
 			}
-			switch( c )
+			switch( nチャンネル番号 )
 			{
 				case 0x18:
 					this.bチップがある.HHOpen = true;
@@ -4552,104 +5165,167 @@ namespace DTXMania
 				case 0xA0:
 					this.bチップがある.OpenBass = true;
 					break;
+			}
+			//-----------------
+			#endregion
 
-				case 0x02:			// 小節長変更
-					{
-						double result = 0.0;
-						//if( !double.TryParse( strパラメータ, out result ) )
-						if (!TryParse(strパラメータ, out result))			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
-						{
-							Trace.TraceError( "小節長倍率に不正な値を指定しました。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
-							return false;
-						}
-						CChip item = new CChip();
-						item.n発声位置 = num * 384;
-						item.nチャンネル番号 = c;
-						item.db実数値 = result;
-						this.listChip.Add( item );
-						return true;
-					}
-			}
-			if( string.IsNullOrEmpty( strパラメータ ) )
+
+			// (2) Ch.02を処理。
+
+			#region [ 小節長変更(Ch.02)は他のチャンネルとはパラメータが特殊なので、先にとっとと終わらせる。 ]
+			//-----------------
+			if( nチャンネル番号 == 0x02 )
 			{
-				return false;
-			}
-			int num4 = 0;
-			StringBuilder builder = new StringBuilder( strパラメータ.Length );
-			CharEnumerator enumerator = strパラメータ.GetEnumerator();
-			while( enumerator.MoveNext() )
-			{
-				if( enumerator.Current != '_' )
+				// 小節長倍率を取得する。
+
+				double db小節長倍率 = 1.0;
+				//if( !double.TryParse( strパラメータ, out result ) )
+				if( !this.TryParse( strパラメータ, out db小節長倍率 ) )			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
 				{
-					if( "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".IndexOf( enumerator.Current ) < 0 )
-					{
-						Trace.TraceError( "不正なオブジェクト指定があります。[{0}: {1}行]", new object[] { this.strファイル名の絶対パス, this.n現在の行数 } );
-						return false;
-					}
-					builder.Append( enumerator.Current );
-					num4++;
+					Trace.TraceError( "小節長倍率に不正な値を指定しました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
+					return false;
 				}
+
+				// 小節長倍率チップを配置する。
+
+				this.listChip.Add(
+					new CChip() {
+						nチャンネル番号 = nチャンネル番号,
+						db実数値 = db小節長倍率,
+						n発声位置 = n小節番号 * 384,
+					} );
+
+				return true;	// 配置終了。
 			}
-			strパラメータ = builder.ToString();
-			if( ( num4 % 2 ) != 0 )
+			//-----------------
+			#endregion
+
+
+			// (3) パラメータを処理。
+
+			if( string.IsNullOrEmpty( strパラメータ ) )		// パラメータはnullまたは空文字列ではないこと。
+				return false;
+
+			#region [ strパラメータ にオブジェクト記述を格納し、その n文字数 をカウントする。]
+			//-----------------
+			int n文字数 = 0;
+
+			var sb = new StringBuilder( strパラメータ.Length );
+
+			// strパラメータを先頭から1文字ずつ見ながら正規化（無効文字('_')を飛ばしたり不正な文字でエラーを出したり）し、sb へ格納する。
+
+			CharEnumerator ce = strパラメータ.GetEnumerator();
+			while( ce.MoveNext() )
 			{
-				num4--;
-			}
-			for( int i = 0; i < ( num4 / 2 ); i++ )
-			{
-				int index = 0;
-				if( c == 3 )
+				if( ce.Current == '_' )		// '_' は無視。
+					continue;
+
+				if( C変換.str36進数文字.IndexOf( ce.Current ) < 0 )	// オブジェクト記述は36進数文字であること。
 				{
-					index = C変換.n16進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( i * 2, 2 ) );
+					Trace.TraceError( "不正なオブジェクト指定があります。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
+					return false;
+				}
+
+				sb.Append( ce.Current );
+				n文字数++;
+			}
+
+			strパラメータ = sb.ToString();	// 正規化された文字列になりました。
+
+			if( ( n文字数 % 2 ) != 0 )		// パラメータの文字数が奇数の場合、最後の1文字を無視する。
+				n文字数--;
+			//-----------------
+			#endregion
+
+
+			// (4) パラメータをオブジェクト数値に分解して配置する。
+
+			for( int i = 0; i < ( n文字数 / 2 ); i++ )	// 2文字で1オブジェクト数値
+			{
+				#region [ nオブジェクト数値 を１つ取得する。'00' なら無視。]
+				//-----------------
+				int nオブジェクト数値 = 0;
+
+				if( nチャンネル番号 == 0x03 )
+				{
+					// Ch.03 のみ 16進数2桁。
+					nオブジェクト数値 = C変換.n16進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( i * 2, 2 ) );
 				}
 				else
 				{
-					index = C変換.n36進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( i * 2, 2 ) );
+					// その他のチャンネルは36進数2桁。
+					nオブジェクト数値 = C変換.n36進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( i * 2, 2 ) );
 				}
-				if( index != 0 )
+
+				if( nオブジェクト数値 == 0x00 )
+					continue;
+				//-----------------
+				#endregion
+
+				// オブジェクト数値に対応するチップを生成。
+
+				var chip = new CChip();
+
+				chip.nチャンネル番号 = nチャンネル番号;
+				chip.n発声位置 = ( n小節番号 * 384 ) + ( ( 384 * i ) / ( n文字数 / 2 ) );
+				chip.n整数値 = nオブジェクト数値;
+				chip.n整数値・内部番号 = nオブジェクト数値;
+
+				#region [ chip.e楽器パート = ... ]
+				//-----------------
+				if( ( nチャンネル番号 >= 0x11 ) && ( nチャンネル番号 <= 0x1A ) )
 				{
-					CChip chip2 = new CChip();
-					chip2.n発声位置 = ( num * 384 ) + ( ( 384 * i ) / ( num4 / 2 ) );
-					chip2.nチャンネル番号 = c;
-					chip2.n整数値 = index;
-					chip2.n整数値・内部番号 = index;
-					if( ( c >= 0x11 ) && ( c <= 0x1a ) )
-					{
-						chip2.e楽器パート = E楽器パート.DRUMS;
-					}
-					if( ( c >= 0x20 ) && ( c <= 0x27 ) )
-					{
-						chip2.e楽器パート = E楽器パート.GUITAR;
-					}
-					if( ( c >= 160 ) && ( c <= 0xa7 ) )
-					{
-						chip2.e楽器パート = E楽器パート.BASS;
-					}
-					if( chip2.bWAVを使うチャンネルである )
-					{
-						chip2.n整数値・内部番号 = this.n無限管理WAV[ index ];
-					}
-					else if( chip2.bBPMチップである )
-					{
-						chip2.n整数値・内部番号 = this.n無限管理BPM[ index ];
-					}
-					if( c == 0x53 )
-					{
-						if( ( index > 0 ) && ( index != 2 ) )
-						{
-							chip2.n発声位置 -= 0x20;
-						}
-						else if( index == 2 )
-						{
-							chip2.n発声位置 += 0x20;
-						}
-					}
-					this.listChip.Add( chip2 );
+					chip.e楽器パート = E楽器パート.DRUMS;
 				}
+				if( ( nチャンネル番号 >= 0x20 ) && ( nチャンネル番号 <= 0x27 ) )
+				{
+					chip.e楽器パート = E楽器パート.GUITAR;
+				}
+				if( ( nチャンネル番号 >= 160 ) && ( nチャンネル番号 <= 0xA7 ) )
+				{
+					chip.e楽器パート = E楽器パート.BASS;
+				}
+				//-----------------
+				#endregion
+
+				#region [ 無限定義への対応 → 内部番号の取得。]
+				//-----------------
+				if( chip.bWAVを使うチャンネルである )
+				{
+					chip.n整数値・内部番号 = this.n無限管理WAV[ nオブジェクト数値 ];	// これが本当に一意なWAV番号となる。（無限定義の場合、chip.n整数値 は一意である保証がない。）
+				}
+				else if( chip.bBPMチップである )
+				{
+					chip.n整数値・内部番号 = this.n無限管理BPM[ nオブジェクト数値 ];	// これが本当に一意なBPM番号となる。（同上。）
+				}
+				//-----------------
+				#endregion
+
+				#region [ フィルインON/OFFチャンネル(Ch.53)の場合、発声位置を少し前後にずらす。]
+				//-----------------
+				if( nチャンネル番号 == 0x53 )
+				{
+					// ずらすのは、フィルインONチップと同じ位置にいるチップでも確実にフィルインが発動し、
+					// 同様に、フィルインOFFチップと同じ位置にいるチップでも確実にフィルインが終了するようにするため。
+
+					if( ( nオブジェクト数値 > 0 ) && ( nオブジェクト数値 != 2 ) )
+					{
+						chip.n発声位置 -= 32;	// 384÷32＝12 ということで、フィルインONチップは12分音符ほど前へ移動。
+					}
+					else if( nオブジェクト数値 == 2 )
+					{
+						chip.n発声位置 += 32;	// 同じく、フィルインOFFチップは12分音符ほど後ろへ移動。
+					}
+				}
+				//-----------------
+				#endregion
+
+				// チップを配置。
+
+				this.listChip.Add( chip );
 			}
 			return true;
 		}
-
 		#region [#23880 2010.12.30 yyagi: コンマとスペースの両方を小数点として扱うTryParse]
 		/// <summary>
 		/// 小数点としてコンマとピリオドの両方を受け付けるTryParse()

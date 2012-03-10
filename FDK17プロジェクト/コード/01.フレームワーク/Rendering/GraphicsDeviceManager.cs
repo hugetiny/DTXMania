@@ -346,8 +346,8 @@ namespace SampleFramework
                         newSettings.BackBufferHeight = 0;
                         if (newSettings.Direct3D9 != null)
                         {
-							newSettings.Direct3D9.PresentParameters.BackBufferWidth = 640;	// #23510 2010.10.31 add yyagi: to avoid setting BackBufferSize=ClientSize
-							newSettings.Direct3D9.PresentParameters.BackBufferHeight = 480;	// #23510 2010.10.31 add yyagi: to avoid setting BackBufferSize=ClientSize
+							newSettings.Direct3D9.PresentParameters.BackBufferWidth = GameWindowSize.Width;	// #23510 2010.10.31 add yyagi: to avoid setting BackBufferSize=ClientSize
+							newSettings.Direct3D9.PresentParameters.BackBufferHeight = GameWindowSize.Height;	// #23510 2010.10.31 add yyagi: to avoid setting BackBufferSize=ClientSize
                         }
 
                         CreateDevice(newSettings);
@@ -380,8 +380,8 @@ namespace SampleFramework
 			{
 				newSettings.BackBufferWidth = 0;
 				newSettings.BackBufferHeight = 0;
-				newSettings.Direct3D9.PresentParameters.BackBufferWidth = 640;		// #23510 2010.10.31 add yyagi: to avoid setting BackBufferSize=ClientSize
-				newSettings.Direct3D9.PresentParameters.BackBufferHeight = 480;		// 
+				newSettings.Direct3D9.PresentParameters.BackBufferWidth = GameWindowSize.Width;		// #23510 2010.10.31 add yyagi: to avoid setting BackBufferSize=ClientSize
+				newSettings.Direct3D9.PresentParameters.BackBufferHeight = GameWindowSize.Height;	// 
 				CreateDevice( newSettings );
 			}
 		}
@@ -400,8 +400,8 @@ namespace SampleFramework
 
 			newSettings.BackBufferWidth = 0;								// #23510 2010.11.1 add yyagi to avoid to reset to 640x480 for the first time in XP.
 			newSettings.BackBufferHeight = 0;								//
-			newSettings.Direct3D9.PresentParameters.BackBufferWidth = 640;	//
-			newSettings.Direct3D9.PresentParameters.BackBufferHeight = 480;	//
+			newSettings.Direct3D9.PresentParameters.BackBufferWidth = GameWindowSize.Width;		//
+			newSettings.Direct3D9.PresentParameters.BackBufferHeight = GameWindowSize.Height;	//
 
 			CreateDevice(newSettings);
 		}

@@ -46,6 +46,7 @@ namespace DirectInput
 	{
 		JoystickState^ result = gcnew JoystickState();
 		result->timeStamp = objectData.dwTimeStamp;
+		result->dwOfs = objectData.dwOfs;
 
 		switch( objectData.dwOfs )
 		{

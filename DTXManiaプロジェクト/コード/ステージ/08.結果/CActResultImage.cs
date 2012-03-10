@@ -121,7 +121,7 @@ namespace DTXMania
 			else
 			{
 				double num3 = ( (double) this.ct登場用.n現在の値 ) / 100.0;
-				double num4 = Math.Cos( ( 1.5 + ( 0.5 * num3 ) ) * 3.1415926535897931 );
+				double num4 = Math.Cos( ( 1.5 + ( 0.5 * num3 ) ) * Math.PI );
 				this.n本体X = 4;
 				this.n本体Y = 0x3f - ( (int) ( ( ( this.txパネル本体 != null ) ? ( (double) this.txパネル本体.sz画像サイズ.Height ) : ( (double) 0 ) ) * ( 1.0 - ( num4 * num4 ) ) ) );
 			}
@@ -243,12 +243,12 @@ namespace DTXMania
 			try
 			{
 				image = new Bitmap( bACKGROUND );
-				bitmap2 = new Bitmap( 640, 480 );
+				bitmap2 = new Bitmap(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
 				Graphics graphics = Graphics.FromImage( bitmap2 );
 				int x = 0;
-				for( int i = 0; i < 480; i += image.Height )
+				for (int i = 0; i < SampleFramework.GameWindowSize.Height; i += image.Height)
 				{
-					for( x = 0; x < 640; x += image.Width )
+					for (x = 0; x < SampleFramework.GameWindowSize.Width; x += image.Width)
 					{
 						graphics.DrawImage( image, x, i, image.Width, image.Height );
 					}

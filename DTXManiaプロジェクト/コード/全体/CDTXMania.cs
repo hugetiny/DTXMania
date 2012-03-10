@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Threading;
+using System.Runtime.Serialization.Formatters.Binary;
 using SlimDX;
 using SlimDX.Direct3D9;
 using FDK;
@@ -19,8 +20,8 @@ namespace DTXMania
 	{
 		// プロパティ
 
-		public static readonly string VERSION = "090(110401) w/ #23624";
-//		public static readonly string VERSION = "086(101120)";
+
+		public static readonly string VERSION = "092(12xxxx)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
         //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -154,8 +155,19 @@ namespace DTXMania
 		public static CSongs管理 Songs管理 
 		{
 			get;
+			set;	// 2012.1.26 yyagi private解除 CStage起動でのdesirialize読み込みのため
+		}
+		public static CEnumSongs EnumSongs
+		{
+			get;
 			private set;
 		}
+		public static CActEnumSongs actEnumSongs
+		{
+			get;
+			private set;
+		}
+
 		public static CSound管理 Sound管理
 		{
 			get; 
@@ -171,11 +183,11 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		public static CStageオプション stageオプション
-		{ 
-			get;
-			private set;
-		}
+//		public static CStageオプション stageオプション
+//		{ 
+//			get;
+//			private set;
+//		}
 		public static CStageコンフィグ stageコンフィグ 
 		{ 
 			get; 
@@ -268,6 +280,7 @@ namespace DTXMania
 			set;
 		}
 
+
 		// コンストラクタ
 
 		public CDTXMania()
@@ -333,6 +346,7 @@ namespace DTXMania
 
 		protected override void Initialize()
 		{
+//			new GCBeep();
 			if( this.listトップレベルActivities != null )
 			{
 				foreach( CActivity activity in this.listトップレベルActivities )
@@ -361,9 +375,9 @@ namespace DTXMania
 				Cursor.Hide();
 				this.bマウスカーソル表示中 = false;
 			}
-			this.Device.SetTransform( TransformState.View, Matrix.LookAtLH( new Vector3( 0f, 0f, (float) ( -240.0 * Math.Sqrt( 3.0 ) ) ), new Vector3( 0f, 0f, 0f ), new Vector3( 0f, 1f, 0f ) ) );
-			this.Device.SetTransform( TransformState.Projection, Matrix.PerspectiveFovLH( C変換.DegreeToRadian( (float) 60f ), ( (float) this.Device.Viewport.Width ) / ( (float) this.Device.Viewport.Height ), -100f, 100f ) );
-			this.Device.SetRenderState( RenderState.Lighting, false );
+			this.Device.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f, 0f, (float)(-SampleFramework.GameWindowSize.Height / 2 * Math.Sqrt(3.0))), new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f)));
+			this.Device.SetTransform(TransformState.Projection, Matrix.PerspectiveFovLH(C変換.DegreeToRadian((float)60f), ((float)this.Device.Viewport.Width) / ((float)this.Device.Viewport.Height), -100f, 100f));
+			this.Device.SetRenderState(RenderState.Lighting, false);
 			this.Device.SetRenderState( RenderState.ZEnable, false );
 			this.Device.SetRenderState( RenderState.AntialiasedLineEnable, false );
 			this.Device.SetRenderState( RenderState.AlphaTestEnable, true );
@@ -458,9 +472,85 @@ namespace DTXMania
 				//---------------------
 				#endregion
 
+
 				CScoreIni scoreIni = null;
 
-				switch( r現在のステージ.eステージID )
+				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
+				actEnumSongs.On進行描画();								// "Enumerating Songs..."アイコンの描画
+				switch ( r現在のステージ.eステージID )
+				{
+					case CStage.Eステージ.タイトル:
+					case CStage.Eステージ.コンフィグ:
+					case CStage.Eステージ.選曲:
+					case CStage.Eステージ.曲読み込み:
+						if ( EnumSongs != null )
+						{
+							#region [ (特定条件時) 曲検索スレッドの起動・開始 ]
+							if ( r現在のステージ.eステージID == CStage.Eステージ.タイトル &&
+								 r直前のステージ.eステージID == CStage.Eステージ.起動 &&
+								 this.n進行描画の戻り値 == (int) CStageタイトル.E戻り値.継続 &&
+								 !EnumSongs.IsSongListEnumStarted )
+							{
+								actEnumSongs.On活性化();
+								CDTXMania.stage選曲.bIsEnumeratingSongs = true;
+								EnumSongs.Init( CDTXMania.Songs管理.listSongsDB, CDTXMania.Songs管理.nSongsDBから取得できたスコア数 );	// songs.db情報と、取得した曲数を、新インスタンスにも与える
+								EnumSongs.StartEnumFromDisk();		// 曲検索スレッドの起動・開始
+							}
+							#endregion
+							
+							#region [ 曲検索の中断と再開 ]
+							if ( r現在のステージ.eステージID == CStage.Eステージ.選曲 && !EnumSongs.IsSongListEnumCompletelyDone )
+							{
+								switch ( this.n進行描画の戻り値 )
+								{
+									case 0:		// 何もない
+										//if ( CDTXMania.stage選曲.bIsEnumeratingSongs )
+										if ( !CDTXMania.stage選曲.bIsPlayingPremovie )
+										{
+											EnumSongs.Resume();						// #27060 2012.2.6 yyagi 中止していたバックグランド曲検索を再開
+											EnumSongs.IsSlowdown = false;
+										}
+										else
+										{
+											// EnumSongs.Suspend();					// #27060 2012.3.2 yyagi #PREMOVIE再生中は曲検索を低速化
+											EnumSongs.IsSlowdown = true;
+										}
+										actEnumSongs.On活性化();
+										break;
+
+									case 2:		// 曲決定
+										EnumSongs.Suspend();						// #27060 バックグラウンドの曲検索を一時停止
+										actEnumSongs.On非活性化();
+										break;
+								}
+							}
+							#endregion
+
+							#region [ 曲探索中断待ち待機 ]
+							if ( r現在のステージ.eステージID == CStage.Eステージ.曲読み込み && !EnumSongs.IsSongListEnumCompletelyDone )
+							{
+								EnumSongs.WaitUntilSuspended();									// 念のため、曲検索が一時中断されるまで待機
+							}
+							#endregion
+
+							#region [ 曲検索が完了したら、実際の曲リストに反映する ]
+							// CStage選曲.On活性化() に回した方がいいかな？
+							if ( EnumSongs.IsSongListEnumerated )
+							{
+								actEnumSongs.On非活性化();
+								CDTXMania.stage選曲.bIsEnumeratingSongs = false;
+
+								bool bRemakeSongTitleBar = ( r現在のステージ.eステージID == CStage.Eステージ.選曲 ) ? true : false;
+								CDTXMania.stage選曲.Refresh( EnumSongs.Songs管理, bRemakeSongTitleBar );
+								EnumSongs.SongListEnumCompletelyDone();
+							}
+							#endregion
+						}
+						break;
+				}
+				#endregion
+
+				switch ( r現在のステージ.eステージID )
 				{
 					case CStage.Eステージ.何もしない:
 						break;
@@ -520,6 +610,7 @@ namespace DTXMania
 								#endregion
 								break;
 
+							#region [ OPTION: 廃止済 ]
 //							case 2:									// #24525 OPTIONとCONFIGの統合に伴い、OPTIONは廃止
 //								#region [ *** ]
 //								//-----------------------------
@@ -531,7 +622,8 @@ namespace DTXMania
 //								r現在のステージ = stageオプション;
 //								//-----------------------------
 //								#endregion
-//								break;
+							//								break;
+							#endregion
 
 							case (int)CStageタイトル.E戻り値.CONFIG:
 								#region [ *** ]
@@ -894,7 +986,7 @@ for (int i = 0; i < 3; i++) {
 									this.tガベージコレクションを実行する();
 								}
 								break;
-							//-----------------------------
+								//-----------------------------
 								#endregion
 
 							case 2:
@@ -942,7 +1034,7 @@ for (int i = 0; i < 3; i++) {
 									this.tガベージコレクションを実行する();
 								}
 								break;
-							//-----------------------------
+								//-----------------------------
 								#endregion
 
 							case 3:
@@ -971,38 +1063,52 @@ for (int i = 0; i < 3; i++) {
 																					// これを戻すのは、リザルト集計後。
 								}													// "case CStage.Eステージ.結果:"のところ。
 
+								double ps = 0.0, gs = 0.0;
+								if ( !c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0) {
+									ps = c演奏記録_Drums.db演奏型スキル値;
+									gs = c演奏記録_Drums.dbゲーム型スキル値;
+								}
+								else if ( !c演奏記録_Guitar.b全AUTOである && c演奏記録_Guitar.n全チップ数 > 0) {
+									ps = c演奏記録_Guitar.db演奏型スキル値;
+									gs = c演奏記録_Guitar.dbゲーム型スキル値;
+								}
+								else
+								{
+									ps = c演奏記録_Bass.db演奏型スキル値;
+									gs = c演奏記録_Bass.dbゲーム型スキル値;
+								}
 								str = "Cleared";
 								switch( CScoreIni.t総合ランク値を計算して返す( c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass ) )
 								{
-									case 0:
-										str = "Cleared (Rank:SS)";
+									case (int)CScoreIni.ERANK.SS:
+										str = string.Format( "Cleared (SS: {0:F2})", ps );
 										break;
 
-									case 1:
-										str = "Cleared (Rank:S)";
+									case (int) CScoreIni.ERANK.S:
+										str = string.Format( "Cleared (S: {0:F2})", ps );
 										break;
 
-									case 2:
-										str = "Cleared (Rank:A)";
+									case (int) CScoreIni.ERANK.A:
+										str = string.Format( "Cleared (A: {0:F2})", ps );
 										break;
 
-									case 3:
-										str = "Cleared (Rank:B)";
+									case (int) CScoreIni.ERANK.B:
+										str = string.Format( "Cleared (B: {0:F2})", ps );
 										break;
 
-									case 4:
-										str = "Cleared (Rank:C)";
+									case (int) CScoreIni.ERANK.C:
+										str = string.Format( "Cleared (C: {0:F2})", ps );
 										break;
 
-									case 5:
-										str = "Cleared (Rank:D)";
+									case (int) CScoreIni.ERANK.D:
+										str = string.Format( "Cleared (D: {0:F2})", ps );
 										break;
 
-									case 6:
-										str = "Cleared (Rank:E)";
+									case (int) CScoreIni.ERANK.E:
+										str = string.Format( "Cleared (E: {0:F2})", ps );
 										break;
 
-									case 99:	// #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
+									case (int)CScoreIni.ERANK.UNKNOWN:	// #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
 										str = "Cleared (No chips)";
 										break;
 								}
@@ -1043,7 +1149,7 @@ for (int i = 0; i < 3; i++) {
 								#endregion
 
 								break;
-							//-----------------------------
+								//-----------------------------
 								#endregion
 						}
 						//-----------------------------
@@ -1127,12 +1233,18 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 			#endregion
+			#region [ スリープ ]
+			if ( ConfigIni.nフレーム毎スリープms >= 0 )			// #xxxxx 2011.11.27 yyagi
+			{
+				Thread.Sleep( ConfigIni.nフレーム毎スリープms );
+			}
+			#endregion
 		}
 
 
 		// その他
 
-		#region [ テクスチャの生成・解放のためのヘルパー ]
+		#region [ 汎用ヘルパー ]
 		//-----------------
 		public static CTexture tテクスチャの生成( string fileName )
 		{
@@ -1156,11 +1268,21 @@ for (int i = 0; i < 3; i++) {
 		}
 		public static void tテクスチャの解放( ref CTexture tx )
 		{
-			if( tx != null )
-			{
-				tx.Dispose();
-				tx = null;
-			}
+			CDTXMania.t安全にDisposeする( ref tx );
+		}
+		
+		/// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
+		public static void t安全にDisposeする<T>( ref T obj )
+		{
+			if( obj == null )
+				return;
+
+			var d = obj as IDisposable;
+
+			if( d != null )
+				d.Dispose();
+
+			obj = default( T );
 		}
 		//-----------------
 		#endregion
@@ -1172,6 +1294,7 @@ for (int i = 0; i < 3; i++) {
 		private static CDTX dtx;
 		private List<CActivity> listトップレベルActivities;
 		private int n進行描画の戻り値;
+		private MouseButtons mb = System.Windows.Forms.MouseButtons.Left;
 
 		private void t起動処理()
 		{
@@ -1262,19 +1385,24 @@ for (int i = 0; i < 3; i++) {
 			base.Window.ShowIcon = true;
 			base.Window.Icon = Properties.Resources.dtx;
 			base.Window.KeyDown += new KeyEventHandler( this.Window_KeyDown );
+			base.Window.MouseUp +=new MouseEventHandler( this.Window_MouseUp);
 			base.Window.MouseDoubleClick += new MouseEventHandler(this.Window_MouseDoubleClick);	// #23510 2010.11.13 yyagi: to go fullscreen mode
 			base.Window.ResizeEnd += new EventHandler(this.Window_ResizeEnd);						// #23510 2010.11.20 yyagi: to set resized window size in Config.ini
 			base.Window.ApplicationActivated += new EventHandler(this.Window_ApplicationActivated);
 			base.Window.ApplicationDeactivated += new EventHandler( this.Window_ApplicationDeactivated );
 			//---------------------
 			#endregion
+			#region [ Direct3D9Exを使うかどうか判定 ]
+			#endregion
 			#region [ Direct3D9 デバイスの生成 ]
 			//---------------------
 			DeviceSettings settings = new DeviceSettings();
 			settings.Windowed = ConfigIni.bウィンドウモード;
-			settings.BackBufferWidth = 640;
-			settings.BackBufferHeight = 480;
+			settings.BackBufferWidth = SampleFramework.GameWindowSize.Width;
+			settings.BackBufferHeight = SampleFramework.GameWindowSize.Height;
+//			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
+
 			try
 			{
 				base.GraphicsDeviceManager.ChangeDevice(settings);
@@ -1282,7 +1410,7 @@ for (int i = 0; i < 3; i++) {
 			catch (DeviceCreationException e)
 			{
 				Trace.TraceError(e.ToString());
-				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Initialize Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(-1);
 			}
 
@@ -1464,11 +1592,14 @@ for (int i = 0; i < 3; i++) {
 			try
 			{
 				Songs管理 = new CSongs管理();
+//				Songs管理_裏読 = new CSongs管理();
+				EnumSongs = new CEnumSongs();
+				actEnumSongs = new CActEnumSongs();
 				Trace.TraceInformation( "曲リストの初期化を完了しました。" );
 			}
-			catch( Exception exception4 )
+			catch( Exception e )
 			{
-				Trace.TraceError( exception4.Message );
+				Trace.TraceError( e.Message );
 				Trace.TraceError( "曲リストの初期化に失敗しました。" );
 			}
 			finally
@@ -1493,7 +1624,7 @@ for (int i = 0; i < 3; i++) {
 			r直前のステージ = null;
 			stage起動 = new CStage起動();
 			stageタイトル = new CStageタイトル();
-			stageオプション = new CStageオプション();
+//			stageオプション = new CStageオプション();
 			stageコンフィグ = new CStageコンフィグ();
 			stage選曲 = new CStage選曲();
 			stage曲読み込み = new CStage曲読み込み();
@@ -1502,10 +1633,11 @@ for (int i = 0; i < 3; i++) {
 			stage結果 = new CStage結果();
 			stage終了 = new CStage終了();
 			this.listトップレベルActivities = new List<CActivity>();
+			this.listトップレベルActivities.Add( actEnumSongs );
 			this.listトップレベルActivities.Add( act文字コンソール );
 			this.listトップレベルActivities.Add( stage起動 );
 			this.listトップレベルActivities.Add( stageタイトル );
-			this.listトップレベルActivities.Add( stageオプション );
+//			this.listトップレベルActivities.Add( stageオプション );
 			this.listトップレベルActivities.Add( stageコンフィグ );
 			this.listトップレベルActivities.Add( stage選曲 );
 			this.listトップレベルActivities.Add( stage曲読み込み );
@@ -1576,15 +1708,40 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			#endregion
 		}
+
 		private void t終了処理()
 		{
 			if( !this.b終了処理完了済み )
 			{
 				Trace.TraceInformation( "----------------------" );
 				Trace.TraceInformation( "■ アプリケーションの終了" );
+				#region [ 曲検索の終了処理 ]
+				//---------------------
+				if ( actEnumSongs != null )
+				{
+					Trace.TraceInformation( "曲検索actの終了処理を行います。" );
+					Trace.Indent();
+					try
+					{
+						actEnumSongs.On非活性化();
+						actEnumSongs= null;
+						Trace.TraceInformation( "曲検索actの終了処理を完了しました。" );
+					}
+					catch ( Exception e )
+					{
+						Trace.TraceError( e.Message );
+						Trace.TraceError( "曲検索actの終了処理に失敗しました。" );
+					}
+					finally
+					{
+						Trace.Unindent();
+					}
+				}
+				//---------------------
+				#endregion
 				#region [ 現在のステージの終了処理 ]
 				//---------------------
-				if (r現在のステージ != null)
+				if( CDTXMania.r現在のステージ != null && CDTXMania.r現在のステージ.b活性化してる )		// #25398 2011.06.07 MODIFY FROM
 				{
 					Trace.TraceInformation( "現在のステージを終了します。" );
 					Trace.Indent();
@@ -1871,7 +2028,8 @@ for (int i = 0; i < 3; i++) {
 			{
 				for ( int i = 0; i < 0x10; i++ )
 				{
-					if ( e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
+					if ( ConfigIni.KeyAssign.System.Capture[ i ].コード > 0 &&
+						 e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
 					{
 // Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
 						string strFullPath =
@@ -2004,16 +2162,41 @@ for (int i = 0; i < 3; i++) {
 				this.t指定フォルダ内でのプラグイン検索と生成( dir + "\\", strプラグイン型名 );
 		}
 		//-----------------
+		private void Window_MouseUp( object sender, MouseEventArgs e )
+		{
+			mb = e.Button;
+		}
+
 		private void Window_MouseDoubleClick( object sender, MouseEventArgs e)	// #23510 2010.11.13 yyagi: to go full screen mode
 		{
-			ConfigIni.bウィンドウモード = false;
-			this.t全画面・ウィンドウモード切り替え();
+			if ( mb.Equals(MouseButtons.Left) && ConfigIni.bIsAllowedDoubleClickFullscreen )	// #26752 2011.11.27 yyagi
+			{
+				ConfigIni.bウィンドウモード = false;
+				this.t全画面・ウィンドウモード切り替え();
+			}
 		}
 		private void Window_ResizeEnd(object sender, EventArgs e)				// #23510 2010.11.20 yyagi: to get resized window size
 		{
 			ConfigIni.nウインドウwidth = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
 			ConfigIni.nウインドウheight = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Height : currentClientSize.Height;
 		}
+
+		//internal sealed class GCBeep	// GC発生の度にbeep
+		//{
+		//    ~GCBeep()
+		//    {
+		//        Console.Beep();
+		//        if ( !AppDomain.CurrentDomain.IsFinalizingForUnload()
+		//            && !Environment.HasShutdownStarted )
+		//        {
+		//            new GCBeep();
+		//        }
+		//    }
+		//}
+
+	
+		
+		//-----------------
 		#endregion
 	}
 }

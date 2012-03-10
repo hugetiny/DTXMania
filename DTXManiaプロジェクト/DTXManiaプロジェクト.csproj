@@ -39,7 +39,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;TEST_SHOWLAG_ TEST_ENGLISH_ TEST_Direct3D9Ex_</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEST_ENGLISH_ TEST_Direct3D9Ex_</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -57,7 +57,8 @@
     <NoWarn>0219</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, PublicKeyToken=53d0e4ef1f1579f5, processorArchitecture=x86">
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\実行時フォルダ\SlimDXc_net20x86_Jun2010.dll</HintPath>
     </Reference>
@@ -99,13 +100,13 @@
     <Compile Include="コード\スコア、曲\CDTX.cs" />
     <Compile Include="コード\スコア、曲\CScoreIni.cs" />
     <Compile Include="コード\スコア、曲\CSetDef.cs" />
+    <Compile Include="コード\ステージ\02.タイトル\CEnumSongs.cs" />
     <Compile Include="コード\スコア、曲\CSong管理.cs" />
     <Compile Include="コード\スコア、曲\Cスコア.cs" />
     <Compile Include="コード\スコア、曲\C曲リストノード.cs" />
     <Compile Include="コード\ステージ\01.起動\CStage起動.cs" />
+    <Compile Include="コード\ステージ\02.タイトル\CActEnumSongs.cs" />
     <Compile Include="コード\ステージ\02.タイトル\CStageタイトル.cs" />
-    <Compile Include="コード\ステージ\03.オプション\CActOptionList.cs" />
-    <Compile Include="コード\ステージ\03.オプション\CStageオプション.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CActConfigKeyAssign.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CActConfigList.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CStageコンフィグ.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="コード\ステージ\CActDFPFont.cs" />
     <Compile Include="コード\ステージ\CActFIFOBlack.cs" />
     <Compile Include="コード\ステージ\CActFIFOWhite.cs" />
+    <Compile Include="コード\ステージ\CActLVLNFont.cs" />
     <Compile Include="コード\ステージ\CActオプションパネル.cs" />
     <Compile Include="コード\ステージ\CStage.cs" />
     <Compile Include="コード\プラグイン\CPluginHost.cs" />

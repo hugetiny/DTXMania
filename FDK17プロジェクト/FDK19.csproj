@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="コード\01.フレームワーク\Core\GameWindowSize.cs" />
     <Compile Include="コード\01.フレームワーク\Core\Game.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameClock.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameTime.cs" />

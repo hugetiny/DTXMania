@@ -54,7 +54,7 @@ namespace DTXMania
 		
 		// メソッド
 
-		public void Start( Eドラムレーン lane, float f強弱度合い )
+		public void Start( Eレーン lane, float f強弱度合い )
 		{
 			int num = (int) ( ( 1f - f強弱度合い ) * 55f );
 			this.ct進行[ (int) lane ] = new CCounter( num, 100, 4, CDTXMania.Timer );

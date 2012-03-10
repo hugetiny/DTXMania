@@ -10,17 +10,33 @@ using SlimDX.Multimedia;
 
 namespace FDK
 {
-	public class CSound : IDisposable
+	public class CSound : IDisposable, ICloneable
 	{
 		// (1) 以下は全子クラスに共通
 
 
 		// プロパティ
 
-		public SecondarySoundBuffer Buffer
+		private SlimDX.DirectSound.DirectSound Device;
+		public void setDevice( ref DirectSound Device_ )
 		{
-			get;
-			private set;
+			Device = Device_;
+		}
+		public DirectSound getDevice()
+		{
+			return Device;
+		}
+
+		public SoundBuffer Buffer
+		{
+			get
+			{
+				return _Buffer;
+			}
+			private set
+			{
+				_Buffer = value;
+			}
 		}
 		public bool bストリーム再生する
 		{
@@ -191,7 +207,8 @@ namespace FDK
 		{
 			get
 			{
-				return (int) ( ( (double) this.GetTotalPCMSize( this.nHandle ) ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
+				return (int) ( ( (double) this.nTotalPCMSize ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
+//				return (int) ( ( (double) this.GetTotalPCMSize( this.nHandle ) ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
 			}
 		}
 		public string strファイル名
@@ -211,6 +228,15 @@ namespace FDK
 
 		// メソッド
 
+		public object Clone()
+		{
+			CSound clone = (CSound) MemberwiseClone();	// これだけだとCY連打が途切れる＆タイトルに戻る際にNullRef例外発生
+
+			Device.DuplicateSoundBuffer( this._Buffer, out clone._Buffer );
+
+			return clone;
+		}
+
 		public int tデコード後のサイズを調べる( string strファイル名, out int _nHandle )
 		{
 //Trace.TraceInformation("tデコード後のサイズを調べる、を開始。");
@@ -226,27 +252,33 @@ namespace FDK
 			fi = null;
 			#endregion
 
-			int nHandle = this.Open(strファイル名);
+//			Trace.TraceInformation( "Open(): Enter." );
+			int nHandle = this.Open( strファイル名 );
 			if( nHandle < 0 )
 			{
 				return -1;
 			}
+//			Trace.TraceInformation( "Open(): Exit." );
 //Trace.TraceInformation("this.Open()完了。");
 			CWin32.WAVEFORMATEX wfx = new CWin32.WAVEFORMATEX();
-			if (this.GetFormat(nHandle, ref wfx) < 0)
+//			Trace.TraceInformation( "GetFormat(): Enter." );
+			if ( this.GetFormat( nHandle, ref wfx ) < 0 )
 			{
 				this.Close( nHandle );
 				return -2;
 			}
-			uint totalPCMSize = this.GetTotalPCMSize(nHandle);
-			if (totalPCMSize == 0)
+//			Trace.TraceInformation( "GetFormat(): Exit." );
+//			Trace.TraceInformation( "GetTotalPCMSize(): Enter." );
+			this.nTotalPCMSize = this.GetTotalPCMSize(nHandle);		// 2012.3.9 yyagi GetTotalPCMSize()の結果をthis.nTotalPCMSizeに保持するよう修正。オンメモリ再生時はnHandleが解放され、#SOUND_NOWLOADINGの再生終了待ちが(再生時間ゼロで扱われてしまって)うまく動かなくなる。
+			if (this.nTotalPCMSize == 0)
 			{
 				this.Close( nHandle );
 				return -3;
 			}
+//			Trace.TraceInformation( "GetTotalPCMSize(): Exit." );
 			//this.Close( nHandle );	// 2011.1.2 yyagi ここでClose()しないで、次のオンメモリ/ストリーム読み出しの時に再利用して読み込みを高速化
 			_nHandle = nHandle;
-			return (int) totalPCMSize;
+			return (int) this.nTotalPCMSize;
 		}
 		public void tオンメモリ方式で作成する( SlimDX.DirectSound.DirectSound Device, string strファイル名, int _nHandle )
 		{
@@ -263,8 +295,9 @@ namespace FDK
 				this.Close( nHandle );
 				throw new Exception( string.Format( "GetFormat() に失敗しました。({0})", strファイル名 ) );
 			}
-			int totalPCMSize = (int) this.GetTotalPCMSize( nHandle );
-			if( totalPCMSize == 0 )
+			int totalPCMSize = (int) this.nTotalPCMSize;		//  tデコード後のサイズを調べる()で既に取得済みの値を流用する。ms単位の高速化だが、チップ音がたくさんあると塵積で結構効果がある
+			// int totalPCMSize = (int) this.GetTotalPCMSize( nHandle );
+			if ( totalPCMSize == 0 )
 			{
 				this.Close( nHandle );
 				throw new Exception( string.Format( "GetTotalPCMSize() に失敗しました。({0})", strファイル名 ) );
@@ -305,6 +338,7 @@ namespace FDK
 		}
 		public void tストリーム方式で作成する( SlimDX.DirectSound.DirectSound Device, string strファイル名, int _nHandle )
 		{
+//			Trace.TraceInformation( "tストリーム方式で作成: 開始。" );
 			//this.nHandle = this.Open( strファイル名 );	// 2011.1.2 yyagi tデコード後のサイズを調べる()で得たnHandleを継続して使って、Open()の処理時間を削減
 			this.nHandle = _nHandle;
 			if( this.nHandle < 0 )
@@ -342,6 +376,7 @@ namespace FDK
 			this.strファイル名 = strファイル名;
 			this.dt最終更新時刻 = File.GetLastWriteTime( strファイル名 );
 			this.nオリジナルの周波数 = this.Buffer.Frequency;
+//			Trace.TraceInformation( "tストリーム方式で作成: 完了。" );
 		}
 		public void t再生を一時停止する()
 		{
@@ -588,6 +623,8 @@ namespace FDK
 		private int n一時停止回数;
 		private int n現在のPCM側の位置byte;
 		private int n現在書き込み許可待ちのバッファ番号;
+		private SoundBuffer _Buffer;
+		private uint nTotalPCMSize = 0;
 
 		private void tストリーム再生位置リセット()
 		{
@@ -597,7 +634,7 @@ namespace FDK
 				this.n現在のPCM側の位置byte = 0;
 			}
 		}
-		private void tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( SecondarySoundBuffer buffer, int n書込先バッファ番号, bool bPCMの末尾に達したら先頭に戻る )
+		private void tデコーダの現在の読み出し位置から1バッファ分のPCMを指定されたバッファに書き込む( SoundBuffer buffer, int n書込先バッファ番号, bool bPCMの末尾に達したら先頭に戻る )
 		{
 			if( !this.bDispose完了済み && ( this.nHandle >= 0 ) )
 			{

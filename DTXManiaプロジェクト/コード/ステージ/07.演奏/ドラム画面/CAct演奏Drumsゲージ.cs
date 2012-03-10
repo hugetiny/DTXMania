@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Diagnostics;
 using SlimDX;
 using FDK;
 
@@ -41,14 +42,15 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.dbゲージ値 = 0.66666666666666663;
+			// CAct演奏ゲージ共通.Init()に移動
+			// this.dbゲージ値 = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
 			base.On活性化();
 		}
 		public override void On非活性化()
 		{
 			this.ct本体振動 = null;
 			this.ct本体移動 = null;
-			for( int i = 0; i < 0x18; i++ )
+			for( int i = 0; i < 24; i++ )
 			{
 				this.st白い星[ i ].ct進行 = null;
 			}
@@ -72,9 +74,9 @@ namespace DTXMania
 		}
 		public override int On進行描画()
 		{
-			if( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
-				if( base.b初めての進行描画 )
+				if ( base.b初めての進行描画 )
 				{
 					for( int k = 0; k < 0x18; k++ )
 					{
@@ -89,7 +91,15 @@ namespace DTXMania
 				}
 				this.ct本体移動.t進行Loop();
 				this.ct本体振動.t進行Loop();
-				int num2 = ( this.dbゲージ値 == 1.0 ) ? ( (int) ( 352.0 * this.dbゲージ値 ) ) : ( (int) ( ( 352.0 * this.dbゲージ値 ) + ( 2.0 * Math.Sin( 6.2831853071795862 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) ) );
+
+				if ( this.bRisky && this.actLVLNFont != null )		// #23599 2011.7.30 yyagi Risky残りMiss回数表示
+				{
+					CActLVLNFont.EFontColor efc = this.IsDanger( E楽器パート.DRUMS ) ?
+						CActLVLNFont.EFontColor.Red : CActLVLNFont.EFontColor.Yellow;
+					actLVLNFont.t文字列描画( 15, 408, nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Right );
+				}
+
+				int num2 = ( this.dbゲージ値 == 1.0 ) ? ( (int) ( 352.0 * this.dbゲージ値 ) ) : ( (int) ( ( 352.0 * this.dbゲージ値 ) + ( 2.0 * Math.Sin( Math.PI * 2 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) ) );
 				if( num2 <= 0 )
 				{
 					return 0;
@@ -177,7 +187,7 @@ namespace DTXMania
 				{
 					this.txゲージ.b加算合成 = true;
 				}
-				for( int j = 0; j < 0x18; j++ )
+				for( int j = 0; j < 24; j++ )
 				{
 					this.st白い星[ j ].ct進行.t進行Loop();
 					int x = 6 + this.st白い星[ j ].x;

@@ -24,6 +24,13 @@ namespace DTXMania
 			this.b新しいプレビューファイルを読み込んだ = false;
 		}
 
+		public bool bIsPlayingPremovie		// #27060
+		{
+			get
+			{
+				return (this.avi != null);
+			}
+		}
 
 		// CActivity 実装
 
@@ -324,12 +331,12 @@ namespace DTXMania
 				try
 				{
 					image = new Bitmap( this.str現在のファイル名 );
-					bitmap2 = new Bitmap( 640, 480 );
+					bitmap2 = new Bitmap(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
 					Graphics graphics = Graphics.FromImage( bitmap2 );
 					int x = 0;
-					for( int i = 0; i < 480; i += image.Height )
+					for (int i = 0; i < SampleFramework.GameWindowSize.Height; i += image.Height)
 					{
-						for( x = 0; x < 640; x += image.Width )
+						for (x = 0; x < SampleFramework.GameWindowSize.Width; x += image.Width)
 						{
 							graphics.DrawImage( image, x, i, image.Width, image.Height );
 						}
@@ -488,7 +495,7 @@ namespace DTXMania
 			else
 			{
 				double num = ( (double) this.ct登場アニメ用.n現在の値 ) / 100.0;
-				double num2 = Math.Cos( ( 1.5 + ( 0.5 * num ) ) * 3.1415926535897931 );
+				double num2 = Math.Cos( ( 1.5 + ( 0.5 * num ) ) * Math.PI );
 				this.n本体X = 8;
 				this.n本体Y = 0x39 - ( (int) ( this.txパネル本体.sz画像サイズ.Height * ( 1.0 - ( num2 * num2 ) ) ) );
 			}

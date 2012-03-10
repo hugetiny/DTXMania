@@ -22,6 +22,11 @@ namespace DTXMania
 		左シンバルのみ打ち分ける,
 		全部共通
 	}
+	public enum EBDGroup		// #27029 2012.1.4 from add
+	{
+		打ち分ける,
+		どっちもBD
+	}
 	public enum Eダークモード
 	{
 		OFF,
@@ -34,7 +39,7 @@ namespace DTXMania
 		普通	= 1,
 		大きい	= 2
 	}
-	public enum Eパッド
+	public enum Eパッド			// 演奏用のenum。ここを修正するときは、次に出てくる EKeyConfigPad と EパッドFlag もセットで修正すること。
 	{
 		HH		= 0,
 		R		= 0,
@@ -53,9 +58,11 @@ namespace DTXMania
 		HHO		= 7,
 		RD		= 8,
 		LC		= 9,
+		HP		= 10,	// #27029 2012.1.4 from
+		MAX,			// 門番用として定義
 		UNKNOWN = 99
 	}
-	public enum EKeyConfigPad		// # 24609 
+	public enum EKeyConfigPad		// #24609 キーコンフィグで使うenum。capture要素あり。
 	{
 		HH		= Eパッド.HH,
 		R		= Eパッド.R,
@@ -74,6 +81,7 @@ namespace DTXMania
 		HHO		= Eパッド.HHO,
 		RD		= Eパッド.RD,
 		LC		= Eパッド.LC,
+		HP		= Eパッド.HP,		// #27029 2012.1.4 from
 		Capture,
 		UNKNOWN = Eパッド.UNKNOWN
 	}
@@ -98,7 +106,8 @@ namespace DTXMania
 		HHO		= 128,
 		RD		= 256,
 		LC		= 512,
-		UNKNOWN = 1024
+		HP		= 1024,				// #27029
+		UNKNOWN = 2048
 	}
 	public enum Eランダムモード
 	{
@@ -107,12 +116,12 @@ namespace DTXMania
 		SUPERRANDOM,
 		HYPERRANDOM
 	}
-	public enum E楽器パート
+	public enum E楽器パート		// ここを修正するときは、セットで次の EKeyConfigPart も修正すること。
 	{
 		DRUMS	= 0,
 		GUITAR	= 1,
 		BASS	= 2,
-		UNKNOWN	= 0x63
+		UNKNOWN	= 99
 	}
 	public enum EKeyConfigPart	// : E楽器パート
 	{
@@ -136,7 +145,7 @@ namespace DTXMania
 		マウス			= 3,
 		不明			= -1
 	}
-	internal enum E判定
+	public enum E判定
 	{
 		Perfect	= 0,
 		Great	= 1,
@@ -178,16 +187,20 @@ namespace DTXMania
 		RIGHT,
 		OFF
 	}
-	internal enum Eドラムレーン
+	internal enum Eレーン
 	{
-		LC,
+		LC = 0,
 		HH,
 		SD,
 		BD,
 		HT,
 		LT,
 		FT,
-		CY
+		CY,
+		RD,		// 将来の独立レーン化/独立AUTO設定を見越して追加
+		Guitar,	// AUTOレーン判定を容易にするため、便宜上定義しておく
+		Bass,
+		BGM
 	}
 	internal enum Eログ出力
 	{
@@ -202,12 +215,22 @@ namespace DTXMania
 		ステージ失敗,
 		ステージクリア
 	}
+	/// <summary>
+	/// 入力ラグ表示タイプ
+	/// </summary>
+	internal enum EShowLagType
+	{
+		OFF,			// 全く表示しない
+		ON,				// 判定に依らず全て表示する
+		GREAT_POOR		// GREAT-MISSの時のみ表示する(PERFECT時は表示しない)
+	}
 
 	/// <summary>
 	/// Drum/Guitar/Bass の値を扱う汎用の構造体。
 	/// </summary>
 	/// <typeparam name="T">値の型。</typeparam>
-	[StructLayout(LayoutKind.Sequential)]
+	[Serializable]
+	[StructLayout( LayoutKind.Sequential )]
 	public struct STDGBVALUE<T>
 	{
 		public T Drums;
@@ -259,6 +282,99 @@ namespace DTXMania
 		}
 	}
 
+	/// <summary>
+	/// レーンの値を扱う汎用の構造体。列挙型"Eドラムレーン"に準拠。
+	/// </summary>
+	/// <typeparam name="T">値の型。</typeparam>
+	[StructLayout( LayoutKind.Sequential )]
+	public struct STLANEVALUE<T>
+	{
+		public T LC;
+		public T HH;
+		public T SD;
+		public T BD;
+		public T HT;
+		public T LT;
+		public T FT;
+		public T CY;
+		public T RD;
+		public T Guitar;
+		public T Bass;
+		public T BGM;
+
+		public T this[ int index ]
+		{
+			get
+			{
+				switch ( index )
+				{
+					case (int) Eレーン.LC:
+						return this.LC;
+					case (int) Eレーン.HH:
+						return this.HH;
+					case (int) Eレーン.SD:
+						return this.SD;
+					case (int) Eレーン.BD:
+						return this.BD;
+					case (int) Eレーン.HT:
+						return this.HT;
+					case (int) Eレーン.LT:
+						return this.LT;
+					case (int) Eレーン.FT:
+						return this.FT;
+					case (int) Eレーン.CY:
+						return this.CY;
+					case (int) Eレーン.RD:
+						return this.RD;
+					case (int) Eレーン.Guitar:
+						return this.Guitar;
+					case (int) Eレーン.Bass:
+						return this.Bass;
+				}
+				throw new IndexOutOfRangeException();
+			}
+			set
+			{
+				switch ( index )
+				{
+					case (int) Eレーン.LC:
+						this.LC = value;
+						return;
+					case (int) Eレーン.HH:
+						this.HH = value;
+						return;
+					case (int) Eレーン.SD:
+						this.SD = value;
+						return;
+					case (int) Eレーン.BD:
+						this.BD = value;
+						return;
+					case (int) Eレーン.HT:
+						this.HT = value;
+						return;
+					case (int) Eレーン.LT:
+						this.LT = value;
+						return;
+					case (int) Eレーン.FT:
+						this.FT = value;
+						return;
+					case (int) Eレーン.CY:
+						this.CY = value;
+						return;
+					case (int) Eレーン.RD:
+						this.RD = value;
+						return;
+					case (int) Eレーン.Guitar:
+						this.Guitar = value;
+						return;
+					case (int) Eレーン.Bass:
+						this.Bass = value;
+						return;
+				}
+				throw new IndexOutOfRangeException();
+			}
+		}
+	}
 
 	internal class C定数
 	{

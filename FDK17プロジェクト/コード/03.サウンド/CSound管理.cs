@@ -20,7 +20,17 @@ namespace FDK
 
 		// プロパティ
 
-		public DirectSound Device { get; private set; }
+//		public DirectSound Device { get; private set; }
+		private DirectSound Device;
+		private void setDevice( DirectSound Device_ )
+		{
+			Device = Device_;
+		}
+		public DirectSound getDevice()
+		{
+			return Device;
+		}
+
 		public int n登録サウンド数
 		{
 			get
@@ -93,11 +103,22 @@ namespace FDK
 			if ( (item = this.tCheckAndDecode(strファイル名)) == null)
 				throw new Exception( "OggVorbis, mp3, XA, RIFF ACM のいずれでもデコードに失敗しました。" );
 
-			lock( this.obj排他用 )
-			{
-				this.listSound.Add( item );
-			}
+			item.setDevice( ref this.Device );
+			tサウンドを登録する( item );
+
 			return item;
+		}
+		public void tサウンドを登録する( CSound sound )
+		{
+			lock ( this.obj排他用 )
+			{
+				this.listSound.Add( sound );
+			}
+		}
+
+		public void t再生中の処理をする( object o )			// #26122 2011.9.1 yyagi; delegate経由の呼び出し用
+		{
+			t再生中の処理をする();
 		}
 		public void t再生中の処理をする()
 		{
@@ -163,23 +184,24 @@ namespace FDK
 			int nHandle;
 
 			CSound csound = new CSoundOggVorbis();
-			nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
-			if (nDecodedPCMsize < 0)
+			nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
+			if ( nDecodedPCMsize < 0 )
 			{
 				csound.Dispose();
 				csound = new CSoundXA();
-				nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
-				if (nDecodedPCMsize < 0)
+				nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
+				if ( nDecodedPCMsize < 0 )
 				{
 					csound.Dispose();
 					csound = new CSoundRiffWave();
-					nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
-					if (nDecodedPCMsize < 0)
+					nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
+					if ( nDecodedPCMsize < 0 )
 					{
 						csound.Dispose();
 						csound = new CSoundMp3();
 						nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
-						if (nDecodedPCMsize < 0) {
+						if ( nDecodedPCMsize < 0 )
+						{
 							csound.Dispose();
 							return null;
 						}

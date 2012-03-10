@@ -13,6 +13,24 @@ namespace DTXMania
 	{
 		// プロパティ
 
+		public bool bIsEnumeratingSongs
+		{
+			get
+			{
+				return act曲リスト.bIsEnumeratingSongs;
+			}
+			set
+			{
+				act曲リスト.bIsEnumeratingSongs = value;
+			}
+		}
+		public bool bIsPlayingPremovie
+		{
+			get
+			{
+				return this.actPreimageパネル.bIsPlayingPremovie;
+			}
+		}
 		public bool bスクロール中
 		{
 			get
@@ -66,7 +84,7 @@ namespace DTXMania
 			base.list子Activities.Add( this.actオプションパネル = new CActオプションパネル() );
 			base.list子Activities.Add( this.actFIFO = new CActFIFOBlack() );
 			base.list子Activities.Add( this.actFIfrom結果画面 = new CActFIFOBlack() );
-			base.list子Activities.Add( this.actFOtoNowLoading = new CActFIFOBlack() );
+//			base.list子Activities.Add( this.actFOtoNowLoading = new CActFIFOBlack() );	// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 			base.list子Activities.Add( this.act曲リスト = new CActSelect曲リスト() );
 			base.list子Activities.Add( this.actステータスパネル = new CActSelectステータスパネル() );
 			base.list子Activities.Add( this.act演奏履歴パネル = new CActSelect演奏履歴パネル() );
@@ -127,6 +145,15 @@ namespace DTXMania
 
 		// CStage 実装
 
+		/// <summary>
+		/// 曲リストをリセットする
+		/// </summary>
+		/// <param name="cs"></param>
+		public void Refresh( CSongs管理 cs, bool bRemakeSongTitleBar)
+		{
+			this.act曲リスト.Refresh( cs, bRemakeSongTitleBar );
+		}
+
 		public override void On活性化()
 		{
 			Trace.TraceInformation( "選曲ステージを活性化します。" );
@@ -138,7 +165,7 @@ namespace DTXMania
 
 //				this.actSortSongs.bIsActiveSortMenu = false;
 
-				//				this.n前回Bassを踏んだ時刻 = -1;
+//				this.n前回Bassを踏んだ時刻 = -1;
 //				this.n前回HHを叩いた時刻 = -1;
 //				this.n前回ギターをPickした時刻 = -1;
 //				this.n前回ベースをPickした時刻 = -1;
@@ -234,13 +261,15 @@ namespace DTXMania
 					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
 
 				this.actPreimageパネル.On進行描画();
+			//	this.bIsEnumeratingSongs = !this.actPreimageパネル.bIsPlayingPremovie;				// #27060 2011.3.2 yyagi: #PREMOVIE再生中は曲検索を中断する
+
 				this.act曲リスト.On進行描画();
 				int y = 0;
 				if( this.ct登場時アニメ用共通.b進行中 )
 				{
-					double num2 = ( (double) this.ct登場時アニメ用共通.n現在の値 ) / 100.0;
-					double num3 = Math.Sin( 1.5707963267948966 * num2 );
-					y = ( (int) ( this.tx上部パネル.sz画像サイズ.Height * num3 ) ) - this.tx上部パネル.sz画像サイズ.Height;
+					double db登場割合 = ( (double) this.ct登場時アニメ用共通.n現在の値 ) / 100.0;	// 100が最終値
+					double dbY表示割合 = Math.Sin( Math.PI / 2 * db登場割合 );
+					y = ( (int) ( this.tx上部パネル.sz画像サイズ.Height * dbY表示割合 ) ) - this.tx上部パネル.sz画像サイズ.Height;
 				}
 				if( this.tx上部パネル != null )
 						this.tx上部パネル.t2D描画( CDTXMania.app.Device, 0, y );
@@ -287,10 +316,10 @@ namespace DTXMania
 						break;
 
 					case CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト:
-						if( this.actFOtoNowLoading.On進行描画() == 0 )
-						{
-							break;
-						}
+//						if( this.actFOtoNowLoading.On進行描画() == 0 )
+//						{
+//							break;
+//						}
 						return (int) this.eフェードアウト完了時の戻り値;
 				}
 				if( !this.bBGM再生済み && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
@@ -299,6 +328,10 @@ namespace DTXMania
 					CDTXMania.Skin.bgm選曲画面.t再生する();
 					this.bBGM再生済み = true;
 				}
+
+
+//Debug.WriteLine( "パンくず=" + this.r現在選択中の曲.strBreadcrumbs );
+
 
 				// キー入力
 				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 
@@ -392,7 +425,7 @@ namespace DTXMania
 							if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.BD ) )
 							{	// [BD]x2 スクロール速度変更
 								CommandHistory.Add( E楽器パート.DRUMS, EパッドFlag.BD );
-								EパッドFlag[] comChangeScrollSpeed = new EパッドFlag[ 2 ] { EパッドFlag.BD, EパッドFlag.BD };
+								EパッドFlag[] comChangeScrollSpeed = new EパッドFlag[] { EパッドFlag.BD, EパッドFlag.BD };
 								if ( CommandHistory.CheckCommand( comChangeScrollSpeed, E楽器パート.DRUMS ) )
 								{
 									Debug.WriteLine( "ドラムススクロール速度変更" );
@@ -403,7 +436,7 @@ namespace DTXMania
 							if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.HH ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.HHO ) )
 							{	// [HH]x2 難易度変更
 								CommandHistory.Add( E楽器パート.DRUMS, EパッドFlag.HH );
-								EパッドFlag[] comChangeDifficulty = new EパッドFlag[ 2 ] { EパッドFlag.HH, EパッドFlag.HH };
+								EパッドFlag[] comChangeDifficulty = new EパッドFlag[] { EパッドFlag.HH, EパッドFlag.HH };
 								if ( CommandHistory.CheckCommand( comChangeDifficulty, E楽器パート.DRUMS ) )
 								{
 									Debug.WriteLine( "ドラムス難易度変更" );
@@ -414,7 +447,7 @@ namespace DTXMania
 							if ( CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.G ) && CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.Pick ) )	// #24177 2011.1.17 yyagi || -> &&
 							{	// [G] + [Pick][Pick] ギター難易度変更
 								CommandHistory.Add( E楽器パート.GUITAR, EパッドFlag.Pick | EパッドFlag.G );
-								EパッドFlag[] comChangeDifficulty = new EパッドFlag[ 2 ] { EパッドFlag.Pick | EパッドFlag.G, EパッドFlag.Pick | EパッドFlag.G };
+								EパッドFlag[] comChangeDifficulty = new EパッドFlag[] { EパッドFlag.Pick | EパッドFlag.G, EパッドFlag.Pick | EパッドFlag.G };
 								if ( CommandHistory.CheckCommand( comChangeDifficulty, E楽器パート.GUITAR ) )
 								{
 									Debug.WriteLine( "ギター難易度変更" );
@@ -425,7 +458,7 @@ namespace DTXMania
 							if ( CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.G ) && CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.Pick ) )		// #24177 2011.1.17 yyagi || -> &&
 							{	// [G] + [Pick][Pick] ベース難易度変更
 								CommandHistory.Add( E楽器パート.BASS, EパッドFlag.Pick | EパッドFlag.G );
-								EパッドFlag[] comChangeDifficulty = new EパッドFlag[ 2 ] { EパッドFlag.Pick | EパッドFlag.G, EパッドFlag.Pick | EパッドFlag.G };
+								EパッドFlag[] comChangeDifficulty = new EパッドFlag[] { EパッドFlag.Pick | EパッドFlag.G, EパッドFlag.Pick | EパッドFlag.G };
 								if ( CommandHistory.CheckCommand( comChangeDifficulty, E楽器パート.BASS ) )
 								{
 									Debug.WriteLine( "ベース難易度変更" );
@@ -438,8 +471,8 @@ namespace DTXMania
 							{	// ギター[Pick]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.GUITAR, EパッドFlag.Pick );
 								// Pick, G, G, Pick で、ギターとベースを入れ替え
-								EパッドFlag[] comSwapGtBs = new EパッドFlag[ 4 ] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
-								if ( CommandHistory.CheckCommand( comSwapGtBs, E楽器パート.GUITAR ) )
+								EパッドFlag[] comSwapGtBs1 = new EパッドFlag[] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
+								if ( CommandHistory.CheckCommand( comSwapGtBs1, E楽器パート.GUITAR ) )
 								{
 									Debug.WriteLine( "ギターとベースの入れ替え1" );
 									CDTXMania.Skin.sound変更音.t再生する();
@@ -448,12 +481,12 @@ namespace DTXMania
 									CDTXMania.ConfigIni.bIsSwappedGuitarBass = !CDTXMania.ConfigIni.bIsSwappedGuitarBass;
 								}
 							}
-							if ( CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.Pick ) && !CDTXMania.Pad.b押されている( E楽器パート.GUITAR, Eパッド.G ) )
+							if ( CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.Pick ) && !CDTXMania.Pad.b押されている( E楽器パート.BASS, Eパッド.G ) )
 							{	// ベース[Pick]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.BASS, EパッドFlag.Pick );
 								// Pick, G, G, Pick で、ギターとベースを入れ替え
-								EパッドFlag[] comSwapGtBs = new EパッドFlag[ 4 ] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
-								if ( CommandHistory.CheckCommand( comSwapGtBs, E楽器パート.BASS ) )
+								EパッドFlag[] comSwapGtBs1 = new EパッドFlag[] { EパッドFlag.Pick, EパッドFlag.G, EパッドFlag.G, EパッドFlag.Pick };
+								if ( CommandHistory.CheckCommand( comSwapGtBs1, E楽器パート.BASS ) )
 								{
 									Debug.WriteLine( "ギターとベースの入れ替え2" );
 									CDTXMania.Skin.sound変更音.t再生する();
@@ -466,7 +499,7 @@ namespace DTXMania
 							{	// ギター[G]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.GUITAR, EパッドFlag.G );
 								// ギター G, G, G で、ソート画面に遷移
-								EパッドFlag[] comSortGt = new EパッドFlag[ 3 ] { EパッドFlag.G, EパッドFlag.G, EパッドFlag.G };
+								EパッドFlag[] comSortGt = new EパッドFlag[] { EパッドFlag.G, EパッドFlag.G, EパッドFlag.G };
 								if ( CommandHistory.CheckCommand( comSortGt, E楽器パート.GUITAR ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
@@ -479,11 +512,11 @@ namespace DTXMania
 							{	// ベース[G]: コマンドとしてEnqueue
 								CommandHistory.Add( E楽器パート.BASS, EパッドFlag.G );
 								// ベース G, G, G で、ソート画面に遷移
-								EパッドFlag[] comSortBs = new EパッドFlag[ 3 ] { EパッドFlag.G, EパッドFlag.G, EパッドFlag.G };
+								EパッドFlag[] comSortBs = new EパッドFlag[] { EパッドFlag.G, EパッドFlag.G, EパッドFlag.G };
 								if ( CommandHistory.CheckCommand( comSortBs, E楽器パート.BASS ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
-									Debug.WriteLine( "ソート画面発動(gt)" );
+									Debug.WriteLine( "ソート画面発動(bs)" );
 									//this.actSortSongs.bIsActiveSortMenu = !this.actSortSongs.bIsActiveSortMenu;
 									this.actSortSongs.tActivateSortMenu( ref this.act曲リスト );
 								}
@@ -492,7 +525,7 @@ namespace DTXMania
 							{	// [BD]+[HT] 未使用
 								//
 								CommandHistory.Add( E楽器パート.DRUMS, EパッドFlag.HT );
-								EパッドFlag[] comSort = new EパッドFlag[ 2 ] { EパッドFlag.BD, EパッドFlag.HT };
+								EパッドFlag[] comSort = new EパッドFlag[] { EパッドFlag.BD, EパッドFlag.HT };
 								if ( CommandHistory.CheckCommand( comSort, E楽器パート.DRUMS ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
@@ -576,7 +609,7 @@ namespace DTXMania
 		private CActSelectArtistComment actArtistComment;
 		private CActFIFOBlack actFIFO;
 		private CActFIFOBlack actFIfrom結果画面;
-		private CActFIFOBlack actFOtoNowLoading;
+//		private CActFIFOBlack actFOtoNowLoading;	// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 		private CActSelectInformation actInformation;
 		private CActSelectPreimageパネル actPreimageパネル;
 		private CActSelectPresound actPresound;
@@ -656,10 +689,12 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 				int stciCount = stct.Count;
 				if ( stciCount < targetCount )
 				{
+//Debug.WriteLine("NOT start checking...stciCount=" + stciCount + ", targetCount=" + targetCount);
 					return false;
 				}
 
 				long curTime = CDTXMania.Timer.n現在時刻;
+//Debug.WriteLine("Start checking...targetCount=" + targetCount);
 				for ( int i = targetCount - 1, j = stciCount - 1; i >= 0; i--, j-- )
 				{
 					if ( _ePad[ i ] != stct[ j ].ePad )
@@ -747,7 +782,7 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 			this.n確定された曲の難易度 = this.act曲リスト.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( this.r確定された曲 );
 			this.r確定されたスコア = this.r確定された曲.arスコア[ this.n確定された曲の難易度 ];
 			this.eフェードアウト完了時の戻り値 = E戻り値.選曲した;
-			this.actFOtoNowLoading.tフェードアウト開始();
+		//	this.actFOtoNowLoading.tフェードアウト開始();					// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 			base.eフェーズID = CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト;
 			if( CDTXMania.ConfigIni.bLogDTX詳細ログ出力 )
 			{
@@ -776,7 +811,7 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 			if( ( this.r確定された曲 != null ) && ( this.r確定されたスコア != null ) )
 			{
 				this.eフェードアウト完了時の戻り値 = E戻り値.選曲した;
-				this.actFOtoNowLoading.tフェードアウト開始();
+			//	this.actFOtoNowLoading.tフェードアウト開始();				// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 				base.eフェーズID = CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト;
 			}
 		}

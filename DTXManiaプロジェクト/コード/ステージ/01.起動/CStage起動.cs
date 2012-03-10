@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using FDK;
+using System.Runtime.Serialization.Formatters.Binary;
+
 
 namespace DTXMania
 {
@@ -18,6 +20,7 @@ namespace DTXMania
 			base.b活性化してない = true;
 		}
 
+		public List<string> list進行文字列;
 
 		// CStage 実装
 
@@ -44,11 +47,14 @@ namespace DTXMania
 			try
 			{
 				this.list進行文字列 = null;
-				if( ( this.thリスト構築 != null ) && this.thリスト構築.IsAlive )
+				if ( es != null )
 				{
-					Trace.TraceWarning( "リスト構築スレッドを強制停止します。" );
-					this.thリスト構築.Abort();
-					this.thリスト構築.Join();
+					if ( ( es.thDTXFileEnumerate != null ) && es.thDTXFileEnumerate.IsAlive )
+					{
+						Trace.TraceWarning( "リスト構築スレッドを強制停止します。" );
+						es.thDTXFileEnumerate.Abort();
+						es.thDTXFileEnumerate.Join();
+					}
 				}
 				base.On非活性化();
 				Trace.TraceInformation( "起動ステージの非活性化を完了しました。" );
@@ -82,15 +88,14 @@ namespace DTXMania
 				{
 					this.list進行文字列.Add( "DTXMania powered by YAMAHA Silent Session Drums\n" );
 					this.list進行文字列.Add( "Release: " + CDTXMania.VERSION + " [" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "]" );
-					this.thリスト構築 = new Thread( new ThreadStart( this.t曲リストの構築 ) );
-					this.thリスト構築.Name = "曲リストの構築";
-					this.thリスト構築.IsBackground = true;
-					this.thリスト構築.Start();
+
+					es = new CEnumSongs();
+					es.StartEnumFromCache();										// 曲リスト取得(別スレッドで実行される)
 					base.b初めての進行描画 = false;
 					return 0;
 				}
 
-				CSongs管理 s管理 = CDTXMania.Songs管理;
+				// CSongs管理 s管理 = CDTXMania.Songs管理;
 
 				if( this.tx背景 != null )
 					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
@@ -103,20 +108,24 @@ namespace DTXMania
 						this.str現在進行中 = "Loading system sounds ... ";
 						break;
 
+					case CStage.Eフェーズ.起動00_songlistから曲リストを作成する:
+						this.str現在進行中 = "Loading songlist.db ... ";
+						break;
+
 					case CStage.Eフェーズ.起動1_SongsDBからスコアキャッシュを構築:
 						this.str現在進行中 = "Loading songs.db ... ";
 						break;
 
 					case CStage.Eフェーズ.起動2_曲を検索してリストを作成する:
-						this.str現在進行中 = string.Format( "{0} ... {1}", "Enumerating songs", s管理.n検索されたスコア数 );
+						this.str現在進行中 = string.Format( "{0} ... {1}", "Enumerating songs", es.Songs管理.n検索されたスコア数 );
 						break;
 
 					case CStage.Eフェーズ.起動3_スコアキャッシュをリストに反映する:
-						this.str現在進行中 = string.Format( "{0} ... {1}/{2}", "Loading score properties from songs.db", CDTXMania.Songs管理.nスコアキャッシュから反映できたスコア数, s管理.n検索されたスコア数 );
+						this.str現在進行中 = string.Format( "{0} ... {1}/{2}", "Loading score properties from songs.db", es.Songs管理.nスコアキャッシュから反映できたスコア数, es.Songs管理.n検索されたスコア数 );
 						break;
 
 					case CStage.Eフェーズ.起動4_スコアキャッシュになかった曲をファイルから読み込んで反映する:
-						this.str現在進行中 = string.Format( "{0} ... {1}/{2}", "Loading score properties from files", CDTXMania.Songs管理.nファイルから反映できたスコア数, CDTXMania.Songs管理.n検索されたスコア数 - s管理.nスコアキャッシュから反映できたスコア数 );
+						this.str現在進行中 = string.Format( "{0} ... {1}/{2}", "Loading score properties from files", es.Songs管理.nファイルから反映できたスコア数, es.Songs管理.n検索されたスコア数 - es.Songs管理.nスコアキャッシュから反映できたスコア数 );
 						break;
 
 					case CStage.Eフェーズ.起動5_曲リストへ後処理を適用する:
@@ -149,8 +158,9 @@ namespace DTXMania
 				//-----------------
 				#endregion
 
-				if( !this.thリスト構築.IsAlive )
+				if( es != null && es.IsSongListEnumCompletelyDone )							// 曲リスト作成が終わったら
 				{
+					CDTXMania.Songs管理 = ( es != null ) ? es.Songs管理 : null;		// 最後に、曲リストを拾い上げる
 					return 1;
 				}
 			}
@@ -162,19 +172,11 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private List<string> list進行文字列;
-		private const string MSG進行0 = "Loading system sounds";
-		private const string MSG進行1 = "Loading songs.db";
-		private const string MSG進行2 = "Enumerating songs";
-		private const string MSG進行3 = "Loading score properties from songs.db";
-		private const string MSG進行4 = "Loading score properties from files";
-		private const string MSG進行5 = "Loading score properties from socre.ini";
-		private const string MSG進行6 = "Building songlists";
-		private const string MSG進行7 = "Saving songs.db";
 		private string str現在進行中 = "";
-		private Thread thリスト構築;
 		private CTexture tx背景;
+		private CEnumSongs es;
 
+#if false
 		private void t曲リストの構築()
 		{
 			// ！注意！
@@ -182,7 +184,8 @@ namespace DTXMania
 			// すべてのファイルアクセスは「絶対パス」で行うこと。(2010.9.16)
 
 			DateTime now = DateTime.Now;
-			string str = CDTXMania.strEXEのあるフォルダ + "songs.db";
+			string strPathSongsDB = CDTXMania.strEXEのあるフォルダ + "songs.db";
+			string strPathSongList = CDTXMania.strEXEのあるフォルダ + "songlist.db";
 
 			try
 			{
@@ -238,27 +241,72 @@ namespace DTXMania
 					return;
 				}
 
-				#region [ 1) songs.db の読み込み ]
+				#region [ 00) songlist.dbの読み込みによる曲リストの構築  ]
 				//-----------------------------
-				base.eフェーズID = CStage.Eフェーズ.起動1_SongsDBからスコアキャッシュを構築;
+				base.eフェーズID = CStage.Eフェーズ.起動00_songlistから曲リストを作成する;
 
-				Trace.TraceInformation( "1) songs.db を読み込みます。" );
+				Trace.TraceInformation( "1) songlist.dbを読み込みます。" );
 				Trace.Indent();
 
 				try
 				{
-					if( !CDTXMania.ConfigIni.bConfigIniがないかDTXManiaのバージョンが異なる )
+					if ( !CDTXMania.ConfigIni.bConfigIniがないかDTXManiaのバージョンが異なる )
 					{
 						try
 						{
-							CDTXMania.Songs管理.tSongsDBを読み込む( str );
+							CDTXMania.Songs管理.tSongListDBを読み込む( strPathSongList );
+						}
+						catch
+						{
+							Trace.TraceError( "songlist.db の読み込みに失敗しました。" );
+						}
+
+						int scores = ( CDTXMania.Songs管理 == null ) ? 0 : CDTXMania.Songs管理.n検索されたスコア数;		// 読み込み途中でアプリ終了した場合など、CDTXMania.Songs管理 がnullの場合があるので注意
+						Trace.TraceInformation( "songlist.db の読み込みを完了しました。[{0}スコア]", scores );
+						lock ( this.list進行文字列 )
+						{
+							this.list進行文字列.Add( "Loading songlist.db ... OK" );
+						}
+					}
+					else
+					{
+						Trace.TraceInformation( "初回の起動であるかまたはDTXManiaのバージョンが上がったため、songlist.db の読み込みをスキップします。" );
+						lock ( this.list進行文字列 )
+						{
+							this.list進行文字列.Add( "Loading songlist.db ... Skip" );
+						}
+					}
+				}
+				finally
+				{
+					Trace.Unindent();
+				}
+
+				#endregion
+
+				#region [ 1) songs.db の読み込み ]
+				//-----------------------------
+				base.eフェーズID = CStage.Eフェーズ.起動1_SongsDBからスコアキャッシュを構築;
+
+				Trace.TraceInformation( "2) songs.db を読み込みます。" );
+				Trace.Indent();
+
+				try
+				{
+					if ( !CDTXMania.ConfigIni.bConfigIniがないかDTXManiaのバージョンが異なる )
+					{
+						try
+						{
+							CDTXMania.Songs管理.tSongsDBを読み込む( strPathSongsDB );
 						}
 						catch
 						{
 							Trace.TraceError( "songs.db の読み込みに失敗しました。" );
 						}
-						Trace.TraceInformation( "songs.db の読み込みを完了しました。[{0}スコア]", new object[] { CDTXMania.Songs管理.nSongsDBから取得できたスコア数 } );
-						lock( this.list進行文字列 )
+
+						int scores = ( CDTXMania.Songs管理 == null ) ? 0 : CDTXMania.Songs管理.nSongsDBから取得できたスコア数;	// 読み込み途中でアプリ終了した場合など、CDTXMania.Songs管理 がnullの場合があるので注意
+						Trace.TraceInformation( "songs.db の読み込みを完了しました。[{0}スコア]", scores );
+						lock ( this.list進行文字列 )
 						{
 							this.list進行文字列.Add( "Loading songs.db ... OK" );
 						}
@@ -266,7 +314,7 @@ namespace DTXMania
 					else
 					{
 						Trace.TraceInformation( "初回の起動であるかまたはDTXManiaのバージョンが上がったため、songs.db の読み込みをスキップします。" );
-						lock( this.list進行文字列 )
+						lock ( this.list進行文字列 )
 						{
 							this.list進行文字列.Add( "Loading songs.db ... Skip" );
 						}
@@ -278,182 +326,7 @@ namespace DTXMania
 				}
 				//-----------------------------
 				#endregion
-				#region [ 2) 曲データの検索 ]
-				//-----------------------------
-				base.eフェーズID = CStage.Eフェーズ.起動2_曲を検索してリストを作成する;
 
-				Trace.TraceInformation( "2) 曲データを検索します。" );
-				Trace.Indent();
-
-				try
-				{
-					if( !string.IsNullOrEmpty( CDTXMania.ConfigIni.str曲データ検索パス ) )
-					{
-						string[] strArray = CDTXMania.ConfigIni.str曲データ検索パス.Split( new char[] { ';' } );
-						if( strArray.Length > 0 )
-						{
-							// 全パスについて…
-							foreach( string str2 in strArray )
-							{
-								string path = str2;
-								if( !Path.IsPathRooted( path ) )
-								{
-									path = CDTXMania.strEXEのあるフォルダ + str2;	// 相対パスの場合、絶対パスに直す(2010.9.16)
-								}
-
-								if( !string.IsNullOrEmpty( path ) )
-								{
-									Trace.TraceInformation( "検索パス: " + path );
-									Trace.Indent();
-
-									try
-									{
-										CDTXMania.Songs管理.t曲を検索してリストを作成する( path, true );
-									}
-									catch( Exception exception2 )
-									{
-										Trace.TraceError( exception2.Message );
-										Trace.TraceError( exception2.StackTrace );
-										Trace.TraceError( "例外が発生しましたが処理を継続します。" );
-									}
-									finally
-									{
-										Trace.Unindent();
-									}
-								}
-							}
-						}
-					}
-					else
-					{
-						Trace.TraceWarning( "曲データの検索パス(DTXPath)の指定がありません。" );
-					}
-				}
-				finally
-				{
-					Trace.TraceInformation( "曲データの検索を完了しました。[{0}曲{1}スコア]", new object[] { CDTXMania.Songs管理.n検索された曲ノード数, CDTXMania.Songs管理.n検索されたスコア数 } );
-					Trace.Unindent();
-				}
-				lock( this.list進行文字列 )
-				{
-					this.list進行文字列.Add( string.Format( "{0} ... {1} scores ({2} songs)", "Enumerating songs", CDTXMania.Songs管理.n検索されたスコア数, CDTXMania.Songs管理.n検索された曲ノード数 ) );
-				}
-				//-----------------------------
-				#endregion
-				#region [ 3) songs.db 情報の曲リストへの反映 ]
-				//-----------------------------
-				base.eフェーズID = CStage.Eフェーズ.起動3_スコアキャッシュをリストに反映する;
-
-				Trace.TraceInformation( "3) songs.db の情報を曲リストへ反映します。" );
-				Trace.Indent();
-
-				try
-				{
-					CDTXMania.Songs管理.tスコアキャッシュを曲リストに反映する();
-				}
-				catch( Exception exception3 )
-				{
-					Trace.TraceError( exception3.Message );
-					Trace.TraceError( exception3.StackTrace );
-					Trace.TraceError( "例外が発生しましたが処理を継続します。" );
-				}
-				finally
-				{
-					Trace.TraceInformation( "曲リストへの反映を完了しました。[{0}/{1}スコア]", new object[] { CDTXMania.Songs管理.nスコアキャッシュから反映できたスコア数, CDTXMania.Songs管理.n検索されたスコア数 } );
-					Trace.Unindent();
-				}
-				lock( this.list進行文字列 )
-				{
-					this.list進行文字列.Add( string.Format( "{0} ... {1}/{2}", "Loading score properties from songs.db", CDTXMania.Songs管理.nスコアキャッシュから反映できたスコア数, CDTXMania.Songs管理.n検索されたスコア数 ) );
-				}
-				//-----------------------------
-				#endregion
-				#region [ 4) songs.db になかった曲データをファイルから読み込んで反映 ]
-				//-----------------------------
-				base.eフェーズID = CStage.Eフェーズ.起動4_スコアキャッシュになかった曲をファイルから読み込んで反映する;
-
-				int num2 = CDTXMania.Songs管理.n検索されたスコア数 - CDTXMania.Songs管理.nスコアキャッシュから反映できたスコア数;
-
-				Trace.TraceInformation( "4) songs.db になかった曲データ[{0}スコア]の情報をファイルから読み込んで反映します。", new object[] { num2 } );
-				Trace.Indent();
-
-				try
-				{
-					CDTXMania.Songs管理.tSongsDBになかった曲をファイルから読み込んで反映する();
-				}
-				catch( Exception exception4 )
-				{
-					Trace.TraceError( exception4.Message );
-					Trace.TraceError( exception4.StackTrace );
-					Trace.TraceError( "例外が発生しましたが処理を継続します。" );
-				}
-				finally
-				{
-					Trace.TraceInformation( "曲データへの反映を完了しました。[{0}/{1}スコア]", new object[] { CDTXMania.Songs管理.nファイルから反映できたスコア数, num2 } );
-					Trace.Unindent();
-				}
-				lock( this.list進行文字列 )
-				{
-					this.list進行文字列.Add( string.Format( "{0} ... {1}/{2}", "Loading score properties from files", CDTXMania.Songs管理.nファイルから反映できたスコア数, CDTXMania.Songs管理.n検索されたスコア数 - CDTXMania.Songs管理.nスコアキャッシュから反映できたスコア数 ) );
-				}
-				//-----------------------------
-				#endregion
-				#region [ 5) 曲リストへの後処理の適用 ]
-				//-----------------------------
-				base.eフェーズID = CStage.Eフェーズ.起動5_曲リストへ後処理を適用する;
-
-				Trace.TraceInformation( "5) 曲リストへの後処理を適用します。" );
-				Trace.Indent();
-
-				try
-				{
-					CDTXMania.Songs管理.t曲リストへ後処理を適用する();
-				}
-				catch( Exception exception5 )
-				{
-					Trace.TraceError( exception5.Message );
-					Trace.TraceError( exception5.StackTrace );
-					Trace.TraceError( "例外が発生しましたが処理を継続します。" );
-				}
-				finally
-				{
-					Trace.TraceInformation( "曲リストへの後処理を完了しました。" );
-					Trace.Unindent();
-				}
-				lock( this.list進行文字列 )
-				{
-					this.list進行文字列.Add( string.Format( "{0} ... OK", "Building songlists" ) );
-				}
-				//-----------------------------
-				#endregion
-				#region [ 6) songs.db への保存 ]
-				//-----------------------------
-				base.eフェーズID = CStage.Eフェーズ.起動6_スコアキャッシュをSongsDBに出力する;
-
-				Trace.TraceInformation( "6) 曲データの情報を songs.db へ出力します。" );
-				Trace.Indent();
-
-				try
-				{
-					CDTXMania.Songs管理.tスコアキャッシュをSongsDBに出力する( str );
-				}
-				catch( Exception exception6 )
-				{
-					Trace.TraceError( exception6.Message );
-					Trace.TraceError( exception6.StackTrace );
-					Trace.TraceError( "例外が発生しましたが処理を継続します。" );
-				}
-				finally
-				{
-					Trace.TraceInformation( "songs.db への出力を完了しました。[{0}スコア]", new object[] { CDTXMania.Songs管理.nSongsDBへ出力できたスコア数 } );
-					Trace.Unindent();
-				}
-				lock( this.list進行文字列 )
-				{
-					this.list進行文字列.Add( string.Format( "{0} ... OK", "Saving songs.db" ) );
-				}
-				//-----------------------------
-				#endregion
 			}
 			finally
 			{
@@ -462,7 +335,7 @@ namespace DTXMania
 				Trace.TraceInformation( "起動所要時間: {0}", new object[] { span.ToString() } );
 			}
 		}
-		//-----------------
+#endif
 		#endregion
 	}
 }

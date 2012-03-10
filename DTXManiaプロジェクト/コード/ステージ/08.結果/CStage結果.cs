@@ -409,7 +409,8 @@ namespace DTXMania
 				}
 				#region [ #24609 2011.3.14 yyagi ランク更新or演奏型スキル更新時、リザルト画像をpngで保存する ]
 				if ( this.bアニメが完了 == true && this.bIsCheckedWhetherResultScreenShouldSaveOrNot == false	// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
-					&& CDTXMania.ConfigIni.bScoreIniを出力する)
+					&& CDTXMania.ConfigIni.bScoreIniを出力する
+					&& CDTXMania.ConfigIni.bIsAutoResultCapture)												// #25399 2011.6.9 yyagi
 				{
 					CheckAndSaveResultScreen(true);
 					this.bIsCheckedWhetherResultScreenShouldSaveOrNot = true;
@@ -492,6 +493,7 @@ namespace DTXMania
 					}
 					if( ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Return ) ) ) && !this.bアニメが完了 )
 					{
+						this.actFI.tフェードイン完了();					// #25406 2011.6.9 yyagi
 						this.actResultImage.tアニメを完了させる();
 						this.actParameterPanel.tアニメを完了させる();
 						this.actRank.tアニメを完了させる();

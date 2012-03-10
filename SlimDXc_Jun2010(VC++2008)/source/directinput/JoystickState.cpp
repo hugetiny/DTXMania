@@ -47,6 +47,7 @@ namespace DirectInput
 		vsliders = gcnew array<int>( 2 );
 		fsliders = gcnew array<int>( 2 );
 		asliders = gcnew array<int>( 2 );
+		dwOfs = 0;											// #26880 2011.12.3 yyagi
 	}
 
 	JoystickState::JoystickState( const DIJOYSTATE2 &joystate )
