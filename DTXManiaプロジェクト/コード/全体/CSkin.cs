@@ -176,7 +176,7 @@ namespace DTXMania
 					}
 					if ( this.rSound[ 0 ] == null || this.rSound[ 0 ].bストリーム再生する )
 					{
-						this.rSound[ 0 ] = null;
+						this.rSound[ 1 ] = null;
 					}
 					else
 					{
