@@ -74,7 +74,7 @@ namespace DTXMania
 			if ( this.txNowEnumeratingSongs != null )
 			{
 				this.txNowEnumeratingSongs.n透明度 = (int) ( 176.0 + 80.0 * Math.Sin( (double) (2 * Math.PI * this.ctNowEnumeratingSongs.n現在の値 * 2 / 100.0 ) ) );
-				this.txNowEnumeratingSongs.t2D描画( CDTXMania.app.Device, 0, 0 );
+				this.txNowEnumeratingSongs.t2D描画( CDTXMania.app.Device, 18, 7 );
 			}
 
 			return 0;
