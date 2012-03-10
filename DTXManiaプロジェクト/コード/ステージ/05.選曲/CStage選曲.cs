@@ -66,7 +66,7 @@ namespace DTXMania
 			base.list子Activities.Add( this.actオプションパネル = new CActオプションパネル() );
 			base.list子Activities.Add( this.actFIFO = new CActFIFOBlack() );
 			base.list子Activities.Add( this.actFIfrom結果画面 = new CActFIFOBlack() );
-			base.list子Activities.Add( this.actFOtoNowLoading = new CActFIFOBlack() );
+//			base.list子Activities.Add( this.actFOtoNowLoading = new CActFIFOBlack() );	// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 			base.list子Activities.Add( this.act曲リスト = new CActSelect曲リスト() );
 			base.list子Activities.Add( this.actステータスパネル = new CActSelectステータスパネル() );
 			base.list子Activities.Add( this.act演奏履歴パネル = new CActSelect演奏履歴パネル() );
@@ -287,10 +287,10 @@ namespace DTXMania
 						break;
 
 					case CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト:
-						if( this.actFOtoNowLoading.On進行描画() == 0 )
-						{
-							break;
-						}
+//						if( this.actFOtoNowLoading.On進行描画() == 0 )
+//						{
+//							break;
+//						}
 						return (int) this.eフェードアウト完了時の戻り値;
 				}
 				if( !this.bBGM再生済み && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
@@ -576,7 +576,7 @@ namespace DTXMania
 		private CActSelectArtistComment actArtistComment;
 		private CActFIFOBlack actFIFO;
 		private CActFIFOBlack actFIfrom結果画面;
-		private CActFIFOBlack actFOtoNowLoading;
+//		private CActFIFOBlack actFOtoNowLoading;	// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 		private CActSelectInformation actInformation;
 		private CActSelectPreimageパネル actPreimageパネル;
 		private CActSelectPresound actPresound;
@@ -749,7 +749,7 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 			this.n確定された曲の難易度 = this.act曲リスト.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( this.r確定された曲 );
 			this.r確定されたスコア = this.r確定された曲.arスコア[ this.n確定された曲の難易度 ];
 			this.eフェードアウト完了時の戻り値 = E戻り値.選曲した;
-			this.actFOtoNowLoading.tフェードアウト開始();
+		//	this.actFOtoNowLoading.tフェードアウト開始();					// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 			base.eフェーズID = CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト;
 			if( CDTXMania.ConfigIni.bLogDTX詳細ログ出力 )
 			{
@@ -778,7 +778,7 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 			if( ( this.r確定された曲 != null ) && ( this.r確定されたスコア != null ) )
 			{
 				this.eフェードアウト完了時の戻り値 = E戻り値.選曲した;
-				this.actFOtoNowLoading.tフェードアウト開始();
+			//	this.actFOtoNowLoading.tフェードアウト開始();				// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 				base.eフェーズID = CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト;
 			}
 		}
