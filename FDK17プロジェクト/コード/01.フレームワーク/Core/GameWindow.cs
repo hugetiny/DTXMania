@@ -381,6 +381,13 @@ namespace SampleFramework
                         return;
                     }
 				}
+//				#region Disable system menu
+//				if ( ( m.WParam.ToInt32() & 0xFFFF ) == 0xF100 )	// SC_KEYMENU
+//				{
+//					m.Result = IntPtr.Zero;
+//					return;
+//				}
+//				#endregion
 				#region #23510 2010.11.13 yyagi: reset to 640x480
 				if ((m.WParam.ToInt32() & 0xFFFF) == MENU_VIEW)		
 				{
