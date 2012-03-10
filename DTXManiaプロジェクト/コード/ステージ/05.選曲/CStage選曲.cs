@@ -13,6 +13,24 @@ namespace DTXMania
 	{
 		// プロパティ
 
+		public bool bIsEnumeratingSongs
+		{
+			get
+			{
+				return act曲リスト.bIsEnumeratingSongs;
+			}
+			set
+			{
+				act曲リスト.bIsEnumeratingSongs = value;
+			}
+		}
+		public bool bIsPlayingPremovie
+		{
+			get
+			{
+				return this.actPreimageパネル.bIsPlayingPremovie;
+			}
+		}
 		public bool bスクロール中
 		{
 			get
@@ -127,6 +145,15 @@ namespace DTXMania
 
 		// CStage 実装
 
+		/// <summary>
+		/// 曲リストをリセットする
+		/// </summary>
+		/// <param name="cs"></param>
+		public void Refresh( CSongs管理 cs, bool bRemakeSongTitleBar)
+		{
+			this.act曲リスト.Refresh( cs, bRemakeSongTitleBar );
+		}
+
 		public override void On活性化()
 		{
 			Trace.TraceInformation( "選曲ステージを活性化します。" );
@@ -138,7 +165,7 @@ namespace DTXMania
 
 //				this.actSortSongs.bIsActiveSortMenu = false;
 
-				//				this.n前回Bassを踏んだ時刻 = -1;
+//				this.n前回Bassを踏んだ時刻 = -1;
 //				this.n前回HHを叩いた時刻 = -1;
 //				this.n前回ギターをPickした時刻 = -1;
 //				this.n前回ベースをPickした時刻 = -1;
@@ -234,6 +261,8 @@ namespace DTXMania
 					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
 
 				this.actPreimageパネル.On進行描画();
+			//	this.bIsEnumeratingSongs = !this.actPreimageパネル.bIsPlayingPremovie;				// #27060 2011.3.2 yyagi: #PREMOVIE再生中は曲検索を中断する
+
 				this.act曲リスト.On進行描画();
 				int y = 0;
 				if( this.ct登場時アニメ用共通.b進行中 )
@@ -299,6 +328,10 @@ namespace DTXMania
 					CDTXMania.Skin.bgm選曲画面.t再生する();
 					this.bBGM再生済み = true;
 				}
+
+
+//Debug.WriteLine( "パンくず=" + this.r現在選択中の曲.strBreadcrumbs );
+
 
 				// キー入力
 				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 

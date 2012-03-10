@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -14,6 +15,11 @@ namespace DTXMania
 	{
 		// プロパティ
 
+		public bool bIsEnumeratingSongs
+		{
+			get;
+			set;
+		}
 		public bool bスクロール中
 		{
 			get
@@ -62,6 +68,7 @@ namespace DTXMania
 			this.r現在選択中の曲 = null;
 			this.n現在のアンカ難易度レベル = 0;
 			base.b活性化してない = true;
+			this.bIsEnumeratingSongs = false;
 		}
 
 
@@ -246,7 +253,71 @@ namespace DTXMania
 			CDTXMania.stage選曲.t選択曲変更通知();
 		}
 
-		
+
+		/// <summary>
+		/// 曲リストをリセットする
+		/// </summary>
+		/// <param name="cs"></param>
+		public void Refresh(CSongs管理 cs, bool bRemakeSongTitleBar )		// #26070 2012.2.28 yyagi
+		{
+//			this.On非活性化();
+
+			if ( cs != null && cs.list曲ルート.Count > 0 )	// 新しい曲リストを検索して、1曲以上あった
+			{
+				CDTXMania.Songs管理 = cs;
+
+				if ( this.r現在選択中の曲 != null )			// r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
+				{
+					this.r現在選択中の曲 = searchCurrentBreadcrumbsPosition( CDTXMania.Songs管理.list曲ルート, this.r現在選択中の曲.strBreadcrumbs );
+					if ( bRemakeSongTitleBar )					// 選曲画面以外に居るときには再構成しない (非活性化しているときに実行すると例外となる)
+					{
+						this.t現在選択中の曲を元に曲バーを再構成する();
+					}
+#if false			// list子リストの中まではmatchしてくれないので、検索ロジックは手書きで実装 (searchCurrentBreadcrumbs())
+					string bc = this.r現在選択中の曲.strBreadcrumbs;
+					Predicate<C曲リストノード> match = delegate( C曲リストノード c )
+					{
+						return ( c.strBreadcrumbs.Equals( bc ) );
+					};
+					int nMatched = CDTXMania.Songs管理.list曲ルート.FindIndex( match );
+
+					this.r現在選択中の曲 = ( nMatched == -1 ) ? null : CDTXMania.Songs管理.list曲ルート[ nMatched ];
+					this.t現在選択中の曲を元に曲バーを再構成する();
+#endif
+					return;
+				}
+			}
+			this.On非活性化();
+			this.r現在選択中の曲 = null;
+			this.On活性化();
+		}
+
+
+		/// <summary>
+		/// 現在選曲している位置を検索する
+		/// (曲一覧クラスを新しいものに入れ替える際に用いる)
+		/// </summary>
+		/// <param name="ln">検索対象のList</param>
+		/// <param name="bc">検索するパンくずリスト(文字列)</param>
+		/// <returns></returns>
+		private C曲リストノード searchCurrentBreadcrumbsPosition( List<C曲リストノード> ln, string bc )
+		{
+			foreach (C曲リストノード n in ln)
+			{
+				if ( n.strBreadcrumbs == bc )
+				{
+					return n;
+				}
+				else if ( n.list子リスト != null && n.list子リスト.Count > 0 )	// 子リストが存在するなら、再帰で探す
+				{
+					C曲リストノード r = searchCurrentBreadcrumbsPosition( n.list子リスト, bc );
+					if ( r != null ) return r;
+				}
+			}
+			return null;
+		}
+
+
 		// CActivity 実装
 
 		public override void On活性化()
@@ -308,13 +379,23 @@ namespace DTXMania
 			for( int i = 0; i < 13; i++ )
 				this.t曲名バーの生成( i, this.stバー情報[ i ].strタイトル文字列, this.stバー情報[ i ].col文字色 );
 
+			int c = ( CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ) ? 0 : 1;
+			#region [ Songs not found画像 ]
 			try
 			{
-				using( Bitmap image = new Bitmap( 300, 32 ) )
+				using( Bitmap image = new Bitmap( 640, 128 ) )
 				using( Graphics graphics = Graphics.FromImage( image ) )
 				{
-					graphics.DrawString( "Song not found...", this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 2f );
-					graphics.DrawString( "Song not found...", this.ft曲リスト用フォント, Brushes.White, (float) 0f, (float) 0f );
+					string[] s1 = { "曲データが見つかりません。", "Songs not found." };
+					string[] s2 = { "曲データをDTXManiaGR.exe以下の", "You need to install songs." };
+					string[] s3 = { "フォルダにインストールして下さい。", "" };
+					graphics.DrawString( s1[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 2f );
+					graphics.DrawString( s1[c], this.ft曲リスト用フォント, Brushes.White, (float) 0f, (float) 0f );
+					graphics.DrawString( s2[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 44f );
+					graphics.DrawString( s2[c], this.ft曲リスト用フォント, Brushes.White, (float) 0f, (float) 42f );
+					graphics.DrawString( s3[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 86f );
+					graphics.DrawString( s3[c], this.ft曲リスト用フォント, Brushes.White, (float) 0f, (float) 84f );
+
 					this.txSongNotFound = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
 
 					this.txSongNotFound.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );	// 半分のサイズで表示する。
@@ -325,6 +406,31 @@ namespace DTXMania
 				Trace.TraceError( "SoungNotFoundテクスチャの作成に失敗しました。" );
 				this.txSongNotFound = null;
 			}
+			#endregion
+			#region [ "曲データを検索しています"画像 ]
+			try
+			{
+				using ( Bitmap image = new Bitmap( 640, 96 ) )
+				using ( Graphics graphics = Graphics.FromImage( image ) )
+				{
+					string[] s1 = { "曲データを検索しています。", "Now enumerating songs." };
+					string[] s2 = { "そのまましばらくお待ち下さい。", "Please wait..." };
+					graphics.DrawString( s1[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 2f );
+					graphics.DrawString( s1[c], this.ft曲リスト用フォント, Brushes.White, (float) 0f, (float) 0f );
+					graphics.DrawString( s2[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float) 2f, (float) 44f );
+					graphics.DrawString( s2[c], this.ft曲リスト用フォント, Brushes.White, (float) 0f, (float) 42f );
+
+					this.txEnumeratingSongs = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+
+					this.txEnumeratingSongs.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );	// 半分のサイズで表示する。
+				}
+			}
+			catch ( CTextureCreateFailedException )
+			{
+				Trace.TraceError( "txEnumeratingSongsテクスチャの作成に失敗しました。" );
+				this.txEnumeratingSongs = null;
+			}
+			#endregion
 
 			base.OnManagedリソースの作成();
 		}
@@ -337,6 +443,7 @@ namespace DTXMania
 				CDTXMania.t安全にDisposeする( ref this.stバー情報[ i ].txタイトル名 );
 
 			CDTXMania.t安全にDisposeする( ref this.txスキル数字 );
+			CDTXMania.t安全にDisposeする( ref this.txEnumeratingSongs );
 			CDTXMania.t安全にDisposeする( ref this.txSongNotFound );
 			CDTXMania.t安全にDisposeする( ref this.tx曲名バー.Score );
 			CDTXMania.t安全にDisposeする( ref this.tx曲名バー.Box );
@@ -583,8 +690,18 @@ namespace DTXMania
 			{
 				#region [ 曲が１つもないなら「Songs not found.」を表示してここで帰れ。]
 				//-----------------
-				if( this.txSongNotFound != null )
-					this.txSongNotFound.t2D描画( CDTXMania.app.Device, 320, 200 );
+				if ( bIsEnumeratingSongs )
+				{
+					if ( this.txEnumeratingSongs != null )
+					{
+						this.txEnumeratingSongs.t2D描画( CDTXMania.app.Device, 320, 160 );
+					}
+				}
+				else
+				{
+					if ( this.txSongNotFound != null )
+						this.txSongNotFound.t2D描画( CDTXMania.app.Device, 320, 160 );
+				}
 				//-----------------
 				#endregion
 
@@ -839,7 +956,7 @@ namespace DTXMania
 		private int n目標のスクロールカウンタ;
 		private readonly Point[] ptバーの基本座標 = new Point[] { new Point( 0x162, 20 ), new Point( 0x139, 0x36 ), new Point( 0x121, 0x58 ), new Point( 0x111, 0x7a ), new Point( 0x108, 0x9c ), new Point( 0xe8, 0xc5 ), new Point( 0x112, 0x102 ), new Point( 0x121, 0x124 ), new Point( 0x138, 0x146 ), new Point( 0x157, 360 ), new Point( 0x18a, 0x18a ), new Point( 0x1f2, 0x1ac ), new Point( 640, 0x1ce ) };
 		private STバー情報[] stバー情報 = new STバー情報[ 13 ];
-		private CTexture txSongNotFound;
+		private CTexture txSongNotFound, txEnumeratingSongs;
 		private CTexture txスキル数字;
 		private STバー tx曲名バー;
 		private ST選曲バー tx選曲バー;
