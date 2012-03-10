@@ -163,18 +163,27 @@ namespace DTXMania
 				{
 					throw new FileNotFoundException( this.strファイル名 );
 				}
-				for( int i = 0; i < 2; i++ )
-				{
+//				for( int i = 0; i < 2; i++ )		// #27790 2012.3.10 yyagi 2回読み出しを、1回読みだし＋1回メモリコピーに変更
+//				{
 					try
 					{
-						this.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
+						this.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
 					}
 					catch
 					{
-						this.rSound[ i ] = null;
+						this.rSound[ 0 ] = null;
 						throw;
 					}
-				}
+					if ( this.rSound[ 0 ] == null || this.rSound[ 0 ].bストリーム再生する )
+					{
+						this.rSound[ 0 ] = null;
+					}
+					else
+					{
+						this.rSound[ 1 ] = (CSound) this.rSound[ 0 ].Clone();	// #27790 2012.3.10 yyagi add: to accelerate loading chip sounds
+					}
+
+//				}
 				this.b読み込み成功 = true;
 			}
 			public void t再生する()
