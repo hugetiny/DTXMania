@@ -1185,7 +1185,10 @@ namespace DTXMania
 
 			this.list項目リスト = new List<CItemBase>();
 			this.eメニュー種別 = Eメニュー種別.Unknown;
-			this.t項目リストの設定・System();
+			this.t項目リストの設定・Bass();		// #27795 2012.3.11 yyagi; System設定の中でDrumsの設定を参照しているため、
+			this.t項目リストの設定・Guitar();	// 活性化の時点でDrumsの設定も入れ込んでおかないと、System設定中に例外発生することがある。
+			this.t項目リストの設定・Drums();	// 
+			this.t項目リストの設定・System();	// 順番として、最後にSystemを持ってくること。設定一覧の初期位置がSystemのため。
 			this.b要素値にフォーカス中 = false;
 			this.n目標のスクロールカウンタ = 0;
 			this.n現在のスクロールカウンタ = 0;

@@ -1583,7 +1583,7 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 
 				for( int n楽器番号 = 0; n楽器番号 < 3; n楽器番号++ )
 				{
-					int n = ( n楽器番号 * 2 ) + 1;	// n = 0～5
+					int n = ( n楽器番号 * 3 ) + 1;	// n = 0～7		取りあえずランク対象はHiSkillだけとし、HiGameSkillでのランク計算はは棚上げ
 
 					#region socre.譜面情報.最大ランク[ n楽器番号 ] = ... 
 					//-----------------

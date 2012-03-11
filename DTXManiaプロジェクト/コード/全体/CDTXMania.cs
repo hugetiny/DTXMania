@@ -1063,49 +1063,46 @@ for (int i = 0; i < 3; i++) {
 																					// これを戻すのは、リザルト集計後。
 								}													// "case CStage.Eステージ.結果:"のところ。
 
-								double ps = 0.0, gs = 0.0;
+								double sp = 0.0;
 								if ( !c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0) {
-									ps = c演奏記録_Drums.db演奏型スキル値;
-									gs = c演奏記録_Drums.dbゲーム型スキル値;
+									sp = c演奏記録_Drums.dbスキル値;
 								}
 								else if ( !c演奏記録_Guitar.b全AUTOである && c演奏記録_Guitar.n全チップ数 > 0) {
-									ps = c演奏記録_Guitar.db演奏型スキル値;
-									gs = c演奏記録_Guitar.dbゲーム型スキル値;
+									sp = c演奏記録_Guitar.dbスキル値;
 								}
 								else
 								{
-									ps = c演奏記録_Bass.db演奏型スキル値;
-									gs = c演奏記録_Bass.dbゲーム型スキル値;
+									sp = c演奏記録_Bass.dbスキル値;
 								}
 								str = "Cleared";
 								switch( CScoreIni.t総合ランク値を計算して返す( c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass ) )
 								{
 									case (int)CScoreIni.ERANK.SS:
-										str = string.Format( "Cleared (SS: {0:F2})", ps );
+										str = string.Format( "Cleared (SS: {0:F2})", sp );
 										break;
 
 									case (int) CScoreIni.ERANK.S:
-										str = string.Format( "Cleared (S: {0:F2})", ps );
+										str = string.Format( "Cleared (S: {0:F2})", sp );
 										break;
 
 									case (int) CScoreIni.ERANK.A:
-										str = string.Format( "Cleared (A: {0:F2})", ps );
+										str = string.Format( "Cleared (A: {0:F2})", sp );
 										break;
 
 									case (int) CScoreIni.ERANK.B:
-										str = string.Format( "Cleared (B: {0:F2})", ps );
+										str = string.Format( "Cleared (B: {0:F2})", sp );
 										break;
 
 									case (int) CScoreIni.ERANK.C:
-										str = string.Format( "Cleared (C: {0:F2})", ps );
+										str = string.Format( "Cleared (C: {0:F2})", sp );
 										break;
 
 									case (int) CScoreIni.ERANK.D:
-										str = string.Format( "Cleared (D: {0:F2})", ps );
+										str = string.Format( "Cleared (D: {0:F2})", sp );
 										break;
 
 									case (int) CScoreIni.ERANK.E:
-										str = string.Format( "Cleared (E: {0:F2})", ps );
+										str = string.Format( "Cleared (E: {0:F2})", sp );
 										break;
 
 									case (int)CScoreIni.ERANK.UNKNOWN:	// #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
