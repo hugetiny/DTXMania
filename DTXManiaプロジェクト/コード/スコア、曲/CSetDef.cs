@@ -137,7 +137,7 @@ namespace DTXMania
 					try
 					{
 						str = str.TrimStart( new char[] { ' ', '\t' } );
-						if( ( str[ 0 ] == '#' ) && ( str[ 0 ] != ';' ) )
+						if( ( str.Length > 0 ) && ( str[ 0 ] == '#' ) && ( str[ 0 ] != ';' ) )
 						{
 							if( str.IndexOf( ';' ) != -1 )
 							{
