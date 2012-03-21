@@ -95,7 +95,8 @@ namespace FDK
 			{
 				this.sz画像サイズ = new Size( bitmap.Width, bitmap.Height );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
-				
+				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
+
 				using( var stream = new MemoryStream() )
 				{
 					bitmap.Save( stream, ImageFormat.Bmp );
@@ -169,7 +170,8 @@ namespace FDK
 			{
 				this.sz画像サイズ = new Size( n幅, n高さ );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
-				
+				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
+		
 				using ( var bitmap = new Bitmap( 1, 1 ) )
 				{
 					using ( var graphics = Graphics.FromImage( bitmap ) )
@@ -220,6 +222,7 @@ namespace FDK
 				
 				this.sz画像サイズ = new Size( information.Width, information.Height );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
+				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
 #if TEST_Direct3D9Ex
 				pool = poolvar;
 #endif
@@ -244,7 +247,7 @@ namespace FDK
 		/// <param name="y">描画位置（テクスチャの左上位置の Y 座標[dot]）。</param>
 		public void t2D描画( Device device, int x, int y )
 		{
-			this.t2D描画( device, x, y, new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height ) );
+			this.t2D描画( device, x, y, 1f, this.rc全画像 );
 		}
 		public void t2D描画( Device device, int x, int y, Rectangle rc画像内の描画領域 )
 		{
@@ -269,7 +272,8 @@ namespace FDK
 				float f右U値 = ( (float) rc画像内の描画領域.Right ) / ( (float) this.szテクスチャサイズ.Width );
 				float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 				float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
-				int color = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
+				this.color4.Alpha = ( (float) this._透明度 ) / 255f;
+				int color = this.color4.ToArgb();
 
 				if( this.cvTransformedColoredVertexies == null )
 					this.cvTransformedColoredVertexies = new TransformedColoredTexturedVertex[ 4 ];
@@ -326,7 +330,8 @@ namespace FDK
 				float f右U値 = ( (float) rc画像内の描画領域.Right ) / ( (float) this.szテクスチャサイズ.Width );
 				float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 				float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
-				int color = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
+				this.color4.Alpha = ( (float) this._透明度 ) / 255f;
+				int color = this.color4.ToArgb();
 
 				if( this.cvPositionColoredVertexies == null )
 					this.cvPositionColoredVertexies = new PositionColoredTexturedVertex[ 4 ];
@@ -383,7 +388,7 @@ namespace FDK
 		/// </summary>
 		public void t3D描画( Device device, Matrix mat )
 		{
-			this.t3D描画( device, mat, new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height ) );
+			this.t3D描画( device, mat, this.rc全画像 );
 		}
 		public void t3D描画( Device device, Matrix mat, Rectangle rc画像内の描画領域 )
 		{
@@ -397,7 +402,8 @@ namespace FDK
 			float f右U値 = ( (float) rc画像内の描画領域.Right ) / ( (float) this.szテクスチャサイズ.Width );
 			float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 			float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
-			int color = new Color4( ( (float) this._透明度 ) / 255f, 1f, 1f, 1f ).ToArgb();
+			this.color4.Alpha = ( (float) this._透明度 ) / 255f;
+			int color = this.color4.ToArgb();
 			
 			if( this.cvPositionColoredVertexies == null )
 				this.cvPositionColoredVertexies = new PositionColoredTexturedVertex[ 4 ];
@@ -540,6 +546,12 @@ namespace FDK
 
 			return szサイズ;
 		}
+
+		
+		// 2012.3.21 さらなる new の省略作戦
+
+		private Rectangle rc全画像;								// テクスチャ作ったらあとは不変
+		private Color4 color4 = new Color4( 1f, 1f, 1f, 1f );	// アルファ以外は不変
 		//-----------------
 		#endregion
 	}
