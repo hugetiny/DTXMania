@@ -93,6 +93,7 @@ namespace DTXMania
 			base.list子Activities.Add( this.actArtistComment = new CActSelectArtistComment() );
 			base.list子Activities.Add( this.actInformation = new CActSelectInformation() );
 			base.list子Activities.Add( this.actSortSongs = new CActSortSongs() );
+			base.list子Activities.Add( this.actShowCurrentPosition = new CActSelectShowCurrentPosition() );
 
 			this.CommandHistory = new CCommandHistory();		// #24063 2011.1.16 yyagi
 //			this.actSortSongs.bIsActiveSortMenu = false;		// #23615 2011.3.28 yyagi
@@ -108,6 +109,7 @@ namespace DTXMania
 			this.act演奏履歴パネル.t選択曲が変更された();
 			this.actステータスパネル.t選択曲が変更された();
 			this.actArtistComment.t選択曲が変更された();
+			this.actShowCurrentPosition.t選択曲が変更された();
 
 			#region [ プラグインにも通知する（BOX, RANDOM, BACK なら通知しない）]
 			//---------------------
@@ -292,6 +294,9 @@ namespace DTXMania
 					Rectangle rect = new Rectangle(31, 49, 20, 11);
 					this.txFLIP.t2D描画( CDTXMania.app.Device, 40, 436, rect );
 				}
+				this.actShowCurrentPosition.t選択曲が変更された();						// #27648 2011.3.14 yyagi スクロール中も選択中のアイテム番号表示数を更新するため
+				this.actShowCurrentPosition.On進行描画();								// #27648 2011.3.14 yyagi
+
 				switch ( base.eフェーズID )
 				{
 					case CStage.Eフェーズ.共通_フェードイン:
@@ -617,6 +622,7 @@ namespace DTXMania
 		private CActSelectステータスパネル actステータスパネル;
 		private CActSelect演奏履歴パネル act演奏履歴パネル;
 		private CActSelect曲リスト act曲リスト;
+		private CActSelectShowCurrentPosition actShowCurrentPosition;	// #27648 2011.3.11 yyagi
 
 		private CActSortSongs actSortSongs;
 

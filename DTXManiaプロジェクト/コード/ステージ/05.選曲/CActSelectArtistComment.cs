@@ -170,8 +170,8 @@ namespace DTXMania
 				}
 				if( this.txArtist != null )
 				{
-					int x = 0x27a - ( (int) ( this.txArtist.szテクスチャサイズ.Width * this.txArtist.vc拡大縮小倍率.X ) );
-					int y = 0xe7;
+					int x = 634 - 12 - ( (int) ( this.txArtist.szテクスチャサイズ.Width * this.txArtist.vc拡大縮小倍率.X ) );		// #27648 2012.3.14 yyagi: -12 for scrollbar
+					int y = 231;
 					this.txArtist.t2D描画( CDTXMania.app.Device, x, y );
 				}
 				if( ( this.txComment != null ) && ( ( this.ctComment.n現在の値 + 0x182 ) >= 0 ) )
