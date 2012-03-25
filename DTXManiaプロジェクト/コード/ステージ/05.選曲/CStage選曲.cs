@@ -13,6 +13,24 @@ namespace DTXMania
 	{
 		// プロパティ
 
+		public bool bIsEnumeratingSongs
+		{
+			get
+			{
+				return act曲リスト.bIsEnumeratingSongs;
+			}
+			set
+			{
+				act曲リスト.bIsEnumeratingSongs = value;
+			}
+		}
+		public bool bIsPlayingPremovie
+		{
+			get
+			{
+				return this.actPreimageパネル.bIsPlayingPremovie;
+			}
+		}
 		public bool bスクロール中
 		{
 			get
@@ -66,7 +84,7 @@ namespace DTXMania
 			base.list子Activities.Add( this.actオプションパネル = new CActオプションパネル() );
 			base.list子Activities.Add( this.actFIFO = new CActFIFOBlack() );
 			base.list子Activities.Add( this.actFIfrom結果画面 = new CActFIFOBlack() );
-			base.list子Activities.Add( this.actFOtoNowLoading = new CActFIFOBlack() );
+//			base.list子Activities.Add( this.actFOtoNowLoading = new CActFIFOBlack() );	// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 			base.list子Activities.Add( this.act曲リスト = new CActSelect曲リスト() );
 			base.list子Activities.Add( this.actステータスパネル = new CActSelectステータスパネル() );
 			base.list子Activities.Add( this.act演奏履歴パネル = new CActSelect演奏履歴パネル() );
@@ -90,6 +108,7 @@ namespace DTXMania
 			this.act演奏履歴パネル.t選択曲が変更された();
 			this.actステータスパネル.t選択曲が変更された();
 			this.actArtistComment.t選択曲が変更された();
+			this.act曲リスト.t選択曲が変更された();
 
 			#region [ プラグインにも通知する（BOX, RANDOM, BACK なら通知しない）]
 			//---------------------
@@ -127,6 +146,15 @@ namespace DTXMania
 
 		// CStage 実装
 
+		/// <summary>
+		/// 曲リストをリセットする
+		/// </summary>
+		/// <param name="cs"></param>
+		public void Refresh( CSongs管理 cs, bool bRemakeSongTitleBar)
+		{
+			this.act曲リスト.Refresh( cs, bRemakeSongTitleBar );
+		}
+
 		public override void On活性化()
 		{
 			Trace.TraceInformation( "選曲ステージを活性化します。" );
@@ -138,7 +166,7 @@ namespace DTXMania
 
 //				this.actSortSongs.bIsActiveSortMenu = false;
 
-				//				this.n前回Bassを踏んだ時刻 = -1;
+//				this.n前回Bassを踏んだ時刻 = -1;
 //				this.n前回HHを叩いた時刻 = -1;
 //				this.n前回ギターをPickした時刻 = -1;
 //				this.n前回ベースをPickした時刻 = -1;
@@ -234,6 +262,8 @@ namespace DTXMania
 					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
 
 				this.actPreimageパネル.On進行描画();
+			//	this.bIsEnumeratingSongs = !this.actPreimageパネル.bIsPlayingPremovie;				// #27060 2011.3.2 yyagi: #PREMOVIE再生中は曲検索を中断する
+
 				this.act曲リスト.On進行描画();
 				int y = 0;
 				if( this.ct登場時アニメ用共通.b進行中 )
@@ -263,6 +293,7 @@ namespace DTXMania
 					Rectangle rect = new Rectangle(31, 49, 20, 11);
 					this.txFLIP.t2D描画( CDTXMania.app.Device, 40, 436, rect );
 				}
+
 				switch ( base.eフェーズID )
 				{
 					case CStage.Eフェーズ.共通_フェードイン:
@@ -287,10 +318,10 @@ namespace DTXMania
 						break;
 
 					case CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト:
-						if( this.actFOtoNowLoading.On進行描画() == 0 )
-						{
-							break;
-						}
+//						if( this.actFOtoNowLoading.On進行描画() == 0 )
+//						{
+//							break;
+//						}
 						return (int) this.eフェードアウト完了時の戻り値;
 				}
 				if( !this.bBGM再生済み && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
@@ -299,6 +330,10 @@ namespace DTXMania
 					CDTXMania.Skin.bgm選曲画面.t再生する();
 					this.bBGM再生済み = true;
 				}
+
+
+//Debug.WriteLine( "パンくず=" + this.r現在選択中の曲.strBreadcrumbs );
+
 
 				// キー入力
 				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 
@@ -576,7 +611,7 @@ namespace DTXMania
 		private CActSelectArtistComment actArtistComment;
 		private CActFIFOBlack actFIFO;
 		private CActFIFOBlack actFIfrom結果画面;
-		private CActFIFOBlack actFOtoNowLoading;
+//		private CActFIFOBlack actFOtoNowLoading;	// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 		private CActSelectInformation actInformation;
 		private CActSelectPreimageパネル actPreimageパネル;
 		private CActSelectPresound actPresound;
@@ -749,7 +784,7 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 			this.n確定された曲の難易度 = this.act曲リスト.n現在のアンカ難易度レベルに最も近い難易度レベルを返す( this.r確定された曲 );
 			this.r確定されたスコア = this.r確定された曲.arスコア[ this.n確定された曲の難易度 ];
 			this.eフェードアウト完了時の戻り値 = E戻り値.選曲した;
-			this.actFOtoNowLoading.tフェードアウト開始();
+		//	this.actFOtoNowLoading.tフェードアウト開始();					// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 			base.eフェーズID = CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト;
 			if( CDTXMania.ConfigIni.bLogDTX詳細ログ出力 )
 			{
@@ -778,7 +813,7 @@ Debug.WriteLine( "CMDHIS: 楽器=" + _stct.eInst + ", CMD=" + _stct.ePad + ", ti
 			if( ( this.r確定された曲 != null ) && ( this.r確定されたスコア != null ) )
 			{
 				this.eフェードアウト完了時の戻り値 = E戻り値.選曲した;
-				this.actFOtoNowLoading.tフェードアウト開始();
+			//	this.actFOtoNowLoading.tフェードアウト開始();				// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 				base.eフェーズID = CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト;
 			}
 		}

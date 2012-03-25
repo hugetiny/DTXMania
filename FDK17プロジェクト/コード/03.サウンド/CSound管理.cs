@@ -184,23 +184,24 @@ namespace FDK
 			int nHandle;
 
 			CSound csound = new CSoundOggVorbis();
-			nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
-			if (nDecodedPCMsize < 0)
+			nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
+			if ( nDecodedPCMsize < 0 )
 			{
 				csound.Dispose();
 				csound = new CSoundXA();
-				nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
-				if (nDecodedPCMsize < 0)
+				nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
+				if ( nDecodedPCMsize < 0 )
 				{
 					csound.Dispose();
 					csound = new CSoundRiffWave();
-					nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
-					if (nDecodedPCMsize < 0)
+					nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
+					if ( nDecodedPCMsize < 0 )
 					{
 						csound.Dispose();
 						csound = new CSoundMp3();
 						nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
-						if (nDecodedPCMsize < 0) {
+						if ( nDecodedPCMsize < 0 )
+						{
 							csound.Dispose();
 							return null;
 						}

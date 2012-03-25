@@ -18,7 +18,7 @@ namespace DTXMania
 			base.eステージID = CStage.Eステージ.曲読み込み;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 			base.b活性化してない = true;
-			base.list子Activities.Add( this.actFI = new CActFIFOBlack() );
+//			base.list子Activities.Add( this.actFI = new CActFIFOBlack() );	// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
 			base.list子Activities.Add( this.actFO = new CActFIFOBlack() );
 		}
 
@@ -61,14 +61,14 @@ namespace DTXMania
 				}
 				if( ( ( cdtx.SOUND_NOWLOADING != null ) && ( cdtx.SOUND_NOWLOADING.Length > 0 ) ) && File.Exists( cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING ) )
 				{
-					string strNowLoading画像ファイルパス = cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING;
+					string strNowLoadingサウンドファイルパス = cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING;
 					try
 					{
-						this.sd読み込み音 = CDTXMania.Sound管理.tサウンドを生成する( strNowLoading画像ファイルパス );
+						this.sd読み込み音 = CDTXMania.Sound管理.tサウンドを生成する( strNowLoadingサウンドファイルパス );
 					}
 					catch
 					{
-						Trace.TraceError( "#SOUND_NOWLOADING に指定されたサウンドファイルの読み込みに失敗しました。({0})", strNowLoading画像ファイルパス );
+						Trace.TraceError( "#SOUND_NOWLOADING に指定されたサウンドファイルの読み込みに失敗しました。({0})", strNowLoadingサウンドファイルパス );
 					}
 				}
 				cdtx.On非活性化();
@@ -184,7 +184,7 @@ namespace DTXMania
 					this.nBGM再生開始時刻 = CDTXMania.Timer.n現在時刻;
 					this.nBGMの総再生時間ms = CDTXMania.Skin.sound曲読込開始音.n長さ・現在のサウンド;
 				}
-				this.actFI.tフェードイン開始();
+//				this.actFI.tフェードイン開始();							// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
 				base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 				base.b初めての進行描画 = false;
 			}
@@ -214,7 +214,9 @@ namespace DTXMania
 			switch( base.eフェーズID )
 			{
 				case CStage.Eフェーズ.共通_フェードイン:
-					if( this.actFI.On進行描画() != 0 )
+//					if( this.actFI.On進行描画() != 0 )					// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
+																		// 必ず一度「CStaeg.Eフェーズ.共通_フェードイン」フェーズを経由させること。
+																		// さもないと、曲読み込みが完了するまで、曲読み込み画面が描画されない。
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_DTXファイルを読み込む;
 					return 0;
 
@@ -266,11 +268,11 @@ namespace DTXMania
 				case CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ:
 					{
 						long nCurrentTime = CDTXMania.Timer.n現在時刻;
-
 						if( nCurrentTime < this.nBGM再生開始時刻 )
 							this.nBGM再生開始時刻 = nCurrentTime;
 
-						if( ( nCurrentTime - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms - 1000 ) )
+//						if ( ( nCurrentTime - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms - 1000 ) )
+						if ( ( nCurrentTime - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms ) )	// #27787 2012.3.10 yyagi 1000ms == フェードイン分の時間
 						{
 							this.actFO.tフェードアウト開始();
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
@@ -291,7 +293,7 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private CActFIFOBlack actFI;
+//		private CActFIFOBlack actFI;
 		private CActFIFOBlack actFO;
 		private bool b音符を表示する;
 		private Font ftタイトル表示用フォント;

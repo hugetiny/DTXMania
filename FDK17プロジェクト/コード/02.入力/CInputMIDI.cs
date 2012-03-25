@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace FDK
 {
@@ -30,16 +31,19 @@ namespace FDK
 		{
 			if( wMsg == CWin32.MIM_DATA )
 			{
-				int num = dwParam1 & 0xF0;
-				int num2 = ( dwParam1 >> 8 ) & 0xFF;
-				int num3 = ( dwParam1 >> 16 ) & 0xFF;
-				if( ( num == 0x90 ) && ( num3 != 0 ) )
+				int nMIDIevent = dwParam1 & 0xF0;
+				int nPara1 = ( dwParam1 >> 8 ) & 0xFF;
+				int nPara2 = ( dwParam1 >> 16 ) & 0xFF;
+
+// Trace.TraceInformation( "MIDIevent={0:X2} para1={1:X2} para2={2:X2}", nMIDIevent, nPara1, nPara2 );
+			
+				if( ( nMIDIevent == 0x90 ) && ( nPara2 != 0 ) )
 				{
 					STInputEvent item = new STInputEvent();
-					item.nKey = num2;
+					item.nKey = nPara1;
 					item.b押された = true;
 					item.nTimeStamp = n受信システム時刻;
-					item.nVelocity = num3;
+					item.nVelocity = nPara2;
 					this.listEventBuffer.Add( item );
 				}
 			}

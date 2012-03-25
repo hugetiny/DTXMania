@@ -372,7 +372,7 @@ namespace DTXMania
 						base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 					}
 				}
-				else if( ( base.eフェーズID == CStage.Eフェーズ.共通_フェードアウト ) && ( this.actFO.On進行描画() != 0 ) )
+				else if( ( base.eフェーズID == CStage.Eフェーズ.共通_フェードアウト ) )			//&& ( this.actFO.On進行描画() != 0 ) )
 				{
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
@@ -489,7 +489,7 @@ namespace DTXMania
 						if ( ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) && this.bアニメが完了 )
 						{
 							CDTXMania.Skin.sound取消音.t再生する();
-							this.actFO.tフェードアウト開始();
+//							this.actFO.tフェードアウト開始();
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 							this.eフェードアウト完了時の戻り値 = E戻り値.完了;
 						}
