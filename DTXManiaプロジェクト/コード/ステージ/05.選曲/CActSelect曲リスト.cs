@@ -879,7 +879,6 @@ namespace DTXMania
 				int ry = (sy / 128);
 				int h = ( ( ry + 1 ) * 128 > 336 ) ? 336 - ry * 128 : 128;
 				this.txScrollBar.t2D描画( CDTXMania.app.Device, 640 - 12, 58 + sy, new Rectangle( ry * 12 , 0, 12, h ) );	// 本当のy座標は88なんだが、なぜか約30のバイアスが掛かる・・・
-				Debug.WriteLine( "sy=" + sy + ", ry=" + ry );
 			}
 			#endregion
 			#region [ スクロール地点の描画 #27648 ]
