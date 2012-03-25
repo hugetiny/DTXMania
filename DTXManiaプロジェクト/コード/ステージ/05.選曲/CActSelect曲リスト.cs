@@ -181,6 +181,7 @@ namespace DTXMania
 			{
 				this.r現在選択中の曲 = this.r現在選択中の曲.list子リスト[ 0 ];
 				this.t現在選択中の曲を元に曲バーを再構成する();
+				this.t選択曲が変更された();									// #27648 項目数変更を反映させる
 			}
 		}
 		public void tBOXを出る()
@@ -189,6 +190,7 @@ namespace DTXMania
 			{
 				this.r現在選択中の曲 = this.r現在選択中の曲.r親ノード;
 				this.t現在選択中の曲を元に曲バーを再構成する();
+				this.t選択曲が変更された();									// #27648 項目数変更を反映させる
 			}
 		}
 		public void t現在選択中の曲を元に曲バーを再構成する()
@@ -317,6 +319,26 @@ namespace DTXMania
 			return null;
 		}
 
+		/// <summary>
+		/// BOXのアイテム数と、今何番目を選択しているかをセットする
+		/// </summary>
+		public void t選択曲が変更された()	// #27648
+		{
+			C曲リストノード song = CDTXMania.stage選曲.r現在選択中の曲;
+			if ( song == null )
+				return;
+			List<C曲リストノード> list = ( song.r親ノード != null ) ? song.r親ノード.list子リスト : CDTXMania.Songs管理.list曲ルート;
+			int index = list.IndexOf( song ) + 1;
+			if ( index <= 0 )
+			{
+				nCurrentPosition = nNumOfItems = 0;
+			}
+			else
+			{
+				nCurrentPosition = index;
+				nNumOfItems = list.Count;
+			}
+		}
 
 		// CActivity 実装
 
@@ -431,6 +453,11 @@ namespace DTXMania
 				this.txEnumeratingSongs = null;
 			}
 			#endregion
+			#region [ スクロールバー #27648 ]
+			this.txアイテム数数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill number on gauge etc.png" ), false );
+			this.txScrollBar = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" ), false );
+			this.txScrollPosition = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" ), false );
+			#endregion
 
 			base.OnManagedリソースの作成();
 		}
@@ -438,6 +465,9 @@ namespace DTXMania
 		{
 			if( this.b活性化してない )
 				return;
+			CDTXMania.t安全にDisposeする( ref this.txアイテム数数字 );
+			CDTXMania.t安全にDisposeする( ref this.txScrollBar );
+			CDTXMania.t安全にDisposeする( ref this.txScrollPosition );
 
 			for( int i = 0; i < 13; i++ )
 				CDTXMania.t安全にDisposeする( ref this.stバー情報[ i ].txタイトル名 );
@@ -616,7 +646,9 @@ namespace DTXMania
 
 						this.n現在のスクロールカウンタ -= 100;
 						this.n目標のスクロールカウンタ -= 100;
-						
+
+						this.t選択曲が変更された();						// スクロールバー用に今何番目を選択しているかを更新
+
 						if( this.n目標のスクロールカウンタ == 0 )
 							CDTXMania.stage選曲.t選択曲変更通知();		// スクロール完了＝選択曲変更！
 
@@ -670,6 +702,8 @@ namespace DTXMania
 
 						this.n現在のスクロールカウンタ += 100;
 						this.n目標のスクロールカウンタ += 100;
+
+						this.t選択曲が変更された();						// スクロールバー用に今何番目を選択しているかを更新
 
 						if( this.n目標のスクロールカウンタ == 0 )
 							CDTXMania.stage選曲.t選択曲変更通知();		// スクロール完了＝選択曲変更！
@@ -839,6 +873,37 @@ namespace DTXMania
 				//-----------------
 				#endregion
 			}
+			#region [ スクロールバーの描画 #27648 ]
+			for ( int sy = 0; sy < 336; sy += 128 )
+			{
+				int ry = (sy / 128);
+				int h = ( ( ry + 1 ) * 128 > 336 ) ? 336 - ry * 128 : 128;
+				this.txScrollBar.t2D描画( CDTXMania.app.Device, 640 - 12, 58 + sy, new Rectangle( ry * 12 , 0, 12, h ) );	// 本当のy座標は88なんだが、なぜか約30のバイアスが掛かる・・・
+				Debug.WriteLine( "sy=" + sy + ", ry=" + ry );
+			}
+			#endregion
+			#region [ スクロール地点の描画 #27648 ]
+			int py;
+			double d = 0;
+			if ( nNumOfItems > 1 )
+			{
+				d = ( 336 - 6 - 8 ) / (double) ( nNumOfItems - 1 );
+				py = (int) ( d * ( nCurrentPosition - 1 ) );
+			}
+			else
+			{
+				d = 0;
+				py = 0;
+			}
+			int delta = (int) ( d * this.n現在のスクロールカウンタ / 100 );
+			if ( py + delta <= 336 - 6 - 8 )
+			{
+				this.txScrollPosition.t2D描画( CDTXMania.app.Device, 640 - 12 + 3, 58 + 3 + py + delta, new Rectangle( 30, 120, 6, 8 ) );
+			}
+			#endregion
+			#region [ アイテム数の描画 #27648 ]
+			tアイテム数の描画();
+			#endregion
 
 			return 0;
 		}
@@ -960,6 +1025,12 @@ namespace DTXMania
 		private CTexture txスキル数字;
 		private STバー tx曲名バー;
 		private ST選曲バー tx選曲バー;
+
+		private int nCurrentPosition = 0;
+		private int nNumOfItems = 0;
+		private CTexture txScrollPosition;
+		private CTexture txScrollBar;
+		private CTexture txアイテム数数字;
 
 		private Eバー種別 e曲のバー種別を返す( C曲リストノード song )
 		{
@@ -1179,6 +1250,37 @@ namespace DTXMania
 			{
 				Trace.TraceError( "曲名テクスチャの作成に失敗しました。[{0}]", str曲名 );
 				this.stバー情報[ nバー番号 ].txタイトル名 = null;
+			}
+		}
+		private void tアイテム数の描画()
+		{
+			string s = nCurrentPosition.ToString() + "/" + nNumOfItems.ToString();
+			int x = 639 - 8;
+			int y = 362;
+
+			for ( int p = s.Length - 1; p >= 0; p-- )
+			{
+				tアイテム数の描画・１桁描画( x, y, s[ p ] );
+				x -= 8;
+			}
+		}
+		private void tアイテム数の描画・１桁描画( int x, int y, char s数値 )
+		{
+			int dx, dy;
+			if ( s数値 == '/' )
+			{
+				dx = 48;
+				dy = 0;
+			}
+			else
+			{
+				int n = (int) s数値 - (int) '0';
+				dx = ( n % 6 ) * 8;
+				dy = ( n / 6 ) * 12;
+			}
+			if ( this.txアイテム数数字 != null )
+			{
+				this.txアイテム数数字.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( dx, dy, 8, 12 ) );
 			}
 		}
 		//-----------------
