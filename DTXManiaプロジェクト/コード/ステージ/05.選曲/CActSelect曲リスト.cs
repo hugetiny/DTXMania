@@ -60,7 +60,17 @@ namespace DTXMania
 			private set;
 		}
 
+		public int nスクロールバー相対y座標
+		{
+			get;
+			private set;
+		}
 
+		// t選択曲が変更された()内で使う、直前の選曲の保持
+		// (前と同じ曲なら選択曲変更に掛かる再計算を省略して高速化するため)
+		private C曲リストノード song_last = null;
+
+		
 		// コンストラクタ
 
 		public CActSelect曲リスト()
@@ -325,8 +335,9 @@ namespace DTXMania
 		public void t選択曲が変更された()	// #27648
 		{
 			C曲リストノード song = CDTXMania.stage選曲.r現在選択中の曲;
-			if ( song == null )
+			if ( song == null || song == song_last )
 				return;
+			song_last = song;
 			List<C曲リストノード> list = ( song.r親ノード != null ) ? song.r親ノード.list子リスト : CDTXMania.Songs管理.list曲ルート;
 			int index = list.IndexOf( song ) + 1;
 			if ( index <= 0 )
@@ -453,21 +464,17 @@ namespace DTXMania
 				this.txEnumeratingSongs = null;
 			}
 			#endregion
-			#region [ スクロールバー #27648 ]
+			#region [ 曲数表示 ]
 			this.txアイテム数数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill number on gauge etc.png" ), false );
-			this.txScrollBar = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" ), false );
-			this.txScrollPosition = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" ), false );
 			#endregion
-
 			base.OnManagedリソースの作成();
 		}
 		public override void OnManagedリソースの解放()
 		{
 			if( this.b活性化してない )
 				return;
+
 			CDTXMania.t安全にDisposeする( ref this.txアイテム数数字 );
-			CDTXMania.t安全にDisposeする( ref this.txScrollBar );
-			CDTXMania.t安全にDisposeする( ref this.txScrollPosition );
 
 			for( int i = 0; i < 13; i++ )
 				CDTXMania.t安全にDisposeする( ref this.stバー情報[ i ].txタイトル名 );
@@ -704,7 +711,7 @@ namespace DTXMania
 						this.n目標のスクロールカウンタ += 100;
 
 						this.t選択曲が変更された();						// スクロールバー用に今何番目を選択しているかを更新
-
+						
 						if( this.n目標のスクロールカウンタ == 0 )
 							CDTXMania.stage選曲.t選択曲変更通知();		// スクロール完了＝選択曲変更！
 						//-----------------
@@ -873,15 +880,7 @@ namespace DTXMania
 				//-----------------
 				#endregion
 			}
-			#region [ スクロールバーの描画 #27648 ]
-			for ( int sy = 0; sy < 336; sy += 128 )
-			{
-				int ry = (sy / 128);
-				int h = ( ( ry + 1 ) * 128 > 336 ) ? 336 - ry * 128 : 128;
-				this.txScrollBar.t2D描画( CDTXMania.app.Device, 640 - 12, 58 + sy, new Rectangle( ry * 12 , 0, 12, h ) );	// 本当のy座標は88なんだが、なぜか約30のバイアスが掛かる・・・
-			}
-			#endregion
-			#region [ スクロール地点の描画 #27648 ]
+			#region [ スクロール地点の計算(描画はCActSelectShowCurrentPositionにて行う) #27648 ]
 			int py;
 			double d = 0;
 			if ( nNumOfItems > 1 )
@@ -897,13 +896,13 @@ namespace DTXMania
 			int delta = (int) ( d * this.n現在のスクロールカウンタ / 100 );
 			if ( py + delta <= 336 - 6 - 8 )
 			{
-				this.txScrollPosition.t2D描画( CDTXMania.app.Device, 640 - 12 + 3, 58 + 3 + py + delta, new Rectangle( 30, 120, 6, 8 ) );
+				this.nスクロールバー相対y座標 = py + delta;
 			}
 			#endregion
+
 			#region [ アイテム数の描画 #27648 ]
 			tアイテム数の描画();
 			#endregion
-
 			return 0;
 		}
 		
@@ -1022,14 +1021,12 @@ namespace DTXMania
 		private STバー情報[] stバー情報 = new STバー情報[ 13 ];
 		private CTexture txSongNotFound, txEnumeratingSongs;
 		private CTexture txスキル数字;
+		private CTexture txアイテム数数字;
 		private STバー tx曲名バー;
 		private ST選曲バー tx選曲バー;
 
 		private int nCurrentPosition = 0;
 		private int nNumOfItems = 0;
-		private CTexture txScrollPosition;
-		private CTexture txScrollBar;
-		private CTexture txアイテム数数字;
 
 		private Eバー種別 e曲のバー種別を返す( C曲リストノード song )
 		{
@@ -1254,7 +1251,7 @@ namespace DTXMania
 		private void tアイテム数の描画()
 		{
 			string s = nCurrentPosition.ToString() + "/" + nNumOfItems.ToString();
-			int x = 639 - 8;
+			int x = 639 - 8 - 12;
 			int y = 362;
 
 			for ( int p = s.Length - 1; p >= 0; p-- )

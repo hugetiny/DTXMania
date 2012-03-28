@@ -12,7 +12,20 @@ namespace DTXMania
 	internal class CStage選曲 : CStage
 	{
 		// プロパティ
-
+		public int nスクロールバー相対y座標
+		{
+			get
+			{
+				if ( act曲リスト != null )
+				{
+					return act曲リスト.nスクロールバー相対y座標;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
 		public bool bIsEnumeratingSongs
 		{
 			get
@@ -93,6 +106,7 @@ namespace DTXMania
 			base.list子Activities.Add( this.actArtistComment = new CActSelectArtistComment() );
 			base.list子Activities.Add( this.actInformation = new CActSelectInformation() );
 			base.list子Activities.Add( this.actSortSongs = new CActSortSongs() );
+			base.list子Activities.Add( this.actShowCurrentPosition = new CActSelectShowCurrentPosition() );
 
 			this.CommandHistory = new CCommandHistory();		// #24063 2011.1.16 yyagi
 //			this.actSortSongs.bIsActiveSortMenu = false;		// #23615 2011.3.28 yyagi
@@ -108,7 +122,6 @@ namespace DTXMania
 			this.act演奏履歴パネル.t選択曲が変更された();
 			this.actステータスパネル.t選択曲が変更された();
 			this.actArtistComment.t選択曲が変更された();
-			this.act曲リスト.t選択曲が変更された();
 
 			#region [ プラグインにも通知する（BOX, RANDOM, BACK なら通知しない）]
 			//---------------------
@@ -142,7 +155,6 @@ namespace DTXMania
 			//---------------------
 			#endregion
 		}
-
 
 		// CStage 実装
 
@@ -293,6 +305,7 @@ namespace DTXMania
 					Rectangle rect = new Rectangle(31, 49, 20, 11);
 					this.txFLIP.t2D描画( CDTXMania.app.Device, 40, 436, rect );
 				}
+				this.actShowCurrentPosition.On進行描画();								// #27648 2011.3.28 yyagi
 
 				switch ( base.eフェーズID )
 				{
@@ -619,6 +632,7 @@ namespace DTXMania
 		private CActSelectステータスパネル actステータスパネル;
 		private CActSelect演奏履歴パネル act演奏履歴パネル;
 		private CActSelect曲リスト act曲リスト;
+		private CActSelectShowCurrentPosition actShowCurrentPosition;
 
 		private CActSortSongs actSortSongs;
 
