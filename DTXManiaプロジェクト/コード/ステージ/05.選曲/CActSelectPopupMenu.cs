@@ -15,6 +15,16 @@ namespace DTXMania
 
 		// プロパティ
 
+	
+		public int GetIndex(int pos)
+		{
+			return lciMenuItems[ pos ].GetIndex();
+		}
+		public object GetObj現在値( int pos )
+		{
+			return lciMenuItems[ pos ].obj現在値();
+		}
+
 		/// <summary>
 		/// ソートメニュー機能を使用中かどうか。外部からこれをtrueにすると、ソートメニューが出現する。falseにすると消える。
 		/// </summary>
@@ -23,12 +33,13 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		public virtual void tActivatePopupMenu()
+		public void tActivatePopupMenu()
 		{
 			nItemSelecting = -1;		// #24757 2011.4.1 yyagi: Clear sorting status in each stating menu.
 			this.bIsActivePopupMenu = true;
+			this.bIsSelectingIntItem = false;
 		}
-		public virtual void tDeativatePopupMenu()
+		public void tDeativatePopupMenu()
 		{
 			this.bIsActivePopupMenu = false;
 		}
@@ -36,11 +47,16 @@ namespace DTXMania
 
 		public void Initialize( string title, List<CItemBase> menulist, bool showAllItems )
 		{
+			Initialize( title, menulist, showAllItems, 0 );
+		}
+
+		public void Initialize( string title, List<CItemBase> menulist, bool showAllItems, int defaultPos )
+		{
 			strMenuTitle = title;
 			lciMenuItems = menulist;
 			bShowAllItems = showAllItems;
+			n現在の選択行 = defaultPos;
 		}
-
 
 
 		public void tEnter押下( E楽器パート eInst )
@@ -51,7 +67,20 @@ namespace DTXMania
 
 				if ( this.n現在の選択行 != lciMenuItems.Count - 1 )
 				{
-					lciMenuItems[ n現在の選択行 ].t項目値を次へ移動();
+					if ( lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.リスト ||
+						 lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.ONorOFFトグル ||
+						 lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.ONorOFFor不定スリーステート	)
+					{
+						lciMenuItems[ n現在の選択行 ].t項目値を次へ移動();
+					}
+					else if ( lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.整数 )
+					{
+						bIsSelectingIntItem = !bIsSelectingIntItem;
+					}
+					else
+					{
+						throw new ArgumentException();
+					}
 					nItemSelecting = n現在の選択行;
 				}
 				tEnter押下Main( eInst, (int) this.n現在の選択行, (int) lciMenuItems[ n現在の選択行 ].GetIndex() );
@@ -68,9 +97,16 @@ namespace DTXMania
 			if ( this.bキー入力待ち )
 			{
 				CDTXMania.Skin.soundカーソル移動音.t再生する();
-				if (++this.n現在の選択行 >= this.lciMenuItems.Count)
+				if ( bIsSelectingIntItem )
 				{
-					this.n現在の選択行 = 0;
+					 lciMenuItems[ n現在の選択行 ].t項目値を前へ移動();		// 項目移動と数値上下は方向が逆になるので注意
+				}
+				else
+				{
+					if ( ++this.n現在の選択行 >= this.lciMenuItems.Count )
+					{
+						this.n現在の選択行 = 0;
+					}
 				}
 			}
 		}
@@ -79,9 +115,16 @@ namespace DTXMania
 			if ( this.bキー入力待ち )
 			{
 				CDTXMania.Skin.soundカーソル移動音.t再生する();
-				if ( --this.n現在の選択行 < 0 )
+				if ( bIsSelectingIntItem )
 				{
-					this.n現在の選択行 = this.lciMenuItems.Count - 1;
+					lciMenuItems[ n現在の選択行 ].t項目値を次へ移動();		// 項目移動と数値上下は方向が逆になるので注意
+				}
+				else
+				{
+					if ( --this.n現在の選択行 < 0 )
+					{
+						this.n現在の選択行 = this.lciMenuItems.Count - 1;
+					}
 				}
 			}
 		}
@@ -90,18 +133,17 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.n現在の選択行 = 0;
+	//		this.n現在の選択行 = 0;
 			this.bキー入力待ち = true;
 			for ( int i = 0; i < 4; i++ )
 			{
 				this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.Timer );
 			}
 			base.b活性化してない = true;
-			this.bキー入力待ち = true;
+
 			this.bIsActivePopupMenu = false;
 			this.font = new CActDFPFont();
 			base.list子Activities.Add( this.font );
-			this.n現在の選択行 = 0;
 			nItemSelecting = -1;
 
 			base.On活性化();
@@ -160,7 +202,6 @@ namespace DTXMania
 						|| CDTXMania.Pad.b押されたGB( Eパッド.Cancel ) )
 					{	// キャンセル
 						CDTXMania.Skin.sound取消音.t再生する();
-						//this.bキー入力待ち = false;
 						this.bIsActivePopupMenu = false;
 					}
 					#endregion
@@ -238,11 +279,33 @@ namespace DTXMania
 				#region [ ソート候補文字列描画 ]
 				for ( int i = 0; i < lciMenuItems.Count; i++ )
 				{
-					bool bBold = ( i == nItemSelecting ) ? true : false;
-					font.t文字列描画( 190, 80 + i * 32, lciMenuItems[i].str項目名, bBold, 1.0f );
-					if ( bBold || bShowAllItems )
+					bool bItemBold = ( i == nItemSelecting && !bShowAllItems ) ? true : false;
+					font.t文字列描画( 190, 80 + i * 32, lciMenuItems[i].str項目名, bItemBold, 1.0f );
+
+					bool bValueBold = (bItemBold || (i == nItemSelecting && bIsSelectingIntItem)) ? true : false;
+					if ( bItemBold || bShowAllItems )
 					{
-						font.t文字列描画( 340, 80 + i * 32, lciMenuItems[i].obj現在値().ToString(), bBold, 1.0f );
+						string s;
+						switch ( lciMenuItems[i].str項目名 )
+						{
+							case "PlaySpeed":
+								{
+									double d = (double) ((int)lciMenuItems[ i ].obj現在値() / 20.0);
+									s = "x" + d.ToString( "0.000" );
+								}
+								break;
+							case "ScrollSpeed":
+								{
+									double d = (double) ( ( ( (int) lciMenuItems[ i ].obj現在値() ) + 1 ) / 2.0 );
+									s = "x" + d.ToString( "0.0" );
+								}
+								break;
+
+							default:
+								s = lciMenuItems[ i ].obj現在値().ToString();
+								break;
+						}
+						font.t文字列描画( 340, 80 + i * 32, s, bValueBold, 1.0f );
 					}
 				}
 				#endregion
@@ -267,6 +330,7 @@ namespace DTXMania
 		private string strMenuTitle;
 		private List<CItemBase> lciMenuItems;
 		private bool bShowAllItems;
+		private bool bIsSelectingIntItem;
 
 		[StructLayout( LayoutKind.Sequential )]
 		private struct STキー反復用カウンタ

@@ -387,6 +387,8 @@ namespace DTXMania
 			this.tバーの初期化();
 
 			base.On活性化();
+
+			this.t選択曲が変更された(true);		// #27648 2012.3.31 yyagi 選曲画面に入った直後の 現在位置/全アイテム数 の表示を正しく行うため
 		}
 		public override void On非活性化()
 		{
