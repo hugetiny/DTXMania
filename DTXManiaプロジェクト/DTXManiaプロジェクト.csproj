@@ -81,7 +81,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="DTXManiaGR.exe.x86.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -113,6 +112,7 @@
     <Compile Include="コード\ステージ\04.コンフィグ\CStageコンフィグ.cs" />
     <Compile Include="コード\ステージ\05.選曲\CActSelectArtistComment.cs" />
     <Compile Include="コード\ステージ\05.選曲\CActSelectInformation.cs" />
+    <Compile Include="コード\ステージ\05.選曲\CActSelectPopupMenu.cs" />
     <Compile Include="コード\ステージ\05.選曲\CActSelectPreimageパネル.cs" />
     <Compile Include="コード\ステージ\05.選曲\CActSelectPresound.cs" />
     <Compile Include="コード\ステージ\05.選曲\CActSelectShowCurrentPosition.cs" />

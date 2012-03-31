@@ -191,7 +191,7 @@ namespace DTXMania
 			{
 				this.r現在選択中の曲 = this.r現在選択中の曲.list子リスト[ 0 ];
 				this.t現在選択中の曲を元に曲バーを再構成する();
-				this.t選択曲が変更された();									// #27648 項目数変更を反映させる
+				this.t選択曲が変更された(false);									// #27648 項目数変更を反映させる
 			}
 		}
 		public void tBOXを出る()
@@ -200,7 +200,7 @@ namespace DTXMania
 			{
 				this.r現在選択中の曲 = this.r現在選択中の曲.r親ノード;
 				this.t現在選択中の曲を元に曲バーを再構成する();
-				this.t選択曲が変更された();									// #27648 項目数変更を反映させる
+				this.t選択曲が変更された(false);									// #27648 項目数変更を反映させる
 			}
 		}
 		public void t現在選択中の曲を元に曲バーを再構成する()
@@ -332,11 +332,14 @@ namespace DTXMania
 		/// <summary>
 		/// BOXのアイテム数と、今何番目を選択しているかをセットする
 		/// </summary>
-		public void t選択曲が変更された()	// #27648
+		public void t選択曲が変更された( bool bForce )	// #27648
 		{
 			C曲リストノード song = CDTXMania.stage選曲.r現在選択中の曲;
-			if ( song == null || song == song_last )
+			if ( song == null )
 				return;
+			if ( song == song_last && bForce == false )
+				return;
+				
 			song_last = song;
 			List<C曲リストノード> list = ( song.r親ノード != null ) ? song.r親ノード.list子リスト : CDTXMania.Songs管理.list曲ルート;
 			int index = list.IndexOf( song ) + 1;
@@ -654,7 +657,7 @@ namespace DTXMania
 						this.n現在のスクロールカウンタ -= 100;
 						this.n目標のスクロールカウンタ -= 100;
 
-						this.t選択曲が変更された();						// スクロールバー用に今何番目を選択しているかを更新
+						this.t選択曲が変更された(false);				// スクロールバー用に今何番目を選択しているかを更新
 
 						if( this.n目標のスクロールカウンタ == 0 )
 							CDTXMania.stage選曲.t選択曲変更通知();		// スクロール完了＝選択曲変更！
@@ -710,7 +713,7 @@ namespace DTXMania
 						this.n現在のスクロールカウンタ += 100;
 						this.n目標のスクロールカウンタ += 100;
 
-						this.t選択曲が変更された();						// スクロールバー用に今何番目を選択しているかを更新
+						this.t選択曲が変更された(false);				// スクロールバー用に今何番目を選択しているかを更新
 						
 						if( this.n目標のスクロールカウンタ == 0 )
 							CDTXMania.stage選曲.t選択曲変更通知();		// スクロール完了＝選択曲変更！

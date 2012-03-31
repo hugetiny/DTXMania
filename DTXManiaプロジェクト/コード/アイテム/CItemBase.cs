@@ -104,5 +104,13 @@ namespace DTXMania
 			this.eパネル種別 = eパネル種別;
 			this.str説明文 = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? str説明文jp : str説明文en;
 		}
+		public virtual object obj現在値()
+		{
+			return null;
+		}
+		public virtual int GetIndex()
+		{
+			return 0;
+		}
 	}
 }

@@ -352,7 +352,7 @@ namespace DTXMania
 				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 
 					&& CDTXMania.act現在入力を占有中のプラグイン == null )
 				{
-					if ( !this.actSortSongs.bIsActiveSortMenu )
+					if ( !this.actSortSongs.bIsActivePopupMenu )
 					{
 						if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape ) || ( ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT ) || CDTXMania.Pad.b押されたGB( Eパッド.Cancel ) ) && ( ( this.act曲リスト.r現在選択中の曲 != null ) && ( this.act曲リスト.r現在選択中の曲.r親ノード == null ) ) ) )
 						{	// [ESC]
@@ -520,7 +520,7 @@ namespace DTXMania
 									CDTXMania.Skin.sound変更音.t再生する();
 									Debug.WriteLine( "ソート画面発動(gt)" );
 									//this.actSortSongs.bIsActiveSortMenu = !this.actSortSongs.bIsActiveSortMenu;
-									this.actSortSongs.tActivateSortMenu( ref this.act曲リスト );
+									this.actSortSongs.tActivatePopupMenu( ref this.act曲リスト );
 								}
 							}
 							if ( CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.G ) )
@@ -533,7 +533,7 @@ namespace DTXMania
 									CDTXMania.Skin.sound変更音.t再生する();
 									Debug.WriteLine( "ソート画面発動(bs)" );
 									//this.actSortSongs.bIsActiveSortMenu = !this.actSortSongs.bIsActiveSortMenu;
-									this.actSortSongs.tActivateSortMenu( ref this.act曲リスト );
+									this.actSortSongs.tActivatePopupMenu( ref this.act曲リスト );
 								}
 							}
 							if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.HT ) )
@@ -546,12 +546,13 @@ namespace DTXMania
 									CDTXMania.Skin.sound変更音.t再生する();
 									Debug.WriteLine( "ソート画面発動(dr)" );
 									//this.actSortSongs.bIsActiveSortMenu = !this.actSortSongs.bIsActiveSortMenu;
-									this.actSortSongs.tActivateSortMenu( ref this.act曲リスト );
+									this.actSortSongs.tActivatePopupMenu( ref this.act曲リスト );
 								}
 							}
 						}
 					}
-					this.actSortSongs.t進行描画( this.actSortSongs.bIsActiveSortMenu );
+					//this.actSortSongs.t進行描画( this.actSortSongs.bIsActivePopupMenu );
+					this.actSortSongs.t進行描画();
 				}
 			}
 			return 0;

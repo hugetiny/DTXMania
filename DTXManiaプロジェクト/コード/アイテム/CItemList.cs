@@ -88,5 +88,13 @@ namespace DTXMania
 				this.list項目値.Add(str);
 			}
 		}
+		public override object obj現在値()
+		{
+			return this.list項目値[ n現在選択されている項目番号 ];
+		}
+		public override int GetIndex()
+		{
+			return n現在選択されている項目番号;
+		}
 	}
 }

@@ -101,7 +101,14 @@ namespace DTXMania
 			this.n現在の値 = n初期値;
 			this.b値がフォーカスされている = false;
 		}
-
+		public override object obj現在値()
+		{
+			return this.n現在の値;
+		}
+		public override int GetIndex()
+		{
+			return this.n現在の値;
+		}
 
 		// その他
 

@@ -118,5 +118,20 @@ namespace DTXMania
 			base.t初期化(str項目名, eパネル種別, str説明文jp, str説明文en);
 			this.e現在の状態 = e初期状態;
 		}
+		public override object obj現在値()
+		{
+			if ( this.e現在の状態 == E状態.不定 )
+			{
+				return "- -";
+			}
+			else
+			{
+				return this.e現在の状態.ToString();
+			}
+		}
+		public override int GetIndex()
+		{
+			return (int)this.e現在の状態;
+		}
 	}
 }
