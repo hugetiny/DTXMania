@@ -7,11 +7,14 @@ namespace DTXMania
 {
 	internal class CActSelectQuickConfig : CActSelectPopupMenu
 	{
+		private readonly string QuickCfgTitle = "Quick Config";
+
 		public bool bGotoDetailConfig
 		{
 			get;
 			private set;
 		}
+
 		// コンストラクタ
 
 		public CActSelectQuickConfig()
@@ -28,12 +31,53 @@ namespace DTXMania
 •More... 
 •EXIT 
 */
-			List<CItemBase> lciD = new List<CItemBase>();
-			lciD.Add( new CItemList( "Target",		CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "Drums", "Guitar", "Bass" } ) );
-			lciD.Add( new CItemList( "Auto Mode",		CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "ON",	"OFF", "Custom" } ) );
-			lciD.Add( new CItemList( "Auto Lane",	CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "" } ) );
+			for ( int nConfSet = 0; nConfSet < 3; nConfSet++ )
+			{
+				lci.Add( new List<List<CItemBase>>() );									// ConfSet用の3つ分の枠。
+				for ( int nInst = 0; nInst < 3; nInst++ )
+				{
+					lci[ nConfSet ].Add( null );										// Drum/Guitar/Bassで3つ分、枠を作っておく
+					lci[ nConfSet ][ nInst ] = MakeListCItemBase( nConfSet, nInst );
+				}
+			}
+			base.Initialize( lci[ nCurrentConfigSet ][ 0 ], true, QuickCfgTitle, 2 );	// ConfSet=0, nInst=Drums
+		}
 
-			lciD.Add( new CItemInteger( "ScrollSpeed", 0, 1999, CDTXMania.ConfigIni.n譜面スクロール速度.Drums,
+		private List<CItemBase> MakeListCItemBase( int nConfigSet, int nInst )
+		{
+			List<CItemBase> l = new List<CItemBase>();
+
+			#region [ 共通 Target/AutoMode/AutoLane ]
+			l.Add( new CSwitchItemList( "Target", CItemBase.Eパネル種別.通常, nInst, "", "", new string[] { "Drums", "Guitar", "Bass" } ) );
+
+			int automode = 4;
+			if ( CDTXMania.ConfigIni.bドラムが全部オートプレイである )
+			{
+				automode = 0;
+			}
+			else if (	CDTXMania.ConfigIni.bAutoPlay.LC == false && CDTXMania.ConfigIni.bAutoPlay.HH == true  &&
+						CDTXMania.ConfigIni.bAutoPlay.BD == false && CDTXMania.ConfigIni.bAutoPlay.SD == false &&
+						CDTXMania.ConfigIni.bAutoPlay.HT == false && CDTXMania.ConfigIni.bAutoPlay.FT == false &&
+						CDTXMania.ConfigIni.bAutoPlay.FT == false && CDTXMania.ConfigIni.bAutoPlay.CY == false )
+			{
+				automode = 1;
+			}
+			else if (	CDTXMania.ConfigIni.bAutoPlay.LC == false && CDTXMania.ConfigIni.bAutoPlay.HH == false &&
+						CDTXMania.ConfigIni.bAutoPlay.BD == true  && CDTXMania.ConfigIni.bAutoPlay.SD == false &&
+						CDTXMania.ConfigIni.bAutoPlay.HT == false && CDTXMania.ConfigIni.bAutoPlay.FT == false &&
+						CDTXMania.ConfigIni.bAutoPlay.FT == false && CDTXMania.ConfigIni.bAutoPlay.CY == false )
+			{
+				automode = 2;
+			}
+			else
+			{
+				automode = 3;
+			}
+			l.Add( new CItemList( "Auto Mode", CItemBase.Eパネル種別.通常, automode, "", "", new string[] { "All Auto", "Auto HH", "Auto BD", "Custom", "OFF" } ) );
+			l.Add( new CItemList( "Auto Lanes", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "" } ) );
+			#endregion
+			#region [ 個別 ScrollSpeed ]
+			l.Add( new CItemInteger( "ScrollSpeed", 0, 1999, CDTXMania.ConfigIni.n譜面スクロール速度[ nInst ],
 				"演奏時のドラム譜面のスクロールの\n" +
 				"速度を指定します。\n" +
 				"x0.5 ～ x1000.0 を指定可能です。",
@@ -41,12 +85,12 @@ namespace DTXMania
 				"drums lanes.\n" +
 				"You can set it from x0.5 to x1000.0.\n" +
 				"(ScrollSpeed=x0.5 means half speed)" ) );
-
-			lciD.Add( new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度,
+			#endregion
+			#region [ 共通 PlaySpeed/Risky ]
+			l.Add( new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度,
 				"曲の演奏速度を、速くしたり遅くした\nりすることができます。\n（※一部のサウンドカードでは正しく\n 再生できない可能性があります。）",
 				"It changes the song speed.\nFor example, you can play in half\n speed by setting PlaySpeed = 0.500\n for your practice.\nNote: It also changes the songs' pitch." ) );
-
-			lciD.Add( new CItemInteger( "Risky", 0, 10, CDTXMania.ConfigIni.nRisky,
+			l.Add( new CItemInteger( "Risky", 0, 10, CDTXMania.ConfigIni.nRisky,
 				"Riskyモードの設定:\n" +
 				"1以上の値にすると、その回数分の\n" +
 				"Poor/MissでFAILEDとなります。\n" +
@@ -57,32 +101,21 @@ namespace DTXMania
 				"Risky mode:\n" +
 				"Set over 1, in case you'd like to specify\n" +
 				" the number of Poor/Miss times to be\n" +
-				" FAILED.\n" +	
+				" FAILED.\n" +
 				"Set 0 to disable Risky mode." ) );
-			
-			//lciD.Add( new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Drums,
-			//    "ドラムチップが譜面の下の方で表示\n" +
-			//    "されなくなります。",
-			//    "Drums chips are hidden by approaching\n" +
-			//    "to the hit bar. " ) );
-			//lciD.Add( new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Drums,
-			//    "ドラムチップが譜面の下の方から表\n" +
-			//    "示されるようになります。",
-			//    "Drums chips are disappered until they\n" +
-			//    "come near the hit bar, and suddenly\n" +
-			//    "appears." ) );
+			#endregion
+			#region [ 個別 Sud/Hid ]
+			int nSuddenHidden = ( ( CDTXMania.ConfigIni.bHidden[ nInst ] ) ? 2 : 0 ) + ( ( CDTXMania.ConfigIni.bSudden[ nInst ] ) ? 1 : 0 );
+			l.Add( new CItemList( "Sud/Hid", CItemBase.Eパネル種別.通常, nSuddenHidden, "", "", new string[] { "None", "Sudden", "Hidden", "Sud+Hid" } ) );
+			#endregion
+			#region [ 共通 SET切り替え/More/Return ]
+			l.Add( new CSwitchItemList( "Config SET", CItemBase.Eパネル種別.通常, nCurrentConfigSet, "", "", new string[] { "SET-1", "SET-2", "SET-3" } ) );
+			l.Add( new CSwitchItemList( "More...", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "" } ) );
+			l.Add( new CSwitchItemList( "Return", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "", "" } ) );
+			#endregion
 
-			int nSuddenHidden = ( ( CDTXMania.ConfigIni.bHidden.Drums ) ? 2 : 0 ) + ( ( CDTXMania.ConfigIni.bSudden.Drums ) ? 1 : 0 );
-			lciD.Add( new CItemList( "Sud/Hid", CItemBase.Eパネル種別.通常, nSuddenHidden, "", "", new string[] { "None", "Sudden", "Hidden", "Sud+Hid" } ) );
-			lciD.Add( new CItemList( "Config SET", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "SET-1", "SET-2", "SET-3" } ) );
-
-			lciD.Add( new CItemList( "More...", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "" } ) );
-
-			lciD.Add( new CItemList( "Return",		CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "", "" } ) );
-			
-			base.Initialize( "Quick Config", lciD, true, 2 );
+			return l;
 		}
-
 
 		// メソッド
 		//public new void tActivatePopupMenu()
@@ -99,8 +132,13 @@ namespace DTXMania
 		{
             switch ( pos )
             {
+				case (int) ESortItem.Target:
+					nCurrentTarget = ( nCurrentTarget + 1 ) % 3;
+					Initialize( lci[ nCurrentConfigSet ][ nCurrentTarget ], true, QuickCfgTitle, pos );
+					break;
+
 				case (int) ESortItem.ScrollSpeed:
-					CDTXMania.ConfigIni.n譜面スクロール速度.Drums = (int) GetObj現在値( (int) ESortItem.ScrollSpeed );
+					CDTXMania.ConfigIni.n譜面スクロール速度[ nCurrentTarget ] = (int) GetObj現在値( (int) ESortItem.ScrollSpeed );
 					break;
 				case (int) ESortItem.PlaySpeed:
 					CDTXMania.ConfigIni.n演奏速度 = (int) GetObj現在値( (int) ESortItem.PlaySpeed );
@@ -110,9 +148,14 @@ namespace DTXMania
 					break;
 				case (int) ESortItem.SuddenHidden:
 					int sh = (int) GetIndex( (int) ESortItem.SuddenHidden );
-					CDTXMania.ConfigIni.bSudden.Drums = ( (sh & 2) > 0 ) ? true : false;
-					CDTXMania.ConfigIni.bHidden.Drums = ( (sh & 1) > 0 ) ? true : false;
+					CDTXMania.ConfigIni.bSudden[ nCurrentTarget ] = ( (sh & 2) > 0 ) ? true : false;
+					CDTXMania.ConfigIni.bHidden[ nCurrentTarget ] = ( (sh & 1) > 0 ) ? true : false;
 					break;
+				case (int) ESortItem.ConfSet:		// CONF-SET切り替え
+					nCurrentConfigSet = (int) GetIndex( (int) ESortItem.ConfSet );
+					//Initialize( lci[ nCurrentConfigSet ], true, QuickCfgTitle, pos );
+					break;
+
 				case (int) ESortItem.More:
 					this.bGotoDetailConfig = true;
 					this.tDeativatePopupMenu();
@@ -156,7 +199,9 @@ namespace DTXMania
 		//-----------------
 
 		//private CActSelect曲リスト act曲リスト;
-
+		private int nCurrentTarget = 0;
+		private int nCurrentConfigSet = 0;
+		List<List<List<CItemBase>>> lci = new List<List<List<CItemBase>>>();	// DrGtBs, ConfSet, 選択肢一覧。都合、3次のListとなる。
 		private enum ESortItem : int
 		{
 			Target = 0,

@@ -109,7 +109,10 @@ namespace DTXMania
 		{
 			return this.n現在の値;
 		}
-
+		public override void SetValue( int index, object value )
+		{
+			this.n現在の値 = (int) value;
+		}
 		// その他
 
 		#region [ private ]

@@ -93,5 +93,19 @@ namespace DTXMania
 		{
 			return ( this.bON ) ? 1 : 0;
 		}
+		public override void SetValue( int index, object value )
+		{
+			switch ( (int) value )
+			{
+				case 0:
+					this.bON = false;
+					break;
+				case 1:
+					this.bON = true;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
 	}
 }

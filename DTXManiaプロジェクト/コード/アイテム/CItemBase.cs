@@ -27,7 +27,8 @@ namespace DTXMania
 			ONorOFFトグル,
 			ONorOFFor不定スリーステート,
 			整数,
-			リスト
+			リスト,
+			切替リスト
 		}
 
 		public string str項目名;
@@ -111,6 +112,9 @@ namespace DTXMania
 		public virtual int GetIndex()
 		{
 			return 0;
+		}
+		public virtual void SetValue( int index, object value )
+		{
 		}
 	}
 }

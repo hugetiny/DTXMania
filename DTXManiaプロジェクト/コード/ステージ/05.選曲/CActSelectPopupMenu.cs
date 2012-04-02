@@ -45,12 +45,12 @@ namespace DTXMania
 		}
 
 
-		public void Initialize( string title, List<CItemBase> menulist, bool showAllItems )
+		public void Initialize( List<CItemBase> menulist, bool showAllItems, string title )
 		{
-			Initialize( title, menulist, showAllItems, 0 );
+			Initialize( menulist, showAllItems, title, 0 );
 		}
 
-		public void Initialize( string title, List<CItemBase> menulist, bool showAllItems, int defaultPos )
+		public void Initialize( List<CItemBase> menulist, bool showAllItems, string title, int defaultPos )
 		{
 			strMenuTitle = title;
 			lciMenuItems = menulist;
@@ -77,6 +77,10 @@ namespace DTXMania
 					{
 						bIsSelectingIntItem = !bIsSelectingIntItem;
 					}
+					else if ( lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.切替リスト )
+					{
+						// 特に何もしない
+					}
 					else
 					{
 						throw new ArgumentException();
@@ -91,7 +95,10 @@ namespace DTXMania
 		public virtual void tEnter押下Main( E楽器パート eInst, int order, int val )			// 継承先でメイン処理を記述すること
 		{
 		}
-	
+		public virtual void tCancel()
+		{
+		}
+
 		public void t次に移動()
 		{
 			if ( this.bキー入力待ち )
@@ -202,6 +209,7 @@ namespace DTXMania
 						|| CDTXMania.Pad.b押されたGB( Eパッド.Cancel ) )
 					{	// キャンセル
 						CDTXMania.Skin.sound取消音.t再生する();
+						tCancel();
 						this.bIsActivePopupMenu = false;
 					}
 					#endregion

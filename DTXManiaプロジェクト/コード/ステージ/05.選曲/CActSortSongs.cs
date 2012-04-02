@@ -25,7 +25,7 @@ namespace DTXMania
 			lci.Add( new CItemList( "Date",			CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "Dec.31,30,...",	"Jan.1,2,..." } ) );
 			lci.Add( new CItemList( "Return",		CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "", 				"" } ) );
 			
-			base.Initialize( "SORT MENU", lci, false );
+			base.Initialize( lci, false, "SORT MENU" );
 		}
 
 
