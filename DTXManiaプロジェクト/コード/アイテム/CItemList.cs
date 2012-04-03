@@ -96,10 +96,9 @@ namespace DTXMania
 		{
 			return n現在選択されている項目番号;
 		}
-		public override void SetValue( int index, object value )
+		public override void SetIndex( int index )
 		{
 			n現在選択されている項目番号 = index;
-			this.list項目値[ n現在選択されている項目番号 ] = (string) value;
 		}
 	}
 

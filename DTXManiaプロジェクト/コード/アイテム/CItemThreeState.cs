@@ -133,22 +133,22 @@ namespace DTXMania
 		{
 			return (int)this.e現在の状態;
 		}
-		public override void SetValue( int index, object value )
+		public override void SetIndex( int index )
 		{
-			switch ( (int) value )
-			{
-				case 0:
-					this.e現在の状態 = E状態.ON;
-					break;
-				case 1:
-					this.e現在の状態 = E状態.OFF;
-					break;
-				case 2:
-					this.e現在の状態 = E状態.不定;
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+		    switch (index )
+		    {
+		        case 0:
+		            this.e現在の状態 = E状態.ON;
+		            break;
+		        case 1:
+		            this.e現在の状態 = E状態.OFF;
+		            break;
+		        case 2:
+		            this.e現在の状態 = E状態.不定;
+		            break;
+		        default:
+		            throw new ArgumentOutOfRangeException();
+		    }
 		}
 	}
 }

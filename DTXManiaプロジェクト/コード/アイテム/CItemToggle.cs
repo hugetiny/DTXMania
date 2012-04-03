@@ -93,9 +93,9 @@ namespace DTXMania
 		{
 			return ( this.bON ) ? 1 : 0;
 		}
-		public override void SetValue( int index, object value )
+		public override void SetIndex( int index )
 		{
-			switch ( (int) value )
+			switch ( index )
 			{
 				case 0:
 					this.bON = false;

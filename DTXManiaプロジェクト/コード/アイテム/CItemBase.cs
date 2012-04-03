@@ -113,7 +113,7 @@ namespace DTXMania
 		{
 			return 0;
 		}
-		public virtual void SetValue( int index, object value )
+		public virtual void SetIndex( int index )
 		{
 		}
 	}

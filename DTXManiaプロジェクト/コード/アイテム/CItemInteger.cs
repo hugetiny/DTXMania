@@ -109,9 +109,9 @@ namespace DTXMania
 		{
 			return this.n現在の値;
 		}
-		public override void SetValue( int index, object value )
+		public override void SetIndex( int index )
 		{
-			this.n現在の値 = (int) value;
+			this.n現在の値 = index;
 		}
 		// その他
 

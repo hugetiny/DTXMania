@@ -24,6 +24,11 @@ namespace DTXMania
 		{
 			return lciMenuItems[ pos ].obj現在値();
 		}
+		public bool bGotoDetailConfig
+		{
+			get;
+			internal set;
+		}
 
 		/// <summary>
 		/// ソートメニュー機能を使用中かどうか。外部からこれをtrueにすると、ソートメニューが出現する。falseにすると消える。
@@ -33,13 +38,15 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		public void tActivatePopupMenu()
+		public virtual void tActivatePopupMenu( E楽器パート einst )
 		{
 			nItemSelecting = -1;		// #24757 2011.4.1 yyagi: Clear sorting status in each stating menu.
+			this.eInst = einst;
 			this.bIsActivePopupMenu = true;
 			this.bIsSelectingIntItem = false;
+			this.bGotoDetailConfig = false;
 		}
-		public void tDeativatePopupMenu()
+		public virtual void tDeativatePopupMenu()
 		{
 			this.bIsActivePopupMenu = false;
 		}
@@ -59,7 +66,7 @@ namespace DTXMania
 		}
 
 
-		public void tEnter押下( E楽器パート eInst )
+		public void tEnter押下()
 		{
 			if ( this.bキー入力待ち )
 			{
@@ -75,7 +82,7 @@ namespace DTXMania
 					}
 					else if ( lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.整数 )
 					{
-						bIsSelectingIntItem = !bIsSelectingIntItem;
+						bIsSelectingIntItem = !bIsSelectingIntItem;		// 選択状態/選択解除状態を反転する
 					}
 					else if ( lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.切替リスト )
 					{
@@ -87,17 +94,32 @@ namespace DTXMania
 					}
 					nItemSelecting = n現在の選択行;
 				}
-				tEnter押下Main( eInst, (int) this.n現在の選択行, (int) lciMenuItems[ n現在の選択行 ].GetIndex() );
+				tEnter押下Main( (int) lciMenuItems[ n現在の選択行 ].GetIndex() );
 
 				this.bキー入力待ち = true;
 			}
 		}
-		public virtual void tEnter押下Main( E楽器パート eInst, int order, int val )			// 継承先でメイン処理を記述すること
+
+		/// <summary>
+		/// Decide押下時の処理を、継承先で記述する。
+		/// </summary>
+		/// <param name="val">CItemBaseの現在の設定値のindex</param>
+		public virtual void tEnter押下Main( int val )
 		{
 		}
+		/// <summary>
+		/// Cancel押下時の追加処理があれば、継承先で記述する。
+		/// </summary>
 		public virtual void tCancel()
 		{
 		}
+		/// <summary>
+		/// 追加の描画処理。必要に応じて、継承先で記述する。
+		/// </summary>
+		public virtual void t進行描画sub()
+		{
+		}
+
 
 		public void t次に移動()
 		{
@@ -202,9 +224,17 @@ namespace DTXMania
 			{
 				if ( this.bキー入力待ち )
 				{
-
+					#region [ Shift-F1: CONFIG画面 ]
+					if ( ( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightShift ) || CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftShift ) ) &&
+						CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F1 ) )
+					{	// [SHIFT] + [F1] CONFIG
+						CDTXMania.Skin.sound取消音.t再生する();
+						tCancel();
+						this.bGotoDetailConfig = true;
+					}
+					#endregion
 					#region [ キー入力: キャンセル ]
-					if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape )
+					else if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape )
 						|| CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT )
 						|| CDTXMania.Pad.b押されたGB( Eパッド.Cancel ) )
 					{	// キャンセル
@@ -213,8 +243,9 @@ namespace DTXMania
 						this.bIsActivePopupMenu = false;
 					}
 					#endregion
+
 					#region [ キー入力: 決定 ]
-					E楽器パート eInst = E楽器パート.UNKNOWN;
+					// E楽器パート eInst = E楽器パート.UNKNOWN;
 					ESortAction eAction = ESortAction.END;
 					if ( CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.Decide ) )
 					{
@@ -237,7 +268,7 @@ namespace DTXMania
 					}
 					if ( eAction == ESortAction.Decide )	// 決定
 					{
-						this.tEnter押下( eInst );
+						this.tEnter押下();
 					}
 					#endregion
 					#region [ キー入力: 前に移動 ]
@@ -317,7 +348,7 @@ namespace DTXMania
 					}
 				}
 				#endregion
-
+				t進行描画sub();
 			}
 			return 0;
 		}
@@ -330,7 +361,9 @@ namespace DTXMania
 
 		private bool bキー入力待ち;
 
-		private int n現在の選択行;
+		internal int n現在の選択行;
+		internal E楽器パート eInst = E楽器パート.UNKNOWN;
+
 		private CTexture txPopupMenuBackground;
 		private CTexture txCursor;
 		private CActDFPFont font;
@@ -398,7 +431,6 @@ namespace DTXMania
 			Cancel, Decide, Previous, Next, END
 		}
 		private int nItemSelecting;		// 「n現在の選択行」とは別に設ける。sortでメニュー表示直後にアイテムの中身を表示しないようにするため
-
 		//-----------------
 		#endregion
 	}

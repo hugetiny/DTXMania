@@ -345,9 +345,10 @@ namespace DTXMania
 				if( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 
 					&& CDTXMania.act現在入力を占有中のプラグイン == null )
 				{
-					#region [ 簡易CONFIGでMore: 詳細CONFIG呼び出し ]
+					#region [ 簡易CONFIGでMore、またはShift+F1: 詳細CONFIG呼び出し ]
 					if (  actQuickConfig.bGotoDetailConfig )
 					{	// 詳細CONFIG呼び出し
+						actQuickConfig.tDeativatePopupMenu();
 						this.actPresound.tサウンド停止();
 						this.eフェードアウト完了時の戻り値 = E戻り値.コンフィグ呼び出し;	// #24525 2011.3.16 yyagi: [SHIFT]-[F1]でCONFIG呼び出し
 						this.actFIFO.tフェードアウト開始();
@@ -371,7 +372,7 @@ namespace DTXMania
 						#region [ Shift-F1: CONFIG画面 ]
 						if ( ( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightShift ) || CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftShift ) ) &&
 							CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F1 ) )
-						{	// [SHIFT] + [F1] OPTION
+						{	// [SHIFT] + [F1] CONFIG
 							this.actPresound.tサウンド停止();
 							this.eフェードアウト完了時の戻り値 = E戻り値.コンフィグ呼び出し;	// #24525 2011.3.16 yyagi: [SHIFT]-[F1]でCONFIG呼び出し
 							this.actFIFO.tフェードアウト開始();
@@ -464,7 +465,7 @@ namespace DTXMania
 									// Debug.WriteLine( "ドラムススクロール速度変更" );
 									// CDTXMania.ConfigIni.n譜面スクロール速度.Drums = ( CDTXMania.ConfigIni.n譜面スクロール速度.Drums + 1 ) % 0x10;
 									CDTXMania.Skin.sound変更音.t再生する();
-									this.actQuickConfig.tActivatePopupMenu();
+									this.actQuickConfig.tActivatePopupMenu( E楽器パート.DRUMS );
 								}
 							}
 							#endregion
@@ -548,7 +549,7 @@ namespace DTXMania
 								if ( CommandHistory.CheckCommand( comSortGt, E楽器パート.GUITAR ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
-									this.actSortSongs.tActivatePopupMenu( ref this.act曲リスト );
+									this.actSortSongs.tActivatePopupMenu( E楽器パート.GUITAR, ref this.act曲リスト );
 								}
 							}
 							#endregion
@@ -561,7 +562,7 @@ namespace DTXMania
 								if ( CommandHistory.CheckCommand( comSortBs, E楽器パート.BASS ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
-									this.actSortSongs.tActivatePopupMenu( ref this.act曲リスト );
+									this.actSortSongs.tActivatePopupMenu( E楽器パート.BASS, ref this.act曲リスト );
 								}
 							}
 							#endregion
@@ -574,7 +575,7 @@ namespace DTXMania
 								if ( CommandHistory.CheckCommand( comSort, E楽器パート.DRUMS ) )
 								{
 									CDTXMania.Skin.sound変更音.t再生する();
-									this.actSortSongs.tActivatePopupMenu( ref this.act曲リスト );
+									this.actSortSongs.tActivatePopupMenu( E楽器パート.DRUMS, ref this.act曲リスト );
 								}
 							}
 							#endregion
