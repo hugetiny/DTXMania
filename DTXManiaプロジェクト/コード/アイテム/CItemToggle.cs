@@ -85,5 +85,27 @@ namespace DTXMania
 			base.t初期化(str項目名, eパネル種別, str説明文jp, str説明文en);
 			this.bON = b初期状態;
 		}
+		public override object obj現在値()
+		{
+			return ( this.bON ) ? "ON" : "OFF";
+		}
+		public override int GetIndex()
+		{
+			return ( this.bON ) ? 1 : 0;
+		}
+		public override void SetIndex( int index )
+		{
+			switch ( index )
+			{
+				case 0:
+					this.bON = false;
+					break;
+				case 1:
+					this.bON = true;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
 	}
 }

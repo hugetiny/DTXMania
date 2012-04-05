@@ -27,7 +27,8 @@ namespace DTXMania
 			ONorOFFトグル,
 			ONorOFFor不定スリーステート,
 			整数,
-			リスト
+			リスト,
+			切替リスト
 		}
 
 		public string str項目名;
@@ -103,6 +104,17 @@ namespace DTXMania
 			this.str項目名 = str項目名;
 			this.eパネル種別 = eパネル種別;
 			this.str説明文 = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? str説明文jp : str説明文en;
+		}
+		public virtual object obj現在値()
+		{
+			return null;
+		}
+		public virtual int GetIndex()
+		{
+			return 0;
+		}
+		public virtual void SetIndex( int index )
+		{
 		}
 	}
 }
