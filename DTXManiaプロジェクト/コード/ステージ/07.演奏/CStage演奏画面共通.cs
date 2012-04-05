@@ -1522,8 +1522,7 @@ namespace DTXMania
 			{
 				return true;
 			}
-			int nCurrentTopChip = this.n現在のトップChip;
-			if ( nCurrentTopChip == -1 )
+			if ( this.n現在のトップChip == -1 )
 			{
 				return true;
 			}
@@ -1537,8 +1536,7 @@ namespace DTXMania
 
 			CDTX dTX = CDTXMania.DTX;
 			CConfigIni configIni = CDTXMania.ConfigIni;
-//			while ( nCurrentTopChip < dTX.listChip.Count )
-			for ( ; nCurrentTopChip < dTX.listChip.Count; nCurrentTopChip++ )
+			for ( int nCurrentTopChip = this.n現在のトップChip; nCurrentTopChip < dTX.listChip.Count; nCurrentTopChip++ )
 			{
 				CDTX.CChip pChip = dTX.listChip[ nCurrentTopChip ];
 				pChip.nバーからの距離dot.Drums = (int) ( ( pChip.n発声時刻ms - CDTXMania.Timer.n現在時刻 ) * ScrollSpeedDrums );
@@ -1548,10 +1546,12 @@ namespace DTXMania
 				{
 					break;
 				}
-				if ( ( ( nCurrentTopChip == this.n現在のトップChip ) && ( pChip.nバーからの距離dot.Drums < -65 ) ) && pChip.bHit )
+//				if ( ( ( nCurrentTopChip == this.n現在のトップChip ) && ( pChip.nバーからの距離dot.Drums < -65 ) ) && pChip.bHit )
+				// #28026 2012.4.5 yyagi; 信心ワールドエンドの曲終了後リザルトになかなか行かない問題の修正
+				if ( ( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Drums < -65 ) && dTX.listChip[ this.n現在のトップChip ].bHit )
 				{
-					//this.n現在のトップChip++;
-					nCurrentTopChip = ++this.n現在のトップChip;
+//					nCurrentTopChip = ++this.n現在のトップChip;
+					++this.n現在のトップChip;
 					continue;
 				}
 
@@ -1953,8 +1953,6 @@ namespace DTXMania
 						break;
 					#endregion 
 				}
-
-//				nCurrentTopChip++;
 			}
 			return false;
 		}
