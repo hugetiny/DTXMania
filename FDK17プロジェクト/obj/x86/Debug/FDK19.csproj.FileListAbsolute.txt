@@ -1,0 +1,8 @@
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120104(DTXMania with #27029)\FDK17プロジェクト\bin\x86\Debug\FDK.dll
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120104(DTXMania with #27029)\FDK17プロジェクト\bin\x86\Debug\FDK.pdb
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120104(DTXMania with #27029)\FDK17プロジェクト\bin\x86\Debug\SlimDXc_net20x86_Jun2010.dll
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120104(DTXMania with #27029)\FDK17プロジェクト\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120104(DTXMania with #27029)\FDK17プロジェクト\obj\x86\Debug\FDK.コード._01.フレームワーク.Properties.Resources.resources
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120104(DTXMania with #27029)\FDK17プロジェクト\obj\x86\Debug\FDK19.csproj.GenerateResource.Cache
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120104(DTXMania with #27029)\FDK17プロジェクト\obj\x86\Debug\FDK.dll
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120104(DTXMania with #27029)\FDK17プロジェクト\obj\x86\Debug\FDK.pdb

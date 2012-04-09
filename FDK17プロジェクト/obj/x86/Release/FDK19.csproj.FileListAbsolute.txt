@@ -1,0 +1,6 @@
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\FDK17プロジェクト\bin\x86\Release\FDK.dll
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\FDK17プロジェクト\bin\x86\Release\SlimDXc_net20x86_Jun2010.dll
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\FDK17プロジェクト\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\FDK17プロジェクト\obj\x86\Release\FDK.コード._01.フレームワーク.Properties.Resources.resources
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\FDK17プロジェクト\obj\x86\Release\FDK19.csproj.GenerateResource.Cache
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\FDK17プロジェクト\obj\x86\Release\FDK.dll

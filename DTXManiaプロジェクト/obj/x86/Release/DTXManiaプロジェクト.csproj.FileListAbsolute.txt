@@ -1,0 +1,10 @@
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\bin\x86\Release\DTXManiaGR.exe.config
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\bin\x86\Release\DTXManiaGR.exe
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\bin\x86\Release\DTXManiaGR.pdb
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\bin\x86\Release\FDK.dll
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\bin\x86\Release\SlimDXc_net20x86_Jun2010.dll
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\obj\x86\Release\DTXMania.Properties.Resources.resources
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\obj\x86\Release\DTXManiaプロジェクト.csproj.GenerateResource.Cache
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\obj\x86\Release\DTXManiaGR.exe
+D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120407(DTXMania092 with #28026)\DTXManiaプロジェクト\obj\x86\Release\DTXManiaGR.pdb
