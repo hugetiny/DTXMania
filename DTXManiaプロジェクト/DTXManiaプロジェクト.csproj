@@ -122,6 +122,7 @@
     <Compile Include="コード\ステージ\05.選曲\CActSelect演奏履歴パネル.cs" />
     <Compile Include="コード\ステージ\05.選曲\CActSortSongs.cs" />
     <Compile Include="コード\ステージ\05.選曲\CStage選曲.cs" />
+    <Compile Include="コード\ステージ\06.曲読み込み\CLoadInParallelBase.cs" />
     <Compile Include="コード\ステージ\06.曲読み込み\CStage曲読み込み.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏AVI.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏BGA.cs" />

@@ -75,6 +75,7 @@ namespace FDK
 			this.b加算合成 = false;
 			this.fZ軸中心回転 = 0f;
 			this.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
+			this._txData = null;
 		}
 		
 		/// <summary>
@@ -143,6 +144,11 @@ namespace FDK
 			: this( device, strファイル名, format, b黒を透過する, Pool.Managed )
 		{
 		}
+		public CTexture( Device device, byte[] txData, Format format, bool b黒を透過する )
+			: this( device, txData, format, b黒を透過する, Pool.Managed )
+		{
+		}
+		
 		
 		/// <summary>
 		/// <para>空のテクスチャを作成する。</para>
@@ -162,7 +168,8 @@ namespace FDK
 			: this( device, n幅, n高さ, format, pool, Usage.None )
 		{
 		}
-		
+
+		static object lockobj = new object();
 		public CTexture( Device device, int n幅, int n高さ, Format format, Pool pool, Usage usage )
 			: this()
 		{
@@ -186,7 +193,10 @@ namespace FDK
 						pool = poolvar;
 #endif
 						// 中で更にメモリ読み込みし直していて無駄なので、Streamを使うのは止めたいところ
-						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, usage, format, pool, Filter.Point, Filter.None, 0 );
+						lock ( lockobj )
+						{
+							this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, usage, format, pool, Filter.Point, Filter.None, 0 );
+						}
 					}
 				}
 			}
@@ -213,29 +223,45 @@ namespace FDK
 		public CTexture( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool )
 			: this()
 		{
+			MakeTexture( device, strファイル名, format, b黒を透過する, pool );
+		}
+		public void MakeTexture( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool )
+		{
+			if ( !File.Exists( strファイル名 ) )		// #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
+				throw new FileNotFoundException( string.Format( "ファイルが存在しません。\n[{0}]", strファイル名 ) );
+
+			_txData = File.ReadAllBytes( strファイル名 );
+			MakeTexture( device, _txData, format, b黒を透過する, pool );
+		}
+		public CTexture( Device device, byte[] txData, Format format, bool b黒を透過する, Pool pool )
+			: this()
+		{
+			MakeTexture( device, txData, format, b黒を透過する, pool );
+		}
+		public void MakeTexture( Device device, byte[] txData, Format format, bool b黒を透過する, Pool pool )
+		{
 			try
 			{
-				if( !File.Exists( strファイル名 ) )		// #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
-					throw new FileNotFoundException( string.Format( "ファイルが存在しません。\n[{0}]", strファイル名 ) );
-
-				var information = ImageInformation.FromFile( strファイル名 );
-				
+				var information = ImageInformation.FromMemory( txData );
 				this.sz画像サイズ = new Size( information.Width, information.Height );
-				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
 				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
+				int colorKey = ( b黒を透過する ) ? unchecked( (int) 0xFF000000 ) : 0;
+				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
 #if TEST_Direct3D9Ex
 				pool = poolvar;
 #endif
-				int colorKey = ( b黒を透過する ) ? unchecked( (int) 0xFF000000 ) : 0;
-				this.texture = Texture.FromFile( device, strファイル名, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, colorKey );
+//				lock ( lockobj )
+//				{
+				this.texture = Texture.FromMemory( device, txData, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, colorKey );
+//				}
 			}
 			catch
 			{
 				this.Dispose();
-				throw new CTextureCreateFailedException( string.Format( "テクスチャの生成に失敗しました。\n{0}", strファイル名 ) );
+				// throw new CTextureCreateFailedException( string.Format( "テクスチャの生成に失敗しました。\n{0}", strファイル名 ) );
+				throw new CTextureCreateFailedException( string.Format( "テクスチャの生成に失敗しました。\n") );
 			}
 		}
-
 
 		// メソッド
 
@@ -480,6 +506,7 @@ namespace FDK
 #else
 			Pool.Managed;
 #endif
+		byte[] _txData;
 
 		private void tレンダリングステートの設定( Device device )
 		{

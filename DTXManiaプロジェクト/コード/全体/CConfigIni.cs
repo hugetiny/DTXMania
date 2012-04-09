@@ -894,6 +894,8 @@ namespace DTXMania
 			public E打ち分け時の再生の優先順位 eHitSoundPriorityHH = E打ち分け時の再生の優先順位.ChipがPadより優先;
 		}
 		public CBackupOf1BD BackupOf1BD = null;
+		public bool bLoadWAVInParallel;					// #28021 2012.4.8 yyagi マルチスレッドでのWAV読み込みON/OFF
+		public bool bLoadBMPInParallel;					// #28021 2012.4.8 yyagi マルチスレッドでのBMP読み込みON/OFF
 
 
 		// コンストラクタ
@@ -1012,6 +1014,8 @@ namespace DTXMania
 			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
 			this.bIsAllowedDoubleClickFullscreen = true;	// #26752 2011.11.26 ダブルクリックでのフルスクリーンモード移行を許可
 			this.eBDGroup = EBDGroup.打ち分ける;		// #27029 2012.1.4 from HHPedalとBassPedalのグルーピング
+			this.bLoadWAVInParallel = false;			// #28021 2012.4.8 yyagi マルチスレッドでのWAV読み込みON/OFF
+			this.bLoadBMPInParallel = false;			// #28021 2012.4.8 yyagi マルチスレッドでのBMP読み込みON/OFF
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1253,6 +1257,12 @@ namespace DTXMania
 			sw.WriteLine( "CYVelocityMin={0}", this.nVelocityMin.CY );						//
 			sw.WriteLine( "RDVelocityMin={0}", this.nVelocityMin.RD );						//
 			sw.WriteLine();																	//
+			sw.WriteLine();
+			sw.WriteLine( "; WAV, BMPの読み込み高速化(0=OFF, 1=ON)" );						// #23580 2011.1.3 yyagi
+			sw.WriteLine( "; Whether you'd like to accelerate loading or not. WAV one is too risky." );	//
+			sw.WriteLine( "WAVLoadAcceleration={0}", this.bLoadWAVInParallel ? 1 : 0 );		//
+			sw.WriteLine( "BMPLoadAcceleration={0}", this.bLoadBMPInParallel ? 1 : 0 );		//
+			sw.WriteLine();
 			sw.WriteLine( ";-------------------" );
 			#endregion
 			#region [ Log ]
@@ -1936,6 +1946,14 @@ namespace DTXMania
 											else if( str3.Equals( "RDVelocityMin" ) )			// #23857 2011.1.31 yyagi
 											{
 												this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
+											}
+											else if( str3.Equals( "WAVLoadAcceleration" ) )		// #28021 2012.4.8 yyagi
+											{
+												this.bLoadWAVInParallel = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if( str3.Equals( "BMPLoadAcceleration" ) )		// #28021 2012.4.8 yyagi
+											{
+												this.bLoadBMPInParallel = C変換.bONorOFF( str4[ 0 ] );
 											}
 											continue;
 										}
