@@ -8,7 +8,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Reflection;
 using System.Globalization;
-using System.Threading;
 using FDK;
 
 namespace DTXMania
@@ -179,30 +178,7 @@ namespace DTXMania
 					CDTX.tZZ( this.nBMP番号 ) );
 			}
 		}
-		public class CBMP : CBMPbase, IDisposable
-		{
-			public override void PutLog( string strテクスチャファイル名 )
-			{
-				Trace.TraceInformation( "テクスチャを生成しました。({0})({1})({2}x{3})", this.strコメント文, strテクスチャファイル名, this.n幅, this.n高さ );
-			}
-			public override string ToString()
-			{
-				return string.Format( "CBMP{0}: File:{1}, Comment:{2}", CDTX.tZZ( this.n番号 ), this.strファイル名, this.strコメント文 );
-			}
-
-		}
-		public class CBMPTEX : CBMPbase, IDisposable
-		{
-			public override void PutLog( string strテクスチャファイル名 )
-			{
-				Trace.TraceInformation( "テクスチャを生成しました。({0})({1})(Gr:{2}x{3})(Tx:{4}x{5})", this.strコメント文, strテクスチャファイル名, this.tx画像.sz画像サイズ.Width, this.tx画像.sz画像サイズ.Height, this.tx画像.szテクスチャサイズ.Width, this.tx画像.szテクスチャサイズ.Height );
-			}
-			public override string ToString()
-			{
-				return string.Format( "CBMPTEX{0}: File:{1}, Comment:{2}", CDTX.tZZ( this.n番号 ), this.strファイル名, this.strコメント文 );
-			}
-		}
-		public class CBMPbase : IDisposable
+		public class CBMP : IDisposable
 		{
 			public bool bUse;
 			public int n番号;
@@ -224,30 +200,19 @@ namespace DTXMania
 				}
 			}
 
-			public string GetFullPathname
-			{
-				get
-				{
-					if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-						return CDTXMania.DTX.PATH_WAV + this.strファイル名;
-					else
-						return CDTXMania.DTX.strフォルダ名 + this.strファイル名;
-				}
-			}
-
 			public void OnDeviceCreated()
 			{
 				#region [ strテクスチャファイル名 を作成。]
 				//-----------------
-				string strテクスチャファイル名 = this.GetFullPathname;
-				//if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-				//    strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
-				//else
-				//    strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				string strテクスチャファイル名;
+				if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+					strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+				else
+					strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
 				//-----------------
 				#endregion
 
-				if ( !File.Exists( strテクスチャファイル名 ) )
+				if( !File.Exists( strテクスチャファイル名 ) )
 				{
 					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", this.strコメント文, strテクスチャファイル名 );
 					this.tx画像 = null;
@@ -255,32 +220,29 @@ namespace DTXMania
 				}
 
 				// テクスチャを作成。
-				byte[] txData = File.ReadAllBytes( strテクスチャファイル名 );
-				// this.tx画像 = CDTXMania.tテクスチャの生成( strテクスチャファイル名, true );
-				this.OnDeviceCreated( txData, strテクスチャファイル名 );
-			}
-			public void OnDeviceCreated( byte[] txData, string strテクスチャファイル名 )
-			{
-				this.tx画像 = CDTXMania.tテクスチャの生成( txData, true );
 
-				if ( this.tx画像 != null )
+				this.tx画像 = CDTXMania.tテクスチャの生成( strテクスチャファイル名, true );
+
+				if( this.tx画像 != null )
 				{
 					// 作成成功。
 
-					if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-						PutLog( strテクスチャファイル名 );
+					if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+						Trace.TraceInformation( "テクスチャを生成しました。({0})({1})({2}x{3})", this.strコメント文, strテクスチャファイル名, this.n幅, this.n高さ );
+
 					this.bUse = true;
 				}
 				else
 				{
 					// 作成失敗。
+
 					Trace.TraceError( "テクスチャの生成に失敗しました。({0})({1})", this.strコメント文, strテクスチャファイル名 );
 					this.tx画像 = null;
 				}
 			}
-
-			public virtual void PutLog(string strテクスチャファイル名)
+			public override string ToString()
 			{
+				return string.Format( "CBMP{0}: File:{1}, Comment:{2}", CDTX.tZZ( this.n番号 ), this.strファイル名, this.strコメント文 );
 			}
 
 			#region [ IDisposable 実装 ]
@@ -294,11 +256,11 @@ namespace DTXMania
 				{
 					#region [ strテクスチャファイル名 を作成。]
 					//-----------------
-					string strテクスチャファイル名 = this.GetFullPathname;
-					//if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-					//    strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
-					//else
-					//    strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					string strテクスチャファイル名;
+					if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+						strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					else
+						strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
 					//-----------------
 					#endregion
 
@@ -311,7 +273,111 @@ namespace DTXMania
 
 				this.bDisposed済み = true;
 			}
+			//-----------------
 			#endregion
+
+			#region [ private ]
+			//-----------------
+			private bool bDisposed済み;
+			//-----------------
+			#endregion
+		}
+		public class CBMPTEX : IDisposable
+		{
+			public bool bUse;
+			public int n番号;
+			public string strコメント文 = "";
+			public string strファイル名 = "";
+			public CTexture tx画像;
+			public int n高さ
+			{
+				get
+				{
+					return this.tx画像.sz画像サイズ.Height;
+				}
+			}
+			public int n幅
+			{
+				get
+				{
+					return this.tx画像.sz画像サイズ.Width;
+				}
+			}
+
+			public void OnDeviceCreated()
+			{
+				#region [ strテクスチャファイル名 を作成。]
+				//-----------------
+				string strテクスチャファイル名;
+				if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+					strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+				else
+					strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				//-----------------
+				#endregion
+
+				if( !File.Exists( strテクスチャファイル名 ) )
+				{
+					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", this.strコメント文, strテクスチャファイル名 );
+					this.tx画像 = null;
+					return;
+				}
+
+				// テクスチャを作成。
+
+				this.tx画像 = CDTXMania.tテクスチャの生成( strテクスチャファイル名 );
+
+				if( this.tx画像 != null )
+				{
+					// 作成成功
+
+					if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+						Trace.TraceInformation( "テクスチャを生成しました。({0})({1})(Gr:{2}x{3})(Tx:{4}x{5})", this.strコメント文, strテクスチャファイル名, this.tx画像.sz画像サイズ.Width, this.tx画像.sz画像サイズ.Height, this.tx画像.szテクスチャサイズ.Width, this.tx画像.szテクスチャサイズ.Height );
+					this.bUse = true;
+				}
+				else
+				{
+					// 作成失敗
+
+					Trace.TraceError( "テクスチャの生成に失敗しました。({0})({1})", this.strコメント文, strテクスチャファイル名 );
+				}
+			}
+			public override string ToString()
+			{
+				return string.Format( "CBMPTEX{0}: File:{1}, Comment:{2}", CDTX.tZZ( this.n番号 ), this.strファイル名, this.strコメント文 );
+			}
+
+			#region [ IDisposable 実装 ]
+			//-----------------
+			public void Dispose()
+			{
+				if( this.bDisposed済み )
+					return;
+
+				if( this.tx画像 != null )
+				{
+					#region [ strテクスチャファイル名 を作成。]
+					//-----------------
+					string strテクスチャファイル名;
+					if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+						strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					else
+						strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					//-----------------
+					#endregion
+
+					CDTXMania.tテクスチャの解放( ref this.tx画像 );
+
+					if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+						Trace.TraceInformation( "テクスチャを解放しました。({0})({1})", this.strコメント文, strテクスチャファイル名 );
+				}
+				this.bUse = false;
+
+				this.bDisposed済み = true;
+			}
+			//-----------------
+			#endregion
+
 			#region [ private ]
 			//-----------------
 			private bool bDisposed済み;
@@ -1024,8 +1090,7 @@ namespace DTXMania
 		public class CWAV : IDisposable
 		{
 			public bool bBGMとして使う;
-			public bool bIsOnBGMLane;	// #28021 「bBGMとして使う」の用途不明につき、「BGMレーン(01)上にあるWAV」という意味で新規作成
-			public List<int> listこのWAVを使用するチャンネル番号の集合 = new List<int>( 16 );	// 登録はしているけど参照はしていないような・・・
+			public List<int> listこのWAVを使用するチャンネル番号の集合 = new List<int>( 16 );
 			public int nチップサイズ = 100;
 			public int n位置;
 			public long[] n一時停止時刻 = new long[ 4 ];
@@ -1486,12 +1551,43 @@ namespace DTXMania
 			stdgbvalue.Bass = 0;
 			this.LEVEL = stdgbvalue;
 
+#if true	// 2010.12.31 yyagi #RESULTxxxのリファクタ後。ここはnew()して参照渡ししなくてもいいよね？
 			for (int i = 0; i < 7; i++) {
 				this.RESULTIMAGE[i] = "";
 				this.RESULTMOVIE[i] = "";
 				this.RESULTSOUND[i] = "";
 			}
-
+#else		// #RESULTxxxのリファクタ前
+			STRESULT stresult4 = new STRESULT();
+			STRESULT stresult = stresult4;
+			stresult.SS = "";
+			stresult.S = "";
+			stresult.A = "";
+			stresult.B = "";
+			stresult.C = "";
+			stresult.D = "";
+			stresult.E = "";
+			this.RESULTIMAGE = stresult;
+			stresult4 = new STRESULT();
+			STRESULT stresult2 = stresult4;
+			stresult2.SS = "";
+			stresult2.S = "";
+			stresult2.A = "";
+			stresult2.B = "";
+			stresult2.C = "";
+			stresult2.D = "";
+			stresult2.E = "";
+			this.RESULTMOVIE = stresult2;
+			STRESULT stresult3 = new STRESULT();
+			stresult3.SS = "";
+			stresult3.S = "";
+			stresult3.A = "";
+			stresult3.B = "";
+			stresult3.C = "";
+			stresult3.D = "";
+			stresult3.E = "";
+			this.RESULTSOUND = stresult3;
+#endif
 			this.db再生速度 = 1.0;
 			this.strハッシュofDTXファイル = "";
 			this.bチップがある = new STチップがある();
@@ -1515,6 +1611,7 @@ namespace DTXMania
 			this.nRESULTMOVIE用優先順位 = new int[ 7 ];
 			this.nRESULTSOUND用優先順位 = new int[ 7 ];
 
+#if true	// 2011.1.1 yyagi GDA->DTX変換テーブル リファクタ後
 			STGDAPARAM[] stgdaparamArray = new STGDAPARAM[] {		// GDA->DTX conversion table
 				new STGDAPARAM("TC", 0x03),	new STGDAPARAM("BL", 0x02),	new STGDAPARAM("GS", 0x29),
 				new STGDAPARAM("DS", 0x30),	new STGDAPARAM("FI", 0x53),	new STGDAPARAM("HH", 0x11),
@@ -1538,7 +1635,313 @@ namespace DTXMania
 				new STGDAPARAM("B7", 0xA7),	new STGDAPARAM("BW", 0xA8),	new STGDAPARAM("G0", 0x20),
 				new STGDAPARAM("B0", 0xA0)
 			};
-
+#else	// 2011.1.1 yyagi GDA->DTX変換テーブル リファクタ前
+			STGDAPARAM[] stgdaparamArray = new STGDAPARAM[62];
+			STGDAPARAM stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam = stgdaparam62;
+			stgdaparam.s = "TC";
+			stgdaparam.c = 3;
+			stgdaparamArray[ 0 ] = stgdaparam;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam2 = stgdaparam62;
+			stgdaparam2.s = "BL";
+			stgdaparam2.c = 2;
+			stgdaparamArray[ 1 ] = stgdaparam2;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam3 = stgdaparam62;
+			stgdaparam3.s = "GS";
+			stgdaparam3.c = 0x29;
+			stgdaparamArray[ 2 ] = stgdaparam3;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam4 = stgdaparam62;
+			stgdaparam4.s = "DS";
+			stgdaparam4.c = 0x30;
+			stgdaparamArray[ 3 ] = stgdaparam4;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam5 = stgdaparam62;
+			stgdaparam5.s = "FI";
+			stgdaparam5.c = 0x53;
+			stgdaparamArray[ 4 ] = stgdaparam5;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam6 = stgdaparam62;
+			stgdaparam6.s = "HH";
+			stgdaparam6.c = 0x11;
+			stgdaparamArray[ 5 ] = stgdaparam6;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam7 = stgdaparam62;
+			stgdaparam7.s = "SD";
+			stgdaparam7.c = 0x12;
+			stgdaparamArray[ 6 ] = stgdaparam7;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam8 = stgdaparam62;
+			stgdaparam8.s = "BD";
+			stgdaparam8.c = 0x13;
+			stgdaparamArray[ 7 ] = stgdaparam8;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam9 = stgdaparam62;
+			stgdaparam9.s = "HT";
+			stgdaparam9.c = 20;
+			stgdaparamArray[ 8 ] = stgdaparam9;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam10 = stgdaparam62;
+			stgdaparam10.s = "LT";
+			stgdaparam10.c = 0x15;
+			stgdaparamArray[ 9 ] = stgdaparam10;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam11 = stgdaparam62;
+			stgdaparam11.s = "CY";
+			stgdaparam11.c = 0x16;
+			stgdaparamArray[ 10 ] = stgdaparam11;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam12 = stgdaparam62;
+			stgdaparam12.s = "G1";
+			stgdaparam12.c = 0x21;
+			stgdaparamArray[ 11 ] = stgdaparam12;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam13 = stgdaparam62;
+			stgdaparam13.s = "G2";
+			stgdaparam13.c = 0x22;
+			stgdaparamArray[ 12 ] = stgdaparam13;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam14 = stgdaparam62;
+			stgdaparam14.s = "G3";
+			stgdaparam14.c = 0x23;
+			stgdaparamArray[ 13 ] = stgdaparam14;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam15 = stgdaparam62;
+			stgdaparam15.s = "G4";
+			stgdaparam15.c = 0x24;
+			stgdaparamArray[ 14 ] = stgdaparam15;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam16 = stgdaparam62;
+			stgdaparam16.s = "G5";
+			stgdaparam16.c = 0x25;
+			stgdaparamArray[ 15 ] = stgdaparam16;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam17 = stgdaparam62;
+			stgdaparam17.s = "G6";
+			stgdaparam17.c = 0x26;
+			stgdaparamArray[ 0x10 ] = stgdaparam17;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam18 = stgdaparam62;
+			stgdaparam18.s = "G7";
+			stgdaparam18.c = 0x27;
+			stgdaparamArray[ 0x11 ] = stgdaparam18;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam19 = stgdaparam62;
+			stgdaparam19.s = "GW";
+			stgdaparam19.c = 40;
+			stgdaparamArray[ 0x12 ] = stgdaparam19;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam20 = stgdaparam62;
+			stgdaparam20.s = "01";
+			stgdaparam20.c = 0x61;
+			stgdaparamArray[ 0x13 ] = stgdaparam20;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam21 = stgdaparam62;
+			stgdaparam21.s = "02";
+			stgdaparam21.c = 0x62;
+			stgdaparamArray[ 20 ] = stgdaparam21;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam22 = stgdaparam62;
+			stgdaparam22.s = "03";
+			stgdaparam22.c = 0x63;
+			stgdaparamArray[ 0x15 ] = stgdaparam22;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam23 = stgdaparam62;
+			stgdaparam23.s = "04";
+			stgdaparam23.c = 100;
+			stgdaparamArray[ 0x16 ] = stgdaparam23;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam24 = stgdaparam62;
+			stgdaparam24.s = "05";
+			stgdaparam24.c = 0x65;
+			stgdaparamArray[ 0x17 ] = stgdaparam24;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam25 = stgdaparam62;
+			stgdaparam25.s = "06";
+			stgdaparam25.c = 0x66;
+			stgdaparamArray[ 0x18 ] = stgdaparam25;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam26 = stgdaparam62;
+			stgdaparam26.s = "07";
+			stgdaparam26.c = 0x67;
+			stgdaparamArray[ 0x19 ] = stgdaparam26;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam27 = stgdaparam62;
+			stgdaparam27.s = "08";
+			stgdaparam27.c = 0x68;
+			stgdaparamArray[ 0x1a ] = stgdaparam27;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam28 = stgdaparam62;
+			stgdaparam28.s = "09";
+			stgdaparam28.c = 0x69;
+			stgdaparamArray[ 0x1b ] = stgdaparam28;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam29 = stgdaparam62;
+			stgdaparam29.s = "0A";
+			stgdaparam29.c = 0x70;
+			stgdaparamArray[ 0x1c ] = stgdaparam29;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam30 = stgdaparam62;
+			stgdaparam30.s = "0B";
+			stgdaparam30.c = 0x71;
+			stgdaparamArray[ 0x1d ] = stgdaparam30;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam31 = stgdaparam62;
+			stgdaparam31.s = "0C";
+			stgdaparam31.c = 0x72;
+			stgdaparamArray[ 30 ] = stgdaparam31;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam32 = stgdaparam62;
+			stgdaparam32.s = "0D";
+			stgdaparam32.c = 0x73;
+			stgdaparamArray[ 0x1f ] = stgdaparam32;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam33 = stgdaparam62;
+			stgdaparam33.s = "0E";
+			stgdaparam33.c = 0x74;
+			stgdaparamArray[ 0x20 ] = stgdaparam33;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam34 = stgdaparam62;
+			stgdaparam34.s = "0F";
+			stgdaparam34.c = 0x75;
+			stgdaparamArray[ 0x21 ] = stgdaparam34;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam35 = stgdaparam62;
+			stgdaparam35.s = "10";
+			stgdaparam35.c = 0x76;
+			stgdaparamArray[ 0x22 ] = stgdaparam35;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam36 = stgdaparam62;
+			stgdaparam36.s = "11";
+			stgdaparam36.c = 0x77;
+			stgdaparamArray[ 0x23 ] = stgdaparam36;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam37 = stgdaparam62;
+			stgdaparam37.s = "12";
+			stgdaparam37.c = 120;
+			stgdaparamArray[ 0x24 ] = stgdaparam37;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam38 = stgdaparam62;
+			stgdaparam38.s = "13";
+			stgdaparam38.c = 0x79;
+			stgdaparamArray[ 0x25 ] = stgdaparam38;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam39 = stgdaparam62;
+			stgdaparam39.s = "14";
+			stgdaparam39.c = 0x80;
+			stgdaparamArray[ 0x26 ] = stgdaparam39;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam40 = stgdaparam62;
+			stgdaparam40.s = "15";
+			stgdaparam40.c = 0x81;
+			stgdaparamArray[ 0x27 ] = stgdaparam40;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam41 = stgdaparam62;
+			stgdaparam41.s = "16";
+			stgdaparam41.c = 130;
+			stgdaparamArray[ 40 ] = stgdaparam41;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam42 = stgdaparam62;
+			stgdaparam42.s = "17";
+			stgdaparam42.c = 0x83;
+			stgdaparamArray[ 0x29 ] = stgdaparam42;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam43 = stgdaparam62;
+			stgdaparam43.s = "18";
+			stgdaparam43.c = 0x84;
+			stgdaparamArray[ 0x2a ] = stgdaparam43;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam44 = stgdaparam62;
+			stgdaparam44.s = "19";
+			stgdaparam44.c = 0x85;
+			stgdaparamArray[ 0x2b ] = stgdaparam44;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam45 = stgdaparam62;
+			stgdaparam45.s = "1A";
+			stgdaparam45.c = 0x86;
+			stgdaparamArray[ 0x2c ] = stgdaparam45;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam46 = stgdaparam62;
+			stgdaparam46.s = "1B";
+			stgdaparam46.c = 0x87;
+			stgdaparamArray[ 0x2d ] = stgdaparam46;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam47 = stgdaparam62;
+			stgdaparam47.s = "1C";
+			stgdaparam47.c = 0x88;
+			stgdaparamArray[ 0x2e ] = stgdaparam47;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam48 = stgdaparam62;
+			stgdaparam48.s = "1D";
+			stgdaparam48.c = 0x89;
+			stgdaparamArray[ 0x2f ] = stgdaparam48;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam49 = stgdaparam62;
+			stgdaparam49.s = "1E";
+			stgdaparam49.c = 0x90;
+			stgdaparamArray[ 0x30 ] = stgdaparam49;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam50 = stgdaparam62;
+			stgdaparam50.s = "1F";
+			stgdaparam50.c = 0x91;
+			stgdaparamArray[ 0x31 ] = stgdaparam50;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam51 = stgdaparam62;
+			stgdaparam51.s = "20";
+			stgdaparam51.c = 0x92;
+			stgdaparamArray[ 50 ] = stgdaparam51;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam52 = stgdaparam62;
+			stgdaparam52.s = "B1";
+			stgdaparam52.c = 0xa1;
+			stgdaparamArray[ 0x33 ] = stgdaparam52;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam53 = stgdaparam62;
+			stgdaparam53.s = "B2";
+			stgdaparam53.c = 0xa2;
+			stgdaparamArray[ 0x34 ] = stgdaparam53;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam54 = stgdaparam62;
+			stgdaparam54.s = "B3";
+			stgdaparam54.c = 0xa3;
+			stgdaparamArray[ 0x35 ] = stgdaparam54;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam55 = stgdaparam62;
+			stgdaparam55.s = "B4";
+			stgdaparam55.c = 0xa4;
+			stgdaparamArray[ 0x36 ] = stgdaparam55;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam56 = stgdaparam62;
+			stgdaparam56.s = "B5";
+			stgdaparam56.c = 0xa5;
+			stgdaparamArray[ 0x37 ] = stgdaparam56;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam57 = stgdaparam62;
+			stgdaparam57.s = "B6";
+			stgdaparam57.c = 0xa6;
+			stgdaparamArray[ 0x38 ] = stgdaparam57;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam58 = stgdaparam62;
+			stgdaparam58.s = "B7";
+			stgdaparam58.c = 0xa7;
+			stgdaparamArray[ 0x39 ] = stgdaparam58;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam59 = stgdaparam62;
+			stgdaparam59.s = "BW";
+			stgdaparam59.c = 0xa8;
+			stgdaparamArray[ 0x3a ] = stgdaparam59;
+			stgdaparam62 = new STGDAPARAM();
+			STGDAPARAM stgdaparam60 = stgdaparam62;
+			stgdaparam60.s = "G0";
+			stgdaparam60.c = 0x20;
+			stgdaparamArray[ 0x3b ] = stgdaparam60;
+			STGDAPARAM stgdaparam61 = new STGDAPARAM();
+			stgdaparam61.s = "B0";
+			stgdaparam61.c = 160;
+			stgdaparamArray[ 60 ] = stgdaparam61;
+#endif
 			this.stGDAParam = stgdaparamArray;
 			this.nBGMAdjust = 0;
 
@@ -1622,8 +2025,7 @@ namespace DTXMania
 			{
 				foreach( CChip chip in this.listChip )
 				{
-					#region [ AVI ]
-					if ( chip.nチャンネル番号 == 0x54 )
+					if( chip.nチャンネル番号 == 0x54 )
 					{
 						chip.eAVI種別 = EAVI種別.Unknown;
 						chip.rAVI = null;
@@ -1645,147 +2047,37 @@ namespace DTXMania
 							chip.rAVI = this.listAVI[ chip.n整数値 ];
 						}
 					}
-					#endregion
 				}
 			}
 		}
-
-		#region [ 読み込みとテクスチャ定義をセットで並列化するやり方(D3D外のプロセスでテクスチャ定義すると問題なので結局未使用) ]
-		//private class Cbmp並列読み込み : CLoadInParallelBase<CBMP>
-		//{
-		//    public Cbmp並列読み込み( string p, string f ) : base( p, f ) { }
-
-		//    protected override void t読み込みMain( object tlws )
-		//    {
-		//        tLoadState t = (tLoadState) tlws;
-
-		//        CBMP cbmp = (CBMP) t.cItem;
-		//        cbmp.OnDeviceCreated();
-		//        ( (tLoadState) tlws ).errcode = CLoadInParallelBase<CBMP>.ErrCode.OK;
-		//        base.t読み込みMain( tlws );
-		//    }
-		//}
-
-		//private class Cbmptex並列読み込み : CLoadInParallelBase<CBMPTEX>
-		//{
-		//    public Cbmptex並列読み込み( string p, string f ) : base( p, f ) { }
-
-		//    protected override void t読み込みMain( object tlws )
-		//    {
-		//        tLoadState t = (tLoadState) tlws;
-
-		//        CBMPTEX cbmptex = (CBMPTEX) t.cItem;
-		//        cbmptex.OnDeviceCreated();
-		//        ( (tLoadState) tlws ).errcode = CLoadInParallelBase<CBMPTEX>.ErrCode.OK;
-		//        // base.t読み込みMain( tlws );
-		//    }
-		//}
-		#endregion
-		#region [ マルチスレッドでの読み込み用 デリゲート・コールバック定義 ]
-		private static int nLoadCompleted;
-		delegate byte[] ParallelLoadBMPDelegate( CBMPbase cbmp );
-		static ParallelLoadBMPDelegate parallelLoadBMPDelegate;
-		private static byte[] LoadTexture( CBMPbase cbmp )		// 別スレッドで動作する、ファイル読み込み部
-		{
-			string filename = cbmp.GetFullPathname;
-			if ( !File.Exists( filename ) )
-			{
-				Trace.TraceWarning( "ファイルが存在しません。({0})", filename );
-				return null;
-			}
-			return File.ReadAllBytes( filename );
-		}
-		private static void BMPLoadCallback( IAsyncResult ar )	// メインスレッドで動作する、コールバック部(テクスチャ定義部)
-		{
-			ParallelLoadBMPDelegate asyncCall = (ParallelLoadBMPDelegate) ( (System.Runtime.Remoting.Messaging.AsyncResult) ar ).AsyncDelegate;
-			CBMPbase cbmp = (CBMPbase) ar.AsyncState;
-			byte[] txData = asyncCall.EndInvoke( ar );
-			cbmp.OnDeviceCreated( txData, cbmp.GetFullPathname );
-			Interlocked.Increment( ref nLoadCompleted );
-		}
-		#endregion
 		public void tBMP_BMPTEXの読み込み()
 		{
-			#region [ BMP読み込み ]
-			if ( this.listBMP != null )
+			if( this.listBMP != null )
 			{
-				if ( CDTXMania.ConfigIni.bLoadBMPInParallel )
+				foreach( CBMP cbmp in this.listBMP.Values )
 				{
-					nLoadCompleted = 0;
-					foreach ( CBMP cbmp in this.listBMP.Values )
-					{
-						parallelLoadBMPDelegate = new ParallelLoadBMPDelegate( LoadTexture );
-						parallelLoadBMPDelegate.BeginInvoke( cbmp,
-							new AsyncCallback( BMPLoadCallback ), cbmp );
-					}
-					while ( nLoadCompleted < this.listBMP.Count )	// テクスチャ定義が全て完了するまで待つ
-					{
-						Thread.Sleep( 100 );
-					}
+					cbmp.OnDeviceCreated();
 				}
-				else
-				{
-					foreach ( CBMP cbmp in this.listBMP.Values )
-					{
-						cbmp.OnDeviceCreated();
-					}
-				}
-				#region [ 読み込みとテクスチャ定義をセットで並列化するやり方(D3D外のプロセスでテクスチャ定義すると問題なので結局未使用) ]
-				// Cbmp並列読み込み c = new Cbmp並列読み込み( PATH_WAV, strフォルダ名 );
-				// c.bActivateParallelLoad = CDTXMania.ConfigIni.bLoadBMPInParallel;
-				// // Debug.WriteLine( "BEGIN BMP LOAD (" + listBMP.Count + ")" );
-				// c.t読み込み( listBMP );
-				// // Debug.WriteLine( "END   BMP LOAD" );
-				#endregion
 			}
-			#endregion
-			#region [ BMPTEX読み込み ]
-			if ( this.listBMPTEX != null )
+			if( this.listBMPTEX != null )
 			{
-				if ( CDTXMania.ConfigIni.bLoadBMPInParallel )
+				foreach( CBMPTEX cbmptex in this.listBMPTEX.Values )
 				{
-					nLoadCompleted = 0;
-					foreach ( CBMPTEX cbmptex in this.listBMPTEX.Values )
-					{
-						parallelLoadBMPDelegate = new ParallelLoadBMPDelegate( LoadTexture );
-						parallelLoadBMPDelegate.BeginInvoke( cbmptex,
-							new AsyncCallback( BMPLoadCallback ), cbmptex );
-					}
-					while ( nLoadCompleted < this.listBMPTEX.Count )	// テクスチャ定義が全て完了するまで待つ
-					{
-						Thread.Sleep( 100 );
-					}
+					cbmptex.OnDeviceCreated();
 				}
-				else
-				{
-					foreach ( CBMPTEX cbmptex in this.listBMPTEX.Values )
-					{
-						cbmptex.OnDeviceCreated();
-					}
-				}
-				#region [ 読み込みとテクスチャ定義をセットで並列化するやり方(D3D外のプロセスでテクスチャ定義すると問題なので結局未使用) ]
-				//Cbmptex並列読み込み c = new Cbmptex並列読み込み( PATH_WAV, strフォルダ名 );
-				//c.bActivateParallelLoad = CDTXMania.ConfigIni.bLoadBMPInParallel;
-				//// Debug.WriteLine( "BEGIN BMPTEX LOAD (" + listBMPTEX.Count + ")" );
-				//c.t読み込み( listBMPTEX );
-				//// Debug.WriteLine( "END   BMPTEX LOAD" );
-				#endregion
 			}
-			#endregion
-			if ( !this.bヘッダのみ )
+			if( !this.bヘッダのみ )
 			{
 				foreach( CChip chip in this.listChip )
 				{
-					#region [ BGAPAN/BGA/BMPTEX/BMP ]
-					if ( ( ( ( chip.nチャンネル番号 == 4 ) || ( chip.nチャンネル番号 == 7 ) ) || ( ( chip.nチャンネル番号 >= 0x55 ) && ( chip.nチャンネル番号 <= 0x59 ) ) ) || ( chip.nチャンネル番号 == 0x60 ) )
+					if( ( ( ( chip.nチャンネル番号 == 4 ) || ( chip.nチャンネル番号 == 7 ) ) || ( ( chip.nチャンネル番号 >= 0x55 ) && ( chip.nチャンネル番号 <= 0x59 ) ) ) || ( chip.nチャンネル番号 == 0x60 ) )
 					{
 						chip.eBGA種別 = EBGA種別.Unknown;
 						chip.rBMP = null;
 						chip.rBMPTEX = null;
 						chip.rBGA = null;
 						chip.rBGAPan = null;
-						#region [ BGAPAN ]
-						if ( this.listBGAPAN.ContainsKey( chip.n整数値 ) )
+						if( this.listBGAPAN.ContainsKey( chip.n整数値 ) )
 						{
 							CBGAPAN cbgapan = this.listBGAPAN[ chip.n整数値 ];
 							if( this.listBMPTEX.ContainsKey( cbgapan.nBMP番号 ) && this.listBMPTEX[ cbgapan.nBMP番号 ].bUse )
@@ -1803,9 +2095,7 @@ namespace DTXMania
 								continue;
 							}
 						}
-						#endregion
-						#region [ BGA ]
-						if ( this.listBGA.ContainsKey( chip.n整数値 ) )
+						if( this.listBGA.ContainsKey( chip.n整数値 ) )
 						{
 							CBGA cbga = this.listBGA[ chip.n整数値 ];
 							if( this.listBMPTEX.ContainsKey( cbga.nBMP番号 ) && this.listBMPTEX[ cbga.nBMP番号 ].bUse )
@@ -1823,27 +2113,20 @@ namespace DTXMania
 								continue;
 							}
 						}
-						#endregion
-						#region [ BMPTEX ]
-						if ( this.listBMPTEX.ContainsKey( chip.n整数値 ) && this.listBMPTEX[ chip.n整数値 ].bUse )
+						if( this.listBMPTEX.ContainsKey( chip.n整数値 ) && this.listBMPTEX[ chip.n整数値 ].bUse )
 						{
 							chip.eBGA種別 = EBGA種別.BMPTEX;
 							chip.rBMPTEX = this.listBMPTEX[ chip.n整数値 ];
 							continue;
 						}
-						#endregion
-						#region [ BMP ]
-						if ( this.listBMP.ContainsKey( chip.n整数値 ) && this.listBMP[ chip.n整数値 ].bUse )
+						if( this.listBMP.ContainsKey( chip.n整数値 ) && this.listBMP[ chip.n整数値 ].bUse )
 						{
 							chip.eBGA種別 = EBGA種別.BMP;
 							chip.rBMP = this.listBMP[ chip.n整数値 ];
 							continue;
 						}
-						#endregion
 					}
-					#endregion
-					#region [ BGA入れ替え ]
-					if ( ( ( ( chip.nチャンネル番号 == 0xc4 ) || ( chip.nチャンネル番号 == 0xc7 ) ) || ( ( chip.nチャンネル番号 >= 0xd5 ) && ( chip.nチャンネル番号 <= 0xd9 ) ) ) || ( chip.nチャンネル番号 == 0xe0 ) )
+					if( ( ( ( chip.nチャンネル番号 == 0xc4 ) || ( chip.nチャンネル番号 == 0xc7 ) ) || ( ( chip.nチャンネル番号 >= 0xd5 ) && ( chip.nチャンネル番号 <= 0xd9 ) ) ) || ( chip.nチャンネル番号 == 0xe0 ) )
 					{
 						chip.eBGA種別 = EBGA種別.Unknown;
 						chip.rBMP = null;
@@ -1861,7 +2144,6 @@ namespace DTXMania
 							chip.rBMP = this.listBMP[ chip.n整数値 ];
 						}
 					}
-					#endregion
 				}
 			}
 		}
@@ -1901,132 +2183,62 @@ namespace DTXMania
 				}
 			}
 		}
-
-
-		private class Cwav並列読み込み : CLoadInParallelBase<CWAV>
+		public void tWAVの読み込み()
 		{
-			public Cwav並列読み込み( string p, string f ) : base( p, f ) { }
-
-			protected  override void t読み込みMain( object tlws )
+//			Trace.TraceInformation("WAV files={0}", this.listWAV.Count);
+//			int count = 0;
+			foreach (CWAV cwav in this.listWAV.Values)
 			{
-				// string strCount = count.ToString() + " / " + this.listWAV.Count.ToString();
-				// Debug.WriteLine(strCount);
-				// CDTXMania.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, strCount);
-				// count++;
+//				string strCount = count.ToString() + " / " + this.listWAV.Count.ToString();
+//				Debug.WriteLine(strCount);
+//				CDTXMania.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, strCount);
+//				count++;
 
-				tLoadState t = (tLoadState) tlws;
-
-				CWAV cwav = (CWAV) t.cItem;
-				string str = string.IsNullOrEmpty( this.PATH_WAV ) ? this.strフォルダ名 : this.PATH_WAV;
+				string str = string.IsNullOrEmpty(this.PATH_WAV) ? this.strフォルダ名 : this.PATH_WAV;
 				str = str + cwav.strファイル名;
-				//Debug.WriteLine( str + ": start loading" );
-				if ( cwav == null )
-				{
-					Trace.TraceError( "CWAVがnullです。" );
-				}
 				try
 				{
-				    cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( str );
-				    cwav.rSound[ 0 ].n音量 = 100;
-				    ( (tLoadState) tlws ).errcode = CLoadInParallelBase<CWAV>.ErrCode.OK;
-				    if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-				    {
-				        Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes){4}", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory", cwav.bIsOnBGMLane ? "(BGM)" : "" );
-				    }
+						try
+						{
+							cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する(str);
+							cwav.rSound[ 0 ].n音量 = 100;
+							if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+							{
+								Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
+							}
+						}
+						catch
+						{
+							cwav.rSound[ 0 ] = null;
+							Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
+						}
+						if ( cwav.rSound[ 0 ] == null || cwav.rSound[ 0 ].bストリーム再生する )
+						{
+							for ( int j = 1; j < cwav.rSound.GetLength(0); j++ )
+							{
+								cwav.rSound[ j ] = null;
+							}
+						}
+						else
+						{
+							for ( int j = 1; j < cwav.rSound.GetLength(0); j++ )
+							{
+								cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
+								CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
+							}
+						}
 				}
-				catch ( ArgumentException )
+				catch( Exception exception )
 				{
-					cwav.rSound[ 0 ] = null;
-					Trace.TraceError( "ファイルが見つからないか、0byteでした。({0})({1})", cwav.strコメント文, str );
-					( (tLoadState) tlws ).errcode = CLoadInParallelBase<CWAV>.ErrCode.FatalError;
-					// Trace.TraceError( e.Message );
-				}
-				catch ( AccessViolationException e )
-				{
-				    cwav.rSound[ 0 ] = null;
-				    ( (tLoadState) tlws ).errcode = CLoadInParallelBase<CWAV>.ErrCode.TemporalError;
-				    Trace.TraceError( "AccessViolationError。リトライします。({0})({1})", cwav.strコメント文, str );
-				    Trace.TraceError( e.Message );
-				}
-				catch ( NullReferenceException e )
-				{
-				    cwav.rSound[ 0 ] = null;
-				    ( (tLoadState) tlws ).errcode = CLoadInParallelBase<CWAV>.ErrCode.TemporalError;
-				    Trace.TraceError( "NullReferenceException。リトライします。({0})({1})", cwav.strコメント文, str );
-					if ( e != null )
-					{
-						Trace.TraceError( e.Message );
-					}
-					else
-					{
-						Trace.TraceError( "Exception e==nullでした" );
-					}
-
-				}
-				catch ( Exception e )
-				{
-				    cwav.rSound[ 0 ] = null;
-				    ( (tLoadState) tlws ).errcode = CLoadInParallelBase<CWAV>.ErrCode.OK;
-				    Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
-					if ( e != null )	// e==nullのことがある
-					{
-						//Trace.TraceError( e.Data.Values.ToString());
-						//if ( e.InnerException != null )
-						//{
-						//    Trace.TraceError( e.InnerException.ToString() );
-						//}
-						//Trace.TraceError( e.StackTrace );
-						Trace.TraceError( e.Message );
-					}
-					else
-					{
-						Trace.TraceError( "Exception e==nullでした" );
-					}
-				}
-
-				if ( cwav.rSound[ 0 ] == null || cwav.rSound[ 0 ].bストリーム再生する )
-				{
-					for ( int j = 1; j < cwav.rSound.GetLength( 0 ); j++ )
+					Trace.TraceError( "サウンドの生成に失敗しました。({0})({1})({2})", exception.Message, cwav.strコメント文, str );
+					for( int j = 0; j < cwav.rSound.GetLength(0); j++ )
 					{
 						cwav.rSound[ j ] = null;
 					}
+					continue;
 				}
-				else
-				{
-					try
-					{
-						for ( int j = 1; j < cwav.rSound.GetLength( 0 ); j++ )
-						{
-							cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
-							CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
-						}
-					}
-					catch ( Exception exception )
-					{
-						Trace.TraceError( "サウンドの生成に失敗しました。({0})({1})({2})", exception.Message, cwav.strコメント文, str );
-						( (tLoadState) tlws ).errcode = CLoadInParallelBase<CWAV>.ErrCode.FatalError;
-						for ( int j = 0; j < cwav.rSound.GetLength( 0 ); j++ )
-						{
-							cwav.rSound[ j ] = null;
-						}
-					}
-				}
-				//Debug.WriteLine( str + ": end loading" );
-				//base.t読み込みMain( tlws );
 			}
 		}
-		public void tWAVの読み込み()
-		{
-			Cwav並列読み込み c = new Cwav並列読み込み( PATH_WAV, strフォルダ名 );
-			//Cwav並列読み込み c = new Cwav並列読み込み();
-			//c.SetPaths( PATH_WAV, strフォルダ名 ); 
-			c.bActivateParallelLoad = CDTXMania.ConfigIni.bLoadWAVInParallel;
-			// Debug.WriteLine( "BEGIN WAV LOAD (" + listWAV.Count + ")" );
-			c.t読み込み( listWAV );
-			// Debug.WriteLine( "END   WAV LOAD" );
-		}
-
-
 		public static string tZZ( int n )
 		{
 			if( n < 0 || n >= 36 * 36 )
@@ -2341,16 +2553,10 @@ namespace DTXMania
 			}
 			if( this.e種別 != E種別.SMF )
 			{
-				try
-				{
-					StreamReader reader = new StreamReader( strファイル名, Encoding.GetEncoding( "shift-jis" ) );
-					string str2 = reader.ReadToEnd();
-					reader.Close();
-					this.t入力・全入力文字列から( str2, db再生速度, nBGMAdjust );
-				}
-				catch
-				{
-				}
+				StreamReader reader = new StreamReader( strファイル名, Encoding.GetEncoding( "shift-jis" ) );
+				string str2 = reader.ReadToEnd();
+				reader.Close();
+				this.t入力・全入力文字列から( str2, db再生速度, nBGMAdjust );
 			}
 			else
 			{
@@ -2429,7 +2635,7 @@ namespace DTXMania
 					this.n無限管理SIZE = null;
 					if( !this.bヘッダのみ )
 					{
-						int ch;
+						int num26;
 						CBPM cbpm = null;
 						foreach( CBPM cbpm2 in this.listBPM.Values )
 						{
@@ -2446,31 +2652,31 @@ namespace DTXMania
 							cbpm.n表記上の番号 = 0;
 							cbpm.dbBPM値 = 120.0;
 							this.listBPM.Add( cbpm.n内部番号, cbpm );
-							CChip chip = new CChip();
-							chip.n発声位置 = 0;
-							chip.nチャンネル番号 = 8;		// 拡張BPM
-							chip.n整数値 = 0;
-							chip.n整数値・内部番号 = cbpm.n内部番号;
-							this.listChip.Add( chip );
+							CChip item = new CChip();
+							item.n発声位置 = 0;
+							item.nチャンネル番号 = 8;
+							item.n整数値 = 0;
+							item.n整数値・内部番号 = cbpm.n内部番号;
+							this.listChip.Add( item );
 						}
 						else
 						{
-							CChip chip = new CChip();
-							chip.n発声位置 = 0;
-							chip.nチャンネル番号 = 8;		// 拡張BPM
-							chip.n整数値 = 0;
-							chip.n整数値・内部番号 = cbpm.n内部番号;
-							this.listChip.Add( chip );
+							CChip chip2 = new CChip();
+							chip2.n発声位置 = 0;
+							chip2.nチャンネル番号 = 8;
+							chip2.n整数値 = 0;
+							chip2.n整数値・内部番号 = cbpm.n内部番号;
+							this.listChip.Add( chip2 );
 						}
 						if( this.listBMP.ContainsKey( 0 ) )
 						{
-							CChip chip = new CChip();
-							chip.n発声位置 = 0;
-							chip.nチャンネル番号 = 4;		// BGA (レイヤBGA1)
-							chip.n整数値 = 0;
-							chip.n整数値・内部番号 = 0;
-							//CChip chip3 = chip;
-							this.listChip.Add( chip );
+							CChip chip4 = new CChip();
+							chip4.n発声位置 = 0;
+							chip4.nチャンネル番号 = 4;
+							chip4.n整数値 = 0;
+							chip4.n整数値・内部番号 = 0;
+							CChip chip3 = chip4;
+							this.listChip.Add( chip3 );
 						}
 						foreach( CWAV cwav in this.listWAV.Values )
 						{
@@ -2487,32 +2693,28 @@ namespace DTXMania
 								cwav.n音量 = 100;
 							}
 						}
-						foreach( CWAV cwav in this.listWAV.Values )
+						foreach( CWAV cwav2 in this.listWAV.Values )
 						{
-							foreach( CChip chip in this.listChip )
+							foreach( CChip chip5 in this.listChip )
 							{
-								if( chip.n整数値・内部番号 == cwav.n内部番号 )
+								if( chip5.n整数値・内部番号 == cwav2.n内部番号 )
 								{
-									chip.dbチップサイズ倍率 = ( (double) cwav.nチップサイズ ) / 100.0;
-									if (chip.nチャンネル番号 == 0x01 )	// BGMだったら
-									{
-										cwav.bIsOnBGMLane = true;
-									}
+									chip5.dbチップサイズ倍率 = ( (double) cwav2.nチップサイズ ) / 100.0;
 								}
 							}
 						}
-						for( int m = 0xb1; m <= 0xbb; m++ )				// 空打ち(ドラム, ギター, ベース) LCの空打ちが入ってないけど・・・
+						for( int m = 0xb1; m <= 0xbb; m++ )
 						{
-							foreach( CChip chip in this.listChip )
+							foreach( CChip chip6 in this.listChip )
 							{
-								if( chip.nチャンネル番号 == m )
+								if( chip6.nチャンネル番号 == m )
 								{
-									CChip c = new CChip();
-									c.n発声位置 = 0;
-									c.nチャンネル番号 = chip.nチャンネル番号;
-									c.n整数値 = chip.n整数値;
-									c.n整数値・内部番号 = chip.n整数値・内部番号;
-									this.listChip.Add( c );
+									CChip chip7 = new CChip();
+									chip7.n発声位置 = 0;
+									chip7.nチャンネル番号 = chip6.nチャンネル番号;
+									chip7.n整数値 = chip6.n整数値;
+									chip7.n整数値・内部番号 = chip6.n整数値・内部番号;
+									this.listChip.Add( chip7 );
 									break;
 								}
 							}
@@ -2520,25 +2722,25 @@ namespace DTXMania
 						if( this.listChip.Count > 0 )
 						{
 							this.listChip.Sort();
-							double barlength = 1.0;
-							int nEndOfSong = ( this.listChip[ this.listChip.Count - 1 ].n発声位置 + 384 ) - ( this.listChip[ this.listChip.Count - 1 ].n発声位置 % 384 );
-							for( int bar = 0; bar <= nEndOfSong; bar += 384 )
+							double num4 = 1.0;
+							int num5 = ( this.listChip[ this.listChip.Count - 1 ].n発声位置 + 384 ) - ( this.listChip[ this.listChip.Count - 1 ].n発声位置 % 384 );
+							for( int num6 = 0; num6 <= num5; num6 += 384 )
 							{
-								CChip chip = new CChip();
-								chip.n発声位置 = bar;
-								chip.nチャンネル番号 = 0x50;	// 小節線
-								chip.n整数値 = 36 * 36 - 1;
-								this.listChip.Add( chip );
+								CChip chip8 = new CChip();
+								chip8.n発声位置 = num6;
+								chip8.nチャンネル番号 = 0x50;
+								chip8.n整数値 = 36 * 36 - 1;
+								this.listChip.Add( chip8 );
 							}
 							this.listChip.Sort();
 							int num7 = 0;
 							int num8 = 0;
-							for( int num9 = 0; num9 < nEndOfSong; num9 += 384 )
+							for( int num9 = 0; num9 < num5; num9 += 384 )
 							{
 								int num10 = 0;
 								while( ( num8 < this.listChip.Count ) && ( this.listChip[ num8 ].n発声位置 < ( num9 + 384 ) ) )
 								{
-									if( this.listChip[ num8 ].nチャンネル番号 == 0xc1 )		// 拍線シフト
+									if( this.listChip[ num8 ].nチャンネル番号 == 0xc1 )
 									{
 										num10 = this.listChip[ num8 ].n発声位置 - num9;
 									}
@@ -2546,30 +2748,30 @@ namespace DTXMania
 								}
 								if( ( this.e種別 == E種別.BMS ) || ( this.e種別 == E種別.BME ) )
 								{
-									barlength = 1.0;
+									num4 = 1.0;
 								}
 								while( ( num7 < this.listChip.Count ) && ( this.listChip[ num7 ].n発声位置 <= num9 ) )
 								{
-									if( this.listChip[ num7 ].nチャンネル番号 == 2 )		// bar length
+									if( this.listChip[ num7 ].nチャンネル番号 == 2 )
 									{
-										barlength = this.listChip[ num7 ].db実数値;
+										num4 = this.listChip[ num7 ].db実数値;
 									}
 									num7++;
 								}
 								for( int num11 = 0; num11 < 100; num11++ )
 								{
-									int num12 = (int) ( ( (double) ( 384 * num11 ) ) / ( 4.0 * barlength ) );
+									int num12 = (int) ( ( (double) ( 384 * num11 ) ) / ( 4.0 * num4 ) );
 									if( ( num12 + num10 ) >= 384 )
 									{
 										break;
 									}
 									if( ( ( num12 + num10 ) % 384 ) != 0 )
 									{
-										CChip chip = new CChip();
-										chip.n発声位置 = ( num9 + num12 ) + num10;
-										chip.nチャンネル番号 = 0x51;
-										chip.n整数値 = 36 * 36 - 1;
-										this.listChip.Add( chip );
+										CChip chip9 = new CChip();
+										chip9.n発声位置 = ( num9 + num12 ) + num10;
+										chip9.nチャンネル番号 = 0x51;
+										chip9.n整数値 = 36 * 36 - 1;
+										this.listChip.Add( chip9 );
 									}
 								}
 							}
@@ -2604,81 +2806,81 @@ namespace DTXMania
 								}
 								startIndex++;
 							}
-							if( ( ( this.listChip[ i ].nチャンネル番号 == 0x50 ) || ( this.listChip[ i ].nチャンネル番号 == 0x51 ) ) && ( this.listChip[ i ].n整数値 == (36 * 36 - 1) ) )
+							if( ( ( this.listChip[ i ].nチャンネル番号 == 80 ) || ( this.listChip[ i ].nチャンネル番号 == 0x51 ) ) && ( this.listChip[ i ].n整数値 == 0x50f ) )
 							{
 								this.listChip[ i ].b可視 = flag;
 							}
 						}
 						double bpm = 120.0;
-						double dbBarLength = 1.0;
-						int n発声位置 = 0;
-						int ms = 0;
+						double num15 = 1.0;
+						int num16 = 0;
+						int num17 = 0;
 						int nBar = 0;
-						foreach( CChip chip in this.listChip )
+						foreach( CChip chip10 in this.listChip )
 						{
-							chip.n発声時刻ms = ms + ( (int) ( ( ( 0x271 * ( chip.n発声位置 - n発声位置 ) ) * dbBarLength ) / bpm ) );
-							if( ( ( this.e種別 == E種別.BMS ) || ( this.e種別 == E種別.BME ) ) && ( ( dbBarLength != 1.0 ) && ( ( chip.n発声位置 / 384) != nBar ) ) )
+							chip10.n発声時刻ms = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / bpm ) );
+							if( ( ( this.e種別 == E種別.BMS ) || ( this.e種別 == E種別.BME ) ) && ( ( num15 != 1.0 ) && ( ( chip10.n発声位置 / 384) != nBar ) ) )
 							{
-								n発声位置 = chip.n発声位置;
-								ms = chip.n発声時刻ms;
-								dbBarLength = 1.0;
+								num16 = chip10.n発声位置;
+								num17 = chip10.n発声時刻ms;
+								num15 = 1.0;
 							}
-							nBar = chip.n発声位置 / 384;
-							ch = chip.nチャンネル番号;
-							switch( ch )
+							nBar = chip10.n発声位置 / 384;
+							num26 = chip10.nチャンネル番号;
+							switch( num26 )
 							{
 								case 0x02:
 									{
-										n発声位置 = chip.n発声位置;
-										ms = chip.n発声時刻ms;
-										dbBarLength = chip.db実数値;
+										num16 = chip10.n発声位置;
+										num17 = chip10.n発声時刻ms;
+										num15 = chip10.db実数値;
 										continue;
 									}
-								case 0x03:	// BPM
+								case 0x03:
 									{
-										n発声位置 = chip.n発声位置;
-										ms = chip.n発声時刻ms;
-										bpm = this.BASEBPM + chip.n整数値;
+										num16 = chip10.n発声位置;
+										num17 = chip10.n発声時刻ms;
+										bpm = this.BASEBPM + chip10.n整数値;
 										continue;
 									}
-								case 0x04:	// BGA (レイヤBGA1)
-								case 0x07:	// レイヤBGA2
-								case 0x55:	// レイヤBGA3
-								case 0x56:	// レイヤBGA4
-								case 0x57:	// レイヤBGA5
-								case 0x58:	// レイヤBGA6
-								case 0x59:	// レイヤBGA7
-								case 0x60:	// レイヤBGA8
+								case 0x04:
+								case 0x07:
+								case 0x55:
+								case 0x56:
+								case 0x57:
+								case 0x58:
+								case 0x59:
+								case 0x60:
 									break;
 
-								case 0x05:	// Extended Object (非対応)
-								case 0x06:	// Missアニメ (非対応)
-								case 0x5A:	// 未定義
-								case 0x5b:	// 未定義
-								case 0x5c:	// 未定義
-								case 0x5d:	// 未定義
-								case 0x5e:	// 未定義
-								case 0x5f:	// 未定義
+								case 0x05:
+								case 0x06:
+								case 0x5A:
+								case 0x5b:
+								case 0x5c:
+								case 0x5d:
+								case 0x5e:
+								case 0x5f:
 									{
 										continue;
 									}
-								case 0x08:	// 拡張BPM
+								case 8:
 									{
-										n発声位置 = chip.n発声位置;
-										ms = chip.n発声時刻ms;
-										if( this.listBPM.ContainsKey( chip.n整数値・内部番号 ) )
+										num16 = chip10.n発声位置;
+										num17 = chip10.n発声時刻ms;
+										if( this.listBPM.ContainsKey( chip10.n整数値・内部番号 ) )
 										{
-											bpm = ( ( this.listBPM[ chip.n整数値・内部番号 ].n表記上の番号 == 0 ) ? 0.0 : this.BASEBPM ) + this.listBPM[ chip.n整数値・内部番号 ].dbBPM値;
+											bpm = ( ( this.listBPM[ chip10.n整数値・内部番号 ].n表記上の番号 == 0 ) ? 0.0 : this.BASEBPM ) + this.listBPM[ chip10.n整数値・内部番号 ].dbBPM値;
 										}
 										continue;
 									}
-								case 0x54:	// 動画再生
+								case 0x54:
 									{
-										if( this.listAVIPAN.ContainsKey( chip.n整数値 ) )
+										if( this.listAVIPAN.ContainsKey( chip10.n整数値 ) )
 										{
-											int num21 = ms + ( (int) ( ( ( 0x271 * ( chip.n発声位置 - n発声位置 ) ) * dbBarLength ) / bpm ) );
-											int num22 = ms + ( (int) ( ( ( 0x271 * ( ( chip.n発声位置 + this.listAVIPAN[ chip.n整数値 ].n移動時間ct ) - n発声位置 ) ) * dbBarLength ) / bpm ) );
-											chip.n総移動時間 = num22 - num21;
+											int num21 = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / bpm ) );
+											int num22 = num17 + ( (int) ( ( ( 0x271 * ( ( chip10.n発声位置 + this.listAVIPAN[ chip10.n整数値 ].n移動時間ct ) - num16 ) ) * num15 ) / bpm ) );
+											chip10.n総移動時間 = num22 - num21;
 										}
 										continue;
 									}
@@ -2687,18 +2889,18 @@ namespace DTXMania
 										continue;
 									}
 							}
-							if( this.listBGAPAN.ContainsKey( chip.n整数値 ) )
+							if( this.listBGAPAN.ContainsKey( chip10.n整数値 ) )
 							{
-								int num19 = ms + ( (int) ( ( ( 0x271 * ( chip.n発声位置 - n発声位置 ) ) * dbBarLength ) / bpm ) );
-								int num20 = ms + ( (int) ( ( ( 0x271 * ( ( chip.n発声位置 + this.listBGAPAN[ chip.n整数値 ].n移動時間ct ) - n発声位置 ) ) * dbBarLength ) / bpm ) );
-								chip.n総移動時間 = num20 - num19;
+								int num19 = num17 + ( (int) ( ( ( 0x271 * ( chip10.n発声位置 - num16 ) ) * num15 ) / bpm ) );
+								int num20 = num17 + ( (int) ( ( ( 0x271 * ( ( chip10.n発声位置 + this.listBGAPAN[ chip10.n整数値 ].n移動時間ct ) - num16 ) ) * num15 ) / bpm ) );
+								chip10.n総移動時間 = num20 - num19;
 							}
 						}
 						if( this.db再生速度 > 0.0 )
 						{
-							foreach( CChip chip in this.listChip )
+							foreach( CChip chip11 in this.listChip )
 							{
-								chip.n発声時刻ms = (int) ( ( (double) chip.n発声時刻ms ) / this.db再生速度 );
+								chip11.n発声時刻ms = (int) ( ( (double) chip11.n発声時刻ms ) / this.db再生速度 );
 							}
 						}
 						this.nBGMAdjust = 0;
@@ -2707,27 +2909,27 @@ namespace DTXMania
 						{
 							this.n可視チップ数[ n ] = 0;
 						}
-						foreach( CChip chip in this.listChip )
+						foreach( CChip chip12 in this.listChip )
 						{
-							int c = chip.nチャンネル番号;
-							if( ( 0x11 <= c ) && ( c <= 0x1a ) )
+							int num24 = chip12.nチャンネル番号;
+							if( ( 0x11 <= num24 ) && ( num24 <= 0x1a ) )
 							{
-								this.n可視チップ数[ c - 0x11 ]++;
+								this.n可視チップ数[ num24 - 0x11 ]++;
 							}
-							if( ( 0x20 <= c ) && ( c <= 0x27 ) )
+							if( ( 0x20 <= num24 ) && ( num24 <= 0x27 ) )
 							{
 								this.n可視チップ数.Guitar++;
 							}
-							if( ( 0xA0 <= c ) && ( c <= 0xa7 ) )
+							if( ( 0xA0 <= num24 ) && ( num24 <= 0xa7 ) )
 							{
 								this.n可視チップ数.Bass++;
 							}
 						}
-						foreach( CChip chip in this.listChip )
+						foreach( CChip chip13 in this.listChip )
 						{
-							if( ( chip.bWAVを使うチャンネルである && this.listWAV.ContainsKey( chip.n整数値・内部番号 ) ) && !this.listWAV[ chip.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Contains( chip.nチャンネル番号 ) )
+							if( ( chip13.bWAVを使うチャンネルである && this.listWAV.ContainsKey( chip13.n整数値・内部番号 ) ) && !this.listWAV[ chip13.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Contains( chip13.nチャンネル番号 ) )
 							{
-								this.listWAV[ chip.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Add( chip.nチャンネル番号 );
+								this.listWAV[ chip13.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Add( chip13.nチャンネル番号 );
 							}
 						}
 						byte[] buffer = null;
@@ -2746,12 +2948,12 @@ namespace DTXMania
 						if( buffer != null )
 						{
 							byte[] buffer2 = new MD5CryptoServiceProvider().ComputeHash( buffer );
-							StringBuilder sb = new StringBuilder();
-							foreach( byte b in buffer2 )
+							StringBuilder builder4 = new StringBuilder();
+							foreach( byte num25 in buffer2 )
 							{
-								sb.Append( b.ToString( "x2" ) );
+								builder4.Append( num25.ToString( "x2" ) );
 							}
-							this.strハッシュofDTXファイル = sb.ToString();
+							this.strハッシュofDTXファイル = builder4.ToString();
 						}
 						else
 						{
@@ -2760,9 +2962,9 @@ namespace DTXMania
 						#region [ bLogDTX詳細ログ出力 ]
 						if ( CDTXMania.ConfigIni.bLogDTX詳細ログ出力 )
 						{
-							foreach( CWAV cwav in this.listWAV.Values )
+							foreach( CWAV cwav3 in this.listWAV.Values )
 							{
-								Trace.TraceInformation( cwav.ToString() );
+								Trace.TraceInformation( cwav3.ToString() );
 							}
 							foreach( CAVI cavi in this.listAVI.Values )
 							{
@@ -2792,9 +2994,9 @@ namespace DTXMania
 							{
 								Trace.TraceInformation( cbpm3.ToString() );
 							}
-							foreach( CChip chip in this.listChip )
+							foreach( CChip chip14 in this.listChip )
 							{
-								Trace.TraceInformation( chip.ToString() );
+								Trace.TraceInformation( chip14.ToString() );
 							}
 						}
 						#endregion
@@ -4736,7 +4938,6 @@ namespace DTXMania
 				n音量 = this.n無限管理VOL[ zz ],
 				strファイル名 = strパラメータ,
 				strコメント文 = strコメント,
-				bIsOnBGMLane= false
 			};
 
 			#region [ WAVリストに {内部番号, wav} の組を登録。]

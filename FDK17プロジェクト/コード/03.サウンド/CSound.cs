@@ -237,23 +237,17 @@ namespace FDK
 			return clone;
 		}
 
-		public int tデコード後のサイズを調べる( string strファイル名, out int _nHandle, ref int errcode )
+		public int tデコード後のサイズを調べる( string strファイル名, out int _nHandle )
 		{
 //Trace.TraceInformation("tデコード後のサイズを調べる、を開始。");
 			_nHandle = -1;
 
-			if ( !File.Exists( strファイル名 ) )
-			{
-				errcode = -10;
-				return -10;
-			}
 			#region [ #24416 2011.2.15 yyagi; to avoid application error in case filesize==0 ]
 			FileInfo fi = new FileInfo( strファイル名 );
 			long filesize = fi.Length;
 			if ( filesize <= 0 )
 			{
-				errcode = -10;
-				return -10;
+				return -1;
 			}
 			fi = null;
 			#endregion
@@ -262,7 +256,6 @@ namespace FDK
 			int nHandle = this.Open( strファイル名 );
 			if( nHandle < 0 )
 			{
-				errcode = -1;
 				return -1;
 			}
 //			Trace.TraceInformation( "Open(): Exit." );
@@ -272,7 +265,6 @@ namespace FDK
 			if ( this.GetFormat( nHandle, ref wfx ) < 0 )
 			{
 				this.Close( nHandle );
-				errcode = -2;
 				return -2;
 			}
 //			Trace.TraceInformation( "GetFormat(): Exit." );
@@ -281,13 +273,11 @@ namespace FDK
 			if (this.nTotalPCMSize == 0)
 			{
 				this.Close( nHandle );
-				errcode = -3;
 				return -3;
 			}
 //			Trace.TraceInformation( "GetTotalPCMSize(): Exit." );
 			//this.Close( nHandle );	// 2011.1.2 yyagi ここでClose()しないで、次のオンメモリ/ストリーム読み出しの時に再利用して読み込みを高速化
 			_nHandle = nHandle;
-			errcode = 0;
 			return (int) this.nTotalPCMSize;
 		}
 		public void tオンメモリ方式で作成する( SlimDX.DirectSound.DirectSound Device, string strファイル名, int _nHandle )
@@ -635,7 +625,6 @@ namespace FDK
 		private int n現在書き込み許可待ちのバッファ番号;
 		private SoundBuffer _Buffer;
 		private uint nTotalPCMSize = 0;
-		private static object lockOggGetFormat = new object();
 
 		private void tストリーム再生位置リセット()
 		{

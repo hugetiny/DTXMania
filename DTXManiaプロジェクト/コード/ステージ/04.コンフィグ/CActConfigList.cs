@@ -195,34 +195,6 @@ namespace DTXMania
 				"Turn ON to put debug log to\n DTXManiaLog.txt\nTo take it effective, you need to\n re-open DTXMania." );
 			this.list項目リスト.Add( this.iLogOutputLog );
 
-			this.iSystemWAVLoadAcceleration = new CItemToggle( "WAVLoadAccel.", CDTXMania.ConfigIni.bLoadWAVInParallel,
-				"WAV読込高速化：\n" +
-				"マルチスレッドでWAV読込を実行し\n" +
-				"曲データの読込を高速化します。\n" +
-				"ただし一部サウンドが消えたり、\n" +
-				"強制終了したりすることがあるため、\n" +
-				"基本的にはOFFにして下さい。",
-				"WAV load acceleration:\n" +
-				"To accelerate WAV file loading,\n" +
-				" multithread technology is used.\n" +
-				"But it is too dangerous\n" +
-				" * Some sound may disappear\n" +
-				" * DTXMania suddely shutdown" );
-			this.list項目リスト.Add( this.iSystemWAVLoadAcceleration );
-			this.iSystemBMPLoadAcceleration = new CItemToggle( "BMPLoadAccel.", CDTXMania.ConfigIni.bLoadBMPInParallel,
-				"BMP読込高速化：\n" +
-				"マルチスレッドでBMP読込を実行し\n" +
-				"曲データの読込を高速化します。\n" +
-				"ただし一部BMPが消えることがある\n" +
-				"ため、基本的にはOFFにして下さい。",
-				"BMP load acceleration:\n" +
-				"To accelerate WAV file loading,\n" +
-				" multithread technology is used.\n" +
-				"But it may not be safe that some\n" +
-				" BMP may disappeared." );
-			this.list項目リスト.Add( this.iSystemBMPLoadAcceleration );
-
-	
 			this.iSystemGoToKeyAssign = new CItemBase( "System Keys", CItemBase.Eパネル種別.通常,
 			"システムのキー入力に関する項目を設\n定します。",
 			"Settings for the system key/pad inputs." );
@@ -1622,8 +1594,6 @@ namespace DTXMania
 		private CItemToggle iSystemAutoResultCapture;		// #25399 2011.6.9 yyagi
 		private CItemToggle iSystemBufferedInput;
 		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
-		private CItemToggle iSystemWAVLoadAcceleration;		// #28021 2012.4.8 yyagi
-		private CItemToggle iSystemBMPLoadAcceleration;		// #28021 2012.4.8 yyagi
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -1781,9 +1751,6 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;		// #25399 2011.6.9 yyagi
 
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
-			CDTXMania.ConfigIni.bLoadWAVInParallel = this.iSystemWAVLoadAcceleration.bON;			// #28021 2012.4.8 yyagi
-			CDTXMania.ConfigIni.bLoadBMPInParallel = this.iSystemBMPLoadAcceleration.bON;			// #28021 2012.4.8 yyagi
-
 		}
 		private void tConfigIniへ記録する・Bass()
 		{

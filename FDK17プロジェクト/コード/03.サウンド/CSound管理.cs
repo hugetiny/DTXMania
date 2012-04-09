@@ -98,27 +98,15 @@ namespace FDK
 			if( string.IsNullOrEmpty( strファイル名 ) || !File.Exists( strファイル名 ) )
 				throw new ArgumentException( "ファイル名が無効です。" );
 
-			CSound csound = null;
-			int errcode = 0;
-			if ( ( csound = this.tCheckAndDecode( strファイル名, ref errcode ) ) == null )
-			{
-				if ( errcode == -10 )
-				{
-					throw new ArgumentException( "ファイルが見つからないか、ファイルが0byteです。" );
-				}
-				else if ( errcode >= 0 )
-				{
-					throw new AccessViolationException( "デコードで異常が発生しました。" );
-				}
-				else
-				{
-					throw new Exception( "OggVorbis, mp3, XA, RIFF ACM のいずれでもデコードに失敗しました。" );
-				}
-			}
-			csound.setDevice( ref this.Device );
-			tサウンドを登録する( csound );
+			CSound item = null;
+//			if( ( ( ( item = this.tネイティブOggVorbisの場合( strファイル名 ) ) == null ) && ( ( item = this.tネイティブXAの場合( strファイル名 ) ) == null ) ) && ( ( ( item = this.tネイティブmp3の場合( strファイル名 ) ) == null ) && ( ( item = this.tRIFF_WAVEの場合( strファイル名 ) ) == null ) ) )
+			if ( (item = this.tCheckAndDecode(strファイル名)) == null)
+				throw new Exception( "OggVorbis, mp3, XA, RIFF ACM のいずれでもデコードに失敗しました。" );
 
-			return csound;
+			item.setDevice( ref this.Device );
+			tサウンドを登録する( item );
+
+			return item;
 		}
 		public void tサウンドを登録する( CSound sound )
 		{
@@ -190,33 +178,28 @@ namespace FDK
 		private List<CSound> listSound = new List<CSound>();
 
 
-		private CSound tCheckAndDecode(string strFilename, ref int errcode )
+		private CSound tCheckAndDecode(string strFilename)
 		{
 			int nDecodedPCMsize;
 			int nHandle;
 
 			CSound csound = new CSoundOggVorbis();
-			nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle, ref errcode );
+			nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
 			if ( nDecodedPCMsize < 0 )
 			{
 				csound.Dispose();
-				if ( errcode == -10 )
-				{
-					return null;
-				}
-	
 				csound = new CSoundXA();
-				nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle, ref errcode );
+				nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
 				if ( nDecodedPCMsize < 0 )
 				{
 					csound.Dispose();
 					csound = new CSoundRiffWave();
-					nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle, ref errcode );
+					nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle );
 					if ( nDecodedPCMsize < 0 )
 					{
 						csound.Dispose();
 						csound = new CSoundMp3();
-						nDecodedPCMsize = csound.tデコード後のサイズを調べる( strFilename, out nHandle, ref errcode );
+						nDecodedPCMsize = csound.tデコード後のサイズを調べる(strFilename, out nHandle);
 						if ( nDecodedPCMsize < 0 )
 						{
 							csound.Dispose();
@@ -225,13 +208,13 @@ namespace FDK
 					}
 				}
 			}
-			if ( nDecodedPCMsize < n最大オンメモリ可能サイズ )
+			if (nDecodedPCMsize < n最大オンメモリ可能サイズ)
 			{
-				csound.tオンメモリ方式で作成する( this.Device, strFilename, nHandle );
+				csound.tオンメモリ方式で作成する(this.Device, strFilename, nHandle);
 			}
 			else
 			{
-				csound.tストリーム方式で作成する( this.Device, strFilename, nHandle );
+				csound.tストリーム方式で作成する(this.Device, strFilename, nHandle);
 			}
 			return csound;
 		}
