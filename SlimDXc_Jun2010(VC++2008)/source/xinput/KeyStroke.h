@@ -60,7 +60,7 @@ namespace SlimDX
 			}
 
 			/// <summary>
-			/// Gets the index of the signed-in gamer associated with the device. Can be a value in the range 0ñ3.
+			/// Gets the index of the signed-in gamer associated with the device. Can be a value in the range 0ÅE.
 			/// </summary>
 			property XInput::UserIndex UserIndex
 			{
