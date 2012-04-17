@@ -6,6 +6,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using SlimDX;
 using SlimDX.Direct3D9;
+using System.Diagnostics;
 
 namespace FDK
 {
@@ -252,7 +253,9 @@ namespace FDK
 #endif
 //				lock ( lockobj )
 //				{
+Trace.TraceInformation( "CTexture() start: " );
 				this.texture = Texture.FromMemory( device, txData, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, colorKey );
+Trace.TraceInformation( "CTexture() end:   " );
 //				}
 			}
 			catch

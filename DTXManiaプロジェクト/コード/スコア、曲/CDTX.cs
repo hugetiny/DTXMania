@@ -223,6 +223,7 @@ namespace DTXMania
 					return this.tx画像.sz画像サイズ.Width;
 				}
 			}
+			public byte[] txData;
 
 			public string GetFullPathname
 			{
@@ -256,7 +257,6 @@ namespace DTXMania
 
 				// テクスチャを作成。
 				byte[] txData = File.ReadAllBytes( strテクスチャファイル名 );
-				// this.tx画像 = CDTXMania.tテクスチャの生成( strテクスチャファイル名, true );
 				this.OnDeviceCreated( txData, strテクスチャファイル名 );
 			}
 			public void OnDeviceCreated( byte[] txData, string strテクスチャファイル名 )
@@ -1662,7 +1662,6 @@ namespace DTXMania
 		//        CBMP cbmp = (CBMP) t.cItem;
 		//        cbmp.OnDeviceCreated();
 		//        ( (tLoadState) tlws ).errcode = CLoadInParallelBase<CBMP>.ErrCode.OK;
-		//        base.t読み込みMain( tlws );
 		//    }
 		//}
 
@@ -1677,33 +1676,118 @@ namespace DTXMania
 		//        CBMPTEX cbmptex = (CBMPTEX) t.cItem;
 		//        cbmptex.OnDeviceCreated();
 		//        ( (tLoadState) tlws ).errcode = CLoadInParallelBase<CBMPTEX>.ErrCode.OK;
-		//        // base.t読み込みMain( tlws );
 		//    }
 		//}
 		#endregion
 		#region [ マルチスレッドでの読み込み用 デリゲート・コールバック定義 ]
-		private static int nLoadCompleted;
+		private static int nLoadStarted, nLoadDone;
 		delegate byte[] ParallelLoadBMPDelegate( CBMPbase cbmp );
 		static ParallelLoadBMPDelegate parallelLoadBMPDelegate;
-		private static byte[] LoadTexture( CBMPbase cbmp )		// 別スレッドで動作する、ファイル読み込み部
+		//private static byte[] LoadTexture( CBMPbase cbmp )		// 別スレッドで動作する、ファイル読み込み部
+		//{
+		//    string filename = cbmp.GetFullPathname;
+		//    if ( !File.Exists( filename ) )
+		//    {
+		//        Trace.TraceWarning( "ファイルが存在しません。({0})", filename );
+		//        return null;
+		//    }
+		//    return File.ReadAllBytes( filename );
+		//}
+		private static void LoadTexture( CBMPbase cbmp )		// 別スレッドで動作する、ファイル読み込み部
 		{
 			string filename = cbmp.GetFullPathname;
 			if ( !File.Exists( filename ) )
 			{
 				Trace.TraceWarning( "ファイルが存在しません。({0})", filename );
-				return null;
+				cbmp.txData = null;
+				return;
 			}
-			return File.ReadAllBytes( filename );
+			cbmp.txData = File.ReadAllBytes( filename );
 		}
-		private static void BMPLoadCallback( IAsyncResult ar )	// メインスレッドで動作する、コールバック部(テクスチャ定義部)
+		private static void BMPLoadCallback( IAsyncResult ar )	// 別スレッドで動作する、コールバック部(メインスレッドへのデータ引き渡しと、Wait解除)
 		{
 			ParallelLoadBMPDelegate asyncCall = (ParallelLoadBMPDelegate) ( (System.Runtime.Remoting.Messaging.AsyncResult) ar ).AsyncDelegate;
 			CBMPbase cbmp = (CBMPbase) ar.AsyncState;
 			byte[] txData = asyncCall.EndInvoke( ar );
 			cbmp.OnDeviceCreated( txData, cbmp.GetFullPathname );
-			Interlocked.Increment( ref nLoadCompleted );
+			Interlocked.Increment( ref nLoadDone );
+#if false
+			cbmp.txData = asyncCall.EndInvoke( ar );
+			lock ( lockobj )
+			{
+				queueCBMPbaseDone.Enqueue( cbmp );
+			}
+#endif
 		}
+
+		private void BMPLoadAll( object o )		// 別スレッドで、テクスチャファイルをひたすら読み込んではキューに追加する
+		{
+
+			Dictionary<int, CBMP> listB = (Dictionary<int, CBMP>) o;
+Trace.TraceInformation( "Back: ThreadID(BMPLoad)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + listB.Count  );
+			foreach ( CBMP cbmp in listB.Values )
+			{
+				LoadTexture( cbmp );
+
+Trace.TraceInformation( "Back: Lock Begin for enqueue." );
+				lock ( lockobj )
+				{
+Trace.TraceInformation( "Back: Lock End   for enqueue." );
+					queueCBMPbaseDone.Enqueue( cbmp );
+Trace.TraceInformation( "Back: Enqueued: " + cbmp.strファイル名 );
+				}
+Trace.TraceInformation( "Back: Lock End   for enqueue2." );
+				if ( queueCBMPbaseDone.Count > 4 )
+				{
+					Thread.Sleep( 10 );
+				}
+			}
+		}
+
 		#endregion
+		private static Queue<CBMPbase> queueCBMPbaseDone = new Queue<CBMPbase>();
+		private static object lockobj = new object();
+
+		private class Cbmp並列読み込み : CLoadInParallelBase<CBMP>
+		{
+			public Cbmp並列読み込み( string p, string f ) : base( p, f ) { }
+
+			protected override void t読み込み別ThreadMain( object tlws )
+			{
+				tLoadState t = (tLoadState) tlws;
+				CBMP cbmp = (CBMP) t.cItem;
+				string filename = cbmp.GetFullPathname;
+				if ( !File.Exists( filename ) )
+				{
+					Trace.TraceWarning( "ファイルが存在しません。({0})", filename );
+					( (tLoadState) tlws ).errcode = CLoadInParallelBase<CBMP>.ErrCode.FatalError;
+					return;
+				}
+				cbmp.txData = File.ReadAllBytes( filename );
+				( (tLoadState) tlws ).errcode = CLoadInParallelBase<CBMP>.ErrCode.OK;
+//if ( cbmp.txData == null )
+//{
+//    Debug.WriteLine( "cbmp.txdata== null!!" + cbmp.GetFullPathname );
+//}
+//else
+//{
+//    Debug.WriteLine( "cbmp.txdata is NOT null!! index=" + t.index + ", " + cbmp.GetFullPathname );
+//}
+			}
+			protected override void t読み込みメインThread終了処理( object tlws )
+			{
+				tLoadState t = (tLoadState) tlws;
+				CBMP cbmp = (CBMP) t.cItem;
+//if ( cbmp.txData == null )
+//{
+//    Debug.WriteLine( "cbmp.txdata== null!! index=" + t.index + ", " + cbmp.GetFullPathname );
+//}
+				cbmp.OnDeviceCreated( cbmp.txData, cbmp.GetFullPathname );
+				cbmp.txData = null;
+				( (tLoadState) tlws ).errcode = CLoadInParallelBase<CBMP>.ErrCode.OK;
+			}
+		}
+
 		public void tBMP_BMPTEXの読み込み()
 		{
 			#region [ BMP読み込み ]
@@ -1711,17 +1795,104 @@ namespace DTXMania
 			{
 				if ( CDTXMania.ConfigIni.bLoadBMPInParallel )
 				{
-					nLoadCompleted = 0;
+					//Cbmp並列読み込み c = new Cbmp並列読み込み( PATH_WAV, strフォルダ名 );
+					////Cwav並列読み込み c = new Cwav並列読み込み();
+					////c.SetPaths( PATH_WAV, strフォルダ名 ); 
+					//c.bActivateParallelLoad = CDTXMania.ConfigIni.bLoadBMPInParallel;
+					//c.t読み込み( listBMP );
+
+Trace.TraceInformation( "Main: ThreadID(Main)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + this.listBMP.Count );
+					nLoadDone = 0;
+					Thread t = new Thread( BMPLoadAll );
+					t.IsBackground = true;
+					// t.Priority = ThreadPriority.Lowest;
+					t.Start( listBMP );
+
+					while ( nLoadDone < listBMP.Count )
+					{
+						if ( queueCBMPbaseDone.Count > 0 )
+						{
+							CBMP cbmp;
+Trace.TraceInformation( "Main: Lock Begin for dequeue1." );
+							lock ( lockobj )
+							{
+Trace.TraceInformation( "Main: Lock End   for dequeue1." );
+								cbmp = (CBMP) queueCBMPbaseDone.Dequeue();
+Trace.TraceInformation( "Main: Dequeued: " + cbmp.strファイル名 );
+							}
+Trace.TraceInformation( "Main: Lock End   for dequeue2." );
+
+							cbmp.OnDeviceCreated( cbmp.txData, cbmp.GetFullPathname );
+							nLoadDone++;
+Trace.TraceInformation( "Main: OnDeviceCreated: " + cbmp.strファイル名 );
+						}
+						else
+						{
+Trace.TraceInformation( "Main: Sleeped.");
+							Thread.Sleep( 5 );
+						}
+					}
+
+#if false
+					nLoadDone = 0;
 					foreach ( CBMP cbmp in this.listBMP.Values )
 					{
-						parallelLoadBMPDelegate = new ParallelLoadBMPDelegate( LoadTexture );
-						parallelLoadBMPDelegate.BeginInvoke( cbmp,
-							new AsyncCallback( BMPLoadCallback ), cbmp );
+						parallelLoadBMPDelegate = new ParallelLoadBMPDelegate( LoadTexture );		// 別スレッドにファイル読み込みを突っ込みまくる
+						parallelLoadBMPDelegate.BeginInvoke( cbmp,								//
+							new AsyncCallback( BMPLoadCallback ), cbmp );							//
 					}
-					while ( nLoadCompleted < this.listBMP.Count )	// テクスチャ定義が全て完了するまで待つ
+					while ( nLoadDone < this.listBMP.Count )	// テクスチャ定義が全て完了するまで待つ
 					{
 						Thread.Sleep( 100 );
 					}
+#endif
+#if false
+					nLoadStarted = 0;
+					nLoadDone = 0;
+					queueCBMPbaseDone.Clear();
+
+					foreach ( CBMP cbmp in this.listBMP.Values )
+					{
+						parallelLoadBMPDelegate = new ParallelLoadBMPDelegate( LoadTexture );		// 別スレッドにファイル読み込みを突っ込みまくる
+						parallelLoadBMPDelegate.BeginInvoke( cbmp,									//
+							new AsyncCallback( BMPLoadCallback ), cbmp );							//
+						nLoadStarted++;																//
+//Debug.WriteLine( "nLoadStarted++: " + nLoadStarted + " " + cbmp.GetFullPathname );
+
+						//while ( queueCBMPbaseDone.Count > 0 )										// 読み込み完了していたら、OnDeviceCreate()する
+						if ( queueCBMPbaseDone.Count > 0 )										// 読み込み完了していたら、OnDeviceCreate()する
+						{
+							CBMP cbmpDone;
+							lock ( lockobj )
+							{
+								cbmpDone = (CBMP) queueCBMPbaseDone.Dequeue();
+							}
+							cbmpDone.OnDeviceCreated( cbmpDone.txData, cbmpDone.GetFullPathname );
+							nLoadDone++;
+//Debug.WriteLine( "nLoadDone++: " + nLoadDone + " " + cbmpDone.GetFullPathname );
+						}
+						//while ( nLoadStarted - nLoadDone - queueCBMPbaseDone.Count > 8 )			// 別スレッドに突っ込みすぎているようなら、
+						//{																			// 状態が改善されるまで待つ
+						//    Thread.Sleep( 10 );
+						//}		
+					}
+					while ( nLoadDone < this.listBMP.Count )	// テクスチャ定義が全て完了するまで待つ
+					{
+//Debug.WriteLine( "nLoadStarted=" + nLoadStarted + ", nLoadDone=" + nLoadDone );
+						Thread.Sleep( 10 );
+						while ( queueCBMPbaseDone.Count > 0 )											// 読み込み完了していたら、OnDeviceCreate()する
+						{
+							CBMP cbmpDone;
+							lock ( lockobj )
+							{
+								cbmpDone = (CBMP) queueCBMPbaseDone.Dequeue();
+							}
+							cbmpDone.OnDeviceCreated( cbmpDone.txData, cbmpDone.GetFullPathname );
+							nLoadDone++;
+//Debug.WriteLine( "nLoadDone++: " + nLoadDone + " " + cbmpDone.GetFullPathname );
+						}
+					}
+#endif
 				}
 				else
 				{
@@ -1742,27 +1913,27 @@ namespace DTXMania
 			#region [ BMPTEX読み込み ]
 			if ( this.listBMPTEX != null )
 			{
-				if ( CDTXMania.ConfigIni.bLoadBMPInParallel )
-				{
-					nLoadCompleted = 0;
-					foreach ( CBMPTEX cbmptex in this.listBMPTEX.Values )
-					{
-						parallelLoadBMPDelegate = new ParallelLoadBMPDelegate( LoadTexture );
-						parallelLoadBMPDelegate.BeginInvoke( cbmptex,
-							new AsyncCallback( BMPLoadCallback ), cbmptex );
-					}
-					while ( nLoadCompleted < this.listBMPTEX.Count )	// テクスチャ定義が全て完了するまで待つ
-					{
-						Thread.Sleep( 100 );
-					}
-				}
-				else
-				{
+				//if ( CDTXMania.ConfigIni.bLoadBMPInParallel )
+				//{
+				//    nLoadDone = 0;
+				//    foreach ( CBMPTEX cbmptex in this.listBMPTEX.Values )
+				//    {
+				//        parallelLoadBMPDelegate = new ParallelLoadBMPDelegate( LoadTexture );
+				//        parallelLoadBMPDelegate.BeginInvoke( cbmptex,
+				//            new AsyncCallback( BMPLoadCallback ), cbmptex );
+				//    }
+				//    while ( nLoadDone < this.listBMPTEX.Count )	// テクスチャ定義が全て完了するまで待つ
+				//    {
+				//        Thread.Sleep( 100 );
+				//    }
+				//}
+				//else
+				//{
 					foreach ( CBMPTEX cbmptex in this.listBMPTEX.Values )
 					{
 						cbmptex.OnDeviceCreated();
 					}
-				}
+				//}
 				#region [ 読み込みとテクスチャ定義をセットで並列化するやり方(D3D外のプロセスでテクスチャ定義すると問題なので結局未使用) ]
 				//Cbmptex並列読み込み c = new Cbmptex並列読み込み( PATH_WAV, strフォルダ名 );
 				//c.bActivateParallelLoad = CDTXMania.ConfigIni.bLoadBMPInParallel;
@@ -1907,7 +2078,7 @@ namespace DTXMania
 		{
 			public Cwav並列読み込み( string p, string f ) : base( p, f ) { }
 
-			protected  override void t読み込みMain( object tlws )
+			protected  override void t読み込み別ThreadMain( object tlws )
 			{
 				// string strCount = count.ToString() + " / " + this.listWAV.Count.ToString();
 				// Debug.WriteLine(strCount);

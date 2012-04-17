@@ -243,7 +243,7 @@ namespace DTXMania
 						Trace.TraceInformation( "---------------------------" );
 
 						span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
-						Trace.TraceInformation( "DTX読込所要時間:     {0}", span.ToString() );
+						Trace.TraceInformation( "DTX読込所要時間:           {0}", span.ToString() );
 
 						if( CDTXMania.bコンパクトモード )
 							CDTXMania.DTX.MIDIレベル = 1;
@@ -253,7 +253,7 @@ namespace DTXMania
 						DateTime timeBeginLoadWAV = DateTime.Now;
 						CDTXMania.DTX.tWAVの読み込み();
 						span = (TimeSpan) ( DateTime.Now - timeBeginLoadWAV );
-						Trace.TraceInformation( "WAV読込所要時間:     {0}", span.ToString() );
+						Trace.TraceInformation( "WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString() );
 						
 						CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.GUITAR, CDTXMania.ConfigIni.eRandom.Guitar );
 						CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.BASS, CDTXMania.ConfigIni.eRandom.Bass );
@@ -270,10 +270,10 @@ namespace DTXMania
 						if ( CDTXMania.ConfigIni.bAVI有効 )
 							CDTXMania.DTX.tAVIの読み込み();
 						span = (TimeSpan) ( DateTime.Now - timeBeginLoadBMPAVI );
-						Trace.TraceInformation( "BMP/AVI読込所要時間: {0}", span.ToString() );
+						Trace.TraceInformation( "BMP/AVI読込所要時間({0,4}): {1}", (CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count ), span.ToString() );
 
 						span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
-						Trace.TraceInformation( "総読込時間:          {0}", span.ToString() ); 
+						Trace.TraceInformation( "総読込時間:                {0}", span.ToString() ); 
 
 						CDTXMania.Timer.t更新();
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ;
