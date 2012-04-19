@@ -443,7 +443,7 @@ namespace FDK
 			device.SetTransform( TransformState.World, mat );
 			device.SetTexture( 0, this.texture );
 			device.VertexFormat = PositionColoredTexturedVertex.Format;
-			device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 4, this.cvPositionColoredVertexies );
+			device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 2, this.cvPositionColoredVertexies );
 		}
 
 		#region [ IDosposable 実装 ]
