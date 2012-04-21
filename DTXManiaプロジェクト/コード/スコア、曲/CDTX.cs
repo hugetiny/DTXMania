@@ -2777,40 +2777,43 @@ namespace DTXMania
 							}
 							this.listChip.Sort();
 						}
-						bool flag = true;
-						Predicate<CChip> match = null;
-						for( int i = 0; i < this.listChip.Count; i++ )
+						#region [ C2 [拍線・小節線表示指定] の処理 ]		// #28145 2012.4.21 yyagi; 2重ループをほぼ1重にして高速化
+						bool bShowBeatBarLine = true;
+						for ( int i = 0; i < this.listChip.Count; i++ )
 						{
-							int startIndex = i;
-							while( true )
+							bool bChangedBeatBarStatus = false;
+							if ( ( this.listChip[ i ].nチャンネル番号 == 0xc2 ) )
 							{
-								if( match == null )
+								if ( this.listChip[ i ].n整数値 == 1 )				// BAR/BEAT LINE = ON
 								{
-									match = delegate( CChip c )
-									{
-										return ( c.nチャンネル番号 == 0xc2 ) && ( c.n発声位置 == this.listChip[ i ].n発声位置 );
-									};
+									bShowBeatBarLine = true;
+									bChangedBeatBarStatus = true;
 								}
-								startIndex = this.listChip.FindIndex( startIndex, match );
-								if( startIndex == -1 )
+								else if ( this.listChip[ i ].n整数値 == 2 )			// BAR/BEAT LINE = OFF
 								{
-									break;
+									bShowBeatBarLine = false;
+									bChangedBeatBarStatus = true;
 								}
-								if( this.listChip[ startIndex ].n整数値 == 1 )
-								{
-									flag = true;
-								}
-								if( this.listChip[ startIndex ].n整数値 == 2 )
-								{
-									flag = false;
-								}
-								startIndex++;
 							}
-							if( ( ( this.listChip[ i ].nチャンネル番号 == 80 ) || ( this.listChip[ i ].nチャンネル番号 == 0x51 ) ) && ( this.listChip[ i ].n整数値 == 0x50f ) )
+							int startIndex = i;
+							if ( bChangedBeatBarStatus )							// C2チップの前に50/51チップが来ている可能性に配慮
 							{
-								this.listChip[ i ].b可視 = flag;
+								while ( startIndex > 0 && this.listChip[ startIndex ].n発声位置 == this.listChip[ i ].n発声位置 )
+								{
+									startIndex--;
+								}
+								startIndex++;	// 1つ小さく過ぎているので、戻す
+							}
+							for ( int j = startIndex; j <= i; j++ ) 
+							{
+								if ( ( ( this.listChip[ j ].nチャンネル番号 == 0x50 ) || ( this.listChip[ j ].nチャンネル番号 == 0x51 ) ) &&
+									( this.listChip[ j ].n整数値 == ( 36 * 36 - 1 ) ) )
+								{
+									this.listChip[ j ].b可視 = bShowBeatBarLine;
+								}
 							}
 						}
+						#endregion
 						double bpm = 120.0;
 						double num15 = 1.0;
 						int num16 = 0;
