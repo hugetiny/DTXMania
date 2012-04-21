@@ -2703,7 +2703,7 @@ namespace DTXMania
 								}
 							}
 						}
-						for( int m = 0xb1; m <= 0xbb; m++ )
+						for ( int m = 0xb1; m <= 0xbc; m++ )			// #28146 2012.4.21 yyagi; bb -> bc
 						{
 							foreach( CChip chip6 in this.listChip )
 							{
