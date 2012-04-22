@@ -2657,7 +2657,7 @@ namespace DTXMania
 							item.nチャンネル番号 = 8;
 							item.n整数値 = 0;
 							item.n整数値・内部番号 = cbpm.n内部番号;
-							this.listChip.Add( item );
+							this.listChip.Insert( 0, item );
 						}
 						else
 						{
@@ -2666,7 +2666,7 @@ namespace DTXMania
 							chip2.nチャンネル番号 = 8;
 							chip2.n整数値 = 0;
 							chip2.n整数値・内部番号 = cbpm.n内部番号;
-							this.listChip.Add( chip2 );
+							this.listChip.Insert( 0, chip2 );
 						}
 						if( this.listBMP.ContainsKey( 0 ) )
 						{
@@ -2676,7 +2676,7 @@ namespace DTXMania
 							chip4.n整数値 = 0;
 							chip4.n整数値・内部番号 = 0;
 							CChip chip3 = chip4;
-							this.listChip.Add( chip3 );
+							this.listChip.Insert( 0, chip3 );
 						}
 						foreach( CWAV cwav in this.listWAV.Values )
 						{
@@ -2693,16 +2693,26 @@ namespace DTXMania
 								cwav.n音量 = 100;
 							}
 						}
-						foreach( CWAV cwav2 in this.listWAV.Values )
+						#region [ チップ倍率設定 ]						// #28145 2012.4.22 yyagi 二重ループを1重ループに変更して高速化)
+						//foreach( CWAV cwav2 in this.listWAV.Values )
+						//{
+						//    foreach( CChip chip5 in this.listChip )
+						//    {
+						//        if( chip5.n整数値・内部番号 == cwav2.n内部番号 )
+						//        {
+						//            chip5.dbチップサイズ倍率 = ( (double) cwav2.nチップサイズ ) / 100.0;
+						//        }
+						//    }
+						//}
+						foreach ( CChip chip in this.listChip )
 						{
-							foreach( CChip chip5 in this.listChip )
+							if ( this.listWAV.ContainsKey( chip.n整数値・内部番号 ) )
 							{
-								if( chip5.n整数値・内部番号 == cwav2.n内部番号 )
-								{
-									chip5.dbチップサイズ倍率 = ( (double) cwav2.nチップサイズ ) / 100.0;
-								}
+								CWAV cwav = this.listWAV[ chip.n整数値・内部番号 ];
+								chip.dbチップサイズ倍率 = ( (double) cwav.nチップサイズ ) / 100.0;
 							}
 						}
+						#endregion
 						for ( int m = 0xb1; m <= 0xbc; m++ )			// #28146 2012.4.21 yyagi; bb -> bc
 						{
 							foreach( CChip chip6 in this.listChip )
@@ -2714,7 +2724,7 @@ namespace DTXMania
 									chip7.nチャンネル番号 = chip6.nチャンネル番号;
 									chip7.n整数値 = chip6.n整数値;
 									chip7.n整数値・内部番号 = chip6.n整数値・内部番号;
-									this.listChip.Add( chip7 );
+									this.listChip.Insert( 0, chip7 );
 									break;
 								}
 							}
@@ -5191,7 +5201,8 @@ namespace DTXMania
 
 				// 小節長倍率チップを配置する。
 
-				this.listChip.Add(
+				this.listChip.Insert(
+					0,
 					new CChip() {
 						nチャンネル番号 = nチャンネル番号,
 						db実数値 = db小節長倍率,
