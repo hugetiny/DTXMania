@@ -284,6 +284,10 @@ namespace DTXMania
 			}
 			public void OnDeviceCreated( Bitmap bitmap, string strテクスチャファイル名 )
 			{
+				if ( bitmap != null && b黒を透過する )
+				{
+					bitmap.MakeTransparent( Color.Black );
+				}
 				this.tx画像 = CDTXMania.tテクスチャの生成( bitmap, b黒を透過する );
 
 				if ( this.tx画像 != null )
