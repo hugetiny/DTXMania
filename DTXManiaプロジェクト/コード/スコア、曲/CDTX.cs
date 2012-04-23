@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -181,6 +181,10 @@ namespace DTXMania
 		}
 		public class CBMP : CBMPbase, IDisposable
 		{
+			public CBMP()
+			{
+				b黒を透過する = true;
+			}
 			public override void PutLog( string strテクスチャファイル名 )
 			{
 				Trace.TraceInformation( "テクスチャを生成しました。({0})({1})({2}x{3})", this.strコメント文, strテクスチャファイル名, this.n幅, this.n高さ );
@@ -193,6 +197,10 @@ namespace DTXMania
 		}
 		public class CBMPTEX : CBMPbase, IDisposable
 		{
+			public CBMPTEX()
+			{
+				b黒を透過する = false;
+			}
 			public override void PutLog( string strテクスチャファイル名 )
 			{
 				Trace.TraceInformation( "テクスチャを生成しました。({0})({1})(Gr:{2}x{3})(Tx:{4}x{5})", this.strコメント文, strテクスチャファイル名, this.tx画像.sz画像サイズ.Width, this.tx画像.sz画像サイズ.Height, this.tx画像.szテクスチャサイズ.Width, this.tx画像.szテクスチャサイズ.Height );
@@ -223,7 +231,9 @@ namespace DTXMania
 					return this.tx画像.sz画像サイズ.Width;
 				}
 			}
+			public bool b黒を透過する;
 			public byte[] txData;
+			public Bitmap bitmap;
 
 			public string GetFullPathname
 			{
@@ -239,13 +249,7 @@ namespace DTXMania
 			public void OnDeviceCreated()
 			{
 				#region [ strテクスチャファイル名 を作成。]
-				//-----------------
 				string strテクスチャファイル名 = this.GetFullPathname;
-				//if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-				//    strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
-				//else
-				//    strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
-				//-----------------
 				#endregion
 
 				if ( !File.Exists( strテクスチャファイル名 ) )
@@ -256,12 +260,31 @@ namespace DTXMania
 				}
 
 				// テクスチャを作成。
-				byte[] txData = File.ReadAllBytes( strテクスチャファイル名 );
-				this.OnDeviceCreated( txData, strテクスチャファイル名 );
+				if ( this.txData == null )
+				{
+					this.txData = File.ReadAllBytes( strテクスチャファイル名 );
+				}
+
+				this.tx画像 = CDTXMania.tテクスチャの生成( this.txData, b黒を透過する );
+
+				if ( this.tx画像 != null )
+				{
+					// 作成成功。
+
+					if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+						PutLog( strテクスチャファイル名 );
+					this.bUse = true;
+				}
+				else
+				{
+					// 作成失敗。
+					Trace.TraceError( "テクスチャの生成に失敗しました。({0})({1})", this.strコメント文, strテクスチャファイル名 );
+					this.tx画像 = null;
+				}
 			}
-			public void OnDeviceCreated( byte[] txData, string strテクスチャファイル名 )
+			public void OnDeviceCreated( Bitmap bitmap, string strテクスチャファイル名 )
 			{
-				this.tx画像 = CDTXMania.tテクスチャの生成( txData, true );
+				this.tx画像 = CDTXMania.tテクスチャの生成( bitmap, b黒を透過する );
 
 				if ( this.tx画像 != null )
 				{
@@ -1700,16 +1723,18 @@ namespace DTXMania
 			{
 				Trace.TraceWarning( "ファイルが存在しません。({0})", filename );
 				cbmp.txData = null;
+				cbmp.bitmap = null;
 				return;
 			}
-			cbmp.txData = File.ReadAllBytes( filename );
+//			cbmp.txData = File.ReadAllBytes( filename );
+			cbmp.bitmap = new Bitmap( filename );
 		}
 		private static void BMPLoadCallback( IAsyncResult ar )	// 別スレッドで動作する、コールバック部(メインスレッドへのデータ引き渡しと、Wait解除)
 		{
 			ParallelLoadBMPDelegate asyncCall = (ParallelLoadBMPDelegate) ( (System.Runtime.Remoting.Messaging.AsyncResult) ar ).AsyncDelegate;
 			CBMPbase cbmp = (CBMPbase) ar.AsyncState;
 			byte[] txData = asyncCall.EndInvoke( ar );
-			cbmp.OnDeviceCreated( txData, cbmp.GetFullPathname );
+			cbmp.OnDeviceCreated();
 			Interlocked.Increment( ref nLoadDone );
 #if false
 			cbmp.txData = asyncCall.EndInvoke( ar );
@@ -1724,29 +1749,29 @@ namespace DTXMania
 		{
 
 			Dictionary<int, CBMP> listB = (Dictionary<int, CBMP>) o;
-Trace.TraceInformation( "Back: ThreadID(BMPLoad)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + listB.Count  );
+//Trace.TraceInformation( "Back: ThreadID(BMPLoad)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + listB.Count  );
 			foreach ( CBMP cbmp in listB.Values )
 			{
 				LoadTexture( cbmp );
 
-Trace.TraceInformation( "Back: Lock Begin for enqueue." );
-				lock ( lockobj )
+//Trace.TraceInformation( "Back: Lock Begin for enqueue." );
+				lock ( lockQueue )
 				{
-Trace.TraceInformation( "Back: Lock End   for enqueue." );
+  //Trace.TraceInformation( "Back: Lock End   for enqueue." );
 					queueCBMPbaseDone.Enqueue( cbmp );
-Trace.TraceInformation( "Back: Enqueued: " + cbmp.strファイル名 );
+//  Trace.TraceInformation( "Back: Enqueued(" + queueCBMPbaseDone.Count + "): " + cbmp.strファイル名 );
 				}
-Trace.TraceInformation( "Back: Lock End   for enqueue2." );
-				if ( queueCBMPbaseDone.Count > 4 )
-				{
-					Thread.Sleep( 10 );
-				}
+//Trace.TraceInformation( "Back: Lock End   for enqueue2." );
+//				if ( queueCBMPbaseDone.Count > 4 )
+//				{
+//					Thread.Sleep( 10 );
+//				}
 			}
 		}
 
 		#endregion
 		private static Queue<CBMPbase> queueCBMPbaseDone = new Queue<CBMPbase>();
-		private static object lockobj = new object();
+		private static object lockQueue = new object();
 
 		private class Cbmp並列読み込み : CLoadInParallelBase<CBMP>
 		{
@@ -1782,7 +1807,7 @@ Trace.TraceInformation( "Back: Lock End   for enqueue2." );
 //{
 //    Debug.WriteLine( "cbmp.txdata== null!! index=" + t.index + ", " + cbmp.GetFullPathname );
 //}
-				cbmp.OnDeviceCreated( cbmp.txData, cbmp.GetFullPathname );
+				cbmp.OnDeviceCreated();
 				cbmp.txData = null;
 				( (tLoadState) tlws ).errcode = CLoadInParallelBase<CBMP>.ErrCode.OK;
 			}
@@ -1801,34 +1826,35 @@ Trace.TraceInformation( "Back: Lock End   for enqueue2." );
 					//c.bActivateParallelLoad = CDTXMania.ConfigIni.bLoadBMPInParallel;
 					//c.t読み込み( listBMP );
 
-Trace.TraceInformation( "Main: ThreadID(Main)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + this.listBMP.Count );
+//Trace.TraceInformation( "Main: ThreadID(Main)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + this.listBMP.Count );
 					nLoadDone = 0;
 					Thread t = new Thread( BMPLoadAll );
-					t.IsBackground = true;
+					// t.IsBackground = true;
 					// t.Priority = ThreadPriority.Lowest;
 					t.Start( listBMP );
-
-					while ( nLoadDone < listBMP.Count )
+					int c = listBMP.Count;
+					while ( nLoadDone < c )
 					{
 						if ( queueCBMPbaseDone.Count > 0 )
 						{
 							CBMP cbmp;
-Trace.TraceInformation( "Main: Lock Begin for dequeue1." );
-							lock ( lockobj )
+//Trace.TraceInformation( "Main: Lock Begin for dequeue1." );
+							lock ( lockQueue )
 							{
-Trace.TraceInformation( "Main: Lock End   for dequeue1." );
+  //Trace.TraceInformation( "Main: Lock End   for dequeue1." );
 								cbmp = (CBMP) queueCBMPbaseDone.Dequeue();
-Trace.TraceInformation( "Main: Dequeued: " + cbmp.strファイル名 );
+//  Trace.TraceInformation( "Main: Dequeued(" + queueCBMPbaseDone.Count + "): " + cbmp.strファイル名 );
 							}
-Trace.TraceInformation( "Main: Lock End   for dequeue2." );
+//Trace.TraceInformation( "Main: Lock End   for dequeue2." );
 
-							cbmp.OnDeviceCreated( cbmp.txData, cbmp.GetFullPathname );
+							//cbmp.OnDeviceCreated();
+							cbmp.OnDeviceCreated( cbmp.bitmap, cbmp.GetFullPathname );
 							nLoadDone++;
-Trace.TraceInformation( "Main: OnDeviceCreated: " + cbmp.strファイル名 );
+//Trace.TraceInformation( "Main: OnDeviceCreated: " + cbmp.strファイル名 );
 						}
 						else
 						{
-Trace.TraceInformation( "Main: Sleeped.");
+//Trace.TraceInformation( "Main: Sleeped.");
 							Thread.Sleep( 5 );
 						}
 					}
@@ -2514,9 +2540,15 @@ Trace.TraceInformation( "Main: Sleeped.");
 			{
 				try
 				{
+					DateTime timeBeginLoad = DateTime.Now;
+					TimeSpan span;
+
 					StreamReader reader = new StreamReader( strファイル名, Encoding.GetEncoding( "shift-jis" ) );
 					string str2 = reader.ReadToEnd();
 					reader.Close();
+					span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+					Trace.TraceInformation( "DTXfileload時間:          {0}", span.ToString() );
+
 					this.t入力・全入力文字列から( str2, db再生速度, nBGMAdjust );
 				}
 				catch
@@ -2534,13 +2566,22 @@ Trace.TraceInformation( "Main: Sleeped.");
 		}
 		public unsafe void t入力・全入力文字列から( string str全入力文字列, double db再生速度, int nBGMAdjust )
 		{
-			if( !string.IsNullOrEmpty( str全入力文字列 ) )
+			DateTime timeBeginLoad = DateTime.Now;
+			TimeSpan span;
+
+			if ( !string.IsNullOrEmpty( str全入力文字列 ) )
 			{
+				#region [ 改行カット ]
 				this.db再生速度 = db再生速度;
 				str全入力文字列 = str全入力文字列.Replace( Environment.NewLine, "\n" );
 				str全入力文字列 = str全入力文字列.Replace( '\t', ' ' );
 				str全入力文字列 = str全入力文字列 + "\n";
-				for( int j = 0; j < 36 * 36; j++ )
+				#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "改行カット時間:           {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+				#region [ 初期化 ]
+				for ( int j = 0; j < 36 * 36; j++ )
 				{
 					this.n無限管理WAV[ j ] = -j;
 					this.n無限管理BPM[ j ] = -j;
@@ -2559,6 +2600,8 @@ Trace.TraceInformation( "Main: Sleeped.");
 					this.nRESULTMOVIE用優先順位[ k ] = 0;
 					this.nRESULTSOUND用優先順位[ k ] = 0;
 				}
+				#endregion
+				#region [ 入力/行解析 ]
 				CharEnumerator ce = str全入力文字列.GetEnumerator();
 				if( ce.MoveNext() )
 				{
@@ -2593,6 +2636,10 @@ Trace.TraceInformation( "Main: Sleeped.");
 						}
 					}
 					while( this.t入力・コメントをスキップする( ref ce ) );
+					#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "抜き出し時間:             {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
 					this.n無限管理WAV = null;
 					this.n無限管理BPM = null;
 					this.n無限管理VOL = null;
@@ -2600,6 +2647,7 @@ Trace.TraceInformation( "Main: Sleeped.");
 					this.n無限管理SIZE = null;
 					if( !this.bヘッダのみ )
 					{
+						#region [ BPM/BMP初期化 ]
 						int ch;
 						CBPM cbpm = null;
 						foreach( CBPM cbpm2 in this.listBPM.Values )
@@ -2622,7 +2670,7 @@ Trace.TraceInformation( "Main: Sleeped.");
 							chip.nチャンネル番号 = 8;		// 拡張BPM
 							chip.n整数値 = 0;
 							chip.n整数値・内部番号 = cbpm.n内部番号;
-							this.listChip.Add( chip );
+							this.listChip.Insert( 0, chip );
 						}
 						else
 						{
@@ -2631,7 +2679,7 @@ Trace.TraceInformation( "Main: Sleeped.");
 							chip.nチャンネル番号 = 8;		// 拡張BPM
 							chip.n整数値 = 0;
 							chip.n整数値・内部番号 = cbpm.n内部番号;
-							this.listChip.Add( chip );
+							this.listChip.Insert( 0, chip );
 						}
 						if( this.listBMP.ContainsKey( 0 ) )
 						{
@@ -2640,10 +2688,14 @@ Trace.TraceInformation( "Main: Sleeped.");
 							chip.nチャンネル番号 = 4;		// BGA (レイヤBGA1)
 							chip.n整数値 = 0;
 							chip.n整数値・内部番号 = 0;
-							//CChip chip3 = chip;
-							this.listChip.Add( chip );
+							this.listChip.Insert( 0, chip );
 						}
-						foreach( CWAV cwav in this.listWAV.Values )
+						#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "前準備完了時間:           {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+						#region [ CWAV初期化 ]
+						foreach ( CWAV cwav in this.listWAV.Values )
 						{
 							if( cwav.nチップサイズ < 0 )
 							{
@@ -2658,21 +2710,47 @@ Trace.TraceInformation( "Main: Sleeped.");
 								cwav.n音量 = 100;
 							}
 						}
-						foreach( CWAV cwav in this.listWAV.Values )
+						#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "CWAV前準備時間:           {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+						#region [ チップ倍率設定 ]						// #28145 2012.4.22 yyagi 二重ループを1重ループに変更して高速化)
+						//foreach ( CWAV cwav in this.listWAV.Values )
+						//{
+						//    foreach( CChip chip in this.listChip )
+						//    {
+						//        if( chip.n整数値・内部番号 == cwav.n内部番号 )
+						//        {
+						//            chip.dbチップサイズ倍率 = ( (double) cwav.nチップサイズ ) / 100.0;
+						//            if (chip.nチャンネル番号 == 0x01 )	// BGMだったら
+						//            {
+						//                cwav.bIsOnBGMLane = true;
+						//            }
+						//        }
+						//    }
+						//}
+						foreach ( CChip chip in this.listChip )
 						{
-							foreach( CChip chip in this.listChip )
+							if ( this.listWAV.ContainsKey( chip.n整数値・内部番号 ) )
+							//foreach ( CWAV cwav in this.listWAV.Values )
 							{
-								if( chip.n整数値・内部番号 == cwav.n内部番号 )
-								{
+								CWAV cwav = this.listWAV[ chip.n整数値・内部番号 ];
+							//	if ( chip.n整数値・内部番号 == cwav.n内部番号 )
+							//	{
 									chip.dbチップサイズ倍率 = ( (double) cwav.nチップサイズ ) / 100.0;
-									if (chip.nチャンネル番号 == 0x01 )	// BGMだったら
+									if ( chip.nチャンネル番号 == 0x01 )	// BGMだったら
 									{
 										cwav.bIsOnBGMLane = true;
 									}
-								}
+							//	}
 							}
 						}
-						for( int m = 0xb1; m <= 0xbb; m++ )				// 空打ち(ドラム, ギター, ベース) LCの空打ちが入ってないけど・・・
+						#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "CWAV全準備時間:           {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+						#region [ 必要に応じて空打ち音を0小節に定義する ]
+						for ( int m = 0xb1; m <= 0xbc; m++ )			// #28146 2012.4.21 yyagi; bb -> bc
 						{
 							foreach( CChip chip in this.listChip )
 							{
@@ -2683,62 +2761,71 @@ Trace.TraceInformation( "Main: Sleeped.");
 									c.nチャンネル番号 = chip.nチャンネル番号;
 									c.n整数値 = chip.n整数値;
 									c.n整数値・内部番号 = chip.n整数値・内部番号;
-									this.listChip.Add( c );
+									this.listChip.Insert( 0, c );
 									break;
 								}
 							}
 						}
-						if( this.listChip.Count > 0 )
+						#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "空打確認時間:             {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+						#region [ 拍子・拍線の挿入 ]
+						if ( this.listChip.Count > 0 )
 						{
-							this.listChip.Sort();
+							this.listChip.Sort();		// 高速化のためにはこれを削りたいが、listChipの最後がn発声位置の終端である必要があるので、
+														// 保守性確保を優先してここでのソートは残しておく
+														// なお、093時点では、このソートを削除しても動作するようにはしてある。
+														// (ここまでの一部チップ登録を、listChip.Add(c)から同Insert(0,c)に変更してある)
+														// これにより、数ms程度ながらここでのソートも高速化されている。
 							double barlength = 1.0;
 							int nEndOfSong = ( this.listChip[ this.listChip.Count - 1 ].n発声位置 + 384 ) - ( this.listChip[ this.listChip.Count - 1 ].n発声位置 % 384 );
-							for( int bar = 0; bar <= nEndOfSong; bar += 384 )
+							for( int tick384 = 0; tick384 <= nEndOfSong; tick384 += 384 )	// 小節線の挿入　(後に出てくる拍子線とループをまとめようとするなら、forループの終了条件の微妙な違いに注意が必要)
 							{
 								CChip chip = new CChip();
-								chip.n発声位置 = bar;
+								chip.n発声位置 = tick384;
 								chip.nチャンネル番号 = 0x50;	// 小節線
 								chip.n整数値 = 36 * 36 - 1;
 								this.listChip.Add( chip );
 							}
-							this.listChip.Sort();
-							int num7 = 0;
-							int num8 = 0;
-							for( int num9 = 0; num9 < nEndOfSong; num9 += 384 )
+							//this.listChip.Sort();				// ここでのソートは不要。ただし最後にソートすること
+							int nChipNo_BarLength = 0;
+							int nChipNo_C1 = 0;
+							for( int tick384 = 0; tick384 < nEndOfSong; tick384 += 384 )
 							{
-								int num10 = 0;
-								while( ( num8 < this.listChip.Count ) && ( this.listChip[ num8 ].n発声位置 < ( num9 + 384 ) ) )
+								int n発声位置_C1_同一小節内 = 0;
+								while( ( nChipNo_C1 < this.listChip.Count ) && ( this.listChip[ nChipNo_C1 ].n発声位置 < ( tick384 + 384 ) ) )
 								{
-									if( this.listChip[ num8 ].nチャンネル番号 == 0xc1 )		// 拍線シフト
+									if( this.listChip[ nChipNo_C1 ].nチャンネル番号 == 0xc1 )				// 拍線シフトの検出
 									{
-										num10 = this.listChip[ num8 ].n発声位置 - num9;
+										n発声位置_C1_同一小節内 = this.listChip[ nChipNo_C1 ].n発声位置 - tick384;
 									}
-									num8++;
+									nChipNo_C1++;
 								}
 								if( ( this.e種別 == E種別.BMS ) || ( this.e種別 == E種別.BME ) )
 								{
 									barlength = 1.0;
 								}
-								while( ( num7 < this.listChip.Count ) && ( this.listChip[ num7 ].n発声位置 <= num9 ) )
+								while( ( nChipNo_BarLength < this.listChip.Count ) && ( this.listChip[ nChipNo_BarLength ].n発声位置 <= tick384 ) )
 								{
-									if( this.listChip[ num7 ].nチャンネル番号 == 2 )		// bar length
+									if( this.listChip[ nChipNo_BarLength ].nチャンネル番号 == 0x02 )		// bar lengthの検出
 									{
-										barlength = this.listChip[ num7 ].db実数値;
+										barlength = this.listChip[ nChipNo_BarLength ].db実数値;
 									}
-									num7++;
+									nChipNo_BarLength++;
 								}
-								for( int num11 = 0; num11 < 100; num11++ )
+								for ( int i = 0; i < 100; i++ )								// 拍線の挿入
 								{
-									int num12 = (int) ( ( (double) ( 384 * num11 ) ) / ( 4.0 * barlength ) );
-									if( ( num12 + num10 ) >= 384 )
+									int tickBeat = (int) ( ( (double) ( 384 * i ) ) / ( 4.0 * barlength ) );
+									if( ( tickBeat + n発声位置_C1_同一小節内 ) >= 384 )
 									{
 										break;
 									}
-									if( ( ( num12 + num10 ) % 384 ) != 0 )
+									if( ( ( tickBeat + n発声位置_C1_同一小節内 ) % 384 ) != 0 )
 									{
 										CChip chip = new CChip();
-										chip.n発声位置 = ( num9 + num12 ) + num10;
-										chip.nチャンネル番号 = 0x51;
+										chip.n発声位置 = tick384 + ( tickBeat + n発声位置_C1_同一小節内 );
+										chip.nチャンネル番号 = 0x51;						// beat line 拍線
 										chip.n整数値 = 36 * 36 - 1;
 										this.listChip.Add( chip );
 									}
@@ -2746,40 +2833,51 @@ Trace.TraceInformation( "Main: Sleeped.");
 							}
 							this.listChip.Sort();
 						}
-						bool flag = true;
-						Predicate<CChip> match = null;
-						for( int i = 0; i < this.listChip.Count; i++ )
+						#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "小節長準備時間:           {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+						#region [ C2 [拍線・小節線表示指定] の処理 ]		// #28145 2012.4.21 yyagi; 2重ループをほぼ1重にして高速化
+						bool bShowBeatBarLine = true;
+						for ( int i = 0; i < this.listChip.Count; i++ )
 						{
-							int startIndex = i;
-							while( true )
+							bool bChangedBeatBarStatus = false;
+							if ( ( this.listChip[ i ].nチャンネル番号 == 0xc2 ) )
 							{
-								if( match == null )
+								if ( this.listChip[ i ].n整数値 == 1 )				// BAR/BEAT LINE = ON
 								{
-									match = delegate( CChip c )
-									{
-										return ( c.nチャンネル番号 == 0xc2 ) && ( c.n発声位置 == this.listChip[ i ].n発声位置 );
-									};
+									bShowBeatBarLine = true;
+									bChangedBeatBarStatus = true;
 								}
-								startIndex = this.listChip.FindIndex( startIndex, match );
-								if( startIndex == -1 )
+								else if ( this.listChip[ i ].n整数値 == 2 )			// BAR/BEAT LINE = OFF
 								{
-									break;
+									bShowBeatBarLine = false;
+									bChangedBeatBarStatus = true;
 								}
-								if( this.listChip[ startIndex ].n整数値 == 1 )
-								{
-									flag = true;
-								}
-								if( this.listChip[ startIndex ].n整数値 == 2 )
-								{
-									flag = false;
-								}
-								startIndex++;
 							}
-							if( ( ( this.listChip[ i ].nチャンネル番号 == 0x50 ) || ( this.listChip[ i ].nチャンネル番号 == 0x51 ) ) && ( this.listChip[ i ].n整数値 == (36 * 36 - 1) ) )
+							int startIndex = i;
+							if ( bChangedBeatBarStatus )							// C2チップの前に50/51チップが来ている可能性に配慮
 							{
-								this.listChip[ i ].b可視 = flag;
+								while ( startIndex > 0 && this.listChip[ startIndex ].n発声位置 ==  this.listChip[ i ].n発声位置 )
+								{
+									startIndex--;
+								}
+								startIndex++;	// 1つ小さく過ぎているので、戻す
+							}
+							for ( int j = startIndex; j <= i; j++ ) 
+							{
+								if ( ( ( this.listChip[ j ].nチャンネル番号 == 0x50 ) || ( this.listChip[ j ].nチャンネル番号 == 0x51 ) ) &&
+									( this.listChip[ j ].n整数値 == ( 36 * 36 - 1 ) ) )
+								{
+									this.listChip[ j ].b可視 = bShowBeatBarLine;
+								}
 							}
 						}
+						#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "CWAVmatch時間:            {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+						#region [ 発声時刻の計算 ]
 						double bpm = 120.0;
 						double dbBarLength = 1.0;
 						int n発声位置 = 0;
@@ -2798,7 +2896,7 @@ Trace.TraceInformation( "Main: Sleeped.");
 							ch = chip.nチャンネル番号;
 							switch( ch )
 							{
-								case 0x02:
+								case 0x02:	// BarLength
 									{
 										n発声位置 = chip.n発声位置;
 										ms = chip.n発声時刻ms;
@@ -2872,9 +2970,17 @@ Trace.TraceInformation( "Main: Sleeped.");
 								chip.n発声時刻ms = (int) ( ( (double) chip.n発声時刻ms ) / this.db再生速度 );
 							}
 						}
+						#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "発声時刻計算:             {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
 						this.nBGMAdjust = 0;
 						this.t各自動再生音チップの再生時刻を変更する( nBGMAdjust );
-						for( int n = 0; n < 12; n++ )
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "再生時刻変更:             {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+						#region [ 可視チップ数カウント ]
+						for ( int n = 0; n < 12; n++ )
 						{
 							this.n可視チップ数[ n ] = 0;
 						}
@@ -2894,6 +3000,10 @@ Trace.TraceInformation( "Main: Sleeped.");
 								this.n可視チップ数.Bass++;
 							}
 						}
+						#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "可視チップ数カウント      {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
 						foreach( CChip chip in this.listChip )
 						{
 							if( ( chip.bWAVを使うチャンネルである && this.listWAV.ContainsKey( chip.n整数値・内部番号 ) ) && !this.listWAV[ chip.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Contains( chip.nチャンネル番号 ) )
@@ -2901,6 +3011,10 @@ Trace.TraceInformation( "Main: Sleeped.");
 								this.listWAV[ chip.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Add( chip.nチャンネル番号 );
 							}
 						}
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "ch番号集合確認:           {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
+						#region [ hash値計算 ]
 						byte[] buffer = null;
 						try
 						{
@@ -2928,6 +3042,10 @@ Trace.TraceInformation( "Main: Sleeped.");
 						{
 							this.strハッシュofDTXファイル = "00000000000000000000000000000000";
 						}
+#endregion
+span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+Trace.TraceInformation( "hash計算:                 {0}", span.ToString() );
+timeBeginLoad = DateTime.Now;
 						#region [ bLogDTX詳細ログ出力 ]
 						if ( CDTXMania.ConfigIni.bLogDTX詳細ログ出力 )
 						{
@@ -5158,7 +5276,8 @@ Trace.TraceInformation( "Main: Sleeped.");
 
 				// 小節長倍率チップを配置する。
 
-				this.listChip.Add(
+				this.listChip.Insert(
+					0,
 					new CChip() {
 						nチャンネル番号 = nチャンネル番号,
 						db実数値 = db小節長倍率,

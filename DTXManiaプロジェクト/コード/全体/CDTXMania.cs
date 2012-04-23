@@ -1291,7 +1291,28 @@ for (int i = 0; i < 3; i++) {
 			}
 		}
 
-	/// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
+		public static CTexture tテクスチャの生成( Bitmap bitmap )
+		{
+			return tテクスチャの生成( bitmap, false );
+		}
+		public static CTexture tテクスチャの生成( Bitmap bitmap, bool b黒を透過する )
+		{
+			if ( app == null )
+			{
+				return null;
+			}
+			try
+			{
+				return new CTexture( app.Device, bitmap, TextureFormat, b黒を透過する );
+			}
+			catch ( CTextureCreateFailedException )
+			{
+				Trace.TraceError( "テクスチャの生成に失敗しました。(txData)" );
+				return null;
+			}
+		}
+
+		/// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
 		public static void t安全にDisposeする<T>( ref T obj )
 		{
 			if( obj == null )

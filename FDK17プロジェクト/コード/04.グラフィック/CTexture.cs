@@ -7,6 +7,7 @@ using System.IO;
 using SlimDX;
 using SlimDX.Direct3D9;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace FDK
 {
@@ -149,6 +150,10 @@ namespace FDK
 			: this( device, txData, format, b黒を透過する, Pool.Managed )
 		{
 		}
+		public CTexture( Device device, Bitmap bitmap, Format format, bool b黒を透過する )
+			: this( device, bitmap, format, b黒を透過する, Pool.Managed )
+		{
+		}
 		
 		
 		/// <summary>
@@ -234,6 +239,7 @@ namespace FDK
 			_txData = File.ReadAllBytes( strファイル名 );
 			MakeTexture( device, _txData, format, b黒を透過する, pool );
 		}
+
 		public CTexture( Device device, byte[] txData, Format format, bool b黒を透過する, Pool pool )
 			: this()
 		{
@@ -253,9 +259,9 @@ namespace FDK
 #endif
 //				lock ( lockobj )
 //				{
-Trace.TraceInformation( "CTexture() start: " );
+//Trace.TraceInformation( "CTexture() start: " );
 				this.texture = Texture.FromMemory( device, txData, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, colorKey );
-Trace.TraceInformation( "CTexture() end:   " );
+//Trace.TraceInformation( "CTexture() end:   " );
 //				}
 			}
 			catch
@@ -266,6 +272,50 @@ Trace.TraceInformation( "CTexture() end:   " );
 			}
 		}
 
+		public CTexture( Device device, Bitmap bitmap, Format format, bool b黒を透過する, Pool pool )
+			: this()
+		{
+			MakeTexture( device, bitmap, format, b黒を透過する, pool );
+		}
+		public void MakeTexture( Device device, Bitmap bitmap, Format format, bool b黒を透過する, Pool pool )
+		{
+			try
+			{
+				this.sz画像サイズ = new Size( bitmap.Width, bitmap.Height );
+				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
+				int colorKey = ( b黒を透過する ) ? unchecked( (int) 0xFF000000 ) : 0;
+				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
+#if TEST_Direct3D9Ex
+				pool = poolvar;
+#endif
+//Trace.TraceInformation( "CTExture() start: " );
+				unsafe  // Bitmapの内部データ(a8r8g8b8)を自前でゴリゴリコピーする
+				{
+					this.texture = new Texture( device, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool );
+					BitmapData srcBufData = bitmap.LockBits( new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height ), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb );
+					DataRectangle destDataRectangle = texture.LockRectangle( 0, LockFlags.None );
+
+					IntPtr src_scan0 = (IntPtr) ( (Int64) srcBufData.Scan0 );
+					destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height );
+
+					//for ( int y = 0; y < this.sz画像サイズ.Height; y++ )
+					//{
+					//	IntPtr src_scan0 = (IntPtr) ( (Int64) srcBufData.Scan0 + y * srcBufData.Stride );
+					//	destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4  );
+					//}
+
+					texture.UnlockRectangle( 0 );
+					bitmap.UnlockBits( srcBufData );
+				}
+//Trace.TraceInformation( "CTExture() End: " );
+			}
+			catch
+			{
+				this.Dispose();
+				// throw new CTextureCreateFailedException( string.Format( "テクスチャの生成に失敗しました。\n{0}", strファイル名 ) );
+				throw new CTextureCreateFailedException( string.Format( "テクスチャの生成に失敗しました。\n" ) );
+			}
+		}
 		// メソッド
 
 		/// <summary>
@@ -472,7 +522,7 @@ Trace.TraceInformation( "CTexture() end:   " );
 			device.SetTransform( TransformState.World, mat );
 			device.SetTexture( 0, this.texture );
 			device.VertexFormat = PositionColoredTexturedVertex.Format;
-			device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 4, this.cvPositionColoredVertexies );
+			device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 2, this.cvPositionColoredVertexies );
 		}
 
 		#region [ IDosposable 実装 ]
@@ -510,6 +560,7 @@ Trace.TraceInformation( "CTexture() end:   " );
 			Pool.Managed;
 #endif
 		byte[] _txData;
+		Bitmap _bitmap;
 
 		private void tレンダリングステートの設定( Device device )
 		{

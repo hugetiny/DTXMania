@@ -104,6 +104,7 @@ namespace DTXMania
 			this.thDTXFileEnumerate = new Thread( new ThreadStart( this.t曲リストの構築1 ) );
 			this.thDTXFileEnumerate.Name = "曲リストの構築";
 			this.thDTXFileEnumerate.IsBackground = true;
+			this.thDTXFileEnumerate.Priority = System.Threading.ThreadPriority.Lowest;
 			this.thDTXFileEnumerate.Start();
 		}
 
