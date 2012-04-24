@@ -52,19 +52,24 @@ namespace DTXMania
 		public override int On進行描画()
 		{
 			#region [ スクロールバーの描画 #27648 ]
-			for ( int sy = 0; sy < 336; sy += 128 )
+			if ( this.txScrollBar != null )
 			{
-				int ry = ( sy / 128 );
-				int h = ( ( ry + 1 ) * 128 > 336 ) ? 336 - ry * 128 : 128;
-				this.txScrollBar.t2D描画( CDTXMania.app.Device, 640 - 12, 58 + sy, new Rectangle( ry * 12, 0, 12, h ) );	// 本当のy座標は88なんだが、なぜか約30のバイアスが掛かる・・・
+				for ( int sy = 0; sy < 336; sy += 128 )
+				{
+					int ry = ( sy / 128 );
+					int h = ( ( ry + 1 ) * 128 > 336 ) ? 336 - ry * 128 : 128;
+					this.txScrollBar.t2D描画( CDTXMania.app.Device, 640 - 12, 58 + sy, new Rectangle( ry * 12, 0, 12, h ) );	// 本当のy座標は88なんだが、なぜか約30のバイアスが掛かる・・・
+				}
 			}
 			#endregion
 			#region [ スクロール地点の描画 (計算はCActSelect曲リストで行う。スクロール位置と選曲項目の同期のため。)#27648 ]
-
-			int py = CDTXMania.stage選曲.nスクロールバー相対y座標;
-			if ( py <= 336 - 6 - 8 )
+			if ( this.txScrollPosition != null )
 			{
-				this.txScrollPosition.t2D描画( CDTXMania.app.Device, 640 - 12 + 3, 58 + py, new Rectangle( 30, 120, 6, 8 ) );
+				int py = CDTXMania.stage選曲.nスクロールバー相対y座標;
+				if ( py <= 336 - 6 - 8 )
+				{
+					this.txScrollPosition.t2D描画( CDTXMania.app.Device, 640 - 12 + 3, 58 + py, new Rectangle( 30, 120, 6, 8 ) );
+				}
 			}
 			#endregion
 
