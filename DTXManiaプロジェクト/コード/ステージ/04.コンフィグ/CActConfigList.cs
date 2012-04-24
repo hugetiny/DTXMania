@@ -197,7 +197,7 @@ namespace DTXMania
 
 			this.iSystemWAVLoadAcceleration = new CItemToggle( "WAVLoadAccel.", CDTXMania.ConfigIni.bLoadWAVInParallel,
 				"WAV読込高速化：\n" +
-				"マルチスレッドでWAV読込を実行し\n" +
+				"WAV読込をマルチスレッドで実行し\n" +
 				"曲データの読込を高速化します。\n" +
 				"ただし一部サウンドが消えたり、\n" +
 				"強制終了したりすることがあるため、\n" +
@@ -211,15 +211,16 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iSystemWAVLoadAcceleration );
 			this.iSystemBMPLoadAcceleration = new CItemToggle( "BMPLoadAccel.", CDTXMania.ConfigIni.bLoadBMPInParallel,
 				"BMP読込高速化：\n" +
-				"マルチスレッドでBMP読込を実行し\n" +
-				"曲データの読込を高速化します。\n" +
-				"ただし一部BMPが消えることがある\n" +
-				"ため、基本的にはOFFにして下さい。",
+				"BGA画像の読込をマルチスレッドで\n" +
+				"行い、曲データの読込を高速化します。\n" +
+				"シングルコアのCPUをお使いの場合\n" +
+				"や、WindowsXPをお使いの場合は、\n" +
+				"逆に読込が遅くなることがあります。",
 				"BMP load acceleration:\n" +
-				"To accelerate WAV file loading,\n" +
+				"To accelerate BGA file loading,\n" +
 				" multithread technology is used.\n" +
-				"But it may not be safe that some\n" +
-				" BMP may disappeared." );
+				"But you may feel slower in case\n" +
+				"you use single-core CPU or XP OS." );
 			this.list項目リスト.Add( this.iSystemBMPLoadAcceleration );
 
 	
