@@ -222,6 +222,8 @@ namespace DTXMania
 
 				case CStage.Eフェーズ.NOWLOADING_DTXファイルを読み込む:
 					{
+						DateTime timeBeginLoad = DateTime.Now;
+						TimeSpan span;
 						str = null;
 						if( !CDTXMania.bコンパクトモード )
 							str = CDTXMania.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
@@ -240,12 +242,19 @@ namespace DTXMania
 						Trace.TraceInformation( "FILE: {0}", new object[] { CDTXMania.DTX.strファイル名の絶対パス } );
 						Trace.TraceInformation( "---------------------------" );
 
-						if( CDTXMania.bコンパクトモード )
+						span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+						Trace.TraceInformation( "DTX読込所要時間:           {0}", span.ToString() );
+
+						if ( CDTXMania.bコンパクトモード )
 							CDTXMania.DTX.MIDIレベル = 1;
 						else
 							CDTXMania.DTX.MIDIレベル = ( CDTXMania.stage選曲.r確定された曲.eノード種別 == C曲リストノード.Eノード種別.SCORE_MIDI ) ? CDTXMania.stage選曲.n現在選択中の曲の難易度 : 0;
 
+						DateTime timeBeginLoadWAV = DateTime.Now;
 						CDTXMania.DTX.tWAVの読み込み();
+						span = (TimeSpan) ( DateTime.Now - timeBeginLoadWAV );
+						Trace.TraceInformation( "WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString() );
+
 						CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.GUITAR, CDTXMania.ConfigIni.eRandom.Guitar );
 						CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.BASS, CDTXMania.ConfigIni.eRandom.Bass );
 
@@ -254,11 +263,17 @@ namespace DTXMania
 						else
 							CDTXMania.stage演奏ドラム画面.On活性化();
 
-						if( CDTXMania.ConfigIni.bBGA有効 )
+						DateTime timeBeginLoadBMPAVI = DateTime.Now;
+						if ( CDTXMania.ConfigIni.bBGA有効 )
 							CDTXMania.DTX.tBMP_BMPTEXの読み込み();
 
 						if( CDTXMania.ConfigIni.bAVI有効 )
 							CDTXMania.DTX.tAVIの読み込み();
+						span = (TimeSpan) ( DateTime.Now - timeBeginLoadBMPAVI );
+						Trace.TraceInformation( "BMP/AVI読込所要時間({0,4}): {1}", ( CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count ), span.ToString() );
+
+						span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+						Trace.TraceInformation( "総読込時間:                {0}", span.ToString() ); 
 
 						CDTXMania.Timer.t更新();
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ;

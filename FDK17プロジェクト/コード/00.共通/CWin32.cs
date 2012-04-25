@@ -214,6 +214,8 @@ namespace FDK
 		[return: MarshalAs( UnmanagedType.Bool )]
 		[DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
 		public static extern bool SystemParametersInfo( uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni );
+		[DllImport( "kernel32" )]
+		public static extern void GetSystemInfo( ref SYSTEM_INFO ptmpsi );
 		//-----------------
 		#endregion
 
@@ -299,6 +301,20 @@ namespace FDK
 					return Marshal.SizeOf( typeof( CWin32.WINDOWPLACEMENT ) );
 				}
 			}
+		}
+		[StructLayout( LayoutKind.Sequential )]
+		public struct SYSTEM_INFO
+		{
+			public uint dwOemId;
+			public uint dwPageSize;
+			public uint lpMinimumApplicationAddress;
+			public uint lpMaximumApplicationAddress;
+			public uint dwActiveProcessorMask;
+			public uint dwNumberOfProcessors;
+			public uint dwProcessorType;
+			public uint dwAllocationGranularity;
+			public uint dwProcessorLevel;
+			public uint dwProcessorRevision;
 		}
 		//-----------------
 		#endregion

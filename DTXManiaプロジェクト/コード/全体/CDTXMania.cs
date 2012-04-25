@@ -1251,7 +1251,7 @@ for (int i = 0; i < 3; i++) {
 		}
 		public static CTexture tテクスチャの生成( string fileName, bool b黒を透過する )
 		{
-			if( app == null )
+			if ( app == null )
 			{
 				return null;
 			}
@@ -1259,9 +1259,9 @@ for (int i = 0; i < 3; i++) {
 			{
 				return new CTexture( app.Device, fileName, TextureFormat, b黒を透過する );
 			}
-			catch( CTextureCreateFailedException )
+			catch ( CTextureCreateFailedException )
 			{
-				Trace.TraceError( "テクスチャの生成に失敗しました。({0})", new object[] { fileName } );
+				Trace.TraceError( "テクスチャの生成に失敗しました。({0})", fileName );
 				return null;
 			}
 		}
@@ -1269,16 +1269,58 @@ for (int i = 0; i < 3; i++) {
 		{
 			CDTXMania.t安全にDisposeする( ref tx );
 		}
-		
+
+		public static CTexture tテクスチャの生成( byte[] txData )
+		{
+			return tテクスチャの生成( txData, false );
+		}
+		public static CTexture tテクスチャの生成( byte[] txData, bool b黒を透過する )
+		{
+			if ( app == null )
+			{
+				return null;
+			}
+			try
+			{
+				return new CTexture( app.Device, txData, TextureFormat, b黒を透過する );
+			}
+			catch ( CTextureCreateFailedException )
+			{
+				Trace.TraceError( "テクスチャの生成に失敗しました。(txData)" );
+				return null;
+			}
+		}
+
+		public static CTexture tテクスチャの生成( Bitmap bitmap )
+		{
+			return tテクスチャの生成( bitmap, false );
+		}
+		public static CTexture tテクスチャの生成( Bitmap bitmap, bool b黒を透過する )
+		{
+			if ( app == null )
+			{
+				return null;
+			}
+			try
+			{
+				return new CTexture( app.Device, bitmap, TextureFormat, b黒を透過する );
+			}
+			catch ( CTextureCreateFailedException )
+			{
+				Trace.TraceError( "テクスチャの生成に失敗しました。(txData)" );
+				return null;
+			}
+		}
+
 		/// <summary>プロパティ、インデクサには ref は使用できないので注意。</summary>
 		public static void t安全にDisposeする<T>( ref T obj )
 		{
-			if( obj == null )
+			if ( obj == null )
 				return;
 
 			var d = obj as IDisposable;
 
-			if( d != null )
+			if ( d != null )
 				d.Dispose();
 
 			obj = default( T );
