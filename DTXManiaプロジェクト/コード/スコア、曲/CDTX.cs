@@ -1737,13 +1737,27 @@ namespace DTXMania
 
 		public void tBMP_BMPTEXの読み込み()
 		{
+			#region [ CPUコア数の取得 ]
+			CWin32.SYSTEM_INFO sysInfo = new CWin32.SYSTEM_INFO();
+			CWin32.GetSystemInfo( ref sysInfo );
+			int nCPUCores = (int) sysInfo.dwNumberOfProcessors;
+			#endregion
 			#region [ BMP読み込み ]
 			if ( this.listBMP != null )
 			{
-				if ( CDTXMania.ConfigIni.bLoadBMPInParallel )
+				if ( nCPUCores <= 1 )
+				{
+					#region [ シングルスレッドで逐次読み出し・デコード・テクスチャ定義 ]
+					foreach ( CBMP cbmp in this.listBMP.Values )
+					{
+						cbmp.OnDeviceCreated();
+					}
+					#endregion
+				}
+				else
 				{
 					#region [ メインスレッド(テクスチャ定義)とバックグラウンドスレッド(読み出し・デコード)を並列動作させ高速化 ]
-//Trace.TraceInformation( "Main: ThreadID(Main)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + this.listBMP.Count );
+					//Trace.TraceInformation( "Main: ThreadID(Main)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + this.listBMP.Count );
 					nLoadDone = 0;
 					backgroundBMPLoadAll.BeginInvoke( listBMP, null, null );
 
@@ -1755,30 +1769,21 @@ namespace DTXMania
 						if ( queueCBMPbaseDone.Count > 0 )
 						{
 							CBMP cbmp;
-//Trace.TraceInformation( "Main: Lock Begin for dequeue1." );
+							//Trace.TraceInformation( "Main: Lock Begin for dequeue1." );
 							lock ( lockQueue )
 							{
 								cbmp = (CBMP) queueCBMPbaseDone.Dequeue();
-//  Trace.TraceInformation( "Main: Dequeued(" + queueCBMPbaseDone.Count + "): " + cbmp.strファイル名 );
+								//  Trace.TraceInformation( "Main: Dequeued(" + queueCBMPbaseDone.Count + "): " + cbmp.strファイル名 );
 							}
 							cbmp.OnDeviceCreated( cbmp.bitmap, cbmp.GetFullPathname );
 							nLoadDone++;
-//Trace.TraceInformation( "Main: OnDeviceCreated: " + cbmp.strファイル名 );
+							//Trace.TraceInformation( "Main: OnDeviceCreated: " + cbmp.strファイル名 );
 						}
 						else
 						{
-//Trace.TraceInformation( "Main: Sleeped.");
+							//Trace.TraceInformation( "Main: Sleeped.");
 							Thread.Sleep( 5 );	// WaitOneのイベント待ちにすると、メインスレッド処理中に2個以上イベント完了したときにそれを正しく検出できなくなるので、
 						}						// ポーリングに逃げてしまいました。
-					}
-					#endregion
-				}
-				else
-				{
-					#region [ シングルスレッドで逐次読み出し・デコード・テクスチャ定義 ]
-					foreach ( CBMP cbmp in this.listBMP.Values )
-					{
-						cbmp.OnDeviceCreated();
 					}
 					#endregion
 				}
@@ -1787,7 +1792,16 @@ namespace DTXMania
 			#region [ BMPTEX読み込み ]
 			if ( this.listBMPTEX != null )
 			{
-				if ( CDTXMania.ConfigIni.bLoadBMPInParallel )
+				if ( nCPUCores <= 1 )
+				{
+					#region [ シングルスレッドで逐次読み出し・デコード・テクスチャ定義 ]
+					foreach ( CBMPTEX cbmptex in this.listBMPTEX.Values )
+					{
+						cbmptex.OnDeviceCreated();
+					}
+					#endregion
+				}
+				else
 				{
 					#region [ メインスレッド(テクスチャ定義)とバックグラウンドスレッド(読み出し・デコード)を並列動作させ高速化 ]
 					//Trace.TraceInformation( "Main: ThreadID(Main)=" + Thread.CurrentThread.ManagedThreadId + ", listCount=" + this.listBMP.Count );
@@ -1814,15 +1828,6 @@ namespace DTXMania
 							//Trace.TraceInformation( "Main: Sleeped.");
 							Thread.Sleep( 5 );	// WaitOneのイベント待ちにすると、メインスレッド処理中に2個以上イベント完了したときにそれを正しく検出できなくなるので、
 						}						// ポーリングに逃げてしまいました。
-					}
-					#endregion
-				}
-				else
-				{
-					#region [ シングルスレッドで逐次読み出し・デコード・テクスチャ定義 ]
-					foreach ( CBMPTEX cbmptex in this.listBMPTEX.Values )
-					{
-						cbmptex.OnDeviceCreated();
 					}
 					#endregion
 				}

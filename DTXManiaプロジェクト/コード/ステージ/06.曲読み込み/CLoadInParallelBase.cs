@@ -15,8 +15,8 @@ namespace DTXMania
 		#region [ 読み込みに使用するスレッド数を決定する ]
 		public static int GetNumOfThreads()
 		{
-			CpuCores.SYSTEM_INFO sysInfo = new CpuCores.SYSTEM_INFO();
-			CpuCores.GetSystemInfo( ref sysInfo );
+			FDK.CWin32.SYSTEM_INFO sysInfo = new FDK.CWin32.SYSTEM_INFO();
+			FDK.CWin32.GetSystemInfo( ref sysInfo );
 			int nThreads = (int) sysInfo.dwNumberOfProcessors;
 			nThreads = 8;				// あまりコア数とスレッド数の性能相関が出なかったので、とりあえず8で固定
 

@@ -209,19 +209,19 @@ namespace DTXMania
 				" * Some sound may disappear\n" +
 				" * DTXMania suddely shutdown" );
 			this.list項目リスト.Add( this.iSystemWAVLoadAcceleration );
-			this.iSystemBMPLoadAcceleration = new CItemToggle( "BMPLoadAccel.", CDTXMania.ConfigIni.bLoadBMPInParallel,
-				"BMP読込高速化：\n" +
-				"BGA画像の読込をマルチスレッドで\n" +
-				"行い、曲データの読込を高速化します。\n" +
-				"シングルコアのCPUをお使いの場合\n" +
-				"や、WindowsXPをお使いの場合は、\n" +
-				"逆に読込が遅くなることがあります。",
-				"BMP load acceleration:\n" +
-				"To accelerate BGA file loading,\n" +
-				" multithread technology is used.\n" +
-				"But you may feel slower in case\n" +
-				"you use single-core CPU or XP OS." );
-			this.list項目リスト.Add( this.iSystemBMPLoadAcceleration );
+			//this.iSystemBMPLoadAcceleration = new CItemToggle( "BMPLoadAccel.", CDTXMania.ConfigIni.bLoadBMPInParallel,
+			//    "BMP読込高速化：\n" +
+			//    "BGA画像の読込をマルチスレッドで\n" +
+			//    "行い、曲データの読込を高速化します。\n" +
+			//    "シングルコアのCPUをお使いの場合\n" +
+			//    "や、WindowsXPをお使いの場合は、\n" +
+			//    "逆に読込が遅くなることがあります。",
+			//    "BMP load acceleration:\n" +
+			//    "To accelerate BGA file loading,\n" +
+			//    " multithread technology is used.\n" +
+			//    "But you may feel slower in case\n" +
+			//    "you use single-core CPU or XP OS." );
+			//this.list項目リスト.Add( this.iSystemBMPLoadAcceleration );
 
 	
 			this.iSystemGoToKeyAssign = new CItemBase( "System Keys", CItemBase.Eパネル種別.通常,
@@ -1624,7 +1624,7 @@ namespace DTXMania
 		private CItemToggle iSystemBufferedInput;
 		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
 		private CItemToggle iSystemWAVLoadAcceleration;		// #28021 2012.4.8 yyagi
-		private CItemToggle iSystemBMPLoadAcceleration;		// #28021 2012.4.8 yyagi
+		//private CItemToggle iSystemBMPLoadAcceleration;		// #28021 2012.4.8 yyagi
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -1783,7 +1783,7 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
 			CDTXMania.ConfigIni.bLoadWAVInParallel = this.iSystemWAVLoadAcceleration.bON;			// #28021 2012.4.8 yyagi
-			CDTXMania.ConfigIni.bLoadBMPInParallel = this.iSystemBMPLoadAcceleration.bON;			// #28021 2012.4.8 yyagi
+			// CDTXMania.ConfigIni.bLoadBMPInParallel = this.iSystemBMPLoadAcceleration.bON;			// #28021 2012.4.8 yyagi
 
 		}
 		private void tConfigIniへ記録する・Bass()
