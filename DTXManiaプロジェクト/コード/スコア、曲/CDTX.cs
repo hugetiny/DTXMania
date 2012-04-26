@@ -267,6 +267,7 @@ namespace DTXMania
 					// 作成成功。
 					if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 						PutLog( strテクスチャファイル名 );
+					txData = null;
 					this.bUse = true;
 				}
 				else
