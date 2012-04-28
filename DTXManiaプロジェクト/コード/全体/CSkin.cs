@@ -151,6 +151,26 @@ namespace DTXMania
 				}
 			}
 
+
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
+			/// <param name="strファイル名"></param>
+			/// <param name="bループ"></param>
+			/// <param name="b排他"></param>
+			/// <param name="bCompact対象"></param>
+			public Cシステムサウンド(string strファイル名, bool bループ, bool b排他, bool bCompact対象)
+			{
+				this.strファイル名 = strファイル名;
+				this.bループ = bループ;
+				this.b排他 = b排他;
+				this.bCompact対象 = bCompact対象;
+			}
+			public Cシステムサウンド()
+			{
+			}
+			
+
 			// メソッド
 
 			public void t読み込み()
@@ -383,102 +403,22 @@ namespace DTXMania
 
 		public CSkin()
 		{
-			Cシステムサウンド cシステムサウンド = new Cシステムサウンド();
-			cシステムサウンド.strファイル名 = @"Sounds\Move.ogg";
-			cシステムサウンド.bループ = false;
-			cシステムサウンド.b排他 = false;
-			cシステムサウンド.bCompact対象 = false;
-			this.soundカーソル移動音 = cシステムサウンド;
-			Cシステムサウンド cシステムサウンド2 = new Cシステムサウンド();
-			cシステムサウンド2.strファイル名 = @"Sounds\Decide.ogg";
-			cシステムサウンド2.bループ = false;
-			cシステムサウンド2.b排他 = false;
-			cシステムサウンド2.bCompact対象 = false;
-			this.sound決定音 = cシステムサウンド2;
-			Cシステムサウンド cシステムサウンド3 = new Cシステムサウンド();
-			cシステムサウンド3.strファイル名 = @"Sounds\Change.ogg";
-			cシステムサウンド3.bループ = false;
-			cシステムサウンド3.b排他 = false;
-			cシステムサウンド3.bCompact対象 = false;
-			this.sound変更音 = cシステムサウンド3;
-			Cシステムサウンド cシステムサウンド4 = new Cシステムサウンド();
-			cシステムサウンド4.strファイル名 = @"Sounds\Cancel.ogg";
-			cシステムサウンド4.bループ = false;
-			cシステムサウンド4.b排他 = false;
-			cシステムサウンド4.bCompact対象 = true;
-			this.sound取消音 = cシステムサウンド4;
-			Cシステムサウンド cシステムサウンド5 = new Cシステムサウンド();
-			cシステムサウンド5.strファイル名 = @"Sounds\Audience.ogg";
-			cシステムサウンド5.bループ = false;
-			cシステムサウンド5.b排他 = false;
-			cシステムサウンド5.bCompact対象 = true;
-			this.sound歓声音 = cシステムサウンド5;
-			Cシステムサウンド cシステムサウンド6 = new Cシステムサウンド();
-			cシステムサウンド6.strファイル名 = @"Sounds\Stage failed.ogg";
-			cシステムサウンド6.bループ = false;
-			cシステムサウンド6.b排他 = true;
-			cシステムサウンド6.bCompact対象 = true;
-			this.soundSTAGEFAILED音 = cシステムサウンド6;
-			Cシステムサウンド cシステムサウンド7 = new Cシステムサウンド();
-			cシステムサウンド7.strファイル名 = @"Sounds\Game start.ogg";
-			cシステムサウンド7.bループ = false;
-			cシステムサウンド7.b排他 = false;
-			cシステムサウンド7.bCompact対象 = false;
-			this.soundゲーム開始音 = cシステムサウンド7;
-			Cシステムサウンド cシステムサウンド8 = new Cシステムサウンド();
-			cシステムサウンド8.strファイル名 = @"Sounds\Game end.ogg";
-			cシステムサウンド8.bループ = false;
-			cシステムサウンド8.b排他 = true;
-			cシステムサウンド8.bCompact対象 = false;
-			this.soundゲーム終了音 = cシステムサウンド8;
-			Cシステムサウンド cシステムサウンド9 = new Cシステムサウンド();
-			cシステムサウンド9.strファイル名 = @"Sounds\Stage clear.ogg";
-			cシステムサウンド9.bループ = false;
-			cシステムサウンド9.b排他 = true;
-			cシステムサウンド9.bCompact対象 = true;
-			this.soundステージクリア音 = cシステムサウンド9;
-			Cシステムサウンド cシステムサウンド10 = new Cシステムサウンド();
-			cシステムサウンド10.strファイル名 = @"Sounds\Full combo.ogg";
-			cシステムサウンド10.bループ = false;
-			cシステムサウンド10.b排他 = false;
-			cシステムサウンド10.bCompact対象 = true;
-			this.soundフルコンボ音 = cシステムサウンド10;
-			Cシステムサウンド cシステムサウンド11 = new Cシステムサウンド();
-			cシステムサウンド11.strファイル名 = @"Sounds\Now loading.ogg";
-			cシステムサウンド11.bループ = false;
-			cシステムサウンド11.b排他 = true;
-			cシステムサウンド11.bCompact対象 = true;
-			this.sound曲読込開始音 = cシステムサウンド11;
-			Cシステムサウンド cシステムサウンド12 = new Cシステムサウンド();
-			cシステムサウンド12.strファイル名 = @"Sounds\Title.ogg";
-			cシステムサウンド12.bループ = false;
-			cシステムサウンド12.b排他 = true;
-			cシステムサウンド12.bCompact対象 = false;
-			this.soundタイトル音 = cシステムサウンド12;
-			Cシステムサウンド cシステムサウンド13 = new Cシステムサウンド();
-			cシステムサウンド13.strファイル名 = @"Sounds\Setup BGM.ogg";
-			cシステムサウンド13.bループ = true;
-			cシステムサウンド13.b排他 = true;
-			cシステムサウンド13.bCompact対象 = false;
-			this.bgm起動画面 = cシステムサウンド13;
-			Cシステムサウンド cシステムサウンド14 = new Cシステムサウンド();
-			cシステムサウンド14.strファイル名 = @"Sounds\Option BGM.ogg";
-			cシステムサウンド14.bループ = true;
-			cシステムサウンド14.b排他 = true;
-			cシステムサウンド14.bCompact対象 = false;
-			this.bgmオプション画面 = cシステムサウンド14;
-			Cシステムサウンド cシステムサウンド15 = new Cシステムサウンド();
-			cシステムサウンド15.strファイル名 = @"Sounds\Config BGM.ogg";
-			cシステムサウンド15.bループ = true;
-			cシステムサウンド15.b排他 = true;
-			cシステムサウンド15.bCompact対象 = false;
-			this.bgmコンフィグ画面 = cシステムサウンド15;
-			Cシステムサウンド cシステムサウンド16 = new Cシステムサウンド();
-			cシステムサウンド16.strファイル名 = @"Sounds\Select BGM.ogg";
-			cシステムサウンド16.bループ = true;
-			cシステムサウンド16.b排他 = true;
-			cシステムサウンド16.bCompact対象 = false;
-			this.bgm選曲画面 = cシステムサウンド16;
+			this.soundカーソル移動音	= new Cシステムサウンド( @"Sounds\Move.ogg",			false, false, false );
+			this.sound決定音			= new Cシステムサウンド( @"Sounds\Decide.ogg",			false, false, false );
+			this.sound変更音			= new Cシステムサウンド( @"Sounds\Change.ogg",			false, false, false );
+			this.sound取消音			= new Cシステムサウンド( @"Sounds\Cancel.ogg",			false, false, true  );
+			this.sound歓声音			= new Cシステムサウンド( @"Sounds\Audience.ogg",		false, false, true  );
+			this.soundSTAGEFAILED音		= new Cシステムサウンド( @"Sounds\Stage failed.ogg",	false, true,  true  );
+			this.soundゲーム開始音		= new Cシステムサウンド( @"Sounds\Game start.ogg",		false, false, false );
+			this.soundゲーム終了音		= new Cシステムサウンド( @"Sounds\Game end.ogg",		false, true,  false );
+			this.soundステージクリア音	= new Cシステムサウンド( @"Sounds\Stage clear.ogg",		false, true,  true  );
+			this.soundフルコンボ音		= new Cシステムサウンド( @"Sounds\Full combo.ogg",		false, false, true  );
+			this.sound曲読込開始音		= new Cシステムサウンド( @"Sounds\Now loading.ogg",		false, true,  true  );
+			this.soundタイトル音		= new Cシステムサウンド( @"Sounds\Title.ogg",			false, true,  false );
+			this.bgm起動画面			= new Cシステムサウンド( @"Sounds\Setup BGM.ogg",		true,  true,  false );
+			this.bgmオプション画面		= new Cシステムサウンド( @"Sounds\Option BGM.ogg",		true,  true,  false );
+			this.bgmコンフィグ画面		= new Cシステムサウンド( @"Sounds\Config BGM.ogg",		true,  true,  false );
+			this.bgm選曲画面			= new Cシステムサウンド( @"Sounds\Select BGM.ogg",		true,  true,  false );
 		}
 
 
