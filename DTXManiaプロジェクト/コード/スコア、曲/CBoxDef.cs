@@ -60,75 +60,80 @@ namespace DTXMania
 				{
 					try
 					{
-						str = str.TrimStart( new char[] { ' ', '\t' } );
+						char[] ignoreCharsWoColon = new char[] { ' ', '\t' };
+
+						str = str.TrimStart( ignoreCharsWoColon );
 						if( ( str[ 0 ] == '#' ) && ( str[ 0 ] != ';' ) )
 						{
 							if( str.IndexOf( ';' ) != -1 )
 							{
 								str = str.Substring( 0, str.IndexOf( ';' ) );
 							}
-							if( str.StartsWith( "#TITLE", StringComparison.OrdinalIgnoreCase ) )
+
+							char[] ignoreChars = new char[] { ':', ' ', '\t' };
+		
+							if ( str.StartsWith( "#TITLE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								this.Title = str.Substring( 6 ).Trim( new char[] { ':', ' ', '\t' } );
+								this.Title = str.Substring( 6 ).Trim( ignoreChars );
 							}
 							else if( str.StartsWith( "#ARTIST", StringComparison.OrdinalIgnoreCase ) )
 							{
-								this.Artist = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
+								this.Artist = str.Substring( 7 ).Trim( ignoreChars );
 							}
 							else if( str.StartsWith( "#COMMENT", StringComparison.OrdinalIgnoreCase ) )
 							{
-								this.Comment = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
+								this.Comment = str.Substring( 8 ).Trim( ignoreChars );
 							}
 							else if( str.StartsWith( "#GENRE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								this.Genre = str.Substring( 6 ).Trim( new char[] { ':', ' ', '\t' } );
+								this.Genre = str.Substring( 6 ).Trim( ignoreChars );
 							}
 							else if( str.StartsWith( "#PREVIEW", StringComparison.OrdinalIgnoreCase ) )
 							{
-								this.Presound = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
+								this.Presound = str.Substring( 8 ).Trim( ignoreChars );
 							}
 							else if( str.StartsWith( "#PREIMAGE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								this.Preimage = str.Substring( 9 ).Trim( new char[] { ':', ' ', '\t' } );
+								this.Preimage = str.Substring( 9 ).Trim( ignoreChars );
 							}
 							else if( str.StartsWith( "#PREMOVIE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								this.Premovie = str.Substring( 9 ).Trim( new char[] { ':', ' ', '\t' } );
+								this.Premovie = str.Substring( 9 ).Trim( ignoreChars );
 							}
 							else if( str.StartsWith( "#FONTCOLOR", StringComparison.OrdinalIgnoreCase ) )
 							{
-								this.Color = ColorTranslator.FromHtml( str.Substring( 10 ).Trim( new char[] { ':', ' ', '\t' } ) );
+								this.Color = ColorTranslator.FromHtml( str.Substring( 10 ).Trim( ignoreChars ) );
 							}
 							else if( str.StartsWith( "#PERFECTRANGE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								int result = 0;
-								if( int.TryParse( str.Substring( 13 ).Trim( new char[] { ':', ' ', '\t' } ), out result ) && ( result >= 0 ) )
+								int range = 0;
+								if ( int.TryParse( str.Substring( 13 ).Trim( ignoreChars ), out range ) && ( range >= 0 ) )
 								{
-									this.PerfectRange = result;
+									this.PerfectRange = range;
 								}
 							}
 							else if( str.StartsWith( "#GREATRANGE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								int num2 = 0;
-								if( int.TryParse( str.Substring( 11 ).Trim( new char[] { ':', ' ', '\t' } ), out num2 ) && ( num2 >= 0 ) )
+								int range = 0;
+								if ( int.TryParse( str.Substring( 11 ).Trim( ignoreChars ), out range ) && ( range >= 0 ) )
 								{
-									this.GreatRange = num2;
+									this.GreatRange = range;
 								}
 							}
 							else if( str.StartsWith( "#GOODRANGE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								int num3 = 0;
-								if( int.TryParse( str.Substring( 10 ).Trim( new char[] { ':', ' ', '\t' } ), out num3 ) && ( num3 >= 0 ) )
+								int range = 0;
+								if ( int.TryParse( str.Substring( 10 ).Trim( ignoreChars ), out range ) && ( range >= 0 ) )
 								{
-									this.GoodRange = num3;
+									this.GoodRange = range;
 								}
 							}
 							else if( str.StartsWith( "#POORRANGE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								int num4 = 0;
-								if( int.TryParse( str.Substring( 10 ).Trim( new char[] { ':', ' ', '\t' } ), out num4 ) && ( num4 >= 0 ) )
+								int range = 0;
+								if ( int.TryParse( str.Substring( 10 ).Trim( ignoreChars ), out range ) && ( range >= 0 ) )
 								{
-									this.PoorRange = num4;
+									this.PoorRange = range;
 								}
 							}
 						}
