@@ -80,100 +80,100 @@ namespace FDK
 			return num;
 		}
 		
-		public static int n16進数2桁の文字列を数値に変換して返す( string num )
+		public static int n16進数2桁の文字列を数値に変換して返す( string strNum )
 		{
-			if( num.Length < 2 )
+			if( strNum.Length < 2 )
 				return -1;
 
-			int index = str16進数文字.IndexOf( num[ 0 ] );
-			if( index < 0 )
+			int digit2 = str16進数文字.IndexOf( strNum[ 0 ] );
+			if( digit2 < 0 )
 				return -1;
 
-			if( index >= 16 )
-				index -= 6;
+			if( digit2 >= 16 )
+				digit2 -= (16 - 10);		// A,B,C... -> 1,2,3...
 
-			int num3 = str16進数文字.IndexOf( num[ 1 ] );
-			if( num3 < 0 )
+			int digit1 = str16進数文字.IndexOf( strNum[ 1 ] );
+			if( digit1 < 0 )
 				return -1;
 
-			if( num3 >= 16 )
-				num3 -= 6;
+			if( digit1 >= 16 )
+				digit1 -= (16 - 10);
 
-			return ( ( index * 16 ) + num3 );
+			return digit2 * 16 + digit1;
 		}
-		public static int n36進数2桁の文字列を数値に変換して返す( string num )
+		public static int n36進数2桁の文字列を数値に変換して返す( string strNum )
 		{
-			if( num.Length < 2 )
+			if( strNum.Length < 2 )
 				return -1;
 
-			int index = str36進数文字.IndexOf( num[ 0 ] );
-			if( index < 0 )
+			int digit2 = str36進数文字.IndexOf( strNum[ 0 ] );
+			if( digit2 < 0 )
 				return -1;
 
-			if( index >= 0x24 )
-				index -= 0x1a;
+			if( digit2 >= 36 )
+				digit2 -= (36 - 10);		// A,B,C... -> 1,2,3...
 
-			int num3 = str36進数文字.IndexOf( num[ 1 ] );
-			if( num3 < 0 )
+			int digit1 = str36進数文字.IndexOf( strNum[ 1 ] );
+			if( digit1 < 0 )
 				return -1;
 
-			if( num3 >= 0x24 )
-				num3 -= 0x1a;
+			if( digit1 >= 36 )
+				digit1 -= (36 - 10);
 
-			return ( ( index * 0x24 ) + num3 );
+			return digit2 * 36 + digit1;
 		}
-		public static int n小節番号の文字列3桁を数値に変換して返す( string num )
+		public static int n小節番号の文字列3桁を数値に変換して返す( string strNum )
 		{
-			if( num.Length >= 3 )
+			if( strNum.Length >= 3 )
 			{
-				int index = str36進数文字.IndexOf( num[ 0 ] );
-				if( index < 0 )
+				int digit3 = str36進数文字.IndexOf( strNum[ 0 ] );
+				if( digit3 < 0 )
 					return -1;
 
-				if( index >= 0x24 )
-					index -= 0x1a;
+				if( digit3 >= 36 )									// 3桁目は36進数
+					digit3 -= (36 - 10);
 
-				int num3 = str16進数文字.IndexOf( num[ 1 ] );
-				if( ( num3 < 0 ) || ( num3 > 9 ) )
+				int digit2 = str16進数文字.IndexOf( strNum[ 1 ] );	// 2桁目は10進数
+				if( ( digit2 < 0 ) || ( digit2 > 9 ) )
 					return -1;
 
-				int num4 = str16進数文字.IndexOf( num[ 2 ] );
-				if( ( num4 >= 0 ) && ( num4 <= 9 ) )
-					return ( ( ( index * 100 ) + ( num3 * 10 ) ) + num4 );
+				int digit1 = str16進数文字.IndexOf( strNum[ 2 ] );	// 1桁目も10進数
+				if( ( digit1 >= 0 ) && ( digit1 <= 9 ) )
+					return digit3 * 100 + digit2 * 10 + digit1;
 			}
 			return -1;
 		}
 		
 		public static string str小節番号を文字列3桁に変換して返す( int num )
 		{
-			if( ( num < 0 ) || ( num >= 0xe10 ) )
+			if( ( num < 0 ) || ( num >= 3600 ) )	// 3600 == Z99 + 1
 				return "000";
 
-			int num2 = num / 100;
-			int num3 = ( num % 100 ) / 10;
-			int num4 = ( num % 100 ) % 10;
-			char ch = str36進数文字[ num2 ];
-			char ch2 = str16進数文字[ num3 ];
-			char ch3 = str16進数文字[ num4 ];
-			return ( ch.ToString() + ch2.ToString() + ch3.ToString() );
+			int digit4 = num / 100;
+			int digit2 = ( num % 100 ) / 10;
+			int digit1 = ( num % 100 ) % 10;
+			char ch3 = str36進数文字[ digit4 ];
+			char ch2 = str16進数文字[ digit2 ];
+			char ch1 = str16進数文字[ digit1 ];
+			return ( ch3.ToString() + ch2.ToString() + ch1.ToString() );
 		}
 		public static string str数値を16進数2桁に変換して返す( int num )
 		{
 			if( ( num < 0 ) || ( num >= 0x100 ) )
 				return "00";
 
-			char ch = str16進数文字[ num / 0x10 ];
-			char ch2 = str16進数文字[ num % 0x10 ];
-			return ( ch.ToString() + ch2.ToString() );
+			char ch2 = str16進数文字[ num / 0x10 ];
+			char ch1 = str16進数文字[ num % 0x10 ];
+			return ( ch2.ToString() + ch1.ToString() );
 		}
 		public static string str数値を36進数2桁に変換して返す( int num )
 		{
-			if( ( num < 0 ) || ( num >= 0x510 ) )
+			if( ( num < 0 ) || ( num >= 36 * 36 ) )
 				return "00";
 
-			char ch = str36進数文字[ num / 0x24 ];
-			char ch2 = str36進数文字[ num % 0x24 ];
-			return ( ch.ToString() + ch2.ToString() );
+			char ch2 = str36進数文字[ num / 36 ];
+			char ch1 = str36進数文字[ num % 36 ];
+			return ( ch2.ToString() + ch1.ToString() );
 		}
 
 		#region [ private ]

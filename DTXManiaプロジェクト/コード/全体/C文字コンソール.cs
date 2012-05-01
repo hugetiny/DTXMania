@@ -33,37 +33,29 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない && !string.IsNullOrEmpty( str英数字文字列 ) )
 			{
-				int num = x;
+				int BOL = x;
 				for( int i = 0; i < str英数字文字列.Length; i++ )
 				{
 					char ch = str英数字文字列[ i ];
 					if( ch == '\n' )
 					{
-						x = num;
-						y += 0x10;
+						x = BOL;
+						y += nFontHeight;
 					}
 					else
 					{
-						int num3 = 0;
-						while( num3 < " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ".Length )
+						int index = str表記可能文字.IndexOf( ch );
+						if( index < 0 )
 						{
-							if( " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ "[ num3 ] == ch )
-							{
-								break;
-							}
-							num3++;
-						}
-						if( num3 >= " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ".Length )
-						{
-							x += 8;
+							x += nFontWidth;
 						}
 						else
 						{
 							if( this.txフォント8x16[ (int) ( (int) font / (int) Eフォント種別.白細 ) ] != null )
 							{
-								this.txフォント8x16[ (int) ( (int) font / (int) Eフォント種別.白細 ) ].t2D描画( CDTXMania.app.Device, x, y, this.rc文字の矩形領域[ (int) ( (int) font % (int) Eフォント種別.白細 ), num3 ] );
+								this.txフォント8x16[ (int) ( (int) font / (int) Eフォント種別.白細 ) ].t2D描画( CDTXMania.app.Device, x, y, this.rc文字の矩形領域[ (int) ( (int) font % (int) Eフォント種別.白細 ), index ] );
 							}
-							x += 8;
+							x += nFontWidth;
 						}
 					}
 				}
@@ -75,15 +67,16 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.rc文字の矩形領域 = new Rectangle[ 3, 0x60 ];
+			this.rc文字の矩形領域 = new Rectangle[3, str表記可能文字.Length ];
 			for( int i = 0; i < 3; i++ )
 			{
-				for( int j = 0; j < 0x60; j++ )
+				for (int j = 0; j < str表記可能文字.Length; j++)
 				{
-					this.rc文字の矩形領域[ i, j ].X = ( ( i / 2 ) * 0x80 ) + ( ( j % 0x10 ) * 8 );
-					this.rc文字の矩形領域[ i, j ].Y = ( ( i % 2 ) * 0x80 ) + ( ( j / 0x10 ) * 0x10 );
-					this.rc文字の矩形領域[ i, j ].Width = 8;
-					this.rc文字の矩形領域[ i, j ].Height = 0x10;
+					const int regionX = 128, regionY = 16;
+					this.rc文字の矩形領域[ i, j ].X = ( ( i / 2 ) * regionX ) + ( ( j % regionY ) * nFontWidth );
+					this.rc文字の矩形領域[ i, j ].Y = ( ( i % 2 ) * regionX ) + ( ( j / regionY ) * nFontHeight );
+					this.rc文字の矩形領域[ i, j ].Width = nFontWidth;
+					this.rc文字の矩形領域[ i, j ].Height = nFontHeight;
 				}
 			}
 			base.On活性化();
@@ -127,6 +120,7 @@ namespace DTXMania
 		//-----------------
 		private Rectangle[,] rc文字の矩形領域;
 		private const string str表記可能文字 = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ";
+		private const int nFontWidth = 8, nFontHeight = 16;
 		private CTexture[] txフォント8x16 = new CTexture[ 2 ];
 		//-----------------
 		#endregion
