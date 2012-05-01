@@ -1057,13 +1057,13 @@ namespace DTXMania
 			public List<int> listこのWAVを使用するチャンネル番号の集合 = new List<int>( 16 );
 			public int nチップサイズ = 100;
 			public int n位置;
-			public long[] n一時停止時刻 = new long[ nPolyphonicSounds ];	// 4
+			public long[] n一時停止時刻 = new long[ CDTXMania.ConfigIni.nPoliphonicSounds ];	// 4
 			public int n音量 = 100;
 			public int n現在再生中のサウンド番号;
-			public long[] n再生開始時刻 = new long[ nPolyphonicSounds ];	// 4
+			public long[] n再生開始時刻 = new long[ CDTXMania.ConfigIni.nPoliphonicSounds ];	// 4
 			public int n内部番号;
 			public int n表記上の番号;
-			public CSound[] rSound = new CSound[ nPolyphonicSounds ];	// 4
+			public CSound[] rSound = new CSound[ CDTXMania.ConfigIni.nPoliphonicSounds ];		// 4
 			public string strコメント文 = "";
 			public string strファイル名 = "";
 			public bool bBGMとして使わない
@@ -1109,7 +1109,7 @@ namespace DTXMania
 
 				if( bManagedリソースの解放も行う )
 				{
-					for( int i = 0; i < nPolyphonicSounds; i++ )
+					for ( int i = 0; i < CDTXMania.ConfigIni.nPoliphonicSounds; i++ )	// 4
 					{
 						if( this.rSound[ i ] != null )
 							CDTXMania.Sound管理.tサウンドを破棄する( this.rSound[ i ] );
@@ -1569,7 +1569,7 @@ namespace DTXMania
 			this.stGDAParam = stgdaparamArray;
 			#endregion
 			this.nBGMAdjust = 0;
-			nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
+			this.nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
 #if TEST_NOTEOFFMODE
 			this.bHH演奏で直前のHHを消音する = true;
 			this.bGUITAR演奏で直前のGUITARを消音する = true;
@@ -3073,7 +3073,7 @@ namespace DTXMania
 		private int n現在の行数;
 		private int n現在の乱数;
 
-		private static int nPolyphonicSounds = 4;							// #28228 2012.5.1 yyagi
+		private int nPolyphonicSounds = 4;							// #28228 2012.5.1 yyagi
 
 		private int n内部番号BPM1to;
 		private int n内部番号WAV1to;
