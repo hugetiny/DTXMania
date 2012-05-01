@@ -495,8 +495,8 @@ namespace SampleFramework
         {
             try
             {
-                if (!IsExiting && !Window.IsMinimized)
-                {
+				if ( !IsExiting /* && !Window.IsMinimized */ )		// #28230 2012.5.1 yyagi
+				{
                     CancelEventArgs e = new CancelEventArgs(false);
                     OnFrameStart(e);
                     if (!e.Cancel)
