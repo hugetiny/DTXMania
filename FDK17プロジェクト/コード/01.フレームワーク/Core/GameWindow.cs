@@ -112,6 +112,16 @@ namespace SampleFramework
             get { return maximized; }
         }
 
+		/// <summary>
+		/// Gets or sets a value indicating whether System Menu is enabled.
+		/// </summary>
+		/// <value><c>true</c> if System Menu is enabled; otherwise, <c>false</c>.</value>
+		public bool EnableSystemMenu			// #28200 2012.5.1 yyagi
+		{
+			get;
+			set;
+		}
+
 		private Screen m_Screen;
         /// <summary>
         /// Gets the screen on which the window resides.
@@ -381,13 +391,13 @@ namespace SampleFramework
                         return;
                     }
 				}
-//				#region Disable system menu
-//				if ( ( m.WParam.ToInt32() & 0xFFFF ) == 0xF100 )	// SC_KEYMENU
-//				{
-//					m.Result = IntPtr.Zero;
-//					return;
-//				}
-//				#endregion
+				#region #28200 2012.5.1 yyagi: Disable system menu
+				if ( ( m.WParam.ToInt32() & 0xFFFF ) == 0xF100 && !EnableSystemMenu )	// SC_KEYMENU
+				{
+					m.Result = IntPtr.Zero;
+					return;
+				}
+				#endregion
 				#region #23510 2010.11.13 yyagi: reset to 640x480
 				if ((m.WParam.ToInt32() & 0xFFFF) == MENU_VIEW)		
 				{

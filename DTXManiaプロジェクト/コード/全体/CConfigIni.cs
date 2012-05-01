@@ -481,6 +481,7 @@ namespace DTXMania
 		public bool bIsAutoResultCapture;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能のON/OFF制御
 		public int nPoliphonicSounds;				// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
 		public bool bバッファ入力を行う;
+		public bool bIsEnabledSystemMenu;			// #28200 2012.5.1 yyagi System Menuの使用可否切替
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
 			get
@@ -1014,6 +1015,7 @@ namespace DTXMania
 			this.bIsAllowedDoubleClickFullscreen = true;	// #26752 2011.11.26 ダブルクリックでのフルスクリーンモード移行を許可
 			this.eBDGroup = EBDGroup.打ち分ける;		// #27029 2012.1.4 from HHPedalとBassPedalのグルーピング
 			this.nPoliphonicSounds = 4;					// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
+			this.bIsEnabledSystemMenu = true;			// #28200 2012.5.1 yyagi System Menuの利用可否切替(使用可)
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1092,7 +1094,11 @@ namespace DTXMania
 			sw.WriteLine( "; ウインドウをダブルクリックした時にフルスクリーンに移行するか(0:移行しない,1:移行する)" );	// #26752 2011.11.27 yyagi
 			sw.WriteLine( "; Whether double click to go full screen mode or not." );					//
 			sw.WriteLine( "DoubleClickFullScreen={0}", this.bIsAllowedDoubleClickFullscreen? 1 : 0);	//
-			sw.WriteLine();												//
+			sw.WriteLine();																				//
+			sw.WriteLine( "; ALT+SPACEのメニュー表示を抑制するかどうか(0:抑制する 1:抑制しない)" );		// #28200 2012.5.1 yyagi
+			sw.WriteLine( "; Whether ALT+SPACE menu would be masked or not.(0=masked 1=not masked)" );	//
+			sw.WriteLine( "EnableSystemMenu={0}", this.bIsEnabledSystemMenu? 1 : 0 );					//
+			sw.WriteLine();																				//
 
 			sw.WriteLine("; 垂直帰線同期(0:OFF,1:ON)");
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
@@ -1715,15 +1721,19 @@ namespace DTXMania
 													this.nウインドウheight = SampleFramework.GameWindowSize.Height;
 												}
 											}
-											else if( str3.Equals( "DoubleClickFullScreen" ) )	// #26752 2011.11.27 yyagi
+											else if ( str3.Equals( "DoubleClickFullScreen" ) )	// #26752 2011.11.27 yyagi
 											{
 												this.bIsAllowedDoubleClickFullscreen = C変換.bONorOFF( str4[ 0 ] );
 											}
-											else if( str3.Equals( "VSyncWait" ) )
+											else if ( str3.Equals( "EnableSystemMenu" ) )		// #28200 2012.5.1 yyagi
+											{
+												this.bIsEnabledSystemMenu = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "VSyncWait" ) )
 											{
 												this.b垂直帰線待ちを行う = C変換.bONorOFF( str4[ 0 ] );
 											}
-											else if( str3.Equals( "BackSleep" ) )		// #23568 2010.11.04 ikanick add
+											else if( str3.Equals( "BackSleep" ) )				// #23568 2010.11.04 ikanick add
 											{
 												this.n非フォーカス時スリープms = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す( str4, 0, 50, this.n非フォーカス時スリープms );
 											}
