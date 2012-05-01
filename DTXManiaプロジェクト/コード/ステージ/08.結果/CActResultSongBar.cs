@@ -57,7 +57,8 @@ namespace DTXMania
 				{
 					Bitmap image = new Bitmap( 0x3a8, 0x36 );
 					Graphics graphics = Graphics.FromImage( image );
-					graphics.DrawString( CDTXMania.DTX.TITLE, this.ft曲名用フォント, Brushes.White, (float) 8f, (float) 0f );
+					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+					graphics.DrawString( CDTXMania.DTX.TITLE, this.ft曲名用フォント, Brushes.White, ( float ) 8f, ( float ) 0f );
 					this.tx曲名 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
 					this.tx曲名.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 					graphics.Dispose();
