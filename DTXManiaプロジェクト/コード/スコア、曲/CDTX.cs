@@ -1057,13 +1057,13 @@ namespace DTXMania
 			public List<int> listこのWAVを使用するチャンネル番号の集合 = new List<int>( 16 );
 			public int nチップサイズ = 100;
 			public int n位置;
-			public long[] n一時停止時刻 = new long[ 4 ];
+			public long[] n一時停止時刻 = new long[ nPolyphonicSounds ];	// 4
 			public int n音量 = 100;
 			public int n現在再生中のサウンド番号;
-			public long[] n再生開始時刻 = new long[ 4 ];
+			public long[] n再生開始時刻 = new long[ nPolyphonicSounds ];	// 4
 			public int n内部番号;
 			public int n表記上の番号;
-			public CSound[] rSound = new CSound[ 4 ];
+			public CSound[] rSound = new CSound[ nPolyphonicSounds ];	// 4
 			public string strコメント文 = "";
 			public string strファイル名 = "";
 			public bool bBGMとして使わない
@@ -1109,7 +1109,7 @@ namespace DTXMania
 
 				if( bManagedリソースの解放も行う )
 				{
-					for( int i = 0; i < 4; i++ )
+					for( int i = 0; i < nPolyphonicSounds; i++ )
 					{
 						if( this.rSound[ i ] != null )
 							CDTXMania.Sound管理.tサウンドを破棄する( this.rSound[ i ] );
@@ -1569,7 +1569,7 @@ namespace DTXMania
 			this.stGDAParam = stgdaparamArray;
 			#endregion
 			this.nBGMAdjust = 0;
-
+			nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
 #if TEST_NOTEOFFMODE
 			this.bHH演奏で直前のHHを消音する = true;
 			this.bGUITAR演奏で直前のGUITARを消音する = true;
@@ -1931,15 +1931,18 @@ namespace DTXMania
 		}
 		public void tWave再生位置自動補正( CWAV wc )
 		{
-			for( int i = 0; i < 4; i++ )
+			if ( wc.rSound[ 0 ] != null && wc.rSound[ 0 ].n総演奏時間ms >= 5000 )
 			{
-				if( ( ( wc.rSound[ i ] != null ) && wc.rSound[ i ].b再生中 ) && ( wc.rSound[ i ].n総演奏時間ms >= 5000 ) )
+				for ( int i = 0; i < nPolyphonicSounds; i++ )
 				{
-					long nCurrentTime = CDTXMania.Timer.nシステム時刻;
-					if( nCurrentTime > wc.n再生開始時刻[ i ] )
+					if ( ( wc.rSound[ i ] != null ) && ( wc.rSound[ i ].b再生中 ) )
 					{
-						long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[ i ];
-						wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
+						long nCurrentTime = CDTXMania.Timer.nシステム時刻;
+						if ( nCurrentTime > wc.n再生開始時刻[ i ] )
+						{
+							long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[ i ];
+							wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
+						}
 					}
 				}
 			}
@@ -1949,9 +1952,9 @@ namespace DTXMania
 			if( this.listWAV.ContainsKey( nWaveの内部番号 ) )
 			{
 				CWAV cwav = this.listWAV[ nWaveの内部番号 ];
-				for( int i = 0; i < 4; i++ )
+				for ( int i = 0; i < nPolyphonicSounds; i++ )
 				{
-					if( cwav.rSound[ i ] != null )
+					if( cwav.rSound[ i ] != null && cwav.rSound[ i ].b再生中 )
 					{
 						cwav.rSound[ i ].t再生を停止する();
 					}
@@ -1989,14 +1992,14 @@ namespace DTXMania
 						}
 						if ( cwav.rSound[ 0 ] == null || cwav.rSound[ 0 ].bストリーム再生する )
 						{
-							for ( int j = 1; j < cwav.rSound.GetLength(0); j++ )
+							for ( int j = 1; j < nPolyphonicSounds; j++ )
 							{
 								cwav.rSound[ j ] = null;
 							}
 						}
 						else
 						{
-							for ( int j = 1; j < cwav.rSound.GetLength(0); j++ )
+							for ( int j = 1; j < nPolyphonicSounds; j++ )
 							{
 								cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
 								CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
@@ -2006,7 +2009,7 @@ namespace DTXMania
 				catch( Exception exception )
 				{
 					Trace.TraceError( "サウンドの生成に失敗しました。({0})({1})({2})", exception.Message, cwav.strコメント文, str );
-					for( int j = 0; j < cwav.rSound.GetLength(0); j++ )
+					for ( int j = 0; j < nPolyphonicSounds; j++ )
 					{
 						cwav.rSound[ j ] = null;
 					}
@@ -2193,7 +2196,7 @@ namespace DTXMania
 				if( this.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 				{
 					CWAV wc = this.listWAV[ pChip.n整数値・内部番号 ];
-					int index = wc.n現在再生中のサウンド番号 = ( wc.n現在再生中のサウンド番号 + 1 ) % 4;
+					int index = wc.n現在再生中のサウンド番号 = ( wc.n現在再生中のサウンド番号 + 1 ) % nPolyphonicSounds;
 					if( ( wc.rSound[ 0 ] != null ) && wc.rSound[ 0 ].bストリーム再生する )
 					{
 						index = wc.n現在再生中のサウンド番号 = 0;
@@ -2239,7 +2242,7 @@ namespace DTXMania
 			}
 			foreach( CWAV cwav in this.listWAV.Values )
 			{
-				for( int j = 0; j < 4; j++ )
+				for ( int j = 0; j < nPolyphonicSounds; j++ )
 				{
 					if( ( cwav.rSound[ j ] != null ) && cwav.rSound[ j ].b再生中 )
 					{
@@ -2252,7 +2255,7 @@ namespace DTXMania
 		{
 			foreach( CWAV cwav in this.listWAV.Values )
 			{
-				for( int i = 0; i < 4; i++ )
+				for ( int i = 0; i < nPolyphonicSounds; i++ )
 				{
 					if( ( cwav.rSound[ i ] != null ) && cwav.rSound[ i ].b再生中 )
 					{
@@ -2266,12 +2269,12 @@ namespace DTXMania
 		{
 			foreach( CWAV cwav in this.listWAV.Values )
 			{
-				for( int i = 0; i < 4; i++ )
+				for ( int i = 0; i < nPolyphonicSounds; i++ )
 				{
 					if( ( cwav.rSound[ i ] != null ) && cwav.rSound[ i ].b一時停止中 )
 					{
-						long num1 = cwav.n一時停止時刻[ i ];
-						long num2 = cwav.n再生開始時刻[ i ];
+						//long num1 = cwav.n一時停止時刻[ i ];
+						//long num2 = cwav.n再生開始時刻[ i ];
 						cwav.rSound[ i ].t再生を再開する( cwav.n一時停止時刻[ i ] - cwav.n再生開始時刻[ i ] );
 						cwav.n再生開始時刻[ i ] += CDTXMania.Timer.nシステム時刻 - cwav.n一時停止時刻[ i ];
 					}
@@ -3069,6 +3072,8 @@ namespace DTXMania
 	
 		private int n現在の行数;
 		private int n現在の乱数;
+
+		private static int nPolyphonicSounds = 4;							// #28228 2012.5.1 yyagi
 
 		private int n内部番号BPM1to;
 		private int n内部番号WAV1to;

@@ -479,6 +479,7 @@ namespace DTXMania
 		public STDGBVALUE<int> nInputAdjustTimeMs;	// #23580 2011.1.3 yyagi タイミングアジャスト機能
 		public int	nShowLagType;					// #25370 2011.6.5 yyagi ズレ時間表示機能
 		public bool bIsAutoResultCapture;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能のON/OFF制御
+		public int nPoliphonicSounds;				// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
 		public bool bバッファ入力を行う;
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
@@ -1012,6 +1013,7 @@ namespace DTXMania
 			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
 			this.bIsAllowedDoubleClickFullscreen = true;	// #26752 2011.11.26 ダブルクリックでのフルスクリーンモード移行を許可
 			this.eBDGroup = EBDGroup.打ち分ける;		// #27029 2012.1.4 from HHPedalとBassPedalのグルーピング
+			this.nPoliphonicSounds = 4;					// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1221,6 +1223,10 @@ namespace DTXMania
 			sw.WriteLine();
 			sw.WriteLine( "; バッファ入力モード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BufferedInput={0}", this.bバッファ入力を行う ? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; レーン毎の最大同時発音数(1～8)" );
+			sw.WriteLine( "; Number of polyphonic sounds per lane. (1-8)" );
+			sw.WriteLine( "PolyphonicSounds={0}", this.nPoliphonicSounds );
 			sw.WriteLine();
 			sw.WriteLine( "; 判定ズレ時間表示(0:OFF, 1:ON, 2=GREAT-POOR)" );				// #25370 2011.6.3 yyagi
 			sw.WriteLine( "; Whether displaying the lag times from the just timing or not." );	//
@@ -1901,7 +1907,11 @@ namespace DTXMania
 											{
 												this.bバッファ入力を行う = C変換.bONorOFF( str4[ 0 ] );
 											}
-											else if( str3.Equals( "LCVelocityMin" ) )			// #23857 2010.12.12 yyagi
+											else if ( str3.Equals( "PolyphonicSounds" ) )		// #28228 2012.5.1 yyagi
+											{
+												this.nPoliphonicSounds = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 8, this.nPoliphonicSounds );
+											}
+											else if ( str3.Equals( "LCVelocityMin" ) )			// #23857 2010.12.12 yyagi
 											{
 												this.nVelocityMin.LC = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LC );
 											}
