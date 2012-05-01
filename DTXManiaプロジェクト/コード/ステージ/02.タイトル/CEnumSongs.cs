@@ -60,6 +60,13 @@ namespace DTXMania
 			}
 		}
 
+		public void ChangeEnumeratePriority( ThreadPriority tp )
+		{
+			if ( this.thDTXFileEnumerate != null )
+			{
+				this.thDTXFileEnumerate.Priority = tp;
+			}
+		}
 		private readonly string strPathSongsDB = CDTXMania.strEXEのあるフォルダ + "songs.db";
 		private readonly string strPathSongList = CDTXMania.strEXEのあるフォルダ + "songlist.db";
 
