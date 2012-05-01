@@ -38,7 +38,8 @@ namespace DTXMania
 					{
 						Bitmap bitmap2 = new Bitmap( (int) Math.Ceiling( (double) ef.Width ), (int) Math.Ceiling( (double) this.ft描画用フォント.Size ) );
 						graphics = Graphics.FromImage( bitmap2 );
-						graphics.DrawString( this.strArtist, this.ft描画用フォント, Brushes.White, (float) 0f, (float) 0f );
+						graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+						graphics.DrawString( this.strArtist, this.ft描画用フォント, Brushes.White, ( float ) 0f, ( float ) 0f );
 						graphics.Dispose();
 						this.txArtist = new CTexture( CDTXMania.app.Device, bitmap2, CDTXMania.TextureFormat );
 						this.txArtist.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
@@ -63,7 +64,8 @@ namespace DTXMania
 					int maxTextureHeight = CDTXMania.app.Device.Capabilities.MaxTextureHeight;
 					Bitmap bitmap3 = new Bitmap( size.Width, (int) Math.Ceiling( (double) this.ft描画用フォント.Size ) );
 					graphics2 = Graphics.FromImage( bitmap3 );
-					graphics2.DrawString( this.strComment, this.ft描画用フォント, Brushes.White, (float) 0f, (float) 0f );
+					graphics2.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+					graphics2.DrawString( this.strComment, this.ft描画用フォント, Brushes.White, ( float ) 0f, ( float ) 0f );
 					graphics2.Dispose();
 					this.nComment行数 = 1;
 					this.nComment最終行の幅 = size.Width;

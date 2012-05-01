@@ -553,6 +553,7 @@ namespace DTXMania
 			{
 				var image = new Bitmap( 220 * 2, 192 * 2 );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
 				var graphics = Graphics.FromImage( image );
+				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 				
 				string[,] str = new string[ 2, 2 ];
 				switch( this.n現在のメニュー番号 )
@@ -615,7 +616,7 @@ namespace DTXMania
 				int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
 				for (int i = 0; i < 2; i++)
 				{
-					graphics.DrawString(str[c, i], this.ftフォント, Brushes.White, new PointF(4f, (i * 30)));
+					graphics.DrawString( str[ c, i ], this.ftフォント, Brushes.White, new PointF( 4f, ( i * 30 ) ) );
 				}
 				graphics.Dispose();
 				if( this.tx説明文パネル != null )
@@ -639,6 +640,7 @@ namespace DTXMania
 			{
 				var image = new Bitmap( 220 * 2, 192 * 2 );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
 				var graphics = Graphics.FromImage( image );
+				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
 				CItemBase item = this.actList.ib現在の選択項目;
 				if( ( item.str説明文 != null ) && ( item.str説明文.Length > 0 ) )
