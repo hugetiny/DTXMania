@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Drawing;
+using System.IO;
 using SlimDX;
 using FDK;
 
@@ -439,8 +440,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txパネル本体 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect popup auto settings.png" ), true );
-
+				string pathパネル本体 = CSkin.Path( @"Graphics\ScreenSelect popup auto settings.png" );
+				if ( File.Exists( pathパネル本体 ) )
+				{
+					this.txパネル本体 = CDTXMania.tテクスチャの生成( pathパネル本体, true );
+				}
 				base.OnManagedリソースの作成();
 			}
 		}

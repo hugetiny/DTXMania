@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Diagnostics;
+using System.IO;
 using SlimDX;
 using FDK;
 
@@ -34,8 +35,16 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				this.txScrollBar = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" ), false );
-				this.txScrollPosition = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" ), false );
+				string pathScrollBar = CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" );
+				string pathScrollPosition = CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" );
+				if ( File.Exists( pathScrollBar ) )
+				{
+					this.txScrollBar = CDTXMania.tテクスチャの生成( pathScrollBar, false );
+				}
+				if ( File.Exists( pathScrollPosition ) )
+				{
+					this.txScrollPosition = CDTXMania.tテクスチャの生成( pathScrollPosition, false );
+				}
 				base.OnManagedリソースの作成();
 			}
 		}

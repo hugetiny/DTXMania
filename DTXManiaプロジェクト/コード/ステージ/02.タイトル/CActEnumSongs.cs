@@ -52,7 +52,15 @@ namespace DTXMania
 		{
 			if ( this.b活性化してない )
 				return;
-			this.txNowEnumeratingSongs = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle NowEnumeratingSongs.png" ), false );
+			string pathNowEnumeratingSongs = CSkin.Path( @"Graphics\ScreenTitle NowEnumeratingSongs.png" );
+			if ( File.Exists( pathNowEnumeratingSongs ) )
+			{
+				this.txNowEnumeratingSongs = CDTXMania.tテクスチャの生成( pathNowEnumeratingSongs, false );
+			}
+			else
+			{
+				this.txNowEnumeratingSongs = null;
+			}
 			base.OnManagedリソースの作成();
 		}
 		public override void OnManagedリソースの解放()

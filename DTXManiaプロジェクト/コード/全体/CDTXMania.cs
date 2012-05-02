@@ -1476,8 +1476,10 @@ for (int i = 0; i < 3; i++) {
 			Trace.Indent();
 			try
 			{
-				Skin = new CSkin();
-				Trace.TraceInformation( "スキンの初期化を完了しました。" );
+				Trace.TraceInformation( "初期化開始。{0}", CDTXMania.ConfigIni.strSkinSubfolder );
+				Skin = new CSkin( CDTXMania.ConfigIni.strSkinSubfolder );
+				CDTXMania.ConfigIni.strSkinSubfolder = CSkin.strSkinSubfolder;	// 旧指定のSkinフォルダが消滅していた場合に備える
+				Trace.TraceInformation( "スキンの初期化を完了しました。{0}",CDTXMania.ConfigIni.strSkinSubfolder );
 			}
 			catch
 			{

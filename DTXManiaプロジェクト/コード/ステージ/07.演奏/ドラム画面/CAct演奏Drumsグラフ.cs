@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.IO;
 using SlimDX;
 using FDK;
 
@@ -70,7 +71,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-                this.txグラフ = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlay graph.png"));
+				string pathグラフ = CSkin.Path( @"Graphics\ScreenPlay graph.png" );
+				if ( File.Exists( pathグラフ ) )
+				{
+					this.txグラフ = CDTXMania.tテクスチャの生成( pathグラフ );
+				}
 				base.OnManagedリソースの作成();
 			}
 		}

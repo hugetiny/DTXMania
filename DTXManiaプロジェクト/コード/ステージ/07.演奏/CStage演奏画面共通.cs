@@ -272,6 +272,7 @@ namespace DTXMania
 				CDTXMania.DTX.SwapGuitarBassInfos();
 			}
 			this.sw = new Stopwatch();
+			this.sw2 = new Stopwatch();
 //			this.gclatencymode = GCSettings.LatencyMode;
 //			GCSettings.LatencyMode = GCLatencyMode.LowLatency;	// GCのgen2はせいぜい1演奏辺り1,2回しか発生しないので、ここでわざわざGC gen2は抑止しない
 		}
@@ -544,6 +545,7 @@ namespace DTXMania
 //		protected int nRisky_InitialVar, nRiskyTime;		// #23559 2011.7.28 yyagi → CAct演奏ゲージ共通クラスに隠蔽
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
+		protected Stopwatch sw2;
 //		protected GCLatencyMode gclatencymode;
 
 		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
@@ -695,11 +697,14 @@ namespace DTXMania
 		}
 		protected CDTX.CChip r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( long nTime, int nChannel, int nInputAdjustTime )
 		{
+			sw2.Start();
+//Trace.TraceInformation( "NTime={0}, nChannel={1:x2}", nTime, nChannel );
 			nTime += nInputAdjustTime;						// #24239 2011.1.23 yyagi InputAdjust
 
 			int nIndex_InitialPositionSearchingToPast;
 			if ( this.n現在のトップChip == -1 )				// 演奏データとして1個もチップがない場合は
 			{
+				sw2.Stop();
 				return null;
 			}
 			int count = CDTXMania.DTX.listChip.Count;
@@ -778,11 +783,13 @@ namespace DTXMania
 				}
 				else 								// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
 				{
+					sw2.Stop();
 					return CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
 				}
 			}
 			else if ( nIndex_NearestChip_Past < 0 )	// 検索対象が過去方向には見つからなかった(しかし未来方向には見つかった)場合
 			{
+				sw2.Stop();
 				return CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
 			}
 													// 検索対象が過去未来の双方に見つかったなら、より近い方を採用する
@@ -792,8 +799,10 @@ namespace DTXMania
 			int nDiffTime_Past   = Math.Abs( (int) ( nTime - nearestChip_Past.n発声時刻ms ) );
 			if ( nDiffTime_Future >= nDiffTime_Past )
 			{
+				sw2.Stop();
 				return nearestChip_Past;
 			}
+			sw2.Stop();
 			return nearestChip_Future;
 		}
 		protected void tサウンド再生( CDTX.CChip rChip, long n再生開始システム時刻ms, E楽器パート part )
@@ -1147,12 +1156,15 @@ namespace DTXMania
 		}
 		protected CDTX.CChip r指定時刻に一番近い未ヒットChip( long nTime, int nChannel, int nInputAdjustTime, int n検索範囲時間ms )
 		{
+			sw2.Start();
+//Trace.TraceInformation( "nTime={0}, nChannel={1:x2}, 現在のTop={2}", nTime, nChannel,CDTXMania.DTX.listChip[ this.n現在のトップChip ].n発声時刻ms );
 			nTime += nInputAdjustTime;
 
 			int nIndex_InitialPositionSearchingToPast;
 			int nTimeDiff;
 			if ( this.n現在のトップChip == -1 )			// 演奏データとして1個もチップがない場合は
 			{
+				sw2.Stop();
 				return null;
 			}
 			int count = CDTXMania.DTX.listChip.Count;
@@ -1228,6 +1240,7 @@ namespace DTXMania
 			}
 			if ( ( nIndex_NearestChip_Future >= count ) && ( nIndex_NearestChip_Past < 0 ) )	// 検索対象が過去未来どちらにも見つからなかった場合
 			{
+				sw2.Stop();
 				return null;
 			}
 			CDTX.CChip nearestChip;	// = null;	// 以下のifブロックのいずれかで必ずnearestChipには非nullが代入されるので、null初期化を削除
@@ -1259,8 +1272,10 @@ namespace DTXMania
 			nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
 			if ( ( n検索範囲時間ms > 0 ) && ( nTimeDiff > n検索範囲時間ms ) )					// チップは見つかったが、検索範囲時間外だった場合
 			{
+				sw2.Stop();
 				return null;
 			}
+			sw2.Stop();
 			return nearestChip;
 		}
 
@@ -1814,7 +1829,7 @@ namespace DTXMania
 							if ( configIni.bBGM音を発声する )
 							{
 								dTX.tWavの再生停止( this.n最後に再生したBGMの実WAV番号[ pChip.nチャンネル番号 - 0x61 ] );
-								dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+								dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, ( int ) Eレーン.BGM, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
 								this.n最後に再生したBGMの実WAV番号[ pChip.nチャンネル番号 - 0x61 ] = pChip.n整数値・内部番号;
 							}
 						}
@@ -2004,14 +2019,17 @@ namespace DTXMania
 		protected abstract void t進行描画・チップ・空打ち音設定・ドラム( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected void t進行描画・チップアニメ()
 		{
-			for ( int i = 0; i < 3; i++ )			// drums: 0-3 gt/bs: 1-3
+			for ( int i = 0; i < 3; i++ )			// 0=drums, 1=guitar, 2=bass
 			{
 				if ( this.ctチップ模様アニメ[ i ] != null )
 				{
 					this.ctチップ模様アニメ[ i ].t進行Loop();
 				}
 			}
-			this.ctWailingチップ模様アニメ.t進行Loop();
+			if ( this.ctWailingチップ模様アニメ != null )
+			{
+				this.ctWailingチップ模様アニメ.t進行Loop();
+			}
 		}
 
 		protected bool t進行描画・フェードイン・アウト()

@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.IO;
 using FDK;
 
 
@@ -198,8 +199,16 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				this.txCursor = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
-				this.txPopupMenuBackground = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sort menu background.png" ), false );
+				string pathCursor = CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" );;
+				string pathPopupMenuBackground = CSkin.Path( @"Graphics\ScreenSelect sort menu background.png" );
+				if ( File.Exists ( pathCursor ) )
+				{
+					this.txCursor = CDTXMania.tテクスチャの生成( pathCursor, false );
+				}
+				if ( File.Exists( pathPopupMenuBackground ) )
+				{
+					this.txPopupMenuBackground = CDTXMania.tテクスチャの生成( pathPopupMenuBackground, false );
+				}
 				base.OnManagedリソースの作成();
 			}
 		}

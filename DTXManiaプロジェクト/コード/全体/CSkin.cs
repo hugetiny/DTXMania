@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 using FDK;
 
 namespace DTXMania
@@ -266,22 +267,22 @@ namespace DTXMania
 	
 		// プロパティ
 
-		public Cシステムサウンド bgmオプション画面;
-		public Cシステムサウンド bgmコンフィグ画面;
-		public Cシステムサウンド bgm起動画面;
-		public Cシステムサウンド bgm選曲画面;
-		public Cシステムサウンド soundSTAGEFAILED音;
-		public Cシステムサウンド soundカーソル移動音;
-		public Cシステムサウンド soundゲーム開始音;
-		public Cシステムサウンド soundゲーム終了音;
-		public Cシステムサウンド soundステージクリア音;
-		public Cシステムサウンド soundタイトル音;
-		public Cシステムサウンド soundフルコンボ音;
-		public Cシステムサウンド sound歓声音;
-		public Cシステムサウンド sound曲読込開始音;
-		public Cシステムサウンド sound決定音;
-		public Cシステムサウンド sound取消音;
-		public Cシステムサウンド sound変更音;
+		public Cシステムサウンド bgmオプション画面 = null;
+		public Cシステムサウンド bgmコンフィグ画面 = null;
+		public Cシステムサウンド bgm起動画面 = null;
+		public Cシステムサウンド bgm選曲画面 = null;
+		public Cシステムサウンド soundSTAGEFAILED音 = null;
+		public Cシステムサウンド soundカーソル移動音 = null;
+		public Cシステムサウンド soundゲーム開始音 = null;
+		public Cシステムサウンド soundゲーム終了音 = null;
+		public Cシステムサウンド soundステージクリア音 = null;
+		public Cシステムサウンド soundタイトル音 = null;
+		public Cシステムサウンド soundフルコンボ音 = null;
+		public Cシステムサウンド sound歓声音 = null;
+		public Cシステムサウンド sound曲読込開始音 = null;
+		public Cシステムサウンド sound決定音 = null;
+		public Cシステムサウンド sound取消音 = null;
+		public Cシステムサウンド sound変更音 = null;
 		public readonly int nシステムサウンド数 = 16;
 		public Cシステムサウンド this[ Eシステムサウンド sound ]
 		{
@@ -398,11 +399,55 @@ namespace DTXMania
 			}
 		}
 
+		public string[] strSkinSubfolders = null;		// List<string>だとignoreCaseな検索が面倒なので、配列に逃げる :-)
+		public static string strSkinSubfolder = null;
 
 		// コンストラクタ
-
+		public CSkin( string _strSkinSubfolder )
+		{
+			strSkinSubfolder = _strSkinSubfolder;
+			ReloadSkinPaths();
+			Trace.TraceInformation( "SkinPath設定: {0}", strSkinSubfolder );
+			ReloadSkin();
+		}
 		public CSkin()
 		{
+			ReloadSkinPaths();
+			Trace.TraceInformation( "SkinPath設定: {0}", strSkinSubfolder );
+			ReloadSkin();
+			//this.soundカーソル移動音	= new Cシステムサウンド( @"Sounds\Move.ogg",			false, false, false );
+			//this.sound決定音			= new Cシステムサウンド( @"Sounds\Decide.ogg",			false, false, false );
+			//this.sound変更音			= new Cシステムサウンド( @"Sounds\Change.ogg",			false, false, false );
+			//this.sound取消音			= new Cシステムサウンド( @"Sounds\Cancel.ogg",			false, false, true  );
+			//this.sound歓声音			= new Cシステムサウンド( @"Sounds\Audience.ogg",		false, false, true  );
+			//this.soundSTAGEFAILED音		= new Cシステムサウンド( @"Sounds\Stage failed.ogg",	false, true,  true  );
+			//this.soundゲーム開始音		= new Cシステムサウンド( @"Sounds\Game start.ogg",		false, false, false );
+			//this.soundゲーム終了音		= new Cシステムサウンド( @"Sounds\Game end.ogg",		false, true,  false );
+			//this.soundステージクリア音	= new Cシステムサウンド( @"Sounds\Stage clear.ogg",		false, true,  true  );
+			//this.soundフルコンボ音		= new Cシステムサウンド( @"Sounds\Full combo.ogg",		false, false, true  );
+			//this.sound曲読込開始音		= new Cシステムサウンド( @"Sounds\Now loading.ogg",		false, true,  true  );
+			//this.soundタイトル音		= new Cシステムサウンド( @"Sounds\Title.ogg",			false, true,  false );
+			//this.bgm起動画面			= new Cシステムサウンド( @"Sounds\Setup BGM.ogg",		true,  true,  false );
+			//this.bgmオプション画面		= new Cシステムサウンド( @"Sounds\Option BGM.ogg",		true,  true,  false );
+			//this.bgmコンフィグ画面		= new Cシステムサウンド( @"Sounds\Config BGM.ogg",		true,  true,  false );
+			//this.bgm選曲画面			= new Cシステムサウンド( @"Sounds\Select BGM.ogg",		true,  true,  false );
+		}
+
+		/// <summary>
+		/// Skin(Sounds)を再読込する。
+		/// あらかじめstrSkinSubfolderを適切に設定しておくこと。
+		/// その後、ReloadSkinPaths()を実行し、strSkinSubfolderの正当性を確認した上で、本メソッドを呼び出すこと。
+		/// </summary>
+		private void ReloadSkin()
+		{
+			for ( int i = 0; i < nシステムサウンド数; i++ )
+			{
+				if ( this[ i ] != null && this[i].b読み込み成功 )
+				{
+					this[ i ].t停止する();
+					this[ i ].Dispose();
+				}
+			}
 			this.soundカーソル移動音	= new Cシステムサウンド( @"Sounds\Move.ogg",			false, false, false );
 			this.sound決定音			= new Cシステムサウンド( @"Sounds\Decide.ogg",			false, false, false );
 			this.sound変更音			= new Cシステムサウンド( @"Sounds\Change.ogg",			false, false, false );
@@ -421,12 +466,67 @@ namespace DTXMania
 			this.bgm選曲画面			= new Cシステムサウンド( @"Sounds\Select BGM.ogg",		true,  true,  false );
 		}
 
+		/// <summary>
+		/// Skinの一覧を再取得する。
+		/// System/SkinFiles.*****/Graphics (やSounds/) というフォルダ構成を想定している。
+		/// もし再取得の結果、現在使用中のSkinのパス(strSkinSubfloder)が消えていた場合は、
+		/// 以下の優先順位で存在確認の上strSkinSubfolderを再設定する。
+		/// 1. System/SkinFiles.Default/
+		/// 2. System/SkinFiles.*****/ で最初にenumerateされたもの
+ 		/// 3. System/ (従来互換)
+		/// </summary>
+		public void ReloadSkinPaths()
+		{
+			string path;
+			#region [ まず System/SkinFiles.*** をenumerateする ]
+			path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
+			strSkinSubfolders = System.IO.Directory.GetDirectories(	path, "SkinFiles.*" );
+			for ( int i = 0; i < strSkinSubfolders.Length; i++ )
+			{
+				string[] spl = strSkinSubfolders[ i ].Split( System.IO.Path.DirectorySeparatorChar );
+				strSkinSubfolders[ i ] = spl[ spl.Length - 1 ];		// subfolder名から、～～/System/ までの部分を削除
+				Trace.TraceInformation( "SkinPath検出: {0}", strSkinSubfolders[ i ] );
+			}
+			Array.Sort( strSkinSubfolders );	// BinarySearch実行前にSortが必要
+			#endregion
+			#region [ 次に、カレントのSkinパスが存在するか調べる。あれば終了。]
+			if ( Array.BinarySearch( strSkinSubfolders, strSkinSubfolder, StringComparer.InvariantCultureIgnoreCase ) >= 0 )
+				return;
+			#endregion
+			#region [ カレントのSkinパスが消滅しているので、再設定する。]
+			/// 以下の優先順位で現在使用中のSkinパスを再設定する。
+			/// 1. System/SkinFiles.Default/
+			/// 2. System/SkinFiles.*****/ で最初にenumerateされたもの
+			/// 3. System/ (従来互換)
+			#region [ System/SkinFiles.Default/ があるなら、そこにカレントSkinパスを設定する]
+			if ( Array.BinarySearch( strSkinSubfolders, "SkinFiles.Default", StringComparer.InvariantCultureIgnoreCase ) >= 0 )
+			{
+				strSkinSubfolder = "SkinFiles.Default";
+				return;
+			}
+			#endregion
+			#region [ System/SkinFiles.*****/ で最初にenumerateされたものを、カレントSkinパスに再設定する ]
+			if ( strSkinSubfolders.Length > 0 )
+			{
+				strSkinSubfolder = strSkinSubfolders[ 0 ];
+				return;
+			}
+			#endregion
+			#region [ System/ に、カレントSkinパスを再設定する。]
+			strSkinSubfolder = "";			// ""にすることで、結果的に System/ 相当の相対パスになる。
+			#endregion
+			#endregion
+		}
 
 		// メソッド
 
 		public static string Path( string strファイルの相対パス )
 		{
-			return ( CDTXMania.strEXEのあるフォルダ + @"System\" + strファイルの相対パス );
+			string path;
+			path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
+			path = System.IO.Path.Combine( path, strSkinSubfolder );
+			path = System.IO.Path.Combine( path, strファイルの相対パス );
+			return path;
 		}
 		
 		#region [ IDisposable 実装 ]

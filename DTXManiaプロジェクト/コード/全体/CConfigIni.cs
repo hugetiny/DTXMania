@@ -482,6 +482,7 @@ namespace DTXMania
 		public int nPoliphonicSounds;				// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
 		public bool bバッファ入力を行う;
 		public bool bIsEnabledSystemMenu;			// #28200 2012.5.1 yyagi System Menuの使用可否切替
+		public string strSkinSubfolder;				// #28195 2012.5.2 yyagi Skin切替用 System/以下のサブフォルダ名
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
 			get
@@ -1016,6 +1017,7 @@ namespace DTXMania
 			this.eBDGroup = EBDGroup.打ち分ける;		// #27029 2012.1.4 from HHPedalとBassPedalのグルーピング
 			this.nPoliphonicSounds = 4;					// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
 			this.bIsEnabledSystemMenu = true;			// #28200 2012.5.1 yyagi System Menuの利用可否切替(使用可)
+			this.strSkinSubfolder = "";					// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1072,13 +1074,23 @@ namespace DTXMania
 #endif
 
 			sw.WriteLine( "; リリースバージョン" );
+			sw.WriteLine( "; Release Version." );
 			sw.WriteLine( "Version={0}", CDTXMania.VERSION );
 			sw.WriteLine();
 			sw.WriteLine( "; 演奏データの格納されているフォルダへのパス。" );
 			sw.WriteLine( @"; セミコロン(;)で区切ることにより複数のパスを指定できます。（例: d:\DTXFiles1\;e:\DTXFiles2\）" );
+			sw.WriteLine( "; Pathes for DTX data." );
+			sw.WriteLine( @"; You can specify many pathes separated with semicolon(;). (e.g. d:\DTXFiles1\;e:\DTXFiles2\)" );
 			sw.WriteLine( "DTXPath={0}", this.str曲データ検索パス );
 			sw.WriteLine();
+			sw.WriteLine( "; 使用するSkinのサブフォルダ名。" );
+			sw.WriteLine( "; System/SkinFiles.Default/Graphics/... などの場合は、SkinPath=SkinFiles.Default を指定します。" );
+			sw.WriteLine( "; Skin subfolder path." );
+			sw.WriteLine( "; e.g. System/SkinFiles.Default/Graphics/... -> Set SkinPath=SkinFiles.Default" );
+			sw.WriteLine( "SkinPath={0}", this.strSkinSubfolder );
+			sw.WriteLine();
 			sw.WriteLine( "; 画面モード(0:ウィンドウ, 1:全画面)" );
+			sw.WriteLine( "; Screen mode. (0:Window, 1:Fullscreen)" );
 			sw.WriteLine( "FullScreen={0}", this.b全画面モード ? 1 : 0 );
             sw.WriteLine();
 
@@ -1701,7 +1713,11 @@ namespace DTXMania
 											{
 												this.str曲データ検索パス = str4;
 											}
-											else if( str3.Equals( "FullScreen" ) )
+											else if ( str3.Equals( "SkinPath" ) )
+											{
+												this.strSkinSubfolder = str4;
+											}
+											else if ( str3.Equals( "FullScreen" ) )
 											{
 												this.b全画面モード = C変換.bONorOFF( str4[ 0 ] );
 											}
