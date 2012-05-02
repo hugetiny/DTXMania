@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Drawing;
+using SlimDX;
 using FDK;
 
 namespace DTXMania
@@ -41,12 +42,6 @@ namespace DTXMania
 				{
 					return false;
 				}
-//				CItemBase base2 = this.list項目リスト[ this.n現在の選択項目 ];
-//				if( ( ( base2 != this.iSystemReturnToMenu ) && ( base2 != this.iKeyAssignDrumsReturnToMenu ) ) && ( base2 != this.iKeyAssignGuitarReturnToMenu ) )
-//				{
-//					return ( base2 == this.iKeyAssignBassReturnToMenu );
-//				}
-//				return true;
 			}
 		}
 		public CItemBase ib現在の選択項目
@@ -195,6 +190,15 @@ namespace DTXMania
 				"Turn ON to put debug log to\n DTXManiaLog.txt\nTo take it effective, you need to\n re-open DTXMania." );
 			this.list項目リスト.Add( this.iLogOutputLog );
 
+			this.iSystemSkinSubfolder = new CItemList( "Skin", CItemBase.Eパネル種別.通常, nSkinIndex,
+				"スキン切替：\n" +
+				"スキンを切り替えます。",
+				"Skin:\n" +
+				"Change skin.",
+				skinSubFolders );
+			this.list項目リスト.Add( this.iSystemSkinSubfolder );
+
+	
 			this.iSystemGoToKeyAssign = new CItemBase( "System Keys", CItemBase.Eパネル種別.通常,
 			"システムのキー入力に関する項目を設\n定します。",
 			"Settings for the system key/pad inputs." );
@@ -776,7 +780,8 @@ namespace DTXMania
 			}
 			else if( this.b現在選択されている項目はReturnToMenuである )
 			{
-				this.tConfigIniへ記録する();
+				//this.tConfigIniへ記録する();
+				//CONFIG中にスキン変化が発生すると面倒なので、一旦マスクした。
 			}
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsLC )
 			{
@@ -973,6 +978,40 @@ namespace DTXMania
 						CDTXMania.ConfigIni.BackupOf1BD = null;
 					}
 				}
+				#region [ スキン項目でEnterを押下した場合に限り、スキンの縮小サンプルを生成する。]
+				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemSkinSubfolder )			// #28195 2012.5.2 yyagi
+				{
+					tGenerateSkinSample();
+				}
+				#endregion
+			}
+		}
+
+		private void tGenerateSkinSample()
+		{
+			nSkinIndex = ( ( CItemList ) this.list項目リスト[ this.n現在の選択項目 ] ).n現在選択されている項目番号;
+			if ( nSkinSampleIndex != nSkinIndex )
+			{
+				string skinName = ( string ) ( ( ( CItemList ) this.list項目リスト[ this.n現在の選択項目 ] ).obj現在値() );
+				string path;
+				path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
+				path = System.IO.Path.Combine( path, "SkinFiles." + skinName );
+				path = System.IO.Path.Combine( path, @"Graphics\ScreenTitle background.jpg" );
+				Bitmap bmSrc = new Bitmap( path );
+				Bitmap bmDest = new Bitmap( bmSrc.Width / 4, bmSrc.Height / 4 );
+				Graphics g = Graphics.FromImage( bmDest );
+				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+				g.DrawImage( bmSrc, new Rectangle( 0, 0, bmSrc.Width / 4, bmSrc.Height / 4 ),
+					0, 0, bmSrc.Width, bmSrc.Height, GraphicsUnit.Pixel );
+				if ( txSkinSample1 != null )
+				{
+					CDTXMania.t安全にDisposeする( ref txSkinSample1 );
+				}
+				txSkinSample1 = CDTXMania.tテクスチャの生成( bmDest, false );
+				g.Dispose();
+				bmDest.Dispose();
+				bmSrc.Dispose();
+				nSkinSampleIndex = nSkinIndex;
 			}
 		}
 
@@ -1178,6 +1217,18 @@ namespace DTXMania
 
 			this.list項目リスト = new List<CItemBase>();
 			this.eメニュー種別 = Eメニュー種別.Unknown;
+
+			#region [ スキン選択肢と、現在選択中のスキン(index)の準備 #28195 2012.5.2 yyagi ]
+			CDTXMania.Skin.ReloadSkinPaths();					// CONFIGに入るタイミングで、スキンフォルダを再検索
+			skinSubFolders = CDTXMania.Skin.strSkinSubfolders;
+			nSkinIndex = Array.BinarySearch( skinSubFolders, CSkin.strSkinSubfolder );
+			nSkinSampleIndex = -1;
+			for ( int i = 0; i < skinSubFolders.Length; i++ )	// "SkinFiles."を削除
+			{
+				skinSubFolders[ i ] = skinSubFolders[ i ].Substring( "SkinFiles.".Length );
+			}
+			#endregion
+
 			this.t項目リストの設定・Bass();		// #27795 2012.3.11 yyagi; System設定の中でDrumsの設定を参照しているため、
 			this.t項目リストの設定・Guitar();	// 活性化の時点でDrumsの設定も入れ込んでおかないと、System設定中に例外発生することがある。
 			this.t項目リストの設定・Drums();	// 
@@ -1209,7 +1260,7 @@ namespace DTXMania
 			this.tx通常項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox.png" ), false );
 			this.txその他項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox other.png" ), false );
 			this.tx三角矢印 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig triangle arrow.png" ), false );
-
+			this.txSkinSample1 = null;		// スキン選択時に動的に設定するため、ここでは初期化しない
 			base.OnManagedリソースの作成();
 		}
 		public override void OnManagedリソースの解放()
@@ -1217,6 +1268,7 @@ namespace DTXMania
 			if( this.b活性化してない )
 				return;
 
+			CDTXMania.tテクスチャの解放( ref this.txSkinSample1 );
 			CDTXMania.tテクスチャの解放( ref this.tx通常項目行パネル );
 			CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
 			CDTXMania.tテクスチャの解放( ref this.tx三角矢印 );
@@ -1442,12 +1494,23 @@ namespace DTXMania
 						//-----------------
 						#endregion
 
-					case CItemBase.E種別.リスト:
+					case CItemBase.E種別.リスト:	// #28195 2012.5.2 yyagi: add Skin supports
 						#region [ *** ]
 						//-----------------
 						{
 							CItemList list = (CItemList) this.list項目リスト[ nItem ];
 							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, list.list項目値[ list.n現在選択されている項目番号 ] );
+
+							#region [ 必要な場合に、Skinのサンプルを生成・描画する。#28195 2012.5.2 yyagi ]
+							if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemSkinSubfolder )
+							{
+								tGenerateSkinSample();		// 最初にSkinの選択肢にきたとき(Enterを押す前)に限り、サンプル生成が発生する。
+								if ( txSkinSample1 != null )
+								{
+									txSkinSample1.t2D描画( CDTXMania.app.Device, 56, 300 );
+								}
+							}
+							#endregion
 							break;
 						}
 						//-----------------
@@ -1494,7 +1557,6 @@ namespace DTXMania
 			}
 			//-----------------
 			#endregion
-
 			return 0;
 		}
 	
@@ -1604,6 +1666,11 @@ namespace DTXMania
 		private CTexture tx三角矢印;
 		private CTexture tx通常項目行パネル;
 
+		private CTexture txSkinSample1;				// #28195 2012.5.2 yyagi
+		private string[] skinSubFolders;			//
+		private int nSkinSampleIndex;				//
+		private int nSkinIndex;						//
+
 		private CItemBase iDrumsGoToKeyAssign;
 		private CItemBase iGuitarGoToKeyAssign;
 		private CItemBase iBassGoToKeyAssign;
@@ -1655,6 +1722,7 @@ namespace DTXMania
 		private CItemInteger iDrumsInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 		private CItemInteger iGuitarInputAdjustTimeMs;		//
 		private CItemInteger iBassInputAdjustTimeMs;		//
+		private CItemList iSystemSkinSubfolder;				// #28195 2012.5.2 yyagi
 
 		private int t前の項目( int nItem )
 		{
@@ -1751,6 +1819,9 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;		// #25399 2011.6.9 yyagi
 
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
+
+			CDTXMania.ConfigIni.strSkinSubfolder = "SkinFiles." + (string)this.iSystemSkinSubfolder.list項目値[ nSkinIndex ];	// #28195 2012.5.2 yyagi
+			CSkin.strSkinSubfolder = CDTXMania.ConfigIni.strSkinSubfolder;
 		}
 		private void tConfigIniへ記録する・Bass()
 		{

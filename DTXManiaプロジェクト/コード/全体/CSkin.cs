@@ -407,39 +407,24 @@ namespace DTXMania
 		{
 			strSkinSubfolder = _strSkinSubfolder;
 			ReloadSkinPaths();
-			Trace.TraceInformation( "SkinPath設定: {0}", strSkinSubfolder );
-			ReloadSkin();
+			PrepareReloadSkin();
 		}
 		public CSkin()
 		{
 			ReloadSkinPaths();
-			Trace.TraceInformation( "SkinPath設定: {0}", strSkinSubfolder );
-			ReloadSkin();
-			//this.soundカーソル移動音	= new Cシステムサウンド( @"Sounds\Move.ogg",			false, false, false );
-			//this.sound決定音			= new Cシステムサウンド( @"Sounds\Decide.ogg",			false, false, false );
-			//this.sound変更音			= new Cシステムサウンド( @"Sounds\Change.ogg",			false, false, false );
-			//this.sound取消音			= new Cシステムサウンド( @"Sounds\Cancel.ogg",			false, false, true  );
-			//this.sound歓声音			= new Cシステムサウンド( @"Sounds\Audience.ogg",		false, false, true  );
-			//this.soundSTAGEFAILED音		= new Cシステムサウンド( @"Sounds\Stage failed.ogg",	false, true,  true  );
-			//this.soundゲーム開始音		= new Cシステムサウンド( @"Sounds\Game start.ogg",		false, false, false );
-			//this.soundゲーム終了音		= new Cシステムサウンド( @"Sounds\Game end.ogg",		false, true,  false );
-			//this.soundステージクリア音	= new Cシステムサウンド( @"Sounds\Stage clear.ogg",		false, true,  true  );
-			//this.soundフルコンボ音		= new Cシステムサウンド( @"Sounds\Full combo.ogg",		false, false, true  );
-			//this.sound曲読込開始音		= new Cシステムサウンド( @"Sounds\Now loading.ogg",		false, true,  true  );
-			//this.soundタイトル音		= new Cシステムサウンド( @"Sounds\Title.ogg",			false, true,  false );
-			//this.bgm起動画面			= new Cシステムサウンド( @"Sounds\Setup BGM.ogg",		true,  true,  false );
-			//this.bgmオプション画面		= new Cシステムサウンド( @"Sounds\Option BGM.ogg",		true,  true,  false );
-			//this.bgmコンフィグ画面		= new Cシステムサウンド( @"Sounds\Config BGM.ogg",		true,  true,  false );
-			//this.bgm選曲画面			= new Cシステムサウンド( @"Sounds\Select BGM.ogg",		true,  true,  false );
+			PrepareReloadSkin();
 		}
 
 		/// <summary>
-		/// Skin(Sounds)を再読込する。
+		/// Skin(Sounds)を再読込する準備をする(再生停止,Dispose,ファイル名再設定)。
 		/// あらかじめstrSkinSubfolderを適切に設定しておくこと。
 		/// その後、ReloadSkinPaths()を実行し、strSkinSubfolderの正当性を確認した上で、本メソッドを呼び出すこと。
+		/// 本メソッド呼び出し後に、ReloadSkin()を実行することで、システムサウンドを読み込み直す。
 		/// </summary>
-		private void ReloadSkin()
+		public void PrepareReloadSkin()
 		{
+			Trace.TraceInformation( "SkinPath設定: {0}", strSkinSubfolder );
+
 			for ( int i = 0; i < nシステムサウンド数; i++ )
 			{
 				if ( this[ i ] != null && this[i].b読み込み成功 )
@@ -465,6 +450,32 @@ namespace DTXMania
 			this.bgmコンフィグ画面		= new Cシステムサウンド( @"Sounds\Config BGM.ogg",		true,  true,  false );
 			this.bgm選曲画面			= new Cシステムサウンド( @"Sounds\Select BGM.ogg",		true,  true,  false );
 		}
+
+		public void ReloadSkin()
+		{
+			for ( int i = 0; i < nシステムサウンド数; i++ )
+			{
+				Cシステムサウンド cシステムサウンド = this[ i ];
+				if ( !CDTXMania.bコンパクトモード || cシステムサウンド.bCompact対象 )
+				{
+					try
+					{
+						cシステムサウンド.t読み込み();
+						Trace.TraceInformation( "システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名 );
+					}
+					catch ( FileNotFoundException )
+					{
+						Trace.TraceWarning( "システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名 );
+					}
+					catch ( Exception e )
+					{
+						Trace.TraceError( e.Message );
+						Trace.TraceWarning( "システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名 );
+					}
+				}
+			}
+		}
+
 
 		/// <summary>
 		/// Skinの一覧を再取得する。
