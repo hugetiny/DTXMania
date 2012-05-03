@@ -1268,6 +1268,11 @@ for (int i = 0; i < 3; i++) {
 				Trace.TraceError( "テクスチャの生成に失敗しました。({0})", fileName );
 				return null;
 			}
+			catch ( FileNotFoundException )
+			{
+				Trace.TraceError( "テクスチャファイルが見つかりませんでした。({0})", fileName );
+				return null;
+			}
 		}
 		public static void tテクスチャの解放( ref CTexture tx )
 		{
@@ -1476,10 +1481,10 @@ for (int i = 0; i < 3; i++) {
 			Trace.Indent();
 			try
 			{
-				Trace.TraceInformation( "初期化開始。{0}", CDTXMania.ConfigIni.strSkinSubfolder );
+				Trace.TraceInformation( "初期化開始。" );
 				Skin = new CSkin( CDTXMania.ConfigIni.strSkinSubfolder );
 				CDTXMania.ConfigIni.strSkinSubfolder = CSkin.strSkinSubfolder;	// 旧指定のSkinフォルダが消滅していた場合に備える
-				Trace.TraceInformation( "スキンの初期化を完了しました。{0}",CDTXMania.ConfigIni.strSkinSubfolder );
+				Trace.TraceInformation( "スキンの初期化を完了しました。" );
 			}
 			catch
 			{
