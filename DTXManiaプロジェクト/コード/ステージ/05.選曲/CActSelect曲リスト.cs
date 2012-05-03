@@ -486,7 +486,6 @@ namespace DTXMania
 			for( int i = 0; i < 13; i++ )
 				CDTXMania.t安全にDisposeする( ref this.stバー情報[ i ].txタイトル名 );
 
-			CDTXMania.t安全にDisposeする( ref this.txアイテム数数字 );
 			CDTXMania.t安全にDisposeする( ref this.txスキル数字 );
 			CDTXMania.t安全にDisposeする( ref this.txEnumeratingSongs );
 			CDTXMania.t安全にDisposeする( ref this.txSongNotFound );
