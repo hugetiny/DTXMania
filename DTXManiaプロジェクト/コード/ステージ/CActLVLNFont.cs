@@ -85,11 +85,7 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
-				if (this.tx数値 != null)
-				{
-					this.tx数値.Dispose();
-					this.tx数値 = null;
-				}
+				CDTXMania.t安全にDisposeする( ref this.tx数値 );
 				base.OnManagedリソースの解放();
 			}
 		}
