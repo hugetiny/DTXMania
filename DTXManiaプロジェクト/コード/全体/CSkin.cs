@@ -197,7 +197,7 @@ namespace DTXMania
 						this.rSound[ 0 ] = null;
 						throw;
 					}
-					if ( this.rSound[ 0 ] == null || this.rSound[ 0 ].bストリーム再生する )
+					if ( this.rSound[ 0 ] == null )	// #28243 2012.5.3 yyagi "this.rSound[ 0 ].bストリーム再生する"時もCloneするよう修正
 					{
 						this.rSound[ 1 ] = null;
 					}
