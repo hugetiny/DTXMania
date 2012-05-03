@@ -31,6 +31,8 @@ namespace DTXMania
 
 	internal class CSkin : IDisposable
 	{
+		public static string PrefixSkinFolder = "SkinFiles.";
+
 		// クラス
 
 		public class Cシステムサウンド : IDisposable
@@ -491,7 +493,7 @@ namespace DTXMania
 			string path;
 			#region [ まず System/SkinFiles.*** をenumerateする ]
 			path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
-			strSkinSubfolders = System.IO.Directory.GetDirectories(	path, "SkinFiles.*" );
+			strSkinSubfolders = System.IO.Directory.GetDirectories(	path, PrefixSkinFolder + "*" );
 			for ( int i = 0; i < strSkinSubfolders.Length; i++ )
 			{
 				string[] spl = strSkinSubfolders[ i ].Split( System.IO.Path.DirectorySeparatorChar );
@@ -510,9 +512,9 @@ namespace DTXMania
 			/// 2. System/SkinFiles.*****/ で最初にenumerateされたもの
 			/// 3. System/ (従来互換)
 			#region [ System/SkinFiles.Default/ があるなら、そこにカレントSkinパスを設定する]
-			if ( Array.BinarySearch( strSkinSubfolders, "SkinFiles.Default", StringComparer.InvariantCultureIgnoreCase ) >= 0 )
+			if ( Array.BinarySearch( strSkinSubfolders, PrefixSkinFolder + "Default", StringComparer.InvariantCultureIgnoreCase ) >= 0 )
 			{
-				strSkinSubfolder = "SkinFiles.Default";
+				strSkinSubfolder = PrefixSkinFolder + "Default";
 				return;
 			}
 			#endregion
