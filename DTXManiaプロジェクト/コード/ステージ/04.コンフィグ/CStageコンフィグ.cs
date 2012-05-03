@@ -270,11 +270,6 @@ namespace DTXMania
 					{
 						break;
 					}
-					if ( CSkin.strSkinSubfolder != this.strSkinSubfolder )
-					{
-						CDTXMania.Skin.PrepareReloadSkin();		// #28195 2012.5.2 yyagi CONFIG脱出時にSkin更新
-						CDTXMania.Skin.ReloadSkin();			//
-					}
 					return 1;
 			}
 			//---------------------

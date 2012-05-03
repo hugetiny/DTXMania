@@ -31,7 +31,7 @@ namespace DTXMania
 
 	internal class CSkin : IDisposable
 	{
-		public static string PrefixSkinFolder = "SkinFiles.";
+		public static string PrefixSkinFolder = "";		// "SkinFiles.";
 
 		// クラス
 
@@ -423,6 +423,7 @@ namespace DTXMania
 		/// あらかじめstrSkinSubfolderを適切に設定しておくこと。
 		/// その後、ReloadSkinPaths()を実行し、strSkinSubfolderの正当性を確認した上で、本メソッドを呼び出すこと。
 		/// 本メソッド呼び出し後に、ReloadSkin()を実行することで、システムサウンドを読み込み直す。
+		/// ReloadSkin()の内容は本メソッド内に含めないこと。起動時はReloadSkin()相当の処理をCEnumSongsで行っているため。
 		/// </summary>
 		public void PrepareReloadSkin()
 		{
@@ -494,15 +495,27 @@ namespace DTXMania
 			string path;
 			#region [ まず System/SkinFiles.*** をenumerateする ]
 			path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
-			strSkinSubfolders = System.IO.Directory.GetDirectories(	path, PrefixSkinFolder + "*" );
+			string[] tempSkinSubfolders = System.IO.Directory.GetDirectories( path, PrefixSkinFolder + "*" );
+			strSkinSubfolders = new string[ tempSkinSubfolders.Length ];
+			int size = 0;
 			for ( int i = 0; i < strSkinSubfolders.Length; i++ )
 			{
-				string[] spl = strSkinSubfolders[ i ].Split( System.IO.Path.DirectorySeparatorChar );
-				strSkinSubfolders[ i ] = spl[ spl.Length - 1 ];		// subfolder名から、～～/System/ までの部分を削除
+				#region [ 検出したフォルダがスキンフォルダかどうか確認する]
+				string filePathTitle;
+				filePathTitle = System.IO.Path.Combine( tempSkinSubfolders[i], @"Graphics\ScreenTitle background.jpg" );
+				if ( !File.Exists( filePathTitle ) )
+					continue;
+				#endregion
+				#region [ スキンフォルダと確認できたものを、strSKinSubfoldersに入れる ]
+				string[] spl = tempSkinSubfolders[ i ].Split( System.IO.Path.DirectorySeparatorChar );
+				strSkinSubfolders[ size++ ] = spl[ spl.Length - 1 ];		// subfolder名から、～～/System/ までの部分を削除
 				Trace.TraceInformation( "SkinPath検出: {0}", strSkinSubfolders[ i ] );
+				#endregion
 			}
+			Array.Resize( ref strSkinSubfolders, size );
 			Array.Sort( strSkinSubfolders );	// BinarySearch実行前にSortが必要
 			#endregion
+
 			#region [ 次に、カレントのSkinパスが存在するか調べる。あれば終了。]
 			if ( Array.BinarySearch( strSkinSubfolders, strSkinSubfolder, StringComparer.InvariantCultureIgnoreCase ) >= 0 )
 				return;

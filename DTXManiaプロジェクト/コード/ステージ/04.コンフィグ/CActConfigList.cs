@@ -995,7 +995,7 @@ namespace DTXMania
 				string skinName = ( string ) ( ( ( CItemList ) this.list項目リスト[ this.n現在の選択項目 ] ).obj現在値() );
 				string path;
 				path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
-				path = System.IO.Path.Combine( path, "SkinFiles." + skinName );
+				path = System.IO.Path.Combine( path, CSkin.PrefixSkinFolder + skinName );
 				path = System.IO.Path.Combine( path, @"Graphics\ScreenTitle background.jpg" );
 				Bitmap bmSrc = new Bitmap( path );
 				Bitmap bmDest = new Bitmap( bmSrc.Width / 4, bmSrc.Height / 4 );
@@ -1219,13 +1219,14 @@ namespace DTXMania
 			this.eメニュー種別 = Eメニュー種別.Unknown;
 
 			#region [ スキン選択肢と、現在選択中のスキン(index)の準備 #28195 2012.5.2 yyagi ]
-			CDTXMania.Skin.ReloadSkinPaths();					// CONFIGに入るタイミングで、スキンフォルダを再検索
-			skinSubFolders = CDTXMania.Skin.strSkinSubfolders;
+			//CDTXMania.Skin.ReloadSkinPaths();					// CONFIGに入るタイミングで、スキンフォルダを再検索
+			skinSubFolders = (string[])CDTXMania.Skin.strSkinSubfolders.Clone();	// skinSubFoldersへの書き換えが元に及ばないよう、Clone()する
+			skinSubFolder_org = CSkin.strSkinSubfolder;
 			nSkinIndex = Array.BinarySearch( skinSubFolders, CSkin.strSkinSubfolder );
 			nSkinSampleIndex = -1;
 			for ( int i = 0; i < skinSubFolders.Length; i++ )	// "SkinFiles."を削除
 			{
-				skinSubFolders[ i ] = skinSubFolders[ i ].Substring( "SkinFiles.".Length );
+				skinSubFolders[ i ] = skinSubFolders[ i ].Substring( CSkin.PrefixSkinFolder.Length );
 			}
 			#endregion
 
@@ -1251,6 +1252,13 @@ namespace DTXMania
 			this.ct三角矢印アニメ = null;
 			
 			base.On非活性化();
+
+			if ( CSkin.strSkinSubfolder != this.skinSubFolder_org )
+			{
+				CDTXMania.Skin.PrepareReloadSkin();		// #28195 2012.5.2 yyagi CONFIG脱出時にSkin更新
+				CDTXMania.Skin.ReloadSkin();			//
+			}
+
 		}
 		public override void OnManagedリソースの作成()
 		{
@@ -1668,6 +1676,7 @@ namespace DTXMania
 
 		private CTexture txSkinSample1;				// #28195 2012.5.2 yyagi
 		private string[] skinSubFolders;			//
+		private string skinSubFolder_org;			//
 		private int nSkinSampleIndex;				//
 		private int nSkinIndex;						//
 
@@ -1820,8 +1829,8 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
 
-			CDTXMania.ConfigIni.strSkinSubfolder = "SkinFiles." + (string)this.iSystemSkinSubfolder.list項目値[ nSkinIndex ];	// #28195 2012.5.2 yyagi
-			CSkin.strSkinSubfolder = CDTXMania.ConfigIni.strSkinSubfolder;
+			CDTXMania.ConfigIni.strSkinSubfolder = CSkin.PrefixSkinFolder + ( string ) this.iSystemSkinSubfolder.list項目値[ nSkinIndex ];	// #28195 2012.5.2 yyagi
+			CSkin.strSkinSubfolder = CDTXMania.ConfigIni.strSkinSubfolder;																	//
 		}
 		private void tConfigIniへ記録する・Bass()
 		{
