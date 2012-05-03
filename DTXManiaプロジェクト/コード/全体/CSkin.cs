@@ -11,7 +11,7 @@ namespace DTXMania
 
 	public enum Eシステムサウンド
 	{
-		BGMオプション画面,
+		BGMオプション画面 = 0,
 		BGMコンフィグ画面,
 		BGM起動画面,
 		BGM選曲画面,
@@ -27,6 +27,7 @@ namespace DTXMania
 		SOUND決定音,
 		SOUND取消音,
 		SOUND変更音,
+		Count				// システムサウンド総数の計算用
 	}
 
 	internal class CSkin : IDisposable
@@ -45,6 +46,7 @@ namespace DTXMania
 
 			public bool bCompact対象;
 			public bool bループ;
+			public bool b読み込み未試行;
 			public bool b読み込み成功;
 			public bool b排他;
 			public string strファイル名 = "";
@@ -168,9 +170,11 @@ namespace DTXMania
 				this.bループ = bループ;
 				this.b排他 = b排他;
 				this.bCompact対象 = bCompact対象;
+				this.b読み込み未試行 = true;
 			}
 			public Cシステムサウンド()
 			{
+				this.b読み込み未試行 = true;
 			}
 			
 
@@ -178,6 +182,7 @@ namespace DTXMania
 
 			public void t読み込み()
 			{
+				this.b読み込み未試行 = false;
 				this.b読み込み成功 = false;
 				if( string.IsNullOrEmpty( this.strファイル名 ) )
 					throw new InvalidOperationException( "ファイル名が無効です。" );
@@ -212,6 +217,17 @@ namespace DTXMania
 			}
 			public void t再生する()
 			{
+				if ( this.b読み込み未試行 )
+				{
+					try
+					{
+						t読み込み();
+					}
+					catch
+					{
+						this.b読み込み未試行 = false;
+					}
+				}
 				if( this.b排他 )
 				{
 					if( r最後に再生した排他システムサウンド != null )
@@ -286,7 +302,7 @@ namespace DTXMania
 		public Cシステムサウンド sound決定音 = null;
 		public Cシステムサウンド sound取消音 = null;
 		public Cシステムサウンド sound変更音 = null;
-		public readonly int nシステムサウンド数 = 16;
+		public readonly int nシステムサウンド数 = (int)Eシステムサウンド.Count;
 		public Cシステムサウンド this[ Eシステムサウンド sound ]
 		{
 			get
@@ -459,22 +475,25 @@ namespace DTXMania
 		{
 			for ( int i = 0; i < nシステムサウンド数; i++ )
 			{
-				Cシステムサウンド cシステムサウンド = this[ i ];
-				if ( !CDTXMania.bコンパクトモード || cシステムサウンド.bCompact対象 )
+				if ( !this[ i ].b排他 )	// BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
 				{
-					try
+					Cシステムサウンド cシステムサウンド = this[ i ];
+					if ( !CDTXMania.bコンパクトモード || cシステムサウンド.bCompact対象 )
 					{
-						cシステムサウンド.t読み込み();
-						Trace.TraceInformation( "システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名 );
-					}
-					catch ( FileNotFoundException )
-					{
-						Trace.TraceWarning( "システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名 );
-					}
-					catch ( Exception e )
-					{
-						Trace.TraceError( e.Message );
-						Trace.TraceWarning( "システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名 );
+						try
+						{
+							cシステムサウンド.t読み込み();
+							Trace.TraceInformation( "システムサウンドを読み込みました。({0})", cシステムサウンド.strファイル名 );
+						}
+						catch ( FileNotFoundException )
+						{
+							Trace.TraceWarning( "システムサウンドが存在しません。({0})", cシステムサウンド.strファイル名 );
+						}
+						catch ( Exception e )
+						{
+							Trace.TraceError( e.Message );
+							Trace.TraceWarning( "システムサウンドの読み込みに失敗しました。({0})", cシステムサウンド.strファイル名 );
+						}
 					}
 				}
 			}
