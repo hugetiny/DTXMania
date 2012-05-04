@@ -860,6 +860,7 @@ namespace DTXMania
 				}
 				Trace.TraceInformation( builder2.ToString() );
 			}
+			CDTXMania.Skin.bgm選曲画面.t停止する();
 		}
 		private void t曲を選択する()
 		{
@@ -872,6 +873,7 @@ namespace DTXMania
 			//	this.actFOtoNowLoading.tフェードアウト開始();				// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
 				base.eフェーズID = CStage.Eフェーズ.選曲_NowLoading画面へのフェードアウト;
 			}
+			CDTXMania.Skin.bgm選曲画面.t停止する();
 		}
 		private List<C曲リストノード> t指定された曲が存在する場所の曲を列挙する・子リスト含む( C曲リストノード song )
 		{

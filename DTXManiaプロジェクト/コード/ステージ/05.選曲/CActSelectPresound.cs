@@ -118,19 +118,19 @@ namespace DTXMania
 			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
 			if( ( cスコア != null ) && !string.IsNullOrEmpty( cスコア.譜面情報.Presound ) )
 			{
-				string str = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.Presound;
+				string strPreviewFilename = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.Presound;
 				try
 				{
-					this.sound = CDTXMania.Sound管理.tサウンドを生成する( str );
+					this.sound = CDTXMania.Sound管理.tサウンドを生成する( strPreviewFilename );
 					this.sound.n音量 = 80;	// CDTXMania.ConfigIni.n自動再生音量;			// #25217 changed preview volume from AutoVolume
 					this.sound.t再生を開始する( true );
-					this.str現在のファイル名 = str;
+					this.str現在のファイル名 = strPreviewFilename;
 					this.tBGMフェードアウト開始();
-					Trace.TraceInformation( "サウンドを生成しました。({0})", new object[] { str } );
+					Trace.TraceInformation( "プレビューサウンドを生成しました。({0})", strPreviewFilename );
 				}
 				catch
 				{
-					Trace.TraceError( "サウンドの生成に失敗しました。({0})", new object[] { str } );
+					Trace.TraceError( "プレビューサウンドの生成に失敗しました。({0})", strPreviewFilename );
 					if( this.sound != null )
 					{
 						this.sound.Dispose();
