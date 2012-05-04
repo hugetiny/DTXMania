@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using SlimDX;
+using System.Drawing.Text;
 using FDK;
 
 namespace DTXMania
@@ -119,7 +120,8 @@ namespace DTXMania
 							image.Dispose();
 							image = new Bitmap( size.Width, size.Height );
 							graphics = Graphics.FromImage( image );
-							graphics.DrawString( this.str曲タイトル, this.ftタイトル表示用フォント, Brushes.White, (float) 0f, (float) 0f );
+							graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+							graphics.DrawString( this.str曲タイトル, this.ftタイトル表示用フォント, Brushes.White, ( float ) 0f, ( float ) 0f );
 							graphics.Dispose();
 							this.txタイトル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
 							this.txタイトル.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
@@ -187,6 +189,12 @@ namespace DTXMania
 //				this.actFI.tフェードイン開始();							// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
 				base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 				base.b初めての進行描画 = false;
+
+				nWAVcount = 1;
+				bitmapFilename = new Bitmap( 640, 24 );
+				graphicsFilename = Graphics.FromImage( bitmapFilename );
+				graphicsFilename.TextRenderingHint = TextRenderingHint.AntiAlias;
+				ftFilename = new Font( "MS PGothic", 24f, FontStyle.Bold, GraphicsUnit.Pixel );
 			}
 			//-----------------------------
 			#endregion
@@ -222,7 +230,7 @@ namespace DTXMania
 
 				case CStage.Eフェーズ.NOWLOADING_DTXファイルを読み込む:
 					{
-						DateTime timeBeginLoad = DateTime.Now;
+						timeBeginLoad = DateTime.Now;
 						TimeSpan span;
 						str = null;
 						if( !CDTXMania.bコンパクトモード )
@@ -238,8 +246,8 @@ namespace DTXMania
 
 						CDTXMania.DTX = new CDTX( str, false, ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0, ini.stファイル.BGMAdjust );
 						Trace.TraceInformation( "----曲情報-----------------" );
-						Trace.TraceInformation( "TITLE: {0}", new object[] { CDTXMania.DTX.TITLE } );
-						Trace.TraceInformation( "FILE: {0}", new object[] { CDTXMania.DTX.strファイル名の絶対パス } );
+						Trace.TraceInformation( "TITLE: {0}", CDTXMania.DTX.TITLE );
+						Trace.TraceInformation( "FILE: {0}",  CDTXMania.DTX.strファイル名の絶対パス );
 						Trace.TraceInformation( "---------------------------" );
 
 						span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
@@ -250,31 +258,74 @@ namespace DTXMania
 						else
 							CDTXMania.DTX.MIDIレベル = ( CDTXMania.stage選曲.r確定された曲.eノード種別 == C曲リストノード.Eノード種別.SCORE_MIDI ) ? CDTXMania.stage選曲.n現在選択中の曲の難易度 : 0;
 
-						DateTime timeBeginLoadWAV = DateTime.Now;
-						CDTXMania.DTX.tWAVの読み込み();
-						span = (TimeSpan) ( DateTime.Now - timeBeginLoadWAV );
-						Trace.TraceInformation( "WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString() );
+						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_WAVファイルを読み込む;
+						timeBeginLoadWAV = DateTime.Now;
+						return 0;
+					}
 
-						CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.GUITAR, CDTXMania.ConfigIni.eRandom.Guitar );
-						CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.BASS, CDTXMania.ConfigIni.eRandom.Bass );
+				case CStage.Eフェーズ.NOWLOADING_WAVファイルを読み込む:
+					{
+						if ( nWAVcount == 1 )
+						{
+							ShowProgressByFilename( CDTXMania.DTX.listWAV[ nWAVcount ].strファイル名 );
+						}
+						int looptime = (CDTXMania.ConfigIni.b垂直帰線待ちを行う)? 3 : 1;	// VSyncWait=ON時は1frame(1/60s)あたり3つ読むようにする
+						for ( int i = 0; i < looptime && nWAVcount <= CDTXMania.DTX.listWAV.Count; i++ )
+						{
+							CDTXMania.DTX.tWAVの読み込み( CDTXMania.DTX.listWAV[ nWAVcount++ ] );
+						}
+						if ( nWAVcount <= CDTXMania.DTX.listWAV.Count )
+						{
+							ShowProgressByFilename( CDTXMania.DTX.listWAV[ nWAVcount ].strファイル名 );
+						}
+						if ( nWAVcount > CDTXMania.DTX.listWAV.Count )
+						{
+							TimeSpan span = ( TimeSpan ) ( DateTime.Now - timeBeginLoadWAV );
+							Trace.TraceInformation( "WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString() );
 
-						if( CDTXMania.ConfigIni.bギタレボモード )
-							CDTXMania.stage演奏ギター画面.On活性化();
-						else
-							CDTXMania.stage演奏ドラム画面.On活性化();
+							CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.GUITAR, CDTXMania.ConfigIni.eRandom.Guitar );
+							CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.BASS, CDTXMania.ConfigIni.eRandom.Bass );
 
+							if ( CDTXMania.ConfigIni.bギタレボモード )
+								CDTXMania.stage演奏ギター画面.On活性化();
+							else
+								CDTXMania.stage演奏ドラム画面.On活性化();
+
+							base.eフェーズID = CStage.Eフェーズ.NOWLOADING_BMPファイルを読み込む;
+						}
+						return 0;
+					}
+
+				case CStage.Eフェーズ.NOWLOADING_BMPファイルを読み込む:
+					{
+						TimeSpan span;
 						DateTime timeBeginLoadBMPAVI = DateTime.Now;
 						if ( CDTXMania.ConfigIni.bBGA有効 )
 							CDTXMania.DTX.tBMP_BMPTEXの読み込み();
 
-						if( CDTXMania.ConfigIni.bAVI有効 )
+						if ( CDTXMania.ConfigIni.bAVI有効 )
 							CDTXMania.DTX.tAVIの読み込み();
-						span = (TimeSpan) ( DateTime.Now - timeBeginLoadBMPAVI );
+						span = ( TimeSpan ) ( DateTime.Now - timeBeginLoadBMPAVI );
 						Trace.TraceInformation( "BMP/AVI読込所要時間({0,4}): {1}", ( CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count ), span.ToString() );
 
-						span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
-						Trace.TraceInformation( "総読込時間:                {0}", span.ToString() ); 
+						span = ( TimeSpan ) ( DateTime.Now - timeBeginLoad );
+						Trace.TraceInformation( "総読込時間:                {0}", span.ToString() );
 
+						if ( bitmapFilename != null )
+						{
+							bitmapFilename.Dispose();
+							bitmapFilename = null;
+						}
+						if ( graphicsFilename != null )
+						{
+							graphicsFilename.Dispose();
+							graphicsFilename = null;
+						}
+						if ( ftFilename != null )
+						{
+							ftFilename.Dispose();
+							ftFilename = null;
+						}
 						CDTXMania.Timer.t更新();
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ;
 						return 0;
@@ -303,7 +354,22 @@ namespace DTXMania
 			return 0;
 		}
 
-		
+		private void ShowProgressByFilename(string strファイル名 )
+		{
+			if ( graphicsFilename != null && ftFilename != null )
+			{
+				graphicsFilename.Clear( Color.Transparent );
+				graphicsFilename.DrawString( strファイル名, ftFilename, Brushes.White, new RectangleF( 0, 0, 640, 24 ) );
+				if ( txFilename != null )
+				{
+					txFilename.Dispose();
+				}
+				txFilename = new CTexture( CDTXMania.app.Device, bitmapFilename, CDTXMania.TextureFormat );
+				txFilename.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
+				txFilename.t2D描画( CDTXMania.app.Device, 0, 480 - 16 );
+			}
+		}
+
 		// その他
 
 		#region [ private ]
@@ -321,6 +387,13 @@ namespace DTXMania
 		private CTexture txタイトル;
 		private CTexture tx音符;
 		private CTexture tx背景;
+		private DateTime timeBeginLoad;
+		private DateTime timeBeginLoadWAV;
+		private int nWAVcount;
+		private CTexture txFilename;
+		private Bitmap bitmapFilename;
+		private Graphics graphicsFilename;
+		private Font ftFilename;
 		//-----------------
 		#endregion
 	}

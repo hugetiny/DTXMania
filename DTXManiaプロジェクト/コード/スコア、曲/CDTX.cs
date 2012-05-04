@@ -1961,11 +1961,11 @@ namespace DTXMania
 				}
 			}
 		}
-		public void tWAVの読み込み()
+		public void tWAVの読み込み( CWAV cwav )
 		{
 //			Trace.TraceInformation("WAV files={0}", this.listWAV.Count);
 //			int count = 0;
-			foreach (CWAV cwav in this.listWAV.Values)
+//			foreach (CWAV cwav in this.listWAV.Values)
 			{
 //				string strCount = count.ToString() + " / " + this.listWAV.Count.ToString();
 //				Debug.WriteLine(strCount);
@@ -1990,7 +1990,7 @@ namespace DTXMania
 							cwav.rSound[ 0 ] = null;
 							Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
 						}
-						if ( cwav.rSound[ 0 ] == null || cwav.rSound[ 0 ].bストリーム再生する )
+						if ( cwav.rSound[ 0 ] == null )	// #xxxxx 2012.5.3 yyagi rSound[1-3]もClone()するようにし、これらのストリーム再生がおかしくなる問題を修正
 						{
 							for ( int j = 1; j < nPolyphonicSounds; j++ )
 							{
@@ -2013,7 +2013,7 @@ namespace DTXMania
 					{
 						cwav.rSound[ j ] = null;
 					}
-					continue;
+					//continue;
 				}
 			}
 		}

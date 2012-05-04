@@ -1084,9 +1084,9 @@ namespace DTXMania
 			sw.WriteLine( "DTXPath={0}", this.str曲データ検索パス );
 			sw.WriteLine();
 			sw.WriteLine( "; 使用するSkinのサブフォルダ名。" );
-			sw.WriteLine( "; System/SkinFiles.Default/Graphics/... などの場合は、SkinPath=SkinFiles.Default を指定します。" );
+			sw.WriteLine( "; 例えば System/Default/Graphics/... などの場合は、SkinPath=Default を指定します。" );
 			sw.WriteLine( "; Skin subfolder path." );
-			sw.WriteLine( "; e.g. System/SkinFiles.Default/Graphics/... -> Set SkinPath=SkinFiles.Default" );
+			sw.WriteLine( "; e.g. System/Default/Graphics/... -> Set SkinPath=Default" );
 			sw.WriteLine( "SkinPath={0}", this.strSkinSubfolder );
 			sw.WriteLine();
 			sw.WriteLine( "; 画面モード(0:ウィンドウ, 1:全画面)" );
@@ -1126,12 +1126,15 @@ namespace DTXMania
 			sw.WriteLine();											        			//
 
 			sw.WriteLine( "; ギター/ベース有効(0:OFF,1:ON)" );
+			sw.WriteLine( "; Enable Guitar/Bass or not.(0:OFF,1:ON)" );
 			sw.WriteLine( "Guitar={0}", this.bGuitar有効 ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; ドラム有効(0:OFF,1:ON)" );
+			sw.WriteLine( "; Enable Drums or not.(0:OFF,1:ON)" );
 			sw.WriteLine( "Drums={0}", this.bDrums有効 ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; 背景画像の半透明割合(0:透明～255:不透明)" );
+			sw.WriteLine( "; Transparency for background image in playing screen.(0:tranaparent - 255:no transparent)" );
 			sw.WriteLine( "BGAlpha={0}", this.nBGAlpha );
 			sw.WriteLine();
 			sw.WriteLine( "; Missヒット時のゲージ減少割合(0:少, 1:普通, 2:大)" );

@@ -55,6 +55,8 @@ namespace DTXMania
 			選曲_結果画面からのフェードイン,
 			選曲_NowLoading画面へのフェードアウト,
 			NOWLOADING_DTXファイルを読み込む,
+			NOWLOADING_WAVファイルを読み込む,
+			NOWLOADING_BMPファイルを読み込む,
 			NOWLOADING_システムサウンドBGMの完了を待つ,
 			演奏_STAGE_FAILED,
 			演奏_STAGE_FAILED_フェードアウト,

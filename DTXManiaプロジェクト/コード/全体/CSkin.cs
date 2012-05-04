@@ -527,8 +527,9 @@ namespace DTXMania
 				#endregion
 				#region [ スキンフォルダと確認できたものを、strSKinSubfoldersに入れる ]
 				string[] spl = tempSkinSubfolders[ i ].Split( System.IO.Path.DirectorySeparatorChar );
-				strSkinSubfolders[ size++ ] = spl[ spl.Length - 1 ];		// subfolder名から、～～/System/ までの部分を削除
-				Trace.TraceInformation( "SkinPath検出: {0}", strSkinSubfolders[ i ] );
+				strSkinSubfolders[ size ] = spl[ spl.Length - 1 ];		// subfolder名から、～～/System/ までの部分を削除
+				Trace.TraceInformation( "SkinPath検出: {0}", strSkinSubfolders[ size ] );
+				size++;
 				#endregion
 			}
 			Array.Resize( ref strSkinSubfolders, size );
