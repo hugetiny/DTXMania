@@ -32,6 +32,7 @@ namespace DTXMania
 			曲読み込み,
 			演奏,
 			結果,
+			ChangeSkin,						// #28195 2011.5.4 yyagi
 			終了
 		}
 		

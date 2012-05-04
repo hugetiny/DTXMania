@@ -187,23 +187,40 @@ namespace DTXMania
 			}
 		}
 
-		public void tBOXに入る()
+		public bool tBOXに入る()
 		{
+			bool ret = false;
+			if ( this.strBoxDefSkinPath != this.r現在選択中の曲.strSkinPath )
+			{
+				CSkin.strBoxDefSkinSubfolderFullName = this.r現在選択中の曲.strSkinPath;
+				this.strBoxDefSkinPath = this.r現在選択中の曲.strSkinPath;
+				ret = true;
+			}
+
 			if( ( this.r現在選択中の曲.list子リスト != null ) && ( this.r現在選択中の曲.list子リスト.Count > 0 ) )
 			{
 				this.r現在選択中の曲 = this.r現在選択中の曲.list子リスト[ 0 ];
 				this.t現在選択中の曲を元に曲バーを再構成する();
 				this.t選択曲が変更された(false);									// #27648 項目数変更を反映させる
 			}
+			return ret;
 		}
-		public void tBOXを出る()
+		public bool tBOXを出る()
 		{
-			if( this.r現在選択中の曲.r親ノード != null )
+			bool ret = false;
+			if ( this.strBoxDefSkinPath != this.r現在選択中の曲.strSkinPath )
+			{
+				CSkin.strBoxDefSkinSubfolderFullName = this.r現在選択中の曲.strSkinPath;
+				this.strBoxDefSkinPath = this.r現在選択中の曲.strSkinPath;
+				ret = true;
+			}
+			if ( this.r現在選択中の曲.r親ノード != null )
 			{
 				this.r現在選択中の曲 = this.r現在選択中の曲.r親ノード;
 				this.t現在選択中の曲を元に曲バーを再構成する();
 				this.t選択曲が変更された(false);									// #27648 項目数変更を反映させる
 			}
+			return ret;
 		}
 		public void t現在選択中の曲を元に曲バーを再構成する()
 		{
@@ -1035,6 +1052,7 @@ namespace DTXMania
 		private int nCurrentPosition = 0;
 		private int nNumOfItems = 0;
 
+		private string strBoxDefSkinPath = "";
 		private Eバー種別 e曲のバー種別を返す( C曲リストノード song )
 		{
 			if( song != null )

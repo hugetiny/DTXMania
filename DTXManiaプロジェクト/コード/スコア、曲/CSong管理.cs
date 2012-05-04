@@ -356,6 +356,10 @@ namespace DTXMania
 					c曲リストノード.nスコア数 = 1;
 					c曲リストノード.r親ノード = node親;
 
+					// 一旦、上位BOXのスキン情報をコピー (後でbox.defの記載にて上書きされる場合がある)
+					c曲リストノード.strSkinPath = ( c曲リストノード.r親ノード == null ) ?
+						"" : c曲リストノード.r親ノード.strSkinPath;
+
 					c曲リストノード.strBreadcrumbs = ( c曲リストノード.r親ノード == null ) ?
 						c曲リストノード.strタイトル : c曲リストノード.r親ノード.strBreadcrumbs + " > " + c曲リストノード.strタイトル;
 
@@ -404,7 +408,21 @@ namespace DTXMania
 						{
 							c曲リストノード.arスコア[ 0 ].譜面情報.Presound = boxdef.Presound;
 						}
-						if( boxdef.PerfectRange >= 0 )
+						if ( boxdef.SkinPath != null )
+						{
+							if ( boxdef.SkinPath == "" )
+							{
+								// box.defにスキン情報が記載されていないなら、上位BOXのスキン情報をコピー
+								c曲リストノード.strSkinPath = ( c曲リストノード.r親ノード == null ) ?
+									"" : c曲リストノード.r親ノード.strSkinPath;
+							}
+							else
+							{
+								//	box.def	記載のスキン情報を利用
+								c曲リストノード.strSkinPath = System.IO.Path.Combine( infoDir.FullName, boxdef.SkinPath );
+							}
+						}
+						if ( boxdef.PerfectRange >= 0 )
 						{
 							c曲リストノード.nPerfect範囲ms = boxdef.PerfectRange;
 						}
@@ -439,6 +457,7 @@ namespace DTXMania
 							sb.Append( " BOX, Title=" + c曲リストノード.strタイトル );
 							sb.Append( ", Folder=" + c曲リストノード.arスコア[ 0 ].ファイル情報.フォルダの絶対パス );
 							sb.Append( ", Comment=" + c曲リストノード.arスコア[ 0 ].譜面情報.コメント );
+							sb.Append( ", SkinPath=" + c曲リストノード.strSkinPath );
 							Trace.TraceInformation( sb.ToString() );
 						}
 						finally
@@ -477,6 +496,17 @@ namespace DTXMania
 					c曲リストノード.arスコア[ 0 ].譜面情報.Presound = boxdef.Presound;
 					c曲リストノード.r親ノード = node親;
 
+					if ( boxdef.SkinPath == "" )
+					{
+						// box.defにスキン情報が記載されていないなら、上位BOXのスキン情報をコピー
+						c曲リストノード.strSkinPath = ( c曲リストノード.r親ノード == null ) ?
+							"" : c曲リストノード.r親ノード.strSkinPath;
+					}
+					else
+					{
+						// box.defに記載されているスキン情報をコピー
+						c曲リストノード.strSkinPath = System.IO.Path.Combine( infoDir.FullName, boxdef.SkinPath );
+					}
 					c曲リストノード.strBreadcrumbs = ( c曲リストノード.r親ノード == null ) ?
 						c曲リストノード.strタイトル : c曲リストノード.r親ノード.strBreadcrumbs + " > " + c曲リストノード.strタイトル;
 	
@@ -547,6 +577,10 @@ namespace DTXMania
 							if( c曲リストノード.nPoor範囲ms != -1 )
 							{
 								sb.Append( ", Poor=" + c曲リストノード.nPoor範囲ms + "ms" );
+							}
+							if ( ( c曲リストノード.strSkinPath != null ) && ( c曲リストノード.strSkinPath.Length > 0 ) )
+							{
+								sb.Append( ", SkinPath=" + c曲リストノード.strSkinPath );
 							}
 							Trace.TraceInformation( sb.ToString() );
 						}
@@ -722,7 +756,8 @@ namespace DTXMania
 			cスコア.譜面情報.演奏履歴.行5 = br.ReadString();
 			cスコア.譜面情報.レベルを非表示にする = br.ReadBoolean();
 			cスコア.譜面情報.曲種別 = (CDTX.E種別) br.ReadInt32();
-//			cスコア.譜面情報.bpm = br.ReadDouble();
+			cスコア.譜面情報.Bpm = br.ReadDouble();
+			cスコア.譜面情報.Duration = br.ReadInt32();
 
 //Debug.WriteLine( "songs.db: " + cスコア.ファイル情報.ファイルの絶対パス );
 			return cスコア;
@@ -774,7 +809,8 @@ namespace DTXMania
 									c曲リストノード.arスコア[ i ].譜面情報.レベル.Bass = cdtx.LEVEL.Bass;
 									c曲リストノード.arスコア[ i ].譜面情報.レベルを非表示にする = cdtx.HIDDENLEVEL;
 									c曲リストノード.arスコア[ i ].譜面情報.曲種別 = cdtx.e種別;
-//									c曲リストノード.arスコア[ i ].譜面情報.bpm = cdtx.BPM;
+									c曲リストノード.arスコア[ i ].譜面情報.Bpm = cdtx.BPM;
+									c曲リストノード.arスコア[ i ].譜面情報.Duration = 0;	//  (cdtx.listChip == null)? 0 : cdtx.listChip[ cdtx.listChip.Count - 1 ].n発声時刻ms;
 									this.nファイルから反映できたスコア数++;
 									cdtx.On非活性化();
 //Debug.WriteLine( "★" + this.nファイルから反映できたスコア数 + " " + c曲リストノード.arスコア[ i ].譜面情報.タイトル );
@@ -797,7 +833,8 @@ namespace DTXMania
 										sb.Append( ", lvBs=" + c曲リストノード.arスコア[ i ].譜面情報.レベル.Bass );
 										sb.Append( ", lvHide=" + c曲リストノード.arスコア[ i ].譜面情報.レベルを非表示にする );
 										sb.Append( ", type=" + c曲リストノード.arスコア[ i ].譜面情報.曲種別 );
-//										builder.Append( ", bpm=" + c曲リストノード.arスコア[ i ].譜面情報.bpm );
+										sb.Append( ", bpm=" + c曲リストノード.arスコア[ i ].譜面情報.Bpm );
+									//	sb.Append( ", duration=" + c曲リストノード.arスコア[ i ].譜面情報.Duration );
 										Trace.TraceInformation( sb.ToString() );
 									}
 									//-----------------
@@ -897,6 +934,9 @@ namespace DTXMania
 					itemBack.strタイトル = "<< BACK";
 					itemBack.nスコア数 = 1;
 					itemBack.r親ノード = c曲リストノード;
+
+					itemBack.strSkinPath = ( c曲リストノード.r親ノード == null ) ?
+						"" : c曲リストノード.r親ノード.strSkinPath;
 
 					itemBack.strBreadcrumbs = ( itemBack.r親ノード == null ) ?
 						itemBack.strタイトル : itemBack.r親ノード.strBreadcrumbs + " > " + itemBack.strタイトル;
@@ -1030,7 +1070,8 @@ namespace DTXMania
 					bw.Write( node.arスコア[ i ].譜面情報.演奏履歴.行5 );
 					bw.Write( node.arスコア[ i ].譜面情報.レベルを非表示にする );
 					bw.Write( (int) node.arスコア[ i ].譜面情報.曲種別 );
-//					bw.Write( node.arスコア[ i ].譜面情報.bpm );
+					bw.Write( node.arスコア[ i ].譜面情報.Bpm );
+					bw.Write( node.arスコア[ i ].譜面情報.Duration );
 					this.nSongsDBへ出力できたスコア数++;
 				}
 			}
@@ -1578,7 +1619,7 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 
 		#region [ private ]
 		//-----------------
-		private const string SONGSDB_VERSION = "SongsDB2";
+		private const string SONGSDB_VERSION = "SongsDB3";
 
 		private int t比較0_共通( C曲リストノード n1, C曲リストノード n2 )
 		{

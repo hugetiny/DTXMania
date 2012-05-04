@@ -1223,6 +1223,10 @@ namespace DTXMania
 			skinSubFolders = (string[])CDTXMania.Skin.strSkinSubfolders.Clone();	// skinSubFoldersへの書き換えが元に及ばないよう、Clone()する
 			skinSubFolder_org = CSkin.strSkinSubfolder;
 			nSkinIndex = Array.BinarySearch( skinSubFolders, CSkin.strSkinSubfolder );
+			if ( nSkinIndex < 0 )
+			{
+				nSkinIndex = 0;
+			}
 			nSkinSampleIndex = -1;
 			for ( int i = 0; i < skinSubFolders.Length; i++ )	// "SkinFiles."を削除
 			{

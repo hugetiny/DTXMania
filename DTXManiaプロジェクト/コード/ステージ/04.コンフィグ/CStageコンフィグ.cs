@@ -66,7 +66,6 @@ namespace DTXMania
 				}																				//
 				this.bメニューにフォーカス中 = true;											// ここまでOPTIONと共通
 				this.eItemPanelモード = EItemPanelモード.パッド一覧;
-				strSkinSubfolder = CSkin.strSkinSubfolder;										// CONFIGに入る前に、現在使用中のSkin名を保持 
 			}
 			finally
 			{
@@ -436,7 +435,6 @@ namespace DTXMania
 		private CTexture tx上部パネル;
 		private CTexture tx説明文パネル;
 		private CTexture tx背景;
-		private string strSkinSubfolder;
 
 		private void tカーソルを下へ移動する()
 		{

@@ -217,6 +217,11 @@ namespace DTXMania
 			get;
 			private set;
 		}
+		public static CStageChangeSkin stageChangeSkin
+		{
+			get;
+			private set;
+		}
 		public static CStage終了 stage終了
 		{
 			get;
@@ -784,7 +789,7 @@ namespace DTXMania
 						//-----------------------------
 						switch( this.n進行描画の戻り値 )
 						{
-							case 1:
+							case (int) CStage選曲.E戻り値.タイトルに戻る:
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.On非活性化();
@@ -806,7 +811,7 @@ namespace DTXMania
 							//-----------------------------
 								#endregion
 
-							case 2:
+							case (int) CStage選曲.E戻り値.選曲した:
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.On非活性化();
@@ -828,7 +833,7 @@ namespace DTXMania
 							//-----------------------------
 								#endregion
 
-//							case 3:
+//							case (int) CStage選曲.E戻り値.オプション呼び出し:
 								#region [ *** ]
 //								//-----------------------------
 //								r現在のステージ.On非活性化();
@@ -850,7 +855,7 @@ namespace DTXMania
 //							//-----------------------------
 								#endregion
 
-							case 4:
+							case (int) CStage選曲.E戻り値.コンフィグ呼び出し:
 								#region [ *** ]
 								//-----------------------------
 								r現在のステージ.On非活性化();
@@ -868,6 +873,20 @@ namespace DTXMania
 								}
 
 								this.tガベージコレクションを実行する();
+								break;
+							//-----------------------------
+								#endregion
+
+							case (int) CStage選曲.E戻り値.スキン変更:
+
+								#region [ *** ]
+								//-----------------------------
+								r現在のステージ.On非活性化();
+								Trace.TraceInformation( "----------------------" );
+								Trace.TraceInformation( "■ スキン切り替え" );
+								stageChangeSkin.On活性化();
+								r直前のステージ = r現在のステージ;
+								r現在のステージ = stageChangeSkin;
 								break;
 							//-----------------------------
 								#endregion
@@ -941,10 +960,10 @@ for (int i = 0; i < 3; i++) {
 						//-----------------------------
 						switch( this.n進行描画の戻り値 )
 						{
-							case 0:
+							case (int) E演奏画面の戻り値.継続:
 								break;
 
-							case 1:
+							case (int) E演奏画面の戻り値.演奏中断:
 								#region [ 演奏キャンセル ]
 								//-----------------------------
 								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Play canceled" );
@@ -992,7 +1011,7 @@ for (int i = 0; i < 3; i++) {
 								//-----------------------------
 								#endregion
 
-							case 2:
+							case (int) E演奏画面の戻り値.ステージ失敗:
 								#region [ 演奏失敗(StageFailed) ]
 								//-----------------------------
 								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Stage failed" );
@@ -1040,7 +1059,7 @@ for (int i = 0; i < 3; i++) {
 								//-----------------------------
 								#endregion
 
-							case 3:
+							case (int) E演奏画面の戻り値.ステージクリア:
 								#region [ 演奏クリア ]
 								//-----------------------------
 								chipArray = new CDTX.CChip[ 10 ];
@@ -1193,6 +1212,23 @@ for (int i = 0; i < 3; i++) {
 							{
 								base.Window.Close();
 							}
+						}
+						//-----------------------------
+						#endregion
+						break;
+
+					case CStage.Eステージ.ChangeSkin:
+						#region [ *** ]
+						//-----------------------------
+						if ( this.n進行描画の戻り値 != 0 )
+						{
+							r現在のステージ.On非活性化();
+							Trace.TraceInformation( "----------------------" );
+							Trace.TraceInformation( "■ 選曲" );
+							stage選曲.On活性化();
+							r直前のステージ = r現在のステージ;
+							r現在のステージ = stage選曲;
+							this.tガベージコレクションを実行する();
 						}
 						//-----------------------------
 						#endregion
@@ -1684,6 +1720,7 @@ for (int i = 0; i < 3; i++) {
 			stage演奏ドラム画面 = new CStage演奏ドラム画面();
 			stage演奏ギター画面 = new CStage演奏ギター画面();
 			stage結果 = new CStage結果();
+			stageChangeSkin = new CStageChangeSkin();
 			stage終了 = new CStage終了();
 			this.listトップレベルActivities = new List<CActivity>();
 			this.listトップレベルActivities.Add( actEnumSongs );
@@ -1697,6 +1734,7 @@ for (int i = 0; i < 3; i++) {
 			this.listトップレベルActivities.Add( stage演奏ドラム画面 );
 			this.listトップレベルActivities.Add( stage演奏ギター画面 );
 			this.listトップレベルActivities.Add( stage結果 );
+			this.listトップレベルActivities.Add( stageChangeSkin );
 			this.listトップレベルActivities.Add( stage終了 );
 			//---------------------
 			#endregion

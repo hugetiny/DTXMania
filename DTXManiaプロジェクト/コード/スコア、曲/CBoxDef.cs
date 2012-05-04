@@ -22,7 +22,7 @@ namespace DTXMania
 		public string Premovie;
 		public string Presound;
 		public string Title;
-
+		public string SkinPath;		// ""ならユーザー指定スキン、さもなくばbox.def指定スキン。
 
 		// コンストラクタ
 
@@ -40,6 +40,7 @@ namespace DTXMania
 			this.GreatRange = -1;
 			this.GoodRange = -1;
 			this.PoorRange = -1;
+			this.SkinPath = "";
 		}
 		public CBoxDef( string boxdefファイル名 )
 			: this()
@@ -100,7 +101,11 @@ namespace DTXMania
 							{
 								this.Premovie = str.Substring( 9 ).Trim( ignoreChars );
 							}
-							else if( str.StartsWith( "#FONTCOLOR", StringComparison.OrdinalIgnoreCase ) )
+							else if ( str.StartsWith( "#SKINPATH", StringComparison.OrdinalIgnoreCase ) )
+							{
+								this.SkinPath = str.Substring( 9 ).Trim( ignoreChars );
+							}
+							else if ( str.StartsWith( "#FONTCOLOR", StringComparison.OrdinalIgnoreCase ) )
 							{
 								this.Color = ColorTranslator.FromHtml( str.Substring( 10 ).Trim( ignoreChars ) );
 							}

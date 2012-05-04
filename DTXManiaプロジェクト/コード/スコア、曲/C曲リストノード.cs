@@ -51,7 +51,7 @@ namespace DTXMania
 		public string strジャンル = "";
 		public string strタイトル = "";
 		public string strBreadcrumbs = "";		// #27060 2011.2.27 yyagi; MUSIC BOXのパンくずリスト (曲リスト構造内の絶対位置捕捉のために使う)
-
+		public string strSkinPath = "";			// #28195 2012.5.4 yyagi; box.defでのスキン切り替え対応
 		
 		// コンストラクタ
 

@@ -66,6 +66,8 @@ namespace DTXMania
 			public STHISTORY 演奏履歴;
 			public bool レベルを非表示にする;
 			public CDTX.E種別 曲種別;
+			public double Bpm;
+			public int Duration;
 
 			[Serializable]
 			[StructLayout( LayoutKind.Sequential )]
@@ -269,6 +271,8 @@ namespace DTXMania
 			this.譜面情報.レベルを非表示にする = false;
 			this.譜面情報.最大スキル = new ST譜面情報.STSKILL();
 			this.譜面情報.曲種別 = CDTX.E種別.DTX;
+			this.譜面情報.Bpm = 120.0;
+			this.譜面情報.Duration = 0;
 		}
 	}
 }

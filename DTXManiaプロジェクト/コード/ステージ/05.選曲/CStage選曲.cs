@@ -416,11 +416,25 @@ namespace DTXMania
 											break;
 
 										case C曲リストノード.Eノード種別.BOX:
-											this.act曲リスト.tBOXに入る();
+											{
+												bool bNeedChangeSkin = this.act曲リスト.tBOXに入る();
+												if ( bNeedChangeSkin )
+												{
+													this.eフェードアウト完了時の戻り値 = E戻り値.スキン変更; 
+													base.eフェーズID = Eフェーズ.選曲_NowLoading画面へのフェードアウト;
+												}
+											}
 											break;
 
 										case C曲リストノード.Eノード種別.BACKBOX:
-											this.act曲リスト.tBOXを出る();
+											{
+												bool bNeedChangeSkin = this.act曲リスト.tBOXを出る();
+												if ( bNeedChangeSkin )
+												{
+													this.eフェードアウト完了時の戻り値 = E戻り値.スキン変更; 
+													base.eフェーズID = Eフェーズ.選曲_NowLoading画面へのフェードアウト;
+												}
+											}
 											break;
 
 										case C曲リストノード.Eノード種別.RANDOM:
@@ -593,7 +607,8 @@ namespace DTXMania
 			タイトルに戻る,
 			選曲した,
 			オプション呼び出し,
-			コンフィグ呼び出し
+			コンフィグ呼び出し,
+			スキン変更
 		}
 		
 

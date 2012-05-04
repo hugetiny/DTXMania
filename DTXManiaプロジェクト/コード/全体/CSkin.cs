@@ -419,11 +419,25 @@ namespace DTXMania
 		}
 
 		public string[] strSkinSubfolders = null;		// List<string>だとignoreCaseな検索が面倒なので、配列に逃げる :-)
-		public static string strSkinSubfolder = null;
+		public static string strSkinSubfolder = null;					// Configで選択しているスキン
+		public static string strSkinSubfolderFullName					// strSkinSubfolderのフルパスを返す
+		{
+			get
+			{
+				string path;
+				path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
+				path = System.IO.Path.Combine( path, strSkinSubfolder );
+				return path;
+			}
+		}
+		public static string strBoxDefSkinSubfolderFullName = "";		// box.defで指定されているスキン
+
 
 		// コンストラクタ
 		public CSkin( string _strSkinSubfolder )
 		{
+			string path;
+			path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
 			strSkinSubfolder = _strSkinSubfolder;
 			ReloadSkinPaths();
 			PrepareReloadSkin();
@@ -443,7 +457,11 @@ namespace DTXMania
 		/// </summary>
 		public void PrepareReloadSkin()
 		{
-			Trace.TraceInformation( "SkinPath設定: {0}", strSkinSubfolder );
+			Trace.TraceInformation( "SkinPath設定: {0}",
+				( strBoxDefSkinSubfolderFullName == "" ) ?
+				strBoxDefSkinSubfolderFullName :
+				strSkinSubfolder
+			);
 
 			for ( int i = 0; i < nシステムサウンド数; i++ )
 			{
@@ -537,7 +555,8 @@ namespace DTXMania
 			#endregion
 
 			#region [ 次に、カレントのSkinパスが存在するか調べる。あれば終了。]
-			if ( Array.BinarySearch( strSkinSubfolders, strSkinSubfolder, StringComparer.InvariantCultureIgnoreCase ) >= 0 )
+			if ( Array.BinarySearch( strSkinSubfolders, strSkinSubfolder,
+				StringComparer.InvariantCultureIgnoreCase ) >= 0 )
 				return;
 			#endregion
 			#region [ カレントのSkinパスが消滅しているので、再設定する。]
@@ -560,7 +579,7 @@ namespace DTXMania
 			}
 			#endregion
 			#region [ System/ に、カレントSkinパスを再設定する。]
-			strSkinSubfolder = "";			// ""にすることで、結果的に System/ 相当の相対パスになる。
+			strSkinSubfolder = "";
 			#endregion
 			#endregion
 		}
@@ -569,11 +588,14 @@ namespace DTXMania
 
 		public static string Path( string strファイルの相対パス )
 		{
-			string path;
-			path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
-			path = System.IO.Path.Combine( path, strSkinSubfolder );
-			path = System.IO.Path.Combine( path, strファイルの相対パス );
-			return path;
+			if ( strBoxDefSkinSubfolderFullName == "" )
+			{
+				return System.IO.Path.Combine( strSkinSubfolderFullName, strファイルの相対パス );
+			}
+			else
+			{
+				return System.IO.Path.Combine( strBoxDefSkinSubfolderFullName, strファイルの相対パス );
+			}
 		}
 		
 		#region [ IDisposable 実装 ]
