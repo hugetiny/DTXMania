@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Diagnostics;
+using System.Web;
 using FDK;
 
 namespace DTXMania
@@ -482,7 +483,8 @@ namespace DTXMania
 		public int nPoliphonicSounds;				// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
 		public bool bバッファ入力を行う;
 		public bool bIsEnabledSystemMenu;			// #28200 2012.5.1 yyagi System Menuの使用可否切替
-		public string strSkinSubfolder;				// #28195 2012.5.2 yyagi Skin切替用 System/以下のサブフォルダ名
+		public string strSystemSkinSubfolderFullName;	// #28195 2012.5.2 yyagi Skin切替用 System/以下のサブフォルダ名
+		public bool bUseBoxDefSkin;						// #28195 2012.5.6 yyagi Skin切替用 box.defによるスキン変更機能を使用するか否か
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
 			get
@@ -1017,7 +1019,8 @@ namespace DTXMania
 			this.eBDGroup = EBDGroup.打ち分ける;		// #27029 2012.1.4 from HHPedalとBassPedalのグルーピング
 			this.nPoliphonicSounds = 4;					// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
 			this.bIsEnabledSystemMenu = true;			// #28200 2012.5.1 yyagi System Menuの利用可否切替(使用可)
-			this.strSkinSubfolder = "";					// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
+			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
+			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1083,17 +1086,30 @@ namespace DTXMania
 			sw.WriteLine( @"; You can specify many pathes separated with semicolon(;). (e.g. d:\DTXFiles1\;e:\DTXFiles2\)" );
 			sw.WriteLine( "DTXPath={0}", this.str曲データ検索パス );
 			sw.WriteLine();
-			sw.WriteLine( "; 使用するSkinのサブフォルダ名。" );
-			sw.WriteLine( "; 例えば System/Default/Graphics/... などの場合は、SkinPath=Default を指定します。" );
-			sw.WriteLine( "; Skin subfolder path." );
-			sw.WriteLine( "; e.g. System/Default/Graphics/... -> Set SkinPath=Default" );
-			sw.WriteLine( "SkinPath={0}", this.strSkinSubfolder );
+
+			#region [ スキン関連 ]
+			#region [ Skinパスの絶対パス→相対パス変換 ]
+			Uri uriRoot = new Uri( System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
+			Uri uriPath = new Uri( System.IO.Path.Combine( this.strSystemSkinSubfolderFullName, "." + System.IO.Path.DirectorySeparatorChar ) );
+			string relPath = uriRoot.MakeRelativeUri( uriPath ).ToString();				// 相対パスを取得
+			relPath = System.Web.HttpUtility.UrlDecode( relPath );						// デコードする
+			relPath = relPath.Replace( '/', System.IO.Path.DirectorySeparatorChar );	// 区切り文字が\ではなく/なので置換する
+			#endregion
+			sw.WriteLine( "; 使用するSkinのフォルダ名。" );
+			sw.WriteLine( "; 例えば System\\Default\\Graphics\\... などの場合は、SkinPath=.\\Default\\ を指定します。" );
+			sw.WriteLine( "; Skin folder path." );
+			sw.WriteLine( "; e.g. System\\Default\\Graphics\\... -> Set SkinPath=.\\Default\\" );
+			sw.WriteLine( "SkinPath={0}", relPath );
 			sw.WriteLine();
+			sw.WriteLine( "; box.defが指定するSkinに自動で切り替えるかどうか (0=切り替えない、1=切り替える)" );
+			sw.WriteLine( "; Automatically change skin specified in box.def. (0=No 1=Yes)" );
+			sw.WriteLine( "SkinChangeByBoxDef={0}", this.bUseBoxDefSkin? 1 : 0 );
+			sw.WriteLine();
+			#endregion
 			sw.WriteLine( "; 画面モード(0:ウィンドウ, 1:全画面)" );
 			sw.WriteLine( "; Screen mode. (0:Window, 1:Fullscreen)" );
 			sw.WriteLine( "FullScreen={0}", this.b全画面モード ? 1 : 0 );
             sw.WriteLine();
-
 			sw.WriteLine("; ウインドウモード時の画面幅");				// #23510 2010.10.31 yyagi add
 			sw.WriteLine("; A width size in the window mode.");			//
 			sw.WriteLine("WindowWidth={0}", this.nウインドウwidth);		//
@@ -1718,13 +1734,31 @@ namespace DTXMania
 											}
 											else if ( str3.Equals( "SkinPath" ) )
 											{
-												this.strSkinSubfolder = str4;
+												string absSkinPath = str4;
+												if ( !System.IO.Path.IsPathRooted( str4 ) )
+												{
+													absSkinPath = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
+													absSkinPath = System.IO.Path.Combine( absSkinPath, str4 );
+													Uri u = new Uri( absSkinPath );
+													absSkinPath = u.AbsolutePath.ToString();	// str4内に相対パスがある場合に備える
+													absSkinPath = System.Web.HttpUtility.UrlDecode( absSkinPath );						// デコードする
+													absSkinPath = absSkinPath.Replace( '/', System.IO.Path.DirectorySeparatorChar );	// 区切り文字が\ではなく/なので置換する
+												}
+												if ( absSkinPath[ absSkinPath.Length - 1 ] != System.IO.Path.DirectorySeparatorChar )	// フォルダ名末尾に\を必ずつけて、CSkin側と表記を統一する
+												{
+													absSkinPath += System.IO.Path.DirectorySeparatorChar;
+												}
+												this.strSystemSkinSubfolderFullName = absSkinPath;
+											}
+											else if ( str3.Equals( "SkinChangeByBoxDef" ) )
+											{
+												this.bUseBoxDefSkin = C変換.bONorOFF( str4[ 0 ] );
 											}
 											else if ( str3.Equals( "FullScreen" ) )
 											{
 												this.b全画面モード = C変換.bONorOFF( str4[ 0 ] );
 											}
-											else if( str3.Equals( "WindowWidth" ) )		// #23510 2010.10.31 yyagi add
+											else if ( str3.Equals( "WindowWidth" ) )		// #23510 2010.10.31 yyagi add
 											{
 												this.nウインドウwidth = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 1, 65535, this.nウインドウwidth );
 												if( this.nウインドウwidth <= 0 )

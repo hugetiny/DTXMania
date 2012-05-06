@@ -1518,8 +1518,8 @@ for (int i = 0; i < 3; i++) {
 			try
 			{
 				Trace.TraceInformation( "初期化開始。" );
-				Skin = new CSkin( CDTXMania.ConfigIni.strSkinSubfolder );
-				CDTXMania.ConfigIni.strSkinSubfolder = CSkin.strSkinSubfolder;	// 旧指定のSkinフォルダが消滅していた場合に備える
+				Skin = new CSkin( CDTXMania.ConfigIni.strSystemSkinSubfolderFullName, CDTXMania.ConfigIni.bUseBoxDefSkin );
+				CDTXMania.ConfigIni.strSystemSkinSubfolderFullName = CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true );	// 旧指定のSkinフォルダが消滅していた場合に備える
 				Trace.TraceInformation( "スキンの初期化を完了しました。" );
 			}
 			catch
@@ -1786,6 +1786,13 @@ for (int i = 0; i < 3; i++) {
 
 			//---------------------
 			#endregion
+
+			// Sound管理.t再生中の処理をする() を、別スレッドで50ms周期で実行する
+			//System.Threading.Thread t =
+			//new System.Threading.Thread(
+			//new System.Threading.ThreadStart( Sound管理.t再生中の処理をする_loop ) );
+			//t.IsBackground = true;
+			//t.Start();
 
 			Trace.TraceInformation( "アプリケーションの初期化を完了しました。" );
 

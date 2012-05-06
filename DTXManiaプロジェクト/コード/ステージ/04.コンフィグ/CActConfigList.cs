@@ -190,13 +190,27 @@ namespace DTXMania
 				"Turn ON to put debug log to\n DTXManiaLog.txt\nTo take it effective, you need to\n re-open DTXMania." );
 			this.list項目リスト.Add( this.iLogOutputLog );
 
-			this.iSystemSkinSubfolder = new CItemList( "Skin", CItemBase.Eパネル種別.通常, nSkinIndex,
+			this.iSystemSkinSubfolder = new CItemList( "Skin (General)", CItemBase.Eパネル種別.通常, nSkinIndex,
 				"スキン切替：\n" +
-				"スキンを切り替えます。",
+				"スキンを切り替えます。\n",
+				//"CONFIGURATIONを抜けると、設定した\n" +
+				//"スキンに変更されます。",
 				"Skin:\n" +
 				"Change skin.",
-				skinSubFolders );
+				skinNames );
 			this.list項目リスト.Add( this.iSystemSkinSubfolder );
+			this.iSystemUseBoxDefSkin = new CItemToggle( "Skin (Box)", CDTXMania.ConfigIni.bUseBoxDefSkin,
+				"Music boxスキンの利用：\n" +
+				"特別なスキンが設定されたMusic box\n" +
+				"に出入りしたときに、自動でスキンを\n" +
+				"切り替えるかどうかを設定します。\n",
+				//"\n" +
+				//"(Music Boxスキンは、box.defファイル\n" +
+				//" で指定できます)\n",
+				"Box skin:\n" +
+				"Automatically change skin\n" +
+				"specified in box.def file." );
+			this.list項目リスト.Add( this.iSystemUseBoxDefSkin );
 
 	
 			this.iSystemGoToKeyAssign = new CItemBase( "System Keys", CItemBase.Eパネル種別.通常,
@@ -978,6 +992,10 @@ namespace DTXMania
 						CDTXMania.ConfigIni.BackupOf1BD = null;
 					}
 				}
+				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemUseBoxDefSkin )			// #28195 2012.5.6 yyagi
+				{
+					CSkin.bUseBoxDefSkin = this.iSystemUseBoxDefSkin.bON;
+				}
 				#region [ スキン項目でEnterを押下した場合に限り、スキンの縮小サンプルを生成する。]
 				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemSkinSubfolder )			// #28195 2012.5.2 yyagi
 				{
@@ -992,10 +1010,7 @@ namespace DTXMania
 			nSkinIndex = ( ( CItemList ) this.list項目リスト[ this.n現在の選択項目 ] ).n現在選択されている項目番号;
 			if ( nSkinSampleIndex != nSkinIndex )
 			{
-				string skinName = ( string ) ( ( ( CItemList ) this.list項目リスト[ this.n現在の選択項目 ] ).obj現在値() );
-				string path;
-				path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
-				path = System.IO.Path.Combine( path, CSkin.PrefixSkinFolder + skinName );
+				string path = skinSubFolders[ nSkinIndex ];
 				path = System.IO.Path.Combine( path, @"Graphics\ScreenTitle background.jpg" );
 				Bitmap bmSrc = new Bitmap( path );
 				Bitmap bmDest = new Bitmap( bmSrc.Width / 4, bmSrc.Height / 4 );
@@ -1219,19 +1234,26 @@ namespace DTXMania
 			this.eメニュー種別 = Eメニュー種別.Unknown;
 
 			#region [ スキン選択肢と、現在選択中のスキン(index)の準備 #28195 2012.5.2 yyagi ]
-			//CDTXMania.Skin.ReloadSkinPaths();					// CONFIGに入るタイミングで、スキンフォルダを再検索
-			skinSubFolders = (string[])CDTXMania.Skin.strSkinSubfolders.Clone();	// skinSubFoldersへの書き換えが元に及ばないよう、Clone()する
-			skinSubFolder_org = CSkin.strSkinSubfolder;
-			nSkinIndex = Array.BinarySearch( skinSubFolders, CSkin.strSkinSubfolder );
-			if ( nSkinIndex < 0 )
+			int ns = ( CDTXMania.Skin.strSystemSkinSubfolders == null ) ? 0 : CDTXMania.Skin.strSystemSkinSubfolders.Length;
+			int nb = ( CDTXMania.Skin.strBoxDefSkinSubfolders == null ) ? 0 : CDTXMania.Skin.strBoxDefSkinSubfolders.Length;
+			skinSubFolders = new string[ ns + nb ];
+			for ( int i = 0; i < ns; i++ )
+			{
+				skinSubFolders[ i ] = CDTXMania.Skin.strSystemSkinSubfolders[ i ];
+			}
+			for ( int i = 0; i < nb; i++ )
+			{
+				skinSubFolders[ ns + i ] = CDTXMania.Skin.strBoxDefSkinSubfolders[ i ];
+			}
+			skinSubFolder_org = CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true );
+			Array.Sort( skinSubFolders );
+			skinNames = CSkin.GetSkinName( skinSubFolders );
+			nSkinIndex = Array.BinarySearch( skinSubFolders, skinSubFolder_org );
+			if ( nSkinIndex < 0 )	// 念のため
 			{
 				nSkinIndex = 0;
 			}
 			nSkinSampleIndex = -1;
-			for ( int i = 0; i < skinSubFolders.Length; i++ )	// "SkinFiles."を削除
-			{
-				skinSubFolders[ i ] = skinSubFolders[ i ].Substring( CSkin.PrefixSkinFolder.Length );
-			}
 			#endregion
 
 			this.t項目リストの設定・Bass();		// #27795 2012.3.11 yyagi; System設定の中でDrumsの設定を参照しているため、
@@ -1257,7 +1279,7 @@ namespace DTXMania
 			
 			base.On非活性化();
 
-			if ( CSkin.strSkinSubfolder != this.skinSubFolder_org )
+			if ( CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true ) != this.skinSubFolder_org )
 			{
 				CDTXMania.Skin.PrepareReloadSkin();		// #28195 2012.5.2 yyagi CONFIG脱出時にSkin更新
 				CDTXMania.Skin.ReloadSkin();			//
@@ -1680,6 +1702,7 @@ namespace DTXMania
 
 		private CTexture txSkinSample1;				// #28195 2012.5.2 yyagi
 		private string[] skinSubFolders;			//
+		private string[] skinNames;					//
 		private string skinSubFolder_org;			//
 		private int nSkinSampleIndex;				//
 		private int nSkinIndex;						//
@@ -1736,6 +1759,7 @@ namespace DTXMania
 		private CItemInteger iGuitarInputAdjustTimeMs;		//
 		private CItemInteger iBassInputAdjustTimeMs;		//
 		private CItemList iSystemSkinSubfolder;				// #28195 2012.5.2 yyagi
+		private CItemToggle iSystemUseBoxDefSkin;			// #28195 2012.5.6 yyagi
 
 		private int t前の項目( int nItem )
 		{
@@ -1828,13 +1852,20 @@ namespace DTXMania
 			CDTXMania.ConfigIni.n自動再生音量 = this.iSystemAutoChipVolume.n現在の値;
 			CDTXMania.ConfigIni.bストイックモード = this.iSystemStoicMode.bON;
 
-			CDTXMania.ConfigIni.nShowLagType = this.iSystemShowLag.n現在選択されている項目番号;		// #25370 2011.6.3 yyagi
-			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;		// #25399 2011.6.9 yyagi
+			CDTXMania.ConfigIni.nShowLagType = this.iSystemShowLag.n現在選択されている項目番号;				// #25370 2011.6.3 yyagi
+			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;					// #25399 2011.6.9 yyagi
 
-			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
+			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;										// #23559 2911.7.27 yyagi
 
-			CDTXMania.ConfigIni.strSkinSubfolder = CSkin.PrefixSkinFolder + ( string ) this.iSystemSkinSubfolder.list項目値[ nSkinIndex ];	// #28195 2012.5.2 yyagi
-			CSkin.strSkinSubfolder = CDTXMania.ConfigIni.strSkinSubfolder;																	//
+			CDTXMania.ConfigIni.strSystemSkinSubfolderFullName = skinSubFolders[ nSkinIndex ];				// #28195 2012.5.2 yyagi
+			CDTXMania.Skin.SetCurrentSkinSubfolderFullName( CDTXMania.ConfigIni.strSystemSkinSubfolderFullName, true );
+			CDTXMania.ConfigIni.bUseBoxDefSkin = this.iSystemUseBoxDefSkin.bON;								// #28195 2012.5.6 yyagi
+
+//Trace.TraceInformation( "saved" );
+//Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );
+//Trace.TraceInformation( "Skin現在System  : " + CSkin.strSystemSkinSubfolderFullName );
+//Trace.TraceInformation( "Skin現在BoxDef  : " + CSkin.strBoxDefSkinSubfolderFullName );
+		
 		}
 		private void tConfigIniへ記録する・Bass()
 		{

@@ -418,8 +418,21 @@ namespace DTXMania
 							}
 							else
 							{
-								//	box.def	記載のスキン情報を利用
-								c曲リストノード.strSkinPath = System.IO.Path.Combine( infoDir.FullName, boxdef.SkinPath );
+								// box.defに記載されているスキン情報をコピー。末尾に必ず\をつけておくこと。
+								string s = System.IO.Path.Combine( infoDir.FullName, boxdef.SkinPath );
+								if ( s[ s.Length - 1 ] != System.IO.Path.DirectorySeparatorChar )	// フォルダ名末尾に\を必ずつけて、CSkin側と表記を統一する
+								{
+									s += System.IO.Path.DirectorySeparatorChar;
+								}
+								if ( CDTXMania.Skin.bIsValid( s ) )
+								{
+									c曲リストノード.strSkinPath = s;
+								}
+								else
+								{
+									c曲リストノード.strSkinPath = ( c曲リストノード.r親ノード == null ) ?
+										"" : c曲リストノード.r親ノード.strSkinPath;
+								}
 							}
 						}
 						if ( boxdef.PerfectRange >= 0 )
@@ -504,8 +517,21 @@ namespace DTXMania
 					}
 					else
 					{
-						// box.defに記載されているスキン情報をコピー
-						c曲リストノード.strSkinPath = System.IO.Path.Combine( infoDir.FullName, boxdef.SkinPath );
+						// box.defに記載されているスキン情報をコピー。末尾に必ず\をつけておくこと。
+						string s = System.IO.Path.Combine( infoDir.FullName, boxdef.SkinPath );
+						if ( s[ s.Length - 1 ] != System.IO.Path.DirectorySeparatorChar )	// フォルダ名末尾に\を必ずつけて、CSkin側と表記を統一する
+						{
+							s += System.IO.Path.DirectorySeparatorChar;
+						}
+						if ( CDTXMania.Skin.bIsValid( s ) )
+						{
+							c曲リストノード.strSkinPath = s;
+						}
+						else
+						{
+							c曲リストノード.strSkinPath = ( c曲リストノード.r親ノード == null ) ?
+								"" : c曲リストノード.r親ノード.strSkinPath;
+						}
 					}
 					c曲リストノード.strBreadcrumbs = ( c曲リストノード.r親ノード == null ) ?
 						c曲リストノード.strタイトル : c曲リストノード.r親ノード.strBreadcrumbs + " > " + c曲リストノード.strタイトル;
@@ -868,7 +894,33 @@ namespace DTXMania
 		//-----------------
 		public void t曲リストへ後処理を適用する()
 		{
+			listStrBoxDefSkinSubfolderFullName = new List<string>();
+			if ( CDTXMania.Skin.strBoxDefSkinSubfolders != null )
+			{
+				foreach ( string b in CDTXMania.Skin.strBoxDefSkinSubfolders )
+				{
+					listStrBoxDefSkinSubfolderFullName.Add( b );
+				}
+			}
+
 			this.t曲リストへ後処理を適用する( this.list曲ルート );
+
+			#region [ skin名で比較して、systemスキンとboxdefスキンに重複があれば、boxdefスキン側を削除する ]
+			string[] systemSkinNames = CSkin.GetSkinName( CDTXMania.Skin.strSystemSkinSubfolders );
+			List<string> l = new List<string>( listStrBoxDefSkinSubfolderFullName );
+			foreach ( string boxdefSkinSubfolderFullName in l )
+			{
+				if ( Array.BinarySearch( systemSkinNames,
+					CSkin.GetSkinName( boxdefSkinSubfolderFullName ),
+					StringComparer.InvariantCultureIgnoreCase ) >= 0 )
+				{
+					listStrBoxDefSkinSubfolderFullName.Remove( boxdefSkinSubfolderFullName );
+				}
+			}
+			#endregion
+			string[] ba = listStrBoxDefSkinSubfolderFullName.ToArray();
+			Array.Sort( ba );
+			CDTXMania.Skin.strBoxDefSkinSubfolders = ba;
 		}
 		private void t曲リストへ後処理を適用する( List<C曲リストノード> ノードリスト )
 		{
@@ -937,6 +989,11 @@ namespace DTXMania
 
 					itemBack.strSkinPath = ( c曲リストノード.r親ノード == null ) ?
 						"" : c曲リストノード.r親ノード.strSkinPath;
+
+					if ( itemBack.strSkinPath != "" && !listStrBoxDefSkinSubfolderFullName.Contains( itemBack.strSkinPath ) )
+					{
+						listStrBoxDefSkinSubfolderFullName.Add( itemBack.strSkinPath );
+					}
 
 					itemBack.strBreadcrumbs = ( itemBack.r親ノード == null ) ?
 						itemBack.strタイトル : itemBack.r親ノード.strBreadcrumbs + " > " + itemBack.strタイトル;
@@ -1620,6 +1677,7 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 		#region [ private ]
 		//-----------------
 		private const string SONGSDB_VERSION = "SongsDB3";
+		private List<string> listStrBoxDefSkinSubfolderFullName;
 
 		private int t比較0_共通( C曲リストノード n1, C曲リストノード n2 )
 		{

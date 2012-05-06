@@ -32,8 +32,6 @@ namespace DTXMania
 
 	internal class CSkin : IDisposable
 	{
-		public static string PrefixSkinFolder = "";		// "SkinFiles.";
-
 		// クラス
 
 		public class Cシステムサウンド : IDisposable
@@ -418,34 +416,108 @@ namespace DTXMania
 			}
 		}
 
-		public string[] strSkinSubfolders = null;		// List<string>だとignoreCaseな検索が面倒なので、配列に逃げる :-)
-		public static string strSkinSubfolder = null;					// Configで選択しているスキン
-		public static string strSkinSubfolderFullName					// strSkinSubfolderのフルパスを返す
+
+		// スキンの切り替えについて・・・
+		//
+		// ・スキンの種類は大きく分けて2種類。Systemスキンとboxdefスキン。
+		// 　前者はSystem/フォルダにユーザーが自らインストールしておくスキン。
+		// 　後者はbox.defで指定する、曲データ制作者が提示するスキン。
+		//
+		// ・Config画面で、2種のスキンを区別無く常時使用するよう設定することができる。
+		// ・box.defの#SKINPATH 設定により、boxdefスキンを一時的に使用するよう設定する。
+		// 　(box.defの効果の及ばない他のmuxic boxでは、当該boxdefスキンの有効性が無くなる)
+		//
+		// これを実現するために・・・
+		// ・Systemスキンの設定情報と、boxdefスキンの設定情報は、分離して持つ。
+		// 　(strSystem～～ と、strBoxDef～～～)
+		// ・Config画面からは前者のみ書き換えできるようにし、
+		// 　選曲画面からは後者のみ書き換えできるようにする。(SetCurrent...())
+		// ・読み出しは両者から行えるようにすると共に
+		// 　選曲画面用に二種の情報を区別しない読み出し方法も提供する(GetCurrent...)
+
+		private object lockBoxDefSkin;
+		public static bool bUseBoxDefSkin = true;						// box.defからのスキン変更を許容するか否か
+
+		public string strSystemSkinRoot = null;
+		public string[] strSystemSkinSubfolders = null;		// List<string>だとignoreCaseな検索が面倒なので、配列に逃げる :-)
+		private string[] _strBoxDefSkinSubfolders = null;
+		public string[] strBoxDefSkinSubfolders
 		{
 			get
 			{
-				string path;
-				path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
-				path = System.IO.Path.Combine( path, strSkinSubfolder );
-				return path;
+				lock ( lockBoxDefSkin )
+				{
+					return _strBoxDefSkinSubfolders;
+				}
+			}
+			set
+			{
+				lock ( lockBoxDefSkin )
+				{
+					_strBoxDefSkinSubfolders = value;
+				}
+			}
+		}			// 別スレッドからも書き込みアクセスされるため、スレッドセーフなアクセス法を提供
+
+		private static string strSystemSkinSubfolderFullName;			// Config画面で設定されたスキン
+		private static string strBoxDefSkinSubfolderFullName = "";		// box.defで指定されているスキン
+
+		/// <summary>
+		/// スキンパス名をフルパスで取得する
+		/// </summary>
+		/// <param name="bFromUserConfig">ユーザー設定用ならtrue, box.defからの設定ならfalse</param>
+		/// <returns></returns>
+		public string GetCurrentSkinSubfolderFullName( bool bFromUserConfig )
+		{
+			if ( !bUseBoxDefSkin || bFromUserConfig == true || strBoxDefSkinSubfolderFullName == "" )
+			{
+				return strSystemSkinSubfolderFullName;
+			}
+			else
+			{
+				return strBoxDefSkinSubfolderFullName;
 			}
 		}
-		public static string strBoxDefSkinSubfolderFullName = "";		// box.defで指定されているスキン
+		/// <summary>
+		/// スキンパス名をフルパスで設定する
+		/// </summary>
+		/// <param name="value">スキンパス名</param>
+		/// <param name="bFromUserConfig">ユーザー設定用ならtrue, box.defからの設定ならfalse</param>
+		public void SetCurrentSkinSubfolderFullName( string value, bool bFromUserConfig )
+		{
+			if ( bFromUserConfig )
+			{
+				strSystemSkinSubfolderFullName = value;
+			}
+			else
+			{
+				strBoxDefSkinSubfolderFullName = value;
+			}
+		}
 
 
 		// コンストラクタ
-		public CSkin( string _strSkinSubfolder )
+		public CSkin( string _strSkinSubfolderFullName, bool _bUseBoxDefSkin )
 		{
-			string path;
-			path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
-			strSkinSubfolder = _strSkinSubfolder;
+			lockBoxDefSkin = new object();
+			strSystemSkinSubfolderFullName = _strSkinSubfolderFullName;
+			bUseBoxDefSkin = _bUseBoxDefSkin;
+			InitializeSkinPathRoot();
 			ReloadSkinPaths();
 			PrepareReloadSkin();
 		}
 		public CSkin()
 		{
+			lockBoxDefSkin = new object();
+			InitializeSkinPathRoot();
+			bUseBoxDefSkin = true;
 			ReloadSkinPaths();
 			PrepareReloadSkin();
+		}
+		private string InitializeSkinPathRoot()
+		{
+			strSystemSkinRoot = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
+			return strSystemSkinRoot;
 		}
 
 		/// <summary>
@@ -459,8 +531,8 @@ namespace DTXMania
 		{
 			Trace.TraceInformation( "SkinPath設定: {0}",
 				( strBoxDefSkinSubfolderFullName == "" ) ?
-				strBoxDefSkinSubfolderFullName :
-				strSkinSubfolder
+				strSystemSkinSubfolderFullName :
+				strBoxDefSkinSubfolderFullName
 			);
 
 			for ( int i = 0; i < nシステムサウンド数; i++ )
@@ -520,66 +592,79 @@ namespace DTXMania
 
 		/// <summary>
 		/// Skinの一覧を再取得する。
-		/// System/SkinFiles.*****/Graphics (やSounds/) というフォルダ構成を想定している。
-		/// もし再取得の結果、現在使用中のSkinのパス(strSkinSubfloder)が消えていた場合は、
-		/// 以下の優先順位で存在確認の上strSkinSubfolderを再設定する。
-		/// 1. System/SkinFiles.Default/
-		/// 2. System/SkinFiles.*****/ で最初にenumerateされたもの
+		/// System/*****/Graphics (やSounds/) というフォルダ構成を想定している。
+		/// もし再取得の結果、現在使用中のSkinのパス(strSystemSkinSubfloderFullName)が消えていた場合は、
+		/// 以下の優先順位で存在確認の上strSystemSkinSubfolderFullNameを再設定する。
+		/// 1. System/Default/
+		/// 2. System/*****/ で最初にenumerateされたもの
  		/// 3. System/ (従来互換)
 		/// </summary>
 		public void ReloadSkinPaths()
 		{
-			string path;
-			#region [ まず System/SkinFiles.*** をenumerateする ]
-			path = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
-			string[] tempSkinSubfolders = System.IO.Directory.GetDirectories( path, PrefixSkinFolder + "*" );
-			strSkinSubfolders = new string[ tempSkinSubfolders.Length ];
+			#region [ まず System/*** をenumerateする ]
+			string[] tempSkinSubfolders = System.IO.Directory.GetDirectories( strSystemSkinRoot, "*" );
+			strSystemSkinSubfolders = new string[ tempSkinSubfolders.Length ];
 			int size = 0;
-			for ( int i = 0; i < strSkinSubfolders.Length; i++ )
+			for ( int i = 0; i < tempSkinSubfolders.Length; i++ )
 			{
 				#region [ 検出したフォルダがスキンフォルダかどうか確認する]
-				string filePathTitle;
-				filePathTitle = System.IO.Path.Combine( tempSkinSubfolders[i], @"Graphics\ScreenTitle background.jpg" );
-				if ( !File.Exists( filePathTitle ) )
+				if ( !bIsValid( tempSkinSubfolders[ i ] ) )
 					continue;
 				#endregion
-				#region [ スキンフォルダと確認できたものを、strSKinSubfoldersに入れる ]
-				string[] spl = tempSkinSubfolders[ i ].Split( System.IO.Path.DirectorySeparatorChar );
-				strSkinSubfolders[ size ] = spl[ spl.Length - 1 ];		// subfolder名から、～～/System/ までの部分を削除
-				Trace.TraceInformation( "SkinPath検出: {0}", strSkinSubfolders[ size ] );
+				#region [ スキンフォルダと確認できたものを、strSkinSubfoldersに入れる ]
+				// フォルダ名末尾に必ず\をつけておくこと。さもないとConfig読み出し側(必ず\をつける)とマッチできない
+				if ( tempSkinSubfolders[ i ][ tempSkinSubfolders[ i ].Length - 1 ] != System.IO.Path.DirectorySeparatorChar )
+				{
+					tempSkinSubfolders[ i ] += System.IO.Path.DirectorySeparatorChar;
+				}
+				strSystemSkinSubfolders[ size ] = tempSkinSubfolders[ i ];
+				Trace.TraceInformation( "SkinPath検出: {0}", strSystemSkinSubfolders[ size ] );
 				size++;
 				#endregion
 			}
-			Array.Resize( ref strSkinSubfolders, size );
-			Array.Sort( strSkinSubfolders );	// BinarySearch実行前にSortが必要
+			Trace.TraceInformation( "SkinPath入力: {0}", strSystemSkinSubfolderFullName );
+			Array.Resize( ref strSystemSkinSubfolders, size );
+			Array.Sort( strSystemSkinSubfolders );	// BinarySearch実行前にSortが必要
 			#endregion
 
-			#region [ 次に、カレントのSkinパスが存在するか調べる。あれば終了。]
-			if ( Array.BinarySearch( strSkinSubfolders, strSkinSubfolder,
+			#region [ 現在のSkinパスがbox.defスキンをCONFIG指定していた場合のために、最初にこれが有効かチェックする。有効ならこれを使う。 ]
+			if ( bIsValid( strSystemSkinSubfolderFullName ) &&
+				Array.BinarySearch( strSystemSkinSubfolders, strSystemSkinSubfolderFullName,
+				StringComparer.InvariantCultureIgnoreCase ) < 0 )
+			{
+				strBoxDefSkinSubfolders = new string[ 1 ]{ strSystemSkinSubfolderFullName };
+				return;
+			}
+			#endregion
+
+			#region [ 次に、現在のSkinパスが存在するか調べる。あれば終了。]
+			if ( Array.BinarySearch( strSystemSkinSubfolders, strSystemSkinSubfolderFullName,
 				StringComparer.InvariantCultureIgnoreCase ) >= 0 )
 				return;
 			#endregion
-			#region [ カレントのSkinパスが消滅しているので、再設定する。]
+			#region [ カレントのSkinパスが消滅しているので、以下で再設定する。]
 			/// 以下の優先順位で現在使用中のSkinパスを再設定する。
-			/// 1. System/SkinFiles.Default/
-			/// 2. System/SkinFiles.*****/ で最初にenumerateされたもの
+			/// 1. System/Default/
+			/// 2. System/*****/ で最初にenumerateされたもの
 			/// 3. System/ (従来互換)
-			#region [ System/SkinFiles.Default/ があるなら、そこにカレントSkinパスを設定する]
-			if ( Array.BinarySearch( strSkinSubfolders, PrefixSkinFolder + "Default", StringComparer.InvariantCultureIgnoreCase ) >= 0 )
+			#region [ System/Default/ があるなら、そこにカレントSkinパスを設定する]
+			string tempSkinPath_default = System.IO.Path.Combine( strSystemSkinRoot, "Default" + System.IO.Path.DirectorySeparatorChar );
+			if ( Array.BinarySearch( strSystemSkinSubfolders, tempSkinPath_default, 
+				StringComparer.InvariantCultureIgnoreCase ) >= 0 )
 			{
-				strSkinSubfolder = PrefixSkinFolder + "Default";
+				strSystemSkinSubfolderFullName = tempSkinPath_default;
 				return;
 			}
 			#endregion
 			#region [ System/SkinFiles.*****/ で最初にenumerateされたものを、カレントSkinパスに再設定する ]
-			if ( strSkinSubfolders.Length > 0 )
+			if ( strSystemSkinSubfolders.Length > 0 )
 			{
-				strSkinSubfolder = strSkinSubfolders[ 0 ];
+				strSystemSkinSubfolderFullName = strSystemSkinSubfolders[ 0 ];
 				return;
 			}
 			#endregion
 			#region [ System/ に、カレントSkinパスを再設定する。]
-			strSkinSubfolder = "";
+			strSystemSkinSubfolderFullName = strSystemSkinRoot;
 			#endregion
 			#endregion
 		}
@@ -588,16 +673,72 @@ namespace DTXMania
 
 		public static string Path( string strファイルの相対パス )
 		{
-			if ( strBoxDefSkinSubfolderFullName == "" )
+			if ( strBoxDefSkinSubfolderFullName == "" || !bUseBoxDefSkin )
 			{
-				return System.IO.Path.Combine( strSkinSubfolderFullName, strファイルの相対パス );
+				return System.IO.Path.Combine( strSystemSkinSubfolderFullName, strファイルの相対パス );
 			}
 			else
 			{
 				return System.IO.Path.Combine( strBoxDefSkinSubfolderFullName, strファイルの相対パス );
 			}
 		}
-		
+
+		/// <summary>
+		/// フルパス名を与えると、スキン名として、ディレクトリ名末尾の要素を返す
+		/// 例: C:\foo\bar\ なら、barを返す
+		/// </summary>
+		/// <param name="skinpath">スキンが格納されたパス名(フルパス)</param>
+		/// <returns>スキン名</returns>
+		public static string GetSkinName( string skinPathFullName )
+		{
+			if ( skinPathFullName != null )
+			{
+				if ( skinPathFullName == "" )		// 「box.defで未定義」用
+					skinPathFullName = strSystemSkinSubfolderFullName;
+				string[] tmp = skinPathFullName.Split( System.IO.Path.DirectorySeparatorChar );
+				return tmp[ tmp.Length - 2 ];		// ディレクトリ名の最後から2番目の要素がスキン名(最後の要素はnull。元stringの末尾が\なので。)
+			}
+			return null;
+		}
+		public static string[] GetSkinName( string[] skinPathFullNames )
+		{
+			string[] ret = new string[ skinPathFullNames.Length ];
+			for ( int i = 0; i < skinPathFullNames.Length; i++ )
+			{
+				ret[ i ] = GetSkinName( skinPathFullNames[ i ] );
+			}
+			return ret;
+		}
+
+
+		public string GetSkinSubfolderFullNameFromSkinName( string skinName )
+		{
+			foreach ( string s in strSystemSkinSubfolders )
+			{
+				if ( GetSkinName( s ) == skinName )
+					return s;
+			}
+			foreach ( string b in strBoxDefSkinSubfolders )
+			{
+				if ( GetSkinName( b ) == skinName )
+					return b;
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// スキンパス名が妥当かどうか
+		/// (タイトル画像にアクセスできるかどうかで判定する)
+		/// </summary>
+		/// <param name="skinPathFullName">妥当性を確認するスキンパス(フルパス)</param>
+		/// <returns>妥当ならtrue</returns>
+		public bool bIsValid( string skinPathFullName )
+		{
+			string filePathTitle;
+			filePathTitle = System.IO.Path.Combine( skinPathFullName, @"Graphics\ScreenTitle background.jpg" );
+			return ( File.Exists( filePathTitle ) );
+		}
+
 		#region [ IDisposable 実装 ]
 		//-----------------
 		public void Dispose()

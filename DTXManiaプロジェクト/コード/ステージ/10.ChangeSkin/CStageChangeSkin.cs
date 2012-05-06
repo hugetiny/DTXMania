@@ -79,7 +79,7 @@ namespace DTXMania
 				}
 
 				//スキン変更処理
-				Trace.TraceInformation("New Skin=" + CSkin.strBoxDefSkinSubfolderFullName );
+				Trace.TraceInformation("スキン変更:" + CDTXMania.Skin.GetCurrentSkinSubfolderFullName( false )  );
 				CDTXMania.Skin.PrepareReloadSkin();
 				CDTXMania.Skin.ReloadSkin();
 				return 1;

@@ -3455,7 +3455,14 @@ namespace DTXMania
 				}
 				//-----------------
 				#endregion
-
+				#region [ BPM ]
+				//-----------------
+				else if( strコマンド.StartsWith( "BPM", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・行解析・BPM_BPMzz( strコマンド, strパラメータ, strコメント );
+				}
+				//-----------------
+				#endregion
 				else if( !this.bヘッダのみ )		// ヘッダのみの解析の場合、以下は無視。
 				{
 					#region [ PANEL ]
@@ -3555,7 +3562,7 @@ namespace DTXMania
 						!this.t入力・行解析・BGA( strコマンド, strパラメータ, strコメント ) &&
 						!this.t入力・行解析・AVIPAN( strコマンド, strパラメータ, strコメント ) &&
 						!this.t入力・行解析・AVI_VIDEO( strコマンド, strパラメータ, strコメント ) &&
-						!this.t入力・行解析・BPM_BPMzz( strコマンド, strパラメータ, strコメント ) &&
+					//	!this.t入力・行解析・BPM_BPMzz( strコマンド, strパラメータ, strコメント ) &&	// bヘッダのみ==trueの場合でもチェックするよう変更
 						!this.t入力・行解析・RESULTIMAGE( strコマンド, strパラメータ, strコメント ) &&
 						!this.t入力・行解析・RESULTMOVIE( strコマンド, strパラメータ, strコメント ) &&
 						!this.t入力・行解析・RESULTSOUND( strコマンド, strパラメータ, strコメント ) &&
@@ -3567,6 +3574,10 @@ namespace DTXMania
 					Debug.Assert( true );		// #23885 2010.12.12 yyagi: dummy line to exit parsing the line
 												// 2011.8.17 from: "int xx=0;" から変更。毎回警告が出るので。
 				}
+				//else
+				//{	// Duration測定のため、bヘッダのみ==trueでも、チップ配置は行う
+				//	this.t入力・行解析・チップ配置( strコマンド, strパラメータ, strコメント );
+				//}
 			}
 		}
 		private bool t入力・行解析・AVI_VIDEO( string strコマンド, string strパラメータ, string strコメント )

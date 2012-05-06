@@ -133,6 +133,17 @@ namespace FDK
 				}
 			}
 		}
+
+		//public void t再生中の処理をする_loop()
+		//{
+		//    while ( true )
+		//    {
+		//        t再生中の処理をする();
+		//        System.Threading.Thread.Sleep( 100 );
+		//    }
+		//}
+
+	
 		public void tサウンドを破棄する( CSound sound )
 		{
 			lock( this.obj排他用 )
