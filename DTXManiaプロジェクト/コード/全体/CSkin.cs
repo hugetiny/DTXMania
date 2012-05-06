@@ -516,7 +516,7 @@ namespace DTXMania
 		}
 		private string InitializeSkinPathRoot()
 		{
-			strSystemSkinRoot = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
+			strSystemSkinRoot = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar );
 			return strSystemSkinRoot;
 		}
 
@@ -665,6 +665,7 @@ namespace DTXMania
 			#endregion
 			#region [ System/ に、カレントSkinパスを再設定する。]
 			strSystemSkinSubfolderFullName = strSystemSkinRoot;
+			strSystemSkinSubfolders = new string[ 1 ]{ strSystemSkinSubfolderFullName };
 			#endregion
 			#endregion
 		}
