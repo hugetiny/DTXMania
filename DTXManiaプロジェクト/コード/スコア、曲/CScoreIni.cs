@@ -225,6 +225,17 @@ namespace DTXMania
 				this.bAutoPlay.CY = false;
 				this.bAutoPlay.Guitar = false;
 				this.bAutoPlay.Bass = false;
+				this.bAutoPlay.GtR = false;
+				this.bAutoPlay.GtG = false;
+				this.bAutoPlay.GtB = false;
+				this.bAutoPlay.GtPick = false;
+				this.bAutoPlay.GtW = false;
+				this.bAutoPlay.BsR = false;
+				this.bAutoPlay.BsG = false;
+				this.bAutoPlay.BsB = false;
+				this.bAutoPlay.BsPick = false;
+				this.bAutoPlay.BsW = false;
+
 				this.bSudden = new STDGBVALUE<bool>();
 				this.bSudden.Drums = false;
 				this.bSudden.Guitar = false;
@@ -311,88 +322,136 @@ namespace DTXMania
 				public bool LT;
 				public bool FT;
 				public bool CY;
+				public bool RD;
 				public bool Guitar;
 				public bool Bass;
+				public bool GtR;
+				public bool GtG;
+				public bool GtB;
+				public bool GtPick;
+				public bool GtW;
+				public bool BsR;
+				public bool BsG;
+				public bool BsB;
+				public bool BsPick;
+				public bool BsW;
 				public bool this[ int index ]
 				{
 					get
 					{
-						switch( index )
+						switch ( index )
 						{
-							case 0:
+							case (int) Eレーン.LC:
 								return this.LC;
-
-							case 1:
+							case (int) Eレーン.HH:
 								return this.HH;
-
-							case 2:
+							case (int) Eレーン.SD:
 								return this.SD;
-
-							case 3:
+							case (int) Eレーン.BD:
 								return this.BD;
-
-							case 4:
+							case (int) Eレーン.HT:
 								return this.HT;
-
-							case 5:
+							case (int) Eレーン.LT:
 								return this.LT;
-
-							case 6:
+							case (int) Eレーン.FT:
 								return this.FT;
-
-							case 7:
+							case (int) Eレーン.CY:
 								return this.CY;
-
-							case 8:
+							case (int) Eレーン.RD:
+								return this.RD;
+							case (int) Eレーン.Guitar:
 								return this.Guitar;
-
-							case 9:
+							case (int) Eレーン.Bass:
 								return this.Bass;
+							case (int) Eレーン.GtR:
+								return this.GtR;
+							case (int) Eレーン.GtG:
+								return this.GtG;
+							case (int) Eレーン.GtB:
+								return this.GtB;
+							case (int) Eレーン.GtPick:
+								return this.GtPick;
+							case (int) Eレーン.GtW:
+								return this.GtW;
+							case (int) Eレーン.BsR:
+								return this.BsR;
+							case (int) Eレーン.BsG:
+								return this.BsG;
+							case (int) Eレーン.BsB:
+								return this.BsB;
+							case (int) Eレーン.BsPick:
+								return this.BsPick;
+							case (int) Eレーン.BsW:
+								return this.BsW;
 						}
 						throw new IndexOutOfRangeException();
 					}
 					set
 					{
-						switch( index )
+						switch ( index )
 						{
-							case 0:
+							case (int) Eレーン.LC:
 								this.LC = value;
 								return;
-
-							case 1:
+							case (int) Eレーン.HH:
 								this.HH = value;
 								return;
-
-							case 2:
+							case (int) Eレーン.SD:
 								this.SD = value;
 								return;
-
-							case 3:
+							case (int) Eレーン.BD:
 								this.BD = value;
 								return;
-
-							case 4:
+							case (int) Eレーン.HT:
 								this.HT = value;
 								return;
-
-							case 5:
+							case (int) Eレーン.LT:
 								this.LT = value;
 								return;
-
-							case 6:
+							case (int) Eレーン.FT:
 								this.FT = value;
 								return;
-
-							case 7:
+							case (int) Eレーン.CY:
 								this.CY = value;
 								return;
-
-							case 8:
+							case (int) Eレーン.RD:
+								this.RD = value;
+								return;
+							case (int) Eレーン.Guitar:
 								this.Guitar = value;
 								return;
-
-							case 9:
+							case (int) Eレーン.Bass:
 								this.Bass = value;
+								return;
+							case (int) Eレーン.GtR:
+								this.GtR = value;
+								return;
+							case (int) Eレーン.GtG:
+								this.GtG = value;
+								return;
+							case (int) Eレーン.GtB:
+								this.GtB = value;
+								return;
+							case (int) Eレーン.GtPick:
+								this.GtPick = value;
+								return;
+							case (int) Eレーン.GtW:
+								this.GtW = value;
+								return;
+							case (int) Eレーン.BsR:
+								this.BsR = value;
+								return;
+							case (int) Eレーン.BsG:
+								this.BsG = value;
+								return;
+							case (int) Eレーン.BsB:
+								this.BsB = value;
+								return;
+							case (int) Eレーン.BsPick:
+								this.BsPick = value;
+								return;
+							case (int) Eレーン.BsW:
+								this.BsW = value;
 								return;
 						}
 						throw new IndexOutOfRangeException();
@@ -732,18 +791,12 @@ namespace DTXMania
 							}
 							else if( item.Equals( "AutoPlay" ) )
 							{
-								if( para.Length == 9 )
+								// LCなし               LCあり               CYとRDが別           Gt/Bs autolane/pick
+								if( para.Length == 9 || para.Length == 10 || para.Length == 11 || para.Length == 21 )
 								{
-									for( int i = 0; i < 9; i++ )
+									for( int i = 0; i < para.Length; i++ )
 									{
 										c演奏記録.bAutoPlay[ i ] = this.ONorOFF( para[ i ] );
-									}
-								}
-								else if( para.Length == 10 )
-								{
-									for( int j = 0; j < 10; j++ )
-									{
-										c演奏記録.bAutoPlay[ j ] = this.ONorOFF( para[ j ] );
 									}
 								}
 							}
@@ -793,6 +846,7 @@ namespace DTXMania
 							}
 							else
 							{
+								#region [ RandomGuitar ]
 								if ( item.Equals( "RandomGuitar" ) )
 								{
 									switch ( int.Parse( para ) )
@@ -820,6 +874,8 @@ namespace DTXMania
 									}
 									throw new Exception( "RandomGuitar の値が無効です。" );
 								}
+								#endregion
+								#region [ RandomBass ]
 								if ( item.Equals( "RandomBass" ) )
 								{
 									switch ( int.Parse( para ) )
@@ -847,24 +903,34 @@ namespace DTXMania
 									}
 									throw new Exception( "RandomBass の値が無効です。" );
 								}
+								#endregion
+								#region [ LightGuitar ]
 								if ( item.Equals( "LightGuitar" ) )
 								{
 									c演奏記録.bLight.Guitar = C変換.bONorOFF( para[ 0 ] );
 								}
+								#endregion
+								#region [ LightBass ]
 								else if ( item.Equals( "LightBass" ) )
 								{
 									c演奏記録.bLight.Bass = C変換.bONorOFF( para[ 0 ] );
 								}
+								#endregion
+								#region [ LeftGuitar ]
 								else if ( item.Equals( "LeftGuitar" ) )
 								{
 									c演奏記録.bLeft.Guitar = C変換.bONorOFF( para[ 0 ] );
 								}
+								#endregion
+								#region [ LeftBass ]
 								else if ( item.Equals( "LeftBass" ) )
 								{
 									c演奏記録.bLeft.Bass = C変換.bONorOFF( para[ 0 ] );
 								}
+								#endregion
 								else
 								{
+									#region [ Dark ]
 									if ( item.Equals( "Dark" ) )
 									{
 										switch ( int.Parse( para ) )
@@ -887,18 +953,26 @@ namespace DTXMania
 										}
 										throw new Exception( "Dark の値が無効です。" );
 									}
+									#endregion
+									#region [ ScrollSpeedDrums ]
 									if ( item.Equals( "ScrollSpeedDrums" ) )
 									{
 										c演奏記録.f譜面スクロール速度.Drums = (float) decimal.Parse( para );
 									}
+									#endregion
+									#region [ ScrollSpeedGuitar ]
 									else if ( item.Equals( "ScrollSpeedGuitar" ) )
 									{
 										c演奏記録.f譜面スクロール速度.Guitar = (float) decimal.Parse( para );
 									}
+									#endregion
+									#region [ ScrollSpeedBass ]
 									else if ( item.Equals( "ScrollSpeedBass" ) )
 									{
 										c演奏記録.f譜面スクロール速度.Bass = (float) decimal.Parse( para );
 									}
+									#endregion
+									#region [ PlaySpeed ]
 									else if ( item.Equals( "PlaySpeed" ) )
 									{
 										string[] strArray2 = para.Split( new char[] { '/' } );
@@ -908,8 +982,10 @@ namespace DTXMania
 											c演奏記録.n演奏速度分母 = int.Parse( strArray2[ 1 ] );
 										}
 									}
+									#endregion
 									else
 									{
+										#region [ HHGroup ]
 										if ( item.Equals( "HHGroup" ) )
 										{
 											switch ( int.Parse( para ) )
@@ -937,6 +1013,8 @@ namespace DTXMania
 											}
 											throw new Exception( "HHGroup の値が無効です。" );
 										}
+										#endregion
+										#region [ FTGroup ]
 										if ( item.Equals( "FTGroup" ) )
 										{
 											switch ( int.Parse( para ) )
@@ -954,6 +1032,8 @@ namespace DTXMania
 											}
 											throw new Exception( "FTGroup の値が無効です。" );
 										}
+										#endregion
+										#region [ CYGroup ]
 										if ( item.Equals( "CYGroup" ) )
 										{
 											switch ( int.Parse( para ) )
@@ -971,6 +1051,8 @@ namespace DTXMania
 											}
 											throw new Exception( "CYGroup の値が無効です。" );
 										}
+										#endregion
+										#region [ HitSoundPriorityHH ]
 										if ( item.Equals( "HitSoundPriorityHH" ) )
 										{
 											switch ( int.Parse( para ) )
@@ -988,6 +1070,8 @@ namespace DTXMania
 											}
 											throw new Exception( "HitSoundPriorityHH の値が無効です。" );
 										}
+										#endregion
+										#region [ HitSoundPriorityFT ]
 										if ( item.Equals( "HitSoundPriorityFT" ) )
 										{
 											switch ( int.Parse( para ) )
@@ -1005,6 +1089,8 @@ namespace DTXMania
 											}
 											throw new Exception( "HitSoundPriorityFT の値が無効です。" );
 										}
+										#endregion
+										#region [ HitSoundPriorityCY ]
 										if ( item.Equals( "HitSoundPriorityCY" ) )
 										{
 											switch ( int.Parse( para ) )
@@ -1022,20 +1108,28 @@ namespace DTXMania
 											}
 											throw new Exception( "HitSoundPriorityCY の値が無効です。" );
 										}
+										#endregion
+										#region [ Guitar ]
 										if ( item.Equals( "Guitar" ) )
 										{
 											c演奏記録.bGuitar有効 = C変換.bONorOFF( para[ 0 ] );
 										}
+										#endregion
+										#region [ Drums ]
 										else if ( item.Equals( "Drums" ) )
 										{
 											c演奏記録.bDrums有効 = C変換.bONorOFF( para[ 0 ] );
 										}
+										#endregion
+										#region [ StageFailed ]
 										else if ( item.Equals( "StageFailed" ) )
 										{
 											c演奏記録.bSTAGEFAILED有効 = C変換.bONorOFF( para[ 0 ] );
 										}
+										#endregion
 										else
 										{
+											#region [ DamageLevel ]
 											if ( item.Equals( "DamageLevel" ) )
 											{
 												switch ( int.Parse( para ) )
@@ -1058,6 +1152,7 @@ namespace DTXMania
 												}
 												throw new Exception( "DamageLevel の値が無効です。" );
 											}
+											#endregion
 											if ( item.Equals( "UseKeyboard" ) )
 											{
 												c演奏記録.b演奏にキーボードを使用した = C変換.bONorOFF( para[ 0 ] );
@@ -1114,7 +1209,7 @@ namespace DTXMania
 						}
 						catch( Exception exception )
 						{
-							Trace.TraceError( "{0}読み込みを中断します。({1})", new object[] { exception.Message, iniファイル名 } );
+							Trace.TraceError( "{0}読み込みを中断します。({1})",  exception.Message, iniファイル名 );
 							break;
 						}
 					}
@@ -1160,7 +1255,7 @@ namespace DTXMania
 			writer.WriteLine();
 			for( int i = 0; i < 9; i++ )
 			{
-                string[] strArray = new string[] { "HiScore.Drums", "HiSkill.Drums", "HiScore.Guitar", "HiSkill.Guitar", "HiScore.Bass", "HiSkill.Bass", "LastPlay.Drums", "LastPlay.Guitar", "LastPlay.Bass" };
+                string[] strArray = { "HiScore.Drums", "HiSkill.Drums", "HiScore.Guitar", "HiSkill.Guitar", "HiScore.Bass", "HiSkill.Bass", "LastPlay.Drums", "LastPlay.Guitar", "LastPlay.Bass" };
 				writer.WriteLine( "[{0}]", strArray[ i ] );
 				writer.WriteLine( "Score={0}", this.stセクション[ i ].nスコア );
 				writer.WriteLine( "PlaySkill={0}", this.stセクション[ i ].db演奏型スキル値 );
@@ -1173,7 +1268,7 @@ namespace DTXMania
 				writer.WriteLine( "MaxCombo={0}", this.stセクション[ i ].n最大コンボ数 );
 				writer.WriteLine( "TotalChips={0}", this.stセクション[ i ].n全チップ数 );
 				writer.Write( "AutoPlay=" );
-				for( int j = 0; j < 10; j++ )
+				for( int j = 0; j < 21; j++ )
 				{
 					writer.Write( this.stセクション[ i ].bAutoPlay[ j ] ? 1 : 0 );
 				}

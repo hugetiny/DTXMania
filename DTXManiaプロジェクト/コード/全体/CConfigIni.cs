@@ -564,9 +564,37 @@ namespace DTXMania
 		{
 			get
 			{
-				for( int i = 0; i < 8; i++ )
+				for( int i = (int) Eレーン.LC; i <= (int) Eレーン.CY; i++ )
 				{
 					if( !this.bAutoPlay[ i ] )
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		public bool bギターが全部オートプレイである
+		{
+			get
+			{
+				for ( int i = (int) Eレーン.GtR; i <= (int) Eレーン.GtW; i++ )
+				{
+					if ( !this.bAutoPlay[ i ] )
+					{
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		public bool bベースが全部オートプレイである
+		{
+			get
+			{
+				for ( int i = (int) Eレーン.BsR; i <= (int) Eレーン.BsW; i++ )
+				{
+					if ( !this.bAutoPlay[ i ] )
 					{
 						return false;
 					}
@@ -621,7 +649,7 @@ namespace DTXMania
 		}
 		public STAUTOPLAY bAutoPlay;
 		[StructLayout( LayoutKind.Sequential )]
-		public struct STAUTOPLAY
+		public struct STAUTOPLAY								// Eレーンとindexを一致させること
 		{
 			public bool LC;
 			public bool HH;
@@ -634,93 +662,133 @@ namespace DTXMania
 			public bool RD;
 			public bool Guitar;
 			public bool Bass;
+			public bool GtR;
+			public bool GtG;
+			public bool GtB;
+			public bool GtPick;
+			public bool GtW;
+			public bool BsR;
+			public bool BsG;
+			public bool BsB;
+			public bool BsPick;
+			public bool BsW;
 			public bool this[ int index ]
 			{
 				get
 				{
-					switch( index )
+					switch ( index )
 					{
 						case (int) Eレーン.LC:
 							return this.LC;
-
 						case (int) Eレーン.HH:
 							return this.HH;
-
 						case (int) Eレーン.SD:
 							return this.SD;
-
 						case (int) Eレーン.BD:
 							return this.BD;
-
 						case (int) Eレーン.HT:
 							return this.HT;
-
 						case (int) Eレーン.LT:
 							return this.LT;
-
 						case (int) Eレーン.FT:
 							return this.FT;
-
 						case (int) Eレーン.CY:
 							return this.CY;
-
 						case (int) Eレーン.RD:
 							return this.RD;
-
 						case (int) Eレーン.Guitar:
 							return this.Guitar;
-
 						case (int) Eレーン.Bass:
 							return this.Bass;
+						case (int) Eレーン.GtR:
+							return this.GtR;
+						case (int) Eレーン.GtG:
+							return this.GtG;
+						case (int) Eレーン.GtB:
+							return this.GtB;
+						case (int) Eレーン.GtPick:
+							return this.GtPick;
+						case (int) Eレーン.GtW:
+							return this.GtW;
+						case (int) Eレーン.BsR:
+							return this.BsR;
+						case (int) Eレーン.BsG:
+							return this.BsG;
+						case (int) Eレーン.BsB:
+							return this.BsB;
+						case (int) Eレーン.BsPick:
+							return this.BsPick;
+						case (int) Eレーン.BsW:
+							return this.BsW;
 					}
 					throw new IndexOutOfRangeException();
 				}
 				set
 				{
-					switch( index )
+					switch ( index )
 					{
 						case (int) Eレーン.LC:
 							this.LC = value;
 							return;
-
 						case (int) Eレーン.HH:
 							this.HH = value;
 							return;
-
 						case (int) Eレーン.SD:
 							this.SD = value;
 							return;
-
 						case (int) Eレーン.BD:
 							this.BD = value;
 							return;
-
 						case (int) Eレーン.HT:
 							this.HT = value;
 							return;
-
 						case (int) Eレーン.LT:
 							this.LT = value;
 							return;
-
 						case (int) Eレーン.FT:
 							this.FT = value;
 							return;
-
 						case (int) Eレーン.CY:
 							this.CY = value;
 							return;
-
 						case (int) Eレーン.RD:
-							this.CY = value;
+							this.RD = value;
 							return;
-
 						case (int) Eレーン.Guitar:
 							this.Guitar = value;
 							return;
-
 						case (int) Eレーン.Bass:
 							this.Bass = value;
+							return;
+						case (int) Eレーン.GtR:
+							this.GtR = value;
+							return;
+						case (int) Eレーン.GtG:
+							this.GtG = value;
+							return;
+						case (int) Eレーン.GtB:
+							this.GtB = value;
+							return;
+						case (int) Eレーン.GtPick:
+							this.GtPick = value;
+							return;
+						case (int) Eレーン.GtW:
+							this.GtW = value;
+							return;
+						case (int) Eレーン.BsR:
+							this.BsR = value;
+							return;
+						case (int) Eレーン.BsG:
+							this.BsG = value;
+							return;
+						case (int) Eレーン.BsB:
+							this.BsB = value;
+							return;
+						case (int) Eレーン.BsPick:
+							this.BsPick = value;
+							return;
+						case (int) Eレーン.BsW:
+							this.BsW = value;
 							return;
 					}
 					throw new IndexOutOfRangeException();
@@ -992,6 +1060,17 @@ namespace DTXMania
 			this.bAutoPlay.LC = false;
 			this.bAutoPlay.Guitar = true;
 			this.bAutoPlay.Bass = true;
+			this.bAutoPlay.GtR = true;
+			this.bAutoPlay.GtG = true;
+			this.bAutoPlay.GtB = true;
+			this.bAutoPlay.GtPick = true;
+			this.bAutoPlay.GtW = true;
+			this.bAutoPlay.BsR = true;
+			this.bAutoPlay.BsG = true;
+			this.bAutoPlay.BsB = true;
+			this.bAutoPlay.BsPick = true;
+			this.bAutoPlay.BsW = true;
+
 			this.nヒット範囲ms = new STRANGE();
 			this.nヒット範囲ms.Perfect = 34;
 			this.nヒット範囲ms.Great = 67;
@@ -1420,10 +1499,20 @@ namespace DTXMania
 			sw.WriteLine( "CY={0}", this.bAutoPlay.CY ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; Guitar" );
-			sw.WriteLine( "Guitar={0}", this.bAutoPlay.Guitar ? 1 : 0 );
+			//sw.WriteLine( "Guitar={0}", this.bAutoPlay.Guitar ? 1 : 0 );
+			sw.WriteLine( "GuitarR={0}", this.bAutoPlay.GtR ? 1 : 0 );
+			sw.WriteLine( "GuitarG={0}", this.bAutoPlay.GtG ? 1 : 0 );
+			sw.WriteLine( "GuitarB={0}", this.bAutoPlay.GtB ? 1 : 0 );
+			sw.WriteLine( "GuitarPick={0}", this.bAutoPlay.GtPick ? 1 : 0 );
+			sw.WriteLine( "GuitarWailing={0}", this.bAutoPlay.GtW ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; Bass" );
-			sw.WriteLine( "Bass={0}", this.bAutoPlay.Bass ? 1 : 0 );
+			// sw.WriteLine( "Bass={0}", this.bAutoPlay.Bass ? 1 : 0 );
+			sw.WriteLine( "BassR={0}", this.bAutoPlay.BsR ? 1 : 0 );
+			sw.WriteLine( "BassG={0}", this.bAutoPlay.BsG ? 1 : 0 );
+			sw.WriteLine( "BassB={0}", this.bAutoPlay.BsB ? 1 : 0 );
+			sw.WriteLine( "BassPick={0}", this.bAutoPlay.BsPick ? 1 : 0 );
+			sw.WriteLine( "BassWailing={0}", this.bAutoPlay.BsW ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( ";-------------------" );
 			#endregion
@@ -2193,13 +2282,53 @@ namespace DTXMania
 										{
 											this.bAutoPlay.CY = C変換.bONorOFF( str4[ 0 ] );
 										}
-										else if( str3.Equals( "Guitar" ) )
+										//else if( str3.Equals( "Guitar" ) )
+										//{
+										//    this.bAutoPlay.Guitar = C変換.bONorOFF( str4[ 0 ] );
+										//}
+										else if ( str3.Equals( "GuitarR" ) )
 										{
-											this.bAutoPlay.Guitar = C変換.bONorOFF( str4[ 0 ] );
+											this.bAutoPlay.GtR = C変換.bONorOFF( str4[ 0 ] );
 										}
-										else if( str3.Equals( "Bass" ) )
+										else if ( str3.Equals( "GuitarG" ) )
 										{
-											this.bAutoPlay.Bass = C変換.bONorOFF( str4[ 0 ] );
+											this.bAutoPlay.GtG = C変換.bONorOFF( str4[ 0 ] );
+										}
+										else if ( str3.Equals( "GuitarB" ) )
+										{
+											this.bAutoPlay.GtB = C変換.bONorOFF( str4[ 0 ] );
+										}
+										else if ( str3.Equals( "GuitarPick" ) )
+										{
+											this.bAutoPlay.GtPick = C変換.bONorOFF( str4[ 0 ] );
+										}
+										else if ( str3.Equals( "GuitarWailing" ) )
+										{
+											this.bAutoPlay.GtW = C変換.bONorOFF( str4[ 0 ] );
+										}
+										//else if ( str3.Equals( "Bass" ) )
+										//{
+										//    this.bAutoPlay.Bass = C変換.bONorOFF( str4[ 0 ] );
+										//}
+										else if ( str3.Equals( "BassR" ) )
+										{
+											this.bAutoPlay.BsR = C変換.bONorOFF( str4[ 0 ] );
+										}
+										else if ( str3.Equals( "BassG" ) )
+										{
+											this.bAutoPlay.BsG = C変換.bONorOFF( str4[ 0 ] );
+										}
+										else if ( str3.Equals( "BassB" ) )
+										{
+											this.bAutoPlay.BsB = C変換.bONorOFF( str4[ 0 ] );
+										}
+										else if ( str3.Equals( "BassPick" ) )
+										{
+											this.bAutoPlay.BsPick = C変換.bONorOFF( str4[ 0 ] );
+										}
+										else if ( str3.Equals( "BassWailing" ) )
+										{
+											this.bAutoPlay.BsW = C変換.bONorOFF( str4[ 0 ] );
 										}
 										continue;
 									//-----------------------------

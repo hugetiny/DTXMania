@@ -543,457 +543,43 @@ namespace DTXMania
 			}
 			public override string ToString()
 			{
-				string str = "";
-				switch( this.nチャンネル番号 )
+				string[] chToStr = 
 				{
-					case 0x01:
-						str = "バックコーラス";
-						break;
+					"??", "バックコーラス", "小節長変更", "BPM変更", "BMPレイヤ1", "??", "??", "BMPレイヤ2",
+					"BPM変更(拡張)", "??", "??", "??", "??", "??", "??", "??",
+					"??", "HHClose", "Snare", "Kick", "HiTom", "LowTom", "Cymbal", "FloorTom",
+					"HHOpen", "RideCymbal", "LeftCymbal", "", "", "", "", "ドラム歓声切替",
+					"ギターOPEN", "ギター - - B", "ギター - G -", "ギター - G B", "ギター R - -", "ギター R - B", "ギター R G -", "ギター R G B",
+					"ギターWailing", "??", "??", "??", "??", "??", "??", "ギターWailing音切替",
+					"??", "HHClose(不可視)", "Snare(不可視)", "Kick(不可視)", "HiTom(不可視)", "LowTom(不可視)", "Cymbal(不可視)", "FloorTom(不可視)",
+					"HHOpen(不可視)", "RideCymbal(不可視)", "LeftCymbal(不可視)", "??", "??", "??", "??", "??",
+					"??", "??", "??", "??", "??", "??", "??", "??", 
+					"??", "??", "??", "??", "??", "??", "??", "??", 
+					"小節線", "拍線", "MIDIコーラス", "フィルイン", "AVI", "BMPレイヤ3", "BMPレイヤ4", "BMPレイヤ5",
+					"BMPレイヤ6", "BMPレイヤ7", "??", "??", "??", "??", "??", "??", 
+					"BMPレイヤ8", "SE01", "SE02", "SE03", "SE04", "SE05", "SE06", "SE07",
+					"SE08", "SE09", "??", "??", "??", "??", "??", "??", 
+					"SE10", "SE11", "SE12", "SE13", "SE14", "SE15", "SE16", "SE17",
+					"SE18", "SE19", "??", "??", "??", "??", "??", "??", 
+					"SE20", "SE21", "SE22", "SE23", "SE24", "SE25", "SE26", "SE27",
+					"SE28", "SE29", "??", "??", "??", "??", "??", "??", 
+					"SE30", "SE31", "SE32", "??", "??", "??", "??", "??", 
+					"??", "??", "??", "??", "??", "??", "??", "??", 
+					"ベースOPEN", "ベース - - B", "ベース - G -", "ベース - G B", "ベース R - -", "ベース R - B", "ベース R G -", "ベース R G B",
+					"ベースWailing", "??", "??", "??", "??", "??", "??", "ベースWailing音切替",
+					"??", "HHClose(空うち)", "Snare(空うち)", "Kick(空うち)", "HiTom(空うち)", "LowTom(空うち)", "Cymbal(空うち)", "FloorTom(空うち)",
+					"HHOpen(空うち)", "RideCymbal(空うち)", "ギター(空打ち)", "ベース(空打ち)", "LeftCymbal(空うち)", "??", "??", "??", 
+					"??", "??", "??", "??", "BGAスコープ画像切替1", "??", "??", "BGAスコープ画像切替2",
+					"??", "??", "??", "??", "??", "??", "??", "??", 
+					"??", "??", "??", "??", "??", "BGAスコープ画像切替3", "BGAスコープ画像切替4", "BGAスコープ画像切替5",
+					"BGAスコープ画像切替6", "BGAスコープ画像切替7", "??", "??", "??", "??", "??", "??", 
+					"BGAスコープ画像切替8"
+				};
 
-					case 0x02:
-						str = "小節長変更";
-						break;
-
-					case 0x03:
-						str = "BPM変更";
-						break;
-
-					case 0x04:
-						str = "BMPレイヤ1";
-						break;
-
-					case 0x07:
-						str = "BMPレイヤ2";
-						break;
-
-					case 0x08:
-						str = "BPM変更(拡張)";
-						break;
-
-					case 0x11:
-						str = "HHClose";
-						break;
-
-					case 0x12:
-						str = "Snare";
-						break;
-
-					case 0x13:
-						str = "Kick";
-						break;
-
-					case 0x14:
-						str = "HiTom";
-						break;
-
-					case 0x15:
-						str = "LowTom";
-						break;
-
-					case 0x16:
-						str = "Cymbal";
-						break;
-
-					case 0x17:
-						str = "FloorTom";
-						break;
-
-					case 0x18:
-						str = "HHOpen";
-						break;
-
-					case 0x19:
-						str = "RideCymbal";
-						break;
-
-					case 0x1a:
-						str = "LeftCymbal";
-						break;
-
-					case 0x1f:
-						str = "ドラム歓声切替";
-						break;
-
-					case 0x20:
-						str = "ギターOPEN";
-						break;
-
-					case 0x21:
-						str = "ギター - - B";
-						break;
-
-					case 0x22:
-						str = "ギター - G -";
-						break;
-
-					case 0x23:
-						str = "ギター - G B";
-						break;
-
-					case 0x24:
-						str = "ギター R - -";
-						break;
-
-					case 0x25:
-						str = "ギター R - B";
-						break;
-
-					case 0x26:
-						str = "ギター R G -";
-						break;
-
-					case 0x27:
-						str = "ギター R G B";
-						break;
-
-					case 0x28:
-						str = "ギターWailing";
-						break;
-
-					case 0x2f:
-						str = "ギターWailing音切替";
-						break;
-
-					case 0x31:
-						str = "HHClose(不可視)";
-						break;
-
-					case 0x32:
-						str = "Snare(不可視)";
-						break;
-
-					case 0x33:
-						str = "Kick(不可視)";
-						break;
-
-					case 0x34:
-						str = "HiTom(不可視)";
-						break;
-
-					case 0x35:
-						str = "LowTom(不可視)";
-						break;
-
-					case 0x36:
-						str = "Cymbal(不可視)";
-						break;
-
-					case 0x37:
-						str = "FloorTom(不可視)";
-						break;
-
-					case 0x38:
-						str = "HHOpen(不可視)";
-						break;
-
-					case 0x39:
-						str = "RideCymbal(不可視)";
-						break;
-
-					case 0x3a:
-						str = "LeftCymbal(不可視)";
-						break;
-
-					case 0x50:
-						str = "小節線";
-						break;
-
-					case 0x51:
-						str = "拍線";
-						break;
-
-					case 0x52:
-						str = "MIDIコーラス";
-						break;
-
-					case 0x53:
-						str = "フィルイン";
-						break;
-
-					case 0x54:
-						str = "AVI";
-						break;
-
-					case 0x55:
-						str = "BMPレイヤ3";
-						break;
-
-					case 0x56:
-						str = "BMPレイヤ4";
-						break;
-
-					case 0x57:
-						str = "BMPレイヤ5";
-						break;
-
-					case 0x58:
-						str = "BMPレイヤ6";
-						break;
-
-					case 0x59:
-						str = "BMPレイヤ7";
-						break;
-
-					case 0x60:
-						str = "BMPレイヤ8";
-						break;
-
-					case 0x61:
-						str = "SE01";
-						break;
-
-					case 0x62:
-						str = "SE02";
-						break;
-
-					case 0x63:
-						str = "SE03";
-						break;
-
-					case 0x64:
-						str = "SE04";
-						break;
-
-					case 0x65:
-						str = "SE05";
-						break;
-
-					case 0x66:
-						str = "SE06";
-						break;
-
-					case 0x67:
-						str = "SE07";
-						break;
-
-					case 0x68:
-						str = "SE08";
-						break;
-
-					case 0x69:
-						str = "SE09";
-						break;
-
-					case 0x70:
-						str = "SE10";
-						break;
-
-					case 0x71:
-						str = "SE11";
-						break;
-
-					case 0x72:
-						str = "SE12";
-						break;
-
-					case 0x73:
-						str = "SE13";
-						break;
-
-					case 0x74:
-						str = "SE14";
-						break;
-
-					case 0x75:
-						str = "SE15";
-						break;
-
-					case 0x76:
-						str = "SE16";
-						break;
-
-					case 0x77:
-						str = "SE17";
-						break;
-
-					case 0x78:
-						str = "SE18";
-						break;
-
-					case 0x79:
-						str = "SE19";
-						break;
-
-					case 0x80:
-						str = "SE20";
-						break;
-
-					case 0x81:
-						str = "SE21";
-						break;
-
-					case 0x82:
-						str = "SE22";
-						break;
-
-					case 0x83:
-						str = "SE23";
-						break;
-
-					case 0x84:
-						str = "SE24";
-						break;
-
-					case 0x85:
-						str = "SE25";
-						break;
-
-					case 0x86:
-						str = "SE26";
-						break;
-
-					case 0x87:
-						str = "SE27";
-						break;
-
-					case 0x88:
-						str = "SE28";
-						break;
-
-					case 0x89:
-						str = "SE29";
-						break;
-
-					case 0x90:
-						str = "SE30";
-						break;
-
-					case 0x91:
-						str = "SE31";
-						break;
-
-					case 0x92:
-						str = "SE32";
-						break;
-
-					case 0xa0:
-						str = "ベースOPEN";
-						break;
-
-					case 0xa1:
-						str = "ベース - - B";
-						break;
-
-					case 0xa2:
-						str = "ベース - G -";
-						break;
-
-					case 0xa3:
-						str = "ベース - G B";
-						break;
-
-					case 0xa4:
-						str = "ベース R - -";
-						break;
-
-					case 0xa5:
-						str = "ベース R - B";
-						break;
-
-					case 0xa6:
-						str = "ベース R G -";
-						break;
-
-					case 0xa7:
-						str = "ベース R G B";
-						break;
-
-					case 0xa8:
-						str = "ベースWailing";
-						break;
-
-					case 0xaf:
-						str = "ベースWailing音切替";
-						break;
-
-					case 0xb1:
-						str = "HHClose(空うち)";
-						break;
-
-					case 0xb2:
-						str = "Snare(空うち)";
-						break;
-
-					case 0xb3:
-						str = "Kick(空うち)";
-						break;
-
-					case 0xb4:
-						str = "HiTom(空うち)";
-						break;
-
-					case 0xb5:
-						str = "LowTom(空うち)";
-						break;
-
-					case 0xb6:
-						str = "Cymbal(空うち)";
-						break;
-
-					case 0xb7:
-						str = "FloorTom(空うち)";
-						break;
-
-					case 0xb8:
-						str = "HHOpen(空うち)";
-						break;
-
-					case 0xb9:
-						str = "RideCymbal(空うち)";
-						break;
-
-					case 0xba:
-						str = "ギター(空打ち)";
-						break;
-
-					case 0xbb:
-						str = "ベース(空打ち)";
-						break;
-
-					case 0xbc:
-						str = "LeftCymbal(空うち)";
-						break;
-
-					case 0xc4:
-						str = "BGAスコープ画像切替1";
-						break;
-
-					case 0xc7:
-						str = "BGAスコープ画像切替2";
-						break;
-
-					case 0xd5:
-						str = "BGAスコープ画像切替3";
-						break;
-
-					case 0xd6:
-						str = "BGAスコープ画像切替4";
-						break;
-
-					case 0xd7:
-						str = "BGAスコープ画像切替5";
-						break;
-
-					case 0xd8:
-						str = "BGAスコープ画像切替6";
-						break;
-
-					case 0xd9:
-						str = "BGAスコープ画像切替7";
-						break;
-
-					case 0xe0:
-						str = "BGAスコープ画像切替8";
-						break;
-
-					default:
-						str = "??";
-						break;
-				}
 				return string.Format( "CChip: 位置:{0:D4}.{1:D3}, 時刻{2:D6}, Ch:{3:X2}({4}), Pn:{5}({11})(内部{6}), Pd:{7}, Sz:{8}, UseWav:{9}, Auto:{10}",
 					this.n発声位置 / 384, this.n発声位置 % 384,
 					this.n発声時刻ms,
-					this.nチャンネル番号, str,
+					this.nチャンネル番号, chToStr[ this.nチャンネル番号 ],
 					this.n整数値, this.n整数値・内部番号,
 					this.db実数値,
 					this.dbチップサイズ倍率,
@@ -1001,7 +587,6 @@ namespace DTXMania
 					this.b自動再生音チャンネルである,
 					CDTX.tZZ( this.n整数値 ) );
 			}
-
 			#region [ IComparable 実装 ]
 			//-----------------
 			public int CompareTo( CDTX.CChip other )

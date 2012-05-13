@@ -616,10 +616,38 @@ namespace DTXMania
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iGuitarReturnToMenu );
-			this.iGuitarAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Guitar,
-				"ギターパートを自動で演奏します。",
-				"To play the guitar part automatically." );
-			this.list項目リスト.Add( this.iGuitarAutoPlay );
+			//this.iGuitarAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Guitar,
+			//    "ギターパートを自動で演奏します。",
+			//    "To play the guitar part automatically." );
+			//this.list項目リスト.Add( this.iGuitarAutoPlay );
+
+			this.iGuitarAutoPlayAll = new CItemThreeState( "AutoPlay (All)", CItemThreeState.E状態.不定,
+				"全パッドの自動演奏の ON/OFF を\n" +
+				"まとめて切り替えます。",
+				"You can change whether Auto or not\n" +
+				" for all guitar lanes at once." );
+			this.list項目リスト.Add( this.iGuitarAutoPlayAll );
+			this.iGuitarR = new CItemToggle( "    R", CDTXMania.ConfigIni.bAutoPlay.GtR,
+				"Rネックを自動で演奏します。",
+				"To play R neck automatically." );
+			this.list項目リスト.Add( this.iGuitarR );
+			this.iGuitarG = new CItemToggle( "    G", CDTXMania.ConfigIni.bAutoPlay.GtG,
+				"Gネックを自動で演奏します。",
+				"To play G neck automatically." );
+			this.list項目リスト.Add( this.iGuitarG );
+			this.iGuitarB = new CItemToggle( "    B", CDTXMania.ConfigIni.bAutoPlay.GtB,
+				"Bネックを自動で演奏します。",
+				"To play B neck automatically." );
+			this.list項目リスト.Add( this.iGuitarB );
+			this.iGuitarPick = new CItemToggle( "    Pick", CDTXMania.ConfigIni.bAutoPlay.GtPick,
+				"ピックを自動で演奏します。",
+				"To play Pick automatically." );
+			this.list項目リスト.Add( this.iGuitarPick );
+			this.iGuitarW = new CItemToggle( "    Wailing", CDTXMania.ConfigIni.bAutoPlay.GtW,
+				"ウェイリングを自動で演奏します。",
+				"To play wailing automatically." );
+			this.list項目リスト.Add( this.iGuitarW );
+
 			this.iGuitarScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Guitar,
 				"演奏時のギター譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
 				"To change the scroll speed for the\nguitar lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)" );
@@ -690,10 +718,38 @@ namespace DTXMania
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iBassReturnToMenu );
-			this.iBassAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Bass,
-				"ベースパートを自動で演奏します。",
-				"To play the bass part automatically." );
-			this.list項目リスト.Add( this.iBassAutoPlay );
+			//this.iBassAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Bass,
+			//    "ベースパートを自動で演奏します。",
+			//    "To play the bass part automatically." );
+			//this.list項目リスト.Add( this.iBassAutoPlay );
+
+			this.iBassAutoPlayAll = new CItemThreeState( "AutoPlay (All)", CItemThreeState.E状態.不定,
+			"全パッドの自動演奏の ON/OFF を\n" +
+			"まとめて切り替えます。",
+			"You can change whether Auto or not\n" +
+			" for all guitar lanes at once." );
+			this.list項目リスト.Add( this.iGuitarAutoPlayAll );
+			this.iBassR = new CItemToggle( "    R", CDTXMania.ConfigIni.bAutoPlay.BsR,
+				"Rネックを自動で演奏します。",
+				"To play R neck automatically." );
+			this.list項目リスト.Add( this.iBassR );
+			this.iBassG = new CItemToggle( "    G", CDTXMania.ConfigIni.bAutoPlay.BsG,
+				"Gネックを自動で演奏します。",
+				"To play G neck automatically." );
+			this.list項目リスト.Add( this.iBassG );
+			this.iBassB = new CItemToggle( "    B", CDTXMania.ConfigIni.bAutoPlay.BsB,
+				"Bネックを自動で演奏します。",
+				"To play B neck automatically." );
+			this.list項目リスト.Add( this.iBassB );
+			this.iBassPick = new CItemToggle( "    Pick", CDTXMania.ConfigIni.bAutoPlay.BsPick,
+				"ピックを自動で演奏します。",
+				"To play Pick automatically." );
+			this.list項目リスト.Add( this.iBassPick );
+			this.iBassW = new CItemToggle( "    Wailing", CDTXMania.ConfigIni.bAutoPlay.BsW,
+				"ウェイリングを自動で演奏します。",
+				"To play wailing automatically." );
+			this.list項目リスト.Add( this.iBassW );
+
 			this.iBassScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Bass,
 				"演奏時のベース譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
 				"To change the scroll speed for the\nbass lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)" );
@@ -797,6 +853,7 @@ namespace DTXMania
 				//this.tConfigIniへ記録する();
 				//CONFIG中にスキン変化が発生すると面倒なので、一旦マスクした。
 			}
+			#region [ 個々のキーアサイン ]
 			else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iKeyAssignDrumsLC )
 			{
 				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.DRUMS, EKeyConfigPad.LC );
@@ -901,6 +958,7 @@ namespace DTXMania
 			{
 				CDTXMania.stageコンフィグ.tパッド選択通知( EKeyConfigPart.SYSTEM, EKeyConfigPad.Capture);
 			}
+			#endregion
 			else
 			{
 		 		// #27029 2012.1.5 from
@@ -927,10 +985,21 @@ namespace DTXMania
 					CDTXMania.ConfigIni.b垂直帰線待ちを行う = this.iSystemVSyncWait.bON;
 					CDTXMania.app.b次のタイミングで垂直帰線同期切り替えを行う = true;
 				}
+				#region [ AutoPlay #23886 2012.5.8 yyagi ]
 				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iDrumsAutoPlayAll )
 				{
 					this.t全部のドラムパッドのAutoを切り替える( this.iDrumsAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
 				}
+				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iGuitarAutoPlayAll )
+				{
+					this.t全部のギターパッドのAutoを切り替える( this.iGuitarAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
+				}
+				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iBassAutoPlayAll )
+				{
+					this.t全部のベースパッドのAutoを切り替える( this.iBassAutoPlayAll.e現在の状態 == CItemThreeState.E状態.ON );
+				}
+				#endregion
+				#region [ キーアサインへの遷移と脱出 ]
 				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemGoToKeyAssign )			// #24609 2011.4.12 yyagi
 				{
 					t項目リストの設定・KeyAssignSystem();
@@ -963,6 +1032,8 @@ namespace DTXMania
 				{
 					t項目リストの設定・Bass();
 				}
+				#endregion
+				#region [ BDGroup #27029 2012.1.4 from ]
 				else if( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemBDGroup )					// #27029 2012.1.4 from
 				{
 					if( this.iSystemBDGroup.n現在選択されている項目番号 == (int) EBDGroup.どっちもBD )
@@ -992,6 +1063,7 @@ namespace DTXMania
 						CDTXMania.ConfigIni.BackupOf1BD = null;
 					}
 				}
+				#endregion
 				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemUseBoxDefSkin )			// #28195 2012.5.6 yyagi
 				{
 					CSkin.bUseBoxDefSkin = this.iSystemUseBoxDefSkin.bON;
@@ -1714,7 +1786,14 @@ namespace DTXMania
 
 		private CItemList iSystemGRmode;
 
-		private CItemToggle iBassAutoPlay;
+		//private CItemToggle iBassAutoPlay;
+		private CItemThreeState iBassAutoPlayAll;			// #23886 2012.5.8 yyagi
+		private CItemToggle iBassR;							//
+		private CItemToggle iBassG;							//
+		private CItemToggle iBassB;							//
+		private CItemToggle iBassPick;						//
+		private CItemToggle iBassW;							//
+	
 		private CItemToggle iBassHidden;
 		private CItemToggle iBassLeft;
 		private CItemToggle iBassLight;
@@ -1727,6 +1806,7 @@ namespace DTXMania
 		private CItemList iCommonDark;
 		private CItemInteger iCommonPlaySpeed;
 //		private CItemBase iCommonReturnToMenu;
+
 		private CItemThreeState iDrumsAutoPlayAll;
 		private CItemToggle iDrumsBass;
 		private CItemList iDrumsComboPosition;
@@ -1745,7 +1825,15 @@ namespace DTXMania
 		private CItemToggle iDrumsSudden;
 		private CItemToggle iDrumsTight;
 		private CItemToggle iDrumsGraph;        // #24074 2011.01.23 add ikanick
-		private CItemToggle iGuitarAutoPlay;
+
+		//private CItemToggle iGuitarAutoPlay;
+		private CItemThreeState iGuitarAutoPlayAll;			// #23886 2012.5.8 yyagi
+		private CItemToggle iGuitarR;						//
+		private CItemToggle iGuitarG;						//
+		private CItemToggle iGuitarB;						//
+		private CItemToggle iGuitarPick;					//
+		private CItemToggle iGuitarW;						//
+
 		private CItemToggle iGuitarHidden;
 		private CItemToggle iGuitarLeft;
 		private CItemToggle iGuitarLight;
@@ -1780,6 +1868,14 @@ namespace DTXMania
 		private void t全部のドラムパッドのAutoを切り替える( bool bAutoON )
 		{
 			this.iDrumsLeftCymbal.bON = this.iDrumsHiHat.bON = this.iDrumsSnare.bON = this.iDrumsBass.bON = this.iDrumsHighTom.bON = this.iDrumsLowTom.bON = this.iDrumsFloorTom.bON = this.iDrumsCymbalRide.bON = bAutoON;
+		}
+		private void t全部のギターパッドのAutoを切り替える( bool bAutoON )
+		{
+			this.iGuitarR.bON = this.iGuitarG.bON = this.iGuitarB.bON = this.iGuitarPick.bON = this.iGuitarW.bON = bAutoON;
+		}
+		private void t全部のベースパッドのAutoを切り替える( bool bAutoON )
+		{
+			this.iBassR.bON = this.iBassG.bON = this.iBassB.bON = this.iBassPick.bON = this.iBassW.bON = bAutoON;
 		}
 		private void tConfigIniへ記録する()
 		{
@@ -1869,7 +1965,12 @@ namespace DTXMania
 		}
 		private void tConfigIniへ記録する・Bass()
 		{
-			CDTXMania.ConfigIni.bAutoPlay.Bass = this.iBassAutoPlay.bON;
+			//CDTXMania.ConfigIni.bAutoPlay.Bass = this.iBassAutoPlay.bON;
+			CDTXMania.ConfigIni.bAutoPlay.BsR = this.iBassR.bON;
+			CDTXMania.ConfigIni.bAutoPlay.BsG = this.iBassG.bON;
+			CDTXMania.ConfigIni.bAutoPlay.BsB = this.iBassB.bON;
+			CDTXMania.ConfigIni.bAutoPlay.BsPick = this.iBassPick.bON;
+			CDTXMania.ConfigIni.bAutoPlay.BsW = this.iBassW.bON;
 			CDTXMania.ConfigIni.n譜面スクロール速度.Bass = this.iBassScrollSpeed.n現在の値;
 			CDTXMania.ConfigIni.bSudden.Bass = this.iBassSudden.bON;
 			CDTXMania.ConfigIni.bHidden.Bass = this.iBassHidden.bON;
@@ -1921,7 +2022,12 @@ namespace DTXMania
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{
-			CDTXMania.ConfigIni.bAutoPlay.Guitar = this.iGuitarAutoPlay.bON;
+			//CDTXMania.ConfigIni.bAutoPlay.Guitar = this.iGuitarAutoPlay.bON;
+			CDTXMania.ConfigIni.bAutoPlay.GtR = this.iGuitarR.bON;
+			CDTXMania.ConfigIni.bAutoPlay.GtG = this.iGuitarG.bON;
+			CDTXMania.ConfigIni.bAutoPlay.GtB = this.iGuitarB.bON;
+			CDTXMania.ConfigIni.bAutoPlay.GtPick = this.iGuitarPick.bON;
+			CDTXMania.ConfigIni.bAutoPlay.GtW = this.iGuitarW.bON;
 			CDTXMania.ConfigIni.n譜面スクロール速度.Guitar = this.iGuitarScrollSpeed.n現在の値;
 			CDTXMania.ConfigIni.bSudden.Guitar = this.iGuitarSudden.bON;
 			CDTXMania.ConfigIni.bHidden.Guitar = this.iGuitarHidden.bON;

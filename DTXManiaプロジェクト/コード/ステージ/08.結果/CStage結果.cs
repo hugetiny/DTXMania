@@ -92,11 +92,11 @@ namespace DTXMania
 								break;
 
 							case 1:
-								bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay.Guitar;
+								bIsAutoPlay = CDTXMania.ConfigIni.bギターが全部オートプレイである;
 								break;
 
 							case 2:
-								bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay.Bass;
+								bIsAutoPlay = CDTXMania.ConfigIni.bベースが全部オートプレイである;
 								break;
 						}
 						this.fPerfect率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPerfect数 ) / ( (float) part.n全チップ数 ) );
