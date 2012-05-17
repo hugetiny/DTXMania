@@ -2186,7 +2186,7 @@ namespace DTXMania
 						}
 						int chWailingChip = ( inst == E楽器パート.GUITAR ) ? 0x28 : 0xA8;
 						CDTX.CChip item = this.r指定時刻に一番近い未ヒットChip( pChip.n発声時刻ms, chWailingChip, this.nInputAdjustTimeMs[ instIndex ], 140 );
-						if ( item != null )
+						if ( item != null && !bMiss )
 						{
 							this.queWailing[ instIndex ].Enqueue( item );
 						}
