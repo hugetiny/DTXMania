@@ -173,9 +173,9 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 
-		protected override E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip )
+		protected override E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, bool bCorrectLane )
 		{
-			E判定 eJudgeResult = tチップのヒット処理( nHitTime, pChip, E楽器パート.GUITAR );
+			E判定 eJudgeResult = tチップのヒット処理( nHitTime, pChip, E楽器パート.GUITAR, bCorrectLane );
 			return eJudgeResult;
 		}
 		protected override void tチップのヒット処理・BadならびにTight時のMiss( E楽器パート part )

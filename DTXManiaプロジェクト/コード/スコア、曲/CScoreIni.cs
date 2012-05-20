@@ -1461,8 +1461,8 @@ namespace DTXMania
 		internal static void t更新条件を取得する( out bool bDrumsを更新する, out bool bGuitarを更新する, out bool bBassを更新する )
 		{
 			bDrumsを更新する =  CDTXMania.ConfigIni.bDrums有効  && CDTXMania.DTX.bチップがある.Drums  && !CDTXMania.ConfigIni.bドラムが全部オートプレイである;
-			bGuitarを更新する = CDTXMania.ConfigIni.bGuitar有効 && CDTXMania.DTX.bチップがある.Guitar && !CDTXMania.ConfigIni.bAutoPlay.Guitar;
-			bBassを更新する =   CDTXMania.ConfigIni.bGuitar有効 && CDTXMania.DTX.bチップがある.Bass   && !CDTXMania.ConfigIni.bAutoPlay.Bass;
+			bGuitarを更新する = CDTXMania.ConfigIni.bGuitar有効 && CDTXMania.DTX.bチップがある.Guitar && !CDTXMania.ConfigIni.bギターが全部オートプレイである;
+			bBassを更新する =   CDTXMania.ConfigIni.bGuitar有効 && CDTXMania.DTX.bチップがある.Bass   && !CDTXMania.ConfigIni.bベースが全部オートプレイである;
 		}
 		internal static int t総合ランク値を計算して返す( C演奏記録 Drums, C演奏記録 Guitar, C演奏記録 Bass )
 		{
