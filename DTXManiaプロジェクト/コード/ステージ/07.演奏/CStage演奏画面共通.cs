@@ -240,11 +240,11 @@ namespace DTXMania
 			this.r現在の空うちベースChip = null;
 			for ( int k = 0; k < 3; k++ )
 			{
-				for ( int n = 0; n < 5; n++ )
-				{
-					this.nヒット数・Auto含まない[ k ] = new STHITCOUNTOFRANK();
-					this.nヒット数・Auto含む[ k ] = new STHITCOUNTOFRANK();
-				}
+				//for ( int n = 0; n < 5; n++ )
+				//{
+					this.nヒット数・Auto含まない[ k ] = new CHITCOUNTOFRANK();
+					this.nヒット数・Auto含む[ k ] = new CHITCOUNTOFRANK();
+				//}
 				this.queWailing[ k ] = new Queue<CDTX.CChip>();
 				this.r現在の歓声Chip[ k ] = null;
 			}
@@ -319,7 +319,7 @@ namespace DTXMania
 
 		#region [ protected ]
 		//-----------------
-		protected class STHITCOUNTOFRANK
+		protected class CHITCOUNTOFRANK
 		{
 			// Fields
 			public int Good;
@@ -327,6 +327,12 @@ namespace DTXMania
 			public int Miss;
 			public int Perfect;
 			public int Poor;
+
+			// Constractors
+			public CHITCOUNTOFRANK()
+			{
+				Perfect = Great = Good = Poor = Miss = 0;
+			}
 
 			// Properties
 			public int this[ int index ]
@@ -518,8 +524,8 @@ namespace DTXMania
 		protected readonly int[] nパッド0Atoチャンネル0A = new int[] { 0x11, 0x12, 0x13, 20, 0x15, 0x17, 0x16, 0x18, 0x19, 0x1a };
 		protected readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };	// パッド画像のヒット処理用
 		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };	
-		protected STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含まない;
-		protected STDGBVALUE<STHITCOUNTOFRANK> nヒット数・Auto含む;
+		protected STDGBVALUE<CHITCOUNTOFRANK> nヒット数・Auto含まない;
+		protected STDGBVALUE<CHITCOUNTOFRANK> nヒット数・Auto含む;
 		protected int n現在のトップChip = -1;
 		protected int[] n最後に再生したBGMの実WAV番号 = new int[ 50 ];
 		protected int n最後に再生したHHのチャンネル番号;
@@ -981,7 +987,7 @@ namespace DTXMania
 		protected E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, E楽器パート screenmode, bool bCorrectLane )
 		{
 			pChip.bHit = true;
-#region [メソッド化する前の記述]
+#region [メソッド化する前の記述(注釈化)]
 //            bool bPChipIsAutoPlay = false;
 //            bool bGtBsR = ( ( pChip.nチャンネル番号 & 4 ) > 0 );
 //            bool bGtBsG = ( ( pChip.nチャンネル番号 & 2 ) > 0 );
@@ -2254,8 +2260,12 @@ namespace DTXMania
 					//if ( configIni.bAutoPlay[ ((int) Eレーン.Guitar - 1) + indexInst ] )	// このような、バグの入りやすい書き方(GT/BSのindex値が他と異なる)はいずれ見直したい
 					if ( autoW )
 					{
-						pChip.bHit = true;								// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
-						this.actWailingBonus.Start( inst, this.r現在の歓声Chip[indexInst] );
+					//    pChip.bHit = true;								// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
+					//    this.actWailingBonus.Start( inst, this.r現在の歓声Chip[indexInst] );
+					// #23886 2012.5.22 yyagi; To support auto Wailing; Don't do wailing for ALL wailing chips. Do wailing for queued wailing chip.
+					// wailing chips are queued when 1) manually wailing and not missed at that time 2) AutoWailing=ON and not missed at that time
+						long nTimeStamp_Wailed = pChip.n発声時刻ms + CDTXMania.Timer.n前回リセットした時のシステム時刻;
+						DoWailingFromQueue( inst, nTimeStamp_Wailed, autoW );
 					}
 				}
 				return;
@@ -2508,11 +2518,11 @@ namespace DTXMania
 			int R = ( inst == E楽器パート.GUITAR ) ? 0 : 3;
 			int G = R + 1;
 			int B = R + 2;
-			bool autoW =		( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtW : bIsAutoPlay.BsW;
-			bool autoR =		( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtR : bIsAutoPlay.BsR;
-			bool autoG =		( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtG : bIsAutoPlay.BsG;
-			bool autoB =		( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtB : bIsAutoPlay.BsB;
-			bool autoPick =		( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtPick : bIsAutoPlay.BsPick;
+			bool autoW =	( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtW : bIsAutoPlay.BsW;
+			bool autoR =	( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtR : bIsAutoPlay.BsR;
+			bool autoG =	( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtG : bIsAutoPlay.BsG;
+			bool autoB =	( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtB : bIsAutoPlay.BsB;
+			bool autoPick =	( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtPick : bIsAutoPlay.BsPick;
 			int nAutoW = ( autoW ) ? 8 : 0;
 			int nAutoR = ( autoR ) ? 4 : 0;
 			int nAutoG = ( autoG ) ? 2 : 0;
@@ -2637,22 +2647,28 @@ namespace DTXMania
 						{
 							continue;
 						}
-						long nTimeWailed = eventWailed.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
-						CDTX.CChip chipWailing;
-						while ( ( this.queWailing[indexInst].Count > 0 ) && ( ( chipWailing = this.queWailing[indexInst].Dequeue() ) != null ) )
-						{
-							if ( ( nTimeWailed - chipWailing.n発声時刻ms ) <= 1000 )		// #24245 2011.1.26 yyagi: 800 -> 1000
-							{
-								chipWailing.bHit = true;
-								this.actWailingBonus.Start( inst, this.r現在の歓声Chip[indexInst] );
-								//if ( !bIsAutoPlay[indexInst] )
-								if ( !autoW )
-								{
-									int nCombo = ( this.actCombo.n現在のコンボ数[indexInst] < 500 ) ? this.actCombo.n現在のコンボ数[indexInst] : 500;
-									this.actScore.Set( inst, this.actScore.Get( inst ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->BASS, add nCombo conditions
-								}
-							}
-						}
+						DoWailingFromQueue( inst, eventWailed.nTimeStamp,  autoW );
+					}
+				}
+			}
+		}
+
+		private void DoWailingFromQueue( E楽器パート inst, long nTimeStamp_Wailed,  bool autoW )
+		{
+			int indexInst = (int) inst;
+			long nTimeWailed = nTimeStamp_Wailed - CDTXMania.Timer.n前回リセットした時のシステム時刻;
+			CDTX.CChip chipWailing;
+			while ( ( this.queWailing[ indexInst ].Count > 0 ) && ( ( chipWailing = this.queWailing[ indexInst ].Dequeue() ) != null ) )
+			{
+				if ( ( nTimeWailed - chipWailing.n発声時刻ms ) <= 1000 )		// #24245 2011.1.26 yyagi: 800 -> 1000
+				{
+					chipWailing.bHit = true;
+					this.actWailingBonus.Start( inst, this.r現在の歓声Chip[ indexInst ] );
+					//if ( !bIsAutoPlay[indexInst] )
+					if ( !autoW )
+					{
+						int nCombo = ( this.actCombo.n現在のコンボ数[ indexInst ] < 500 ) ? this.actCombo.n現在のコンボ数[ indexInst ] : 500;
+						this.actScore.Set( inst, this.actScore.Get( inst ) + ( nCombo * 3000L ) );		// #24245 2011.1.26 yyagi changed DRUMS->BASS, add nCombo conditions
 					}
 				}
 			}
