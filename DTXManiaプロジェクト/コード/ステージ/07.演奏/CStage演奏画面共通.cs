@@ -50,7 +50,7 @@ namespace DTXMania
 				Drums.nMiss数・Auto含まない = this.nヒット数・Auto含まない.Drums.Miss;
 				Drums.n最大コンボ数 = this.actCombo.n現在のコンボ数.Drums最高値;
 				Drums.n全チップ数 = CDTXMania.DTX.n可視チップ数.Drums;
-				for ( int i = 0; i < 10; i++ )
+				for ( int i = 0; i < (int) Eレーン.MAX;  i++ )
 				{
 					Drums.bAutoPlay[ i ] = bIsAutoPlay[ i ];
 				}
@@ -112,7 +112,7 @@ namespace DTXMania
 				Guitar.nMiss数・Auto含まない = this.nヒット数・Auto含まない.Guitar.Miss;
 				Guitar.n最大コンボ数 = this.actCombo.n現在のコンボ数.Guitar最高値;
 				Guitar.n全チップ数 = CDTXMania.DTX.n可視チップ数.Guitar;
-				for ( int i = 0; i < 10; i++ )
+				for ( int i = 0; i < (int) Eレーン.MAX; i++ )
 				{
 					Guitar.bAutoPlay[ i ] = bIsAutoPlay[ i ];
 				}
@@ -174,7 +174,7 @@ namespace DTXMania
 				Bass.nMiss数・Auto含まない = this.nヒット数・Auto含まない.Bass.Miss;
 				Bass.n最大コンボ数 = this.actCombo.n現在のコンボ数.Bass最高値;
 				Bass.n全チップ数 = CDTXMania.DTX.n可視チップ数.Bass;
-				for ( int i = 0; i < 10; i++ )
+				for ( int i = 0; i < (int) Eレーン.MAX; i++ )
 				{
 					Bass.bAutoPlay[ i ] = bIsAutoPlay[ i ];
 				}
@@ -284,6 +284,7 @@ namespace DTXMania
 			this.L最後に再生したHHの実WAV番号 = null;	//
 			for ( int i = 0; i < 3; i++ )
 			{
+				this.queWailing[ i ].Clear();
 				this.queWailing[ i ] = null;
 			}
 			this.ctWailingチップ模様アニメ = null;
@@ -549,7 +550,7 @@ namespace DTXMania
 		protected CTexture tx背景;
 
 		protected STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
-		protected CConfigIni.STAUTOPLAY bIsAutoPlay;		// #24239 2011.1.23 yyagi
+		protected STAUTOPLAY bIsAutoPlay;		// #24239 2011.1.23 yyagi
 //		protected int nRisky_InitialVar, nRiskyTime;		// #23559 2011.7.28 yyagi → CAct演奏ゲージ共通クラスに隠蔽
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
@@ -1196,7 +1197,7 @@ namespace DTXMania
 					return;
 
 				case E楽器パート.GUITAR:
-					this.actJudgeString.Start( 10, E判定.Bad, 900 );
+					this.actJudgeString.Start( 10, E判定.Bad, 999 );
 					this.actCombo.n現在のコンボ数.Guitar = 0;
 					return;
 

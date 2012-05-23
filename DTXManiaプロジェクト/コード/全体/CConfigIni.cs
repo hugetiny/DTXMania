@@ -648,30 +648,31 @@ namespace DTXMania
 		    set;
 		}
 		public STAUTOPLAY bAutoPlay;
+#if false
 		[StructLayout( LayoutKind.Sequential )]
-		public struct STAUTOPLAY								// Eレーンとindexを一致させること
+		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
 		{
-			public bool LC;
-			public bool HH;
-			public bool SD;
-			public bool BD;
-			public bool HT;
-			public bool LT;
-			public bool FT;
-			public bool CY;
-			public bool RD;
-			public bool Guitar;
-			public bool Bass;
-			public bool GtR;
-			public bool GtG;
-			public bool GtB;
-			public bool GtPick;
-			public bool GtW;
-			public bool BsR;
-			public bool BsG;
-			public bool BsB;
-			public bool BsPick;
-			public bool BsW;
+			public bool LC;			// 0
+			public bool HH;			// 1
+			public bool SD;			// 2
+			public bool BD;			// 3
+			public bool HT;			// 4
+			public bool LT;			// 5
+			public bool FT;			// 6
+			public bool CY;			// 7
+			public bool RD;			// 8
+			public bool Guitar;		// 9	(not used)
+			public bool Bass;		// 10	(not used)
+			public bool GtR;		// 11
+			public bool GtG;		// 12
+			public bool GtB;		// 13
+			public bool GtPick;		// 14
+			public bool GtW;		// 15
+			public bool BsR;		// 16
+			public bool BsG;		// 17
+			public bool BsB;		// 18
+			public bool BsPick;		// 19
+			public bool BsW;		// 20
 			public bool this[ int index ]
 			{
 				get
@@ -795,7 +796,7 @@ namespace DTXMania
 				}
 			}
 		}
-
+#endif
 		public STRANGE nヒット範囲ms;
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STRANGE
@@ -968,7 +969,7 @@ namespace DTXMania
 		}
 		public CBackupOf1BD BackupOf1BD = null;
 
-
+		
 		// コンストラクタ
 
 		public CConfigIni()

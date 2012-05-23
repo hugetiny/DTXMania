@@ -310,7 +310,7 @@ namespace DTXMania
 					return (this.n全チップ数 - this.nPerfect数・Auto含まない - this.nGreat数・Auto含まない - this.nGood数・Auto含まない - this.nPoor数・Auto含まない - this.nMiss数・Auto含まない) == this.n全チップ数;
 				}
 			}
-
+#if false
 			[StructLayout( LayoutKind.Sequential )]
 			public struct STAUTOPLAY
 			{
@@ -458,6 +458,7 @@ namespace DTXMania
 					}
 				}
 			}
+#endif
 		}
 
 		/// <summary>
@@ -1268,7 +1269,7 @@ namespace DTXMania
 				writer.WriteLine( "MaxCombo={0}", this.stセクション[ i ].n最大コンボ数 );
 				writer.WriteLine( "TotalChips={0}", this.stセクション[ i ].n全チップ数 );
 				writer.Write( "AutoPlay=" );
-				for( int j = 0; j < 21; j++ )
+				for ( int j = 0; j < (int) Eレーン.MAX; j++ )
 				{
 					writer.Write( this.stセクション[ i ].bAutoPlay[ j ] ? 1 : 0 );
 				}
