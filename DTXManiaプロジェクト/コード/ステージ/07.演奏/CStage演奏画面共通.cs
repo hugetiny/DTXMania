@@ -329,12 +329,6 @@ namespace DTXMania
 			public int Perfect;
 			public int Poor;
 
-			// Constractors
-			public CHITCOUNTOFRANK()
-			{
-				Perfect = Great = Good = Poor = Miss = 0;
-			}
-
 			// Properties
 			public int this[ int index ]
 			{
