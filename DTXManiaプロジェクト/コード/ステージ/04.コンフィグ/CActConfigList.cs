@@ -728,7 +728,7 @@ namespace DTXMania
 			"まとめて切り替えます。",
 			"You can change whether Auto or not\n" +
 			" for all guitar lanes at once." );
-			this.list項目リスト.Add( this.iGuitarAutoPlayAll );
+			this.list項目リスト.Add( this.iBassAutoPlayAll );
 			this.iBassR = new CItemToggle( "    R", CDTXMania.ConfigIni.bAutoPlay.BsR,
 				"Rネックを自動で演奏します。",
 				"To play R neck automatically." );
