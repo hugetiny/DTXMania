@@ -81,7 +81,10 @@ namespace DTXMania
 				for( int i = 0; i < 3; i++ )
 				{
 					this.nランク値[ i ] = -1;
-					if ( ( ( ( i != 0 ) || ( CDTXMania.DTX.bチップがある.Drums && !CDTXMania.ConfigIni.bギタレボモード ) ) && ( ( i != 1 ) || CDTXMania.DTX.bチップがある.Guitar ) ) && ( ( i != 2 ) || CDTXMania.DTX.bチップがある.Bass ) )
+					this.fPerfect率[ i ] = this.fGreat率[ i ] = this.fGood率[ i ] = this.fPoor率[ i ] = this.fMiss率[ i ] = 0.0f;	// #28500 2011.5.24 yyagi
+					if ( ( ( ( i != 0 ) || ( CDTXMania.DTX.bチップがある.Drums && !CDTXMania.ConfigIni.bギタレボモード ) ) &&
+						( ( i != 1 ) || CDTXMania.DTX.bチップがある.Guitar ) ) &&
+						( ( i != 2 ) || CDTXMania.DTX.bチップがある.Bass ) )
 					{
 						CScoreIni.C演奏記録 part = this.st演奏記録[ i ];
 						bool bIsAutoPlay = true;
@@ -92,11 +95,11 @@ namespace DTXMania
 								break;
 
 							case 1:
-								bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay.Guitar;
+								bIsAutoPlay = CDTXMania.ConfigIni.bギターが全部オートプレイである;
 								break;
 
 							case 2:
-								bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay.Bass;
+								bIsAutoPlay = CDTXMania.ConfigIni.bベースが全部オートプレイである;
 								break;
 						}
 						this.fPerfect率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPerfect数 ) / ( (float) part.n全チップ数 ) );

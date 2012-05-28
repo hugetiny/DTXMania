@@ -198,8 +198,19 @@ namespace DTXMania
 		FT,
 		CY,
 		RD,		// 将来の独立レーン化/独立AUTO設定を見越して追加
-		Guitar,	// AUTOレーン判定を容易にするため、便宜上定義しておく
-		Bass,
+		Guitar,	// AUTOレーン判定を容易にするため、便宜上定義しておく(未使用)
+		Bass,	// (未使用)
+		GtR,
+		GtG,
+		GtB,
+		GtPick,
+		GtW,
+		BsR,
+		BsG,
+		BsB,
+		BsPick,
+		BsW,
+		MAX,	// 要素数取得のための定義 ("BGM"は使わない前提で)
 		BGM
 	}
 	internal enum Eログ出力
@@ -231,7 +242,7 @@ namespace DTXMania
 	/// <typeparam name="T">値の型。</typeparam>
 	[Serializable]
 	[StructLayout( LayoutKind.Sequential )]
-	public struct STDGBVALUE<T>
+	public struct STDGBVALUE<T>			// indexはE楽器パートと一致させること
 	{
 		public T Drums;
 		public T Guitar;
@@ -243,16 +254,16 @@ namespace DTXMania
 			{
 				switch( index )
 				{
-					case 0:
+					case (int) E楽器パート.DRUMS:
 						return this.Drums;
 
-					case 1:
+					case (int) E楽器パート.GUITAR:
 						return this.Guitar;
 
-					case 2:
+					case (int) E楽器パート.BASS:
 						return this.Bass;
 
-					case 0x63:
+					case (int) E楽器パート.UNKNOWN:
 						return this.Unknown;
 				}
 				throw new IndexOutOfRangeException();
@@ -261,19 +272,19 @@ namespace DTXMania
 			{
 				switch( index )
 				{
-					case 0:
+					case (int) E楽器パート.DRUMS:
 						this.Drums = value;
 						return;
 
-					case 1:
+					case (int) E楽器パート.GUITAR:
 						this.Guitar = value;
 						return;
 
-					case 2:
+					case (int) E楽器パート.BASS:
 						this.Bass = value;
 						return;
 
-					case 0x63:
+					case (int) E楽器パート.UNKNOWN:
 						this.Unknown = value;
 						return;
 				}
@@ -300,6 +311,16 @@ namespace DTXMania
 		public T RD;
 		public T Guitar;
 		public T Bass;
+		public T GtR;
+		public T GtG;
+		public T GtB;
+		public T GtPick;
+		public T GtW;
+		public T BsR;
+		public T BsG;
+		public T BsB;
+		public T BsPick;
+		public T BsW;
 		public T BGM;
 
 		public T this[ int index ]
@@ -330,6 +351,26 @@ namespace DTXMania
 						return this.Guitar;
 					case (int) Eレーン.Bass:
 						return this.Bass;
+					case (int) Eレーン.GtR:
+						return this.GtR;
+					case (int) Eレーン.GtG:
+						return this.GtG;
+					case (int) Eレーン.GtB:
+						return this.GtB;
+					case (int) Eレーン.GtPick:
+						return this.GtPick;
+					case (int) Eレーン.GtW:
+						return this.GtW;
+					case (int) Eレーン.BsR:
+						return this.BsR;
+					case (int) Eレーン.BsG:
+						return this.BsG;
+					case (int) Eレーン.BsB:
+						return this.BsB;
+					case (int) Eレーン.BsPick:
+						return this.BsPick;
+					case (int) Eレーン.BsW:
+						return this.BsW;
 				}
 				throw new IndexOutOfRangeException();
 			}
@@ -370,11 +411,191 @@ namespace DTXMania
 					case (int) Eレーン.Bass:
 						this.Bass = value;
 						return;
+					case (int) Eレーン.GtR:
+						this.GtR = value;
+						return;
+					case (int) Eレーン.GtG:
+						this.GtG = value;
+						return;
+					case (int) Eレーン.GtB:
+						this.GtB = value;
+						return;
+					case (int) Eレーン.GtPick:
+						this.GtPick = value;
+						return;
+					case (int) Eレーン.GtW:
+						this.GtW = value;
+						return;
+					case (int) Eレーン.BsR:
+						this.BsR = value;
+						return;
+					case (int) Eレーン.BsG:
+						this.BsG = value;
+						return;
+					case (int) Eレーン.BsB:
+						this.BsB = value;
+						return;
+					case (int) Eレーン.BsPick:
+						this.BsPick = value;
+						return;
+					case (int) Eレーン.BsW:
+						this.BsW = value;
+						return;
 				}
 				throw new IndexOutOfRangeException();
 			}
 		}
 	}
+
+
+	[StructLayout( LayoutKind.Sequential )]
+	public struct STAUTOPLAY								// Eレーンとindexを一致させること
+	{
+		public bool LC;			// 0
+		public bool HH;			// 1
+		public bool SD;			// 2
+		public bool BD;			// 3
+		public bool HT;			// 4
+		public bool LT;			// 5
+		public bool FT;			// 6
+		public bool CY;			// 7
+		public bool RD;			// 8
+		public bool Guitar;		// 9	(not used)
+		public bool Bass;		// 10	(not used)
+		public bool GtR;		// 11
+		public bool GtG;		// 12
+		public bool GtB;		// 13
+		public bool GtPick;		// 14
+		public bool GtW;		// 15
+		public bool BsR;		// 16
+		public bool BsG;		// 17
+		public bool BsB;		// 18
+		public bool BsPick;		// 19
+		public bool BsW;		// 20
+		public bool this[ int index ]
+		{
+			get
+			{
+				switch ( index )
+				{
+					case (int) Eレーン.LC:
+						return this.LC;
+					case (int) Eレーン.HH:
+						return this.HH;
+					case (int) Eレーン.SD:
+						return this.SD;
+					case (int) Eレーン.BD:
+						return this.BD;
+					case (int) Eレーン.HT:
+						return this.HT;
+					case (int) Eレーン.LT:
+						return this.LT;
+					case (int) Eレーン.FT:
+						return this.FT;
+					case (int) Eレーン.CY:
+						return this.CY;
+					case (int) Eレーン.RD:
+						return this.RD;
+					case (int) Eレーン.Guitar:
+						return this.Guitar;
+					case (int) Eレーン.Bass:
+						return this.Bass;
+					case (int) Eレーン.GtR:
+						return this.GtR;
+					case (int) Eレーン.GtG:
+						return this.GtG;
+					case (int) Eレーン.GtB:
+						return this.GtB;
+					case (int) Eレーン.GtPick:
+						return this.GtPick;
+					case (int) Eレーン.GtW:
+						return this.GtW;
+					case (int) Eレーン.BsR:
+						return this.BsR;
+					case (int) Eレーン.BsG:
+						return this.BsG;
+					case (int) Eレーン.BsB:
+						return this.BsB;
+					case (int) Eレーン.BsPick:
+						return this.BsPick;
+					case (int) Eレーン.BsW:
+						return this.BsW;
+				}
+				throw new IndexOutOfRangeException();
+			}
+			set
+			{
+				switch ( index )
+				{
+					case (int) Eレーン.LC:
+						this.LC = value;
+						return;
+					case (int) Eレーン.HH:
+						this.HH = value;
+						return;
+					case (int) Eレーン.SD:
+						this.SD = value;
+						return;
+					case (int) Eレーン.BD:
+						this.BD = value;
+						return;
+					case (int) Eレーン.HT:
+						this.HT = value;
+						return;
+					case (int) Eレーン.LT:
+						this.LT = value;
+						return;
+					case (int) Eレーン.FT:
+						this.FT = value;
+						return;
+					case (int) Eレーン.CY:
+						this.CY = value;
+						return;
+					case (int) Eレーン.RD:
+						this.RD = value;
+						return;
+					case (int) Eレーン.Guitar:
+						this.Guitar = value;
+						return;
+					case (int) Eレーン.Bass:
+						this.Bass = value;
+						return;
+					case (int) Eレーン.GtR:
+						this.GtR = value;
+						return;
+					case (int) Eレーン.GtG:
+						this.GtG = value;
+						return;
+					case (int) Eレーン.GtB:
+						this.GtB = value;
+						return;
+					case (int) Eレーン.GtPick:
+						this.GtPick = value;
+						return;
+					case (int) Eレーン.GtW:
+						this.GtW = value;
+						return;
+					case (int) Eレーン.BsR:
+						this.BsR = value;
+						return;
+					case (int) Eレーン.BsG:
+						this.BsG = value;
+						return;
+					case (int) Eレーン.BsB:
+						this.BsB = value;
+						return;
+					case (int) Eレーン.BsPick:
+						this.BsPick = value;
+						return;
+					case (int) Eレーン.BsW:
+						this.BsW = value;
+						return;
+				}
+				throw new IndexOutOfRangeException();
+			}
+		}
+	}
+
 
 	internal class C定数
 	{
