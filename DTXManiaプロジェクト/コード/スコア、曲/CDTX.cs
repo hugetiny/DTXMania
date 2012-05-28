@@ -575,7 +575,6 @@ namespace DTXMania
 					"BGAスコープ画像切替6", "BGAスコープ画像切替7", "??", "??", "??", "??", "??", "??", 
 					"BGAスコープ画像切替8"
 				};
-
 				return string.Format( "CChip: 位置:{0:D4}.{1:D3}, 時刻{2:D6}, Ch:{3:X2}({4}), Pn:{5}({11})(内部{6}), Pd:{7}, Sz:{8}, UseWav:{9}, Auto:{10}",
 					this.n発声位置 / 384, this.n発声位置 % 384,
 					this.n発声時刻ms,
