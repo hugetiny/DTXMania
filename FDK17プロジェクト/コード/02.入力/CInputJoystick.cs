@@ -634,7 +634,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 				}
 				bDoUpDownCore( contrary, data, true );												// X軸+ == ON から X軸-のONレンジに来たら、X軸+はOFF
 			}
-			else if ( ( axisdata < 0 && targetsign < 0 ) || ( axisdata > 0 && targetsign > 0 ) )	// 軸の最大値の半分を超えておらず、かつ  
+			else if ( ( axisdata <= 0 && targetsign <= 0 ) || ( axisdata >= 0 && targetsign >= 0 ) )	// 軸の最大値の半分を超えておらず、かつ  
 			{
 				//Debug.WriteLine( "X-OFF? " + data.TimeStamp + " " + axisdata );
 				if ( bDoUpDownCore( target, data, true ) )											// 直前までは超えていたのならば、今回OFF
