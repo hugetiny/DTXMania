@@ -622,10 +622,10 @@ namespace DTXMania
 			//this.list項目リスト.Add( this.iGuitarAutoPlay );
 
 			this.iGuitarAutoPlayAll = new CItemThreeState( "AutoPlay (All)", CItemThreeState.E状態.不定,
-				"全パッドの自動演奏の ON/OFF を\n" +
+				"全ネック/ピックの自動演奏の ON/OFF を\n" +
 				"まとめて切り替えます。",
 				"You can change whether Auto or not\n" +
-				" for all guitar lanes at once." );
+				" for all guitar neck/pick at once." );
 			this.list項目リスト.Add( this.iGuitarAutoPlayAll );
 			this.iGuitarR = new CItemToggle( "    R", CDTXMania.ConfigIni.bAutoPlay.GtR,
 				"Rネックを自動で演奏します。",
@@ -724,10 +724,10 @@ namespace DTXMania
 			//this.list項目リスト.Add( this.iBassAutoPlay );
 
 			this.iBassAutoPlayAll = new CItemThreeState( "AutoPlay (All)", CItemThreeState.E状態.不定,
-			"全パッドの自動演奏の ON/OFF を\n" +
-			"まとめて切り替えます。",
-			"You can change whether Auto or not\n" +
-			" for all guitar lanes at once." );
+				"全ネック/ピックの自動演奏の ON/OFF を\n" +
+				"まとめて切り替えます。",
+				"You can change whether Auto or not\n" +
+				" for all bass neck/pick at once." );
 			this.list項目リスト.Add( this.iBassAutoPlayAll );
 			this.iBassR = new CItemToggle( "    R", CDTXMania.ConfigIni.bAutoPlay.BsR,
 				"Rネックを自動で演奏します。",

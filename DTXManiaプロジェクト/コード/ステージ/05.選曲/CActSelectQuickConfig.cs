@@ -55,15 +55,13 @@ namespace DTXMania
 			#region [ 共通 Target/AutoMode/AutoLane ]
 			l.Add( new CSwitchItemList( "Target", CItemBase.Eパネル種別.通常, nInst, "", "", new string[] { "Drums", "Guitar", "Bass" } ) );
 			List<int> automode = tConfigureAuto_DefaultSettings();
-			if ( nInst == 0 )
+			if ( nInst == (int) E楽器パート.DRUMS )
 			{
 				l.Add( new CItemList( "Auto Mode", CItemBase.Eパネル種別.通常, automode[ nInst ], "", "", new string[] { "All Auto", "Auto HH", "Auto BD", "Custom", "OFF" } ) );
-			//	l.Add( new CItemList( "Auto Lanes", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "" } ) );
 			}
 			else
 			{
-				l.Add( new CItemList( "Auto Mode", CItemBase.Eパネル種別.通常, automode[ nInst ], "", "", new string[] { "OFF", "ON" } ) );
-			//	l.Add( new CItemList( "Auto Lanes", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "" } ) );
+				l.Add( new CItemList( "Auto Mode", CItemBase.Eパネル種別.通常, automode[ nInst ], "", "", new string[] { "All Auto", "Auto Neck", "Auto Pick", "Custom", "OFF"  } ) );
 			}
 			#endregion
 			#region [ 個別 ScrollSpeed ]
@@ -166,10 +164,66 @@ namespace DTXMania
 			}
 			l.Add( automode );
 			#endregion
-			#region [ Guitar/Bass ]
-			// "OFF", "ON" 
-			l.Add( ( CDTXMania.ConfigIni.bAutoPlay.Guitar == true ) ? 1 : 0 );
-			l.Add( ( CDTXMania.ConfigIni.bAutoPlay.Bass   == true ) ? 1 : 0 );
+			#region [ Guitar ]
+// "OFF", "ON" 
+//			l.Add( ( CDTXMania.ConfigIni.bAutoPlay.Guitar == true ) ? 1 : 0 );
+//			l.Add( ( CDTXMania.ConfigIni.bAutoPlay.Bass   == true ) ? 1 : 0 );
+			if ( CDTXMania.ConfigIni.bギターが全部オートプレイである)
+			{
+				automode = 0;	// All Auto
+			}
+			else if (	CDTXMania.ConfigIni.bAutoPlay.GtR == true && CDTXMania.ConfigIni.bAutoPlay.GtB == true &&
+						CDTXMania.ConfigIni.bAutoPlay.GtB == true && CDTXMania.ConfigIni.bAutoPlay.GtPick == false &&
+						CDTXMania.ConfigIni.bAutoPlay.GtW == false )
+			{
+				automode = 1;	// Auto Neck
+			}
+			else if (	CDTXMania.ConfigIni.bAutoPlay.GtR == false && CDTXMania.ConfigIni.bAutoPlay.GtB == false &&
+						CDTXMania.ConfigIni.bAutoPlay.GtB == false && CDTXMania.ConfigIni.bAutoPlay.GtPick == true &&
+						CDTXMania.ConfigIni.bAutoPlay.GtW == false )
+			{
+				automode = 2;	// Auto Pick
+			}
+			else if	(	CDTXMania.ConfigIni.bAutoPlay.GtR == false && CDTXMania.ConfigIni.bAutoPlay.GtB == false &&
+						CDTXMania.ConfigIni.bAutoPlay.GtB == false && CDTXMania.ConfigIni.bAutoPlay.GtPick == false &&
+						CDTXMania.ConfigIni.bAutoPlay.GtW == false )
+			{
+				automode = 4;	// OFF
+			}
+			else
+			{
+				automode = 3;	// Custom
+			}
+			l.Add( automode );
+			#endregion
+			#region [ Bass ]
+			if ( CDTXMania.ConfigIni.bベースが全部オートプレイである )
+			{
+				automode = 0;	// All Auto
+			}
+			else if (	CDTXMania.ConfigIni.bAutoPlay.BsR == true && CDTXMania.ConfigIni.bAutoPlay.BsB == true &&
+						CDTXMania.ConfigIni.bAutoPlay.BsB == true && CDTXMania.ConfigIni.bAutoPlay.BsPick == false &&
+						CDTXMania.ConfigIni.bAutoPlay.BsW == false )
+			{
+				automode = 1;	// Auto Neck
+			}
+			else if (	CDTXMania.ConfigIni.bAutoPlay.BsR == false && CDTXMania.ConfigIni.bAutoPlay.BsB == false &&
+						CDTXMania.ConfigIni.bAutoPlay.BsB == false && CDTXMania.ConfigIni.bAutoPlay.BsPick == true &&
+						CDTXMania.ConfigIni.bAutoPlay.BsW == false )
+			{
+				automode = 2;	// Auto Pick
+			}
+			else if (	CDTXMania.ConfigIni.bAutoPlay.BsR == false && CDTXMania.ConfigIni.bAutoPlay.BsB == false &&
+						CDTXMania.ConfigIni.bAutoPlay.BsB == false && CDTXMania.ConfigIni.bAutoPlay.BsPick == false &&
+						CDTXMania.ConfigIni.bAutoPlay.BsW == false )
+			{
+				automode = 4;	// OFF
+			}
+			else
+			{
+				automode = 3;	// Custom
+			}
+			l.Add( automode );
 			#endregion
 			return l;
 		}
@@ -193,9 +247,6 @@ namespace DTXMania
 		{
 			if ( base.n現在の選択行 == (int) EOrder.AutoMode )
 			{
-				// if ( eInst == E楽器パート.DRUMS )
-				if ( nCurrentTarget == (int) E楽器パート.DRUMS )
-				{
 					if ( tx文字列パネル == null )		// TagetとAuto Modeを全く変更せずにAuto Modeまで動かした場合限り、ここに来る
 					{
 						MakeAutoPanel();
@@ -207,9 +258,10 @@ namespace DTXMania
 					}
 					if ( this.tx文字列パネル != null )
 					{
-						this.tx文字列パネル.t2D描画( CDTXMania.app.Device, 230, 190 );
+						int x = ( nCurrentTarget == (int) E楽器パート.DRUMS ) ? 230 : 260;
+						this.tx文字列パネル.t2D描画( CDTXMania.app.Device, x, 190 );
+
 					}
-				}
 			}
 		}
 
@@ -229,7 +281,7 @@ namespace DTXMania
 					break;
 				case (int) E楽器パート.GUITAR:
 				case (int) E楽器パート.BASS:
-					// header = "RGBPW"
+					header = "RGBPW";
 					break;
 				default:
 					break;
@@ -348,23 +400,13 @@ namespace DTXMania
 		{
 			for ( int target = 0; target < 3; target++ )
 			{
-				string s = GetAutoParameters( target );
-				switch ( target )
+				string str = GetAutoParameters( target );
+				int[] pa = { (int) Eレーン.LC, (int) Eレーン.GtR, (int) Eレーン.BsR };
+				int start = pa[ target ];
+
+				for ( int i = 0; i < str.Length; i++ )
 				{
-					case (int) E楽器パート.DRUMS:
-						for ( int i = 0; i < s.Length; i++ )
-						{
-							CDTXMania.ConfigIni.bAutoPlay[ i ] = ( s[ i ] == 'A' ) ? true : false;
-						}
-						break;
-					case (int) E楽器パート.GUITAR:
-						CDTXMania.ConfigIni.bAutoPlay.Guitar = ( s[ 0 ] == 'A' ) ? true : false;
-						break;
-					case (int) E楽器パート.BASS:
-						CDTXMania.ConfigIni.bAutoPlay.Bass = ( s[ 0 ] == 'A' ) ? true : false;
-						break;
-					default:
-						break;
+					CDTXMania.ConfigIni.bAutoPlay[ i + start ] = ( str[ i ] == 'A' ) ? true : false;
 				}
 			}
 		}
@@ -409,7 +451,32 @@ namespace DTXMania
 				#region [ Guitar / Bass ]
 				case (int) E楽器パート.GUITAR:
 				case (int) E楽器パート.BASS:
-					s = ( lci[ nCurrentConfigSet ][ target ][ (int) EOrder.AutoMode ].GetIndex() ) == 1 ? "A" : "_";
+//					s = ( lci[ nCurrentConfigSet ][ target ][ (int) EOrder.AutoMode ].GetIndex() ) == 1 ? "A" : "_";
+					switch ( lci[ nCurrentConfigSet ][ target ][ (int) EOrder.AutoMode ].GetIndex() )
+					{
+						case 0:	// All Auto
+							s = "AAAAA";
+							break;
+						case 1:	// Auto Neck
+							s = "AAA__";
+							break;
+						case 2:	// Auto Pick
+							s = "___A_";
+							break;
+						case 3:	// Custom
+							int p = (target == (int) E楽器パート.GUITAR ) ? (int) Eレーン.GtR : (int) Eレーン.BsR;
+							int len = (int) Eレーン.GtW - (int) Eレーン.GtR + 1;
+							for ( int i = p; i < p + len; i++ )
+							{
+								s += ( CDTXMania.ConfigIni.bAutoPlay[ i ] ) ? "A" : "_";
+							}
+							break;
+						case 4:	// OFF
+							s = "_____";
+							break;
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
 					break;
 				default:
 					break;
