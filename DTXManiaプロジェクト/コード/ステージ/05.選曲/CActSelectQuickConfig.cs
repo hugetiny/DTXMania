@@ -297,8 +297,8 @@ namespace DTXMania
 					break;
 				case (int) EOrder.SuddenHidden:
 					int sh = (int) GetIndex( (int) EOrder.SuddenHidden );
-					CDTXMania.ConfigIni.bSudden[ nCurrentTarget ] = ( (sh & 2) > 0 ) ? true : false;
-					CDTXMania.ConfigIni.bHidden[ nCurrentTarget ] = ( (sh & 1) > 0 ) ? true : false;
+					CDTXMania.ConfigIni.bSudden[ nCurrentTarget ] = ( ( sh & 1 ) > 0 ) ? true : false;
+					CDTXMania.ConfigIni.bHidden[ nCurrentTarget ] = ( ( sh & 2 ) > 0 ) ? true : false;
 					break;
 				case (int) EOrder.ConfSet:			// CONF-SET切り替え
 					nCurrentConfigSet = (int) GetIndex( (int) EOrder.ConfSet );
