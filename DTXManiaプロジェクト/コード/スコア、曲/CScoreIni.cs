@@ -580,7 +580,8 @@ namespace DTXMania
 							string item;
 							string para;
 							C演奏記録 c演奏記録;
-							if( str[ 0 ] == '[' )
+							#region [ section ]
+							if ( str[ 0 ] == '[' )
 							{
 								StringBuilder builder = new StringBuilder( 0x20 );
 								int num = 1;
@@ -636,6 +637,7 @@ namespace DTXMania
 									section = Eセクション種別.Unknown;
 								}
 							}
+							#endregion
 							else
 							{
 								string[] strArray = str.Split( new char[] { '=' } );
@@ -676,6 +678,7 @@ namespace DTXMania
 								}
 							}
 							continue;
+							#region [ File section ]
 						Label_01C7:
 							if( item.Equals( "Name" ) )
 							{
@@ -753,6 +756,8 @@ namespace DTXMania
 								this.stファイル.BGMAdjust = C変換.n値を文字列から取得して返す( para, 0 );
 							}
 							continue;
+							#endregion
+							#region [ Score section ]
 						Label_03B9:
 							if( item.Equals( "PlaySkill" ) )
 							{
@@ -845,6 +850,7 @@ namespace DTXMania
 							{
 								c演奏記録.bReverse.Bass = C変換.bONorOFF( para[ 0 ] );
 							}
+							#endregion
 							else
 							{
 								#region [ RandomGuitar ]
@@ -1375,21 +1381,113 @@ namespace DTXMania
 			}
 			return (int)ERANK.E;
 		}
-		internal static double tゲーム型スキルを計算して返す( int nLevel, int nTotal, int nPerfect, int nCombo )
+		internal static double tゲーム型スキルを計算して返す( int nLevel, int nTotal, int nPerfect, int nCombo, E楽器パート inst, STAUTOPLAY bAutoPlay )
 		{
+			double ret;
 			if( ( nTotal == 0 ) || ( ( nPerfect == 0 ) && ( nCombo == 0 ) ) )
-				return 0.0;
+				ret = 0.0;
 
-			return ( ( nLevel * ( ( nPerfect * 0.8 + nCombo * 0.2 ) / ( (double) nTotal ) ) ) / 2.0 );
+			ret = ( ( nLevel * ( ( nPerfect * 0.8 + nCombo * 0.2 ) / ( (double) nTotal ) ) ) / 2.0 );
+			ret *= dbCalcReviseValForDrGtBsAutoLanes( inst, bAutoPlay );
+
+			return ret;
 		}
-		internal static double t演奏型スキルを計算して返す( int nTotal, int nPerfect, int nGreat, int nGood, int nPoor, int nMiss )
+		internal static double t演奏型スキルを計算して返す( int nTotal, int nPerfect, int nGreat, int nGood, int nPoor, int nMiss, E楽器パート inst, STAUTOPLAY bAutoPlay)
 		{
 			if( nTotal == 0 )
 				return 0.0;
 
 			int nAuto = nTotal - ( nPerfect + nGreat + nGood + nPoor  + nMiss );
 			double y = ( ( nPerfect * 1.0 + nGreat * 0.8 + nGood * 0.5 + nPoor * 0.2 + nMiss * 0.0 + nAuto * 0.0 ) * 100.0 ) / ( (double) nTotal );
-			return ( 100.0 * ( ( Math.Pow( 1.03, y ) - 1.0 ) / ( Math.Pow( 1.03, 100.0 ) - 1.0 ) ) );
+			double ret = ( 100.0 * ( ( Math.Pow( 1.03, y ) - 1.0 ) / ( Math.Pow( 1.03, 100.0 ) - 1.0 ) ) );
+
+			ret *= dbCalcReviseValForDrGtBsAutoLanes( inst, bAutoPlay );
+			return ret;
+		}
+		internal static double dbCalcReviseValForDrGtBsAutoLanes( E楽器パート inst, STAUTOPLAY bAutoPlay )	// #28607 2012.6.7 yyagi
+		{
+			double ret = 1.0;
+
+			if ( inst == E楽器パート.DRUMS || inst == E楽器パート.UNKNOWN )
+			{
+				throw new ArgumentException();
+			}
+			#region [ Drums ]
+			else if ( inst == E楽器パート.DRUMS )
+			{
+				if ( !CDTXMania.ConfigIni.bドラムが全部オートプレイである )
+				{
+					#region [ Auto BD ]
+					if ( bAutoPlay.BD )
+					{
+						ret /= 2;
+					}
+					#endregion
+				}
+				
+			}
+			#endregion
+			#region [ Guitar ]
+			else if ( inst == E楽器パート.GUITAR )
+			{
+				if ( !CDTXMania.ConfigIni.bギターが全部オートプレイである )
+				{
+					#region [ Auto Pick ]
+					if ( bAutoPlay.GtPick )
+					{
+						ret /= 2;			 // AutoPick時、達成率を1/2にする
+					}
+					#endregion
+					#region [ Auto Neck ]
+					int nAutoLanes = 0;
+					if ( bAutoPlay.GtR )
+					{
+						nAutoLanes++;
+					}
+					if ( bAutoPlay.GtG )
+					{
+						nAutoLanes++;
+					}
+					if ( bAutoPlay.GtB )
+					{
+						nAutoLanes++;
+					}
+					ret /= Math.Sqrt( nAutoLanes + 1 );
+					#endregion
+				}
+			}
+			#endregion
+			#region [ Bass ]
+			else
+			{
+				if ( !CDTXMania.ConfigIni.bベースが全部オートプレイである )
+				{
+					#region [ Auto Pick ]
+					if ( bAutoPlay.BsPick )
+					{
+						ret /= 2;			 // AutoPick時、達成率を1/2にする
+					}
+					#endregion
+					#region [ Auto lanes ]
+					int nAutoLanes = 0;
+					if ( bAutoPlay.BsR )
+					{
+						nAutoLanes++;
+					}
+					if ( bAutoPlay.BsG )
+					{
+						nAutoLanes++;
+					}
+					if ( bAutoPlay.BsB )
+					{
+						nAutoLanes++;
+					}
+					ret /= Math.Sqrt( nAutoLanes + 1 );
+					#endregion
+				}
+			}
+			#endregion
+			return ret;
 		}
 		internal static string t演奏セクションのMD5を求めて返す( C演奏記録 cc )
 		{

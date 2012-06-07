@@ -10,7 +10,7 @@ namespace DTXMania
 		// プロパティ
 
 		protected STDGBVALUE<long> nスコアの増分;
-		protected STDGBVALUE<long> n現在の本当のスコア;
+		protected STDGBVALUE<double> n現在の本当のスコア;
 		protected STDGBVALUE<long> n現在表示中のスコア;
 		protected long n進行用タイマ;
 		protected CTexture txScore;
@@ -26,22 +26,101 @@ namespace DTXMania
 
 		// メソッド
 
-		public long Get( E楽器パート part )
+		public double Get( E楽器パート part )
 		{
 			return this.n現在の本当のスコア[ (int) part ];
 		}
-		public void Set( E楽器パート part, long nScore )
+		public void Set( E楽器パート part, double nScore )
 		{
-			int num = (int) part;
-			if( this.n現在の本当のスコア[ num ] != nScore )
+			int nPart = (int) part;
+			if( this.n現在の本当のスコア[ nPart ] != nScore )
 			{
-				this.n現在の本当のスコア[ num ] = nScore;
-				this.nスコアの増分[ num ] = (long) ( ( (double) ( this.n現在の本当のスコア[ num ] - this.n現在表示中のスコア[ num ] ) ) / 20.0 );
-				if( this.nスコアの増分[ num ] < 1L )
+				this.n現在の本当のスコア[ nPart ] = nScore;
+				this.nスコアの増分[ nPart ] = (long) ( ( (double) ( this.n現在の本当のスコア[ nPart ] - this.n現在表示中のスコア[ nPart ] ) ) / 20.0 );
+				if( this.nスコアの増分[ nPart ] < 1L )
 				{
-					this.nスコアの増分[ num ] = 1L;
+					this.nスコアの増分[ nPart ] = 1L;
 				}
 			}
+		}
+		/// <summary>
+		/// 点数を加える(各種AUTO補正つき)
+		/// </summary>
+		/// <param name="part"></param>
+		/// <param name="bAutoPlay"></param>
+		/// <param name="delta"></param>
+		public void Add( E楽器パート part, STAUTOPLAY bAutoPlay, long delta )
+		{
+			double rev = 1.0;
+			switch ( (int) part )
+			{
+				case (int) E楽器パート.UNKNOWN:
+					throw new ArgumentException();
+				#region [ Drums ]
+				case (int) E楽器パート.DRUMS:
+					if ( !CDTXMania.ConfigIni.bドラムが全部オートプレイである )
+					{
+						#region [ Auto BD ]
+						if ( bAutoPlay.BD == true )
+						{
+							rev /= 2;
+						}
+						#endregion
+					}
+					break;
+				#endregion
+				#region [ Gutiar ]
+				case (int) E楽器パート.GUITAR:
+					if ( !CDTXMania.ConfigIni.bギターが全部オートプレイである )
+					{
+						#region [ Auto Wailing ]
+						if ( bAutoPlay.GtW )
+						{
+							rev /= 2;
+						}
+						#endregion
+						#region [ Auto Pick ]
+						if ( bAutoPlay.GtPick )
+						{
+							rev /= 3;
+						}
+						#endregion
+						#region [ Auto Neck ]
+						if ( bAutoPlay.GtR || bAutoPlay.GtG || bAutoPlay.GtB )
+						{
+							rev /= 4;
+						}
+						#endregion
+					}
+					break;
+				#endregion
+				#region [ Bass ]
+				case (int) E楽器パート.BASS:
+					if ( !CDTXMania.ConfigIni.bベースが全部オートプレイである )
+					{
+						#region [ Auto Wailing ]
+						if ( bAutoPlay.BsW )
+						{
+							rev /= 2;
+						}
+						#endregion
+						#region [ Auto Pick ]
+						if ( bAutoPlay.BsPick )
+						{
+							rev /= 3;
+						}
+						#endregion
+						#region [ Auto Neck ]
+						if ( bAutoPlay.BsR || bAutoPlay.BsG || bAutoPlay.BsB )
+						{
+							rev /= 4;
+						}
+						#endregion
+					}
+					break;
+				#endregion
+			}
+			this.Set( part, this.Get( part ) + delta * rev );
 		}
 
 
