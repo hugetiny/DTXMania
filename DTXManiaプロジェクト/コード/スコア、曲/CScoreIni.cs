@@ -1408,85 +1408,84 @@ namespace DTXMania
 		{
 			double ret = 1.0;
 
-			if ( inst == E楽器パート.DRUMS || inst == E楽器パート.UNKNOWN )
+			switch ( inst )
 			{
-				throw new ArgumentException();
+				#region [ Unknown ]
+				case E楽器パート.UNKNOWN:
+					throw new ArgumentException();
+				#endregion
+				#region [ Drums ]
+				case E楽器パート.DRUMS:
+					if ( !CDTXMania.ConfigIni.bドラムが全部オートプレイである )
+					{
+						#region [ Auto BD ]
+						if ( bAutoPlay.BD )
+						{
+							ret /= 2;
+						}
+						#endregion
+					}
+					break;
+				#endregion
+				#region [ Guitar ]
+				case E楽器パート.GUITAR:
+					if ( !CDTXMania.ConfigIni.bギターが全部オートプレイである )
+					{
+						#region [ Auto Pick ]
+						if ( bAutoPlay.GtPick )
+						{
+							ret /= 2;			 // AutoPick時、達成率を1/2にする
+						}
+						#endregion
+						#region [ Auto Neck ]
+						int nAutoLanes = 0;
+						if ( bAutoPlay.GtR )
+						{
+							nAutoLanes++;
+						}
+						if ( bAutoPlay.GtG )
+						{
+							nAutoLanes++;
+						}
+						if ( bAutoPlay.GtB )
+						{
+							nAutoLanes++;
+						}
+						ret /= Math.Sqrt( nAutoLanes + 1 );
+						#endregion
+					}
+					break;
+				#endregion
+				#region [ Bass ]
+				case E楽器パート.BASS:
+					if ( !CDTXMania.ConfigIni.bベースが全部オートプレイである )
+					{
+						#region [ Auto Pick ]
+						if ( bAutoPlay.BsPick )
+						{
+							ret /= 2;			 // AutoPick時、達成率を1/2にする
+						}
+						#endregion
+						#region [ Auto lanes ]
+						int nAutoLanes = 0;
+						if ( bAutoPlay.BsR )
+						{
+							nAutoLanes++;
+						}
+						if ( bAutoPlay.BsG )
+						{
+							nAutoLanes++;
+						}
+						if ( bAutoPlay.BsB )
+						{
+							nAutoLanes++;
+						}
+						ret /= Math.Sqrt( nAutoLanes + 1 );
+						#endregion
+					}
+					break;
+				#endregion
 			}
-			#region [ Drums ]
-			else if ( inst == E楽器パート.DRUMS )
-			{
-				if ( !CDTXMania.ConfigIni.bドラムが全部オートプレイである )
-				{
-					#region [ Auto BD ]
-					if ( bAutoPlay.BD )
-					{
-						ret /= 2;
-					}
-					#endregion
-				}
-				
-			}
-			#endregion
-			#region [ Guitar ]
-			else if ( inst == E楽器パート.GUITAR )
-			{
-				if ( !CDTXMania.ConfigIni.bギターが全部オートプレイである )
-				{
-					#region [ Auto Pick ]
-					if ( bAutoPlay.GtPick )
-					{
-						ret /= 2;			 // AutoPick時、達成率を1/2にする
-					}
-					#endregion
-					#region [ Auto Neck ]
-					int nAutoLanes = 0;
-					if ( bAutoPlay.GtR )
-					{
-						nAutoLanes++;
-					}
-					if ( bAutoPlay.GtG )
-					{
-						nAutoLanes++;
-					}
-					if ( bAutoPlay.GtB )
-					{
-						nAutoLanes++;
-					}
-					ret /= Math.Sqrt( nAutoLanes + 1 );
-					#endregion
-				}
-			}
-			#endregion
-			#region [ Bass ]
-			else
-			{
-				if ( !CDTXMania.ConfigIni.bベースが全部オートプレイである )
-				{
-					#region [ Auto Pick ]
-					if ( bAutoPlay.BsPick )
-					{
-						ret /= 2;			 // AutoPick時、達成率を1/2にする
-					}
-					#endregion
-					#region [ Auto lanes ]
-					int nAutoLanes = 0;
-					if ( bAutoPlay.BsR )
-					{
-						nAutoLanes++;
-					}
-					if ( bAutoPlay.BsG )
-					{
-						nAutoLanes++;
-					}
-					if ( bAutoPlay.BsB )
-					{
-						nAutoLanes++;
-					}
-					ret /= Math.Sqrt( nAutoLanes + 1 );
-					#endregion
-				}
-			}
-			#endregion
 			return ret;
 		}
 		internal static string t演奏セクションのMD5を求めて返す( C演奏記録 cc )
