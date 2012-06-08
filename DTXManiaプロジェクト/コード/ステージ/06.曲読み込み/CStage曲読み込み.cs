@@ -272,7 +272,11 @@ namespace DTXMania
 						int looptime = (CDTXMania.ConfigIni.b垂直帰線待ちを行う)? 3 : 1;	// VSyncWait=ON時は1frame(1/60s)あたり3つ読むようにする
 						for ( int i = 0; i < looptime && nWAVcount <= CDTXMania.DTX.listWAV.Count; i++ )
 						{
-							CDTXMania.DTX.tWAVの読み込み( CDTXMania.DTX.listWAV[ nWAVcount++ ] );
+							if ( CDTXMania.DTX.listWAV[ nWAVcount ].listこのWAVを使用するチャンネル番号の集合.Count > 0 )	// #28674 2012.5.8 yyagi
+							{
+								CDTXMania.DTX.tWAVの読み込み( CDTXMania.DTX.listWAV[ nWAVcount ] );
+							}
+							nWAVcount++;
 						}
 						if ( nWAVcount <= CDTXMania.DTX.listWAV.Count )
 						{
