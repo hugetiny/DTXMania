@@ -52,12 +52,14 @@ namespace DTXMania
 		public void Add( E楽器パート part, STAUTOPLAY bAutoPlay, long delta )
 		{
 			double rev = 1.0;
-			switch ( (int) part )
+			switch ( part )
 			{
-				case (int) E楽器パート.UNKNOWN:
+				#region [ Unknown ]
+				case E楽器パート.UNKNOWN:
 					throw new ArgumentException();
+				#endregion
 				#region [ Drums ]
-				case (int) E楽器パート.DRUMS:
+				case E楽器パート.DRUMS:
 					if ( !CDTXMania.ConfigIni.bドラムが全部オートプレイである )
 					{
 						#region [ Auto BD ]
@@ -70,7 +72,7 @@ namespace DTXMania
 					break;
 				#endregion
 				#region [ Gutiar ]
-				case (int) E楽器パート.GUITAR:
+				case E楽器パート.GUITAR:
 					if ( !CDTXMania.ConfigIni.bギターが全部オートプレイである )
 					{
 						#region [ Auto Wailing ]
@@ -95,7 +97,7 @@ namespace DTXMania
 					break;
 				#endregion
 				#region [ Bass ]
-				case (int) E楽器パート.BASS:
+				case E楽器パート.BASS:
 					if ( !CDTXMania.ConfigIni.bベースが全部オートプレイである )
 					{
 						#region [ Auto Wailing ]

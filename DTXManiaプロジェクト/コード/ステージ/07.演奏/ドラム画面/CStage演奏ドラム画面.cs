@@ -1938,7 +1938,7 @@ namespace DTXMania
 		protected override void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
 		{
 			base.t進行描画・チップ・ギターベース( configIni, ref dTX, ref pChip, inst,
-				95, 374, 57, 412, 400, 509,
+				95, 374, 57, 412, 509, 400,
 				268, 144, 76, 6,
 				24, 509, 561, 400, 452, 26, 24 );
 		}
