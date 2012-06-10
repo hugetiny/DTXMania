@@ -1353,8 +1353,10 @@ namespace DTXMania
 
 			if ( CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true ) != this.skinSubFolder_org )
 			{
+				CDTXMania.act文字コンソール.On非活性化();
 				CDTXMania.Skin.PrepareReloadSkin();		// #28195 2012.5.2 yyagi CONFIG脱出時にSkin更新
 				CDTXMania.Skin.ReloadSkin();			//
+				CDTXMania.act文字コンソール.On活性化();
 			}
 
 		}
