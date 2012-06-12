@@ -535,7 +535,8 @@ namespace DTXMania
 							#endregion
 
 							#region [ 曲探索中断待ち待機 ]
-							if ( r現在のステージ.eステージID == CStage.Eステージ.曲読み込み && !EnumSongs.IsSongListEnumCompletelyDone )
+							if ( r現在のステージ.eステージID == CStage.Eステージ.曲読み込み && !EnumSongs.IsSongListEnumCompletelyDone &&
+								EnumSongs.thDTXFileEnumerate != null )							// #28700 2012.6.12 yyagi; at Compact mode, enumerating thread does not exist.
 							{
 								EnumSongs.WaitUntilSuspended();									// 念のため、曲検索が一時中断されるまで待機
 							}
@@ -1454,7 +1455,7 @@ for (int i = 0; i < 3; i++) {
 			{
 				bコンパクトモード = true;
 				strコンパクトモードファイル = commandLineArgs[ 1 ];
-				Trace.TraceInformation( "コンパクトモードで起動します。[{0}]", new object[] { strコンパクトモードファイル } );
+				Trace.TraceInformation( "コンパクトモードで起動します。[{0}]", strコンパクトモードファイル );
 			}
 			//---------------------
 			#endregion
@@ -1517,7 +1518,6 @@ for (int i = 0; i < 3; i++) {
 			Trace.Indent();
 			try
 			{
-				Trace.TraceInformation( "初期化開始。" );
 				Skin = new CSkin( CDTXMania.ConfigIni.strSystemSkinSubfolderFullName, CDTXMania.ConfigIni.bUseBoxDefSkin );
 				CDTXMania.ConfigIni.strSystemSkinSubfolderFullName = CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true );	// 旧指定のSkinフォルダが消滅していた場合に備える
 				Trace.TraceInformation( "スキンの初期化を完了しました。" );

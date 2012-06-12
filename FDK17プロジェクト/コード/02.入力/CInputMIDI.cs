@@ -19,6 +19,7 @@ namespace FDK
 		{
 			this.hMidiIn = 0;
 			this.listEventBuffer = new List<STInputEvent>( 32 );
+			this.list入力イベント = new List<STInputEvent>( 32 );
 			this.e入力デバイス種別 = E入力デバイス種別.MidiIn;
 			this.GUID = "";
 			this.ID = (int) nID;
@@ -58,7 +59,8 @@ namespace FDK
 
 		public void tポーリング( bool bWindowがアクティブ中, bool bバッファ入力を使用する )
 		{
-			this.list入力イベント = new List<STInputEvent>( 32 );
+			// this.list入力イベント = new List<STInputEvent>( 32 );
+			this.list入力イベント.Clear();								// #xxxxx 2012.6.11 yyagi; To optimize, I removed new();
 
 			for( int i = 0; i < this.listEventBuffer.Count; i++ )
 				this.list入力イベント.Add( this.listEventBuffer[ i ] );
@@ -95,6 +97,14 @@ namespace FDK
 		//-----------------
 		public void Dispose()
 		{
+			if ( this.listEventBuffer != null )
+			{
+				this.listEventBuffer = null;
+			}
+			if ( this.list入力イベント != null )
+			{
+				this.list入力イベント = null;
+			}
 		}
 		//-----------------
 		#endregion

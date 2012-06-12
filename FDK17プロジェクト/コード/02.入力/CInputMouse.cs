@@ -50,6 +50,7 @@ namespace FDK
 				this.bMouseState[ i ] = false;
 
 			this.timer = new CTimer( CTimer.E種別.MultiMedia );
+			this.list入力イベント = new List<STInputEvent>( 32 );
 		}
 
 
@@ -72,7 +73,8 @@ namespace FDK
 
 			if( ( ( bWindowがアクティブ中 && ( this.devMouse != null ) ) && !this.devMouse.Acquire().IsFailure ) && !this.devMouse.Poll().IsFailure )
 			{
-				this.list入力イベント = new List<STInputEvent>( 32 );
+				// this.list入力イベント = new List<STInputEvent>( 32 );
+				this.list入力イベント.Clear();			// #xxxxx 2012.6.11 yyagi; To optimize, I removed new();
 
 				if( bバッファ入力を使用する )
 				{
@@ -198,6 +200,10 @@ namespace FDK
 				{
 					this.timer.Dispose();
 					this.timer = null;
+				}
+				if ( this.list入力イベント != null )
+				{
+					this.list入力イベント = null;
 				}
 				this.bDispose完了済み = true;
 			}

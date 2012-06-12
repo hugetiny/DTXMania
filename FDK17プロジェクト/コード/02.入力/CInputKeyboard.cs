@@ -45,6 +45,7 @@ namespace FDK
 				this.bKeyState[ i ] = false;
 
 			this.timer = new CTimer( CTimer.E種別.MultiMedia );
+			this.list入力イベント = new List<STInputEvent>( 32 );
 		}
 
 
@@ -67,7 +68,8 @@ namespace FDK
 
 			if ( ( ( bWindowがアクティブ中 && ( this.devKeyboard != null ) ) && !this.devKeyboard.Acquire().IsFailure ) && !this.devKeyboard.Poll().IsFailure )
 			{
-				this.list入力イベント = new List<STInputEvent>( 32 );
+				//this.list入力イベント = new List<STInputEvent>( 32 );
+				this.list入力イベント.Clear();			// #xxxxx 2012.6.11 yyagi; To optimize, I removed new();
 				int posEnter = -1;
 				string d = DateTime.Now.ToString( "yyyy/MM/dd HH:mm:ss.ffff" );
 
@@ -204,6 +206,10 @@ namespace FDK
 				{
 					this.timer.Dispose();
 					this.timer = null;
+				}
+				if ( this.list入力イベント != null )
+				{
+					this.list入力イベント = null;
 				}
 				this.bDispose完了済み = true;
 			}
