@@ -211,7 +211,10 @@ namespace DTXMania
 		BsPick,
 		BsW,
 		MAX,	// 要素数取得のための定義 ("BGM"は使わない前提で)
-		BGM
+		BGM,
+		DrTrk,	// ドラム/ギター/ベース音の一本化用 (この再生のボリュームをON/OFFする)
+		GtTrk,
+		BsTrk
 	}
 	internal enum Eログ出力
 	{
@@ -294,7 +297,7 @@ namespace DTXMania
 	}
 
 	/// <summary>
-	/// レーンの値を扱う汎用の構造体。列挙型"Eドラムレーン"に準拠。
+	/// レーンの値を扱う汎用の構造体。列挙型"Eレーン"に準拠。
 	/// </summary>
 	/// <typeparam name="T">値の型。</typeparam>
 	[StructLayout( LayoutKind.Sequential )]
@@ -322,6 +325,9 @@ namespace DTXMania
 		public T BsPick;
 		public T BsW;
 		public T BGM;
+		public T DrTrk;
+		public T GtTrk;
+		public T BsTrk;
 
 		public T this[ int index ]
 		{
@@ -371,6 +377,12 @@ namespace DTXMania
 						return this.BsPick;
 					case (int) Eレーン.BsW:
 						return this.BsW;
+					case (int) Eレーン.DrTrk:
+						return this.DrTrk;
+					case (int) Eレーン.GtTrk:
+						return this.GtTrk;
+					case (int) Eレーン.BsTrk:
+						return this.BsTrk;
 				}
 				throw new IndexOutOfRangeException();
 			}
@@ -440,6 +452,15 @@ namespace DTXMania
 						return;
 					case (int) Eレーン.BsW:
 						this.BsW = value;
+						return;
+					case (int) Eレーン.DrTrk:
+						this.DrTrk = value;
+						return;
+					case (int) Eレーン.GtTrk:
+						this.GtTrk = value;
+						return;
+					case (int) Eレーン.BsTrk:
+						this.BsTrk = value;
 						return;
 				}
 				throw new IndexOutOfRangeException();

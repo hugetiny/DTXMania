@@ -494,6 +494,9 @@ namespace DTXMania
 						case 0xba:
 						case 0xbb:
 						case 0xbc:
+						case 0xbd:
+						case 0xbe:
+						case 0xbf:
 							return true;
 					}
 					return false;
@@ -568,7 +571,7 @@ namespace DTXMania
 					"ベースOPEN", "ベース - - B", "ベース - G -", "ベース - G B", "ベース R - -", "ベース R - B", "ベース R G -", "ベース R G B",
 					"ベースWailing", "??", "??", "??", "??", "??", "??", "ベースWailing音切替",
 					"??", "HHClose(空うち)", "Snare(空うち)", "Kick(空うち)", "HiTom(空うち)", "LowTom(空うち)", "Cymbal(空うち)", "FloorTom(空うち)",
-					"HHOpen(空うち)", "RideCymbal(空うち)", "ギター(空打ち)", "ベース(空打ち)", "LeftCymbal(空うち)", "??", "??", "??", 
+					"HHOpen(空うち)", "RideCymbal(空うち)", "ギター(空打ち)", "ベース(空打ち)", "LeftCymbal(空うち)", "Drums音1本化", "Guitar音1本化", "Bass音1本化", 
 					"??", "??", "??", "??", "BGAスコープ画像切替1", "??", "??", "BGAスコープ画像切替2",
 					"??", "??", "??", "??", "??", "??", "??", "??", 
 					"??", "??", "??", "??", "??", "BGAスコープ画像切替3", "BGAスコープ画像切替4", "BGAスコープ画像切替5",
@@ -1545,6 +1548,30 @@ namespace DTXMania
 				}
 			}
 		}
+		/// <summary>
+		/// 1本wavの再生停止をする(周波数正常化、音量ゼロ)
+		/// </summary>
+		/// <param name="pChip">1本Wavのチップ</param>
+		public void t1本Wavの再生停止( CChip pChip )
+		{
+			if ( pChip == null )
+				return;
+
+			if ( this.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
+			{
+				CWAV wc = this.listWAV[ pChip.n整数値・内部番号 ];
+				int index = wc.n現在再生中のサウンド番号;
+				CSound sound = wc.rSound[ index ];
+				if ( sound != null )
+				{
+					sound.db周波数倍率 = 1.0;
+					//sound.db再生速度 = ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0;
+					//sound.n位置 = wc.n位置;
+					sound.n音量 = 0;
+				}
+				this.tWave再生位置自動補正( wc );
+			}
+		}
 		public void tWAVの読み込み( CWAV cwav )
 		{
 //			Trace.TraceInformation("WAV files={0}", this.listWAV.Count);
@@ -1771,17 +1798,20 @@ namespace DTXMania
 		}
 		public void tチップの再生( CChip pChip, long n再生開始システム時刻ms, int nLane, int nVol, bool bMIDIMonitor, bool bBad )
 		{
+			bool bIsSingleMusicTrack = ( (int) Eレーン.DrTrk <= nLane && nLane <= (int) Eレーン.BsTrk );
+
 			if( pChip.n整数値・内部番号 >= 0 )
 			{
-				if( ( nLane < (int) Eレーン.LC ) || ( (int) Eレーン.BGM < nLane ) )
+				if( ( nLane < (int) Eレーン.LC ) || ( (int) Eレーン.BsTrk < nLane ) )
 				{
 					throw new ArgumentOutOfRangeException();
 				}
 				if( this.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 				{
 					CWAV wc = this.listWAV[ pChip.n整数値・内部番号 ];
-					int index = wc.n現在再生中のサウンド番号 = ( wc.n現在再生中のサウンド番号 + 1 ) % nPolyphonicSounds;
-					if( ( wc.rSound[ 0 ] != null ) && wc.rSound[ 0 ].bストリーム再生する )
+					int index = wc.n現在再生中のサウンド番号 = ( bIsSingleMusicTrack ) ?
+					    wc.n現在再生中のサウンド番号 : ( wc.n現在再生中のサウンド番号 + 1 ) % nPolyphonicSounds;
+					if ( ( wc.rSound[ 0 ] != null ) && wc.rSound[ 0 ].bストリーム再生する )
 					{
 						index = wc.n現在再生中のサウンド番号 = 0;
 					}
@@ -1790,22 +1820,29 @@ namespace DTXMania
 					{
 						sound.n音量 = (int) ( ( (double) ( nVol * wc.n音量 ) ) / 100.0 );
 						sound.n位置 = wc.n位置;
-						if( bBad )
+						if ( bBad )
 						{
-							sound.db周波数倍率 = ( (float) ( 100 + ( ( ( CDTXMania.Random.Next( 3 ) + 1 ) * 7 ) * ( 1 - ( CDTXMania.Random.Next( 2 ) * 2 ) ) ) ) ) / 100f;
+							sound.db周波数倍率 = ( (float) ( 100 + ( ( ( CDTXMania.Random.Next( 3 ) + 1 ) * 7 ) * ( 1 - ( CDTXMania.Random.Next( 2 ) * 2 ) ) ) ) ) / 100.0;
 						}
 						else
 						{
 							sound.db周波数倍率 = 1.0;
 						}
 						sound.db再生速度 = ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0;
-						sound.t再生を開始する();
+						if ( !bIsSingleMusicTrack || nVol == 0 )	// nVol==0: 1本化WAVの最初の再生トリガ(美しくないな・・)
+						{
+							sound.t再生を開始する();
+						}
 					}
-					wc.n再生開始時刻[ wc.n現在再生中のサウンド番号 ] = n再生開始システム時刻ms;
+					if ( !bIsSingleMusicTrack )
+					{
+						wc.n再生開始時刻[ wc.n現在再生中のサウンド番号 ] = n再生開始システム時刻ms;
+					}
 					this.tWave再生位置自動補正( wc );
 				}
 			}
 		}
+
 		public void t各自動再生音チップの再生時刻を変更する( int nBGMAdjustの増減値 )
 		{
 			this.nBGMAdjust += nBGMAdjustの増減値;

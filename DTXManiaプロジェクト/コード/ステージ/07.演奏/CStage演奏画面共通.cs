@@ -514,8 +514,12 @@ namespace DTXMania
 
 		protected E演奏画面の戻り値 eフェードアウト完了時の戻り値;
 		protected readonly int[,] nBGAスコープチャンネルマップ = new int[ , ] { { 0xc4, 0xc7, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xe0 }, { 4, 7, 0x55, 0x56, 0x57, 0x58, 0x59, 0x60 } };
-		protected readonly int[] nチャンネル0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 8, 0 };
-		protected readonly int[] nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
+		protected readonly int[] nチャンネル0Atoパッド08 = new int[] {	// チャンネル→パッドの変換に使用
+			(int) Eレーン.HH, (int) Eレーン.SD, (int)Eレーン.BD, (int)Eレーン.HT, (int)Eレーン.LT, (int)Eレーン.CY, (int)Eレーン.FT, (int)Eレーン.HH, (int)Eレーン.RD, (int)Eレーン.LC	
+		};
+		protected readonly int[] nチャンネル0Atoレーン07 = new int[] {	// 判定表示, Auto判定, サウンドの排他等、色々と使用
+			(int) Eレーン.HH, (int) Eレーン.SD, (int)Eレーン.BD, (int)Eレーン.HT, (int)Eレーン.LT, (int)Eレーン.CY, (int)Eレーン.FT, (int)Eレーン.HH, (int)Eレーン.CY, (int)Eレーン.LC	
+		};
 		protected readonly int[] nパッド0Atoチャンネル0A = new int[] { 0x11, 0x12, 0x13, 20, 0x15, 0x17, 0x16, 0x18, 0x19, 0x1a };
 		protected readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };	// パッド画像のヒット処理用
 		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };	
@@ -550,6 +554,8 @@ namespace DTXMania
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;
 //		protected GCLatencyMode gclatencymode;
+
+		private STDGBVALUE<CDTX.CChip> r1本化WavChip;			// #28732 2011.6.19 yyagi
 
 		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
 		{
@@ -834,11 +840,37 @@ namespace DTXMania
 			if ( pChip != null )
 			{
 				bool overwrite = false;
+				bool bIsSingleMusicTrack = false;			// 1本化WAVを使っているかどうかのフラグ
+				int nPart = (int) part;
+				int nLane = 0;
+				if ( part == E楽器パート.GUITAR )
+				{
+					nLane = (int) Eレーン.Guitar;
+				}
+				else if ( part == E楽器パート.BASS )
+				{
+					nLane = (int) Eレーン.Bass;
+				}
+				if ( this.r1本化WavChip[ nPart ] != null )	// 1本化WAVを使っていて、且つチップ音のファイル名指定無しなら、フラグを立てる
+				{
+					if ( !CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
+					{
+						bIsSingleMusicTrack = true;
+						pChip = this.r1本化WavChip[ nPart ];
+					}
+				}
 				switch ( part )
 				{
 					case E楽器パート.DRUMS:
 					#region [ DRUMS ]
 						{
+							if ( bIsSingleMusicTrack )		// 1本化WAVの場合はここの処理だけして終了
+							{
+								CDTXMania.DTX.t1本Wavの再生停止( this.r1本化WavChip[ nPart ] );
+								CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, (int) Eレーン.DrTrk, n音量, bモニタ, b音程をずらして再生 );
+								return;
+							}
+		
 							int index = pChip.nチャンネル番号;
 							if ( ( 0x11 <= index ) && ( index <= 0x1a ) )
 							{
@@ -871,7 +903,7 @@ namespace DTXMania
 							{
 								return;
 							}
-							int nLane = this.nチャンネル0Atoレーン07[ index ];
+							nLane = this.nチャンネル0Atoレーン07[ index ];
 							if ( ( nLane == 1 ) &&	// 今回演奏するのがHC or HO
 								( index == 0 || ( index == 7 && this.n最後に再生したHHのチャンネル番号 != 0x18 && this.n最後に再生したHHのチャンネル番号 != 0x38 ) )
 								// HCを演奏するか、またはHO演奏＆以前HO演奏でない＆以前不可視HO演奏でない
@@ -928,29 +960,33 @@ namespace DTXMania
 						}
 					#endregion
 					case E楽器パート.GUITAR:
-					#region [ GUITAR ]
+					case E楽器パート.BASS:
+						#region [ GUITAR / BASS ]
 #if TEST_NOTEOFFMODE	// 2011.1.1 yyagi test
 						if (CDTXMania.DTX.b演奏で直前の音を消音する.Guitar) {
 #endif
-						CDTXMania.DTX.tWavの再生停止( this.n最後に再生した実WAV番号.Guitar );
+						if ( bIsSingleMusicTrack )
+						{
+							CDTXMania.DTX.t1本Wavの再生停止( this.r1本化WavChip[ nPart ] );
+						}
+						else
+						{
+							CDTXMania.DTX.tWavの再生停止( this.n最後に再生した実WAV番号[ nLane ] );
+						}
 #if TEST_NOTEOFFMODE
 						}
 #endif
-						CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, (int) Eレーン.Guitar, n音量, bモニタ, b音程をずらして再生 );
-						this.n最後に再生した実WAV番号.Guitar = pChip.n整数値・内部番号;
-						return;
-					#endregion
-					case E楽器パート.BASS:
-					#region [ BASS ]
-#if TEST_NOTEOFFMODE
-						if (CDTXMania.DTX.b演奏で直前の音を消音する.Bass) {
-#endif
-						CDTXMania.DTX.tWavの再生停止( this.n最後に再生した実WAV番号.Bass );
-#if TEST_NOTEOFFMODE
+						if ( bIsSingleMusicTrack )
+						{
+							Eレーン eTrk = ( part == E楽器パート.GUITAR ) ? Eレーン.GtTrk : Eレーン.BsTrk;
+							CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, (int) eTrk, n音量, bモニタ, b音程をずらして再生 );
 						}
-#endif
-						CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, (int) Eレーン.Bass, n音量, bモニタ, b音程をずらして再生 );
-						this.n最後に再生した実WAV番号.Bass = pChip.n整数値・内部番号;
+						else
+						{
+							Eレーン e = ( part == E楽器パート.GUITAR ) ? Eレーン.Guitar : Eレーン.Bass;
+							CDTXMania.DTX.tチップの再生( pChip, n再生開始システム時刻ms, (int) e, n音量, bモニタ, b音程をずらして再生 );
+							this.n最後に再生した実WAV番号[ nLane ] = pChip.n整数値・内部番号;
+						}
 						return;
 					#endregion
 
@@ -1979,6 +2015,38 @@ namespace DTXMania
 						}
 						break;
 					#endregion
+
+					#region [ bd: ドラム音1本化 ]
+					case 0xbd:	// Drums single track
+						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
+						{
+							pChip.bHit = true;
+							dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.DrTrk, 0 );
+							this.r1本化WavChip.Drums = pChip;
+						}
+						break;
+					#endregion
+					#region [ be: ギター音1本化 ]
+					case 0xbe:	// Guitar single track
+						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Guitar < 0 ) )
+						{
+							pChip.bHit = true;
+							dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.GtTrk, 0 );
+							this.r1本化WavChip.Guitar = pChip;
+						}
+						break;
+					#endregion
+					#region [ bf: ベース音1本化 ]
+					case 0xbf:	// Bass single track
+						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Bass < 0 ) )
+						{
+							pChip.bHit = true;
+							dTX.tチップの再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BsTrk, 0 );
+							this.r1本化WavChip.Bass = pChip;
+						}
+						break;
+					#endregion
+	
 					#region [ c4, c7, d5-d9, e0: BGA画像入れ替え ]
 					case 0xc4:
 					case 0xc7:
