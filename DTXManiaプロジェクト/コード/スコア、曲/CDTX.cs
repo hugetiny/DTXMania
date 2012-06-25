@@ -515,6 +515,7 @@ namespace DTXMania
 				}
 			}
 			public bool bIsAutoPlayed;						// 2011.6.10 yyagi
+			public bool bバーを通過した;					// 2012.6.20 yyagi
 			
 			public CChip()
 			{
@@ -543,6 +544,7 @@ namespace DTXMania
 				this.nバーからの距離dot.Guitar = 0;
 				this.nバーからの距離dot.Bass = 0;
 				this.n総移動時間 = 0;
+				this.bバーを通過した = false;
 			}
 			public override string ToString()
 			{
@@ -4796,7 +4798,7 @@ namespace DTXMania
 				{
 					chip.e楽器パート = E楽器パート.GUITAR;
 				}
-				if( ( nチャンネル番号 >= 160 ) && ( nチャンネル番号 <= 0xA7 ) )
+				if( ( nチャンネル番号 >= 0xA0 ) && ( nチャンネル番号 <= 0xA7 ) )
 				{
 					chip.e楽器パート = E楽器パート.BASS;
 				}

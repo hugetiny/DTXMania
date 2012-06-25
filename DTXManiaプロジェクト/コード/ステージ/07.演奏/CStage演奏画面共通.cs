@@ -226,34 +226,32 @@ namespace DTXMania
 			this.n最後に再生したHHのチャンネル番号 = 0;
 			this.n最後に再生した実WAV番号.Guitar = -1;
 			this.n最後に再生した実WAV番号.Bass = -1;
-			for ( int i = 0; i < 50; i++ )
+			for ( int i = 0; i < this.n最後に再生したBGMの実WAV番号.Length; i++ )
 			{
 				this.n最後に再生したBGMの実WAV番号[ i ] = -1;
 			}
 			this.r次にくるギターChip = null;
 			this.r次にくるベースChip = null;
-			for ( int j = 0; j < 10; j++ )
+			for ( int i = 0; i < 10; i++ )
 			{
-				this.r現在の空うちドラムChip[ j ] = null;
+				this.r現在の空うちドラムChip[ i ] = null;
 			}
 			this.r現在の空うちギターChip = null;
 			this.r現在の空うちベースChip = null;
-			for ( int k = 0; k < 3; k++ )
-			{
-				//for ( int n = 0; n < 5; n++ )
-				//{
-					this.nヒット数・Auto含まない[ k ] = new CHITCOUNTOFRANK();
-					this.nヒット数・Auto含む[ k ] = new CHITCOUNTOFRANK();
-				//}
-				this.queWailing[ k ] = new Queue<CDTX.CChip>();
-				this.r現在の歓声Chip[ k ] = null;
-			}
 			for ( int i = 0; i < 3; i++ )
 			{
+				this.nヒット数・Auto含まない[ i ] = new CHITCOUNTOFRANK();
+				this.nヒット数・Auto含む[ i ] = new CHITCOUNTOFRANK();
+				this.queWailing[ i ] = new Queue<CDTX.CChip>();
+				this.r現在の歓声Chip[ i ] = null;
+
 				this.b演奏にキーボードを使った[ i ] = false;
 				this.b演奏にジョイパッドを使った[ i ] = false;
 				this.b演奏にMIDI入力を使った[ i ] = false;
 				this.b演奏にマウスを使った[ i ] = false;
+
+				this.n1本化Wav消音待ちの開始時刻[ i ] = -1;						// #28732 2012.6.20 yyagi
+				this.n1本化Wav消音継続時間[ i ] = 100;							// #28732 2012.6.20 yyagi
 			}
 			this.bAUTOでないチップが１つでもバーを通過した = false;
 			base.On活性化();
@@ -556,6 +554,9 @@ namespace DTXMania
 //		protected GCLatencyMode gclatencymode;
 
 		private STDGBVALUE<CDTX.CChip> r1本化WavChip;			// #28732 2011.6.19 yyagi
+		private STDGBVALUE<long> n1本化Wav消音待ちの開始時刻;			// #28732 2012.6.20 yyagi
+		private STDGBVALUE<long> n1本化Wav消音継続時間;			// #28732 2012.6.20 yyagi
+
 
 		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
 		{
@@ -851,13 +852,10 @@ namespace DTXMania
 				{
 					nLane = (int) Eレーン.Bass;
 				}
-				if ( this.r1本化WavChip[ nPart ] != null )	// 1本化WAVを使っていて、且つチップ音のファイル名指定無しなら、フラグを立てる
+				bIsSingleMusicTrack = bIsPlayingSingleWavTrk( ref pChip, part );
+				if ( part != E楽器パート.UNKNOWN )			// 1本化WAVの消音タイマ解除
 				{
-					if ( !CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
-					{
-						bIsSingleMusicTrack = true;
-						pChip = this.r1本化WavChip[ nPart ];
-					}
+					this.n1本化Wav消音待ちの開始時刻[ nPart ] = -1;
 				}
 				switch ( part )
 				{
@@ -995,6 +993,20 @@ namespace DTXMania
 				}
 			}
 		}
+
+		private bool bIsPlayingSingleWavTrk( ref CDTX.CChip pChip,  E楽器パート part)
+		{
+			int nPart = (int) part;
+			if ( this.r1本化WavChip[ nPart ] != null )	// 1本化WAVを使っていて、且つチップ音のファイル名指定無しなら、フラグを立てる
+			{
+				if ( !CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
+				{
+					pChip = this.r1本化WavChip[ nPart ];
+					return true;
+				}
+			}
+			return false;
+		}
 		protected void tステータスパネルの選択()
 		{
 			if ( CDTXMania.bコンパクトモード )
@@ -1070,6 +1082,7 @@ namespace DTXMania
 //            }
 ////Trace.TraceInformation( "ch={0:x2}, flag={1}",  pChip.nチャンネル番号, bPChipIsAutoPlay.ToString() );
 #endregion
+
 			if ( pChip.e楽器パート == E楽器パート.UNKNOWN )
 			{
 				this.bAUTOでないチップが１つでもバーを通過した = true;
@@ -1627,10 +1640,10 @@ namespace DTXMania
 			{
 				return true;
 			}
-			if ( this.n現在のトップChip == -1 )
-			{
-				return true;
-			}
+			//if ( this.n現在のトップChip == -1 )	// 1つ上のブロックで同じことをしているので省略
+			//{
+			//    return true;
+			//}
 
 			//double speed = 264.0;	// BPM150の時の1小節の長さ[dot]
 			const double speed = 234.0;	// BPM150の時の1小節の長さ[dot]
@@ -1664,6 +1677,7 @@ namespace DTXMania
 
 				int nInputAdjustTime = ( bPChipIsAutoPlay || (pChip.e楽器パート == E楽器パート.UNKNOWN) )? 0 : this.nInputAdjustTimeMs[ (int) pChip.e楽器パート ];
 
+				// 演奏しないで流れてMissになったチップを退場させる
 				if ( ( ( pChip.e楽器パート != E楽器パート.UNKNOWN ) && !pChip.bHit ) &&
 					( ( pChip.nバーからの距離dot.Drums < 0 ) && ( this.e指定時刻からChipのJUDGEを返す( CDTXMania.Timer.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss ) ) )
 				{
@@ -2233,7 +2247,8 @@ namespace DTXMania
 					bool pushingR = CDTXMania.Pad.b押されている( inst, Eパッド.R );
 					bool pushingG = CDTXMania.Pad.b押されている( inst, Eパッド.G );
 					bool pushingB = CDTXMania.Pad.b押されている( inst, Eパッド.B );
-
+					bool bバーを通過した = pChip.bバーを通過した;	// 後でpChipを壊すので、ここで値をコピーしておく
+					pChip.bバーを通過した = true;
 					#region [ Chip Fire effects ]
 					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
 					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || bSuccessOPEN )
@@ -2249,6 +2264,7 @@ namespace DTXMania
 						this.actChipFireGB.Start( 2 + lo );
 					}
 					#endregion
+					#region [ auto pick処理 ]
 					if ( autoPick )
 					{
 						bool bMiss = true;
@@ -2257,7 +2273,7 @@ namespace DTXMania
 							bMiss = false;
 						}
 						else if ( ( autoR || ( bChipHasR == pushingR ) ) && ( autoG || ( bChipHasG == pushingG ) ) && ( autoB || ( bChipHasB == pushingB ) ) )
-							// ( bChipHasR == ( pushingR | autoR ) ) && ( bChipHasG == ( pushingG | autoG ) ) && ( bChipHasB == ( pushingB | autoB ) ) )
+						// ( bChipHasR == ( pushingR | autoR ) ) && ( bChipHasG == ( pushingG | autoG ) ) && ( bChipHasB == ( pushingB | autoB ) ) )
 						{
 							bMiss = false;
 						}
@@ -2284,6 +2300,31 @@ namespace DTXMania
 							this.queWailing[ instIndex ].Enqueue( item );
 						}
 					}
+					#endregion
+					#region [ auto pickではないときの処理 (1WAV化したギター・ベース用の処理) ]
+					else
+					{
+						// もし空チップなら、以下を実行。
+						// 　　今のシステム時刻を覚えてないなら、覚える。そして、1wavトラックがあれば消音する。
+						// 　　100ms経っていたら、複音する。
+						// (100ms経たないうちに次の空チップが来ても、消音開始時間を上書きしない(消音継続しない)。)
+
+						long n発声時刻ms = pChip.n発声時刻ms;
+						if ( bIsPlayingSingleWavTrk( ref pChip, inst ) )	// ここでpChipが1WAVなtrkのchipに化ける
+						{
+							int nInst = (int) inst;
+							if ( !bバーを通過した && n1本化Wav消音待ちの開始時刻[ nInst ] < 0 )
+							{
+								n1本化Wav消音待ちの開始時刻[ nInst ] = n発声時刻ms;
+							}
+							if ( n1本化Wav消音待ちの開始時刻[ nInst ] >= 0 && CDTXMania.Timer.n現在時刻 - n1本化Wav消音待ちの開始時刻[ nInst ] >= n1本化Wav消音継続時間[ nInst ] )
+							{
+								CDTXMania.DTX.t1本Wavの再生停止( this.r1本化WavChip[ nInst ] );
+								n1本化Wav消音待ちの開始時刻[ nInst ] = -1;
+							}
+						}
+					}
+					#endregion
 				}
 				return;
 			}	// end of "if configIni.bGuitar有効"
@@ -2557,8 +2598,6 @@ namespace DTXMania
 		{
 			t入力処理・ギターベース( E楽器パート.BASS );
 		}
-
-
 		protected virtual void t入力処理・ギターベース(E楽器パート inst)
 		{
 			int indexInst = (int) inst;
