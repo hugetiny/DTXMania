@@ -1,0 +1,122 @@
+<HTML>
+<HEAD>
+<TITLE>DTXMania説明書 [演奏画面の操作]</TITLE>
+</HEAD>
+<BODY BGCOLOR="#EEFFEE" TEXT="black" LINK="#008800" VLINK="#006600">
+
+<!-- ヘッダ -->
+<P>
+<DIV ALIGN="right"><FONT SIZE="-1" FACE="Century"><I>DTXMania User's Manual ―</I></FONT></DIV>
+<TABLE BORDER="0" CELLPADDING="5" CELLSPACING="5" WIDTH="100%">
+<TR>
+<TD BGCOLOR="green" WIDTH="80%">
+     <FONT SIZE="+1" COLOR="white"><B><I> 演奏画面の操作</I></B></FONT>
+<TD BGCOLOR="green" WIDTH="2%"><TD BGCOLOR="green" WIDTH="2%">
+<TD BGCOLOR="green" WIDTH="2%"><TD BGCOLOR="green" WIDTH="2%">
+<TD BGCOLOR="green" WIDTH="2%"><TD BGCOLOR="green" WIDTH="2%">
+<TD BGCOLOR="green" WIDTH="2%">
+</TR>
+</TABLE>
+</P>
+
+<!-- 本文 -->
+
+<P ALIGN="center">
+<IMG SRC="ensou.jpg"><BR><BR>
+<B>演奏画面</B><BR>
+</P>
+
+<BLOCKQUOTE>
+<DL>
+
+<DT><IMG SRC="ball_y.gif"> <FONT COLOR="blue"><B>演奏方法</B></FONT><BR>
+<DD>各レーンのチップオブジェクトが、画面下の緑色のバーと重なった瞬間を狙って、該当するパッドを叩いて下さい。（ギター／ベースの場合は、該当する色のボタンを押しながらピックを弾いて下さい。）<BR><BR>
+<TABLE BORDER="0" CELLSPACING="10">
+<TR><TD><IMG SRC="hit_timing.png"><TD><IMG SRC="hit_timing2.png"></TR>
+<TR><TD ALIGN="center"><B>ドラム側</B><TD ALIGN="center"><B>ギター側</B></TR>
+</TABLE><BR>
+叩いたタイミングによって、５段階の判定（Perfect, Great, Good, Poor, Miss）が表示されます。<BR>
+<BR>
+初期状態でのキーとパッドの割り当てについては、「<A HREF="..\3.設定\keybind.html">デフォルトのキー割り当て</A>」をご参照ください。<BR>
+<BR>
+
+<DT><IMG SRC="ball_y.gif"> <FONT COLOR="blue"><B>打ち分け機能</B></FONT><BR>
+<DD>「○」のついはハイハットは<FONT COLOR="red"><B>ハイハットオープン</B></FONT>、「○」のついたシンバルは<FONT COLOR="red"><B>ライドシンバル</B></FONT>です。<BR>
+<BR>
+　　<IMG SRC="hhopen.png">　　　<IMG SRC="ride.png"><BR><BR>
+<B>ハイハットオープンやライドは、ハイハットクローズやシンバルで叩いたとしても Miss にはなりません。</B><BR><BR>
+ただし、「９レーン演奏」を有効にしている場合は、ハイハットオープンのチップのときにハイハットクローズで叩くと、ハイハットクローズに割り当てられている音色で演奏されます。シンバルとライドについても同様です。（「９レーン演奏」が無効であるとき、または９レーンモードでない曲データの場合には、どちらのパッドでどちらのチップを叩いても、正しい音色で演奏されます。）<BR>
+<BR>
+９レーン演奏の有効・無効については、<A HREF="config.html">コンフィグ画面</A>で設定できます。<BR>
+<BR>
+
+<DT><IMG SRC="ball_y.gif"> <FONT COLOR="blue"><B>譜面スクロール速度の変更</B></FONT><BR>
+<DD>演奏中に、<FONT COLOR="red"><B>矢印キーの上下（「↑」「↓」）</B></FONT>で、ドラム譜面のスクロール速度をリアルタイムに変更することが出来ます。<BR>
+<BR>
+
+<DT><IMG SRC="ball_y.gif"> <FONT COLOR="blue"><B>DrumMIDI関連の情報表示</B></FONT><BR>
+<DD>MID形式ファイルを演奏中の場合は、以下のキー操作が有効になります。<BR>
+<BR>
+<TABLE BORDER="1" CELLSPACING="0" CELLPADDING="10">
+<TR><TD BGCOLOR="#DDFFDD">PageUp<TD BGCOLOR="#DDFFDD">DrumMIDI関連情報ページの表示</TR>
+<TR><TD BGCOLOR="#DDFFDD">PageDown<TD BGCOLOR="#DDFFDD">DrumMIDI関連情報ページの表示</TR>
+</TABLE>
+<BR>
+<CENTER>
+<IMG SRC="drummidi1.png" ALIGN="center"> → 
+<IMG SRC="drummidi2.png" ALIGN="center">→ 
+<IMG SRC="drummidi3.png" ALIGN="center"><BR>
+<B>DrumMIDI関連情報ページ</B>
+</CENTER>
+<BR>
+
+また、DrumMIDI関連情報ページが表示されている間は、以下のキー操作が有効になります。<BR>
+<BR>
+<TABLE BORDER="1" CELLSPACING="0" CELLPADDING="10">
+<TR><TD BGCOLOR="#DDFFDD">PageUp<TD BGCOLOR="#DDFFDD">DrumMIDI関連情報ページの切り替え（順方向）</TR>
+<TR><TD BGCOLOR="#DDFFDD">PageDown<TD BGCOLOR="#DDFFDD">DrumMIDI関連情報ページの切り替え（逆方向）</TR>
+<TR><TD BGCOLOR="#DDFFDD">↑↓←→<TD BGCOLOR="#DDFFDD">DrumMIDIカーソル移動</TR>
+<TR><TD BGCOLOR="#DDFFDD">Enter<TD BGCOLOR="#DDFFDD">DrumMIDI値の変更・決定</TR>
+<TR><TD BGCOLOR="#DDFFDD">End<TD BGCOLOR="#DDFFDD">DrumMIDI関連情報ページの表示OFF</TR>
+</TABLE>
+<BR>
+
+<DT><IMG SRC="ball_y.gif"> <FONT COLOR="blue"><B>演奏の終了</B></FONT><BR>
+<DD>曲が最後まで演奏されると、自動的に終了して結果表示画面へと移ります。<BR>
+       また、演奏中に<FONT COLOR="red"><B>ESCキー</B></FONT>またはギター・ベースの <font color="red"><B>Cancel キー</B></font>を押下すると、演奏をそこで中断して選曲画面に戻ります。<BR>
+</DL>
+</BLOCKQUOTE>
+
+<BR>
+[<A HREF="..\index.html">戻る</A>]
+
+<!-- フッター -->
+<HR SIZE="8" COLOR="green">
+<FONT FACE="Impact">
+<DIV ALIGN="right">
+(C) 2000-2003 FROM / K.YAMASAKI<BR>
+mailto: from@donburi.to<BR>
+</DIV>
+</FONT>
+
+</BODY>
+</HTML>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
