@@ -36,6 +36,7 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 				this.txDANGER = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums danger.png" ) );
+                this.tx黒 = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlayDrums Black.png"));
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -44,6 +45,7 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 				CDTXMania.tテクスチャの解放( ref this.txDANGER );
+                CDTXMania.tテクスチャの解放(ref this.tx黒);
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -82,7 +84,8 @@ namespace DTXMania
 				int num = this.ct透明度用.n現在の値;
 				if( this.txDANGER != null )
 				{
-					this.txDANGER.n透明度 = 60 + ( ( num < 180 ) ? num : ( 360 - num ) );
+                    this.txDANGER.n透明度 = 100;    //試験的にDANGERの点滅しながら表示を無効にしました。
+                    this.tx黒.n透明度 = 20;　　//
 				}
 				num = this.ct移動用.n現在の値;
 				int num2 = CDTXMania.ConfigIni.bReverse.Drums ? ( 0x7f - num ) : num;
@@ -90,6 +93,7 @@ namespace DTXMania
 				{
 					if( this.txDANGER != null )
 					{
+                        this.tx黒.t2D描画(CDTXMania.app.Device, 0, 0);
 						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26, ( i * 0x80 ) + num2, this.rc領域[ 0 ] );
 						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26, ( ( i * 0x80 ) + num2 ) + 0x40, this.rc領域[ 1 ] );
 						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a, ( i * 0x80 ) + num2, this.rc領域[ 0 ] );
@@ -112,6 +116,7 @@ namespace DTXMania
 //		private const int n左位置 = 0x26;
 		private readonly Rectangle[] rc領域 = new Rectangle[] { new Rectangle( 0, 0, 0x20, 0x40 ), new Rectangle( 0x20, 0, 0x20, 0x40 ) };
 		private CTexture txDANGER;
+        private CTexture tx黒;
 		//-----------------
 		#endregion
 	}
