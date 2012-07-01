@@ -4,6 +4,7 @@ using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Diagnostics;
 using SlimDX;
 using SlimDX.Direct3D9;
 
@@ -284,19 +285,38 @@ namespace FDK
 				//Trace.TraceInformation( "CTExture() start: " );
 				unsafe  // Bitmapの内部データ(a8r8g8b8)を自前でゴリゴリコピーする
 				{
+					int tw =
+#if TEST_Direct3D9Ex
+					288;		// 32の倍数にする(グラフによっては2のべき乗にしないとダメかも)
+#else
+					this.sz画像サイズ.Width;
+#endif
+#if TEST_Direct3D9Ex
+					this.texture = new Texture( device, tw, this.sz画像サイズ.Height, 1, Usage.Dynamic, format, Pool.Default );
+#else
 					this.texture = new Texture( device, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool );
-					BitmapData srcBufData = bitmap.LockBits( new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height ), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb );
-					DataRectangle destDataRectangle = texture.LockRectangle( 0, LockFlags.None );
-
+#endif
+					BitmapData srcBufData = bitmap.LockBits( new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height ), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb );
+					DataRectangle destDataRectangle = texture.LockRectangle( 0, LockFlags.Discard );	// None
+#if TEST_Direct3D9Ex
+					byte[] filldata = null;
+					if ( tw > this.sz画像サイズ.Width )
+					{
+						filldata = new byte[ (tw - this.sz画像サイズ.Width) * 4 ];
+					}
+					for ( int y = 0; y < this.sz画像サイズ.Height; y++ )
+					{
+						IntPtr src_scan0 = (IntPtr) ( (Int64) srcBufData.Scan0 + y * srcBufData.Stride );
+						destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4  );
+						if ( tw > this.sz画像サイズ.Width )
+						{
+							destDataRectangle.Data.WriteRange( filldata );
+						}
+					}
+#else
 					IntPtr src_scan0 = (IntPtr) ( (Int64) srcBufData.Scan0 );
 					destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height );
-
-					//for ( int y = 0; y < this.sz画像サイズ.Height; y++ )
-					//{
-					//	IntPtr src_scan0 = (IntPtr) ( (Int64) srcBufData.Scan0 + y * srcBufData.Stride );
-					//	destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4  );
-					//}
-
+#endif
 					texture.UnlockRectangle( 0 );
 					bitmap.UnlockBits( srcBufData );
 				}

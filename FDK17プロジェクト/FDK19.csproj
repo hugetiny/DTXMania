@@ -28,7 +28,8 @@
     </DocumentationFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>0219</NoWarn>
-    <DefineConstants>TRACE;DEBUG;TEST_Direct3D9Ex_ TEST_CancelEnterCodeInAltEnter2</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEST_CancelEnterCodeInAltEnter2 TEST_Direct3D9Ex_</DefineConstants>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -38,6 +39,8 @@
     </DocumentationFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>0219</NoWarn>
+    <DefineConstants>TRACE;TEST_ENGLISH_ TEST_Direct3D9Ex_</DefineConstants>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, PublicKeyToken=53d0e4ef1f1579f5, processorArchitecture=x86">

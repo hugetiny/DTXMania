@@ -512,6 +512,7 @@ namespace SampleFramework
 						CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
 						CurrentSettings.Direct3D9.CreationFlags, CurrentSettings.Direct3D9.PresentParameters );
 				}
+				Direct3D9.Device.MaximumFrameLatency = 0;
 #else
 				Direct3D9.Device = new SlimDX.Direct3D9.Device( Direct3D9Object, CurrentSettings.Direct3D9.AdapterOrdinal,
 					CurrentSettings.Direct3D9.DeviceType, game.Window.Handle,
