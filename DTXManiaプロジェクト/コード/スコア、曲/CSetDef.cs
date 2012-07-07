@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.IO;
+using System.Diagnostics;
 
 namespace DTXMania
 {
@@ -16,7 +17,7 @@ namespace DTXMania
 			/// <summary>
 			/// このブロックが有効である（何かのプロパティがセットされた）場合、true を示す。
 			/// </summary>
-			public bool b使用中 { get; private set; }
+			public bool b使用中 { get; set; }
 
 			/// <summary>
 			/// スコアファイル名（#LxFILE）を保持する。配列は [0～4] で、存在しないレベルは null となる。
@@ -27,7 +28,7 @@ namespace DTXMania
 				{
 					return this._file;
 				}
-				set
+				set						// ここには来ない( Label[xx] にsetすると、結局Labelのgetが呼ばれるだけで、Labelのsetは呼ばれない)
 				{
 					this._file = value;
 					this.b使用中 = true;
@@ -75,7 +76,7 @@ namespace DTXMania
 				{
 					return this._label;
 				}
-				set
+				set						// ここには来ない( Label[xx] にsetすると、結局Labelのgetが呼ばれるだけで、Labelのsetは呼ばれない)
 				{
 					this._label = value;
 					this.b使用中 = true;
@@ -161,42 +162,52 @@ namespace DTXMania
 							else if( str.StartsWith( "#L1FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.File[ 0 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L2FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.File[ 1 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L3FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.File[ 2 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L4FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.File[ 3 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L5FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.File[ 4 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L1LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.Label[ 0 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L2LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.Label[ 1 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L3LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.Label[ 2 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L4LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.Label[ 3 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 							else if( str.StartsWith( "#L5LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
 								block.Label[ 4 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
+								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 						}
 						continue;
