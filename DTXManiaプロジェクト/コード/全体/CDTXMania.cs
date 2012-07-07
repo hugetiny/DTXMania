@@ -283,7 +283,9 @@ namespace DTXMania
 			get;
 			set;
 		}
-
+		private static TimeCaps timecaps;
+		private bool bChangedtimePeriod = false;
+		//		public static CTimer ct;
 
 		// コンストラクタ
 
@@ -480,7 +482,10 @@ namespace DTXMania
 				CScoreIni scoreIni = null;
 
 				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
-				actEnumSongs.On進行描画();								// "Enumerating Songs..."アイコンの描画
+				if ( !CDTXMania.bコンパクトモード )
+				{
+					actEnumSongs.On進行描画();							// "Enumerating Songs..."アイコンの描画
+				}
 				switch ( r現在のステージ.eステージID )
 				{
 					case CStage.Eステージ.タイトル:
@@ -1533,6 +1538,31 @@ for (int i = 0; i < 3; i++) {
 			}
 			//---------------------
 			#endregion
+			#region [ アプリケーションの最小タイマ分解能を設定する ]
+			//---------------------
+			Trace.TraceInformation( "アプリケーションの最小タイマ分解能を設定します。" );
+			Trace.Indent();
+			try
+			{
+				timecaps = new TimeCaps();
+				if ( timeGetDevCaps( out timecaps, (uint) Marshal.SizeOf( typeof( TimeCaps ) ) ) != 0 )
+				{
+					Trace.TraceInformation( "timeGetDevCaps()に失敗しました。タイマ分解能は変更せず続行します。" );
+				}
+				else
+				{
+					timeBeginPeriod( timecaps.wPeriodMin );
+					Trace.TraceInformation( "最小タイマ分解能指定を完了しました。" );
+					bChangedtimePeriod = true;
+				}
+			}
+			finally
+			{
+				Trace.Unindent();
+			}
+			#endregion
+//			ct = new CTimer( CTimer.E種別.PerformanceCounter );
+			//-----------
 			#region [ Timer の初期化 ]
 			//---------------------
 			Trace.TraceInformation( "タイマの初期化を行います。" );
@@ -1801,7 +1831,14 @@ for (int i = 0; i < 3; i++) {
 			Trace.TraceInformation( "----------------------" );
 			Trace.TraceInformation( "■ 起動" );
 
-			r現在のステージ = stage起動;
+			if ( CDTXMania.bコンパクトモード )
+			{
+				r現在のステージ = stage曲読み込み;
+			}
+			else
+			{
+				r現在のステージ = stage起動;
+			}
 			r現在のステージ.On活性化();
 			//---------------------
 			#endregion
@@ -2042,6 +2079,9 @@ for (int i = 0; i < 3; i++) {
 				}
 				//---------------------
 				#endregion
+
+//				ct.Dispose();
+
 				#region [ タイマの終了処理 ]
 				//---------------------
 				Trace.TraceInformation("タイマの終了処理を行います。");
@@ -2065,6 +2105,25 @@ for (int i = 0; i < 3; i++) {
 				}
 				//---------------------
 				#endregion
+				#region [ アプリケーションの最小タイマ分解能設定を解除する ]
+				//---------------------
+				if ( bChangedtimePeriod )
+				{
+					Trace.TraceInformation( "アプリケーションの最小タイマ分解能設定を解除します。" );
+					Trace.Indent();
+					try
+					{
+						timeEndPeriod( timecaps.wPeriodMin );
+						Trace.TraceInformation( "最小タイマ分解能設定を解除しました。" );
+					}
+					finally
+					{
+						Trace.Unindent();
+					}
+				}
+				//-----------
+				#endregion
+
 				#region [ Config.iniの出力 ]
 				//---------------------
 				Trace.TraceInformation("Config.ini を出力します。");
@@ -2296,5 +2355,24 @@ for (int i = 0; i < 3; i++) {
 		
 		//-----------------
 		#endregion
+
+		#region [ DllImport ]
+		//-----------------
+		[DllImport( "winmm.dll" )]
+		private static extern void timeBeginPeriod( uint x );
+		[DllImport( "winmm.dll" )]
+		private static extern void timeEndPeriod( uint x );
+		[DllImport( "winmm.dll" )]
+		private static extern uint timeGetDevCaps( out TimeCaps timeCaps, uint size );
+
+		[StructLayout( LayoutKind.Sequential )]
+		private struct TimeCaps
+		{
+			public uint wPeriodMin;
+			public uint wPeriodMax;
+		}
+		//-----------------
+		#endregion
+
 	}
 }
