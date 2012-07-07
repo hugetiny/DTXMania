@@ -265,7 +265,7 @@ namespace DTXMania
 
 				case CStage.Eフェーズ.NOWLOADING_WAVファイルを読み込む:
 					{
-						if ( nWAVcount == 1 )
+						if ( nWAVcount == 1 && CDTXMania.DTX.listWAV.Count > 0 )			// #28934 2012.7.7 yyagi (added checking Count)
 						{
 							ShowProgressByFilename( CDTXMania.DTX.listWAV[ nWAVcount ].strファイル名 );
 						}
