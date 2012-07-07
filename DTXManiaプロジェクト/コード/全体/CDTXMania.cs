@@ -434,10 +434,6 @@ namespace DTXMania
 		}
 		protected override void Draw( GameTime gameTime )
 		{
-			CScoreIni.C演奏記録 c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass;
-			CDTX.CChip[] chipArray;
-			string str;
-
 			Sound管理.t再生中の処理をする();
 
 			if( Timer != null )
@@ -1068,7 +1064,8 @@ for (int i = 0; i < 3; i++) {
 							case (int) E演奏画面の戻り値.ステージクリア:
 								#region [ 演奏クリア ]
 								//-----------------------------
-								chipArray = new CDTX.CChip[ 10 ];
+								CScoreIni.C演奏記録 c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass;
+								CDTX.CChip[] chipArray = new CDTX.CChip[ 10 ];
 								if( ConfigIni.bギタレボモード )
 								{
 									stage演奏ギター画面.t演奏結果を格納する( out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass );
@@ -1105,7 +1102,7 @@ for (int i = 0; i < 3; i++) {
 									ps = c演奏記録_Bass.db演奏型スキル値;
 									gs = c演奏記録_Bass.dbゲーム型スキル値;
 								}
-								str = "Cleared";
+								string str = "Cleared";
 								switch( CScoreIni.t総合ランク値を計算して返す( c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass ) )
 								{
 									case (int)CScoreIni.ERANK.SS:
