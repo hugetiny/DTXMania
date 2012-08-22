@@ -1425,12 +1425,10 @@ for (int i = 0; i < 3; i++) {
 				{
 					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
 				}
-				finally
-				{
-					this.Window.EnableSystemMenu = CDTXMania.ConfigIni.bIsEnabledSystemMenu;	// #28200 2011.5.1 yyagi
-					// 2012.8.22 Config.iniが無いときに初期値が適用されるよう、この設定行をfinallyに移動
-				}
 			}
+			this.Window.EnableSystemMenu = CDTXMania.ConfigIni.bIsEnabledSystemMenu;	// #28200 2011.5.1 yyagi
+			// 2012.8.22 Config.iniが無いときに初期値が適用されるよう、この設定行をifブロック外に移動
+
 			//---------------------
 			#endregion
 			#region [ ログ出力開始 ]
