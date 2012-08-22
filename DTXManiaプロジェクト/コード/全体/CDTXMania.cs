@@ -1420,11 +1420,15 @@ for (int i = 0; i < 3; i++) {
 				try
 				{
 					ConfigIni.tファイルから読み込み( path );
-					this.Window.EnableSystemMenu = CDTXMania.ConfigIni.bIsEnabledSystemMenu;	// #28200 2011.5.1 yyagi
 				}
 				catch
 				{
 					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
+				}
+				finally
+				{
+					this.Window.EnableSystemMenu = CDTXMania.ConfigIni.bIsEnabledSystemMenu;	// #28200 2011.5.1 yyagi
+					// 2012.8.22 Config.iniが無いときに初期値が適用されるよう、この設定行をfinallyに移動
 				}
 			}
 			//---------------------
