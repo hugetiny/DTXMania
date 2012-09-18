@@ -53,7 +53,7 @@ namespace DTXMania
 
 		public void t読み込み( string boxdefファイル名 )
 		{
-			StreamReader reader = new StreamReader( boxdefファイル名, Encoding.GetEncoding( "shift-jis" ) );
+			StreamReader reader = new StreamReader( boxdefファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
 			string str = null;
 			while( ( str = reader.ReadLine() ) != null )
 			{

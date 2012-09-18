@@ -1137,7 +1137,7 @@ namespace DTXMania
 		}
 		public void t書き出し( string iniファイル名 )
 		{
-			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "shift-jis" ) );
+			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );
 			sw.WriteLine( ";-------------------" );
 			
 			#region [ System ]
@@ -1686,7 +1686,7 @@ namespace DTXMania
 			{
 				string str;
 				this.tキーアサインを全部クリアする();
-				StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "shift-jis" ) );
+				StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
 				str = reader.ReadToEnd();
 				t文字列から読み込み( str );
 				CDTXVersion version = new CDTXVersion( this.strDTXManiaのバージョン );

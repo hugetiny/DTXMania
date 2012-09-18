@@ -1438,7 +1438,7 @@ for (int i = 0; i < 3; i++) {
 			{
 				try
 				{
-					Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( "DTXManiaLog.txt", false, Encoding.GetEncoding( "shift-jis" ) ) ) );
+					Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( "DTXManiaLog.txt", false, Encoding.GetEncoding( "Shift_JIS" ) ) ) );
 				}
 				catch ( System.UnauthorizedAccessException )			// #24481 2011.2.20 yyagi
 				{
