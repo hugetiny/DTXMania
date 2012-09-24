@@ -18,17 +18,6 @@ namespace DTXMania
 {
 	internal class CDTXMania : Game
 	{
-		[DllImport( "kernel32.dll" )]
-		extern static ExecutionState SetThreadExecutionState( ExecutionState esFlags );
-		[FlagsAttribute]
-		public enum ExecutionState : uint
-		{
-			Null = 0,					// 関数が失敗した時の戻り値
-			SystemRequired = 1,			// スタンバイを抑止
-			DisplayRequired = 2,		// 画面OFFを抑止
-			Continuous = 0x80000000,	// 効果を永続させる。ほかオプションと併用する。
-		}
-
 		// プロパティ
 		public static readonly string VERSION = "094(120610)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
@@ -434,7 +423,7 @@ namespace DTXMania
 		}
 		protected override void OnExiting( EventArgs e )
 		{
-			SetThreadExecutionState( ExecutionState.Continuous );		// スリープ抑止状態を解除
+			CWin32.tEnableMonitorSuspend();		// スリープ抑止状態を解除
 			this.t終了処理();
 			base.OnExiting( e );
 		}
@@ -461,7 +450,7 @@ namespace DTXMania
 				return;
 
 			if ( this.bApplicationActive )	// DTXMania本体起動中の本体/モニタの省電力モード移行を抑止
-				SetThreadExecutionState( ExecutionState.SystemRequired | ExecutionState.DisplayRequired );
+				CWin32.tDisableMonitorSuspend();
 
 			this.Device.BeginScene();
 			this.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 1f, 0 );

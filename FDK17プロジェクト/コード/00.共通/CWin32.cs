@@ -152,6 +152,14 @@ namespace FDK
 			NODRIVERCB,
 			MOREDATA
 		}
+		[FlagsAttribute]
+		public enum ExecutionState : uint
+		{
+			Null = 0,					// 関数が失敗した時の戻り値
+			SystemRequired = 1,			// スタンバイを抑止
+			DisplayRequired = 2,		// 画面OFFを抑止
+			Continuous = 0x80000000,	// 効果を永続させる。ほかオプションと併用する。
+		}
 		//-----------------
 		#endregion
 
@@ -216,6 +224,8 @@ namespace FDK
 		public static extern bool SystemParametersInfo( uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni );
 		[DllImport( "kernel32" )]
 		public static extern void GetSystemInfo( ref SYSTEM_INFO ptmpsi );
+		[DllImport( "kernel32.dll" )]
+		extern static ExecutionState SetThreadExecutionState( ExecutionState esFlags );
 		//-----------------
 		#endregion
 
@@ -321,6 +331,22 @@ namespace FDK
 
 		
 		// プロパティ
+
+		/// <summary>
+		/// 本体/モニタの省電力モード移行を抑止する
+		/// </summary>
+		public static void tDisableMonitorSuspend()
+		{
+			SetThreadExecutionState( ExecutionState.SystemRequired | ExecutionState.DisplayRequired );
+		}
+		/// <summary>
+		/// 本体/モニタの省電力モニタ以降抑制を解除する
+		/// </summary>
+		public static void tEnableMonitorSuspend()
+		{
+			SetThreadExecutionState( ExecutionState.Continuous );		// スリープ抑止状態を解除
+		}
+
 
 		public static bool bアプリがIdle状態である
 		{
