@@ -1452,8 +1452,9 @@ namespace DTXMania
 			sw.WriteLine( "; RISKY mode. 0=OFF, 1-10 is the times of misses to be Failed." );	//
 			sw.WriteLine( "Risky={0}", this.nRisky );			//
 			sw.WriteLine();
-            sw.WriteLine("; TIGHTモード(0:OFF, 1:ON)");									// #29500 2012.9.11 kairera0467
-            sw.WriteLine("Tight={0}", this.bTight);			//
+            sw.WriteLine( "; TIGHTモード(0:OFF, 1:ON)" );									// #29500 2012.9.11 kairera0467
+			sw.WriteLine( ": TIGHT mode. 0=OFF, 1=ON " );
+			sw.WriteLine( "DrumsTight={0}", this.bTight );									//
             sw.WriteLine();
 			sw.WriteLine( "; ドラム判定文字表示位置(0:レーン上,1:判定ライン上,2:表示OFF)" );
 			sw.WriteLine( "DrumsPosition={0}", (int) this.判定文字表示位置.Drums );
@@ -2142,10 +2143,6 @@ namespace DTXMania
 											{
 												this.eDark = (Eダークモード) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eDark );
 											}
-											else if( str3.Equals( "DrumsTight" ) )
-											{
-												this.bTight = C変換.bONorOFF( str4[ 0 ] );
-											}
 											else if( str3.Equals( "DrumsGraph" ) )  // #24074 2011.01.23 addikanick
 											{
 												this.bGraph.Drums = C変換.bONorOFF( str4[ 0 ] );
@@ -2246,11 +2243,10 @@ namespace DTXMania
 											{
 												this.nRisky = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 10, this.nRisky );
 											}
-                                            else if (str3.Equals("Tight"))                   // #29500 2012.9.11 kairera0467
+                                            else if( str3.Equals( "DrumsTight" ) )				// #29500 2012.9.11 kairera0467
                                             {
                                                 this.bTight = C変換.bONorOFF(str4[0]);
                                             }
-
 											continue;
 										}
 									//-----------------------------
