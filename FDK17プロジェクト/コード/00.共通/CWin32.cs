@@ -153,7 +153,7 @@ namespace FDK
 			MOREDATA
 		}
 		[FlagsAttribute]
-		public enum ExecutionState : uint
+		internal enum ExecutionState : uint
 		{
 			Null = 0,					// 関数が失敗した時の戻り値
 			SystemRequired = 1,			// スタンバイを抑止
@@ -222,10 +222,10 @@ namespace FDK
 		[return: MarshalAs( UnmanagedType.Bool )]
 		[DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
 		public static extern bool SystemParametersInfo( uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni );
-		[DllImport( "kernel32" )]
+		[DllImport( "kernel32.dll" )]
 		public static extern void GetSystemInfo( ref SYSTEM_INFO ptmpsi );
 		[DllImport( "kernel32.dll" )]
-		extern static ExecutionState SetThreadExecutionState( ExecutionState esFlags );
+		internal static extern ExecutionState SetThreadExecutionState( ExecutionState esFlags );
 		//-----------------
 		#endregion
 
@@ -331,22 +331,6 @@ namespace FDK
 
 		
 		// プロパティ
-
-		/// <summary>
-		/// 本体/モニタの省電力モード移行を抑止する
-		/// </summary>
-		public static void tDisableMonitorSuspend()
-		{
-			SetThreadExecutionState( ExecutionState.SystemRequired | ExecutionState.DisplayRequired );
-		}
-		/// <summary>
-		/// 本体/モニタの省電力モニタ以降抑制を解除する
-		/// </summary>
-		public static void tEnableMonitorSuspend()
-		{
-			SetThreadExecutionState( ExecutionState.Continuous );		// スリープ抑止状態を解除
-		}
-
 
 		public static bool bアプリがIdle状態である
 		{

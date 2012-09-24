@@ -423,7 +423,7 @@ namespace DTXMania
 		}
 		protected override void OnExiting( EventArgs e )
 		{
-			CWin32.tEnableMonitorSuspend();		// スリープ抑止状態を解除
+			CPowerManagement.tEnableMonitorSuspend();		// スリープ抑止状態を解除
 			this.t終了処理();
 			base.OnExiting( e );
 		}
@@ -450,7 +450,7 @@ namespace DTXMania
 				return;
 
 			if ( this.bApplicationActive )	// DTXMania本体起動中の本体/モニタの省電力モード移行を抑止
-				CWin32.tDisableMonitorSuspend();
+				CPowerManagement.tDisableMonitorSuspend();
 
 			this.Device.BeginScene();
 			this.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 1f, 0 );
