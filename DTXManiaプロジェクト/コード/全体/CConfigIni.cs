@@ -1454,7 +1454,7 @@ namespace DTXMania
 			sw.WriteLine();
             sw.WriteLine( "; TIGHTモード(0:OFF, 1:ON)" );									// #29500 2012.9.11 kairera0467
 			sw.WriteLine( ": TIGHT mode. 0=OFF, 1=ON " );
-			sw.WriteLine( "DrumsTight={0}", this.bTight );									//
+			sw.WriteLine( "DrumsTight={0}", this.bTight ? 1 : 0 );									//
             sw.WriteLine();
 			sw.WriteLine( "; ドラム判定文字表示位置(0:レーン上,1:判定ライン上,2:表示OFF)" );
 			sw.WriteLine( "DrumsPosition={0}", (int) this.判定文字表示位置.Drums );
