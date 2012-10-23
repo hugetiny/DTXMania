@@ -169,7 +169,7 @@ namespace DTXMania
 
 		public static CSound管理 Sound管理
 		{
-			get; 
+			get;
 			private set;
 		}
 		public static CStage起動 stage起動 
@@ -284,6 +284,10 @@ namespace DTXMania
 			set;
 		}
 		//		public static CTimer ct;
+		public IntPtr WindowHandle					// 2012.10.24 yyagi; to add ASIO support
+		{
+			get { return base.Window.Handle; }
+		}
 
 		// コンストラクタ
 

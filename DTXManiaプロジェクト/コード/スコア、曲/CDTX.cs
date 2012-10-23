@@ -1515,21 +1515,21 @@ namespace DTXMania
 		}
 		public void tWave再生位置自動補正( CWAV wc )
 		{
-			if ( wc.rSound[ 0 ] != null && wc.rSound[ 0 ].n総演奏時間ms >= 5000 )
-			{
-				for ( int i = 0; i < nPolyphonicSounds; i++ )
-				{
-					if ( ( wc.rSound[ i ] != null ) && ( wc.rSound[ i ].b再生中 ) )
-					{
-						long nCurrentTime = CDTXMania.Timer.nシステム時刻;
-						if ( nCurrentTime > wc.n再生開始時刻[ i ] )
-						{
-							long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[ i ];
-							wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
-						}
-					}
-				}
-			}
+			//if ( wc.rSound[ 0 ] != null && wc.rSound[ 0 ].n総演奏時間ms >= 5000 )
+			//{
+			//    for ( int i = 0; i < nPolyphonicSounds; i++ )
+			//    {
+			//        if ( ( wc.rSound[ i ] != null ) && ( wc.rSound[ i ].b再生中 ) )
+			//        {
+			//            long nCurrentTime = CDTXMania.Timer.nシステム時刻;
+			//            if ( nCurrentTime > wc.n再生開始時刻[ i ] )
+			//            {
+			//                long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[ i ];
+			//                wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
+			//            }
+			//        }
+			//    }
+			//}
 		}
 		public void tWavの再生停止( int nWaveの内部番号 )
 		{
@@ -1560,35 +1560,52 @@ namespace DTXMania
 				str = str + cwav.strファイル名;
 				try
 				{
+					//try
+					//{
+					//    cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( str );
+					//    cwav.rSound[ 0 ].n音量 = 100;
+					//    if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+					//    {
+					//        Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
+					//    }
+					//}
+					//catch
+					//{
+					//    cwav.rSound[ 0 ] = null;
+					//    Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
+					//}
+					//if ( cwav.rSound[ 0 ] == null )	// #xxxxx 2012.5.3 yyagi rSound[1-3]もClone()するようにし、これらのストリーム再生がおかしくなる問題を修正
+					//{
+					//    for ( int j = 1; j < nPolyphonicSounds; j++ )
+					//    {
+					//        cwav.rSound[ j ] = null;
+					//    }
+					//}
+					//else
+					//{
+					//    for ( int j = 1; j < nPolyphonicSounds; j++ )
+					//    {
+					//        cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
+					//        CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
+					//    }
+					//}
+					for ( int i = 0; i < nPolyphonicSounds; i++ )
+					{
 						try
 						{
-							cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する(str);
-							cwav.rSound[ 0 ].n音量 = 100;
-							if( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+							cwav.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( str );
+							cwav.rSound[ i ].n音量 = 100;
+							if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 							{
 								Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
 							}
 						}
 						catch
 						{
-							cwav.rSound[ 0 ] = null;
+							cwav.rSound[ i ] = null;
 							Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
 						}
-						if ( cwav.rSound[ 0 ] == null )	// #xxxxx 2012.5.3 yyagi rSound[1-3]もClone()するようにし、これらのストリーム再生がおかしくなる問題を修正
-						{
-							for ( int j = 1; j < nPolyphonicSounds; j++ )
-							{
-								cwav.rSound[ j ] = null;
-							}
-						}
-						else
-						{
-							for ( int j = 1; j < nPolyphonicSounds; j++ )
-							{
-								cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
-								CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
-							}
-						}
+					}
 				}
 				catch( Exception exception )
 				{

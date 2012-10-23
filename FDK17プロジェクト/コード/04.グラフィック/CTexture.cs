@@ -61,6 +61,11 @@ namespace FDK
 			get;
 			private set;
 		}
+		public Format Format
+		{
+			get;
+			protected set;
+		}
 		public Vector3 vc拡大縮小倍率;
 
 
@@ -95,6 +100,7 @@ namespace FDK
 		{
 			try
 			{
+				this.Format = format;
 				this.sz画像サイズ = new Size( bitmap.Width, bitmap.Height );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
 				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
@@ -178,6 +184,7 @@ namespace FDK
 		{
 			try
 			{
+				this.Format = format;
 				this.sz画像サイズ = new Size( n幅, n高さ );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
 				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
@@ -244,6 +251,7 @@ namespace FDK
 			try
 			{
 				var information = ImageInformation.FromMemory( txData );
+				this.Format = format;
 				this.sz画像サイズ = new Size( information.Width, information.Height );
 				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
 				int colorKey = ( b黒を透過する ) ? unchecked( (int) 0xFF000000 ) : 0;
@@ -275,6 +283,7 @@ namespace FDK
 		{
 			try
 			{
+				this.Format = format;
 				this.sz画像サイズ = new Size( bitmap.Width, bitmap.Height );
 				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
 				int colorKey = ( b黒を透過する ) ? unchecked( (int) 0xFF000000 ) : 0;

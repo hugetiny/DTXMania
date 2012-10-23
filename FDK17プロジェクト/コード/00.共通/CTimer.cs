@@ -2,30 +2,28 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+using DirectShowLib;
 
 namespace FDK
 {
-	public class CTimer : IDisposable
+	public class CTimer : CTimerBase
 	{
-		// 定数
-
 		public enum E種別
 		{
-			GetTickCount = 2,
-			MultiMedia = 1,
+			Unknown = -1,
 			PerformanceCounter = 0,
-			Unknown = -1
+			MultiMedia = 1,
+			GetTickCount = 2,
 		}
-		public const long n未使用 = -1;
-
-
-		// プロパティ
-
-		public E種別 eタイマ種別 {
+		public E種別 eタイマ種別
+		{
 			get;
-			private set;
+			protected set;
 		}
-		public long nシステム時刻
+
+
+		public override long nシステム時刻ms
 		{
 			get
 			{
@@ -51,44 +49,11 @@ namespace FDK
 				return 0;
 			}
 		}
-		public long n現在時刻
-		{
-			get
-			{
-				if( this.n停止数 > 0 )
-					return ( this.n一時停止時刻 - this.n前回リセットした時のシステム時刻 );
 
-				return ( this.n更新時刻 - this.n前回リセットした時のシステム時刻 );
-			}
-			set
-			{
-				if( this.n停止数 > 0 )
-					this.n前回リセットした時のシステム時刻 = this.n一時停止時刻 - value;
-				else
-					this.n前回リセットした時のシステム時刻 = this.n更新時刻 - value;
-			}
-		}
-		public long n前回リセットした時のシステム時刻
-		{
-			get;
-			private set;
-		}
-
-		
-		// コンストラクタ
-
-		public CTimer()
-			: this( E種別.MultiMedia )
-		{
-		}
-		
 		public CTimer( E種別 eタイマ種別 )
+			:base()
 		{
 			this.eタイマ種別 = eタイマ種別;
-			this.n前回リセットした時のシステム時刻 = 0;
-			this.n更新時刻 = 0;
-			this.n停止数 = 0;
-			this.n一時停止時刻 = 0;
 
 			if( n参照カウント[ (int) this.eタイマ種別 ] == 0 )
 			{
@@ -107,107 +72,47 @@ namespace FDK
 					case E種別.GetTickCount:
 						this.b確認と設定_GetTickCount();
 						break;
+
+					default:
+						throw new ArgumentException( string.Format( "未知のタイマ種別です。[{0}]", this.eタイマ種別 ) );
 				}
 			}
-			this.tリセット();
+	
+			base.tリセット();
+
 			n参照カウント[ (int) this.eタイマ種別 ]++;
 		}
-
 		
-		// メソッド
+		public override void Dispose()
+		{
+			if( this.eタイマ種別 == E種別.Unknown )
+				return;
 
-		public void tリセット()
-		{
-			this.t更新();
-			this.n前回リセットした時のシステム時刻 = this.n更新時刻;
-			this.n一時停止時刻 = this.n更新時刻;
-			this.n停止数 = 0;
-		}
-		public void t一時停止()
-		{
-			if( this.n停止数 == 0 )
-				this.n一時停止時刻 = this.n更新時刻;
+			int type = (int) this.eタイマ種別;
 
-			this.n停止数++;
-		}
-		public void t更新()
-		{
-			this.n更新時刻 = this.nシステム時刻;
-		}
-		public void t再開()
-		{
-			if( this.n停止数 > 0 )
+			n参照カウント[ type ] = Math.Max( n参照カウント[ type ] - 1, 0 );
+
+			if( n参照カウント[ type ] == 0 )
 			{
-				this.n停止数--;
-				if( this.n停止数 == 0 )
-				{
-					this.t更新();
-					this.n前回リセットした時のシステム時刻 += this.n更新時刻 - this.n一時停止時刻;
-				}
+				if( this.eタイマ種別 == E種別.MultiMedia )
+					timeEndPeriod( this.timeCaps.wPeriodMin );
 			}
+
+			this.eタイマ種別 = E種別.Unknown;
 		}
 
-		#region [ IDisposable＋α 実装 ]
+		#region [ protected ]
 		//-----------------
-		public void Dispose()
-		{
-			this.Dispose( true );
-			GC.SuppressFinalize( this );
-		}
-		protected virtual void Dispose( bool disposing )
-		{
-			if( !this.bDisposed )
-			{
-				this.bDisposed = true;
-				if( disposing )
-				{
-					if( this.eタイマ種別 != E種別.Unknown )
-					{
-						n参照カウント[ (int) this.eタイマ種別 ]--;
-						if( n参照カウント[ (int) this.eタイマ種別 ] == 0 )
-						{
-							switch( this.eタイマ種別 )
-							{
-								case E種別.Unknown:
-								case E種別.PerformanceCounter:
-								case E種別.GetTickCount:
-									return;
+		protected long n現在の周波数;
+		protected static int[] n参照カウント = new int[ 3 ];
+		protected TimeCaps timeCaps;
 
-								case E種別.MultiMedia:
-									timeEndPeriod( this.timeCaps.wPeriodMin );
-									return;
-							}
-						}
-						else if( n参照カウント[ (int) this.eタイマ種別 ] < 0 )
-						{
-							n参照カウント[ (int) this.eタイマ種別 ] = 0;
-						}
-					}
-				}
-			}
-		}
-		//-----------------
-		#endregion
-	
-		
-		// その他
-
-		#region [ private ]
-		//-----------------
-		private bool bDisposed;
-		private long n一時停止時刻;
-		private long n現在の周波数;
-		private long n更新時刻;
-		private static int[] n参照カウント = new int[ 3 ];
-		private int n停止数;
-		private TimeCaps timeCaps;
-
-		private bool b確認と設定_GetTickCount()
+		protected bool b確認と設定_GetTickCount()
 		{
 			this.eタイマ種別 = E種別.GetTickCount;
 			return true;
 		}
-		private bool b確認と設定_MultiMedia()
+		protected bool b確認と設定_MultiMedia()
 		{
 			this.timeCaps = new TimeCaps();
 			if( ( timeGetDevCaps( out this.timeCaps, (uint) Marshal.SizeOf( typeof( TimeCaps ) ) ) == 0 ) && ( this.timeCaps.wPeriodMin < 10 ) )
@@ -218,7 +123,7 @@ namespace FDK
 			}
 			return false;
 		}
-		private bool b確認と設定_PerformanceCounter()
+		protected bool b確認と設定_PerformanceCounter()
 		{
 			if( QueryPerformanceFrequency( ref this.n現在の周波数 ) != 0 )
 			{
@@ -233,20 +138,20 @@ namespace FDK
 		#region [ DllImport ]
 		//-----------------
 		[DllImport( "kernel32.dll" )]
-		private static extern short QueryPerformanceCounter( ref long x );
+		protected static extern short QueryPerformanceCounter( ref long x );
 		[DllImport( "kernel32.dll" )]
-		private static extern short QueryPerformanceFrequency( ref long x );
+		protected static extern short QueryPerformanceFrequency( ref long x );
 		[DllImport( "winmm.dll" )]
-		private static extern void timeBeginPeriod( uint x );
+		protected static extern void timeBeginPeriod( uint x );
 		[DllImport( "winmm.dll" )]
-		private static extern void timeEndPeriod( uint x );
+		protected static extern void timeEndPeriod( uint x );
 		[DllImport( "winmm.dll" )]
-		private static extern uint timeGetDevCaps( out TimeCaps timeCaps, uint size );
+		protected static extern uint timeGetDevCaps( out TimeCaps timeCaps, uint size );
 		[DllImport( "winmm.dll" )]
-		private static extern uint timeGetTime();
+		protected static extern uint timeGetTime();
 
 		[StructLayout( LayoutKind.Sequential )]
-		private struct TimeCaps
+		protected struct TimeCaps
 		{
 			public uint wPeriodMin;
 			public uint wPeriodMax;
