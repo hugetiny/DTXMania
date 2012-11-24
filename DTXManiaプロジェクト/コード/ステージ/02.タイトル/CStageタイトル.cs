@@ -177,6 +177,8 @@ namespace DTXMania
 						this.actFO.tフェードアウト開始();
 						base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 					}
+//					if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) Key.Space ) )
+//						Trace.TraceInformation( "DTXMania Title: SPACE key registered. " + CDTXMania.ct.nシステム時刻 );
 				}
 
 				// 描画
