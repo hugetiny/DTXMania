@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // アセンブリに関する一般情報は以下の属性セットをとおして制御されます。
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
-[assembly: AssemblyTitle( "MidiInChecker2_Project" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyTitle( "MidiInChecker2" )]
+[assembly: AssemblyDescription( "Test tool to check MIDI-in signals." )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
-[assembly: AssemblyProduct( "MidiInChecker2_Project" )]
+[assembly: AssemblyProduct( "MidiInChecker2" )]
 [assembly: AssemblyCopyright( "Copyright ©  2012" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
