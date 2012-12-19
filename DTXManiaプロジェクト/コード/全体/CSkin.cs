@@ -216,6 +216,7 @@ namespace DTXMania
 				{
 					try
 					{
+Debug.WriteLine( "★★" +this.strファイル名 );
 						this.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
 					}
 					catch

@@ -79,10 +79,12 @@ namespace FDK
 		public CCounter( int n開始値, int n終了値, int n間隔ms, CTimer timer )
 			: this()
 		{
+//			this.timer = timer;
 			this.t開始( n開始値, n終了値, n間隔ms );
 		}
 		public void t開始( int n最初のカウント値, int n最後のカウント値, int nカウント値を１増加させるのにかける時間ms, CTimer timer )
 		{
+//			this.timer = timer;
 			this.t開始( n最初のカウント値, n最後のカウント値, nカウント値を１増加させるのにかける時間ms );
 		}
 		#endregion
@@ -110,10 +112,14 @@ namespace FDK
 		/// </summary>
 		public CCounter t進行()
 		{
-			this.m一定間隔処理.t進行( this.n間隔ms, () => {
-				if( ++this.n現在の値 > this.n終了値 )
-					this.n現在の値 = this.n終了値;
-			} );
+			if ( this.m一定間隔処理 != null )
+			{
+				this.m一定間隔処理.t進行( this.n間隔ms, () =>
+				{
+					if ( ++this.n現在の値 > this.n終了値 )
+						this.n現在の値 = this.n終了値;
+				} );
+			}
 
 			return this;
 		}

@@ -96,6 +96,11 @@ namespace FDK
 		{
 			SoundDevice = null;							// ユーザ依存
 			rc演奏用タイマ = null;				// Global.Bass 依存（つまりユーザ依存）
+
+			//SoundDeviceType = ESoundDeviceType.DirectSound;
+			SoundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+			//SoundDeviceType = ESoundDeviceType.ASIO;
+			t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する();
 		}
 		public static void t終了()
 		{
@@ -158,18 +163,18 @@ namespace FDK
 		}
 		public CSound tサウンドを生成する( string filename )
 		{
+Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デバイス );
 			if ( SoundDeviceType == ESoundDeviceType.Unknown )
 			{
 				throw new Exception( string.Format( "未対応の SoundDeviceType です。[{0}]", SoundDeviceType.ToString() ) );
 			}
-
 			return SoundDevice.tサウンドを作成する( filename );
 		}
 
 		public void t再生中の処理をする()
 		{
 //★★★★★★★★★★★★★★★★★★★★★ダミー★★★★★★★★★★★★★★★★★★
-			Debug.Write( "再生中の処理をする()" );
+//			Debug.Write( "再生中の処理をする()" );
 		}
 
 		public void tサウンドを破棄する( CSound csound )
@@ -599,8 +604,11 @@ namespace FDK
 		}
 		public void tサウンドを再生する()
 		{
+Debug.WriteLine( "tす運度を再生する(): " + this.strファイル名 );
 			if( this.bBASSサウンドである )
 			{
+				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 再生中だと多重再生不可。とりあえずPAUSEしてrewindして再生しておく。後日多重再生対応する。
+				BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, 0 );
 				BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 			}
 			else if( this.bDirectSoundである )
