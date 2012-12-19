@@ -29,18 +29,9 @@ namespace MidiInChecker2
 		//public CInputManager( IntPtr hWnd )
 		public CInputManager()
 		{
-			//this.directInput = new DirectInput();
-			//this.timer = new CTimer( CTimer.E種別.MultiMedia );
-
 			this.list入力デバイス = new List<IInputDevice>( 10 );
 			this.listStrMidiDevices = new List<string>();
 
-			//this.list入力デバイス.Add( new CInputKeyboard( hWnd, directInput ) );
-			//this.list入力デバイス.Add( new CInputMouse( hWnd, directInput ) );
-			//foreach ( DeviceInstance instance in this.directInput.GetDevices( DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly ) )
-			//{
-			//    this.list入力デバイス.Add( new CInputJoystick( hWnd, instance, directInput ) );
-			//}
 			this.proc = new CWin32.MidiInProc( this.MidiInCallback );
 			nInputMidiDevices = CWin32.midiInGetNumDevs();
 			Trace.TraceInformation( "MIDI入力デバイス数: {0}", nInputMidiDevices );
@@ -70,28 +61,6 @@ namespace MidiInChecker2
 
 		// メソッド
 
-		//public IInputDevice Joystick( int ID )
-		//{
-		//    foreach ( IInputDevice device in this.list入力デバイス )
-		//    {
-		//        if ( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && ( device.ID == ID ) )
-		//        {
-		//            return device;
-		//        }
-		//    }
-		//    return null;
-		//}
-		//public IInputDevice Joystick( string GUID )
-		//{
-		//    foreach ( IInputDevice device in this.list入力デバイス )
-		//    {
-		//        if ( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && device.GUID.Equals( GUID ) )
-		//        {
-		//            return device;
-		//        }
-		//    }
-		//    return null;
-		//}
 		public IInputDevice MidiIn( int ID )
 		{
 		    foreach ( IInputDevice device in this.list入力デバイス )
@@ -107,7 +76,6 @@ namespace MidiInChecker2
 		{
 			lock ( this.objMidiIn排他用 )
 			{
-				//				foreach( IInputDevice device in this.list入力デバイス )
 				for ( int i = this.list入力デバイス.Count - 1; i >= 0; i-- )	// #24016 2011.1.6 yyagi: change not to use "foreach" to avoid InvalidOperation exception by Remove().
 				{
 					IInputDevice device = this.list入力デバイス[ i ];
@@ -115,8 +83,7 @@ namespace MidiInChecker2
 					{
 						device.tポーリング( bWindowがアクティブ中, bバッファ入力を使用する );
 					}
-					// catch ( DirectInputException )							// #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
-					catch ( Exception e )							// #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
+					catch ( Exception )							// #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
 					{
 						this.list入力デバイス.Remove( device );
 						device.Dispose();
@@ -182,14 +149,10 @@ namespace MidiInChecker2
 
 		#region [ private ]
 		//-----------------
-		//private DirectInput directInput;
-		//private IInputDevice _Keyboard;
-		//private IInputDevice _Mouse;
 		private bool bDisposed済み;
 		private List<uint> listHMIDIIN = new List<uint>( 8 );
 		private object objMidiIn排他用 = new object();
 		private CWin32.MidiInProc proc;
-		//private CTimer timer;
 
 		private void MidiInCallback( uint hMidiIn, uint wMsg, int dwInstance, int dwParam1, int dwParam2 )
 		{
