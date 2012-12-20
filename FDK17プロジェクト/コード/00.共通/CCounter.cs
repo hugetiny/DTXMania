@@ -4,19 +4,22 @@ using System.Text;
 
 namespace FDK
 {
-	public class CCounter : IDisposable
+	/// <summary>
+	/// 一定間隔で単純増加する整数（カウント値）を扱う。
+	/// </summary>
+	public class CCounter
 	{
-		// プロパティ(1) 値系
+		// 値プロパティ
 
 		public int n開始値
 		{
 			get;
-			protected set;
+			private set;
 		}
 		public int n終了値
 		{
 			get;
-			protected set;
+			private set;
 		}
 		public int n現在の値
 		{
@@ -30,7 +33,7 @@ namespace FDK
 		}
 
 
-		// プロパティ(2) 状態系
+		// 状態プロパティ
 
 		public bool b進行中
 		{
@@ -52,96 +55,90 @@ namespace FDK
 
 		// コンストラクタ
 
-		/// <summary>
-		/// <para>生成のみ行い、開始はしない。</para>
-		/// </summary>
 		public CCounter()
 		{
-			this.timer = new CTimer( CTimer.E種別.MultiMedia );
+			this.timer = null;
 			this.n開始値 = 0;
 			this.n終了値 = 0;
 			this.n間隔ms = 0;
 			this.n現在の値 = 0;
 			this.n現在の経過時間ms = CTimer.n未使用;
-			this.m一定間隔処理 = null;
 		}
 
-		/// <summary>
-		/// <para>生成と同時に開始する。</para>
-		/// </summary>
-		public CCounter( int n最初のカウント値, int n最後のカウント値, int nカウント値を１増加させるのにかける時間ms )
-			: this()
-		{
-			this.t開始( n最初のカウント値, n最後のカウント値, nカウント値を１増加させるのにかける時間ms );
-		}
-
-		#region [ DTXMania用の変換 ]
+		/// <summary>生成と同時に開始する。</summary>
 		public CCounter( int n開始値, int n終了値, int n間隔ms, CTimer timer )
 			: this()
 		{
-//			this.timer = timer;
-			this.t開始( n開始値, n終了値, n間隔ms );
+			this.t開始( n開始値, n終了値, n間隔ms, timer );
 		}
-		public void t開始( int n最初のカウント値, int n最後のカウント値, int nカウント値を１増加させるのにかける時間ms, CTimer timer )
-		{
-//			this.timer = timer;
-			this.t開始( n最初のカウント値, n最後のカウント値, nカウント値を１増加させるのにかける時間ms );
-		}
-		#endregion
+
 
 		// 状態操作メソッド
 
 		/// <summary>
-		/// <para>カウントを開始する。</para>
+		/// カウントを開始する。
 		/// </summary>
-		public void t開始( int n最初のカウント値, int n最後のカウント値, int nカウント値を１増加させるのにかける時間ms )
+		/// <param name="n開始値">最初のカウント値。</param>
+		/// <param name="n終了値">最後のカウント値。</param>
+		/// <param name="n間隔ms">カウント値を１増加させるのにかける時間（ミリ秒単位）。</param>
+		/// <param name="timer">カウントに使用するタイマ。</param>
+		public void t開始( int n開始値, int n終了値, int n間隔ms, CTimer timer )
 		{
-			this.timer.tリセット();
-			this.n開始値 = n最初のカウント値;
-			this.n終了値 = n最後のカウント値;
-			this.n間隔ms = nカウント値を１増加させるのにかける時間ms;
-			this.n現在の経過時間ms = this.timer.n現在時刻ms;
-			this.n現在の値 = n最初のカウント値;
-			this.m一定間隔処理 = new C一定間隔処理();
+			this.n開始値 = n開始値;
+			this.n終了値 = n終了値;
+			this.n間隔ms = n間隔ms;
+			this.timer = timer;
+			this.n現在の経過時間ms = this.timer.n現在時刻;
+			this.n現在の値 = n開始値;
 		}
 
 		/// <summary>
-		/// <para>前回の t進行() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。</para>
-		/// <para>カウント値が終了値に達している場合は、それ以上増加しない（終了値を維持する）。</para>
-		/// <para>戻り値として自分自身を返す。</para>
+		/// 前回の t進行() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。
+		/// カウント値が終了値に達している場合は、それ以上増加しない（終了値を維持する）。
 		/// </summary>
-		public CCounter t進行()
+		public void t進行()
 		{
-			if ( this.m一定間隔処理 != null )
+			if ( ( this.timer != null ) && ( this.n現在の経過時間ms != CTimer.n未使用 ) )
 			{
-				this.m一定間隔処理.t進行( this.n間隔ms, () =>
+				long num = this.timer.n現在時刻;
+				if ( num < this.n現在の経過時間ms )
+					this.n現在の経過時間ms = num;
+
+				while ( ( num - this.n現在の経過時間ms ) >= this.n間隔ms )
 				{
 					if ( ++this.n現在の値 > this.n終了値 )
 						this.n現在の値 = this.n終了値;
-				} );
+
+					this.n現在の経過時間ms += this.n間隔ms;
+				}
 			}
-
-			return this;
 		}
 
 		/// <summary>
-		/// <para>前回の t進行Loop() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。</para>
-		/// <para>カウント値が終了値に達している場合は、次の増加タイミングで開始値に戻る（値がループする）。</para>
-		/// <para>戻り値として自分自身を返す。</para>
+		/// 前回の t進行Loop() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。
+		/// カウント値が終了値に達している場合は、次の増加タイミングで開始値に戻る（値がループする）。
 		/// </summary>
-		public CCounter t進行Loop()
+		public void t進行Loop()
 		{
-			this.m一定間隔処理.t進行( this.n間隔ms, () => {
-				if( ++this.n現在の値 > this.n終了値 )
-					this.n現在の値 = this.n開始値;
-			} );
+			if ( ( this.timer != null ) && ( this.n現在の経過時間ms != CTimer.n未使用 ) )
+			{
+				long num = this.timer.n現在時刻;
+				if ( num < this.n現在の経過時間ms )
+					this.n現在の経過時間ms = num;
 
-			return this;
+				while ( ( num - this.n現在の経過時間ms ) >= this.n間隔ms )
+				{
+					if ( ++this.n現在の値 > this.n終了値 )
+						this.n現在の値 = this.n開始値;
+
+					this.n現在の経過時間ms += this.n間隔ms;
+				}
+			}
 		}
 
 		/// <summary>
-		/// <para>カウントを停止する。</para>
-		/// <para>これ以降に t進行() や t進行Loop() を呼び出しても何も処理されない。</para>
+		/// カウントを停止する。
+		/// これ以降に t進行() や t進行Loop() を呼び出しても何も処理されない。
 		/// </summary>
 		public void t停止()
 		{
@@ -150,16 +147,6 @@ namespace FDK
 
 
 		// その他
-
-		#region [ IDisposable 実装 ]
-		//-----------------
-		public void Dispose()
-		{
-			C共通.tDisposeする( ref this.timer );
-			C共通.tDisposeする( ref this.m一定間隔処理 );
-		}
-		//-----------------
-		#endregion
 
 		#region [ 応用：キーの反復入力をエミュレーションする ]
 		//-----------------
@@ -177,33 +164,33 @@ namespace FDK
 			const int n2回目 = 1;
 			const int n3回目以降 = 2;
 
-			if( bキー押下 )
+			if ( bキー押下 )
 			{
-				switch( this.n現在の値 )
+				switch ( this.n現在の値 )
 				{
 					case n1回目:
 
 						tキー処理();
 						this.n現在の値 = n2回目;
-						this.n現在の経過時間ms = this.timer.n現在時刻ms;
+						this.n現在の経過時間ms = this.timer.n現在時刻;
 						return;
 
 					case n2回目:
 
-						if( ( this.timer.n現在時刻ms - this.n現在の経過時間ms ) > 200 )
+						if ( ( this.timer.n現在時刻 - this.n現在の経過時間ms ) > 200 )
 						{
 							tキー処理();
-							this.n現在の経過時間ms = this.timer.n現在時刻ms;
+							this.n現在の経過時間ms = this.timer.n現在時刻;
 							this.n現在の値 = n3回目以降;
 						}
 						return;
 
 					case n3回目以降:
 
-						if( ( this.timer.n現在時刻ms - this.n現在の経過時間ms ) > 30 )
+						if ( ( this.timer.n現在時刻 - this.n現在の経過時間ms ) > 30 )
 						{
 							tキー処理();
-							this.n現在の経過時間ms = this.timer.n現在時刻ms;
+							this.n現在の経過時間ms = this.timer.n現在時刻;
 						}
 						return;
 				}
@@ -218,11 +205,10 @@ namespace FDK
 		//-----------------
 		#endregion
 
-		#region [ protected ]
+		#region [ private ]
 		//-----------------
-		protected CTimer timer;
-		protected int n間隔ms;
-		protected C一定間隔処理 m一定間隔処理;
+		private CTimer timer;
+		private int n間隔ms;
 		//-----------------
 		#endregion
 	}
