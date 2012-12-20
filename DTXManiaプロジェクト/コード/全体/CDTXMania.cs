@@ -1669,9 +1669,9 @@ for (int i = 0; i < 3; i++) {
 				Sound管理 = new CSound管理( base.Window.Handle );
 				Trace.TraceInformation( "DirectSound の初期化を完了しました。" );
 			}
-			catch
+			catch (Exception e)
 			{
-				Trace.TraceError( "DirectSound の初期化に失敗しました。" );
+				Trace.TraceError( "DirectSound の初期化に失敗しました。(" + e.Message + ")"  );
 				throw;
 			}
 			finally

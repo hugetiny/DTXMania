@@ -163,7 +163,7 @@ namespace FDK
 		}
 		public CSound tサウンドを生成する( string filename )
 		{
-Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デバイス );
+Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デバイス + " " + filename );
 			if ( SoundDeviceType == ESoundDeviceType.Unknown )
 			{
 				throw new Exception( string.Format( "未対応の SoundDeviceType です。[{0}]", SoundDeviceType.ToString() ) );
@@ -200,9 +200,10 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 		{
 			get { return 0; }
 		}
-		public bool bストリーム再生する			// 取りあえずtrue固定★★★★★★★★★★★★★★★★★★★★
+		public bool bストリーム再生する			// 取りあえずfalse固定★★★★★★★★★★★★★★★★★★★★
+												// trueにすると同一チップ音の多重再生で問題が出る(4POLY音源として動かない)
 		{
-			get { return true; }
+			get { return false; }
 		}
 		public double db周波数倍率;
 		public double db再生速度;
@@ -557,27 +558,38 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 		}
 		public void t再生を開始する()
 		{
+			t再生位置を先頭に戻す();
 			tサウンドを再生する();
 		}
-		public void t再生を開始する( bool bループする )		// とりあえずループは無視★★★★★★★★★★★★★★
+		public void t再生を開始する( bool bループする )
 		{
+			if ( bループする )
+			{
+				Bass.BASS_ChannelFlags( this.hBassStream, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP );
+			}
+			else
+			{
+				Bass.BASS_ChannelFlags( this.hBassStream, BASSFlag.BASS_DEFAULT, BASSFlag.BASS_DEFAULT );
+			}
+			t再生位置を先頭に戻す();
 			tサウンドを再生する();
 		}
 		public void t再生を停止する()
 		{
 			tサウンドを停止する();
+			t再生位置を先頭に戻す();
 		}
-		public void t再生を一時停止する()	// ポーズとレジュームは未実装★★★★★★★★★★★★★
+		public void t再生を一時停止する()
 		{
-			//tサウンドを停止する();
+			tサウンドを停止する();
 		}
-		public void t再生を再開する(long t)		// ポーズとレジュームは未実装★★★★★★★★★★★★★
+		public void t再生を再開する( long t )	// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 		{
-			//tサウンドを停止する();
+			tサウンドを再生する();
 		}
-		public bool b一時停止中		// 常にfalse★★★★★★★★★★★★★
+		public bool b一時停止中
 		{
-			get { return false; }
+			get { return ( BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) == BASSActive.BASS_ACTIVE_PAUSED ); }
 		}
 		public bool b再生中
 		{
@@ -588,8 +600,15 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 					return ( ( this.Buffer.Status & BufferStatus.Playing ) != BufferStatus.None );
 				}
 				else
-				{	// BASSActive.BASS_ACTIVE_STOPPINGを考慮しなくて良いか、後で考えること
-					return ( BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) != BASSActive.BASS_ACTIVE_PLAYING );
+				{
+					// 基本的にはBASS_ACTIVE_PLAYINGなら再生中だが、最後まで再生しきったchannelも
+					// BASS_ACTIVE_PLAYINGのままになっているので、小細工が必要。
+					bool ret = ( BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) == BASSActive.BASS_ACTIVE_PLAYING );
+					if ( BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) >= nBytes )
+					{
+						ret = false;
+					}
+					return ret;
 				}
 			}
 		}
@@ -604,11 +623,19 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 		}
 		public void tサウンドを再生する()
 		{
-Debug.WriteLine( "tす運度を再生する(): " + this.strファイル名 );
+//Debug.WriteLine( "tサウンドを再生する(): " + this.strファイル名 );
 			if( this.bBASSサウンドである )
 			{
-				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 再生中だと多重再生不可。とりあえずPAUSEしてrewindして再生しておく。後日多重再生対応する。
-				BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, 0 );
+Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
+
+				//if ( ( BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) == BASSActive.BASS_ACTIVE_PLAYING ) &&
+				//     ( BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) >= nBytes )
+				//     )
+//				if ( b再生中 )
+//				{
+//					BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 再生中だと多重再生不可。とりあえずPAUSEしてrewindして再生しておく。後日多重再生対応する。
+//				}
+//				BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, 0 );
 				BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 			}
 			else if( this.bDirectSoundである )
@@ -625,6 +652,7 @@ Debug.WriteLine( "tす運度を再生する(): " + this.strファイル名 );
 		{
 			if( this.bBASSサウンドである )
 			{
+Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 			}
 			else if( this.bDirectSoundである )
@@ -798,6 +826,7 @@ Debug.WriteLine( "tす運度を再生する(): " + this.strファイル名 );
 		private int _n位置db;
 		private int _n音量 = 100;
 		private int _n音量db;
+		private long nBytes = 0;
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{
@@ -814,17 +843,17 @@ Debug.WriteLine( "tす運度を再生する(): " + this.strファイル名 );
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT );
-			BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 追加すると勝手に再生（ミキサへの出力）が始まるので即停止。
+			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
+			//BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 追加すると勝手に再生（ミキサへの出力）が始まるので即停止。
 
 
 			// インスタンスリストに登録。
 
 			CSound.listインスタンス.Add( this );
 
-			// n総演奏時間の取得; DTXMania用に追加。
-			long length = Bass.BASS_ChannelGetLength( this.hBassStream );
-			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, length );
+			// nBytesとn総演奏時間の取得; DTXMania用に追加。
+			nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, nBytes );
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
 		}
 		private void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, BASSFlag flags )
@@ -843,17 +872,17 @@ Debug.WriteLine( "tす運度を再生する(): " + this.strファイル名 );
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT );
-			BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 追加すると勝手に再生（ミキサへの出力）が始まるので即停止。
+			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
+//			BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 追加すると勝手に再生（ミキサへの出力）が始まるので即停止。
 
 
 			// インスタンスリストに登録。
 
 			CSound.listインスタンス.Add( this );
 
-			// n総演奏時間の取得; DTXMania用に追加。
-			long length = Bass.BASS_ChannelGetLength( this.hBassStream );
-			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, length );
+			// nBytesとn総演奏時間の取得; DTXMania用に追加。
+			nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, nBytes );
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
 		}
 		//-----------------
