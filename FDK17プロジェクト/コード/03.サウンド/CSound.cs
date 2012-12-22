@@ -163,7 +163,7 @@ namespace FDK
 		}
 		public CSound tサウンドを生成する( string filename )
 		{
-Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デバイス + " " + filename );
+Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デバイス + " " + Path.GetFileName( filename ) );
 			if ( SoundDeviceType == ESoundDeviceType.Unknown )
 			{
 				throw new Exception( string.Format( "未対応の SoundDeviceType です。[{0}]", SoundDeviceType.ToString() ) );
@@ -627,15 +627,6 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 			if( this.bBASSサウンドである )
 			{
 Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
-
-				//if ( ( BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) == BASSActive.BASS_ACTIVE_PLAYING ) &&
-				//     ( BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) >= nBytes )
-				//     )
-//				if ( b再生中 )
-//				{
-//					BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 再生中だと多重再生不可。とりあえずPAUSEしてrewindして再生しておく。後日多重再生対応する。
-//				}
-//				BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, 0 );
 				BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 			}
 			else if( this.bDirectSoundである )
@@ -799,7 +790,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		protected E作成方法 e作成方法 = E作成方法.Unknown;
 		protected ESoundDeviceType eデバイス種別 = ESoundDeviceType.Unknown;
 		protected string strファイル名 = null;
-		protected byte[] byArrWAVファイルイメージ = null;
+		protected byte[] byArrWAVファイルイメージ = null;	// WAVファイルイメージ、もしくはchunkのDATA部のみ
 		protected GCHandle hGC;
 		protected int hBassStream = -1;					// ASIO, WASAPI 用
 		protected SecondarySoundBuffer Buffer = null;	// DirectSound 用
@@ -830,6 +821,12 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{
+			if ( Path.GetExtension( strファイル名 ) == ".xa" )
+			{
+				tBASSサウンドを作成するXA( strファイル名, hMixer, flags );
+				return;
+			}
+
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
 
@@ -875,6 +872,63 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
 //			BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 追加すると勝手に再生（ミキサへの出力）が始まるので即停止。
 
+
+			// インスタンスリストに登録。
+
+			CSound.listインスタンス.Add( this );
+
+			// nBytesとn総演奏時間の取得; DTXMania用に追加。
+			nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, nBytes );
+			this.n総演奏時間ms = (int) ( seconds * 1000 );
+		}
+		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
+		{
+			byte[] buf;
+			Cxa.XAHEADER xah;
+			Cxa.XASTREAMHEADER xash;
+			Debug.WriteLine( "xaデコード開始: " + Path.GetFileName( strファイル名 ) );
+			Cxa.Decode( strファイル名, out xah, out xash, out buf );
+
+			this.e作成方法 = E作成方法.WAVファイルイメージから;
+			this.byArrWAVファイルイメージ = buf;
+			this.hGC = GCHandle.Alloc( byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
+
+			// BASSファイルストリームを作成。
+			//xah.id = br.ReadUInt32();
+			//xah.nDataLen = br.ReadUInt32();
+			//xah.nSamples = br.ReadUInt32();
+			//xah.nSamplesPerSec = br.ReadUInt16();
+			//xah.nBits = br.ReadByte();
+			//xah.nChannels = br.ReadByte();
+			//xah.nLoopPtr = br.ReadUInt32();
+			//            Debug.WriteLine( "**WAVEFORMATEX**" );
+			//Debug.WriteLine( "wFormatTag=      " + wfx.wFormatTag.ToString("X4") );
+			//Debug.WriteLine( "nChannels =      " + wfx.nChannels.ToString( "X4" ) );
+			//Debug.WriteLine( "nSamplesPerSec=  " + wfx.nSamplesPerSec.ToString( "X8" ) );
+			//Debug.WriteLine( "nAvgBytesPerSec= " + wfx.nAvgBytesPerSec.ToString( "X8" ) );
+			//Debug.WriteLine( "nBlockAlign=     " + wfx.nBlockAlign.ToString( "X4" ) );
+			//Debug.WriteLine( "wBitsPerSample=  " + wfx.wBitsPerSample.ToString( "X4" ) );
+			//Debug.WriteLine( "cbSize=          " + wfx.cbSize.ToString( "X4" ) );
+				//xash.pSrc = pXaBuf;
+				//xash.nSrcLen = xah.nDataLen;
+				//xash.nSrcUsed = 0;
+				//xash.pDst = pWavBuf;
+				//xash.nDstLen = dlen2;
+				//xash.nDstUsed = 0;
+				//xaDecodeConvert( hxas, ref xash );
+			this.hBassStream = Bass.BASS_SampleCreate( (int)xash.nDstLen, xah.nSamplesPerSec, xah.nChannels, 1, flags );
+			if ( this.hBassStream == 0 )
+				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_SampleCreate)" );
+			bool b = Bass.BASS_SampleSetData( this.hBassStream, buf );
+			if ( !b )
+				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_SampleSetData)" );
+
+
+			// ミキサーにBASSファイルストリームを追加。
+
+			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
+			//			BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 追加すると勝手に再生（ミキサへの出力）が始まるので即停止。
 
 			// インスタンスリストに登録。
 

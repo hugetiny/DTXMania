@@ -1802,6 +1802,12 @@ for (int i = 0; i < 3; i++) {
 
 			Trace.TraceInformation( "アプリケーションの初期化を完了しました。" );
 
+			
+			byte[] buf;
+			Cxa.XAHEADER xah;
+			Cxa.XASTREAMHEADER xash;
+			Cxa.Decode( @"bass1.xa", out xah, out xash, out buf );
+			
 			#region [ 最初のステージの起動 ]
 			//---------------------
 			Trace.TraceInformation( "----------------------" );
