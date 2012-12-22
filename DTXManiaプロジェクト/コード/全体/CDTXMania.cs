@@ -1801,18 +1801,6 @@ for (int i = 0; i < 3; i++) {
 			//t.Start();
 
 			Trace.TraceInformation( "アプリケーションの初期化を完了しました。" );
-
-			
-			byte[] buf1, buf2, buf3, buf4;
-//			Cxa.XAHEADER xah;
-//			Cxa.XASTREAMHEADER xash;
-//			string f = @"D:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania3\branches\120724(DTXMania with #24820)\DTXManiaプロジェクト\bin\x86\Debug\samplesongs\DTXFiles.OVERTAKE\anxiety\midio3c+.xa";
-//			string f = @"midio3c+.xa";
-//			Cxa.Decode( f, out xah, out xash, out buf1 );
-//			Cxa.Decode( f, out xah, out xash, out buf2 );
-//			Cxa.Decode( f, out xah, out xash, out buf3 );
-			Cxa xa = new Cxa();
-			xa.Decode( @"bass1.xa", out buf4 );
 			
 			#region [ 最初のステージの起動 ]
 			//---------------------

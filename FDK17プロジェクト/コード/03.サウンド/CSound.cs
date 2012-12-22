@@ -824,7 +824,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{
-			if ( Path.GetExtension( strファイル名 ) == ".xa" )
+			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 )	// caselessで文字列比較
 			{
 				tBASSサウンドを作成するXA( strファイル名, hMixer, flags );
 				return;
