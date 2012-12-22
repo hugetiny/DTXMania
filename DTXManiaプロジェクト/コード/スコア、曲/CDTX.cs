@@ -1600,10 +1600,11 @@ namespace DTXMania
 								Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
 							}
 						}
-						catch
+						catch ( Exception e )
 						{
 							cwav.rSound[ i ] = null;
 							Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
+							Trace.TraceError( "例外: ", e.Message );
 						}
 					}
 				}
