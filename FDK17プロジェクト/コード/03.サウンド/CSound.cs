@@ -884,16 +884,15 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		}
 		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
 		{
-			byte[] buf;
-			Cxa.XAHEADER xah;
-			Cxa.XASTREAMHEADER xash;
 			Debug.WriteLine( "xaデコード開始: " + Path.GetFileName( strファイル名 ) );
-			Cxa.Decode( strファイル名, out xah, out xash, out buf );
-
+			Cxa xa = new Cxa();
+			xa.Decode( strファイル名, out this.byArrWAVファイルイメージ );
+Debug.WriteLine( "デコード完了:" + Path.GetFileName(strファイル名));
+//return;
 			this.e作成方法 = E作成方法.WAVファイルイメージから;
-			this.byArrWAVファイルイメージ = buf;
-			this.hGC = GCHandle.Alloc( byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
+			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
+Debug.WriteLine( "ピン止め完了:" + Path.GetFileName( strファイル名 ) );
 			// BASSファイルストリームを作成。
 			//xah.id = br.ReadUInt32();
 			//xah.nDataLen = br.ReadUInt32();
@@ -917,27 +916,55 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 				//xash.nDstLen = dlen2;
 				//xash.nDstUsed = 0;
 				//xaDecodeConvert( hxas, ref xash );
-			this.hBassStream = Bass.BASS_SampleCreate( (int)xash.nDstLen, xah.nSamplesPerSec, xah.nChannels, 1, flags );
+
+
+			this.hBassStream = Bass.BASS_SampleCreate(256, 28160, 1, 1, BASSFlag.BASS_SAMPLE_LOOP| BASSFlag.BASS_SAMPLE_OVER_POS); // create sample
+//short[] data = new short[128]; // data buffer
+//int a;
+//for (a=0; a<128; a++)
+//    data[a]=(short)(32767.0*Math.Sin((double)a*6.283185/64)); // sine wave
+//Bass.BASS_SampleSetData(this.hBassStream, data); // set the sample's data
+
+
+Debug.WriteLine( "xash.nDstLen=" + xa.xash.nDstLen + ", xah.nSamplesPerSec=" + xa.xah.nSamplesPerSec + ", xah.nChannels=" + xa.xah.nChannels );
+			//this.hBassStream = Bass.BASS_SampleCreate( (int) xash.nDstLen, xah.nSamplesPerSec, xah.nChannels, 1, flags );
+			this.hBassStream = Bass.BASS_SampleCreate( (int) xa.xash.nDstLen, xa.xah.nSamplesPerSec, xa.xah.nChannels, 1, (BASSFlag) 0 );
 			if ( this.hBassStream == 0 )
-				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_SampleCreate)" );
-			bool b = Bass.BASS_SampleSetData( this.hBassStream, buf );
+			{
+				hGC.Free();
+				BASSError err = Bass.BASS_ErrorGetCode();
+Debug.WriteLine( "BASS_SampleCreate: " + err );
+				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_SampleCreate: " + err + ")" );
+			}
+Debug.WriteLine( "SampleCreate完了:" + Path.GetFileName( strファイル名 ) );
+			bool b = Bass.BASS_SampleSetData( this.hBassStream, this.byArrWAVファイルイメージ);		// ★★★★★★★★★★★★★★ 多分bufをshort見せしないとダメ！！！
 			if ( !b )
+			{
+				hGC.Free();
+				BASSError err = Bass.BASS_ErrorGetCode();
+				Debug.WriteLine( "BASS_SampleSetData: " + err );
 				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_SampleSetData)" );
+			}
+Debug.WriteLine( "SampleSetData完了:" + Path.GetFileName( strファイル名 ) );
 
 
 			// ミキサーにBASSファイルストリームを追加。
 
 			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
 			//			BassMix.BASS_Mixer_ChannelPause( this.hBassStream );	// 追加すると勝手に再生（ミキサへの出力）が始まるので即停止。
+Debug.WriteLine( "StreamAddChannel完了:" + Path.GetFileName( strファイル名 ) );
 
 			// インスタンスリストに登録。
 
 			CSound.listインスタンス.Add( this );
+Debug.WriteLine( "listインスタンス.Add完了:" + Path.GetFileName( strファイル名 ) );
 
 			// nBytesとn総演奏時間の取得; DTXMania用に追加。
 			nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
 			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, nBytes );
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
+
+			Debug.WriteLine( "nBytes=" + nBytes + ", n総演奏時間ms=" + this.n総演奏時間ms );
 		}
 		//-----------------
 		#endregion
