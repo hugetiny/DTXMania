@@ -1604,7 +1604,7 @@ namespace DTXMania
 						{
 							cwav.rSound[ i ] = null;
 							Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
-							Trace.TraceError( "例外: ", e.Message );
+							Trace.TraceError( "例外: " + e.Message );
 						}
 					}
 				}

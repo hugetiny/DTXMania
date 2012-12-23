@@ -1665,13 +1665,29 @@ for (int i = 0; i < 3; i++) {
 			Trace.TraceInformation( "DirectSound の初期化を行います。" );
 			Trace.Indent();
 			try
-			{
-				Sound管理 = new CSound管理( base.Window.Handle );
+			{				
+				ESoundDeviceType soundDeviceType;
+				switch ( CDTXMania.ConfigIni.nSoundDeviceType )
+				{
+					case 0:
+						soundDeviceType = ESoundDeviceType.DirectSound;
+						break;
+					case 1:
+						soundDeviceType = ESoundDeviceType.ASIO;
+						break;
+					case 2:
+						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						break;
+					default:
+						soundDeviceType = ESoundDeviceType.Unknown;
+						break;
+				}
+				Sound管理 = new CSound管理( base.Window.Handle, soundDeviceType );
 				Trace.TraceInformation( "DirectSound の初期化を完了しました。" );
 			}
 			catch (Exception e)
 			{
-				Trace.TraceError( "DirectSound の初期化に失敗しました。(" + e.Message + ")"  );
+				Trace.TraceError( e.Message );
 				throw;
 			}
 			finally

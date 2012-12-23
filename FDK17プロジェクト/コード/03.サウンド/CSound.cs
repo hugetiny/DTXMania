@@ -82,10 +82,10 @@ namespace FDK
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="handle"></param>
-		public CSound管理( IntPtr handle )
+		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType )
 		{
 			WindowHandle = handle;
-			t初期化();
+			t初期化( soundDeviceType );
 		}
 		public void Dispose()
 		{
@@ -94,13 +94,58 @@ namespace FDK
 
 		public static void t初期化()
 		{
+			t初期化( ESoundDeviceType.ExclusiveWASAPI );
+		}
+
+		public static void t初期化( ESoundDeviceType soundDeviceType )
+		{
 			SoundDevice = null;							// ユーザ依存
 			rc演奏用タイマ = null;				// Global.Bass 依存（つまりユーザ依存）
 
+			//SoundDeviceType = soundDeviceType;
 			//SoundDeviceType = ESoundDeviceType.DirectSound;
-			SoundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+			//SoundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
 			//SoundDeviceType = ESoundDeviceType.ASIO;
-			t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する();
+
+			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
+			{
+				ESoundDeviceType.ExclusiveWASAPI,
+				ESoundDeviceType.ASIO,
+				ESoundDeviceType.DirectSound,
+				ESoundDeviceType.Unknown
+			};
+
+			int n初期デバイス;
+			switch ( soundDeviceType )
+			{
+				case ESoundDeviceType.ExclusiveWASAPI:
+					n初期デバイス = 0;
+					break;
+				case ESoundDeviceType.ASIO:
+					n初期デバイス = 1;
+					break;
+				case ESoundDeviceType.DirectSound:
+					n初期デバイス = 2;
+					break;
+				default:
+					n初期デバイス = 3;
+					break;
+			}
+			for ( SoundDeviceType = ESoundDeviceTypes[ n初期デバイス ]; ; SoundDeviceType = ESoundDeviceTypes[ ++n初期デバイス ] )
+			{
+				try
+				{
+					t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する();
+					break;
+				}
+				catch ( Exception e )
+				{
+					if ( ESoundDeviceTypes[ n初期デバイス ] == ESoundDeviceType.Unknown )
+					{
+						throw new Exception( string.Format( "サウンドデバイスの初期化に失敗しました。" ) );
+					}
+				}
+			}
 		}
 		public static void t終了()
 		{
@@ -163,7 +208,7 @@ namespace FDK
 		}
 		public CSound tサウンドを生成する( string filename )
 		{
-Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デバイス + " " + Path.GetFileName( filename ) );
+//Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デバイス + " " + Path.GetFileName( filename ) );
 			if ( SoundDeviceType == ESoundDeviceType.Unknown )
 			{
 				throw new Exception( string.Format( "未対応の SoundDeviceType です。[{0}]", SoundDeviceType.ToString() ) );
@@ -373,58 +418,109 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
 
+			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 )	// caselessで文字列比較
+			{
+				tDirectSoundサウンドを作成するXA( strファイル名, DirectSound );
+				return;
+			}
 
 			// すべてのファイルを DirectShow でデコードすると時間がかかるので、ファイルが WAV かつ PCM フォーマットでない場合のみ DirectShow でデコードする。
 
-			byte[] byArrWAVファイルイメージ;
+			byte[] byArrWAVファイルイメージ = null;
 			bool bファイルがWAVかつPCMフォーマットである = true;
-			
-			#region [ ファイルがWAVかつPCMフォーマットか否か調べる。]
-			//-----------------
-			try
+
 			{
-				using( var ws = new WaveStream( strファイル名 ) )
+				#region [ ファイルがWAVかつPCMフォーマットか否か調べる。]
+				//-----------------
+				try
 				{
-					if( ws.Format.FormatTag != WaveFormatTag.Pcm )
-						bファイルがWAVかつPCMフォーマットである = false;
+					using ( var ws = new WaveStream( strファイル名 ) )
+					{
+						if ( ws.Format.FormatTag != WaveFormatTag.Pcm )
+							bファイルがWAVかつPCMフォーマットである = false;
+					}
+				}
+				catch
+				{
+					bファイルがWAVかつPCMフォーマットである = false;
+				}
+				//-----------------
+				#endregion
+
+				if ( bファイルがWAVかつPCMフォーマットである )
+				{
+					#region [ ファイルを読み込んで byArrWAVファイルイメージへ格納。]
+					//-----------------
+					var fs = File.Open( strファイル名, FileMode.Open, FileAccess.Read );
+					var br = new BinaryReader( fs );
+
+					byArrWAVファイルイメージ = new byte[ fs.Length ];
+					br.Read( byArrWAVファイルイメージ, 0, (int) fs.Length );
+
+					br.Close();
+					fs.Close();
+					//-----------------
+					#endregion
+				}
+				else
+				{
+					#region [ DirectShow でデコード変換し、 byArrWAVファイルイメージへ格納。]
+					//-----------------
+					CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
+					//-----------------
+					#endregion
 				}
 			}
-			catch
-			{
-				bファイルがWAVかつPCMフォーマットである = false;
-			}
-			//-----------------
-			#endregion
-
-			if( bファイルがWAVかつPCMフォーマットである )
-			{
-				#region [ ファイルを読み込んで byArrWAVファイルイメージへ格納。]
-				//-----------------
-				var fs = File.Open( strファイル名, FileMode.Open, FileAccess.Read );
-				var br = new BinaryReader( fs );
-
-				byArrWAVファイルイメージ = new byte[ fs.Length ];
-				br.Read( byArrWAVファイルイメージ, 0, (int) fs.Length );
-
-				br.Close();
-				fs.Close();
-				//-----------------
-				#endregion
-			}
-			else
-			{
-				#region [ DirectShow でデコード変換し、 byArrWAVファイルイメージへ格納。]
-				//-----------------
-				CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
-				//-----------------
-				#endregion
-			}
-
 
 			// あとはあちらで。
 
 			this.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, DirectSound );
 		}
+		public void tDirectSoundサウンドを作成するXA( string strファイル名, DirectSound DirectSound )
+		{
+			this.e作成方法 = E作成方法.ファイルから;
+			this.strファイル名 = strファイル名;
+
+			Cxa xa = new Cxa();
+			xa.Decode( strファイル名, out this.byArrWAVファイルイメージ );
+
+			WaveFormat wfx = new WaveFormat();
+			int nPCMデータの先頭インデックス = 0;
+			int nPCMサイズbyte = (int) ( xa.xaheader.nSamples * xa.xaheader.nChannels * 2 );	// nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+
+			wfx.AverageBytesPerSecond = (int) xa.waveformatex.nAvgBytesPerSec;
+			wfx.BitsPerSample = (short) xa.waveformatex.wBitsPerSample;
+			wfx.BlockAlignment = (short) xa.waveformatex.nBlockAlign;
+			wfx.Channels = (short) xa.waveformatex.nChannels;
+			wfx.FormatTag = WaveFormatTag.Pcm;	// xa.waveformatex.wFormatTag;
+			wfx.SamplesPerSecond = (int) xa.waveformatex.nSamplesPerSec;
+
+
+			// セカンダリバッファを作成し、PCMデータを書き込む。
+
+			this.Buffer = new SecondarySoundBuffer( DirectSound, new SoundBufferDescription()
+			{
+				Format = wfx,
+				Flags = CSoundDeviceDirectSound.DefaultFlags,
+				SizeInBytes = nPCMサイズbyte,
+			} );
+			this.Buffer.Write( byArrWAVファイルイメージ, nPCMデータの先頭インデックス, nPCMサイズbyte, 0, LockFlags.None );
+
+			// DTXMania用に追加
+			n総演奏時間ms = (int) ( ( (double) nPCMサイズbyte ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
+
+			// 作成完了。
+
+			this.eデバイス種別 = ESoundDeviceType.DirectSound;
+			this.DirectSoundBufferFlags = CSoundDeviceDirectSound.DefaultFlags;
+
+
+			// インスタンスリストに登録。
+
+			CSound.listインスタンス.Add( this );
+
+		}
+
 		public void tDirectSoundサウンドを作成する( byte[] byArrWAVファイルイメージ, DirectSound DirectSound )
 		{
 			this.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, DirectSound, CSoundDeviceDirectSound.DefaultFlags );
@@ -437,7 +533,7 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 			WaveFormat wfx = null;
 			int nPCMデータの先頭インデックス = -1;
 			int nPCMサイズbyte = -1;
-
+	
 			#region [ byArrWAVファイルイメージ[] から上記３つのデータを取得。]
 			//-----------------
 			var ms = new MemoryStream( byArrWAVファイルイメージ );
@@ -565,13 +661,16 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 		}
 		public void t再生を開始する( bool bループする )
 		{
-			if ( bループする )
+			if ( bBASSサウンドである )
 			{
-				Bass.BASS_ChannelFlags( this.hBassStream, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP );
-			}
-			else
-			{
-				Bass.BASS_ChannelFlags( this.hBassStream, BASSFlag.BASS_DEFAULT, BASSFlag.BASS_DEFAULT );
+				if ( bループする )
+				{
+					Bass.BASS_ChannelFlags( this.hBassStream, BASSFlag.BASS_SAMPLE_LOOP, BASSFlag.BASS_SAMPLE_LOOP );
+				}
+				else
+				{
+					Bass.BASS_ChannelFlags( this.hBassStream, BASSFlag.BASS_DEFAULT, BASSFlag.BASS_DEFAULT );
+				}
 			}
 			t再生位置を先頭に戻す();
 			tサウンドを再生する();
@@ -584,20 +683,29 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 		public void t再生を一時停止する()
 		{
 			tサウンドを停止する();
+			this.n一時停止回数++;
 		}
 		public void t再生を再開する( long t )	// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 		{
 			Debug.WriteLine( "t再生を再開する(long " + t + ")" );
 			t再生位置を変更する( t );
 			tサウンドを再生する();
+			this.n一時停止回数--;
 		}
 		public bool b一時停止中
 		{
 			get
 			{
-				bool ret = ( BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) == BASSActive.BASS_ACTIVE_PAUSED ) &
-							( BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) > 0 );
-				return ret;
+				if ( this.bBASSサウンドである )
+				{
+					bool ret = ( BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) == BASSActive.BASS_ACTIVE_PAUSED ) &
+								( BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) > 0 );
+					return ret;
+				}
+				else
+				{
+					return ( this.n一時停止回数 > 0 );
+				}
 			}
 		}
 		public bool b再生中
@@ -635,7 +743,7 @@ Debug.WriteLine( "★★tサウンドを生成する()" + SoundDevice.e出力デ
 //Debug.WriteLine( "tサウンドを再生する(): " + this.strファイル名 );
 			if( this.bBASSサウンドである )
 			{
-Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
+//Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 			}
 			else if( this.bDirectSoundである )
@@ -652,7 +760,7 @@ Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイ�
 		{
 			if( this.bBASSサウンドである )
 			{
-Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
+//Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 			}
 			else if( this.bDirectSoundである )
@@ -828,6 +936,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		private int _n音量 = 100;
 		private int _n音量db;
 		private long nBytes = 0;
+		private int n一時停止回数 = 0;
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{
@@ -892,7 +1001,6 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		}
 		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
 		{
-			Debug.WriteLine( "xaデコード開始: " + Path.GetFileName( strファイル名 ) );
 			Cxa xa = new Cxa();
 			xa.Decode( strファイル名, out this.byArrWAVファイルイメージ );
 
@@ -900,7 +1008,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
 
-			_myStreamCreate = new STREAMPROC( MyFileProc );
+			_myStreamCreate = new STREAMPROC( CallbackPlayingXA );
 
 			// BASSファイルストリームを作成。
 
@@ -929,7 +1037,7 @@ Debug.WriteLine( "BASS_SampleCreate: " + err );
 		//-----------------
 
 		private int pos = 0;
-		private int MyFileProc( int handle, IntPtr buffer, int length, IntPtr user )
+		private int CallbackPlayingXA( int handle, IntPtr buffer, int length, IntPtr user )
 		{
 			int bytesread = ( pos + length > Convert.ToInt32(nBytes) ) ? Convert.ToInt32(nBytes) - pos : length;
 

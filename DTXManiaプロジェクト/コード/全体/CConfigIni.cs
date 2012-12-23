@@ -13,6 +13,7 @@ namespace DTXMania
 	{
 		// クラス
 
+		#region [ CKeyAssign ]
 		public class CKeyAssign
 		{
 			public class CKeyAssignPad
@@ -406,8 +407,17 @@ namespace DTXMania
 				}
 			}
 		}
+		#endregion
 
-
+		//
+		public enum ESoundDeviceTypeForConfig
+		{
+			ACM = 0,
+			// DirectSound,
+			ASIO,
+			WASAPI,
+			Unknown=99
+		}
 		// プロパティ
 
 #if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
@@ -648,6 +658,7 @@ namespace DTXMania
 		    set;
 		}
 		public STAUTOPLAY bAutoPlay;
+		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -797,6 +808,7 @@ namespace DTXMania
 			}
 		}
 #endif
+		#region [ STRANGE ]
 		public STRANGE nヒット範囲ms;
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STRANGE
@@ -849,7 +861,8 @@ namespace DTXMania
 				}
 			}
 		}
-
+		#endregion
+		#region [ STLANEVALUE ]
 		public STLANEVALUE nVelocityMin;
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STLANEVALUE
@@ -958,6 +971,7 @@ namespace DTXMania
 				}
 			}
 		}
+		#endregion
 
 		// #27029 2012.1.5 from:
 		// BDGroup が FP|BD→FP&BD に変化した際に自動変化するパラメータの値のバックアップ。FP&BD→FP|BD の時に元に戻す。
@@ -1101,6 +1115,7 @@ namespace DTXMania
 			this.bIsEnabledSystemMenu = true;			// #28200 2012.5.1 yyagi System Menuの利用可否切替(使用可)
 			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
+			this.nSoundDeviceType = (int)ESoundDeviceTypeForConfig.WASAPI;	// #24820 2012.12.23 yyagi 初期値はWASAPI, ダメならASIO→ACMと下げていく
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1212,7 +1227,17 @@ namespace DTXMania
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
             sw.WriteLine();
 
-            sw.WriteLine("; 非フォーカス時のsleep値[ms]");	    			    // #23568 2011.11.04 ikanick add
+			sw.WriteLine( "; サウンド出力方式(0=ACM, 1=ASIO, 2=WASAPI)" );
+			sw.WriteLine( "; WASAPIはVista以降のOSで使用可能。" );
+			sw.WriteLine( "; WASAPIが使用不可ならASIOに、ASIOが使用不可ならACMを使用します。" );
+			sw.WriteLine( "; Sound device type(0=ACM, 1=ASIO, 2=WASAPI)" );
+			sw.WriteLine( "; WASAPI can use on Vista or later OSs." );
+			sw.WriteLine( "; If WASAPI is not available, DTXMania try to use ASIO. If ASIO can't be used, ACM is used." );
+			sw.WriteLine( "SoundDeviceType={0}", (int) this.nSoundDeviceType );
+			sw.WriteLine();
+
+			sw.WriteLine( "; 非フォーカス時のsleep値[ms]" 
+				);	    			    // #23568 2011.11.04 ikanick add
 			sw.WriteLine("; A sleep time[ms] while the window is inactive.");	//
 			sw.WriteLine("BackSleep={0}", this.n非フォーカス時スリープms);		// そのまま引用（苦笑）
             sw.WriteLine();											        			//
@@ -1871,6 +1896,10 @@ namespace DTXMania
 											else if ( str3.Equals( "EnableSystemMenu" ) )		// #28200 2012.5.1 yyagi
 											{
 												this.bIsEnabledSystemMenu = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "SoundDeviceType" ) )
+											{
+												this.nSoundDeviceType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nSoundDeviceType );
 											}
 											else if ( str3.Equals( "VSyncWait" ) )
 											{

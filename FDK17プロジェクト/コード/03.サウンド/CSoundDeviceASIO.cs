@@ -88,6 +88,15 @@ namespace FDK
 			if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
 				throw new Exception( string.Format( "BASS の初期化に失敗しました。[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 
+			#region [ デバッグ用: ASIOデバイスのenumerateと、ログ出力 ]
+			//int a, count = 0;
+			//BASS_ASIO_DEVICEINFO asioDevInfo;
+			//for ( a = 0; ( asioDevInfo = BassAsio.BASS_ASIO_GetDeviceInfo( a ) ) != null; a++ )
+			//{
+			//    Trace.TraceInformation( "ASIO Device {0}: {1}", a, asioDevInfo.name );
+			//    count++; // count it
+			//}
+			#endregion
 
 			// BASS ASIO の初期化。
 
