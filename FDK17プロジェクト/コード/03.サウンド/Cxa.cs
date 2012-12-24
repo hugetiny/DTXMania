@@ -172,7 +172,6 @@ namespace FDK
 		{
 			#region [ xaデータのデコード ]
 			xastreamheader = new XASTREAMHEADER();
-			bool b;
 			unsafe
 			{
 				fixed ( byte* pXaBuf = srcBuf )
@@ -185,8 +184,7 @@ namespace FDK
 					xastreamheader.pDst = pWavBuf;
 					xastreamheader.nDstLen = szDestSize;
 					xastreamheader.nDstUsed = 0;
-					b = xaDecodeConvert( (IntPtr) nHandle, ref xastreamheader );
-					if ( !b )
+					if ( !xaDecodeConvert( (IntPtr) nHandle, ref xastreamheader ) )
 					{
 						Trace.TraceError( "Error: xaDecodeConvert(): " + Path.GetFileName( filename ) );
 						dstBuf = null;
@@ -203,14 +201,12 @@ namespace FDK
 			#endregion
 			#endregion
 
-			return b? 0 : -1;
+			return 0;
 		}
-
 		public override void Close( int nHandle )
 		{
 			#region [ xaファイルのクローズ ]
-			bool bb = xaDecodeClose( (IntPtr) nHandle );
-			if ( !bb )
+			if ( !xaDecodeClose( (IntPtr) nHandle ) )
 			{
 				Trace.TraceError( "Error: xaDecodeClose(): " + Path.GetFileName( filename ) );
 			}
