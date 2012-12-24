@@ -993,7 +993,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 			this.hBassStream = Bass.BASS_StreamCreateFile( strファイル名, 0, 0, flags );
 			if( this.hBassStream == 0 )
-				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。[{0}]", Bass.BASS_ErrorGetCode() ) );
+				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_StreamCreateFile)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 
 
 			// ミキサーにBASSファイルストリームを追加。
@@ -1023,12 +1023,16 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 			this.hBassStream = Bass.BASS_StreamCreateFile( hGC.AddrOfPinnedObject(), 0, byArrWAVファイルイメージ.Length, flags );
 			if( this.hBassStream == 0 )
-				throw new Exception( "サウンドストリームの生成に失敗しました。" );
+				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_StreamCreateFile)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
+			if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
+			{
+				hGC.Free();
+				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			}
 
 
 			// インスタンスリストに登録。
@@ -1067,18 +1071,15 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			if ( this.hBassStream == 0 )
 			{
 				hGC.Free();
-				BASSError err = Bass.BASS_ErrorGetCode();
-				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_SampleCreate: " + err + ")" );
+				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_SampleCreate)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 			}
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			bool b = BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
-			if ( !b )
+			if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
 			{
 				hGC.Free();
-				BASSError err = Bass.BASS_ErrorGetCode();
-				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel: " + err + ")" );
+				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 			}
 			// インスタンスリストに登録。
 

@@ -77,6 +77,8 @@ namespace FDK
 
 		public CSoundDeviceDirectSound( IntPtr hWnd, long n遅延時間ms )
 		{
+			Trace.TraceInformation( "DirectSound の初期化を開始します。" );
+
 			this.e出力デバイス = ESoundDeviceType.Unknown;
 			this.n実出力遅延ms = n遅延時間ms;
 			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );

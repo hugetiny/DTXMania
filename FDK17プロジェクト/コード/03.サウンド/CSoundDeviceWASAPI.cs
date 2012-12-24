@@ -49,6 +49,8 @@ namespace FDK
 		{
 			// 初期化。
 
+			Trace.TraceInformation( "BASS (WASAPI) の初期化を開始します。" );
+
 			this.e出力デバイス = ESoundDeviceType.Unknown;
 			this.n実出力遅延ms = 0;
 			this.n経過時間ms = 0;
@@ -61,7 +63,6 @@ namespace FDK
 
 			BassNet.Registration( "dtx0266@gmail.com", "2X9182617152222" );
 
-	
 			// BASS のバージョンチェック。
 
 			int nBASSVersion = Utils.HighWord( Bass.BASS_GetVersion() );
@@ -88,7 +89,7 @@ namespace FDK
 			int nデバイス = 0;		// 0:"no device" … BASS からはデバイスへアクセスさせない。アクセスは BASSWASAPI アドオンから行う。
 			int n周波数 = 44100;	// 仮決め。lデバイス（≠ドライバ）がネイティブに対応している周波数であれば何でもいい？ようだ。BASSWASAPIでデバイスの周波数は変えられる。いずれにしろBASSMXで自動的にリサンプリングされる。
 			if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
-				throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+				throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 
 			#region [ デバッグ用: WASAPIデバイスのenumerateと、ログ出力 ]
 			// (デバッグ用)
@@ -159,7 +160,7 @@ Retry:
 					#endregion
 				}
 			}
-			else if( mode == Eデバイスモード.排他 )
+			else if ( mode == Eデバイスモード.排他 )
 			{
 				#region [ 排他モードに失敗したのなら共有モードでリトライ。]
 				//-----------------
@@ -172,8 +173,9 @@ Retry:
 			{
 				#region [ それでも失敗したら例外発生。]
 				//-----------------
+				BASSError errcode = Bass.BASS_ErrorGetCode();
 				Bass.BASS_Free();
-				throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+				throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_WASAPI_Init)[{0}]", errcode ) );
 				//-----------------
 				#endregion
 			}

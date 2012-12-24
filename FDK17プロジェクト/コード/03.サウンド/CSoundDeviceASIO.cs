@@ -48,6 +48,8 @@ namespace FDK
 		{
 			// 初期化。
 
+			Trace.TraceInformation( "BASS (ASIO) の初期化を開始します。" );
+
 			this.e出力デバイス = ESoundDeviceType.Unknown;
 			this.n実出力遅延ms = 0;
 			this.n経過時間ms = 0;
@@ -56,7 +58,6 @@ namespace FDK
 
 
 			// BASS.NET ユーザ登録（BASSスプラッシュが非表示になる）。
-
 			BassNet.Registration( "dtx0266@gmail.com", "2X9182617152222" );
 
 
@@ -80,6 +81,7 @@ namespace FDK
 			Debug.Assert( Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 ),		// 0:BASSストリームの自動更新を行わない。（BASSWASAPIから行うため）
 				string.Format( "BASS_SetConfig() に失敗しました。[{0}", Bass.BASS_ErrorGetCode() ) );
 
+Debug.WriteLine( "BASS_SetConfig()完了。" );
 
 			// BASS の初期化。
 
@@ -88,6 +90,7 @@ namespace FDK
 			if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
 				throw new Exception( string.Format( "BASS の初期化に失敗しました。[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 
+Debug.WriteLine( "BASS_Init()完了。" );
 			#region [ デバッグ用: ASIOデバイスのenumerateと、ログ出力 ]
 			//int a, count = 0;
 			//BASS_ASIO_DEVICEINFO asioDevInfo;
