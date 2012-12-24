@@ -102,11 +102,6 @@ namespace FDK
 			SoundDevice = null;							// ユーザ依存
 			rc演奏用タイマ = null;				// Global.Bass 依存（つまりユーザ依存）
 
-			//SoundDeviceType = soundDeviceType;
-			//SoundDeviceType = ESoundDeviceType.DirectSound;
-			//SoundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
-			//SoundDeviceType = ESoundDeviceType.ASIO;
-
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
 			{
 				ESoundDeviceType.ExclusiveWASAPI,
@@ -140,6 +135,7 @@ namespace FDK
 				}
 				catch ( Exception e )
 				{
+					Trace.TraceInformation( e.Message );
 					if ( ESoundDeviceTypes[ n初期デバイス ] == ESoundDeviceType.Unknown )
 					{
 						throw new Exception( string.Format( "サウンドデバイスの初期化に失敗しました。" ) );
@@ -418,9 +414,10 @@ namespace FDK
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
 
-			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 )	// caselessで文字列比較
+			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 ||
+				 String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )	// caselessで文字列比較
 			{
-				tDirectSoundサウンドを作成するXA( strファイル名, DirectSound );
+				tDirectSoundサウンドを作成するXAOGG( strファイル名, DirectSound );
 				return;
 			}
 
@@ -476,24 +473,33 @@ namespace FDK
 
 			this.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, DirectSound );
 		}
-		public void tDirectSoundサウンドを作成するXA( string strファイル名, DirectSound DirectSound )
+		public void tDirectSoundサウンドを作成するXAOGG( string strファイル名, DirectSound DirectSound )
 		{
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
 
-			Cxa xa = new Cxa();
-			xa.Decode( strファイル名, out this.byArrWAVファイルイメージ );
+
+
+			
+//			Cxa xa = new Cxa();
+//			xa.Decode( strファイル名, out this.byArrWAVファイルイメージ );
 
 			WaveFormat wfx = new WaveFormat();
 			int nPCMデータの先頭インデックス = 0;
-			int nPCMサイズbyte = (int) ( xa.xaheader.nSamples * xa.xaheader.nChannels * 2 );	// nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+//			int nPCMサイズbyte = (int) ( xa.xaheader.nSamples * xa.xaheader.nChannels * 2 );	// nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
 
-			wfx.AverageBytesPerSecond = (int) xa.waveformatex.nAvgBytesPerSec;
-			wfx.BitsPerSample = (short) xa.waveformatex.wBitsPerSample;
-			wfx.BlockAlignment = (short) xa.waveformatex.nBlockAlign;
-			wfx.Channels = (short) xa.waveformatex.nChannels;
+			int nPCMサイズbyte;
+			CWin32.WAVEFORMATEX cw32wfx;
+			tオンメモリ方式でデコードする( strファイル名, out this.byArrWAVファイルイメージ,
+			out nPCMデータの先頭インデックス, out nPCMサイズbyte, out cw32wfx );
+
+			wfx.AverageBytesPerSecond = (int) cw32wfx.nAvgBytesPerSec;
+			wfx.BitsPerSample = (short) cw32wfx.wBitsPerSample;
+			wfx.BlockAlignment = (short) cw32wfx.nBlockAlign;
+			wfx.Channels = (short) cw32wfx.nChannels;
 			wfx.FormatTag = WaveFormatTag.Pcm;	// xa.waveformatex.wFormatTag;
-			wfx.SamplesPerSecond = (int) xa.waveformatex.nSamplesPerSec;
+			wfx.SamplesPerSecond = (int) cw32wfx.nSamplesPerSec;
+
 
 
 			// セカンダリバッファを作成し、PCMデータを書き込む。
@@ -508,6 +514,7 @@ namespace FDK
 
 			// DTXMania用に追加
 			n総演奏時間ms = (int) ( ( (double) nPCMサイズbyte ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
+			nBytes = nPCMサイズbyte;
 
 			// 作成完了。
 
@@ -744,7 +751,36 @@ namespace FDK
 			if( this.bBASSサウンドである )
 			{
 //Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
-				BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
+				bool b = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
+				if ( !b )
+				{
+Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) );
+//Debug.WriteLine( "ErrCode= " +Bass.BASS_ErrorGetCode() );
+
+					bool bb = tBASSサウンドをミキサーに追加する(false);
+					if ( !bb )
+					{
+Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strファイル名 ) + ": " + Bass.BASS_ErrorGetCode() );
+					}
+					else
+					{
+Debug.WriteLine( "Mixerへの登録に成功: " + Path.GetFileName( this.strファイル名 ) + ": " + Bass.BASS_ErrorGetCode() );
+					}
+//                    bool bbb = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
+//                    if ( !bbb )
+//                    {
+//Debug.WriteLine( "更に再生に失敗                                 : " + Path.GetFileName( this.strファイル名 ) );
+//Debug.WriteLine( "ErrCode= " +Bass.BASS_ErrorGetCode() );
+//                    }
+//                    else
+//                    {
+//Debug.WriteLine( "再生成功(ミキサー追加後)                       : " + Path.GetFileName( this.strファイル名 ) );
+//                    }
+				}
+				else
+				{
+Debug.WriteLine( "再生成功                                       : " + Path.GetFileName( this.strファイル名 ) );
+				}
 			}
 			else if( this.bDirectSoundである )
 			{
@@ -760,8 +796,10 @@ namespace FDK
 		{
 			if( this.bBASSサウンドである )
 			{
-//Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
+Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
+
+//tBASSサウンドをミキサーから削除する();
 			}
 			else if( this.bDirectSoundである )
 			{
@@ -912,6 +950,7 @@ namespace FDK
 		protected GCHandle hGC;
 		protected int hBassStream = -1;					// ASIO, WASAPI 用
 		protected SecondarySoundBuffer Buffer = null;	// DirectSound 用
+		protected int hMixer = -1;	// 設計壊してゴメン Mixerに後で登録するときに使う
 		//-----------------
 		#endregion
 
@@ -970,6 +1009,8 @@ namespace FDK
 			nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
 			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, nBytes );
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
+			this.pos = 0;
+			this.hMixer = hMixer;
 		}
 		private void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, BASSFlag flags )
 		{
@@ -998,13 +1039,22 @@ namespace FDK
 			nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
 			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, nBytes );
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
+			this.pos = 0;
+			this.hMixer = hMixer;
 		}
 		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
 		{
-			Cxa xa = new Cxa();
-			xa.Decode( strファイル名, out this.byArrWAVファイルイメージ );
+			int nPCMデータの先頭インデックス;
+			CWin32.WAVEFORMATEX wfx;
+			int totalPCMSize;
+
+			tオンメモリ方式でデコードする( strファイル名, out this.byArrWAVファイルイメージ,
+			    out nPCMデータの先頭インデックス, out totalPCMSize, out wfx );
+
+			nBytes = totalPCMSize;
 
 			this.e作成方法 = E作成方法.WAVファイルイメージから;
+			this.strファイル名 = strファイル名; 
 			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
 
@@ -1012,27 +1062,43 @@ namespace FDK
 
 			// BASSファイルストリームを作成。
 
-			this.hBassStream = Bass.BASS_StreamCreate( xa.xaheader.nSamplesPerSec, xa.xaheader.nChannels, BASSFlag.BASS_STREAM_DECODE, _myStreamCreate, IntPtr.Zero );
+			//this.hBassStream = Bass.BASS_StreamCreate( xa.xaheader.nSamplesPerSec, xa.xaheader.nChannels, BASSFlag.BASS_STREAM_DECODE, _myStreamCreate, IntPtr.Zero );
+			this.hBassStream = Bass.BASS_StreamCreate( (int)wfx.nSamplesPerSec, (int)wfx.nChannels, BASSFlag.BASS_STREAM_DECODE, _myStreamCreate, IntPtr.Zero );
 			if ( this.hBassStream == 0 )
 			{
 				hGC.Free();
 				BASSError err = Bass.BASS_ErrorGetCode();
-Debug.WriteLine( "BASS_SampleCreate: " + err );
 				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_SampleCreate: " + err + ")" );
 			}
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
-
+			bool b = BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
+			if ( !b )
+			{
+				hGC.Free();
+				BASSError err = Bass.BASS_ErrorGetCode();
+				throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel: " + err + ")" );
+			}
 			// インスタンスリストに登録。
 
 			CSound.listインスタンス.Add( this );
 
 			// nBytesとn総演奏時間の取得; DTXMania用に追加。
-			nBytes = (int) ( xa.xaheader.nSamples * xa.xaheader.nChannels * 2 );	// nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+			//nBytes = (int) ( xa.xaheader.nSamples * xa.xaheader.nChannels * 2 );	// nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+			//nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+			//if ( nBytes < 0 )
+			//{
+			//    hGC.Free();
+			//    BASSError err = Bass.BASS_ErrorGetCode();
+			//    throw new Exception( "サウンドストリームの生成に失敗しました。(BASS_ChannelGetLength: " + err + ")" );
+			//}
+			//nBytes = (int) this.byArrWAVファイルイメージ.Length;
+
 			double seconds = Bass.BASS_ChannelBytes2Seconds( this.hBassStream, nBytes );
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
+			this.pos = 0;
+			this.hMixer = hMixer;
 		}
 		//-----------------
 
@@ -1051,6 +1117,91 @@ Debug.WriteLine( "BASS_SampleCreate: " + err );
 			}
 			return bytesread;
 		}
+
+
+		public bool tBASSサウンドをミキサーに追加する()
+		{
+			return tBASSサウンドをミキサーに追加する( true );
+		}
+	
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="pause">falseなら、追加と同時に再生する</param>
+		/// <returns></returns>
+		public bool tBASSサウンドをミキサーに追加する( bool pause )
+		{
+			BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN;
+			if ( pause )
+			{
+				bf |= BASSFlag.BASS_MIXER_PAUSE;
+			}
+			return BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
+		}
+		public bool tBASSサウンドをミキサーから削除する()
+		{
+			return BassMix.BASS_Mixer_ChannelRemove( this.hBassStream );
+		}
+
+
+		public void tオンメモリ方式でデコードする( string strファイル名, out byte[] buffer,
+			out int nPCMデータの先頭インデックス, out int totalPCMSize, out CWin32.WAVEFORMATEX wfx )
+		{
+			nPCMデータの先頭インデックス = 0;
+			//int nPCMサイズbyte = (int) ( xa.xaheader.nSamples * xa.xaheader.nChannels * 2 );	// nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
+
+			SoundDecoder sounddecoder;
+
+			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 )
+			{
+				sounddecoder = new Cxa();
+			}
+			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )
+			{
+				sounddecoder = new Cogg();
+			}
+			else
+			{
+				throw new NotImplementedException();
+			}
+
+			int nHandle = sounddecoder.Open( strファイル名 );
+			if ( nHandle < 0 )
+			{
+				throw new Exception( string.Format( "Open() に失敗しました。({0})({1})", nHandle, strファイル名 ) );
+			}
+			wfx = new CWin32.WAVEFORMATEX();
+			if ( sounddecoder.GetFormat( nHandle, ref wfx ) < 0 )
+			{
+				sounddecoder.Close( nHandle );
+				throw new Exception( string.Format( "GetFormat() に失敗しました。({0})", strファイル名 ) );
+			}
+			//totalPCMSize = (int) sounddecoder.nTotalPCMSize;		//  tデコード後のサイズを調べる()で既に取得済みの値を流用する。ms単位の高速化だが、チップ音がたくさんあると塵積で結構効果がある
+			totalPCMSize = (int) sounddecoder.GetTotalPCMSize( nHandle );
+			if ( totalPCMSize == 0 )
+			{
+				sounddecoder.Close( nHandle );
+				throw new Exception( string.Format( "GetTotalPCMSize() に失敗しました。({0})", strファイル名 ) );
+			}
+			totalPCMSize += ( ( totalPCMSize % 2 ) != 0 ) ? 1 : 0;
+			buffer = new byte[ totalPCMSize ];
+			GCHandle handle = GCHandle.Alloc( buffer, GCHandleType.Pinned );
+			try
+			{
+				if ( sounddecoder.Decode( nHandle, handle.AddrOfPinnedObject(), (uint) totalPCMSize, 0 ) < 0 )
+				{
+					buffer = null;
+					throw new Exception( string.Format( "デコードに失敗しました。({0})", strファイル名 ) );
+				}
+			}
+			finally
+			{
+				handle.Free();
+				sounddecoder.Close( nHandle );
+			}
+			sounddecoder = null;
+		}
+
 		#endregion
 	}
 }

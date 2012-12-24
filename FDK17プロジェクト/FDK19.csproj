@@ -43,7 +43,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bass.Net, Version=2.4.8.0, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
+    <Reference Include="Bass.Net, Version=2.4.9.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\実行時フォルダ\Bass.Net.dll</HintPath>
     </Reference>
@@ -98,6 +98,7 @@
     <Compile Include="コード\02.入力\E入力デバイス種別.cs" />
     <Compile Include="コード\02.入力\IInputDevice.cs" />
     <Compile Include="コード\02.入力\STInputEvent.cs" />
+    <Compile Include="コード\03.サウンド\Cogg.cs" />
     <Compile Include="コード\03.サウンド\CSound.cs" />
     <Compile Include="コード\03.サウンド\CSoundDeviceASIO.cs" />
     <Compile Include="コード\03.サウンド\CSoundDeviceDirectSound.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="コード\03.サウンド\CSoundTimer.cs" />
     <Compile Include="コード\03.サウンド\Cxa.cs" />
     <Compile Include="コード\03.サウンド\ESoundDeviceType.cs" />
+    <Compile Include="コード\03.サウンド\SoundDecoder.cs" />
     <Compile Include="コード\03.サウンド\ISoundDevice.cs" />
     <Compile Include="コード\04.グラフィック\BitmapUtil.cs" />
     <Compile Include="コード\04.グラフィック\CAero.cs" />

@@ -137,11 +137,35 @@ namespace FDK
 			// ASIO 出力チャンネルの初期化。
 
 			this.tAsioProc = new ASIOPROC( this.tAsio処理 );		// アンマネージに渡す delegate は、フィールドとして保持しておかないとGCでアドレスが変わってしまう。
-			BassAsio.BASS_ASIO_ChannelEnable( false, 0, this.tAsioProc, IntPtr.Zero );				// 出力チャンネル0 の有効化。
+			if ( !BassAsio.BASS_ASIO_ChannelEnable( false, 0, this.tAsioProc, IntPtr.Zero ) )		// 出力チャンネル0 の有効化。
+			{
+				#region [ ASIO 出力チャンネルの初期化に失敗。]
+				//-----------------
+				Bass.BASS_Free();
+				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelEnable() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
+				//-----------------
+				#endregion
+			}
 			//for( int i = 1; i < this.n出力チャンネル数; i++ )
 			//	BassAsio.BASS_ASIO_ChannelJoin( false, i, 0 );
-			BassAsio.BASS_ASIO_ChannelJoin( false, 1, 0 );											// 出力チャンネル1をチャンネル0 とグループ化。（ステレオ限定）
-			BassAsio.BASS_ASIO_ChannelSetFormat( false, 0, this.fmtASIOチャンネルフォーマット );	// 出力チャンネル0のフォーマット
+			if (!BassAsio.BASS_ASIO_ChannelJoin( false, 1, 0 ))										// 出力チャンネル1をチャンネル0 とグループ化。（ステレオ限定）
+			{
+				#region [ 初期化に失敗。]
+				//-----------------
+				Bass.BASS_Free();
+				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelJoin() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
+				//-----------------
+				#endregion
+			}
+			if ( !BassAsio.BASS_ASIO_ChannelSetFormat( false, 0, this.fmtASIOチャンネルフォーマット ) )	// 出力チャンネル0のフォーマット
+			{
+				#region [ ASIO 出力チャンネルの初期化に失敗。]
+				//-----------------
+				Bass.BASS_Free();
+				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelSetFormat() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
+				//-----------------
+				#endregion
+			}
 
 
 			// ASIO 出力と同じフォーマットを持つ BASS ミキサーを作成。
@@ -172,11 +196,17 @@ namespace FDK
 			// 出力を開始。
 
 			this.nバッファサイズsample = (int) ( nバッファサイズms * this.db周波数 / 1000.0 );
-			BassAsio.BASS_ASIO_Start( this.nバッファサイズsample );		// 範囲外の値を指定した場合は自動的にデフォルト値に設定される。
-
-			int n遅延sample = BassAsio.BASS_ASIO_GetLatency( false );	// この関数は BASS_ASIO_Start() 後にしか呼び出せない。
-			this.n実出力遅延ms = (long) ( n遅延sample * 1000.0f / this.db周波数 );
-			Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample [{1}ms(希望{2}ms)]", n遅延sample, this.n実出力遅延ms, nバッファサイズms );
+			if ( !BassAsio.BASS_ASIO_Start( this.nバッファサイズsample ) )		// 範囲外の値を指定した場合は自動的にデフォルト値に設定される。
+			{
+				Bass.BASS_Free();
+				throw new Exception( "ASIO デバイス出力開始に失敗しました。" + BassAsio.BASS_ASIO_ErrorGetCode().ToString() );
+			}
+			else
+			{
+				int n遅延sample = BassAsio.BASS_ASIO_GetLatency( false );	// この関数は BASS_ASIO_Start() 後にしか呼び出せない。
+				this.n実出力遅延ms = (long) ( n遅延sample * 1000.0f / this.db周波数 );
+				Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample [{1}ms(希望{2}ms)]", n遅延sample, this.n実出力遅延ms, nバッファサイズms );
+			}
 		}
 
 		public CSound tサウンドを作成する( string strファイル名 )

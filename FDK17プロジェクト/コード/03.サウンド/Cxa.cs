@@ -9,9 +9,9 @@ using System.Threading;
 
 namespace FDK
 {
-	public unsafe class Cxa
+	public unsafe class Cxa : SoundDecoder	//, IDisposable
 	{
-		static byte[] _XAID = Encoding.ASCII.GetBytes( "1DWK" );	// KWD1 の little endian
+		static byte[] FOURCC = Encoding.ASCII.GetBytes( "1DWK" );	// KWD1 の little endian
 
 		#region [ XA用構造体の宣言 ]
 		[StructLayout(LayoutKind.Sequential)]
@@ -58,6 +58,195 @@ namespace FDK
 		public XASTREAMHEADER xastreamheader;
 		public CWin32.WAVEFORMATEX waveformatex;
 
+		private string filename;
+		private byte[] srcBuf = null, dstBuf = null;
+		private int nHandle = -1;
+
+		public override int Open( string filename )
+		{
+			this.filename = filename;
+
+			#region [ XAヘッダと、XAデータの読み出し  ]
+			xaheader = new XAHEADER();
+			using ( FileStream fs = new FileStream( filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) )	// FileShare を付けとかないと、Close() 後もロックがかかる??
+			{
+				using ( BinaryReader br = new BinaryReader( fs ) )
+				{
+					xaheader.id = br.ReadUInt32();
+					xaheader.nDataLen = br.ReadUInt32();
+					xaheader.nSamples = br.ReadUInt32();
+					xaheader.nSamplesPerSec = br.ReadUInt16();
+					xaheader.nBits = br.ReadByte();
+					xaheader.nChannels = br.ReadByte();
+					xaheader.nLoopPtr = br.ReadUInt32();
+
+					xaheader.befL = new short[ 2 ];
+					xaheader.befR = new short[ 2 ];
+					xaheader.pad = new byte[ 4 ];
+
+					xaheader.befL[ 0 ] = br.ReadInt16();
+					xaheader.befL[ 1 ] = br.ReadInt16();
+					xaheader.befR[ 0 ] = br.ReadInt16();
+					xaheader.befR[ 1 ] = br.ReadInt16();
+					xaheader.pad = br.ReadBytes( 4 );
+
+					srcBuf = new byte[ xaheader.nDataLen ];
+					srcBuf = br.ReadBytes( (int) xaheader.nDataLen );
+				}
+			}
+			//string xaid = Encoding.ASCII.GetString( xah.id );
+			#region [ デバッグ表示 ]
+			//Debug.WriteLine( "**XAHEADER**" );
+			//Debug.WriteLine( "id=             " + xaheader.id.ToString( "X8" ) );
+			//Debug.WriteLine( "nDataLen=       " + xaheader.nDataLen.ToString( "X8" ) );
+			//Debug.WriteLine( "nSamples=       " + xaheader.nSamples.ToString( "X8" ) );
+			//Debug.WriteLine( "nSamplesPerSec= " + xaheader.nSamplesPerSec.ToString( "X4" ) );
+			//Debug.WriteLine( "nBits=          " + xaheader.nBits.ToString( "X2" ) );
+			//Debug.WriteLine( "nChannels=      " + xaheader.nChannels.ToString( "X2" ) );
+			//Debug.WriteLine( "nLoopPtr=       " + xaheader.nLoopPtr.ToString( "X8" ) );
+			//Debug.WriteLine( "befL[0]=        " + xaheader.befL[ 0 ].ToString( "X4" ) );
+			//Debug.WriteLine( "befL[1]=        " + xaheader.befL[ 1 ].ToString( "X4" ) );
+			//Debug.WriteLine( "befR[0]=        " + xaheader.befR[ 0 ].ToString( "X4" ) );
+			//Debug.WriteLine( "befR[1]=        " + xaheader.befR[ 1 ].ToString( "X4" ) );
+			#endregion
+			#endregion
+
+			IntPtr hxas;
+
+			#region [ WAVEFORMEX情報の取得  ]
+			waveformatex = new CWin32.WAVEFORMATEX();
+			hxas = xaDecodeOpen( ref xaheader, out waveformatex );
+			if ( hxas == null )
+			{
+				Trace.TraceError( "Error: xa: Open(): xaDecodeOpen(): " + Path.GetFileName( filename ) );
+				dstBuf = null;
+				return -1;
+			}
+
+			#region [ デバッグ表示 ]
+			//Debug.WriteLine( "**WAVEFORMATEX**" );
+			//Debug.WriteLine( "wFormatTag=      " + waveformatex.wFormatTag.ToString( "X4" ) );
+			//Debug.WriteLine( "nChannels =      " + waveformatex.nChannels.ToString( "X4" ) );
+			//Debug.WriteLine( "nSamplesPerSec=  " + waveformatex.nSamplesPerSec.ToString( "X8" ) );
+			//Debug.WriteLine( "nAvgBytesPerSec= " + waveformatex.nAvgBytesPerSec.ToString( "X8" ) );
+			//Debug.WriteLine( "nBlockAlign=     " + waveformatex.nBlockAlign.ToString( "X4" ) );
+			//Debug.WriteLine( "wBitsPerSample=  " + waveformatex.wBitsPerSample.ToString( "X4" ) );
+			//Debug.WriteLine( "cbSize=          " + waveformatex.cbSize.ToString( "X4" ) );
+			#endregion
+			#endregion
+
+			this.nHandle = (int) hxas;
+			return (int) hxas;
+		}
+		public override int GetFormat( int nHandle, ref CWin32.WAVEFORMATEX wfx )
+		{
+			#region [ WAVEFORMATEX構造体の手動コピー ]
+			wfx.nAvgBytesPerSec = waveformatex.nAvgBytesPerSec;
+			wfx.wBitsPerSample  =  waveformatex.wBitsPerSample;
+			wfx.nBlockAlign     =  waveformatex.nBlockAlign;
+			wfx.nChannels       =  waveformatex.nChannels;
+			wfx.wFormatTag      = waveformatex.wFormatTag;
+			wfx.nSamplesPerSec  = waveformatex.nSamplesPerSec;
+
+			return 0;
+			#endregion
+		}
+		public override uint GetTotalPCMSize( int nHandle )
+		{
+			#region [ データ長の取得 ]
+			uint dlen;
+			xaDecodeSize( (IntPtr) nHandle, xaheader.nDataLen, out dlen );
+			#region [ デバッグ表示 ]
+			//Debug.WriteLine( "**INTERNAL VALUE**" );
+			//Debug.WriteLine( "dlen=          " + dlen );
+			#endregion
+			#endregion
+
+			return dlen;
+		}
+		public override int Seek( int nHandle, uint dwPosition )
+		{
+			return 0;
+		}
+		public override int Decode( int nHandle, IntPtr pDest, uint szDestSize, int bLoop )
+		{
+			#region [ xaデータのデコード ]
+			xastreamheader = new XASTREAMHEADER();
+			bool b;
+			unsafe
+			{
+				fixed ( byte* pXaBuf = srcBuf )
+				{
+					byte* pWavBuf = (byte*) pDest;
+
+					xastreamheader.pSrc = pXaBuf;
+					xastreamheader.nSrcLen = xaheader.nDataLen;
+					xastreamheader.nSrcUsed = 0;
+					xastreamheader.pDst = pWavBuf;
+					xastreamheader.nDstLen = szDestSize;
+					xastreamheader.nDstUsed = 0;
+					b = xaDecodeConvert( (IntPtr) nHandle, ref xastreamheader );
+					if ( !b )
+					{
+						Trace.TraceError( "Error: xaDecodeConvert(): " + Path.GetFileName( filename ) );
+						dstBuf = null;
+						return -1;
+					}
+				}
+			}
+			#region [ デバッグ表示 ]
+			//Debug.WriteLine( "**XASTREAMHEADER**" );
+			//Debug.WriteLine( "nSrcLen=  " + xastreamheader.nSrcLen );
+			//Debug.WriteLine( "nSrcUsed= " + xastreamheader.nSrcUsed );
+			//Debug.WriteLine( "nDstLen=  " + xastreamheader.nDstLen );
+			//Debug.WriteLine( "nDstUsed= " + xastreamheader.nDstUsed );
+			#endregion
+			#endregion
+
+			return b? 0 : -1;
+		}
+
+		public override void Close( int nHandle )
+		{
+			#region [ xaファイルのクローズ ]
+			bool bb = xaDecodeClose( (IntPtr) nHandle );
+			if ( !bb )
+			{
+				Trace.TraceError( "Error: xaDecodeClose(): " + Path.GetFileName( filename ) );
+			}
+			#endregion
+		}
+
+
+
+		//#region [ IDisposable 実装 ]
+		////-----------------
+		//private bool bDispose完了済み = false;
+		//public void Dispose()
+		//{
+		//    if ( !this.bDispose完了済み )
+		//    {
+		//        if ( srcBuf != null )
+		//        {
+		//            srcBuf = null;
+		//        }
+		//        if ( dstBuf != null )
+		//        {
+		//            dstBuf = null;
+		//        }
+
+		//        if ( this.nHandle >= 0 )
+		//        {
+		//            this.Close( this.nHandle );
+		//            this.nHandle = -1;
+		//        }
+		//        this.bDispose完了済み = true;
+		//    }
+		//}
+		////-----------------
+		//#endregion
+
+#if false
 		/// <summary>
 		/// xaファイルを読み込んで、wavにdecodeする
 		/// </summary>
@@ -191,5 +380,6 @@ namespace FDK
 
 			return true;
 		}
+#endif
 	}
 }

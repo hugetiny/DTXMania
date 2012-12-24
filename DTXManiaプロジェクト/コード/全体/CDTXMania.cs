@@ -1662,7 +1662,7 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Sound管理 の初期化 ]
 			//---------------------
-			Trace.TraceInformation( "DirectSound の初期化を行います。" );
+			Trace.TraceInformation( "サウンドデバイスの初期化を行います。" );
 			Trace.Indent();
 			try
 			{				
@@ -1683,7 +1683,7 @@ for (int i = 0; i < 3; i++) {
 						break;
 				}
 				Sound管理 = new CSound管理( base.Window.Handle, soundDeviceType );
-				Trace.TraceInformation( "DirectSound の初期化を完了しました。" );
+				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );
 			}
 			catch (Exception e)
 			{

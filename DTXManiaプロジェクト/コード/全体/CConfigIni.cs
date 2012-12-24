@@ -1227,9 +1227,9 @@ namespace DTXMania
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
             sw.WriteLine();
 
-			sw.WriteLine( "; サウンド出力方式(0=ACM, 1=ASIO, 2=WASAPI)" );
-			sw.WriteLine( "; WASAPIはVista以降のOSで使用可能。" );
-			sw.WriteLine( "; WASAPIが使用不可ならASIOに、ASIOが使用不可ならACMを使用します。" );
+			sw.WriteLine( "; サウンド出力方式(0=ACM(って今はまだDirectShowですが), 1=ASIO, 2=WASAPI)" );
+			sw.WriteLine( "; WASAPIはVista以降のOSで使用可能。推奨方式はWASAPI。" );
+			sw.WriteLine( "; WASAPIが使用不可ならASIOを、ASIOが使用不可ならACMを使用します。" );
 			sw.WriteLine( "; Sound device type(0=ACM, 1=ASIO, 2=WASAPI)" );
 			sw.WriteLine( "; WASAPI can use on Vista or later OSs." );
 			sw.WriteLine( "; If WASAPI is not available, DTXMania try to use ASIO. If ASIO can't be used, ACM is used." );
