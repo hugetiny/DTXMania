@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -61,7 +61,7 @@ namespace FDK
 
 			// BASS.NET ユーザ登録（BASSスプラッシュが非表示になる）。
 
-			BassNet.Registration( "dtx0266@gmail.com", "2X9182617152222" );
+			BassNet.Registration( "dtx2013@gmail.com", "2X9181017152222" );
 
 			// BASS のバージョンチェック。
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -58,7 +58,7 @@ namespace FDK
 
 
 			// BASS.NET ユーザ登録（BASSスプラッシュが非表示になる）。
-			BassNet.Registration( "dtx0266@gmail.com", "2X9182617152222" );
+			BassNet.Registration( "dtx2013@gmail.com", "2X9181017152222" );
 
 
 			// BASS のバージョンチェック。
@@ -88,7 +88,7 @@ Debug.WriteLine( "BASS_SetConfig()完了。" );
 			int nデバイス = 0;		// 0:"no device" … BASS からはデバイスへアクセスさせない。アクセスは BASSASIO アドオンから行う。
 			int n周波数 = 44100;	// 仮決め。最終的な周波数はデバイス（≠ドライバ）が決める。
 			if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
-				throw new Exception( string.Format( "BASS の初期化に失敗しました。[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+				throw new Exception( string.Format( "BASS の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 
 Debug.WriteLine( "BASS_Init()完了。" );
 			#region [ デバッグ用: ASIOデバイスのenumerateと、ログ出力 ]
@@ -130,8 +130,9 @@ Debug.WriteLine( "BASS_Init()完了。" );
 			{
 				#region [ ASIO の初期化に失敗。]
 				//-----------------
+				BASSError errcode = Bass.BASS_ErrorGetCode();
 				Bass.BASS_Free();
-				throw new Exception( string.Format( "BASS (ASIO) の初期化に失敗しました。[{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
+				throw new Exception( string.Format( "BASS (ASIO) の初期化に失敗しました。(BASS_ASIO_Init)[{0}]", errcode ) );
 				//-----------------
 				#endregion
 			}
