@@ -1515,21 +1515,22 @@ namespace DTXMania
 		}
 		public void tWave再生位置自動補正( CWAV wc )
 		{
-			//if ( wc.rSound[ 0 ] != null && wc.rSound[ 0 ].n総演奏時間ms >= 5000 )
-			//{
-			//    for ( int i = 0; i < nPolyphonicSounds; i++ )
-			//    {
-			//        if ( ( wc.rSound[ i ] != null ) && ( wc.rSound[ i ].b再生中 ) )
-			//        {
-			//            long nCurrentTime = CDTXMania.Timer.nシステム時刻;
-			//            if ( nCurrentTime > wc.n再生開始時刻[ i ] )
-			//            {
-			//                long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[ i ];
-			//                wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
-			//            }
-			//        }
-			//    }
-			//}
+			if ( wc.rSound[ 0 ] != null && wc.rSound[ 0 ].n総演奏時間ms >= 5000 )
+			{
+				for ( int i = 0; i < nPolyphonicSounds; i++ )
+				{
+					if ( ( wc.rSound[ i ] != null ) && ( wc.rSound[ i ].b再生中 ) )
+					{
+						long nCurrentTime = CDTXMania.Timer.nシステム時刻;
+						if ( nCurrentTime > wc.n再生開始時刻[ i ] )
+						{
+							long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[ i ];
+							// wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
+							wc.rSound[ i ].t再生位置を変更する( nAbsTimeFromStartPlaying );	// WASAPI/ASIO用
+						}
+					}
+				}
+			}
 		}
 		public void tWavの再生停止( int nWaveの内部番号 )
 		{
