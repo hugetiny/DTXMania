@@ -237,6 +237,23 @@ namespace FDK
 			csound.t解放する();
 			csound = null;
 		}
+
+		public string GetCurrentSoundDeviceType()
+		{
+			switch ( SoundDeviceType )
+			{
+				case ESoundDeviceType.ExclusiveWASAPI:
+				case ESoundDeviceType.SharedWASAPI:
+					return "WASAPI";
+				case ESoundDeviceType.ASIO:
+					return "ASIO";
+				case ESoundDeviceType.DirectSound:
+					return "DirectSound";
+				default:
+					return "Unknown";
+			}
+		}
+	
 	}
 	#endregion
 
