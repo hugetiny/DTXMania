@@ -59,7 +59,7 @@ namespace FDK
 		public CWin32.WAVEFORMATEX waveformatex;
 
 		private string filename;
-		private byte[] srcBuf = null, dstBuf = null;
+		private byte[] srcBuf = null, dstBuf;
 		private int nHandle = -1;
 
 		public override int Open( string filename )

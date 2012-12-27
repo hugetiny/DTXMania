@@ -1683,6 +1683,7 @@ for (int i = 0; i < 3; i++) {
 						break;
 				}
 				Sound管理 = new CSound管理( base.Window.Handle, soundDeviceType );
+				Sound管理.SetSoundBufferSizeASIO( CDTXMania.ConfigIni.nASIOBufferSize );
 				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );
 			}
 			catch (Exception e)

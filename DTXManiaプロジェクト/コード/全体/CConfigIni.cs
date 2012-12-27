@@ -659,6 +659,7 @@ namespace DTXMania
 		}
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
+		public int nASIOBufferSize;					// #24820 2012.12.28 yyagi ASIOのバッファサイズ
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1115,7 +1116,8 @@ namespace DTXMania
 			this.bIsEnabledSystemMenu = true;			// #28200 2012.5.1 yyagi System Menuの利用可否切替(使用可)
 			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
-			this.nSoundDeviceType = (int)ESoundDeviceTypeForConfig.WASAPI;	// #24820 2012.12.23 yyagi 初期値はWASAPI, ダメならASIO→ACMと下げていく
+			this.nSoundDeviceType = (int) ESoundDeviceTypeForConfig.WASAPI;	// #24820 2012.12.23 yyagi 初期値はWASAPI, ダメならASIO→ACMと下げていく
+			this.nASIOBufferSize = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1201,6 +1203,7 @@ namespace DTXMania
 			sw.WriteLine( "SkinChangeByBoxDef={0}", this.bUseBoxDefSkin? 1 : 0 );
 			sw.WriteLine();
 			#endregion
+			#region [ Window関連 ]
 			sw.WriteLine( "; 画面モード(0:ウィンドウ, 1:全画面)" );
 			sw.WriteLine( "; Screen mode. (0:Window, 1:Fullscreen)" );
 			sw.WriteLine( "FullScreen={0}", this.b全画面モード ? 1 : 0 );
@@ -1222,11 +1225,15 @@ namespace DTXMania
 			sw.WriteLine( "; Whether ALT+SPACE menu would be masked or not.(0=masked 1=not masked)" );	//
 			sw.WriteLine( "EnableSystemMenu={0}", this.bIsEnabledSystemMenu? 1 : 0 );					//
 			sw.WriteLine();																				//
-
+			sw.WriteLine( "; 非フォーカス時のsleep値[ms]" );	    			    // #23568 2011.11.04 ikanick add
+			sw.WriteLine( "; A sleep time[ms] while the window is inactive." );	//
+			sw.WriteLine( "BackSleep={0}", this.n非フォーカス時スリープms );		// そのまま引用（苦笑）
+			sw.WriteLine();											        			//
+			#endregion
 			sw.WriteLine("; 垂直帰線同期(0:OFF,1:ON)");
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
             sw.WriteLine();
-
+			#region [ WASAPI/ASIO関連 ]
 			sw.WriteLine( "; サウンド出力方式(0=ACM(って今はまだDirectShowですが), 1=ASIO, 2=WASAPI)" );
 			sw.WriteLine( "; WASAPIはVista以降のOSで使用可能。推奨方式はWASAPI。" );
 			sw.WriteLine( "; WASAPIが使用不可ならASIOを、ASIOが使用不可ならACMを使用します。" );
@@ -1236,11 +1243,13 @@ namespace DTXMania
 			sw.WriteLine( "SoundDeviceType={0}", (int) this.nSoundDeviceType );
 			sw.WriteLine();
 
-			sw.WriteLine( "; 非フォーカス時のsleep値[ms]" 
-				);	    			    // #23568 2011.11.04 ikanick add
-			sw.WriteLine("; A sleep time[ms] while the window is inactive.");	//
-			sw.WriteLine("BackSleep={0}", this.n非フォーカス時スリープms);		// そのまま引用（苦笑）
-            sw.WriteLine();											        			//
+			sw.WriteLine( "; ASIOサウンドバッファサイズ" );
+			sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(サンプル数)の手動指定" );
+			sw.WriteLine( "; ASIO Sound Buffer Size." );
+			sw.WriteLine( "; (0=Use the value specified to the device, 1-9999=specify the buffer size by yourself)" );
+			sw.WriteLine( "ASIOBufferSize={0}", (int) this.nASIOBufferSize );
+			sw.WriteLine();
+			#endregion
 			sw.WriteLine( "; フレーム毎のsleep値[ms] (-1でスリープ無し, 0以上で毎フレームスリープ。動画キャプチャ等で活用下さい)" );	// #xxxxx 2011.11.27 yyagi add
 			sw.WriteLine( "; A sleep time[ms] per frame." );							//
 			sw.WriteLine( "SleepTimePerFrame={0}", this.nフレーム毎スリープms);			//
@@ -1261,6 +1270,7 @@ namespace DTXMania
 			sw.WriteLine( "; Missヒット時のゲージ減少割合(0:少, 1:普通, 2:大)" );
 			sw.WriteLine( "DamageLevel={0}", (int) this.eダメージレベル );
 			sw.WriteLine();
+			#region [ 打ち分け関連 ]
 			sw.WriteLine( "; LC/HHC/HHO 打ち分けモード(0:LC|HHC|HHO, 1:LC&(HHC|HHO), 2:LC&HHC&HHO)" );
 			sw.WriteLine( "HHGroup={0}", (int) this.eHHGroup );
 			sw.WriteLine();
@@ -1282,6 +1292,7 @@ namespace DTXMania
 			sw.WriteLine( "; 打ち分け時の再生音の優先順位(CYGroup)(0:Chip>Pad, 1:Pad>Chip)" );
 			sw.WriteLine( "HitSoundPriorityCY={0}", (int) this.eHitSoundPriorityCY );
 			sw.WriteLine();
+			#endregion
 			sw.WriteLine( "; ゲージゼロでSTAGE FAILED (0:OFF, 1:ON)" );
 			sw.WriteLine( "StageFailed={0}", this.bSTAGEFAILED有効 ? 1 : 0 );
 			sw.WriteLine();
@@ -1900,6 +1911,10 @@ namespace DTXMania
 											else if ( str3.Equals( "SoundDeviceType" ) )
 											{
 												this.nSoundDeviceType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nSoundDeviceType );
+											}
+											else if ( str3.Equals( "ASIOBufferSize" ) )
+											{
+												this.nASIOBufferSize = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nASIOBufferSize );
 											}
 											else if ( str3.Equals( "VSyncWait" ) )
 											{

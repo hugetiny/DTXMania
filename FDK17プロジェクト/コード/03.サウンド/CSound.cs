@@ -52,7 +52,7 @@ namespace FDK
 		/// <summary>
 		/// <para>WASAPI 排他モード出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
 		/// </summary>
-		public static int SoundDelayExclusiveWASAPI = 50;
+		public static int SoundDelayExclusiveWASAPI = 0;		// SSTでは、50ms
 		/// <summary>
 		/// <para>WASAPI 共有モード出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
@@ -67,14 +67,28 @@ namespace FDK
 		/// <para>SoundDelay よりも小さい値であること。（小さすぎる場合はBASSによって自動修正される。）</para>
 		/// </summary>
 		public static int SoundUpdatePeriodSharedWASAPI = 6;
+		///// <summary>
+		///// <para>ASIO 出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
+		///// </summary>
+		//public static int SoundDelayASIO = 0;					// SSTでは50ms。0にすると、デバイスの設定値をそのまま使う。
 		/// <summary>
-		/// <para>ASIO 出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
+		/// <para>ASIO 出力におけるバッファサイズ。</para>
 		/// </summary>
-		public static int SoundDelayASIO = 50;
+		public static int SoundBufferSizeASIO = 0;						// 0にすると、デバイスの設定値をそのまま使う。
+		public int GetSoundBufferSizeASIO()
+		{
+			return SoundBufferSizeASIO;
+		}
+		public void SetSoundBufferSizeASIO(int value)
+		{
+			SoundBufferSizeASIO = value;
+		}
 		/// <summary>
 		/// <para>DirectSound 出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
 		public static int SoundDelayDirectSound = 100;
+
+		
 		#endregion
 
 
@@ -182,7 +196,7 @@ namespace FDK
 					break;
 
 				case ESoundDeviceType.ASIO:
-					SoundDevice = new CSoundDeviceASIO( SoundDelayASIO );
+					SoundDevice = new CSoundDeviceASIO( SoundBufferSizeASIO );
 					break;
 
 				case ESoundDeviceType.DirectSound:
