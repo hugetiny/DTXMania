@@ -265,6 +265,11 @@ namespace DTXMania
 		{
 			get { return base.GraphicsDeviceManager.Direct3D9.Device; }
 		}
+		public SlimDX.Direct3D9.Query IDirect3DQuery9
+		{
+			get;
+			set;
+		}
 		public CPluginHost PluginHost
 		{
 			get;
@@ -1251,7 +1256,9 @@ for (int i = 0; i < 3; i++) {
 						break;
 				}
 			}
-
+			DWM.Flush();
+			IDirect3DQuery9.Issue( Issue.End );
+			IDirect3DQuery9.GetData<int>(true);	// flush GPU queue
 			this.Device.EndScene();
 			#region [ 全画面・ウインドウ切り替え ]
 			if ( this.b次のタイミングで全画面・ウィンドウ切り替えを行う )
@@ -1284,7 +1291,6 @@ for (int i = 0; i < 3; i++) {
 			}
 			#endregion
 		}
-
 
 		// その他
 
@@ -1495,6 +1501,7 @@ for (int i = 0; i < 3; i++) {
 //			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
 
+
 			try
 			{
 				base.GraphicsDeviceManager.ChangeDevice(settings);
@@ -1511,6 +1518,16 @@ for (int i = 0; i < 3; i++) {
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
 			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
 																												// #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
+			try
+					// #xxxxx 2012.12.31 yyagi: to prepare flush, first of all, I create q queue to the GPU.
+			{
+				IDirect3DQuery9 = new SlimDX.Direct3D9.Query( Device, QueryType.Occlusion );
+			}
+			catch ( Exception e )
+			{
+				Trace.TraceError( e.Message );
+			}
+
 			//---------------------
 			#endregion
 

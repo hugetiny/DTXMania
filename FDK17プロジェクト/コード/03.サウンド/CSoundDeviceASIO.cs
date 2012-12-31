@@ -123,6 +123,17 @@ Debug.WriteLine( "BASS_Init()完了。" );
 					asioInfo.bufmax, asioInfo.bufmax * 1000 / this.db周波数,
 					this.fmtASIOデバイスフォーマット.ToString()
 					);
+
+				BASS_ASIO_CHANNELINFO info = new BASS_ASIO_CHANNELINFO();
+				int chan = 0;
+				while ( true )
+				{
+					if ( !BassAsio.BASS_ASIO_ChannelGetInfo( false, chan, info ) )
+						break;
+					Debug.WriteLine( "Ch=" + chan + ": " + info.name.ToString() + ", " + info.group.ToString() + ", " + info.format.ToString() );
+					chan++;
+				}
+
 				//-----------------
 				#endregion
 			}

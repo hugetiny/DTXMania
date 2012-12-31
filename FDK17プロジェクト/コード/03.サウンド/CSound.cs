@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -47,6 +47,8 @@ namespace FDK
 		public static CSoundTimer rc演奏用タイマ = null;
 
 		public static IntPtr WindowHandle;
+
+		public static int nStreams;
 
 		#region [ WASAPI/ASIO/DirectSound設定値 ]
 		/// <summary>
@@ -115,6 +117,7 @@ namespace FDK
 		{
 			SoundDevice = null;							// ユーザ依存
 			rc演奏用タイマ = null;				// Global.Bass 依存（つまりユーザ依存）
+			nStreams = 0;
 
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
 			{
@@ -236,6 +239,31 @@ namespace FDK
 		{
 			csound.t解放する();
 			csound = null;
+		}
+
+		public float GetCPUusage()
+		{
+			//float f = Bass.BASS_GetCPU();
+			float f;
+			switch ( SoundDeviceType )
+			{
+				case ESoundDeviceType.ExclusiveWASAPI:
+				case ESoundDeviceType.SharedWASAPI:
+					f = BassWasapi.BASS_WASAPI_GetCPU();
+					break;
+				case ESoundDeviceType.ASIO:
+					f = BassAsio.BASS_ASIO_GetCPU();
+					break;
+				case ESoundDeviceType.DirectSound:
+					f = 0.0f;
+					break;
+				default:
+					f = 0.0f;
+					break;
+			}
+			
+			//Debug.WriteLine( "cpu=" + f );
+			return f;
 		}
 
 		public string GetCurrentSoundDeviceType()
@@ -531,8 +559,6 @@ namespace FDK
 			wfx.FormatTag = WaveFormatTag.Pcm;	// xa.waveformatex.wFormatTag;
 			wfx.SamplesPerSecond = (int) cw32wfx.nSamplesPerSec;
 
-
-
 			// セカンダリバッファを作成し、PCMデータを書き込む。
 
 			this.Buffer = new SecondarySoundBuffer( DirectSound, new SoundBufferDescription()
@@ -767,6 +793,11 @@ namespace FDK
 				}
 			}
 		}
+		//public lint t時刻から位置を返す( long t )
+		//{
+		//    double num = ( n時刻 * this.db再生速度 ) * this.db周波数倍率;
+		//    return (int) ( ( num * 0.01 ) * this.nSamplesPerSecond );
+		//}
 		#endregion
 
 
@@ -1029,8 +1060,12 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN );
-
+			if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
+//			if ( !tBASSサウンドをミキサーに追加する() )
+			{
+			    hGC.Free();
+			    throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			}
 
 			// インスタンスリストに登録。
 
@@ -1060,6 +1095,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			// ミキサーにBASSファイルストリームを追加。
 
 			if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
+//			if ( !tBASSサウンドをミキサーに追加する() )
 			{
 				hGC.Free();
 				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
@@ -1108,6 +1144,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			// ミキサーにBASSファイルストリームを追加。
 
 			if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
+//			if ( !tBASSサウンドをミキサーに追加する() )
 			{
 				hGC.Free();
 				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
