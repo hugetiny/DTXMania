@@ -67,7 +67,7 @@ namespace FDK
 		public CInput管理( IntPtr hWnd )
 		{
 			this.directInput = new DirectInput();
-			this.timer = new CTimer( CTimer.E種別.MultiMedia );
+			// this.timer = new CTimer( CTimer.E種別.MultiMedia );
 
 			this.list入力デバイス = new List<IInputDevice>( 10 );
 			this.list入力デバイス.Add( new CInputKeyboard( hWnd, directInput ) );
@@ -77,9 +77,9 @@ namespace FDK
 				this.list入力デバイス.Add( new CInputJoystick( hWnd, instance, directInput ) );
 			}
 			this.proc = new CWin32.MidiInProc( this.MidiInCallback );
-			uint num = CWin32.midiInGetNumDevs();
-			Trace.TraceInformation( "MIDI入力デバイス数: {0}", new object[] { num } );
-			for( uint i = 0; i < num; i++ )
+			uint nMidiDevices = CWin32.midiInGetNumDevs();
+			Trace.TraceInformation( "MIDI入力デバイス数: {0}", nMidiDevices );
+			for( uint i = 0; i < nMidiDevices; i++ )
 			{
 				CInputMIDI item = new CInputMIDI( i );
 				this.list入力デバイス.Add( item );
@@ -87,16 +87,16 @@ namespace FDK
 				uint num3 = CWin32.midiInGetDevCaps( i, ref lpMidiInCaps, (uint) Marshal.SizeOf( lpMidiInCaps ) );
 				if( num3 != 0 )
 				{
-					Trace.TraceError( "MIDI In: Device{0}: midiInDevCaps(): {1:X2}: ", new object[] { i, num3 } );
+					Trace.TraceError( "MIDI In: Device{0}: midiInDevCaps(): {1:X2}: ", i, num3 );
 				}
 				else if( ( CWin32.midiInOpen( ref item.hMidiIn, i, this.proc, 0, 0x30000 ) == 0 ) && ( item.hMidiIn != 0 ) )
 				{
 					CWin32.midiInStart( item.hMidiIn );
-					Trace.TraceInformation( "MIDI In: [{0}] \"{1}\" の入力受付を開始しました。", new object[] { i, lpMidiInCaps.szPname } );
+					Trace.TraceInformation( "MIDI In: [{0}] \"{1}\" の入力受付を開始しました。", i, lpMidiInCaps.szPname );
 				}
 				else
 				{
-					Trace.TraceError( "MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", new object[] { i, lpMidiInCaps.szPname } );
+					Trace.TraceError( "MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", i, lpMidiInCaps.szPname );
 				}
 			}
 		}
@@ -193,11 +193,11 @@ namespace FDK
 
 					this.directInput.Dispose();
 
-					if( this.timer != null )
-					{
-						this.timer.Dispose();
-						this.timer = null;
-					}
+					//if( this.timer != null )
+					//{
+					//    this.timer.Dispose();
+					//    this.timer = null;
+					//}
 				}
 				this.bDisposed済み = true;
 			}
@@ -222,7 +222,7 @@ namespace FDK
 		private List<uint> listHMIDIIN = new List<uint>( 8 );
 		private object objMidiIn排他用 = new object();
 		private CWin32.MidiInProc proc;
-		private CTimer timer;
+//		private CTimer timer;
 
 		private void MidiInCallback( uint hMidiIn, uint wMsg, int dwInstance, int dwParam1, int dwParam2 )
 		{
@@ -230,7 +230,7 @@ namespace FDK
 			if( wMsg != CWin32.MIM_DATA || ( p != 0x80 && p != 0x90 ) )
 				return;
 
-            long time = CSound管理.rc演奏用タイマ.nシステム時刻;	// lock前に取得
+            long time = CSound管理.rc演奏用タイマ.nシステム時刻;	// lock前に取得。演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 
 			lock( this.objMidiIn排他用 )
 			{
