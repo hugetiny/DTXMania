@@ -445,6 +445,8 @@ namespace DTXMania
 
 			if( Timer != null )
 				Timer.t更新();
+            if (CSound管理.rc演奏用タイマ != null)
+                CSound管理.rc演奏用タイマ.t更新();
 
 			if( Input管理 != null )
 				Input管理.tポーリング( this.bApplicationActive, CDTXMania.ConfigIni.bバッファ入力を行う );

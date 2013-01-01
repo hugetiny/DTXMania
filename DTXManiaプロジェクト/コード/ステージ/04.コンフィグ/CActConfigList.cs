@@ -1395,7 +1395,7 @@ namespace DTXMania
 			//-----------------
 			if( base.b初めての進行描画 )
 			{
-				this.nスクロール用タイマ値 = CDTXMania.Timer.n現在時刻;
+                this.nスクロール用タイマ値 = CSound管理.rc演奏用タイマ.n現在時刻;
 				this.ct三角矢印アニメ.t開始( 0, 9, 50, CDTXMania.Timer );
 			
 				base.b初めての進行描画 = false;

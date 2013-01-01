@@ -230,7 +230,7 @@ namespace FDK
 			if( wMsg != CWin32.MIM_DATA || ( p != 0x80 && p != 0x90 ) )
 				return;
 
-			long time = this.timer.nシステム時刻;	// lock前に取得
+            long time = CSound管理.rc演奏用タイマ.nシステム時刻;	// lock前に取得
 
 			lock( this.objMidiIn排他用 )
 			{

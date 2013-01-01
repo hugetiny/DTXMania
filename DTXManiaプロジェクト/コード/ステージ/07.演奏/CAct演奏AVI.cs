@@ -38,7 +38,7 @@ namespace DTXMania
 				this.n表示側終了位置X = n表示側終了位置X;
 				this.n表示側終了位置Y = n表示側終了位置Y;
 				this.n総移動時間ms = n総移動時間ms;
-				this.n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CDTXMania.Timer.n現在時刻;
+				this.n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
 				this.n前回表示したフレーム番号 = -1;
 			}
 		}
@@ -99,7 +99,7 @@ namespace DTXMania
 				{
 					return 0;
 				}
-				int time = (int) ( ( CDTXMania.Timer.n現在時刻 - this.n移動開始時刻ms ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+				int time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
 				int frameNoFromTime = this.rAVI.avi.GetFrameNoFromTime( time );
 				if( ( this.n総移動時間ms != 0 ) && ( this.n総移動時間ms < time ) )
 				{
@@ -128,11 +128,11 @@ namespace DTXMania
 				Point point4 = new Point( this.n表示側終了位置X, this.n表示側終了位置Y );
 				long num3 = this.n総移動時間ms;
 				long num4 = this.n移動開始時刻ms;
-				if( CDTXMania.Timer.n現在時刻 < num4 )
+				if( CSound管理.rc演奏用タイマ.n現在時刻 < num4 )
 				{
-					num4 = CDTXMania.Timer.n現在時刻;
+					num4 = CSound管理.rc演奏用タイマ.n現在時刻;
 				}
-				time = (int) ( ( CDTXMania.Timer.n現在時刻 - num4 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+				time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - num4 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
 				if( num3 == 0 )
 				{
 					rectangle = new Rectangle( location, size3 );

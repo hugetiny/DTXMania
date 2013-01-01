@@ -557,7 +557,7 @@ namespace DTXMania
 				for( int i = 0; i < 13; i++ )
 					this.ct登場アニメ用[ i ] = new CCounter( -i * 10, 100, 3, CDTXMania.Timer );
 
-				this.nスクロールタイマ = CDTXMania.Timer.n現在時刻;
+				this.nスクロールタイマ = CSound管理.rc演奏用タイマ.n現在時刻;
 				CDTXMania.stage選曲.t選択曲変更通知();
 				
 				base.b初めての進行描画 = false;
@@ -608,7 +608,7 @@ namespace DTXMania
 			{
 				#region [ (2) 通常フェーズの進行。]
 				//-----------------
-				long n現在時刻 = CDTXMania.Timer.n現在時刻;
+				long n現在時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
 				
 				if( n現在時刻 < this.nスクロールタイマ )	// 念のため
 					this.nスクロールタイマ = n現在時刻;

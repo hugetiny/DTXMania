@@ -62,7 +62,7 @@ namespace DTXMania
 				r空打ちドラムチップ[ i ] = this.r空うちChip( E楽器パート.DRUMS, (Eパッド) i );
 				if( r空打ちドラムチップ[ i ] == null )
 				{
-					r空打ちドラムチップ[ i ] = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( CDTXMania.Timer.n現在時刻, this.nパッド0Atoチャンネル0A[ i ], this.nInputAdjustTimeMs.Drums );
+					r空打ちドラムチップ[ i ] = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( CSound管理.rc演奏用タイマ.n現在時刻, this.nパッド0Atoチャンネル0A[ i ], this.nInputAdjustTimeMs.Drums );
 				}
 			}
 
@@ -141,6 +141,7 @@ namespace DTXMania
 				bool bIsFinishedFadeout = false;
 				if( base.b初めての進行描画 )
 				{
+                    CSound管理.rc演奏用タイマ.tリセット();
 					CDTXMania.Timer.tリセット();
 					this.ctチップ模様アニメ.Drums = new CCounter( 0, 0x30, 10, CDTXMania.Timer );
 					this.ctチップ模様アニメ.Guitar = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
@@ -343,7 +344,7 @@ namespace DTXMania
 						rChip = pChip;
 					}
 				}
-				this.tサウンド再生( rChip, CDTXMania.Timer.nシステム時刻, E楽器パート.DRUMS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );
+				this.tサウンド再生( rChip, CSound管理.rc演奏用タイマ.nシステム時刻, E楽器パート.DRUMS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );
 			}
 			return true;
 		}
@@ -522,7 +523,7 @@ namespace DTXMania
 					if( !inputEvent.b押された )
 						continue;
 
-					long nTime = inputEvent.nTimeStamp - CDTXMania.Timer.n前回リセットした時のシステム時刻;
+					long nTime = inputEvent.nTimeStamp - CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻;
 					int nPad09 = ( nPad == (int) Eパッド.HP ) ? (int) Eパッド.BD : nPad;		// #27029 2012.1.5 yyagi
 					int nInputAdjustTime = bIsAutoPlay[ this.nチャンネル0Atoレーン07[ (int) nPad09 ] ] ? 0 : nInputAdjustTimeMs.Drums;
 
@@ -1488,7 +1489,7 @@ namespace DTXMania
 						{
 							#region [ (B1) 空打ち音が譜面で指定されているのでそれを再生する。]
 							//-----------------
-							this.tサウンド再生( rChip, CDTXMania.Timer.nシステム時刻, E楽器パート.DRUMS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );
+							this.tサウンド再生( rChip, CSound管理.rc演奏用タイマ.nシステム時刻, E楽器パート.DRUMS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );
 							//-----------------
 							#endregion
 						}
@@ -1710,7 +1711,7 @@ namespace DTXMania
 							if( rChip != null )
 							{
 								// 空打ち音が見つかったので再生する。
-								this.tサウンド再生( rChip, CDTXMania.Timer.nシステム時刻, E楽器パート.DRUMS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );
+								this.tサウンド再生( rChip, CSound管理.rc演奏用タイマ.nシステム時刻, E楽器パート.DRUMS, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );
 							}
 							//-----------------
 							#endregion
@@ -1923,7 +1924,7 @@ namespace DTXMania
 					//bool flag3 = flag2;
 					this.actChipFireD.Start( (Eレーン) indexSevenLanes, flag, flag2, flag2 );
 					this.actPad.Hit( this.nチャンネル0Atoパッド08[ pChip.nチャンネル番号 - 0x11 ] );
-					this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
+					this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
 					this.tチップのヒット処理( pChip.n発声時刻ms, pChip );
 				}
 				//break;
@@ -1931,7 +1932,7 @@ namespace DTXMania
 			}	// end of "if configIni.bDrums有効"
 			if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 			{
-				this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
+				this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
 				pChip.bHit = true;
 			}
 		}
@@ -2146,7 +2147,7 @@ namespace DTXMania
 						{
 							if ( this.r現在の歓声Chip.Drums != null )
 							{
-								dTX.tチップの再生( this.r現在の歓声Chip.Drums, CDTXMania.Timer.nシステム時刻, (int) Eレーン.BGM, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+								dTX.tチップの再生( this.r現在の歓声Chip.Drums, CSound管理.rc演奏用タイマ.nシステム時刻, (int) Eレーン.BGM, dTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
 							}
 							else
 							{

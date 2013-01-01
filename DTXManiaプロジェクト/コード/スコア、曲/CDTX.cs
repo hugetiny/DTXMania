@@ -1521,7 +1521,7 @@ namespace DTXMania
 				{
 					if ( ( wc.rSound[ i ] != null ) && ( wc.rSound[ i ].b再生中 ) )
 					{
-						long nCurrentTime = CDTXMania.Timer.nシステム時刻;
+						long nCurrentTime = CSound管理.rc演奏用タイマ.nシステム時刻ms;
 						if ( nCurrentTime > wc.n再生開始時刻[ i ] )
 						{
 							long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[ i ];
@@ -1863,7 +1863,7 @@ namespace DTXMania
 					if( ( cwav.rSound[ i ] != null ) && cwav.rSound[ i ].b再生中 )
 					{
 						cwav.rSound[ i ].t再生を一時停止する();
-						cwav.n一時停止時刻[ i ] = CDTXMania.Timer.nシステム時刻;
+						cwav.n一時停止時刻[ i ] = CSound管理.rc演奏用タイマ.nシステム時刻ms;
 					}
 				}
 			}
@@ -1879,7 +1879,7 @@ namespace DTXMania
 						//long num1 = cwav.n一時停止時刻[ i ];
 						//long num2 = cwav.n再生開始時刻[ i ];
 						cwav.rSound[ i ].t再生を再開する( cwav.n一時停止時刻[ i ] - cwav.n再生開始時刻[ i ] );
-						cwav.n再生開始時刻[ i ] += CDTXMania.Timer.nシステム時刻 - cwav.n一時停止時刻[ i ];
+						cwav.n再生開始時刻[ i ] += CSound管理.rc演奏用タイマ.nシステム時刻ms - cwav.n一時停止時刻[ i ];
 					}
 				}
 			}
