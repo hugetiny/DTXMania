@@ -217,7 +217,8 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 											this.bButtonPushDown[ e.nKey ] = true;
 //Debug.WriteLine( "POVS押された" + data.TimeStamp + " " + e.nKey );
 										}
-										e.nTimeStamp = data.TimeStamp;
+										//e.nTimeStamp = data.TimeStamp;
+										e.nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp );
 										this.list入力イベント.Add( e );
 									}
 									#endregion
@@ -234,7 +235,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 												nKey = 6 + i,
 												b押された = true,
 												b離された = false,
-												nTimeStamp = data.TimeStamp,
+												nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
 												nVelocity = CInput管理.n通常音量
 											};
 											this.list入力イベント.Add( e );
@@ -249,7 +250,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 												nKey = 6 + i,
 												b押された = false,
 												b離された = true,
-												nTimeStamp = data.TimeStamp,
+												nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
 												nVelocity = CInput管理.n通常音量,
 											};
 											this.list入力イベント.Add( ev );
@@ -705,7 +706,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 				{
 					nKey = target,
 					b押された = !lastMode,
-					nTimeStamp = data.TimeStamp,
+					nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
 					nVelocity = ( lastMode ) ? 0 : CInput管理.n通常音量
 				};
 				this.list入力イベント.Add( e );

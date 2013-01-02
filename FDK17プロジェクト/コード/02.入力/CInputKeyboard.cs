@@ -89,9 +89,10 @@ namespace FDK
 									nKey = (int) key,
 									b押された = true,
 									b離された = false,
-									nTimeStamp = data.TimeStamp,
+									nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
 									nVelocity = CInput管理.n通常音量
 								};
+//Debug.WriteLine( "変換from=" + data.TimeStamp + ", to=" + item.nTimeStamp );
 								this.list入力イベント.Add( item );
 
 								this.bKeyState[ (int) key ] = true;
@@ -104,7 +105,7 @@ namespace FDK
 									nKey = (int) key,
 									b押された = false,
 									b離された = true,
-									nTimeStamp = data.TimeStamp,
+									nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
 									nVelocity = CInput管理.n通常音量
 								};
 								this.list入力イベント.Add( item );
