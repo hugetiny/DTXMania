@@ -305,8 +305,56 @@ namespace FDK
 		{
 			get { return false; }
 		}
-		public double db周波数倍率;
-		public double db再生速度;
+		public double db周波数倍率
+		{
+			get
+			{
+				return _db周波数倍率;
+			}
+			set
+			{
+				if ( _db周波数倍率 != value )
+				{
+					_db周波数倍率 = value;
+					if ( bBASSサウンドである )
+					{
+						Bass.BASS_ChannelSetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_FREQ, ( float ) ( _db周波数倍率 * _db再生速度 * nオリジナルの周波数 ) );
+					}
+					else
+					{
+						if ( b再生中 )
+						{
+							this.Buffer.Frequency = ( int ) ( _db周波数倍率 * _db再生速度 * nオリジナルの周波数 );
+						}
+					}
+				}
+			}
+		}
+		public double db再生速度
+		{
+			get
+			{
+				return _db再生速度;
+			}
+			set
+			{
+				if ( _db再生速度 != value )
+				{
+					_db再生速度 = value;
+					if ( bBASSサウンドである )
+					{
+						Bass.BASS_ChannelSetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_FREQ, ( float ) ( _db周波数倍率 * _db再生速度 * nオリジナルの周波数 ) );
+					}
+					else
+					{
+						if ( b再生中 )
+						{
+							this.Buffer.Frequency = ( int ) ( _db周波数倍率 * _db再生速度 * nオリジナルの周波数 );
+						}
+					}
+				}
+			}
+		}
 		#endregion
 
 
@@ -443,8 +491,8 @@ namespace FDK
 		{
 			this.n音量 = 100;
 			this.n位置 = 0;
-			this.db周波数倍率 = 1.0;
-			this.db再生速度 = 1.0;
+			this._db周波数倍率 = 1.0;
+			this._db再生速度 = 1.0;
 			this.DirectSoundBufferFlags = CSoundDeviceDirectSound.DefaultFlags;
 		}
 
@@ -569,15 +617,16 @@ namespace FDK
 			} );
 			this.Buffer.Write( byArrWAVファイルイメージ, nPCMデータの先頭インデックス, nPCMサイズbyte, 0, LockFlags.None );
 
-			// DTXMania用に追加
-			n総演奏時間ms = (int) ( ( (double) nPCMサイズbyte ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
-			nBytes = nPCMサイズbyte;
-
 			// 作成完了。
 
 			this.eデバイス種別 = ESoundDeviceType.DirectSound;
 			this.DirectSoundBufferFlags = CSoundDeviceDirectSound.DefaultFlags;
 
+			// DTXMania用に追加
+			this.nオリジナルの周波数 = wfx.SamplesPerSecond;
+
+			n総演奏時間ms = ( int ) ( ( ( double ) nPCMサイズbyte ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
+			nBytes = nPCMサイズbyte;
 
 			// インスタンスリストに登録。
 
@@ -698,15 +747,16 @@ namespace FDK
 			} );
 			this.Buffer.Write( byArrWAVファイルイメージ, nPCMデータの先頭インデックス, nPCMサイズbyte, 0, LockFlags.None );
 
-			// DTXMania用に追加
-			n総演奏時間ms = (int) ( ( (double) nPCMサイズbyte ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
-			
 			// 作成完了。
 
 			this.eデバイス種別 = ESoundDeviceType.DirectSound;
 			this.DirectSoundBufferFlags = flags;
 			this.byArrWAVファイルイメージ = byArrWAVファイルイメージ;
 
+			// DTXMania用に追加
+			this.nオリジナルの周波数 = wfx.SamplesPerSecond;
+			n総演奏時間ms = ( int ) ( ( ( double ) nPCMサイズbyte ) / ( this.Buffer.Format.AverageBytesPerSecond * 0.001 ) );
+			
 
 			// インスタンスリストに登録。
 
@@ -714,6 +764,7 @@ namespace FDK
 		}
 
 		#region [ DTXMania用の変換 ]
+
 		public void tサウンドを破棄する( CSound cs )
 		{
 			cs.t解放する();
@@ -917,12 +968,14 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			{
 				switch( sounds[ i ].e作成方法 )
 				{
+					#region [ ファイルから ]
 					case E作成方法.ファイルから:
 						string strファイル名 = sounds[ i ].strファイル名;
 						sounds[ i ].Dispose( true, false );
 						device.tサウンドを作成する( strファイル名, ref sounds[ i ] );
 						break;
-
+					#endregion
+					#region [ WAVファイルイメージから ]
 					case E作成方法.WAVファイルイメージから:
 						if( sounds[ i ].bBASSサウンドである )
 						{
@@ -938,6 +991,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 							( (CSoundDeviceDirectSound) device ).tサウンドを作成する( byArrWaveファイルイメージ, flags, ref sounds[ i ] );
 						}
 						break;
+					#endregion
 				}
 			}
 		}
@@ -1038,6 +1092,9 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		private int _n音量db;
 		private long nBytes = 0;
 		private int n一時停止回数 = 0;
+		private int nオリジナルの周波数 = 0;
+		private double _db周波数倍率 = 1.0;
+		private double _db再生速度 = 1.0;
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{
@@ -1077,6 +1134,13 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
 			this.pos = 0;
 			this.hMixer = hMixer;
+			float freq = 0.0f;
+			if ( !Bass.BASS_ChannelGetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_FREQ, ref freq ) )
+			{
+				hGC.Free();
+				throw new Exception( string.Format( "サウンドストリームの周波数取得に失敗しました。(BASS_ChannelGetAttribute)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			}
+			this.nオリジナルの周波数 = (int) freq;
 		}
 		private void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, BASSFlag flags )
 		{
@@ -1112,6 +1176,13 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
 			this.pos = 0;
 			this.hMixer = hMixer;
+			float freq = 0.0f;
+			if ( !Bass.BASS_ChannelGetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_FREQ, ref freq ) )
+			{
+				hGC.Free();
+				throw new Exception( string.Format( "サウンドストリームの周波数取得に失敗しました。(BASS_ChannelGetAttribute)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			}
+			this.nオリジナルの周波数 = ( int ) freq;
 		}
 		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
 		{
@@ -1149,6 +1220,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 				hGC.Free();
 				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 			}
+
 			// インスタンスリストに登録。
 
 			CSound.listインスタンス.Add( this );
@@ -1168,6 +1240,13 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
 			this.pos = 0;
 			this.hMixer = hMixer;
+			float freq = 0.0f;
+			if ( !Bass.BASS_ChannelGetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_FREQ, ref freq ) )
+			{
+				hGC.Free();
+				throw new Exception( string.Format( "サウンドストリームの周波数取得に失敗しました。(BASS_ChannelGetAttribute)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			}
+			this.nオリジナルの周波数 = ( int ) freq;
 		}
 		//-----------------
 
