@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Runtime.CompilerServices;
 using SlimDX;
 using SlimDX.DirectSound;
 using SlimDX.Multimedia;
@@ -48,8 +49,16 @@ namespace FDK
 
 		public static IntPtr WindowHandle;
 
-		public static int nStreams;
-
+		public static int nMixing = 0;
+		public int GetMixingStreams()
+		{
+			return nMixing;
+		}
+		public static int nStreams = 0;
+		public int GetStreams()
+		{
+			return nStreams;
+		}
 		#region [ WASAPI/ASIO/DirectSound設定値 ]
 		/// <summary>
 		/// <para>WASAPI 排他モード出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
@@ -117,7 +126,7 @@ namespace FDK
 		{
 			SoundDevice = null;							// ユーザ依存
 			rc演奏用タイマ = null;				// Global.Bass 依存（つまりユーザ依存）
-			nStreams = 0;
+			nMixing = 0;
 
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
 			{
@@ -358,7 +367,8 @@ namespace FDK
 		#endregion
 
 
-		private STREAMPROC _myStreamCreate;  // make it global, so that the GC can not remove it
+		private STREAMPROC _cbStreamXA;		// make it global, so that the GC can not remove it
+		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
 
 		/// <summary>
 		/// <para>0:最小～100:原音</para>
@@ -370,8 +380,9 @@ namespace FDK
 				if( this.bBASSサウンドである )
 				{
 					float f音量 = 0.0f;
-					if( BassMix.BASS_Mixer_ChannelGetEnvelopePos( this.hBassStream, BASSMIXEnvelope.BASS_MIXER_ENV_VOL, ref f音量 ) == -1 )
-						return 100;
+					if ( !Bass.BASS_ChannelGetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_VOL, ref f音量 ) )
+					//if ( BassMix.BASS_Mixer_ChannelGetEnvelopePos( this.hBassStream, BASSMIXEnvelope.BASS_MIXER_ENV_VOL, ref f音量 ) == -1 )
+					    return 100;
 					return (int) ( f音量 * 100 );
 				}
 				else if( this.bDirectSoundである )
@@ -385,8 +396,10 @@ namespace FDK
 				if( this.bBASSサウンドである )
 				{
 					float f音量 = Math.Min( Math.Max( value, 0 ), 100 ) / 100.0f;	// 0～100 → 0.0～1.0
-					var nodes = new BASS_MIXER_NODE[ 1 ] { new BASS_MIXER_NODE( 0, f音量 ) };
-					BassMix.BASS_Mixer_ChannelSetEnvelope( this.hBassStream, BASSMIXEnvelope.BASS_MIXER_ENV_VOL, nodes );
+					//var nodes = new BASS_MIXER_NODE[ 1 ] { new BASS_MIXER_NODE( 0, f音量 ) };
+					//BassMix.BASS_Mixer_ChannelSetEnvelope( this.hBassStream, BASSMIXEnvelope.BASS_MIXER_ENV_VOL, nodes );
+					Bass.BASS_ChannelSetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_VOL, f音量 );
+
 				}
 				else if( this.bDirectSoundである )
 				{
@@ -416,7 +429,8 @@ namespace FDK
 				if( this.bBASSサウンドである )
 				{
 					float f位置 = 0.0f;
-					if( BassMix.BASS_Mixer_ChannelGetEnvelopePos( this.hBassStream, BASSMIXEnvelope.BASS_MIXER_ENV_PAN, ref f位置 ) == -1 )
+					if ( !Bass.BASS_ChannelGetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_PAN, ref f位置 ) )
+						//if( BassMix.BASS_Mixer_ChannelGetEnvelopePos( this.hBassStream, BASSMIXEnvelope.BASS_MIXER_ENV_PAN, ref f位置 ) == -1 )
 						return 0;
 					return (int) ( f位置 * 100 );
 				}
@@ -431,8 +445,9 @@ namespace FDK
 				if( this.bBASSサウンドである )
 				{
 					float f位置 = Math.Min( Math.Max( value, -100 ), 100 ) / 100.0f;	// -100～100 → -1.0～1.0
-					var nodes = new BASS_MIXER_NODE[ 1 ] { new BASS_MIXER_NODE( 0, f位置 ) };
-					BassMix.BASS_Mixer_ChannelSetEnvelope( this.hBassStream, BASSMIXEnvelope.BASS_MIXER_ENV_PAN, nodes );
+					//var nodes = new BASS_MIXER_NODE[ 1 ] { new BASS_MIXER_NODE( 0, f位置 ) };
+					//BassMix.BASS_Mixer_ChannelSetEnvelope( this.hBassStream, BASSMIXEnvelope.BASS_MIXER_ENV_PAN, nodes );
+					Bass.BASS_ChannelSetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_PAN, f位置 );
 				}
 				else if( this.bDirectSoundである )
 				{
@@ -854,6 +869,13 @@ namespace FDK
 
 		public void t解放する()
 		{
+			if ( this.bBASSサウンドである )		// stream数の削減用
+			{
+				tBASSサウンドをミキサーから削除する();
+				_cbEndofStream = null;
+				_cbStreamXA = null;
+				CSound管理.nStreams--;
+			}
 			bool bManagedも解放する = true;
 			bool bインスタンス削除 = false;								// インスタンスは存続する。
 			this.Dispose( bManagedも解放する, bインスタンス削除 );
@@ -863,14 +885,14 @@ namespace FDK
 //Debug.WriteLine( "tサウンドを再生する(): " + this.strファイル名 );
 			if( this.bBASSサウンドである )
 			{
-//Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
+Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				bool b = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 				if ( !b )
 				{
-Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) );
+Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) + ", " + hBassStream );
 //Debug.WriteLine( "ErrCode= " +Bass.BASS_ErrorGetCode() );
 
-					bool bb = tBASSサウンドをミキサーに追加する(false);
+					bool bb = tBASSサウンドをミキサーに追加する();
 					if ( !bb )
 					{
 Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strファイル名 ) + ": " + Bass.BASS_ErrorGetCode() );
@@ -879,20 +901,22 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 					{
 Debug.WriteLine( "Mixerへの登録に成功: " + Path.GetFileName( this.strファイル名 ) + ": " + Bass.BASS_ErrorGetCode() );
 					}
-//                    bool bbb = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
-//                    if ( !bbb )
-//                    {
-//Debug.WriteLine( "更に再生に失敗                                 : " + Path.GetFileName( this.strファイル名 ) );
-//Debug.WriteLine( "ErrCode= " +Bass.BASS_ErrorGetCode() );
-//                    }
-//                    else
-//                    {
-//Debug.WriteLine( "再生成功(ミキサー追加後)                       : " + Path.GetFileName( this.strファイル名 ) );
-//                    }
+					//this.t再生位置を先頭に戻す();
+
+					bool bbb = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
+					if (!bbb)
+					{
+						Debug.WriteLine("更に再生に失敗                                 : " + Path.GetFileName(this.strファイル名));
+						Debug.WriteLine("ErrCode= " + Bass.BASS_ErrorGetCode());
+					}
+					else
+					{
+						Debug.WriteLine("再生成功(ミキサー追加後)                       : " + Path.GetFileName(this.strファイル名));
+					}
 				}
 				else
 				{
-Debug.WriteLine( "再生成功                                       : " + Path.GetFileName( this.strファイル名 ) );
+Debug.WriteLine( "再生成功                                       : " + Path.GetFileName( this.strファイル名 ) + ", " + hBassStream );
 				}
 			}
 			else if( this.bDirectSoundである )
@@ -911,8 +935,7 @@ Debug.WriteLine( "再生成功                                       : " + Path.
 			{
 Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
-
-//tBASSサウンドをミキサーから削除する();
+				tBASSサウンドをミキサーから削除する();
 			}
 			else if( this.bDirectSoundである )
 			{
@@ -1113,16 +1136,21 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			this.hBassStream = Bass.BASS_StreamCreateFile( strファイル名, 0, 0, flags );
 			if( this.hBassStream == 0 )
 				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_StreamCreateFile)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
-
+			CSound管理.nStreams++;
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
-//			if ( !tBASSサウンドをミキサーに追加する() )
-			{
-			    hGC.Free();
-			    throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
-			}
+			//if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
+			////			if ( !tBASSサウンドをミキサーに追加する() )
+			//{
+			//    hGC.Free();
+			//    throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			//}
+			//CSound管理.nStreams++;
+
+			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
+			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END |BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
+
 
 			// インスタンスリストに登録。
 
@@ -1154,17 +1182,21 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			this.hBassStream = Bass.BASS_StreamCreateFile( hGC.AddrOfPinnedObject(), 0, byArrWAVファイルイメージ.Length, flags );
 			if( this.hBassStream == 0 )
 				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_StreamCreateFile)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			CSound管理.nStreams++;
 
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
-//			if ( !tBASSサウンドをミキサーに追加する() )
-			{
-				hGC.Free();
-				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
-			}
+			//if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
+			////			if ( !tBASSサウンドをミキサーに追加する() )
+			//{
+			//    hGC.Free();
+			//    throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			//}
+			//CSound管理.nStreams++;
 
+			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
+			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
 
 			// インスタンスリストに登録。
 
@@ -1200,26 +1232,31 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
 
-			_myStreamCreate = new STREAMPROC( CallbackPlayingXA );
+			_cbStreamXA = new STREAMPROC( CallbackPlayingXA );
 
 			// BASSファイルストリームを作成。
 
 			//this.hBassStream = Bass.BASS_StreamCreate( xa.xaheader.nSamplesPerSec, xa.xaheader.nChannels, BASSFlag.BASS_STREAM_DECODE, _myStreamCreate, IntPtr.Zero );
-			this.hBassStream = Bass.BASS_StreamCreate( (int)wfx.nSamplesPerSec, (int)wfx.nChannels, BASSFlag.BASS_STREAM_DECODE, _myStreamCreate, IntPtr.Zero );
+			this.hBassStream = Bass.BASS_StreamCreate( (int)wfx.nSamplesPerSec, (int)wfx.nChannels, BASSFlag.BASS_STREAM_DECODE, _cbStreamXA, IntPtr.Zero );
 			if ( this.hBassStream == 0 )
 			{
 				hGC.Free();
 				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_SampleCreate)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 			}
+			CSound管理.nStreams++;
 
 			// ミキサーにBASSファイルストリームを追加。
 
-			if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
-//			if ( !tBASSサウンドをミキサーに追加する() )
-			{
-				hGC.Free();
-				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
-			}
+			//if ( !BassMix.BASS_Mixer_StreamAddChannel( hMixer, this.hBassStream, BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_PAUSE | BASSFlag.BASS_MIXER_NORAMPIN ) )
+			////			if ( !tBASSサウンドをミキサーに追加する() )
+			//{
+			//    hGC.Free();
+			//    throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_Mixer_StreamAddChannel)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			//}
+			//CSound管理.nStreams++;
+
+			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
+			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
 
 			// インスタンスリストに登録。
 
@@ -1266,29 +1303,41 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			return bytesread;
 		}
 
+		/// <summary>
+		/// ストリームの終端まで再生したときに呼び出されるコールバック
+		/// </summary>
+		/// <param name="handle"></param>
+		/// <param name="channel"></param>
+		/// <param name="data"></param>
+		/// <param name="user"></param>
+		private void CallbackEndofStream( int handle, int channel, int data, IntPtr user )
+		{
+			Debug.WriteLine( "Callback!(remove)" );
+			tBASSサウンドをミキサーから削除する( channel );
+		}
 
 		public bool tBASSサウンドをミキサーに追加する()
 		{
-			return tBASSサウンドをミキサーに追加する( true );
-		}
-	
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="pause">falseなら、追加と同時に再生する</param>
-		/// <returns></returns>
-		public bool tBASSサウンドをミキサーに追加する( bool pause )
-		{
-			BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN;
-			if ( pause )
-			{
-				bf |= BASSFlag.BASS_MIXER_PAUSE;
-			}
-			return BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
+			BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN | BASSFlag.BASS_MIXER_PAUSE;
+			CSound管理.nMixing++;
+
+			bool b = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
+			t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
+			return b;
 		}
 		public bool tBASSサウンドをミキサーから削除する()
 		{
-			return BassMix.BASS_Mixer_ChannelRemove( this.hBassStream );
+			return tBASSサウンドをミキサーから削除する( this.hBassStream );
+		}
+		public bool tBASSサウンドをミキサーから削除する( int channel )
+		{
+			bool b = BassMix.BASS_Mixer_ChannelRemove( channel );
+			if ( b )
+			{
+				CSound管理.nMixing--;
+				Debug.WriteLine( "Removed: " + channel );
+			}
+			return b;
 		}
 
 

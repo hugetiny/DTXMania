@@ -53,7 +53,11 @@ namespace DTXMania
 				y -= 0x10;
 				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound CPU :    {0:####0.00}%", CDTXMania.Sound管理.GetCPUusage() ) );
 				y -= 0x10;
-//Debug.WriteLine( "CPU:" + CDTXMania.Sound管理.GetCPUusage() );
+				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Mixing:  {0:####0}", CDTXMania.Sound管理.GetMixingStreams() ) );
+				y -= 0x10;
+				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Streams: {0:####0}", CDTXMania.Sound管理.GetStreams() ) );
+				y -= 0x10;
+				//Debug.WriteLine( "CPU:" + CDTXMania.Sound管理.GetCPUusage() );
 			}
 		}
 	}
