@@ -44,7 +44,7 @@ namespace FDK
 
 		// メソッド
 
-		public CSoundDeviceASIO( long nバッファサイズbyte )
+		public CSoundDeviceASIO( long nバッファサイズbyte, bool bForceStereo )
 		{
 			// 初期化。
 
@@ -62,7 +62,7 @@ namespace FDK
 
 
 			// BASS のバージョンチェック。
-
+			#region [ BASS Version Check ]
 			int nBASSVersion = Utils.HighWord( Bass.BASS_GetVersion() );
 			if( nBASSVersion != Bass.BASSVERSION )
 				throw new DllNotFoundException( string.Format( "bass.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSVersion, Bass.BASSVERSION ) );
@@ -74,7 +74,7 @@ namespace FDK
 			int nBASSASIO = Utils.HighWord( BassAsio.BASS_ASIO_GetVersion() );
 			if( nBASSASIO != BassAsio.BASSASIOVERSION )
 				throw new DllNotFoundException( string.Format( "bassasio.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSASIO, BassAsio.BASSASIOVERSION ) );
-
+			#endregion
 
 			// BASS の設定。
 
@@ -83,6 +83,20 @@ namespace FDK
 
 Debug.WriteLine( "BASS_SetConfig()完了。" );
 
+
+			// デフォルトデバイスの取得。(BASSではデフォルトデバイスを扱えるが、BASSASIOでは扱えないため)
+			int defDevice = -1;
+			BASS_DEVICEINFO devinfo;
+			for ( int n = 0; ( devinfo = Bass.BASS_GetDeviceInfo( n ) ) != null; n++ )
+			{
+				if ( devinfo.IsDefault )
+				{
+					defDevice = n;
+					break;
+				}
+			}
+
+			
 			// BASS の初期化。
 
 			int nデバイス = 0;		// 0:"no device" … BASS からはデバイスへアクセスさせない。アクセスは BASSASIO アドオンから行う。
@@ -92,29 +106,40 @@ Debug.WriteLine( "BASS_SetConfig()完了。" );
 
 Debug.WriteLine( "BASS_Init()完了。" );
 			#region [ デバッグ用: ASIOデバイスのenumerateと、ログ出力 ]
-			//int a, count = 0;
-			//BASS_ASIO_DEVICEINFO asioDevInfo;
-			//for ( a = 0; ( asioDevInfo = BassAsio.BASS_ASIO_GetDeviceInfo( a ) ) != null; a++ )
-			//{
-			//    Trace.TraceInformation( "ASIO Device {0}: {1}", a, asioDevInfo.name );
-			//    count++; // count it
-			//}
+			int a, count = 0;
+			BASS_ASIO_DEVICEINFO asioDevInfo;
+			for ( a = 0; ( asioDevInfo = BassAsio.BASS_ASIO_GetDeviceInfo( a ) ) != null; a++ )
+			{
+			    Trace.TraceInformation( "ASIO Device {0}: {1}", a, asioDevInfo.name );
+			    count++; // count it
+			}
 			#endregion
 
 			// BASS ASIO の初期化。
 
-			nデバイス = 0;			// デフォルトデバイス
-			if( BassAsio.BASS_ASIO_Init( nデバイス, BASSASIOInit.BASS_ASIO_THREAD ) )	// 専用スレッドにて起動
+			nデバイス = defDevice;			// デフォルトデバイス
+			BASS_ASIO_INFO asioInfo = null;
+			if ( BassAsio.BASS_ASIO_Init( nデバイス, BASSASIOInit.BASS_ASIO_DEFAULT | BASSASIOInit.BASS_ASIO_THREAD ) )	// 専用スレッドにて起動
 			{
 				#region [ ASIO の初期化に成功。]
 				//-----------------
+				if ( !BassAsio.BASS_ASIO_SetDevice( nデバイス ) )
+				{
+					Bass.BASS_Free();
+					throw new Exception( string.Format( "Failed BASS_ASIO_SetDevice() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
+				}
+
 				this.e出力デバイス = ESoundDeviceType.ASIO;
-				var asioInfo = BassAsio.BASS_ASIO_GetInfo();
+				asioInfo = BassAsio.BASS_ASIO_GetInfo();
+				if ( bForceStereo )
+				{
+					asioInfo.outputs = 2;	// Mixer_StreamCreateでチャネル数を2にしないと出力がおかしくなるサウンドカードがある
+				}
 				this.n出力チャンネル数 = asioInfo.outputs;
 				this.db周波数 = BassAsio.BASS_ASIO_GetRate();
 				this.fmtASIOデバイスフォーマット = BassAsio.BASS_ASIO_ChannelGetFormat( false, 0 );
 
-				Trace.TraceInformation( "BASS を初期化しました。(ASIO, デバイス:\"{0}\", 入力{1}, 出力{2}, {3}Hz, バッファ{4}～{6}sample ({5:0.###}～{7:0.###}ms), フォーマット:{8})",
+				Trace.TraceInformation( "BASS を初期化しました。(ASIO, デバイス:\"{0}\", 入力{1}, 出力{2}, {3}Hz, バッファ{4}～{6}sample ({5:0.###}～{7:0.###}ms), デバイスフォーマット:{8})",
 					asioInfo.name,
 					asioInfo.inputs,
 					asioInfo.outputs,
@@ -123,17 +148,17 @@ Debug.WriteLine( "BASS_Init()完了。" );
 					asioInfo.bufmax, asioInfo.bufmax * 1000 / this.db周波数,
 					this.fmtASIOデバイスフォーマット.ToString()
 					);
-
-				BASS_ASIO_CHANNELINFO info = new BASS_ASIO_CHANNELINFO();
+				#region [ debug: channel format ]
+				BASS_ASIO_CHANNELINFO chinfo = new BASS_ASIO_CHANNELINFO();
 				int chan = 0;
 				while ( true )
 				{
-					if ( !BassAsio.BASS_ASIO_ChannelGetInfo( false, chan, info ) )
+					if ( !BassAsio.BASS_ASIO_ChannelGetInfo( false, chan, chinfo ) )
 						break;
-					Debug.WriteLine( "Ch=" + chan + ": " + info.name.ToString() + ", " + info.group.ToString() + ", " + info.format.ToString() );
+					Debug.WriteLine( "Ch=" + chan + ": " + chinfo.name.ToString() + ", " + chinfo.group.ToString() + ", " + chinfo.format.ToString() );
 					chan++;
 				}
-
+				#endregion
 				//-----------------
 				#endregion
 			}
@@ -156,6 +181,7 @@ Debug.WriteLine( "BASS_Init()完了。" );
 			{
 				#region [ ASIO 出力チャンネルの初期化に失敗。]
 				//-----------------
+				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
 				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelEnable() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
 				//-----------------
@@ -167,6 +193,7 @@ Debug.WriteLine( "BASS_Init()完了。" );
 			{
 				#region [ 初期化に失敗。]
 				//-----------------
+				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
 				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelJoin() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
 				//-----------------
@@ -176,6 +203,7 @@ Debug.WriteLine( "BASS_Init()完了。" );
 			{
 				#region [ ASIO 出力チャンネルの初期化に失敗。]
 				//-----------------
+				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
 				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelSetFormat() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
 				//-----------------
@@ -188,8 +216,10 @@ Debug.WriteLine( "BASS_Init()完了。" );
 			var flag = BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_STREAM_DECODE;	// デコードのみ＝発声しない。ASIO に出力されるだけ。
 			if( this.fmtASIOデバイスフォーマット == BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT )
 				flag |= BASSFlag.BASS_SAMPLE_FLOAT;
-			this.hMixer = BassMix.BASS_Mixer_StreamCreate( (int) this.db周波数, this.n出力チャンネル数, flag );
-			if( this.hMixer == 0 )
+			this.hMixer = BassMix.BASS_Mixer_StreamCreate( (int) this.db周波数, this.n出力チャンネル数, flag );		// SB X-Fu Tutabuyn HDでは、ここを2にしないと出力がおかしくなる
+																													// bassasio側の問題の可能性もあるが、強制的にこれを2にする設定を追加して回避する
+
+			if ( this.hMixer == 0 )
 				throw new Exception( string.Format( "BASSミキサの作成に失敗しました。[{0}]", Bass.BASS_ErrorGetCode() ) );
 
 
@@ -204,7 +234,8 @@ Debug.WriteLine( "BASS_Init()完了。" );
 				case BASSASIOFormat.BASS_ASIO_FORMAT_32BIT: nサンプルサイズbyte = 4; break;
 				case BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT: nサンプルサイズbyte = 4; break;
 			}
-			long nミキサーの1サンプルあたりのバイト数 = /*mixerInfo.chans*/ 2 * nサンプルサイズbyte;
+			//long nミキサーの1サンプルあたりのバイト数 = /*mixerInfo.chans*/ 2 * nサンプルサイズbyte;
+			long nミキサーの1サンプルあたりのバイト数 = mixerInfo.chans * nサンプルサイズbyte;
 			this.nミキサーの1秒あたりのバイト数 = nミキサーの1サンプルあたりのバイト数 * mixerInfo.freq;
 
 
@@ -214,6 +245,7 @@ Debug.WriteLine( "BASS_Init()完了。" );
 			this.nバッファサイズsample = (int)  nバッファサイズbyte;
 			if ( !BassAsio.BASS_ASIO_Start( this.nバッファサイズsample ) )		// 範囲外の値を指定した場合は自動的にデフォルト値に設定される。
 			{
+				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
 				throw new Exception( "ASIO デバイス出力開始に失敗しました。" + BassAsio.BASS_ASIO_ErrorGetCode().ToString() );
 			}
@@ -278,6 +310,7 @@ Debug.WriteLine( "BASS_Init()完了。" );
 		protected int nバッファサイズsample = 0;
 		protected BASSASIOFormat fmtASIOデバイスフォーマット = BASSASIOFormat.BASS_ASIO_FORMAT_UNKNOWN;
 		protected BASSASIOFormat fmtASIOチャンネルフォーマット = BASSASIOFormat.BASS_ASIO_FORMAT_16BIT;		// 16bit 固定
+		//protected BASSASIOFormat fmtASIOチャンネルフォーマット = BASSASIOFormat.BASS_ASIO_FORMAT_32BIT;// 16bit 固定
 		protected ASIOPROC tAsioProc = null;
 
 		protected int tAsio処理( bool input, int channel, IntPtr buffer, int length, IntPtr user )

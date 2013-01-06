@@ -94,6 +94,15 @@ namespace FDK
 		{
 			SoundBufferSizeASIO = value;
 		}
+		public static bool ForceStereoASIO = false;						// trueにすると、出力を強制的にステレオにする。Titanium HD対策。
+		public bool GetForceStereoASIO()
+		{
+			return ForceStereoASIO;
+		}
+		public void SetForceStereoASIO( bool value )
+		{
+			ForceStereoASIO = value;
+		}
 		/// <summary>
 		/// <para>DirectSound 出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
@@ -107,10 +116,10 @@ namespace FDK
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="handle"></param>
-		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType )
+		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, bool forceStereoASIO )
 		{
 			WindowHandle = handle;
-			t初期化( soundDeviceType );
+			t初期化( soundDeviceType, forceStereoASIO );
 		}
 		public void Dispose()
 		{
@@ -119,14 +128,15 @@ namespace FDK
 
 		public static void t初期化()
 		{
-			t初期化( ESoundDeviceType.ExclusiveWASAPI );
+			t初期化( ESoundDeviceType.DirectSound, false );
 		}
 
-		public static void t初期化( ESoundDeviceType soundDeviceType )
+		public static void t初期化( ESoundDeviceType soundDeviceType, bool forceStereoASIO )
 		{
 			SoundDevice = null;							// ユーザ依存
-			rc演奏用タイマ = null;				// Global.Bass 依存（つまりユーザ依存）
+			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
+			ForceStereoASIO = forceStereoASIO;
 
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
 			{
@@ -208,7 +218,7 @@ namespace FDK
 					break;
 
 				case ESoundDeviceType.ASIO:
-					SoundDevice = new CSoundDeviceASIO( SoundBufferSizeASIO );
+					SoundDevice = new CSoundDeviceASIO( SoundBufferSizeASIO, ForceStereoASIO );
 					break;
 
 				case ESoundDeviceType.DirectSound:
