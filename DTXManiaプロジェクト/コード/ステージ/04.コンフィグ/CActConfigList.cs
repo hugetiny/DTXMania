@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -240,22 +240,6 @@ namespace DTXMania
 				"Note: Restart DTXMania to make\n" +
 				"     the setting take effect.");
 			this.list項目リスト.Add(this.iSystemASIOBufferSize);
-
-			// #24820 2013.1.6 yyagi
-			this.iSystemASIOForceStereo = new CItemToggle( "ASIOforce2ch", CDTXMania.ConfigIni.bASIOForceStereo,
-				"ASIO出力の強制ステレオ化:\n" +
-				"マルチチャンネルをサポートした\n" +
-				"ステレオカードの出力を強制的に\n"+
-				"ステレオ化します(ASIO使用時のみ)。\n" +
-				"ASIO使用時にサウンドがおかしくなる\n" +
-				"場合にお試し下さい。",
-				"Foecely set the ASIO output\n" +
-				"to stereo:\n" +
-				"If your soundcard outputs strange\n" +
-				"sound on ASIO, please try to\n" +
-				"turn ON." );
-			this.list項目リスト.Add( this.iSystemASIOForceStereo );
-
 
 			this.iSystemSkinSubfolder = new CItemList( "Skin (General)", CItemBase.Eパネル種別.通常, nSkinIndex,
 				"スキン切替：\n" +
@@ -1831,7 +1815,6 @@ namespace DTXMania
 		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
 		private CItemList iSystemSoundType;					// #24820 2013.1.3 yyagi
 		private CItemInteger iSystemASIOBufferSize;			// #24820 2013.1.3 yyagi
-		private CItemToggle iSystemASIOForceStereo;			// #24820 2013.1.6 yyagi
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -2029,7 +2012,6 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.nSoundDeviceType = this.iSystemSoundType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
 			CDTXMania.ConfigIni.nASIOBufferSize = this.iSystemASIOBufferSize.n現在の値;						// #24820 2013.1.3 yyagi
-			CDTXMania.ConfigIni.bASIOForceStereo= this.iSystemASIOForceStereo.bON;							// #24820 2013.1.6 yyagi
 
 //Trace.TraceInformation( "saved" );
 //Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );

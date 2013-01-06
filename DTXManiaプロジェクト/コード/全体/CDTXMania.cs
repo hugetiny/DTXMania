@@ -1691,7 +1691,7 @@ for (int i = 0; i < 3; i++) {
 						soundDeviceType = ESoundDeviceType.Unknown;
 						break;
 				}
-				Sound管理 = new CSound管理( base.Window.Handle, soundDeviceType, CDTXMania.ConfigIni.bASIOForceStereo );
+				Sound管理 = new CSound管理( base.Window.Handle, soundDeviceType );
 				Sound管理.SetSoundBufferSizeASIO( CDTXMania.ConfigIni.nASIOBufferSize );
 				base.Window.Text += " (" + Sound管理.GetCurrentSoundDeviceType() + ")";
 				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );

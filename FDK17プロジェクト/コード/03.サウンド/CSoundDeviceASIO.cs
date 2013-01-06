@@ -44,7 +44,7 @@ namespace FDK
 
 		// メソッド
 
-		public CSoundDeviceASIO( long nバッファサイズbyte, bool bForceStereo )
+		public CSoundDeviceASIO( long nバッファサイズbyte )
 		{
 			// 初期化。
 
@@ -84,19 +84,7 @@ namespace FDK
 Debug.WriteLine( "BASS_SetConfig()完了。" );
 
 
-			// デフォルトデバイスの取得。(BASSではデフォルトデバイスを扱えるが、BASSASIOでは扱えないため)
-			int defDevice = -1;
-			BASS_DEVICEINFO devinfo;
-			for ( int n = 0; ( devinfo = Bass.BASS_GetDeviceInfo( n ) ) != null; n++ )
-			{
-				if ( devinfo.IsDefault )
-				{
-					defDevice = n;
-					break;
-				}
-			}
-
-			
+		
 			// BASS の初期化。
 
 			int nデバイス = 0;		// 0:"no device" … BASS からはデバイスへアクセスさせない。アクセスは BASSASIO アドオンから行う。
@@ -115,26 +103,43 @@ Debug.WriteLine( "BASS_Init()完了。" );
 			}
 			#endregion
 
-			// BASS ASIO の初期化。
+			// デフォルトデバイスの取得。(BASSではデフォルトデバイスを扱えるが、BASSASIOでは扱えないため)
+			int defDevice = -1;
+			BASS_DEVICEINFO devinfo;
+			for ( int n = 0; ( devinfo = Bass.BASS_GetDeviceInfo( n ) ) != null; n++ )
+			{
+				Debug.WriteLine( "dev#=" + n + ", IsDefault=" + devinfo.IsDefault );
+				if ( devinfo.IsDefault )
+				{
+					defDevice = n;
+					break;
+				}
+			}
+//            BASS_DEVICEINFO[] bd = Bass.BASS_GetDeviceInfos();
+//            for ( int i = 0; i < bd.Length; i++ )
+//            {
+//Debug.WriteLine( "dev#=" + i + ", IsDefault=" + bd[i].IsDefault );
+//                if ( bd[ i ].IsDefault )
+//                {
+//                    defDevice = i;
+//                    break;
+//                }
+//            }
 
+
+
+	//		defDevice = 0;
+
+			// BASS ASIO の初期化。
+Debug.WriteLine( "Default device no.: " + defDevice );
 			nデバイス = defDevice;			// デフォルトデバイス
 			BASS_ASIO_INFO asioInfo = null;
-			if ( BassAsio.BASS_ASIO_Init( nデバイス, BASSASIOInit.BASS_ASIO_DEFAULT | BASSASIOInit.BASS_ASIO_THREAD ) )	// 専用スレッドにて起動
+			if ( BassAsio.BASS_ASIO_Init( nデバイス, BASSASIOInit.BASS_ASIO_THREAD ) )	// 専用スレッドにて起動
 			{
 				#region [ ASIO の初期化に成功。]
 				//-----------------
-				if ( !BassAsio.BASS_ASIO_SetDevice( nデバイス ) )
-				{
-					Bass.BASS_Free();
-					throw new Exception( string.Format( "Failed BASS_ASIO_SetDevice() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
-				}
-
 				this.e出力デバイス = ESoundDeviceType.ASIO;
 				asioInfo = BassAsio.BASS_ASIO_GetInfo();
-				if ( bForceStereo )
-				{
-					asioInfo.outputs = 2;	// Mixer_StreamCreateでチャネル数を2にしないと出力がおかしくなるサウンドカードがある
-				}
 				this.n出力チャンネル数 = asioInfo.outputs;
 				this.db周波数 = BassAsio.BASS_ASIO_GetRate();
 				this.fmtASIOデバイスフォーマット = BassAsio.BASS_ASIO_ChannelGetFormat( false, 0 );
@@ -187,17 +192,18 @@ Debug.WriteLine( "BASS_Init()完了。" );
 				//-----------------
 				#endregion
 			}
-			//for( int i = 1; i < this.n出力チャンネル数; i++ )
-			//	BassAsio.BASS_ASIO_ChannelJoin( false, i, 0 );
-			if (!BassAsio.BASS_ASIO_ChannelJoin( false, 1, 0 ))										// 出力チャンネル1をチャンネル0 とグループ化。（ステレオ限定）
+			for ( int i = 1; i < this.n出力チャンネル数; i++ )
 			{
-				#region [ 初期化に失敗。]
-				//-----------------
-				BassAsio.BASS_ASIO_Free();
-				Bass.BASS_Free();
-				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelJoin() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
-				//-----------------
-				#endregion
+				if ( !BassAsio.BASS_ASIO_ChannelJoin( false, i, 0 ) )									// 出力チャンネル1をチャンネル0 とグループ化。（ステレオ限定）
+				{
+					#region [ 初期化に失敗。]
+					//-----------------
+					BassAsio.BASS_ASIO_Free();
+					Bass.BASS_Free();
+					throw new Exception( string.Format( "Failed BASS_ASIO_ChannelJoin({1}) [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString(), i ) );
+					//-----------------
+					#endregion
+				}
 			}
 			if ( !BassAsio.BASS_ASIO_ChannelSetFormat( false, 0, this.fmtASIOチャンネルフォーマット ) )	// 出力チャンネル0のフォーマット
 			{
@@ -209,7 +215,6 @@ Debug.WriteLine( "BASS_Init()完了。" );
 				//-----------------
 				#endregion
 			}
-
 
 			// ASIO 出力と同じフォーマットを持つ BASS ミキサーを作成。
 

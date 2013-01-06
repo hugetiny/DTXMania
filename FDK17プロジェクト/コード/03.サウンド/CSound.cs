@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using SlimDX;
 using SlimDX.DirectSound;
 using SlimDX.Multimedia;
@@ -94,15 +95,6 @@ namespace FDK
 		{
 			SoundBufferSizeASIO = value;
 		}
-		public static bool ForceStereoASIO = false;						// trueにすると、出力を強制的にステレオにする。Titanium HD対策。
-		public bool GetForceStereoASIO()
-		{
-			return ForceStereoASIO;
-		}
-		public void SetForceStereoASIO( bool value )
-		{
-			ForceStereoASIO = value;
-		}
 		/// <summary>
 		/// <para>DirectSound 出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
@@ -116,10 +108,13 @@ namespace FDK
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="handle"></param>
-		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, bool forceStereoASIO )
+		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType )
 		{
 			WindowHandle = handle;
-			t初期化( soundDeviceType, forceStereoASIO );
+			//cMixerManager = new CBassMixerManager();
+			//thMixerManager = new Thread( new ThreadStart( cMixerManager.Start ) );
+
+			t初期化( soundDeviceType );
 		}
 		public void Dispose()
 		{
@@ -128,15 +123,14 @@ namespace FDK
 
 		public static void t初期化()
 		{
-			t初期化( ESoundDeviceType.DirectSound, false );
+			t初期化( ESoundDeviceType.DirectSound );
 		}
 
-		public static void t初期化( ESoundDeviceType soundDeviceType, bool forceStereoASIO )
+		public static void t初期化( ESoundDeviceType soundDeviceType )
 		{
 			SoundDevice = null;							// ユーザ依存
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
-			ForceStereoASIO = forceStereoASIO;
 
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
 			{
@@ -218,7 +212,7 @@ namespace FDK
 					break;
 
 				case ESoundDeviceType.ASIO:
-					SoundDevice = new CSoundDeviceASIO( SoundBufferSizeASIO, ForceStereoASIO );
+					SoundDevice = new CSoundDeviceASIO( SoundBufferSizeASIO );
 					break;
 
 				case ESoundDeviceType.DirectSound:
@@ -300,7 +294,14 @@ namespace FDK
 					return "Unknown";
 			}
 		}
-	
+
+		//private CBassMixerManager cMixerManager = null;
+		//private Thread thMixerManager = null;
+
+		public void AddMixer( CSound cs )
+		{
+			cs.tBASSサウンドをミキサーに追加する();
+		}
 	}
 	#endregion
 
@@ -379,6 +380,7 @@ namespace FDK
 
 		private STREAMPROC _cbStreamXA;		// make it global, so that the GC can not remove it
 		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
+		private WaitCallback _cbRemoveMixerChannel;
 
 		/// <summary>
 		/// <para>0:最小～100:原音</para>
@@ -519,6 +521,7 @@ namespace FDK
 			this._db周波数倍率 = 1.0;
 			this._db再生速度 = 1.0;
 			this.DirectSoundBufferFlags = CSoundDeviceDirectSound.DefaultFlags;
+			this._cbRemoveMixerChannel = new WaitCallback( RemoveMixerChannelLater );
 		}
 
 		public void tASIOサウンドを作成する( string strファイル名, int hMixer )
@@ -822,7 +825,7 @@ namespace FDK
 		}
 		public void t再生を一時停止する()
 		{
-			tサウンドを停止する();
+			tサウンドを停止する(true);
 			this.n一時停止回数++;
 		}
 		public void t再生を再開する( long t )	// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -941,11 +944,18 @@ Debug.WriteLine( "再生成功                                       : " + Path.
 		}
 		public void tサウンドを停止する()
 		{
+			tサウンドを停止する( false );
+		}
+		public void tサウンドを停止する( bool pause )
+		{
 			if( this.bBASSサウンドである )
 			{
 Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
-				tBASSサウンドをミキサーから削除する();
+				if ( !pause )
+				{
+					tBASSサウンドをミキサーから削除する();		// PAUSEと再生停止を区別できるようにすること!!
+				}
 			}
 			else if( this.bDirectSoundである )
 			{
@@ -1313,6 +1323,9 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			return bytesread;
 		}
 
+
+// mixerからの削除
+
 		/// <summary>
 		/// ストリームの終端まで再生したときに呼び出されるコールバック
 		/// </summary>
@@ -1322,18 +1335,15 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		/// <param name="user"></param>
 		private void CallbackEndofStream( int handle, int channel, int data, IntPtr user )
 		{
-			Debug.WriteLine( "Callback!(remove)" );
-			tBASSサウンドをミキサーから削除する( channel );
+			Debug.WriteLine( "Callback!(remove 3sec later)" );
+			ThreadPool.QueueUserWorkItem( RemoveMixerChannelLater, channel); 
+			//tBASSサウンドをミキサーから削除する( channel );
 		}
-
-		public bool tBASSサウンドをミキサーに追加する()
+		private void RemoveMixerChannelLater( object o )
 		{
-			BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN | BASSFlag.BASS_MIXER_PAUSE;
-			CSound管理.nMixing++;
-
-			bool b = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
-			t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
-			return b;
+			int channel = (int) o;
+			Thread.Sleep( 3000 );
+			tBASSサウンドをミキサーから削除する( channel );
 		}
 		public bool tBASSサウンドをミキサーから削除する()
 		{
@@ -1348,6 +1358,24 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 				Debug.WriteLine( "Removed: " + channel );
 			}
 			return b;
+		}
+
+
+// mixer への追加
+		
+		public bool tBASSサウンドをミキサーに追加する()
+		{
+			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
+			{
+				BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN | BASSFlag.BASS_MIXER_PAUSE;
+				CSound管理.nMixing++;
+
+				bool b = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
+				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
+Debug.WriteLine( "Add Mixer: " + hBassStream );
+				return b;
+			}
+			return true;
 		}
 
 

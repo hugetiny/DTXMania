@@ -660,8 +660,6 @@ namespace DTXMania
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
 		public int nASIOBufferSize;					// #24820 2012.12.28 yyagi ASIOのバッファサイズ
-		public bool bASIOForceStereo;				// #24820 2013.1.6 yyagi ASIOのミキサーのチャンネル数を強制的に2にする。
-													// SoundBlaster X-Fi Titanium HD対策。
 
 #if false
 		[StructLayout( LayoutKind.Sequential )]
@@ -1121,7 +1119,6 @@ namespace DTXMania
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
 			this.nSoundDeviceType = (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM
 			this.nASIOBufferSize = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
-			this.bASIOForceStereo = false;				// #24820 2013.1.6 yyagi
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1258,14 +1255,6 @@ namespace DTXMania
 			sw.WriteLine( "; ASIO Sound Buffer Size." );
 			sw.WriteLine( "; (0=Use the value specified to the device, 1-9999=specify the buffer size by yourself)" );
 			sw.WriteLine( "ASIOBufferSize={0}", (int) this.nASIOBufferSize );
-			sw.WriteLine();
-
-			sw.WriteLine( "; 強制的にASIOの出力をステレオにする(0:OFF,1:ON)" );
-			sw.WriteLine( "; 一部サウンドカードで出力がおかしくなる場合に試して下さい。(SoundBlaster X-Fi Titanium HDなど)" );
-			sw.WriteLine( "; Set ASIO's output to stereo forcely.(0:OFF,1:ON)" );
-			sw.WriteLine( "; Try to turn ON if your sound card outputs strange sounds. (SoundBlaster X-Fi Titanium HD etc)" );
-			sw.WriteLine( "; (0=No, 1=Yes)" );
-			sw.WriteLine( "ASIOForceStereo={0}", this.bASIOForceStereo? 1 : 0 );
 			sw.WriteLine();
 			#endregion
 			#region [ ギター/ベース/ドラム 有効/無効 ]
@@ -1961,10 +1950,6 @@ namespace DTXMania
 											else if ( str3.Equals( "ASIOBufferSize" ) )
 											{
 												this.nASIOBufferSize = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nASIOBufferSize );
-											}
-											else if ( str3.Equals( "ASIOForceStereo" ) )
-											{
-												this.bASIOForceStereo = C変換.bONorOFF( str4[ 0 ] );
 											}
 											#endregion
 											else if ( str3.Equals( "VSyncWait" ) )
