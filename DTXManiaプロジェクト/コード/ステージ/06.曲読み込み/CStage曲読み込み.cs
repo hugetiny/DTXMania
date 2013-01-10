@@ -286,7 +286,12 @@ namespace DTXMania
 						{
 							TimeSpan span = ( TimeSpan ) ( DateTime.Now - timeBeginLoadWAV );
 							Trace.TraceInformation( "WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString() );
+							timeBeginLoadWAV = DateTime.Now;
 
+							if ( CDTXMania.ConfigIni.bDynamicBassMixerManagement )
+							{
+								CDTXMania.DTX.PlanToAddMixerChannel();
+							}
 							CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.GUITAR, CDTXMania.ConfigIni.eRandom.Guitar );
 							CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.BASS, CDTXMania.ConfigIni.eRandom.Bass );
 
@@ -294,6 +299,9 @@ namespace DTXMania
 								CDTXMania.stage演奏ギター画面.On活性化();
 							else
 								CDTXMania.stage演奏ドラム画面.On活性化();
+
+							span = (TimeSpan) ( DateTime.Now - timeBeginLoadWAV );
+							Trace.TraceInformation( "WAV/譜面後処理時間({0,4}):   {1}", ( CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count ), span.ToString() );
 
 							base.eフェーズID = CStage.Eフェーズ.NOWLOADING_BMPファイルを読み込む;
 						}

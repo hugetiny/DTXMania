@@ -660,6 +660,7 @@ namespace DTXMania
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
 		public int nASIOBufferSize;					// #24820 2012.12.28 yyagi ASIOのバッファサイズ
+		public bool bDynamicBassMixerManagement;	// #24820
 
 #if false
 		[StructLayout( LayoutKind.Sequential )]
@@ -1119,6 +1120,8 @@ namespace DTXMania
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
 			this.nSoundDeviceType = (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM
 			this.nASIOBufferSize = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
+			this.bDynamicBassMixerManagement = true;	//
+
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1256,6 +1259,13 @@ namespace DTXMania
 			sw.WriteLine( "; (0=Use the value specified to the device, 1-9999=specify the buffer size by yourself)" );
 			sw.WriteLine( "ASIOBufferSize={0}", (int) this.nASIOBufferSize );
 			sw.WriteLine();
+
+			sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。");
+			sw.WriteLine( "; ONにすると、ギター曲などチップ音の多い曲も再生できますが、画面が少しがたつきます。" );
+			sw.WriteLine( "; (0=行わない, 1=行う)" );
+			sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement? 1 : 0 );
+			sw.WriteLine();
+
 			#endregion
 			#region [ ギター/ベース/ドラム 有効/無効 ]
 			sw.WriteLine( "; ギター/ベース有効(0:OFF,1:ON)" );
@@ -1950,6 +1960,10 @@ namespace DTXMania
 											else if ( str3.Equals( "ASIOBufferSize" ) )
 											{
 												this.nASIOBufferSize = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nASIOBufferSize );
+											}
+											else if ( str3.Equals( "DynamicBassMixerManagement" ) )
+											{
+												this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
 											}
 											#endregion
 											else if ( str3.Equals( "VSyncWait" ) )

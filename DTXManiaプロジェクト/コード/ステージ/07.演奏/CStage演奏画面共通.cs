@@ -268,6 +268,36 @@ namespace DTXMania
 			this.bIsAutoPlay.Bass = CDTXMania.ConfigIni.bベースが全部オートプレイである;
 //			this.nRisky = CDTXMania.ConfigIni.nRisky;											// #23559 2011.7.28 yyagi
 			actGauge.Init( CDTXMania.ConfigIni.nRisky );									// #23559 2011.7.28 yyagi
+			this.nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
+
+			CDTXMania.Skin.tRemoveMixerAll();	// 効果音のストリームをミキサーから解除しておく
+
+			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
+			foreach ( CDTX.CChip pChip in CDTXMania.DTX.listChip )
+			{
+//				Debug.WriteLine( "CH=" + pChip.nチャンネル番号.ToString( "x2" ) + ", 整数値=" + pChip.n整数値 +  ", time=" + pChip.n発声時刻ms );
+				if ( pChip.n発声時刻ms <= 0 )
+				{
+					if ( pChip.nチャンネル番号 == 0xDA )
+					{
+						pChip.bHit = true;
+//						Debug.WriteLine( "first [DA] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms );
+						if ( CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
+						{
+							CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+							for ( int i = 0; i < nPolyphonicSounds; i++ )
+							{
+								CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+							}
+						}
+					}
+				}
+				else
+				{
+					break;
+				}
+			}
+			#endregion
 
 			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
 			{
@@ -546,6 +576,7 @@ namespace DTXMania
 		protected STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 		protected STAUTOPLAY bIsAutoPlay;		// #24239 2011.1.23 yyagi
 //		protected int nRisky_InitialVar, nRiskyTime;		// #23559 2011.7.28 yyagi → CAct演奏ゲージ共通クラスに隠蔽
+		protected int nPolyphonicSounds;
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;
@@ -1610,6 +1641,7 @@ namespace DTXMania
 			for ( int nCurrentTopChip = this.n現在のトップChip; nCurrentTopChip < dTX.listChip.Count; nCurrentTopChip++ )
 			{
 				CDTX.CChip pChip = dTX.listChip[ nCurrentTopChip ];
+//Debug.WriteLine( "nCurrentTopChip=" + nCurrentTopChip + ", ch=" + pChip.nチャンネル番号.ToString("x2") + ", 発音位置=" + pChip.n発声位置 + ", 発声時刻ms=" + pChip.n発声時刻ms );
 				pChip.nバーからの距離dot.Drums = (int) ( ( pChip.n発声時刻ms - CSound管理.rc演奏用タイマ.n現在時刻 ) * ScrollSpeedDrums );
 				pChip.nバーからの距離dot.Guitar = (int) ( ( pChip.n発声時刻ms - CSound管理.rc演奏用タイマ.n現在時刻 ) * ScrollSpeedGuitar );
 				pChip.nバーからの距離dot.Bass = (int) ( ( pChip.n発声時刻ms - CSound管理.rc演奏用タイマ.n現在時刻 ) * ScrollSpeedBass );
@@ -2002,6 +2034,40 @@ namespace DTXMania
 										this.actBGA.ChangeScope( this.nBGAスコープチャンネルマップ[ 1, i ], pChip.rBMP, pChip.rBMPTEX );
 									}
 								}
+							}
+						}
+						break;
+					#endregion
+					#region [ da: ミキサーへチップ音追加 ]
+					case 0xDA:
+						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
+						{
+							Debug.WriteLine( "[DA(AddMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
+							pChip.bHit = true;
+							if ( CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
+							{
+								CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+								for ( int i = 0; i < nPolyphonicSounds; i++ )
+								{
+									CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+								}
+							}
+						}
+						break;
+					#endregion
+					#region [ db: ミキサーからチップ音削除 ]
+					case 0xDB:
+						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
+						{
+Debug.WriteLine( "[DB(RemoveMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
+							pChip.bHit = true;
+							if ( CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
+							{
+							    CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+							    for ( int i = 0; i < nPolyphonicSounds; i++ )
+							    {
+							        CDTXMania.Sound管理.RemoveMixer( wc.rSound[ i ] );
+							    }
 							}
 						}
 						break;

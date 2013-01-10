@@ -302,7 +302,11 @@ namespace FDK
 		{
 			cs.tBASSサウンドをミキサーに追加する();
 		}
-	}
+		public void RemoveMixer( CSound cs )
+		{
+			cs.tBASSサウンドをミキサーから削除する();
+		}
+}
 	#endregion
 
 	// CSound は、サウンドデバイスが変更されたときも、インスタンスを再作成することなく、新しいデバイスで作り直せる必要がある。
@@ -379,8 +383,8 @@ namespace FDK
 
 
 		private STREAMPROC _cbStreamXA;		// make it global, so that the GC can not remove it
-		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
-		private WaitCallback _cbRemoveMixerChannel;
+//		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
+//		private WaitCallback _cbRemoveMixerChannel;
 
 		/// <summary>
 		/// <para>0:最小～100:原音</para>
@@ -521,7 +525,7 @@ namespace FDK
 			this._db周波数倍率 = 1.0;
 			this._db再生速度 = 1.0;
 			this.DirectSoundBufferFlags = CSoundDeviceDirectSound.DefaultFlags;
-			this._cbRemoveMixerChannel = new WaitCallback( RemoveMixerChannelLater );
+//			this._cbRemoveMixerChannel = new WaitCallback( RemoveMixerChannelLater );
 		}
 
 		public void tASIOサウンドを作成する( string strファイル名, int hMixer )
@@ -885,8 +889,8 @@ namespace FDK
 			if ( this.bBASSサウンドである )		// stream数の削減用
 			{
 				tBASSサウンドをミキサーから削除する();
-				_cbEndofStream = null;
-				_cbStreamXA = null;
+				//_cbEndofStream = null;
+				//_cbStreamXA = null;
 				CSound管理.nStreams--;
 			}
 			bool bManagedも解放する = true;
@@ -898,7 +902,7 @@ namespace FDK
 //Debug.WriteLine( "tサウンドを再生する(): " + this.strファイル名 );
 			if( this.bBASSサウンドである )
 			{
-Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
+//Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				bool b = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 				if ( !b )
 				{
@@ -929,7 +933,7 @@ Debug.WriteLine( "Mixerへの登録に成功: " + Path.GetFileName( this.strフ�
 				}
 				else
 				{
-Debug.WriteLine( "再生成功                                       : " + Path.GetFileName( this.strファイル名 ) + ", " + hBassStream );
+Debug.WriteLine( "再生成功: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" );
 				}
 			}
 			else if( this.bDirectSoundである )
@@ -954,7 +958,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				if ( !pause )
 				{
-					tBASSサウンドをミキサーから削除する();		// PAUSEと再生停止を区別できるようにすること!!
+			//		tBASSサウンドをミキサーから削除する();		// PAUSEと再生停止を区別できるようにすること!!
 				}
 			}
 			else if( this.bDirectSoundである )
@@ -1168,8 +1172,8 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			//}
 			//CSound管理.nStreams++;
 
-			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
-			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END |BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
+//			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
+//			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END |BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
 
 
 			// インスタンスリストに登録。
@@ -1215,8 +1219,8 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			//}
 			//CSound管理.nStreams++;
 
-			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
-			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
+//			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
+//			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
 
 			// インスタンスリストに登録。
 
@@ -1275,8 +1279,8 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			//}
 			//CSound管理.nStreams++;
 
-			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
-			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
+//			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
+//			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
 
 			// インスタンスリストに登録。
 
@@ -1326,25 +1330,25 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 // mixerからの削除
 
-		/// <summary>
-		/// ストリームの終端まで再生したときに呼び出されるコールバック
-		/// </summary>
-		/// <param name="handle"></param>
-		/// <param name="channel"></param>
-		/// <param name="data"></param>
-		/// <param name="user"></param>
-		private void CallbackEndofStream( int handle, int channel, int data, IntPtr user )
-		{
-			Debug.WriteLine( "Callback!(remove 3sec later)" );
-			ThreadPool.QueueUserWorkItem( RemoveMixerChannelLater, channel); 
-			//tBASSサウンドをミキサーから削除する( channel );
-		}
-		private void RemoveMixerChannelLater( object o )
-		{
-			int channel = (int) o;
-			Thread.Sleep( 3000 );
-			tBASSサウンドをミキサーから削除する( channel );
-		}
+		///// <summary>
+		///// ストリームの終端まで再生したときに呼び出されるコールバック
+		///// </summary>
+		///// <param name="handle"></param>
+		///// <param name="channel"></param>
+		///// <param name="data"></param>
+		///// <param name="user"></param>
+		//private void CallbackEndofStream( int handle, int channel, int data, IntPtr user )
+		//{
+		//    //Debug.WriteLine( "Callback!(remove 3sec later)" );
+		//    //ThreadPool.QueueUserWorkItem( RemoveMixerChannelLater, channel); 
+		//    //tBASSサウンドをミキサーから削除する( channel );
+		//}
+		//private void RemoveMixerChannelLater( object o )
+		//{
+		//    int channel = (int) o;
+		//    Thread.Sleep( 3000 );
+		//    tBASSサウンドをミキサーから削除する( channel );
+		//}
 		public bool tBASSサウンドをミキサーから削除する()
 		{
 			return tBASSサウンドをミキサーから削除する( this.hBassStream );
@@ -1355,7 +1359,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			if ( b )
 			{
 				CSound管理.nMixing--;
-				Debug.WriteLine( "Removed: " + channel );
+				Debug.WriteLine( "Removed: " + Path.GetFileName( this.strファイル名 ) + " (" + channel + ")" + " MixedStreams=" + CSound管理.nMixing );
 			}
 			return b;
 		}
@@ -1372,7 +1376,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 				bool b = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
 				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
-Debug.WriteLine( "Add Mixer: " + hBassStream );
+				Debug.WriteLine( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
 				return b;
 			}
 			return true;

@@ -56,13 +56,13 @@ namespace FDK
 			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
 			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
 
-
+			#region [ BASS registration ]
 			// BASS.NET ユーザ登録（BASSスプラッシュが非表示になる）。
 			BassNet.Registration( "dtx2013@gmail.com", "2X9181017152222" );
+			#endregion
 
-
-			// BASS のバージョンチェック。
 			#region [ BASS Version Check ]
+			// BASS のバージョンチェック。
 			int nBASSVersion = Utils.HighWord( Bass.BASS_GetVersion() );
 			if( nBASSVersion != Bass.BASSVERSION )
 				throw new DllNotFoundException( string.Format( "bass.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSVersion, Bass.BASSVERSION ) );
@@ -128,7 +128,7 @@ Debug.WriteLine( "BASS_Init()完了。" );
 
 
 
-	//		defDevice = 0;
+//			defDevice = 0;
 
 			// BASS ASIO の初期化。
 Debug.WriteLine( "Default device no.: " + defDevice );
@@ -192,9 +192,9 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 				//-----------------
 				#endregion
 			}
-			for ( int i = 1; i < this.n出力チャンネル数; i++ )
-			{
-				if ( !BassAsio.BASS_ASIO_ChannelJoin( false, i, 0 ) )									// 出力チャンネル1をチャンネル0 とグループ化。（ステレオ限定）
+			for ( int i = 1; i < this.n出力チャンネル数; i++ )		// 出力チャネルを全てチャネル0とグループ化する。
+			{														// チャネル1だけを0とグループ化すると、3ch以上の出力をサポートしたカードでの動作がおかしくなる
+				if ( !BassAsio.BASS_ASIO_ChannelJoin( false, i, 0 ) )
 				{
 					#region [ 初期化に失敗。]
 					//-----------------
@@ -221,8 +221,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 			var flag = BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_STREAM_DECODE;	// デコードのみ＝発声しない。ASIO に出力されるだけ。
 			if( this.fmtASIOデバイスフォーマット == BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT )
 				flag |= BASSFlag.BASS_SAMPLE_FLOAT;
-			this.hMixer = BassMix.BASS_Mixer_StreamCreate( (int) this.db周波数, this.n出力チャンネル数, flag );		// SB X-Fu Tutabuyn HDでは、ここを2にしないと出力がおかしくなる
-																													// bassasio側の問題の可能性もあるが、強制的にこれを2にする設定を追加して回避する
+			this.hMixer = BassMix.BASS_Mixer_StreamCreate( (int) this.db周波数, this.n出力チャンネル数, flag );
 
 			if ( this.hMixer == 0 )
 				throw new Exception( string.Format( "BASSミキサの作成に失敗しました。[{0}]", Bass.BASS_ErrorGetCode() ) );
@@ -262,6 +261,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 			}
 		}
 
+		#region [ tサウンドを作成する() ]
 		public CSound tサウンドを作成する( string strファイル名 )
 		{
 			var sound = new CSound();
@@ -282,6 +282,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 		{
 			sound.tASIOサウンドを作成する( byArrWAVファイルイメージ, this.hMixer );
 		}
+		#endregion
 
 		#region [ Dispose-Finallizeパターン実装 ]
 		//-----------------

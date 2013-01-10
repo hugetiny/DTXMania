@@ -216,7 +216,6 @@ namespace DTXMania
 				{
 					try
 					{
-Debug.WriteLine( "★★" +this.strファイル名 );
 						this.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
 					}
 					catch
@@ -263,6 +262,20 @@ Debug.WriteLine( "★★" +this.strファイル名 );
 
 				if( r最後に再生した排他システムサウンド == this )
 					r最後に再生した排他システムサウンド = null;
+			}
+
+			public void tRemoveMixer()
+			{
+				if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() != "DirectShow" )
+				{
+					for ( int i = 0; i < 2; i++ )
+					{
+						if ( this.rSound[ i ] != null )
+						{
+							CDTXMania.Sound管理.RemoveMixer( this.rSound[ i ] );
+						}
+					}
+				}
 			}
 
 			#region [ IDisposable 実装 ]
@@ -754,6 +767,19 @@ Debug.WriteLine( "★★" +this.strファイル名 );
 			return ( File.Exists( filePathTitle ) );
 		}
 
+
+		public void tRemoveMixerAll()
+		{
+			for ( int i = 0; i < nシステムサウンド数; i++ )
+			{
+				if ( this[ i ] != null && this[ i ].b読み込み成功 )
+				{
+					this[ i ].t停止する();
+					this[ i ].tRemoveMixer();
+				}
+			}
+
+		}
 		#region [ IDisposable 実装 ]
 		//-----------------
 		public void Dispose()

@@ -58,13 +58,14 @@ namespace FDK
 			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
 			this.b最初の実出力遅延算出 = true;
 
-
+			#region [ BASS registration ]
 			// BASS.NET ユーザ登録（BASSスプラッシュが非表示になる）。
 
 			BassNet.Registration( "dtx2013@gmail.com", "2X9181017152222" );
+			#endregion
 
+			#region [ BASS Version Check ]
 			// BASS のバージョンチェック。
-
 			int nBASSVersion = Utils.HighWord( Bass.BASS_GetVersion() );
 			if( nBASSVersion != Bass.BASSVERSION )
 				throw new DllNotFoundException( string.Format( "bass.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSVersion, Bass.BASSVERSION ) );
@@ -76,7 +77,7 @@ namespace FDK
 			int nBASSWASAPIVersion = Utils.HighWord( BassWasapi.BASS_WASAPI_GetVersion() );
 			if( nBASSWASAPIVersion != BassWasapi.BASSWASAPIVERSION )
 				throw new DllNotFoundException( string.Format( "basswasapi.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSWASAPIVersion, BassWasapi.BASSWASAPIVERSION ) );
-
+			#endregion
 
 			// BASS の設定。
 
@@ -93,27 +94,28 @@ namespace FDK
 
 			#region [ デバッグ用: WASAPIデバイスのenumerateと、ログ出力 ]
 			// (デバッグ用)
-			//int a, count = 0;
-			//BASS_WASAPI_DEVICEINFO wasapiDevInfo;
-			//for ( a = 0; ( wasapiDevInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( a ) ) != null; a++ )
-			//{
-			//    if ( ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_INPUT ) == 0 // device is an output device (not input)
-			//            && ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_ENABLED ) != 0 ) // and it is enabled
-			//    {
-			//        Trace.TraceInformation( "WASAPI Device {0}: {1}", a, wasapiDevInfo.name );
-			//        count++; // count it
-			//    }
-			//}
+			Trace.TraceInformation( "WASAPIデバイス一覧:" );
+			int a, count = 0;
+			BASS_WASAPI_DEVICEINFO wasapiDevInfo;
+			for ( a = 0; ( wasapiDevInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( a ) ) != null; a++ )
+			{
+			    if ( ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_INPUT ) == 0 // device is an output device (not input)
+			            && ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_ENABLED ) != 0 ) // and it is enabled
+			    {
+			        Trace.TraceInformation( "WASAPI Device #{0}: {1}", a, wasapiDevInfo.name );
+			        count++; // count it
+			    }
+			}
 			#endregion
 
 			// BASS WASAPI の初期化。
 
 			nデバイス = -1;
-			n周波数 = -1;			// デフォルトデバイスの周波数
-			int nチャンネル数 = -1;	// デフォルトデバイスのチャンネル数
+			n周波数 = 0;			// デフォルトデバイスの周波数 (0="mix format" sample rate)
+			int nチャンネル数 = 0;	// デフォルトデバイスのチャンネル数 (0="mix format" channels)
 			this.tWasapiProc = new WASAPIPROC( this.tWASAPI処理 );		// アンマネージに渡す delegate は、フィールドとして保持しておかないとGCでアドレスが変わってしまう。
 Retry:
-			var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
+			var flags = ( mode == Eデバイスモード.排他 ) ?BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
 			if ( BassWasapi.BASS_WASAPI_Init( nデバイス, n周波数, nチャンネル数, flags, ( n希望バッファサイズms / 1000.0f ), ( n更新間隔ms / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
 			{
 				if( mode == Eデバイスモード.排他 )
@@ -122,6 +124,8 @@ Retry:
 					//-----------------
 					this.e出力デバイス = ESoundDeviceType.ExclusiveWASAPI;
 
+					int nDevNo = BassWasapi.BASS_WASAPI_GetDevice();
+					var deviceInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( nDevNo );
 					var wasapiInfo = BassWasapi.BASS_WASAPI_GetInfo();
 					int n1サンプルのバイト数 = 2 * wasapiInfo.chans;	// default;
 					switch( wasapiInfo.format )		// BASS WASAPI で扱うサンプルはすべて 32bit float で固定されているが、デバイスはそうとは限らない。
@@ -135,7 +139,7 @@ Retry:
 					int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.freq;
 					long n実バッファサイズms = (long) ( wasapiInfo.buflen * 1000.0f / n1秒のバイト数 );
 					this.n実出力遅延ms = 0;	// 初期値はゼロ
-
+					Trace.TraceInformation( "使用デバイス: #" + nDevNo + " : " + deviceInfo.name + ", flags=" + deviceInfo.flags );
 					Trace.TraceInformation( "BASS を初期化しました。(WASAPI排他モード, {0}Hz, {1}ch, フォーマット:{2}, バッファ{3}bytes [{4}ms(希望{5}ms)], 更新間隔{6}ms)",
 						wasapiInfo.freq,
 						wasapiInfo.chans,
@@ -202,7 +206,7 @@ Retry:
 
 			BassWasapi.BASS_WASAPI_Start();
 		}
-
+		#region [ tサウンドを作成する() ]
 		public CSound tサウンドを作成する( string strファイル名 )
 		{
 			var sound = new CSound();
@@ -223,6 +227,7 @@ Retry:
 		{
 			sound.tWASAPIサウンドを作成する( byArrWAVファイルイメージ, this.hMixer, this.e出力デバイス );
 		}
+		#endregion
 
 		#region [ Dispose-Finallizeパターン実装 ]
 		//-----------------
