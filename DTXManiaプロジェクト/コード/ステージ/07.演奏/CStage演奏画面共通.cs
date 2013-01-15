@@ -287,7 +287,10 @@ namespace DTXMania
 							CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
 							for ( int i = 0; i < nPolyphonicSounds; i++ )
 							{
-								CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+								if ( wc.rSound[ i ] != null )
+								{
+									CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+								}
 							}
 						}
 					}
@@ -2049,7 +2052,10 @@ namespace DTXMania
 								CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
 								for ( int i = 0; i < nPolyphonicSounds; i++ )
 								{
-									CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+									if ( wc.rSound[ i ] != null )
+									{
+										CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+									}
 								}
 							}
 						}
@@ -2066,7 +2072,10 @@ Debug.WriteLine( "[DB(RemoveMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" +
 							    CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
 							    for ( int i = 0; i < nPolyphonicSounds; i++ )
 							    {
-							        CDTXMania.Sound管理.RemoveMixer( wc.rSound[ i ] );
+									if ( wc.rSound[ i ] != null )
+									{
+										CDTXMania.Sound管理.RemoveMixer( wc.rSound[ i ] );
+									}
 							    }
 							}
 						}

@@ -361,6 +361,11 @@ namespace DTXMania
 				case CStage.Eフェーズ.共通_フェードアウト:
 					if( this.actFO.On進行描画() == 0 )
 						return 0;
+
+					if ( this.sd読み込み音 != null )
+					{
+						this.sd読み込み音.t解放する();
+					}
 					return 1;
 			}
 			return 0;

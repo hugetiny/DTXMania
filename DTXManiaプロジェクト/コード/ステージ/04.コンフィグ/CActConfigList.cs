@@ -219,19 +219,37 @@ namespace DTXMania
 				new string[] { "DShow", "ASIO", "WASAPI" });
 			this.list項目リスト.Add(this.iSystemSoundType);
 
+			// #24820 2013.1.15 yyagi
+			this.iSystemWASAPIBufferSizeMs = new CItemInteger( "WASAPIBufSize", 0, 99999, CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
+				"WASAPI使用時のバッファサイズ:\n" +
+				"0～99999ms を指定可能です。\n" +
+				"0を指定すると、OSがバッファの\n" +
+				"サイズを自動設定します。\n" +
+				"値を小さくするほど発音ラグが\n" +
+				"減少しますが、音割れや異常動作を\n" +
+				"引き起こす場合があります。\n",
+				"Sound buffer size for WASAPI:\n" +
+				"You can set from 0 to 99999ms.\n" +
+				"Set 0 to use a default sysytem\n" +
+				"buffer size.\n" +
+				"Smaller value makes smaller lag,\n" +
+				"but it may cause sound troubles.\n" +
+				"\n" +
+				"Note: Restart DTXMania to make\n" +
+				"     the setting take effect." );
+			this.list項目リスト.Add( this.iSystemWASAPIBufferSizeMs );
+
 			// #24820 2013.1.3 yyagi
-			this.iSystemASIOBufferSize = new CItemInteger("ASIOBuffSize", 0, 99999, CDTXMania.ConfigIni.nASIOBufferSize,
+			this.iSystemASIOBufferSizeMs = new CItemInteger("ASIOBuffSize", 0, 99999, CDTXMania.ConfigIni.nASIOBufferSizeMs,
 				"ASIO使用時のバッファサイズ:\n" +
-				"0～99999 を指定可能で、通常は\n" +
-				"16の倍数を指定します。" +
-				"(96, 128...)\n" +
+				"0～99999ms を指定可能です。\n" +
 				"0を指定すると、サウンドデバイスに\n" +
 				"指定されている初期値を使用します。\n" +
 				"値を小さくするほど発音ラグが\n" +
 				"減少しますが、音割れや異常動作を\n" +
 				"引き起こす場合があります。\n",
 				"Sound buffer size for ASIO:\n" +
-				"You can set from 0 to 99999.\n" +
+				"You can set from 0 to 99999ms.\n" +
 				"Set 0 to use a default value already\n" +
 				"specified to the sound device.\n" +
 				"Smaller value makes smaller lag,\n" +
@@ -239,7 +257,7 @@ namespace DTXMania
 				"\n" +
 				"Note: Restart DTXMania to make\n" +
 				"     the setting take effect.");
-			this.list項目リスト.Add(this.iSystemASIOBufferSize);
+			this.list項目リスト.Add(this.iSystemASIOBufferSizeMs);
 
 			this.iSystemSkinSubfolder = new CItemList( "Skin (General)", CItemBase.Eパネル種別.通常, nSkinIndex,
 				"スキン切替：\n" +
@@ -1814,7 +1832,8 @@ namespace DTXMania
 		private CItemToggle iSystemBufferedInput;
 		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
 		private CItemList iSystemSoundType;					// #24820 2013.1.3 yyagi
-		private CItemInteger iSystemASIOBufferSize;			// #24820 2013.1.3 yyagi
+		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
+		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -2011,7 +2030,8 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bUseBoxDefSkin = this.iSystemUseBoxDefSkin.bON;								// #28195 2012.5.6 yyagi
 
 			CDTXMania.ConfigIni.nSoundDeviceType = this.iSystemSoundType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
-			CDTXMania.ConfigIni.nASIOBufferSize = this.iSystemASIOBufferSize.n現在の値;						// #24820 2013.1.3 yyagi
+			CDTXMania.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
+			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
 
 //Trace.TraceInformation( "saved" );
 //Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );

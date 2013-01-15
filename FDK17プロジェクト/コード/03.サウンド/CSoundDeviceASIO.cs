@@ -44,7 +44,7 @@ namespace FDK
 
 		// メソッド
 
-		public CSoundDeviceASIO( long nバッファサイズbyte )
+		public CSoundDeviceASIO( long nバッファサイズms )
 		{
 			// 初期化。
 
@@ -128,7 +128,7 @@ Debug.WriteLine( "BASS_Init()完了。" );
 
 
 
-//			defDevice = 0;
+			defDevice = 0;
 
 			// BASS ASIO の初期化。
 Debug.WriteLine( "Default device no.: " + defDevice );
@@ -245,8 +245,8 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 
 			// 出力を開始。
 
-			//this.nバッファサイズsample = (int) ( nバッファサイズms * this.db周波数 / 1000.0 );
-			this.nバッファサイズsample = (int)  nバッファサイズbyte;
+			this.nバッファサイズsample = (int) ( nバッファサイズms * this.db周波数 / 1000.0 );
+			//this.nバッファサイズsample = (int)  nバッファサイズbyte;
 			if ( !BassAsio.BASS_ASIO_Start( this.nバッファサイズsample ) )		// 範囲外の値を指定した場合は自動的にデフォルト値に設定される。
 			{
 				BassAsio.BASS_ASIO_Free();
@@ -256,8 +256,9 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 			else
 			{
 				int n遅延sample = BassAsio.BASS_ASIO_GetLatency( false );	// この関数は BASS_ASIO_Start() 後にしか呼び出せない。
+				int n希望遅延sample = (int) ( nバッファサイズms * this.db周波数 / 1000.0 );
 				this.n実出力遅延ms = (long) ( n遅延sample * 1000.0f / this.db周波数 );
-				Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample(希望{1}) [{2}ms(希望{3}ms)]", n遅延sample, nバッファサイズbyte, this.n実出力遅延ms, nバッファサイズbyte );
+				Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample(希望{1}) [{2}ms(希望{3}ms)]", n遅延sample, n希望遅延sample, this.n実出力遅延ms, nバッファサイズms );
 			}
 		}
 

@@ -659,7 +659,8 @@ namespace DTXMania
 		}
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
-		public int nASIOBufferSize;					// #24820 2012.12.28 yyagi ASIOのバッファサイズ
+		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
+		public int nASIOBufferSizeMs;				// #24820 2012.12.28 yyagi ASIOのバッファサイズ
 		public bool bDynamicBassMixerManagement;	// #24820
 
 #if false
@@ -1114,12 +1115,14 @@ namespace DTXMania
 			this.bIsSwappedGuitarBass = false;			// #24063 2011.1.16 yyagi ギターとベースの切り替え
 			this.bIsAllowedDoubleClickFullscreen = true;	// #26752 2011.11.26 ダブルクリックでのフルスクリーンモード移行を許可
 			this.eBDGroup = EBDGroup.打ち分ける;		// #27029 2012.1.4 from HHPedalとBassPedalのグルーピング
-			this.nPoliphonicSounds = 4;					// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
+			this.nPoliphonicSounds = 2;					// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
+														// #24820 2013.1.15 yyagi 初期値を4から2に変更。BASS.net使用時の負荷軽減のため。
 			this.bIsEnabledSystemMenu = true;			// #28200 2012.5.1 yyagi System Menuの利用可否切替(使用可)
 			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
 			this.nSoundDeviceType = (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM
-			this.nASIOBufferSize = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
+			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
+			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
 			this.bDynamicBassMixerManagement = true;	//
 
 		}
@@ -1246,18 +1249,26 @@ namespace DTXMania
 			#region [ WASAPI/ASIO関連 ]
 			sw.WriteLine( "; サウンド出力方式(0=ACM(って今はまだDirectShowですが), 1=ASIO, 2=WASAPI)" );
 			sw.WriteLine( "; WASAPIはVista以降のOSで使用可能。推奨方式はWASAPI。" );
-			sw.WriteLine( "; WASAPIが使用不可ならASIOを、ASIOが使用不可ならACMを使用します。" );
+			sw.WriteLine( "; WASAPIが使用不可ならASIOを、ASIOが使用不可ならACMを使用します・・・が、" );
+			sw.WriteLine( "; 現時点ではWASAPI使用不可時にASIOは必ず使用不可となり、DirectShowになります。" );
 			sw.WriteLine( "; Sound device type(0=ACM, 1=ASIO, 2=WASAPI)" );
 			sw.WriteLine( "; WASAPI can use on Vista or later OSs." );
 			sw.WriteLine( "; If WASAPI is not available, DTXMania try to use ASIO. If ASIO can't be used, ACM is used." );
 			sw.WriteLine( "SoundDeviceType={0}", (int) this.nSoundDeviceType );
 			sw.WriteLine();
 
-			sw.WriteLine( "; ASIOサウンドバッファサイズ" );
-			sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(サンプル数)の手動指定" );
+			sw.WriteLine( "; WASAPI使用時のサウンドバッファサイズ" );
+			sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(単位:ms)の手動指定" );
+			sw.WriteLine( "; WASAPI Sound Buffer Size." );
+			sw.WriteLine( "; (0=Use system default buffer size, 1-9999=specify the buffer size(ms) by yourself)" );
+			sw.WriteLine( "WASAPIBufferSizeMs={0}", (int) this.nWASAPIBufferSizeMs );
+			sw.WriteLine();
+
+			sw.WriteLine( "; ASIO使用時のサウンドバッファサイズ" );
+			sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(単位:ms)の手動指定" );
 			sw.WriteLine( "; ASIO Sound Buffer Size." );
-			sw.WriteLine( "; (0=Use the value specified to the device, 1-9999=specify the buffer size by yourself)" );
-			sw.WriteLine( "ASIOBufferSize={0}", (int) this.nASIOBufferSize );
+			sw.WriteLine( "; (0=Use the value specified to the device, 1-9999=specify the buffer size(ms) by yourself)" );
+			sw.WriteLine( "ASIOBufferSizeMs={0}", (int) this.nASIOBufferSizeMs );
 			sw.WriteLine();
 
 			sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。");
@@ -1957,9 +1968,13 @@ namespace DTXMania
 											{
 												this.nSoundDeviceType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nSoundDeviceType );
 											}
-											else if ( str3.Equals( "ASIOBufferSize" ) )
+											else if ( str3.Equals( "WASAPIBufferSizeMs" ) )
 											{
-												this.nASIOBufferSize = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nASIOBufferSize );
+												this.nWASAPIBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nWASAPIBufferSizeMs );
+											}
+											else if ( str3.Equals( "ASIOBufferSizeMs" ) )
+											{
+												this.nASIOBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nASIOBufferSizeMs );
 											}
 											else if ( str3.Equals( "DynamicBassMixerManagement" ) )
 											{

@@ -65,6 +65,14 @@ namespace FDK
 		/// <para>WASAPI 排他モード出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
 		/// </summary>
 		public static int SoundDelayExclusiveWASAPI = 0;		// SSTでは、50ms
+		public int GetSoundExclusiveWASAPI()
+		{
+			return SoundDelayExclusiveWASAPI;
+		}
+		public void SetSoundDelayExclusiveWASAPI( int value )
+		{
+			SoundDelayExclusiveWASAPI = value;
+		}
 		/// <summary>
 		/// <para>WASAPI 共有モード出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
@@ -86,14 +94,14 @@ namespace FDK
 		/// <summary>
 		/// <para>ASIO 出力におけるバッファサイズ。</para>
 		/// </summary>
-		public static int SoundBufferSizeASIO = 0;						// 0にすると、デバイスの設定値をそのまま使う。
-		public int GetSoundBufferSizeASIO()
+		public static int SoundDelayASIO = 0;						// 0にすると、デバイスの設定値をそのまま使う。
+		public int GetSoundDelayASIO()
 		{
-			return SoundBufferSizeASIO;
+			return SoundDelayASIO;
 		}
-		public void SetSoundBufferSizeASIO(int value)
+		public void SetSoundDelayASIO(int value)
 		{
-			SoundBufferSizeASIO = value;
+			SoundDelayASIO = value;
 		}
 		/// <summary>
 		/// <para>DirectSound 出力における再生遅延[ms]。ユーザが決定する。</para>
@@ -108,13 +116,13 @@ namespace FDK
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="handle"></param>
-		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType )
+		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO )
 		{
 			WindowHandle = handle;
 			//cMixerManager = new CBassMixerManager();
 			//thMixerManager = new Thread( new ThreadStart( cMixerManager.Start ) );
 
-			t初期化( soundDeviceType );
+			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO );
 		}
 		public void Dispose()
 		{
@@ -123,14 +131,17 @@ namespace FDK
 
 		public static void t初期化()
 		{
-			t初期化( ESoundDeviceType.DirectSound );
+			t初期化( ESoundDeviceType.DirectSound, 0, 0 );
 		}
 
-		public static void t初期化( ESoundDeviceType soundDeviceType )
+		public static void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO )
 		{
 			SoundDevice = null;							// ユーザ依存
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
+
+			SoundDelayExclusiveWASAPI = _nSoundDelayExclusiveWASAPI;
+			SoundDelayASIO = _nSoundDelayASIO;
 
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
 			{
@@ -212,7 +223,7 @@ namespace FDK
 					break;
 
 				case ESoundDeviceType.ASIO:
-					SoundDevice = new CSoundDeviceASIO( SoundBufferSizeASIO );
+					SoundDevice = new CSoundDeviceASIO( SoundDelayASIO );
 					break;
 
 				case ESoundDeviceType.DirectSound:

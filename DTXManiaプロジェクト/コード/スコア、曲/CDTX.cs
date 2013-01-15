@@ -2550,7 +2550,7 @@ namespace DTXMania
 						if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 						{
 							CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
-							duration = wc.rSound[0].n総演奏時間ms;
+							duration = (wc.rSound[0] == null)? 0 : wc.rSound[0].n総演奏時間ms;
 						}
 //Debug.WriteLine("duration=" + duration );
 						int n新RemoveMixer時刻ms, n新RemoveMixer位置;
