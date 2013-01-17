@@ -59,7 +59,7 @@ namespace FDK
 		public CWin32.WAVEFORMATEX waveformatex;
 
 		private string filename;
-		private byte[] srcBuf = null, dstBuf;
+		private byte[] srcBuf = null;
 		private int nHandle = -1;
 
 		public override int Open( string filename )
@@ -119,7 +119,6 @@ namespace FDK
 			if ( hxas == null )
 			{
 				Trace.TraceError( "Error: xa: Open(): xaDecodeOpen(): " + Path.GetFileName( filename ) );
-				dstBuf = null;
 				return -1;
 			}
 
@@ -187,7 +186,6 @@ namespace FDK
 					if ( !xaDecodeConvert( (IntPtr) nHandle, ref xastreamheader ) )
 					{
 						Trace.TraceError( "Error: xaDecodeConvert(): " + Path.GetFileName( filename ) );
-						dstBuf = null;
 						return -1;
 					}
 				}
@@ -210,6 +208,7 @@ namespace FDK
 			{
 				Trace.TraceError( "Error: xaDecodeClose(): " + Path.GetFileName( filename ) );
 			}
+			srcBuf = null;
 			#endregion
 		}
 

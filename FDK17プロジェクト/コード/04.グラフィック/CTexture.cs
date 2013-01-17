@@ -81,7 +81,7 @@ namespace FDK
 			this.b加算合成 = false;
 			this.fZ軸中心回転 = 0f;
 			this.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
-			this._txData = null;
+//			this._txData = null;
 		}
 		
 		/// <summary>
@@ -113,10 +113,10 @@ namespace FDK
 					this.texture = Texture.FromStream( device, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, poolvar, Filter.Point, Filter.None, colorKey );
 				}
 			}
-			catch
+			catch ( Exception e )
 			{
 				this.Dispose();
-				throw new CTextureCreateFailedException( "ビットマップからのテクスチャの生成に失敗しました。" );
+				throw new CTextureCreateFailedException( "ビットマップからのテクスチャの生成に失敗しました。(" + e.Message + ")" );
 			}
 		}
 	
@@ -237,7 +237,7 @@ namespace FDK
 			if ( !File.Exists( strファイル名 ) )		// #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
 				throw new FileNotFoundException( string.Format( "ファイルが存在しません。\n[{0}]", strファイル名 ) );
 
-			_txData = File.ReadAllBytes( strファイル名 );
+			Byte[] _txData = File.ReadAllBytes( strファイル名 );
 			MakeTexture( device, _txData, format, b黒を透過する, pool );
 		}
 
@@ -581,7 +581,7 @@ namespace FDK
 #else
 			Pool.Managed;
 #endif
-		byte[] _txData;
+//		byte[] _txData;
 		static object lockobj = new object();
 
 		private void tレンダリングステートの設定( Device device )

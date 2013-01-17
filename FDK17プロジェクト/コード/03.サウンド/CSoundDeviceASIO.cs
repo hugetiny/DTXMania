@@ -8,6 +8,29 @@ using Un4seen.Bass.AddOn.Mix;
 
 namespace FDK
 {
+	/// <summary>
+	/// 全ASIOデバイスを列挙する静的クラス。
+	/// BASS_Init()やBASS_ASIO_Init()の状態とは無関係に使用可能。
+	/// </summary>
+	public static class CEnumerateAllAsioDevices
+	{
+		public static string[] GetAllASIODevices()
+		{
+			Debug.WriteLine( "BassAsio.BASS_ASIO_GetDeviceInfos():" );
+			BASS_ASIO_DEVICEINFO[] bassAsioDevInfo = BassAsio.BASS_ASIO_GetDeviceInfos();
+
+			List<string> asioDeviceList = new List<string>();
+
+			for ( int i = 0; i < bassAsioDevInfo.Length; i++ )
+			{
+				asioDeviceList.Add( bassAsioDevInfo[ i ].name );
+				Trace.TraceInformation( "ASIO Device {0}: {1}", i, bassAsioDevInfo[ i ].name );
+			}
+
+			return asioDeviceList.ToArray();
+		}
+	}
+
 	public class CSoundDeviceASIO : ISoundDevice
 	{
 		// プロパティ
@@ -21,6 +44,11 @@ namespace FDK
 		{
 			get;
 			protected set;
+		}
+		public int nASIODevice
+		{
+			get;
+			set;
 		}
 
 		// CSoundTimer 用に公開しているプロパティ
@@ -44,17 +72,17 @@ namespace FDK
 
 		// メソッド
 
-		public CSoundDeviceASIO( long nバッファサイズms )
+		public CSoundDeviceASIO( long nバッファサイズms, int _nASIODevice )
 		{
 			// 初期化。
 
 			Trace.TraceInformation( "BASS (ASIO) の初期化を開始します。" );
-
 			this.e出力デバイス = ESoundDeviceType.Unknown;
 			this.n実出力遅延ms = 0;
 			this.n経過時間ms = 0;
 			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
 			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
+			this.nASIODevice = _nASIODevice;
 
 			#region [ BASS registration ]
 			// BASS.NET ユーザ登録（BASSスプラッシュが非表示になる）。
@@ -78,6 +106,7 @@ namespace FDK
 
 			// BASS の設定。
 
+			this.bIsBASSFree = true;
 			Debug.Assert( Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 ),		// 0:BASSストリームの自動更新を行わない。（BASSWASAPIから行うため）
 				string.Format( "BASS_SetConfig() に失敗しました。[{0}", Bass.BASS_ErrorGetCode() ) );
 
@@ -94,47 +123,36 @@ Debug.WriteLine( "BASS_SetConfig()完了。" );
 
 Debug.WriteLine( "BASS_Init()完了。" );
 			#region [ デバッグ用: ASIOデバイスのenumerateと、ログ出力 ]
-			int a, count = 0;
-			BASS_ASIO_DEVICEINFO asioDevInfo;
-			for ( a = 0; ( asioDevInfo = BassAsio.BASS_ASIO_GetDeviceInfo( a ) ) != null; a++ )
-			{
-			    Trace.TraceInformation( "ASIO Device {0}: {1}", a, asioDevInfo.name );
-			    count++; // count it
-			}
+//			CEnumerateAllAsioDevices.GetAllASIODevices();
+//Debug.WriteLine( "BassAsio.BASS_ASIO_GetDeviceInfo():" );
+//            int a, count = 0;
+//            BASS_ASIO_DEVICEINFO asioDevInfo;
+//            for ( a = 0; ( asioDevInfo = BassAsio.BASS_ASIO_GetDeviceInfo( a ) ) != null; a++ )
+//            {
+//                Trace.TraceInformation( "ASIO Device {0}: {1}, driver={2}", a, asioDevInfo.name, asioDevInfo.driver );
+//                count++; // count it
+//            }
 			#endregion
 
 			// デフォルトデバイスの取得。(BASSではデフォルトデバイスを扱えるが、BASSASIOでは扱えないため)
-			int defDevice = -1;
-			BASS_DEVICEINFO devinfo;
-			for ( int n = 0; ( devinfo = Bass.BASS_GetDeviceInfo( n ) ) != null; n++ )
-			{
-				Debug.WriteLine( "dev#=" + n + ", IsDefault=" + devinfo.IsDefault );
-				if ( devinfo.IsDefault )
-				{
-					defDevice = n;
-					break;
-				}
-			}
-//            BASS_DEVICEINFO[] bd = Bass.BASS_GetDeviceInfos();
-//            for ( int i = 0; i < bd.Length; i++ )
-//            {
-//Debug.WriteLine( "dev#=" + i + ", IsDefault=" + bd[i].IsDefault );
-//                if ( bd[ i ].IsDefault )
-//                {
-//                    defDevice = i;
-//                    break;
-//                }
-//            }
-
-
-
-			defDevice = 0;
+			// BASSのデバイスNoと、BASSASIOのデバイスNoは異なるので注意！！！！！
+//Debug.WriteLine( "Bass.BASS_GetDeviceInfo():" );
+			//int defDevice = -1;
+			//BASS_DEVICEINFO devinfo;
+			//for ( int n = 0; ( devinfo = Bass.BASS_GetDeviceInfo( n ) ) != null; n++ )
+			//{
+			//    Debug.WriteLine( "dev#=" + n + ": " + devinfo.name + ", driver=" + devinfo.driver + ", IsDefault=" + devinfo.IsDefault );
+			//    if ( devinfo.IsDefault )
+			//    {
+			//        defDevice = n;
+			//        break;
+			//    }
+			//}
 
 			// BASS ASIO の初期化。
-Debug.WriteLine( "Default device no.: " + defDevice );
-			nデバイス = defDevice;			// デフォルトデバイス
+Debug.WriteLine( "Default device no.: " + nASIODevice );
 			BASS_ASIO_INFO asioInfo = null;
-			if ( BassAsio.BASS_ASIO_Init( nデバイス, BASSASIOInit.BASS_ASIO_THREAD ) )	// 専用スレッドにて起動
+			if ( BassAsio.BASS_ASIO_Init( nASIODevice, BASSASIOInit.BASS_ASIO_THREAD ) )	// 専用スレッドにて起動
 			{
 				#region [ ASIO の初期化に成功。]
 				//-----------------
@@ -153,6 +171,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 					asioInfo.bufmax, asioInfo.bufmax * 1000 / this.db周波数,
 					this.fmtASIOデバイスフォーマット.ToString()
 					);
+				this.bIsBASSFree = false;
 				#region [ debug: channel format ]
 				BASS_ASIO_CHANNELINFO chinfo = new BASS_ASIO_CHANNELINFO();
 				int chan = 0;
@@ -172,8 +191,14 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 				#region [ ASIO の初期化に失敗。]
 				//-----------------
 				BASSError errcode = Bass.BASS_ErrorGetCode();
+				string errmes = errcode.ToString();
+				if ( errcode == BASSError.BASS_OK )
+				{
+					errmes = "BASS_OK; The device may be dissconnected";
+				}
 				Bass.BASS_Free();
-				throw new Exception( string.Format( "BASS (ASIO) の初期化に失敗しました。(BASS_ASIO_Init)[{0}]", errcode ) );
+				this.bIsBASSFree = true;
+				throw new Exception( string.Format( "BASS (ASIO) の初期化に失敗しました。(BASS_ASIO_Init)[{0}]", errmes ) );
 				//-----------------
 				#endregion
 			}
@@ -188,6 +213,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 				//-----------------
 				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
+				this.bIsBASSFree = true;
 				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelEnable() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
 				//-----------------
 				#endregion
@@ -200,6 +226,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 					//-----------------
 					BassAsio.BASS_ASIO_Free();
 					Bass.BASS_Free();
+					this.bIsBASSFree = true;
 					throw new Exception( string.Format( "Failed BASS_ASIO_ChannelJoin({1}) [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString(), i ) );
 					//-----------------
 					#endregion
@@ -211,6 +238,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 				//-----------------
 				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
+				this.bIsBASSFree = true;
 				throw new Exception( string.Format( "Failed BASS_ASIO_ChannelSetFormat() [{0}]", BassAsio.BASS_ASIO_ErrorGetCode().ToString() ) );
 				//-----------------
 				#endregion
@@ -224,8 +252,12 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 			this.hMixer = BassMix.BASS_Mixer_StreamCreate( (int) this.db周波数, this.n出力チャンネル数, flag );
 
 			if ( this.hMixer == 0 )
+			{
+				BassAsio.BASS_ASIO_Free();
+				Bass.BASS_Free();
+				this.bIsBASSFree = true;
 				throw new Exception( string.Format( "BASSミキサの作成に失敗しました。[{0}]", Bass.BASS_ErrorGetCode() ) );
-
+			}
 
 			// BASS ミキサーの1秒あたりのバイト数を算出。
 
@@ -251,6 +283,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 			{
 				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
+				this.bIsBASSFree = true;
 				throw new Exception( "ASIO デバイス出力開始に失敗しました。" + BassAsio.BASS_ASIO_ErrorGetCode().ToString() );
 			}
 			else
@@ -285,6 +318,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 		}
 		#endregion
 
+
 		#region [ Dispose-Finallizeパターン実装 ]
 		//-----------------
 		public void Dispose()
@@ -294,9 +328,15 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
-			Bass.BASS_StreamFree( this.hMixer );
-			BassAsio.BASS_ASIO_Free();	// システムタイマより先に呼び出すこと。（tAsio処理() の中でシステムタイマを参照してるため）
-			Bass.BASS_Free();
+			if ( hMixer != -1 )
+			{
+				Bass.BASS_StreamFree( this.hMixer );
+			}
+			if ( !this.bIsBASSFree )
+			{
+				BassAsio.BASS_ASIO_Free();	// システムタイマより先に呼び出すこと。（tAsio処理() の中でシステムタイマを参照してるため）
+				Bass.BASS_Free();
+			}
 
 			if( bManagedDispose )
 			{
@@ -310,6 +350,7 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 		}
 		//-----------------
 		#endregion
+
 
 		protected int hMixer = -1;
 		protected int n出力チャンネル数 = 0;
@@ -346,5 +387,6 @@ Debug.WriteLine( "Default device no.: " + defDevice );
 
 		private long nミキサーの1秒あたりのバイト数 = 0;
 		private long n累積転送バイト数 = 0;
+		private bool bIsBASSFree = true;
 	}
 }

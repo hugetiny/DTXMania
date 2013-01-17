@@ -442,7 +442,7 @@ namespace DTXMania
 		public STDGBVALUE<bool> bSudden;
 		public bool bTight;
 		public STDGBVALUE<bool> bGraph;     // #24074 2011.01.23 add ikanick
-//		public bool bWave再生位置自動調整機能有効;
+		public bool bWave再生位置自動調整機能有効;
 		public bool bシンバルフリー;
 		public bool bストイックモード;
 		public bool bドラム打音を発声する;
@@ -661,6 +661,7 @@ namespace DTXMania
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
 		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
 		public int nASIOBufferSizeMs;				// #24820 2012.12.28 yyagi ASIOのバッファサイズ
+		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
 		public bool bDynamicBassMixerManagement;	// #24820
 
 #if false
@@ -1028,7 +1029,7 @@ namespace DTXMania
 			this.bフィルイン有効 = true;
 			this.n曲が選択されてからプレビュー音が鳴るまでのウェイトms = 1000;
 			this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms = 100;
-//			this.bWave再生位置自動調整機能有効 = true;
+			this.bWave再生位置自動調整機能有効 = true;
 			this.bBGM音を発声する = true;
 			this.bドラム打音を発声する = true;
 			this.b歓声を発声する = true;
@@ -1068,6 +1069,7 @@ namespace DTXMania
 				this.nInputAdjustTimeMs[ i ] = 0;
 			}
 			this.n演奏速度 = 20;
+			#region [ AutoPlay ]
 			this.bAutoPlay = new STAUTOPLAY();
 			this.bAutoPlay.HH = false;
 			this.bAutoPlay.SD = false;
@@ -1089,7 +1091,7 @@ namespace DTXMania
 			this.bAutoPlay.BsB = true;
 			this.bAutoPlay.BsPick = true;
 			this.bAutoPlay.BsW = true;
-
+			#endregion
 			this.nヒット範囲ms = new STRANGE();
 			this.nヒット範囲ms.Perfect = 34;
 			this.nヒット範囲ms.Great = 67;
@@ -1098,6 +1100,7 @@ namespace DTXMania
 			this.ConfigIniファイル名 = "";
 			this.dicJoystick = new Dictionary<int, string>( 10 );
 			this.tデフォルトのキーアサインに設定する();
+			#region [ velocityMin ]
 			this.nVelocityMin.LC = 0;					// #23857 2011.1.31 yyagi VelocityMin
 			this.nVelocityMin.HH = 20;
 			this.nVelocityMin.SD = 0;
@@ -1107,6 +1110,7 @@ namespace DTXMania
 			this.nVelocityMin.FT = 0;
 			this.nVelocityMin.CY = 0;
 			this.nVelocityMin.RD = 0;
+			#endregion
 			this.nRisky = 0;							// #23539 2011.7.26 yyagi RISKYモード
 			this.nShowLagType = (int) EShowLagType.OFF;	// #25370 2011.6.3 yyagi ズレ時間表示
 			this.bIsAutoResultCapture = false;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能ON/OFF
@@ -1122,6 +1126,7 @@ namespace DTXMania
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
 			this.nSoundDeviceType = (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM
 			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
+			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
 			this.bDynamicBassMixerManagement = true;	//
 
@@ -1239,18 +1244,19 @@ namespace DTXMania
 			sw.WriteLine( "BackSleep={0}", this.n非フォーカス時スリープms );		// そのまま引用（苦笑）
 			sw.WriteLine();											        			//
 			#endregion
+			#region [ フレーム処理関連(VSync, フレーム毎のsleep) ]
 			sw.WriteLine("; 垂直帰線同期(0:OFF,1:ON)");
 			sw.WriteLine( "VSyncWait={0}", this.b垂直帰線待ちを行う ? 1 : 0 );
             sw.WriteLine();
 			sw.WriteLine( "; フレーム毎のsleep値[ms] (-1でスリープ無し, 0以上で毎フレームスリープ。動画キャプチャ等で活用下さい)" );	// #xxxxx 2011.11.27 yyagi add
 			sw.WriteLine( "; A sleep time[ms] per frame." );							//
-			sw.WriteLine( "SleepTimePerFrame={0}", this.nフレーム毎スリープms );			//
+			sw.WriteLine( "SleepTimePerFrame={0}", this.nフレーム毎スリープms );		//
 			sw.WriteLine();											        			//
+			#endregion
 			#region [ WASAPI/ASIO関連 ]
-			sw.WriteLine( "; サウンド出力方式(0=ACM(って今はまだDirectShowですが), 1=ASIO, 2=WASAPI)" );
+			sw.WriteLine( "; サウンド出力方式(0=ACM(って今はまだDirectSoundですが), 1=ASIO, 2=WASAPI)" );
 			sw.WriteLine( "; WASAPIはVista以降のOSで使用可能。推奨方式はWASAPI。" );
-			sw.WriteLine( "; WASAPIが使用不可ならASIOを、ASIOが使用不可ならACMを使用します・・・が、" );
-			sw.WriteLine( "; 現時点ではWASAPI使用不可時にASIOは必ず使用不可となり、DirectShowになります。" );
+			sw.WriteLine( "; なお、WASAPIが使用不可ならASIOを、ASIOが使用不可ならACMを使用します。" );
 			sw.WriteLine( "; Sound device type(0=ACM, 1=ASIO, 2=WASAPI)" );
 			sw.WriteLine( "; WASAPI can use on Vista or later OSs." );
 			sw.WriteLine( "; If WASAPI is not available, DTXMania try to use ASIO. If ASIO can't be used, ACM is used." );
@@ -1264,6 +1270,16 @@ namespace DTXMania
 			sw.WriteLine( "WASAPIBufferSizeMs={0}", (int) this.nWASAPIBufferSizeMs );
 			sw.WriteLine();
 
+			sw.WriteLine( "; ASIO使用時のサウンドデバイス" );
+			sw.WriteLine( "; Sound device used by ASIO." );
+			string[] asiodev = CEnumerateAllAsioDevices.GetAllASIODevices();
+			for ( int i = 0; i < asiodev.Length; i++ )
+			{
+				sw.WriteLine( "; {0}: {1}", i, asiodev[ i ] );
+			}
+			sw.WriteLine( "ASIODevice={0}", (int) this.nASIODevice );
+			sw.WriteLine();
+
 			sw.WriteLine( "; ASIO使用時のサウンドバッファサイズ" );
 			sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(単位:ms)の手動指定" );
 			sw.WriteLine( "; ASIO Sound Buffer Size." );
@@ -1271,11 +1287,11 @@ namespace DTXMania
 			sw.WriteLine( "ASIOBufferSizeMs={0}", (int) this.nASIOBufferSizeMs );
 			sw.WriteLine();
 
-			sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。");
-			sw.WriteLine( "; ONにすると、ギター曲などチップ音の多い曲も再生できますが、画面が少しがたつきます。" );
-			sw.WriteLine( "; (0=行わない, 1=行う)" );
-			sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement? 1 : 0 );
-			sw.WriteLine();
+			//sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。");
+			//sw.WriteLine( "; ONにすると、ギター曲などチップ音の多い曲も再生できますが、画面が少しがたつきます。" );
+			//sw.WriteLine( "; (0=行わない, 1=行う)" );
+			//sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement? 1 : 0 );
+			//sw.WriteLine();
 
 			#endregion
 			#region [ ギター/ベース/ドラム 有効/無効 ]
@@ -1348,8 +1364,8 @@ namespace DTXMania
 			sw.WriteLine( "PreviewImageWait={0}", this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms );
 			sw.WriteLine();
 			#endregion
-//			sw.WriteLine( "; Waveの再生位置自動補正(0:OFF, 1:ON)" );
-//			sw.WriteLine( "AdjustWaves={0}", this.bWave再生位置自動調整機能有効 ? 1 : 0 );
+			sw.WriteLine( "; Waveの再生位置自動補正(0:OFF, 1:ON)" );
+			sw.WriteLine( "AdjustWaves={0}", this.bWave再生位置自動調整機能有効 ? 1 : 0 );
 			sw.WriteLine();
 			#region [ BGM/ドラムヒット音の再生 ]
 			sw.WriteLine( "; BGM の再生(0:OFF, 1:ON)" );
@@ -1972,14 +1988,18 @@ namespace DTXMania
 											{
 												this.nWASAPIBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nWASAPIBufferSizeMs );
 											}
+											else if ( str3.Equals( "ASIODevice" ) )
+											{
+												this.nASIODevice = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 999, this.nASIODevice );
+											}
 											else if ( str3.Equals( "ASIOBufferSizeMs" ) )
 											{
 												this.nASIOBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nASIOBufferSizeMs );
 											}
-											else if ( str3.Equals( "DynamicBassMixerManagement" ) )
-											{
-												this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
-											}
+											//else if ( str3.Equals( "DynamicBassMixerManagement" ) )
+											//{
+											//    this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
+											//}
 											#endregion
 											else if ( str3.Equals( "VSyncWait" ) )
 											{
@@ -2075,10 +2095,10 @@ namespace DTXMania
 												this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 0x5f5e0ff, this.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms );
 											}
 											#endregion
-											//else if( str3.Equals( "AdjustWaves" ) )
-											//{
-											//    this.bWave再生位置自動調整機能有効 = C変換.bONorOFF( str4[ 0 ] );
-											//}
+											else if( str3.Equals( "AdjustWaves" ) )
+											{
+											    this.bWave再生位置自動調整機能有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
 											#region [ BGM/ドラムのヒット音 ]
 											else if( str3.Equals( "BGMSound" ) )
 											{

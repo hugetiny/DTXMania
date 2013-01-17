@@ -301,7 +301,7 @@ namespace DTXMania
 								CDTXMania.stage演奏ドラム画面.On活性化();
 
 							span = (TimeSpan) ( DateTime.Now - timeBeginLoadWAV );
-							Trace.TraceInformation( "WAV/譜面後処理時間({0,4}):   {1}", ( CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count ), span.ToString() );
+							Trace.TraceInformation( "WAV/譜面後処理時間({0,4}):  {1}", ( CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count ), span.ToString() );
 
 							base.eフェーズID = CStage.Eフェーズ.NOWLOADING_BMPファイルを読み込む;
 						}

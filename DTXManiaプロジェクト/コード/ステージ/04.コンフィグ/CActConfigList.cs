@@ -107,10 +107,10 @@ namespace DTXMania
 
 
 	
-			//this.iSystemAdjustWaves = new CItemToggle( "AdjustWaves", CDTXMania.ConfigIni.bWave再生位置自動調整機能有効,
-			//    "サウンド再生位置自動補正：\nハードウェアやＯＳに起因するサウン\nドのずれを強制的に補正します。\nBGM のように再生時間の長い音声\nデータが使用されている曲で効果が\nあります。",
-			//    "Automatic wave playing position\n adjustment feature. If you turn it ON,\n it decrease the lag which comes from\n the difference of hardware/OS.\nUsually, you should turn it ON." );
-			//this.list項目リスト.Add( this.iSystemAdjustWaves );
+			this.iSystemAdjustWaves = new CItemToggle( "AdjustWaves", CDTXMania.ConfigIni.bWave再生位置自動調整機能有効,
+			    "サウンド再生位置自動補正：\nハードウェアやＯＳに起因するサウン\nドのずれを強制的に補正します。\nBGM のように再生時間の長い音声\nデータが使用されている曲で効果が\nあります。",
+			    "Automatic wave playing position\n adjustment feature. If you turn it ON,\n it decrease the lag which comes from\n the difference of hardware/OS.\nUsually, you should turn it ON." );
+			this.list項目リスト.Add( this.iSystemAdjustWaves );
 			this.iSystemVSyncWait = new CItemToggle( "VSyncWait", CDTXMania.ConfigIni.b垂直帰線待ちを行う,
 				"垂直帰線同期：\n画面の描画をディスプレイの垂直帰\n線中に行なう場合には ON を指定し\nます。ON にすると、ガタつきのない\n滑らかな画面描画が実現されます。",
 				"Turn ON to wait VSync (Vertical\n Synchronizing signal) at every\n drawings. (so FPS becomes 60)\nIf you have enough CPU/GPU power,\n the scroll would become smooth." );
@@ -239,6 +239,24 @@ namespace DTXMania
 				"     the setting take effect." );
 			this.list項目リスト.Add( this.iSystemWASAPIBufferSizeMs );
 
+			// #24820 2013.1.17 yyagi
+			string[] asiodevs = CEnumerateAllAsioDevices.GetAllASIODevices();
+			this.iSystemASIODevice = new CItemList( "ASIO device", CItemList.Eパネル種別.通常, CDTXMania.ConfigIni.nASIODevice,
+				"ASIOデバイス:\n" +
+				"ASIO使用時のサウンドデバイスを\n" +
+				"選択します。\n" +
+				"\n" +
+				"※ 設定はアプリ再起動後に有効に\n" +
+				"　なります。",
+				"ASIO Sound Device:\n" +
+				"Select the sound device to use\n" +
+				"under ASIO mode.\n" +
+				"\n" +
+				"Note: Restart DTXMania to make\n" +
+				"     the setting take effect.",
+				asiodevs );
+			this.list項目リスト.Add( this.iSystemASIODevice );
+
 			// #24820 2013.1.3 yyagi
 			this.iSystemASIOBufferSizeMs = new CItemInteger("ASIOBuffSize", 0, 99999, CDTXMania.ConfigIni.nASIOBufferSizeMs,
 				"ASIO使用時のバッファサイズ:\n" +
@@ -247,7 +265,10 @@ namespace DTXMania
 				"指定されている初期値を使用します。\n" +
 				"値を小さくするほど発音ラグが\n" +
 				"減少しますが、音割れや異常動作を\n" +
-				"引き起こす場合があります。\n",
+				"引き起こす場合があります。\n" +
+				"\n" +
+				"※ 設定はアプリ再起動後に有効に\n" +
+				"　なります。",
 				"Sound buffer size for ASIO:\n" +
 				"You can set from 0 to 99999ms.\n" +
 				"Set 0 to use a default value already\n" +
@@ -1789,7 +1810,7 @@ namespace DTXMania
 		private CItemBase iKeyAssignGuitarReturnToMenu;
 		private CItemBase iKeyAssignGuitarWail;
 		private CItemToggle iLogOutputLog;
-//		private CItemToggle iSystemAdjustWaves;
+		private CItemToggle iSystemAdjustWaves;
 		private CItemToggle iSystemAudienceSound;
 		private CItemInteger iSystemAutoChipVolume;
 		private CItemToggle iSystemAVI;
@@ -1834,6 +1855,7 @@ namespace DTXMania
 		private CItemList iSystemSoundType;					// #24820 2013.1.3 yyagi
 		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
 		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
+		private CItemList	iSystemASIODevice;				// $24820 2013.1.17 yyagi
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -2032,6 +2054,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.nSoundDeviceType = this.iSystemSoundType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
 			CDTXMania.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
 			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
+			CDTXMania.ConfigIni.nASIODevice = this.iSystemASIODevice.n現在選択されている項目番号;			// #24820 2013.1.17 yyagi
 
 //Trace.TraceInformation( "saved" );
 //Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );

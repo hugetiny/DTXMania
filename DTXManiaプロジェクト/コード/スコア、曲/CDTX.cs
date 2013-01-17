@@ -661,6 +661,11 @@ namespace DTXMania
 					this.bBGMとして使う = !value;
 				}
 			}
+			public bool bIsBassSound = false;
+			public bool bIsGuitarSound = false;
+			public bool bIsDrumsSound = false;
+			public bool bIsSESound = false;
+			public bool bIsBGMSound = false;
 
 			public override string ToString()
 			{
@@ -1590,22 +1595,67 @@ namespace DTXMania
 					//        CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
 					//    }
 					//}
-					for ( int i = 0; i < nPolyphonicSounds; i++ )
+
+					// まず1つめを登録する
+					try
 					{
-						try
+						cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( str );
+						cwav.rSound[ 0 ].n音量 = 100;
+						if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 						{
-							cwav.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( str );
-							cwav.rSound[ i ].n音量 = 100;
-							if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
-							{
-								Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
-							}
+							Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
 						}
-						catch ( Exception e )
+					}
+					catch ( Exception e )
+					{
+						cwav.rSound[ 0 ] = null;
+						Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
+						Trace.TraceError( "例外: " + e.Message );
+					}
+
+					#region [ 同時発音数を、チャンネルによって変える ]
+					int nPoly = nPolyphonicSounds;
+					if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )	// DShowでの再生の場合はミキシング負荷が高くないため、
+					{																		// チップのライフタイム管理を行わない
+						if      ( cwav.bIsBassSound )   nPoly = (nPolyphonicSounds >= 2)? 2 : 1;
+						else if ( cwav.bIsGuitarSound ) nPoly = (nPolyphonicSounds >= 2)? 2 : 1;
+						else if ( cwav.bIsSESound )     nPoly = 1;
+					}
+					if ( cwav.bIsBGMSound ) nPoly = 1;
+					#endregion
+
+					// 残りはClone等で登録する
+					if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" )	// DShowでの再生の場合はCloneする
+					{
+						for ( int i = 1; i < nPoly; i++ )
+						{
+							cwav.rSound[ i ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
+							// CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
+						}
+						for ( int i = nPoly; i < nPolyphonicSounds; i++ )
 						{
 							cwav.rSound[ i ] = null;
-							Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
-							Trace.TraceError( "例外: " + e.Message );
+						}
+					}
+					else															// WASAPI/ASIO時は通常通り登録
+					{
+						for ( int i = 1; i < nPoly; i++ )
+						{
+							try
+							{
+								cwav.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( str );
+								cwav.rSound[ i ].n音量 = 100;
+								if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+								{
+									Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
+								}
+							}
+							catch ( Exception e )
+							{
+								cwav.rSound[ i ] = null;
+								Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
+								Trace.TraceError( "例外: " + e.Message );
+							}
 						}
 					}
 				}
@@ -1776,6 +1826,8 @@ namespace DTXMania
 				}
 			}
 		}
+
+		#region [ チップの再生と停止 ]
 		public void tチップの再生( CChip rChip, long n再生開始システム時刻ms, int nLane )
 		{
 			this.tチップの再生( rChip, n再生開始システム時刻ms, nLane, CDTXMania.ConfigIni.n自動再生音量, false, false );
@@ -1800,7 +1852,8 @@ namespace DTXMania
 				{
 					CWAV wc = this.listWAV[ pChip.n整数値・内部番号 ];
 					int index = wc.n現在再生中のサウンド番号 = ( wc.n現在再生中のサウンド番号 + 1 ) % nPolyphonicSounds;
-					if( ( wc.rSound[ 0 ] != null ) && wc.rSound[ 0 ].bストリーム再生する )
+					if( ( wc.rSound[ 0 ] != null ) && 
+						( wc.rSound[ 0 ].bストリーム再生する || wc.rSound[index] == null ) )
 					{
 						index = wc.n現在再生中のサウンド番号 = 0;
 					}
@@ -1891,6 +1944,8 @@ namespace DTXMania
 				this.tWavの再生停止( cwav.n内部番号 );
 			}
 		}
+		#endregion
+
 		public void t入力( string strファイル名, bool bヘッダのみ )
 		{
 			this.t入力( strファイル名, bヘッダのみ, 1.0, 0 );
@@ -2405,6 +2460,28 @@ namespace DTXMania
 							if ( ( chip.bWAVを使うチャンネルである && this.listWAV.ContainsKey( chip.n整数値・内部番号 ) ) && !this.listWAV[ chip.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Contains( chip.nチャンネル番号 ) )
 							{
 								this.listWAV[ chip.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Add( chip.nチャンネル番号 );
+
+								int c = chip.nチャンネル番号 >> 4;
+								switch ( c )
+								{
+									case 0x01:
+										this.listWAV[ chip.n整数値・内部番号 ].bIsDrumsSound = true; break;
+									case 0x02:
+										this.listWAV[ chip.n整数値・内部番号 ].bIsGuitarSound = true; break;
+									case 0x0A:
+										this.listWAV[ chip.n整数値・内部番号 ].bIsBassSound = true; break;
+									case 0x06:
+									case 0x07:
+									case 0x08:
+									case 0x09:
+										this.listWAV[ chip.n整数値・内部番号 ].bIsSESound = true; break;
+									case 0x00:
+										if ( chip.nチャンネル番号 == 0x01 )
+										{
+											this.listWAV[ chip.n整数値・内部番号 ].bIsBGMSound = true; break;
+										}
+										break;
+								}
 							}
 						}
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
@@ -2489,7 +2566,7 @@ namespace DTXMania
 		}
 		public void PlanToAddMixerChannel()
 		{
-			if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectShow" )	// DShowでの再生の場合はミキシング負荷が高くないため、
+			if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" )	// DShowでの再生の場合はミキシング負荷が高くないため、
 			{																		// チップのライフタイム管理を行わない
 				return;
 			}
@@ -2525,8 +2602,22 @@ namespace DTXMania
 					case 0x80:	case 0x81:	case 0x82:	case 0x83:	case 0x84:	case 0x85:	case 0x86:	case 0x87:	case 0x88:	case 0x89:
 					case 0x90:	case 0x91:	case 0x92:
 
-						#region [ 発音2秒前のタイミングを記録 ]
-						const int n発音前余裕ms = 1000, n発音後余裕ms = 800;
+						#region [ 発音1秒前のタイミングを記録 ]
+						int n発音前余裕ms = 1000, n発音後余裕ms = 800;
+						{
+							int ch = pChip.nチャンネル番号 >> 4;
+							if ( ch == 0x02 || ch == 0x0A )
+							{
+								n発音前余裕ms = 500;
+								n発音前余裕ms = 500;
+							}
+							if ( ch == 0x06 || ch == 0x07 || ch == 0x08 || ch == 0x09 )
+							{
+								n発音前余裕ms = 200;
+								n発音前余裕ms = 500;
+							}
+						}
+
 						int nAddMixer時刻ms, nAddMixer位置 = 0;
 //Debug.WriteLine("==================================================================");
 //Debug.WriteLine( "Start: ch=" + pChip.nチャンネル番号.ToString("x2") + ", nWAV番号=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms + ", lasttime=" + listChip[ listChip.Count - 1 ].n発声時刻ms );

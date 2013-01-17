@@ -19,7 +19,7 @@ namespace DTXMania
 	internal class CDTXMania : Game
 	{
 		// プロパティ
-
+		#region [ properties ]
 		public static readonly string VERSION = "094(120610)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
@@ -293,6 +293,7 @@ namespace DTXMania
 		{
 			get { return base.Window.Handle; }
 		}
+		#endregion
 
 		// コンストラクタ
 
@@ -1694,7 +1695,8 @@ for (int i = 0; i < 3; i++) {
 				Sound管理 = new CSound管理( base.Window.Handle,
 											soundDeviceType,
 											CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
-											CDTXMania.ConfigIni.nASIOBufferSizeMs
+											CDTXMania.ConfigIni.nASIOBufferSizeMs,
+											CDTXMania.ConfigIni.nASIODevice
 				);
 				base.Window.Text += " (" + Sound管理.GetCurrentSoundDeviceType() + ")";
 				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );

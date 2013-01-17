@@ -81,6 +81,7 @@ namespace FDK
 
 			// BASS の設定。
 
+			this.bIsBASSFree = true;
 			Debug.Assert( Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 ),		// 0:BASSストリームの自動更新を行わない。（BASSWASAPIから行うため）
 				string.Format( "BASS_SetConfig() に失敗しました。[{0}", Bass.BASS_ErrorGetCode() ) );
 
@@ -148,6 +149,7 @@ Retry:
 						n実バッファサイズms.ToString(),
 						n希望バッファサイズms.ToString(),
 						n更新間隔ms.ToString() );
+					this.bIsBASSFree = false;
 					//-----------------
 					#endregion
 				}
@@ -160,6 +162,7 @@ Retry:
 					this.n実出力遅延ms = 0;	// 初期値はゼロ
 					var devInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( BassWasapi.BASS_WASAPI_GetDevice() );	// 共有モードの場合、更新間隔はデバイスのデフォルト値に固定される。
 					Trace.TraceInformation( "BASS を初期化しました。(WASAPI共有モード, {0}ms, 更新間隔{1}ms)", n希望バッファサイズms, devInfo.defperiod * 1000.0f );
+					this.bIsBASSFree = false;
 					//-----------------
 					#endregion
 				}
@@ -179,6 +182,7 @@ Retry:
 				//-----------------
 				BASSError errcode = Bass.BASS_ErrorGetCode();
 				Bass.BASS_Free();
+				this.bIsBASSFree = true;
 				throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_WASAPI_Init)[{0}]", errcode ) );
 				//-----------------
 				#endregion
@@ -192,9 +196,14 @@ Retry:
 				info.freq,
 				info.chans,
 				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
-			if( this.hMixer == 0 )
-				throw new Exception( string.Format( "BASSミキサの作成に失敗しました。[{0}]", Bass.BASS_ErrorGetCode() ) );
-
+			if (this.hMixer == 0)
+			{
+				BASSError errcode = Bass.BASS_ErrorGetCode();
+				BassWasapi.BASS_WASAPI_Free();
+				Bass.BASS_Free();
+				this.bIsBASSFree = true;
+				throw new Exception( string.Format( "BASSミキサの作成に失敗しました。[{0}]", errcode ) );
+			}
 
 			// BASS ミキサーの1秒あたりのバイト数を算出。
 
@@ -238,10 +247,15 @@ Retry:
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
-			Bass.BASS_StreamFree( this.hMixer );
-			BassWasapi.BASS_WASAPI_Free();	// システムタイマより先に呼び出すこと。（tWasapi処理() の中でシステムタイマを参照してるため）
-			Bass.BASS_Free();
-
+			if ( hMixer != -1 )
+			{
+				Bass.BASS_StreamFree( this.hMixer );
+			}
+			if ( !this.bIsBASSFree )
+			{
+				BassWasapi.BASS_WASAPI_Free();	// システムタイマより先に呼び出すこと。（tWasapi処理() の中でシステムタイマを参照してるため）
+				Bass.BASS_Free();
+			}
 			if( bManagedDispose )
 			{
 				C共通.tDisposeする( this.tmシステムタイマ );
@@ -290,5 +304,6 @@ Retry:
 		private long nミキサーの1秒あたりのバイト数 = 0;
 		private long n累積転送バイト数 = 0;
 		private bool b最初の実出力遅延算出 = true;
+		private bool bIsBASSFree = true;
 	}
 }

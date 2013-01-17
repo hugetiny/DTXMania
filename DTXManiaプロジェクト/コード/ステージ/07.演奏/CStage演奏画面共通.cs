@@ -308,8 +308,8 @@ namespace DTXMania
 			}
 			this.sw = new Stopwatch();
 			this.sw2 = new Stopwatch();
-//			this.gclatencymode = GCSettings.LatencyMode;
-//			GCSettings.LatencyMode = GCLatencyMode.LowLatency;	// GCのgen2はせいぜい1演奏辺り1,2回しか発生しないので、ここでわざわざGC gen2は抑止しない
+			this.gclatencymode = GCSettings.LatencyMode;
+			GCSettings.LatencyMode = GCLatencyMode.Batch;	// GCのgen2はせいぜい1演奏辺り1,2回しか発生しないので、ここでわざわざGC gen2は抑止しない
 		}
 		public override void On非活性化()
 		{
@@ -324,7 +324,7 @@ namespace DTXMania
 			this.ctチップ模様アニメ.Drums = null;
 			this.ctチップ模様アニメ.Guitar = null;
 			this.ctチップ模様アニメ.Bass = null;
-//			GCSettings.LatencyMode = this.gclatencymode;
+			GCSettings.LatencyMode = this.gclatencymode;
 			base.On非活性化();
 		}
 		public override void OnManagedリソースの作成()
@@ -583,7 +583,7 @@ namespace DTXMania
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;
-//		protected GCLatencyMode gclatencymode;
+		protected GCLatencyMode gclatencymode;
 
 		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
 		{
