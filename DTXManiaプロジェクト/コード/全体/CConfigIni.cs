@@ -1124,6 +1124,7 @@ namespace DTXMania
 			this.bIsEnabledSystemMenu = true;			// #28200 2012.5.1 yyagi System Menuの利用可否切替(使用可)
 			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
+			this.bTight = false;                        // #29500 2012.9.11 kairera0467 TIGHTモード
 			this.nSoundDeviceType = (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM
 			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
@@ -1165,7 +1166,7 @@ namespace DTXMania
 		}
 		public void t書き出し( string iniファイル名 )
 		{
-			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "shift-jis" ) );
+			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );
 			sw.WriteLine( ";-------------------" );
 			
 			#region [ System ]
@@ -1546,6 +1547,10 @@ namespace DTXMania
 			sw.WriteLine( "; RISKY mode. 0=OFF, 1-10 is the times of misses to be Failed." );	//
 			sw.WriteLine( "Risky={0}", this.nRisky );			//
 			sw.WriteLine();
+			sw.WriteLine( "; TIGHTモード(0:OFF, 1:ON)" );									// #29500 2012.9.11 kairera0467
+			sw.WriteLine( ": TIGHT mode. 0=OFF, 1=ON " );
+			sw.WriteLine( "DrumsTight={0}", this.bTight ? 1 : 0 );
+			sw.WriteLine();
 			sw.WriteLine( "; ドラム判定文字表示位置(0:レーン上,1:判定ライン上,2:表示OFF)" );
 			sw.WriteLine( "DrumsPosition={0}", (int) this.判定文字表示位置.Drums );
 			sw.WriteLine();
@@ -1777,7 +1782,7 @@ namespace DTXMania
 			{
 				string str;
 				this.tキーアサインを全部クリアする();
-				StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "shift-jis" ) );
+				StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
 				str = reader.ReadToEnd();
 				t文字列から読み込み( str );
 				CDTXVersion version = new CDTXVersion( this.strDTXManiaのバージョン );
@@ -2385,11 +2390,14 @@ namespace DTXMania
 											{
 												this.ドラムコンボ文字の表示位置 = (Eドラムコンボ文字の表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.ドラムコンボ文字の表示位置 );
 											}
-											else if( str3.Equals( "Risky" ) )					// #2359 2011.6.23  yyagi
+											else if( str3.Equals( "Risky" ) )					// #23559 2011.6.23  yyagi
 											{
 												this.nRisky = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 10, this.nRisky );
 											}
-
+											else if ( str3.Equals( "DrumsTight" ) )				// #29500 2012.9.11 kairera0467
+											{
+												this.bTight = C変換.bONorOFF( str4[ 0 ] );
+											}
 											continue;
 										}
 									//-----------------------------

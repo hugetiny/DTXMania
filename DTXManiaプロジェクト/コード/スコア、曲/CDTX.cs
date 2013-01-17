@@ -1994,7 +1994,7 @@ namespace DTXMania
 					//DateTime timeBeginLoad = DateTime.Now;
 					//TimeSpan span;
 
-					StreamReader reader = new StreamReader( strファイル名, Encoding.GetEncoding( "shift-jis" ) );
+					StreamReader reader = new StreamReader( strファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
 					string str2 = reader.ReadToEnd();
 					reader.Close();
 					//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );

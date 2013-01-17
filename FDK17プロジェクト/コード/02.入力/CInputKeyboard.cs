@@ -46,6 +46,7 @@ namespace FDK
 
 			//this.timer = new CTimer( CTimer.E種別.MultiMedia );
 			this.list入力イベント = new List<STInputEvent>( 32 );
+			// this.ct = new CTimer( CTimer.E種別.PerformanceCounter );
 		}
 
 
@@ -71,7 +72,7 @@ namespace FDK
 				//this.list入力イベント = new List<STInputEvent>( 32 );
 				this.list入力イベント.Clear();			// #xxxxx 2012.6.11 yyagi; To optimize, I removed new();
 				int posEnter = -1;
-				string d = DateTime.Now.ToString( "yyyy/MM/dd HH:mm:ss.ffff" );
+				//string d = DateTime.Now.ToString( "yyyy/MM/dd HH:mm:ss.ffff" );
 
 				if ( bバッファ入力を使用する )
 				{
@@ -92,11 +93,15 @@ namespace FDK
 									nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
 									nVelocity = CInput管理.n通常音量
 								};
-//Debug.WriteLine( "変換from=" + data.TimeStamp + ", to=" + item.nTimeStamp );
 								this.list入力イベント.Add( item );
 
 								this.bKeyState[ (int) key ] = true;
 								this.bKeyPushDown[ (int) key ] = true;
+
+								//if ( item.nKey == (int) SlimDX.DirectInput.Key.Space )
+								//{
+								//    Trace.TraceInformation( "FDK(buffered): SPACE key registered. " + ct.nシステム時刻 );
+								//}
 							}
 							foreach ( Key key in data.ReleasedKeys )
 							{
@@ -141,6 +146,11 @@ namespace FDK
 
 								this.bKeyState[ (int) key ] = true;
 								this.bKeyPushDown[ (int) key ] = true;
+
+								//if ( (int) key == (int) SlimDX.DirectInput.Key.Space )
+								//{
+								//    Trace.TraceInformation( "FDK(direct): SPACE key registered. " + ct.nシステム時刻 );
+								//}
 							}
 						}
 						foreach ( Key key in currentState.ReleasedKeys )

@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="コード\00.共通\CPowerManagement.cs" />
     <Compile Include="コード\00.共通\CTimerBase.cs" />
     <Compile Include="コード\00.共通\C一定間隔処理.cs" />
     <Compile Include="コード\00.共通\C共通.cs" />

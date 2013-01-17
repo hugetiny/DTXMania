@@ -20,7 +20,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "094(120610)";
+		public static readonly string VERSION = "095(121201)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
         //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -434,6 +434,7 @@ namespace DTXMania
 		}
 		protected override void OnExiting( EventArgs e )
 		{
+			CPowerManagement.tEnableMonitorSuspend();		// スリープ抑止状態を解除
 			this.t終了処理();
 			base.OnExiting( e );
 		}
@@ -460,6 +461,9 @@ namespace DTXMania
 
 			if( this.Device == null )
 				return;
+
+			if ( this.bApplicationActive )	// DTXMania本体起動中の本体/モニタの省電力モード移行を抑止
+				CPowerManagement.tDisableMonitorSuspend();
 
 			this.Device.BeginScene();
 			this.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 1f, 0 );
@@ -1418,13 +1422,15 @@ for (int i = 0; i < 3; i++) {
 				try
 				{
 					ConfigIni.tファイルから読み込み( path );
-					this.Window.EnableSystemMenu = CDTXMania.ConfigIni.bIsEnabledSystemMenu;	// #28200 2011.5.1 yyagi
 				}
 				catch
 				{
 					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
 				}
 			}
+			this.Window.EnableSystemMenu = CDTXMania.ConfigIni.bIsEnabledSystemMenu;	// #28200 2011.5.1 yyagi
+			// 2012.8.22 Config.iniが無いときに初期値が適用されるよう、この設定行をifブロック外に移動
+
 			//---------------------
 			#endregion
 			#region [ ログ出力開始 ]
@@ -1434,7 +1440,7 @@ for (int i = 0; i < 3; i++) {
 			{
 				try
 				{
-					Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( "DTXManiaLog.txt", false, Encoding.GetEncoding( "shift-jis" ) ) ) );
+					Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( "DTXManiaLog.txt", false, Encoding.GetEncoding( "Shift_JIS" ) ) ) );
 				}
 				catch ( System.UnauthorizedAccessException )			// #24481 2011.2.20 yyagi
 				{
