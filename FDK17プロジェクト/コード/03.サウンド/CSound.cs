@@ -586,9 +586,10 @@ namespace FDK
 			this.strファイル名 = strファイル名;
 
 			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 ||
+				 String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 ||
 				 String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )	// caselessで文字列比較
 			{
-				tDirectSoundサウンドを作成するXAOGG( strファイル名, DirectSound );
+				tDirectSoundサウンドを作成するXaOggMp3( strファイル名, DirectSound );
 				return;
 			}
 
@@ -644,7 +645,7 @@ namespace FDK
 
 			this.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, DirectSound );
 		}
-		public void tDirectSoundサウンドを作成するXAOGG( string strファイル名, DirectSound DirectSound )
+		public void tDirectSoundサウンドを作成するXaOggMp3( string strファイル名, DirectSound DirectSound )
 		{
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
@@ -837,7 +838,7 @@ namespace FDK
 				}
 			}
 			t再生位置を先頭に戻す();
-			tサウンドを再生する();
+			tサウンドを再生する( bループする );
 		}
 		public void t再生を停止する()
 		{
@@ -916,8 +917,12 @@ namespace FDK
 		}
 		public void tサウンドを再生する()
 		{
+			tサウンドを再生する( false );
+		}
+		public void tサウンドを再生する( bool bループする )
+		{
 //Debug.WriteLine( "tサウンドを再生する(): " + this.strファイル名 );
-			if( this.bBASSサウンドである )
+			if ( this.bBASSサウンドである )			// BASSサウンド時のループ処理は、t再生を開始する()側に実装。
 			{
 //Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				bool b = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
@@ -955,7 +960,8 @@ Debug.WriteLine( "再生成功: " + Path.GetFileName( this.strファイル名 ) 
 			}
 			else if( this.bDirectSoundである )
 			{
-				this.Buffer.Play( 0, PlayFlags.None );
+				PlayFlags pf = ( bループする ) ? PlayFlags.Looping : PlayFlags.None;
+				this.Buffer.Play( 0, pf );
 			}
 		}
 		public void tサウンドを先頭から再生する()
@@ -1361,6 +1367,10 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )
 			{
 				sounddecoder = new Cogg();
+			}
+			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 )
+			{
+				sounddecoder = new Cmp3();
 			}
 			else
 			{
