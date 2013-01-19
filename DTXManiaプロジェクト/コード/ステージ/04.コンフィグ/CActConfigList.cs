@@ -2022,7 +2022,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bSTAGEFAILED有効 = this.iSystemStageFailed.bON;
 			CDTXMania.ConfigIni.bランダムセレクトで子BOXを検索対象とする = this.iSystemRandomFromSubBox.bON;
 
-//			CDTXMania.ConfigIni.bWave再生位置自動調整機能有効 = this.iSystemAdjustWaves.bON;
+			CDTXMania.ConfigIni.bWave再生位置自動調整機能有効 = this.iSystemAdjustWaves.bON;
 			CDTXMania.ConfigIni.b垂直帰線待ちを行う = this.iSystemVSyncWait.bON;
 			CDTXMania.ConfigIni.bバッファ入力を行う = this.iSystemBufferedInput.bON;
 			CDTXMania.ConfigIni.bAVI有効 = this.iSystemAVI.bON;
