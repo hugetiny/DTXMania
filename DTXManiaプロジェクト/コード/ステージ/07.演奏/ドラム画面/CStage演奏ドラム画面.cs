@@ -237,9 +237,9 @@ namespace DTXMania
 				return false;
 			}
 			int num = pChip.n発声位置;
-			for( int i = CDTXMania.DTX.listChip.IndexOf( pChip ) + 1; i < CDTXMania.DTX.listChip.Count; i++ )
+			for( int i = listChip.IndexOf( pChip ) + 1; i < listChip.Count; i++ )
 			{
-				pChip = CDTXMania.DTX.listChip[ i ];
+				pChip = listChip[ i ];
 				if( ( pChip.nチャンネル番号 == 0x53 ) && ( pChip.n整数値 == 2 ) )
 				{
 					return true;

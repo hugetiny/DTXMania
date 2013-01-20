@@ -29,6 +29,7 @@ namespace DTXMania
 
 		// メソッド
 
+		#region [ t演奏結果を格納する・ドラム() ]
 		public void t演奏結果を格納する・ドラム( out CScoreIni.C演奏記録 Drums )
 		{
 			Drums = new CScoreIni.C演奏記録();
@@ -91,6 +92,8 @@ namespace DTXMania
 				Drums.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Drums );
 			}
 		}
+		#endregion
+		#region [ t演奏結果を格納する・ギター() ]
 		public void t演奏結果を格納する・ギター( out CScoreIni.C演奏記録 Guitar )
 		{
 			Guitar = new CScoreIni.C演奏記録();
@@ -153,6 +156,8 @@ namespace DTXMania
 				Guitar.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Guitar );
 			}
 		}
+		#endregion
+		#region [ t演奏結果を格納する・ベース() ]
 		public void t演奏結果を格納する・ベース( out CScoreIni.C演奏記録 Bass )
 		{
 			Bass = new CScoreIni.C演奏記録();
@@ -215,13 +220,17 @@ namespace DTXMania
 				Bass.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Bass );
 			}
 		}
+		#endregion
 
 		// CStage 実装
 
 		public override void On活性化()
 		{
+			listChip = CDTXMania.DTX.listChip;
+			listWAV = CDTXMania.DTX.listWAV;
+
 			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.継続;
-			this.n現在のトップChip = ( CDTXMania.DTX.listChip.Count > 0 ) ? 0 : -1;
+			this.n現在のトップChip = ( listChip.Count > 0 ) ? 0 : -1;
 			this.L最後に再生したHHの実WAV番号 = new List<int>( 16 );
 			this.n最後に再生したHHのチャンネル番号 = 0;
 			this.n最後に再生した実WAV番号.Guitar = -1;
@@ -273,7 +282,7 @@ namespace DTXMania
 			CDTXMania.Skin.tRemoveMixerAll();	// 効果音のストリームをミキサーから解除しておく
 
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
-			foreach ( CDTX.CChip pChip in CDTXMania.DTX.listChip )
+			foreach ( CDTX.CChip pChip in listChip )
 			{
 //				Debug.WriteLine( "CH=" + pChip.nチャンネル番号.ToString( "x2" ) + ", 整数値=" + pChip.n整数値 +  ", time=" + pChip.n発声時刻ms );
 				if ( pChip.n発声時刻ms <= 0 )
@@ -282,9 +291,9 @@ namespace DTXMania
 					{
 						pChip.bHit = true;
 //						Debug.WriteLine( "first [DA] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms );
-						if ( CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
+						if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
 						{
-							CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+							CDTX.CWAV wc = listWAV[ pChip.n整数値・内部番号 ];
 							for ( int i = 0; i < nPolyphonicSounds; i++ )
 							{
 								if ( wc.rSound[ i ] != null )
@@ -324,6 +333,9 @@ namespace DTXMania
 			this.ctチップ模様アニメ.Drums = null;
 			this.ctチップ模様アニメ.Guitar = null;
 			this.ctチップ模様アニメ.Bass = null;
+			//listWAV.Clear();
+			listWAV = null;
+			listChip = null;
 			GCSettings.LatencyMode = this.gclatencymode;
 			base.On非活性化();
 		}
@@ -580,6 +592,8 @@ namespace DTXMania
 		protected STAUTOPLAY bIsAutoPlay;		// #24239 2011.1.23 yyagi
 //		protected int nRisky_InitialVar, nRiskyTime;		// #23559 2011.7.28 yyagi → CAct演奏ゲージ共通クラスに隠蔽
 		protected int nPolyphonicSounds;
+		protected List<CDTX.CChip> listChip;
+		protected Dictionary<int, CDTX.CWAV> listWAV;
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;
@@ -744,7 +758,7 @@ namespace DTXMania
 				sw2.Stop();
 				return null;
 			}
-			int count = CDTXMania.DTX.listChip.Count;
+			int count = listChip.Count;
 			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToPast = this.n現在のトップChip;
 			if ( this.n現在のトップChip >= count )			// その時点で演奏すべきチップが既に全部無くなっていたら
 			{
@@ -754,7 +768,7 @@ namespace DTXMania
 			//while ( nIndex_NearestChip_Future < count )		// 未来方向への検索
 			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++)
 			{
-				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
+				CDTX.CChip chip = listChip[ nIndex_NearestChip_Future ];
 				if ( ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) ) )
 				{
 					if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -789,7 +803,7 @@ namespace DTXMania
 			//while ( nIndex_NearestChip_Past >= 0 )			// 過去方向への検索
 			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
 			{
-				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
+				CDTX.CChip chip = listChip[ nIndex_NearestChip_Past ];
 				if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) )
 				{
 					if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -821,17 +835,17 @@ namespace DTXMania
 				else 								// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
 				{
 					sw2.Stop();
-					return CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
+					return listChip[ nIndex_NearestChip_Past ];
 				}
 			}
 			else if ( nIndex_NearestChip_Past < 0 )	// 検索対象が過去方向には見つからなかった(しかし未来方向には見つかった)場合
 			{
 				sw2.Stop();
-				return CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
+				return listChip[ nIndex_NearestChip_Future ];
 			}
 													// 検索対象が過去未来の双方に見つかったなら、より近い方を採用する
-			CDTX.CChip nearestChip_Future = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
-			CDTX.CChip nearestChip_Past   = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
+			CDTX.CChip nearestChip_Future = listChip[ nIndex_NearestChip_Future ];
+			CDTX.CChip nearestChip_Past   = listChip[ nIndex_NearestChip_Past ];
 			int nDiffTime_Future = Math.Abs( (int) ( nTime - nearestChip_Future.n発声時刻ms ) );
 			int nDiffTime_Past   = Math.Abs( (int) ( nTime - nearestChip_Past.n発声時刻ms ) );
 			if ( nDiffTime_Future >= nDiffTime_Past )
@@ -1256,7 +1270,7 @@ namespace DTXMania
 				sw2.Stop();
 				return null;
 			}
-			int count = CDTXMania.DTX.listChip.Count;
+			int count = listChip.Count;
 			int nIndex_NearestChip_Future = nIndex_InitialPositionSearchingToPast = this.n現在のトップChip;
 			if ( this.n現在のトップChip >= count )		// その時点で演奏すべきチップが既に全部無くなっていたら
 			{
@@ -1266,7 +1280,7 @@ namespace DTXMania
 //			while ( nIndex_NearestChip_Future < count )	// 未来方向への検索
 			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++ )
 			{
-				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
+				CDTX.CChip chip = listChip[ nIndex_NearestChip_Future ];
 				if ( !chip.bHit )
 				{
 					if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) )
@@ -1304,7 +1318,7 @@ namespace DTXMania
 //			while ( nIndex_NearestChip_Past >= 0 )		// 過去方向への検索
 			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
 			{
-				CDTX.CChip chip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
+				CDTX.CChip chip = listChip[ nIndex_NearestChip_Past ];
 				if ( (!chip.bHit) &&
 						(
 							( ( nChannel >= 0x11 ) && ( nChannel <= 0x1a ) &&
@@ -1335,26 +1349,26 @@ namespace DTXMania
 			CDTX.CChip nearestChip;	// = null;	// 以下のifブロックのいずれかで必ずnearestChipには非nullが代入されるので、null初期化を削除
 			if ( nIndex_NearestChip_Future >= count )											// 検索対象が未来方向には見つからなかった(しかし過去方向には見つかった)場合
 			{
-				nearestChip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
+				nearestChip = listChip[ nIndex_NearestChip_Past ];
 //				nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
 			}
 			else if ( nIndex_NearestChip_Past < 0 )												// 検索対象が過去方向には見つからなかった(しかし未来方向には見つかった)場合
 			{
-				nearestChip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
+				nearestChip = listChip[ nIndex_NearestChip_Future ];
 //				nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
 			}
 			else
 			{
-				int nTimeDiff_Future = Math.Abs( (int) ( nTime - CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ].n発声時刻ms ) );
-				int nTimeDiff_Past   = Math.Abs( (int) ( nTime - CDTXMania.DTX.listChip[ nIndex_NearestChip_Past   ].n発声時刻ms ) );
+				int nTimeDiff_Future = Math.Abs( (int) ( nTime - listChip[ nIndex_NearestChip_Future ].n発声時刻ms ) );
+				int nTimeDiff_Past   = Math.Abs( (int) ( nTime - listChip[ nIndex_NearestChip_Past   ].n発声時刻ms ) );
 				if ( nTimeDiff_Future < nTimeDiff_Past )
 				{
-					nearestChip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Future ];
+					nearestChip = listChip[ nIndex_NearestChip_Future ];
 //					nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
 				}
 				else
 				{
-					nearestChip = CDTXMania.DTX.listChip[ nIndex_NearestChip_Past ];
+					nearestChip = listChip[ nIndex_NearestChip_Past ];
 //					nTimeDiff = Math.Abs( (int) ( nTime - nearestChip.n発声時刻ms ) );
 				}
 			}
@@ -1623,7 +1637,7 @@ namespace DTXMania
 			{
 				return true;
 			}
-			if ( ( this.n現在のトップChip == -1 ) || ( this.n現在のトップChip >= CDTXMania.DTX.listChip.Count ) )
+			if ( ( this.n現在のトップChip == -1 ) || ( this.n現在のトップChip >= listChip.Count ) )
 			{
 				return true;
 			}
@@ -2047,9 +2061,9 @@ namespace DTXMania
 						{
 							Debug.WriteLine( "[DA(AddMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
 							pChip.bHit = true;
-							if ( CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
+							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
 							{
-								CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+								CDTX.CWAV wc = listWAV[ pChip.n整数値・内部番号 ];
 								for ( int i = 0; i < nPolyphonicSounds; i++ )
 								{
 									if ( wc.rSound[ i ] != null )
@@ -2067,9 +2081,9 @@ namespace DTXMania
 						{
 Debug.WriteLine( "[DB(RemoveMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
 							pChip.bHit = true;
-							if ( CDTXMania.DTX.listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
+							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
 							{
-							    CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+							    CDTX.CWAV wc = listWAV[ pChip.n整数値・内部番号 ];
 							    for ( int i = 0; i < nPolyphonicSounds; i++ )
 							    {
 									if ( wc.rSound[ i ] != null )
