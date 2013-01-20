@@ -1340,13 +1340,15 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		{
 			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
 			{
-				BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN | BASSFlag.BASS_MIXER_PAUSE;
+				BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN;	// | BASSFlag.BASS_MIXER_PAUSE;
 				CSound管理.nMixing++;
 
-				bool b = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
+				// preloadされることを期待して、敢えてflagからはBASS_MIXER_PAUSEを外してAddChannelした上で、すぐにPAUSEする
+				bool b1 = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
+				bool b2 = BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
 				Debug.WriteLine( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
-				return b;
+				return b1 & b2;
 			}
 			return true;
 		}

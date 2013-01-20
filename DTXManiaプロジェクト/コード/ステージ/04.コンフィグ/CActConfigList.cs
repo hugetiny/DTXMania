@@ -55,6 +55,7 @@ namespace DTXMania
 
 
 		// メソッド
+		#region [ t項目リストの設定・System() ]
 		public void t項目リストの設定・System()
 		{
 			this.tConfigIniへ記録する();
@@ -312,6 +313,8 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.System;
 		}
+		#endregion
+		#region [ t項目リストの設定・Drums() ]
 		public void t項目リストの設定・Drums()
 		{
 			this.tConfigIniへ記録する();
@@ -696,6 +699,8 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Drums;
 		}
+		#endregion
+		#region [ t項目リストの設定・Guitar() ]
 		public void t項目リストの設定・Guitar()
 		{
 			this.tConfigIniへ記録する();
@@ -798,6 +803,8 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Guitar;
 		}
+		#endregion
+		#region [ t項目リストの設定・Bass() ]
 		public void t項目リストの設定・Bass()
 		{
 			this.tConfigIniへ記録する();
@@ -903,7 +910,7 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Bass;
 		}
-
+		#endregion
 
 		/// <summary>
 		/// ESC押下時の右メニュー描画
@@ -1193,6 +1200,7 @@ namespace DTXMania
 			}
 		}
 
+		#region [ 項目リストの設定 ( Exit, KeyAssignSystem/Drums/Guitar/Bass) ]
 		public void t項目リストの設定・Exit()
 		{
 			this.tConfigIniへ記録する();
@@ -1359,7 +1367,7 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignBass;
 		}
-
+		#endregion
 		public void t次に移動()
 		{
 			CDTXMania.Skin.soundカーソル移動音.t再生する();

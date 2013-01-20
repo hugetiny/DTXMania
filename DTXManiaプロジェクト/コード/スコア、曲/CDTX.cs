@@ -1620,6 +1620,7 @@ namespace DTXMania
 						if      ( cwav.bIsBassSound )   nPoly = (nPolyphonicSounds >= 2)? 2 : 1;
 						else if ( cwav.bIsGuitarSound ) nPoly = (nPolyphonicSounds >= 2)? 2 : 1;
 						else if ( cwav.bIsSESound )     nPoly = 1;
+						else if ( cwav.bIsBGMSound)     nPoly = 1;
 					}
 					if ( cwav.bIsBGMSound ) nPoly = 1;
 					#endregion
@@ -2455,6 +2456,7 @@ namespace DTXMania
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
 						//Trace.TraceInformation( "可視チップ数カウント      {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
+						#region [ チップの種類を分類し、対応するフラグを立てる ]
 						foreach ( CChip chip in this.listChip )
 						{
 							if ( ( chip.bWAVを使うチャンネルである && this.listWAV.ContainsKey( chip.n整数値・内部番号 ) ) && !this.listWAV[ chip.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Contains( chip.nチャンネル番号 ) )
@@ -2484,6 +2486,7 @@ namespace DTXMania
 								}
 							}
 						}
+						#endregion
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
 						//Trace.TraceInformation( "ch番号集合確認:           {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
@@ -2616,6 +2619,18 @@ namespace DTXMania
 								n発音前余裕ms = 200;
 								n発音前余裕ms = 500;
 							}
+						}
+						if ( pChip.nチャンネル番号 == 0x01 )	// BGMチップは即ミキサーに追加
+						{
+							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
+							{
+								CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+								if ( wc.rSound[ 0 ] != null )
+								{
+									CDTXMania.Sound管理.AddMixer( wc.rSound[ 0 ] );	// BGMは多重再生しない仕様としているので、1個目だけミキサーに登録すればよい
+								}
+							}
+
 						}
 
 						int nAddMixer時刻ms, nAddMixer位置 = 0;
