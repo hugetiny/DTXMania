@@ -120,6 +120,8 @@ namespace FDK
 		
 		#endregion
 
+		public static CBassMixerManager cMixerManager = null;
+		public static Thread thMixerManager = null;
 
 	/// <summary>
 	/// コンストラクタ
@@ -142,6 +144,7 @@ namespace FDK
 		{
 			t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
 		}
+
 
 		public static void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
 		{
@@ -193,9 +196,24 @@ namespace FDK
 					}
 				}
 			}
+
+			cMixerManager = new CBassMixerManager();
+			thMixerManager = new Thread( new ThreadStart( cMixerManager.Start ) );		// 
+
+			thMixerManager.IsBackground = true;
+			thMixerManager.Priority = ThreadPriority.Normal;
+			thMixerManager.Start();
 		}
+
+
 		public static void t終了()
 		{
+			cMixerManager.End();
+			thMixerManager.Join();
+			cMixerManager.Dispose();
+			thMixerManager = null;
+			cMixerManager = null;
+
 			C共通.tDisposeする( SoundDevice ); SoundDevice = null;
 			C共通.tDisposeする( ref rc演奏用タイマ );	// Global.Bass を解放した後に解放すること。（Global.Bass で参照されているため）
 		}
@@ -315,16 +333,15 @@ namespace FDK
 			}
 		}
 
-		//private CBassMixerManager cMixerManager = null;
-		//private Thread thMixerManager = null;
-
 		public void AddMixer( CSound cs )
 		{
-			cs.tBASSサウンドをミキサーに追加する();
+			//cs.tBASSサウンドをミキサーに追加する();
+			cMixerManager.AddMixer( cs );
 		}
 		public void RemoveMixer( CSound cs )
 		{
-			cs.tBASSサウンドをミキサーから削除する();
+			//cs.tBASSサウンドをミキサーから削除する();
+			cMixerManager.RemoveMixer( cs );
 		}
 }
 	#endregion
@@ -1138,11 +1155,11 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		protected string strファイル名 = null;
 		protected byte[] byArrWAVファイルイメージ = null;	// WAVファイルイメージ、もしくはchunkのDATA部のみ
 		protected GCHandle hGC;
-		protected int hBassStream = -1;					// ASIO, WASAPI 用
+		public int hBassStream = -1;					// ASIO, WASAPI 用
 		//protected SecondarySoundBuffer Buffer = null;	// DirectSound 用
 		protected SoundBuffer Buffer = null;	// DirectSound 用
 		protected DirectSound DirectSound;
-		protected int hMixer = -1;	// 設計壊してゴメン Mixerに後で登録するときに使う
+		public int hMixer = -1;	// 設計壊してゴメン Mixerに後で登録するときに使う
 		//-----------------
 		#endregion
 
@@ -1327,7 +1344,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			bool b = BassMix.BASS_Mixer_ChannelRemove( channel );
 			if ( b )
 			{
-				CSound管理.nMixing--;
+				Interlocked.Decrement( ref CSound管理.nMixing );
 				Debug.WriteLine( "Removed: " + Path.GetFileName( this.strファイル名 ) + " (" + channel + ")" + " MixedStreams=" + CSound管理.nMixing );
 			}
 			return b;
@@ -1341,7 +1358,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
 			{
 				BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN;	// | BASSFlag.BASS_MIXER_PAUSE;
-				CSound管理.nMixing++;
+				Interlocked.Increment( ref CSound管理.nMixing );
 
 				// preloadされることを期待して、敢えてflagからはBASS_MIXER_PAUSEを外してAddChannelした上で、すぐにPAUSEする
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
