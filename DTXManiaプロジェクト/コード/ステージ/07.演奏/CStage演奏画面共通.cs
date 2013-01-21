@@ -281,6 +281,10 @@ namespace DTXMania
 
 			CDTXMania.Skin.tRemoveMixerAll();	// 効果音のストリームをミキサーから解除しておく
 
+			//lockmixer = new object();
+			queueMixerSound = new Queue<stmixer>( 64 );
+			bMixerManaging = true;
+
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
 			foreach ( CDTX.CChip pChip in listChip )
 			{
@@ -299,6 +303,7 @@ namespace DTXMania
 								if ( wc.rSound[ i ] != null )
 								{
 									CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+									//AddMixer( wc.rSound[ i ] );		// 最初はqueueを介さず直接ミキサー登録する
 								}
 							}
 						}
@@ -527,6 +532,12 @@ namespace DTXMania
 			}
 		}
 
+		protected struct stmixer
+		{
+			internal bool bIsAdd;
+			internal CSound csound;
+		};
+
 		protected CAct演奏AVI actAVI;
 		protected CAct演奏BGA actBGA;
 
@@ -574,6 +585,9 @@ namespace DTXMania
 																//							into "n最後に再生した実WAV番号";
 //		protected int n最後に再生した実WAV番号.GUITAR;
 //		protected int n最後に再生した実WAV番号.BASS;
+
+		protected volatile Queue<stmixer> queueMixerSound;		// #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
+		protected bool bMixerManaging;
 	
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
@@ -598,6 +612,27 @@ namespace DTXMania
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;
 		protected GCLatencyMode gclatencymode;
+
+		public void AddMixer( CSound cs )
+		{
+			stmixer stm = new stmixer()
+			{
+				bIsAdd = true,
+				csound = cs
+			};
+			queueMixerSound.Enqueue( stm );
+		Debug.WriteLine( "★Queue: add " + Path.GetFileName( stm.csound.strファイル名 ));
+		}
+		public void RemoveMixer( CSound cs )
+		{
+			stmixer stm = new stmixer()
+			{
+				bIsAdd = false,
+				csound = cs
+			};
+			queueMixerSound.Enqueue( stm );
+		Debug.WriteLine( "★Queue: remove " + Path.GetFileName( stm.csound.strファイル名 ));
+		}
 
 		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
 		{
@@ -2068,7 +2103,8 @@ namespace DTXMania
 								{
 									if ( wc.rSound[ i ] != null )
 									{
-										CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+										//CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+										AddMixer( wc.rSound[ i ] );
 									}
 								}
 							}
@@ -2088,7 +2124,8 @@ Debug.WriteLine( "[DB(RemoveMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" +
 							    {
 									if ( wc.rSound[ i ] != null )
 									{
-										CDTXMania.Sound管理.RemoveMixer( wc.rSound[ i ] );
+										//CDTXMania.Sound管理.RemoveMixer( wc.rSound[ i ] );
+										RemoveMixer( wc.rSound[ i ] );
 									}
 							    }
 							}

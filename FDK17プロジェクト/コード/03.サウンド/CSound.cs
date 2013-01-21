@@ -197,22 +197,22 @@ namespace FDK
 				}
 			}
 
-			cMixerManager = new CBassMixerManager();
-			thMixerManager = new Thread( new ThreadStart( cMixerManager.Start ) );		// 
+			//cMixerManager = new CBassMixerManager();
+			//thMixerManager = new Thread( new ThreadStart( cMixerManager.Start ) );		// 
 
-			thMixerManager.IsBackground = true;
-			thMixerManager.Priority = ThreadPriority.Normal;
-			thMixerManager.Start();
+			//thMixerManager.IsBackground = true;
+			//thMixerManager.Priority = ThreadPriority.Normal;
+			//thMixerManager.Start();
 		}
 
 
 		public static void t終了()
 		{
-			cMixerManager.End();
-			thMixerManager.Join();
-			cMixerManager.Dispose();
-			thMixerManager = null;
-			cMixerManager = null;
+			//cMixerManager.End();
+			//thMixerManager.Join();
+			//cMixerManager.Dispose();
+			//thMixerManager = null;
+			//cMixerManager = null;
 
 			C共通.tDisposeする( SoundDevice ); SoundDevice = null;
 			C共通.tDisposeする( ref rc演奏用タイマ );	// Global.Bass を解放した後に解放すること。（Global.Bass で参照されているため）
@@ -335,13 +335,13 @@ namespace FDK
 
 		public void AddMixer( CSound cs )
 		{
-			//cs.tBASSサウンドをミキサーに追加する();
-			cMixerManager.AddMixer( cs );
+			cs.tBASSサウンドをミキサーに追加する();
+			//cMixerManager.AddMixer( cs );
 		}
 		public void RemoveMixer( CSound cs )
 		{
-			//cs.tBASSサウンドをミキサーから削除する();
-			cMixerManager.RemoveMixer( cs );
+			cs.tBASSサウンドをミキサーから削除する();
+			//cMixerManager.RemoveMixer( cs );
 		}
 }
 	#endregion
@@ -1152,7 +1152,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		protected enum E作成方法 { ファイルから, WAVファイルイメージから, Unknown }
 		protected E作成方法 e作成方法 = E作成方法.Unknown;
 		protected ESoundDeviceType eデバイス種別 = ESoundDeviceType.Unknown;
-		protected string strファイル名 = null;
+		public string strファイル名 = null;
 		protected byte[] byArrWAVファイルイメージ = null;	// WAVファイルイメージ、もしくはchunkのDATA部のみ
 		protected GCHandle hGC;
 		public int hBassStream = -1;					// ASIO, WASAPI 用

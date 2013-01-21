@@ -97,6 +97,8 @@ namespace DTXMania
 				this.actGraph.dbグラフ値目標_渡 = CDTXMania.stage選曲.r確定されたスコア.譜面情報.最大スキル[ 0 ];	// #24074 2011.01.23 add ikanick
 			}
 			// MODIFY_END #25398
+			dtLastQueueOperation = DateTime.MinValue;
+
 		}
 		public override void On非活性化()
 		{
@@ -199,6 +201,31 @@ namespace DTXMania
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
 
+				// もしサウンドの登録削除が必要なら、実行する
+				if ( queueMixerSound.Count > 0 )
+				{
+Debug.WriteLine( "☆queueLength=" + queueMixerSound.Count );
+					TimeSpan ts = DateTime.Now - dtLastQueueOperation;
+					if ( ts.Milliseconds > 7 )
+					{
+						dtLastQueueOperation = DateTime.Now;
+						stmixer stm = queueMixerSound.Dequeue();
+						if ( stm.bIsAdd )
+						{
+							CDTXMania.Sound管理.AddMixer( stm.csound );
+							//AddMixer( stm.csound );
+							//Debug.WriteLine( "★ADDMIXER" );
+						}
+						else
+						{
+							CDTXMania.Sound管理.RemoveMixer( stm.csound );
+							//RemoveMixer( stm.csound );
+							//Debug.WriteLine( "★REMOVEMIXER" );
+						}
+						//Thread.Sleep( 7 );
+					}
+				}
+
 				// キー入力
 
 				if( CDTXMania.act現在入力を占有中のプラグイン == null )
@@ -227,7 +254,7 @@ namespace DTXMania
 		private readonly int[] nチャンネルtoX座標 = new int[] { 76, 110, 145, 192, 226, 294, 260, 79, 300, 35 };
 		private CTexture txヒットバーGB;
 		private CTexture txレーンフレームGB;
-
+		private DateTime dtLastQueueOperation;
 		//-----------------
 
 		private bool bフィルイン区間の最後のChipである( CDTX.CChip pChip )

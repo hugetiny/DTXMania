@@ -2611,7 +2611,7 @@ namespace DTXMania
 							int ch = pChip.nチャンネル番号 >> 4;
 							if ( ch == 0x02 || ch == 0x0A )
 							{
-								n発音前余裕ms = 500;
+								n発音前余裕ms = 800;
 								n発音前余裕ms = 500;
 							}
 							if ( ch == 0x06 || ch == 0x07 || ch == 0x08 || ch == 0x09 )
