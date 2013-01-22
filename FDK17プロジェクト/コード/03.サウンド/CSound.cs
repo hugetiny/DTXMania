@@ -128,6 +128,7 @@ namespace FDK
 		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice )
 		{
 			WindowHandle = handle;
+			SoundDevice = null;
 			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice );
 		}
 		public void Dispose()
@@ -143,7 +144,7 @@ namespace FDK
 
 		public static void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
 		{
-			SoundDevice = null;							// ユーザ依存
+			//SoundDevice = null;						// 後で再初期化することがあるので、null初期化はコンストラクタに回す
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
 
@@ -179,6 +180,7 @@ namespace FDK
 			{
 				try
 				{
+Debug.WriteLine( "n初期デバイス=" + n初期デバイス );
 					t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する();
 					break;
 				}
@@ -1013,8 +1015,11 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 		public static void tすべてのサウンドを初期状態に戻す()
 		{
-			foreach( var sound in CSound.listインスタンス )
+			foreach ( var sound in CSound.listインスタンス )
+			{
+				Debug.WriteLine( "解放: " + Path.GetFileName( sound.strファイル名 ) );
 				sound.t解放する();
+			}
 		}
 		public static void tすべてのサウンドを再構築する( ISoundDevice device )
 		{

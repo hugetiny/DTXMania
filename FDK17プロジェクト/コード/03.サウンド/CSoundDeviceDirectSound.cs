@@ -212,6 +212,7 @@ namespace FDK
 				C共通.tDisposeする( ref this.DirectSound );
 				C共通.tDisposeする( this.tmシステムタイマ );
 			}
+			this.e出力デバイス = ESoundDeviceType.Unknown;
 		}
 		~CSoundDeviceDirectSound()
 		{

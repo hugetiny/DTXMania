@@ -261,6 +261,7 @@ Retry:
 				C共通.tDisposeする( this.tmシステムタイマ );
 				this.tmシステムタイマ = null;
 			}
+			this.e出力デバイス = ESoundDeviceType.Unknown;
 		}
 		~CSoundDeviceWASAPI()
 		{

@@ -204,8 +204,8 @@ namespace DTXMania
 				"遅延の少ない演奏を楽しむことが\n" +
 				"できます。\n" +
 				"\n" +
-				"※ 設定はアプリ再起動後に有効に\n" +
-				"　なります。",
+				"※ 設定はCONFIGURATION画面の\n" +
+				"　終了時に有効になります。",
 				"Sound output type:\n" +
 				"You can choose WASAPI, ASIO or\n" +
 				"DShow(DirectShow).\n" +
@@ -215,7 +215,7 @@ namespace DTXMania
 				"You should use WASAPI or ASIO\n" +
 				"to decrease the sound lag.\n" +
 				"\n" +
-				"Note: Restart DTXMania to make\n" +
+				"Note: Exit CONFIGURATION to make\n" +
 				"     the setting take effect.",
 				new string[] { "DShow", "ASIO", "WASAPI" });
 			this.list項目リスト.Add(this.iSystemSoundType);
@@ -228,7 +228,9 @@ namespace DTXMania
 				"サイズを自動設定します。\n" +
 				"値を小さくするほど発音ラグが\n" +
 				"減少しますが、音割れや異常動作を\n" +
-				"引き起こす場合があります。\n",
+				"引き起こす場合があります。\n" +
+				"※ 設定はCONFIGURATION画面の\n" +
+				"　終了時に有効になります。",
 				"Sound buffer size for WASAPI:\n" +
 				"You can set from 0 to 99999ms.\n" +
 				"Set 0 to use a default sysytem\n" +
@@ -236,7 +238,7 @@ namespace DTXMania
 				"Smaller value makes smaller lag,\n" +
 				"but it may cause sound troubles.\n" +
 				"\n" +
-				"Note: Restart DTXMania to make\n" +
+				"Note: Exit CONFIGURATION to make\n" +
 				"     the setting take effect." );
 			this.list項目リスト.Add( this.iSystemWASAPIBufferSizeMs );
 
@@ -247,13 +249,13 @@ namespace DTXMania
 				"ASIO使用時のサウンドデバイスを\n" +
 				"選択します。\n" +
 				"\n" +
-				"※ 設定はアプリ再起動後に有効に\n" +
-				"　なります。",
+				"※ 設定はCONFIGURATION画面の\n" +
+				"　終了時に有効になります。",
 				"ASIO Sound Device:\n" +
 				"Select the sound device to use\n" +
 				"under ASIO mode.\n" +
 				"\n" +
-				"Note: Restart DTXMania to make\n" +
+				"Note: Exit CONFIGURATION to make\n" +
 				"     the setting take effect.",
 				asiodevs );
 			this.list項目リスト.Add( this.iSystemASIODevice );
@@ -268,8 +270,8 @@ namespace DTXMania
 				"減少しますが、音割れや異常動作を\n" +
 				"引き起こす場合があります。\n" +
 				"\n" +
-				"※ 設定はアプリ再起動後に有効に\n" +
-				"　なります。",
+				"※ 設定はCONFIGURATION画面の\n" +
+				"　終了時に有効になります。",
 				"Sound buffer size for ASIO:\n" +
 				"You can set from 0 to 99999ms.\n" +
 				"Set 0 to use a default value already\n" +
@@ -277,9 +279,9 @@ namespace DTXMania
 				"Smaller value makes smaller lag,\n" +
 				"but it may cause sound troubles.\n" +
 				"\n" +
-				"Note: Restart DTXMania to make\n" +
-				"     the setting take effect.");
-			this.list項目リスト.Add(this.iSystemASIOBufferSizeMs);
+				"Note: Exit CONFIGURATION to make\n" +
+				"     the setting take effect." );
+			this.list項目リスト.Add( this.iSystemASIOBufferSizeMs );
 
 			this.iSystemSkinSubfolder = new CItemList( "Skin (General)", CItemBase.Eパネル種別.通常, nSkinIndex,
 				"スキン切替：\n" +
@@ -1436,7 +1438,11 @@ namespace DTXMania
 			this.n現在のスクロールカウンタ = 0;
 			this.nスクロール用タイマ値 = -1;
 			this.ct三角矢印アニメ = new CCounter();
-			
+
+			this.iSystemSoundType_initial			= this.iSystemSoundType.n現在選択されている項目番号;	// CONFIGに入ったときの値を保持しておく
+			this.iSystemWASAPIBufferSizeMs_initial	= this.iSystemWASAPIBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
+			this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
+			this.iSystemASIODevice_initial			= this.iSystemASIODevice.n現在選択されている項目番号;	//
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -1449,12 +1455,44 @@ namespace DTXMania
 			this.ct三角矢印アニメ = null;
 			
 			base.On非活性化();
-
+			#region [ Skin変更 ]
 			if ( CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true ) != this.skinSubFolder_org )
 			{
 				CDTXMania.stageChangeSkin.tChangeSkinMain();	// #28195 2012.6.11 yyagi CONFIG脱出時にSkin更新
 			}
+			#endregion
 
+			// #24820 2013.1.22 yyagi CONFIGでWASAPI/ASIO/DirectSound関連の設定を変更した場合、サウンドデバイスを再構築する。
+			#region [ サウンドデバイス変更 ]
+			if ( this.iSystemSoundType_initial != this.iSystemSoundType.n現在選択されている項目番号 ||
+				this.iSystemWASAPIBufferSizeMs_initial != this.iSystemWASAPIBufferSizeMs.n現在の値 ||
+				this.iSystemASIOBufferSizeMs_initial != this.iSystemASIOBufferSizeMs.n現在の値 ||
+				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 )
+			{
+				ESoundDeviceType soundDeviceType;
+				switch ( this.iSystemSoundType.n現在選択されている項目番号 )
+				{
+					case 0:
+						soundDeviceType = ESoundDeviceType.DirectSound;
+						break;
+					case 1:
+						soundDeviceType = ESoundDeviceType.ASIO;
+						break;
+					case 2:
+						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						break;
+					default:
+						soundDeviceType = ESoundDeviceType.Unknown;
+						break;
+				}
+
+				FDK.CSound管理.t初期化( soundDeviceType,
+										this.iSystemWASAPIBufferSizeMs.n現在の値,
+										this.iSystemASIOBufferSizeMs.n現在の値,
+										this.iSystemASIODevice.n現在選択されている項目番号 );
+				CDTXMania.app.AddSoundTypeToWindowTitle();
+			}
+			#endregion
 		}
 		public override void OnManagedリソースの作成()
 		{
@@ -1864,6 +1902,12 @@ namespace DTXMania
 		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
 		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
 		private CItemList	iSystemASIODevice;				// $24820 2013.1.17 yyagi
+
+		private int iSystemSoundType_initial;
+		private int iSystemWASAPIBufferSizeMs_initial;
+		private int iSystemASIOBufferSizeMs_initial;
+		private int iSystemASIODevice_initial;
+
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
