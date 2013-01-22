@@ -180,7 +180,6 @@ namespace FDK
 			{
 				try
 				{
-Debug.WriteLine( "n初期デバイス=" + n初期デバイス );
 					t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する();
 					break;
 				}

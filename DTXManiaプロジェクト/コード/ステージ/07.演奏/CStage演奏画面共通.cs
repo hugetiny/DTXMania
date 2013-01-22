@@ -283,7 +283,6 @@ namespace DTXMania
 
 			//lockmixer = new object();
 			queueMixerSound = new Queue<stmixer>( 64 );
-			bMixerManaging = true;
 
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
 			foreach ( CDTX.CChip pChip in listChip )
@@ -341,6 +340,8 @@ namespace DTXMania
 			//listWAV.Clear();
 			listWAV = null;
 			listChip = null;
+			queueMixerSound.Clear();
+			queueMixerSound = null;
 			GCSettings.LatencyMode = this.gclatencymode;
 			base.On非活性化();
 		}
@@ -587,7 +588,6 @@ namespace DTXMania
 //		protected int n最後に再生した実WAV番号.BASS;
 
 		protected volatile Queue<stmixer> queueMixerSound;		// #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
-		protected bool bMixerManaging;
 	
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;

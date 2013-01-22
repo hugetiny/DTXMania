@@ -701,10 +701,10 @@ namespace DTXMania
 			{
 				pChip.bHit = true;
 				this.actPlayInfo.n小節番号 = n小節番号plus1 - 1;
-//				if ( configIni.bWave再生位置自動調整機能有効 )
-//				{
-//					dTX.tWave再生位置自動補正();
-//				}
+				if ( configIni.bWave再生位置自動調整機能有効 )
+				{
+					dTX.tWave再生位置自動補正();
+				}
 			}
 			if ( ( pChip.b可視 && configIni.bGuitar有効 ) && ( configIni.eDark != Eダークモード.FULL ) )
 			{
