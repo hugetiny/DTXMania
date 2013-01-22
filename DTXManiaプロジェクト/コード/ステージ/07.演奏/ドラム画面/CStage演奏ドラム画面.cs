@@ -201,28 +201,24 @@ namespace DTXMania
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
 
-				// もしサウンドの登録削除が必要なら、実行する
+				// もしサウンドの登録/削除が必要なら、実行する
 				if ( queueMixerSound.Count > 0 )
 				{
-Debug.WriteLine( "☆queueLength=" + queueMixerSound.Count );
-					TimeSpan ts = DateTime.Now - dtLastQueueOperation;
+//Debug.WriteLine( "☆queueLength=" + queueMixerSound.Count );
+					DateTime dtnow = DateTime.Now;
+					TimeSpan ts = dtnow - dtLastQueueOperation;
 					if ( ts.Milliseconds > 7 )
 					{
-						dtLastQueueOperation = DateTime.Now;
+						dtLastQueueOperation = dtnow;
 						stmixer stm = queueMixerSound.Dequeue();
 						if ( stm.bIsAdd )
 						{
 							CDTXMania.Sound管理.AddMixer( stm.csound );
-							//AddMixer( stm.csound );
-							//Debug.WriteLine( "★ADDMIXER" );
 						}
 						else
 						{
 							CDTXMania.Sound管理.RemoveMixer( stm.csound );
-							//RemoveMixer( stm.csound );
-							//Debug.WriteLine( "★REMOVEMIXER" );
 						}
-						//Thread.Sleep( 7 );
 					}
 				}
 

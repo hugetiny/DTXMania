@@ -1398,6 +1398,7 @@ for (int i = 0; i < 3; i++) {
 		private List<CActivity> listトップレベルActivities;
 		private int n進行描画の戻り値;
 		private MouseButtons mb = System.Windows.Forms.MouseButtons.Left;
+		private string strWindowTitle = "";
 
 		private void t起動処理()
 		{
@@ -1480,7 +1481,8 @@ for (int i = 0; i < 3; i++) {
 
 			#region [ ウィンドウ初期化 ]
 			//---------------------
-			base.Window.Text = "DTXMania .NET style release " + VERSION;
+			this.strWindowTitle = "DTXMania .NET style release " + VERSION;
+			base.Window.Text = this.strWindowTitle;
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #34510 yyagi 2010.10.31 to change window size got from Config.ini
 			if (!ConfigIni.bウィンドウモード)						// #23510 2010.11.02 yyagi: add; to recover window size in case bootup with fullscreen mode
 			{
@@ -1704,7 +1706,7 @@ for (int i = 0; i < 3; i++) {
 											CDTXMania.ConfigIni.nASIOBufferSizeMs,
 											CDTXMania.ConfigIni.nASIODevice
 				);
-				base.Window.Text += " (" + Sound管理.GetCurrentSoundDeviceType() + ")";
+				AddSoundTypeToWindowTitle();
 				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );
 			}
 			catch (Exception e)
@@ -1857,6 +1859,11 @@ for (int i = 0; i < 3; i++) {
 			r現在のステージ.On活性化();
 			//---------------------
 			#endregion
+		}
+
+		public void AddSoundTypeToWindowTitle()
+		{
+			base.Window.Text = strWindowTitle + " (" + Sound管理.GetCurrentSoundDeviceType() + ")";
 		}
 
 		private void t終了処理()

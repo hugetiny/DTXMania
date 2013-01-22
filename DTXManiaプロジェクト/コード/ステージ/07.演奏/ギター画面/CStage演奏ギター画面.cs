@@ -67,6 +67,7 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
+			dtLastQueueOperation = DateTime.MinValue;
 			base.On活性化();
 		}
 		public override void OnManagedリソースの作成()
@@ -158,6 +159,27 @@ namespace DTXMania
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
 
+				// もしサウンドの登録/削除が必要なら、実行する
+				if ( queueMixerSound.Count > 0 )
+				{
+//Debug.WriteLine( "☆queueLength=" + queueMixerSound.Count );
+					DateTime dtnow = DateTime.Now;
+					TimeSpan ts = dtnow - dtLastQueueOperation;
+					if ( ts.Milliseconds > 7 )
+					{
+						dtLastQueueOperation = dtnow;
+						stmixer stm = queueMixerSound.Dequeue();
+						if ( stm.bIsAdd )
+						{
+							CDTXMania.Sound管理.AddMixer( stm.csound );
+						}
+						else
+						{
+							CDTXMania.Sound管理.RemoveMixer( stm.csound );
+						}
+					}
+				}
+
 				// キー入力
 
 				if( CDTXMania.act現在入力を占有中のプラグイン == null )
@@ -173,6 +195,7 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
+		private DateTime dtLastQueueOperation;
 
 		protected override E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, bool bCorrectLane )
 		{

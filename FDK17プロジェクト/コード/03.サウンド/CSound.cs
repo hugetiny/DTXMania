@@ -120,8 +120,6 @@ namespace FDK
 		
 		#endregion
 
-		public static CBassMixerManager cMixerManager = null;
-		public static Thread thMixerManager = null;
 
 	/// <summary>
 	/// コンストラクタ
@@ -130,9 +128,6 @@ namespace FDK
 		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice )
 		{
 			WindowHandle = handle;
-			//cMixerManager = new CBassMixerManager();
-			//thMixerManager = new Thread( new ThreadStart( cMixerManager.Start ) );
-
 			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice );
 		}
 		public void Dispose()
@@ -196,24 +191,11 @@ namespace FDK
 					}
 				}
 			}
-
-			//cMixerManager = new CBassMixerManager();
-			//thMixerManager = new Thread( new ThreadStart( cMixerManager.Start ) );		// 
-
-			//thMixerManager.IsBackground = true;
-			//thMixerManager.Priority = ThreadPriority.Normal;
-			//thMixerManager.Start();
 		}
 
 
 		public static void t終了()
 		{
-			//cMixerManager.End();
-			//thMixerManager.Join();
-			//cMixerManager.Dispose();
-			//thMixerManager = null;
-			//cMixerManager = null;
-
 			C共通.tDisposeする( SoundDevice ); SoundDevice = null;
 			C共通.tDisposeする( ref rc演奏用タイマ );	// Global.Bass を解放した後に解放すること。（Global.Bass で参照されているため）
 		}
@@ -336,12 +318,10 @@ namespace FDK
 		public void AddMixer( CSound cs )
 		{
 			cs.tBASSサウンドをミキサーに追加する();
-			//cMixerManager.AddMixer( cs );
 		}
 		public void RemoveMixer( CSound cs )
 		{
 			cs.tBASSサウンドをミキサーから削除する();
-			//cMixerManager.RemoveMixer( cs );
 		}
 }
 	#endregion
@@ -938,7 +918,6 @@ namespace FDK
 		}
 		public void tサウンドを再生する( bool bループする )
 		{
-//Debug.WriteLine( "tサウンドを再生する(): " + this.strファイル名 );
 			if ( this.bBASSサウンドである )			// BASSサウンド時のループ処理は、t再生を開始する()側に実装。
 			{
 //Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
@@ -1239,7 +1218,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 
 			nBytes = totalPCMSize;
 
-			this.e作成方法 = E作成方法.WAVファイルイメージから;
+			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
 			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
