@@ -167,15 +167,18 @@ namespace DTXMania
 					TimeSpan ts = dtnow - dtLastQueueOperation;
 					if ( ts.Milliseconds > 7 )
 					{
-						dtLastQueueOperation = dtnow;
-						stmixer stm = queueMixerSound.Dequeue();
-						if ( stm.bIsAdd )
+						for ( int i = 0; i < 2 && queueMixerSound.Count > 0; i++ )
 						{
-							CDTXMania.Sound管理.AddMixer( stm.csound );
-						}
-						else
-						{
-							CDTXMania.Sound管理.RemoveMixer( stm.csound );
+							dtLastQueueOperation = dtnow;
+							stmixer stm = queueMixerSound.Dequeue();
+							if ( stm.bIsAdd )
+							{
+								CDTXMania.Sound管理.AddMixer( stm.csound );
+							}
+							else
+							{
+								CDTXMania.Sound管理.RemoveMixer( stm.csound );
+							}
 						}
 					}
 				}
@@ -699,7 +702,7 @@ namespace DTXMania
 			{
 				pChip.bHit = true;
 				this.actPlayInfo.n小節番号 = n小節番号plus1 - 1;
-				if ( configIni.bWave再生位置自動調整機能有効 )
+				if ( configIni.bWave再生位置自動調整機能有効 && bIsDirectSound )
 				{
 					dTX.tWave再生位置自動補正();
 				}

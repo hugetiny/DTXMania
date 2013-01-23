@@ -109,8 +109,22 @@ namespace DTXMania
 
 	
 			this.iSystemAdjustWaves = new CItemToggle( "AdjustWaves", CDTXMania.ConfigIni.bWave再生位置自動調整機能有効,
-			    "サウンド再生位置自動補正：\nハードウェアやＯＳに起因するサウン\nドのずれを強制的に補正します。\nBGM のように再生時間の長い音声\nデータが使用されている曲で効果が\nあります。",
-			    "Automatic wave playing position\n adjustment feature. If you turn it ON,\n it decrease the lag which comes from\n the difference of hardware/OS.\nUsually, you should turn it ON." );
+			    "サウンド再生位置自動補正：\n" +
+				"ハードウェアやOSに起因するサウン\n" +
+				"ドのずれを強制的に補正します。\n" +
+				"BGM のように再生時間の長い音声\n" +
+				"データが使用されている曲で効果が\n" +
+				"あります。" +
+				"\n" +
+				"※ DirectSound使用時のみ有効です。",
+			    "Automatic wave playing position\n" +
+				" adjustment feature. If you turn it ON,\n" +
+				" it decrease the lag which comes from\n" +
+				" the difference of hardware/OS.\n" +
+				"Usually, you should turn it ON." +
+				"\n"+
+				"Note: This setting is effetive\n" +
+				" only when DirectSound is used.");
 			this.list項目リスト.Add( this.iSystemAdjustWaves );
 			this.iSystemVSyncWait = new CItemToggle( "VSyncWait", CDTXMania.ConfigIni.b垂直帰線待ちを行う,
 				"垂直帰線同期：\n画面の描画をディスプレイの垂直帰\n線中に行なう場合には ON を指定し\nます。ON にすると、ガタつきのない\n滑らかな画面描画が実現されます。",
@@ -194,7 +208,7 @@ namespace DTXMania
 			// #24820 2013.1.3 yyagi
 			this.iSystemSoundType = new CItemList("SoundType", CItemList.Eパネル種別.通常, CDTXMania.ConfigIni.nSoundDeviceType,
 				"サウンドの出力方式:\n" +
-				"WASAPI, ASIO, DShow(DirectShow)\n" +
+				"WASAPI, ASIO, DSound(DirectShow)\n" +
 				"の中からサウンド出力方式を選択\n" +
 				"します。\n" +
 				"WASAPIはVista以降でのみ使用可能\n" +
@@ -217,7 +231,7 @@ namespace DTXMania
 				"\n" +
 				"Note: Exit CONFIGURATION to make\n" +
 				"     the setting take effect.",
-				new string[] { "DShow", "ASIO", "WASAPI" });
+				new string[] { "DSound", "ASIO", "WASAPI" });
 			this.list項目リスト.Add(this.iSystemSoundType);
 
 			// #24820 2013.1.15 yyagi
