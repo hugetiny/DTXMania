@@ -250,7 +250,6 @@ namespace DTXMania
 		private readonly int[] nチャンネルtoX座標 = new int[] { 76, 110, 145, 192, 226, 294, 260, 79, 300, 35 };
 		private CTexture txヒットバーGB;
 		private CTexture txレーンフレームGB;
-		private DateTime dtLastQueueOperation;
 		//-----------------
 
 		private bool bフィルイン区間の最後のChipである( CDTX.CChip pChip )

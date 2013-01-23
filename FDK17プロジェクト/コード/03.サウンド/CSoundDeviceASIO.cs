@@ -45,6 +45,11 @@ namespace FDK
 			get;
 			protected set;
 		}
+		public long n実バッファサイズms
+		{
+			get;
+			protected set;
+		}
 		public int nASIODevice
 		{
 			get;
@@ -72,7 +77,7 @@ namespace FDK
 
 		// メソッド
 
-		public CSoundDeviceASIO( long nバッファサイズms, int _nASIODevice )
+		public CSoundDeviceASIO( long n希望バッファサイズms, int _nASIODevice )
 		{
 			// 初期化。
 
@@ -110,9 +115,6 @@ namespace FDK
 			Debug.Assert( Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 ),		// 0:BASSストリームの自動更新を行わない。（BASSWASAPIから行うため）
 				string.Format( "BASS_SetConfig() に失敗しました。[{0}", Bass.BASS_ErrorGetCode() ) );
 
-Debug.WriteLine( "BASS_SetConfig()完了。" );
-
-
 		
 			// BASS の初期化。
 
@@ -133,21 +135,6 @@ Debug.WriteLine( "BASS_Init()完了。" );
 //                count++; // count it
 //            }
 			#endregion
-
-			// デフォルトデバイスの取得。(BASSではデフォルトデバイスを扱えるが、BASSASIOでは扱えないため)
-			// BASSのデバイスNoと、BASSASIOのデバイスNoは異なるので注意！！！！！
-//Debug.WriteLine( "Bass.BASS_GetDeviceInfo():" );
-			//int defDevice = -1;
-			//BASS_DEVICEINFO devinfo;
-			//for ( int n = 0; ( devinfo = Bass.BASS_GetDeviceInfo( n ) ) != null; n++ )
-			//{
-			//    Debug.WriteLine( "dev#=" + n + ": " + devinfo.name + ", driver=" + devinfo.driver + ", IsDefault=" + devinfo.IsDefault );
-			//    if ( devinfo.IsDefault )
-			//    {
-			//        defDevice = n;
-			//        break;
-			//    }
-			//}
 
 			// BASS ASIO の初期化。
 Debug.WriteLine( "Default device no.: " + nASIODevice );
@@ -277,7 +264,7 @@ Debug.WriteLine( "Default device no.: " + nASIODevice );
 
 			// 出力を開始。
 
-			this.nバッファサイズsample = (int) ( nバッファサイズms * this.db周波数 / 1000.0 );
+			this.nバッファサイズsample = (int) ( n希望バッファサイズms * this.db周波数 / 1000.0 );
 			//this.nバッファサイズsample = (int)  nバッファサイズbyte;
 			if ( !BassAsio.BASS_ASIO_Start( this.nバッファサイズsample ) )		// 範囲外の値を指定した場合は自動的にデフォルト値に設定される。
 			{
@@ -289,9 +276,9 @@ Debug.WriteLine( "Default device no.: " + nASIODevice );
 			else
 			{
 				int n遅延sample = BassAsio.BASS_ASIO_GetLatency( false );	// この関数は BASS_ASIO_Start() 後にしか呼び出せない。
-				int n希望遅延sample = (int) ( nバッファサイズms * this.db周波数 / 1000.0 );
-				this.n実出力遅延ms = (long) ( n遅延sample * 1000.0f / this.db周波数 );
-				Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample(希望{1}) [{2}ms(希望{3}ms)]", n遅延sample, n希望遅延sample, this.n実出力遅延ms, nバッファサイズms );
+				int n希望遅延sample = (int) ( n希望バッファサイズms * this.db周波数 / 1000.0 );
+				this.n実バッファサイズms = this.n実出力遅延ms = (long) ( n遅延sample * 1000.0f / this.db周波数 );
+				Trace.TraceInformation( "ASIO デバイス出力開始：バッファ{0}sample(希望{1}) [{2}ms(希望{3}ms)]", n遅延sample, n希望遅延sample, this.n実出力遅延ms, n希望バッファサイズms );
 			}
 		}
 

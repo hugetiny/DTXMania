@@ -1863,7 +1863,12 @@ for (int i = 0; i < 3; i++) {
 
 		public void AddSoundTypeToWindowTitle()
 		{
-			base.Window.Text = strWindowTitle + " (" + Sound管理.GetCurrentSoundDeviceType() + ")";
+			string delay = "";
+			if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
+			{
+				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
+			}
+			base.Window.Text = strWindowTitle + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
 		}
 
 		private void t終了処理()

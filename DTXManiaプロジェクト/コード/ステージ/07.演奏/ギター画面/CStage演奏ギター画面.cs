@@ -195,8 +195,6 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private DateTime dtLastQueueOperation;
-
 		protected override E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, bool bCorrectLane )
 		{
 			E判定 eJudgeResult = tチップのヒット処理( nHitTime, pChip, E楽器パート.GUITAR, bCorrectLane );

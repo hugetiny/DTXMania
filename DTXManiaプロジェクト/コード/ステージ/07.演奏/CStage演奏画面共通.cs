@@ -322,7 +322,7 @@ namespace DTXMania
 			this.sw = new Stopwatch();
 			this.sw2 = new Stopwatch();
 			this.gclatencymode = GCSettings.LatencyMode;
-			GCSettings.LatencyMode = GCLatencyMode.Batch;	// GCのgen2はせいぜい1演奏辺り1,2回しか発生しないので、ここでわざわざGC gen2は抑止しない
+			GCSettings.LatencyMode = GCLatencyMode.Batch;	// 演奏画面中はGCを抑止する
 		}
 		public override void On非活性化()
 		{
@@ -588,7 +588,8 @@ namespace DTXMania
 //		protected int n最後に再生した実WAV番号.BASS;
 
 		protected volatile Queue<stmixer> queueMixerSound;		// #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
-	
+		protected DateTime dtLastQueueOperation;				//
+
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
 		protected CDTX.CChip r現在の空うちギターChip;
@@ -621,7 +622,7 @@ namespace DTXMania
 				csound = cs
 			};
 			queueMixerSound.Enqueue( stm );
-		Debug.WriteLine( "★Queue: add " + Path.GetFileName( stm.csound.strファイル名 ));
+//		Debug.WriteLine( "★Queue: add " + Path.GetFileName( stm.csound.strファイル名 ));
 		}
 		public void RemoveMixer( CSound cs )
 		{
@@ -631,7 +632,7 @@ namespace DTXMania
 				csound = cs
 			};
 			queueMixerSound.Enqueue( stm );
-		Debug.WriteLine( "★Queue: remove " + Path.GetFileName( stm.csound.strファイル名 ));
+//		Debug.WriteLine( "★Queue: remove " + Path.GetFileName( stm.csound.strファイル名 ));
 		}
 
 		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
@@ -2094,7 +2095,7 @@ namespace DTXMania
 					case 0xDA:
 						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 						{
-							Debug.WriteLine( "[DA(AddMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
+//Debug.WriteLine( "[DA(AddMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
 							pChip.bHit = true;
 							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
 							{
@@ -2115,7 +2116,7 @@ namespace DTXMania
 					case 0xDB:
 						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 						{
-Debug.WriteLine( "[DB(RemoveMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
+//Debug.WriteLine( "[DB(RemoveMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
 							pChip.bHit = true;
 							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
 							{

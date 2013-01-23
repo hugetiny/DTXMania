@@ -23,6 +23,12 @@ namespace FDK
 			get;
 			protected set;
 		}
+		public long n実バッファサイズms
+		{
+			get;
+			protected set;
+		}
+
 		public static readonly BufferFlags DefaultFlags = BufferFlags.Defer | BufferFlags.GetCurrentPosition2 | BufferFlags.GlobalFocus | BufferFlags.ControlVolume | BufferFlags.ControlPan | BufferFlags.ControlFrequency;
 
 		// CSoundTimer 用に公開しているプロパティ
@@ -80,7 +86,7 @@ namespace FDK
 			Trace.TraceInformation( "DirectSound の初期化を開始します。" );
 
 			this.e出力デバイス = ESoundDeviceType.Unknown;
-			this.n実出力遅延ms = n遅延時間ms;
+			this.n実バッファサイズms = this.n実出力遅延ms = n遅延時間ms;
 			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
 
 			#region [ DirectSound デバイスを作成する。]

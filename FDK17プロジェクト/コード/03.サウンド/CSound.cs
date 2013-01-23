@@ -117,7 +117,19 @@ namespace FDK
 		/// </summary>
 		public static int SoundDelayDirectSound = 100;
 
-		
+		public long GetSoundDelay()
+		{
+			if ( SoundDevice != null )
+			{
+Debug.WriteLine( "n実出力値園ms=" + SoundDevice.n実出力遅延ms );
+				return SoundDevice.n実バッファサイズms;
+			}
+			else
+			{
+				return -1;
+			}
+		}
+
 		#endregion
 
 
@@ -935,7 +947,7 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 					}
 					else
 					{
-Debug.WriteLine( "Mixerへの登録に成功: " + Path.GetFileName( this.strファイル名 ) + ": " + Bass.BASS_ErrorGetCode() );
+//Debug.WriteLine( "Mixerへの登録に成功: " + Path.GetFileName( this.strファイル名 ) + ": " + Bass.BASS_ErrorGetCode() );
 					}
 					//this.t再生位置を先頭に戻す();
 
@@ -947,12 +959,12 @@ Debug.WriteLine( "Mixerへの登録に成功: " + Path.GetFileName( this.strフ�
 					}
 					else
 					{
-						Debug.WriteLine("再生成功(ミキサー追加後)                       : " + Path.GetFileName(this.strファイル名));
+//						Debug.WriteLine("再生成功(ミキサー追加後)                       : " + Path.GetFileName(this.strファイル名));
 					}
 				}
 				else
 				{
-Debug.WriteLine( "再生成功: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" );
+//Debug.WriteLine( "再生成功: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" );
 				}
 			}
 			else if( this.bDirectSoundである )
@@ -974,7 +986,7 @@ Debug.WriteLine( "再生成功: " + Path.GetFileName( this.strファイル名 ) 
 		{
 			if( this.bBASSサウンドである )
 			{
-Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
+//Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル名 ) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				if ( !pause )
 				{
@@ -1016,7 +1028,6 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 		{
 			foreach ( var sound in CSound.listインスタンス )
 			{
-				Debug.WriteLine( "解放: " + Path.GetFileName( sound.strファイル名 ) );
 				sound.t解放する();
 			}
 		}
@@ -1328,7 +1339,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 			if ( b )
 			{
 				Interlocked.Decrement( ref CSound管理.nMixing );
-				Debug.WriteLine( "Removed: " + Path.GetFileName( this.strファイル名 ) + " (" + channel + ")" + " MixedStreams=" + CSound管理.nMixing );
+//				Debug.WriteLine( "Removed: " + Path.GetFileName( this.strファイル名 ) + " (" + channel + ")" + " MixedStreams=" + CSound管理.nMixing );
 			}
 			return b;
 		}
@@ -1347,7 +1358,7 @@ Debug.WriteLine( "停止: " + System.IO.Path.GetFileName( this.strファイル�
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
 				bool b2 = BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
-				Debug.WriteLine( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
+//				Debug.WriteLine( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
 				return b1 & b2;
 			}
 			return true;

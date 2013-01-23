@@ -22,6 +22,11 @@ namespace FDK
 			get;
 			protected set;
 		}
+		public long n実バッファサイズms
+		{
+			get;
+			protected set;
+		}
 
 		// CSoundTimer 用に公開しているプロパティ
 
@@ -138,7 +143,7 @@ Retry:
 						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_FLOAT: n1サンプルのバイト数 = 4 * wasapiInfo.chans; break;
 					}
 					int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.freq;
-					long n実バッファサイズms = (long) ( wasapiInfo.buflen * 1000.0f / n1秒のバイト数 );
+					this.n実バッファサイズms = (long) ( wasapiInfo.buflen * 1000.0f / n1秒のバイト数 );
 					this.n実出力遅延ms = 0;	// 初期値はゼロ
 					Trace.TraceInformation( "使用デバイス: #" + nDevNo + " : " + deviceInfo.name + ", flags=" + deviceInfo.flags );
 					Trace.TraceInformation( "BASS を初期化しました。(WASAPI排他モード, {0}Hz, {1}ch, フォーマット:{2}, バッファ{3}bytes [{4}ms(希望{5}ms)], 更新間隔{6}ms)",

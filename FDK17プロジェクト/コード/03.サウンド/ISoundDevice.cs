@@ -13,6 +13,7 @@ namespace FDK
 	{
 		ESoundDeviceType e出力デバイス { get; }
 		long n実出力遅延ms { get; }
+		long n実バッファサイズms { get; }
 		long n経過時間ms { get; }
 		long n経過時間を更新したシステム時刻ms { get; }
 		CTimer tmシステムタイマ { get; }
