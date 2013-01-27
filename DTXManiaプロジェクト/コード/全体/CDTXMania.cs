@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -1084,7 +1084,7 @@ for (int i = 0; i < 3; i++) {
 									c演奏記録_Bass = t;
 
 									CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
-									CDTXMania.DTX.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
+									CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
 																					// リザルト集計時のみ、Auto系のフラグを入れ替え
 																					// これを戻すのは、リザルト集計後。
 								}													// "case CStage.Eステージ.結果:"のところ。
@@ -1189,7 +1189,7 @@ for (int i = 0; i < 3; i++) {
 						{
 							if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24415 2011.2.27 yyagi Gt/Bsを入れ替えていたなら、Auto状態をリザルト画面終了後に元に戻す
 							{
-								CDTXMania.DTX.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
+								CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
 							}
 
 							DTX.t全チップの再生一時停止();
@@ -2088,7 +2088,7 @@ for (int i = 0; i < 3; i++) {
 //				if ( ConfigIni.bIsSwappedGuitarBass )			// #24063 2011.1.16 yyagi ギターベースがスワップしているときは元に戻す
 				if ( ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped )	// #24415 2011.2.21 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、AUTOのフラグをswapして戻す
 				{
-				    DTX.SwapGuitarBassInfos_AutoFlags();
+				    ConfigIni.SwapGuitarBassInfos_AutoFlags();
 				}
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();

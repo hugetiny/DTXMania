@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
@@ -497,9 +497,19 @@ namespace DTXMania
 					case (int) Eレーン.RD:
 						return this.RD;
 					case (int) Eレーン.Guitar:
-						return this.Guitar;
+						if ( !this.GtR ) return false;
+						if ( !this.GtG ) return false;
+						if ( !this.GtB ) return false;
+						if ( !this.GtPick ) return false;
+						if ( !this.GtW ) return false;
+						return true;
 					case (int) Eレーン.Bass:
-						return this.Bass;
+						if ( !this.BsR ) return false;
+						if ( !this.BsG ) return false;
+						if ( !this.BsB) return false;
+						if ( !this.BsPick ) return false;
+						if ( !this.BsW ) return false;
+						return true;
 					case (int) Eレーン.GtR:
 						return this.GtR;
 					case (int) Eレーン.GtG:
@@ -555,10 +565,10 @@ namespace DTXMania
 						this.RD = value;
 						return;
 					case (int) Eレーン.Guitar:
-						this.Guitar = value;
+						this.GtR = this.GtG = this.GtB = this.GtPick = this.GtW = value;
 						return;
 					case (int) Eレーン.Bass:
-						this.Bass = value;
+						this.BsR = this.BsG = this.BsB = this.BsPick = this.BsW = value;
 						return;
 					case (int) Eレーン.GtR:
 						this.GtR = value;

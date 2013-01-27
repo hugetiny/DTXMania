@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -353,6 +353,10 @@ namespace DTXMania
 				case CStage.Eフェーズ.共通_フェードアウト:
 					if( this.actFO.On進行描画() == 0 )
 						return 0;
+					if ( txFilename != null )
+					{
+						txFilename.Dispose();
+					}
 					return 1;
 			}
 			return 0;
