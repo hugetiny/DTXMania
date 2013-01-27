@@ -2844,14 +2844,8 @@ namespace DTXMania
 
 //			SwapGuitarBassInfos_AutoFlags();
 		}
-		public void SwapGuitarBassInfos_AutoFlags()
-		{
-		    bool ts = CDTXMania.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
-		    CDTXMania.ConfigIni.bAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Guitar;
-		    CDTXMania.ConfigIni.bAutoPlay.Guitar = ts;
 
-		    CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
-		}
+		// SwapGuitarBassInfos_AutoFlags()は、CDTXからCConfigIniに移動。
 
 		// CActivity 実装
 

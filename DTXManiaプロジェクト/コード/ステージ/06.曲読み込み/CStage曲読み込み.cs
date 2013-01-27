@@ -362,6 +362,10 @@ namespace DTXMania
 					if( this.actFO.On進行描画() == 0 )
 						return 0;
 
+					if ( txFilename != null )
+					{
+						txFilename.Dispose();
+					}
 					if ( this.sd読み込み音 != null )
 					{
 						this.sd読み込み音.t解放する();

@@ -77,7 +77,6 @@ DTXManiaは、Release 096以降、WASAPI/ASIOに対応しています。
 従来相当のラグになっています。ラグを小さくするためには、
 CONFIGURATIONで、SoundTypeをDirectSoundからWASAPIあるいはASIOに
 変更して下さい。
-(変更後、DTXManiaを再起動しないと、変更が有効になりません。)
 
 WASAPIが使用できないときは、自動的にASIOを使うよう試みます。
 ASIOも使用できないときは、DirectSoundを使います。

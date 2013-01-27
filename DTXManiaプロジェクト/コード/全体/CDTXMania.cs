@@ -309,22 +309,34 @@ namespace DTXMania
 		public void t全画面・ウィンドウモード切り替え()
 		{
 			DeviceSettings settings = base.GraphicsDeviceManager.CurrentSettings.Clone();
-			if( ( ConfigIni != null ) && ( ConfigIni.bウィンドウモード != settings.Windowed ) )
+			if ( ( ConfigIni != null ) && ( ConfigIni.bウィンドウモード != settings.Windowed ) )
 			{
 				settings.Windowed = ConfigIni.bウィンドウモード;
-				if (ConfigIni.bウィンドウモード == false)	// #23510 2010.10.27 yyagi: backup current window size before going fullscreen mode
+				if ( ConfigIni.bウィンドウモード == false )	// #23510 2010.10.27 yyagi: backup current window size before going fullscreen mode
 				{
 					currentClientSize = this.Window.ClientSize;
 					ConfigIni.nウインドウwidth = this.Window.ClientSize.Width;
 					ConfigIni.nウインドウheight = this.Window.ClientSize.Height;
 				}
 				base.GraphicsDeviceManager.ChangeDevice( settings );
-				if (ConfigIni.bウィンドウモード == true)	// #23510 2010.10.27 yyagi: to resume window size from backuped value
+				if ( ConfigIni.bウィンドウモード == true )	// #23510 2010.10.27 yyagi: to resume window size from backuped value
 				{
 					base.Window.ClientSize =
-						new Size(currentClientSize.Width, currentClientSize.Height);
-				}					
+						new Size( currentClientSize.Width, currentClientSize.Height );
+				}
 			}
+			//if ( app.Window.WindowState == FormWindowState.Normal )	// 最初に最大化表示だった場合に未対応
+			//{
+			//    app.Window.WindowState = FormWindowState.Normal;
+			//    app.Window.FormBorderStyle = FormBorderStyle.None;
+			//    app.Window.WindowState = FormWindowState.Maximized;
+			//}
+			//else
+			//{
+			//    app.Window.WindowState = FormWindowState.Normal;
+			//    app.Window.FormBorderStyle = FormBorderStyle.Sizable;
+			//    app.Window.WindowState = FormWindowState.Normal;
+			//}
 		}
 
 		#region [ #24609 リザルト画像をpngで保存する ]		// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
@@ -1097,8 +1109,8 @@ for (int i = 0; i < 3; i++) {
 									c演奏記録_Bass = t;
 
 									CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
-									CDTXMania.DTX.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
-																					// リザルト集計時のみ、Auto系のフラグを入れ替え
+									CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
+																					// リザルト集計時のみ、Auto系のフラグも元に戻す。
 																					// これを戻すのは、リザルト集計後。
 								}													// "case CStage.Eステージ.結果:"のところ。
 
@@ -1202,7 +1214,7 @@ for (int i = 0; i < 3; i++) {
 						{
 							if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24415 2011.2.27 yyagi Gt/Bsを入れ替えていたなら、Auto状態をリザルト画面終了後に元に戻す
 							{
-								CDTXMania.DTX.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
+								CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
 							}
 
 							DTX.t全チップの再生一時停止();
@@ -1555,7 +1567,6 @@ for (int i = 0; i < 3; i++) {
 			}
 			//---------------------
 			#endregion
-//			ct = new CTimer( CTimer.E種別.PerformanceCounter );
 			//-----------
 			#region [ Timer の初期化 ]
 			//---------------------
@@ -1834,13 +1845,6 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			#endregion
 
-			// Sound管理.t再生中の処理をする() を、別スレッドで50ms周期で実行する
-			//System.Threading.Thread t =
-			//new System.Threading.Thread(
-			//new System.Threading.ThreadStart( Sound管理.t再生中の処理をする_loop ) );
-			//t.IsBackground = true;
-			//t.Start();
-
 			Trace.TraceInformation( "アプリケーションの初期化を完了しました。" );
 			
 			#region [ 最初のステージの起動 ]
@@ -2107,8 +2111,6 @@ for (int i = 0; i < 3; i++) {
 				//---------------------
 				#endregion
 
-//				ct.Dispose();
-
 				#region [ タイマの終了処理 ]
 				//---------------------
 				Trace.TraceInformation("タイマの終了処理を行います。");
@@ -2138,7 +2140,7 @@ for (int i = 0; i < 3; i++) {
 //				if ( ConfigIni.bIsSwappedGuitarBass )			// #24063 2011.1.16 yyagi ギターベースがスワップしているときは元に戻す
 				if ( ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped )	// #24415 2011.2.21 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、AUTOのフラグをswapして戻す
 				{
-				    DTX.SwapGuitarBassInfos_AutoFlags();
+				    ConfigIni.SwapGuitarBassInfos_AutoFlags();
 				}
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();

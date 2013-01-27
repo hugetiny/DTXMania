@@ -574,7 +574,7 @@ namespace DTXMania
 		{
 			get
 			{
-				for( int i = (int) Eレーン.LC; i <= (int) Eレーン.CY; i++ )
+				for ( int i = (int) Eレーン.LC; i <= (int) Eレーン.CY; i++ )
 				{
 					if( !this.bAutoPlay[ i ] )
 					{
@@ -988,6 +988,22 @@ namespace DTXMania
 		}
 		public CBackupOf1BD BackupOf1BD = null;
 
+		public void SwapGuitarBassInfos_AutoFlags()
+		{
+			//bool ts = CDTXMania.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
+			//CDTXMania.ConfigIni.bAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Guitar;
+			//CDTXMania.ConfigIni.bAutoPlay.Guitar = ts;
+
+			int looptime = (int) Eレーン.GtW - (int) Eレーン.GtR + 1;		// #29390 2013.1.25 yyagi ギターのAutoLane/AutoPick対応に伴い、FLIPもこれに対応
+			for ( int i = 0; i < looptime; i++ )							// こんなに離れたところを独立して修正しなければならない設計ではいけませんね・・・
+			{
+				bool b = CDTXMania.ConfigIni.bAutoPlay[ i + (int) Eレーン.BsR ];
+				CDTXMania.ConfigIni.bAutoPlay[ i + (int) Eレーン.BsR ] = CDTXMania.ConfigIni.bAutoPlay[ i + (int) Eレーン.GtR ];
+				CDTXMania.ConfigIni.bAutoPlay[ i + (int) Eレーン.GtR ] = b;
+			}
+
+			CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
+		}
 		
 		// コンストラクタ
 
@@ -1079,8 +1095,8 @@ namespace DTXMania
 			this.bAutoPlay.FT = false;
 			this.bAutoPlay.CY = false;
 			this.bAutoPlay.LC = false;
-			this.bAutoPlay.Guitar = true;
-			this.bAutoPlay.Bass = true;
+			//this.bAutoPlay.Guitar = true;
+			//this.bAutoPlay.Bass = true;
 			this.bAutoPlay.GtR = true;
 			this.bAutoPlay.GtG = true;
 			this.bAutoPlay.GtB = true;

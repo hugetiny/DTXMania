@@ -24,7 +24,7 @@ namespace FDK
 			for ( int i = 0; i < bassAsioDevInfo.Length; i++ )
 			{
 				asioDeviceList.Add( bassAsioDevInfo[ i ].name );
-				Trace.TraceInformation( "ASIO Device {0}: {1}", i, bassAsioDevInfo[ i ].name );
+				//Trace.TraceInformation( "ASIO Device {0}: {1}", i, bassAsioDevInfo[ i ].name );
 			}
 
 			return asioDeviceList.ToArray();

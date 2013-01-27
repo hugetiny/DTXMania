@@ -20,31 +20,13 @@ namespace FDK
 	#region [ DTXMania用拡張 ]
 	public class CSound管理	// : CSound
 	{
-		//private static ISoundDevice _SoundDevice;
-		//private static ESoundDeviceType _SoundDeviceType = ESoundDeviceType.Unknown;
 		public static ISoundDevice SoundDevice
 		{
 			get; set;
-			//get
-			//{
-			//    return _SoundDevice;
-			//}
-			//set
-			//{
-			//    _SoundDevice = value;
-			//}
 		}
 		public static ESoundDeviceType SoundDeviceType
 		{
 			get; set;
-			//get
-			//{
-			//    return _SoundDeviceType;
-			//}
-			//set
-			//{
-			//    _SoundDeviceType = value;
-			//}
 		}
 		public static CSoundTimer rc演奏用タイマ = null;
 
@@ -121,7 +103,6 @@ namespace FDK
 		{
 			if ( SoundDevice != null )
 			{
-Debug.WriteLine( "n実出力値園ms=" + SoundDevice.n実出力遅延ms );
 				return SoundDevice.n実バッファサイズms;
 			}
 			else
@@ -222,7 +203,7 @@ Debug.WriteLine( "n実出力値園ms=" + SoundDevice.n実出力遅延ms );
 			{
 				// すでに生成済みのサウンドがあれば初期状態に戻す。
 
-				CSound.tすべてのサウンドを初期状態に戻す();
+				CSound.tすべてのサウンドを初期状態に戻す();		// リソースは解放するが、CSoundのインスタンスは残す。
 
 
 				// サウンドデバイスと演奏タイマを解放する。
@@ -284,12 +265,12 @@ Debug.WriteLine( "n実出力値園ms=" + SoundDevice.n実出力遅延ms );
 		public void tサウンドを破棄する( CSound csound )
 		{
 			csound.t解放する();
+			csound.Dispose();
 			csound = null;
 		}
 
 		public float GetCPUusage()
 		{
-			//float f = Bass.BASS_GetCPU();
 			float f;
 			switch ( SoundDeviceType )
 			{
@@ -307,8 +288,6 @@ Debug.WriteLine( "n実出力値園ms=" + SoundDevice.n実出力遅延ms );
 					f = 0.0f;
 					break;
 			}
-			
-			//Debug.WriteLine( "cpu=" + f );
 			return f;
 		}
 
@@ -548,6 +527,15 @@ Debug.WriteLine( "n実出力値園ms=" + SoundDevice.n実出力遅延ms );
 		/// <para>～を作成する() で追加され、t解放する() or Dispose() で解放される。</para>
 		/// </summary>
 		public static List<CSound> listインスタンス = new List<CSound>();
+
+		public static void ShowAllCSoundFiles()
+		{
+			foreach ( CSound cs in listインスタンス )
+			{
+				int i = 0;
+				Debug.WriteLine( i.ToString( "d3" ) + ": " + Path.GetFileName( cs.strファイル名 ) );
+			}
+		}
 
 		public CSound()
 		{
@@ -1122,8 +1110,11 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 				if( this.e作成方法 == E作成方法.WAVファイルイメージから &&
 					this.eデバイス種別 != ESoundDeviceType.DirectSound )	// DirectSound は hGC 未使用。
 				{
-					this.hGC.Free();
-					this.hGC = default( GCHandle );
+					if ( this.hGC != null && this.hGC.IsAllocated )
+					{
+						this.hGC.Free();
+						this.hGC = default( GCHandle );
+					}
 				}
 				if ( this.byArrWAVファイルイメージ != null )
 				{
@@ -1150,8 +1141,7 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 		protected byte[] byArrWAVファイルイメージ = null;	// WAVファイルイメージ、もしくはchunkのDATA部のみ
 		protected GCHandle hGC;
 		public int hBassStream = -1;					// ASIO, WASAPI 用
-		//protected SecondarySoundBuffer Buffer = null;	// DirectSound 用
-		protected SoundBuffer Buffer = null;	// DirectSound 用
+		protected SoundBuffer Buffer = null;			// DirectSound 用
 		protected DirectSound DirectSound;
 		public int hMixer = -1;	// 設計壊してゴメン Mixerに後で登録するときに使う
 		//-----------------
@@ -1233,7 +1223,7 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 
 			nBytes = totalPCMSize;
 
-			this.e作成方法 = E作成方法.ファイルから;
+			this.e作成方法 = E作成方法.WAVファイルイメージから;		//.ファイルから;	// 再構築時はデコード後のイメージを流用する&Dispose時にhGCを解放する
 			this.strファイル名 = strファイル名;
 			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
@@ -1310,25 +1300,6 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 
 // mixerからの削除
 
-		///// <summary>
-		///// ストリームの終端まで再生したときに呼び出されるコールバック
-		///// </summary>
-		///// <param name="handle"></param>
-		///// <param name="channel"></param>
-		///// <param name="data"></param>
-		///// <param name="user"></param>
-		//private void CallbackEndofStream( int handle, int channel, int data, IntPtr user )
-		//{
-		//    //Debug.WriteLine( "Callback!(remove 3sec later)" );
-		//    //ThreadPool.QueueUserWorkItem( RemoveMixerChannelLater, channel); 
-		//    //tBASSサウンドをミキサーから削除する( channel );
-		//}
-		//private void RemoveMixerChannelLater( object o )
-		//{
-		//    int channel = (int) o;
-		//    Thread.Sleep( 3000 );
-		//    tBASSサウンドをミキサーから削除する( channel );
-		//}
 		public bool tBASSサウンドをミキサーから削除する()
 		{
 			return tBASSサウンドをミキサーから削除する( this.hBassStream );

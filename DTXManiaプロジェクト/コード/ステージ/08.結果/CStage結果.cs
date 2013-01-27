@@ -155,7 +155,8 @@ namespace DTXMania
                         this.b新記録スキル[ i ] = true;
                         ini.stセクション[(i * 2) + 1] = this.st演奏記録[ i ];
                     }
-                    // ラストプレイ #23595 2011.1.9 ikanick
+
+					// ラストプレイ #23595 2011.1.9 ikanick
                     // オートじゃなければプレイ結果を書き込む
                     if (this.bオート[ i ] == false) {
                         ini.stセクション[i + 6] = this.st演奏記録[ i ];
@@ -212,7 +213,7 @@ namespace DTXMania
 							if( this.b新記録スキル[ m ] )
 							{
 								cスコア.譜面情報.最大スキル[ m ] = this.st演奏記録[ m ].db演奏型スキル値;
-                            }
+		                    }
 
                             if (this.b新記録ランク[ m ])
                             {
