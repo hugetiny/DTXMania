@@ -100,18 +100,18 @@ namespace FDK
 
 			#region [ デバッグ用: WASAPIデバイスのenumerateと、ログ出力 ]
 			// (デバッグ用)
-			Trace.TraceInformation( "WASAPIデバイス一覧:" );
-			int a, count = 0;
-			BASS_WASAPI_DEVICEINFO wasapiDevInfo;
-			for ( a = 0; ( wasapiDevInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( a ) ) != null; a++ )
-			{
-			    if ( ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_INPUT ) == 0 // device is an output device (not input)
-			            && ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_ENABLED ) != 0 ) // and it is enabled
-			    {
-			        Trace.TraceInformation( "WASAPI Device #{0}: {1}", a, wasapiDevInfo.name );
-			        count++; // count it
-			    }
-			}
+			//Trace.TraceInformation( "WASAPIデバイス一覧:" );
+			//int a, count = 0;
+			//BASS_WASAPI_DEVICEINFO wasapiDevInfo;
+			//for ( a = 0; ( wasapiDevInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( a ) ) != null; a++ )
+			//{
+			//    if ( ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_INPUT ) == 0 // device is an output device (not input)
+			//            && ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_ENABLED ) != 0 ) // and it is enabled
+			//    {
+			//        Trace.TraceInformation( "WASAPI Device #{0}: {1}", a, wasapiDevInfo.name );
+			//        count++; // count it
+			//    }
+			//}
 			#endregion
 
 			// BASS WASAPI の初期化。
@@ -252,6 +252,7 @@ Retry:
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
+			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
 			if ( hMixer != -1 )
 			{
 				Bass.BASS_StreamFree( this.hMixer );
@@ -266,7 +267,6 @@ Retry:
 				C共通.tDisposeする( this.tmシステムタイマ );
 				this.tmシステムタイマ = null;
 			}
-			this.e出力デバイス = ESoundDeviceType.Unknown;
 		}
 		~CSoundDeviceWASAPI()
 		{

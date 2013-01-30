@@ -16,7 +16,7 @@ namespace FDK
 	{
 		public static string[] GetAllASIODevices()
 		{
-			Debug.WriteLine( "BassAsio.BASS_ASIO_GetDeviceInfos():" );
+			//Debug.WriteLine( "BassAsio.BASS_ASIO_GetDeviceInfos():" );
 			BASS_ASIO_DEVICEINFO[] bassAsioDevInfo = BassAsio.BASS_ASIO_GetDeviceInfos();
 
 			List<string> asioDeviceList = new List<string>();
@@ -160,15 +160,15 @@ Debug.WriteLine( "Default device no.: " + nASIODevice );
 					);
 				this.bIsBASSFree = false;
 				#region [ debug: channel format ]
-				BASS_ASIO_CHANNELINFO chinfo = new BASS_ASIO_CHANNELINFO();
-				int chan = 0;
-				while ( true )
-				{
-					if ( !BassAsio.BASS_ASIO_ChannelGetInfo( false, chan, chinfo ) )
-						break;
-					Debug.WriteLine( "Ch=" + chan + ": " + chinfo.name.ToString() + ", " + chinfo.group.ToString() + ", " + chinfo.format.ToString() );
-					chan++;
-				}
+				//BASS_ASIO_CHANNELINFO chinfo = new BASS_ASIO_CHANNELINFO();
+				//int chan = 0;
+				//while ( true )
+				//{
+				//    if ( !BassAsio.BASS_ASIO_ChannelGetInfo( false, chan, chinfo ) )
+				//        break;
+				//    Debug.WriteLine( "Ch=" + chan + ": " + chinfo.name.ToString() + ", " + chinfo.group.ToString() + ", " + chinfo.format.ToString() );
+				//    chan++;
+				//}
 				#endregion
 				//-----------------
 				#endregion
@@ -315,6 +315,7 @@ Debug.WriteLine( "Default device no.: " + nASIODevice );
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
+			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
 			if ( hMixer != -1 )
 			{
 				Bass.BASS_StreamFree( this.hMixer );
@@ -330,7 +331,6 @@ Debug.WriteLine( "Default device no.: " + nASIODevice );
 				C共通.tDisposeする( this.tmシステムタイマ );
 				this.tmシステムタイマ = null;
 			}
-			this.e出力デバイス = ESoundDeviceType.Unknown;
 		}
 		~CSoundDeviceASIO()
 		{

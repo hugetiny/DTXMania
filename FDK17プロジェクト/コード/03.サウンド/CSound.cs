@@ -264,8 +264,7 @@ namespace FDK
 
 		public void tサウンドを破棄する( CSound csound )
 		{
-			csound.t解放する();
-			csound.Dispose();
+			csound.t解放する( true );			// インスタンスは存続→破棄にする。
 			csound = null;
 		}
 
@@ -530,10 +529,10 @@ namespace FDK
 
 		public static void ShowAllCSoundFiles()
 		{
+			int i = 0;
 			foreach ( CSound cs in listインスタンス )
 			{
-				int i = 0;
-				Debug.WriteLine( i.ToString( "d3" ) + ": " + Path.GetFileName( cs.strファイル名 ) );
+				Debug.WriteLine( i++.ToString( "d3" ) + ": " + Path.GetFileName( cs.strファイル名 ) );
 			}
 		}
 
@@ -902,6 +901,11 @@ namespace FDK
 
 		public void t解放する()
 		{
+			t解放する( false );
+		}
+
+		public void t解放する( bool _bインスタンス削除 )
+		{
 			if ( this.bBASSサウンドである )		// stream数の削減用
 			{
 				tBASSサウンドをミキサーから削除する();
@@ -910,8 +914,9 @@ namespace FDK
 				CSound管理.nStreams--;
 			}
 			bool bManagedも解放する = true;
-			bool bインスタンス削除 = false;								// インスタンスは存続する。
+			bool bインスタンス削除 = _bインスタンス削除;	// CSoundの再初期化時は、インスタンスは存続する。
 			this.Dispose( bManagedも解放する, bインスタンス削除 );
+//Debug.WriteLine( "Disposed: " + _bインスタンス削除 + " : " + Path.GetFileName( this.strファイル名 ) );
 		}
 		public void tサウンドを再生する()
 		{
@@ -1016,7 +1021,7 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 		{
 			foreach ( var sound in CSound.listインスタンス )
 			{
-				sound.t解放する();
+				sound.t解放する( false );
 			}
 		}
 		public static void tすべてのサウンドを再構築する( ISoundDevice device )
@@ -1121,8 +1126,15 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 					this.byArrWAVファイルイメージ = null;
 				}
 
-				if( bインスタンス削除 )
-					CSound.listインスタンス.Remove( this );
+				if ( bインスタンス削除 )
+				{
+					bool b = CSound.listインスタンス.Remove( this );
+					if ( !b )
+					{
+Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
+					}
+
+				}
 			}
 		}
 		~CSound()

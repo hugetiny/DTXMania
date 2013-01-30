@@ -196,7 +196,8 @@ namespace FDK
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
-			if( bManagedDispose )
+			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
+			if ( bManagedDispose )
 			{
 				#region [ 経緯時間計測用サウンドバッファを解放。]
 				//-----------------
@@ -218,7 +219,6 @@ namespace FDK
 				C共通.tDisposeする( ref this.DirectSound );
 				C共通.tDisposeする( this.tmシステムタイマ );
 			}
-			this.e出力デバイス = ESoundDeviceType.Unknown;
 		}
 		~CSoundDeviceDirectSound()
 		{

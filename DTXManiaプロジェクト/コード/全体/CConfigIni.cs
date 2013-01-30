@@ -2012,7 +2012,8 @@ namespace DTXMania
 											}
 											else if ( str3.Equals( "ASIODevice" ) )
 											{
-												this.nASIODevice = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 999, this.nASIODevice );
+												string[] asiodev = CEnumerateAllAsioDevices.GetAllASIODevices();
+												this.nASIODevice = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, asiodev.Length - 1, this.nASIODevice );
 											}
 											else if ( str3.Equals( "ASIOBufferSizeMs" ) )
 											{
