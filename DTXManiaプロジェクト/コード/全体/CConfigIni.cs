@@ -654,8 +654,8 @@ namespace DTXMania
 		}
 		public bool bIsSwappedGuitarBass_AutoFlagsAreSwapped	// #24415 2011.2.21 yyagi FLIP中にalt-f4終了で、AUTOフラグがswapした状態でconfig.iniが出力されてしまうことを避けるためのフラグ
 		{
-		    get;
-		    set;
+			get;
+			set;
 		}
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
@@ -2711,20 +2711,20 @@ namespace DTXMania
 		/// <summary>
 		/// ギターとベースのキーアサイン入れ替え
 		/// </summary>
-		public void SwapGuitarBassKeyAssign()		// #24063 2011.1.16 yyagi
-		{
-			for ( int j = 0; j <= (int)EKeyConfigPad.Capture; j++ )
-			{
-				CKeyAssign.STKEYASSIGN t; //= new CConfigIni.CKeyAssign.STKEYASSIGN();
-				for ( int k = 0; k < 16; k++ )
-				{
-					t = this.KeyAssign[ (int)EKeyConfigPart.GUITAR ][ j ][ k ];
-					this.KeyAssign[ (int)EKeyConfigPart.GUITAR ][ j ][ k ] = this.KeyAssign[ (int)EKeyConfigPart.BASS ][ j ][ k ];
-					this.KeyAssign[ (int)EKeyConfigPart.BASS ][ j ][ k ] = t;
-				}
-			}
-			this.bIsSwappedGuitarBass = !bIsSwappedGuitarBass;
-		}
+		//public void SwapGuitarBassKeyAssign()		// #24063 2011.1.16 yyagi
+		//{
+		//    for ( int j = 0; j <= (int)EKeyConfigPad.Capture; j++ )
+		//    {
+		//        CKeyAssign.STKEYASSIGN t; //= new CConfigIni.CKeyAssign.STKEYASSIGN();
+		//        for ( int k = 0; k < 16; k++ )
+		//        {
+		//            t = this.KeyAssign[ (int)EKeyConfigPart.GUITAR ][ j ][ k ];
+		//            this.KeyAssign[ (int)EKeyConfigPart.GUITAR ][ j ][ k ] = this.KeyAssign[ (int)EKeyConfigPart.BASS ][ j ][ k ];
+		//            this.KeyAssign[ (int)EKeyConfigPart.BASS ][ j ][ k ] = t;
+		//        }
+		//    }
+		//    this.bIsSwappedGuitarBass = !bIsSwappedGuitarBass;
+		//}
 
 
 		// その他

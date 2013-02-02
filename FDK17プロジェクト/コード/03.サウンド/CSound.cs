@@ -320,7 +320,7 @@ namespace FDK
 	// CSound は、サウンドデバイスが変更されたときも、インスタンスを再作成することなく、新しいデバイスで作り直せる必要がある。
 	// そのため、デバイスごとに別のクラスに分割するのではなく、１つのクラスに集約するものとする。
 
-	public class CSound : IDisposable
+	public class CSound : IDisposable, ICloneable
 	{
 		#region [ DTXMania用拡張 ]
 		public int n総演奏時間ms
@@ -554,6 +554,9 @@ namespace FDK
 			}
 			CSound clone = (CSound) MemberwiseClone();	// これだけだとCY連打が途切れる＆タイトルに戻る際にNullRef例外発生
 			this.DirectSound.DuplicateSoundBuffer( this.Buffer, out clone.Buffer );
+
+			// CSound.listインスタンス.Add( this );			// インスタンスリストに登録。
+			// 本来これを加えるべきだが、Add後Removeできなくなっている。Clone()の仕方の問題であろう。
 
 			return clone;
 		}
@@ -1092,6 +1095,17 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 
 			if( bManagedも解放する )
 			{
+				//int freeIndex = -1;
+
+				//if ( CSound.listインスタンス != null )
+				//{
+				//    freeIndex = CSound.listインスタンス.IndexOf( this );
+				//    if ( freeIndex == -1 )
+				//    {
+				//        Debug.WriteLine( "ERR: freeIndex==-1 : Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
+				//    }
+				//}
+
 				if( this.eデバイス種別 == ESoundDeviceType.DirectSound )
 				{
 					#region [ DirectSound の解放 ]
@@ -1128,10 +1142,18 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 
 				if ( bインスタンス削除 )
 				{
-					bool b = CSound.listインスタンス.Remove( this );
+					//try
+					//{
+					//    CSound.listインスタンス.RemoveAt( freeIndex );
+					//}
+					//catch
+					//{
+					//    Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
+					//}
+					bool b = CSound.listインスタンス.Remove( this );	// これだと、Clone()したサウンドのremoveに失敗する
 					if ( !b )
 					{
-Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
+						Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
 					}
 
 				}

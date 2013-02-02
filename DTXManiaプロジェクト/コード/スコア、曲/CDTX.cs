@@ -1564,6 +1564,7 @@ namespace DTXMania
 
 				string str = string.IsNullOrEmpty(this.PATH_WAV) ? this.strフォルダ名 : this.PATH_WAV;
 				str = str + cwav.strファイル名;
+				bool bIsDirectSound = ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
 				try
 				{
 					//try
@@ -1626,7 +1627,7 @@ namespace DTXMania
 					#endregion
 
 					// 残りはClone等で登録する
-					//if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" )	// DShowでの再生の場合はCloneする
+					//if ( bIsDirectSound )	// DShowでの再生の場合はCloneする
 					//{
 					//    for ( int i = 1; i < nPoly; i++ )
 					//    {

@@ -294,7 +294,7 @@ namespace DTXMania
 					{
 						pChip.bHit = true;
 //						Debug.WriteLine( "first [DA] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms );
-						if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
+						if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 						{
 							CDTX.CWAV wc = listWAV[ pChip.n整数値・内部番号 ];
 							for ( int i = 0; i < nPolyphonicSounds; i++ )
@@ -322,7 +322,7 @@ namespace DTXMania
 			this.sw = new Stopwatch();
 			this.sw2 = new Stopwatch();
 			this.gclatencymode = GCSettings.LatencyMode;
-			GCSettings.LatencyMode = GCLatencyMode.Batch;	// 演奏画面中はGCを抑止する
+//			GCSettings.LatencyMode = GCLatencyMode.Batch;	// 演奏画面中はGCを抑止する
 		}
 		public override void On非活性化()
 		{

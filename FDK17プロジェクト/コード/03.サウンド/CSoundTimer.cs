@@ -50,21 +50,27 @@ namespace FDK
 			//this.thSnapTimers.IsBackground = true;
 			//this.thSnapTimers.Start();
 
-			TimerCallback timerDelegate = new TimerCallback( SnapTimers );
-			timer = new Timer( timerDelegate, null, 0, 1000 );
+			if ( this.Device.e出力デバイス != ESoundDeviceType.DirectSound )
+			{
+				TimerCallback timerDelegate = new TimerCallback( SnapTimers );	// CSoundTimerをシステム時刻に変換するために、
+				timer = new Timer( timerDelegate, null, 0, 1000 );				// CSoundTimerとCTimerを両方とも走らせておき、
+				ctDInputTimer = new CTimer( CTimer.E種別.MultiMedia );			// 1秒に1回時差を測定するようにしておく
+			}
 
-			ctDInputTimer = new CTimer( CTimer.E種別.MultiMedia );
 		}
 	
-		private void SnapTimers(object o)
+		private void SnapTimers(object o)	// 1秒に1回呼び出され、2つのタイマー間の現在値をそれぞれ保持する。
 		{
-			this.nDInputTimerCounter = this.ctDInputTimer.nシステム時刻ms;
-			this.nSoundTimerCounter = this.nシステム時刻ms;
-//Debug.WriteLine( "BaseCounter: " + nDInputTimerCounter + ", " + nSoundTimerCounter );
+			if ( this.Device.e出力デバイス != ESoundDeviceType.DirectSound )
+			{
+				this.nDInputTimerCounter = this.ctDInputTimer.nシステム時刻ms;
+				this.nSoundTimerCounter = this.nシステム時刻ms;
+				//Debug.WriteLine( "BaseCounter: " + nDInputTimerCounter + ", " + nSoundTimerCounter );
+			}
 		}
 		public long nサウンドタイマーのシステム時刻msへの変換( long nDInputのタイムスタンプ )
 		{
-			return nDInputのタイムスタンプ - this.nDInputTimerCounter + this.nSoundTimerCounter;
+			return nDInputのタイムスタンプ - this.nDInputTimerCounter + this.nSoundTimerCounter;	// Timer違いによる時差を補正する
 		}
 
 #if false
