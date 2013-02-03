@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -469,7 +469,7 @@ namespace FDK
 
 				device.SetTexture( 0, this.texture );
 				device.VertexFormat = PositionColoredTexturedVertex.Format;
-				device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 4, this.cvPositionColoredVertexies );
+				device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 2, this.cvPositionColoredVertexies );
 				//-----------------
 				#endregion
 			}
