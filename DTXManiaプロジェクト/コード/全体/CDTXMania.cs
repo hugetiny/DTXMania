@@ -1294,7 +1294,7 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 			this.Device.EndScene();
-			actFlushGPU.On進行描画();		// Flush GPU
+			//actFlushGPU.On進行描画();		// Flush GPU
 
 			#region [ 全画面・ウインドウ切り替え ]
 			if ( this.b次のタイミングで全画面・ウィンドウ切り替えを行う )
