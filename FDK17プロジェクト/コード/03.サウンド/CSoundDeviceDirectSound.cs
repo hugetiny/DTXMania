@@ -99,13 +99,11 @@ namespace FDK
 			try
 			{
 				this.DirectSound.SetCooperativeLevel( hWnd, CooperativeLevel.Priority );
-Debug.WriteLine( "DirectSound CooperativeLevel=Priority" );
 			}
 			catch( DirectSoundException )
 			{
 				this.DirectSound.SetCooperativeLevel( hWnd, CooperativeLevel.Normal );	// これでも失敗したら例外をそのまま発出。
 				priority = false;
-Debug.WriteLine( "DirectSound CooperativeLevel=Normal" );
 			}
 
 			// デバイス作成完了。

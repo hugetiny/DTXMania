@@ -27,7 +27,8 @@ namespace FDK
 				}
 				else if( this.Device.e出力デバイス == ESoundDeviceType.DirectSound )
 				{
-					return this.Device.n経過時間ms;
+					//return this.Device.n経過時間ms;		// #24820 2013.2.3 yyagi TESTCODE DirectSoundでスクロールが滑らかにならないため、
+					return ct.nシステム時刻ms;				// 仮にCSoundTimerをCTimer相当の動作にしてみた
 				}
 				return CTimerBase.n未使用;
 			}
@@ -37,26 +38,16 @@ namespace FDK
 		{
 			this.Device = device;
 
-			// sendinputスレッド作成
-			//this.thSendInput = new Thread( new ThreadStart( this.pollingSendInput ) );
-			//this.thSendInput.Name = "タイマー補正用自動キー入力";
-			//this.thSendInput.IsBackground = true;
-			//this.thSendInput.Start();
-			//Debug.WriteLine( "＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠＠" );
-
-			// 2つのタイマーのタイムスタンプのスナップショットをとるスレッドを作成
-			//this.thSnapTimers = new Thread( new ThreadStart( this.SnapTimers ) );
-			//this.thSnapTimers.Name = "タイマー補正用自動スナップ取得";
-			//this.thSnapTimers.IsBackground = true;
-			//this.thSnapTimers.Start();
-
 			if ( this.Device.e出力デバイス != ESoundDeviceType.DirectSound )
 			{
 				TimerCallback timerDelegate = new TimerCallback( SnapTimers );	// CSoundTimerをシステム時刻に変換するために、
 				timer = new Timer( timerDelegate, null, 0, 1000 );				// CSoundTimerとCTimerを両方とも走らせておき、
 				ctDInputTimer = new CTimer( CTimer.E種別.MultiMedia );			// 1秒に1回時差を測定するようにしておく
 			}
-
+			else																// TESTCODE DirectSound時のみ、CSoundTimerでなくCTimerを使う
+			{
+				ct = new CTimer( CTimer.E種別.MultiMedia );
+			}
 		}
 	
 		private void SnapTimers(object o)	// 1秒に1回呼び出され、2つのタイマー間の現在値をそれぞれ保持する。
@@ -166,5 +157,7 @@ Debug.WriteLine( "B" );
 		private long nDInputTimerCounter = 0;
 		private long nSoundTimerCounter = 0;
 		Timer timer = null;
+
+		private CTimer ct = null;								// TESTCODE
 	}
 }
