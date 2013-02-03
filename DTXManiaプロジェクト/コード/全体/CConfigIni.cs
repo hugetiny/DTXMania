@@ -1289,7 +1289,9 @@ namespace DTXMania
 			sw.WriteLine();
 
 			sw.WriteLine( "; ASIO使用時のサウンドデバイス" );
+			sw.WriteLine( "; 存在しないデバイスを指定すると、DTXManiaが起動しないことがあります。" );
 			sw.WriteLine( "; Sound device used by ASIO." );
+			sw.WriteLine( "; Don't specify unconnected device, as the DTXMania may not bootup." );
 			string[] asiodev = CEnumerateAllAsioDevices.GetAllASIODevices();
 			for ( int i = 0; i < asiodev.Length; i++ )
 			{

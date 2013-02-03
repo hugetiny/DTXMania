@@ -308,35 +308,49 @@ namespace DTXMania
 
 		public void t全画面・ウィンドウモード切り替え()
 		{
-			//DeviceSettings settings = base.GraphicsDeviceManager.CurrentSettings.Clone();
-			if ( ConfigIni != null )
+			DeviceSettings settings = base.GraphicsDeviceManager.CurrentSettings.Clone();
+			if ( ( ConfigIni != null ) && ( ConfigIni.bウィンドウモード != settings.Windowed ) )
+			//if ( ConfigIni != null )
 			{
-				//settings.Windowed = ConfigIni.bウィンドウモード;
+				settings.Windowed = ConfigIni.bウィンドウモード;
 				if ( ConfigIni.bウィンドウモード == false )	// #23510 2010.10.27 yyagi: backup current window size before going fullscreen mode
 				{
 					currentClientSize = this.Window.ClientSize;
 					ConfigIni.nウインドウwidth = this.Window.ClientSize.Width;
 					ConfigIni.nウインドウheight = this.Window.ClientSize.Height;
 				}
-				//base.GraphicsDeviceManager.ChangeDevice( settings );
+				base.GraphicsDeviceManager.ChangeDevice( settings );
 				if ( ConfigIni.bウィンドウモード == true )	// #23510 2010.10.27 yyagi: to resume window size from backuped value
 				{
 															// #30666 2013.2.2 yyagi Don't use Fullscreen mode becasue NVIDIA GeForce is
 															// tend to delay drawing on Fullscreen mode. So DTXMania uses Maximized window
 															// in spite of using fullscreen mode.
-					app.Window.WindowState = FormWindowState.Normal;
-					app.Window.FormBorderStyle = FormBorderStyle.Sizable;
-					app.Window.WindowState = FormWindowState.Normal;
+					//app.Window.WindowState = FormWindowState.Normal;
+					//app.Window.FormBorderStyle = FormBorderStyle.Sizable;
+					//app.Window.WindowState = FormWindowState.Normal;
 
 					base.Window.ClientSize =
 						new Size( currentClientSize.Width, currentClientSize.Height );
 				}
 				else 
 				{
-					app.Window.WindowState = FormWindowState.Normal;
-					app.Window.FormBorderStyle = FormBorderStyle.None;
-					app.Window.WindowState = FormWindowState.Maximized;
+					//app.Window.WindowState = FormWindowState.Normal;
+					//app.Window.FormBorderStyle = FormBorderStyle.None;
+					//app.Window.WindowState = FormWindowState.Maximized;
 				}
+				//if ( ConfigIni.bウィンドウモード )
+				//{
+				//    if ( !this.bマウスカーソル表示中 )
+				//    {
+				//        Cursor.Show();
+				//        this.bマウスカーソル表示中 = true;
+				//    }
+				//}
+				//else if ( this.bマウスカーソル表示中 )
+				//{
+				//    Cursor.Hide();
+				//    this.bマウスカーソル表示中 = false;
+				//}
 			}
 		}
 
@@ -409,6 +423,9 @@ namespace DTXMania
 			this.Device.SetRenderState( RenderState.AntialiasedLineEnable, false );
 			this.Device.SetRenderState( RenderState.AlphaTestEnable, true );
 			this.Device.SetRenderState( RenderState.AlphaRef, 10 );
+
+//			this.Device.SetRenderState( RenderState.MultisampleAntialias, true );
+
 			this.Device.SetRenderState<Compare>( RenderState.AlphaFunc, Compare.Greater );
 			this.Device.SetRenderState( RenderState.AlphaBlendEnable, true );
 			this.Device.SetRenderState<Blend>( RenderState.SourceBlend, Blend.SourceAlpha );
@@ -1276,8 +1293,8 @@ for (int i = 0; i < 3; i++) {
 						break;
 				}
 			}
-			actFlushGPU.On進行描画();		// Flush GPU
 			this.Device.EndScene();
+			actFlushGPU.On進行描画();		// Flush GPU
 
 			#region [ 全画面・ウインドウ切り替え ]
 			if ( this.b次のタイミングで全画面・ウィンドウ切り替えを行う )
@@ -1497,12 +1514,12 @@ for (int i = 0; i < 3; i++) {
 			this.strWindowTitle = "DTXMania .NET style release " + VERSION;
 			base.Window.Text = this.strWindowTitle;
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #34510 yyagi 2010.10.31 to change window size got from Config.ini
-//			if (!ConfigIni.bウィンドウモード)						// #23510 2010.11.02 yyagi: add; to recover window size in case bootup with fullscreen mode
-//			{														// #30666 2013.02.02 yyagi: currentClientSize should be always made
+			if (!ConfigIni.bウィンドウモード)						// #23510 2010.11.02 yyagi: add; to recover window size in case bootup with fullscreen mode
+			{														// #30666 2013.02.02 yyagi: currentClientSize should be always made
 				currentClientSize = new Size( ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight );
-//			}
+			}
 			base.Window.MaximizeBox = true;							// #23510 2010.11.04 yyagi: to support maximizing window
-			//base.Window.FormBorderStyle = FormBorderStyle.Sizable;	// #23510 2010.10.27 yyagi: changed from FixedDialog to Sizable, to support window resize
+			base.Window.FormBorderStyle = FormBorderStyle.Sizable;	// #23510 2010.10.27 yyagi: changed from FixedDialog to Sizable, to support window resize
 																		// #30666 2013.02.02 yyagi: moved the code to t全画面・ウインドウモード切り替え()
 			base.Window.ShowIcon = true;
 			base.Window.Icon = Properties.Resources.dtx;
@@ -1519,13 +1536,18 @@ for (int i = 0; i < 3; i++) {
 			#region [ Direct3D9 デバイスの生成 ]
 			//---------------------
 			DeviceSettings settings = new DeviceSettings();
-			//settings.Windowed = ConfigIni.bウィンドウモード;
-			settings.Windowed = true;								// #30666 2013.2.2 yyagi: Fullscreenmode is "Maximized window" mode
+			settings.Windowed = ConfigIni.bウィンドウモード;
+			//settings.Windowed = true;								// #30666 2013.2.2 yyagi: Fullscreenmode is "Maximized window" mode
 			settings.BackBufferWidth = SampleFramework.GameWindowSize.Width;
 			settings.BackBufferHeight = SampleFramework.GameWindowSize.Height;
 //			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
-
+//			settings.BackBufferFormat = Format.A8R8G8B8;
+//			settings.MultisampleType = MultisampleType.FourSamples;
+//			settings.MultisampleQuality = 4;
+//			settings.MultisampleType = MultisampleType.None;
+//			settings.MultisampleQuality = 0;
+			
 			try
 			{
 				base.GraphicsDeviceManager.ChangeDevice(settings);
@@ -1536,13 +1558,13 @@ for (int i = 0; i < 3; i++) {
 				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Initialize Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(-1);
 			}
-
+			
 			base.IsFixedTimeStep = false;
 //			base.TargetElapsedTime = TimeSpan.FromTicks( 10000000 / 75 );
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
 			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
 																												// #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
-			this.t全画面・ウィンドウモード切り替え();				// #30666 2013.2.2 yyagi: finalize settings for "Maximized window mode"
+			//this.t全画面・ウィンドウモード切り替え();				// #30666 2013.2.2 yyagi: finalize settings for "Maximized window mode"
 			actFlushGPU = new CActFlushGPU();
 			//---------------------
 			#endregion

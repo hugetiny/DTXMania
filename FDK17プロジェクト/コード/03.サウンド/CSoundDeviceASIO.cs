@@ -268,10 +268,11 @@ Debug.WriteLine( "Default device no.: " + nASIODevice );
 			//this.nバッファサイズsample = (int)  nバッファサイズbyte;
 			if ( !BassAsio.BASS_ASIO_Start( this.nバッファサイズsample ) )		// 範囲外の値を指定した場合は自動的にデフォルト値に設定される。
 			{
+				BASSError err = BassAsio.BASS_ASIO_ErrorGetCode();
 				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
 				this.bIsBASSFree = true;
-				throw new Exception( "ASIO デバイス出力開始に失敗しました。" + BassAsio.BASS_ASIO_ErrorGetCode().ToString() );
+				throw new Exception( "ASIO デバイス出力開始に失敗しました。" + err.ToString() );
 			}
 			else
 			{
