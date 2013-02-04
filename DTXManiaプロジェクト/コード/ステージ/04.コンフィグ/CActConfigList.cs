@@ -208,7 +208,7 @@ namespace DTXMania
 			// #24820 2013.1.3 yyagi
 			this.iSystemSoundType = new CItemList("SoundType", CItemList.Eパネル種別.通常, CDTXMania.ConfigIni.nSoundDeviceType,
 				"サウンドの出力方式:\n" +
-				"WASAPI, ASIO, DSound(DirectShow)\n" +
+				"WASAPI, ASIO, DSound(DirectSound)\n" +
 				"の中からサウンド出力方式を選択\n" +
 				"します。\n" +
 				"WASAPIはVista以降でのみ使用可能\n" +
@@ -279,7 +279,7 @@ namespace DTXMania
 				"ASIO使用時のバッファサイズ:\n" +
 				"0～99999ms を指定可能です。\n" +
 				"0を指定すると、サウンドデバイスに\n" +
-				"指定されている初期値を使用します。\n" +
+				"指定されている設定値を使用します。\n" +
 				"値を小さくするほど発音ラグが\n" +
 				"減少しますが、音割れや異常動作を\n" +
 				"引き起こす場合があります。\n" +

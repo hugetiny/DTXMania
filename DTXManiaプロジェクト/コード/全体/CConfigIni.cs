@@ -456,6 +456,8 @@ namespace DTXMania
 		public bool b選曲リストフォントを斜体にする;
 		public bool b選曲リストフォントを太字にする;
 		public bool b全画面モード;
+		public int n初期ウィンドウ開始位置X; // #30675 2013.02.04 ikanick add
+		public int n初期ウィンドウ開始位置Y;  
 		public int nウインドウwidth;				// #23510 2010.10.31 yyagi add
 		public int nウインドウheight;				// #23510 2010.10.31 yyagi add
 		public Dictionary<int, string> dicJoystick;
@@ -1031,6 +1033,8 @@ namespace DTXMania
 			this.str曲データ検索パス = @".\";
 			this.b全画面モード = false;
 			this.b垂直帰線待ちを行う = true;
+			this.n初期ウィンドウ開始位置X = 0; // #30675 2013.02.04 ikanick add
+			this.n初期ウィンドウ開始位置Y = 0;  
 			this.nウインドウwidth = SampleFramework.GameWindowSize.Width;			// #23510 2010.10.31 yyagi add
 			this.nウインドウheight = SampleFramework.GameWindowSize.Height;			// 
 			this.nフレーム毎スリープms = -1;			// #xxxxx 2011.11.27 yyagi add
@@ -1248,6 +1252,14 @@ namespace DTXMania
 			sw.WriteLine("; A height size in the window mode.");		//
 			sw.WriteLine("WindowHeight={0}", this.nウインドウheight);	//
 			sw.WriteLine();												//
+			sw.WriteLine( "; ウィンドウモード時の位置X" );				            // #30675 2013.02.04 ikanick add
+			sw.WriteLine( "; X position in the window mode." );			            //
+			sw.WriteLine( "WindowX={0}", this.n初期ウィンドウ開始位置X );			//
+			sw.WriteLine();											            	//
+			sw.WriteLine( "; ウィンドウモード時の位置Y" );			            	//
+			sw.WriteLine( "; Y position in the window mode." );	            	    //
+			sw.WriteLine( "WindowY={0}", this.n初期ウィンドウ開始位置Y );   		//
+			sw.WriteLine();												            //
 
 			sw.WriteLine( "; ウインドウをダブルクリックした時にフルスクリーンに移行するか(0:移行しない,1:移行する)" );	// #26752 2011.11.27 yyagi
 			sw.WriteLine( "; Whether double click to go full screen mode or not." );					//
@@ -1989,6 +2001,16 @@ namespace DTXMania
 												{
 													this.nウインドウheight = SampleFramework.GameWindowSize.Height;
 												}
+											}
+											else if ( str3.Equals( "WindowX" ) )		// #30675 2013.02.04 ikanick add
+											{
+												this.n初期ウィンドウ開始位置X = C変換.n値を文字列から取得して範囲内に丸めて返す(
+													str4, 0, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 1, this.n初期ウィンドウ開始位置X );
+											}
+											else if ( str3.Equals( "WindowY" ) )		// #30675 2013.02.04 ikanick add
+											{
+												this.n初期ウィンドウ開始位置Y = C変換.n値を文字列から取得して範囲内に丸めて返す(
+													str4, 0, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 1, this.n初期ウィンドウ開始位置Y );
 											}
 											else if ( str3.Equals( "DoubleClickFullScreen" ) )	// #26752 2011.11.27 yyagi
 											{

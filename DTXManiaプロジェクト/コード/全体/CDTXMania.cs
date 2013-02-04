@@ -1512,6 +1512,10 @@ for (int i = 0; i < 3; i++) {
 			#region [ ウィンドウ初期化 ]
 			//---------------------
 			this.strWindowTitle = "DTXMania .NET style release " + VERSION;
+
+			base.Window.StartPosition = FormStartPosition.Manual;                                                       // #30675 2013.02.04 ikanick add
+			base.Window.Location = new Point( ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y );   // #30675 2013.02.04 ikanick add
+
 			base.Window.Text = this.strWindowTitle;
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #34510 yyagi 2010.10.31 to change window size got from Config.ini
 			if (!ConfigIni.bウィンドウモード)						// #23510 2010.11.02 yyagi: add; to recover window size in case bootup with fullscreen mode
@@ -2191,47 +2195,6 @@ for (int i = 0; i < 3; i++) {
 				this.b終了処理完了済み = true;
 			}
 		}
-		private void Window_ApplicationActivated( object sender, EventArgs e )
-		{
-			this.bApplicationActive = true;
-		}
-		private void Window_ApplicationDeactivated( object sender, EventArgs e )
-		{
-			this.bApplicationActive = false;
-		}
-		private void Window_KeyDown( object sender, KeyEventArgs e )
-		{
-			if (e.KeyCode == Keys.Menu)
-			{
-				e.Handled = true;
-				e.SuppressKeyPress = true;
-			}
-			else if ((e.KeyCode == Keys.Return) && e.Alt)
-			{
-				if (ConfigIni != null)
-				{
-					ConfigIni.bウィンドウモード = !ConfigIni.bウィンドウモード;
-					this.t全画面・ウィンドウモード切り替え();
-				}
-				e.Handled = true;
-				e.SuppressKeyPress = true;
-			}
-			else
-			{
-				for ( int i = 0; i < 0x10; i++ )
-				{
-					if ( ConfigIni.KeyAssign.System.Capture[ i ].コード > 0 &&
-						 e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
-					{
-// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
-						string strFullPath =
-						   Path.Combine( CDTXMania.strEXEのあるフォルダ, "Capture_img" );
-						strFullPath = Path.Combine( strFullPath, DateTime.Now.ToString( "yyyyMMddHHmmss" ) + ".png" );
-						SaveResultScreen( strFullPath );
-					}
-				}
-			}
-		}
 		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
 		{
 			bool bIsUpdatedDrums, bIsUpdatedGuitar, bIsUpdatedBass;
@@ -2304,6 +2267,7 @@ for (int i = 0; i < 3; i++) {
 			if( this.listプラグイン.Count > 0 )
 				Trace.TraceInformation( this.listプラグイン.Count + " 個のプラグインを読み込みました。" );
 		}
+		#region [ Windowイベント処理 ]
 		private void t指定フォルダ内でのプラグイン検索と生成( string strプラグインフォルダパス, string strプラグイン型名 )
 		{
 			// 指定されたパスが存在しないとエラー
@@ -2354,6 +2318,47 @@ for (int i = 0; i < 3; i++) {
 				this.t指定フォルダ内でのプラグイン検索と生成( dir + "\\", strプラグイン型名 );
 		}
 		//-----------------
+		private void Window_ApplicationActivated( object sender, EventArgs e )
+		{
+			this.bApplicationActive = true;
+		}
+		private void Window_ApplicationDeactivated( object sender, EventArgs e )
+		{
+			this.bApplicationActive = false;
+		}
+		private void Window_KeyDown( object sender, KeyEventArgs e )
+		{
+			if ( e.KeyCode == Keys.Menu )
+			{
+				e.Handled = true;
+				e.SuppressKeyPress = true;
+			}
+			else if ( ( e.KeyCode == Keys.Return ) && e.Alt )
+			{
+				if ( ConfigIni != null )
+				{
+					ConfigIni.bウィンドウモード = !ConfigIni.bウィンドウモード;
+					this.t全画面・ウィンドウモード切り替え();
+				}
+				e.Handled = true;
+				e.SuppressKeyPress = true;
+			}
+			else
+			{
+				for ( int i = 0; i < 0x10; i++ )
+				{
+					if ( ConfigIni.KeyAssign.System.Capture[ i ].コード > 0 &&
+						 e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
+					{
+						// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
+						string strFullPath =
+						   Path.Combine( CDTXMania.strEXEのあるフォルダ, "Capture_img" );
+						strFullPath = Path.Combine( strFullPath, DateTime.Now.ToString( "yyyyMMddHHmmss" ) + ".png" );
+						SaveResultScreen( strFullPath );
+					}
+				}
+			}
+		}
 		private void Window_MouseUp( object sender, MouseEventArgs e )
 		{
 			mb = e.Button;
@@ -2369,9 +2374,16 @@ for (int i = 0; i < 3; i++) {
 		}
 		private void Window_ResizeEnd(object sender, EventArgs e)				// #23510 2010.11.20 yyagi: to get resized window size
 		{
+			if ( ConfigIni.bウィンドウモード )
+			{
+				ConfigIni.n初期ウィンドウ開始位置X = base.Window.Location.X;	// #30675 2013.02.04 ikanick add
+				ConfigIni.n初期ウィンドウ開始位置Y = base.Window.Location.Y;	//
+			}
+
 			ConfigIni.nウインドウwidth = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
 			ConfigIni.nウインドウheight = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Height : currentClientSize.Height;
 		}
+		#endregion
 
 		//internal sealed class GCBeep	// GC発生の度にbeep
 		//{
@@ -2385,8 +2397,6 @@ for (int i = 0; i < 3; i++) {
 		//        }
 		//    }
 		//}
-
-	
 		
 		//-----------------
 		#endregion

@@ -71,6 +71,30 @@ namespace DTXMania
 					CDTXMania.D3DXDLL + " が存在しません。" + newLine + "DirectX Redist フォルダの DXSETUP.exe を実行し、" + newLine + "必要な DirectX ランタイムをインストールしてください。",
 					CDTXMania.D3DXDLL + " is not found." + newLine + "Please execute DXSETUP.exe in \"DirectX Redist\" folder, to install DirectX runtimes required for DTXMania."
 					)) flag = true;
+				if ( !tDLLの存在チェック( "bass.dll",
+					"bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"baas.dll is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
+				if ( !tDLLの存在チェック( "Bass.Net.dll",
+					"Bass.Net.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"Bass.Net.dll is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
+				if ( !tDLLの存在チェック( "bassmix.dll",
+					"bassmix.dll を読み込めません。bassmix.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"bassmix.dll is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
+				if ( !tDLLの存在チェック( "bassasio.dll",
+					"bassasio.dll を読み込めません。bassasio.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"bassasio.dll is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
+				if ( !tDLLの存在チェック( "basswasapi.dll",
+					"basswasapi.dll を読み込めません。basswasapi.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"basswasapi.dll is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
+				if ( !tDLLの存在チェック( "DirectShowLib-2005.dll",
+					"DirectShowLib-2005.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"DirectShowLib-2005.dll is not found." + newLine + "Please download DTXMania again."
+					) ) flag = true;
 				#endregion
 				if (!flag)
 				{
