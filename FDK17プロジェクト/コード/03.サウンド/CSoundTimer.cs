@@ -46,7 +46,7 @@ namespace FDK
 			}
 			else																// TESTCODE DirectSound時のみ、CSoundTimerでなくCTimerを使う
 			{
-				ct = new CTimer( CTimer.E種別.MultiMedia );
+			    ct = new CTimer( CTimer.E種別.MultiMedia );
 			}
 		}
 	
@@ -145,9 +145,18 @@ Debug.WriteLine( "B" );
 			// 特になし； ISoundDevice の解放は呼び出し元で行うこと。
 
 			//sendinputスレッド削除
-			timer.Change( System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite );
-			timer.Dispose();
-			timer = null;
+			if ( timer != null )
+			{
+				timer.Change( System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite );
+				timer.Dispose();
+				timer = null;
+			}
+			if ( ct != null )
+			{
+				ct.t一時停止();
+				ct.Dispose();
+				ct = null;
+			}
 		}
 
 		protected ISoundDevice Device = null;

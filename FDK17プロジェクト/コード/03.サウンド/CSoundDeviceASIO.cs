@@ -21,10 +21,17 @@ namespace FDK
 
 			List<string> asioDeviceList = new List<string>();
 
-			for ( int i = 0; i < bassAsioDevInfo.Length; i++ )
+			if ( bassAsioDevInfo.Length == 0 )
 			{
-				asioDeviceList.Add( bassAsioDevInfo[ i ].name );
-				//Trace.TraceInformation( "ASIO Device {0}: {1}", i, bassAsioDevInfo[ i ].name );
+				asioDeviceList.Add( "None" );
+			}
+			else
+			{
+				for ( int i = 0; i < bassAsioDevInfo.Length; i++ )
+				{
+					asioDeviceList.Add( bassAsioDevInfo[ i ].name );
+					//Trace.TraceInformation( "ASIO Device {0}: {1}", i, bassAsioDevInfo[ i ].name );
+				}
 			}
 
 			return asioDeviceList.ToArray();
