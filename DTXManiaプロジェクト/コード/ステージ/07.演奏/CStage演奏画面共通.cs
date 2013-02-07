@@ -321,7 +321,7 @@ namespace DTXMania
 			}
 			this.sw = new Stopwatch();
 			this.sw2 = new Stopwatch();
-			this.gclatencymode = GCSettings.LatencyMode;
+//			this.gclatencymode = GCSettings.LatencyMode;
 //			GCSettings.LatencyMode = GCLatencyMode.Batch;	// 演奏画面中はGCを抑止する
 		}
 		public override void On非活性化()
@@ -342,7 +342,7 @@ namespace DTXMania
 			listChip = null;
 			queueMixerSound.Clear();
 			queueMixerSound = null;
-			GCSettings.LatencyMode = this.gclatencymode;
+//			GCSettings.LatencyMode = this.gclatencymode;
 			base.On非活性化();
 		}
 		public override void OnManagedリソースの作成()

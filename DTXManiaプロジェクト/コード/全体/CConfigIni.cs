@@ -1262,7 +1262,7 @@ namespace DTXMania
 			sw.WriteLine();												            //
 
 			sw.WriteLine( "; ウインドウをダブルクリックした時にフルスクリーンに移行するか(0:移行しない,1:移行する)" );	// #26752 2011.11.27 yyagi
-			sw.WriteLine( "; Whether double click to go full screen mode or not." );					//
+			sw.WriteLine( "; Whether double click to go full screen mode or not.(0:No, 1:Yes)" );		//
 			sw.WriteLine( "DoubleClickFullScreen={0}", this.bIsAllowedDoubleClickFullscreen? 1 : 0);	//
 			sw.WriteLine();																				//
 			sw.WriteLine( "; ALT+SPACEのメニュー表示を抑制するかどうか(0:抑制する 1:抑制しない)" );		// #28200 2012.5.1 yyagi
@@ -1347,28 +1347,36 @@ namespace DTXMania
 			sw.WriteLine( "StageFailed={0}", this.bSTAGEFAILED有効 ? 1 : 0 );
 			sw.WriteLine();
 			#region [ 打ち分け関連 ]
-			sw.WriteLine( "; LC/HHC/HHO 打ち分けモード(0:LC|HHC|HHO, 1:LC&(HHC|HHO), 2:LC&HHC&HHO)" );
+			sw.WriteLine( "; LC/HHC/HHO 打ち分けモード (0:LC|HHC|HHO, 1:LC&(HHC|HHO), 2:LC|(HHC&HHO), 3:LC&HHC&HHO)" );
+			sw.WriteLine( "; LC/HHC/HHO Grouping       (0:LC|HHC|HHO, 1:LC&(HHC|HHO), 2:LC|(HHC&HHO), 3:LC&HHC&HHO)" );
 			sw.WriteLine( "HHGroup={0}", (int) this.eHHGroup );
 			sw.WriteLine();
-			sw.WriteLine( "; LT/FT 打ち分けモード(0:LT|FT, 1:LT&FT)" );
+			sw.WriteLine( "; LT/FT 打ち分けモード (0:LT|FT, 1:LT&FT)" );
+			sw.WriteLine( "; LT/FT Grouping       (0:LT|FT, 1:LT&FT)" );
 			sw.WriteLine( "FTGroup={0}", (int) this.eFTGroup );
 			sw.WriteLine();
-			sw.WriteLine( "; CY/RD 打ち分けモード(0:CY|RD, 1:CY&RD)" );
+			sw.WriteLine( "; CY/RD 打ち分けモード (0:CY|RD, 1:CY&RD)" );
+			sw.WriteLine( "; CY/RD Grouping       (0:CY|RD, 1:CY&RD)" );
 			sw.WriteLine( "CYGroup={0}", (int) this.eCYGroup );
 			sw.WriteLine();
-			sw.WriteLine( "; HP/BD 打ち分けモード(0:HP|BD, 1:HP&BD)" );		// #27029 2012.1.4 from
+			sw.WriteLine( "; CY/RD 打ち分けモード (0:CY|RD, 1:CY&RD)" );	// #27029 2012.1.4 from
+			sw.WriteLine( "; CY/RD Grouping (0:CY|RD, 1:CY&RD)" );			//
 			sw.WriteLine( "BDGroup={0}", (int) this.eBDGroup );				// 
 			sw.WriteLine();													//
 			sw.WriteLine( "; 打ち分け時の再生音の優先順位(HHGroup)(0:Chip>Pad, 1:Pad>Chip)" );
+			sw.WriteLine( "; Grouping sound priority(HHGroup)(0:Chip>Pad, 1:Pad>Chip)" );
 			sw.WriteLine( "HitSoundPriorityHH={0}", (int) this.eHitSoundPriorityHH );
 			sw.WriteLine();
 			sw.WriteLine( "; 打ち分け時の再生音の優先順位(FTGroup)(0:Chip>Pad, 1:Pad>Chip)" );
+			sw.WriteLine( "; Grouping sound priority(FTGroup)(0:Chip>Pad, 1:Pad>Chip)" );
 			sw.WriteLine( "HitSoundPriorityFT={0}", (int) this.eHitSoundPriorityFT );
 			sw.WriteLine();
 			sw.WriteLine( "; 打ち分け時の再生音の優先順位(CYGroup)(0:Chip>Pad, 1:Pad>Chip)" );
+			sw.WriteLine( "; Grouping sound priority(CYGroup)(0:Chip>Pad, 1:Pad>Chip)" );
 			sw.WriteLine( "HitSoundPriorityCY={0}", (int) this.eHitSoundPriorityCY );
 			sw.WriteLine();
 			sw.WriteLine( "; シンバルフリーモード(0:OFF, 1:ON)" );
+			sw.WriteLine( "; Grouping CY and LC (0:OFF, 1:ON)" );
 			sw.WriteLine( "CymbalFree={0}", this.bシンバルフリー ? 1 : 0 );
 			sw.WriteLine();
 			#endregion
@@ -1436,32 +1444,41 @@ namespace DTXMania
 			sw.WriteLine();
 			#endregion
 			sw.WriteLine( "; 演奏情報を表示する (0:OFF, 1:ON)" );
+			sw.WriteLine( "; Showing playing info on the playing screen. (0:OFF, 1:ON)" );
 			sw.WriteLine( "ShowDebugStatus={0}", this.b演奏情報を表示する ? 1 : 0 );
 			sw.WriteLine();
 			#region [ 選曲リストのフォント ]
 			sw.WriteLine( "; 選曲リストのフォント名" );
+			sw.WriteLine( "; Font name for select song item." );
 			sw.WriteLine( "SelectListFontName={0}", this.str選曲リストフォント );
 			sw.WriteLine();
 			sw.WriteLine( "; 選曲リストのフォントのサイズ[dot]" );
+			sw.WriteLine( "; Font size[dot] for select song item." );
 			sw.WriteLine( "SelectListFontSize={0}", this.n選曲リストフォントのサイズdot );
 			sw.WriteLine();
 			sw.WriteLine( "; 選曲リストのフォントを斜体にする (0:OFF, 1:ON)" );
+			sw.WriteLine( "; Using italic font style select song list. (0:OFF, 1:ON)" );
 			sw.WriteLine( "SelectListFontItalic={0}", this.b選曲リストフォントを斜体にする ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; 選曲リストのフォントを太字にする (0:OFF, 1:ON)" );
+			sw.WriteLine( "; Using bold font style select song list. (0:OFF, 1:ON)" );
 			sw.WriteLine( "SelectListFontBold={0}", this.b選曲リストフォントを太字にする ? 1 : 0 );
 			sw.WriteLine();
 			#endregion
 			sw.WriteLine( "; 打音の音量(0～100%)" );
+			sw.WriteLine( "; Sound volume (you're playing) (0-100%)" );
 			sw.WriteLine( "ChipVolume={0}", this.n手動再生音量 );
 			sw.WriteLine();
 			sw.WriteLine( "; 自動再生音の音量(0～100%)" );
+			sw.WriteLine( "; Sound volume (auto playing) (0-100%)" );
 			sw.WriteLine( "AutoChipVolume={0}", this.n自動再生音量 );
 			sw.WriteLine();
 			sw.WriteLine( "; ストイックモード(0:OFF, 1:ON)" );
+			sw.WriteLine( "; Stoic mode. (0:OFF, 1:ON)" );
 			sw.WriteLine( "StoicMode={0}", this.bストイックモード ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; バッファ入力モード(0:OFF, 1:ON)" );
+			sw.WriteLine( "; Using Buffered input (0:OFF, 1:ON)" );
 			sw.WriteLine( "BufferedInput={0}", this.bバッファ入力を行う ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; レーン毎の最大同時発音数(1～8)" );
