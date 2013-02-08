@@ -1359,8 +1359,8 @@ namespace DTXMania
 			sw.WriteLine( "; CY/RD Grouping       (0:CY|RD, 1:CY&RD)" );
 			sw.WriteLine( "CYGroup={0}", (int) this.eCYGroup );
 			sw.WriteLine();
-			sw.WriteLine( "; CY/RD 打ち分けモード (0:CY|RD, 1:CY&RD)" );	// #27029 2012.1.4 from
-			sw.WriteLine( "; CY/RD Grouping (0:CY|RD, 1:CY&RD)" );			//
+			sw.WriteLine( "; HP/BD 打ち分けモード (0:HP|BD, 1:HP&BD)" );	// #27029 2012.1.4 from
+			sw.WriteLine( "; HP/BD Grouping (0:HP|BD, 1:HP&BD)" );			//
 			sw.WriteLine( "BDGroup={0}", (int) this.eBDGroup );				// 
 			sw.WriteLine();													//
 			sw.WriteLine( "; 打ち分け時の再生音の優先順位(HHGroup)(0:Chip>Pad, 1:Pad>Chip)" );
