@@ -49,7 +49,7 @@ namespace FDK
 			for( int i = 0; i < this.bMouseState.Length; i++ )
 				this.bMouseState[ i ] = false;
 
-			this.timer = new CTimer( CTimer.E種別.MultiMedia );
+			//this.timer = new CTimer( CTimer.E種別.MultiMedia );
 			this.list入力イベント = new List<STInputEvent>( 32 );
 		}
 
@@ -89,13 +89,14 @@ namespace FDK
 							{
 								if( data.IsPressed( k ) )
 								{
-									STInputEvent event4 = new STInputEvent();
-									STInputEvent item = event4;
-									item.nKey = k;
-									item.b押された = true;
-									item.b離された = false;
-									item.nTimeStamp = data.TimeStamp;
-									item.nVelocity = CInput管理.n通常音量;
+									STInputEvent item = new STInputEvent()
+									{
+										nKey = k,
+										b押された = true,
+										b離された = false,
+										nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
+										nVelocity = CInput管理.n通常音量
+									};
 									this.list入力イベント.Add( item );
 
 									this.bMouseState[ k ] = true;
@@ -103,14 +104,15 @@ namespace FDK
 								}
 								else if( data.IsReleased( k ) )
 								{
-									STInputEvent event5 = new STInputEvent();
-									STInputEvent event3 = event5;
-									event3.nKey = k;
-									event3.b押された = false;
-									event3.b離された = true;
-									event3.nTimeStamp = data.TimeStamp;
-									event3.nVelocity = CInput管理.n通常音量;
-									this.list入力イベント.Add( event3 );
+									STInputEvent item = new STInputEvent()
+									{
+										nKey = k,
+										b押された = false,
+										b離された = true,
+										nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
+										nVelocity = CInput管理.n通常音量
+									};
+									this.list入力イベント.Add( item );
 
 									this.bMouseState[ k ] = false;
 									this.bMousePullUp[ k ] = true;
@@ -137,7 +139,7 @@ namespace FDK
 									nKey = j,
 									b押された = true,
 									b離された = false,
-									nTimeStamp = this.timer.nシステム時刻,
+									nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻,	// 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 									nVelocity = CInput管理.n通常音量,
 								};
 								this.list入力イベント.Add( ev );
@@ -151,7 +153,7 @@ namespace FDK
 									nKey = j,
 									b押された = false,
 									b離された = true,
-									nTimeStamp = this.timer.nシステム時刻,
+									nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻,	// 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 									nVelocity = CInput管理.n通常音量,
 								};
 								this.list入力イベント.Add( ev );
@@ -196,11 +198,11 @@ namespace FDK
 					this.devMouse.Dispose();
 					this.devMouse = null;
 				}
-				if( this.timer != null )
-				{
-					this.timer.Dispose();
-					this.timer = null;
-				}
+				//if( this.timer != null )
+				//{
+				//    this.timer.Dispose();
+				//    this.timer = null;
+				//}
 				if ( this.list入力イベント != null )
 				{
 					this.list入力イベント = null;
@@ -221,7 +223,7 @@ namespace FDK
 		private bool[] bMousePushDown = new bool[ 8 ];
 		private bool[] bMouseState = new bool[ 8 ];
 		private Mouse devMouse;
-		private CTimer timer;
+		//private CTimer timer;
 		//-----------------
 		#endregion
 	}

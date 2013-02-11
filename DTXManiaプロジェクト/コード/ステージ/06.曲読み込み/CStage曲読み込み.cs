@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -177,13 +177,13 @@ namespace DTXMania
 						CSkin.Cシステムサウンド.r最後に再生した排他システムサウンド.t停止する();
 					}
 					this.sd読み込み音.t再生を開始する();
-					this.nBGM再生開始時刻 = CDTXMania.Timer.n現在時刻;
+					this.nBGM再生開始時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
 					this.nBGMの総再生時間ms = this.sd読み込み音.n総演奏時間ms;
 				}
 				else
 				{
 					CDTXMania.Skin.sound曲読込開始音.t再生する();
-					this.nBGM再生開始時刻 = CDTXMania.Timer.n現在時刻;
+					this.nBGM再生開始時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
 					this.nBGMの総再生時間ms = CDTXMania.Skin.sound曲読込開始音.n長さ・現在のサウンド;
 				}
 //				this.actFI.tフェードイン開始();							// #27787 2012.3.10 yyagi 曲読み込み画面のフェードインの省略
@@ -286,7 +286,12 @@ namespace DTXMania
 						{
 							TimeSpan span = ( TimeSpan ) ( DateTime.Now - timeBeginLoadWAV );
 							Trace.TraceInformation( "WAV読込所要時間({0,4}):     {1}", CDTXMania.DTX.listWAV.Count, span.ToString() );
+							timeBeginLoadWAV = DateTime.Now;
 
+							if ( CDTXMania.ConfigIni.bDynamicBassMixerManagement )
+							{
+								CDTXMania.DTX.PlanToAddMixerChannel();
+							}
 							CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.GUITAR, CDTXMania.ConfigIni.eRandom.Guitar );
 							CDTXMania.DTX.tギターとベースのランダム化( E楽器パート.BASS, CDTXMania.ConfigIni.eRandom.Bass );
 
@@ -294,6 +299,9 @@ namespace DTXMania
 								CDTXMania.stage演奏ギター画面.On活性化();
 							else
 								CDTXMania.stage演奏ドラム画面.On活性化();
+
+							span = (TimeSpan) ( DateTime.Now - timeBeginLoadWAV );
+							Trace.TraceInformation( "WAV/譜面後処理時間({0,4}):  {1}", ( CDTXMania.DTX.listBMP.Count + CDTXMania.DTX.listBMPTEX.Count + CDTXMania.DTX.listAVI.Count ), span.ToString() );
 
 							base.eフェーズID = CStage.Eフェーズ.NOWLOADING_BMPファイルを読み込む;
 						}
@@ -353,9 +361,14 @@ namespace DTXMania
 				case CStage.Eフェーズ.共通_フェードアウト:
 					if( this.actFO.On進行描画() == 0 )
 						return 0;
+
 					if ( txFilename != null )
 					{
 						txFilename.Dispose();
+					}
+					if ( this.sd読み込み音 != null )
+					{
+						this.sd読み込み音.t解放する();
 					}
 					return 1;
 			}

@@ -37,10 +37,10 @@ namespace DTXMania
 			{
 				if( base.b初めての進行描画 )
 				{
-					this.n速度変更制御タイマ.Drums = this.n速度変更制御タイマ.Guitar = this.n速度変更制御タイマ.Bass = CDTXMania.Timer.n現在時刻;
+					this.n速度変更制御タイマ.Drums = this.n速度変更制御タイマ.Guitar = this.n速度変更制御タイマ.Bass = CSound管理.rc演奏用タイマ.n現在時刻;
 					base.b初めての進行描画 = false;
 				}
-				long num = CDTXMania.Timer.n現在時刻;
+				long num = CSound管理.rc演奏用タイマ.n現在時刻;
 				for( int i = 0; i < 3; i++ )
 				{
 					double num3 = (double) CDTXMania.ConfigIni.n譜面スクロール速度[ i ];

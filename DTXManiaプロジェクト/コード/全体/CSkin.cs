@@ -189,28 +189,41 @@ namespace DTXMania
 				{
 					throw new FileNotFoundException( this.strファイル名 );
 				}
-//				for( int i = 0; i < 2; i++ )		// #27790 2012.3.10 yyagi 2回読み出しを、1回読みだし＋1回メモリコピーに変更
-//				{
+////				for( int i = 0; i < 2; i++ )		// #27790 2012.3.10 yyagi 2回読み出しを、1回読みだし＋1回メモリコピーに変更
+////				{
+//                    try
+//                    {
+//                        this.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
+//                    }
+//                    catch
+//                    {
+//                        this.rSound[ 0 ] = null;
+//                        throw;
+//                    }
+//                    if ( this.rSound[ 0 ] == null )	// #28243 2012.5.3 yyagi "this.rSound[ 0 ].bストリーム再生する"時もCloneするようにし、rSound[1]がnullにならないよう修正→rSound[1]の再生正常化
+//                    {
+//                        this.rSound[ 1 ] = null;
+//                    }
+//                    else
+//                    {
+//                        this.rSound[ 1 ] = ( CSound ) this.rSound[ 0 ].Clone();	// #27790 2012.3.10 yyagi add: to accelerate loading chip sounds
+//                        CDTXMania.Sound管理.tサウンドを登録する( this.rSound[ 1 ] );	// #28243 2012.5.3 yyagi add (登録漏れによりストリーム再生処理が発生していなかった)
+//                    }
+
+////				}
+
+				for ( int i = 0; i < 2; i++ )		// 一旦Cloneを止めてASIO対応に専念
+				{
 					try
 					{
-						this.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
+						this.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
 					}
 					catch
 					{
-						this.rSound[ 0 ] = null;
+						this.rSound[ i ] = null;
 						throw;
 					}
-					if ( this.rSound[ 0 ] == null )	// #28243 2012.5.3 yyagi "this.rSound[ 0 ].bストリーム再生する"時もCloneするようにし、rSound[1]がnullにならないよう修正→rSound[1]の再生正常化
-					{
-						this.rSound[ 1 ] = null;
-					}
-					else
-					{
-						this.rSound[ 1 ] = ( CSound ) this.rSound[ 0 ].Clone();	// #27790 2012.3.10 yyagi add: to accelerate loading chip sounds
-						CDTXMania.Sound管理.tサウンドを登録する( this.rSound[ 1 ] );	// #28243 2012.5.3 yyagi add (登録漏れによりストリーム再生処理が発生していなかった)
-					}
-
-//				}
+				}
 				this.b読み込み成功 = true;
 			}
 			public void t再生する()
@@ -249,6 +262,20 @@ namespace DTXMania
 
 				if( r最後に再生した排他システムサウンド == this )
 					r最後に再生した排他システムサウンド = null;
+			}
+
+			public void tRemoveMixer()
+			{
+				if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() != "DirectShow" )
+				{
+					for ( int i = 0; i < 2; i++ )
+					{
+						if ( this.rSound[ i ] != null )
+						{
+							CDTXMania.Sound管理.RemoveMixer( this.rSound[ i ] );
+						}
+					}
+				}
 			}
 
 			#region [ IDisposable 実装 ]
@@ -740,6 +767,19 @@ namespace DTXMania
 			return ( File.Exists( filePathTitle ) );
 		}
 
+
+		public void tRemoveMixerAll()
+		{
+			for ( int i = 0; i < nシステムサウンド数; i++ )
+			{
+				if ( this[ i ] != null && this[ i ].b読み込み成功 )
+				{
+					this[ i ].t停止する();
+					this[ i ].tRemoveMixer();
+				}
+			}
+
+		}
 		#region [ IDisposable 実装 ]
 		//-----------------
 		public void Dispose()

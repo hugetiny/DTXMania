@@ -15,10 +15,10 @@ namespace DTXMania
         {
             if (base.b初めての進行描画)
             {
-                base.n進行用タイマ = CDTXMania.Timer.n現在時刻;
+                base.n進行用タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
                 base.b初めての進行描画 = false;
             }
-            long num = CDTXMania.Timer.n現在時刻;
+            long num = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
             if (num < base.n進行用タイマ)
             {
                 base.n進行用タイマ = num;

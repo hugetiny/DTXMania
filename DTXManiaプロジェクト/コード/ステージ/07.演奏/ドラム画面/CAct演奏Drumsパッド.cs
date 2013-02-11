@@ -114,11 +114,11 @@ namespace DTXMania
 			{
 				if( base.b初めての進行描画 )
 				{
-					this.nフラッシュ制御タイマ = CDTXMania.Timer.n現在時刻;
-					this.nY座標制御タイマ = CDTXMania.Timer.n現在時刻;
+					this.nフラッシュ制御タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
+					this.nY座標制御タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
 					base.b初めての進行描画 = false;
 				}
-				long num = CDTXMania.Timer.n現在時刻;
+				long num = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
 				if( num < this.nフラッシュ制御タイマ )
 				{
 					this.nフラッシュ制御タイマ = num;
@@ -134,7 +134,7 @@ namespace DTXMania
 					}
 					this.nフラッシュ制御タイマ += 15;
 				}
-				long num3 = CDTXMania.Timer.n現在時刻;
+				long num3 = CSound管理.rc演奏用タイマ.n現在時刻;
 				if( num3 < this.nY座標制御タイマ )
 				{
 					this.nY座標制御タイマ = num3;

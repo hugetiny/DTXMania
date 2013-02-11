@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FDK;
+using System.Diagnostics;
 
 namespace DTXMania
 {
@@ -35,13 +36,13 @@ namespace DTXMania
 		}
 		public void t進行描画( int x, int y )
 		{
-			if( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
 				y += 0x153;
 				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "BGM/D/G/B Adj: {0:####0}/{1:####0}/{2:####0}/{3:####0} ms", CDTXMania.DTX.nBGMAdjust, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums, CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass ) );
 				y -= 0x10;
 				int num = ( CDTXMania.DTX.listChip.Count > 0 ) ? CDTXMania.DTX.listChip[ CDTXMania.DTX.listChip.Count - 1 ].n発声時刻ms : 0;
-				string str = "Time:          " + ( ( ( (double) CDTXMania.Timer.n現在時刻 ) / 1000.0 ) ).ToString( "####0.00" ) + " / " + ( ( ( (double) num ) / 1000.0 ) ).ToString( "####0.00" );
+				string str = "Time:          " + ( ( ( ( double ) CDTXMania.Timer.n現在時刻 ) / 1000.0 ) ).ToString( "####0.00" ) + " / " + ( ( ( ( double ) num ) / 1000.0 ) ).ToString( "####0.00" );
 				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, str );
 				y -= 0x10;
 				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Part:          {0:####0}", this.n小節番号 ) );
@@ -49,7 +50,13 @@ namespace DTXMania
 				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "BPM:           {0:####0.00}", this.dbBPM ) );
 				y -= 0x10;
 				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Frame:         {0:####0} fps", CDTXMania.FPS.n現在のFPS ) );
-				y -= 0x10;
+				//y -= 0x10;
+				//CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound CPU :    {0:####0.00}%", CDTXMania.Sound管理.GetCPUusage() ) );
+				//y -= 0x10;
+				//CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Mixing:  {0:####0}", CDTXMania.Sound管理.GetMixingStreams() ) );
+				//y -= 0x10;
+				//CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Streams: {0:####0}", CDTXMania.Sound管理.GetStreams() ) );
+				//y -= 0x10;
 			}
 		}
 	}

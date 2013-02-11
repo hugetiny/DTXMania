@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -19,7 +19,8 @@ namespace DTXMania
 	internal class CDTXMania : Game
 	{
 		// プロパティ
-		public static readonly string VERSION = "095(121201)";
+		#region [ properties ]
+		public static readonly string VERSION = "096(130214)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
         //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -165,10 +166,15 @@ namespace DTXMania
 			get;
 			private set;
 		}
+		public static CActFlushGPU actFlushGPU
+		{
+			get;
+			private set;
+		}
 
 		public static CSound管理 Sound管理
 		{
-			get; 
+			get;
 			private set;
 		}
 		public static CStage起動 stage起動 
@@ -283,6 +289,11 @@ namespace DTXMania
 			set;
 		}
 		//		public static CTimer ct;
+		public IntPtr WindowHandle					// 2012.10.24 yyagi; to add ASIO support
+		{
+			get { return base.Window.Handle; }
+		}
+		#endregion
 
 		// コンストラクタ
 
@@ -298,21 +309,48 @@ namespace DTXMania
 		public void t全画面・ウィンドウモード切り替え()
 		{
 			DeviceSettings settings = base.GraphicsDeviceManager.CurrentSettings.Clone();
-			if( ( ConfigIni != null ) && ( ConfigIni.bウィンドウモード != settings.Windowed ) )
+			if ( ( ConfigIni != null ) && ( ConfigIni.bウィンドウモード != settings.Windowed ) )
+			//if ( ConfigIni != null )
 			{
 				settings.Windowed = ConfigIni.bウィンドウモード;
-				if (ConfigIni.bウィンドウモード == false)	// #23510 2010.10.27 yyagi: backup current window size before going fullscreen mode
+				if ( ConfigIni.bウィンドウモード == false )	// #23510 2010.10.27 yyagi: backup current window size before going fullscreen mode
 				{
 					currentClientSize = this.Window.ClientSize;
 					ConfigIni.nウインドウwidth = this.Window.ClientSize.Width;
 					ConfigIni.nウインドウheight = this.Window.ClientSize.Height;
 				}
 				base.GraphicsDeviceManager.ChangeDevice( settings );
-				if (ConfigIni.bウィンドウモード == true)	// #23510 2010.10.27 yyagi: to resume window size from backuped value
+				if ( ConfigIni.bウィンドウモード == true )	// #23510 2010.10.27 yyagi: to resume window size from backuped value
 				{
+															// #30666 2013.2.2 yyagi Don't use Fullscreen mode becasue NVIDIA GeForce is
+															// tend to delay drawing on Fullscreen mode. So DTXMania uses Maximized window
+															// in spite of using fullscreen mode.
+					//app.Window.WindowState = FormWindowState.Normal;
+					//app.Window.FormBorderStyle = FormBorderStyle.Sizable;
+					//app.Window.WindowState = FormWindowState.Normal;
+
 					base.Window.ClientSize =
-						new Size(currentClientSize.Width, currentClientSize.Height);
-				}					
+						new Size( currentClientSize.Width, currentClientSize.Height );
+			}
+				else 
+				{
+					//app.Window.WindowState = FormWindowState.Normal;
+					//app.Window.FormBorderStyle = FormBorderStyle.None;
+					//app.Window.WindowState = FormWindowState.Maximized;
+		}
+				//if ( ConfigIni.bウィンドウモード )
+				//{
+				//    if ( !this.bマウスカーソル表示中 )
+				//    {
+				//        Cursor.Show();
+				//        this.bマウスカーソル表示中 = true;
+				//    }
+				//}
+				//else if ( this.bマウスカーソル表示中 )
+				//{
+				//    Cursor.Hide();
+				//    this.bマウスカーソル表示中 = false;
+				//}
 			}
 		}
 
@@ -385,6 +423,9 @@ namespace DTXMania
 			this.Device.SetRenderState( RenderState.AntialiasedLineEnable, false );
 			this.Device.SetRenderState( RenderState.AlphaTestEnable, true );
 			this.Device.SetRenderState( RenderState.AlphaRef, 10 );
+
+//			this.Device.SetRenderState( RenderState.MultisampleAntialias, true );
+
 			this.Device.SetRenderState<Compare>( RenderState.AlphaFunc, Compare.Greater );
 			this.Device.SetRenderState( RenderState.AlphaBlendEnable, true );
 			this.Device.SetRenderState<Blend>( RenderState.SourceBlend, Blend.SourceAlpha );
@@ -436,6 +477,8 @@ namespace DTXMania
 
 			if( Timer != null )
 				Timer.t更新();
+            if (CSound管理.rc演奏用タイマ != null)
+                CSound管理.rc演奏用タイマ.t更新();
 
 			if( Input管理 != null )
 				Input管理.tポーリング( this.bApplicationActive, CDTXMania.ConfigIni.bバッファ入力を行う );
@@ -1085,7 +1128,7 @@ for (int i = 0; i < 3; i++) {
 
 									CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
 									CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
-																					// リザルト集計時のみ、Auto系のフラグを入れ替え
+																					// リザルト集計時のみ、Auto系のフラグも元に戻す。
 																					// これを戻すのは、リザルト集計後。
 								}													// "case CStage.Eステージ.結果:"のところ。
 
@@ -1250,8 +1293,9 @@ for (int i = 0; i < 3; i++) {
 						break;
 				}
 			}
-
 			this.Device.EndScene();
+			//actFlushGPU.On進行描画();		// Flush GPU
+
 			#region [ 全画面・ウインドウ切り替え ]
 			if ( this.b次のタイミングで全画面・ウィンドウ切り替えを行う )
 			{
@@ -1283,7 +1327,6 @@ for (int i = 0; i < 3; i++) {
 			}
 			#endregion
 		}
-
 
 		// その他
 
@@ -1385,6 +1428,7 @@ for (int i = 0; i < 3; i++) {
 		private List<CActivity> listトップレベルActivities;
 		private int n進行描画の戻り値;
 		private MouseButtons mb = System.Windows.Forms.MouseButtons.Left;
+		private string strWindowTitle = "";
 
 		private void t起動処理()
 		{
@@ -1467,18 +1511,24 @@ for (int i = 0; i < 3; i++) {
 
 			#region [ ウィンドウ初期化 ]
 			//---------------------
-			base.Window.Text = "DTXMania .NET style release " + VERSION;
+			this.strWindowTitle = "DTXMania .NET style release " + VERSION;
+
+			base.Window.StartPosition = FormStartPosition.Manual;                                                       // #30675 2013.02.04 ikanick add
+			base.Window.Location = new Point( ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y );   // #30675 2013.02.04 ikanick add
+
+			base.Window.Text = this.strWindowTitle;
 
 			base.Window.StartPosition = FormStartPosition.Manual;                                                       // #30675 2013.02.04 ikanick add
             base.Window.Location = new Point(ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y);   // #30675 2013.02.04 ikanick add
 
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #34510 yyagi 2010.10.31 to change window size got from Config.ini
 			if (!ConfigIni.bウィンドウモード)						// #23510 2010.11.02 yyagi: add; to recover window size in case bootup with fullscreen mode
-			{
-				currentClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);
+			{														// #30666 2013.02.02 yyagi: currentClientSize should be always made
+				currentClientSize = new Size( ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight );
 			}
 			base.Window.MaximizeBox = true;							// #23510 2010.11.04 yyagi: to support maximizing window
 			base.Window.FormBorderStyle = FormBorderStyle.Sizable;	// #23510 2010.10.27 yyagi: changed from FixedDialog to Sizable, to support window resize
+																		// #30666 2013.02.02 yyagi: moved the code to t全画面・ウインドウモード切り替え()
 			base.Window.ShowIcon = true;
 			base.Window.Icon = Properties.Resources.dtx;
 			base.Window.KeyDown += new KeyEventHandler( this.Window_KeyDown );
@@ -1495,11 +1545,17 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			DeviceSettings settings = new DeviceSettings();
 			settings.Windowed = ConfigIni.bウィンドウモード;
+			//settings.Windowed = true;								// #30666 2013.2.2 yyagi: Fullscreenmode is "Maximized window" mode
 			settings.BackBufferWidth = SampleFramework.GameWindowSize.Width;
 			settings.BackBufferHeight = SampleFramework.GameWindowSize.Height;
 //			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
-
+//			settings.BackBufferFormat = Format.A8R8G8B8;
+//			settings.MultisampleType = MultisampleType.FourSamples;
+//			settings.MultisampleQuality = 4;
+//			settings.MultisampleType = MultisampleType.None;
+//			settings.MultisampleQuality = 0;
+			
 			try
 			{
 				base.GraphicsDeviceManager.ChangeDevice(settings);
@@ -1510,12 +1566,14 @@ for (int i = 0; i < 3; i++) {
 				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Initialize Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(-1);
 			}
-
+			
 			base.IsFixedTimeStep = false;
 //			base.TargetElapsedTime = TimeSpan.FromTicks( 10000000 / 75 );
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
 			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
 																												// #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
+			//this.t全画面・ウィンドウモード切り替え();				// #30666 2013.2.2 yyagi: finalize settings for "Maximized window mode"
+			actFlushGPU = new CActFlushGPU();
 			//---------------------
 			#endregion
 
@@ -1542,7 +1600,6 @@ for (int i = 0; i < 3; i++) {
 			}
 			//---------------------
 			#endregion
-//			ct = new CTimer( CTimer.E種別.PerformanceCounter );
 			//-----------
 			#region [ Timer の初期化 ]
 			//---------------------
@@ -1667,16 +1724,38 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Sound管理 の初期化 ]
 			//---------------------
-			Trace.TraceInformation( "DirectSound の初期化を行います。" );
+			Trace.TraceInformation( "サウンドデバイスの初期化を行います。" );
 			Trace.Indent();
 			try
+			{				
+				ESoundDeviceType soundDeviceType;
+				switch ( CDTXMania.ConfigIni.nSoundDeviceType )
 			{
-				Sound管理 = new CSound管理( base.Window.Handle );
-				Trace.TraceInformation( "DirectSound の初期化を完了しました。" );
+					case 0:
+						soundDeviceType = ESoundDeviceType.DirectSound;
+						break;
+					case 1:
+						soundDeviceType = ESoundDeviceType.ASIO;
+						break;
+					case 2:
+						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						break;
+					default:
+						soundDeviceType = ESoundDeviceType.Unknown;
+						break;
 			}
-			catch
+				Sound管理 = new CSound管理( base.Window.Handle,
+											soundDeviceType,
+											CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
+											CDTXMania.ConfigIni.nASIOBufferSizeMs,
+											CDTXMania.ConfigIni.nASIODevice
+				);
+				AddSoundTypeToWindowTitle();
+				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );
+			}
+			catch (Exception e)
 			{
-				Trace.TraceError( "DirectSound の初期化に失敗しました。" );
+				Trace.TraceError( e.Message );
 				throw;
 			}
 			finally
@@ -1747,6 +1826,7 @@ for (int i = 0; i < 3; i++) {
 			this.listトップレベルActivities.Add( stage結果 );
 			this.listトップレベルActivities.Add( stageChangeSkin );
 			this.listトップレベルActivities.Add( stage終了 );
+			this.listトップレベルActivities.Add( actFlushGPU );
 			//---------------------
 			#endregion
 			#region [ プラグインの検索と生成 ]
@@ -1798,15 +1878,8 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			#endregion
 
-			// Sound管理.t再生中の処理をする() を、別スレッドで50ms周期で実行する
-			//System.Threading.Thread t =
-			//new System.Threading.Thread(
-			//new System.Threading.ThreadStart( Sound管理.t再生中の処理をする_loop ) );
-			//t.IsBackground = true;
-			//t.Start();
-
 			Trace.TraceInformation( "アプリケーションの初期化を完了しました。" );
-
+			
 			#region [ 最初のステージの起動 ]
 			//---------------------
 			Trace.TraceInformation( "----------------------" );
@@ -1823,6 +1896,16 @@ for (int i = 0; i < 3; i++) {
 			r現在のステージ.On活性化();
 			//---------------------
 			#endregion
+		}
+
+		public void AddSoundTypeToWindowTitle()
+		{
+			string delay = "";
+			if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
+			{
+				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
+			}
+			base.Window.Text = strWindowTitle + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
 		}
 
 		private void t終了処理()
@@ -2061,8 +2144,6 @@ for (int i = 0; i < 3; i++) {
 				//---------------------
 				#endregion
 
-//				ct.Dispose();
-
 				#region [ タイマの終了処理 ]
 				//---------------------
 				Trace.TraceInformation("タイマの終了処理を行います。");
@@ -2116,47 +2197,6 @@ for (int i = 0; i < 3; i++) {
 
 
 				this.b終了処理完了済み = true;
-			}
-		}
-		private void Window_ApplicationActivated( object sender, EventArgs e )
-		{
-			this.bApplicationActive = true;
-		}
-		private void Window_ApplicationDeactivated( object sender, EventArgs e )
-		{
-			this.bApplicationActive = false;
-		}
-		private void Window_KeyDown( object sender, KeyEventArgs e )
-		{
-			if (e.KeyCode == Keys.Menu)
-			{
-				e.Handled = true;
-				e.SuppressKeyPress = true;
-			}
-			else if ((e.KeyCode == Keys.Return) && e.Alt)
-			{
-				if (ConfigIni != null)
-				{
-					ConfigIni.bウィンドウモード = !ConfigIni.bウィンドウモード;
-					this.t全画面・ウィンドウモード切り替え();
-				}
-				e.Handled = true;
-				e.SuppressKeyPress = true;
-			}
-			else
-			{
-				for ( int i = 0; i < 0x10; i++ )
-				{
-					if ( ConfigIni.KeyAssign.System.Capture[ i ].コード > 0 &&
-						 e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
-					{
-// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
-						string strFullPath =
-						   Path.Combine( CDTXMania.strEXEのあるフォルダ, "Capture_img" );
-						strFullPath = Path.Combine( strFullPath, DateTime.Now.ToString( "yyyyMMddHHmmss" ) + ".png" );
-						SaveResultScreen( strFullPath );
-					}
-				}
 			}
 		}
 		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
@@ -2231,6 +2271,7 @@ for (int i = 0; i < 3; i++) {
 			if( this.listプラグイン.Count > 0 )
 				Trace.TraceInformation( this.listプラグイン.Count + " 個のプラグインを読み込みました。" );
 		}
+		#region [ Windowイベント処理 ]
 		private void t指定フォルダ内でのプラグイン検索と生成( string strプラグインフォルダパス, string strプラグイン型名 )
 		{
 			// 指定されたパスが存在しないとエラー
@@ -2281,6 +2322,47 @@ for (int i = 0; i < 3; i++) {
 				this.t指定フォルダ内でのプラグイン検索と生成( dir + "\\", strプラグイン型名 );
 		}
 		//-----------------
+		private void Window_ApplicationActivated( object sender, EventArgs e )
+		{
+			this.bApplicationActive = true;
+		}
+		private void Window_ApplicationDeactivated( object sender, EventArgs e )
+		{
+			this.bApplicationActive = false;
+		}
+		private void Window_KeyDown( object sender, KeyEventArgs e )
+		{
+			if ( e.KeyCode == Keys.Menu )
+			{
+				e.Handled = true;
+				e.SuppressKeyPress = true;
+			}
+			else if ( ( e.KeyCode == Keys.Return ) && e.Alt )
+			{
+				if ( ConfigIni != null )
+				{
+					ConfigIni.bウィンドウモード = !ConfigIni.bウィンドウモード;
+					this.t全画面・ウィンドウモード切り替え();
+				}
+				e.Handled = true;
+				e.SuppressKeyPress = true;
+			}
+			else
+			{
+				for ( int i = 0; i < 0x10; i++ )
+				{
+					if ( ConfigIni.KeyAssign.System.Capture[ i ].コード > 0 &&
+						 e.KeyCode == DeviceConstantConverter.KeyToKeyCode( (SlimDX.DirectInput.Key) ConfigIni.KeyAssign.System.Capture[ i ].コード ) )
+					{
+						// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
+						string strFullPath =
+						   Path.Combine( CDTXMania.strEXEのあるフォルダ, "Capture_img" );
+						strFullPath = Path.Combine( strFullPath, DateTime.Now.ToString( "yyyyMMddHHmmss" ) + ".png" );
+						SaveResultScreen( strFullPath );
+					}
+				}
+			}
+		}
 		private void Window_MouseUp( object sender, MouseEventArgs e )
 		{
 			mb = e.Button;
@@ -2296,15 +2378,16 @@ for (int i = 0; i < 3; i++) {
 		}
 		private void Window_ResizeEnd(object sender, EventArgs e)				// #23510 2010.11.20 yyagi: to get resized window size
 		{
-            if (ConfigIni.bウィンドウモード)
-            {
-                ConfigIni.n初期ウィンドウ開始位置X = base.Window.Location.X;	// #30675 2013.02.04 ikanick add
-                ConfigIni.n初期ウィンドウ開始位置Y = base.Window.Location.Y;	//
-            }
+			if ( ConfigIni.bウィンドウモード )
+			{
+				ConfigIni.n初期ウィンドウ開始位置X = base.Window.Location.X;	// #30675 2013.02.04 ikanick add
+				ConfigIni.n初期ウィンドウ開始位置Y = base.Window.Location.Y;	//
+			}
 
 			ConfigIni.nウインドウwidth = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Width : currentClientSize.Width;	// #23510 2010.10.31 yyagi add
 			ConfigIni.nウインドウheight = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Height : currentClientSize.Height;
 		}
+		#endregion
 
 		//internal sealed class GCBeep	// GC発生の度にbeep
 		//{
@@ -2318,9 +2401,7 @@ for (int i = 0; i < 3; i++) {
 		//        }
 		//    }
 		//}
-
 	
-		
 		//-----------------
 		#endregion
 	}

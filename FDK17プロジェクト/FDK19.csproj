@@ -43,6 +43,14 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bass.Net, Version=2.4.9.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\実行時フォルダ\Bass.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\実行時フォルダ\DirectShowLib-2005.dll</HintPath>
+    </Reference>
     <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, PublicKeyToken=53d0e4ef1f1579f5, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\実行時フォルダ\SlimDXc_net20x86_Jun2010.dll</HintPath>
@@ -55,6 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="コード\00.共通\CPowerManagement.cs" />
+    <Compile Include="コード\00.共通\CTimerBase.cs" />
+    <Compile Include="コード\00.共通\C一定間隔処理.cs" />
+    <Compile Include="コード\00.共通\C共通.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameWindowSize.cs" />
     <Compile Include="コード\01.フレームワーク\Core\Game.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameClock.cs" />
@@ -88,12 +99,17 @@
     <Compile Include="コード\02.入力\E入力デバイス種別.cs" />
     <Compile Include="コード\02.入力\IInputDevice.cs" />
     <Compile Include="コード\02.入力\STInputEvent.cs" />
+    <Compile Include="コード\03.サウンド\Cmp3.cs" />
+    <Compile Include="コード\03.サウンド\Cogg.cs" />
     <Compile Include="コード\03.サウンド\CSound.cs" />
-    <Compile Include="コード\03.サウンド\CSoundMp3.cs" />
-    <Compile Include="コード\03.サウンド\CSoundOggVorbis.cs" />
-    <Compile Include="コード\03.サウンド\CSoundRiffWave.cs" />
-    <Compile Include="コード\03.サウンド\CSoundXA.cs" />
-    <Compile Include="コード\03.サウンド\CSound管理.cs" />
+    <Compile Include="コード\03.サウンド\CSoundDeviceASIO.cs" />
+    <Compile Include="コード\03.サウンド\CSoundDeviceDirectSound.cs" />
+    <Compile Include="コード\03.サウンド\CSoundDeviceWASAPI.cs" />
+    <Compile Include="コード\03.サウンド\CSoundTimer.cs" />
+    <Compile Include="コード\03.サウンド\Cxa.cs" />
+    <Compile Include="コード\03.サウンド\ESoundDeviceType.cs" />
+    <Compile Include="コード\03.サウンド\SoundDecoder.cs" />
+    <Compile Include="コード\03.サウンド\ISoundDevice.cs" />
     <Compile Include="コード\04.グラフィック\BitmapUtil.cs" />
     <Compile Include="コード\04.グラフィック\CAero.cs" />
     <Compile Include="コード\04.グラフィック\CAvi.cs" />
@@ -113,9 +129,14 @@
     <Compile Include="コード\00.共通\CTraceLogListener.cs" />
     <Compile Include="コード\00.共通\CWin32.cs" />
     <Compile Include="コード\00.共通\C変換.cs" />
+    <Compile Include="コード\05.DirectShow\CDirectShow.cs" />
+    <Compile Include="コード\05.DirectShow\CDStoWAVFileImage.cs" />
+    <Compile Include="コード\05.DirectShow\MemoryRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="コード\01.フレームワーク\Properties\Resources.resx" />
+    <EmbeddedResource Include="コード\01.フレームワーク\Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="コード\01.フレームワーク\Resources\sdx_icon_black.ico" />

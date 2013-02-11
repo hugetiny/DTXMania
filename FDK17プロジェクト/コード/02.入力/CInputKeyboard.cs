@@ -44,7 +44,7 @@ namespace FDK
 			for( int i = 0; i < this.bKeyState.Length; i++ )
 				this.bKeyState[ i ] = false;
 
-			this.timer = new CTimer( CTimer.E種別.MultiMedia );
+			//this.timer = new CTimer( CTimer.E種別.MultiMedia );
 			this.list入力イベント = new List<STInputEvent>( 32 );
 			// this.ct = new CTimer( CTimer.E種別.PerformanceCounter );
 		}
@@ -85,12 +85,14 @@ namespace FDK
 						{
 							foreach ( Key key in data.PressedKeys )
 							{
-								STInputEvent item = new STInputEvent();
-								item.nKey = (int) key;
-								item.b押された = true;
-								item.b離された = false;
-								item.nTimeStamp = data.TimeStamp;
-								item.nVelocity = CInput管理.n通常音量;
+								STInputEvent item = new STInputEvent()
+								{
+									nKey = (int) key,
+									b押された = true,
+									b離された = false,
+									nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
+									nVelocity = CInput管理.n通常音量
+								};
 								this.list入力イベント.Add( item );
 
 								this.bKeyState[ (int) key ] = true;
@@ -103,13 +105,15 @@ namespace FDK
 							}
 							foreach ( Key key in data.ReleasedKeys )
 							{
-								STInputEvent event3 = new STInputEvent();
-								event3.nKey = (int) key;
-								event3.b押された = false;
-								event3.b離された = true;
-								event3.nTimeStamp = data.TimeStamp;
-								event3.nVelocity = CInput管理.n通常音量;
-								this.list入力イベント.Add( event3 );
+								STInputEvent item = new STInputEvent()
+								{
+									nKey = (int) key,
+									b押された = false,
+									b離された = true,
+									nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
+									nVelocity = CInput管理.n通常音量
+								};
+								this.list入力イベント.Add( item );
 
 								this.bKeyState[ (int) key ] = false;
 								this.bKeyPullUp[ (int) key ] = true;
@@ -135,7 +139,7 @@ namespace FDK
 									nKey = (int) key,
 									b押された = true,
 									b離された = false,
-									nTimeStamp = this.timer.nシステム時刻,
+									nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻,	// 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 									nVelocity = CInput管理.n通常音量,
 								};
 								this.list入力イベント.Add( ev );
@@ -158,7 +162,7 @@ namespace FDK
 									nKey = (int) key,
 									b押された = false,
 									b離された = true,
-									nTimeStamp = this.timer.nシステム時刻,
+									nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻,	// 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 									nVelocity = CInput管理.n通常音量,
 								};
 								this.list入力イベント.Add( ev );
@@ -213,11 +217,11 @@ namespace FDK
 					this.devKeyboard.Dispose();
 					this.devKeyboard = null;
 				}
-				if( this.timer != null )
-				{
-					this.timer.Dispose();
-					this.timer = null;
-				}
+				//if( this.timer != null )
+				//{
+				//    this.timer.Dispose();
+				//    this.timer = null;
+				//}
 				if ( this.list入力イベント != null )
 				{
 					this.list入力イベント = null;
@@ -238,7 +242,7 @@ namespace FDK
 		private bool[] bKeyPushDown = new bool[ 0x100 ];
 		private bool[] bKeyState = new bool[ 0x100 ];
 		private Keyboard devKeyboard;
-		private CTimer timer;
+		//private CTimer timer;
 		//private CTimer ct;
 		//-----------------
 		#endregion

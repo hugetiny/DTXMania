@@ -67,6 +67,7 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
+			dtLastQueueOperation = DateTime.MinValue;
 			base.On活性化();
 		}
 		public override void OnManagedリソースの作成()
@@ -100,6 +101,7 @@ namespace DTXMania
 
 				if( base.b初めての進行描画 )
 				{
+                    CSound管理.rc演奏用タイマ.tリセット();
 					CDTXMania.Timer.tリセット();
 					this.ctチップ模様アニメ.Guitar = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
 					this.ctチップ模様アニメ.Bass = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
@@ -157,6 +159,30 @@ namespace DTXMania
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
 
+				// もしサウンドの登録/削除が必要なら、実行する
+				if ( queueMixerSound.Count > 0 )
+				{
+//Debug.WriteLine( "☆queueLength=" + queueMixerSound.Count );
+					DateTime dtnow = DateTime.Now;
+					TimeSpan ts = dtnow - dtLastQueueOperation;
+					if ( ts.Milliseconds > 7 )
+					{
+						for ( int i = 0; i < 2 && queueMixerSound.Count > 0; i++ )
+						{
+							dtLastQueueOperation = dtnow;
+							stmixer stm = queueMixerSound.Dequeue();
+							if ( stm.bIsAdd )
+							{
+								CDTXMania.Sound管理.AddMixer( stm.csound );
+							}
+							else
+							{
+								CDTXMania.Sound管理.RemoveMixer( stm.csound );
+							}
+						}
+					}
+				}
+
 				// キー入力
 
 				if( CDTXMania.act現在入力を占有中のプラグイン == null )
@@ -172,7 +198,6 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-
 		protected override E判定 tチップのヒット処理( long nHitTime, CDTX.CChip pChip, bool bCorrectLane )
 		{
 			E判定 eJudgeResult = tチップのヒット処理( nHitTime, pChip, E楽器パート.GUITAR, bCorrectLane );
@@ -288,7 +313,7 @@ namespace DTXMania
 			if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 			{
 				pChip.bHit = true;
-				this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
+				this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
 			}
 		}
 		protected override void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
@@ -393,7 +418,7 @@ namespace DTXMania
 							bMiss = false;
 						}
 						pChip.bHit = true;
-						this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, inst, dTX.nモニタを考慮した音量( inst ) );
+						this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, inst, dTX.nモニタを考慮した音量( inst ) );
 						this.r次にくるギターChip = null;
 						this.tチップのヒット処理( pChip.n発声時刻ms, pChip );
 					}
@@ -404,7 +429,7 @@ namespace DTXMania
 			if ( !pChip.bHit && ( pChip.nバーからの距離dot[ instIndex ] < 0 ) )
 			{
 				pChip.bHit = true;
-				this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, inst, dTX.nモニタを考慮した音量( inst ) );
+				this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, inst, dTX.nモニタを考慮した音量( inst ) );
 			}
 		}
 #endif
@@ -584,7 +609,7 @@ namespace DTXMania
 					{
 						this.actChipFireGB.Start( 5 );
 					}
-					this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.BASS, dTX.nモニタを考慮した音量( E楽器パート.BASS ) );
+					this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.BASS, dTX.nモニタを考慮した音量( E楽器パート.BASS ) );
 					this.r次にくるベースChip = null;
 					this.tチップのヒット処理( pChip.n発声時刻ms, pChip );
 				}
@@ -593,7 +618,7 @@ namespace DTXMania
 			if ( !pChip.bHit && ( pChip.nバーからの距離dot.Bass < 0 ) )
 			{
 				pChip.bHit = true;
-				this.tサウンド再生( pChip, CDTXMania.Timer.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.BASS, dTX.nモニタを考慮した音量( E楽器パート.BASS ) );
+				this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.BASS, dTX.nモニタを考慮した音量( E楽器パート.BASS ) );
 			}
 		}
 #endif
@@ -677,7 +702,7 @@ namespace DTXMania
 			{
 				pChip.bHit = true;
 				this.actPlayInfo.n小節番号 = n小節番号plus1 - 1;
-				if ( configIni.bWave再生位置自動調整機能有効 )
+				if ( configIni.bWave再生位置自動調整機能有効 && bIsDirectSound )
 				{
 					dTX.tWave再生位置自動補正();
 				}

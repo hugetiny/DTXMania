@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -55,6 +55,7 @@ namespace DTXMania
 
 
 		// メソッド
+		#region [ t項目リストの設定・System() ]
 		public void t項目リストの設定・System()
 		{
 			this.tConfigIniへ記録する();
@@ -108,8 +109,22 @@ namespace DTXMania
 
 	
 			this.iSystemAdjustWaves = new CItemToggle( "AdjustWaves", CDTXMania.ConfigIni.bWave再生位置自動調整機能有効,
-				"サウンド再生位置自動補正：\nハードウェアやＯＳに起因するサウン\nドのずれを強制的に補正します。\nBGM のように再生時間の長い音声\nデータが使用されている曲で効果が\nあります。",
-				"Automatic wave playing position\n adjustment feature. If you turn it ON,\n it decrease the lag which comes from\n the difference of hardware/OS.\nUsually, you should turn it ON." );
+			    "サウンド再生位置自動補正：\n" +
+				"ハードウェアやOSに起因するサウン\n" +
+				"ドのずれを強制的に補正します。\n" +
+				"BGM のように再生時間の長い音声\n" +
+				"データが使用されている曲で効果が\n" +
+				"あります。" +
+				"\n" +
+				"※ DirectSound使用時のみ有効です。",
+			    "Automatic wave playing position\n" +
+				" adjustment feature. If you turn it ON,\n" +
+				" it decrease the lag which comes from\n" +
+				" the difference of hardware/OS.\n" +
+				"Usually, you should turn it ON." +
+				"\n"+
+				"Note: This setting is effetive\n" +
+				" only when DirectSound is used.");
 			this.list項目リスト.Add( this.iSystemAdjustWaves );
 			this.iSystemVSyncWait = new CItemToggle( "VSyncWait", CDTXMania.ConfigIni.b垂直帰線待ちを行う,
 				"垂直帰線同期：\n画面の描画をディスプレイの垂直帰\n線中に行なう場合には ON を指定し\nます。ON にすると、ガタつきのない\n滑らかな画面描画が実現されます。",
@@ -190,6 +205,98 @@ namespace DTXMania
 				"Turn ON to put debug log to\n DTXManiaLog.txt\nTo take it effective, you need to\n re-open DTXMania." );
 			this.list項目リスト.Add( this.iLogOutputLog );
 
+			// #24820 2013.1.3 yyagi
+			this.iSystemSoundType = new CItemList("SoundType", CItemList.Eパネル種別.通常, CDTXMania.ConfigIni.nSoundDeviceType,
+				"サウンドの出力方式:\n" +
+				"WASAPI, ASIO, DSound(DirectSound)\n" +
+				"の中からサウンド出力方式を選択\n" +
+				"します。\n" +
+				"WASAPIはVista以降でのみ使用可能\n" +
+				"です。ASIOは対応機器でのみ使用\n" +
+				"可能です。\n" +
+				"WASAPIかASIOを指定することで、\n" +
+				"遅延の少ない演奏を楽しむことが\n" +
+				"できます。\n" +
+				"\n" +
+				"※ 設定はCONFIGURATION画面の\n" +
+				"　終了時に有効になります。",
+				"Sound output type:\n" +
+				"You can choose WASAPI, ASIO or\n" +
+				"DShow(DirectShow).\n" +
+				"WASAPI can use only after Vista.\n" +
+				"ASIO can use on the\n" +
+				"\"ASIO-supported\" sound device.\n" +
+				"You should use WASAPI or ASIO\n" +
+				"to decrease the sound lag.\n" +
+				"\n" +
+				"Note: Exit CONFIGURATION to make\n" +
+				"     the setting take effect.",
+				new string[] { "DSound", "ASIO", "WASAPI" });
+			this.list項目リスト.Add(this.iSystemSoundType);
+
+			// #24820 2013.1.15 yyagi
+			this.iSystemWASAPIBufferSizeMs = new CItemInteger( "WASAPIBufSize", 0, 99999, CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
+				"WASAPI使用時のバッファサイズ:\n" +
+				"0～99999ms を指定可能です。\n" +
+				"0を指定すると、OSがバッファの\n" +
+				"サイズを自動設定します。\n" +
+				"値を小さくするほど発音ラグが\n" +
+				"減少しますが、音割れや異常動作を\n" +
+				"引き起こす場合があります。\n" +
+				"※ 設定はCONFIGURATION画面の\n" +
+				"　終了時に有効になります。",
+				"Sound buffer size for WASAPI:\n" +
+				"You can set from 0 to 99999ms.\n" +
+				"Set 0 to use a default sysytem\n" +
+				"buffer size.\n" +
+				"Smaller value makes smaller lag,\n" +
+				"but it may cause sound troubles.\n" +
+				"\n" +
+				"Note: Exit CONFIGURATION to make\n" +
+				"     the setting take effect." );
+			this.list項目リスト.Add( this.iSystemWASAPIBufferSizeMs );
+
+			// #24820 2013.1.17 yyagi
+			string[] asiodevs = CEnumerateAllAsioDevices.GetAllASIODevices();
+			this.iSystemASIODevice = new CItemList( "ASIO device", CItemList.Eパネル種別.通常, CDTXMania.ConfigIni.nASIODevice,
+				"ASIOデバイス:\n" +
+				"ASIO使用時のサウンドデバイスを\n" +
+				"選択します。\n" +
+				"\n" +
+				"※ 設定はCONFIGURATION画面の\n" +
+				"　終了時に有効になります。",
+				"ASIO Sound Device:\n" +
+				"Select the sound device to use\n" +
+				"under ASIO mode.\n" +
+				"\n" +
+				"Note: Exit CONFIGURATION to make\n" +
+				"     the setting take effect.",
+				asiodevs );
+			this.list項目リスト.Add( this.iSystemASIODevice );
+
+			// #24820 2013.1.3 yyagi
+			this.iSystemASIOBufferSizeMs = new CItemInteger("ASIOBuffSize", 0, 99999, CDTXMania.ConfigIni.nASIOBufferSizeMs,
+				"ASIO使用時のバッファサイズ:\n" +
+				"0～99999ms を指定可能です。\n" +
+				"0を指定すると、サウンドデバイスに\n" +
+				"指定されている設定値を使用します。\n" +
+				"値を小さくするほど発音ラグが\n" +
+				"減少しますが、音割れや異常動作を\n" +
+				"引き起こす場合があります。\n" +
+				"\n" +
+				"※ 設定はCONFIGURATION画面の\n" +
+				"　終了時に有効になります。",
+				"Sound buffer size for ASIO:\n" +
+				"You can set from 0 to 99999ms.\n" +
+				"Set 0 to use a default value already\n" +
+				"specified to the sound device.\n" +
+				"Smaller value makes smaller lag,\n" +
+				"but it may cause sound troubles.\n" +
+				"\n" +
+				"Note: Exit CONFIGURATION to make\n" +
+				"     the setting take effect." );
+			this.list項目リスト.Add( this.iSystemASIOBufferSizeMs );
+
 			this.iSystemSkinSubfolder = new CItemList( "Skin (General)", CItemBase.Eパネル種別.通常, nSkinIndex,
 				"スキン切替：\n" +
 				"スキンを切り替えます。\n",
@@ -222,6 +329,8 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.System;
 		}
+		#endregion
+		#region [ t項目リストの設定・Drums() ]
 		public void t項目リストの設定・Drums()
 		{
 			this.tConfigIniへ記録する();
@@ -581,7 +690,8 @@ namespace DTXMania
 				"行います。\n" +
 				"-99 ～ 0ms まで指定可能です。\n" +
 				"入力ラグを軽減するためには、負の\n" +
-				"値を指定してください。",
+				"値を指定してください。\n" +
+				"※ 設定はアプリ再起動後に有効になります。",
 				"To adjust the drums input timing.\n" +
 				"You can set from -99 to 0ms.\n" +
 				"To decrease input lag, set minus value." );
@@ -605,6 +715,8 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Drums;
 		}
+		#endregion
+		#region [ t項目リストの設定・Guitar() ]
 		public void t項目リストの設定・Guitar()
 		{
 			this.tConfigIniへ記録する();
@@ -707,6 +819,8 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Guitar;
 		}
+		#endregion
+		#region [ t項目リストの設定・Bass() ]
 		public void t項目リストの設定・Bass()
 		{
 			this.tConfigIniへ記録する();
@@ -812,7 +926,7 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Bass;
 		}
-
+		#endregion
 
 		/// <summary>
 		/// ESC押下時の右メニュー描画
@@ -1102,6 +1216,7 @@ namespace DTXMania
 			}
 		}
 
+		#region [ 項目リストの設定 ( Exit, KeyAssignSystem/Drums/Guitar/Bass) ]
 		public void t項目リストの設定・Exit()
 		{
 			this.tConfigIniへ記録する();
@@ -1268,7 +1383,7 @@ namespace DTXMania
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignBass;
 		}
-
+		#endregion
 		public void t次に移動()
 		{
 			CDTXMania.Skin.soundカーソル移動音.t再生する();
@@ -1337,7 +1452,11 @@ namespace DTXMania
 			this.n現在のスクロールカウンタ = 0;
 			this.nスクロール用タイマ値 = -1;
 			this.ct三角矢印アニメ = new CCounter();
-			
+
+			this.iSystemSoundType_initial			= this.iSystemSoundType.n現在選択されている項目番号;	// CONFIGに入ったときの値を保持しておく
+			this.iSystemWASAPIBufferSizeMs_initial	= this.iSystemWASAPIBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
+			this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
+			this.iSystemASIODevice_initial			= this.iSystemASIODevice.n現在選択されている項目番号;	//
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -1350,12 +1469,44 @@ namespace DTXMania
 			this.ct三角矢印アニメ = null;
 			
 			base.On非活性化();
-
+			#region [ Skin変更 ]
 			if ( CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true ) != this.skinSubFolder_org )
 			{
 				CDTXMania.stageChangeSkin.tChangeSkinMain();	// #28195 2012.6.11 yyagi CONFIG脱出時にSkin更新
 			}
+			#endregion
 
+			// #24820 2013.1.22 yyagi CONFIGでWASAPI/ASIO/DirectSound関連の設定を変更した場合、サウンドデバイスを再構築する。
+			#region [ サウンドデバイス変更 ]
+			if ( this.iSystemSoundType_initial != this.iSystemSoundType.n現在選択されている項目番号 ||
+				this.iSystemWASAPIBufferSizeMs_initial != this.iSystemWASAPIBufferSizeMs.n現在の値 ||
+				this.iSystemASIOBufferSizeMs_initial != this.iSystemASIOBufferSizeMs.n現在の値 ||
+				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 )
+			{
+				ESoundDeviceType soundDeviceType;
+				switch ( this.iSystemSoundType.n現在選択されている項目番号 )
+				{
+					case 0:
+						soundDeviceType = ESoundDeviceType.DirectSound;
+						break;
+					case 1:
+						soundDeviceType = ESoundDeviceType.ASIO;
+						break;
+					case 2:
+						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						break;
+					default:
+						soundDeviceType = ESoundDeviceType.Unknown;
+						break;
+				}
+
+				FDK.CSound管理.t初期化( soundDeviceType,
+										this.iSystemWASAPIBufferSizeMs.n現在の値,
+										this.iSystemASIOBufferSizeMs.n現在の値,
+										this.iSystemASIODevice.n現在選択されている項目番号 );
+				CDTXMania.app.AddSoundTypeToWindowTitle();
+			}
+			#endregion
 		}
 		public override void OnManagedリソースの作成()
 		{
@@ -1395,7 +1546,7 @@ namespace DTXMania
 			//-----------------
 			if( base.b初めての進行描画 )
 			{
-				this.nスクロール用タイマ値 = CDTXMania.Timer.n現在時刻;
+                this.nスクロール用タイマ値 = CSound管理.rc演奏用タイマ.n現在時刻;
 				this.ct三角矢印アニメ.t開始( 0, 9, 50, CDTXMania.Timer );
 			
 				base.b初めての進行描画 = false;
@@ -1761,6 +1912,16 @@ namespace DTXMania
 		private CItemToggle iSystemAutoResultCapture;		// #25399 2011.6.9 yyagi
 		private CItemToggle iSystemBufferedInput;
 		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
+		private CItemList iSystemSoundType;					// #24820 2013.1.3 yyagi
+		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
+		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
+		private CItemList	iSystemASIODevice;				// $24820 2013.1.17 yyagi
+
+		private int iSystemSoundType_initial;
+		private int iSystemWASAPIBufferSizeMs_initial;
+		private int iSystemASIOBufferSizeMs_initial;
+		private int iSystemASIODevice_initial;
+
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -1955,6 +2116,11 @@ namespace DTXMania
 			CDTXMania.ConfigIni.strSystemSkinSubfolderFullName = skinSubFolders[ nSkinIndex ];				// #28195 2012.5.2 yyagi
 			CDTXMania.Skin.SetCurrentSkinSubfolderFullName( CDTXMania.ConfigIni.strSystemSkinSubfolderFullName, true );
 			CDTXMania.ConfigIni.bUseBoxDefSkin = this.iSystemUseBoxDefSkin.bON;								// #28195 2012.5.6 yyagi
+
+			CDTXMania.ConfigIni.nSoundDeviceType = this.iSystemSoundType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
+			CDTXMania.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
+			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
+			CDTXMania.ConfigIni.nASIODevice = this.iSystemASIODevice.n現在選択されている項目番号;			// #24820 2013.1.17 yyagi
 
 //Trace.TraceInformation( "saved" );
 //Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );

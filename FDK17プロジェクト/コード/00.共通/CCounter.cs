@@ -17,19 +17,19 @@ namespace FDK
 			private set;
 		}
 		public int n終了値
-		{ 
+		{
 			get;
 			private set;
 		}
-		public int n現在の値 
+		public int n現在の値
 		{
 			get;
 			set;
 		}
 		public long n現在の経過時間ms
-		{ 
-			get; 
-			set; 
+		{
+			get;
+			set;
 		}
 
 
@@ -41,7 +41,7 @@ namespace FDK
 		}
 		public bool b停止中
 		{
-			get { return !this.b進行中; } 
+			get { return !this.b進行中; }
 		}
 		public bool b終了値に達した
 		{
@@ -49,7 +49,7 @@ namespace FDK
 		}
 		public bool b終了値に達してない
 		{
-			get { return !this.b終了値に達した; } 
+			get { return !this.b終了値に達した; }
 		}
 
 
@@ -98,44 +98,44 @@ namespace FDK
 		/// </summary>
 		public void t進行()
 		{
-			if( ( this.timer != null ) && ( this.n現在の経過時間ms != CTimer.n未使用 ) )
+			if ( ( this.timer != null ) && ( this.n現在の経過時間ms != CTimer.n未使用 ) )
 			{
 				long num = this.timer.n現在時刻;
-				if( num < this.n現在の経過時間ms )
+				if ( num < this.n現在の経過時間ms )
 					this.n現在の経過時間ms = num;
 
-				while( ( num - this.n現在の経過時間ms ) >= this.n間隔ms )
+				while ( ( num - this.n現在の経過時間ms ) >= this.n間隔ms )
 				{
-					if( ++this.n現在の値 > this.n終了値 )
+					if ( ++this.n現在の値 > this.n終了値 )
 						this.n現在の値 = this.n終了値;
 
 					this.n現在の経過時間ms += this.n間隔ms;
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// 前回の t進行Loop() の呼び出しからの経過時間をもとに、必要なだけカウント値を増加させる。
 		/// カウント値が終了値に達している場合は、次の増加タイミングで開始値に戻る（値がループする）。
 		/// </summary>
 		public void t進行Loop()
 		{
-			if( ( this.timer != null ) && ( this.n現在の経過時間ms != CTimer.n未使用 ) )
+			if ( ( this.timer != null ) && ( this.n現在の経過時間ms != CTimer.n未使用 ) )
 			{
 				long num = this.timer.n現在時刻;
-				if( num < this.n現在の経過時間ms )
+				if ( num < this.n現在の経過時間ms )
 					this.n現在の経過時間ms = num;
 
-				while( ( num - this.n現在の経過時間ms ) >= this.n間隔ms )
+				while ( ( num - this.n現在の経過時間ms ) >= this.n間隔ms )
 				{
-					if( ++this.n現在の値 > this.n終了値 )
+					if ( ++this.n現在の値 > this.n終了値 )
 						this.n現在の値 = this.n開始値;
 
 					this.n現在の経過時間ms += this.n間隔ms;
 				}
 			}
 		}
-		
+
 		/// <summary>
 		/// カウントを停止する。
 		/// これ以降に t進行() や t進行Loop() を呼び出しても何も処理されない。
@@ -164,9 +164,9 @@ namespace FDK
 			const int n2回目 = 1;
 			const int n3回目以降 = 2;
 
-			if( bキー押下 )
+			if ( bキー押下 )
 			{
-				switch( this.n現在の値 )
+				switch ( this.n現在の値 )
 				{
 					case n1回目:
 
@@ -177,7 +177,7 @@ namespace FDK
 
 					case n2回目:
 
-						if( ( this.timer.n現在時刻 - this.n現在の経過時間ms ) > 200 )
+						if ( ( this.timer.n現在時刻 - this.n現在の経過時間ms ) > 200 )
 						{
 							tキー処理();
 							this.n現在の経過時間ms = this.timer.n現在時刻;
@@ -187,7 +187,7 @@ namespace FDK
 
 					case n3回目以降:
 
-						if( ( this.timer.n現在時刻 - this.n現在の経過時間ms ) > 30 )
+						if ( ( this.timer.n現在時刻 - this.n現在の経過時間ms ) > 30 )
 						{
 							tキー処理();
 							this.n現在の経過時間ms = this.timer.n現在時刻;
@@ -201,7 +201,7 @@ namespace FDK
 			}
 		}
 		public delegate void DGキー処理();
-		
+
 		//-----------------
 		#endregion
 
