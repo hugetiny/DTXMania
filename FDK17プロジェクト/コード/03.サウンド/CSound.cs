@@ -118,6 +118,12 @@ namespace FDK
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="handle"></param>
+		public CSound管理( IntPtr handle )	// #30803 従来のコンストラクタ相当のI/Fを追加。(DTXC用)
+		{
+			WindowHandle = handle;
+			SoundDevice = null;
+			t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
+		}
 		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice )
 		{
 			WindowHandle = handle;
@@ -256,6 +262,10 @@ namespace FDK
 			return SoundDevice.tサウンドを作成する( filename );
 		}
 
+		public void t再生中の処理をする( object o )			// #26122 2011.9.1 yyagi; delegate経由の呼び出し用
+		{
+			t再生中の処理をする();
+		}
 		public void t再生中の処理をする()
 		{
 //★★★★★★★★★★★★★★★★★★★★★ダミー★★★★★★★★★★★★★★★★★★
