@@ -1553,8 +1553,8 @@ for (int i = 0; i < 3; i++) {
 //			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
 //			settings.BackBufferFormat = Format.A8R8G8B8;
-			settings.MultisampleType = MultisampleType.FourSamples;
-			settings.MultisampleQuality = 4;
+//			settings.MultisampleType = MultisampleType.FourSamples;
+//			settings.MultisampleQuality = 4;
 //			settings.MultisampleType = MultisampleType.None;
 //			settings.MultisampleQuality = 0;
 			
