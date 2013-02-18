@@ -424,7 +424,9 @@ namespace DTXMania
 			this.Device.SetRenderState( RenderState.AlphaTestEnable, true );
 			this.Device.SetRenderState( RenderState.AlphaRef, 10 );
 
-//			this.Device.SetRenderState( RenderState.MultisampleAntialias, true );
+			this.Device.SetRenderState( RenderState.MultisampleAntialias, true );
+			this.Device.SetSamplerState( 0, SamplerState.MinFilter, TextureFilter.Linear );
+			this.Device.SetSamplerState( 0, SamplerState.MagFilter, TextureFilter.Linear );
 
 			this.Device.SetRenderState<Compare>( RenderState.AlphaFunc, Compare.Greater );
 			this.Device.SetRenderState( RenderState.AlphaBlendEnable, true );
@@ -433,7 +435,7 @@ namespace DTXMania
 			this.Device.SetTextureStageState( 0, TextureStage.AlphaOperation, TextureOperation.Modulate );
 			this.Device.SetTextureStageState( 0, TextureStage.AlphaArg1, 2 );
 			this.Device.SetTextureStageState( 0, TextureStage.AlphaArg2, 1 );
-			
+
 			if( this.listトップレベルActivities != null )
 			{
 				foreach( CActivity activity in this.listトップレベルActivities )
@@ -1551,8 +1553,8 @@ for (int i = 0; i < 3; i++) {
 //			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
 //			settings.BackBufferFormat = Format.A8R8G8B8;
-//			settings.MultisampleType = MultisampleType.FourSamples;
-//			settings.MultisampleQuality = 4;
+			settings.MultisampleType = MultisampleType.FourSamples;
+			settings.MultisampleQuality = 4;
 //			settings.MultisampleType = MultisampleType.None;
 //			settings.MultisampleQuality = 0;
 			
