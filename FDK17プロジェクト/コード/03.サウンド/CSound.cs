@@ -112,6 +112,7 @@ namespace FDK
 		}
 
 		#endregion
+		public static int hTempoStream;
 
 
 	/// <summary>
@@ -250,6 +251,11 @@ namespace FDK
 			rc演奏用タイマ = new CSoundTimer( SoundDevice );
 			//-----------------
 			#endregion
+			if ( SoundDevice.e出力デバイス != ESoundDeviceType.DirectSound && SoundDevice.e出力デバイス != ESoundDeviceType.Unknown )
+			{
+				hTempoStream = SoundDevice.hTempoStream;
+			}
+			
 
 			CSound.tすべてのサウンドを再構築する( SoundDevice );		// すでに生成済みのサウンドがあれば作り直す。
 		}
@@ -386,6 +392,7 @@ namespace FDK
 					if ( bBASSサウンドである )
 					{
 						Bass.BASS_ChannelSetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_FREQ, ( float ) ( _db周波数倍率 * _db再生速度 * nオリジナルの周波数 ) );
+						//Bass.BASS_ChannelSetAttribute( CSound管理.hTempoStream, BASSAttribute.BASS_ATTRIB_TEMPO, (float) (db再生速度 * 100 - 100 ) );
 					}
 					else
 					{
@@ -398,7 +405,6 @@ namespace FDK
 			}
 		}
 		#endregion
-
 
 		private STREAMPROC _cbStreamXA;		// make it global, so that the GC can not remove it
 //		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
