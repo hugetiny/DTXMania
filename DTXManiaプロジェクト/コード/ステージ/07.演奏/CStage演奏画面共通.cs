@@ -1465,9 +1465,9 @@ namespace DTXMania
 			}
 
 			this.nInputAdjustTimeMs[ part ] += offset;
-			if ( this.nInputAdjustTimeMs[ part ] > 0 )
+			if ( this.nInputAdjustTimeMs[ part ] > 99 )
 			{
-				this.nInputAdjustTimeMs[ part ] = 0;
+				this.nInputAdjustTimeMs[ part ] = 99;
 			}
 			else if ( this.nInputAdjustTimeMs[ part ] < -99 )
 			{
