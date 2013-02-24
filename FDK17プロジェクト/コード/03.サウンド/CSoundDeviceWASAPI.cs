@@ -5,7 +5,6 @@ using System.Diagnostics;
 using Un4seen.Bass;
 using Un4seen.BassWasapi;
 using Un4seen.Bass.AddOn.Mix;
-using Un4seen.Bass.AddOn.Fx;
 
 namespace FDK
 {
@@ -46,11 +45,6 @@ namespace FDK
 			get;
 			protected set;
 		}
-		public int hTempoStream
-		{
-			get;
-			private set;
-		}
 
 		public enum Eデバイスモード { 排他, 共有 }
 
@@ -68,7 +62,6 @@ namespace FDK
 			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
 			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
 			this.b最初の実出力遅延算出 = true;
-			hTempoStream = -1;
 
 			#region [ BASS registration ]
 			// BASS.NET ユーザ登録（BASSスプラッシュが非表示になる）。
@@ -188,7 +181,7 @@ Retry:
 						n実バッファサイズms.ToString(),
 						n希望バッファサイズms.ToString(),
 						n更新間隔ms.ToString() );
-					Trace.TraceInformation( "デバイスの最小更新時間={0}ms, 規定の更新時間={1}ms", deviceInfo.minperiod * 1000, deviceInfo.defperiod * 1000 );
+					Trace.TraceInformation( "デバイスの最小更新時間={0}ms, 既定の更新時間={1}ms", deviceInfo.minperiod * 1000, deviceInfo.defperiod * 1000 );
 					this.bIsBASSFree = false;
 					//-----------------
 					#endregion
@@ -246,16 +239,6 @@ Retry:
 				throw new Exception( string.Format( "BASSミキサの作成に失敗しました。[{0}]", errcode ) );
 			}
 
-			// the tempo channel
-			//hTempoStream = BassFx.BASS_FX_TempoCreate( hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
-			//if ( hTempoStream == 0 )
-			//{
-			//    BASSError err = Bass.BASS_ErrorGetCode();
-			//    BassWasapi.BASS_WASAPI_Free();
-			//    Bass.BASS_Free();
-			//    this.bIsBASSFree = true;
-			//    throw new Exception( string.Format( "TempoCreateに失敗しました。[{0}]", err ) );
-			//}
 
 			// BASS ミキサーの1秒あたりのバイト数を算出。
 
@@ -330,7 +313,6 @@ Retry:
 			// BASSミキサからの出力データをそのまま WASAPI buffer へ丸投げ。
 
 			int num = Bass.BASS_ChannelGetData( this.hMixer, buffer, length );		// num = 実際に転送した長さ
-			//int num = Bass.BASS_ChannelGetData( this.hTempoStream, buffer, length );		// num = 実際に転送した長さ
 			if ( num == -1 ) num = 0;
 
 

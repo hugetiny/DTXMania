@@ -17,7 +17,6 @@ namespace FDK
 		long n経過時間ms { get; }
 		long n経過時間を更新したシステム時刻ms { get; }
 		CTimer tmシステムタイマ { get; }
-		int hTempoStream { get; }
 
 		CSound tサウンドを作成する( string strファイル名 );
 		CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ );

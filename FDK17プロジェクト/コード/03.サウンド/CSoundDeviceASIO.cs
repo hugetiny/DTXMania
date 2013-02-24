@@ -5,7 +5,6 @@ using System.Diagnostics;
 using Un4seen.Bass;
 using Un4seen.BassAsio;
 using Un4seen.Bass.AddOn.Mix;
-using Un4seen.Bass.AddOn.Fx;
 
 namespace FDK
 {
@@ -82,12 +81,6 @@ namespace FDK
 			protected set;
 		}
 
-		public int hTempoStream
-		{
-			get;
-			private set;
-		}
-
 		// メソッド
 
 		public CSoundDeviceASIO( long n希望バッファサイズms, int _nASIODevice )
@@ -101,7 +94,6 @@ namespace FDK
 			this.n経過時間を更新したシステム時刻ms = CTimer.n未使用;
 			this.tmシステムタイマ = new CTimer( CTimer.E種別.MultiMedia );
 			this.nASIODevice = _nASIODevice;
-			this.hTempoStream = -1;
 
 			#region [ BASS registration ]
 			// BASS.NET ユーザ登録（BASSスプラッシュが非表示になる）。
@@ -274,22 +266,7 @@ Debug.WriteLine( "BASS_Init()完了。" );
 			//long nミキサーの1サンプルあたりのバイト数 = /*mixerInfo.chans*/ 2 * nサンプルサイズbyte;
 			long nミキサーの1サンプルあたりのバイト数 = mixerInfo.chans * nサンプルサイズbyte;
 			this.nミキサーの1秒あたりのバイト数 = nミキサーの1サンプルあたりのバイト数 * mixerInfo.freq;
-
-
-			// the tempo channel
-			// mixerの出力をテンポ変更のストリームに入力する。テンポ変更ストリームの出力を、ASIOに出力する。
-			// ・・・・とやるとうまくいかない模様。例えばテンポを遅くした場合、BGMが早く再生終了してしまう。
-			// mixerがテンポ変更に未対応なのでは？？？？
-			//hTempoStream = BassFx.BASS_FX_TempoCreate( hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
-			//if ( hTempoStream == 0 )
-			//{
-			//    BASSError err = Bass.BASS_ErrorGetCode();
-			//    BassAsio.BASS_ASIO_Free();
-			//    Bass.BASS_Free();
-			//    this.bIsBASSFree = true;
-			//    throw new Exception( string.Format( "TempoCreateに失敗しました。[{0}]", err) );
-			//}
-			
+		
 			// 出力を開始。
 
 			this.nバッファサイズsample = (int) ( n希望バッファサイズms * this.db周波数 / 1000.0 );
@@ -387,9 +364,6 @@ Debug.WriteLine( "BASS_Init()完了。" );
 
 			int num = Bass.BASS_ChannelGetData( this.hMixer, buffer, length );		// num = 実際に転送した長さ
 
-			// TempoFxからの出力データをASIObuferに丸投げ。
-
-//			int num = Bass.BASS_ChannelGetData( this.hTempoStream, buffer, length );		// num = 実際に転送した長さ
 			if ( num == -1 ) num = 0;
 
 

@@ -665,6 +665,7 @@ namespace DTXMania
 		public int nASIOBufferSizeMs;				// #24820 2012.12.28 yyagi ASIOのバッファサイズ
 		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
 		public bool bDynamicBassMixerManagement;	// #24820
+		public bool bTimeStretch;					// #23664 2013.2.24 yyagi ピッチ変更無しで再生速度を変更するかどうか
 
 #if false
 		[StructLayout( LayoutKind.Sequential )]
@@ -1151,6 +1152,7 @@ namespace DTXMania
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
 			this.bDynamicBassMixerManagement = true;	//
+			this.bTimeStretch = false;					// #23664 2013.2.24 yyagi 初期値はfalse (再生速度変更を、ピッチ変更にて行う)
 
 		}
 		public CConfigIni( string iniファイル名 )
@@ -1490,9 +1492,16 @@ namespace DTXMania
 			sw.WriteLine( "ShowLagTime={0}", this.nShowLagType );							//
 			sw.WriteLine();
 			sw.WriteLine( "; リザルト画像自動保存機能(0:OFF, 1:ON)" );						// #25399 2011.6.9 yyagi
-			sw.WriteLine( "; Set ON if you'd like to save result screen image automatically");	//
+			sw.WriteLine( "; Set \"1\" if you'd like to save result screen image automatically");	//
 			sw.WriteLine( "; when you get hiscore/hiskill.");								//
 			sw.WriteLine( "AutoResultCapture={0}", this.bIsAutoResultCapture? 1 : 0 );		//
+			sw.WriteLine();
+			sw.WriteLine( "; 再生速度変更を、ピッチ変更で行うかどうか(0:ピッチ変更, 1:タイムストレッチ" );	// #23664 2013.2.24 yyagi
+			sw.WriteLine( "; (WASAPI/ASIO使用時のみ有効) " );
+			sw.WriteLine( "; Set \"0\" if you'd like to use pitch shift with PlaySpeed." );	//
+			sw.WriteLine( "; Set \"1\" for time stretch." );								//
+			sw.WriteLine( "; (Only available when you're using using WASAPI or ASIO)" );	//
+			sw.WriteLine( "TimeStretch={0}", this.bTimeStretch ? 1 : 0 );					//
 			sw.WriteLine();
 			#region [ InputAdjust ]
 			sw.WriteLine( "; 判定タイミング調整(ドラム, ギター, ベース)(-99～0)[ms]" );		// #23580 2011.1.3 yyagi
@@ -2257,9 +2266,13 @@ namespace DTXMania
 											{
 												this.nShowLagType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nShowLagType );
 											}
-											else if( str3.Equals( "AutoResultCapture" ) )			// #25399 2011.6.9 yyagi
+											else if ( str3.Equals( "AutoResultCapture" ) )			// #25399 2011.6.9 yyagi
 											{
 												this.bIsAutoResultCapture = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "TimeStretch" ) )				// #23664 2013.2.24 yyagi
+											{
+												this.bTimeStretch = C変換.bONorOFF( str4[ 0 ] );
 											}
 											#region [ InputAdjustTime ]
 											else if( str3.Equals( "InputAdjustTimeDrums" ) )		// #23580 2011.1.3 yyagi

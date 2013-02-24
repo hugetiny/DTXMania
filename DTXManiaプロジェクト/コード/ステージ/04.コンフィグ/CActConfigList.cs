@@ -88,9 +88,26 @@ namespace DTXMania
 
 
 			this.iCommonPlaySpeed = new CItemInteger("PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度,
-				"曲の演奏速度を、速くしたり遅くした\nりすることができます。\n（※一部のサウンドカードでは正しく\n 再生できない可能性があります。）",
-				"It changes the song speed.\nFor example, you can play in half\n speed by setting PlaySpeed = 0.500\n for your practice.\nNote: It also changes the songs' pitch." );
+				"曲の演奏速度を、速くしたり遅くした\n" +
+				"りすることができます。\n" +
+				"（※一部のサウンドカードでは正しく\n" +
+				"　再生できない可能性があります。）",
+				"It changes the song speed.\n" +
+				"For example, you can play in half\n" +
+				" speed by setting PlaySpeed = 0.500\n" +
+				" for your practice.\n" +
+				"Note: It also changes the songs' pitch." );
 			this.list項目リスト.Add( this.iCommonPlaySpeed );
+
+			this.iSystemTimeStretch = new CItemToggle( "TimeStretch", CDTXMania.ConfigIni.bTimeStretch,
+				"演奏速度の変更方式:\n" + 
+				"ONにすると、演奏速度の変更を、\n" +
+				"周波数変更ではなく\n" +
+				"タイムストレッチで行います。",
+				"How to change the playing speed:\n" +
+				"Turn ON to use time stretch\n" +
+				"to change the play speed." );
+			this.list項目リスト.Add( this.iSystemTimeStretch );
 
 
 			this.iSystemFullscreen = new CItemToggle( "Fullscreen", CDTXMania.ConfigIni.b全画面モード,
@@ -1519,6 +1536,9 @@ namespace DTXMania
 				CDTXMania.app.AddSoundTypeToWindowTitle();
 			}
 			#endregion
+			#region [ サウンドのタイムストレッチモード変更 ]
+			FDK.CSound管理.bIsTimeStretch = this.iSystemTimeStretch.bON;
+			#endregion
 		}
 		public override void OnManagedリソースの作成()
 		{
@@ -1927,12 +1947,14 @@ namespace DTXMania
 		private CItemList iSystemSoundType;					// #24820 2013.1.3 yyagi
 		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
 		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
-		private CItemList	iSystemASIODevice;				// $24820 2013.1.17 yyagi
+		private CItemList	iSystemASIODevice;				// #24820 2013.1.17 yyagi
 
 		private int iSystemSoundType_initial;
 		private int iSystemWASAPIBufferSizeMs_initial;
 		private int iSystemASIOBufferSizeMs_initial;
 		private int iSystemASIODevice_initial;
+
+		private CItemToggle iSystemTimeStretch;				// #23664 2013.2.24 yyagi
 
 
 		private List<CItemBase> list項目リスト;
@@ -2134,6 +2156,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
 			CDTXMania.ConfigIni.nASIODevice = this.iSystemASIODevice.n現在選択されている項目番号;			// #24820 2013.1.17 yyagi
 
+			CDTXMania.ConfigIni.bTimeStretch = this.iSystemTimeStretch.bON;									// #23664 2013.2.24 yyagi
 //Trace.TraceInformation( "saved" );
 //Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );
 //Trace.TraceInformation( "Skin現在System  : " + CSkin.strSystemSkinSubfolderFullName );
