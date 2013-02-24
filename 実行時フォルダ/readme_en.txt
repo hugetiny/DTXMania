@@ -76,7 +76,7 @@ carefully.
 
 * WASAPI / ASIO support
 
-Old DTXMania suuport only DirectSound. It's very "luggy" sound
+Old DTXMania support only DirectSound. It's very "luggy" sound
 system especially Windows Vista and above.
 
 Now, DTXMania support both WASAPI and ASIO on Release 096.
@@ -84,7 +84,7 @@ Now, DTXMania support both WASAPI and ASIO on Release 096.
 To use WASAPI or ASIO, you can reduce the lag from hitting pads
 to output the sound.
 
-However, intially, DTXMania uses DirectSound. So if you want to
+However, initially, DTXMania uses DirectSound. So if you want to
 reduce sound lags, you have to change CONFIGURATION-System-SoundType
 from "DSound" to "WASAPI" or "ASIO".
 
@@ -105,7 +105,7 @@ You may have to edit the song data to keep sync again.
 ****************************************************************
 
 Selected sound-type(WASAPI/ASIO/DirectSound) and sound
-buffer size (= lag time) on the DTXMania window title bar.
+buffer size (= lag time) are shown on the DTXMania window title bar.
 It's very helpful for you to try configuring DTXMania.
 So you should use window mode during your sound configuring
 on DTXMania.
@@ -126,7 +126,7 @@ But the value tend to become larger one and the lag is
 not reduced well.
 So, first of all, you should specify about 20(ms).
 And if the sound seems broken, you should specify
-larger value. If the sound and sysetm works well,
+larger value. If the sound and system works well,
 you can set smaller value than 20. Please investigate
 optimal value for your system.
 
@@ -144,7 +144,7 @@ use specified buffer size.
 Unfortunately, some sound device reject buffer size
 specified at ASIOBuffSuze (If so, DTXMania uses DirectSound).
 So I recommend you to specify the buffer size
-not by DTXMania ASUIBuffSize, by your sound device settings.
+not by DTXMania ASIOBuffSize, by your sound device settings.
 (If you don't have ASIO setting tools,
  you can use "ASIO caps" etc)
 
