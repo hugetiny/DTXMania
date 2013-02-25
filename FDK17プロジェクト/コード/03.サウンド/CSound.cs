@@ -947,19 +947,18 @@ namespace FDK
 		}
 		public void tサウンドを再生する( bool bループする )
 		{
-			if ( this.bBASSサウンドである )			// BASSサウンド時のループ処理は、t再生を開始する()側に実装。
+			if ( this.bBASSサウンドである )			// BASSサウンド時のループ処理は、t再生を開始する()側に実装。ここでは「bループする」は未使用。
 			{
 //Debug.WriteLine( "再生中?: " +  System.IO.Path.GetFileName(this.strファイル名) + " status=" + BassMix.BASS_Mixer_ChannelIsActive( this.hBassStream ) + " current=" + BassMix.BASS_Mixer_ChannelGetPosition( this.hBassStream ) + " nBytes=" + nBytes );
 				bool b = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 				if ( !b )
 				{
-Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) + ", " + hBassStream );
-//Debug.WriteLine( "ErrCode= " +Bass.BASS_ErrorGetCode() );
+Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) + ", ErrCode=" + Bass.BASS_ErrorGetCode() );
 
 					bool bb = tBASSサウンドをミキサーに追加する();
 					if ( !bb )
 					{
-Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strファイル名 ) + ": " + Bass.BASS_ErrorGetCode() );
+Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strファイル名 ) + ", ErrCode=" + Bass.BASS_ErrorGetCode() );
 					}
 					else
 					{
@@ -970,8 +969,7 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 					bool bbb = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 					if (!bbb)
 					{
-						Debug.WriteLine("更に再生に失敗                                 : " + Path.GetFileName(this.strファイル名));
-						Debug.WriteLine("ErrCode= " + Bass.BASS_ErrorGetCode());
+Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイル名) + ", ErrCode=" + Bass.BASS_ErrorGetCode() );
 					}
 					else
 					{
@@ -1323,11 +1321,15 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 			if ( CSound管理.bIsTimeStretch )
 			{
 				this.hTempoStream = BassFx.BASS_FX_TempoCreate( this.hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
-				this.hBassStream = this.hTempoStream;
 				if ( this.hTempoStream == 0 )
 				{
 					hGC.Free();
 					throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_FX_TempoCreate)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+				}
+				else
+				{
+					this.hBassStream = this.hTempoStream;
+					Bass.BASS_ChannelSetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_TEMPO_OPTION_USE_QUICKALGO, 1f );	// 高速化(音の品質は少し落ちる)
 				}
 			}
 
@@ -1390,7 +1392,6 @@ Debug.WriteLine( "Mixerへの登録に失敗: " + Path.GetFileName( this.strフ�
 		
 		public bool tBASSサウンドをミキサーに追加する()
 		{
-//			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
 			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
 			{
 				BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN;	// | BASSFlag.BASS_MIXER_PAUSE;
