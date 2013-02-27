@@ -1192,11 +1192,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		public string strファイル名 = null;
 		protected byte[] byArrWAVファイルイメージ = null;	// WAVファイルイメージ、もしくはchunkのDATA部のみ
 		protected GCHandle hGC;
-		public int hBassStream = -1;					// ASIO, WASAPI 用
+		protected int hBassStream = -1;					// ASIO, WASAPI 用
 		protected SoundBuffer Buffer = null;			// DirectSound 用
 		protected DirectSound DirectSound;
-		public int hMixer = -1;	// 設計壊してゴメン Mixerに後で登録するときに使う
-		public int hTempoStream;
+		protected int hMixer = -1;	// 設計壊してゴメン Mixerに後で登録するときに使う
 		//-----------------
 		#endregion
 
@@ -1315,20 +1314,19 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			//			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END |BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
 
 
-			// the tempo channel
-			// mixerの出力をテンポ変更のストリームに入力する。テンポ変更ストリームの出力を、Mixerに出力する。
+			// 個々のストリームの出力をテンポ変更のストリームに入力する。テンポ変更ストリームの出力を、Mixerに出力する。
 
 			if ( CSound管理.bIsTimeStretch )
 			{
-				this.hTempoStream = BassFx.BASS_FX_TempoCreate( this.hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
-				if ( this.hTempoStream == 0 )
+				int hTempoStream = BassFx.BASS_FX_TempoCreate( this.hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
+				if ( hTempoStream == 0 )
 				{
 					hGC.Free();
 					throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_FX_TempoCreate)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 				}
 				else
 				{
-					this.hBassStream = this.hTempoStream;
+					this.hBassStream = hTempoStream;
 					Bass.BASS_ChannelSetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_TEMPO_OPTION_USE_QUICKALGO, 1f );	// 高速化(音の品質は少し落ちる)
 				}
 			}
