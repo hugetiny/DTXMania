@@ -91,22 +91,38 @@ namespace DTXMania
 				"曲の演奏速度を、速くしたり遅くした\n" +
 				"りすることができます。\n" +
 				"（※一部のサウンドカードでは正しく\n" +
-				"　再生できない可能性があります。）",
+				"　再生できない可能性があります。）\n" +
+				"\n" +
+				"TimeStretchがONの場合は、演奏\n" +
+				"速度をx0.850以下にすると、チップの\n" +
+				"ズレが大きくなります。",
 				"It changes the song speed.\n" +
 				"For example, you can play in half\n" +
 				" speed by setting PlaySpeed = 0.500\n" +
 				" for your practice.\n" +
-				"Note: It also changes the songs' pitch." );
+				"\n" +
+				"Note: It also changes the songs' pitch.\n" +
+				"In case TimeStretch=ON, some sound\n" +
+				"lag occurs slower than x0.900.");
 			this.list項目リスト.Add( this.iCommonPlaySpeed );
 
 			this.iSystemTimeStretch = new CItemToggle( "TimeStretch", CDTXMania.ConfigIni.bTimeStretch,
 				"演奏速度の変更方式:\n" + 
 				"ONにすると、演奏速度の変更を、\n" +
 				"周波数変更ではなく\n" +
-				"タイムストレッチで行います。",
+				"タイムストレッチで行います。" +
+				"\n" +
+				"これをONにすると、サウンド処理に\n" +
+				"より多くのCPU性能を使用します。\n" +
+				"また、演奏速度をx0.850以下にすると、\n" +
+				"チップのズレが大きくなります。",
 				"How to change the playing speed:\n" +
 				"Turn ON to use time stretch\n" +
-				"to change the play speed." );
+				"to change the play speed." +
+				"\n" +
+				"If you set TimeStretch=ON, it usese\n" +
+				"more CPU power. And some sound\n" +
+				"lag occurs slower than x0.900.");
 			this.list項目リスト.Add( this.iSystemTimeStretch );
 
 

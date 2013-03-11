@@ -91,6 +91,10 @@ namespace DTXMania
 					"basswasapi.dll を読み込めません。basswasapi.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"basswasapi.dll is not loaded. basswasapi.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
 					) ) flag = true;
+				if ( !tDLLの存在チェック( "bass_fx.dll",
+					"bass_fx.dll を読み込めません。bass_fx.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"bass_fx.dll is not loaded. bass_fx.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
+					) ) flag = true;
 				if ( !tDLLの存在チェック( "DirectShowLib-2005.dll",
 					"DirectShowLib-2005.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"DirectShowLib-2005.dll is not found." + newLine + "Please download DTXMania again."
