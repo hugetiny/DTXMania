@@ -93,7 +93,7 @@ namespace DTXMania
 				"（※一部のサウンドカードでは正しく\n" +
 				"　再生できない可能性があります。）\n" +
 				"\n" +
-				"TimeStretchがONの場合は、演奏\n" +
+				"TimeStretchがONのときに、演奏\n" +
 				"速度をx0.850以下にすると、チップの\n" +
 				"ズレが大きくなります。",
 				"It changes the song speed.\n" +
@@ -311,8 +311,10 @@ namespace DTXMania
 			this.iSystemASIOBufferSizeMs = new CItemInteger("ASIOBuffSize", 0, 99999, CDTXMania.ConfigIni.nASIOBufferSizeMs,
 				"ASIO使用時のバッファサイズ:\n" +
 				"0～99999ms を指定可能です。\n" +
-				"0を指定すると、サウンドデバイスに\n" +
-				"指定されている設定値を使用します。\n" +
+				"推奨値は0で、サウンドデバイスでの\n" +
+				"設定値をそのまま使用します。\n" +
+				"(サウンドデバイスのASIO設定は、\n" +
+				" ASIO capsなどで行います)\n" +
 				"値を小さくするほど発音ラグが\n" +
 				"減少しますが、音割れや異常動作を\n" +
 				"引き起こす場合があります。\n" +
@@ -321,8 +323,9 @@ namespace DTXMania
 				"　終了時に有効になります。",
 				"Sound buffer size for ASIO:\n" +
 				"You can set from 0 to 99999ms.\n" +
-				"Set 0 to use a default value already\n" +
-				"specified to the sound device.\n" +
+				"You should set it to 0, to use\n" +
+				"a default value specified to\n" +
+				"the sound device.\n" +
 				"Smaller value makes smaller lag,\n" +
 				"but it may cause sound troubles.\n" +
 				"\n" +
