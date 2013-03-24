@@ -193,7 +193,8 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 									if ( povs != null )
 									{
 										STInputEvent e = new STInputEvent();
-										int p = (int) data.JoystickDeviceType - (int) JoystickDeviceType.POV0;	// p = 0,1,2,3
+										int p = ( (int) data.JoystickDeviceType - (int) JoystickDeviceType.POV0 ) / ( (int) JoystickDeviceType.POV1 - (int) JoystickDeviceType.POV0 );	// p = 0,1,2,3
+																					// #31030 2013.3.25 yyagi; p is not 0123 but 048.. Sop must be divided into 4 ( POV1 - POV0 == 4).
 										int nPovDegree = povs[ p ];
 										int nWay = ( nPovDegree + 2250 ) / 4500;
 										if ( nWay == 8 ) nWay = 0;
