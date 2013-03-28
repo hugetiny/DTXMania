@@ -215,7 +215,7 @@ namespace DTXMania
 							stmixer stm = queueMixerSound.Dequeue();
 							if ( stm.bIsAdd )
 							{
-								CDTXMania.Sound管理.AddMixer( stm.csound );
+								CDTXMania.Sound管理.AddMixer( stm.csound, db再生速度 );
 							}
 							else
 							{

@@ -1867,8 +1867,6 @@ namespace DTXMania
 					CSound sound = wc.rSound[ index ];
 					if( sound != null )
 					{
-						sound.n音量 = (int) ( ( (double) ( nVol * wc.n音量 ) ) / 100.0 );
-						sound.n位置 = wc.n位置;
 						if( bBad )
 						{
 							sound.db周波数倍率 = ( (float) ( 100 + ( ( ( CDTXMania.Random.Next( 3 ) + 1 ) * 7 ) * ( 1 - ( CDTXMania.Random.Next( 2 ) * 2 ) ) ) ) ) / 100f;
@@ -1878,6 +1876,9 @@ namespace DTXMania
 							sound.db周波数倍率 = 1.0;
 						}
 						sound.db再生速度 = ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0;
+						// 再生速度によって、WASAPI/ASIOで使う使用mixerが決まるため、付随情報の設定(音量/PAN)は、再生速度の設定後に行う
+						sound.n音量 = (int) ( ( (double) ( nVol * wc.n音量 ) ) / 100.0 );
+						sound.n位置 = wc.n位置;
 						sound.t再生を開始する();
 					}
 					wc.n再生開始時刻[ wc.n現在再生中のサウンド番号 ] = n再生開始システム時刻ms;

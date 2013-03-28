@@ -283,6 +283,7 @@ namespace DTXMania
 
 			queueMixerSound = new Queue<stmixer>( 64 );
 			bIsDirectSound = ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
+			db再生速度 = ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0;
 
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
 			foreach ( CDTX.CChip pChip in listChip )
@@ -301,7 +302,7 @@ namespace DTXMania
 							{
 								if ( wc.rSound[ i ] != null )
 								{
-									CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
+									CDTXMania.Sound管理.AddMixer( wc.rSound[ i ], db再生速度 );
 									//AddMixer( wc.rSound[ i ] );		// 最初はqueueを介さず直接ミキサー登録する
 								}
 							}
@@ -590,6 +591,7 @@ namespace DTXMania
 		protected volatile Queue<stmixer> queueMixerSound;		// #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
 		protected DateTime dtLastQueueOperation;				//
 		protected bool bIsDirectSound;							//
+		protected double db再生速度;
 
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;

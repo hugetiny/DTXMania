@@ -318,6 +318,11 @@ namespace FDK
 			}
 		}
 
+		public void AddMixer( CSound cs, double db再生速度 )
+		{
+			cs.db再生速度 = db再生速度;
+			cs.tBASSサウンドをミキサーに追加する();
+		}
 		public void AddMixer( CSound cs )
 		{
 			cs.tBASSサウンドをミキサーに追加する();
@@ -385,6 +390,7 @@ namespace FDK
 				if ( _db再生速度 != value )
 				{
 					_db再生速度 = value;
+					bIs1倍速再生 = ( _db再生速度 == 1.000f );
 					if ( bBASSサウンドである )
 					{
 						if ( CSound管理.bIsTimeStretch )
@@ -564,6 +570,8 @@ namespace FDK
 			this._db再生速度 = 1.0;
 			this.DirectSoundBufferFlags = CSoundDeviceDirectSound.DefaultFlags;
 //			this._cbRemoveMixerChannel = new WaitCallback( RemoveMixerChannelLater );
+			this._hBassStream = -1;
+			this._hTempoStream = 0;
 		}
 
 		public object Clone()
@@ -953,7 +961,7 @@ namespace FDK
 				bool b = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 				if ( !b )
 				{
-Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) + ", ErrCode=" + Bass.BASS_ErrorGetCode() );
+Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) + ", stream#=" + this.hBassStream + ", ErrCode=" + Bass.BASS_ErrorGetCode() );
 
 					bool bb = tBASSサウンドをミキサーに追加する();
 					if ( !bb )
@@ -1104,9 +1112,15 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			{
 				#region [ ASIO, WASAPI の解放 ]
 				//-----------------
+				if ( _hTempoStream != 0 )
+				{
+					BassMix.BASS_Mixer_ChannelRemove( this._hTempoStream );
+					Bass.BASS_StreamFree( this._hTempoStream );
+				}
 				BassMix.BASS_Mixer_ChannelRemove( this.hBassStream );
 				Bass.BASS_StreamFree( this.hBassStream );
 				this.hBassStream = -1;
+				this._hTempoStream = 0;
 				//-----------------
 				#endregion
 			}
@@ -1192,7 +1206,26 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		public string strファイル名 = null;
 		protected byte[] byArrWAVファイルイメージ = null;	// WAVファイルイメージ、もしくはchunkのDATA部のみ
 		protected GCHandle hGC;
-		protected int hBassStream = -1;					// ASIO, WASAPI 用
+		protected int _hTempoStream = 0;
+		protected int _hBassStream = -1;					// ASIO, WASAPI 用
+		protected int hBassStream
+		{
+			get
+			{
+				if ( _hTempoStream != 0 && !this.bIs1倍速再生 )	// 再生速度がx1.000のときは、TempoStreamを用いないようにして高速化する
+				{
+					return _hTempoStream;
+				}
+				else
+				{
+					return _hBassStream;
+				}
+			}
+			set
+			{
+				_hBassStream = value;
+			}
+		}
 		protected SoundBuffer Buffer = null;			// DirectSound 用
 		protected DirectSound DirectSound;
 		protected int hMixer = -1;	// 設計壊してゴメン Mixerに後で登録するときに使う
@@ -1224,6 +1257,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		private int nオリジナルの周波数 = 0;
 		private double _db周波数倍率 = 1.0;
 		private double _db再生速度 = 1.0;
+		private bool bIs1倍速再生 = true;
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{
@@ -1318,15 +1352,14 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 			if ( CSound管理.bIsTimeStretch )
 			{
-				int hTempoStream = BassFx.BASS_FX_TempoCreate( this.hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
-				if ( hTempoStream == 0 )
+				this._hTempoStream = BassFx.BASS_FX_TempoCreate( this.hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
+				if ( this._hTempoStream == 0 )
 				{
 					hGC.Free();
 					throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_FX_TempoCreate)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 				}
 				else
 				{
-					this.hBassStream = hTempoStream;
 					Bass.BASS_ChannelSetAttribute( this.hBassStream, BASSAttribute.BASS_ATTRIB_TEMPO_OPTION_USE_QUICKALGO, 1f );	// 高速化(音の品質は少し落ちる)
 				}
 			}
