@@ -726,8 +726,7 @@ namespace DTXMania
 				"行います。\n" +
 				"-99 ～ 99ms まで指定可能です。\n" +
 				"入力ラグを軽減するためには、負の\n" +
-				"値を指定してください。\n" +
-				"※ 設定はアプリ再起動後に有効になります。",
+				"値を指定してください。\n",
 				"To adjust the drums input timing.\n" +
 				"You can set from -99 to 99ms.\n" +
 				"To decrease input lag, set minus value." );
