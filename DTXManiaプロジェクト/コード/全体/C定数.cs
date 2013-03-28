@@ -226,6 +226,12 @@ namespace DTXMania
 		ステージ失敗,
 		ステージクリア
 	}
+	internal enum E曲読込画面の戻り値
+	{
+		継続 = 0,
+		読込完了,
+		読込中止
+	}
 	/// <summary>
 	/// 入力ラグ表示タイプ
 	/// </summary>

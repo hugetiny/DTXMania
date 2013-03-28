@@ -969,6 +969,29 @@ namespace DTXMania
 							CDTXMania.Pad.st検知したデバイス.Clear();	// 入力デバイスフラグクリア(2010.9.11)
 
 							r現在のステージ.On非活性化();
+
+							#region [ ESC押下時は、曲の読み込みを中止して選曲画面に戻る ]
+							if ( this.n進行描画の戻り値 == (int) E曲読込画面の戻り値.読込中止 )
+							{
+								//DTX.t全チップの再生停止();
+								DTX.On非活性化();
+								Trace.TraceInformation( "曲の読み込みを中止しました。" );
+								this.tガベージコレクションを実行する();
+								Trace.TraceInformation( "----------------------" );
+								Trace.TraceInformation( "■ 選曲" );
+								stage選曲.On活性化();
+								r直前のステージ = r現在のステージ;
+								r現在のステージ = stage選曲;
+								foreach ( STPlugin pg in this.listプラグイン )
+								{
+									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
+									pg.plugin.Onステージ変更();
+									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
+								}
+								break;
+							}
+							#endregion
+
 							if( !ConfigIni.bギタレボモード )
 							{
 								Trace.TraceInformation( "----------------------" );

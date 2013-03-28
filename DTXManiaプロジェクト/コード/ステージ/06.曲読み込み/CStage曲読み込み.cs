@@ -199,6 +199,18 @@ namespace DTXMania
 			//-----------------------------
 			#endregion
 
+			#region [ ESC押下時は選曲画面に戻る ]
+			if ( tキー入力() )
+			{
+				if ( this.sd読み込み音 != null )
+				{
+					this.sd読み込み音.tサウンドを停止する();
+					this.sd読み込み音.t解放する();
+				}
+				return (int) E曲読込画面の戻り値.読込中止;
+			}
+			#endregion
+
 			#region [ 背景、音符＋タイトル表示 ]
 			//-----------------------------
 			if( this.tx背景 != null )
@@ -226,7 +238,7 @@ namespace DTXMania
 																		// 必ず一度「CStaeg.Eフェーズ.共通_フェードイン」フェーズを経由させること。
 																		// さもないと、曲読み込みが完了するまで、曲読み込み画面が描画されない。
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_DTXファイルを読み込む;
-					return 0;
+					return (int) E曲読込画面の戻り値.継続;
 
 				case CStage.Eフェーズ.NOWLOADING_DTXファイルを読み込む:
 					{
@@ -260,7 +272,7 @@ namespace DTXMania
 
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_WAVファイルを読み込む;
 						timeBeginLoadWAV = DateTime.Now;
-						return 0;
+						return (int) E曲読込画面の戻り値.継続;
 					}
 
 				case CStage.Eフェーズ.NOWLOADING_WAVファイルを読み込む:
@@ -305,7 +317,7 @@ namespace DTXMania
 
 							base.eフェーズID = CStage.Eフェーズ.NOWLOADING_BMPファイルを読み込む;
 						}
-						return 0;
+						return (int) E曲読込画面の戻り値.継続;
 					}
 
 				case CStage.Eフェーズ.NOWLOADING_BMPファイルを読み込む:
@@ -340,7 +352,7 @@ namespace DTXMania
 						}
 						CDTXMania.Timer.t更新();
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ;
-						return 0;
+						return (int) E曲読込画面の戻り値.継続;
 					}
 
 				case CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ:
@@ -355,7 +367,7 @@ namespace DTXMania
 							this.actFO.tフェードアウト開始();
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 						}
-						return 0;
+						return (int) E曲読込画面の戻り値.継続;
 					}
 
 				case CStage.Eフェーズ.共通_フェードアウト:
@@ -370,10 +382,25 @@ namespace DTXMania
 					{
 						this.sd読み込み音.t解放する();
 					}
-					return 1;
+					return (int) E曲読込画面の戻り値.読込完了;
 			}
-			return 0;
+			return (int) E曲読込画面の戻り値.継続;
 		}
+
+		/// <summary>
+		/// ESC押下時、trueを返す
+		/// </summary>
+		/// <returns></returns>
+		protected bool tキー入力()
+		{
+			IInputDevice keyboard = CDTXMania.Input管理.Keyboard;
+			if 	( keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape ) )		// escape (exit)
+			{
+				return true;
+			}
+			return false;
+		}
+
 
 		private void ShowProgressByFilename(string strファイル名 )
 		{
