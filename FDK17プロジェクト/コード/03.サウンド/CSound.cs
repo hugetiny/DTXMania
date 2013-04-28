@@ -47,6 +47,7 @@ namespace FDK
 		#region [ WASAPI/ASIO/DirectSound設定値 ]
 		/// <summary>
 		/// <para>WASAPI 排他モード出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
+		/// <para>→ WASAPI初期化時に自動設定するようにしたため、ここで設定した値は使用しないようになった。</para>
 		/// </summary>
 		public static int SoundDelayExclusiveWASAPI = 0;		// SSTでは、50ms
 		public int GetSoundExclusiveWASAPI()
@@ -63,7 +64,7 @@ namespace FDK
 		public static int SoundDelaySharedWASAPI = 100;
 		/// <summary>
 		/// <para>排他WASAPIバッファの更新間隔。出力間隔ではないので注意。</para>
-		/// <para>SoundDelay よりも小さい値であること。（小さすぎる場合はBASSによって自動修正される。）</para>
+		/// <para>→ 自動設定されるのでSoundDelay よりも小さい値であること。（小さすぎる場合はBASSによって自動修正される。）</para>
 		/// </summary>
 		public static int SoundUpdatePeriodExclusiveWASAPI = 6;
 		/// <summary>

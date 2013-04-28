@@ -50,6 +50,12 @@ namespace FDK
 
 		// メソッド
 
+		/// <summary>
+		/// WASAPIの初期化
+		/// </summary>
+		/// <param name="mode"></param>
+		/// <param name="n希望バッファサイズms">(未使用; 本メソッド内で自動設定する)</param>
+		/// <param name="n更新間隔ms">(未使用; 本メソッド内で自動設定する)</param>
 		public CSoundDeviceWASAPI( Eデバイスモード mode, long n希望バッファサイズms, long n更新間隔ms )
 		{
 			// 初期化。
@@ -140,6 +146,7 @@ namespace FDK
 				// Trace.TraceInformation( "Selected Default WASAPI Device: {0}", deviceInfo.name );
 				// Trace.TraceInformation( "MinPeriod={0}, DefaultPeriod={1}", deviceInfo.minperiod, deviceInfo.defperiod );
 				n更新間隔ms = (long) ( deviceInfo.minperiod * 1000 );
+				n希望バッファサイズms = n更新間隔ms + 1;	// 2013.4.25 #31237 yyagi; バッファサイズ設定の完全自動化。更新間隔＝バッファサイズにするとBASS_ERROR_UNKNOWNになるので+1する。
 			}
 			else
 			{

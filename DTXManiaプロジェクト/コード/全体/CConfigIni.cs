@@ -661,7 +661,7 @@ namespace DTXMania
 		}
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
-		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
+//		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
 		public int nASIOBufferSizeMs;				// #24820 2012.12.28 yyagi ASIOのバッファサイズ
 		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
 		public bool bDynamicBassMixerManagement;	// #24820
@@ -1148,7 +1148,7 @@ namespace DTXMania
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
 			this.bTight = false;                        // #29500 2012.9.11 kairera0467 TIGHTモード
 			this.nSoundDeviceType = (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM
-			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
+//			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
 			this.bDynamicBassMixerManagement = true;	//
@@ -1295,12 +1295,12 @@ namespace DTXMania
 			sw.WriteLine( "SoundDeviceType={0}", (int) this.nSoundDeviceType );
 			sw.WriteLine();
 
-			sw.WriteLine( "; WASAPI使用時のサウンドバッファサイズ" );
-			sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(単位:ms)の手動指定" );
-			sw.WriteLine( "; WASAPI Sound Buffer Size." );
-			sw.WriteLine( "; (0=Use system default buffer size, 1-9999=specify the buffer size(ms) by yourself)" );
-			sw.WriteLine( "WASAPIBufferSizeMs={0}", (int) this.nWASAPIBufferSizeMs );
-			sw.WriteLine();
+			//sw.WriteLine( "; WASAPI使用時のサウンドバッファサイズ" );
+			//sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(単位:ms)の手動指定" );
+			//sw.WriteLine( "; WASAPI Sound Buffer Size." );
+			//sw.WriteLine( "; (0=Use system default buffer size, 1-9999=specify the buffer size(ms) by yourself)" );
+			//sw.WriteLine( "WASAPIBufferSizeMs={0}", (int) this.nWASAPIBufferSizeMs );
+			//sw.WriteLine();
 
 			sw.WriteLine( "; ASIO使用時のサウンドデバイス" );
 			sw.WriteLine( "; 存在しないデバイスを指定すると、DTXManiaが起動しないことがあります。" );
@@ -2066,10 +2066,10 @@ namespace DTXMania
 											{
 												this.nSoundDeviceType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nSoundDeviceType );
 											}
-											else if ( str3.Equals( "WASAPIBufferSizeMs" ) )
-											{
-												this.nWASAPIBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nWASAPIBufferSizeMs );
-											}
+											//else if ( str3.Equals( "WASAPIBufferSizeMs" ) )
+											//{
+											//    this.nWASAPIBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nWASAPIBufferSizeMs );
+											//}
 											else if ( str3.Equals( "ASIODevice" ) )
 											{
 												string[] asiodev = CEnumerateAllAsioDevices.GetAllASIODevices();

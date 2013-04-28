@@ -412,7 +412,17 @@ namespace DTXMania
 				st.plugin.OnManagedリソースの作成();
 				Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 			}
+#if GPUFlushAfterPresent
+			FrameEnd += dtxmania_FrameEnd;
+#endif
 		}
+#if GPUFlushAfterPresent
+		void dtxmania_FrameEnd( object sender, EventArgs e )	// GraphicsDeviceManager.game_FrameEnd()後に実行される
+		{														// → Present()直後にGPUをFlushする
+																// → 画面のカクツキが頻発したため、ここでのFlushは行わない
+			actFlushGPU.On進行描画();		// Flush GPU
+		}
+#endif
 		protected override void LoadContent()
 		{
 			if ( ConfigIni.bウィンドウモード )
@@ -508,6 +518,14 @@ namespace DTXMania
 
 			if ( this.bApplicationActive )	// DTXMania本体起動中の本体/モニタの省電力モード移行を抑止
 				CPowerManagement.tDisableMonitorSuspend();
+
+			// #xxxxx 2013.4.8 yyagi; sleepの挿入位置を、EndScnene～Present間から、BeginScene前に移動。描画遅延を小さくするため。
+			#region [ スリープ ]
+			if ( ConfigIni.nフレーム毎スリープms >= 0 )			// #xxxxx 2011.11.27 yyagi
+			{
+				Thread.Sleep( ConfigIni.nフレーム毎スリープms );
+			}
+			#endregion
 
 			this.Device.BeginScene();
 			this.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 1f, 0 );
@@ -1336,9 +1354,11 @@ for (int i = 0; i < 3; i++) {
 						break;
 				}
 			}
-			this.Device.EndScene();
-			//actFlushGPU.On進行描画();		// Flush GPU
-
+			this.Device.EndScene();			// Present()は game.csのOnFrameEnd()に登録された、GraphicsDeviceManager.game_FrameEnd() 内で実行されるので不要
+											// (つまり、Present()は、Draw()完了後に実行される)
+#if !GPUFlushAfterPresent
+			actFlushGPU.On進行描画();		// Flush GPU	// EndScene()～Present()間 (つまりVSync前) でFlush実行
+#endif
 			#region [ 全画面・ウインドウ切り替え ]
 			if ( this.b次のタイミングで全画面・ウィンドウ切り替えを行う )
 			{
@@ -1361,12 +1381,6 @@ for (int i = 0; i < 3; i++) {
 				{
 					this.Window.WindowState = FormWindowState.Maximized;								// #23510 2010.11.3 yyagi: to resume window mode after changing VSyncWait
 				}
-			}
-			#endregion
-			#region [ スリープ ]
-			if ( ConfigIni.nフレーム毎スリープms >= 0 )			// #xxxxx 2011.11.27 yyagi
-			{
-				Thread.Sleep( ConfigIni.nフレーム毎スリープms );
 			}
 			#endregion
 		}
@@ -1798,7 +1812,8 @@ for (int i = 0; i < 3; i++) {
 				}
 				Sound管理 = new CSound管理( base.Window.Handle,
 											soundDeviceType,
-											CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
+											// CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
+											0,
 											CDTXMania.ConfigIni.nASIOBufferSizeMs,
 											CDTXMania.ConfigIni.nASIODevice
 				);
