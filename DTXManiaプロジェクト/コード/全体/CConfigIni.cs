@@ -2038,16 +2038,6 @@ namespace DTXMania
 													this.nウインドウheight = SampleFramework.GameWindowSize.Height;
 												}
 											}
-											else if ( str3.Equals( "WindowX" ) )		// #30675 2013.02.04 ikanick add
-											{
-												this.n初期ウィンドウ開始位置X = C変換.n値を文字列から取得して範囲内に丸めて返す(
-													str4, 0, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 1, this.n初期ウィンドウ開始位置X );
-											}
-											else if ( str3.Equals( "WindowY" ) )		// #30675 2013.02.04 ikanick add
-											{
-												this.n初期ウィンドウ開始位置Y = C変換.n値を文字列から取得して範囲内に丸めて返す(
-													str4, 0, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 1, this.n初期ウィンドウ開始位置Y );
-											}
 											else if ( str3.Equals( "DoubleClickFullScreen" ) )	// #26752 2011.11.27 yyagi
 											{
 												this.bIsAllowedDoubleClickFullscreen = C変換.bONorOFF( str4[ 0 ] );

@@ -92,6 +92,14 @@ namespace DTXMania
 				}
 				base.On非活性化();
 			}
+			catch ( UnauthorizedAccessException e )
+			{
+				Trace.TraceError( e.Message + "ファイルが読み取り専用になっていないか、管理者権限がないと書き込めなくなっていないか等を確認して下さい" );
+			}
+			catch ( Exception e )
+			{
+				Trace.TraceError( e.Message );
+			}
 			finally
 			{
 				Trace.TraceInformation( "コンフィグステージの非活性化を完了しました。" );
