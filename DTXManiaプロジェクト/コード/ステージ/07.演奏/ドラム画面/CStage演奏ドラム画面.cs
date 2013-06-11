@@ -149,6 +149,12 @@ namespace DTXMania
 					this.ctチップ模様アニメ.Guitar = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
 					this.ctチップ模様アニメ.Bass = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
 					this.ctWailingチップ模様アニメ = new CCounter( 0, 4, 50, CDTXMania.Timer );
+
+					this.actChipFireD.Start(Eレーン.HH);	// #31554 2013.6.12 yyagi
+					// 初チップヒット時のもたつき回避。最初にactChipFireD.Start()するときにJITが掛かって？
+					// ものすごく待たされる(2回目以降と比べると2,3桁tick違う)。そこで最初の画面フェードインの間に
+					// 一発Start()を掛けてJITの結果を生成させておく。
+
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					this.actFI.tフェードイン開始();
 					base.b初めての進行描画 = false;
