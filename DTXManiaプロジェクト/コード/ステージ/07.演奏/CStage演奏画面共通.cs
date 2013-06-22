@@ -272,6 +272,9 @@ namespace DTXMania
 			this.nInputAdjustTimeMs.Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums;		// #23580 2011.1.3 yyagi
 			this.nInputAdjustTimeMs.Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
 			this.nInputAdjustTimeMs.Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass;			//
+			this.nJudgeLinePosY_delta.Drums  = CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums;	// #31602 2013.6.23 yyagi
+			this.nJudgeLinePosY_delta.Guitar = CDTXMania.ConfigIni.nJudgeLinePosOffset.Guitar;	//
+			this.nJudgeLinePosY_delta.Bass   = CDTXMania.ConfigIni.nJudgeLinePosOffset.Bass;	//
 			this.bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay;									// #24239 2011.1.23 yyagi
 			//this.bIsAutoPlay.Guitar = CDTXMania.ConfigIni.bギターが全部オートプレイである;
 			//this.bIsAutoPlay.Bass = CDTXMania.ConfigIni.bベースが全部オートプレイである;
@@ -284,6 +287,8 @@ namespace DTXMania
 			queueMixerSound = new Queue<stmixer>( 64 );
 			bIsDirectSound = ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
 			db再生速度 = ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0;
+			bValidScore = true;
+			bDTXVmode = false;	// とりあえずfalse固定
 
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
 			foreach ( CDTX.CChip pChip in listChip )
@@ -592,6 +597,9 @@ namespace DTXMania
 		protected DateTime dtLastQueueOperation;				//
 		protected bool bIsDirectSound;							//
 		protected double db再生速度;
+		protected bool bValidScore;
+		protected bool bDTXVmode;
+		protected STDGBVALUE<int> nJudgeLinePosY_delta;			// #31602 2013.6.23 yyagi 表示遅延対策として、判定ラインの表示位置をずらす機能を追加する
 
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
@@ -2496,12 +2504,13 @@ namespace DTXMania
 		{
 			if ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
 			{
-				int y = CDTXMania.ConfigIni.bReverse.Drums ? 0x35 : 0x1a3;
-				for ( int i = 0x20; i < 0x14f; i += 8 )
+				int y = CDTXMania.ConfigIni.bReverse.Drums ? 53 - nJudgeLinePosY_delta.Drums : 419 + nJudgeLinePosY_delta.Drums;
+																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
+				if ( this.txヒットバー != null )
 				{
-					if ( this.txヒットバー != null )
+					for ( int i = 32; i < 335; i += 8 )
 					{
-						this.txヒットバー.t2D描画( CDTXMania.app.Device, i, y, new Rectangle( 0, 0, ( ( i + 8 ) >= 0x14f ) ? ( 7 - ( ( i + 8 ) - 0x14f ) ) : 8, 8 ) );
+						this.txヒットバー.t2D描画( CDTXMania.app.Device, i, y, new Rectangle( 0, 0, ( ( i + 8 ) >= 335 ) ? ( 7 - ( ( i + 8 ) - 335 ) ) : 8, 8 ) );
 					}
 				}
 			}

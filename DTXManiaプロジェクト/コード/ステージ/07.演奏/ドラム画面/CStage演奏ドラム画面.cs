@@ -150,13 +150,101 @@ namespace DTXMania
 					this.ctチップ模様アニメ.Bass = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
 					this.ctWailingチップ模様アニメ = new CCounter( 0, 4, 50, CDTXMania.Timer );
 
-					this.actChipFireD.Start(Eレーン.HH);	// #31554 2013.6.12 yyagi
+					this.actChipFireD.Start( Eレーン.HH );	// #31554 2013.6.12 yyagi
 					// 初チップヒット時のもたつき回避。最初にactChipFireD.Start()するときにJITが掛かって？
 					// ものすごく待たされる(2回目以降と比べると2,3桁tick違う)。そこで最初の画面フェードインの間に
 					// 一発Start()を掛けてJITの結果を生成させておく。
 
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					this.actFI.tフェードイン開始();
+
+//					if ( this.bDTXVmode )
+					{
+						#region [テストコード: 再生開始小節の変更]
+#if false
+						int nStartBar = 30;
+						#region [ 処理を開始するチップの特定 ]
+						bool bSuccessSeek = false;
+						for ( int i = this.n現在のトップChip; i < CDTXMania.DTX.listChip.Count; i++ )
+						{
+							CDTX.CChip pChip = CDTXMania.DTX.listChip[ i ];
+							if ( pChip.n発声位置 < 384 * nStartBar )
+							{
+								continue;
+							}
+							else
+							{
+								bSuccessSeek = true;
+								this.n現在のトップChip = i;
+								break;
+							}
+						}
+						if ( !bSuccessSeek )
+						{
+							this.n現在のトップChip = CDTXMania.DTX.listChip.Count - 1;
+						}
+						#endregion
+						#region [ 演奏開始の発声時刻msを取得し、タイマに設定 ]
+						int nStartTime = CDTXMania.DTX.listChip[ this.n現在のトップChip ].n発声時刻ms;
+						CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
+						CSound管理.rc演奏用タイマ.t一時停止();
+						#endregion
+
+						List<CSound> pausedCSound = new List<CSound>();
+
+						#region [ BGMの途中再生開始 (CDTXのt入力・行解析・チップ配置()で小節番号が+1されているのを削っておくこと) ]
+						foreach ( CDTX.CChip pChip in this.listChip )
+						{
+							if ( pChip.nチャンネル番号 == 0x01 )
+							{
+								CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+								int nDuration = ( wc.rSound[ 0 ] == null ) ? 0 : (int) ( wc.rSound[ 0 ].n総演奏時間ms / CDTXMania.DTX.db再生速度 );
+//								if (wc.bIsBGMSound || wc.bIsGuitarSound || wc.bIsBassSound || wc.bIsBGMSound || wc.bIsSESound )
+								{
+									if ( ( pChip.n発声時刻ms + nDuration > 0 ) && ( pChip.n発声時刻ms <= nStartTime ) && ( nStartTime <= pChip.n発声時刻ms + nDuration ) )
+									{
+										if ( CDTXMania.ConfigIni.bBGM音を発声する )
+										{
+											CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+											//CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n現在時刻ms + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+											for ( int i = 0; i < wc.rSound.Length; i++ )
+											{
+												if ( wc.rSound[ i ] != null )
+												{
+													wc.rSound[ i ].t再生を一時停止する();
+													wc.rSound[ i ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
+													pausedCSound.Add( wc.rSound[ i ] );
+												}
+											}
+										}
+										break;
+									}
+								}
+							}
+						}
+						#endregion
+// 以下未実装 ここから
+						#region [ 演奏開始時点で既に演奏中になっているチップの再生とシーク (一つ手前のBGM処理のところに混ぜてもいいかも  ]
+						#endregion
+						#region [ 演奏開始時点で既に表示されているBGAの再生とシーク (BGAの動きの途中状況を反映すること) ]
+						#endregion
+						#region [ 演奏開始時点で既に表示されているAVIの再生とシーク (AVIの動きの途中状況を反映すること) ]
+						#endregion
+
+// 未実装 ここまで
+						#region [ PAUSEしていたサウンドを一斉に再生再開する ]
+						foreach ( CSound cs in pausedCSound )
+						{
+							cs.tサウンドを再生する();
+						}
+						pausedCSound.Clear();
+						pausedCSound = null;
+						#endregion
+						CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
+						CSound管理.rc演奏用タイマ.t再開();
+#endif
+					#endregion
+					}
 					base.b初めての進行描画 = false;
 				}
 				if( ( CDTXMania.ConfigIni.bSTAGEFAILED有効 && this.actGauge.IsFailed(E楽器パート.DRUMS) ) && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
@@ -453,25 +541,27 @@ namespace DTXMania
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 0x176 : 0x5f ) - 3;
-					for ( int i = 0; i < 3; i++ )
+					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 374 + nJudgeLinePosY_delta.Guitar : 95 - nJudgeLinePosY_delta.Guitar ) - 3;
+																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
+					if ( this.txヒットバーGB != null )
 					{
-						if ( this.txヒットバーGB != null )
+						for ( int i = 0; i < 3; i++ )
 						{
-							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, 0x1fd + ( 0x1a * i ), y );
-							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, ( 0x1fd + ( 0x1a * i ) ) + 0x10, y, new Rectangle( 0, 0, 10, 0x10 ) );
+							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, 509 + ( 26 * i ), y );
+							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, ( 509 + ( 26 * i ) ) + 16, y, new Rectangle( 0, 0, 10, 16 ) );
 						}
 					}
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Bass ? 0x176 : 0x5f ) - 3;
-					for ( int j = 0; j < 3; j++ )
+					int y = ( CDTXMania.ConfigIni.bReverse.Bass ? 374 + nJudgeLinePosY_delta.Bass : 95 - nJudgeLinePosY_delta.Bass ) - 3;
+																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
+					if ( this.txヒットバーGB != null )
 					{
-						if ( this.txヒットバーGB != null )
+						for ( int j = 0; j < 3; j++ )
 						{
-							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, 400 + ( 0x1a * j ), y );
-							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, ( 400 + ( 0x1a * j ) ) + 0x10, y, new Rectangle( 0, 0, 10, 0x10 ) );
+							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, 400 + ( 26 * j ), y );
+							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, ( 400 + ( 26 * j ) ) + 16, y, new Rectangle( 0, 0, 10, 16 ) );
 						}
 					}
 				}

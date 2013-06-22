@@ -239,23 +239,25 @@ namespace DTXMania
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 0x171 : 40 ) - 3;
-					for ( int i = 0; i < 4; i++ )
+					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 369 + nJudgeLinePosY_delta.Guitar : 40 - nJudgeLinePosY_delta.Guitar ) - 3;
+															// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
+					if ( this.txヒットバー != null )
 					{
-						if ( this.txヒットバー != null )
+						for ( int i = 0; i < 4; i++ )
 						{
-							this.txヒットバー.t2D描画( CDTXMania.app.Device, 0x17 + ( 0x1c * i ), y, new Rectangle( 0, i * 8, 0x1c, 8 ) );
+							this.txヒットバー.t2D描画( CDTXMania.app.Device, 23 + ( 28 * i ), y, new Rectangle( 0, i * 8, 28, 8 ) );
 						}
 					}
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Bass ? 0x171 : 40 ) - 3;
-					for ( int j = 0; j < 4; j++ )
+					int y = ( CDTXMania.ConfigIni.bReverse.Bass ? 369 + nJudgeLinePosY_delta.Bass : 40 - nJudgeLinePosY_delta.Bass ) - 3;
+															// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
+					if ( this.txヒットバー != null )
 					{
-						if ( this.txヒットバー != null )
+						for ( int j = 0; j < 4; j++ )
 						{
-							this.txヒットバー.t2D描画( CDTXMania.app.Device, 0x1dd + ( 0x1c * j ), y, new Rectangle( 0, j * 8, 0x1c, 8 ) );
+							this.txヒットバー.t2D描画( CDTXMania.app.Device, 477 + ( 28 * j ), y, new Rectangle( 0, j * 8, 28, 8 ) );
 						}
 					}
 				}

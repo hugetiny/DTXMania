@@ -490,6 +490,7 @@ namespace DTXMania
 //		public int nハイハット切り捨て下限Velocity;
 //		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
 		public STDGBVALUE<int> nInputAdjustTimeMs;	// #23580 2011.1.3 yyagi タイミングアジャスト機能
+		public STDGBVALUE<int> nJudgeLinePosOffset;	// #31602 2013.6.23 yyagi 判定ライン表示位置のオフセット
 		public int	nShowLagType;					// #25370 2011.6.5 yyagi ズレ時間表示機能
 		public bool bIsAutoResultCapture;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能のON/OFF制御
 		public int nPoliphonicSounds;				// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
@@ -1076,6 +1077,7 @@ namespace DTXMania
 			this.判定文字表示位置 = new STDGBVALUE<E判定文字表示位置>();
 			this.n譜面スクロール速度 = new STDGBVALUE<int>();
 			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
+			this.nJudgeLinePosOffset = new STDGBVALUE<int>();	// #23580 2013.6.23 yyagi
 			for ( int i = 0; i < 3; i++ )
 			{
 				this.b演奏音を強調する[ i ] = true;
@@ -1088,6 +1090,7 @@ namespace DTXMania
 				this.判定文字表示位置[ i ] = E判定文字表示位置.レーン上;
 				this.n譜面スクロール速度[ i ] = 1;
 				this.nInputAdjustTimeMs[ i ] = 0;
+				this.nJudgeLinePosOffset[ i ] = 0;
 			}
 			this.n演奏速度 = 20;
 			#region [ AutoPlay ]
@@ -1503,12 +1506,19 @@ namespace DTXMania
 			sw.WriteLine( "; (Only available when you're using using WASAPI or ASIO)" );	//
 			sw.WriteLine( "TimeStretch={0}", this.bTimeStretch ? 1 : 0 );					//
 			sw.WriteLine();
-			#region [ InputAdjust ]
-			sw.WriteLine( "; 判定タイミング調整(ドラム, ギター, ベース)(-99～0)[ms]" );		// #23580 2011.1.3 yyagi
+			#region [ Adjust ]
+			sw.WriteLine( "; 判定タイミング調整(ドラム, ギター, ベース)(-99～99)[ms]" );		// #23580 2011.1.3 yyagi
 			sw.WriteLine("; Revision value to adjust judgement timing for the drums, guitar and bass.");	//
 			sw.WriteLine("InputAdjustTimeDrums={0}", this.nInputAdjustTimeMs.Drums);		//
 			sw.WriteLine("InputAdjustTimeGuitar={0}", this.nInputAdjustTimeMs.Guitar);		//
 			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs.Bass);			//
+			sw.WriteLine();
+
+			sw.WriteLine( "; 判定ラインの表示位置調整(ドラム, ギター, ベース)(-99～99)[px]" );	// #31602 2013.6.23 yyagi 判定ラインの表示位置オフセット
+			sw.WriteLine( "; Offset value to adjust displaying judgement line for the drums, guitar and bass." );	//
+			sw.WriteLine( "JudgeLinePosOffsetDrums={0}",  this.nJudgeLinePosOffset.Drums );		//
+			sw.WriteLine( "JudgeLinePosOffsetGuitar={0}", this.nJudgeLinePosOffset.Guitar );	//
+			sw.WriteLine( "JudgeLinePosOffsetBass={0}",   this.nJudgeLinePosOffset.Bass );		//
 			sw.WriteLine();
 			#endregion
 			#region [ VelocityMin ]
@@ -2264,7 +2274,7 @@ namespace DTXMania
 											{
 												this.bTimeStretch = C変換.bONorOFF( str4[ 0 ] );
 											}
-											#region [ InputAdjustTime ]
+											#region [ AdjustTime ]
 											else if( str3.Equals( "InputAdjustTimeDrums" ) )		// #23580 2011.1.3 yyagi
 											{
 												this.nInputAdjustTimeMs.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nInputAdjustTimeMs.Drums );
@@ -2276,6 +2286,18 @@ namespace DTXMania
 											else if( str3.Equals( "InputAdjustTimeBass" ) )		// #23580 2011.1.3 yyagi
 											{
 												this.nInputAdjustTimeMs.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nInputAdjustTimeMs.Bass );
+											}
+											else if ( str3.Equals( "JudgeLinePosOffsetDrums" ) )		// #31602 2013.6.23 yyagi
+											{
+												this.nJudgeLinePosOffset.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Drums );
+											}
+											else if ( str3.Equals( "JudgeLinePosOffsetGuitar" ) )		// #31602 2013.6.23 yyagi
+											{
+												this.nJudgeLinePosOffset.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Guitar );
+											}
+											else if ( str3.Equals( "JudgeLinePosOffsetBass" ) )			// #31602 2013.6.23 yyagi
+											{
+												this.nJudgeLinePosOffset.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Bass );
 											}
 											#endregion
 											else if( str3.Equals( "BufferedInput" ) )
