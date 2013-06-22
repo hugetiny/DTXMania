@@ -1814,7 +1814,8 @@ for (int i = 0; i < 3; i++) {
 											soundDeviceType,
 											// CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
 											0,
-											CDTXMania.ConfigIni.nASIOBufferSizeMs,
+											// CDTXMania.ConfigIni.nASIOBufferSizeMs,
+											0,
 											CDTXMania.ConfigIni.nASIODevice
 				);
 				AddSoundTypeToWindowTitle();

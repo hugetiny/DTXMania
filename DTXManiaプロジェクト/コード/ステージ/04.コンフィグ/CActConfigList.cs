@@ -308,30 +308,30 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iSystemASIODevice );
 
 			// #24820 2013.1.3 yyagi
-			this.iSystemASIOBufferSizeMs = new CItemInteger("ASIOBuffSize", 0, 99999, CDTXMania.ConfigIni.nASIOBufferSizeMs,
-				"ASIO使用時のバッファサイズ:\n" +
-				"0～99999ms を指定可能です。\n" +
-				"推奨値は0で、サウンドデバイスでの\n" +
-				"設定値をそのまま使用します。\n" +
-				"(サウンドデバイスのASIO設定は、\n" +
-				" ASIO capsなどで行います)\n" +
-				"値を小さくするほど発音ラグが\n" +
-				"減少しますが、音割れや異常動作を\n" +
-				"引き起こす場合があります。\n" +
-				"\n" +
-				"※ 設定はCONFIGURATION画面の\n" +
-				"　終了時に有効になります。",
-				"Sound buffer size for ASIO:\n" +
-				"You can set from 0 to 99999ms.\n" +
-				"You should set it to 0, to use\n" +
-				"a default value specified to\n" +
-				"the sound device.\n" +
-				"Smaller value makes smaller lag,\n" +
-				"but it may cause sound troubles.\n" +
-				"\n" +
-				"Note: Exit CONFIGURATION to make\n" +
-				"     the setting take effect." );
-			this.list項目リスト.Add( this.iSystemASIOBufferSizeMs );
+			//this.iSystemASIOBufferSizeMs = new CItemInteger("ASIOBuffSize", 0, 99999, CDTXMania.ConfigIni.nASIOBufferSizeMs,
+			//    "ASIO使用時のバッファサイズ:\n" +
+			//    "0～99999ms を指定可能です。\n" +
+			//    "推奨値は0で、サウンドデバイスでの\n" +
+			//    "設定値をそのまま使用します。\n" +
+			//    "(サウンドデバイスのASIO設定は、\n" +
+			//    " ASIO capsなどで行います)\n" +
+			//    "値を小さくするほど発音ラグが\n" +
+			//    "減少しますが、音割れや異常動作を\n" +
+			//    "引き起こす場合があります。\n" +
+			//    "\n" +
+			//    "※ 設定はCONFIGURATION画面の\n" +
+			//    "　終了時に有効になります。",
+			//    "Sound buffer size for ASIO:\n" +
+			//    "You can set from 0 to 99999ms.\n" +
+			//    "You should set it to 0, to use\n" +
+			//    "a default value specified to\n" +
+			//    "the sound device.\n" +
+			//    "Smaller value makes smaller lag,\n" +
+			//    "but it may cause sound troubles.\n" +
+			//    "\n" +
+			//    "Note: Exit CONFIGURATION to make\n" +
+			//    "     the setting take effect." );
+			//this.list項目リスト.Add( this.iSystemASIOBufferSizeMs );
 
 			this.iSystemSkinSubfolder = new CItemList( "Skin (General)", CItemBase.Eパネル種別.通常, nSkinIndex,
 				"スキン切替：\n" +
@@ -1502,7 +1502,7 @@ namespace DTXMania
 
 			this.iSystemSoundType_initial			= this.iSystemSoundType.n現在選択されている項目番号;	// CONFIGに入ったときの値を保持しておく
 			// this.iSystemWASAPIBufferSizeMs_initial	= this.iSystemWASAPIBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
-			this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
+			// this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
 			this.iSystemASIODevice_initial			= this.iSystemASIODevice.n現在選択されている項目番号;	//
 			base.On活性化();
 		}
@@ -1527,7 +1527,7 @@ namespace DTXMania
 			#region [ サウンドデバイス変更 ]
 			if ( this.iSystemSoundType_initial != this.iSystemSoundType.n現在選択されている項目番号 ||
 				// this.iSystemWASAPIBufferSizeMs_initial != this.iSystemWASAPIBufferSizeMs.n現在の値 ||
-				this.iSystemASIOBufferSizeMs_initial != this.iSystemASIOBufferSizeMs.n現在の値 ||
+				// this.iSystemASIOBufferSizeMs_initial != this.iSystemASIOBufferSizeMs.n現在の値 ||
 				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 )
 			{
 				ESoundDeviceType soundDeviceType;
@@ -1550,7 +1550,8 @@ namespace DTXMania
 				FDK.CSound管理.t初期化( soundDeviceType,
 										0,
 										// this.iSystemWASAPIBufferSizeMs.n現在の値,
-										this.iSystemASIOBufferSizeMs.n現在の値,
+										0,
+										// this.iSystemASIOBufferSizeMs.n現在の値,
 										this.iSystemASIODevice.n現在選択されている項目番号 );
 				CDTXMania.app.AddSoundTypeToWindowTitle();
 			}
@@ -1965,12 +1966,12 @@ namespace DTXMania
 		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
 		private CItemList iSystemSoundType;					// #24820 2013.1.3 yyagi
 //		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
-		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
+//		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
 		private CItemList	iSystemASIODevice;				// #24820 2013.1.17 yyagi
 
 		private int iSystemSoundType_initial;
 //		private int iSystemWASAPIBufferSizeMs_initial;
-		private int iSystemASIOBufferSizeMs_initial;
+//		private int iSystemASIOBufferSizeMs_initial;
 		private int iSystemASIODevice_initial;
 
 		private CItemToggle iSystemTimeStretch;				// #23664 2013.2.24 yyagi
@@ -2172,7 +2173,7 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.nSoundDeviceType = this.iSystemSoundType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
 //			CDTXMania.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
-			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
+//			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
 			CDTXMania.ConfigIni.nASIODevice = this.iSystemASIODevice.n現在選択されている項目番号;			// #24820 2013.1.17 yyagi
 
 			CDTXMania.ConfigIni.bTimeStretch = this.iSystemTimeStretch.bON;									// #23664 2013.2.24 yyagi
