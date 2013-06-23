@@ -9,7 +9,7 @@ namespace DTXMania
 	{
 		// メソッド
 
-		public override void Start( int nLane )
+		public override void Start( int nLane, STDGBVALUE<int> _nJudgeLinePosY_delta )
 		{
 			if( ( nLane < 0 ) && ( nLane > 5 ) )
 			{
@@ -23,11 +23,13 @@ namespace DTXMania
 			}
 			int x = this.pt中央[ index ].X;
 			int y = this.pt中央[ index ].Y;
-			if( CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] )
+			if ( CDTXMania.ConfigIni.bReverse[ (int)e楽器パート ] )
 			{
-				y = ( nLane < 3 ) ? 0x176 : 0x176;
+				y = ( nLane < 3 ) ? 374 : 374;
+
 			}
-			base.Start( nLane, x, y );
+			base.Start( nLane, x, y, _nJudgeLinePosY_delta );
+
 		}
 
 

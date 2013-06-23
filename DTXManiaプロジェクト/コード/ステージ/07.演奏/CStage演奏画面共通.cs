@@ -2310,15 +2310,15 @@ namespace DTXMania
 					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
 					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 0 + lo );
+						this.actChipFireGB.Start( 0 + lo, nJudgeLinePosY_delta );
 					}
 					if ( ( bChipHasG && ( autoG || pushingG ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 1 + lo );
+						this.actChipFireGB.Start( 1 + lo, nJudgeLinePosY_delta );
 					}
 					if ( ( bChipHasB && ( autoB || pushingB ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 2 + lo );
+						this.actChipFireGB.Start( 2 + lo, nJudgeLinePosY_delta );
 					}
 					#endregion
 					if ( autoPick )
@@ -2739,17 +2739,17 @@ namespace DTXMania
 							if ( ( bChipHasR && ( autoR || pushingR != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingR != 0 ) || autoR || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( R );
+								this.actChipFireGB.Start( R, nJudgeLinePosY_delta );
 							}
 							if ( ( bChipHasG && ( autoG || pushingG != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingG != 0 ) || autoG || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( G );
+								this.actChipFireGB.Start( G, nJudgeLinePosY_delta );
 							}
 							if ( ( bChipHasB && ( autoB || pushingB != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingB != 0 ) || autoB || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( B );
+								this.actChipFireGB.Start( B, nJudgeLinePosY_delta );
 							}
 							this.tチップのヒット処理( nTime, pChip );
 							this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.nシステム時刻, inst, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する[indexInst], e判定 == E判定.Poor );

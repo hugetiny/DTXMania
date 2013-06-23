@@ -17,7 +17,7 @@ namespace DTXMania
 		
 		// メソッド
 
-		public override void Start( int nLane )
+		public override void Start( int nLane, STDGBVALUE<int> _nJudgeLinePosY_delta )
 		{
 			if( ( nLane < 0 ) && ( nLane > 5 ) )
 			{
@@ -31,11 +31,11 @@ namespace DTXMania
 			}
 			int x = this.pt中央[ index ].X;
 			int y = this.pt中央[ index ].Y;
-			if( CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] )
+			if ( CDTXMania.ConfigIni.bReverse[ (int)e楽器パート ] )
 			{
-				y = ( nLane < 3 ) ? 0x171 : 0x171;
+				y = ( nLane < 3 ) ? 369 : 369;
 			}
-			base.Start( nLane, x, y );
+			base.Start( nLane, x, y, _nJudgeLinePosY_delta );
 		}
 
 
@@ -43,7 +43,14 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private readonly Point[] pt中央 = new Point[] { new Point( 0x2a, 40 ), new Point( 0x4e, 40 ), new Point( 0x72, 40 ), new Point( 0x1f0, 40 ), new Point( 0x214, 40 ), new Point( 0x238, 40 ) };
+		private readonly Point[] pt中央 = new Point[] {
+			new Point(  42, 40 ),	// GtR
+			new Point(  78, 40 ),	// GtG
+			new Point( 114, 40 ),	// GtB
+			new Point( 496, 40 ),	// BsR
+			new Point( 532, 40 ),	// BsG
+			new Point( 568, 40 )	// BsB
+		};
 		//-----------------
 		#endregion
 	}

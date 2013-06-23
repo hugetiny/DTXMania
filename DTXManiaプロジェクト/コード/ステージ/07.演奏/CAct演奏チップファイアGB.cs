@@ -19,17 +19,20 @@ namespace DTXMania
 
 		// メソッド
 
-		public virtual void Start( int nLane, int n中央X, int n中央Y )
+		public virtual void Start( int nLane, int n中央X, int n中央Y, STDGBVALUE<int> _nJudgeLinePosY_delta )
 		{
 			if( ( nLane >= 0 ) || ( nLane <= 5 ) )
 			{
 				this.pt中央位置[ nLane ].X = n中央X;
 				this.pt中央位置[ nLane ].Y = n中央Y;
 				this.ct進行[ nLane ].t開始( 28, 56, 8, CDTXMania.Timer );		// #24736 2011.2.17 yyagi: (0, 0x38, 4,..) -> (24, 0x38, 8) に変更 ギターチップの光り始めを早くするため
+				this.nJudgeLinePosY_delta = _nJudgeLinePosY_delta;				// #31602 2013.6.24 yyagi
+				this.bReverse = CDTXMania.ConfigIni.bReverse;					//
 			}
 		}
 
-		public abstract void Start( int nLane );
+		public abstract void Start( int nLane, STDGBVALUE<int> _nJudgeLinePosY_delta );
+//		public abstract void Start( int nLane );
 
 		// CActivity 実装
 
@@ -103,7 +106,15 @@ namespace DTXMania
 						int y = this.pt中央位置[ j ].Y - ( (int) ( ( this.tx火花[ j % 3 ].sz画像サイズ.Height * scale ) / 2f ) );
 						this.tx火花[ j % 3 ].n透明度 = ( this.ct進行[ j ].n現在の値 < 0x1c ) ? 0xff : ( 0xff - ( (int) ( 255.0 * Math.Cos( ( Math.PI * ( 90.0 - ( 90.0 * ( ( (double) ( this.ct進行[ j ].n現在の値 - 0x1c ) ) / 28.0 ) ) ) ) / 180.0 ) ) ) );
 						this.tx火花[ j % 3 ].vc拡大縮小倍率 = new Vector3( scale, scale, 1f );
-						this.tx火花[ j % 3 ].t2D描画( CDTXMania.app.Device, x, y );
+
+						E楽器パート e楽器パート = ( j < 3 ) ? E楽器パート.GUITAR : E楽器パート.BASS;	// BEGIN #31602 2013.6.24 yyagi
+						int deltaY=  nJudgeLinePosY_delta[ (int)e楽器パート ];
+						if ( this.bReverse[ (int)e楽器パート ] )
+						{
+							deltaY = -deltaY;
+						}																				// END   #31602
+						
+						this.tx火花[ j % 3 ].t2D描画( CDTXMania.app.Device, x, y - deltaY );
 					}
 				}
 			}
@@ -118,6 +129,8 @@ namespace DTXMania
 		private CCounter[] ct進行 = new CCounter[ 6 ];
 		private Point[] pt中央位置 = new Point[ 6 ];
 		private CTexture[] tx火花 = new CTexture[ 3 ];
+		private STDGBVALUE<int> nJudgeLinePosY_delta = new STDGBVALUE<int>();
+		private STDGBVALUE<bool> bReverse = new STDGBVALUE<bool>();
 		//-----------------
 		#endregion
 	}

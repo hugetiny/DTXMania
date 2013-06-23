@@ -420,7 +420,8 @@ namespace DTXMania
 				bool flag = this.bフィルイン中;
 				bool flag2 = this.bフィルイン中 && this.bフィルイン区間の最後のChipである( pChip );
 				// bool flag3 = flag2;
-				this.actChipFireD.Start( (Eレーン) nLane, flag, flag2, flag2 );
+				// #31602 2013.6.24 yyagi 判定ラインの表示位置をずらしたら、チップのヒットエフェクトの表示もずらすために、nJudgeLine..を追加
+				this.actChipFireD.Start( (Eレーン)nLane, flag, flag2, flag2, nJudgeLinePosY_delta.Drums );
 			}
 			if( CDTXMania.ConfigIni.bドラム打音を発声する )
 			{
@@ -2043,7 +2044,8 @@ namespace DTXMania
 					bool flag = this.bフィルイン中;
 					bool flag2 = this.bフィルイン中 && this.bフィルイン区間の最後のChipである( pChip );
 					//bool flag3 = flag2;
-					this.actChipFireD.Start( (Eレーン) indexSevenLanes, flag, flag2, flag2 );
+					// #31602 2013.6.24 yyagi 判定ラインの表示位置をずらしたら、チップのヒットエフェクトの表示もずらすために、nJudgeLine..を追加
+					this.actChipFireD.Start( (Eレーン)indexSevenLanes, flag, flag2, flag2, nJudgeLinePosY_delta.Drums );
 					this.actPad.Hit( this.nチャンネル0Atoパッド08[ pChip.nチャンネル番号 - 0x11 ] );
 					this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
 					this.tチップのヒット処理( pChip.n発声時刻ms, pChip );
