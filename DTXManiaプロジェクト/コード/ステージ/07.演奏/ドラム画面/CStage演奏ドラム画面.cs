@@ -295,29 +295,7 @@ namespace DTXMania
 					return (int) this.eフェードアウト完了時の戻り値;
 				}
 
-				// もしサウンドの登録/削除が必要なら、実行する
-				if ( queueMixerSound.Count > 0 )
-				{
-//Debug.WriteLine( "☆queueLength=" + queueMixerSound.Count );
-					DateTime dtnow = DateTime.Now;
-					TimeSpan ts = dtnow - dtLastQueueOperation;
-					if ( ts.Milliseconds > 7 )
-					{
-						for ( int i = 0; i < 2 && queueMixerSound.Count > 0; i++ )
-						{
-							dtLastQueueOperation = dtnow;
-							stmixer stm = queueMixerSound.Dequeue();
-							if ( stm.bIsAdd )
-							{
-								CDTXMania.Sound管理.AddMixer( stm.csound, db再生速度 );
-							}
-							else
-							{
-								CDTXMania.Sound管理.RemoveMixer( stm.csound );
-							}
-						}
-					}
-				}
+				ManageMixerQueue();
 
 				// キー入力
 

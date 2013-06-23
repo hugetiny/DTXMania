@@ -645,6 +645,32 @@ namespace DTXMania
 			queueMixerSound.Enqueue( stm );
 //		Debug.WriteLine( "★Queue: remove " + Path.GetFileName( stm.csound.strファイル名 ));
 		}
+		public void ManageMixerQueue()
+		{
+			// もしサウンドの登録/削除が必要なら、実行する
+			if ( queueMixerSound.Count > 0 )
+			{
+				//Debug.WriteLine( "☆queueLength=" + queueMixerSound.Count );
+				DateTime dtnow = DateTime.Now;
+				TimeSpan ts = dtnow - dtLastQueueOperation;
+				if ( ts.Milliseconds > 7 )
+				{
+					for ( int i = 0; i < 2 && queueMixerSound.Count > 0; i++ )
+					{
+						dtLastQueueOperation = dtnow;
+						stmixer stm = queueMixerSound.Dequeue();
+						if ( stm.bIsAdd )
+						{
+							CDTXMania.Sound管理.AddMixer( stm.csound, db再生速度 );
+						}
+						else
+						{
+							CDTXMania.Sound管理.RemoveMixer( stm.csound );
+						}
+					}
+				}
+			}
+		}
 
 		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
 		{
