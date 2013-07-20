@@ -119,38 +119,21 @@ Please check the notice below to configure WASAPI/ASIO.
 WASAPI can use on Windows Vista and above.
 You can't use it on XP.
 
-You must specify WASAPIBufSize on yourself.
-The intitial value of the WASAPIBufSize is 0 and
-it means the system specify the size automatically.
-But the value tend to become larger one and the lag is
-not reduced well.
-So, first of all, you should specify about 20(ms).
-And if the sound seems broken, you should specify
-larger value. If the sound and system works well,
-you can set smaller value than 20. Please investigate
-optimal value for your system.
-
-
 * Notice (ASIO)
 ASIO can use on Windows XP.
 However, the sound device must support ASIO.
 
-You must specify ASIOBuffSize on yourself.
-The intitial value of the ASIOBuffSize is 0 and
-it means the DTXMania uses the default ASIO buufer size
-what each sound device has.
-And if you set over 0 for ASIOBuffSize, DTXMania try to
-use specified buffer size.
-Unfortunately, some sound device reject buffer size
-specified at ASIOBuffSuze (If so, DTXMania uses DirectSound).
-So I recommend you to specify the buffer size
-not by DTXMania ASIOBuffSize, by your sound device settings.
+You must specify the buffer size (latancy).
+You can specify it by the sound device.
 (If you don't have ASIO setting tools,
- you can use "ASIO caps" etc)
+ you can use "ASIO caps" (freesoft) etc)
 
-You have to specify not only ASIOBuffSize, but also
-ASIODevice. It specifies what sound device is used
-by DTXMania.
+If DTXMania fails to use ASIO device
+(by nonproper buffer size, etc),
+DTXMania uses DirectSound.
+
+You also have to specify ASIODevice. It specifies
+what sound device is used by DTXMania.
 (If you choose WASAPI or DirectSound, DTXMania uses
  OS-default sound device)
 If you specify non-existing sound device, DTXMania

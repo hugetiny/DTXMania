@@ -154,7 +154,7 @@ namespace FDK
 			}
 			#endregion
 
-Retry:
+//Retry:
 			var flags = ( mode == Eデバイスモード.排他 ) ?BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
 			if ( BassWasapi.BASS_WASAPI_Init( nデバイス, n周波数, nチャンネル数, flags, ( n希望バッファサイズms / 1000.0f ), ( n更新間隔ms / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
 			{
@@ -207,16 +207,18 @@ Retry:
 					#endregion
 				}
 			}
-			else if ( mode == Eデバイスモード.排他 )
-			{
-				Trace.TraceInformation("Failed to initialize setting BASS (WASAPI) mode [{0}]", Bass.BASS_ErrorGetCode().ToString() );
-				#region [ 排他モードに失敗したのなら共有モードでリトライ。]
-				//-----------------
-				mode = Eデバイスモード.共有;
-				goto Retry;
-				//-----------------
-				#endregion
-			}
+			#region [ #31737 WASAPI排他モードのみ利用可能とし、WASAPI共有モードは使用できないようにするために、WASAPI共有モードでの初期化フローを削除する。 ]
+			//else if ( mode == Eデバイスモード.排他 )
+			//{
+			//    Trace.TraceInformation("Failed to initialize setting BASS (WASAPI) mode [{0}]", Bass.BASS_ErrorGetCode().ToString() );
+			//    #region [ 排他モードに失敗したのなら共有モードでリトライ。]
+			//    //-----------------
+			//    mode = Eデバイスモード.共有;
+			//    goto Retry;
+			//    //-----------------
+			//    #endregion
+			//}
+			#endregion
 			else
 			{
 				#region [ それでも失敗したら例外発生。]
