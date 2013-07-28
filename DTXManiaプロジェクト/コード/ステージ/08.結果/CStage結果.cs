@@ -118,82 +118,87 @@ namespace DTXMania
 
 				#region [ .score.ini の作成と出力 ]
 				//---------------------
-				string str = CDTXMania.DTX.strファイル名の絶対パス + ".score.ini";
+                string str = CDTXMania.DTX.strファイル名の絶対パス + ".score.ini";
 				CScoreIni ini = new CScoreIni( str );
+                
+                bool[] b今までにフルコンボしたことがある = new bool[] { false, false, false };
+                if( CDTXMania.ConfigIni.bScoreIniを出力する )
+                {
+				    for( int i = 0; i < 3; i++ )
+				    {
+				    	// フルコンボチェックならびに新記録ランクチェックは、ini.Record[] が、スコアチェックや演奏型スキルチェックの IF 内で書き直されてしまうよりも前に行う。(2010.9.10)
 
-				bool[] b今までにフルコンボしたことがある = new bool[] { false, false, false };
+					    b今までにフルコンボしたことがある[ i ] = ini.stセクション[ i * 2 ].bフルコンボである | ini.stセクション[ i * 2 + 1 ].bフルコンボである;
 
-				for( int i = 0; i < 3; i++ )
-				{
-					// フルコンボチェックならびに新記録ランクチェックは、ini.Record[] が、スコアチェックや演奏型スキルチェックの IF 内で書き直されてしまうよりも前に行う。(2010.9.10)
-					
-					b今までにフルコンボしたことがある[ i ] = ini.stセクション[ i * 2 ].bフルコンボである | ini.stセクション[ i * 2 + 1 ].bフルコンボである;
-
-					#region [deleted by #24459]
+					    #region [deleted by #24459]
 			//		if( this.nランク値[ i ] <= CScoreIni.tランク値を計算して返す( ini.stセクション[ ( i * 2 ) + 1 ] ) )
 			//		{
 			//			this.b新記録ランク[ i ] = true;
 					//		}
 					#endregion
-					// #24459 上記の条件だと[HiSkill.***]でのランクしかチェックしていないので、BestRankと比較するよう変更。
-					if ( this.nランク値[ i ] >= 0 && ini.stファイル.BestRank[ i ] > this.nランク値[ i ] )		// #24459 2011.3.1 yyagi update BestRank
-					{
-						this.b新記録ランク[ i ] = true;
-						ini.stファイル.BestRank[ i ] = this.nランク値[ i ];
-					}
+					    // #24459 上記の条件だと[HiSkill.***]でのランクしかチェックしていないので、BestRankと比較するよう変更。
+					    if ( this.nランク値[ i ] >= 0 && ini.stファイル.BestRank[ i ] > this.nランク値[ i ] )		// #24459 2011.3.1 yyagi update BestRank
+					    {
+					    	this.b新記録ランク[ i ] = true;
+					    	ini.stファイル.BestRank[ i ] = this.nランク値[ i ];
+					    }
 
-					// 新記録スコアチェック
-					if( this.st演奏記録[ i ].nスコア > ini.stセクション[ i * 2 ].nスコア )
-					{
-						this.b新記録スコア[ i ] = true;
-						ini.stセクション[ i * 2 ] = this.st演奏記録[ i ];
-					}
+					    // 新記録スコアチェック
+					    if( this.st演奏記録[ i ].nスコア > ini.stセクション[ i * 2 ].nスコア )
+					    {
+						    this.b新記録スコア[ i ] = true;
+						    ini.stセクション[ i * 2 ] = this.st演奏記録[ i ];
+					    }
 
-                    // 新記録スキルチェック
-                    if (this.st演奏記録[i].db演奏型スキル値 > ini.stセクション[(i * 2) + 1].db演奏型スキル値)
-                    {
-                        this.b新記録スキル[ i ] = true;
-                        ini.stセクション[(i * 2) + 1] = this.st演奏記録[ i ];
-                    }
-
-					// ラストプレイ #23595 2011.1.9 ikanick
-                    // オートじゃなければプレイ結果を書き込む
-                    if (this.bオート[ i ] == false) {
-                        ini.stセクション[i + 6] = this.st演奏記録[ i ];
-                    }
-
-                    // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
-                    //        11.02.05 bオート to t更新条件を取得する use      ikanick
-					bool[] b更新が必要か否か = new bool[ 3 ];
-					CScoreIni.t更新条件を取得する( out b更新が必要か否か[ 0 ], out b更新が必要か否か[ 1 ], out b更新が必要か否か[ 2 ] );
-
-                    if (b更新が必要か否か[ i ])
-                    {
-                        switch ( i )
+                        // 新記録スキルチェック
+                        if (this.st演奏記録[i].db演奏型スキル値 > ini.stセクション[(i * 2) + 1].db演奏型スキル値)
                         {
-                            case 0:
-                                ini.stファイル.ClearCountDrums++;
-                                break;
-                            case 1:
-                                ini.stファイル.ClearCountGuitar++;
-                                break;
-                            case 2:
-                                ini.stファイル.ClearCountBass++;
-                                break;
-                            default:
-                                throw new Exception("クリア回数増加のk(0-2)が範囲外です。");
+                            this.b新記録スキル[ i ] = true;
+                            ini.stセクション[(i * 2) + 1] = this.st演奏記録[ i ];
                         }
-                    }
+
+					    // ラストプレイ #23595 2011.1.9 ikanick
+                        // オートじゃなければプレイ結果を書き込む
+                        if (this.bオート[ i ] == false) {
+                            ini.stセクション[i + 6] = this.st演奏記録[ i ];
+                        }
+
+                        // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
+                        //        11.02.05 bオート to t更新条件を取得する use      ikanick
+					    bool[] b更新が必要か否か = new bool[ 3 ];
+					    CScoreIni.t更新条件を取得する( out b更新が必要か否か[ 0 ], out b更新が必要か否か[ 1 ], out b更新が必要か否か[ 2 ] );
+
+                        if (b更新が必要か否か[ i ])
+                        {
+                            switch ( i )
+                            {
+                                case 0:
+                                    ini.stファイル.ClearCountDrums++;
+                                    break;
+                                case 1:
+                                    ini.stファイル.ClearCountGuitar++;
+                                    break;
+                                case 2:
+                                    ini.stファイル.ClearCountBass++;
+                                    break;
+                                default:
+                                    throw new Exception("クリア回数増加のk(0-2)が範囲外です。");
+                            }
+                        }
                     //---------------------------------------------------------------------/
-				}
-				ini.t書き出し( str );
+				    }
+				    ini.t書き出し( str );
+                }
 				//---------------------
 				#endregion
 
 				#region [ リザルト画面への演奏回数の更新 #24281 2011.1.30 yyagi]
-				this.n演奏回数.Drums = ini.stファイル.PlayCountDrums;
-				this.n演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
-				this.n演奏回数.Bass = ini.stファイル.PlayCountBass;
+                if( CDTXMania.ConfigIni.bScoreIniを出力する )
+                {
+                    this.n演奏回数.Drums = ini.stファイル.PlayCountDrums;
+                    this.n演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
+                    this.n演奏回数.Bass = ini.stファイル.PlayCountBass;
+                }
 				#endregion
 				#region [ 選曲画面の譜面情報の更新 ]
 				//---------------------
