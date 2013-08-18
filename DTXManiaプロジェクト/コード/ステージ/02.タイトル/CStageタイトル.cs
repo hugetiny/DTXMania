@@ -72,7 +72,7 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle background.jpg" ), false );
-				this.txメニュー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle menu (2).png" ), false );
+				this.txメニュー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle menu.png" ), false );
 
 				prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-bold.ttf" ), 36 );
 				string[] menuStr = { "START", "CONFIGURATION", "EXIT" };

@@ -13,6 +13,7 @@ namespace DTXMania
 	/// <summary>
 	/// プライベートフォントでの描画を扱うクラス。
 	/// </summary>
+	/// <exception cref="ArgumentException">スタイル指定不正時に例外発生</exception>
 	public class CPrivateFont : IDisposable
 	{
 		// コンストラクタ
@@ -40,6 +41,7 @@ namespace DTXMania
 			catch ( System.IO.FileNotFoundException )
 			{
 				Trace.TraceError( "プライベートフォントの追加に失敗しました。({0})", fontpath );
+				return;
 			}
 
 			//foreach ( FontFamily ff in pfc.Families )
@@ -58,6 +60,26 @@ namespace DTXMania
 			//}
 			_fontfamily = pfc.Families[ 0 ];
 
+			// 指定されたフォントスタイルが適用できない場合は、フォント内で定義されているスタイルから候補を選んで使用する
+			// 何もスタイルが使えないようなフォントなら、例外を出す。
+			if ( !_fontfamily.IsStyleAvailable( style ) )
+			{
+				FontStyle[] FS = { FontStyle.Regular, FontStyle.Bold, FontStyle.Italic, FontStyle.Underline, FontStyle.Strikeout };
+				style = FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline | FontStyle.Strikeout;	// null非許容型なので、代わりに全盛をNGワードに設定
+				foreach ( FontStyle ff in FS )
+				{
+					if ( _fontfamily.IsStyleAvailable( ff ) )
+					{
+						style = ff;
+						Trace.TraceWarning( "フォント{0}へのスタイル指定を、{1}に変更しました。", Path.GetFileName( fontpath ), style.ToString() );
+						break;
+					}
+				}
+				if ( style == ( FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline | FontStyle.Strikeout ) )
+				{
+					throw new ArgumentException( "フォント{0}は適切なスタイルを選択できず、使用できません。", Path.GetFileName( fontpath ) );
+				}
+			}
 			_font = new Font( _fontfamily, pt, style );			//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
 		}
 
@@ -116,13 +138,9 @@ namespace DTXMania
 				gp.AddString( drawstr, _fontfamily, (int) _font.Style, sizeInPixels, r, sf );
 
 				// 縁取りを描画する
-				Pen p = null;
-				if ( bEdge )
-				{
-					p = new Pen( edgecolor, nEdgePt );
-					p.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
-					g.DrawPath( p, gp );
-				}
+				Pen p = new Pen( edgecolor, nEdgePt );
+				p.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+				g.DrawPath( p, gp );
 				// 塗りつぶす
 				SolidBrush br = new SolidBrush( fontcolor );
 				g.FillPath( br, gp );
