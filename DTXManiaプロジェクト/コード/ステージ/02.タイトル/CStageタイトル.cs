@@ -257,7 +257,7 @@ namespace DTXMania
 				#endregion
 
 				#region [ メニュー項目描画 ]
-				if ( this.txメニュー != null )
+				// if ( this.txメニュー != null )
 				{
 					int offsetY = 0;
 					for ( int i = 0; i < txMenuItem.Length; i++ )
