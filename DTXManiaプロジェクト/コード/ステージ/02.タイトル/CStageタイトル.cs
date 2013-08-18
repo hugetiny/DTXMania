@@ -74,7 +74,8 @@ namespace DTXMania
 				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle background.jpg" ), false );
 				this.txメニュー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle menu.png" ), false );
 
-				prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-bold.ttf" ), 36 );
+				prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), 36 );
+				//prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );
 				string[] menuStr = { "START", "CONFIGURATION", "EXIT" };
 				this.txMenuItem = new CTexture[ menuStr.Length ];
 				this.stMenuItem = new STMenuItem[ menuStr.Length ];
@@ -84,6 +85,7 @@ namespace DTXMania
 				for ( int i = 0; i < menuStr.Length; i++ )
 				{
 					txMenuItem[ i ] = prvFont.DrawPrivateFont( menuStr[ i ], Color.White, Color.Black );
+//					txMenuItem[ i ] = prvFont.DrawPrivateFont( menuStr[ i ], Color.White, Color.Black, Color.Yellow, Color.OrangeRed );	// グラデーションもなかなかいける。
 //					txMenuItem[ i ] = prvFont.DrawPrivateFont( menuStr[ i ], Color.White );
 					if ( maxX < txMenuItem[ i ].szテクスチャサイズ.Width )
 					{
@@ -115,7 +117,7 @@ namespace DTXMania
 				{
 					if ( txMenuItem[ i ] != null )
 					{
-						txMenuItem[ i ].Dispose();
+						CDTXMania.tテクスチャの解放( ref txMenuItem[ i ] );
 					}
 				}
 				CDTXMania.tテクスチャの解放( ref this.tx背景 );
