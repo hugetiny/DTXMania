@@ -243,8 +243,12 @@ namespace DTXMania
 		private Bitmap DrawPrivateFont( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor )
 		{
 			if ( this._fontfamily == null )
-				return null;
-
+			{
+				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て・・の処理で全部例外が発生することになる。
+				// それは非常に面倒なので、最小限のbitmapを返してしまう。
+				// まずはこの仕様で進めますが、問題有れば(上位側からエラー検出が必要であれば)例外を出したりエラー状態であるプロパティを定義するなり検討します。
+				return new Bitmap(1, 1);
+			}
 			bool bEdge =      ( ( drawmode & DrawMode.Edge      ) == DrawMode.Edge );
 			bool bGradation = ( ( drawmode & DrawMode.Gradation ) == DrawMode.Gradation );
 
