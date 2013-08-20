@@ -249,7 +249,7 @@ namespace DTXMania
 						this.tx描画用.texture.UnlockRectangle( 0 );
 						this.bフレームを作成した = false;
 					}
-					this.tx描画用.t2D描画( CDTXMania.app.Device, x, y );
+					this.tx描画用.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y );
 				}
 			}
 			return 0;
@@ -272,10 +272,19 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 #if TEST_Direct3D9Ex
-				this.tx描画用 = new CTexture( CDTXMania.app.Device, 320, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
+				this.tx描画用 = new CTexture( CDTXMania.app.Device,
+					320,
+					355,
+					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
-				this.tx描画用 = new CTexture( CDTXMania.app.Device, 278, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
+				this.tx描画用 = new CTexture( CDTXMania.app.Device,
+					//(int) ( 278 * Scale.X ),
+					//(int) ( 355 * Scale.Y ),
+					(int) ( 278 ),
+					(int) ( 355 ),
+					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
 #endif
+				this.tx描画用.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
 				base.OnManagedリソースの作成();
 			}
 		}

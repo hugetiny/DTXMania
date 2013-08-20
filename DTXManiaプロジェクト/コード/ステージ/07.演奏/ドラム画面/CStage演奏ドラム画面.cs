@@ -484,31 +484,35 @@ namespace DTXMania
 			{
 				if( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					for( int i = 0; i < 355; i += 0x80 )
+					for( int i = 0; i < (int)(355f * Scale.Y); i += (int)(0x80f * Scale.Y) )
 					{
-						Rectangle rectangle = new Rectangle( 0, 0, 0x6d, 0x80 );
-						if( ( i + 0x80 ) > 355 )
+						Rectangle rectangle = new Rectangle( 0, 0, (int)(0x6d*Scale.X), (int)(0x80*Scale.Y) );
+						if( ( i + (int)(0x80f*Scale.Y) ) > (int)(355f * Scale.Y) )
 						{
-							rectangle.Height -= ( i + 0x80 ) - 355;
+							rectangle.Height -= ( i + (int)(0x80f*Scale.Y) ) - (int)(355f * Scale.Y);
 						}
 						if( this.txレーンフレームGB != null )
 						{
-							this.txレーンフレームGB.t2D描画( CDTXMania.app.Device, 0x1fb, 0x39 + i, rectangle );
+							this.txレーンフレームGB.t2D描画( CDTXMania.app.Device,
+								0x1fb * Scale.X,
+								(0x39 + i) * Scale.Y, rectangle );
 						}
 					}
 				}
 				if( CDTXMania.DTX.bチップがある.Bass )
 				{
-					for( int j = 0; j < 355; j += 0x80 )
+					for ( int j = 0; j < (int) ( 355f * Scale.Y ); j += (int) ( 0x80f * Scale.Y ) )
 					{
-						Rectangle rectangle2 = new Rectangle( 0, 0, 0x6d, 0x80 );
-						if( ( j + 0x80 ) > 355 )
+						Rectangle rectangle2 = new Rectangle( 0, 0, (int) ( 0x6d * Scale.X ), (int) ( 0x80 * Scale.Y ) );
+						if ( ( j + (int) ( 0x80f * Scale.Y ) ) > (int) ( 355f * Scale.Y ) )
 						{
-							rectangle2.Height -= ( j + 0x80 ) - 355;
+							rectangle2.Height -= ( j + (int) ( 0x80f * Scale.Y ) ) - (int) ( 355f * Scale.Y );
 						}
 						if( this.txレーンフレームGB != null )
 						{
-							this.txレーンフレームGB.t2D描画( CDTXMania.app.Device, 0x18e, 0x39 + j, rectangle2 );
+							this.txレーンフレームGB.t2D描画( CDTXMania.app.Device,
+								0x18e * Scale.X,
+								(0x39 + j)*Scale.Y, rectangle2 );
 						}
 					}
 				}
@@ -520,27 +524,43 @@ namespace DTXMania
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 374 + nJudgeLinePosY_delta.Guitar : 95 - nJudgeLinePosY_delta.Guitar ) - 3;
+					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ?
+						(int)((374 * Scale.Y) + nJudgeLinePosY_delta.Guitar) :
+						(int)((95*Scale.Y) - nJudgeLinePosY_delta.Guitar)
+					) - 3;
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバーGB != null )
 					{
 						for ( int i = 0; i < 3; i++ )
 						{
-							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, 509 + ( 26 * i ), y );
-							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, ( 509 + ( 26 * i ) ) + 16, y, new Rectangle( 0, 0, 10, 16 ) );
+							this.txヒットバーGB.t2D描画( CDTXMania.app.Device,
+								(509 + ( 26 * i )) * Scale.X,
+								y );
+							this.txヒットバーGB.t2D描画( CDTXMania.app.Device,
+								(( 509 + ( 26 * i ) ) + 16)*Scale.X,
+								y,
+								new Rectangle( 0, 0, (int)(10*Scale.X), (int)(16*Scale.Y) ) );
 						}
 					}
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Bass ? 374 + nJudgeLinePosY_delta.Bass : 95 - nJudgeLinePosY_delta.Bass ) - 3;
+					int y = ( CDTXMania.ConfigIni.bReverse.Bass ?
+						(int)((374*Scale.Y) + nJudgeLinePosY_delta.Bass) :
+						(int)((95*Scale.Y) - nJudgeLinePosY_delta.Bass)
+					) - 3;
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバーGB != null )
 					{
 						for ( int j = 0; j < 3; j++ )
 						{
-							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, 400 + ( 26 * j ), y );
-							this.txヒットバーGB.t2D描画( CDTXMania.app.Device, ( 400 + ( 26 * j ) ) + 16, y, new Rectangle( 0, 0, 10, 16 ) );
+							this.txヒットバーGB.t2D描画( CDTXMania.app.Device,
+								(400 + ( 26 * j )) * Scale.X,
+								y );
+							this.txヒットバーGB.t2D描画( CDTXMania.app.Device,
+								(( 400 + ( 26 * j ) ) + 16)*Scale.X,
+								y,
+								new Rectangle( 0, 0, (int)(10*Scale.X), (int)(16*Scale.Y) ) );
 						}
 					}
 				}
@@ -1860,7 +1880,7 @@ namespace DTXMania
 
 		protected override void t背景テクスチャの生成()
 		{
-			Rectangle bgrect = new Rectangle( 338, 57, 278, 355 );
+			Rectangle bgrect = new Rectangle( (int)(338 * Scale.X), (int)(57*Scale.Y), (int)(278*Scale.X), (int)(355*Scale.Y) );
 			string DefaultBgFilename = @"Graphics\ScreenPlayDrums background.jpg";
 			string BgFilename = "";
 			if ( ( ( CDTXMania.DTX.BACKGROUND != null ) && ( CDTXMania.DTX.BACKGROUND.Length > 0 ) ) && !CDTXMania.ConfigIni.bストイックモード )
@@ -1916,6 +1936,9 @@ namespace DTXMania
 					}
 					int x = this.nチャンネルtoX座標[ pChip.nチャンネル番号 - 0x11 ];
 					int y = configIni.bReverse.Drums ? ( 0x38 + pChip.nバーからの距離dot.Drums ) : ( 0x1a6 - pChip.nバーからの距離dot.Drums );
+					x = (int) ( x * Scale.X );
+					y = (int) ( y * Scale.Y );
+
 					if ( this.txチップ != null )
 					{
 						this.txチップ.vc拡大縮小倍率 = new Vector3( (float) pChip.dbチップサイズ倍率, (float) pChip.dbチップサイズ倍率, 1f );
@@ -1924,86 +1947,86 @@ namespace DTXMania
 					switch ( pChip.nチャンネル番号 )
 					{
 						case 0x11:
-							x = ( x + 0x10 ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 0x10*Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 0x2c, num9 * 7, 0x20, 8 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0x2c * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x20 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
 							}
 							break;
 
 						case 0x12:
-							x = ( x + 0x10 ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 0x10*Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 0x4c, num9 * 7, 0x20, 8 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int)(0x4c * Scale.X), (int)(num9 * 7*Scale.Y), (int)(0x20* Scale.X), (int)(8*Scale.Y) ) );
 							}
 							break;
 
 						case 0x13:
-							x = ( x + 0x16 ) - ( (int) ( ( 44.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 0x16*Scale.X ) - ( (int) ( ( 44.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 5, new Rectangle( 0, num9 * 9, 0x2c, 10 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 5 * Scale.Y, new Rectangle( (int)(0 * Scale.X), (int)(num9 * 9*Scale.Y), (int)(0x2c* Scale.X), (int)(10*Scale.Y) ) );
 							}
 							break;
 
 						case 0x14:
-							x = ( x + 0x10 ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 0x10*Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 0x6c, num9 * 7, 0x20, 8 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int)(0x6c * Scale.X), (int)(num9 * 7*Scale.Y), (int)(0x20* Scale.X), (int)(8*Scale.Y) ) );
 							}
 							break;
 
 						case 0x15:
-							x = ( x + 0x10 ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 0x10*Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 140, num9 * 7, 0x20, 8 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int)(140 * Scale.X), (int)(num9 * 7*Scale.Y), (int)(0x20* Scale.X), (int)(8*Scale.Y) ) );
 							}
 							break;
 
 						case 0x16:
-							x = ( x + 0x13 ) - ( (int) ( ( 38.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 0x13*Scale.X ) - ( (int) ( ( 38.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 0x15, new Rectangle( 0xcc, 0x158, 0x26, 0x24 ) );
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 0xcc, num9 * 7, 0x26, 8 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 0x15 * Scale.Y, new Rectangle( (int)(0xcc * Scale.X), (int)(0x158*Scale.Y), (int)(0x26* Scale.X), (int)(0x24*Scale.Y) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int)(0xcc * Scale.X), (int)(num9 * 7*Scale.Y), (int)(0x26* Scale.X), (int)(8*Scale.Y) ) );
 							}
 							break;
 
 						case 0x17:
-							x = ( x + 0x10 ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 0x10*Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 0xac, num9 * 7, 0x20, 8 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int)(0xac * Scale.X), (int)(num9 * 7*Scale.Y), (int)(0x20* Scale.X), (int)(8*Scale.Y) ) );
 							}
 							break;
 
 						case 0x18:
-							x = ( x + 13 ) - ( (int) ( ( 26.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 13*Scale.X ) - ( (int) ( ( 26.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 0xf2, num9 * 7, 0x1a, 8 ) );
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 9, new Rectangle( 0xf2, 0x158, 0x1a, 0x12 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int)(0xf2 * Scale.X), (int)(num9 * 7*Scale.Y), (int)(0x1a* Scale.X), (int)(8*Scale.Y) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 9 * Scale.Y, new Rectangle( (int)(0xf2 * Scale.X), (int)(0x158*Scale.Y), (int)(0x1a* Scale.X), (int)(0x12*Scale.Y) ) );
 							}
 							break;
 
 						case 0x19:
-							x = ( x + 13 ) - ( (int) ( ( 26.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 13*Scale.X ) - ( (int) ( ( 26.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 0xf2, num9 * 7, 0x1a, 8 ) );
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 9, new Rectangle( 0xf2, 0x158, 0x1a, 0x12 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int)(0xf2 * Scale.X), (int)(num9 * 7*Scale.Y), (int)(0x1a* Scale.X), (int)(8*Scale.Y) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 9 * Scale.Y, new Rectangle( (int)(0xf2 * Scale.X), (int)(0x158*Scale.Y), (int)(0x1a* Scale.X), (int)(0x12*Scale.Y) ) );
 							}
 							break;
 
 						case 0x1a:
-							x = ( x + 0x13 ) - ( (int) ( ( 38.0 * pChip.dbチップサイズ倍率 ) / 2.0 ) );
+							x += (int)( 0x13*Scale.X ) - ( (int) ( ( 38.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 0x15, new Rectangle( 0xcc, 0x158, 0x26, 0x24 ) );
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4, new Rectangle( 0xcc, num9 * 7, 0x26, 8 ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 0x15 * Scale.Y, new Rectangle( (int)(0xcc * Scale.X), (int)(0x158*Scale.Y), (int)(0x26* Scale.X), (int)(0x24*Scale.Y) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int)(0xcc * Scale.X), (int)(num9 * 7*Scale.Y), (int)(0x26* Scale.X), (int)(8*Scale.Y) ) );
 							}
 							break;
 					}
@@ -2201,9 +2224,16 @@ namespace DTXMania
 						{
 							rect.Height -= numB - ( numD - numA );
 						}
+						rect.X = (int) ( rect.X * Scale.X );
+						rect.Y = (int) ( rect.Y * Scale.Y );
+						rect.Width = (int) ( rect.Width * Scale.X );
+						rect.Height = (int) ( rect.Height * Scale.Y );
 						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, drawX, ( y - numA ) + numC, rect );
+							this.txチップ.t2D描画( CDTXMania.app.Device,
+								drawX * Scale.X,
+								(( y - numA ) + numC) * Scale.Y,
+								rect );
 						}
 					}
 				}
@@ -2413,9 +2443,16 @@ namespace DTXMania
 						{
 							rect.Height -= numB - ( numD - numA );
 						}
+						rect.X = (int) ( rect.X * Scale.X );
+						rect.Y = (int) ( rect.Y * Scale.Y );
+						rect.Width = (int) ( rect.Width * Scale.X );
+						rect.Height = (int) ( rect.Height * Scale.Y );
 						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, drawX, ( y - numA ) + numC, rect );
+							this.txチップ.t2D描画( CDTXMania.app.Device,
+								drawX * Scale.X,
+								( ( y - numA ) + numC ) * Scale.Y,
+								rect );
 						}
 					}
 				}
@@ -2463,11 +2500,23 @@ namespace DTXMania
 				if ( configIni.b演奏情報を表示する && ( configIni.eDark == Eダークモード.OFF ) )
 				{
 					int n小節番号 = n小節番号plus1 - 1;
-					CDTXMania.act文字コンソール.tPrint( 0x14d, configIni.bReverse.Drums ? ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 0x11 ) : ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 0x11 ), C文字コンソール.Eフォント種別.白, n小節番号.ToString() );
+					CDTXMania.act文字コンソール.tPrint(
+						(int)(0x14d * Scale.X),
+						configIni.bReverse.Drums ?
+							(int)(( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 0x11 ) * Scale.X) :
+							(int)(( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 0x11 ) * Scale.Y),
+						C文字コンソール.Eフォント種別.白,
+						n小節番号.ToString()
+					);
 				}
 				if ( ( ( configIni.eDark != Eダークモード.FULL ) && pChip.b可視 ) && ( this.txチップ != null ) )
 				{
-					this.txチップ.t2D描画( CDTXMania.app.Device, 0x23, configIni.bReverse.Drums ? ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) : ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ), new Rectangle( 0, 0x1bc, 0x128, 2 ) );
+					this.txチップ.t2D描画( CDTXMania.app.Device,
+						0x23 * Scale.X,
+						configIni.bReverse.Drums ?
+							(int)(( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y) :
+							(int)(( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y),
+						new Rectangle( 0, (int)(0x1bc*Scale.Y), (int)(0x128*Scale.X), (int)(2*Scale.Y) ) );
 				}
 			}
 			if ( ( pChip.b可視 && configIni.bGuitar有効 ) && ( configIni.eDark != Eダークモード.FULL ) )
@@ -2475,12 +2524,18 @@ namespace DTXMania
 				int y = configIni.bReverse.Guitar ? ( ( 0x176 - pChip.nバーからの距離dot.Guitar ) - 1 ) : ( ( 0x5f + pChip.nバーからの距離dot.Guitar ) - 1 );
 				if ( ( dTX.bチップがある.Guitar && ( y > 0x39 ) ) && ( ( y < 0x19c ) && ( this.txチップ != null ) ) )
 				{
-					this.txチップ.t2D描画( CDTXMania.app.Device, 0x1fb, y, new Rectangle( 0, 450, 0x4e, 1 ) );
+					this.txチップ.t2D描画( CDTXMania.app.Device,
+						0x1fb * Scale.X,
+						y * Scale.Y,
+						new Rectangle( 0, (int)(450*Scale.Y), (int)(0x4e*Scale.X), (int)(1*Scale.Y) ) );
 				}
 				y = configIni.bReverse.Bass ? ( ( 0x176 - pChip.nバーからの距離dot.Bass ) - 1 ) : ( ( 0x5f + pChip.nバーからの距離dot.Bass ) - 1 );
 				if ( ( dTX.bチップがある.Bass && ( y > 0x39 ) ) && ( ( y < 0x19c ) && ( this.txチップ != null ) ) )
 				{
-					this.txチップ.t2D描画( CDTXMania.app.Device, 0x18e, y, new Rectangle( 0, 450, 0x4e, 1 ) );
+					this.txチップ.t2D描画( CDTXMania.app.Device,
+						0x18e * Scale.X,
+						y * Scale.Y,
+						new Rectangle( 0, (int)(450*Scale.Y), (int)(0x4e*Scale.X), (int)(1*Scale.Y) ) );
 				}
 			}
 		}

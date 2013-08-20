@@ -36,9 +36,11 @@ namespace DTXMania
 		}
 		public void t進行描画( int x, int y )
 		{
+			x = (int)(x * Scale.X);
+			y = (int)(y * Scale.Y);
 			if ( !base.b活性化してない )
 			{
-				y += 0x153;
+				y += (int)(0x153 * Scale.Y);
 				CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "BGM/D/G/B Adj: {0:####0}/{1:####0}/{2:####0}/{3:####0} ms", CDTXMania.DTX.nBGMAdjust, CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums, CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar, CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass ) );
 				y -= 0x10;
 				int num = ( CDTXMania.DTX.listChip.Count > 0 ) ? CDTXMania.DTX.listChip[ CDTXMania.DTX.listChip.Count - 1 ].n発声時刻ms : 0;

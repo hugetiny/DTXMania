@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using SlimDX.Direct3D9;
+using SlimDX;
 using FDK;
 
 namespace DTXMania
@@ -263,11 +264,21 @@ namespace DTXMania
 							{
 								if( ( this.stLayer[ i ].rBMP != null ) && ( this.stLayer[ i ].rBMP.tx画像 != null ) )
 								{
-									this.stLayer[ i ].rBMP.tx画像.t2D描画( CDTXMania.app.Device, x + rectangle2.X, y + rectangle2.Y, rectangle );
+									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+									this.stLayer[ i ].rBMP.tx画像.t2D描画(
+										CDTXMania.app.Device,
+										(x + rectangle2.X) * Scale.X,
+										(y + rectangle2.Y) * Scale.Y,
+										rectangle );
 								}
 								else if( ( this.stLayer[ i ].rBMPTEX != null ) && ( this.stLayer[ i ].rBMPTEX.tx画像 != null ) )
 								{
-									this.stLayer[ i ].rBMPTEX.tx画像.t2D描画( CDTXMania.app.Device, x + rectangle2.X, y + rectangle2.Y, rectangle );
+									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+									this.stLayer[ i ].rBMPTEX.tx画像.t2D描画(
+										CDTXMania.app.Device,
+										(x + rectangle2.X) * Scale.X,
+										(y + rectangle2.Y) * Scale.Y,
+										rectangle );
 								}
 							}
 						}

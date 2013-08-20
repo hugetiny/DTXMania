@@ -49,7 +49,7 @@ namespace DTXMania
 						Trace.TraceError( "パネル文字列テクスチャの生成に失敗しました。" );
 						this.txPanel = null;
 					}
-					this.ct進行用 = new CCounter( -278, this.n文字列の長さdot / 2, 8, CDTXMania.Timer );
+					this.ct進行用 = new CCounter( (int)(-278 * Scale.X), this.n文字列の長さdot / 2, (int)(8/Scale.X), CDTXMania.Timer );
 				}
 			}
 		}
@@ -59,7 +59,7 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.ft表示用フォント = new Font( "MS PGothic", 48f, FontStyle.Italic | FontStyle.Bold, GraphicsUnit.Pixel );
+			this.ft表示用フォント = new Font( "MS PGothic", 48f * Scale.X, FontStyle.Italic | FontStyle.Bold, GraphicsUnit.Pixel );
 			this.n文字列の長さdot = 0;
 			this.txPanel = null;
 			this.ct進行用 = new CCounter();
@@ -106,10 +106,15 @@ namespace DTXMania
 					return 0;
 				}
 				float num = this.txPanel.vc拡大縮小倍率.X;
-				Rectangle rectangle = new Rectangle( (int) ( ( (float) this.ct進行用.n現在の値 ) / num ), 0, (int) ( 278f / num ), (int) this.ft表示用フォント.Size );
+				Rectangle rectangle = new Rectangle(
+					(int) ( ( (float) this.ct進行用.n現在の値 ) / num ),
+					0,
+					(int) ( 278f / num * Scale.X),
+					(int) this.ft表示用フォント.Size
+					);
 				if( rectangle.X < 0 )
 				{
-					x -= (int) ( rectangle.X * num );
+					x -= (int) ( rectangle.X * num / Scale.X);
 					rectangle.Width += rectangle.X;
 					rectangle.X = 0;
 				}
@@ -117,7 +122,7 @@ namespace DTXMania
 				{
 					rectangle.Width -= rectangle.Right - this.n文字列の長さdot;
 				}
-				this.txPanel.t2D描画( CDTXMania.app.Device, x, y, rectangle );
+				this.txPanel.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y, rectangle );
 			}
 			return 0;
 		}

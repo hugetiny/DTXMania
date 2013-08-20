@@ -114,7 +114,7 @@ namespace DTXMania
 							deltaY = -deltaY;
 						}																				// END   #31602
 						
-						this.tx火花[ j % 3 ].t2D描画( CDTXMania.app.Device, x, y - deltaY );
+						this.tx火花[ j % 3 ].t2D描画( CDTXMania.app.Device, x * Scale.X, (y - deltaY) * Scale.Y );
 					}
 				}
 			}
