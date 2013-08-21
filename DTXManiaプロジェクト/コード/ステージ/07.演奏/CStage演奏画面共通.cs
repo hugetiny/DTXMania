@@ -2571,7 +2571,7 @@ namespace DTXMania
 						this.txヒットバー.t2D描画( CDTXMania.app.Device,
 							i * Scale.X,
 							y,
-							new Rectangle( 0, 0, ( ( i + 8 ) >= 335 ) ? (int)(( 7 - ( ( i + 8 ) - 335 ) ) * Scale.X) : (int)(8 * Scale.X), 8 ) );
+							new Rectangle( 0, 0, ( ( i + 8 ) >= 335 ) ? (int)(( 7 - ( ( i + 8 ) - 335 ) ) * Scale.X) : (int)(8 * Scale.X), (int)(8 * Scale.Y) ) );
 					}
 				}
 			}

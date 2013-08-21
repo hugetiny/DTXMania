@@ -144,12 +144,12 @@ namespace DTXMania
 						this.txゲージ.t2D描画(
 							CDTXMania.app.Device,
 							6 * Scale.X,
-							y * Scale.Y + 0.5f,
+							y * Scale.Y,
 							rectangle
 						);
 					}
 					num5 -= rectangle1.Height;
-					y += rectangle1.Height;
+					y += rectangle1.Height - 1;		// 横線が入る問題を、取り急ぎ対策
 				}
 				if( this.txゲージ != null )
 				{
