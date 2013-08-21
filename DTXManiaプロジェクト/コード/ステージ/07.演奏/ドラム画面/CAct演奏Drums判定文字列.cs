@@ -163,7 +163,11 @@ namespace DTXMania
 						{
 							base.tx判定文字列[ index ].n透明度 = base.st状態[ j ].n透明度;
 							base.tx判定文字列[ index ].vc拡大縮小倍率 = new Vector3( (float) ( base.st状態[ j ].fX方向拡大率 * ( ( j < 10 ) ? 1.0 : 0.7 ) ), (float) ( base.st状態[ j ].fY方向拡大率 * ( ( j < 10 ) ? 1.0 : 0.7 ) ), 1f );
-							base.tx判定文字列[ index ].t2D描画( CDTXMania.app.Device, x, y, base.st判定文字列[ (int) base.st状態[ j ].judge ].rc );
+							base.tx判定文字列[ index ].t2D描画(
+								CDTXMania.app.Device,
+								x * Scale.X,
+								y * Scale.Y,
+								base.st判定文字列[ (int) base.st状態[ j ].judge ].rc );
 
 							#region [ #25370 2011.6.3 yyagi ShowLag support ]
 							if ( base.nShowLagType == (int) EShowLagType.ON ||

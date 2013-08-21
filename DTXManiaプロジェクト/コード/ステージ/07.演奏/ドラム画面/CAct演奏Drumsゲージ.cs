@@ -115,7 +115,9 @@ namespace DTXMania
 				int num5 = num2 + num3;
 				while( num5 > 0 )
 				{
-					Rectangle rectangle = ( this.dbゲージ値 == 1.0 ) ? new Rectangle( 0x10, 0, 0x10, 0x1b ) : new Rectangle( 0, 0, 0x10, 0x1b );
+					Rectangle rectangle = ( this.dbゲージ値 == 1.0 ) ?
+						new Rectangle( 0x10, 0, 0x10, 0x1b ) :
+						new Rectangle( 0, 0, 0x10, 0x1b );
 					if( y < ( 0x195 - num2 ) )
 					{
 						int num6 = ( 0x195 - num2 ) - y;
@@ -132,12 +134,22 @@ namespace DTXMania
 					{
 						break;
 					}
-					if( this.txゲージ != null )
+					Rectangle rectangle1 = rectangle;
+					if ( this.txゲージ != null )
 					{
-						this.txゲージ.t2D描画( CDTXMania.app.Device, 6, y, rectangle );
+						rectangle.X = (int) ( rectangle.X * Scale.X );
+						rectangle.Y = (int) ( rectangle.Y * Scale.Y );
+						rectangle.Width = (int) ( rectangle.Width * Scale.X );
+						rectangle.Height = (int) ( rectangle.Height * Scale.Y );
+						this.txゲージ.t2D描画(
+							CDTXMania.app.Device,
+							6 * Scale.X,
+							y * Scale.Y + 0.5f,
+							rectangle
+						);
 					}
-					num5 -= rectangle.Height;
-					y += rectangle.Height;
+					num5 -= rectangle1.Height;
+					y += rectangle1.Height;
 				}
 				if( this.txゲージ != null )
 				{
@@ -147,7 +159,12 @@ namespace DTXMania
 				}
 				for( int i = 0; i < 4; i++ )
 				{
-					Rectangle rectangle2 = new Rectangle( 0x40 + ( i * 0x10 ), 0, 0x10, 0x40 );
+					Rectangle rectangle2 = new Rectangle(
+						0x40 + ( i * 0x10 ),
+						0,
+						0x10,
+						0x40
+					);
 					int num9 = ( 0x195 - num2 ) + ( i * 0x40 );
 					if( num9 >= 0x195 )
 					{
@@ -160,7 +177,17 @@ namespace DTXMania
 					}
 					if( ( rectangle2.Top < rectangle2.Bottom ) && ( this.txゲージ != null ) )
 					{
-						this.txゲージ.t2D描画( CDTXMania.app.Device, 6, num9, rectangle2 );
+						rectangle2.X = (int) ( rectangle2.X * Scale.X );
+						rectangle2.Y = (int) ( rectangle2.Y * Scale.Y + 0.5f );
+						rectangle2.Width = (int) ( rectangle2.Width * Scale.X );
+						rectangle2.Height = (int) ( rectangle2.Height * Scale.Y + 0.5f );
+
+						this.txゲージ.t2D描画(
+							CDTXMania.app.Device,
+							(int)(6 * Scale.X),
+							(int)(num9 * Scale.Y + 0.5f),
+							rectangle2
+						);
 					}
 				}
 				if( this.txゲージ != null )
@@ -169,7 +196,12 @@ namespace DTXMania
 					this.txゲージ.n透明度 = 0xff;
 					this.txゲージ.b加算合成 = false;
 				}
-				Rectangle rectangle3 = new Rectangle( 0x30, 0, 0x10, 0x10 );
+				Rectangle rectangle3 = new Rectangle(
+					0x30,
+					0,
+					0x10,
+					0x10
+				);
 				int num11 = 0x195 - num2;
 				if( num11 < 0x195 )
 				{
@@ -180,7 +212,16 @@ namespace DTXMania
 					}
 					if( ( rectangle3.Top < rectangle3.Bottom ) && ( this.txゲージ != null ) )
 					{
-						this.txゲージ.t2D描画( CDTXMania.app.Device, 6, num11, rectangle3 );
+						rectangle3.X = (int) ( rectangle3.X * Scale.X );
+						rectangle3.Y = (int) ( rectangle3.Y * Scale.Y + 0.5f );
+						rectangle3.Width = (int) ( rectangle3.Width * Scale.X );
+						rectangle3.Height = (int) ( rectangle3.Height * Scale.Y + 0.5f );
+						this.txゲージ.t2D描画(
+							CDTXMania.app.Device,
+							(int)(6*Scale.X),
+							(int)(num11*Scale.Y + 0.5f),
+							rectangle3
+						);
 					}
 				}
 				if( this.txゲージ != null )
@@ -195,12 +236,22 @@ namespace DTXMania
 					int num16 = ( this.st白い星[ j ].ct進行.n現在の値 < 0xb0 ) ? 0 : ( (int) ( 255.0 * ( ( (double) ( this.st白い星[ j ].ct進行.n現在の値 - 0xb0 ) ) / 176.0 ) ) );
 					if( ( num16 != 0 ) && ( num15 < 0x191 ) )
 					{
-						Rectangle rectangle4 = new Rectangle( 0, 0x20, 0x20, 0x20 );
+						Rectangle rectangle4 = new Rectangle(
+							(int)(0*Scale.X),
+							(int)(0x20*Scale.Y),
+							(int) ( 0x20 * Scale.X ),
+							(int)(0x20*Scale.Y)
+						);
 						if( this.txゲージ != null )
 						{
 							this.txゲージ.vc拡大縮小倍率 = new Vector3( this.st白い星[ j ].fScale, this.st白い星[ j ].fScale, 1f );
 							this.txゲージ.n透明度 = num16;
-							this.txゲージ.t2D描画( CDTXMania.app.Device, x, num15, rectangle4 );
+							this.txゲージ.t2D描画(
+								CDTXMania.app.Device,
+								(int)(x*Scale.X),
+								(int)(num15*Scale.Y+0.5f),
+								rectangle4
+							);
 						}
 					}
 				}

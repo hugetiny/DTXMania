@@ -41,23 +41,43 @@ namespace DTXMania
                 char ch = str[i];
                 if (ch.Equals(' '))
                 {
-                    rectangle = new Rectangle(0, 0, 12, 0x18);
+                    rectangle = new Rectangle(
+						0,
+						0,
+						(int)(12*Scale.X),
+						(int)(0x18*Scale.Y)
+					);
                 }
                 else
                 {
                     int num4 = int.Parse(str.Substring(i, 1));
                     if (num4 < 5)
                     {
-                        rectangle = new Rectangle(num4 * 12, 0, 12, 0x18);
+                        rectangle = new Rectangle(
+							(int)(num4 * 12 * Scale.X),
+							0,
+							(int)(12*Scale.X),
+							(int)(0x18*Scale.Y)
+						);
                     }
                     else
                     {
-                        rectangle = new Rectangle((num4 - 5) * 12, 0x18, 12, 0x18);
+                        rectangle = new Rectangle(
+							(int)((num4 - 5) * 12 * Scale.X),
+							(int)(0x18*Scale.Y),
+							(int)(12*Scale.X),
+							(int)(0x18*Scale.Y)
+						);
                     }
                 }
                 if (base.txScore != null)
                 {
-                    base.txScore.t2D描画(CDTXMania.app.Device, 0x164 + (i * 12), 14, rectangle);
+                    base.txScore.t2D描画(
+						CDTXMania.app.Device,
+						(0x164 + (i * 12)) * Scale.X,
+						14 * Scale.Y,
+						rectangle
+					);
                 }
             }
         }

@@ -131,7 +131,17 @@ namespace DTXMania
 								{
 									if( this.txFlush[ j + 8 ] != null )
 									{
-										this.txFlush[ j + 8 ].t2D描画( CDTXMania.app.Device, x + m, y, new Rectangle( ( k * 0x2a ) + 2, 0, ( ( w - m ) < 0x2a ) ? ( w - m ) : 0x2a, 0x80 ) );
+										this.txFlush[ j + 8 ].t2D描画(
+											CDTXMania.app.Device,
+											(x + m) * Scale.X,
+											y * Scale.Y,
+											new Rectangle(
+												(int)( ( ( k * 0x2a ) + 2 ) * Scale.X),
+												0,
+												( ( w - m ) < 0x2a ) ? (int)( ( w - m ) * Scale.X) : (int)(0x2a * Scale.X),
+												(int)(0x80 * Scale.Y)
+											)
+										);
 									}
 								}
 							}
@@ -144,7 +154,17 @@ namespace DTXMania
 									{
 										if( this.txFlush[ j ] != null )
 										{
-											this.txFlush[ j ].t2D描画( CDTXMania.app.Device, x + n, num8, new Rectangle( k * 0x2a, 0, ( ( w - n ) < 0x2a ) ? ( w - n ) : 0x2a, 0x80 ) );
+											this.txFlush[ j ].t2D描画(
+												CDTXMania.app.Device,
+												(int)((x + n) * Scale.X),
+												(int)(num8 * Scale.Y),
+												new Rectangle(
+													(int)(k * 0x2a * Scale.X),
+													0,
+													( ( w - n ) < 0x2a ) ? (int)(( w - n )*Scale.X) : (int)(0x2a * Scale.X),
+													(int)(0x80 * Scale.Y)
+												)
+											);
 										}
 									}
 								}

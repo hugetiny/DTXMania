@@ -484,35 +484,40 @@ namespace DTXMania
 			{
 				if( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					for( int i = 0; i < (int)(355f * Scale.Y); i += (int)(0x80f * Scale.Y) )
+					for( int i = 0; i < 355; i += 0x80 )
 					{
 						Rectangle rectangle = new Rectangle( 0, 0, (int)(0x6d*Scale.X), (int)(0x80*Scale.Y) );
-						if( ( i + (int)(0x80f*Scale.Y) ) > (int)(355f * Scale.Y) )
+						if( ( i + 0x80 ) > 355 )
 						{
-							rectangle.Height -= ( i + (int)(0x80f*Scale.Y) ) - (int)(355f * Scale.Y);
+							rectangle.Height -= (int)(( i + 0x80 - 355) * Scale.Y);
 						}
 						if( this.txレーンフレームGB != null )
 						{
-							this.txレーンフレームGB.t2D描画( CDTXMania.app.Device,
+							this.txレーンフレームGB.t2D描画(
+								CDTXMania.app.Device,
 								0x1fb * Scale.X,
-								(0x39 + i) * Scale.Y, rectangle );
+								(0x39 + i) * Scale.Y,
+								rectangle
+							);
 						}
 					}
 				}
 				if( CDTXMania.DTX.bチップがある.Bass )
 				{
-					for ( int j = 0; j < (int) ( 355f * Scale.Y ); j += (int) ( 0x80f * Scale.Y ) )
+					for ( int j = 0; j < 355; j += 0x80 )
 					{
 						Rectangle rectangle2 = new Rectangle( 0, 0, (int) ( 0x6d * Scale.X ), (int) ( 0x80 * Scale.Y ) );
-						if ( ( j + (int) ( 0x80f * Scale.Y ) ) > (int) ( 355f * Scale.Y ) )
+						if ( ( j + 0x80 ) > 355 )
 						{
-							rectangle2.Height -= ( j + (int) ( 0x80f * Scale.Y ) ) - (int) ( 355f * Scale.Y );
+							rectangle2.Height -= (int)(( j + 0x80 - 355) * Scale.Y );
 						}
 						if( this.txレーンフレームGB != null )
 						{
 							this.txレーンフレームGB.t2D描画( CDTXMania.app.Device,
 								0x18e * Scale.X,
-								(0x39 + j)*Scale.Y, rectangle2 );
+								(0x39 + j)*Scale.Y,
+								rectangle2
+							);
 						}
 					}
 				}

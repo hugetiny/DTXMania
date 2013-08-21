@@ -351,15 +351,25 @@ namespace DTXMania
 			#endregion
 			#region [ "COMBO" 文字を表示。]
 			//-----------------
-			int x = n表示中央X - ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
-			int y = n表示中央Y;
+			int x = (int)(n表示中央X * Scale.X)- ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
+			int y = (int)(n表示中央Y * Scale.Y);
 			
 			if( this.txCOMBOギター != null )
-				this.txCOMBOギター.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 70, 45, 16 ) );
+				this.txCOMBOギター.t2D描画(
+					CDTXMania.app.Device,
+					x,
+					y,
+					new Rectangle(
+						0,
+						(int)(70*Scale.Y),
+						(int)(45*Scale.X),
+						(int)(16*Scale.Y)
+					)
+				);
 			//-----------------
 			#endregion
 
-			x = n表示中央X + ( n全桁の合計幅 / 2 );
+			x = (int)(n表示中央X * Scale.X) + ( n全桁の合計幅 / 2 );
 			for( int i = 0; i < n桁数; i++ )
 			{
 				#region [ 数字の拡大率を設定。]
@@ -375,7 +385,7 @@ namespace DTXMania
 				#region [ 数字を1桁表示。]
 				//-----------------
 				x -= nギターコンボの幅 + nギターコンボの文字間隔;
-				y = n表示中央Y - nギターコンボの高さ;
+				y = (int)(n表示中央Y*Scale.Y) - nギターコンボの高さ;
 
 				if( this.txCOMBOギター != null )
 				{
@@ -430,15 +440,25 @@ namespace DTXMania
 			#endregion
 			#region [ "COMBO" 文字を表示。]
 			//-----------------
-			int x = n表示中央X - ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
-			int y = n表示中央Y;
+			int x = (int)(n表示中央X * Scale.X) - ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
+			int y = (int)(n表示中央Y * Scale.Y);
 			
 			if( this.txCOMBOギター != null )
-				this.txCOMBOギター.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 70, 45, 16) );
+				this.txCOMBOギター.t2D描画(
+					CDTXMania.app.Device,
+					x,
+					y,
+					new Rectangle(
+						0,
+						(int) ( 70 * Scale.Y ),
+						(int) ( 45 * Scale.X ),
+						(int) ( 16 * Scale.Y )
+					)
+				);
 			//-----------------
 			#endregion
 
-			x = n表示中央X + ( n全桁の合計幅 / 2 );
+			x = (int)(n表示中央X * Scale.X) + ( n全桁の合計幅 / 2 );
 			for( int i = 0; i < n桁数; i++ )
 			{
 				#region [ 数字の拡大率を設定。]
@@ -454,7 +474,7 @@ namespace DTXMania
 				#region [ 数字を1桁表示。]
 				//-----------------
 				x -= nギターコンボの幅 + nギターコンボの文字間隔;
-				y = n表示中央Y - nギターコンボの高さ;
+				y = (int)(n表示中央Y * Scale.Y) - nギターコンボの高さ;
 
 				if( this.txCOMBOギター != null )
 				{

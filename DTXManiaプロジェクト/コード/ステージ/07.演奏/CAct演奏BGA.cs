@@ -265,6 +265,7 @@ namespace DTXMania
 								if( ( this.stLayer[ i ].rBMP != null ) && ( this.stLayer[ i ].rBMP.tx画像 != null ) )
 								{
 									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+									//this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率 = new Vector3( 2f, 2f, 1f );
 									this.stLayer[ i ].rBMP.tx画像.t2D描画(
 										CDTXMania.app.Device,
 										(x + rectangle2.X) * Scale.X,
@@ -274,6 +275,7 @@ namespace DTXMania
 								else if( ( this.stLayer[ i ].rBMPTEX != null ) && ( this.stLayer[ i ].rBMPTEX.tx画像 != null ) )
 								{
 									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+									//this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率 = new Vector3( 2f, 2f, 1f );
 									this.stLayer[ i ].rBMPTEX.tx画像.t2D描画(
 										CDTXMania.app.Device,
 										(x + rectangle2.X) * Scale.X,

@@ -27,7 +27,17 @@ namespace DTXMania
 							int y = ( ( i < 3 ) ? 0x39 : 0x39 ) + ( j * 0x76 );
 							if( texture != null )
 							{
-								texture.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( j * 0x20, 0, ( 0x18 * ( 100 - base.ct進行[ i ].n現在の値 ) ) / 100, 0x76 ) );
+								texture.t2D描画(
+									CDTXMania.app.Device,
+									x * Scale.X,
+									y * Scale.Y,
+									new Rectangle(
+										(int)((j * 0x20) * Scale.X),
+										0,
+										(int)(( 0x18 * ( 100 - base.ct進行[ i ].n現在の値 ) ) / 100 * Scale.X),
+										(int)(0x76 * Scale.Y)
+									)
+								);
 							}
 						}
 						base.ct進行[ i ].t進行();

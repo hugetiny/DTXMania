@@ -278,13 +278,12 @@ namespace DTXMania
 					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
 				this.tx描画用 = new CTexture( CDTXMania.app.Device,
-					//(int) ( 278 * Scale.X ),
-					//(int) ( 355 * Scale.Y ),
-					(int) ( 278 ),
-					(int) ( 355 ),
+					278,
+					355,
 					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
 #endif
 				this.tx描画用.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+				//this.tx描画用.vc拡大縮小倍率 = new Vector3( 2f, 2f, 1f );
 				base.OnManagedリソースの作成();
 			}
 		}

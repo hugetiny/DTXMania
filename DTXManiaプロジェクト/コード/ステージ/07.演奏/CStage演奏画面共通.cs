@@ -2610,26 +2610,36 @@ namespace DTXMania
 			{
 				try
 				{
-					Bitmap bitmap2 = null;
-					bitmap2 = new Bitmap( bgfilename );
-					if ( ( bitmap2.Size.Width == 0 ) && ( bitmap2.Size.Height == 0 ) )
+					Bitmap bitmap1 = null;
+					bitmap1 = new Bitmap( bgfilename );
+					if ( ( bitmap1.Size.Width == 0 ) && ( bitmap1.Size.Height == 0 ) )
 					{
 						this.tx背景 = null;
 						return;
 					}
+
+					int newWidth  = (int)(bitmap1.Width  * Scale.X );
+					int newHeight = (int)(bitmap1.Height * Scale.Y );
+					Bitmap bitmap2 = new Bitmap( newWidth, newHeight );
+					Graphics graphic2 = Graphics.FromImage( bitmap2 );
+					graphic2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+					graphic2.DrawImage( bitmap1, 0, 0, newWidth, newHeight );
+					graphic2.Dispose();
+					bitmap1.Dispose();
+
 					Bitmap bitmap3 = new Bitmap(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
-					Graphics graphics = Graphics.FromImage( bitmap3 );
+					Graphics graphics3 = Graphics.FromImage( bitmap3 );
 					for ( int i = 0; i < SampleFramework.GameWindowSize.Height; i += bitmap2.Size.Height )
 					{
 						for ( int j = 0; j < SampleFramework.GameWindowSize.Width; j += bitmap2.Size.Width )
 						{
-							graphics.DrawImage( bitmap2, j, i, bitmap2.Width, bitmap2.Height );
+							graphics3.DrawImage( bitmap2, j, i, bitmap2.Width, bitmap2.Height );
 						}
 					}
-					graphics.Dispose();
+					graphics3.Dispose();
 					bitmap2.Dispose();
 					image = new Bitmap( CSkin.Path( DefaultBgFilename ) );
-					graphics = Graphics.FromImage( image );
+					graphics3 = Graphics.FromImage( image );
 					ColorMatrix matrix2 = new ColorMatrix();
 					matrix2.Matrix00 = 1f;
 					matrix2.Matrix11 = 1f;
@@ -2639,10 +2649,10 @@ namespace DTXMania
 					ColorMatrix newColorMatrix = matrix2;
 					ImageAttributes imageAttr = new ImageAttributes();
 					imageAttr.SetColorMatrix( newColorMatrix );
-					graphics.DrawImage( bitmap3, new Rectangle( 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height ), 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, GraphicsUnit.Pixel, imageAttr );
+					graphics3.DrawImage( bitmap3, new Rectangle( 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height ), 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, GraphicsUnit.Pixel, imageAttr );
 					imageAttr.Dispose();
-					graphics.DrawImage( bitmap3, bgrect, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height, GraphicsUnit.Pixel );
-					graphics.Dispose();
+					graphics3.DrawImage( bitmap3, bgrect, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height, GraphicsUnit.Pixel );
+					graphics3.Dispose();
 					bitmap3.Dispose();
 					flag = false;
 				}

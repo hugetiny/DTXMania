@@ -17,47 +17,47 @@ namespace DTXMania
 			ST基本位置 st基本位置 = new ST基本位置();
 			st基本位置.x = 0x16;
 			st基本位置.y = 0;
-			st基本位置.rc = new Rectangle( 0, 0, 0x40, 0x40 );
+			st基本位置.rc = new Rectangle( (int) ( 0 * Scale.X ), (int) ( 0 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 0 ] = st基本位置;
 			ST基本位置 st基本位置2 = new ST基本位置();
 			st基本位置2.x = 0x3d;
 			st基本位置2.y = 11;
-			st基本位置2.rc = new Rectangle( 0x40, 0, 0x40, 0x40 );
+			st基本位置2.rc = new Rectangle( (int)(0x40 * Scale.X), (int)(0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 			st基本位置Array[ 1 ] = st基本位置2;
 			ST基本位置 st基本位置3 = new ST基本位置();
 			st基本位置3.x = 0x60;
 			st基本位置3.y = 8;
-			st基本位置3.rc = new Rectangle( 0x80, 0, 0x40, 0x40 );
+			st基本位置3.rc = new Rectangle( (int)(0x80 * Scale.X), (int)(0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 			st基本位置Array[ 2 ] = st基本位置3;
 			ST基本位置 st基本位置4 = new ST基本位置();
 			st基本位置4.x = 0x8a;
 			st基本位置4.y = 7;
-			st基本位置4.rc = new Rectangle( 0, 0x40, 0x40, 0x40 );
+			st基本位置4.rc = new Rectangle( (int)(0 * Scale.X), (int)(0x40 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 			st基本位置Array[ 3 ] = st基本位置4;
 			ST基本位置 st基本位置5 = new ST基本位置();
 			st基本位置5.x = 0xb3;
 			st基本位置5.y = 0;
-			st基本位置5.rc = new Rectangle( 0x40, 0x40, 0x40, 0x40 );
+			st基本位置5.rc = new Rectangle( (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 			st基本位置Array[ 4 ] = st基本位置5;
 			ST基本位置 st基本位置6 = new ST基本位置();
 			st基本位置6.x = 0xd4;
 			st基本位置6.y = 5;
-			st基本位置6.rc = new Rectangle( 0x80, 0x40, 0x40, 0x40 );
+			st基本位置6.rc = new Rectangle( (int)(0x80 * Scale.X), (int)(0x40 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 			st基本位置Array[ 5 ] = st基本位置6;
 			ST基本位置 st基本位置7 = new ST基本位置();
 			st基本位置7.x = 250;
 			st基本位置7.y = 15;
-			st基本位置7.rc = new Rectangle( 0, 0x80, 0x40, 0x40 );
+			st基本位置7.rc = new Rectangle( (int)(0 * Scale.X), (int)(0x80 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 			st基本位置Array[ 6 ] = st基本位置7;
 			ST基本位置 st基本位置8 = new ST基本位置();
 			st基本位置8.x = 0x11a;
 			st基本位置8.y = 0;
-			st基本位置8.rc = new Rectangle( 0x40, 0x80, 0x40, 0x40 );
+			st基本位置8.rc = new Rectangle( (int)(0x40 * Scale.X), (int)(0x80 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 			st基本位置Array[ 7 ] = st基本位置8;
 			ST基本位置 st基本位置9 = new ST基本位置();
 			st基本位置9.x = 0x130;
 			st基本位置9.y = 8;
-			st基本位置9.rc = new Rectangle( 0x80, 0x80, 0x40, 0x40 );
+			st基本位置9.rc = new Rectangle( (int)(0x80 * Scale.X), (int)(0x80 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 			st基本位置Array[ 8 ] = st基本位置9;
 			this.st基本位置 = st基本位置Array;
 			base.b活性化してない = true;
@@ -164,12 +164,21 @@ namespace DTXMania
 					int y = ( this.st基本位置[ index ].y + ( CDTXMania.ConfigIni.bReverse.Drums ? -10 : 0x19e ) ) + this.stパッド状態[ index ].nY座標オフセットdot;
 					if( this.txパッド != null )
 					{
-						this.txパッド.t2D描画( CDTXMania.app.Device, x, y, this.st基本位置[ index ].rc );
+						this.txパッド.t2D描画(
+							CDTXMania.app.Device,
+							x * Scale.X,
+							y * Scale.Y,
+							this.st基本位置[ index ].rc
+						);
 					}
 					if( this.tx光るパッド != null )
 					{
 						this.tx光るパッド.n透明度 = ( this.stパッド状態[ index ].n明るさ * 40 ) + 15;
-						this.tx光るパッド.t2D描画( CDTXMania.app.Device, x, y, this.st基本位置[ index ].rc );
+						this.tx光るパッド.t2D描画(
+							CDTXMania.app.Device,
+							x * Scale.X,
+							y * Scale.Y,
+							this.st基本位置[ index ].rc );
 					}
 				}
 			}

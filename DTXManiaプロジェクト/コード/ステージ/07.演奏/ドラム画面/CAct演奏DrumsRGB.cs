@@ -22,14 +22,24 @@ namespace DTXMania
 					for( int j = 0; j < 3; j++ )
 					{
 						int index = CDTXMania.ConfigIni.bLeft.Guitar ? ( 2 - j ) : j;
-						Rectangle rectangle = new Rectangle( index * 0x18, 0, 0x18, 0x20 );
+						Rectangle rectangle = new Rectangle(
+							(int)(index * 0x18 * Scale.X),
+							0,
+							(int)(0x18 * Scale.X),
+							(int)(0x20 * Scale.Y)
+						);
 						if( base.b押下状態[ index ] )
 						{
-							rectangle.Y += 0x20;
+							rectangle.Y += (int)(0x20 * Scale.Y);
 						}
 						if( base.txRGB != null )
 						{
-							base.txRGB.t2D描画( CDTXMania.app.Device, 0x1fd + ( j * 0x1a ), 0x39, rectangle );
+							base.txRGB.t2D描画(
+								CDTXMania.app.Device,
+								(0x1fd + ( j * 0x1a )) * Scale.X,
+								0x39 * Scale.Y,
+								rectangle
+							);
 						}
 					}
 				}
@@ -38,14 +48,24 @@ namespace DTXMania
 					for( int k = 0; k < 3; k++ )
 					{
 						int num4 = CDTXMania.ConfigIni.bLeft.Bass ? ( 2 - k ) : k;
-						Rectangle rectangle2 = new Rectangle( num4 * 0x18, 0, 0x18, 0x20 );
+						Rectangle rectangle2 = new Rectangle(
+							(int) ( num4 * 0x18 * Scale.X ),
+							0,
+							(int) ( 0x18 * Scale.X ),
+							(int) ( 0x20 * Scale.Y )
+						);
 						if( base.b押下状態[ num4 + 3 ] )
 						{
-							rectangle2.Y += 0x20;
+							rectangle2.Y += (int)(0x20 * Scale.Y);
 						}
 						if( base.txRGB != null )
 						{
-							base.txRGB.t2D描画( CDTXMania.app.Device, 400 + ( k * 0x1a ), 0x39, rectangle2 );
+							base.txRGB.t2D描画(
+								CDTXMania.app.Device,
+								(400 + ( k * 0x1a )) * Scale.X,
+								0x39 * Scale.Y,
+								rectangle2
+							);
 						}
 					}
 				}
