@@ -213,6 +213,11 @@ namespace DTXMania
 		MAX,	// 要素数取得のための定義 ("BGM"は使わない前提で)
 		BGM
 	}
+	internal enum Eレーン数
+	{
+		物理 = 8,	// LC, HH,     SD, BD, HT, LT, FT, CY
+		論理 = 10	// LC, HO, HC, SD, BD, HT, LT, FT, RC, RD
+	}
 	internal enum Eログ出力
 	{
 		OFF,
