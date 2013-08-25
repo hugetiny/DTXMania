@@ -59,7 +59,7 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.ft表示用フォント = new Font( "MS PGothic", 48f * Scale.X, FontStyle.Italic | FontStyle.Bold, GraphicsUnit.Pixel );
+			this.ft表示用フォント = new Font( "MS PGothic", 48f * Scale.Y, FontStyle.Italic | FontStyle.Bold, GraphicsUnit.Pixel );
 			this.n文字列の長さdot = 0;
 			this.txPanel = null;
 			this.ct進行用 = new CCounter();

@@ -594,7 +594,7 @@ namespace DTXMania
 		}
 		protected override void t進行描画・パネル文字列()
 		{
-			base.t進行描画・パネル文字列( 336, 427 );
+			base.t進行描画・パネル文字列( 336, 427+1 );
 		}
 
 		protected override void t進行描画・演奏情報()
