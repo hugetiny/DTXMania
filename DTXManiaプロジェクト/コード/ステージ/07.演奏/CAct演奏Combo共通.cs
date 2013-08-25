@@ -307,18 +307,34 @@ namespace DTXMania
 		protected virtual void tコンボ表示・ベース( int nCombo値, int nジャンプインデックス )
 		{
 		}
-		protected void tコンボ表示・ギター( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
+				protected void tコンボ表示・ギター( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
 		{
 			#region [ 事前チェック。]
 			//-----------------
-			if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
+			if ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
 				return;		// 表示OFF。
 
-			if( nCombo値 == 0 )
+			if ( nCombo値 == 0 )
 				return;		// コンボゼロは表示しない。
 			//-----------------
 			#endregion
+			tコンボ表示・ギターベース( nCombo値, n表示中央X, n表示中央Y, nジャンプインデックス );
+		}
+		protected void tコンボ表示・ベース( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
+		{
+			#region [ 事前チェック。]
+			//-----------------
+			if ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
+				return;		// 表示OFF。
 
+			if ( nCombo値 == 0 )
+				return;		// コンボゼロは表示しない。
+			//-----------------
+			#endregion
+			tコンボ表示・ギターベース( nCombo値, n表示中央X, n表示中央Y, nジャンプインデックス );
+		}
+		protected void tコンボ表示・ギターベース( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
+		{
 			int[] n位の数 = new int[ 10 ];	// 表示は10桁もあれば足りるだろう
 
 			#region [ nCombo値を桁数ごとに n位の数[] に格納する。（例：nCombo値=125 のとき n位の数 = { 5,2,1,0,0,0,0,0,0,0 } ） ]
@@ -377,85 +393,6 @@ namespace DTXMania
 				if( this.txCOMBOギター != null )
 				{
 					this.txCOMBOギター.t2D描画(
-						CDTXMania.app.Device,
-						x - ( (int) ( ( ( f拡大率 - 1.0f ) * nギターコンボの幅 ) / 2.0f ) ),
-						y - ( (int) ( ( ( f拡大率 - 1.0f ) * nギターコンボの高さ ) / 2.0f ) ),
-						new Rectangle( ( n位の数[ i ] % 5 ) * nギターコンボの幅, ( n位の数[ i ] / 5 ) * nギターコンボの高さ, nギターコンボの幅, nギターコンボの高さ ) );
-				}
-				//-----------------
-				#endregion
-			}
-		}
-		protected void tコンボ表示・ベース( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
-		{
-			#region [ 事前チェック。]
-			//-----------------
-			if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
-				return;		// 表示OFF。
-
-			if( nCombo値 == 0 )
-				return;		// コンボゼロは表示しない。
-			//-----------------
-			#endregion
-
-			int[] n位の数 = new int[ 10 ];	// 表示は10桁もあれば足りるだろう
-
-			#region [ nCombo値を桁数ごとに n位の数[] に格納する。（例：nCombo値=125 のとき n位の数 = { 5,2,1,0,0,0,0,0,0,0 } ） ]
-			//-----------------
-			int n = nCombo値;
-			int n桁数 = 0;
-			while( ( n > 0 ) && ( n桁数 < 10 ) )
-			{
-				n位の数[ n桁数 ] = n % 10;		// 1の位を格納
-				n = ( n - ( n % 10 ) ) / 10;	// 右へシフト（例: 12345 → 1234 ）
-				n桁数++;
-			}
-			//-----------------
-			#endregion
-
-			int n全桁の合計幅 = nギターコンボの幅 * n桁数;
-
-			#region [ "COMBO" の拡大率を設定。]
-			//-----------------
-			float f拡大率 = 1.0f;
-			if( nジャンプインデックス >= 0 && nジャンプインデックス < 180 )
-				f拡大率 = 1.0f - ( ( (float) this.nジャンプ差分値[ nジャンプインデックス ] ) / 45.0f );		// f拡大率 = 1.0 → 1.3333... → 1.0
-
-			if( this.txCOMBOギター != null )
-				this.txCOMBOギター.vc拡大縮小倍率 = new Vector3( f拡大率, f拡大率, 1.0f );
-			//-----------------
-			#endregion
-			#region [ "COMBO" 文字を表示。]
-			//-----------------
-			int x = n表示中央X - ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
-			int y = n表示中央Y;
-			
-			if( this.txCOMBOギター != null )
-				this.txCOMBOギター.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 70, 45, 16) );
-			//-----------------
-			#endregion
-
-			x = n表示中央X + ( n全桁の合計幅 / 2 );
-			for( int i = 0; i < n桁数; i++ )
-			{
-				#region [ 数字の拡大率を設定。]
-				//-----------------
-				f拡大率 = 1.0f;
-				if( nジャンプインデックス >= 0 && nジャンプインデックス < 180 )
-					f拡大率 = 1.0f - ( ( (float) this.nジャンプ差分値[ nジャンプインデックス ] ) / 45f );		// f拡大率 = 1.0 → 1.3333... → 1.0
-
-				if( this.txCOMBOギター != null )
-					this.txCOMBOギター.vc拡大縮小倍率 = new Vector3( f拡大率, f拡大率, 1.0f );
-				//-----------------
-				#endregion
-				#region [ 数字を1桁表示。]
-				//-----------------
-				x -= nギターコンボの幅 + nギターコンボの文字間隔;
-				y = n表示中央Y - nギターコンボの高さ;
-
-				if( this.txCOMBOギター != null )
-				{
-					this.txCOMBOギター.t2D描画( 
 						CDTXMania.app.Device,
 						x - ( (int) ( ( ( f拡大率 - 1.0f ) * nギターコンボの幅 ) / 2.0f ) ),
 						y - ( (int) ( ( ( f拡大率 - 1.0f ) * nギターコンボの高さ ) / 2.0f ) ),

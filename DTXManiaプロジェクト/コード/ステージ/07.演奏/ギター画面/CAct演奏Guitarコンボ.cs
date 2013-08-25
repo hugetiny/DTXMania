@@ -16,7 +16,7 @@ namespace DTXMania
 			{
 				base.txCOMBOギター.n透明度 = 0xff;
 			}
-			base.tコンボ表示・ベース( nCombo値, x, y, nジャンプインデックス );
+			base.tコンボ表示・ギター( nCombo値, x, y, nジャンプインデックス );
 		}
 		protected override void tコンボ表示・ドラム( int nCombo値, int nジャンプインデックス )
 		{
