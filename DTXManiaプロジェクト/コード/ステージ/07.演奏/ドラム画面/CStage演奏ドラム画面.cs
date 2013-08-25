@@ -532,7 +532,7 @@ namespace DTXMania
 					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ?
 						(int)((374 * Scale.Y) + nJudgeLinePosY_delta.Guitar) :
 						(int)((95*Scale.Y) - nJudgeLinePosY_delta.Guitar)
-					) - 3;
+					) - (int)(3 * Scale.Y);
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバーGB != null )
 					{
@@ -553,7 +553,7 @@ namespace DTXMania
 					int y = ( CDTXMania.ConfigIni.bReverse.Bass ?
 						(int)((374*Scale.Y) + nJudgeLinePosY_delta.Bass) :
 						(int)((95*Scale.Y) - nJudgeLinePosY_delta.Bass)
-					) - 3;
+					) - (int)(3 * Scale.Y);
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバーGB != null )
 					{

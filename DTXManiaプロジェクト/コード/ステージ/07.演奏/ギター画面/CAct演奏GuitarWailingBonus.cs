@@ -124,7 +124,17 @@ namespace DTXMania
 							}
 							if( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
 							{
-								this.txWailingBonus.t2D描画( CDTXMania.app.Device, x, num6 + num7, rectangle );
+								rectangle.X = (int) ( rectangle.X * Scale.X );
+								rectangle.Y = (int) ( rectangle.Y * Scale.Y );
+								rectangle.Width = (int) ( rectangle.Width * Scale.X );
+								rectangle.Height = (int) ( rectangle.Height * Scale.Y );
+
+								this.txWailingBonus.t2D描画(
+									CDTXMania.app.Device,
+									x * Scale.X,
+									(num6 + num7) * Scale.Y,
+									rectangle
+								);
 							}
 							num7 = 0;
 							rectangle = new Rectangle( 0x1a, 0, 0x1a, 0x7a );
@@ -140,7 +150,17 @@ namespace DTXMania
 							}
 							if( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
 							{
-								this.txWailingBonus.t2D描画( CDTXMania.app.Device, x, ( num6 + num7 ) + 0x7a, rectangle );
+								rectangle.X = (int) ( rectangle.X * Scale.X );
+								rectangle.Y = (int) ( rectangle.Y * Scale.Y );
+								rectangle.Width = (int) ( rectangle.Width * Scale.X );
+								rectangle.Height = (int) ( rectangle.Height * Scale.Y );
+
+								this.txWailingBonus.t2D描画(
+									CDTXMania.app.Device,
+									x * Scale.X,
+									(int)((( num6 + num7 ) + 0x7a) * Scale.Y),
+									rectangle
+								);
 							}
 						}
 					}

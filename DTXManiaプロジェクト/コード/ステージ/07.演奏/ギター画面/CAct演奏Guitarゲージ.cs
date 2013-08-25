@@ -110,8 +110,19 @@ namespace DTXMania
 						}
 						if( this.txゲージ != null )
 						{
+							Rectangle rectangle1 = rectangle;
+							rectangle1.X = (int) ( rectangle1.X * Scale.X );
+							rectangle1.Y = (int) ( rectangle1.Y * Scale.Y );
+							rectangle1.Width = (int) ( rectangle1.Width * Scale.X );
+							rectangle1.Height = (int) ( rectangle1.Height * Scale.Y );
+
 							this.txゲージ.b加算合成 = false;
-							this.txゲージ.t2D描画( CDTXMania.app.Device, x, 8, rectangle );
+							this.txゲージ.t2D描画(
+								CDTXMania.app.Device,
+								x * Scale.X,
+								8 * Scale.Y,
+								rectangle1
+							);
 						}
 						num4 -= rectangle.Width;
 						x += rectangle.Width;
@@ -133,13 +144,24 @@ namespace DTXMania
 					if( ( rectangle.Left < rectangle.Right ) && ( this.txゲージ != null ) )
 					{
 						this.txゲージ.b加算合成 = true;
-						this.txゲージ.t2D描画( CDTXMania.app.Device, x, 8, rectangle );
+						rectangle.X = (int) ( rectangle.X * Scale.X );
+						rectangle.Y = (int) ( rectangle.Y * Scale.Y );
+						rectangle.Width = (int) ( rectangle.Width * Scale.X );
+						rectangle.Height = (int) ( rectangle.Height * Scale.Y );
+						this.txゲージ.t2D描画( CDTXMania.app.Device,
+							x * Scale.X,
+							8 * Scale.Y,
+							rectangle
+						);
 					}
 					if (this.bRisky && this.actLVLNFont != null)		// #23599 2011.7.30 yyagi Risky残りMiss回数表示
 					{
 						CActLVLNFont.EFontColor efc = this.IsDanger( E楽器パート.GUITAR ) ?
 							CActLVLNFont.EFontColor.Red : CActLVLNFont.EFontColor.Yellow;
-						actLVLNFont.t文字列描画( 196, 6, nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Left );
+						actLVLNFont.t文字列描画(
+							(int)(196 * Scale.X),
+							(int)(6 * Scale.Y),
+							nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Left );
 					}
 				}
 				#endregion
@@ -187,8 +209,18 @@ namespace DTXMania
 						}
 						if( this.txゲージ != null )
 						{
+							Rectangle rectangle3 = rectangle2;
+							rectangle3.X = (int) ( rectangle3.X * Scale.X );
+							rectangle3.Y = (int) ( rectangle3.Y * Scale.Y );
+							rectangle3.Width = (int) ( rectangle3.Width * Scale.X );
+							rectangle3.Height = (int) ( rectangle3.Height * Scale.Y );
 							this.txゲージ.b加算合成 = false;
-							this.txゲージ.t2D描画( CDTXMania.app.Device, num11, 8, rectangle2 );
+							this.txゲージ.t2D描画(
+								CDTXMania.app.Device,
+								num11 * Scale.X,
+								8 * Scale.Y,
+								rectangle3
+							);
 						}
 						num12 -= rectangle2.Width;
 						num11 += rectangle2.Width;
@@ -203,13 +235,25 @@ namespace DTXMania
 					if( ( rectangle2.Left < rectangle2.Right ) && ( this.txゲージ != null ) )
 					{
 						this.txゲージ.b加算合成 = true;
-						this.txゲージ.t2D描画( CDTXMania.app.Device, num11, 8, rectangle2 );
+						rectangle2.X = (int) ( rectangle2.X * Scale.X );
+						rectangle2.Y = (int) ( rectangle2.Y * Scale.Y );
+						rectangle2.Width = (int) ( rectangle2.Width * Scale.X );
+						rectangle2.Height = (int) ( rectangle2.Height * Scale.Y );
+						this.txゲージ.t2D描画(
+							CDTXMania.app.Device,
+							num11 * Scale.X,
+							8 * Scale.Y,
+							rectangle2
+						);
 					}
 					if (this.bRisky && this.actLVLNFont != null)		// #23599 2011.7.30 yyagi Risky残りMiss回数表示
 					{
 						CActLVLNFont.EFontColor efc = this.IsDanger( E楽器パート.GUITAR ) ?
 							CActLVLNFont.EFontColor.Red : CActLVLNFont.EFontColor.Yellow;
-						actLVLNFont.t文字列描画( 445, 6, nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Right);
+						actLVLNFont.t文字列描画(
+							(int)(445 * Scale.X),
+							(int)(6 * Scale.Y),
+							nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Right);
 					}
 				}
 				#endregion

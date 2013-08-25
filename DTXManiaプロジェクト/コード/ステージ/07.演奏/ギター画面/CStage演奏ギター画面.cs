@@ -217,25 +217,50 @@ namespace DTXMania
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 369 + nJudgeLinePosY_delta.Guitar : 40 - nJudgeLinePosY_delta.Guitar ) - 3;
+					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ?
+								(int)(369 * Scale.Y) + nJudgeLinePosY_delta.Guitar :
+								(int)(40 * Scale.Y) - nJudgeLinePosY_delta.Guitar )
+						- (int)(3 * Scale.Y);
 															// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバー != null )
 					{
 						for ( int i = 0; i < 4; i++ )
 						{
-							this.txヒットバー.t2D描画( CDTXMania.app.Device, 23 + ( 28 * i ), y, new Rectangle( 0, i * 8, 28, 8 ) );
+							this.txヒットバー.t2D描画( CDTXMania.app.Device,
+								(23 + ( 28 * i )) * Scale.X,
+								y,
+								new Rectangle(
+									0,
+									(int)(i * 8 * Scale.Y),
+									(int)(28 * Scale.X),
+									(int)(8 * Scale.Y)
+								)
+							);
 						}
 					}
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Bass ? 369 + nJudgeLinePosY_delta.Bass : 40 - nJudgeLinePosY_delta.Bass ) - 3;
+					int y = ( CDTXMania.ConfigIni.bReverse.Bass ?
+								(int)(369 * Scale.Y) + nJudgeLinePosY_delta.Bass :
+								(int)(40 * Scale.Y) - nJudgeLinePosY_delta.Bass )
+						- (int)(3 * Scale.Y);
 															// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバー != null )
 					{
 						for ( int j = 0; j < 4; j++ )
 						{
-							this.txヒットバー.t2D描画( CDTXMania.app.Device, 477 + ( 28 * j ), y, new Rectangle( 0, j * 8, 28, 8 ) );
+							this.txヒットバー.t2D描画(
+								CDTXMania.app.Device,
+								(477 + ( 28 * j )) * Scale.X,
+								y,
+								new Rectangle(
+									0,
+									(int)(j * 8 * Scale.Y),
+									(int)(28 * Scale.X),
+									(int)(8 * Scale.Y)
+								)
+							);
 						}
 					}
 				}
@@ -268,7 +293,7 @@ namespace DTXMania
 
 		protected override void t背景テクスチャの生成()
 		{
-			Rectangle bgrect = new Rectangle( 181, 50, 278, 355 );
+			Rectangle bgrect = new Rectangle( (int) ( 181 * Scale.X ), (int) ( 50 * Scale.Y ), (int) ( 278 * Scale.X ), (int) ( 355 * Scale.Y ) );
 			string DefaultBgFilename = @"Graphics\ScreenPlayGuitar background.jpg";
 			string BgFilename = "";
 			string BACKGROUND = null;
@@ -461,7 +486,17 @@ namespace DTXMania
 						}
 						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, drawX, ( y - numA ) + numC, rect );
+							rect.X = (int) ( rect.X * Scale.X );
+							rect.Y = (int) ( rect.Y * Scale.Y );
+							rect.Width = (int) ( rect.Width * Scale.X );
+							rect.Height = (int) ( rect.Height * Scale.Y );
+
+							this.txチップ.t2D描画(
+								CDTXMania.app.Device,
+								drawX * Scale.X,
+								(( y - numA ) + numC) * Scale.Y,
+								rect
+							);
 						}
 					}
 				}
@@ -650,7 +685,16 @@ namespace DTXMania
 						}
 						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, drawX, ( y - numA ) + numC, rect );
+							rect.X = (int) ( rect.X * Scale.X );
+							rect.Y = (int) ( rect.Y * Scale.Y );
+							rect.Width = (int) ( rect.Width * Scale.X );
+							rect.Height = (int) ( rect.Height * Scale.Y );
+							this.txチップ.t2D描画(
+								CDTXMania.app.Device,
+								drawX * Scale.X,
+								(( y - numA ) + numC) * Scale.Y,
+								rect
+							);
 						}
 					}
 				}
@@ -692,12 +736,32 @@ namespace DTXMania
 				int y = configIni.bReverse.Guitar ? ( ( 0x171 - pChip.nバーからの距離dot.Guitar ) - 1 ) : ( ( 40 + pChip.nバーからの距離dot.Guitar ) - 1 );
 				if ( ( dTX.bチップがある.Guitar && ( y > 0 ) ) && ( ( y < 0x199 ) && ( this.txチップ != null ) ) )
 				{
-					this.txチップ.t2D描画( CDTXMania.app.Device, 0x1a, y, new Rectangle( 0, 0xeb, 0x68, 1 ) );
+					this.txチップ.t2D描画(
+						CDTXMania.app.Device,
+						0x1a * Scale.X,
+						y * Scale.Y,
+						new Rectangle(
+							0,
+							(int)(0xeb * Scale.Y),
+							(int)(0x68 * Scale.X),
+							(int)(1 * Scale.Y)
+						)
+					);
 				}
 				y = configIni.bReverse.Bass ? ( ( 0x171 - pChip.nバーからの距離dot.Bass ) - 1 ) : ( ( 40 + pChip.nバーからの距離dot.Bass ) - 1 );
 				if ( ( dTX.bチップがある.Bass && ( y > 0 ) ) && ( ( y < 0x199 ) && ( this.txチップ != null ) ) )
 				{
-					this.txチップ.t2D描画( CDTXMania.app.Device, 480, y, new Rectangle( 0, 0xeb, 0x68, 1 ) );
+					this.txチップ.t2D描画(
+						CDTXMania.app.Device,
+						480 * Scale.X,
+						y * Scale.Y,
+						new Rectangle(
+							0,
+							(int)(0xeb * Scale.Y),
+							(int)(0x68 * Scale.X),
+							(int)(1 * Scale.Y)
+						)
+					);
 				}
 			}
 

@@ -69,7 +69,11 @@ namespace DTXMania
 							//				{
 							//		if ( this.txDANGER != null )
 							//		{
-							this.txDANGER.t2D描画( CDTXMania.app.Device, nGaugeX[ nPart ], 0 );
+							this.txDANGER.t2D描画(
+								CDTXMania.app.Device,
+								nGaugeX[ nPart ] * Scale.X,
+								0
+							);
 							//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26, ( ( i * 0x80 ) + num2 ) + 0x40, this.rc領域[ 1 ] );
 							//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a, ( i * 0x80 ) + num2, this.rc領域[ 0 ] );
 							//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a, ( ( i * 0x80 ) + num2 ) + 0x40, this.rc領域[ 1 ] );
