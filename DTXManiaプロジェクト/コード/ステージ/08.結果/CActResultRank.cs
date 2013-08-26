@@ -120,7 +120,11 @@ namespace DTXMania
 				{
 					this.txランクパネル.n透明度 = (int) ( 255f * y );
 					this.txランクパネル.vc拡大縮小倍率 = new Vector3( 1f, y, 1f );
-					this.txランクパネル.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y + ( (int) ( ( 1f - y ) * 64f ) ) );
+					this.txランクパネル.t2D描画(
+						CDTXMania.app.Device,
+						this.n本体X * Scale.X,
+						(this.n本体Y + ( (int) ( ( 1f - y ) * 64f ) )) * Scale.Y
+					);
 				}
 			}
 			if( this.ctランク表示.n現在の値 >= 0x3e8 )
@@ -128,7 +132,17 @@ namespace DTXMania
 				double num2 = ( (double) ( this.ctランク表示.n現在の値 - 0x3e8 ) ) / 300.0;
 				if( this.txランク文字 != null )
 				{
-					this.txランク文字.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y, new Rectangle( 0, 0, (int) ( 128.0 * num2 ), 0x80 ) );
+					this.txランク文字.t2D描画(
+						CDTXMania.app.Device,
+						this.n本体X * Scale.X,
+						this.n本体Y * Scale.Y,
+						new Rectangle(
+							0,
+							0,
+							(int) ( 128.0 * num2 * Scale.X),
+							(int)(0x80 * Scale.Y)
+						)
+					);
 				}
 			}
 			this.t描画・白波();
@@ -178,7 +192,17 @@ namespace DTXMania
 						{
 							if( this.tx白波 != null )
 							{
-								this.tx白波.t2D描画( CDTXMania.app.Device, num2 + ( i * 0x20 ), y, rectangle );
+								Rectangle rectangle1 = rectangle;
+								rectangle1.X = (int) ( rectangle1.X * Scale.X );
+								rectangle1.Y = (int) ( rectangle1.Y * Scale.Y );
+								rectangle1.Width = (int) ( rectangle1.Width * Scale.X );
+								rectangle1.Height = (int) ( rectangle1.Height * Scale.Y );
+								this.tx白波.t2D描画(
+									CDTXMania.app.Device,
+									(num2 + ( i * 0x20 )) * Scale.X,
+									y * Scale.Y,
+									rectangle1
+								);
 							}
 						}
 					}

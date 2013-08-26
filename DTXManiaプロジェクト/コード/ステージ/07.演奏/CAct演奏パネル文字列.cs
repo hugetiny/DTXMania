@@ -49,7 +49,7 @@ namespace DTXMania
 						Trace.TraceError( "パネル文字列テクスチャの生成に失敗しました。" );
 						this.txPanel = null;
 					}
-					this.ct進行用 = new CCounter( (int)(-278 * Scale.X), this.n文字列の長さdot / 2, (int)(8/Scale.X), CDTXMania.Timer );
+					this.ct進行用 = new CCounter( (int)(-278 * Scale.X), this.n文字列の長さdot / 2, unchecked((int)( 8.0f / Scale.X )), CDTXMania.Timer );
 				}
 			}
 		}

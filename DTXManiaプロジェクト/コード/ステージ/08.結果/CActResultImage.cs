@@ -55,7 +55,8 @@ namespace DTXMania
 			{
 				this.txパネル本体 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult resultimage panel.png" ) );
 				this.txリザルト画像がないときの画像 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect preimage default.png" ) );
-				this.sfリザルトAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 0xcc, 0x10d, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.SystemMemory );
+				//this.sfリザルトAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 0xcc, 0x10d, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default );
+				this.sfリザルトAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 192, 269, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default );
 				this.nAVI再生開始時刻 = -1;
 				this.n前回描画したフレーム番号 = -1;
 				this.b動画フレームを作成した = false;
@@ -127,7 +128,11 @@ namespace DTXMania
 			}
 			if( this.txパネル本体 != null )
 			{
-				this.txパネル本体.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y );
+				this.txパネル本体.t2D描画(
+					CDTXMania.app.Device,
+					this.n本体X * Scale.X,
+					this.n本体Y * Scale.Y
+				);
 			}
 			int x = this.n本体X + 0x11;
 			int y = this.n本体Y + 0x10;
@@ -166,7 +171,14 @@ namespace DTXMania
 					}
 					if( sourceRectangle.Height > 0 )
 					{
-						CDTXMania.app.Device.UpdateSurface( this.sfリザルトAVI画像, sourceRectangle, surface, new Point( x, y ) );
+						Rectangle destRectangle = new Rectangle(
+							(int) ( x * Scale.X ),
+							(int) ( y * Scale.Y ),
+							(int) ( sourceRectangle.Width * Scale.X ),
+							(int) ( sourceRectangle.Height * Scale.Y )
+						);
+						CDTXMania.app.Device.StretchRectangle( this.sfリザルトAVI画像, sourceRectangle, surface, destRectangle, TextureFilter.Linear );
+						//CDTXMania.app.Device.UpdateSurface( this.sfリザルトAVI画像, sourceRectangle, surface, new Point( (int)(x * Scale.X), (int)(y * Scale.Y) ) );
 					}
 					goto Label_042F;
 				}
@@ -185,12 +197,28 @@ namespace DTXMania
 				}
 				x += ( 0xcc - width ) / 2;
 				y += ( 0x10d - height ) / 2;
-				this.r表示するリザルト画像.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 0, width, height ) );
+				this.r表示するリザルト画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+				this.r表示するリザルト画像.t2D描画(
+					CDTXMania.app.Device,
+					x * Scale.X,
+					y * Scale.Y//,
+					//new Rectangle(
+					//	0,
+					//	0,
+					//	(int)(width * Scale.X),
+					//	(int)(height * Scale.Y)
+					//)
+				);
 			}
 		Label_042F:
 			if( ( CDTXMania.DTX.GENRE != null ) && ( CDTXMania.DTX.GENRE.Length > 0 ) )
 			{
-				CDTXMania.act文字コンソール.tPrint( this.n本体X + 0x12, this.n本体Y - 1, C文字コンソール.Eフォント種別.赤細, CDTXMania.DTX.GENRE );
+				CDTXMania.act文字コンソール.tPrint(
+					(int)((this.n本体X + 0x12) * Scale.X),
+					(int)((this.n本体Y - 1) * Scale.Y),
+					C文字コンソール.Eフォント種別.赤細,
+					CDTXMania.DTX.GENRE
+				);
 			}
 			if( !this.ct登場用.b終了値に達した )
 			{

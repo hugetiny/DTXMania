@@ -350,11 +350,11 @@ namespace DTXMania
 				}
 				if( this.tx上部パネル != null )
 				{
-					this.tx上部パネル.t2D描画( CDTXMania.app.Device, 0, num );
+					this.tx上部パネル.t2D描画( CDTXMania.app.Device, 0, num * Scale.Y );
 				}
 				if( this.tx下部パネル != null )
 				{
-					this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, 480 - this.tx下部パネル.sz画像サイズ.Height );
+					this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, (480 - this.tx下部パネル.sz画像サイズ.Height) * Scale.Y );
 				}
 				this.actOption.On進行描画();
 				if( this.actResultImage.On進行描画() == 0 )
