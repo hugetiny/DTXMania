@@ -63,11 +63,21 @@ namespace DTXMania
 			#region [ スクロールバーの描画 #27648 ]
 			if ( this.txScrollBar != null )
 			{
-				for ( int sy = 0; sy < 336; sy += 128 )
+				for ( int sy = 0; sy < (int)(336 * Scale.Y); sy += (int)(128 * Scale.Y))
 				{
-					int ry = ( sy / 128 );
-					int h = ( ( ry + 1 ) * 128 > 336 ) ? 336 - ry * 128 : 128;
-					this.txScrollBar.t2D描画( CDTXMania.app.Device, 640 - 12, 58 + sy, new Rectangle( ry * 12, 0, 12, h ) );	// 本当のy座標は88なんだが、なぜか約30のバイアスが掛かる・・・
+					int ry = ( sy / (int)(128 * Scale.Y) );
+					int h = ( ( ry + 1 ) * (int)(128 * Scale.Y) > (int)(336 * Scale.Y) ) ? (int)(336 * Scale.Y)- ry * (int)(128 * Scale.Y) : (int)(128 * Scale.Y);
+					this.txScrollBar.t2D描画(
+						CDTXMania.app.Device,
+						SampleFramework.GameWindowSize.Width- 12 * Scale.X,
+						58 * Scale.Y + sy,
+						new Rectangle(
+							(int)(ry * 12 * Scale.X),
+							0,
+							(int)(12 * Scale.X),
+							h
+						)
+					);	// 本当のy座標は88なんだが、なぜか約30のバイアスが掛かる・・・
 				}
 			}
 			#endregion
@@ -75,9 +85,19 @@ namespace DTXMania
 			if ( this.txScrollPosition != null )
 			{
 				int py = CDTXMania.stage選曲.nスクロールバー相対y座標;
-				if ( py <= 336 - 6 - 8 )
+				if ( py <= 336 * Scale.Y - 6 - 8 )
 				{
-					this.txScrollPosition.t2D描画( CDTXMania.app.Device, 640 - 12 + 3, 58 + py, new Rectangle( 30, 120, 6, 8 ) );
+					this.txScrollPosition.t2D描画(
+						CDTXMania.app.Device,
+						SampleFramework.GameWindowSize.Width - (12 - 3) * Scale.X,
+						58 * Scale.Y + py,
+						new Rectangle(
+							(int)(30 * Scale.X),
+							(int)(120 * Scale.Y),
+							(int)(6 * Scale.X),
+							(int)(8 * Scale.Y)
+						)
+					);
 				}
 			}
 			#endregion

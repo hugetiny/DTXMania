@@ -175,7 +175,7 @@ namespace DTXMania
 			{
 				this.eフェードアウト完了時の戻り値 = E戻り値.継続;
 				this.bBGM再生済み = false;
-				this.ftフォント = new Font( "MS PGothic", 26f, GraphicsUnit.Pixel );
+				this.ftフォント = new Font( "MS PGothic", 26f * Scale.X, GraphicsUnit.Pixel );
 				for( int i = 0; i < 4; i++ )
 					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.Timer );
 
@@ -278,25 +278,47 @@ namespace DTXMania
 					y = ( (int) ( this.tx上部パネル.sz画像サイズ.Height * dbY表示割合 ) ) - this.tx上部パネル.sz画像サイズ.Height;
 				}
 				if( this.tx上部パネル != null )
-						this.tx上部パネル.t2D描画( CDTXMania.app.Device, 0, y );
+						this.tx上部パネル.t2D描画(
+							CDTXMania.app.Device,
+							0,
+							y * Scale.Y
+						);
 
 				this.actInformation.On進行描画();
 				if( this.tx下部パネル != null )
-					this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, 480 - this.tx下部パネル.sz画像サイズ.Height );
+					this.tx下部パネル.t2D描画(
+						CDTXMania.app.Device,
+						0,
+						SampleFramework.GameWindowSize.Height - this.tx下部パネル.sz画像サイズ.Height
+					);
 
 				this.actステータスパネル.On進行描画();
 				this.act演奏履歴パネル.On進行描画();
 				this.actPresound.On進行描画();
 				if( this.txコメントバー != null )
 				{
-					this.txコメントバー.t2D描画( CDTXMania.app.Device, 0xf2, 0xe4 );
+					this.txコメントバー.t2D描画(
+						CDTXMania.app.Device,
+						0xf2 * Scale.X,
+						0xe4 * Scale.Y
+					);
 				}
 				this.actArtistComment.On進行描画();
 				this.actオプションパネル.On進行描画();
 				if ( this.txFLIP != null && CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.16 yyagi
 				{
-					Rectangle rect = new Rectangle(31, 49, 20, 11);
-					this.txFLIP.t2D描画( CDTXMania.app.Device, 40, 436, rect );
+					Rectangle rect = new Rectangle(
+						(int)(31 * Scale.X),
+						(int)(49 * Scale.Y),
+						(int)(20 * Scale.X),
+						(int)(11 * Scale.Y)
+					);
+					this.txFLIP.t2D描画(
+						CDTXMania.app.Device,
+						40 * Scale.X,
+						436 * Scale.Y,
+						rect
+					);
 				}
 				this.actShowCurrentPosition.On進行描画();								// #27648 2011.3.28 yyagi
 

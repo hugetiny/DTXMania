@@ -78,29 +78,59 @@ namespace DTXMania
 					if( this.n画像Index上 >= 0 )
 					{
 						STINFO stinfo = this.stInfo[ this.n画像Index上 ];
-						Rectangle rectangle = new Rectangle( stinfo.pt左上座標.X, stinfo.pt左上座標.Y + ( (int) ( 45.0 * n現在の割合 ) ), 221, Convert.ToInt32(45.0 * (1.0 - n現在の割合)) );
+						Rectangle rectangle = new Rectangle(
+							stinfo.pt左上座標.X,
+							stinfo.pt左上座標.Y + ( (int) ( (int)(45.0 * Scale.Y) * n現在の割合 ) ),
+							(int)(221 * Scale.X),
+							Convert.ToInt32((int)(45.0 * Scale.Y) * (1.0 - n現在の割合))
+						);
 						if( this.txInfo[ stinfo.nTexture番号 ] != null )
 						{
-							this.txInfo[ stinfo.nTexture番号 ].t2D描画( CDTXMania.app.Device, 115, 6, rectangle );
+							this.txInfo[ stinfo.nTexture番号 ].t2D描画(
+								CDTXMania.app.Device,
+								115 * Scale.X,
+								6 * Scale.Y,
+								rectangle
+							);
 						}
 					}
 					if( this.n画像Index下 >= 0 )
 					{
 						STINFO stinfo = this.stInfo[ this.n画像Index下 ];
-						Rectangle rectangle = new Rectangle( stinfo.pt左上座標.X, stinfo.pt左上座標.Y, 221, (int) ( 45.0 * n現在の割合 ) );
+						Rectangle rectangle = new Rectangle(
+							stinfo.pt左上座標.X,
+							stinfo.pt左上座標.Y,
+							(int)(221 * Scale.X),
+							(int) ( 45.0 * Scale.Y * n現在の割合 )
+						);
 						if( this.txInfo[ stinfo.nTexture番号 ] != null )
 						{
-							this.txInfo[ stinfo.nTexture番号 ].t2D描画( CDTXMania.app.Device, 115, 6 + ( (int) ( 45.0 * ( 1.0 - n現在の割合 ) ) ), rectangle );
+							this.txInfo[ stinfo.nTexture番号 ].t2D描画(
+								CDTXMania.app.Device,
+								115 * Scale.X,
+								6 * Scale.Y + ( (int) ( 45.0 * Scale.Y * ( 1.0 - n現在の割合 ) ) ),
+								rectangle
+							);
 						}
 					}
 				}
 				else
 				{
 					STINFO stinfo = this.stInfo[ this.n画像Index下 ];
-					Rectangle rectangle = new Rectangle( stinfo.pt左上座標.X, stinfo.pt左上座標.Y, 221, 45 );
+					Rectangle rectangle = new Rectangle(
+						stinfo.pt左上座標.X,
+						stinfo.pt左上座標.Y,
+						(int)(221 * Scale.X),
+						(int)(45 * Scale.Y)
+					);
 					if( this.txInfo[ stinfo.nTexture番号 ] != null )
 					{
-						this.txInfo[ stinfo.nTexture番号 ].t2D描画( CDTXMania.app.Device, 115, 6, rectangle );
+						this.txInfo[ stinfo.nTexture番号 ].t2D描画(
+							CDTXMania.app.Device,
+							115 * Scale.X,
+							6 * Scale.Y,
+							rectangle
+						);
 					}
 				}
 			}
@@ -129,14 +159,14 @@ namespace DTXMania
 		private int n画像Index上;
 		private readonly STINFO[] stInfo = new STINFO[] {
 			new STINFO( 0, 0, 0 ),
-			new STINFO( 0, 0, 49 ),
-			new STINFO( 0, 0, 97 ),
-			new STINFO( 0, 0, 147 ),
-			new STINFO( 0, 0, 196 ),
-			new STINFO( 1, 0, 0 ),
-			new STINFO( 1, 0, 49 ),
-			new STINFO( 1, 0, 97 ),
-			new STINFO( 1, 0, 147 )
+			new STINFO( 0, 0, (int)(49 * Scale.Y) ),
+			new STINFO( 0, 0, (int)(97 * Scale.Y) ),
+			new STINFO( 0, 0, (int)(147 * Scale.Y) ),
+			new STINFO( 0, 0, (int)(196 * Scale.Y) ),
+			new STINFO( 1, 0, (int)(0 * Scale.Y) ),
+			new STINFO( 1, 0, (int)(49 * Scale.Y) ),
+			new STINFO( 1, 0, (int)(97 * Scale.Y) ),
+			new STINFO( 1, 0, (int)(147 * Scale.Y) )
 		};
 		private CTexture[] txInfo = new CTexture[ 2 ];
 		//-----------------

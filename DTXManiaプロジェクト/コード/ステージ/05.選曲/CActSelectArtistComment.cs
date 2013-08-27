@@ -112,7 +112,12 @@ namespace DTXMania
 				image.Dispose();
 				if( this.txComment != null )
 				{
-					this.ctComment = new CCounter( -386, (int) ( ( ( ( this.nComment行数 - 1 ) * this.nテクスチャの最大幅 ) + this.nComment最終行の幅 ) * this.txComment.vc拡大縮小倍率.X ), 10, CDTXMania.Timer );
+					this.ctComment = new CCounter(
+						-nComment表示幅,
+						(int) ( ( ( ( this.nComment行数 - 1 ) * this.nテクスチャの最大幅 ) + this.nComment最終行の幅 ) * this.txComment.vc拡大縮小倍率.X ),
+						(int)(10 * 2 / Scale.X),
+						CDTXMania.Timer
+					);
 				}
 			}
 		}
@@ -122,7 +127,7 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.ft描画用フォント = new Font( "MS PGothic", 26f, GraphicsUnit.Pixel );
+			this.ft描画用フォント = new Font( "MS PGothic", 26f * Scale.Y, GraphicsUnit.Pixel );
 			this.txArtist = null;
 			this.txComment = null;
 			this.strArtist = "";
@@ -172,15 +177,15 @@ namespace DTXMania
 				}
 				if( this.txArtist != null )
 				{
-					int x = 634 - 12 - ( (int) ( this.txArtist.szテクスチャサイズ.Width * this.txArtist.vc拡大縮小倍率.X ) );		// #27648 2012.3.14 yyagi: -12 for scrollbar
-					int y = 231;
+					int x = (int)(SampleFramework.GameWindowSize.Width - (6 + 12) * Scale.X) - ( (int) ( this.txArtist.szテクスチャサイズ.Width * this.txArtist.vc拡大縮小倍率.X ) );		// #27648 2012.3.14 yyagi: -12 for scrollbar
+					int y = (int)(231 * Scale.Y);
 					this.txArtist.t2D描画( CDTXMania.app.Device, x, y );
 				}
-				if( ( this.txComment != null ) && ( ( this.ctComment.n現在の値 + 0x182 ) >= 0 ) )
+				if ( ( this.txComment != null ) && ( ( this.ctComment.n現在の値 + nComment表示幅 ) >= 0 ) )
 				{
-					int num3 = 0xf8;
-					int num4 = 0xf5;
-					Rectangle rectangle = new Rectangle( this.ctComment.n現在の値, 0, 0x182, (int) this.ft描画用フォント.Size );
+					int num3 = (int)(0xf8 * Scale.X);
+					int num4 = (int)(0xf5 * Scale.Y);
+					Rectangle rectangle = new Rectangle( this.ctComment.n現在の値, 0, nComment表示幅, (int) this.ft描画用フォント.Size );
 					if( rectangle.X < 0 )
 					{
 						num3 += -rectangle.X;
@@ -221,7 +226,7 @@ namespace DTXMania
 		private Font ft描画用フォント;
 		private int nComment行数;
 		private int nComment最終行の幅;
-		private const int nComment表示幅 = 0x182;
+		private const int nComment表示幅 = (int)(0x182 * Scale.X);
 		private int nテクスチャの最大幅;
 		private string strArtist;
 		private string strComment;

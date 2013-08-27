@@ -36,8 +36,8 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.n本体X = 8;
-			this.n本体Y = 0x39;
+			this.n本体X = (int)(8 * Scale.X);
+			this.n本体Y = (int)(0x39 * Scale.Y);
 			this.r表示するプレビュー画像 = this.txプレビュー画像がないときの画像;
 			this.str現在のファイル名 = "";
 			this.b新しいプレビューファイルを読み込んだ = false;
@@ -156,9 +156,9 @@ namespace DTXMania
 		private int n本体X;
 		private int n本体Y;
 		private IntPtr pAVIBmp;
-		private readonly Rectangle rcセンサ光 = new Rectangle( 0, 0xc0, 0x40, 0x40 );
-		private readonly Rectangle rcセンサ本体下半分 = new Rectangle( 0x40, 0, 0x40, 0x80 );
-		private readonly Rectangle rcセンサ本体上半分 = new Rectangle( 0, 0, 0x40, 0x80 );
+		private readonly Rectangle rcセンサ光 = new Rectangle( (int)(0 * Scale.X), (int)(0xc0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
+		private readonly Rectangle rcセンサ本体下半分 = new Rectangle( (int)(0x40 * Scale.X), (int)(0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x80 * Scale.Y) );
+		private readonly Rectangle rcセンサ本体上半分 = new Rectangle( (int)(0 * Scale.X), (int)(0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x80 * Scale.Y) );
 		private CTexture r表示するプレビュー画像;
 		private Surface sfAVI画像;
 		private string str現在のファイル名;
@@ -440,7 +440,12 @@ namespace DTXMania
 						str = "Unknown";
 						break;
 				}
-				CDTXMania.act文字コンソール.tPrint( this.n本体X + 0x12, this.n本体Y - 1, C文字コンソール.Eフォント種別.赤細, str );
+				CDTXMania.act文字コンソール.tPrint(
+					this.n本体X + (int)(0x12 * Scale.X),
+					this.n本体Y - (int)(1 * Scale.Y),
+					C文字コンソール.Eフォント種別.赤細,
+					str
+				);
 			}
 		}
 		private void t描画処理・センサ光()
@@ -448,13 +453,23 @@ namespace DTXMania
 			int num = this.ctセンサ光.n現在の値;
 			if( num < 12 )
 			{
-				int x = this.n本体X + 0xcc;
-				int y = this.n本体Y + 0x7b;
+				int x = this.n本体X + (int)(0xcc * Scale.X);
+				int y = this.n本体Y + (int)(0x7b * Scale.Y);
 				if( this.txセンサ光 != null )
 				{
 					this.txセンサ光.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
 					this.txセンサ光.n透明度 = 0xff;
-					this.txセンサ光.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( ( num % 4 ) * 0x40, ( num / 4 ) * 0x40, 0x40, 0x40 ) );
+					this.txセンサ光.t2D描画(
+						CDTXMania.app.Device,
+						x,
+						y,
+						new Rectangle(
+							(int)(( num % 4 ) * 0x40 * Scale.X),
+							(int)(( num / 4 ) * 0x40 * Scale.Y),
+							(int)(0x40 * Scale.X),
+							(int)(0x40 * Scale.Y)
+						)
+					);
 				}
 			}
 			else if( num < 0x18 )
@@ -464,24 +479,29 @@ namespace DTXMania
 				double num6 = 1.0 + ( num5 * 0.5 );
 				int num7 = (int) ( 64.0 * num6 );
 				int num8 = (int) ( 64.0 * num6 );
-				int num9 = ( ( this.n本体X + 0xcc ) + 0x20 ) - ( num7 / 2 );
-				int num10 = ( ( this.n本体Y + 0x7b ) + 0x20 ) - ( num8 / 2 );
+				int x = ( ( this.n本体X + (int)(0xcc*Scale.X) ) + (int)(0x20*Scale.X) ) - ( (int)(num7*Scale.X) / 2 );
+				int y = ( ( this.n本体Y + (int)(0x7b*Scale.Y) ) + (int)(0x20*Scale.Y) ) - ( (int)(num8*Scale.Y) / 2 );
 				if( this.txセンサ光 != null )
 				{
 					this.txセンサ光.vc拡大縮小倍率 = new Vector3( (float) num6, (float) num6, 1f );
 					this.txセンサ光.n透明度 = (int) ( 255.0 * ( 1.0 - num5 ) );
-					this.txセンサ光.t2D描画( CDTXMania.app.Device, num9, num10, this.rcセンサ光 );
+					this.txセンサ光.t2D描画(
+						CDTXMania.app.Device,
+						x,
+						y,
+						this.rcセンサ光
+					);
 				}
 			}
 		}
 		private void t描画処理・センサ本体()
 		{
-			int x = this.n本体X + 0xcd;
-			int y = this.n本体Y - 4;
+			int x = this.n本体X + (int)(0xcd * Scale.X);
+			int y = this.n本体Y - (int)(4 * Scale.Y);
 			if( this.txセンサ != null )
 			{
 				this.txセンサ.t2D描画( CDTXMania.app.Device, x, y, this.rcセンサ本体上半分 );
-				y += 0x80;
+				y += (int)(0x80 * Scale.Y);
 				this.txセンサ.t2D描画( CDTXMania.app.Device, x, y, this.rcセンサ本体下半分 );
 			}
 		}
@@ -489,15 +509,15 @@ namespace DTXMania
 		{
 			if( this.ct登場アニメ用.b終了値に達した || ( this.txパネル本体 != null ) )
 			{
-				this.n本体X = 8;
-				this.n本体Y = 0x39;
+				this.n本体X = (int)(8 * Scale.X);
+				this.n本体Y = (int)(0x39 * Scale.Y);
 			}
 			else
 			{
 				double num = ( (double) this.ct登場アニメ用.n現在の値 ) / 100.0;
 				double num2 = Math.Cos( ( 1.5 + ( 0.5 * num ) ) * Math.PI );
-				this.n本体X = 8;
-				this.n本体Y = 0x39 - ( (int) ( this.txパネル本体.sz画像サイズ.Height * ( 1.0 - ( num2 * num2 ) ) ) );
+				this.n本体X = (int)(8 * Scale.X);
+				this.n本体Y = (int)(0x39 * Scale.Y) - ( (int) ( this.txパネル本体.sz画像サイズ.Height * ( 1.0 - ( num2 * num2 ) ) ) );
 			}
 			if( this.txパネル本体 != null )
 			{
@@ -508,8 +528,8 @@ namespace DTXMania
 		{
 			if( !CDTXMania.stage選曲.bスクロール中 && ( ( ( this.ct遅延表示 != null ) && ( this.ct遅延表示.n現在の値 > 0 ) ) && !this.b新しいプレビューファイルをまだ読み込んでいない ) )
 			{
-				int x = this.n本体X + 0x12;
-				int y = this.n本体Y + 0x10;
+				int x = this.n本体X + (int)(0x12 * Scale.X);
+				int y = this.n本体Y + (int)(0x10 * Scale.Y);
 				float num3 = ( (float) this.ct遅延表示.n現在の値 ) / 100f;
 				float num4 = 0.9f + ( 0.1f * num3 );
 				if( ( this.nAVI再生開始時刻 != -1 ) && ( this.sfAVI画像 != null ) )
@@ -557,9 +577,14 @@ namespace DTXMania
 					x += ( 0xcc - ( (int) ( width * num4 ) ) ) / 2;
 					y += ( 0x10d - ( (int) ( height * num4 ) ) ) / 2;
 					this.r表示するプレビュー画像.n透明度 = (int) ( 255f * num3 );
-					this.r表示するプレビュー画像.vc拡大縮小倍率.X = num4;
-					this.r表示するプレビュー画像.vc拡大縮小倍率.Y = num4;
-					this.r表示するプレビュー画像.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 0, width, height ) );
+					this.r表示するプレビュー画像.vc拡大縮小倍率.X = num4 * Scale.X;
+					this.r表示するプレビュー画像.vc拡大縮小倍率.Y = num4 * Scale.Y;
+					this.r表示するプレビュー画像.t2D描画(
+						CDTXMania.app.Device,
+						x,
+						y
+						//new Rectangle( 0, 0, width, height )
+					);
 				}
 			}
 		}
