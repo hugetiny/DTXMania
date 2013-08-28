@@ -63,7 +63,8 @@ namespace DTXMania
 				this.txセンサ光 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sensor light.png" ), false );
 				this.txプレビュー画像 = null;
 				this.txプレビュー画像がないときの画像 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect preimage default.png" ), false );
-				this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 0xcc, 0x10d, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.SystemMemory );
+				//this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 0xcc, 0x10d, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.SystemMemory );
+				this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 192, 269, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default );
 				this.nAVI再生開始時刻 = -1;
 				this.n前回描画したフレーム番号 = -1;
 				this.b動画フレームを作成した = false;
@@ -558,7 +559,15 @@ namespace DTXMania
 					}
 					using( Surface surface = CDTXMania.app.Device.GetBackBuffer( 0, 0 ) )
 					{
-						CDTXMania.app.Device.UpdateSurface( this.sfAVI画像, new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height ), surface, new Point( x, y ) );
+						Rectangle srcRectangle = new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height );
+						Rectangle destRectangle = new Rectangle(
+							(int) ( x ),
+							(int) ( y ),
+							(int) ( srcRectangle.Width * Scale.X ),
+							(int) ( srcRectangle.Height * Scale.Y )
+						);
+						CDTXMania.app.Device.StretchRectangle( this.sfAVI画像, srcRectangle, surface, destRectangle, TextureFilter.Linear );
+						//CDTXMania.app.Device.UpdateSurface( this.sfAVI画像, new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height ), surface, new Point( x, y ) );
 						return;
 					}
 				}
