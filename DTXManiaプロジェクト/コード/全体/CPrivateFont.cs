@@ -21,18 +21,19 @@ namespace DTXMania
 	/// とか
 	/// CPrivateFont prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );		// システムフォント
 	/// とかした上で、
-	/// CTexture ctBMP = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black );						// フォント色＝白、縁の色＝黒の例。縁の色は省略可能
+	/// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black );						// フォント色＝白、縁の色＝黒の例。縁の色は省略可能
 	/// とか
-	/// CTexture ctBMP = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black, Color.Yellow, Color.OrangeRed ); // 上下グラデーション(Yellow→OrangeRed)
+	/// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black, Color.Yellow, Color.OrangeRed ); // 上下グラデーション(Yellow→OrangeRed)
 	/// とかして、
+	/// CTexture ctBmp = CDTXMania.tテクスチャの生成( bmp, false );
 	/// ctBMP.t2D描画( ～～～ );
 	/// で表示してください。
 	/// (任意のフォントでのレンダリングは結構負荷が大きいので、描画フレーム毎にフォントを再レンダリングするようなことはせず、
 	///  一旦テクスチャにレンダリングして、それを描画に使い回すようにしてください。)
-	/// </remarks
+	/// </remarks>
 	public class CPrivateFont : IDisposable
 	{
-		// コンストラクタ
+		#region [ コンストラクタ ]
 		public CPrivateFont( FontFamily fontfamily, int pt, FontStyle style )
 		{
 			Initialize( null, fontfamily, pt, style );
@@ -49,6 +50,7 @@ namespace DTXMania
 		{
 			Initialize( fontpath, null, pt, FontStyle.Regular );
 		}
+		#endregion
 
 		private void Initialize( string fontpath, FontFamily fontfamily, int pt, FontStyle style )
 		{
@@ -123,7 +125,6 @@ namespace DTXMania
 		}
 
 		#region [ DrawPrivateFontのオーバーロード群 ]
-#if こちらは使わない // (CTextureではなく、Bitmapを返す版)
 		/// <summary>
 		/// 文字列を描画したテクスチャを返す
 		/// </summary>
@@ -173,7 +174,8 @@ namespace DTXMania
 		{
 			return DrawPrivateFont( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor );
 		}
-#endif
+
+#if こちらは使わない // (Bitmapではなく、CTextureを返す版)
 		/// <summary>
 		/// 文字列を描画したテクスチャを返す
 		/// </summary>
@@ -207,7 +209,7 @@ namespace DTXMania
 		/// <param name="gradationTopColor">グラデーション 上側の色</param>
 		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
 		/// <returns>描画済テクスチャ</returns>
-		//public Bitmap DrawPrivateFont( string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor )
+		//public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor )
 		//{
 		//    Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor );
 		//	  return CDTXMania.tテクスチャの生成( bmp, false );
@@ -227,6 +229,7 @@ namespace DTXMania
 			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor );
 			return CDTXMania.tテクスチャの生成( bmp, false );
 		}
+#endif
 		#endregion
 
 
