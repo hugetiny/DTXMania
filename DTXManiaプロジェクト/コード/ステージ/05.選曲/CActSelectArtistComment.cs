@@ -115,7 +115,7 @@ namespace DTXMania
 					this.ctComment = new CCounter(
 						-nComment表示幅,
 						(int) ( ( ( ( this.nComment行数 - 1 ) * this.nテクスチャの最大幅 ) + this.nComment最終行の幅 ) * this.txComment.vc拡大縮小倍率.X ),
-						(int)(10 * 2 / Scale.X),
+						unchecked((int)(10 * 2 / Scale.X)),
 						CDTXMania.Timer
 					);
 				}

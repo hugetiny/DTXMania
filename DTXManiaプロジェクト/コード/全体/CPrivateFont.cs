@@ -21,15 +21,20 @@ namespace DTXMania
 	/// とか
 	/// CPrivateFont prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );		// システムフォント
 	/// とかした上で、
-	/// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black );						// フォント色＝白、縁の色＝黒の例。縁の色は省略可能
+	/// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black );							// フォント色＝白、縁の色＝黒の例。縁の色は省略可能
 	/// とか
 	/// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black, Color.Yellow, Color.OrangeRed ); // 上下グラデーション(Yellow→OrangeRed)
 	/// とかして、
 	/// CTexture ctBmp = CDTXMania.tテクスチャの生成( bmp, false );
 	/// ctBMP.t2D描画( ～～～ );
 	/// で表示してください。
-	/// (任意のフォントでのレンダリングは結構負荷が大きいので、描画フレーム毎にフォントを再レンダリングするようなことはせず、
-	///  一旦テクスチャにレンダリングして、それを描画に使い回すようにしてください。)
+	/// 
+	/// 注意点
+	/// 任意のフォントでのレンダリングは結構負荷が大きいので、なるべｋなら描画フレーム毎にフォントを再レンダリングするようなことはせず、
+	/// 一旦レンダリングしたものを描画に使い回すようにしてください。
+	/// また、長い文字列を与えると、返されるBitmapも横長になります。この横長画像をそのままテクスチャとして使うと、
+	/// 古いPCで問題を発生させやすいです。これを回避するには、一旦Bitmapとして取得したのち、256pixや512pixで分割して
+	/// テクスチャに定義するようにしてください。
 	/// </remarks>
 	public class CPrivateFont : IDisposable
 	{
@@ -58,6 +63,8 @@ namespace DTXMania
 			this._fontfamily = null;
 			this._font = null;
 			this._pt = pt;
+			this._rectStrings = new Rectangle( 0, 0, 0, 0 );
+			this._ptOrigin = new Point( 0, 0 );
 
 			if ( fontfamily != null )
 			{
@@ -236,6 +243,8 @@ namespace DTXMania
 		/// <summary>
 		/// 文字列を描画したテクスチャを返す(メイン処理)
 		/// </summary>
+		/// <param name="rectDrawn">描画された領域</param>
+		/// <param name="ptOrigin">描画文字列</param>
 		/// <param name="drawstr">描画文字列</param>
 		/// <param name="drawmode">描画モード</param>
 		/// <param name="fontColor">描画色</param>
@@ -250,6 +259,8 @@ namespace DTXMania
 				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て・・の処理で全部例外が発生することになる。
 				// それは非常に面倒なので、最小限のbitmapを返してしまう。
 				// まずはこの仕様で進めますが、問題有れば(上位側からエラー検出が必要であれば)例外を出したりエラー状態であるプロパティを定義するなり検討します。
+				_rectStrings = new Rectangle( 0, 0, 0, 0 );
+				_ptOrigin = new Point( 0, 0 );
 				return new Bitmap(1, 1);
 			}
 			bool bEdge =      ( ( drawmode & DrawMode.Edge      ) == DrawMode.Edge );
@@ -313,6 +324,9 @@ namespace DTXMania
 			g.DrawRectangle( new Pen( Color.White, 1 ), new Rectangle( 1, 1, stringSize.Width-1, stringSize.Height-1 ) );
 			g.DrawRectangle( new Pen( Color.Green, 1 ), new Rectangle( 0, 0, bmp.Width - 1, bmp.Height - 1 ) );
 #endif
+			_rectStrings = new Rectangle( 0, 0, stringSize.Width, stringSize.Height );
+			_ptOrigin = new Point( nEdgePt * 2, nEdgePt * 2 );
+			
 
 			#region [ リソースを解放する ]
 			if ( sf != null )	sf.Dispose();	sf = null;
@@ -322,6 +336,23 @@ namespace DTXMania
 			return bmp;
 		}
 
+		/// <summary>
+		/// 最後にDrawPrivateFont()した文字列の描画領域を取得します。
+		/// </summary>
+		public Rectangle RectStrings
+		{
+			get
+			{
+				return _rectStrings;
+			}
+		}
+		public Point PtOrigin
+		{
+			get
+			{
+				return _ptOrigin;
+			}
+		}
 
 		#region [ IDisposable 実装 ]
 		//-----------------
@@ -353,6 +384,8 @@ namespace DTXMania
 		private Font _font;
 		private FontFamily _fontfamily;
 		private int _pt;
+		private Rectangle _rectStrings;
+		private Point _ptOrigin;
 		//-----------------
 		#endregion
 	}

@@ -254,12 +254,12 @@ namespace DTXMania
 
 					if ( this.txパネル本体 != null )
 					{
-						this.txパネル本体.t2D描画( CDTXMania.app.Device, 213, 167 );
+						this.txパネル本体.t2D描画( CDTXMania.app.Device, 213 * Scale.X, 167 * Scale.Y );
 					}
 					if ( this.tx文字列パネル != null )
 					{
 						int x = ( nCurrentTarget == (int) E楽器パート.DRUMS ) ? 230 : 260;
-						this.tx文字列パネル.t2D描画( CDTXMania.app.Device, x, 190 );
+						this.tx文字列パネル.t2D描画( CDTXMania.app.Device, x * Scale.X, 190 * Scale.Y);
 
 					}
 			}
@@ -270,7 +270,7 @@ namespace DTXMania
 		/// </summary>
 		private void MakeAutoPanel()
 		{
-			Bitmap image = new Bitmap( 300, 130 );
+			Bitmap image = new Bitmap( (int)(300 * Scale.X), (int)(130 * Scale.Y) );
 			Graphics graphics = Graphics.FromImage( image );
 
 			string header = "", s = "";
@@ -289,8 +289,8 @@ namespace DTXMania
 			s = GetAutoParameters( nCurrentTarget );
 			for ( int i = 0; i < header.Length; i++ )
 			{
-				graphics.DrawString( header[ i ].ToString(), this.ft表示用フォント, Brushes.White, (float) i * 24, (float) 0f );
-				graphics.DrawString( s[i].ToString(), this.ft表示用フォント, Brushes.White, (float) i * 24, (float) 24f );
+				graphics.DrawString( header[ i ].ToString(), this.ft表示用フォント, Brushes.White, (float) i * 24 * Scale.X, (float) 0f );
+				graphics.DrawString( s[i].ToString(), this.ft表示用フォント, Brushes.White, (float) i * 24 * Scale.X, (float) 24f * Scale.Y );
 			}
 			graphics.Dispose();
 
@@ -490,7 +490,7 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.ft表示用フォント = new Font( "Arial", 26f, FontStyle.Bold, GraphicsUnit.Pixel );
+			this.ft表示用フォント = new Font( "Arial", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel );
 			base.On活性化();
 			this.bGotoDetailConfig = false;
 		}
