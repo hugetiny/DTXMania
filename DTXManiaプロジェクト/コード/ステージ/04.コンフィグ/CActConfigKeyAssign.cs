@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using FDK;
+using SlimDX;
 
 namespace DTXMania
 {
@@ -104,10 +105,15 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
+				this.prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );	// t項目リストの設定 の前に必要
 				this.txカーソル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
 				this.txHitKeyダイアログ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig hit key to assign dialog.png" ), false );
 				base.OnManagedリソースの作成();
 			}
+		}
+		public override void OnManagedリソースの解放()
+		{
+			CDTXMania.t安全にDisposeする( ref prvFont );
 		}
 		public override int On進行描画()
 		{
@@ -139,22 +145,33 @@ namespace DTXMania
 					int num = 20;
 					int num2 = 0x144;
 					int num3 = 0x3e + ( num * ( this.n現在の選択行 + 1 ) );
-					this.txカーソル.t2D描画( CDTXMania.app.Device, num2, num3, new Rectangle( 0, 0, 0x10, 0x20 ) );
+					this.txカーソル.vc拡大縮小倍率 = new Vector3( 1f, 0.75f, 1f );
+					this.txカーソル.t2D描画( CDTXMania.app.Device, num2 * Scale.X, num3 * Scale.Y - 6, new Rectangle( 0, 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) ) );
 					num2 += 0x10;
-					Rectangle rectangle = new Rectangle( 8, 0, 0x10, 0x20 );
+					Rectangle rectangle = new Rectangle( (int)(8 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) );
 					for( int j = 0; j < 14; j++ )
 					{
-						this.txカーソル.t2D描画( CDTXMania.app.Device, num2, num3, rectangle );
+						this.txカーソル.t2D描画( CDTXMania.app.Device, num2 * Scale.X, num3 * Scale.Y - 6, rectangle );
 						num2 += 0x10;
 					}
-					this.txカーソル.t2D描画( CDTXMania.app.Device, num2, num3, new Rectangle( 0x10, 0, 0x10, 0x20 ) );
+					this.txカーソル.t2D描画( CDTXMania.app.Device, num2 * Scale.X, num3 * Scale.Y - 6, new Rectangle( (int)(0x10 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) ) );
 				}
 				int num5 = 20;
 				int x = 0x134;
 				int y = 0x40;
-				CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, this.strパッド名, false, 0.75f );
+				//CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, this.strパッド名, false, 0.75f );
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.strパッド名, Color.White, Color.Black );
+				CTexture txStr = CDTXMania.tテクスチャの生成( bmpStr );
+				txStr.vc拡大縮小倍率 = new Vector3( 0.75f, 0.75f, 1f );
+				txStr.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y - 20 );
+				CDTXMania.tテクスチャの解放( ref txStr );
+				CDTXMania.t安全にDisposeする( ref txStr );
+				CDTXMania.t安全にDisposeする( ref bmpStr );
+
 				y += num5;
 				CConfigIni.CKeyAssign.STKEYASSIGN[] stkeyassignArray = CDTXMania.ConfigIni.KeyAssign[ (int) this.part ][ (int) this.pad ];
+				string strParam;
+				bool b強調;
 				for( int i = 0; i < 0x10; i++ )
 				{
 					switch( stkeyassignArray[ i ].入力デバイス )
@@ -176,18 +193,54 @@ namespace DTXMania
 							break;
 
 						default:
-							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 20, y, string.Format( "{0,2}.", i + 1 ), this.n現在の選択行 == i, 0.75f );
+							strParam = string.Format( "{0,2}.", i + 1 );
+							b強調 = (this.n現在の選択行 == i);
+							bmpStr = b強調 ?
+								prvFont.DrawPrivateFont( strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+								prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
+							txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+							txStr.vc拡大縮小倍率 = new Vector3( 0.75f, 0.75f, 1f );
+							txStr.t2D描画( CDTXMania.app.Device, ( x + 20 ) * Scale.X, y * Scale.Y - 20 );
+							CDTXMania.tテクスチャの解放( ref txStr );
+							CDTXMania.t安全にDisposeする( ref txStr );
+							CDTXMania.t安全にDisposeする( ref bmpStr );
+							//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 20, y, string.Format( "{0,2}.", i + 1 ), this.n現在の選択行 == i, 0.75f );
 							break;
 					}
 					y += num5;
 				}
-				CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 20, y, "Reset", this.n現在の選択行 == 0x10, 0.75f );
+				strParam = "Reset";
+				b強調 = ( this.n現在の選択行 == 0x10 );
+				bmpStr = b強調 ?
+					prvFont.DrawPrivateFont( strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+					prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
+				txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+				txStr.vc拡大縮小倍率 = new Vector3( 0.75f, 0.75f, 1f );
+				txStr.t2D描画( CDTXMania.app.Device, ( x + 20 ) * Scale.X, y * Scale.Y - 20 );
+				CDTXMania.tテクスチャの解放( ref txStr );
+				CDTXMania.t安全にDisposeする( ref txStr );
+				CDTXMania.t安全にDisposeする( ref bmpStr );
+
 				y += num5;
-				CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 20, y, "<< Returnto List", this.n現在の選択行 == 0x11, 0.75f );
-				y += num5;
+				strParam = "<< Returnto List";
+				b強調 = ( this.n現在の選択行 == 0x11 );
+				bmpStr = b強調 ?
+					prvFont.DrawPrivateFont( strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+					prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
+				txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+				txStr.vc拡大縮小倍率 = new Vector3( 0.75f, 0.75f, 1f );
+				txStr.t2D描画( CDTXMania.app.Device, ( x + 20 ) * Scale.X, y * Scale.Y - 20 );
+				CDTXMania.tテクスチャの解放( ref txStr );
+				CDTXMania.t安全にDisposeする( ref txStr );
+				CDTXMania.t安全にDisposeする( ref bmpStr );
+
+				//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 20, y, "Reset", this.n現在の選択行 == 0x10, 0.75f );
+				//y += num5;
+				//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 20, y, "<< Returnto List", this.n現在の選択行 == 0x11, 0.75f );
+				//y += num5;
 				if( this.bキー入力待ち && ( this.txHitKeyダイアログ != null ) )
 				{
-					this.txHitKeyダイアログ.t2D描画( CDTXMania.app.Device, 0x185, 0xd7 );
+					this.txHitKeyダイアログ.t2D描画( CDTXMania.app.Device, 0x185 * Scale.X, 0xd7 * Scale.Y );
 				}
 			}
 			return 0;
@@ -229,6 +282,8 @@ namespace DTXMania
 		private string strパッド名;
 		private CTexture txHitKeyダイアログ;
 		private CTexture txカーソル;
+		private CPrivateFont prvFont;
+
 
 		private void tアサインコードの描画・Joypad( int line, int x, int y, int nID, int nCode, bool b強調 )
 		{
@@ -274,7 +329,16 @@ namespace DTXMania
 					}
 					break;
 			}
-			CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. Joypad #{1} ", line, nID ) + str, b強調, 0.75f );
+			Bitmap bmpStr = b強調 ?
+				prvFont.DrawPrivateFont( str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+				prvFont.DrawPrivateFont( str, Color.White, Color.Black );
+			CTexture txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+			txStr.vc拡大縮小倍率 = new Vector3( 0.75f, 0.75f, 1f );
+			txStr.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y - 20 );
+			CDTXMania.tテクスチャの解放( ref txStr );
+			CDTXMania.t安全にDisposeする( ref txStr );
+			CDTXMania.t安全にDisposeする( ref bmpStr );
+//			CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. Joypad #{1} ", line, nID ) + str, b強調, 0.75f );
 		}
 		private void tアサインコードの描画・Keyboard( int line, int x, int y, int nID, int nCode, bool b強調 )
 		{
@@ -291,15 +355,44 @@ namespace DTXMania
 			{
 				str = string.Format( "{0,2}. Key 0x{1:X2}", line, nCode );
 			}
-			CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, str, b強調, 0.75f );
+			Bitmap bmpStr = b強調 ?
+				prvFont.DrawPrivateFont( str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+				prvFont.DrawPrivateFont( str, Color.White, Color.Black );
+			CTexture txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+			txStr.vc拡大縮小倍率 = new Vector3( 0.75f, 0.75f, 1f );
+			txStr.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y - 20 );
+			CDTXMania.tテクスチャの解放( ref txStr );
+			CDTXMania.t安全にDisposeする( ref txStr );
+			CDTXMania.t安全にDisposeする( ref bmpStr );
+			//CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, str, b強調, 0.75f );
 		}
 		private void tアサインコードの描画・MidiIn( int line, int x, int y, int nID, int nCode, bool b強調 )
 		{
-			CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. MidiIn #{1} code.{2}", line, nID, nCode ), b強調, 0.75f );
+			string str = string.Format( "{0,2}. MidiIn #{1} code.{2}", line, nID, nCode );
+			Bitmap bmpStr = b強調 ?
+				prvFont.DrawPrivateFont( str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+				prvFont.DrawPrivateFont( str, Color.White, Color.Black );
+			CTexture txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+			txStr.vc拡大縮小倍率 = new Vector3( 0.75f, 0.75f, 1f );
+			txStr.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y - 20 );
+			CDTXMania.tテクスチャの解放( ref txStr );
+			CDTXMania.t安全にDisposeする( ref txStr );
+			CDTXMania.t安全にDisposeする( ref bmpStr );
+			//CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. MidiIn #{1} code.{2}", line, nID, nCode ), b強調, 0.75f );
 		}
 		private void tアサインコードの描画・Mouse( int line, int x, int y, int nID, int nCode, bool b強調 )
 		{
-			CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. Mouse Button{1}", line, nCode ), b強調, 0.75f );
+			string str = string.Format( "{0,2}. Mouse Button{1}", line, nCode );
+			Bitmap bmpStr = b強調 ?
+				prvFont.DrawPrivateFont( str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+				prvFont.DrawPrivateFont( str, Color.White, Color.Black );
+			CTexture txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+			txStr.vc拡大縮小倍率 = new Vector3( 0.75f, 0.75f, 1f );
+			txStr.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y - 20 );
+			CDTXMania.tテクスチャの解放( ref txStr );
+			CDTXMania.t安全にDisposeする( ref txStr );
+			CDTXMania.t安全にDisposeする( ref bmpStr );
+			//CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. Mouse Button{1}", line, nCode ), b強調, 0.75f );
 		}
 		private bool tキーチェックとアサイン・Joypad()
 		{

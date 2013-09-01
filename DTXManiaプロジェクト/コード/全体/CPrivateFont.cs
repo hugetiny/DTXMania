@@ -254,7 +254,7 @@ namespace DTXMania
 		/// <returns>描画済テクスチャ</returns>
 		private Bitmap DrawPrivateFont( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor )
 		{
-			if ( this._fontfamily == null )
+			if ( this._fontfamily == null || drawstr == null )
 			{
 				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て・・の処理で全部例外が発生することになる。
 				// それは非常に面倒なので、最小限のbitmapを返してしまう。

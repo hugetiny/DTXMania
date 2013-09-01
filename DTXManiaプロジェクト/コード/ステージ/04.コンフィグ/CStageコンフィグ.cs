@@ -59,7 +59,7 @@ namespace DTXMania
 			try
 			{
 				this.n現在のメニュー番号 = 0;													//
-				this.ftフォント = new Font( "MS PGothic", 26f, FontStyle.Bold, GraphicsUnit.Pixel );			//
+				this.ftフォント = new Font( "MS PGothic", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel );			//
 				for( int i = 0; i < 4; i++ )													//
 				{																				//
 					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.Timer );			//
@@ -114,6 +114,21 @@ namespace DTXMania
 				this.tx上部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig header panel.png" ), true );
 				this.tx下部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig footer panel.png" ), true );
 				this.txMenuカーソル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
+
+				prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );
+				string[] strMenuItem = { "System", "Drums", "Guitar", "Bass", "Exit" };
+				txMenuItemLeft = new CTexture[ strMenuItem.Length, 2 ];
+				for ( int i = 0; i < strMenuItem.Length; i++ )
+				{
+					Bitmap bmpStr;
+					bmpStr = prvFont.DrawPrivateFont( strMenuItem[ i ], Color.White, Color.Black );
+					txMenuItemLeft[ i, 0 ] = CDTXMania.tテクスチャの生成( bmpStr, false );
+					bmpStr.Dispose();
+					bmpStr = prvFont.DrawPrivateFont( strMenuItem[ i ], Color.White, Color.Black, Color.Yellow, Color.OrangeRed );
+					txMenuItemLeft[ i, 1 ] = CDTXMania.tテクスチャの生成( bmpStr, false );
+					bmpStr.Dispose();
+				}
+
 				if( this.bメニューにフォーカス中 )
 				{
 					this.t説明文パネルに現在選択されているメニューの説明を描画する();
@@ -134,6 +149,15 @@ namespace DTXMania
 				CDTXMania.tテクスチャの解放( ref this.tx下部パネル );
 				CDTXMania.tテクスチャの解放( ref this.txMenuカーソル );
 				CDTXMania.tテクスチャの解放( ref this.tx説明文パネル );
+				prvFont.Dispose();
+				for ( int i = 0; i < txMenuItemLeft.GetLength(0); i++ )
+				{
+					txMenuItemLeft[ i, 0 ].Dispose();
+					txMenuItemLeft[ i, 0 ] = null;
+					txMenuItemLeft[ i, 1 ].Dispose();
+					txMenuItemLeft[ i, 1 ] = null;
+				}
+				txMenuItemLeft = null;
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -163,18 +187,18 @@ namespace DTXMania
 			{
 				Rectangle rectangle;
 				this.txMenuカーソル.n透明度 = this.bメニューにフォーカス中 ? 0xff : 0x80;
-				int x = 0x37;
-				int y = 0x61 + ( this.n現在のメニュー番号 * 0x19 );
-				int num3 = 170;
-				this.txMenuカーソル.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 0, 0x10, 0x20 ) );
-				this.txMenuカーソル.t2D描画( CDTXMania.app.Device, ( x + num3 ) - 0x10, y, new Rectangle( 10, 0, 0x10, 0x20 ) );
-				x += 0x10;
-				for( num3 -= 0x20; num3 > 0; num3 -= rectangle.Width )
+				int x = (int)(0x37 * Scale.X);
+				int y = (int)((0x61 + ( this.n現在のメニュー番号 * 0x19 )) * Scale.Y);
+				int num3 = (int)(170 * Scale.X);
+				this.txMenuカーソル.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) ) );
+				this.txMenuカーソル.t2D描画( CDTXMania.app.Device, ( x + num3 ) - 0x10 * Scale.X, y, new Rectangle( (int)(10 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) ) );
+				x += (int)(0x10 * Scale.X);
+				for( num3 -= (int)(0x20 * Scale.X); num3 > 0; num3 -= rectangle.Width )
 				{
-					rectangle = new Rectangle( 8, 0, 0x10, 0x20 );
-					if( num3 < 0x10 )
+					rectangle = new Rectangle( (int)(8 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) );
+					if( num3 < (int)(0x10 * Scale.X) )
 					{
-						rectangle.Width -= 0x10 - num3;
+						rectangle.Width -= (int)(0x10 * Scale.X) - num3;
 					}
 					this.txMenuカーソル.t2D描画( CDTXMania.app.Device, x, y, rectangle );
 					x += rectangle.Width;
@@ -184,19 +208,51 @@ namespace DTXMania
 			#endregion
 			#region [ メニュー ]
 			//---------------------
-			string str = "System";
-			int num4 = this.actFont.n文字列長dot( str );
-			bool flag = this.n現在のメニュー番号 == 0;
-			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 100, str, flag );
-			//str = "Drums Keys";
+			string[] strMenuItem = { "System", "Drums", "Guitar", "Bass", "Exit" };
+			int menuY = (int)(100 * Scale.Y) - 20;
+			int stepY = (int)(25 * Scale.Y);
+			for ( int i = 0; i < strMenuItem.Length; i++ )
+			{
+				//Bitmap bmpStr = (this.n現在のメニュー番号 == i) ?
+				//      prvFont.DrawPrivateFont( strMenuItem[ i ], Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+				//      prvFont.DrawPrivateFont( strMenuItem[ i ], Color.White, Color.Black );
+				//txMenuItemLeft = CDTXMania.tテクスチャの生成( bmpStr, false );
+				int flag = ( this.n現在のメニュー番号 == i ) ? 1 : 0;
+				int num4 = txMenuItemLeft[ i , flag ].sz画像サイズ.Width;
+				txMenuItemLeft[ i, flag ].t2D描画( CDTXMania.app.Device, 0x8a * Scale.X - (num4 / 2), menuY ); //55
+				//txMenuItem.Dispose();
+				menuY += stepY;
+			}
+			#region [ actFontによる旧実装 未使用 ]
+			//string str = "System";
+			//int num4 = this.actFont.n文字列長dot( str );
+			//bool flag = this.n現在のメニュー番号 == 0;
+			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 100, str, flag );
+			////str = "Drums Keys";
+			////num4 = this.actFont.n文字列長dot( str );
+			////flag = this.n現在のメニュー番号 == 1;
+			////this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0x7d, str, flag );
+			////str = "Guitar Keys";
+			////num4 = this.actFont.n文字列長dot( str );
+			////flag = this.n現在のメニュー番号 == 2;
+			////this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 150, str, flag );
+			////str = "Bass Keys";
+			////num4 = this.actFont.n文字列長dot( str );
+			////flag = this.n現在のメニュー番号 == 3;
+			////this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0xaf, str, flag );
+			////str = "Exit";
+			////num4 = this.actFont.n文字列長dot( str );
+			////flag = this.n現在のメニュー番号 == 4;
+			////this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 200, str, flag );
+			//str = "Drums";
 			//num4 = this.actFont.n文字列長dot( str );
 			//flag = this.n現在のメニュー番号 == 1;
 			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0x7d, str, flag );
-			//str = "Guitar Keys";
+			//str = "Guitar";
 			//num4 = this.actFont.n文字列長dot( str );
 			//flag = this.n現在のメニュー番号 == 2;
 			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 150, str, flag );
-			//str = "Bass Keys";
+			//str = "Bass";
 			//num4 = this.actFont.n文字列長dot( str );
 			//flag = this.n現在のメニュー番号 == 3;
 			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0xaf, str, flag );
@@ -204,29 +260,13 @@ namespace DTXMania
 			//num4 = this.actFont.n文字列長dot( str );
 			//flag = this.n現在のメニュー番号 == 4;
 			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 200, str, flag );
-			str = "Drums";
-			num4 = this.actFont.n文字列長dot( str );
-			flag = this.n現在のメニュー番号 == 1;
-			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0x7d, str, flag );
-			str = "Guitar";
-			num4 = this.actFont.n文字列長dot( str );
-			flag = this.n現在のメニュー番号 == 2;
-			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 150, str, flag );
-			str = "Bass";
-			num4 = this.actFont.n文字列長dot( str );
-			flag = this.n現在のメニュー番号 == 3;
-			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0xaf, str, flag );
-			str = "Exit";
-			num4 = this.actFont.n文字列長dot( str );
-			flag = this.n現在のメニュー番号 == 4;
-			this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 200, str, flag );
-
+			#endregion
 			//---------------------
 			#endregion
 			#region [ 説明文パネル ]
 			//---------------------
 			if( this.tx説明文パネル != null )
-				this.tx説明文パネル.t2D描画( CDTXMania.app.Device, 0x1d, 0xf8 );
+				this.tx説明文パネル.t2D描画( CDTXMania.app.Device, 0x1d * Scale.X, 0xf8 * Scale.Y );
 			//---------------------
 			#endregion
 			#region [ アイテム ]
@@ -252,7 +292,7 @@ namespace DTXMania
 			#region [ 下部パネル ]
 			//---------------------
 			if( this.tx下部パネル != null )
-				this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, 480 - this.tx下部パネル.szテクスチャサイズ.Height );
+				this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, SampleFramework.GameWindowSize.Height - this.tx下部パネル.szテクスチャサイズ.Height );
 			//---------------------
 			#endregion
 			#region [ オプションパネル ]
@@ -443,6 +483,8 @@ namespace DTXMania
 		private CTexture tx上部パネル;
 		private CTexture tx説明文パネル;
 		private CTexture tx背景;
+		private CPrivateFont prvFont;
+		private CTexture[,] txMenuItemLeft;
 
 		private void tカーソルを下へ移動する()
 		{
@@ -559,7 +601,7 @@ namespace DTXMania
 		{
 			try
 			{
-				var image = new Bitmap( 220 * 2, 192 * 2 );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
+				var image = new Bitmap( (int)(220 * 2 * Scale.X), (int)(192 * 2 * Scale.Y) );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
 				var graphics = Graphics.FromImage( image );
 				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 				
@@ -624,7 +666,7 @@ namespace DTXMania
 				int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
 				for (int i = 0; i < 2; i++)
 				{
-					graphics.DrawString( str[ c, i ], this.ftフォント, Brushes.White, new PointF( 4f, ( i * 30 ) ) );
+					graphics.DrawString( str[ c, i ], this.ftフォント, Brushes.White, new PointF( 4f * Scale.X, ( i * 30 ) * Scale.Y ) );
 				}
 				graphics.Dispose();
 				if( this.tx説明文パネル != null )
@@ -646,19 +688,20 @@ namespace DTXMania
 		{
 			try
 			{
-				var image = new Bitmap( 220 * 2, 192 * 2 );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
+				var image = new Bitmap( (int)(220 * 2 * Scale.X), (int)(192 * 2 * Scale.Y) );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
 				var graphics = Graphics.FromImage( image );
 				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
 				CItemBase item = this.actList.ib現在の選択項目;
 				if( ( item.str説明文 != null ) && ( item.str説明文.Length > 0 ) )
 				{
-					int num = 0;
-					foreach( string str in item.str説明文.Split( new char[] { '\n' } ) )
-					{
-						graphics.DrawString( str, this.ftフォント, Brushes.White, new PointF( 4f, (float) num ) );
-						num += 30;
-					}
+					//int num = 0;
+					//foreach( string str in item.str説明文.Split( new char[] { '\n' } ) )
+					//{
+					//    graphics.DrawString( str, this.ftフォント, Brushes.White, new PointF( 4f * Scale.X, (float) num * Scale.Y ) );
+					//    num += 30;
+					//}
+					graphics.DrawString( item.str説明文, this.ftフォント, Brushes.White, new RectangleF( 4f * Scale.X, (float) 0 * Scale.Y, 630 * 2, 430 * 2 ) );
 				}
 				graphics.Dispose();
 				if( this.tx説明文パネル != null )

@@ -80,7 +80,7 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iSystemRisky );
 
 			int nDGmode = (CDTXMania.ConfigIni.bGuitar有効 ? 2 : 0) + (CDTXMania.ConfigIni.bDrums有効 ? 1 : 0) - 1;
-			this.iSystemGRmode = new CItemList("Drums & GR", CItemBase.Eパネル種別.通常, nDGmode,
+			this.iSystemGRmode = new CItemList("Drums & GR ", CItemBase.Eパネル種別.通常, nDGmode,
 				"使用楽器の選択：\nDrOnly: ドラムのみ有効にします。\nGROnly: ギター/ベースのみの\n専用画面を用います。\nBoth: ドラムとギター/ベースの\n両方を有効にします。\n",
 				"DrOnly: Only Drums is available.\nGROnly: Only Guitar/Bass are available.\n You can play them in GR screen.\nBoth: Both Drums and Guitar/Bass\n are available.",
 				new string[] { "DrOnly", "GROnly", "Both" });
@@ -361,7 +361,12 @@ namespace DTXMania
 			"Settings for the system key/pad inputs." );
 			this.list項目リスト.Add( this.iSystemGoToKeyAssign );
 
-			
+			OntxMenuItemの解放();
+			for (int i = 0; i < this.list項目リスト.Count; i++)
+			{
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
+				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+			}
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.System;
 		}
@@ -747,6 +752,12 @@ namespace DTXMania
 				"Settings for the drums key/pad inputs." );
 			this.list項目リスト.Add( this.iDrumsGoToKeyAssign );
 
+			OntxMenuItemの解放();
+			for ( int i = 0; i < this.list項目リスト.Count; i++ )
+			{
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
+				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+			}
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Drums;
 		}
@@ -857,6 +868,12 @@ namespace DTXMania
 				"Settings for the guitar key/pad inputs." );
 			this.list項目リスト.Add( this.iGuitarGoToKeyAssign );
 
+			OntxMenuItemの解放();
+			for ( int i = 0; i < this.list項目リスト.Count; i++ )
+			{
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
+				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+			}
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Guitar;
 		}
@@ -970,6 +987,12 @@ namespace DTXMania
 				"Settings for the bass key/pad inputs.");
 			this.list項目リスト.Add( this.iBassGoToKeyAssign );
 
+			OntxMenuItemの解放();
+			for ( int i = 0; i < this.list項目リスト.Count; i++ )
+			{
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
+				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+			}
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Bass;
 		}
@@ -1285,7 +1308,12 @@ namespace DTXMania
 				"Capture key assign:\nTo assign key for screen capture.\n (You can use keyboard only. You can't\nuse pads to capture screenshot." );
 			this.list項目リスト.Add( this.iKeyAssignSystemCapture );
 
-			this.n現在の選択項目 = 0;
+			OntxMenuItemの解放();
+			for ( int i = 0; i < this.list項目リスト.Count; i++ )
+			{
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
+				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+			} this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignSystem;
 		}
 		public void t項目リストの設定・KeyAssignDrums()
@@ -1343,7 +1371,12 @@ namespace DTXMania
 				"ドラムのキー設定：\nハイハットのフットペダルへのキーの\n割り当てを設定します。",	//
 				"Drums key assign:\nTo assign key/pads for HiHatPedal\n button." );					//
 			this.list項目リスト.Add( this.iKeyAssignDrumsHP );										//
-			this.n現在の選択項目 = 0;
+			OntxMenuItemの解放();
+			for ( int i = 0; i < this.list項目リスト.Count; i++ )
+			{
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
+				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+			} this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignDrums;
 		}
 		public void t項目リストの設定・KeyAssignGuitar()
@@ -1385,7 +1418,12 @@ namespace DTXMania
 				"ギターのキー設定：\nキャンセルボタンへのキーの割り当\nてを設定します。",
 				"Guitar key assign:\nTo assign key/pads for Cancel button.");
 			this.list項目リスト.Add(this.iKeyAssignGuitarCancel);
-			this.n現在の選択項目 = 0;
+			OntxMenuItemの解放();
+			for ( int i = 0; i < this.list項目リスト.Count; i++ )
+			{
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
+				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+			} this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignGuitar;
 		}
 		public void t項目リストの設定・KeyAssignBass()
@@ -1427,7 +1465,12 @@ namespace DTXMania
 				"ベースのキー設定：\nキャンセルボタンへのキーの割り当\nてを設定します。",
 				"Bass key assign:\nTo assign key/pads for Cancel button." );
 			this.list項目リスト.Add( this.iKeyAssignBassCancel );
-			this.n現在の選択項目 = 0;
+			OntxMenuItemの解放();
+			for ( int i = 0; i < this.list項目リスト.Count; i++ )
+			{
+				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
+				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+			} this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignBass;
 		}
 		#endregion
@@ -1490,6 +1533,9 @@ namespace DTXMania
 			nSkinSampleIndex = -1;
 			#endregion
 
+			this.prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );	// t項目リストの設定 の前に必要
+			this.txMenuItemRight = new List<CTexture>();
+
 			this.t項目リストの設定・Bass();		// #27795 2012.3.11 yyagi; System設定の中でDrumsの設定を参照しているため、
 			this.t項目リストの設定・Guitar();	// 活性化の時点でDrumsの設定も入れ込んでおかないと、System設定中に例外発生することがある。
 			this.t項目リストの設定・Drums();	// 
@@ -1514,7 +1560,9 @@ namespace DTXMania
 			this.tConfigIniへ記録する();
 			this.list項目リスト.Clear();
 			this.ct三角矢印アニメ = null;
-			
+
+			OntxMenuItemの解放();
+
 			base.On非活性化();
 			#region [ Skin変更 ]
 			if ( CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true ) != this.skinSubFolder_org )
@@ -1569,19 +1617,34 @@ namespace DTXMania
 			this.txその他項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox other.png" ), false );
 			this.tx三角矢印 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig triangle arrow.png" ), false );
 			this.txSkinSample1 = null;		// スキン選択時に動的に設定するため、ここでは初期化しない
+
 			base.OnManagedリソースの作成();
 		}
 		public override void OnManagedリソースの解放()
 		{
 			if( this.b活性化してない )
 				return;
-
 			CDTXMania.tテクスチャの解放( ref this.txSkinSample1 );
 			CDTXMania.tテクスチャの解放( ref this.tx通常項目行パネル );
 			CDTXMania.tテクスチャの解放( ref this.txその他項目行パネル );
 			CDTXMania.tテクスチャの解放( ref this.tx三角矢印 );
 		
 			base.OnManagedリソースの解放();
+		}
+		private void OntxMenuItemの解放()
+		{
+			if ( txMenuItemRight != null )
+			{
+				for ( int i = 0; i < txMenuItemRight.Count; i++ )
+				{
+					if ( txMenuItemRight[ i ] != null )
+					{
+						txMenuItemRight[ i ].Dispose();
+					}
+					txMenuItemRight[ i ] = null;
+				}
+				this.txMenuItemRight.Clear();
+			}
 		}
 		public override int On進行描画()
 		{
@@ -1733,29 +1796,38 @@ namespace DTXMania
 				{
 					case CItemBase.Eパネル種別.通常:
 						if( this.tx通常項目行パネル != null )
-							this.tx通常項目行パネル.t2D描画( CDTXMania.app.Device, x, y );
+							this.tx通常項目行パネル.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y );
 						break;
 
 					case CItemBase.Eパネル種別.その他:
 						if( this.txその他項目行パネル != null )
-							this.txその他項目行パネル.t2D描画( CDTXMania.app.Device, x, y );
+							this.txその他項目行パネル.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y );
 						break;
 				}
 				//-----------------
 				#endregion
 				#region [ 現在の行の項目名を描画。]
 				//-----------------
-				CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 0x12, y + 12, this.list項目リスト[ nItem ].str項目名 );
+				//if ( txMenuItem[ nItem ] == null )
+				//{
+				//    Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ nItem ].str項目名, Color.White, Color.Black );
+				//    txMenuItem[ nItem ] = CDTXMania.tテクスチャの生成( bmpStr, false );
+				//}
+				txMenuItemRight[ nItem ].t2D描画( CDTXMania.app.Device, (x + 0x12) * Scale.X, (y + 12) * Scale.Y - 20);
+				//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 0x12, y + 12, this.list項目リスト[ nItem ].str項目名 );
 				//-----------------
 				#endregion
 				#region [ 現在の行の項目の要素を描画。]
 				//-----------------
+				string strParam = null;
+				bool b強調 = false;
 				switch( this.list項目リスト[ nItem ].e種別 )
 				{
 					case CItemBase.E種別.ONorOFFトグル:
 						#region [ *** ]
 						//-----------------
-						CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemToggle) this.list項目リスト[ nItem ] ).bON ? "ON" : "OFF" );
+						//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemToggle) this.list項目リスト[ nItem ] ).bON ? "ON" : "OFF" );
+						strParam = ( (CItemToggle) this.list項目リスト[ nItem ] ).bON ? "ON" : "OFF";
 						break;
 						//-----------------
 						#endregion
@@ -1766,17 +1838,18 @@ namespace DTXMania
 						switch( ( (CItemThreeState) this.list項目リスト[ nItem ] ).e現在の状態 )
 						{
 							case CItemThreeState.E状態.ON:
-								CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "ON" );
+								strParam = "ON";
 								break;
 
 							case CItemThreeState.E状態.不定:
-								CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "- -" );
+								strParam = "- -";
 								break;
 
 							default:
-								CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "OFF" );
+								strParam = "OFF";
 								break;
 						}
+						//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, "ON" );
 						break;
 						//-----------------
 						#endregion
@@ -1787,17 +1860,21 @@ namespace DTXMania
 						if( this.list項目リスト[ nItem ] == this.iCommonPlaySpeed )
 						{
 							double d = ( (double) ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値 ) / 20.0;
-							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, d.ToString( "0.000" ), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+							//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, d.ToString( "0.000" ), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+							strParam = d.ToString( "0.000" );
 						}
 						else if( this.list項目リスト[ nItem ] == this.iDrumsScrollSpeed || this.list項目リスト[ nItem ] == this.iGuitarScrollSpeed || this.list項目リスト[ nItem ] == this.iBassScrollSpeed )
 						{
 							float f = ( ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値 + 1 ) * 0.5f;
-							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, f.ToString( "x0.0" ), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+							//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, f.ToString( "x0.0" ), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+							strParam = f.ToString( "x0.0" );
 						}
 						else
 						{
-							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値.ToString(), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+							//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値.ToString(), ( n行番号 == 0 ) && this.b要素値にフォーカス中 );
+							strParam = ( (CItemInteger) this.list項目リスト[ nItem ] ).n現在の値.ToString();
 						}
+						b強調 = ( n行番号 == 0 ) && this.b要素値にフォーカス中;
 						break;
 						//-----------------
 						#endregion
@@ -1807,7 +1884,8 @@ namespace DTXMania
 						//-----------------
 						{
 							CItemList list = (CItemList) this.list項目リスト[ nItem ];
-							CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, list.list項目値[ list.n現在選択されている項目番号 ] );
+							//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 210, y + 12, list.list項目値[ list.n現在選択されている項目番号 ] );
+							strParam = list.list項目値[ list.n現在選択されている項目番号 ];
 
 							#region [ 必要な場合に、Skinのサンプルを生成・描画する。#28195 2012.5.2 yyagi ]
 							if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemSkinSubfolder )
@@ -1815,7 +1893,7 @@ namespace DTXMania
 								tGenerateSkinSample();		// 最初にSkinの選択肢にきたとき(Enterを押す前)に限り、サンプル生成が発生する。
 								if ( txSkinSample1 != null )
 								{
-									txSkinSample1.t2D描画( CDTXMania.app.Device, 56, 300 );
+									txSkinSample1.t2D描画( CDTXMania.app.Device, 56 * Scale.X, 300 * Scale.Y );
 								}
 							}
 							#endregion
@@ -1824,6 +1902,13 @@ namespace DTXMania
 						//-----------------
 						#endregion
 				}
+				Bitmap bmpStr = b強調?
+					prvFont.DrawPrivateFont( strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+					prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
+				CTexture txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+				txStr.t2D描画( CDTXMania.app.Device, ( x + 210 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
+				CDTXMania.tテクスチャの解放( ref txStr );
+				CDTXMania.t安全にDisposeする( ref bmpStr );
 				//-----------------
 				#endregion
 				
@@ -1859,8 +1944,8 @@ namespace DTXMania
 				
 				if( this.tx三角矢印 != null )
 				{
-					this.tx三角矢印.t2D描画( CDTXMania.app.Device, x, y_upper, new Rectangle( 0, 0, 32, 16 ) );
-					this.tx三角矢印.t2D描画( CDTXMania.app.Device, x, y_lower, new Rectangle( 0, 16, 32, 16 ) );
+					this.tx三角矢印.t2D描画( CDTXMania.app.Device, x * Scale.X, y_upper * Scale.Y, new Rectangle( 0, 0, (int)(32 * Scale.X), (int)(16 * Scale.Y) ) );
+					this.tx三角矢印.t2D描画( CDTXMania.app.Device, x * Scale.X, y_lower * Scale.Y, new Rectangle( 0, (int)(16 * Scale.Y), (int)(32 * Scale.X), (int)(16 * Scale.Y) ) );
 				}
 			}
 			//-----------------
@@ -1985,6 +2070,10 @@ namespace DTXMania
 		private CTexture txその他項目行パネル;
 		private CTexture tx三角矢印;
 		private CTexture tx通常項目行パネル;
+
+		private CPrivateFont prvFont;
+		//private List<string> list項目リスト_str最終描画名;
+		private List<CTexture> txMenuItemRight;
 
 		private CTexture txSkinSample1;				// #28195 2012.5.2 yyagi
 		private string[] skinSubFolders;			//
