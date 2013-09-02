@@ -187,8 +187,8 @@ namespace DTXMania
 									{
 										int p = ( strDispLag[ i ] == '-' ) ? 11 : (int) ( strDispLag[ i ] - '0' );	//int.Parse(strDispLag[i]);
 										p += minus ? 0 : 12;		// change color if it is minus value
-										base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX, y + 34, base.stLag数値[ p ].rc );
-										offsetX += 15;
+										base.txlag数値.t2D描画( CDTXMania.app.Device, (x + offsetX) * Scale.X, (y + 34) * Scale.Y, base.stLag数値[ p ].rc );
+										offsetX += 12;	// 15 -> 12
 									}
 								}
 							}
