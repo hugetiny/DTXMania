@@ -243,7 +243,7 @@ namespace DTXMania
 				}
 				if( num >= 700 )
 				{
-					this.t大文字表示( x, y + (int)(0x9a * Scale.Y), string.Format( "{0,9:#####0.00}", CDTXMania.stage結果.st演奏記録[ i ].db演奏型スキル値 ), CDTXMania.stage結果.b新記録スキル[ i ] );
+					this.t大文字表示( x - (int)(11 * Scale.X), y + (int)(0x9a * Scale.Y), string.Format( "{0,9:#####0.00}", CDTXMania.stage結果.st演奏記録[ i ].db演奏型スキル値 ), CDTXMania.stage結果.b新記録スキル[ i ] );
 				}
 				if( num >= 700 )
 				{
@@ -411,7 +411,8 @@ namespace DTXMania
 						break;
 					}
 				}
-				x += (int)(8 * Scale.X);
+				//x += (int) ( 8 * Scale.X );
+				x += (int) ( 9 * Scale.X );
 			}
 		}
 		private void t大文字表示( int x, int y, string str )
@@ -444,7 +445,8 @@ namespace DTXMania
 						break;
 					}
 				}
-				x += (int)(8 * Scale.X);
+				//x += (int) ( 8 * Scale.X );
+				x += 27;
 			}
 		}
 		//-----------------

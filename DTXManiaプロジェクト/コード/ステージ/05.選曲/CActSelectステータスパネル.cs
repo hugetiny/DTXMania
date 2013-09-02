@@ -222,7 +222,7 @@ namespace DTXMania
 					int y = this.n本体Y + (int)(0x10 * Scale.Y);
 					index = this.n難易度開始文字位置;
 					flag = true;
-					while( index < ( this.n難易度開始文字位置 + 0x24 ) )
+					while( index < ( this.n難易度開始文字位置 + 55 ) )	 // 0x24 -> 55
 					{
 						CDTXMania.act文字コンソール.tPrint(
 							x,
@@ -230,7 +230,7 @@ namespace DTXMania
 							eフォント種別Array[ index ],
 							chArray[ index ].ToString()
 						);
-						x += 8;
+						x += 8 * 2;
 						index++;
 						if( chArray[ index ] == '\0' )
 						{
@@ -240,7 +240,7 @@ namespace DTXMania
 					}
 					if( this.n難易度開始文字位置 > 0 )
 					{
-						int num9 = ( this.n本体X + (int)(12 * Scale.X) ) - this.ct難易度矢印用.n現在の値;
+						int num9 = ( this.n本体X + (int)(12 * Scale.X) ) - (int)(this.ct難易度矢印用.n現在の値 * Scale.X);
 						int num10 = ( this.n本体Y + (int)(0x10 * Scale.Y) ) + (int)(5 * Scale.Y);
 						if( this.tx難易度用矢印 != null )
 						{
@@ -249,8 +249,8 @@ namespace DTXMania
 					}
 					if( flag )
 					{
-						int num11 = ( ( this.n本体X + (int)(20 * Scale.X) ) + (int)(0x120 * Scale.Y) ) + this.ct難易度矢印用.n現在の値;
-						int num12 = ( this.n本体Y + (int)(0x10 * Scale.X) ) + (int)(5 * Scale.Y);
+						int num11 = ( ( this.n本体X + (int)(20 * Scale.X) ) + (int)(0x120 * Scale.X) ) + (int)(this.ct難易度矢印用.n現在の値 * Scale.Y);
+						int num12 = ( this.n本体Y + (int)(0x10 * Scale.Y) ) + (int)(5 * Scale.Y);
 						if( this.tx難易度用矢印 != null )
 						{
 							this.tx難易度用矢印.t2D描画( CDTXMania.app.Device, num11, num12, new Rectangle( (int)(8 * Scale.X), 0, (int)(8 * Scale.X), (int)(0x10 * Scale.Y) ) );
@@ -510,7 +510,7 @@ namespace DTXMania
 					num += length + 2;
 				}
 			}
-			if( num >= ( this.n難易度開始文字位置 + 0x24 ) )
+			if( num >= ( this.n難易度開始文字位置 + 55 ) )	// 0x24 -> 55
 			{
 				return 1;
 			}
@@ -518,7 +518,7 @@ namespace DTXMania
 			{
 				return -1;
 			}
-			if( ( ( num + length ) - 1 ) >= ( this.n難易度開始文字位置 + 0x24 ) )
+			if( ( ( num + length ) - 1 ) >= ( this.n難易度開始文字位置 + 55 ) )	// 0x24 -> 55
 			{
 				return 1;
 			}

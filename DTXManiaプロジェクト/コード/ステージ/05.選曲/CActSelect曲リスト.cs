@@ -1207,12 +1207,12 @@ namespace DTXMania
 			// 十の位の描画。
 
 			if( n百の位 != 0 || n十の位 != 0 )
-				this.tスキル値の描画・１桁描画( x + (int)(7 * Scale.X) , y, n十の位, color );
+				this.tスキル値の描画・１桁描画( x + (int)(8 * Scale.X) , y, n十の位, color );
 
 
 			// 一の位の描画。
 
-			this.tスキル値の描画・１桁描画( x + (int)(14 * Scale.X), y, n一の位, color );
+			this.tスキル値の描画・１桁描画( x + (int)(16 * Scale.X), y, n一の位, color );
 		}
 		private void tスキル値の描画・１桁描画( int x, int y, int n数値, int color )
 		{
