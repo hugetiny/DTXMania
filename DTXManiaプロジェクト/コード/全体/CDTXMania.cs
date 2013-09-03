@@ -751,7 +751,7 @@ namespace DTXMania
 							Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 						}
 
-						this.tガベージコレクションを実行する();
+						//this.tガベージコレクションを実行する();		// #31980 2013.9.3 yyagi タイトル画面でだけ、毎フレームGCを実行して重くなっていた問題の修正
 						//-----------------------------
 						#endregion
 						break;
