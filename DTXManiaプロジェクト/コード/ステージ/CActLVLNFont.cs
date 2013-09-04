@@ -12,9 +12,9 @@ namespace DTXMania
 	public class CActLVLNFont : CActivity
 	{
 		// コンストラクタ
-
-		const int numWidth = 15;
-		const int numHeight = 19;
+		// 27x26くらい
+		const int numWidth = (int)(15 * Scale.X);
+		const int numHeight =(int)(19 * Scale.Y);
 
 		public CActLVLNFont()
 		{
@@ -27,8 +27,8 @@ namespace DTXMania
 				{
 					this.st数字[i, j].ch = numChars[i];
 					this.st数字[i, j].rc = new Rectangle(
-												(i % 4) * numWidth + (j % 2) * 64,
-												(i / 4) * numHeight + (j / 2) * 64,
+												(i % 4) * numWidth + (j % 2) * (int)(64 * Scale.X),
+												(i / 4) * numHeight + (j / 2) * (int)(64 * Scale.Y),
 												numWidth,
 												numHeight
 					);
@@ -61,7 +61,7 @@ namespace DTXMania
 					{
 						int p = (ch == '-' ? 11 : ch - '0');
 						ST数字 s = st数字[p, (int)efc];
-						int sw = s.rc.Width;
+						int sw = s.rc.Width - 12;
 						int delta = bRightAlign ? 0 : -sw;
 						this.tx数値.t2D描画(CDTXMania.app.Device, x + delta, y, s.rc);
 						x += bRightAlign ? -sw : sw;

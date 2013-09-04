@@ -96,7 +96,7 @@ namespace DTXMania
 				{
 					CActLVLNFont.EFontColor efc = this.IsDanger( E楽器パート.DRUMS ) ?
 						CActLVLNFont.EFontColor.Red : CActLVLNFont.EFontColor.Yellow;
-					actLVLNFont.t文字列描画( 15, 408, nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Right );
+					actLVLNFont.t文字列描画( (int)(12 * Scale.X), (int)(408 * Scale.Y), nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Right );
 				}
 
 				int num2 = ( this.dbゲージ値 == 1.0 ) ? ( (int) ( 352.0 * this.dbゲージ値 ) ) : ( (int) ( ( 352.0 * this.dbゲージ値 ) + ( 2.0 * Math.Sin( Math.PI * 2 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) ) );
