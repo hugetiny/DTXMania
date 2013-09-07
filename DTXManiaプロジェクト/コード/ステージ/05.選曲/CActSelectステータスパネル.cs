@@ -226,7 +226,7 @@ namespace DTXMania
 					{
 						CDTXMania.act文字コンソール.tPrint(
 							x,
-							y,
+							y + 5,
 							eフォント種別Array[ index ],
 							chArray[ index ].ToString()
 						);
