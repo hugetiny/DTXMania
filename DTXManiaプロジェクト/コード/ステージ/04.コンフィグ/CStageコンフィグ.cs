@@ -140,7 +140,7 @@ namespace DTXMania
 				base.OnManagedリソースの作成();
 			}
 		}
-		public override void OnManagedリソースの解放()											// OPTIONと同じ(COnfig.iniの書き出しタイミングのみ異なるが、無視して良い)
+		public override void OnManagedリソースの解放()											// OPTIONと同じ(Config.iniの書き出しタイミングのみ異なるが、無視して良い)
 		{
 			if( !base.b活性化してない )
 			{
@@ -191,7 +191,7 @@ namespace DTXMania
 				int y = (int)((0x61 + ( this.n現在のメニュー番号 * 0x19 )) * Scale.Y);
 				int num3 = (int)(170 * Scale.X);
 				this.txMenuカーソル.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) ) );
-				this.txMenuカーソル.t2D描画( CDTXMania.app.Device, ( x + num3 ) - 0x10 * Scale.X, y, new Rectangle( (int)(10 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) ) );
+				this.txMenuカーソル.t2D描画( CDTXMania.app.Device, ( x + num3 ) - 0x10 * Scale.X, y, new Rectangle( (int)(0x10 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) ) );
 				x += (int)(0x10 * Scale.X);
 				for( num3 -= (int)(0x20 * Scale.X); num3 > 0; num3 -= rectangle.Width )
 				{
@@ -208,10 +208,9 @@ namespace DTXMania
 			#endregion
 			#region [ メニュー ]
 			//---------------------
-			string[] strMenuItem = { "System", "Drums", "Guitar", "Bass", "Exit" };
 			int menuY = (int)(100 * Scale.Y) - 20;
 			int stepY = (int)(25 * Scale.Y);
-			for ( int i = 0; i < strMenuItem.Length; i++ )
+			for ( int i = 0; i < txMenuItemLeft.GetLength(0); i++ )
 			{
 				//Bitmap bmpStr = (this.n現在のメニュー番号 == i) ?
 				//      prvFont.DrawPrivateFont( strMenuItem[ i ], Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
@@ -223,44 +222,6 @@ namespace DTXMania
 				//txMenuItem.Dispose();
 				menuY += stepY;
 			}
-			#region [ actFontによる旧実装 未使用 ]
-			//string str = "System";
-			//int num4 = this.actFont.n文字列長dot( str );
-			//bool flag = this.n現在のメニュー番号 == 0;
-			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 100, str, flag );
-			////str = "Drums Keys";
-			////num4 = this.actFont.n文字列長dot( str );
-			////flag = this.n現在のメニュー番号 == 1;
-			////this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0x7d, str, flag );
-			////str = "Guitar Keys";
-			////num4 = this.actFont.n文字列長dot( str );
-			////flag = this.n現在のメニュー番号 == 2;
-			////this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 150, str, flag );
-			////str = "Bass Keys";
-			////num4 = this.actFont.n文字列長dot( str );
-			////flag = this.n現在のメニュー番号 == 3;
-			////this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0xaf, str, flag );
-			////str = "Exit";
-			////num4 = this.actFont.n文字列長dot( str );
-			////flag = this.n現在のメニュー番号 == 4;
-			////this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 200, str, flag );
-			//str = "Drums";
-			//num4 = this.actFont.n文字列長dot( str );
-			//flag = this.n現在のメニュー番号 == 1;
-			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0x7d, str, flag );
-			//str = "Guitar";
-			//num4 = this.actFont.n文字列長dot( str );
-			//flag = this.n現在のメニュー番号 == 2;
-			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 150, str, flag );
-			//str = "Bass";
-			//num4 = this.actFont.n文字列長dot( str );
-			//flag = this.n現在のメニュー番号 == 3;
-			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 0xaf, str, flag );
-			//str = "Exit";
-			//num4 = this.actFont.n文字列長dot( str );
-			//flag = this.n現在のメニュー番号 == 4;
-			//this.actFont.t文字列描画( 0x8a - ( num4 / 2 ), 200, str, flag );
-			#endregion
 			//---------------------
 			#endregion
 			#region [ 説明文パネル ]
@@ -322,9 +283,8 @@ namespace DTXMania
 			//---------------------
 			#endregion
 
-			// キー入力
-
-			if( ( base.eフェーズID != CStage.Eフェーズ.共通_通常状態 )
+			#region [ キー入力 ]
+			if ( ( base.eフェーズID != CStage.Eフェーズ.共通_通常状態 )
 				|| this.actKeyAssign.bキー入力待ちの最中である
 				|| CDTXMania.act現在入力を占有中のプラグイン != null )
 				return 0;
@@ -354,7 +314,7 @@ namespace DTXMania
 			}
 			else if( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Return) ) ) )
 			{
-				if( this.n現在のメニュー番号 == 4 )
+				if( this.n現在のメニュー番号 == 4 )		// EXIT
 				{
 					CDTXMania.Skin.sound決定音.t再生する();
 					this.actFIFO.tフェードアウト開始();
@@ -401,6 +361,7 @@ namespace DTXMania
 			{
 				this.tカーソルを下へ移動する();
 			}
+			#endregion
 			return 0;
 		}
 
@@ -609,8 +570,8 @@ namespace DTXMania
 				switch( this.n現在のメニュー番号 )
 				{
 					case 0:
-						str[ 0, 0 ] = "システムに関係する項目を設定しま";
-						str[ 0, 1 ] = "す。";
+						str[ 0, 0 ] = "システムに関係する項目を設定します。";
+						str[ 0, 1 ] = "";
 						str[ 1, 0 ] = "Settings for an overall systems.";
 						break;
 
@@ -635,31 +596,31 @@ namespace DTXMania
 					//    str[1, 1] = "";
 					//    break;
 					case 1:
-						str[ 0, 0 ] = "ドラムの演奏に関する項目を設定し";
-						str[ 0, 1 ] = "ます。";
+						str[ 0, 0 ] = "ドラムの演奏に関する項目を設定します。";
+						str[ 0, 1 ] = "";
 						str[ 1, 0 ] = "Settings to play the drums.";
 						str[ 1, 1 ] = "";
 						break;
 
 					case 2:
-						str[ 0, 0 ] = "ギターの演奏に関する項目を設定し";
-						str[ 0, 1 ] = "ます。";
+						str[ 0, 0 ] = "ギターの演奏に関する項目を設定します。";
+						str[ 0, 1 ] = "";
 						str[ 1, 0 ] = "Settings to play the guitar.";
 						str[ 1, 1 ] = "";
 						break;
 
 					case 3:
-						str[ 0, 0 ] = "ベースの演奏に関する項目を設定し";
-						str[ 0, 1 ] = "ます。";
+						str[ 0, 0 ] = "ベースの演奏に関する項目を設定します。";
+						str[ 0, 1 ] = "";
 						str[ 1, 0 ] = "Settings to play the bass.";
 						str[ 1, 1 ] = "";
 						break;
 
 					case 4:
-						str[ 0, 0 ] = "設定を保存し、コンフィグ画面を終了";
-						str[ 0, 1 ] = "します。";
-						str[ 1, 0 ] = "Save the settings and exit from";
-						str[ 1, 1 ] = "CONFIGURATION menu.";
+						str[ 0, 0 ] = "設定を保存し、コンフィグ画面を終了します。";
+						str[ 0, 1 ] = "";
+						str[ 1, 0 ] = "Save the settings and exit from CONFIGURATION menu.";
+						str[ 1, 1 ] = "";
 						break;
 				}
 				

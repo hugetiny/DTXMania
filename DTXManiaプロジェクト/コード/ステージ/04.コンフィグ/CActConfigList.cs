@@ -361,11 +361,21 @@ namespace DTXMania
 			"Settings for the system key/pad inputs." );
 			this.list項目リスト.Add( this.iSystemGoToKeyAssign );
 
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 			for (int i = 0; i < this.list項目リスト.Count; i++)
 			{
-				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
-				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+				stMenuItemRight smr = new stMenuItemRight();
+				smr.strMenuItem = this.list項目リスト[ i ].str項目名;
+				Bitmap bmpStr = prvFont.DrawPrivateFont( smr.strMenuItem, Color.White, Color.Black );
+				smr.txMenuItemRight = CDTXMania.tテクスチャの生成( bmpStr, false );
+				bmpStr.Dispose();
+
+				smr.nParam = this.list項目リスト[ i ].GetIndex();
+				object o = this.list項目リスト[ i ].obj現在値();
+				smr.strParam = ( o == null ) ? "" : o.ToString();
+				bmpStr = prvFont.DrawPrivateFont( smr.strParam, Color.White, Color.Black );
+				smr.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+				listMenu.Add( smr );
 			}
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.System;
@@ -752,11 +762,22 @@ namespace DTXMania
 				"Settings for the drums key/pad inputs." );
 			this.list項目リスト.Add( this.iDrumsGoToKeyAssign );
 
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 			for ( int i = 0; i < this.list項目リスト.Count; i++ )
 			{
-				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
-				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+				stMenuItemRight smr = new stMenuItemRight();
+				smr.strMenuItem = this.list項目リスト[ i ].str項目名;
+				Bitmap bmpStr = prvFont.DrawPrivateFont( smr.strMenuItem, Color.White, Color.Black );
+				smr.txMenuItemRight = CDTXMania.tテクスチャの生成( bmpStr, false );
+				bmpStr.Dispose();
+
+				smr.nParam = this.list項目リスト[ i ].GetIndex();
+				object o = this.list項目リスト[ i ].obj現在値();
+				smr.strParam = ( o == null ) ? "" : o.ToString();
+				bmpStr = prvFont.DrawPrivateFont( smr.strParam, Color.White, Color.Black );
+				smr.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+
+				listMenu.Add( smr );
 			}
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Drums;
@@ -868,11 +889,22 @@ namespace DTXMania
 				"Settings for the guitar key/pad inputs." );
 			this.list項目リスト.Add( this.iGuitarGoToKeyAssign );
 
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 			for ( int i = 0; i < this.list項目リスト.Count; i++ )
 			{
-				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
-				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+				stMenuItemRight smr = new stMenuItemRight();
+				smr.strMenuItem = this.list項目リスト[ i ].str項目名;
+				Bitmap bmpStr = prvFont.DrawPrivateFont( smr.strMenuItem, Color.White, Color.Black );
+				smr.txMenuItemRight = CDTXMania.tテクスチャの生成( bmpStr, false );
+				bmpStr.Dispose();
+
+				smr.nParam = this.list項目リスト[ i ].GetIndex();
+				object o = this.list項目リスト[ i ].obj現在値();
+				smr.strParam = ( o == null ) ? "" : o.ToString();
+				bmpStr = prvFont.DrawPrivateFont( smr.strParam, Color.White, Color.Black );
+				smr.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+
+				listMenu.Add( smr );
 			}
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Guitar;
@@ -987,11 +1019,22 @@ namespace DTXMania
 				"Settings for the bass key/pad inputs.");
 			this.list項目リスト.Add( this.iBassGoToKeyAssign );
 
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 			for ( int i = 0; i < this.list項目リスト.Count; i++ )
 			{
-				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
-				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
+				stMenuItemRight smr = new stMenuItemRight();
+				smr.strMenuItem = this.list項目リスト[ i ].str項目名;
+				Bitmap bmpStr = prvFont.DrawPrivateFont( smr.strMenuItem, Color.White, Color.Black );
+				smr.txMenuItemRight = CDTXMania.tテクスチャの生成( bmpStr, false );
+				bmpStr.Dispose();
+
+				smr.nParam = this.list項目リスト[ i ].GetIndex();
+				object o = this.list項目リスト[ i ].obj現在値();
+				smr.strParam = ( o == null ) ? "" : o.ToString();
+				bmpStr = prvFont.DrawPrivateFont( smr.strParam, Color.White, Color.Black );
+				smr.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+
+				listMenu.Add( smr );
 			}
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.Bass;
@@ -1308,12 +1351,24 @@ namespace DTXMania
 				"Capture key assign:\nTo assign key for screen capture.\n (You can use keyboard only. You can't\nuse pads to capture screenshot." );
 			this.list項目リスト.Add( this.iKeyAssignSystemCapture );
 
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 			for ( int i = 0; i < this.list項目リスト.Count; i++ )
 			{
-				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
-				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
-			} this.n現在の選択項目 = 0;
+				stMenuItemRight smr = new stMenuItemRight();
+				smr.strMenuItem = this.list項目リスト[ i ].str項目名;
+				Bitmap bmpStr = prvFont.DrawPrivateFont( smr.strMenuItem, Color.White, Color.Black );
+				smr.txMenuItemRight = CDTXMania.tテクスチャの生成( bmpStr, false );
+				bmpStr.Dispose();
+
+				smr.nParam = this.list項目リスト[ i ].GetIndex();
+				object o = this.list項目リスト[ i ].obj現在値();
+				smr.strParam = ( o == null ) ? "" : o.ToString();
+				bmpStr = prvFont.DrawPrivateFont( smr.strParam, Color.White, Color.Black );
+				smr.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+
+				listMenu.Add( smr );
+			}
+			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignSystem;
 		}
 		public void t項目リストの設定・KeyAssignDrums()
@@ -1371,12 +1426,24 @@ namespace DTXMania
 				"ドラムのキー設定：\nハイハットのフットペダルへのキーの\n割り当てを設定します。",	//
 				"Drums key assign:\nTo assign key/pads for HiHatPedal\n button." );					//
 			this.list項目リスト.Add( this.iKeyAssignDrumsHP );										//
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 			for ( int i = 0; i < this.list項目リスト.Count; i++ )
 			{
-				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
-				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
-			} this.n現在の選択項目 = 0;
+				stMenuItemRight smr = new stMenuItemRight();
+				smr.strMenuItem = this.list項目リスト[ i ].str項目名;
+				Bitmap bmpStr = prvFont.DrawPrivateFont( smr.strMenuItem, Color.White, Color.Black );
+				smr.txMenuItemRight = CDTXMania.tテクスチャの生成( bmpStr, false );
+				bmpStr.Dispose();
+
+				smr.nParam = this.list項目リスト[ i ].GetIndex();
+				object o = this.list項目リスト[ i ].obj現在値();
+				smr.strParam = ( o == null ) ? "" : o.ToString();
+				bmpStr = prvFont.DrawPrivateFont( smr.strParam, Color.White, Color.Black );
+				smr.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+
+				listMenu.Add( smr );
+			}
+			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignDrums;
 		}
 		public void t項目リストの設定・KeyAssignGuitar()
@@ -1418,12 +1485,24 @@ namespace DTXMania
 				"ギターのキー設定：\nキャンセルボタンへのキーの割り当\nてを設定します。",
 				"Guitar key assign:\nTo assign key/pads for Cancel button.");
 			this.list項目リスト.Add(this.iKeyAssignGuitarCancel);
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 			for ( int i = 0; i < this.list項目リスト.Count; i++ )
 			{
-				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
-				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
-			} this.n現在の選択項目 = 0;
+				stMenuItemRight smr = new stMenuItemRight();
+				smr.strMenuItem = this.list項目リスト[ i ].str項目名;
+				Bitmap bmpStr = prvFont.DrawPrivateFont( smr.strMenuItem, Color.White, Color.Black );
+				smr.txMenuItemRight = CDTXMania.tテクスチャの生成( bmpStr, false );
+				bmpStr.Dispose();
+
+				smr.nParam = this.list項目リスト[ i ].GetIndex();
+				object o = this.list項目リスト[ i ].obj現在値();
+				smr.strParam = ( o == null ) ? "" : o.ToString();
+				bmpStr = prvFont.DrawPrivateFont( smr.strParam, Color.White, Color.Black );
+				smr.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+
+				listMenu.Add( smr );
+			}
+			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignGuitar;
 		}
 		public void t項目リストの設定・KeyAssignBass()
@@ -1465,12 +1544,24 @@ namespace DTXMania
 				"ベースのキー設定：\nキャンセルボタンへのキーの割り当\nてを設定します。",
 				"Bass key assign:\nTo assign key/pads for Cancel button." );
 			this.list項目リスト.Add( this.iKeyAssignBassCancel );
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 			for ( int i = 0; i < this.list項目リスト.Count; i++ )
 			{
-				Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ i ].str項目名, Color.White, Color.Black );
-				txMenuItemRight.Add( CDTXMania.tテクスチャの生成( bmpStr, false ) );
-			} this.n現在の選択項目 = 0;
+				stMenuItemRight smr = new stMenuItemRight();
+				smr.strMenuItem = this.list項目リスト[ i ].str項目名;
+				Bitmap bmpStr = prvFont.DrawPrivateFont( smr.strMenuItem, Color.White, Color.Black );
+				smr.txMenuItemRight = CDTXMania.tテクスチャの生成( bmpStr, false );
+				bmpStr.Dispose();
+
+				smr.nParam = this.list項目リスト[ i ].GetIndex();
+				object o = this.list項目リスト[ i ].obj現在値();
+				smr.strParam = ( o == null ) ? "" : o.ToString();
+				bmpStr = prvFont.DrawPrivateFont( smr.strParam, Color.White, Color.Black );
+				smr.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+
+				listMenu.Add( smr );
+			}
+			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.KeyAssignBass;
 		}
 		#endregion
@@ -1534,7 +1625,7 @@ namespace DTXMania
 			#endregion
 
 			this.prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );	// t項目リストの設定 の前に必要
-			this.txMenuItemRight = new List<CTexture>();
+			this.listMenu = new List<stMenuItemRight>();
 
 			this.t項目リストの設定・Bass();		// #27795 2012.3.11 yyagi; System設定の中でDrumsの設定を参照しているため、
 			this.t項目リストの設定・Guitar();	// 活性化の時点でDrumsの設定も入れ込んでおかないと、System設定中に例外発生することがある。
@@ -1561,7 +1652,7 @@ namespace DTXMania
 			this.list項目リスト.Clear();
 			this.ct三角矢印アニメ = null;
 
-			OntxMenuItemの解放();
+			OnListMenuの解放();
 
 			base.On非活性化();
 			#region [ Skin変更 ]
@@ -1631,19 +1722,20 @@ namespace DTXMania
 		
 			base.OnManagedリソースの解放();
 		}
-		private void OntxMenuItemの解放()
+
+		/// <summary>
+		/// 事前にレンダリングしておいたテクスチャを解放する。
+		/// </summary>
+		private void OnListMenuの解放()
 		{
-			if ( txMenuItemRight != null )
+			if ( listMenu != null )
 			{
-				for ( int i = 0; i < txMenuItemRight.Count; i++ )
+				for ( int i = 0; i < listMenu.Count; i++ )
 				{
-					if ( txMenuItemRight[ i ] != null )
-					{
-						txMenuItemRight[ i ].Dispose();
-					}
-					txMenuItemRight[ i ] = null;
+					listMenu[ i ].txParam.Dispose();
+					listMenu[ i ].txMenuItemRight.Dispose();
 				}
-				this.txMenuItemRight.Clear();
+				this.listMenu.Clear();
 			}
 		}
 		public override int On進行描画()
@@ -1808,12 +1900,7 @@ namespace DTXMania
 				#endregion
 				#region [ 現在の行の項目名を描画。]
 				//-----------------
-				//if ( txMenuItem[ nItem ] == null )
-				//{
-				//    Bitmap bmpStr = prvFont.DrawPrivateFont( this.list項目リスト[ nItem ].str項目名, Color.White, Color.Black );
-				//    txMenuItem[ nItem ] = CDTXMania.tテクスチャの生成( bmpStr, false );
-				//}
-				txMenuItemRight[ nItem ].t2D描画( CDTXMania.app.Device, (x + 0x12) * Scale.X, (y + 12) * Scale.Y - 20);
+				listMenu[ nItem ].txMenuItemRight.t2D描画( CDTXMania.app.Device, (x + 0x12) * Scale.X, (y + 12) * Scale.Y - 20);
 				//CDTXMania.stageコンフィグ.actFont.t文字列描画( x + 0x12, y + 12, this.list項目リスト[ nItem ].str項目名 );
 				//-----------------
 				#endregion
@@ -1902,13 +1989,35 @@ namespace DTXMania
 						//-----------------
 						#endregion
 				}
-				Bitmap bmpStr = b強調?
-					prvFont.DrawPrivateFont( strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
-					prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
-				CTexture txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
-				txStr.t2D描画( CDTXMania.app.Device, ( x + 210 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
-				CDTXMania.tテクスチャの解放( ref txStr );
-				CDTXMania.t安全にDisposeする( ref bmpStr );
+				int nIndex = this.list項目リスト[ nItem].GetIndex();
+				if ( b強調 )
+				{
+					Bitmap bmpStr = b強調 ?
+						prvFont.DrawPrivateFont( strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
+						prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
+					CTexture txStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+					txStr.t2D描画( CDTXMania.app.Device, ( x + 210 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
+					CDTXMania.tテクスチャの解放( ref txStr );
+					CDTXMania.t安全にDisposeする( ref bmpStr );
+				}
+				else
+				{
+					if (listMenu[ nItem ].nParam != nIndex)
+					{
+						stMenuItemRight stm = listMenu[ nItem ];
+						stm.nParam = nIndex;
+						object o = this.list項目リスト[ nItem ].obj現在値();
+						stm.strParam = ( o == null ) ? "" : o.ToString();
+
+						Bitmap bmpStr =
+							prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
+						stm.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+						CDTXMania.t安全にDisposeする( ref bmpStr );
+
+						listMenu[ nItem ] = stm;
+					}
+					listMenu[ nItem ].txParam.t2D描画( CDTXMania.app.Device, ( x + 210 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
+				}
 				//-----------------
 				#endregion
 				
@@ -2073,7 +2182,15 @@ namespace DTXMania
 
 		private CPrivateFont prvFont;
 		//private List<string> list項目リスト_str最終描画名;
-		private List<CTexture> txMenuItemRight;
+		private struct stMenuItemRight
+		{
+			public string strMenuItem;
+			public CTexture txMenuItemRight;
+			public int nParam;
+			public string strParam;
+			public CTexture txParam;
+		}
+		private List<stMenuItemRight> listMenu;
 
 		private CTexture txSkinSample1;				// #28195 2012.5.2 yyagi
 		private string[] skinSubFolders;			//

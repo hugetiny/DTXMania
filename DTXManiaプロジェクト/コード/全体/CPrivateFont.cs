@@ -14,6 +14,7 @@ namespace DTXMania
 	/// <summary>
 	/// プライベートフォントでの描画を扱うクラス。
 	/// </summary>
+	/// <exception cref="FileNotFoundException">フォントファイルが見つからない時に例外発生</exception>
 	/// <exception cref="ArgumentException">スタイル指定不正時に例外発生</exception>
 	/// <remarks>
 	/// 簡単な使い方
@@ -80,7 +81,8 @@ namespace DTXMania
 				catch ( System.IO.FileNotFoundException )
 				{
 					Trace.TraceError( "プライベートフォントの追加に失敗しました。({0})", fontpath );
-					return;
+					throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
+					//return;
 				}
 
 				//foreach ( FontFamily ff in pfc.Families )
