@@ -105,7 +105,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );	// t項目リストの設定 の前に必要
+				this.prvFont = new CPrivateFastFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );	// t項目リストの設定 の前に必要
 				this.txカーソル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
 				this.txHitKeyダイアログ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig hit key to assign dialog.png" ), false );
 				base.OnManagedリソースの作成();
@@ -282,7 +282,7 @@ namespace DTXMania
 		private string strパッド名;
 		private CTexture txHitKeyダイアログ;
 		private CTexture txカーソル;
-		private CPrivateFont prvFont;
+		private CPrivateFastFont prvFont;
 
 
 		private void tアサインコードの描画・Joypad( int line, int x, int y, int nID, int nCode, bool b強調 )

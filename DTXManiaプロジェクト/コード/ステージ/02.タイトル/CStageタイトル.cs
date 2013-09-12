@@ -74,7 +74,7 @@ namespace DTXMania
 				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle background.jpg" ), false );
 				this.txメニュー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle menu.png" ), false );
 
-				prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), 36 );
+				prvFont = new CPrivateFastFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), 36 );
 				//prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );
 				string[] menuStr = { "START", "CONFIGURATION", "EXIT" };
 				this.txMenuItem = new CTexture[ menuStr.Length ];
@@ -394,7 +394,7 @@ namespace DTXMania
 		private CTexture txメニュー;
 		private CTexture tx背景;
 
-		private CPrivateFont prvFont;
+		private CPrivateFastFont prvFont;
 		private CTexture[] txMenuItem;
 		private struct STMenuItem
 		{

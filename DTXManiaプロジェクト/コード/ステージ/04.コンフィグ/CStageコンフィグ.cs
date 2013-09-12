@@ -115,7 +115,7 @@ namespace DTXMania
 				this.tx下部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig footer panel.png" ), true );
 				this.txMenuカーソル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
 
-				prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );
+				prvFont = new CPrivateFastFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );
 				string[] strMenuItem = { "System", "Drums", "Guitar", "Bass", "Exit" };
 				txMenuItemLeft = new CTexture[ strMenuItem.Length, 2 ];
 				for ( int i = 0; i < strMenuItem.Length; i++ )
@@ -444,7 +444,7 @@ namespace DTXMania
 		private CTexture tx上部パネル;
 		private CTexture tx説明文パネル;
 		private CTexture tx背景;
-		private CPrivateFont prvFont;
+		private CPrivateFastFont prvFont;
 		private CTexture[,] txMenuItemLeft;
 
 		private void tカーソルを下へ移動する()

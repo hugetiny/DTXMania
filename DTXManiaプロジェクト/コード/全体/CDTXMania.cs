@@ -1429,6 +1429,11 @@ for (int i = 0; i < 3; i++) {
 			{
 				return null;
 			}
+			if ( txData == null )
+			{
+				Trace.TraceError( "テクスチャの生成に失敗しました。(txData==null)" );
+				return null;
+			}
 			try
 			{
 				return new CTexture( app.Device, txData, TextureFormat, b黒を透過する );
@@ -1450,13 +1455,18 @@ for (int i = 0; i < 3; i++) {
 			{
 				return null;
 			}
+			if ( bitmap == null )
+			{
+				Trace.TraceError( "テクスチャの生成に失敗しました。(bitmap==null)" );
+				return null;
+			}
 			try
 			{
 				return new CTexture( app.Device, bitmap, TextureFormat, b黒を透過する );
 			}
 			catch ( CTextureCreateFailedException )
 			{
-				Trace.TraceError( "テクスチャの生成に失敗しました。(txData)" );
+				Trace.TraceError( "テクスチャの生成に失敗しました。(bitmap)" );
 				return null;
 			}
 		}

@@ -56,9 +56,13 @@ namespace DTXMania
 		{
 			Initialize( fontpath, null, pt, FontStyle.Regular );
 		}
+		public CPrivateFont()
+		{
+			//throw new ArgumentException("CPrivateFont: 引数があるコンストラクタを使用してください。");
+		}
 		#endregion
 
-		private void Initialize( string fontpath, FontFamily fontfamily, int pt, FontStyle style )
+		protected void Initialize( string fontpath, FontFamily fontfamily, int pt, FontStyle style )
 		{
 			this._pfc = null;
 			this._fontfamily = null;
@@ -66,6 +70,7 @@ namespace DTXMania
 			this._pt = pt;
 			this._rectStrings = new Rectangle( 0, 0, 0, 0 );
 			this._ptOrigin = new Point( 0, 0 );
+			this.bDispose完了済み = false;
 
 			if ( fontfamily != null )
 			{
@@ -126,7 +131,7 @@ namespace DTXMania
 		}
 
 		[Flags]
-		private enum DrawMode
+		protected enum DrawMode
 		{
 			Normal,
 			Edge,
@@ -254,13 +259,14 @@ namespace DTXMania
 		/// <param name="gradationTopColor">グラデーション 上側の色</param>
 		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
 		/// <returns>描画済テクスチャ</returns>
-		private Bitmap DrawPrivateFont( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor )
+		protected Bitmap DrawPrivateFont( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor )
 		{
-			if ( this._fontfamily == null || drawstr == null )
+			if ( this._fontfamily == null || drawstr == null || drawstr == "" )
 			{
 				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て・・の処理で全部例外が発生することになる。
 				// それは非常に面倒なので、最小限のbitmapを返してしまう。
 				// まずはこの仕様で進めますが、問題有れば(上位側からエラー検出が必要であれば)例外を出したりエラー状態であるプロパティを定義するなり検討します。
+Trace.TraceError( "DrawPrivateFont()の入力不正。最小値のbitmapを返します。" );
 				_rectStrings = new Rectangle( 0, 0, 0, 0 );
 				_ptOrigin = new Point( 0, 0 );
 				return new Bitmap(1, 1);
@@ -347,12 +353,20 @@ namespace DTXMania
 			{
 				return _rectStrings;
 			}
+			protected set
+			{
+				_rectStrings = value;
+			}
 		}
 		public Point PtOrigin
 		{
 			get
 			{
 				return _ptOrigin;
+			}
+			protected set
+			{
+				_ptOrigin = value;
 			}
 		}
 
@@ -381,9 +395,10 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private bool bDispose完了済み;
+		protected bool bDispose完了済み;
+		protected Font _font;
+
 		private System.Drawing.Text.PrivateFontCollection _pfc;
-		private Font _font;
 		private FontFamily _fontfamily;
 		private int _pt;
 		private Rectangle _rectStrings;

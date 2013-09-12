@@ -61,7 +61,7 @@ namespace DTXMania
 		public void Initialize( List<CItemBase> menulist, bool showAllItems, string title, int defaultPos )
 		{
 
-			prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );
+			prvFont = new CPrivateFastFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );
 
 			stqMenuTitle = new stQuickMenuItem();
 			stqMenuTitle.cItem = new CItemBase();
@@ -426,7 +426,7 @@ namespace DTXMania
 			internal Rectangle rectName;
 		}
 		private stQuickMenuItem[] lciMenuItems;
-		CPrivateFont prvFont;
+		CPrivateFastFont prvFont;
 
 		private stQuickMenuItem stqMenuTitle;
 		private bool bShowAllItems;
