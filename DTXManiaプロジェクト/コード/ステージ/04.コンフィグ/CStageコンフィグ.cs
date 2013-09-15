@@ -619,7 +619,7 @@ namespace DTXMania
 					case 4:
 						str[ 0, 0 ] = "設定を保存し、コンフィグ画面を終了します。";
 						str[ 0, 1 ] = "";
-						str[ 1, 0 ] = "Save the settings and exit from CONFIGURATION menu.";
+						str[ 1, 0 ] = "Save the settings and exit from\nCONFIGURATION menu.";
 						str[ 1, 1 ] = "";
 						break;
 				}
@@ -662,7 +662,7 @@ namespace DTXMania
 					//    graphics.DrawString( str, this.ftフォント, Brushes.White, new PointF( 4f * Scale.X, (float) num * Scale.Y ) );
 					//    num += 30;
 					//}
-					graphics.DrawString( item.str説明文, this.ftフォント, Brushes.White, new RectangleF( 4f * Scale.X, (float) 0 * Scale.Y, 630 * 2, 430 * 2 ) );
+					graphics.DrawString( item.str説明文, this.ftフォント, Brushes.White, new RectangleF( 4f * Scale.X, (float) 0 * Scale.Y, 630 * 2 + 48, 430 * 2 ) );
 				}
 				graphics.Dispose();
 				if( this.tx説明文パネル != null )
