@@ -59,7 +59,7 @@ namespace DTXMania
 			try
 			{
 				this.n現在のメニュー番号 = 0;													//
-				this.ftフォント = new Font( "MS PGothic", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel );			//
+				this.ftフォント = new Font( "MS PGothic", 26f / 2 * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel );			//
 				for( int i = 0; i < 4; i++ )													//
 				{																				//
 					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.Timer );			//
@@ -226,7 +226,7 @@ namespace DTXMania
 			#endregion
 			#region [ 説明文パネル ]
 			//---------------------
-			if( this.tx説明文パネル != null )
+			if ( this.tx説明文パネル != null )
 				this.tx説明文パネル.t2D描画( CDTXMania.app.Device, 0x1d * Scale.X, 0xf8 * Scale.Y );
 			//---------------------
 			#endregion
@@ -635,8 +635,8 @@ namespace DTXMania
 					this.tx説明文パネル.Dispose();
 				}
 				this.tx説明文パネル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
-				this.tx説明文パネル.vc拡大縮小倍率.X = 0.5f;
-				this.tx説明文パネル.vc拡大縮小倍率.Y = 0.5f;
+				// this.tx説明文パネル.vc拡大縮小倍率.X = 0.5f;
+				// this.tx説明文パネル.vc拡大縮小倍率.Y = 0.5f;
 				image.Dispose();
 			}
 			catch( CTextureCreateFailedException )
@@ -649,7 +649,7 @@ namespace DTXMania
 		{
 			try
 			{
-				var image = new Bitmap( (int)(220 * 2 * Scale.X), (int)(192 * 2 * Scale.Y) );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
+				var image = new Bitmap( (int)(220 * Scale.X), (int)(192 * Scale.Y) );		// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する・・・のは中止。処理速度向上のため。）
 				var graphics = Graphics.FromImage( image );
 				graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
@@ -662,7 +662,7 @@ namespace DTXMania
 					//    graphics.DrawString( str, this.ftフォント, Brushes.White, new PointF( 4f * Scale.X, (float) num * Scale.Y ) );
 					//    num += 30;
 					//}
-					graphics.DrawString( item.str説明文, this.ftフォント, Brushes.White, new RectangleF( 4f * Scale.X, (float) 0 * Scale.Y, 630 * 2 + 48, 430 * 2 ) );
+					graphics.DrawString( item.str説明文, this.ftフォント, Brushes.White, new RectangleF( 4f * Scale.X, (float) 0 * Scale.Y, 630, 430 ) );
 				}
 				graphics.Dispose();
 				if( this.tx説明文パネル != null )
@@ -670,8 +670,8 @@ namespace DTXMania
 					this.tx説明文パネル.Dispose();
 				}
 				this.tx説明文パネル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
-				this.tx説明文パネル.vc拡大縮小倍率.X = 0.5f;
-				this.tx説明文パネル.vc拡大縮小倍率.Y = 0.5f;
+				//this.tx説明文パネル.vc拡大縮小倍率.X = 0.5f;
+				//this.tx説明文パネル.vc拡大縮小倍率.Y = 0.5f;
 				image.Dispose();
 			}
 			catch( CTextureCreateFailedException )
