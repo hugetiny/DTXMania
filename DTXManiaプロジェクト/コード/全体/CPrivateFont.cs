@@ -266,7 +266,10 @@ namespace DTXMania
 				// nullを返すと、その後bmp→texture処理や、textureのサイズを見て・・の処理で全部例外が発生することになる。
 				// それは非常に面倒なので、最小限のbitmapを返してしまう。
 				// まずはこの仕様で進めますが、問題有れば(上位側からエラー検出が必要であれば)例外を出したりエラー状態であるプロパティを定義するなり検討します。
-Trace.TraceError( "DrawPrivateFont()の入力不正。最小値のbitmapを返します。" );
+				if ( drawstr != "" )
+				{
+					Trace.TraceWarning( "DrawPrivateFont()の入力不正。最小値のbitmapを返します。" );
+				}
 				_rectStrings = new Rectangle( 0, 0, 0, 0 );
 				_ptOrigin = new Point( 0, 0 );
 				return new Bitmap(1, 1);

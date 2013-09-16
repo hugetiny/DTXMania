@@ -1953,8 +1953,7 @@ namespace DTXMania
 						//-----------------
 						#endregion
 				}
-				int nIndex = this.list項目リスト[ nItem].GetIndex();
-//				if ( b強調 )
+				if ( b強調 )
 				{
 					Bitmap bmpStr = b強調 ?
 						prvFont.DrawPrivateFont( strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) :
@@ -1964,24 +1963,25 @@ namespace DTXMania
 					CDTXMania.tテクスチャの解放( ref txStr );
 					CDTXMania.t安全にDisposeする( ref bmpStr );
 				}
-				//else
-				//{
-				//    if (listMenu[ nItem ].nParam != nIndex)
-				//    {
-				//        stMenuItemRight stm = listMenu[ nItem ];
-				//        stm.nParam = nIndex;
-				//        object o = this.list項目リスト[ nItem ].obj現在値();
-				//        stm.strParam = ( o == null ) ? "" : o.ToString();
+				else
+				{
+					int nIndex = this.list項目リスト[ nItem ].GetIndex();
+					if ( listMenu[ nItem ].nParam != nIndex || listMenu[ nItem ].txParam == null )
+					{
+						stMenuItemRight stm = listMenu[ nItem ];
+						stm.nParam = nIndex;
+						object o = this.list項目リスト[ nItem ].obj現在値();
+						stm.strParam = ( o == null ) ? "" : o.ToString();
 
-				//        Bitmap bmpStr =
-				//            prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
-				//        stm.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
-				//        CDTXMania.t安全にDisposeする( ref bmpStr );
+				        Bitmap bmpStr =
+				            prvFont.DrawPrivateFont( strParam, Color.White, Color.Black );
+				        stm.txParam = CDTXMania.tテクスチャの生成( bmpStr, false );
+				        CDTXMania.t安全にDisposeする( ref bmpStr );
 
-				//        listMenu[ nItem ] = stm;
-				//    }
-				//    listMenu[ nItem ].txParam.t2D描画( CDTXMania.app.Device, ( x + 210 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
-				//}
+				        listMenu[ nItem ] = stm;
+				    }
+				    listMenu[ nItem ].txParam.t2D描画( CDTXMania.app.Device, ( x + 210 ) * Scale.X, ( y + 12 ) * Scale.Y - 20 );
+				}
 				//-----------------
 				#endregion
 				
@@ -2145,10 +2145,10 @@ namespace DTXMania
 		private CTexture tx通常項目行パネル;
 
 		private CPrivateFastFont prvFont;
-		private List<string> list項目リスト_str最終描画名;
+		//private List<string> list項目リスト_str最終描画名;
 		private struct stMenuItemRight
 		{
-			public string strMenuItem;
+		//	public string strMenuItem;
 			public CTexture txMenuItemRight;
 			public int nParam;
 			public string strParam;
