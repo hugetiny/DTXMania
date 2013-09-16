@@ -294,12 +294,12 @@ namespace DTXMania
 				CDTXMania.Skin.sound取消音.t再生する();
 				if( !this.bメニューにフォーカス中 )
 				{
-					if( this.eItemPanelモード == EItemPanelモード.キーコード一覧 )
+					if ( this.eItemPanelモード == EItemPanelモード.キーコード一覧 )
 					{
 						CDTXMania.stageコンフィグ.tアサイン完了通知();
 						return 0;
 					}
-					if ( this.actList.bIsKeyAssignSelected == false )		// #24525 2011.3.15 yyagi
+					if ( !this.actList.bIsKeyAssignSelected && !this.actList.bIsFocusingParameter )	// #24525 2011.3.15 yyagi, #32059 2013.9.17 yyagi
 					{
 						this.bメニューにフォーカス中 = true;
 					}
@@ -314,12 +314,14 @@ namespace DTXMania
 			}
 			else if( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Return) ) ) )
 			{
-				if( this.n現在のメニュー番号 == 4 )		// EXIT
+				#region [ EXIT ]
+				if ( this.n現在のメニュー番号 == 4 )		// EXIT
 				{
 					CDTXMania.Skin.sound決定音.t再生する();
 					this.actFIFO.tフェードアウト開始();
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 				}
+				#endregion
 				else if( this.bメニューにフォーカス中 )
 				{
 					CDTXMania.Skin.sound決定音.t再生する();
@@ -328,7 +330,7 @@ namespace DTXMania
 				}
 				else
 				{
-					switch( this.eItemPanelモード )
+					switch ( this.eItemPanelモード )
 					{
 						case EItemPanelモード.パッド一覧:
 							bool bIsKeyAssignSelectedBeforeHitEnter = this.actList.bIsKeyAssignSelected;	// #24525 2011.3.15 yyagi
