@@ -299,7 +299,7 @@ namespace DTXMania
 						CDTXMania.stageコンフィグ.tアサイン完了通知();
 						return 0;
 					}
-					if ( this.actList.bIsKeyAssignSelected == false )		// #24525 2011.3.15 yyagi
+					if ( !this.actList.bIsKeyAssignSelected && !this.actList.bIsFocusingParameter )	// #24525 2011.3.15 yyagi, #32059 2013.9.17 yyagi
 					{
 						this.bメニューにフォーカス中 = true;
 					}

@@ -28,6 +28,13 @@ namespace DTXMania
 				}
 			}
 		}
+		public bool bIsFocusingParameter		// #32059 2013.9.17 yyagi
+		{
+			get
+			{
+				return b要素値にフォーカス中;
+			}
+		}
 		public bool b現在選択されている項目はReturnToMenuである
 		{
 			get
@@ -980,6 +987,11 @@ namespace DTXMania
 		/// </summary>
 		public void tEsc押下()
 		{
+			if ( this.b要素値にフォーカス中 )		// #32059 2013.9.17 add yyagi
+			{
+				this.b要素値にフォーカス中 = false;
+			}
+
 			if ( this.eメニュー種別 == Eメニュー種別.KeyAssignSystem )
 			{
 				t項目リストの設定・System();
