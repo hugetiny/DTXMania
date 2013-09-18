@@ -46,10 +46,17 @@ namespace DTXMania
 				#region [ strAVIファイル名の作成。]
 				//-----------------
 				string strAVIファイル名;
-				if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-					strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+				if ( CDTXMania.DTX != null && !Path.IsPathRooted( this.strファイル名) )	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
+				{																		// 演奏終了直後はCDTXオブジェクトが残っているので、ファイル名がフルパスかどうかでプレビュー判定する
+					if ( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+						strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					else
+						strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				}
 				else
-					strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				{
+					strAVIファイル名 = this.strファイル名;
+				}
 				//-----------------
 				#endregion
 
@@ -88,13 +95,20 @@ namespace DTXMania
 
 				if( this.avi != null )
 				{
-					#region [ strAVIファイル名 の作成。 ]
+					#region [ strAVIファイル名 の作成。なぜDispose時にファイル名の生成をしているのかと思ったら、デバッグログ用でした。 ]
 					//-----------------
 					string strAVIファイル名;
-					if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-						strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					if ( CDTXMania.DTX != null && !Path.IsPathRooted( this.strファイル名 ) )	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
+					{																			// 演奏終了直後はCDTXオブジェクトが残っているので、ファイル名がフルパスかどうかでプレビュー判定する
+						if ( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+							strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+						else
+							strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					}
 					else
-						strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					{
+						strAVIファイル名 = this.strファイル名;
+					}
 					//-----------------
 					#endregion
 

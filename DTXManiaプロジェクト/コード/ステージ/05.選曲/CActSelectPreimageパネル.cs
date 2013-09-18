@@ -28,8 +28,13 @@ namespace DTXMania
 		{
 			get
 			{
-				return (this.avi != null);
+				return (this.rAVI != null);
 			}
+		}
+		public CAct演奏AVI actAVI
+		{
+			get;
+			set;
 		}
 
 		// CActivity 実装
@@ -42,17 +47,21 @@ namespace DTXMania
 			this.str現在のファイル名 = "";
 			this.b新しいプレビューファイルを読み込んだ = false;
 			base.On活性化();
+
+			this.actAVI.bIsPreviewMovie = true;
+			this.actAVI.On活性化();
 		}
 		public override void On非活性化()
 		{
 			this.ct登場アニメ用 = null;
 			this.ct遅延表示 = null;
-			if( this.avi != null )
+			if( this.rAVI != null )
 			{
-				this.avi.Dispose();
-				this.avi = null;
+				this.rAVI.Dispose();
+				this.rAVI = null;
 			}
 			base.On非活性化();
+			this.actAVI.On非活性化();
 		}
 		public override void OnManagedリソースの作成()
 		{
@@ -64,13 +73,15 @@ namespace DTXMania
 				this.txプレビュー画像 = null;
 				this.txプレビュー画像がないときの画像 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect preimage default.png" ), false );
 				//this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 0xcc, 0x10d, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.SystemMemory );
-				this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 192, 269, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default );
-				this.nAVI再生開始時刻 = -1;
-				this.n前回描画したフレーム番号 = -1;
-				this.b動画フレームを作成した = false;
+				//this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 192, 269, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default );
+				//this.nAVI再生開始時刻 = -1;
+				//this.n前回描画したフレーム番号 = -1;
+				//this.b動画フレームを作成した = false;
 				this.pAVIBmp = IntPtr.Zero;
 				this.tプレビュー画像・動画の変更();
 				base.OnManagedリソースの作成();
+
+				this.actAVI.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
@@ -82,12 +93,13 @@ namespace DTXMania
 				CDTXMania.tテクスチャの解放( ref this.txセンサ光 );
 				CDTXMania.tテクスチャの解放( ref this.txプレビュー画像 );
 				CDTXMania.tテクスチャの解放( ref this.txプレビュー画像がないときの画像 );
-				if( this.sfAVI画像 != null )
-				{
-					this.sfAVI画像.Dispose();
-					this.sfAVI画像 = null;
-				}
+				//if( this.sfAVI画像 != null )
+				//{
+				//    this.sfAVI画像.Dispose();
+				//    this.sfAVI画像 = null;
+				//}
 				base.OnManagedリソースの解放();
+				this.actAVI.OnManagedリソースの解放();
 			}
 		}
 		public override int On進行描画()
@@ -118,26 +130,27 @@ namespace DTXMania
 						this.b新しいプレビューファイルを読み込んだ = true;
 					}
 				}
-				else if( ( ( this.avi != null ) && ( this.sfAVI画像 != null ) ) && ( this.nAVI再生開始時刻 != -1 ) )
-				{
-					int time = (int) ( ( CDTXMania.Timer.n現在時刻 - this.nAVI再生開始時刻 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
-					int frameNoFromTime = this.avi.GetFrameNoFromTime( time );
-					if( frameNoFromTime >= this.avi.GetMaxFrameCount() )
-					{
-						this.nAVI再生開始時刻 = CDTXMania.Timer.n現在時刻;
-					}
-					else if( ( this.n前回描画したフレーム番号 != frameNoFromTime ) && !this.b動画フレームを作成した )
-					{
-						this.b動画フレームを作成した = true;
-						this.n前回描画したフレーム番号 = frameNoFromTime;
-						this.pAVIBmp = this.avi.GetFramePtr( frameNoFromTime );
-					}
-				}
+				//else if( ( ( this.avi != null ) && ( this.sfAVI画像 != null ) ) && ( this.nAVI再生開始時刻 != -1 ) )
+				//{
+				//    int time = (int) ( ( CDTXMania.Timer.n現在時刻 - this.nAVI再生開始時刻 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+				//    int frameNoFromTime = this.avi.GetFrameNoFromTime( time );
+				//    if( frameNoFromTime >= this.avi.GetMaxFrameCount() )
+				//    {
+				//        this.nAVI再生開始時刻 = CDTXMania.Timer.n現在時刻;
+				//    }
+				//    else if( ( this.n前回描画したフレーム番号 != frameNoFromTime ) && !this.b動画フレームを作成した )
+				//    {
+				//        this.b動画フレームを作成した = true;
+				//        this.n前回描画したフレーム番号 = frameNoFromTime;
+				//        this.pAVIBmp = this.avi.GetFramePtr( frameNoFromTime );
+				//    }
+				//}
 				this.t描画処理・パネル本体();
 				this.t描画処理・ジャンル文字列();
 				this.t描画処理・プレビュー画像();
 				this.t描画処理・センサ光();
 				this.t描画処理・センサ本体();
+
 			}
 			return 0;
 		}
@@ -147,13 +160,15 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private CAvi avi;
-		private bool b動画フレームを作成した;
+		//private CAvi avi;
+		private CDTX.CAVI rAVI;
+
+		//private bool b動画フレームを作成した;
 		private CCounter ctセンサ光;
 		private CCounter ct遅延表示;
 		private CCounter ct登場アニメ用;
-		private long nAVI再生開始時刻;
-		private int n前回描画したフレーム番号;
+		//private long nAVI再生開始時刻;
+		//private int n前回描画したフレーム番号;
 		private int n本体X;
 		private int n本体Y;
 		private IntPtr pAVIBmp;
@@ -161,7 +176,7 @@ namespace DTXMania
 		private readonly Rectangle rcセンサ本体下半分 = new Rectangle( (int)(0x40 * Scale.X), (int)(0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x80 * Scale.Y) );
 		private readonly Rectangle rcセンサ本体上半分 = new Rectangle( (int)(0 * Scale.X), (int)(0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x80 * Scale.Y) );
 		private CTexture r表示するプレビュー画像;
-		private Surface sfAVI画像;
+		//private Surface sfAVI画像;
 		private string str現在のファイル名;
 		private CTexture txセンサ;
 		private CTexture txセンサ光;
@@ -216,13 +231,14 @@ namespace DTXMania
 		}
 		private void tプレビュー画像・動画の変更()
 		{
-			if( this.avi != null )
+			this.actAVI.Stop();
+			if ( this.rAVI != null )
 			{
-				this.avi.Dispose();
-				this.avi = null;
+				this.rAVI.Dispose();
+				this.rAVI = null;
 			}
 			this.pAVIBmp = IntPtr.Zero;
-			this.nAVI再生開始時刻 = -1;
+			//this.nAVI再生開始時刻 = -1;
 			if( !CDTXMania.ConfigIni.bストイックモード )
 			{
 				if( this.tプレビュー動画の指定があれば構築する() )
@@ -275,36 +291,46 @@ namespace DTXMania
 			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
 			if( ( CDTXMania.ConfigIni.bAVI有効 && ( cスコア != null ) ) && !string.IsNullOrEmpty( cスコア.譜面情報.Premovie ) )
 			{
-				string filename = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.Premovie;
-				if( filename.Equals( this.str現在のファイル名 ) )
-				{
-					return true;
-				}
-				if( this.avi != null )
-				{
-					this.avi.Dispose();
-					this.avi = null;
-				}
-				this.str現在のファイル名 = filename;
-				if( !File.Exists( this.str現在のファイル名 ) )
-				{
-					Trace.TraceWarning( "ファイルが存在しません。({0})", new object[] { this.str現在のファイル名 } );
-					return false;
-				}
-				try
-				{
-					this.avi = new CAvi( filename );
-					this.nAVI再生開始時刻 = CDTXMania.Timer.n現在時刻;
-					this.n前回描画したフレーム番号 = -1;
-					this.b動画フレームを作成した = false;
-					this.tサーフェイスをクリアする( this.sfAVI画像 );
-					Trace.TraceInformation( "動画を生成しました。({0})", new object[] { filename } );
-				}
+			    string filename = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.Premovie;
+			    if( filename.Equals( this.str現在のファイル名 ) )
+			    {
+			        return true;
+			    }
+			    if( this.rAVI != null )
+			    {
+			        this.rAVI.Dispose();
+			        this.rAVI = null;
+			    }
+			    this.str現在のファイル名 = filename;
+			    if( !File.Exists( this.str現在のファイル名 ) )
+			    {
+			        Trace.TraceWarning( "ファイルが存在しません。({0})", new object[] { this.str現在のファイル名 } );
+			        return false;
+			    }
+			    try
+			    {
+					this.rAVI = new CDTX.CAVI()
+					{
+						n番号 = 00,
+						strファイル名 = this.str現在のファイル名,
+						strコメント文 = this.str現在のファイル名
+					};
+					this.rAVI.OnDeviceCreated();
+					Debug.WriteLine( rAVI.avi.nフレーム幅 + "*" + rAVI.avi.nフレーム高さ );
+					this.actAVI.Start( 0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
+
+			//        this.avi = new CAvi( filename );
+			//        this.nAVI再生開始時刻 = CDTXMania.Timer.n現在時刻;
+			//        this.n前回描画したフレーム番号 = -1;
+			//        this.b動画フレームを作成した = false;
+			//        this.tサーフェイスをクリアする( this.sfAVI画像 );
+			        Trace.TraceInformation( "動画を生成しました。({0})", new object[] { filename } );
+			    }
 				catch
 				{
-					Trace.TraceError( "動画の生成に失敗しました。({0})", new object[] { filename } );
-					this.avi = null;
-					this.nAVI再生開始時刻 = -1;
+				    Trace.TraceError( "動画の生成に失敗しました。({0})", new object[] { filename } );
+				    this.rAVI = null;
+				    //this.nAVI再生開始時刻 = -1;
 				}
 			}
 			return false;
@@ -533,45 +559,51 @@ namespace DTXMania
 				int y = this.n本体Y + (int)(0x10 * Scale.Y);
 				float num3 = ( (float) this.ct遅延表示.n現在の値 ) / 100f;
 				float num4 = 0.9f + ( 0.1f * num3 );
-				if( ( this.nAVI再生開始時刻 != -1 ) && ( this.sfAVI画像 != null ) )
-				{
-					if( this.b動画フレームを作成した && ( this.pAVIBmp != IntPtr.Zero ) )
-					{
-						DataRectangle rectangle = this.sfAVI画像.LockRectangle( LockFlags.None );
-						DataStream data = rectangle.Data;
-						int num5 = rectangle.Pitch / this.sfAVI画像.Description.Width;
-						BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER = (BitmapUtil.BITMAPINFOHEADER*) this.pAVIBmp.ToPointer();
-						if( pBITMAPINFOHEADER->biBitCount == 0x18 )
-						{
-							switch( num5 )
-							{
-								case 2:
-									this.avi.tBitmap24ToGraphicsStreamR5G6B5( pBITMAPINFOHEADER, data, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height );
-									break;
+				//if( ( this.nAVI再生開始時刻 != -1 ) && ( this.sfAVI画像 != null ) )
+				//{
+				//    if( this.b動画フレームを作成した && ( this.pAVIBmp != IntPtr.Zero ) )
+				//    {
+				//        DataRectangle rectangle = this.sfAVI画像.LockRectangle( LockFlags.None );
+				//        DataStream data = rectangle.Data;
+				//        int num5 = rectangle.Pitch / this.sfAVI画像.Description.Width;
+				//        BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER = (BitmapUtil.BITMAPINFOHEADER*) this.pAVIBmp.ToPointer();
+				//        if( pBITMAPINFOHEADER->biBitCount == 0x18 )
+				//        {
+				//            switch( num5 )
+				//            {
+				//                case 2:
+				//                    this.avi.tBitmap24ToGraphicsStreamR5G6B5( pBITMAPINFOHEADER, data, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height );
+				//                    break;
 
-								case 4:
-									this.avi.tBitmap24ToGraphicsStreamX8R8G8B8( pBITMAPINFOHEADER, data, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height );
-									break;
-							}
-						}
-						this.sfAVI画像.UnlockRectangle();
-						this.b動画フレームを作成した = false;
-					}
-					using( Surface surface = CDTXMania.app.Device.GetBackBuffer( 0, 0 ) )
-					{
-						Rectangle srcRectangle = new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height );
-						Rectangle destRectangle = new Rectangle(
-							(int) ( x ),
-							(int) ( y ),
-							(int) ( srcRectangle.Width * Scale.X ),
-							(int) ( srcRectangle.Height * Scale.Y )
-						);
-						CDTXMania.app.Device.StretchRectangle( this.sfAVI画像, srcRectangle, surface, destRectangle, TextureFilter.Linear );
-						//CDTXMania.app.Device.UpdateSurface( this.sfAVI画像, new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height ), surface, new Point( x, y ) );
-						return;
-					}
+				//                case 4:
+				//                    this.avi.tBitmap24ToGraphicsStreamX8R8G8B8( pBITMAPINFOHEADER, data, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height );
+				//                    break;
+				//            }
+				//        }
+				//        this.sfAVI画像.UnlockRectangle();
+				//        this.b動画フレームを作成した = false;
+				//    }
+				//    using( Surface surface = CDTXMania.app.Device.GetBackBuffer( 0, 0 ) )
+				//    {
+				//        Rectangle srcRectangle = new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height );
+				//        Rectangle destRectangle = new Rectangle(
+				//            (int) ( x ),
+				//            (int) ( y ),
+				//            (int) ( srcRectangle.Width * Scale.X ),
+				//            (int) ( srcRectangle.Height * Scale.Y )
+				//        );
+				//        CDTXMania.app.Device.StretchRectangle( this.sfAVI画像, srcRectangle, surface, destRectangle, TextureFilter.Linear );
+				//        //CDTXMania.app.Device.UpdateSurface( this.sfAVI画像, new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height ), surface, new Point( x, y ) );
+				//        return;
+				//    }
+				//}
+				if ( this.rAVI != null )
+				{
+					this.actAVI.t進行描画( x, y );
+					return;
 				}
-				if( this.r表示するプレビュー画像 != null )
+				#region [ プレビュー画像表示 ]
+				if ( this.r表示するプレビュー画像 != null )
 				{
 					int width = this.r表示するプレビュー画像.sz画像サイズ.Width;
 					int height = this.r表示するプレビュー画像.sz画像サイズ.Height;
@@ -595,6 +627,7 @@ namespace DTXMania
 						//new Rectangle( 0, 0, width, height )
 					);
 				}
+				#endregion
 			}
 		}
 		//-----------------

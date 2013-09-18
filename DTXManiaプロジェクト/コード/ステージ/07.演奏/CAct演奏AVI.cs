@@ -5,6 +5,7 @@ using System.Drawing;
 using SlimDX;
 using SlimDX.Direct3D9;
 using FDK;
+using System.Diagnostics;
 
 namespace DTXMania
 {
@@ -15,6 +16,11 @@ namespace DTXMania
 		public CAct演奏AVI()
 		{
 			base.b活性化してない = true;
+		}
+		public bool bIsPreviewMovie
+		{
+			get;
+			set;
 		}
 
 
@@ -109,8 +115,15 @@ namespace DTXMania
 				}
 				if( ( this.n総移動時間ms == 0 ) && ( frameNoFromTime >= this.rAVI.avi.GetMaxFrameCount() ) )
 				{
-					this.n移動開始時刻ms = -1;
-					return 0;
+					if ( !bIsPreviewMovie )
+					{
+						this.n移動開始時刻ms = -1;
+						return 0;
+					}
+					// PREVIEW時はループ再生する。移動開始時刻msを現時刻にして(=AVIを最初に巻き戻して)、ここまでに行った計算をやり直す。
+					this.n移動開始時刻ms = CSound管理.rc演奏用タイマ.n現在時刻;
+					time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+					frameNoFromTime = this.rAVI.avi.GetFrameNoFromTime( time );
 				}
 				if( ( this.n前回表示したフレーム番号 != frameNoFromTime ) && !this.bフレームを作成した )
 				{
@@ -249,7 +262,7 @@ namespace DTXMania
 						this.tx描画用.texture.UnlockRectangle( 0 );
 						this.bフレームを作成した = false;
 					}
-					this.tx描画用.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y );
+					this.tx描画用.t2D描画( CDTXMania.app.Device, x, y );
 				}
 			}
 			return 0;
@@ -278,8 +291,8 @@ namespace DTXMania
 					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
 				this.tx描画用 = new CTexture( CDTXMania.app.Device,
-					278,
-					355,
+					(bIsPreviewMovie)? 204 : 278,
+					(bIsPreviewMovie)? 269 : 355,
 					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
 #endif
 				this.tx描画用.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );

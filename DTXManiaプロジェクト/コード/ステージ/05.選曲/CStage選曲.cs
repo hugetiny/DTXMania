@@ -108,8 +108,11 @@ namespace DTXMania
 			base.list子Activities.Add( this.actSortSongs = new CActSortSongs() );
 			base.list子Activities.Add( this.actShowCurrentPosition = new CActSelectShowCurrentPosition() );
 			base.list子Activities.Add( this.actQuickConfig = new CActSelectQuickConfig() );
+			base.list子Activities.Add( this.actAVI = new CAct演奏AVI() );
 
 			this.CommandHistory = new CCommandHistory();		// #24063 2011.1.16 yyagi
+
+			this.actPreimageパネル.actAVI = this.actAVI;
 		}
 		
 		
@@ -704,6 +707,8 @@ namespace DTXMania
 
 		private CActSortSongs actSortSongs;
 		private CActSelectQuickConfig actQuickConfig;
+
+		protected CAct演奏AVI actAVI;
 
 		private bool bBGM再生済み;
 		private STキー反復用カウンタ ctキー反復用;

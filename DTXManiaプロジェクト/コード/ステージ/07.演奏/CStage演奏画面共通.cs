@@ -1605,7 +1605,7 @@ namespace DTXMania
 		{
 			if ( ( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) && ( !CDTXMania.ConfigIni.bストイックモード && CDTXMania.ConfigIni.bAVI有効 ) )
 			{
-				this.actAVI.t進行描画( x, y );
+				this.actAVI.t進行描画( (int) ( x * Scale.X ), (int) ( y * Scale.Y ) );
 			}
 		}
 		protected abstract void t進行描画・BGA();

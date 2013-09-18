@@ -188,8 +188,8 @@ namespace DTXMania
 			base.b活性化してない = true;
 
 			this.bIsActivePopupMenu = false;
-			this.font = new CActDFPFont();
-			base.list子Activities.Add( this.font );
+//			this.font = new CActDFPFont();
+//			base.list子Activities.Add( this.font );
 			nItemSelecting = -1;
 
 			
@@ -199,9 +199,9 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				base.list子Activities.Remove( this.font );
-				this.font.On非活性化();
-				this.font = null;
+//				base.list子Activities.Remove( this.font );
+//				this.font.On非活性化();
+//				this.font = null;
 
 				CDTXMania.tテクスチャの解放( ref this.txCursor );
 				CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
