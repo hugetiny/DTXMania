@@ -2261,17 +2261,25 @@ namespace DTXMania
 			int instIndex = (int) inst;
 			if ( configIni.bGuitar有効 )
 			{
-				#region [ Hidden/Sudden処理 ]
-				if ( configIni.bSudden[ instIndex ] )
-				{
-					pChip.b可視 = pChip.nバーからの距離dot[ instIndex ] < 200;
-				}
-				if ( configIni.bHidden[ instIndex ] && ( pChip.nバーからの距離dot[ instIndex ] < 100 ) )
+				#region [ Blindfold処理 ]
+				if ( configIni.bBlindfold[ instIndex ] )
 				{
 					pChip.b可視 = false;
 				}
 				#endregion
-
+				else
+				{
+					#region [ Hidden/Sudden処理 ]
+					if ( configIni.bSudden[ instIndex ] )
+					{
+						pChip.b可視 = pChip.nバーからの距離dot[ instIndex ] < 200;
+					}
+					if ( configIni.bHidden[ instIndex ] && ( pChip.nバーからの距離dot[ instIndex ] < 100 ) )
+					{
+						pChip.b可視 = false;
+					}
+					#endregion
+				}
 				bool bChipHasR = ( ( pChip.nチャンネル番号 & 4 ) > 0 );
 				bool bChipHasG = ( ( pChip.nチャンネル番号 & 2 ) > 0 );
 				bool bChipHasB = ( ( pChip.nチャンネル番号 & 1 ) > 0 );
