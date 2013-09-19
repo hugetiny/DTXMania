@@ -707,8 +707,7 @@ namespace DTXMania
 
 		private CActSortSongs actSortSongs;
 		private CActSelectQuickConfig actQuickConfig;
-
-		protected CAct演奏AVI actAVI;
+		private CAct演奏AVI actAVI;
 
 		private bool bBGM再生済み;
 		private STキー反復用カウンタ ctキー反復用;

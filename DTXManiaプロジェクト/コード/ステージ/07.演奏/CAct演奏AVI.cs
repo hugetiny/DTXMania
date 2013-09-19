@@ -97,11 +97,11 @@ namespace DTXMania
 			{
 				Rectangle rectangle;
 				Rectangle rectangle2;
-				if( ( ( this.n移動開始時刻ms == -1 ) || ( this.rAVI == null ) ) || ( this.rAVI.avi == null ) )
+				if ( ( ( this.n移動開始時刻ms == -1 ) || ( this.rAVI == null ) ) || ( this.rAVI.avi == null ) )
 				{
 					return 0;
 				}
-				if( this.tx描画用 == null )
+				if ( this.tx描画用 == null )
 				{
 					return 0;
 				}

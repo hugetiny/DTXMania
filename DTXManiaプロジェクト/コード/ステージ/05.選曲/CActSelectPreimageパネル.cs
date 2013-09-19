@@ -77,7 +77,7 @@ namespace DTXMania
 				//this.nAVI再生開始時刻 = -1;
 				//this.n前回描画したフレーム番号 = -1;
 				//this.b動画フレームを作成した = false;
-				this.pAVIBmp = IntPtr.Zero;
+				//this.pAVIBmp = IntPtr.Zero;
 				this.tプレビュー画像・動画の変更();
 				base.OnManagedリソースの作成();
 
@@ -171,7 +171,7 @@ namespace DTXMania
 		//private int n前回描画したフレーム番号;
 		private int n本体X;
 		private int n本体Y;
-		private IntPtr pAVIBmp;
+		//private IntPtr pAVIBmp;
 		private readonly Rectangle rcセンサ光 = new Rectangle( (int)(0 * Scale.X), (int)(0xc0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x40 * Scale.Y) );
 		private readonly Rectangle rcセンサ本体下半分 = new Rectangle( (int)(0x40 * Scale.X), (int)(0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x80 * Scale.Y) );
 		private readonly Rectangle rcセンサ本体上半分 = new Rectangle( (int)(0 * Scale.X), (int)(0 * Scale.Y), (int)(0x40 * Scale.X), (int)(0x80 * Scale.Y) );
@@ -196,39 +196,39 @@ namespace DTXMania
 			}
 		}
 
-		private unsafe void tサーフェイスをクリアする( Surface sf )
-		{
-			DataRectangle rectangle = sf.LockRectangle( LockFlags.None );
-			DataStream data = rectangle.Data;
-			switch( ( rectangle.Pitch / sf.Description.Width ) )
-			{
-				case 4:
-					{
-						uint* numPtr = (uint*) data.DataPointer.ToPointer();
-						for( int i = 0; i < sf.Description.Height; i++ )
-						{
-							for( int j = 0; j < sf.Description.Width; j++ )
-							{
-								( numPtr + ( i * sf.Description.Width ) )[ j ] = 0;
-							}
-						}
-						break;
-					}
-				case 2:
-					{
-						ushort* numPtr2 = (ushort*) data.DataPointer.ToPointer();
-						for( int k = 0; k < sf.Description.Height; k++ )
-						{
-							for( int m = 0; m < sf.Description.Width; m++ )
-							{
-								( numPtr2 + ( k * sf.Description.Width ) )[ m ] = 0;
-							}
-						}
-						break;
-					}
-			}
-			sf.UnlockRectangle();
-		}
+		//private unsafe void tサーフェイスをクリアする( Surface sf )
+		//{
+		//    DataRectangle rectangle = sf.LockRectangle( LockFlags.None );
+		//    DataStream data = rectangle.Data;
+		//    switch( ( rectangle.Pitch / sf.Description.Width ) )
+		//    {
+		//        case 4:
+		//            {
+		//                uint* numPtr = (uint*) data.DataPointer.ToPointer();
+		//                for( int i = 0; i < sf.Description.Height; i++ )
+		//                {
+		//                    for( int j = 0; j < sf.Description.Width; j++ )
+		//                    {
+		//                        ( numPtr + ( i * sf.Description.Width ) )[ j ] = 0;
+		//                    }
+		//                }
+		//                break;
+		//            }
+		//        case 2:
+		//            {
+		//                ushort* numPtr2 = (ushort*) data.DataPointer.ToPointer();
+		//                for( int k = 0; k < sf.Description.Height; k++ )
+		//                {
+		//                    for( int m = 0; m < sf.Description.Width; m++ )
+		//                    {
+		//                        ( numPtr2 + ( k * sf.Description.Width ) )[ m ] = 0;
+		//                    }
+		//                }
+		//                break;
+		//            }
+		//    }
+		//    sf.UnlockRectangle();
+		//}
 		private void tプレビュー画像・動画の変更()
 		{
 			this.actAVI.Stop();
@@ -237,7 +237,7 @@ namespace DTXMania
 				this.rAVI.Dispose();
 				this.rAVI = null;
 			}
-			this.pAVIBmp = IntPtr.Zero;
+			//this.pAVIBmp = IntPtr.Zero;
 			//this.nAVI再生開始時刻 = -1;
 			if( !CDTXMania.ConfigIni.bストイックモード )
 			{
@@ -313,10 +313,9 @@ namespace DTXMania
 					{
 						n番号 = 00,
 						strファイル名 = this.str現在のファイル名,
-						strコメント文 = this.str現在のファイル名
+						strコメント文 = ""
 					};
 					this.rAVI.OnDeviceCreated();
-					Debug.WriteLine( rAVI.avi.nフレーム幅 + "*" + rAVI.avi.nフレーム高さ );
 					this.actAVI.Start( 0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
 
 			//        this.avi = new CAvi( filename );
@@ -324,7 +323,7 @@ namespace DTXMania
 			//        this.n前回描画したフレーム番号 = -1;
 			//        this.b動画フレームを作成した = false;
 			//        this.tサーフェイスをクリアする( this.sfAVI画像 );
-			        Trace.TraceInformation( "動画を生成しました。({0})", new object[] { filename } );
+			        //Trace.TraceInformation( "動画を生成しました。({0})", new object[] { filename } );
 			    }
 				catch
 				{

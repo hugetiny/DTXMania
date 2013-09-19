@@ -49,6 +49,9 @@ namespace DTXMania
 			base.list子Activities.Add( this.actOption = new CActオプションパネル() );
 			base.list子Activities.Add( this.actFI = new CActFIFOWhite() );
 			base.list子Activities.Add( this.actFO = new CActFIFOBlack() );
+			base.list子Activities.Add( this.actAVI = new CAct演奏AVI() );
+
+			this.actResultImage.actAVI = this.actAVI;
 		}
 
 		
@@ -523,6 +526,7 @@ namespace DTXMania
 		private CActFIFOWhite actFI;
 		private CActFIFOBlack actFO;
 		private CActオプションパネル actOption;
+		private CAct演奏AVI actAVI;
 		private CActResultParameterPanel actParameterPanel;
 		private CActResultRank actRank;
 		private CActResultImage actResultImage;

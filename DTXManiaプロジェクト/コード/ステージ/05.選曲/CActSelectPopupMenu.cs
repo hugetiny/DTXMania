@@ -417,7 +417,7 @@ namespace DTXMania
 
 		private CTexture txPopupMenuBackground;
 		private CTexture txCursor;
-		private CActDFPFont font;
+		//private CActDFPFont font;
 
 		internal struct stQuickMenuItem
 		{
