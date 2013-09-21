@@ -152,85 +152,22 @@ namespace DTXMania
 			//if ( ( ( this.nAVI再生開始時刻 != -1 ) && ( this.avi != null ) ) && ( this.sfリザルトAVI画像 != null ) )
 			if ( this.rAVI != null )
 			{
-				//if( this.b動画フレームを作成した && ( this.pAVIBmp != IntPtr.Zero ) )
-				//{
-				//    DataRectangle rectangle = this.sfリザルトAVI画像.LockRectangle( LockFlags.None );
-				//    DataStream data = rectangle.Data;
-				//    int num7 = rectangle.Pitch / this.sfリザルトAVI画像.Description.Width;
-				//    BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER = (BitmapUtil.BITMAPINFOHEADER*) this.pAVIBmp.ToPointer();
-				//    if( pBITMAPINFOHEADER->biBitCount == 0x18 )
-				//    {
-				//        switch( num7 )
-				//        {
-				//            case 2:
-				//                this.avi.tBitmap24ToGraphicsStreamR5G6B5( pBITMAPINFOHEADER, data, this.sfリザルトAVI画像.Description.Width, this.sfリザルトAVI画像.Description.Height );
-				//                break;
-
-				//            case 4:
-				//                this.avi.tBitmap24ToGraphicsStreamX8R8G8B8( pBITMAPINFOHEADER, data, this.sfリザルトAVI画像.Description.Width, this.sfリザルトAVI画像.Description.Height );
-				//                break;
-				//        }
-				//    }
-				//    this.sfリザルトAVI画像.UnlockRectangle();
-				//    this.b動画フレームを作成した = false;
-				//}
-				//using( Surface surface = CDTXMania.app.Device.GetBackBuffer( 0, 0 ) )
-				//{
-				//    Rectangle sourceRectangle = new Rectangle( 0, 0, this.sfリザルトAVI画像.Description.Width, this.sfリザルトAVI画像.Description.Height );
-				//    if( y < 0 )
-				//    {
-				//        sourceRectangle.Y += -y;
-				//        sourceRectangle.Height -= -y;
-				//        y = 0;
-				//    }
-				//    if( sourceRectangle.Height > 0 )
-				//    {
-				//        Rectangle destRectangle = new Rectangle(
-				//            (int) ( x * Scale.X ),
-				//            (int) ( y * Scale.Y ),
-				//            (int) ( sourceRectangle.Width * Scale.X ),
-				//            (int) ( sourceRectangle.Height * Scale.Y )
-				//        );
-				//        CDTXMania.app.Device.StretchRectangle( this.sfリザルトAVI画像, sourceRectangle, surface, destRectangle, TextureFilter.Linear );
-				//        //CDTXMania.app.Device.UpdateSurface( this.sfリザルトAVI画像, sourceRectangle, surface, new Point( (int)(x * Scale.X), (int)(y * Scale.Y) ) );
-				//    }
-				//    goto Label_042F;
-				//}
-				if ( this.rAVI == null ) { Debug.WriteLine( "ravi=NULL" ); return 0; }
-				if ( this.rAVI.avi == null ) Debug.WriteLine( "ravi.avi=null" );
 				this.actAVI.t進行描画( (int) ( x * Scale.X ), (int) ( y * Scale.Y ) );
-				goto Label_042F;
 			}
 			#region [ プレビュー画像表示 ]
-			if( this.r表示するリザルト画像 != null )
+			else if( this.r表示するリザルト画像 != null )
 			{
-				int width = this.r表示するリザルト画像.szテクスチャサイズ.Width;
-				int height = this.r表示するリザルト画像.szテクスチャサイズ.Height;
-				if( width > 0xcc )
-				{
-					width = 0xcc;
-				}
-				if( height > 0x10d )
-				{
-					height = 0x10d;
-				}
-				x += ( 0xcc - width ) / 2;
-				y += ( 0x10d - height ) / 2;
-				this.r表示するリザルト画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
-				this.r表示するリザルト画像.t2D描画(
-					CDTXMania.app.Device,
-					x * Scale.X,
-					y * Scale.Y//,
-					//new Rectangle(
-					//	0,
-					//	0,
-					//	(int)(width * Scale.X),
-					//	(int)(height * Scale.Y)
-					//)
-				);
+				CPreviewMagnifier cmg = new CPreviewMagnifier();
+				cmg.GetMagnifier( this.r表示するリザルト画像.sz画像サイズ.Width, this.r表示するリザルト画像.sz画像サイズ.Height, 1.0f, 1.0f, true );
+
+				if ( cmg.width < 0xcc)  x += ( 204 - cmg.width ) / 2;
+				if ( cmg.height < 269 ) y += ( 269 - cmg.height ) / 2;
+				this.r表示するリザルト画像.vc拡大縮小倍率.X = cmg.magX;
+				this.r表示するリザルト画像.vc拡大縮小倍率.Y = cmg.magY;
+				this.r表示するリザルト画像.vc拡大縮小倍率.Z = 1f;
+				this.r表示するリザルト画像.t2D描画( CDTXMania.app.Device, x * Scale.X, y * Scale.Y );
 			}
 			#endregion
-		Label_042F:
 			if( ( CDTXMania.DTX.GENRE != null ) && ( CDTXMania.DTX.GENRE.Length > 0 ) )
 			{
 				CDTXMania.act文字コンソール.tPrint(
