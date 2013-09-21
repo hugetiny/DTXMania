@@ -82,15 +82,15 @@ namespace DTXMania
 				this.width = width_org;
 				this.magX = magX_org * Scale.X;
 			}
-			else if ( width_fhd_limit > width && width > width_vga_set )			// width >= 320 なら原寸表示
+			else if ( width_fhd_limit > width_org && width_org > width_vga_set )			// width >= 320 なら原寸表示
 			{
 				this.width = width_vga_set;
 				this.magX = magX_org * Scale.X;
 			}
-			else if ( width >= width_fhd_limit )
+			else if ( width_org >= width_fhd_limit )
 			{
 				this.width = (int) ( width_vga_set * Scale.X );
-				this.magX = ( magX_org * Scale.X ) / width_hd_set;
+				this.magX = magX_org;	// / width_hd_set;
 			}
 			else
 			{
@@ -100,20 +100,20 @@ namespace DTXMania
 			#endregion
 
 			#region [ height ]
-			if ( height <= height_vga_set )											// height <= 269 なら、拡大率だけ変更
+			if ( height_org <= height_vga_set )											// height <= 269 なら、拡大率だけ変更
 			{
 				this.height = height_org;
 				this.magY = magY_org * Scale.Y;
 			}
-			else if ( height_fhd_limit > height && height > height_vga_set )		// height >= 416 なら原寸表示
+			else if ( height_fhd_limit > height_org && height_org > height_vga_set )		// height >= 416 なら原寸表示
 			{
 				this.height = height_vga_set;
 				this.magY = magY_org * Scale.Y;
 			}
-			else if ( width >= height_fhd_limit )
+			else if ( width_org >= height_fhd_limit )
 			{
 				this.height = (int) ( height_vga_set * Scale.Y );
-				this.magY = ( magY_org * Scale.Y ) / height_fhd_set;
+				this.magY = magY_org; // / height_fhd_set;
 			}
 			else
 			{
