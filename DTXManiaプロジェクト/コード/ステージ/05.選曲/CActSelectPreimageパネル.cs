@@ -105,16 +105,16 @@ namespace DTXMania
 				if( ( !CDTXMania.stage選曲.bスクロール中 && ( this.ct遅延表示 != null ) ) && this.ct遅延表示.b進行中 )
 				{
 					this.ct遅延表示.t進行();
-					if( this.ct遅延表示.b終了値に達した )
-					{
-						this.ct遅延表示.t停止();
-					}
-					else if( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
+					if ( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
 					{
 						this.tプレビュー画像・動画の変更();
 						CDTXMania.Timer.t更新();
 						this.ct遅延表示.n現在の経過時間ms = CDTXMania.Timer.n現在時刻;
 						this.b新しいプレビューファイルを読み込んだ = true;
+					}
+					else if ( this.ct遅延表示.b終了値に達した && this.ct遅延表示.b進行中 )
+					{
+						this.ct遅延表示.t停止();
 					}
 				}
 				else if( ( ( this.avi != null ) && ( this.sfAVI画像 != null ) ) && ( this.nAVI再生開始時刻 != -1 ) )
