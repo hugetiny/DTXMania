@@ -104,7 +104,7 @@ Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念�
 			}
 			#endregion
 
-Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": texture最適化結果: width=" + w + ", height=" + h + ", 折りたたみ回数=" + foldtimes );
+//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": texture最適化結果: width=" + w + ", height=" + h + ", 折りたたみ回数=" + foldtimes );
 			#region [ 折りたたみテクスチャ画像を作り、テクスチャ登録する ]
 			// バイナリ(Byte配列)をBitmapに変換
 			MemoryStream mms = new MemoryStream( _txData );

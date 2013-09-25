@@ -118,16 +118,16 @@ namespace DTXMania
 				if( ( !CDTXMania.stage選曲.bスクロール中 && ( this.ct遅延表示 != null ) ) && this.ct遅延表示.b進行中 )
 				{
 					this.ct遅延表示.t進行();
-					if( this.ct遅延表示.b終了値に達した )
-					{
-						this.ct遅延表示.t停止();
-					}
-					else if( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
+					if( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
 					{
 						this.tプレビュー画像・動画の変更();
 						CDTXMania.Timer.t更新();
 						this.ct遅延表示.n現在の経過時間ms = CDTXMania.Timer.n現在時刻;
 						this.b新しいプレビューファイルを読み込んだ = true;
+					}
+					else if ( this.ct遅延表示.b終了値に達した && this.ct遅延表示.b進行中 )
+					{
+						this.ct遅延表示.t停止();
 					}
 				}
 				//else if( ( ( this.avi != null ) && ( this.sfAVI画像 != null ) ) && ( this.nAVI再生開始時刻 != -1 ) )
@@ -304,7 +304,7 @@ namespace DTXMania
 			    this.str現在のファイル名 = filename;
 			    if( !File.Exists( this.str現在のファイル名 ) )
 			    {
-			        Trace.TraceWarning( "ファイルが存在しません。({0})", new object[] { this.str現在のファイル名 } );
+			        Trace.TraceWarning( "ファイルが存在しません。({0})", Path.GetFileName( this.str現在のファイル名 ) );
 			        return false;
 			    }
 			    try
@@ -323,11 +323,11 @@ namespace DTXMania
 			//        this.n前回描画したフレーム番号 = -1;
 			//        this.b動画フレームを作成した = false;
 			//        this.tサーフェイスをクリアする( this.sfAVI画像 );
-			        //Trace.TraceInformation( "動画を生成しました。({0})", new object[] { filename } );
+			//        Trace.TraceInformation( "動画を生成しました。({0})", Path.GetFileName( filename ) );
 			    }
 				catch
 				{
-				    Trace.TraceError( "動画の生成に失敗しました。({0})", new object[] { filename } );
+				    Trace.TraceError( "動画の生成に失敗しました。({0})", Path.GetFileName( filename ) );
 				    this.rAVI = null;
 				    //this.nAVI再生開始時刻 = -1;
 				}

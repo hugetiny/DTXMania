@@ -62,7 +62,7 @@ namespace DTXMania
 
 				if( !File.Exists( strAVIファイル名 ) )
 				{
-					Trace.TraceWarning( "CAVI: ファイルが存在しません。({0})({1})", this.strコメント文, strAVIファイル名 );
+					Trace.TraceWarning( "CAVI: ファイルが存在しません。({0})({1})", this.strコメント文, Path.GetFileName( strAVIファイル名 ) );
 					this.avi = null;
 					return;
 				}
@@ -72,12 +72,12 @@ namespace DTXMania
 				try
 				{
 					this.avi = new CAvi( strAVIファイル名 );
-					Trace.TraceInformation( "CAVI: 動画を生成しました。({0})({1})({2}frames)", this.strコメント文, strAVIファイル名, this.avi.GetMaxFrameCount() );
+					Trace.TraceInformation( "CAVI: 動画を生成しました。({0})({1})({2}frames)", this.strコメント文, Path.GetFileName( strAVIファイル名 ), this.avi.GetMaxFrameCount() );
 				}
 				catch( Exception e )
 				{
 					Trace.TraceError( e.Message );
-					Trace.TraceError( "CAVI: 動画の生成に失敗しました。({0})({1})", this.strコメント文, strAVIファイル名 );
+					Trace.TraceError( "CAVI: 動画の生成に失敗しました。({0})({1})", this.strコメント文, Path.GetFileName( strAVIファイル名 ) );
 					this.avi = null;
 				}
 			}
@@ -115,9 +115,9 @@ namespace DTXMania
 					this.avi.Dispose();
 					this.avi = null;
 					
-					Trace.TraceInformation( "動画を解放しました。({0})({1})", this.strコメント文, strAVIファイル名 );
+					Trace.TraceInformation( "動画を解放しました。({0})({1})", this.strコメント文, Path.GetFileName( strAVIファイル名 ) );
 				}
-
+ 
 				this.bDispose済み = true;
 			}
 			//-----------------

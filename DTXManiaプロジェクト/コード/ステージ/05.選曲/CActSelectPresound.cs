@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using System.IO;
 using FDK;
 
 namespace DTXMania
@@ -126,11 +127,11 @@ namespace DTXMania
 					this.sound.t再生を開始する( true );
 					this.str現在のファイル名 = strPreviewFilename;
 					this.tBGMフェードアウト開始();
-					Trace.TraceInformation( "プレビューサウンドを生成しました。({0})", strPreviewFilename );
+					Trace.TraceInformation( "プレビューサウンドを生成しました。({0})", Path.GetFileName( strPreviewFilename ) );
 				}
 				catch
 				{
-					Trace.TraceError( "プレビューサウンドの生成に失敗しました。({0})", strPreviewFilename );
+					Trace.TraceError( "プレビューサウンドの生成に失敗しました。({0})", Path.GetFileName( strPreviewFilename ) );
 					if( this.sound != null )
 					{
 						this.sound.Dispose();
