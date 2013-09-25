@@ -220,8 +220,8 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect background.jpg" ), false );
-				this.tx上部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect header panel.png" ), true );
-				this.tx下部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect footer panel.png" ), true );
+				this.tx上部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenSelect header panel.png" ), true );
+				this.tx下部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenSelect footer panel.png" ), true );
 				this.txコメントバー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect comment bar.png" ), true );
 				this.txFLIP = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill number on gauge etc.png" ), false );
 				base.OnManagedリソースの作成();
@@ -280,25 +280,28 @@ namespace DTXMania
 					double dbY表示割合 = Math.Sin( Math.PI / 2 * db登場割合 );
 					y = ( (int) ( this.tx上部パネル.sz画像サイズ.Height * dbY表示割合 ) ) - this.tx上部パネル.sz画像サイズ.Height;
 				}
-				if( this.tx上部パネル != null )
+				#region [ 上部パネル描画 ]
+				if ( this.tx上部パネル != null )
 						this.tx上部パネル.t2D描画(
 							CDTXMania.app.Device,
 							0,
 							y * Scale.Y
 						);
-
+				#endregion
 				this.actInformation.On進行描画();
-				if( this.tx下部パネル != null )
+				#region [ 下部パネル描画 ]
+				if ( this.tx下部パネル != null )
 					this.tx下部パネル.t2D描画(
 						CDTXMania.app.Device,
 						0,
 						SampleFramework.GameWindowSize.Height - this.tx下部パネル.sz画像サイズ.Height
 					);
-
+				#endregion
 				this.actステータスパネル.On進行描画();
 				this.act演奏履歴パネル.On進行描画();
 				this.actPresound.On進行描画();
-				if( this.txコメントバー != null )
+				#region [  コメントバー描画 ]
+				if ( this.txコメントバー != null )
 				{
 					this.txコメントバー.t2D描画(
 						CDTXMania.app.Device,
@@ -306,15 +309,17 @@ namespace DTXMania
 						0xe4 * Scale.Y
 					);
 				}
+				#endregion
 				this.actArtistComment.On進行描画();
 				this.actオプションパネル.On進行描画();
+				#region [ FLIP描画 ]
 				if ( this.txFLIP != null && CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.16 yyagi
 				{
 					Rectangle rect = new Rectangle(
-						(int)(31 * Scale.X),
-						(int)(49 * Scale.Y),
-						(int)(20 * Scale.X),
-						(int)(11 * Scale.Y)
+						(int) ( 31 * Scale.X ),
+						(int) ( 49 * Scale.Y ),
+						(int) ( 20 * Scale.X ),
+						(int) ( 11 * Scale.Y )
 					);
 					this.txFLIP.t2D描画(
 						CDTXMania.app.Device,
@@ -323,8 +328,10 @@ namespace DTXMania
 						rect
 					);
 				}
+				#endregion
 				this.actShowCurrentPosition.On進行描画();								// #27648 2011.3.28 yyagi
 
+				#region [ フェーズ処理 ]
 				switch ( base.eフェーズID )
 				{
 					case CStage.Eフェーズ.共通_フェードイン:
@@ -355,6 +362,7 @@ namespace DTXMania
 //						}
 						return (int) this.eフェードアウト完了時の戻り値;
 				}
+				#endregion
 				if( !this.bBGM再生済み && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{
 					CDTXMania.Skin.bgm選曲画面.n音量・次に鳴るサウンド = 100;
@@ -715,8 +723,8 @@ namespace DTXMania
 		private E戻り値 eフェードアウト完了時の戻り値;
 		private Font ftフォント;
 		private CTexture txコメントバー;
-		private CTexture tx下部パネル;
-		private CTexture tx上部パネル;
+		private CTextureAf tx下部パネル;
+		private CTextureAf tx上部パネル;
 		private CTexture tx背景;
 		private CTexture txFLIP;
 

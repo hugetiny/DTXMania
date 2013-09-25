@@ -12,7 +12,7 @@ namespace FDK
 {
 	public class CTexture : IDisposable
 	{
-		// プロパティ
+		#region [ プロパティ ]
 
 		public bool b加算合成
 		{
@@ -49,12 +49,12 @@ namespace FDK
 		public Size szテクスチャサイズ
 		{
 			get; 
-			private set;
+			protected set;
 		}
 		public Size sz画像サイズ
 		{
 			get;
-			private set;
+			protected set;
 		}
 		public Texture texture
 		{
@@ -67,7 +67,7 @@ namespace FDK
 			protected set;
 		}
 		public Vector3 vc拡大縮小倍率;
-
+		#endregion
 
 		// コンストラクタ
 
@@ -579,10 +579,10 @@ namespace FDK
 
 		#region [ private ]
 		//-----------------
-		private int _透明度;
+		protected int _透明度;
 		private bool bDispose完了済み;
-		private PositionColoredTexturedVertex[] cvPositionColoredVertexies;
-		private TransformedColoredTexturedVertex[] cvTransformedColoredVertexies;
+		protected PositionColoredTexturedVertex[] cvPositionColoredVertexies;
+		protected TransformedColoredTexturedVertex[] cvTransformedColoredVertexies;
 		private const Pool poolvar =												// 2011.4.25 yyagi
 #if TEST_Direct3D9Ex
 			Pool.Default;
@@ -592,7 +592,7 @@ namespace FDK
 //		byte[] _txData;
 		static object lockobj = new object();
 
-		private void tレンダリングステートの設定( Device device )
+		protected void tレンダリングステートの設定( Device device )
 		{
 			if( this.b加算合成 )
 			{
@@ -607,7 +607,7 @@ namespace FDK
 				device.SetRenderState( RenderState.DestinationBlend, SlimDX.Direct3D9.Blend.InverseSourceAlpha );	// 6
 			}
 		}
-		private Size t指定されたサイズを超えない最適なテクスチャサイズを返す( Device device, Size sz指定サイズ )
+		protected Size t指定されたサイズを超えない最適なテクスチャサイズを返す( Device device, Size sz指定サイズ )
 		{
 			bool b条件付きでサイズは２の累乗でなくてもOK = ( device.Capabilities.TextureCaps & TextureCaps.NonPow2Conditional ) != 0;
 			bool bサイズは２の累乗でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.Pow2 ) != 0;
@@ -661,8 +661,8 @@ namespace FDK
 		
 		// 2012.3.21 さらなる new の省略作戦
 
-		private Rectangle rc全画像;								// テクスチャ作ったらあとは不変
-		private Color4 color4 = new Color4( 1f, 1f, 1f, 1f );	// アルファ以外は不変
+		protected Rectangle rc全画像;								// テクスチャ作ったらあとは不変
+		protected Color4 color4 = new Color4( 1f, 1f, 1f, 1f );	// アルファ以外は不変
 		//-----------------
 		#endregion
 	}
