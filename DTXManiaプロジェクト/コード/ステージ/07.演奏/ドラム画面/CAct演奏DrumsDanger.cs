@@ -35,7 +35,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txDANGER = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums danger.png" ) );
+				this.txDANGER = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlayDrums danger.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -90,10 +90,10 @@ namespace DTXMania
 				{
 					if( this.txDANGER != null )
 					{
-						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26 * Scale.X, (( i * 0x80 ) + num2) * Scale.Y, this.rc領域[ 0 ] );
-						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26 * Scale.X, (( ( i * 0x80 ) + num2 ) + 0x40) * Scale.Y, this.rc領域[ 1 ] );
-						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a * Scale.X, (( i * 0x80 ) + num2) * Scale.Y, this.rc領域[ 0 ] );
-						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a * Scale.X, ( ( ( i * 0x80 ) + num2 ) + 0x40 ) * Scale.Y, this.rc領域[ 1 ] );
+						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26 * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
+						//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26 * Scale.X, ( ( ( i * 0x80 ) + num2 ) + 0x40 ) * Scale.Y, this.rc領域[ 1 ] );
+						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
+						//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a * Scale.X, ( ( ( i * 0x80 ) + num2 ) + 0x40 ) * Scale.Y, this.rc領域[ 1 ] );
 					}
 				}
 			}
@@ -110,11 +110,11 @@ namespace DTXMania
 		//private CCounter ct透明度用;
 //		private const int n右位置 = 0x12a;
 //		private const int n左位置 = 0x26;
-		private readonly Rectangle[] rc領域 = new Rectangle[] {
-			new Rectangle( 0, 0, (int)(0x20 * Scale.X), (int)(0x40 * Scale.Y) ),
-			new Rectangle( (int)(0x20 * Scale.X), (int)(0 * Scale.Y), (int)(0x20 * Scale.X), (int)(0x40 * Scale.Y) )
-		};
-		private CTexture txDANGER;
+		//private readonly Rectangle[] rc領域 = new Rectangle[] {
+		//    new Rectangle( 0, 0, (int)(0x20 * Scale.X), (int)(0x40 * Scale.Y) ),
+		//    new Rectangle( (int)(0x20 * Scale.X), (int)(0 * Scale.Y), (int)(0x20 * Scale.X), (int)(0x40 * Scale.Y) )
+		//};
+		private CTextureAf txDANGER;
 		//-----------------
 		#endregion
 	}

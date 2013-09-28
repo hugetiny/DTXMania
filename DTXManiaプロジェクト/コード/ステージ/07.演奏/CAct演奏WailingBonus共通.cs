@@ -38,7 +38,7 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				this.txWailingBonus = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay wailing bonus.png" ) );
+				this.txWailingBonus = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay wailing bonus.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -57,7 +57,7 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 		protected CCounter[,] ct進行用 = new CCounter[ 3, 4 ];
-		protected CTexture txWailingBonus;
+		protected CTextureAf txWailingBonus;
 		//-----------------
 		#endregion
 	}

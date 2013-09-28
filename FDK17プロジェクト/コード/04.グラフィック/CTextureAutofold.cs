@@ -65,14 +65,10 @@ namespace FDK
 			bool bサイズは２の累乗でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.Pow2 ) != 0;
 			bool b正方形でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.SquareOnly ) != 0;
 
-//Debug.WriteLine( "2のべき乗でなくてよい=" + b条件付きでサイズは２の累乗でなくてもOK );
-//Debug.WriteLine( "2のべき乗でなければならない=" + bサイズは２の累乗でなければならない );
-//Debug.WriteLine( "正方形=" + b正方形でなければならない );
-
 			// そもそもこんな最適化をしなくてよいのなら、さっさとbaseに処理を委ねて終了
 			if ( !bサイズは２の累乗でなければならない && b条件付きでサイズは２の累乗でなくてもOK )
 			{
-				Debug.WriteLine( Path.GetFileName( strファイル名 )  + ": 最適化は不要です。" );
+				//Debug.WriteLine( Path.GetFileName( strファイル名 )  + ": 最適化は不要です。" );
 				base.MakeTexture( device, strファイル名, format, b黒を透過する, pool );
 				return;
 			}
@@ -211,6 +207,9 @@ Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念�
 		/// <param name="y">描画位置（テクスチャの左上位置の Y 座標[dot]）。</param>
 		public new void t2D描画( Device device, int x, int y )
 		{
+#if TEST_FOLDTEXTURE
+			base.t2D描画( device, x, y, 1f, rc全画像 );
+#else
 			for ( int n = 0; n <= _foldtimes; n++ )
 			{
 				Rectangle r;
@@ -227,10 +226,62 @@ Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念�
 					base.t2D描画( device, x, y + n * this.rc全画像.Height, 1f, r );
 				}
 			}
+#endif
+		}
+		public new void t2D描画( Device device, int x, int y, Rectangle rc )
+		{
+			Rectangle r;
+			if ( b横長のテクスチャである )
+			{
+				int beginFold = rc.X / this.rc全画像.Width;
+				int endFold = ( rc.X + rc.Width ) / rc全画像.Width;
+				for ( int i = beginFold; i <= endFold; i++ )
+				{
+					if ( i > _foldtimes ) break;
+
+					int newRcY = i * _orgHeight + rc.Y;
+					int newRcX = ( i == beginFold ) ? ( rc.X % this.rc全画像.Width ) : 0;
+					int newRcWidth = ( newRcX + rc.Width > rc全画像.Width ) ? rc全画像.Width - newRcX : rc.Width;
+
+					r = new Rectangle( newRcX, newRcY, newRcWidth, rc.Height );
+					base.t2D描画( device, x, y, 1f, r );
+
+					int deltaX = ( i == beginFold ) ? ( i + 1 ) * rc全画像.Width - rc.X : rc全画像.Width;
+					int newWidth = rc.Width - deltaX;
+					x += deltaX;
+					rc.Width = newWidth;
+				}
+			}
+			else
+			{
+				int beginFold = rc.Y / this.rc全画像.Height;
+				int endFold = ( rc.Y + rc.Height ) / rc全画像.Height;
+				for ( int i = beginFold; i <= endFold; i++ )
+				{
+					if ( i > _foldtimes ) break;
+
+					int newRcX = i * _orgWidth + rc.X;
+					int newRcY = ( i == beginFold ) ? ( rc.Y % this.rc全画像.Height ) : 0;
+					int newRcHeight = ( newRcY + rc.Height > rc全画像.Height ) ? rc全画像.Height - newRcY : rc.Height;
+
+					r = new Rectangle( newRcX, newRcY, rc.Width, newRcHeight );
+					base.t2D描画( device, x, y, 1f, r );
+
+					int deltaY = ( i == beginFold ) ? ( i + 1 ) * rc全画像.Height - rc.Y : rc全画像.Height;
+					int newHeight = rc.Height - deltaY;
+					y += deltaY;
+					rc.Height = newHeight;
+				}
+			}
+
 		}
 		public new void t2D描画( Device device, float x, float y )
 		{
 			t2D描画( device, (int) x, (int) y );
+		}
+		public new void t2D描画( Device device, float x, float y, Rectangle rc )
+		{
+			t2D描画( device, (int) x, (int) y, rc );
 		}
 
 
