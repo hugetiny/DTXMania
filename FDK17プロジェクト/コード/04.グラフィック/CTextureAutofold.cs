@@ -108,10 +108,6 @@ Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念�
 			mms.Close();
 
 			Bitmap bmpNew = new Bitmap( w, h );
-			if ( !b黒を透過する )
-			{
-				bmpNew.MakeTransparent();
-			}
 			Graphics g = Graphics.FromImage( bmpNew );
 
 			for ( int n = 0; n <= foldtimes; n++ )
@@ -120,18 +116,27 @@ Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念�
 				{
 					int x = n * w;
 					int currentHeight = n * orgHeight;
-					Rectangle r = new Rectangle( x, 0, w, orgHeight );
-					g.DrawImage( bmpOrg, 0, currentHeight, r, GraphicsUnit.Pixel );
-
+					int currentWidth = ( n < foldtimes ) ? w : orgWidth - x;
+					Rectangle r = new Rectangle( x, 0, currentWidth, orgHeight );
+					Bitmap bmpTmp = bmpOrg.Clone( r, bmpOrg.PixelFormat );				// ここがボトルネックになるようなら、後日unsafeコードにする。
+					g.DrawImage( bmpTmp, 0, currentHeight, currentWidth, orgHeight );
+					bmpTmp.Dispose();
 				}
 				else
 				{
 					int y = n * h;
 					int currentWidth = n * orgWidth;
-					Rectangle r = new Rectangle( 0, y, orgWidth, h );
-					g.DrawImage( bmpOrg, currentWidth, 0, r, GraphicsUnit.Pixel );
+					int currentHeight = ( n < foldtimes ) ? h : orgHeight - y;
+					Rectangle r = new Rectangle( 0, y, orgWidth, currentHeight );
+					Bitmap bmpTmp = bmpOrg.Clone( r, bmpOrg.PixelFormat );				// ここがボトルネックになるようなら、後日unsafeコードにする。
+					g.DrawImage( bmpTmp, currentWidth, 0, orgWidth, currentHeight );
+					bmpTmp.Dispose();
 				}
 			};
+			if ( b黒を透過する )
+			{
+				bmpNew.MakeTransparent( Color.Black );
+			}
 			g.Dispose();
 			g = null;
 			bmpOrg.Dispose();

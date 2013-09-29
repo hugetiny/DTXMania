@@ -111,8 +111,8 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig background.jpg" ), false );
-				this.tx上部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig header panel.png" ), true );
-				this.tx下部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig footer panel.png" ), true );
+				this.tx上部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenConfig header panel.png" ), true );
+				this.tx下部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenConfig footer panel.png" ), true );
 				this.txMenuカーソル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" ), false );
 
 				prvFont = new CPrivateFastFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );
@@ -253,7 +253,7 @@ namespace DTXMania
 			#region [ 下部パネル ]
 			//---------------------
 			if( this.tx下部パネル != null )
-				this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, SampleFramework.GameWindowSize.Height - this.tx下部パネル.szテクスチャサイズ.Height );
+				this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, SampleFramework.GameWindowSize.Height - this.tx下部パネル.sz画像サイズ.Height );
 			//---------------------
 			#endregion
 			#region [ オプションパネル ]
@@ -442,8 +442,8 @@ namespace DTXMania
 		private Font ftフォント;
 		private int n現在のメニュー番号;
 		private CTexture txMenuカーソル;
-		private CTexture tx下部パネル;
-		private CTexture tx上部パネル;
+		private CTextureAf tx下部パネル;
+		private CTextureAf tx上部パネル;
 		private CTexture tx説明文パネル;
 		private CTexture tx背景;
 		private CPrivateFastFont prvFont;

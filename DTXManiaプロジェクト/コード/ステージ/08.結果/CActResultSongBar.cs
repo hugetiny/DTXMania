@@ -52,7 +52,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txバー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult song bar.png" ) );
+				this.txバー = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult song bar.png" ), false );
 				try
 				{
 					Bitmap image = new Bitmap( (int)(0x3a8 * Scale.X), (int)(0x36 * Scale.Y) );
@@ -185,7 +185,7 @@ namespace DTXMania
 		private Font ft曲名用フォント;
 		private int n本体X;
 		private int n本体Y;
-		private CTexture txバー;
+		private CTextureAf txバー;
 		private CTexture tx曲名;
 		//-----------------
 		#endregion

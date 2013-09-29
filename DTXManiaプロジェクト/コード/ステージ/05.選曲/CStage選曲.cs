@@ -222,7 +222,7 @@ namespace DTXMania
 				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect background.jpg" ), false );
 				this.tx上部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenSelect header panel.png" ), true );
 				this.tx下部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenSelect footer panel.png" ), true );
-				this.txコメントバー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect comment bar.png" ), true );
+				this.txコメントバー = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenSelect comment bar.png" ), true );
 				this.txFLIP = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill number on gauge etc.png" ), false );
 				base.OnManagedリソースの作成();
 			}
@@ -722,7 +722,7 @@ namespace DTXMania
 		private CCounter ct登場時アニメ用共通;
 		private E戻り値 eフェードアウト完了時の戻り値;
 		private Font ftフォント;
-		private CTexture txコメントバー;
+		private CTextureAf txコメントバー;
 		private CTextureAf tx下部パネル;
 		private CTextureAf tx上部パネル;
 		private CTexture tx背景;

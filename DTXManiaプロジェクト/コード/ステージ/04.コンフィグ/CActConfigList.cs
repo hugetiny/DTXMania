@@ -1677,8 +1677,8 @@ namespace DTXMania
 			if( this.b活性化してない )
 				return;
 
-			this.tx通常項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox.png" ), false );
-			this.txその他項目行パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig itembox other.png" ), false );
+			this.tx通常項目行パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenConfig itembox.png" ), false );
+			this.txその他項目行パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenConfig itembox other.png" ), false );
 			this.tx三角矢印 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenConfig triangle arrow.png" ), false );
 			this.txSkinSample1 = null;		// スキン選択時に動的に設定するため、ここでは初期化しない
 
@@ -2172,9 +2172,9 @@ namespace DTXMania
 		private int n現在のスクロールカウンタ;
 		private int n目標のスクロールカウンタ;
 		private Point[] ptパネルの基本座標 = new Point[] { new Point( 0x12d, 3 ), new Point( 0x12d, 0x35 ), new Point( 0x12d, 0x67 ), new Point( 0x12d, 0x99 ), new Point( 0x114, 0xcb ), new Point( 0x12d, 0xfd ), new Point( 0x12d, 0x12f ), new Point( 0x12d, 0x161 ), new Point( 0x12d, 0x193 ), new Point( 0x12d, 0x1c5 ) };
-		private CTexture txその他項目行パネル;
+		private CTextureAf txその他項目行パネル;
 		private CTexture tx三角矢印;
-		private CTexture tx通常項目行パネル;
+		private CTextureAf tx通常項目行パネル;
 
 		private CPrivateFastFont prvFont;
 		//private List<string> list項目リスト_str最終描画名;
