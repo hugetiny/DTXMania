@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
@@ -109,6 +110,51 @@ namespace DTXCreator.譜面
 						cチップ.bドラッグで選択中 = false;
 						cチップ.b確定選択中 = true;
 					}
+				}
+			}
+			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
+			this._Form.tUndoRedo用GUIの有効・無効を設定する();
+			this._Form.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this._Form.pictureBox譜面パネル.Refresh();
+		}
+		public void tレーン上の全チップを選択する( int lane )			// #32134 2013.9.29 suggested by beatme
+		{
+			// Debug.WriteLine( "laneno=" + lane + " " + this.mgr譜面管理者ref.listレーン[ lane ].strレーン名 );
+
+			this._Form.mgrUndoRedo管理者.tトランザクション記録を開始する();
+			foreach ( KeyValuePair<int, C小節> pair in this.mgr譜面管理者ref.dic小節 )
+			{
+				C小節 c小節 = pair.Value;
+				for ( int i = 0; i < c小節.listチップ.Count; i++ )
+				{
+					Cチップ cチップ = c小節.listチップ[ i ];
+					if ( cチップ.nレーン番号0to == lane && !cチップ.b確定選択中 )
+					{
+						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のRedo ), redo, redo ) );
+						cチップ.bドラッグで選択中 = false;
+						cチップ.b確定選択中 = true;
+					}
+				}
+			}
+			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
+			this._Form.tUndoRedo用GUIの有効・無効を設定する();
+			this._Form.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this._Form.pictureBox譜面パネル.Refresh();
+		}
+		public void t小節上の全チップを選択する( int n小節番号 )			// #32134 2013.9.29 suggested by beatme
+		{
+			this._Form.mgrUndoRedo管理者.tトランザクション記録を開始する();
+			C小節 c小節 = this.mgr譜面管理者ref.dic小節[ n小節番号 ];
+			for ( int i = 0; i < c小節.listチップ.Count; i++ )
+			{
+				Cチップ cチップ = c小節.listチップ[ i ];
+				if ( !cチップ.b確定選択中 )
+				{
+					Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+					this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のRedo ), redo, redo ) );
+					cチップ.bドラッグで選択中 = false;
+					cチップ.b確定選択中 = true;
 				}
 			}
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();

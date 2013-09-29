@@ -2644,6 +2644,18 @@ The image size is 204x269.</value>
   <data name="toolStripMenuItemすべてのチップの選択.Text" xml:space="preserve">
     <value>Select &amp;All</value>
   </data>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 22</value>
+  </data>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択.Text" xml:space="preserve">
+    <value>Select all in the &amp;lane []</value>
+  </data>
+  <data name="toolStripMenuItem小節内のすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 22</value>
+  </data>
+  <data name="toolStripMenuItem小節内のすべてのチップの選択.Text" xml:space="preserve">
+    <value>Select all in the pa&amp;rt []</value>
+  </data>
   <data name="toolStripSeparator16.Size" type="System.Drawing.Size, System.Drawing">
     <value>206, 6</value>
   </data>
@@ -2669,7 +2681,7 @@ The image size is 204x269.</value>
     <value>D&amp;elete part</value>
   </data>
   <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
-    <value>210, 198</value>
+    <value>210, 264</value>
   </data>
   <data name="&gt;&gt;contextMenuStrip譜面右メニュー.Name" xml:space="preserve">
     <value>contextMenuStrip譜面右メニュー</value>
@@ -3745,6 +3757,18 @@ The image size is 204x269.</value>
     <value>toolStripMenuItemすべてのチップの選択</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemすべてのチップの選択.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemレーン内のすべてのチップの選択.Name" xml:space="preserve">
+    <value>toolStripMenuItemレーン内のすべてのチップの選択</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemレーン内のすべてのチップの選択.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem小節内のすべてのチップの選択.Name" xml:space="preserve">
+    <value>toolStripMenuItem小節内のすべてのチップの選択</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem小節内のすべてのチップの選択.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator16.Name" xml:space="preserve">
