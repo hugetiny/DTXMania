@@ -307,7 +307,7 @@ namespace DTXMania
 		protected virtual void tコンボ表示・ベース( int nCombo値, int nジャンプインデックス )
 		{
 		}
-				protected void tコンボ表示・ギター( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
+		protected void tコンボ表示・ギター( int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス )
 		{
 			#region [ 事前チェック。]
 			//-----------------

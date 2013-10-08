@@ -6,28 +6,45 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.IO;
 using FDK;
 
 namespace DTXMania
 {
 	internal class Program
 	{
-		#region [ 二重機動チェック、DLL存在チェック ]
+		#region [ 二重起動チェック、DLL存在チェック ]
 		//-----------------------------
 		private static Mutex mutex二重起動防止用;
 
+		private static bool tDLLの存在チェック( string strDll名, string str存在しないときに表示するエラー文字列jp, string str存在しないときに表示するエラー文字列en, bool bLoadDllCheck )
+		{
+			string str存在しないときに表示するエラー文字列 = ( CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ) ?
+				str存在しないときに表示するエラー文字列jp : str存在しないときに表示するエラー文字列en;
+			if ( bLoadDllCheck )
+			{
+				IntPtr hModule = LoadLibrary( strDll名 );		// 実際にLoadDll()してチェックする
+				if ( hModule == IntPtr.Zero )
+				{
+					MessageBox.Show( str存在しないときに表示するエラー文字列, "DTXMania runtime error", MessageBoxButtons.OK, MessageBoxIcon.Hand );
+					return false;
+				}
+				FreeLibrary( hModule );
+			}
+			else
+			{													// 単純にファイルの存在有無をチェックするだけ (プロジェクトで「参照」していたり、アンマネージドなDLLが暗黙リンクされるものはこちら)
+				string path = Path.Combine( System.IO.Directory.GetCurrentDirectory(), strDll名 );
+				if ( !File.Exists( path ) )
+				{
+					MessageBox.Show( str存在しないときに表示するエラー文字列, "DTXMania runtime error", MessageBoxButtons.OK, MessageBoxIcon.Hand );
+					return false;
+				}
+			}
+			return true;
+		}
 		private static bool tDLLの存在チェック( string strDll名, string str存在しないときに表示するエラー文字列jp, string str存在しないときに表示するエラー文字列en )
 		{
-			string str存在しないときに表示するエラー文字列 = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
-				str存在しないときに表示するエラー文字列jp : str存在しないときに表示するエラー文字列en;
-			IntPtr hModule = LoadLibrary( strDll名 );
-			if( hModule == IntPtr.Zero )
-			{
-				MessageBox.Show( str存在しないときに表示するエラー文字列, "DTXMania runtime error", MessageBoxButtons.OK, MessageBoxIcon.Hand );
-				return false;
-			}
-			FreeLibrary( hModule );
-			return true;
+			return tDLLの存在チェック( strDll名, str存在しないときに表示するエラー文字列jp, str存在しないときに表示するエラー文字列en, false );
 		}
 
 		#region [DllImport]
@@ -40,7 +57,7 @@ namespace DTXMania
 		//-----------------------------
 		#endregion
 
-		[STAThread]
+		[STAThread] 
 		private static void Main()
 		{
 			mutex二重起動防止用 = new Mutex( false, "DTXManiaMutex" );
@@ -51,51 +68,52 @@ namespace DTXMania
 				bool flag = false;
 
 				#region [DLLの存在チェック]
-				if (!tDLLの存在チェック("SlimDX" + CDTXMania.SLIMDXDLL,
+				if ( !tDLLの存在チェック( "dll\\SlimDX" + CDTXMania.SLIMDXDLL + ".dll",
 					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
-					)) flag = true;
-				if (!tDLLの存在チェック("FDK.dll",
+					) ) flag = true;
+				if ( !tDLLの存在チェック( "dll\\FDK.dll",
 					"FDK.dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"FDK.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if( !tDLLの存在チェック( "xadec.dll",
+				if ( !tDLLの存在チェック( "dll\\xadec.dll",
 					"xadec.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"xadec.dll is not found." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if( !tDLLの存在チェック( "SoundDecoder.dll",
+				if ( !tDLLの存在チェック( "dll\\SoundDecoder.dll",
 					"SoundDecoder.dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"SoundDecoder.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if (!tDLLの存在チェック(CDTXMania.D3DXDLL,
+				if ( !tDLLの存在チェック( CDTXMania.D3DXDLL,
 					CDTXMania.D3DXDLL + " が存在しません。" + newLine + "DirectX Redist フォルダの DXSETUP.exe を実行し、" + newLine + "必要な DirectX ランタイムをインストールしてください。",
-					CDTXMania.D3DXDLL + " is not found." + newLine + "Please execute DXSETUP.exe in \"DirectX Redist\" folder, to install DirectX runtimes required for DTXMania."
-					)) flag = true;
-				if ( !tDLLの存在チェック( "bass.dll",
+					CDTXMania.D3DXDLL + " is not found." + newLine + "Please execute DXSETUP.exe in \"DirectX Redist\" folder, to install DirectX runtimes required for DTXMania.",
+					true
+					) ) flag = true;
+				if ( !tDLLの存在チェック( "dll\\bass.dll",
 					"bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"baas.dll is not found." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if ( !tDLLの存在チェック( "Bass.Net.dll",
+				if ( !tDLLの存在チェック( "dll\\Bass.Net.dll",
 					"Bass.Net.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"Bass.Net.dll is not found." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if ( !tDLLの存在チェック( "bassmix.dll",
+				if ( !tDLLの存在チェック( "dll\\bassmix.dll",
 					"bassmix.dll を読み込めません。bassmix.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"bassmix.dll is not loaded. bassmix.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if ( !tDLLの存在チェック( "bassasio.dll",
+				if ( !tDLLの存在チェック( "dll\\bassasio.dll",
 					"bassasio.dll を読み込めません。bassasio.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"bassasio.dll is not loaded. bassasio.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if ( !tDLLの存在チェック( "basswasapi.dll",
+				if ( !tDLLの存在チェック( "dll\\basswasapi.dll",
 					"basswasapi.dll を読み込めません。basswasapi.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"basswasapi.dll is not loaded. basswasapi.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if ( !tDLLの存在チェック( "bass_fx.dll",
+				if ( !tDLLの存在チェック( "dll\\bass_fx.dll",
 					"bass_fx.dll を読み込めません。bass_fx.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"bass_fx.dll is not loaded. bass_fx.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
 					) ) flag = true;
-				if ( !tDLLの存在チェック( "DirectShowLib-2005.dll",
+				if ( !tDLLの存在チェック( "dll\\DirectShowLib-2005.dll",
 					"DirectShowLib-2005.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"DirectShowLib-2005.dll is not found." + newLine + "Please download DTXMania again."
 					) ) flag = true;
