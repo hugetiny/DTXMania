@@ -319,6 +319,12 @@ namespace FDK
 			}
 		}
 
+		public void AddMixer( CSound cs, double db再生速度, bool _b演奏終了後も再生が続くチップである )
+		{
+			cs.b演奏終了後も再生が続くチップである = _b演奏終了後も再生が続くチップである;
+			cs.db再生速度 = db再生速度;
+			cs.tBASSサウンドをミキサーに追加する();
+		}
 		public void AddMixer( CSound cs, double db再生速度 )
 		{
 			cs.db再生速度 = db再生速度;
@@ -332,7 +338,7 @@ namespace FDK
 		{
 			cs.tBASSサウンドをミキサーから削除する();
 		}
-}
+	}
 	#endregion
 
 	// CSound は、サウンドデバイスが変更されたときも、インスタンスを再作成することなく、新しいデバイスで作り直せる必要がある。
@@ -426,8 +432,10 @@ namespace FDK
 		}
 		#endregion
 
+		public bool b演奏終了後も再生が続くチップである = false;	// これがtrueなら、本サウンドの再生終了のコールバック時に自動でミキサーから削除する
+
 		private STREAMPROC _cbStreamXA;		// make it global, so that the GC can not remove it
-//		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
+		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
 //		private WaitCallback _cbRemoveMixerChannel;
 
 		/// <summary>
@@ -950,7 +958,7 @@ namespace FDK
 			if ( this.bBASSサウンドである )		// stream数の削減用
 			{
 				tBASSサウンドをミキサーから削除する();
-				//_cbEndofStream = null;
+				_cbEndofStream = null;
 				//_cbStreamXA = null;
 				CSound管理.nStreams--;
 			}
@@ -971,7 +979,7 @@ namespace FDK
 				bool b = BassMix.BASS_Mixer_ChannelPlay( this.hBassStream );
 				if ( !b )
 				{
-Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) + ", stream#=" + this.hBassStream + ", ErrCode=" + Bass.BASS_ErrorGetCode() );
+//Debug.WriteLine( "再生しようとしたが、Mixerに登録されていなかった: " + Path.GetFileName( this.strファイル名 ) + ", stream#=" + this.hBassStream + ", ErrCode=" + Bass.BASS_ErrorGetCode() );
 
 					bool bb = tBASSサウンドをミキサーに追加する();
 					if ( !bb )
@@ -1373,6 +1381,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				this.hBassStream = _hBassStream;
 			}
 
+			// #32248 再生終了時に発火するcallbackを登録する (演奏終了後に再生終了するチップを非同期的にミキサーから削除するため。)
+			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
+			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
+
 			// インスタンスリストに登録。
 
 			CSound.listインスタンス.Add( this );
@@ -1407,7 +1419,21 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			}
 			return bytesread;
 		}
-
+		/// <summary>
+		/// ストリームの終端まで再生したときに呼び出されるコールバック
+		/// </summary>
+		/// <param name="handle"></param>
+		/// <param name="channel"></param>
+		/// <param name="data"></param>
+		/// <param name="user"></param>
+		private void CallbackEndofStream( int handle, int channel, int data, IntPtr user )	// #32248 2013.10.14 yyagi
+		{
+//			Debug.WriteLine( "Callback!(remove): " + Path.GetFileName( this.strファイル名 ) );
+			if ( b演奏終了後も再生が続くチップである )			// 演奏終了後に再生終了するチップ音のミキサー削除は、再生終了のコールバックに引っ掛けて、自前で行う。
+			{													// そうでないものは、ミキサー削除予定時刻に削除する。
+				tBASSサウンドをミキサーから削除する( channel );
+			}
+		}
 
 // mixerからの削除
 

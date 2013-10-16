@@ -307,7 +307,7 @@ namespace DTXMania
 							{
 								if ( wc.rSound[ i ] != null )
 								{
-									CDTXMania.Sound管理.AddMixer( wc.rSound[ i ], db再生速度 );
+									CDTXMania.Sound管理.AddMixer( wc.rSound[ i ], db再生速度, pChip.b演奏終了後も再生が続くチップである );
 									//AddMixer( wc.rSound[ i ] );		// 最初はqueueを介さず直接ミキサー登録する
 								}
 							}
@@ -543,6 +543,7 @@ namespace DTXMania
 		{
 			internal bool bIsAdd;
 			internal CSound csound;
+			internal bool b演奏終了後も再生が続くチップである;
 		};
 
 		protected CAct演奏AVI actAVI;
@@ -625,12 +626,13 @@ namespace DTXMania
 		protected Stopwatch sw2;
 //		protected GCLatencyMode gclatencymode;
 
-		public void AddMixer( CSound cs )
+		public void AddMixer( CSound cs, bool _b演奏終了後も再生が続くチップである )
 		{
 			stmixer stm = new stmixer()
 			{
 				bIsAdd = true,
-				csound = cs
+				csound = cs,
+				b演奏終了後も再生が続くチップである = _b演奏終了後も再生が続くチップである
 			};
 			queueMixerSound.Enqueue( stm );
 //		Debug.WriteLine( "★Queue: add " + Path.GetFileName( stm.csound.strファイル名 ));
@@ -640,7 +642,8 @@ namespace DTXMania
 			stmixer stm = new stmixer()
 			{
 				bIsAdd = false,
-				csound = cs
+				csound = cs,
+				b演奏終了後も再生が続くチップである = false
 			};
 			queueMixerSound.Enqueue( stm );
 //		Debug.WriteLine( "★Queue: remove " + Path.GetFileName( stm.csound.strファイル名 ));
@@ -661,7 +664,7 @@ namespace DTXMania
 						stmixer stm = queueMixerSound.Dequeue();
 						if ( stm.bIsAdd )
 						{
-							CDTXMania.Sound管理.AddMixer( stm.csound, db再生速度 );
+							CDTXMania.Sound管理.AddMixer( stm.csound, db再生速度, stm.b演奏終了後も再生が続くチップである );
 						}
 						else
 						{
@@ -2148,7 +2151,7 @@ namespace DTXMania
 									if ( wc.rSound[ i ] != null )
 									{
 										//CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
-										AddMixer( wc.rSound[ i ] );
+										AddMixer( wc.rSound[ i ], pChip.b演奏終了後も再生が続くチップである );
 									}
 								}
 							}
@@ -2169,7 +2172,10 @@ namespace DTXMania
 									if ( wc.rSound[ i ] != null )
 									{
 										//CDTXMania.Sound管理.RemoveMixer( wc.rSound[ i ] );
-										RemoveMixer( wc.rSound[ i ] );
+										if ( !wc.rSound[ i ].b演奏終了後も再生が続くチップである )	// #32248 2013.10.16 yyagi
+										{															// DTX終了後も再生が続くチップの0xDB登録をなくすことはできず。
+											RemoveMixer( wc.rSound[ i ] );							// (ミキサー解除のタイミングが遅延する場合の対応が面倒なので。)
+										}															// そこで、代わりにフラグをチェックしてミキサー削除ロジックへの遷移をカットする。
 									}
 							    }
 							}

@@ -83,7 +83,7 @@ namespace FDK
 				this.b横長のテクスチャである = true;
 				if ( !GetFoldedTextureSize( ref w, ref h, out foldtimes ) )
 				{
-Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念。" );
+//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念。" );
 					base.MakeTexture( device, strファイル名, format, b黒を透過する, pool );
 					return;
 				}
@@ -93,7 +93,7 @@ Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念�
 				this.b横長のテクスチャである = false;
 				if ( !GetFoldedTextureSize( ref h, ref w, out foldtimes ) )	// 縦横入れ替えて呼び出し
 				{
-Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念。" );
+//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念。" );
 					base.MakeTexture( device, strファイル名, format, b黒を透過する, pool );
 					return;
 				}
