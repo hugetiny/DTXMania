@@ -511,8 +511,9 @@ namespace DTXMania
 					return true;
 				}
 			}
-			public bool bIsAutoPlayed;						// 2011.6.10 yyagi
-			
+			public bool bIsAutoPlayed;							// 2011.6.10 yyagi
+			public bool b演奏終了後も再生が続くチップである;	// #32248 2013.10.14 yyagi
+
 			public CChip()
 			{
 				this.nバーからの距離dot = new STDGBVALUE<int>() {
@@ -531,6 +532,7 @@ namespace DTXMania
 				this.n発声時刻ms = 0;
 				this.nLag = -999;
 				this.bIsAutoPlayed = false;
+				this.b演奏終了後も再生が続くチップである = false;
 				this.dbチップサイズ倍率 = 1.0;
 				this.bHit = false;
 				this.b可視 = true;
@@ -2574,6 +2576,9 @@ namespace DTXMania
 				}
 			}
 		}
+		/// <summary>
+		/// サウンドミキサーにサウンドを登録・削除する時刻を事前に算出する
+		/// </summary>
 		public void PlanToAddMixerChannel()
 		{
 			if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" )	// DShowでの再生の場合はミキシング負荷が高くないため、
@@ -2652,7 +2657,8 @@ namespace DTXMania
 							n整数値 = pChip.n整数値,
 							n整数値・内部番号 = pChip.n整数値・内部番号,
 							n発声時刻ms = nAddMixer時刻ms,
-							n発声位置 = nAddMixer位置
+							n発声位置 = nAddMixer位置,
+							b演奏終了後も再生が続くチップである = false
 						};
 						listAddMixerChannel.Add( c_AddMixer );
 //Debug.WriteLine("listAddMixerChannel:" );
@@ -2671,7 +2677,12 @@ namespace DTXMania
 //Debug.WriteLine( "n新RemoveMixer時刻ms=" + n新RemoveMixer時刻ms + ",n新RemoveMixer位置=" + n新RemoveMixer位置 );
 						if ( n新RemoveMixer時刻ms < pChip.n発声時刻ms + duration )	// 曲の最後でサウンドが切れるような場合は
 						{
-							continue;												// 発声位置の計算ができないので、Mixer削除をあきらめる
+							CChip c_AddMixer_noremove = c_AddMixer;
+							c_AddMixer_noremove.b演奏終了後も再生が続くチップである = true;
+							listAddMixerChannel[ listAddMixerChannel.Count - 1 ] = c_AddMixer_noremove;
+							//continue;												// 発声位置の計算ができないので、Mixer削除をあきらめる・・・のではなく
+																					// #32248 2013.10.15 yyagi 演奏終了後も再生を続けるチップであるというフラグをpChip内に立てる
+							break;
 						}
 						#region [ 未使用コード ]
 						//if ( n新RemoveMixer時刻ms < pChip.n発声時刻ms + duration )	// 曲の最後でサウンドが切れるような場合
