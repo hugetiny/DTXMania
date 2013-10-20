@@ -1874,40 +1874,49 @@ namespace DTXMania
 		{
 			if ( configIni.bDrums有効 )
 			{
-				#region [ Sudden処理 ]
-				if ( configIni.bSudden.Drums )
+				#region [ Biindfold処理 ]
+				if ( configIni.bBlindfold.Drums )
 				{
-					if ( pChip.nバーからの距離dot.Drums < 200 )
-					{
-						pChip.b可視 = true;
-						pChip.n透明度 = 0xff;
-					}
-					else if ( pChip.nバーからの距離dot.Drums < 250 )
-					{
-						pChip.b可視 = true;
-						pChip.n透明度 = 0xff - ( (int) ( ( ( (double) ( pChip.nバーからの距離dot.Drums - 200 ) ) * 255.0 ) / 50.0 ) );
-					}
-					else
-					{
-						pChip.b可視 = false;
-						pChip.n透明度 = 0;
-					}
+					pChip.b可視 = false;
 				}
 				#endregion
-				#region [ Hidden処理 ]
-				if ( configIni.bHidden.Drums )
+				else
 				{
-					if ( pChip.nバーからの距離dot.Drums < 100 )
+					#region [ Sudden処理 ]
+					if ( configIni.bSudden.Drums )
 					{
-						pChip.b可視 = false;
+						if ( pChip.nバーからの距離dot.Drums < 200 )
+						{
+							pChip.b可視 = true;
+							pChip.n透明度 = 0xff;
+						}
+						else if ( pChip.nバーからの距離dot.Drums < 250 )
+						{
+							pChip.b可視 = true;
+							pChip.n透明度 = 0xff - ( (int) ( ( ( (double) ( pChip.nバーからの距離dot.Drums - 200 ) ) * 255.0 ) / 50.0 ) );
+						}
+						else
+						{
+							pChip.b可視 = false;
+							pChip.n透明度 = 0;
+						}
 					}
-					else if ( pChip.nバーからの距離dot.Drums < 150 )
+					#endregion
+					#region [ Hidden処理 ]
+					if ( configIni.bHidden.Drums )
 					{
-						pChip.b可視 = true;
-						pChip.n透明度 = (int) ( ( ( (double) ( pChip.nバーからの距離dot.Drums - 100 ) ) * 255.0 ) / 50.0 );
+						if ( pChip.nバーからの距離dot.Drums < 100 )
+						{
+							pChip.b可視 = false;
+						}
+						else if ( pChip.nバーからの距離dot.Drums < 150 )
+						{
+							pChip.b可視 = true;
+							pChip.n透明度 = (int) ( ( ( (double) ( pChip.nバーからの距離dot.Drums - 100 ) ) * 255.0 ) / 50.0 );
+						}
 					}
+					#endregion
 				}
-				#endregion
 				if ( !pChip.bHit && pChip.b可視 )
 				{
 					if ( this.txチップ != null )
@@ -2161,6 +2170,10 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
+				if ( configIni.bBlindfold.Guitar )
+				{
+					pChip.b可視 = false;
+				}
 				//if ( configIni.bSudden.Guitar )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
@@ -2371,6 +2384,10 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
+				if ( configIni.bBlindfold.Bass )
+				{
+					pChip.b可視 = false;
+				}
 				//if ( configIni.bSudden.Bass )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;

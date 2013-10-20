@@ -462,6 +462,15 @@ namespace DTXMania
 				"to the hit bar. " );
 			this.list項目リスト.Add( this.iDrumsHidden );
 
+			this.iDrumsBlindfold = new CItemToggle( "Blindfold", CDTXMania.ConfigIni.bBlindfold.Drums,
+				"ドラムチップを全く表示しなくなります。\n" +
+				"暗譜での練習にお使いください。\n" +
+				"これをONにすると、SuddenとHiddenの\n" +
+				"効果は無効になります。",
+				"If you set Blindfold=ON, you can't\n" +
+				"see the chips at all." );
+			this.list項目リスト.Add( this.iDrumsBlindfold );
+
 			this.iCommonDark = new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
 				"HALF: 背景、レーン、ゲージが表示\n" +
 				"されなくなります。\n" +
@@ -814,6 +823,16 @@ namespace DTXMania
 				"ギターチップがヒットバー付近で表示\nされなくなります。",
 				"Guitar chips are hidden by approaching\nto the hit bar. " );
 			this.list項目リスト.Add( this.iGuitarHidden );
+
+			this.iGuitarBlindfold = new CItemToggle( "Blindfold", CDTXMania.ConfigIni.bBlindfold.Guitar,
+				"ギターのチップを全く表示しなくなりま\n" +
+				"す。暗譜での練習にお使いください。\n" +
+				"これをONにすると、SuddenとHiddenの\n" +
+				"効果は無効になります。",
+				"If you set Blindfold=ON, you can't\n" +
+				"see the chips at all." );
+			this.list項目リスト.Add( this.iGuitarBlindfold );
+
 			this.iGuitarReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Guitar,
 				"ギターチップが譜面の上から下に流\nれるようになります。",
 				"The scroll way is reversed. Guitar chips\nflow from the top to the bottom." );
@@ -924,6 +943,16 @@ namespace DTXMania
 				"ベースチップがヒットバー付近で表示\nされなくなります。",
 				"Bass chips are hidden by approaching\nto the hit bar." );
 			this.list項目リスト.Add( this.iBassHidden );
+
+			this.iBassBlindfold = new CItemToggle( "Blindfold", CDTXMania.ConfigIni.bBlindfold.Bass,
+				"ベースのチップを全く表示しなくなりま\n" +
+				"す。暗譜での練習にお使いください。\n" +
+				"これをONにすると、SuddenとHiddenの\n" +
+				"効果は無効になります。",
+				"If you set Blindfold=ON, you can't\n" +
+				"see the chips at all." );
+			this.list項目リスト.Add( this.iBassBlindfold );
+			
 			this.iBassReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Bass,
 				"ベースチップが譜面の上から下に流\nれるようになります。",
 				"The scroll way is reversed. Bass chips\nflow from the top to the bottom." );
@@ -2074,6 +2103,9 @@ namespace DTXMania
 		private CItemInteger iBassInputAdjustTimeMs;		//
 		private CItemList iSystemSkinSubfolder;				// #28195 2012.5.2 yyagi
 		private CItemToggle iSystemUseBoxDefSkin;			// #28195 2012.5.6 yyagi
+		private CItemToggle iDrumsBlindfold;				// #32072 2013.9.20 yyagi
+		private CItemToggle iGuitarBlindfold;				// #32072 2013.9.20 yyagi
+		private CItemToggle iBassBlindfold;					// #32072 2013.9.20 yyagi
 
 		private int t前の項目( int nItem )
 		{
@@ -2206,6 +2238,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.n譜面スクロール速度.Bass = this.iBassScrollSpeed.n現在の値;
 			CDTXMania.ConfigIni.bSudden.Bass = this.iBassSudden.bON;
 			CDTXMania.ConfigIni.bHidden.Bass = this.iBassHidden.bON;
+			CDTXMania.ConfigIni.bBlindfold.Bass = this.iBassBlindfold.bON;
 			CDTXMania.ConfigIni.bReverse.Bass = this.iBassReverse.bON;
 			CDTXMania.ConfigIni.判定文字表示位置.Bass = (E判定文字表示位置) this.iBassPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eRandom.Bass = (Eランダムモード) this.iBassRandom.n現在選択されている項目番号;
@@ -2230,6 +2263,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.ドラムコンボ文字の表示位置 = (Eドラムコンボ文字の表示位置) this.iDrumsComboPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bSudden.Drums = this.iDrumsSudden.bON;
 			CDTXMania.ConfigIni.bHidden.Drums = this.iDrumsHidden.bON;
+			CDTXMania.ConfigIni.bBlindfold.Drums = this.iDrumsBlindfold.bON;
 			CDTXMania.ConfigIni.bReverse.Drums = this.iDrumsReverse.bON;
 			CDTXMania.ConfigIni.判定文字表示位置.Drums = (E判定文字表示位置) this.iDrumsPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bTight = this.iDrumsTight.bON;
@@ -2263,6 +2297,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.n譜面スクロール速度.Guitar = this.iGuitarScrollSpeed.n現在の値;
 			CDTXMania.ConfigIni.bSudden.Guitar = this.iGuitarSudden.bON;
 			CDTXMania.ConfigIni.bHidden.Guitar = this.iGuitarHidden.bON;
+			CDTXMania.ConfigIni.bBlindfold.Guitar = this.iGuitarBlindfold.bON;
 			CDTXMania.ConfigIni.bReverse.Guitar = this.iGuitarReverse.bON;
 			CDTXMania.ConfigIni.判定文字表示位置.Guitar = (E判定文字表示位置) this.iGuitarPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eRandom.Guitar = (Eランダムモード) this.iGuitarRandom.n現在選択されている項目番号;

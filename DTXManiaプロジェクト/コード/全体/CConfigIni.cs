@@ -667,7 +667,8 @@ namespace DTXMania
 		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
 		public bool bDynamicBassMixerManagement;	// #24820
 		public bool bTimeStretch;					// #23664 2013.2.24 yyagi ピッチ変更無しで再生速度を変更するかどうか
-
+		public STDGBVALUE<bool> bBlindfold;			// #32072 2013.9.20 yyagi チップを非表示にする
+		
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1091,6 +1092,7 @@ namespace DTXMania
 				this.n譜面スクロール速度[ i ] = 1;
 				this.nInputAdjustTimeMs[ i ] = 0;
 				this.nJudgeLinePosOffset[ i ] = 0;
+				this.bBlindfold[ i ] = false;
 			}
 			this.n演奏速度 = 20;
 			#region [ AutoPlay ]
@@ -1566,6 +1568,7 @@ namespace DTXMania
 			sw.WriteLine( "; DARKモード(0:OFF, 1:HALF, 2:FULL)" );
 			sw.WriteLine( "Dark={0}", (int) this.eDark );
 			sw.WriteLine();
+			#region [ SUDDEN ]
 			sw.WriteLine( "; ドラムSUDDENモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "DrumsSudden={0}", this.bSudden.Drums ? 1 : 0 );
 			sw.WriteLine();
@@ -1575,6 +1578,8 @@ namespace DTXMania
 			sw.WriteLine( "; ベースSUDDENモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BassSudden={0}", this.bSudden.Bass ? 1 : 0 );
 			sw.WriteLine();
+			#endregion
+			#region [ HIDDEN ]
 			sw.WriteLine( "; ドラムHIDDENモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "DrumsHidden={0}", this.bHidden.Drums ? 1 : 0 );
 			sw.WriteLine();
@@ -1584,7 +1589,21 @@ namespace DTXMania
 			sw.WriteLine( "; ベースHIDDENモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "BassHidden={0}", this.bHidden.Bass ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine( "; ドラムREVERSEモード(0:OFF, 1:ON)" );
+			#endregion
+			#region [ Blindfold ]
+			sw.WriteLine( "; ドラムチップ非表示モード (0:OFF, 1:ON)" );
+			sw.WriteLine( "; Drums chip blindfold mode" );
+			sw.WriteLine( "DrumsBlindfold={0}", this.bBlindfold.Drums ? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; ギターチップ非表示モード (0:OFF, 1:ON)" );
+			sw.WriteLine( "; Guitar chip blindfold mode" );
+			sw.WriteLine( "GuitarBlindfold={0}", this.bBlindfold.Guitar ? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; ベースチップ非表示モード (0:OFF, 1:ON)" );
+			sw.WriteLine( "; Bbass chip blindfold mode" );
+			sw.WriteLine( "BassBlindfold={0}", this.bBlindfold.Bass ? 1 : 0 );
+			sw.WriteLine();
+			#endregion			sw.WriteLine( "; ドラムREVERSEモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "DrumsReverse={0}", this.bReverse.Drums ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; ギターREVERSEモード(0:OFF, 1:ON)" );
@@ -2389,6 +2408,7 @@ namespace DTXMania
 											{
 												this.bGraph.Drums = C変換.bONorOFF( str4[ 0 ] );
 											}
+											#region [ Sudden ]
 											else if( str3.Equals( "DrumsSudden" ) )
 											{
 												this.bSudden.Drums = C変換.bONorOFF( str4[ 0 ] );
@@ -2401,6 +2421,8 @@ namespace DTXMania
 											{
 												this.bSudden.Bass = C変換.bONorOFF( str4[ 0 ] );
 											}
+											#endregion
+											#region [ Hidden ]
 											else if( str3.Equals( "DrumsHidden" ) )
 											{
 												this.bHidden.Drums = C変換.bONorOFF( str4[ 0 ] );
@@ -2413,7 +2435,22 @@ namespace DTXMania
 											{
 												this.bHidden.Bass = C変換.bONorOFF( str4[ 0 ] );
 											}
-											else if( str3.Equals( "DrumsReverse" ) )
+											#endregion
+											#region [ Blindfold ]
+											else if ( str3.Equals( "DrumsBlindfold" ) )
+											{
+												this.bBlindfold.Drums = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "GuitarBlindfold" ) )
+											{
+												this.bBlindfold.Guitar = C変換.bONorOFF( str4[ 0 ] ); 
+											}
+											else if ( str3.Equals( "BassBlindfold" ) )
+											{
+												this.bBlindfold.Bass = C変換.bONorOFF( str4[ 0 ] ); 
+											}
+											#endregion
+											else if ( str3.Equals( "DrumsReverse" ) )
 											{
 												this.bReverse.Drums = C変換.bONorOFF( str4[ 0 ] );
 											}

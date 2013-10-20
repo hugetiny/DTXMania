@@ -417,6 +417,10 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
+				if ( configIni.bBlindfold.Guitar )
+				{
+					pChip.b可視 = false;
+				}
 				//if ( configIni.bSudden.Guitar )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
@@ -606,6 +610,10 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
+				if ( configIni.bBlindfold.Bass )
+				{
+					pChip.b可視 = false;
+				}
 				//if ( configIni.bSudden.Bass )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;
