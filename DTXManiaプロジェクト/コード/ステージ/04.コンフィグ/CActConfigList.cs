@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Drawing;
+using System.Threading;
 using SlimDX;
 using FDK;
 
@@ -74,6 +75,11 @@ namespace DTXMania
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iSystemReturnToMenu );
+
+			this.iSystemReloadDTX = new CItemBase( "Reload Songs", CItemBase.Eパネル種別.通常,
+				"曲データの一覧情報を取得し直します。",
+				"Reload song data." );
+			this.list項目リスト.Add( this.iSystemReloadDTX );
 
 			this.iCommonDark = new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
 				"HALF: 背景、レーン、ゲージが表示\nされなくなります。\nFULL: さらに小節線、拍線、判定ラ\nイン、パッドも表示されなくなります。",
@@ -1276,6 +1282,22 @@ namespace DTXMania
 					tGenerateSkinSample();
 				}
 				#endregion
+				#region [ 曲データ一覧の再読み込み ]
+				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemReloadDTX )				// #32081 2013.10.21 yyagi
+				{
+					if ( CDTXMania.EnumSongs.IsEnumerating )
+					{
+						// Debug.WriteLine( "バックグラウンドでEnumeratingSongs中だったので、一旦中断します。" );
+						CDTXMania.EnumSongs.Abort();
+						CDTXMania.actEnumSongs.On非活性化();
+					}
+
+					CDTXMania.EnumSongs.StartEnumFromDisk();
+					CDTXMania.EnumSongs.ChangeEnumeratePriority( ThreadPriority.Normal );
+					CDTXMania.actEnumSongs.bコマンドでの曲データ取得 = true;
+					CDTXMania.actEnumSongs.On活性化();
+				}
+				#endregion
 			}
 		}
 
@@ -2106,6 +2128,7 @@ namespace DTXMania
 		private CItemToggle iDrumsBlindfold;				// #32072 2013.9.20 yyagi
 		private CItemToggle iGuitarBlindfold;				// #32072 2013.9.20 yyagi
 		private CItemToggle iBassBlindfold;					// #32072 2013.9.20 yyagi
+		private CItemBase iSystemReloadDTX;					// #32081 2013.10.21 yyagi
 
 		private int t前の項目( int nItem )
 		{
