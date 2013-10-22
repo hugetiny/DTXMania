@@ -60,6 +60,7 @@ namespace DTXMania
 				{
 					Drums.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
 					Drums.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
+					Drums.eInvisible[ i ] = CDTXMania.ConfigIni.eInvisible[ i ];
 					Drums.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
 					Drums.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
 					Drums.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
@@ -124,6 +125,7 @@ namespace DTXMania
 				{
 					Guitar.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
 					Guitar.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
+					Guitar.eInvisible[ i ] = CDTXMania.ConfigIni.eInvisible[ i ];
 					Guitar.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
 					Guitar.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
 					Guitar.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
@@ -188,6 +190,7 @@ namespace DTXMania
 				{
 					Bass.bSudden[ i ] = CDTXMania.ConfigIni.bSudden[ i ];
 					Bass.bHidden[ i ] = CDTXMania.ConfigIni.bHidden[ i ];
+					Bass.eInvisible[ i ] = CDTXMania.ConfigIni.eInvisible[ i ];
 					Bass.bReverse[ i ] = CDTXMania.ConfigIni.bReverse[ i ];
 					Bass.eRandom[ i ] = CDTXMania.ConfigIni.eRandom[ i ];
 					Bass.bLight[ i ] = CDTXMania.ConfigIni.bLight[ i ];
