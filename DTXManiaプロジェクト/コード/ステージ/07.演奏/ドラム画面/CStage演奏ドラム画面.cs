@@ -1875,7 +1875,7 @@ namespace DTXMania
 			if ( configIni.bDrums有効 )
 			{
 				#region [ Biindfold処理 ]
-				if ( configIni.bBlindfold.Drums )
+				if ( configIni.eInvisible.Drums == EInvisible.FULL )
 				{
 					pChip.b可視 = false;
 				}
@@ -2170,7 +2170,7 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.bBlindfold.Guitar )
+				if ( configIni.eInvisible.Guitar == EInvisible.FULL )
 				{
 					pChip.b可視 = false;
 				}
@@ -2384,7 +2384,7 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.bBlindfold.Bass )
+				if ( configIni.eInvisible.Bass == EInvisible.FULL )
 				{
 					pChip.b可視 = false;
 				}

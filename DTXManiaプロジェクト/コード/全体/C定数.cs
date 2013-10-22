@@ -248,6 +248,16 @@ namespace DTXMania
 	}
 
 	/// <summary>
+	/// 透明チップの種類
+	/// </summary>
+	internal enum EInvisible
+	{
+		OFF,		// チップを透明化しない
+		SEMI,		// Poor/Miss時だけ、一時的に透明解除する
+		FULL		// チップを常に透明化する
+	}
+
+	/// <summary>
 	/// Drum/Guitar/Bass の値を扱う汎用の構造体。
 	/// </summary>
 	/// <typeparam name="T">値の型。</typeparam>

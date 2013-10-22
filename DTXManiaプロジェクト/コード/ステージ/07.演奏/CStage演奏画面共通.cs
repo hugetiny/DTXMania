@@ -2261,8 +2261,8 @@ namespace DTXMania
 			int instIndex = (int) inst;
 			if ( configIni.bGuitar有効 )
 			{
-				#region [ Blindfold処理 ]
-				if ( configIni.bBlindfold[ instIndex ] )
+				#region [ Invisible処理 ]
+				if ( configIni.eInvisible[ instIndex ] == EInvisible.FULL)
 				{
 					pChip.b可視 = false;
 				}
