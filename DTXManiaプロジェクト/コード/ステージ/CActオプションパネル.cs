@@ -53,7 +53,9 @@ namespace DTXMania
 						drums = 15;
 					}
 					this.txオプションパネル.t2D描画( device, 0x171, 0x24, this.rc譜面スピード[ drums ] );
-					this.txオプションパネル.t2D描画( device, 0x189, 12, this.rcHS[ ( configIni.bHidden.Drums ? 1 : 0 ) + ( configIni.bSudden.Drums ? 2 : 0 ) ] );
+					this.txオプションパネル.t2D描画( device, 0x189, 12, this.rcHS[ ( configIni.bHidden.Drums ? 1 : 0 ) + ( configIni.bSudden.Drums ? 2 : 0 ) +
+																					( configIni.eInvisible.Drums == EInvisible.SEMI ? 4 : 0 ) +
+																					( configIni.eInvisible.Drums == EInvisible.FULL ? 5 : 0 ) ] );
 					this.txオプションパネル.t2D描画( device, 0x189, 0x18, this.rcHS[ ( configIni.bHidden.Guitar ? 1 : 0 ) + ( configIni.bSudden.Guitar ? 2 : 0 ) ] );
 					this.txオプションパネル.t2D描画( device, 0x189, 0x24, this.rcHS[ ( configIni.bHidden.Bass ? 1 : 0 ) + ( configIni.bSudden.Bass ? 2 : 0 ) ] );
 					this.txオプションパネル.t2D描画( device, 0x1a1, 12, this.rcDark[ (int) configIni.eDark ] );
@@ -85,7 +87,14 @@ namespace DTXMania
 		//-----------------
 		private readonly Rectangle[] rcComboPos = new Rectangle[] { new Rectangle( 0x30, 0x48, 0x18, 12 ), new Rectangle( 0x30, 60, 0x18, 12 ), new Rectangle( 0x30, 0x30, 0x18, 12 ), new Rectangle( 0x18, 0x48, 0x18, 12 ) };
 		private readonly Rectangle[] rcDark = new Rectangle[] { new Rectangle( 0x18, 0, 0x18, 12 ), new Rectangle( 0x18, 12, 0x18, 12 ), new Rectangle( 0x18, 0x54, 0x18, 12 ) };
-		private readonly Rectangle[] rcHS = new Rectangle[] { new Rectangle( 0, 0, 0x18, 12 ), new Rectangle( 0, 12, 0x18, 12 ), new Rectangle( 0, 0x18, 0x18, 12 ), new Rectangle( 0, 0x24, 0x18, 12 ) };
+		private readonly Rectangle[] rcHS = new Rectangle[] {
+			new Rectangle( 0, 0, 0x18, 12 ),		// OFF
+			new Rectangle( 0, 12, 0x18, 12 ),		// Hidden
+			new Rectangle( 0, 0x18, 0x18, 12 ),		// Sudden
+			new Rectangle( 0, 0x24, 0x18, 12 ),		// H/S
+			new Rectangle(0x60, 0x54, 0x18, 12 ),	// Semi-Invisible
+			new Rectangle( 120, 0x54, 0x18, 12 )	// Full-Invisible
+		};
 		private readonly Rectangle[] rcLeft = new Rectangle[] { new Rectangle( 0x60, 0x48, 0x18, 12 ), new Rectangle( 120, 0x48, 0x18, 12 ) };
 		private readonly Rectangle[] rcLight = new Rectangle[] { new Rectangle( 120, 0x30, 0x18, 12 ), new Rectangle( 120, 60, 0x18, 12 ) };
 		private readonly Rectangle[] rcPosition = new Rectangle[] { new Rectangle( 0, 0x30, 0x18, 12 ), new Rectangle( 0, 60, 0x18, 12 ), new Rectangle( 0, 0x48, 0x18, 12 ) };
