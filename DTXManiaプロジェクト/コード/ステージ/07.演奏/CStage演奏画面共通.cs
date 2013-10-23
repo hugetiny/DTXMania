@@ -250,6 +250,7 @@ namespace DTXMania
 			}
 			this.r現在の空うちギターChip = null;
 			this.r現在の空うちベースChip = null;
+			cInvisibleChip = new CInvisibleChip( CDTXMania.ConfigIni.nDisplayTimesMs, CDTXMania.ConfigIni.nFadeoutTimeMs );
 			for ( int k = 0; k < 3; k++ )
 			{
 				//for ( int n = 0; n < 5; n++ )
@@ -259,6 +260,7 @@ namespace DTXMania
 				//}
 				this.queWailing[ k ] = new Queue<CDTX.CChip>();
 				this.r現在の歓声Chip[ k ] = null;
+				cInvisibleChip.eInvisibleMode[ k ] = CDTXMania.ConfigIni.eInvisible[ k ];
 			}
 			for ( int i = 0; i < 3; i++ )
 			{
@@ -351,6 +353,8 @@ namespace DTXMania
 			listChip = null;
 			queueMixerSound.Clear();
 			queueMixerSound = null;
+			cInvisibleChip.Dispose();
+			cInvisibleChip = null;
 //			GCSettings.LatencyMode = this.gclatencymode;
 			base.On非活性化();
 		}
@@ -624,6 +628,7 @@ namespace DTXMania
 		protected int nPolyphonicSounds;
 		protected List<CDTX.CChip> listChip;
 		protected Dictionary<int, CDTX.CWAV> listWAV;
+		protected CInvisibleChip cInvisibleChip;
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;
@@ -1200,7 +1205,10 @@ namespace DTXMania
 				// this.t判定にあわせてゲージを増減する( screenmode, pChip.e楽器パート, eJudgeResult );
 				actGauge.Damage( screenmode, pChip.e楽器パート, eJudgeResult );
 			}
-
+			if ( eJudgeResult == E判定.Poor || eJudgeResult == E判定.Miss )
+			{
+				cInvisibleChip.ShowChipTemporally( pChip.e楽器パート );
+			}
 			switch ( pChip.e楽器パート )
 			{
 				case E楽器パート.DRUMS:

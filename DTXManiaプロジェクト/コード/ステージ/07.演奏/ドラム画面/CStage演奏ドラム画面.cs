@@ -1874,10 +1874,11 @@ namespace DTXMania
 		{
 			if ( configIni.bDrums有効 )
 			{
-				#region [ Biindfold処理 ]
-				if ( configIni.eInvisible.Drums == EInvisible.FULL )
+				#region [ Invisible処理 ]
+				if ( configIni.eInvisible.Drums != EInvisible.OFF )
 				{
-					pChip.b可視 = false;
+					//pChip.b可視 = false;
+					cInvisibleChip.SetInvisibleStatus( ref pChip );
 				}
 				#endregion
 				else
@@ -2170,9 +2171,10 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.eInvisible.Guitar == EInvisible.FULL )
+				if ( configIni.eInvisible.Guitar != EInvisible.OFF )
 				{
-					pChip.b可視 = false;
+					//pChip.b可視 = false;
+					cInvisibleChip.SetInvisibleStatus( ref pChip );
 				}
 				//if ( configIni.bSudden.Guitar )
 				//{
@@ -2384,9 +2386,10 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.eInvisible.Bass == EInvisible.FULL )
+				if ( configIni.eInvisible.Bass != EInvisible.OFF )
 				{
-					pChip.b可視 = false;
+					//pChip.b可視 = false;
+					cInvisibleChip.SetInvisibleStatus( ref pChip );
 				}
 				//if ( configIni.bSudden.Bass )
 				//{
