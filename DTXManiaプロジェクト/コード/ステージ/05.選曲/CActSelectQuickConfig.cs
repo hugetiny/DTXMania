@@ -111,8 +111,17 @@ namespace DTXMania
 				"Note: It also changes the songs' pitch." ) );
 			#endregion
 			#region [ 個別 Sud/Hid ]
-			int nSuddenHidden = ( ( CDTXMania.ConfigIni.bHidden[ nInst ] ) ? 2 : 0 ) + ( ( CDTXMania.ConfigIni.bSudden[ nInst ] ) ? 1 : 0 );
-			l.Add( new CItemList( "Sud/Hid", CItemBase.Eパネル種別.通常, nSuddenHidden, "", "", new string[] { "None", "Sudden", "Hidden", "Sud+Hid" } ) );
+			int nSuddenHidden;
+			if ( CDTXMania.ConfigIni.eInvisible[ nInst ] != EInvisible.OFF )
+			{
+				nSuddenHidden = (int) CDTXMania.ConfigIni.eInvisible[ nInst ] + 3;
+			}
+			else
+			{
+				nSuddenHidden = ( ( CDTXMania.ConfigIni.bHidden[ nInst ] ) ? 2 : 0 ) + ( ( CDTXMania.ConfigIni.bSudden[ nInst ] ) ? 1 : 0 );
+			}
+			l.Add( new CItemList( "Sud/Hid", CItemBase.Eパネル種別.通常, nSuddenHidden, "", "",
+				new string[] { "None", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } ) );
 			#endregion
 			#region [ 共通 SET切り替え/More/Return ]
 			l.Add( new CSwitchItemList( "Config Set", CItemBase.Eパネル種別.通常, nCurrentConfigSet, "", "", new string[] { "SET-1", "SET-2", "SET-3" } ) );
@@ -349,8 +358,17 @@ namespace DTXMania
 					break;
 				case (int) EOrder.SuddenHidden:
 					int sh = (int) GetIndex( (int) EOrder.SuddenHidden );
-					CDTXMania.ConfigIni.bSudden[ nCurrentTarget ] = ( ( sh & 1 ) > 0 ) ? true : false;
-					CDTXMania.ConfigIni.bHidden[ nCurrentTarget ] = ( ( sh & 2 ) > 0 ) ? true : false;
+					if ( sh <= 3 )
+					{
+						CDTXMania.ConfigIni.bSudden[ nCurrentTarget ] = ( ( sh & 1 ) > 0 ) ? true : false;
+						CDTXMania.ConfigIni.bHidden[ nCurrentTarget ] = ( ( sh & 2 ) > 0 ) ? true : false;
+						CDTXMania.ConfigIni.eInvisible[ nCurrentTarget ] = EInvisible.OFF;
+					}
+					else
+					{
+						CDTXMania.ConfigIni.bSudden[ nCurrentTarget ] = CDTXMania.ConfigIni.bHidden[ nCurrentTarget ] = false;
+						CDTXMania.ConfigIni.eInvisible[ nCurrentTarget ] = ( EInvisible ) ( sh - 3 );
+					}
 					break;
 				case (int) EOrder.ConfSet:			// CONF-SET切り替え
 					nCurrentConfigSet = (int) GetIndex( (int) EOrder.ConfSet );

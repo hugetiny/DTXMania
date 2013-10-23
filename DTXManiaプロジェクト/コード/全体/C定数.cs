@@ -250,7 +250,7 @@ namespace DTXMania
 	/// <summary>
 	/// 透明チップの種類
 	/// </summary>
-	internal enum EInvisible
+	public enum EInvisible
 	{
 		OFF,		// チップを透明化しない
 		SEMI,		// Poor/Miss時だけ、一時的に透明解除する
