@@ -70,6 +70,10 @@ namespace DTXMania
 
 		internal EChipInvisibleState SetInvisibleStatus( ref CDTX.CChip cc )
 		{
+			if ( cc.e楽器パート == E楽器パート.UNKNOWN )
+			{
+				return EChipInvisibleState.SHOW;
+			}
 			int nInst = (int) cc.e楽器パート;
 			EChipInvisibleState retcode = EChipInvisibleState.SHOW;
 

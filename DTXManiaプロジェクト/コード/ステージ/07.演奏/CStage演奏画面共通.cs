@@ -2273,9 +2273,10 @@ namespace DTXMania
 			if ( configIni.bGuitar有効 )
 			{
 				#region [ Invisible処理 ]
-				if ( configIni.eInvisible[ instIndex ] == EInvisible.FULL)
+				if ( configIni.eInvisible[ instIndex ] != EInvisible.OFF )
 				{
-					pChip.b可視 = false;
+					//pChip.b可視 = false;
+					cInvisibleChip.SetInvisibleStatus( ref pChip );
 				}
 				#endregion
 				else
@@ -2302,6 +2303,10 @@ namespace DTXMania
 				int OPEN = ( inst == E楽器パート.GUITAR ) ? 0x20 : 0xA0;
 				if ( !pChip.bHit && pChip.b可視 )
 				{
+					if ( this.txチップ != null )
+					{
+						this.txチップ.n透明度 = pChip.n透明度;
+					}
 					int y = configIni.bReverse[ instIndex ] ? ( barYReverse - pChip.nバーからの距離dot[ instIndex ] ) : ( barYNormal + pChip.nバーからの距離dot[ instIndex ] );
 					if ( ( showRangeY0 < y ) && ( y < showRangeY1 ) )
 					{
