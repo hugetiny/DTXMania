@@ -538,7 +538,13 @@ namespace DTXMania
 					}
 					using( Surface surface = CDTXMania.app.Device.GetBackBuffer( 0, 0 ) )
 					{
-						CDTXMania.app.Device.UpdateSurface( this.sfAVI画像, new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height ), surface, new Point( x, y ) );
+						try
+						{
+							CDTXMania.app.Device.UpdateSurface( this.sfAVI画像, new Rectangle( 0, 0, this.sfAVI画像.Description.Width, this.sfAVI画像.Description.Height ), surface, new Point( x, y ) );
+						}
+						catch	// #32335 2013.10.26 yyagi: codecがないと、D3DERR_INVALIDCALLが発生する場合がある
+						{
+						}
 						return;
 					}
 				}
