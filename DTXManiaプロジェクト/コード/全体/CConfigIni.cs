@@ -1159,8 +1159,8 @@ namespace DTXMania
 //			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
 			this.bDynamicBassMixerManagement = true;	//
 			this.bTimeStretch = false;					// #23664 2013.2.24 yyagi 初期値はfalse (再生速度変更を、ピッチ変更にて行う)
-			this.nDisplayTimesMs = 3000;
-			this.nFadeoutTimeMs = 2000;
+			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
+			this.nFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1604,12 +1604,12 @@ namespace DTXMania
 			sw.WriteLine( "; Bbass chip invisible mode" );
 			sw.WriteLine( "BassInvisible={0}", (int) this.eInvisible.Bass );
 			sw.WriteLine();
-			sw.WriteLine( "; Semi-InvisibleでMissった時のチップ再表示時間(ms)" );
-			sw.WriteLine( "InvisibleDisplayTimeMs={0}", (int) this.nDisplayTimesMs );
-			sw.WriteLine();
-			sw.WriteLine( "; Semi-InvisibleでMissってチップ再表示時間終了後のフェードアウト時間(ms)" );
-			sw.WriteLine( "InvisibleFadeoutTimeMs={0}", (int) this.nFadeoutTimeMs );
-			sw.WriteLine();
+			//sw.WriteLine( "; Semi-InvisibleでMissった時のチップ再表示時間(ms)" );
+			//sw.WriteLine( "InvisibleDisplayTimeMs={0}", (int) this.nDisplayTimesMs );
+			//sw.WriteLine();
+			//sw.WriteLine( "; Semi-InvisibleでMissってチップ再表示時間終了後のフェードアウト時間(ms)" );
+			//sw.WriteLine( "InvisibleFadeoutTimeMs={0}", (int) this.nFadeoutTimeMs );
+			//sw.WriteLine();
 			#endregion
 			sw.WriteLine( "; ドラムREVERSEモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "DrumsReverse={0}", this.bReverse.Drums ? 1 : 0 );
@@ -2457,14 +2457,14 @@ namespace DTXMania
 											{
 												this.eInvisible.Bass = (EInvisible) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eInvisible.Bass );
 											}
-											else if ( str3.Equals( "InvisibleDisplayTimeMs" ) )
-											{
-												this.nDisplayTimesMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999999, (int) this.nDisplayTimesMs );
-											}
-											else if ( str3.Equals( "InvisibleFadeoutTimeMs" ) )
-											{
-												this.nFadeoutTimeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999999, (int) this.nFadeoutTimeMs );
-											}
+											//else if ( str3.Equals( "InvisibleDisplayTimeMs" ) )
+											//{
+											//    this.nDisplayTimesMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999999, (int) this.nDisplayTimesMs );
+											//}
+											//else if ( str3.Equals( "InvisibleFadeoutTimeMs" ) )
+											//{
+											//    this.nFadeoutTimeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999999, (int) this.nFadeoutTimeMs );
+											//}
 											#endregion
 											else if ( str3.Equals( "DrumsReverse" ) )
 											{
