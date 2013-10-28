@@ -23,6 +23,8 @@ namespace DTXMania
 		/// <summary>楽器ごとのInvisibleモード</summary>
 		public STDGBVALUE<EInvisible> eInvisibleMode;
 
+
+
 		#region [ コンストラクタ ]
 		public CInvisibleChip()
 		{
@@ -41,14 +43,39 @@ namespace DTXMania
 		{
 			nDisplayTimeMs = _nDisplayTimeMs;
 			nFadeoutTimeMs = _nFadeoutTimeMs;
-			for ( int i = 0; i < 3; i++ )
-			{
-				ccounter[ i ] = new CCounter();
-			}
+			Reset();
 		}
 		#endregion
 
+		/// <summary>
+		/// 内部状態を初期化する
+		/// </summary>
+		public void Reset()
+		{
+			for ( int i = 0; i < 3; i++ )
+			{
+				ccounter[ i ] = new CCounter();
+				b演奏チップが１つでもバーを通過した[ i ] = false;
+			}
+		}
 
+		/// <summary>
+		/// まだSemi-Invisibleを開始していなければ、開始する
+		/// </summary>
+		/// <param name="eInst"></param>
+		public void StartSemiInvisible( E楽器パート eInst )
+		{
+			int nInst = (int) eInst;
+			if ( !b演奏チップが１つでもバーを通過した[ nInst ] )
+			{
+				b演奏チップが１つでもバーを通過した[ nInst ] = true;
+				if ( this.eInvisibleMode[ nInst ] == EInvisible.SEMI )
+				{
+					ShowChipTemporally( eInst );
+					ccounter[ nInst ].n現在の値 = nDisplayTimeMs;
+				}
+			}
+		}
 		/// <summary>
 		/// 一時的にチップを表示するモードを開始する
 		/// </summary>
@@ -92,6 +119,13 @@ namespace DTXMania
 					break;
 
 				case EInvisible.SEMI:
+					if ( !b演奏チップが１つでもバーを通過した[ nInst ] )	// まだ1つもチップがバーを通過していない時は、チップを表示する
+					{
+						cc.b可視 = true;
+						cc.n透明度 = 255;
+						return EChipInvisibleState.SHOW;
+					}
+
 					if ( ccounter[ nInst ].n現在の値 <= 0 || ccounter[ nInst ].n現在の値 > nDisplayTimeMs + nFadeoutTimeMs )
 					// まだ一度もMissっていない or フェードアウトしきった後
 					{
@@ -157,5 +191,6 @@ namespace DTXMania
 
 		private STDGBVALUE<CCounter> ccounter;
 		private bool bDispose完了済み = false;
+		private STDGBVALUE<bool> b演奏チップが１つでもバーを通過した;
 	}
 }

@@ -2211,22 +2211,22 @@ namespace DTXMania
 						//Trace.TraceInformation( "CWAV全準備時間:           {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
 						#region [ 必要に応じて空打ち音を0小節に定義する ]
-						for ( int m = 0xb1; m <= 0xbc; m++ )			// #28146 2012.4.21 yyagi; bb -> bc
-						{
-							foreach ( CChip chip in this.listChip )
-							{
-								if ( chip.nチャンネル番号 == m )
-								{
-									CChip c = new CChip();
-									c.n発声位置 = 0;
-									c.nチャンネル番号 = chip.nチャンネル番号;
-									c.n整数値 = chip.n整数値;
-									c.n整数値・内部番号 = chip.n整数値・内部番号;
-									this.listChip.Insert( 0, c );
-									break;
-								}
-							}
-						}
+						//for ( int m = 0xb1; m <= 0xbc; m++ )			// #28146 2012.4.21 yyagi; bb -> bc
+						//{
+						//    foreach ( CChip chip in this.listChip )
+						//    {
+						//        if ( chip.nチャンネル番号 == m )
+						//        {
+						//            CChip c = new CChip();
+						//            c.n発声位置 = 0;
+						//            c.nチャンネル番号 = chip.nチャンネル番号;
+						//            c.n整数値 = chip.n整数値;
+						//            c.n整数値・内部番号 = chip.n整数値・内部番号;
+						//            this.listChip.Insert( 0, c );
+						//            break;
+						//        }
+						//    }
+						//}
 						#endregion
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
 						//Trace.TraceInformation( "空打確認時間:             {0}", span.ToString() );

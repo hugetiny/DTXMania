@@ -417,11 +417,6 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.eInvisible.Guitar != EInvisible.OFF )
-				{
-					// pChip.b可視 = false;
-					cInvisibleChip.SetInvisibleStatus( ref pChip );
-				}
 				//if ( configIni.bSudden.Guitar )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
@@ -615,11 +610,6 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.eInvisible.Bass != EInvisible.OFF )
-				{
-					// pChip.b可視 = false;
-					cInvisibleChip.SetInvisibleStatus( ref pChip );
-				}
 				//if ( configIni.bSudden.Bass )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;

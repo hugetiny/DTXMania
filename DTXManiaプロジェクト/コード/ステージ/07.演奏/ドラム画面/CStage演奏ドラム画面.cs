@@ -1877,7 +1877,6 @@ namespace DTXMania
 				#region [ Invisible処理 ]
 				if ( configIni.eInvisible.Drums != EInvisible.OFF )
 				{
-					//pChip.b可視 = false;
 					cInvisibleChip.SetInvisibleStatus( ref pChip );
 				}
 				#endregion
@@ -2037,6 +2036,7 @@ namespace DTXMania
 					this.actPad.Hit( this.nチャンネル0Atoパッド08[ pChip.nチャンネル番号 - 0x11 ] );
 					this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
 					this.tチップのヒット処理( pChip.n発声時刻ms, pChip );
+					cInvisibleChip.StartSemiInvisible( E楽器パート.DRUMS );
 				}
 				//break;
 				return;
@@ -2171,11 +2171,6 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.eInvisible.Guitar != EInvisible.OFF )
-				{
-					//pChip.b可視 = false;
-					cInvisibleChip.SetInvisibleStatus( ref pChip );
-				}
 				//if ( configIni.bSudden.Guitar )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
@@ -2390,11 +2385,6 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.eInvisible.Bass != EInvisible.OFF )
-				{
-					//pChip.b可視 = false;
-					cInvisibleChip.SetInvisibleStatus( ref pChip );
-				}
 				//if ( configIni.bSudden.Bass )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;

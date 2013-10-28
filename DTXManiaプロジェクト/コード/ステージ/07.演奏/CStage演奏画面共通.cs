@@ -21,7 +21,7 @@ namespace DTXMania
 	{
 		// プロパティ
 
-		public bool bAUTOでないチップが１つでもバーを通過した
+		public bool bAUTOでないチップが１つでもバーを通過した	// 誰も参照していない？？
 		{
 			get;
 			protected set;
@@ -270,6 +270,7 @@ namespace DTXMania
 				this.b演奏にマウスを使った[ i ] = false;
 			}
 			this.bAUTOでないチップが１つでもバーを通過した = false;
+			cInvisibleChip.Reset();
 			base.On活性化();
 			this.tステータスパネルの選択();
 			this.tパネル文字列の設定();
@@ -1170,6 +1171,10 @@ namespace DTXMania
 			{
 				this.bAUTOでないチップが１つでもバーを通過した = true;
 			}
+			else
+			{
+				cInvisibleChip.StartSemiInvisible( pChip.e楽器パート );
+			}
 			bool bPChipIsAutoPlay = bCheckAutoPlay( pChip );
 
 			pChip.bIsAutoPlayed = bPChipIsAutoPlay;			// 2011.6.10 yyagi
@@ -1205,7 +1210,7 @@ namespace DTXMania
 				// this.t判定にあわせてゲージを増減する( screenmode, pChip.e楽器パート, eJudgeResult );
 				actGauge.Damage( screenmode, pChip.e楽器パート, eJudgeResult );
 			}
-			if ( eJudgeResult == E判定.Poor || eJudgeResult == E判定.Miss )
+			if ( eJudgeResult == E判定.Poor || eJudgeResult == E判定.Miss || eJudgeResult == E判定.Bad )
 			{
 				cInvisibleChip.ShowChipTemporally( pChip.e楽器パート );
 			}
@@ -1313,6 +1318,8 @@ namespace DTXMania
 		protected void tチップのヒット処理・BadならびにTight時のMiss( E楽器パート part, int nLane, E楽器パート screenmode )
 		{
 			this.bAUTOでないチップが１つでもバーを通過した = true;
+			cInvisibleChip.StartSemiInvisible( part );
+			cInvisibleChip.ShowChipTemporally( part );
 			//this.t判定にあわせてゲージを増減する( screenmode, part, E判定.Miss );
 			actGauge.Damage( screenmode, part, E判定.Miss );
 			switch ( part )
@@ -2275,7 +2282,6 @@ namespace DTXMania
 				#region [ Invisible処理 ]
 				if ( configIni.eInvisible[ instIndex ] != EInvisible.OFF )
 				{
-					//pChip.b可視 = false;
 					cInvisibleChip.SetInvisibleStatus( ref pChip );
 				}
 				#endregion
@@ -2363,6 +2369,7 @@ namespace DTXMania
 					bool pushingG = CDTXMania.Pad.b押されている( inst, Eパッド.G );
 					bool pushingB = CDTXMania.Pad.b押されている( inst, Eパッド.B );
 
+					cInvisibleChip.StartSemiInvisible( inst );
 					#region [ Chip Fire effects ]
 					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
 					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || bSuccessOPEN )
@@ -2429,6 +2436,12 @@ namespace DTXMania
 			int indexInst = (int) inst;
 			if ( configIni.bGuitar有効 )
 			{
+				#region [ Invisible処理 ]
+				if ( configIni.eInvisible[ indexInst ] != EInvisible.OFF )
+				{
+					cInvisibleChip.SetInvisibleStatus( ref pChip );
+				}
+				#endregion
 				#region [ Sudden/Hidden処理 ]
 				if ( configIni.bSudden[indexInst] )
 				{
@@ -2459,6 +2472,7 @@ namespace DTXMania
 						long nTimeStamp_Wailed = pChip.n発声時刻ms + CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻;
 						DoWailingFromQueue( inst, nTimeStamp_Wailed, autoW );
 					}
+					cInvisibleChip.StartSemiInvisible( inst );
 				}
 				return;
 			}
