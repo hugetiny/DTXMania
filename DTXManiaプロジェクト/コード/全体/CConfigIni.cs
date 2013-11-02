@@ -1596,11 +1596,11 @@ namespace DTXMania
 			sw.WriteLine( "; Drums chip invisible mode" );
 			sw.WriteLine( "DrumsInvisible={0}", (int) this.eInvisible.Drums );
 			sw.WriteLine();
-			sw.WriteLine( "; ギターチップ非表示モード (0:SEMI, 1:FULL)" );
+			sw.WriteLine( "; ギターチップ非表示モード (0:OFF, 1=SEMI, 2:FULL)" );
 			sw.WriteLine( "; Guitar chip invisible mode" );
 			sw.WriteLine( "GuitarInvisible={0}", (int) this.eInvisible.Guitar );
 			sw.WriteLine();
-			sw.WriteLine( "; ベースチップ非表示モード (0:SEMI, 1:FULL)" );
+			sw.WriteLine( "; ベースチップ非表示モード (0:OFF, 1=SEMI, 2:FULL)" );
 			sw.WriteLine( "; Bbass chip invisible mode" );
 			sw.WriteLine( "BassInvisible={0}", (int) this.eInvisible.Bass );
 			sw.WriteLine();
