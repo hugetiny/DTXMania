@@ -465,6 +465,8 @@ namespace SampleFramework
 							rc.Bottom += dh;
 						}
 						break;
+					case 9:		// #32383 2013.11.2 yyagi; exitting maximized window by using Aero snap
+						break;
 					default:
 						throw new ArgumentOutOfRangeException("value", "Illegal WM_SIZING value.");
 				}
