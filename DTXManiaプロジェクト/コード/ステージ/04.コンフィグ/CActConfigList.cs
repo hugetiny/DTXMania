@@ -500,30 +500,30 @@ namespace DTXMania
 			this.iDrumsSudHid = new CItemList( "Sud+Hid", CItemBase.Eパネル種別.通常, getDefaultSudHidValue(E楽器パート.DRUMS ),
 				"ドラムチップの表示方式:\n" +
 				"OFF:　　チップを常に表示します。\n" +
-				"Sudden: チップが譜面の下の方から\n" +
-				"　　　　表示されるようになります。\n" +
-				"Hidden: チップが譜面の下の方で表示\n" +
+				"Sudden: チップがヒットバー付近に来るまで表示\n" +
 				"　　　　されなくなります。\n" +
-				"Sud+Hid: SuddenとHiddenの効果を\n" +
-				"　　　　同時にかけます。\n" +
+				"Hidden: チップがヒットバー付近で表示されなく\n" +
+				"　　　　なります。\n" +
+				"Sud+Hid: SuddenとHiddenの効果を同時にかけ\n" +
+				"　　　　ます。\n" +
 				"S(emi)-Invisible:\n" +
-				"　　　　通常はチップを透明にしますが、\n" +
-				"　　　　Poor/Miss時しばらく表示します。\n" +
+				"　　　　通常はチップを透明にしますが、Poor /\n" +
+				"　　　　Miss時にはしばらく表示します。\n" +
 				"F(ull)-Invisible:\n" +
-				"　　　　チップを常に透明にします。\n" +
-				"　　　　暗譜での練習にお使いください。",
-
+				"　　　　チップを常に透明にします。暗譜での練習\n" +
+				"　　　　にお使いください。",
 				"Drums chips display type:\n" +
+				"\n" +
 				"OFF:    Always show chips.\n" +
-				"Sudden: The chips are disappered\n" +
-				"        until they come near the hit\n" +
-				"        bar, and suddenly appears.\n" +
-				"Hidden: The chips are hidden by\n" +
-				"        approaching to the hit bar.\n" +
+				"Sudden: The chips are disappered until they\n" +
+				"        come near the hit bar, and suddenly\n" +
+				"        appears.\n" +
+				"Hidden: The chips are hidden by approaching to\n" +
+				"        the hit bar.\n" +
 				"Sud+Hid: Both Sudden and Hidden.\n" +
 				"S(emi)-Invisible:\n" +
-				"        Usually you can't see the chips\n" +
-				"        except you've gotten Poor/Miss.\n" +
+				"        Usually you can't see the chips except\n" +
+				"        you've gotten Poor/Miss.\n" +
 				"F(ull)-Invisible:\n" +
 				"        You can't see the chips at all.",
 				new string[] { "OFF", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } );
@@ -849,30 +849,30 @@ namespace DTXMania
 			this.iGuitarSudHid = new CItemList( "Sud+Hid", CItemBase.Eパネル種別.通常, getDefaultSudHidValue( E楽器パート.GUITAR ),
 				"ギターチップの表示方式:\n" +
 				"OFF:　　チップを常に表示します。\n" +
-				"Sudden: チップが譜面の下の方から\n" +
-				"　　　　表示されるようになります。\n" +
-				"Hidden: チップが譜面の下の方で表示\n" +
+				"Sudden: チップがヒットバー付近に来るまで表示\n" +
 				"　　　　されなくなります。\n" +
-				"Sud+Hid: SuddenとHiddenの効果を\n" +
-				"　　　　同時にかけます。\n" +
+				"Hidden: チップがヒットバー付近で表示されなく\n" +
+				"　　　　なります。\n" +
+				"Sud+Hid: SuddenとHiddenの効果を同時にかけ\n" +
+				"　　　　ます。\n" +
 				"S(emi)-Invisible:\n" +
-				"　　　　通常はチップを透明にしますが、\n" +
-				"　　　　Bad時しばらく表示します。\n" +
+				"　　　　通常はチップを透明にしますが、Bad時\n" +
+				"　　　　にはしばらく表示します。\n" +
 				"F(ull)-Invisible:\n" +
-				"　　　　チップを常に透明にします。\n" +
-				"　　　　暗譜での練習にお使いください。",
-
+				"　　　　チップを常に透明にします。暗譜での練習\n" +
+				"　　　　にお使いください。",
 				"Guitar chips display type:\n" +
+				"\n" +
 				"OFF:    Always show chips.\n" +
-				"Sudden: The chips are disappered\n" +
-				"        until they come near the hit\n" +
-				"        bar, and suddenly appears.\n" +
-				"Hidden: The chips are hidden by\n" +
-				"        approaching to the hit bar.\n" +
+				"Sudden: The chips are disappered until they\n" +
+				"        come near the hit bar, and suddenly\n" +
+				"        appears.\n" +
+				"Hidden: The chips are hidden by approaching to\n" +
+				"        the hit bar.\n" +
 				"Sud+Hid: Both Sudden and Hidden.\n" +
 				"S(emi)-Invisible:\n" +
-				"        Usually you can't see the chips\n" +
-				"        except you've gotten Bad.\n" +
+				"        Usually you can't see the chips except\n" +
+				"        you've gotten Bad.\n" +
 				"F(ull)-Invisible:\n" +
 				"        You can't see the chips at all.",
 				new string[] { "OFF", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } );
@@ -1023,30 +1023,30 @@ namespace DTXMania
 			this.iBassSudHid = new CItemList( "Sud+Hid", CItemBase.Eパネル種別.通常, getDefaultSudHidValue( E楽器パート.BASS ),
 				"ベースチップの表示方式:\n" +
 				"OFF:　　チップを常に表示します。\n" +
-				"Sudden: チップが譜面の下の方から\n" +
-				"　　　　表示されるようになります。\n" +
-				"Hidden: チップが譜面の下の方で表示\n" +
+				"Sudden: チップがヒットバー付近に来るまで表示\n" +
 				"　　　　されなくなります。\n" +
-				"Sud+Hid: SuddenとHiddenの効果を\n" +
-				"　　　　同時にかけます。\n" +
+				"Hidden: チップがヒットバー付近で表示されなく\n" +
+				"　　　　なります。\n" +
+				"Sud+Hid: SuddenとHiddenの効果を同時にかけ\n" +
+				"　　　　ます。\n" +
 				"S(emi)-Invisible:\n" +
-				"　　　　通常はチップを透明にしますが、\n" +
-				"　　　　Bad時しばらく表示します。\n" +
+				"　　　　通常はチップを透明にしますが、Bad時\n" +
+				"　　　　にはしばらく表示します。\n" +
 				"F(ull)-Invisible:\n" +
-				"　　　　チップを常に透明にします。\n" +
-				"　　　　暗譜での練習にお使いください。",
-
+				"　　　　チップを常に透明にします。暗譜での練習\n" +
+				"　　　　にお使いください。",
 				"Bass chips display type:\n" +
+				"\n" +
 				"OFF:    Always show chips.\n" +
-				"Sudden: The chips are disappered\n" +
-				"        until they come near the hit\n" +
-				"        bar, and suddenly appears.\n" +
-				"Hidden: The chips are hidden by\n" +
-				"        approaching to the hit bar.\n" +
+				"Sudden: The chips are disappered until they\n" +
+				"        come near the hit bar, and suddenly\n" +
+				"        appears.\n" +
+				"Hidden: The chips are hidden by approaching to\n" +
+				"        the hit bar.\n" +
 				"Sud+Hid: Both Sudden and Hidden.\n" +
 				"S(emi)-Invisible:\n" +
-				"        Usually you can't see the chips\n" +
-				"        except you've gotten Bad.\n" +
+				"        Usually you can't see the chips except\n" +
+				"        you've gotten Bad.\n" +
 				"F(ull)-Invisible:\n" +
 				"        You can't see the chips at all.",
 				new string[] { "OFF", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } );

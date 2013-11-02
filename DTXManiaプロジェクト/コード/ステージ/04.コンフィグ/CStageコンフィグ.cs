@@ -13,7 +13,7 @@ namespace DTXMania
 	{
 		// プロパティ
 
-		public CActDFPFont actFont { get; private set; }
+		//public CActDFPFont actFont { get; private set; }
 
 
 		// コンストラクタ
@@ -23,8 +23,8 @@ namespace DTXMania
 			CActDFPFont font;
 			base.eステージID = CStage.Eステージ.コンフィグ;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
-			this.actFont = font = new CActDFPFont();
-			base.list子Activities.Add( font );
+			//this.actFont = font = new CActDFPFont();
+			//base.list子Activities.Add( font );
 			base.list子Activities.Add( this.actFIFO = new CActFIFOWhite() );
 			base.list子Activities.Add( this.actList = new CActConfigList() );
 			base.list子Activities.Add( this.actKeyAssign = new CActConfigKeyAssign() );
