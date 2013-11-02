@@ -33,7 +33,7 @@
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <ApplicationManifest>DTXManiaGR.exe.x86.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -143,6 +143,7 @@
     <Compile Include="コード\ステージ\07.演奏\CAct演奏判定文字列共通.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏演奏情報.cs" />
     <Compile Include="コード\全体\CPreviewMagnifier.cs" />
+    <Compile Include="コード\ステージ\07.演奏\CInvisibleChip.cs" />
     <Compile Include="コード\全体\CPrivateFastFont.cs" />
     <Compile Include="コード\全体\CScale.cs" />
     <Compile Include="コード\ステージ\07.演奏\CStage演奏画面共通.cs" />
@@ -248,6 +249,7 @@
 move /Y "$(TargetDir)\Bass.Net.dll" "$(TargetDir)dll"
 move /Y "$(TargetDir)\DirectShowLib-2005.dll" "$(TargetDir)dll"
 move /Y "$(TargetDir)\FDK.dll" "$(TargetDir)dll"
-move /Y "$(TargetDir)\SlimDXc_net20x86_Jun2010.dll" "$(TargetDir)dll"</PostBuildEvent>
+move /Y "$(TargetDir)\SlimDXc_net20x86_Jun2010.dll" "$(TargetDir)dll"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

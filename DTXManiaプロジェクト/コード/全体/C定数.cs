@@ -213,6 +213,11 @@ namespace DTXMania
 		MAX,	// 要素数取得のための定義 ("BGM"は使わない前提で)
 		BGM
 	}
+	internal enum Eレーン数
+	{
+		物理 = 8,	// LC, HH,     SD, BD, HT, LT, FT, CY
+		論理 = 10	// LC, HO, HC, SD, BD, HT, LT, FT, RC, RD
+	}
 	internal enum Eログ出力
 	{
 		OFF,
@@ -240,6 +245,16 @@ namespace DTXMania
 		OFF,			// 全く表示しない
 		ON,				// 判定に依らず全て表示する
 		GREAT_POOR		// GREAT-MISSの時のみ表示する(PERFECT時は表示しない)
+	}
+
+	/// <summary>
+	/// 透明チップの種類
+	/// </summary>
+	public enum EInvisible
+	{
+		OFF,		// チップを透明化しない
+		SEMI,		// Poor/Miss時だけ、一時的に透明解除する
+		FULL		// チップを常に透明化する
 	}
 
 	/// <summary>

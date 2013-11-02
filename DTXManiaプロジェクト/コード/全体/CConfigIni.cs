@@ -667,8 +667,8 @@ namespace DTXMania
 		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
 		public bool bDynamicBassMixerManagement;	// #24820
 		public bool bTimeStretch;					// #23664 2013.2.24 yyagi ピッチ変更無しで再生速度を変更するかどうか
-		public STDGBVALUE<bool> bBlindfold;			// #32072 2013.9.20 yyagi チップを非表示にする
-		
+		public STDGBVALUE<EInvisible> eInvisible;	// #32072 2013.9.20 yyagi チップを非表示にする
+		public int nDisplayTimesMs, nFadeoutTimeMs;
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1092,7 +1092,7 @@ namespace DTXMania
 				this.n譜面スクロール速度[ i ] = 1;
 				this.nInputAdjustTimeMs[ i ] = 0;
 				this.nJudgeLinePosOffset[ i ] = 0;
-				this.bBlindfold[ i ] = false;
+				this.eInvisible[ i ] = EInvisible.OFF;
 			}
 			this.n演奏速度 = 20;
 			#region [ AutoPlay ]
@@ -1152,14 +1152,15 @@ namespace DTXMania
 			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
 			this.bTight = false;                        // #29500 2012.9.11 kairera0467 TIGHTモード
-			this.nSoundDeviceType = FDK.COS.bIsVistaOrLater?
+			this.nSoundDeviceType = FDK.COS.bIsVistaOrLater ?
 				(int) ESoundDeviceTypeForConfig.WASAPI : (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM | #31927 2013.8.25 yyagi OSにより初期値変更
 //			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 //			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
 			this.bDynamicBassMixerManagement = true;	//
 			this.bTimeStretch = false;					// #23664 2013.2.24 yyagi 初期値はfalse (再生速度変更を、ピッチ変更にて行う)
-
+			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
+			this.nFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1590,19 +1591,25 @@ namespace DTXMania
 			sw.WriteLine( "BassHidden={0}", this.bHidden.Bass ? 1 : 0 );
 			sw.WriteLine();
 			#endregion
-			#region [ Blindfold ]
-			sw.WriteLine( "; ドラムチップ非表示モード (0:OFF, 1:ON)" );
-			sw.WriteLine( "; Drums chip blindfold mode" );
-			sw.WriteLine( "DrumsBlindfold={0}", this.bBlindfold.Drums ? 1 : 0 );
+			#region [ Invisible ]
+			sw.WriteLine( "; ドラムチップ非表示モード (0:OFF, 1=SEMI, 2:FULL)" );
+			sw.WriteLine( "; Drums chip invisible mode" );
+			sw.WriteLine( "DrumsInvisible={0}", (int) this.eInvisible.Drums );
 			sw.WriteLine();
-			sw.WriteLine( "; ギターチップ非表示モード (0:OFF, 1:ON)" );
-			sw.WriteLine( "; Guitar chip blindfold mode" );
-			sw.WriteLine( "GuitarBlindfold={0}", this.bBlindfold.Guitar ? 1 : 0 );
+			sw.WriteLine( "; ギターチップ非表示モード (0:OFF, 1=SEMI, 2:FULL)" );
+			sw.WriteLine( "; Guitar chip invisible mode" );
+			sw.WriteLine( "GuitarInvisible={0}", (int) this.eInvisible.Guitar );
 			sw.WriteLine();
-			sw.WriteLine( "; ベースチップ非表示モード (0:OFF, 1:ON)" );
-			sw.WriteLine( "; Bbass chip blindfold mode" );
-			sw.WriteLine( "BassBlindfold={0}", this.bBlindfold.Bass ? 1 : 0 );
+			sw.WriteLine( "; ベースチップ非表示モード (0:OFF, 1=SEMI, 2:FULL)" );
+			sw.WriteLine( "; Bbass chip invisible mode" );
+			sw.WriteLine( "BassInvisible={0}", (int) this.eInvisible.Bass );
 			sw.WriteLine();
+			//sw.WriteLine( "; Semi-InvisibleでMissった時のチップ再表示時間(ms)" );
+			//sw.WriteLine( "InvisibleDisplayTimeMs={0}", (int) this.nDisplayTimesMs );
+			//sw.WriteLine();
+			//sw.WriteLine( "; Semi-InvisibleでMissってチップ再表示時間終了後のフェードアウト時間(ms)" );
+			//sw.WriteLine( "InvisibleFadeoutTimeMs={0}", (int) this.nFadeoutTimeMs );
+			//sw.WriteLine();
 			#endregion
 			sw.WriteLine( "; ドラムREVERSEモード(0:OFF, 1:ON)" );
 			sw.WriteLine( "DrumsReverse={0}", this.bReverse.Drums ? 1 : 0 );
@@ -2437,19 +2444,27 @@ namespace DTXMania
 												this.bHidden.Bass = C変換.bONorOFF( str4[ 0 ] );
 											}
 											#endregion
-											#region [ Blindfold ]
-											else if ( str3.Equals( "DrumsBlindfold" ) )
+											#region [ Invisible ]
+											else if ( str3.Equals( "DrumsInvisible" ) )
 											{
-												this.bBlindfold.Drums = C変換.bONorOFF( str4[ 0 ] );
+												this.eInvisible.Drums = (EInvisible) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eInvisible.Drums );
 											}
-											else if ( str3.Equals( "GuitarBlindfold" ) )
+											else if ( str3.Equals( "GuitarInvisible" ) )
 											{
-												this.bBlindfold.Guitar = C変換.bONorOFF( str4[ 0 ] ); 
+												this.eInvisible.Guitar = (EInvisible) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eInvisible.Guitar ); 
 											}
-											else if ( str3.Equals( "BassBlindfold" ) )
+											else if ( str3.Equals( "BassInvisible" ) )
 											{
-												this.bBlindfold.Bass = C変換.bONorOFF( str4[ 0 ] ); 
+												this.eInvisible.Bass = (EInvisible) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.eInvisible.Bass );
 											}
+											//else if ( str3.Equals( "InvisibleDisplayTimeMs" ) )
+											//{
+											//    this.nDisplayTimesMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999999, (int) this.nDisplayTimesMs );
+											//}
+											//else if ( str3.Equals( "InvisibleFadeoutTimeMs" ) )
+											//{
+											//    this.nFadeoutTimeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999999, (int) this.nFadeoutTimeMs );
+											//}
 											#endregion
 											else if ( str3.Equals( "DrumsReverse" ) )
 											{

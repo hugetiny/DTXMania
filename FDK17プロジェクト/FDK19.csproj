@@ -157,6 +157,9 @@
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ\dll"
 copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ(DTXCreator)"
-copy /Y "$(TargetPath)" "$(SolutionDir)\bin\x86\Debug\dll\"</PostBuildEvent>
+copy /Y "$(TargetPath)" "$(SolutionDir)\bin\x86\Debug\dll\"
+
+
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

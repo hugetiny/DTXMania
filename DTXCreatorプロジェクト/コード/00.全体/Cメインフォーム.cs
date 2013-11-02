@@ -1822,14 +1822,44 @@ namespace DTXCreator
 		}
 		public void t選択モードのコンテクストメニューを表示する( int x, int y )
 		{
-			// メニューを表示。
-
-			this.contextMenuStrip譜面右メニュー.Show( this.pictureBox譜面パネル, x, y );
-
-			
 			// メニューの左上隅座標を控えておく。
 
 			this.pt選択モードのコンテクストメニューを開いたときのマウスの位置 = new Point( x, y );
+			
+			#region [ クリックされた箇所のレーン番号を取得する。]
+			//-----------------
+			int lane = this.mgr譜面管理者.nX座標dotが位置するレーン番号を返す( pt選択モードのコンテクストメニューを開いたときのマウスの位置.X );
+			string strLane = (lane < 0)? "" : this.mgr譜面管理者.listレーン[ lane ].strレーン名;
+			//-----------------
+			#endregion
+
+			#region [ クリックされた箇所の小節番号を取得する。]
+			//-----------------
+			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( pt選択モードのコンテクストメニューを開いたときのマウスの位置.Y );
+			C小節 csクリックされた小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
+			int nPartNo = csクリックされた小節.n小節番号0to3599;
+			string strPartNo = C変換.str小節番号を文字列3桁に変換して返す( nPartNo );
+			//-----------------
+			#endregion
+
+			#region [ コンテクストメニューの[選択]項目に、レーン名と小節番号の情報をを付与する。 ]
+			int indexMenuLaneSelect = this.contextMenuStrip譜面右メニュー.Items.IndexOfKey( "toolStripMenuItemレーン内のすべてのチップの選択" );
+			int indexMenuPartSelect = this.contextMenuStrip譜面右メニュー.Items.IndexOfKey( "toolStripMenuItem小節内のすべてのチップの選択" );
+
+			string strItemMenuLaneSelect = this.contextMenuStrip譜面右メニュー.Items[ indexMenuLaneSelect ].Text;
+			strItemMenuLaneSelect = System.Text.RegularExpressions.Regex.Replace(
+				strItemMenuLaneSelect , @"\[(.*)\]", "[" + strLane + "]" );
+			this.contextMenuStrip譜面右メニュー.Items[ indexMenuLaneSelect ].Text = strItemMenuLaneSelect;
+
+			string strItemMenuPartSelect = this.contextMenuStrip譜面右メニュー.Items[ indexMenuPartSelect ].Text;
+			strItemMenuPartSelect = System.Text.RegularExpressions.Regex.Replace(
+				strItemMenuPartSelect, @"\[(.*)\]", "[" + strPartNo + "]" );
+			this.contextMenuStrip譜面右メニュー.Items[ indexMenuPartSelect ].Text = strItemMenuPartSelect;
+			#endregion
+
+			// メニューを表示。
+
+			this.contextMenuStrip譜面右メニュー.Show( this.pictureBox譜面パネル, x, y );
 		}
 		public void t最近使ったファイルをFileメニューへ追加する()
 		{
@@ -2400,40 +2430,77 @@ namespace DTXCreator
 
 		private void splitContainerタブと譜面を分割_MouseWheel( object sender, MouseEventArgs e )
 		{
-			#region [ 移動量に対応する grid だけ垂直つまみを移動させる。あとはこの移動で生じる ChangedValue イベントで処理する。]
-			//-----------------
-			if( e.Delta == 0 )
-				return;		// 移動量なし
-
-
-			// e.Delta は、スクロールバーを下へ動かしたいときに負、上へ動かしたいときに正となる。
-
-			int n移動すべき行数 = ( -e.Delta * SystemInformation.MouseWheelScrollLines ) / 120;
-
-
-			// １行＝１拍（64/4=16グリッド）とする。
-
-			int n移動すべき数grid = n移動すべき行数 * 16;
-
-
-			// スクロールバーのつまみを移動。
-
-			int n新しい位置 = this.vScrollBar譜面用垂直スクロールバー.Value + n移動すべき数grid;
-			int n最小値 = this.vScrollBar譜面用垂直スクロールバー.Minimum;
-			int n最大値 = ( this.vScrollBar譜面用垂直スクロールバー.Maximum + 1 ) - this.vScrollBar譜面用垂直スクロールバー.LargeChange;
-
-			if( n新しい位置 < n最小値 )
+			if ( ( Control.ModifierKeys & Keys.Shift ) == Keys.Shift )
 			{
-				n新しい位置 = n最小値;
-			}
-			else if( n新しい位置 > n最大値 )
-			{
-				n新しい位置 = n最大値;
-			}
+				#region [ Shiftを押しながらホイール操作すると、横スクロール。]
+				if ( e.Delta == 0 )
+					return;		// 移動量なし
 
-			this.vScrollBar譜面用垂直スクロールバー.Value = n新しい位置;
-			//-----------------
-			#endregion
+				// e.Delta は、スクロールバーを下へ動かしたいときに負、上へ動かしたいときに正となる。
+
+				int n移動すべき行数 = ( -e.Delta * SystemInformation.MouseWheelScrollLines ) / 120;
+
+				// １行＝１レーン とする。(が、実際には適当に設定しただけ。1レーンには設定していない)
+
+				int n移動すべき数grid = n移動すべき行数 * 16;
+
+
+				// スクロールバーのつまみを移動。
+
+				int n新しい位置 = this.hScrollBar譜面用水平スクロールバー.Value + n移動すべき数grid;
+				int n最小値 = this.hScrollBar譜面用水平スクロールバー.Minimum;
+				int n最大値 = ( this.hScrollBar譜面用水平スクロールバー.Maximum + 1 ) - this.hScrollBar譜面用水平スクロールバー.LargeChange;
+
+				if ( n新しい位置 < n最小値 )
+				{
+					n新しい位置 = n最小値;
+				}
+				else if ( n新しい位置 > n最大値 )
+				{
+					n新しい位置 = n最大値;
+				}
+
+				this.hScrollBar譜面用水平スクロールバー.Value = n新しい位置;
+				//-----------------
+				#endregion
+			}
+			else
+			{
+				#region [ 移動量に対応する grid だけ垂直つまみを移動させる。あとはこの移動で生じる ChangedValue イベントで処理する。]
+				//-----------------
+				if ( e.Delta == 0 )
+					return;		// 移動量なし
+
+
+				// e.Delta は、スクロールバーを下へ動かしたいときに負、上へ動かしたいときに正となる。
+
+				int n移動すべき行数 = ( -e.Delta * SystemInformation.MouseWheelScrollLines ) / 120;
+
+
+				// １行＝１拍（64/4=16グリッド）とする。
+
+				int n移動すべき数grid = n移動すべき行数 * 16;
+
+
+				// スクロールバーのつまみを移動。
+
+				int n新しい位置 = this.vScrollBar譜面用垂直スクロールバー.Value + n移動すべき数grid;
+				int n最小値 = this.vScrollBar譜面用垂直スクロールバー.Minimum;
+				int n最大値 = ( this.vScrollBar譜面用垂直スクロールバー.Maximum + 1 ) - this.vScrollBar譜面用垂直スクロールバー.LargeChange;
+
+				if ( n新しい位置 < n最小値 )
+				{
+					n新しい位置 = n最小値;
+				}
+				else if ( n新しい位置 > n最大値 )
+				{
+					n新しい位置 = n最大値;
+				}
+
+				this.vScrollBar譜面用垂直スクロールバー.Value = n新しい位置;
+				//-----------------
+				#endregion
+			}
 		}
 		private void splitContainerタブと譜面を分割_Panel2_SizeChanged( object sender, EventArgs e )
 		{
@@ -2494,6 +2561,60 @@ namespace DTXCreator
 			// 全チップを選択。
 
 			this.mgr選択モード管理者.t全チップを選択する();
+		}
+		private void toolStripMenuItemレーン内のすべてのチップの選択_Click( object sender, EventArgs e )
+		{
+			// 編集モードなら強制的に選択モードにする。
+
+			if ( this.b編集モードである )
+				this.t選択モードにする();
+
+			// メニューが開かれたときのマウスの座標を取得。
+			// ※メニューは必ずマウス位置を左上にして表示されるとは限らないため、
+			// 　メニューの表示位置からは取得しないこと。
+
+			Point ptマウスの位置 = this.pt選択モードのコンテクストメニューを開いたときのマウスの位置;
+
+
+			// マウス位置に小節を挿入。
+
+			#region [ クリックされた箇所のレーン番号を取得する。]
+			//-----------------
+			int lane = this.mgr譜面管理者.nX座標dotが位置するレーン番号を返す( ptマウスの位置.X );
+			if ( lane < 0 )
+				return;		// クリックされた箇所にレーンがない
+
+			//-----------------
+			#endregion
+
+			this.mgr選択モード管理者.tレーン上の全チップを選択する( lane );
+
+		}
+
+		private void toolStripMenuItem小節内のすべてのチップの選択_Click( object sender, EventArgs e )
+		{
+			// 編集モードなら強制的に選択モードにする。
+
+			if ( this.b編集モードである )
+				this.t選択モードにする();
+
+			// メニューが開かれたときのマウスの座標を取得。
+			// ※メニューは必ずマウス位置を左上にして表示されるとは限らないため、
+			// 　メニューの表示位置からは取得しないこと。
+
+			Point ptマウスの位置 = this.pt選択モードのコンテクストメニューを開いたときのマウスの位置;
+
+			#region [ クリックされた箇所の小節を取得する。]
+			//-----------------
+			if ( this.mgr譜面管理者.nX座標dotが位置するレーン番号を返す( ptマウスの位置.X ) < 0 )
+				return;		// クリックされた箇所にレーンがない
+
+			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptマウスの位置.Y );
+			C小節 csクリックされた小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
+			//-----------------
+			#endregion
+
+			this.mgr選択モード管理者.t小節上の全チップを選択する( csクリックされた小節.n小節番号0to3599 );
 		}
 
 		private void toolStripMenuItem小節長変更_Click( object sender, EventArgs e )

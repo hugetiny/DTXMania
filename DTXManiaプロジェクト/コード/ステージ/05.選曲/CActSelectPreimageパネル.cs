@@ -118,7 +118,7 @@ namespace DTXMania
 				if( ( !CDTXMania.stage選曲.bスクロール中 && ( this.ct遅延表示 != null ) ) && this.ct遅延表示.b進行中 )
 				{
 					this.ct遅延表示.t進行();
-					if( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
+					if ( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
 					{
 						this.tプレビュー画像・動画の変更();
 						CDTXMania.Timer.t更新();

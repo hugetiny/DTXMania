@@ -150,7 +150,7 @@ namespace DTXMania
 					this.ctチップ模様アニメ.Bass = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
 					this.ctWailingチップ模様アニメ = new CCounter( 0, 4, 50, CDTXMania.Timer );
 
-					this.actChipFireD.Start( Eレーン.HH );	// #31554 2013.6.12 yyagi
+					// this.actChipFireD.Start( Eレーン.HH );	// #31554 2013.6.12 yyagi
 					// 初チップヒット時のもたつき回避。最初にactChipFireD.Start()するときにJITが掛かって？
 					// ものすごく待たされる(2回目以降と比べると2,3桁tick違う)。そこで最初の画面フェードインの間に
 					// 一発Start()を掛けてJITの結果を生成させておく。
@@ -1899,10 +1899,10 @@ namespace DTXMania
 		{
 			if ( configIni.bDrums有効 )
 			{
-				#region [ Biindfold処理 ]
-				if ( configIni.bBlindfold.Drums )
+				#region [ Invisible処理 ]
+				if ( configIni.eInvisible.Drums != EInvisible.OFF )
 				{
-					pChip.b可視 = false;
+					cInvisibleChip.SetInvisibleStatus( ref pChip );
 				}
 				#endregion
 				else
@@ -2064,6 +2064,7 @@ namespace DTXMania
 					this.actPad.Hit( this.nチャンネル0Atoパッド08[ pChip.nチャンネル番号 - 0x11 ] );
 					this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
 					this.tチップのヒット処理( pChip.n発声時刻ms, pChip );
+					cInvisibleChip.StartSemiInvisible( E楽器パート.DRUMS );
 				}
 				//break;
 				return;
@@ -2198,10 +2199,6 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.bBlindfold.Guitar )
-				{
-					pChip.b可視 = false;
-				}
 				//if ( configIni.bSudden.Guitar )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Guitar < 200;
@@ -2214,6 +2211,10 @@ namespace DTXMania
 				// 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
 				if ( !pChip.bHit && pChip.b可視 )
 				{
+					if ( this.txチップ != null )
+					{
+						this.txチップ.n透明度 = pChip.n透明度;
+					}
 					int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
 					int offset = 0x39;					// ドラム画面かギター画面かで変わる値
 
@@ -2419,10 +2420,6 @@ namespace DTXMania
 		{
 			if ( configIni.bGuitar有効 )
 			{
-				if ( configIni.bBlindfold.Bass )
-				{
-					pChip.b可視 = false;
-				}
 				//if ( configIni.bSudden.Bass )
 				//{
 				//    pChip.b可視 = pChip.nバーからの距離dot.Bass < 200;
@@ -2437,6 +2434,10 @@ namespace DTXMania
 				//
 				if ( !pChip.bHit && pChip.b可視 )
 				{
+					if ( this.txチップ != null )
+					{
+						this.txチップ.n透明度 = pChip.n透明度;
+					}
 					int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
 					int offset = 0x39;					// ドラム画面かギター画面かで変わる値
 
@@ -2533,6 +2534,7 @@ namespace DTXMania
 				}
 				if ( ( ( configIni.eDark != Eダークモード.FULL ) && pChip.b可視 ) && ( this.txチップ != null ) )
 				{
+					this.txチップ.n透明度 = 255;
 					this.txチップ.t2D描画( CDTXMania.app.Device,
 						0x23 * Scale.X,
 						configIni.bReverse.Drums ?
@@ -2541,10 +2543,11 @@ namespace DTXMania
 						new Rectangle( 0, (int)(0x1bc*Scale.Y), (int)(0x128*Scale.X), (int)(2*Scale.Y) ) );
 				}
 			}
-			if ( ( pChip.b可視 && configIni.bGuitar有効 ) && ( configIni.eDark != Eダークモード.FULL ) )
+			if ( ( pChip.b可視 && configIni.bGuitar有効 ) && ( configIni.eDark != Eダークモード.FULL ) && ( this.txチップ != null ) )
 			{
+				this.txチップ.n透明度 = 255;
 				int y = configIni.bReverse.Guitar ? ( ( 0x176 - pChip.nバーからの距離dot.Guitar ) - 1 ) : ( ( 0x5f + pChip.nバーからの距離dot.Guitar ) - 1 );
-				if ( ( dTX.bチップがある.Guitar && ( y > 0x39 ) ) && ( ( y < 0x19c ) && ( this.txチップ != null ) ) )
+				if ( ( dTX.bチップがある.Guitar && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) )
 				{
 					this.txチップ.t2D描画( CDTXMania.app.Device,
 						0x1fb * Scale.X,
@@ -2552,7 +2555,7 @@ namespace DTXMania
 						new Rectangle( 0, (int)(450*Scale.Y), (int)(0x4e*Scale.X), (int)(1*Scale.Y) ) );
 				}
 				y = configIni.bReverse.Bass ? ( ( 0x176 - pChip.nバーからの距離dot.Bass ) - 1 ) : ( ( 0x5f + pChip.nバーからの距離dot.Bass ) - 1 );
-				if ( ( dTX.bチップがある.Bass && ( y > 0x39 ) ) && ( ( y < 0x19c ) && ( this.txチップ != null ) ) )
+				if ( ( dTX.bチップがある.Bass && ( y > 0x39 ) ) && ( ( y < 0x19c )  ) )
 				{
 					this.txチップ.t2D描画( CDTXMania.app.Device,
 						0x18e * Scale.X,

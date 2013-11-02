@@ -20,7 +20,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "097(130405)";
+		public static readonly string VERSION = "098(131101)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
         //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -555,9 +555,9 @@ namespace DTXMania
 
 				if ( Control.IsKeyLocked( Keys.CapsLock ) )				// #30925 2013.3.11 yyagi; capslock=ON時は、EnumSongsしないようにして、起動負荷とASIOの音切れの関係を確認する
 				{														// → songs.db等の書き込み時だと音切れするっぽい
-					CDTXMania.stage選曲.bIsEnumeratingSongs = false;
 					actEnumSongs.On非活性化();
 					EnumSongs.SongListEnumCompletelyDone();
+					CDTXMania.stage選曲.bIsEnumeratingSongs = false;
 				}
 				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
 				if ( !CDTXMania.bコンパクトモード )

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Drawing;
+using System.Threading;
 using SlimDX;
 using FDK;
 
@@ -74,6 +75,11 @@ namespace DTXMania
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iSystemReturnToMenu );
+
+			this.iSystemReloadDTX = new CItemBase( "Reload Songs", CItemBase.Eパネル種別.通常,
+				"曲データの一覧情報を取得し直します。",
+				"Reload song data." );
+			this.list項目リスト.Add( this.iSystemReloadDTX );
 
 			this.iCommonDark = new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
 				"HALF: 背景、レーン、ゲージが表示されなくなります。\n" +
@@ -434,6 +440,7 @@ namespace DTXMania
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iDrumsReturnToMenu );
 
+			#region [ AutoPlay ]
 			this.iDrumsAutoPlayAll = new CItemThreeState( "AutoPlay (All)", CItemThreeState.E状態.不定,
 				"全パッドの自動演奏の ON/OFF をまとめて切り替えます。",
 				"You can change whether Auto or not for all drums lanes at once." );
@@ -480,6 +487,7 @@ namespace DTXMania
 				"右シンバルとライドシンバルを自動で演奏します。",
 				"To play both right- and Ride-Cymbal automatically." );
 			this.list項目リスト.Add( this.iDrumsCymbalRide );
+			#endregion
 
 			this.iDrumsScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Drums,
 				"演奏時のドラム譜面のスクロールの速度を指定します。\n" +
@@ -489,21 +497,67 @@ namespace DTXMania
 				"(ScrollSpeed=x0.5 means half speed)" );
 			this.list項目リスト.Add( this.iDrumsScrollSpeed );
 
-			this.iDrumsSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Drums,
-				"ドラムチップが譜面の下の方から表示されるようになります。",
-				"Drums chips are disappered until they come near the hit bar, and suddenly appears." );
-			this.list項目リスト.Add( this.iDrumsSudden );
+			this.iDrumsSudHid = new CItemList( "Sud+Hid", CItemBase.Eパネル種別.通常, getDefaultSudHidValue(E楽器パート.DRUMS ),
+				"ドラムチップの表示方式:\n" +
+				"OFF:　　チップを常に表示します。\n" +
+				"Sudden: チップが譜面の下の方から\n" +
+				"　　　　表示されるようになります。\n" +
+				"Hidden: チップが譜面の下の方で表示\n" +
+				"　　　　されなくなります。\n" +
+				"Sud+Hid: SuddenとHiddenの効果を\n" +
+				"　　　　同時にかけます。\n" +
+				"S(emi)-Invisible:\n" +
+				"　　　　通常はチップを透明にしますが、\n" +
+				"　　　　Poor/Miss時しばらく表示します。\n" +
+				"F(ull)-Invisible:\n" +
+				"　　　　チップを常に透明にします。\n" +
+				"　　　　暗譜での練習にお使いください。",
 
-			this.iDrumsHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Drums,
-				"ドラムチップが譜面の下の方で表示されなくなります。",
-				"Drums chips are hidden by approaching to the hit bar. " );
-			this.list項目リスト.Add( this.iDrumsHidden );
+				"Drums chips display type:\n" +
+				"OFF:    Always show chips.\n" +
+				"Sudden: The chips are disappered\n" +
+				"        until they come near the hit\n" +
+				"        bar, and suddenly appears.\n" +
+				"Hidden: The chips are hidden by\n" +
+				"        approaching to the hit bar.\n" +
+				"Sud+Hid: Both Sudden and Hidden.\n" +
+				"S(emi)-Invisible:\n" +
+				"        Usually you can't see the chips\n" +
+				"        except you've gotten Poor/Miss.\n" +
+				"F(ull)-Invisible:\n" +
+				"        You can't see the chips at all.",
+				new string[] { "OFF", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } );
+			this.list項目リスト.Add( this.iDrumsSudHid );
 
-			this.iDrumsBlindfold = new CItemToggle( "Blindfold", CDTXMania.ConfigIni.bBlindfold.Drums,
-				"ドラムチップを全く表示しなくなります。暗譜での練習にお使いください。" +
-				"これをONにすると、SuddenとHiddenの効果は無効になります。",
-				"If you set Blindfold=ON, you can't see the chips at all." );
-			this.list項目リスト.Add( this.iDrumsBlindfold );
+			//this.iDrumsSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Drums,
+			//    "ドラムチップが譜面の下の方から表\n" +
+			//    "示されるようになります。",
+			//    "Drums chips are disappered until they\n" +
+			//    "come near the hit bar, and suddenly\n" +
+			//    "appears." );
+			//this.list項目リスト.Add( this.iDrumsSudden );
+
+			//this.iDrumsHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Drums,
+			//    "ドラムチップが譜面の下の方で表示\n" +
+			//    "されなくなります。",
+			//    "Drums chips are hidden by approaching\n" +
+			//    "to the hit bar. " );
+			//this.list項目リスト.Add( this.iDrumsHidden );
+
+			//this.iDrumsInvisible = new CItemList( "Invisible", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eInvisible.Drums,
+			//    "ドラムチップの透明化\n" +
+			//    "OFF: チップを常に表示します。\n" +
+			//    "SEMI: 通常はチップを透明にしますが、\n" +
+			//    "　　　Poor/Miss時はしばらく表示します。\n" +
+			//    "FULL: チップを常に透明にします。\n" +
+			//    "　　　暗譜での練習にお使いください。\n" +
+			//    "これをONにすると、SuddenとHiddenの\n" +
+			//    "効果は無効になります。",
+			//    "Invisible drums chip:\n" +
+			//    "If you set Blindfold=ON, you can't\n" +
+			//    "see the chips at all.",
+			//    new string[] { "OFF", "SEMI", "FULL" } );
+			//this.list項目リスト.Add( this.iDrumsInvisible );
 
 			this.iCommonDark = new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
 				"HALF: 背景、レーン、ゲージが表示されなくなります。\n" +
@@ -536,6 +590,7 @@ namespace DTXMania
 				"It becomes MISS to hit pad without chip." );
 			this.list項目リスト.Add( this.iDrumsTight );
 
+			#region [ Position ]
 			this.iDrumsComboPosition = new CItemList( "ComboPosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.ドラムコンボ文字の表示位置,
 				"演奏時のドラムコンボ文字列の位置を指定します。",
 				"The display position for Drums Combo.",
@@ -555,8 +610,8 @@ namespace DTXMania
 				" OFF: no judgement mark.",
 				new string[] { "P-A", "P-B", "OFF" } );
 			this.list項目リスト.Add( this.iDrumsPosition );
-
-
+			#endregion
+			#region [ Group ]
 			this.iSystemHHGroup = new CItemList( "HH Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHHGroup,
 				"ハイハットレーン打ち分け設定：\n" +
 				"左シンバル、ハイハットオープン、ハイハットクローズの打ち分け方法を指定します。\n" +
@@ -621,6 +676,7 @@ namespace DTXMania
 				"And you cannot change some options while using BD-1.",
 				new string[] { "BD-0", "BD-1" } );
 			this.list項目リスト.Add( this.iSystemBDGroup );
+			#endregion
 
 			this.iSystemCymbalFree = new CItemToggle( "CymbalFree", CDTXMania.ConfigIni.bシンバルフリー,
 				"シンバルフリーモード：\n" +
@@ -629,7 +685,7 @@ namespace DTXMania
 				"Whether RD (ride cymbal) is also grouped or not depends on the 'CY Group' setting." );
 			this.list項目リスト.Add( this.iSystemCymbalFree );
 
-
+			#region [ SoundPriority ]
 			this.iSystemHitSoundPriorityHH = new CItemList( "HH Priority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHitSoundPriorityHH,
 				"発声音決定の優先順位：\n" +
 				"ハイハットレーン打ち分け有効時に、チップの発声音をどのように決定するかを指定します。\n" +
@@ -682,7 +738,7 @@ namespace DTXMania
 				"フィルインエフェクトの描画にはそれなりのマシンパワーが必要とされます。",
 				"To show bursting effects at the fill-in zone." );
 			this.list項目リスト.Add( this.iSystemFillIn );
-
+			#endregion
 
 
 			this.iSystemHitSound = new CItemToggle( "HitSound", CDTXMania.ConfigIni.bドラム打音を発声する,
@@ -789,20 +845,57 @@ namespace DTXMania
 				"You can set it from x0.5 to x1000.0.\n" +
 				"(ScrollSpeed=x0.5 means half speed)" );
 			this.list項目リスト.Add( this.iGuitarScrollSpeed );
-			this.iGuitarSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Guitar,
-				"ギターチップがヒットバー付近にくるまで表示されなくなります。",
-				"Guitar chips are disappered until they come near the hit bar, and suddenly appears." );
-			this.list項目リスト.Add( this.iGuitarSudden );
-			this.iGuitarHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Guitar,
-				"ギターチップがヒットバー付近で表示されなくなります。",
-				"Guitar chips are hidden by approaching to the hit bar. " );
-			this.list項目リスト.Add( this.iGuitarHidden );
 
-			this.iGuitarBlindfold = new CItemToggle( "Blindfold", CDTXMania.ConfigIni.bBlindfold.Guitar,
-				"ギターのチップを全く表示しなくなります。暗譜での練習にお使いください。" +
-				"これをONにすると、SuddenとHiddenの効果は無効になります。",
-				"If you set Blindfold=ON, you can't see the chips at all." );
-			this.list項目リスト.Add( this.iGuitarBlindfold );
+			this.iGuitarSudHid = new CItemList( "Sud+Hid", CItemBase.Eパネル種別.通常, getDefaultSudHidValue( E楽器パート.GUITAR ),
+				"ギターチップの表示方式:\n" +
+				"OFF:　　チップを常に表示します。\n" +
+				"Sudden: チップが譜面の下の方から\n" +
+				"　　　　表示されるようになります。\n" +
+				"Hidden: チップが譜面の下の方で表示\n" +
+				"　　　　されなくなります。\n" +
+				"Sud+Hid: SuddenとHiddenの効果を\n" +
+				"　　　　同時にかけます。\n" +
+				"S(emi)-Invisible:\n" +
+				"　　　　通常はチップを透明にしますが、\n" +
+				"　　　　Bad時しばらく表示します。\n" +
+				"F(ull)-Invisible:\n" +
+				"　　　　チップを常に透明にします。\n" +
+				"　　　　暗譜での練習にお使いください。",
+
+				"Guitar chips display type:\n" +
+				"OFF:    Always show chips.\n" +
+				"Sudden: The chips are disappered\n" +
+				"        until they come near the hit\n" +
+				"        bar, and suddenly appears.\n" +
+				"Hidden: The chips are hidden by\n" +
+				"        approaching to the hit bar.\n" +
+				"Sud+Hid: Both Sudden and Hidden.\n" +
+				"S(emi)-Invisible:\n" +
+				"        Usually you can't see the chips\n" +
+				"        except you've gotten Bad.\n" +
+				"F(ull)-Invisible:\n" +
+				"        You can't see the chips at all.",
+				new string[] { "OFF", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } );
+			this.list項目リスト.Add( this.iGuitarSudHid );
+
+			//this.iGuitarSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Guitar,
+			//    "ギターチップがヒットバー付近にくる\nまで表示されなくなります。",
+			//    "Guitar chips are disappered until they\ncome near the hit bar, and suddenly\nappears." );
+			//this.list項目リスト.Add( this.iGuitarSudden );
+			//this.iGuitarHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Guitar,
+			//    "ギターチップがヒットバー付近で表示\nされなくなります。",
+			//    "Guitar chips are hidden by approaching\nto the hit bar. " );
+			//this.list項目リスト.Add( this.iGuitarHidden );
+
+			//this.iGuitarInvisible = new CItemList( "Invisible", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eInvisible.Guitar,
+			//    "ギターのチップを全く表示しなくなりま\n" +
+			//    "す。暗譜での練習にお使いください。\n" +
+			//    "これをONにすると、SuddenとHiddenの\n" +
+			//    "効果は無効になります。",
+			//    "If you set Blindfold=ON, you can't\n" +
+			//    "see the chips at all.",
+			//    new string[] { "OFF", "HALF", "ON" } );
+			//this.list項目リスト.Add( this.iGuitarInvisible );
 
 			this.iGuitarReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Guitar,
 				"ギターチップが譜面の上から下に流れるようになります。",
@@ -926,20 +1019,57 @@ namespace DTXMania
 				"You can set it from x0.5 to x1000.0.\n" +
 				"(ScrollSpeed=x0.5 means half speed)" );
 			this.list項目リスト.Add( this.iBassScrollSpeed );
-			this.iBassSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Bass,
-				"ベースチップがヒットバー付近にくるまで表示されなくなります。",
-				"Bass chips are disappered until they come near the hit bar, and suddenly appears." );
-			this.list項目リスト.Add( this.iBassSudden );
-			this.iBassHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Bass,
-				"ベースチップがヒットバー付近で表示されなくなります。",
-				"Bass chips are hidden by approaching to the hit bar." );
-			this.list項目リスト.Add( this.iBassHidden );
 
-			this.iBassBlindfold = new CItemToggle( "Blindfold", CDTXMania.ConfigIni.bBlindfold.Bass,
-				"ベースのチップを全く表示しなくなります。暗譜での練習にお使いください。" +
-				"これをONにすると、SuddenとHiddenの効果は無効になります。",
-				"If you set Blindfold=ON, you can't see the chips at all." );
-			this.list項目リスト.Add( this.iBassBlindfold );
+			this.iBassSudHid = new CItemList( "Sud+Hid", CItemBase.Eパネル種別.通常, getDefaultSudHidValue( E楽器パート.BASS ),
+				"ベースチップの表示方式:\n" +
+				"OFF:　　チップを常に表示します。\n" +
+				"Sudden: チップが譜面の下の方から\n" +
+				"　　　　表示されるようになります。\n" +
+				"Hidden: チップが譜面の下の方で表示\n" +
+				"　　　　されなくなります。\n" +
+				"Sud+Hid: SuddenとHiddenの効果を\n" +
+				"　　　　同時にかけます。\n" +
+				"S(emi)-Invisible:\n" +
+				"　　　　通常はチップを透明にしますが、\n" +
+				"　　　　Bad時しばらく表示します。\n" +
+				"F(ull)-Invisible:\n" +
+				"　　　　チップを常に透明にします。\n" +
+				"　　　　暗譜での練習にお使いください。",
+
+				"Bass chips display type:\n" +
+				"OFF:    Always show chips.\n" +
+				"Sudden: The chips are disappered\n" +
+				"        until they come near the hit\n" +
+				"        bar, and suddenly appears.\n" +
+				"Hidden: The chips are hidden by\n" +
+				"        approaching to the hit bar.\n" +
+				"Sud+Hid: Both Sudden and Hidden.\n" +
+				"S(emi)-Invisible:\n" +
+				"        Usually you can't see the chips\n" +
+				"        except you've gotten Bad.\n" +
+				"F(ull)-Invisible:\n" +
+				"        You can't see the chips at all.",
+				new string[] { "OFF", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } );
+			this.list項目リスト.Add( this.iBassSudHid );
+
+			//this.iBassSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Bass,
+			//    "ベースチップがヒットバー付近にくる\nまで表示されなくなります。",
+			//    "Bass chips are disappered until they\ncome near the hit bar, and suddenly\nappears." );
+			//this.list項目リスト.Add( this.iBassSudden );
+			//this.iBassHidden = new CItemToggle( "Hidden", CDTXMania.ConfigIni.bHidden.Bass,
+			//    "ベースチップがヒットバー付近で表示\nされなくなります。",
+			//    "Bass chips are hidden by approaching\nto the hit bar." );
+			//this.list項目リスト.Add( this.iBassHidden );
+
+			//this.iBassInvisible = new CItemList( "InvisibleBlindfold", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eInvisible.Bass,
+			//    "ベースのチップを全く表示しなくなりま\n" +
+			//    "す。暗譜での練習にお使いください。\n" +
+			//    "これをONにすると、SuddenとHiddenの\n" +
+			//    "効果は無効になります。",
+			//    "If you set Blindfold=ON, you can't\n" +
+			//    "see the chips at all.",
+			//    new string[] { "OFF", "HALF", "ON"} );
+			//this.list項目リスト.Add( this.iBassInvisible );
 
 			this.iBassReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Bass,
 				"ベースチップが譜面の上から下に流れるようになります。",
@@ -1017,6 +1147,32 @@ namespace DTXMania
 			this.eメニュー種別 = Eメニュー種別.Bass;
 		}
 		#endregion
+
+		/// <summary>Sud+Hidの初期値を返す</summary>
+		/// <param name="eInst"></param>
+		/// <returns>
+		/// 0: None
+		/// 1: Sudden
+		/// 2: Hidden
+		/// 3: Sud+Hid
+		/// 4: Semi-Invisible
+		/// 5: Full-Invisible
+		/// </returns>
+		private int getDefaultSudHidValue( E楽器パート eInst )
+		{
+			int defvar;
+			int nInst = (int) eInst;
+			if ( CDTXMania.ConfigIni.eInvisible[ nInst ] != EInvisible.OFF )
+			{
+				defvar = (int) CDTXMania.ConfigIni.eInvisible[ nInst ] + 3;
+			}
+			else
+			{
+				defvar = ( CDTXMania.ConfigIni.bSudden[ nInst ] ? 1 : 0 ) +
+						 ( CDTXMania.ConfigIni.bHidden[ nInst ] ? 2 : 0 );
+			}
+			return defvar;
+		}
 
 		/// <summary>
 		/// ESC押下時の右メニュー描画
@@ -1282,6 +1438,22 @@ namespace DTXMania
 				{
 					tGenerateSkinSample();
 				}
+				#endregion
+				#region [ 曲データ一覧の再読み込み ]
+				else if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemReloadDTX )				// #32081 2013.10.21 yyagi
+				{
+					if ( CDTXMania.EnumSongs.IsEnumerating )
+					{
+						// Debug.WriteLine( "バックグラウンドでEnumeratingSongs中だったので、一旦中断します。" );
+						CDTXMania.EnumSongs.Abort();
+						CDTXMania.actEnumSongs.On非活性化();
+			}
+
+					CDTXMania.EnumSongs.StartEnumFromDisk();
+					CDTXMania.EnumSongs.ChangeEnumeratePriority( ThreadPriority.Normal );
+					CDTXMania.actEnumSongs.bコマンドでの曲データ取得 = true;
+					CDTXMania.actEnumSongs.On活性化();
+		}
 				#endregion
 			}
 		}
@@ -2210,7 +2382,7 @@ namespace DTXMania
 		private CItemToggle iBassPick;						//
 		private CItemToggle iBassW;							//
 	
-		private CItemToggle iBassHidden;
+		//private CItemToggle iBassHidden;
 		private CItemToggle iBassLeft;
 		private CItemToggle iBassLight;
 		private CItemList iBassPosition;
@@ -2218,7 +2390,7 @@ namespace DTXMania
 		private CItemBase iBassReturnToMenu;
 		private CItemToggle iBassReverse;
 		private CItemInteger iBassScrollSpeed;
-		private CItemToggle iBassSudden;
+		//private CItemToggle iBassSudden;
 		private CItemList iCommonDark;
 		private CItemInteger iCommonPlaySpeed;
 //		private CItemBase iCommonReturnToMenu;
@@ -2228,7 +2400,7 @@ namespace DTXMania
 		private CItemList iDrumsComboPosition;
 		private CItemToggle iDrumsCymbalRide;
 		private CItemToggle iDrumsFloorTom;
-		private CItemToggle iDrumsHidden;
+		//private CItemToggle iDrumsHidden;
 		private CItemToggle iDrumsHighTom;
 		private CItemToggle iDrumsHiHat;
 		private CItemToggle iDrumsLeftCymbal;
@@ -2238,7 +2410,7 @@ namespace DTXMania
 		private CItemToggle iDrumsReverse;
 		private CItemInteger iDrumsScrollSpeed;
 		private CItemToggle iDrumsSnare;
-		private CItemToggle iDrumsSudden;
+		//private CItemToggle iDrumsSudden;
 		private CItemToggle iDrumsTight;
 		private CItemToggle iDrumsGraph;        // #24074 2011.01.23 add ikanick
 
@@ -2250,7 +2422,7 @@ namespace DTXMania
 		private CItemToggle iGuitarPick;					//
 		private CItemToggle iGuitarW;						//
 
-		private CItemToggle iGuitarHidden;
+		//private CItemToggle iGuitarHidden;
 		private CItemToggle iGuitarLeft;
 		private CItemToggle iGuitarLight;
 		private CItemList iGuitarPosition;
@@ -2258,15 +2430,16 @@ namespace DTXMania
 		private CItemBase iGuitarReturnToMenu;
 		private CItemToggle iGuitarReverse;
 		private CItemInteger iGuitarScrollSpeed;
-		private CItemToggle iGuitarSudden;
+		//private CItemToggle iGuitarSudden;
 		private CItemInteger iDrumsInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
 		private CItemInteger iGuitarInputAdjustTimeMs;		//
 		private CItemInteger iBassInputAdjustTimeMs;		//
 		private CItemList iSystemSkinSubfolder;				// #28195 2012.5.2 yyagi
 		private CItemToggle iSystemUseBoxDefSkin;			// #28195 2012.5.6 yyagi
-		private CItemToggle iDrumsBlindfold;				// #32072 2013.9.20 yyagi
-		private CItemToggle iGuitarBlindfold;				// #32072 2013.9.20 yyagi
-		private CItemToggle iBassBlindfold;					// #32072 2013.9.20 yyagi
+		private CItemList iDrumsSudHid;						// #32072 2013.9.20 yyagi
+		private CItemList iGuitarSudHid;					// #32072 2013.9.20 yyagi
+		private CItemList iBassSudHid;						// #32072 2013.9.20 yyagi
+		private CItemBase iSystemReloadDTX;					// #32081 2013.10.21 yyagi
 
 
 		private int t前の項目( int nItem )
@@ -2398,9 +2571,13 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bAutoPlay.BsPick = this.iBassPick.bON;
 			CDTXMania.ConfigIni.bAutoPlay.BsW = this.iBassW.bON;
 			CDTXMania.ConfigIni.n譜面スクロール速度.Bass = this.iBassScrollSpeed.n現在の値;
-			CDTXMania.ConfigIni.bSudden.Bass = this.iBassSudden.bON;
-			CDTXMania.ConfigIni.bHidden.Bass = this.iBassHidden.bON;
-			CDTXMania.ConfigIni.bBlindfold.Bass = this.iBassBlindfold.bON;
+												// "Sudden" || "Sud+Hid"
+			CDTXMania.ConfigIni.bSudden.Bass = ( this.iBassSudHid.n現在選択されている項目番号 == 1 || this.iBassSudHid.n現在選択されている項目番号 == 3 ) ? true : false;
+												// "Hidden" || "Sud+Hid"
+			CDTXMania.ConfigIni.bHidden.Bass = ( this.iBassSudHid.n現在選択されている項目番号 == 2 || this.iBassSudHid.n現在選択されている項目番号 == 3 ) ? true : false;
+			if      ( this.iBassSudHid.n現在選択されている項目番号 == 4 ) CDTXMania.ConfigIni.eInvisible.Bass = EInvisible.SEMI;	// "S-Invisible"
+			else if ( this.iBassSudHid.n現在選択されている項目番号 == 5 ) CDTXMania.ConfigIni.eInvisible.Bass = EInvisible.FULL;	// "F-Invisible"
+			else                                                          CDTXMania.ConfigIni.eInvisible.Bass = EInvisible.OFF;
 			CDTXMania.ConfigIni.bReverse.Bass = this.iBassReverse.bON;
 			CDTXMania.ConfigIni.判定文字表示位置.Bass = (E判定文字表示位置) this.iBassPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eRandom.Bass = (Eランダムモード) this.iBassRandom.n現在選択されている項目番号;
@@ -2423,9 +2600,13 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bAutoPlay.CY = this.iDrumsCymbalRide.bON;
 			CDTXMania.ConfigIni.n譜面スクロール速度.Drums = this.iDrumsScrollSpeed.n現在の値;
 			CDTXMania.ConfigIni.ドラムコンボ文字の表示位置 = (Eドラムコンボ文字の表示位置) this.iDrumsComboPosition.n現在選択されている項目番号;
-			CDTXMania.ConfigIni.bSudden.Drums = this.iDrumsSudden.bON;
-			CDTXMania.ConfigIni.bHidden.Drums = this.iDrumsHidden.bON;
-			CDTXMania.ConfigIni.bBlindfold.Drums = this.iDrumsBlindfold.bON;
+												// "Sudden" || "Sud+Hid"
+			CDTXMania.ConfigIni.bSudden.Drums = ( this.iDrumsSudHid.n現在選択されている項目番号 == 1 || this.iDrumsSudHid.n現在選択されている項目番号 == 3 ) ? true : false;
+												// "Hidden" || "Sud+Hid"
+			CDTXMania.ConfigIni.bHidden.Drums = ( this.iDrumsSudHid.n現在選択されている項目番号 == 2 || this.iDrumsSudHid.n現在選択されている項目番号 == 3 ) ? true : false;
+			if      ( this.iDrumsSudHid.n現在選択されている項目番号 == 4 ) CDTXMania.ConfigIni.eInvisible.Drums = EInvisible.SEMI;	// "S-Invisible"
+			else if ( this.iDrumsSudHid.n現在選択されている項目番号 == 5 ) CDTXMania.ConfigIni.eInvisible.Drums = EInvisible.FULL;	// "F-Invisible"
+			else                                                           CDTXMania.ConfigIni.eInvisible.Drums = EInvisible.OFF;
 			CDTXMania.ConfigIni.bReverse.Drums = this.iDrumsReverse.bON;
 			CDTXMania.ConfigIni.判定文字表示位置.Drums = (E判定文字表示位置) this.iDrumsPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.bTight = this.iDrumsTight.bON;
@@ -2457,9 +2638,13 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bAutoPlay.GtPick = this.iGuitarPick.bON;
 			CDTXMania.ConfigIni.bAutoPlay.GtW = this.iGuitarW.bON;
 			CDTXMania.ConfigIni.n譜面スクロール速度.Guitar = this.iGuitarScrollSpeed.n現在の値;
-			CDTXMania.ConfigIni.bSudden.Guitar = this.iGuitarSudden.bON;
-			CDTXMania.ConfigIni.bHidden.Guitar = this.iGuitarHidden.bON;
-			CDTXMania.ConfigIni.bBlindfold.Guitar = this.iGuitarBlindfold.bON;
+												// "Sudden" || "Sud+Hid"
+			CDTXMania.ConfigIni.bSudden.Guitar = ( this.iGuitarSudHid.n現在選択されている項目番号 == 1 || this.iGuitarSudHid.n現在選択されている項目番号 == 3 ) ? true : false;
+												// "Hidden" || "Sud+Hid"
+			CDTXMania.ConfigIni.bHidden.Guitar = ( this.iGuitarSudHid.n現在選択されている項目番号 == 2 || this.iGuitarSudHid.n現在選択されている項目番号 == 3 ) ? true : false;
+			if      ( this.iGuitarSudHid.n現在選択されている項目番号 == 4 ) CDTXMania.ConfigIni.eInvisible.Guitar = EInvisible.SEMI;	// "S-Invisible"
+			else if ( this.iGuitarSudHid.n現在選択されている項目番号 == 5 ) CDTXMania.ConfigIni.eInvisible.Guitar = EInvisible.FULL;	// "F-Invisible"
+			else                                                            CDTXMania.ConfigIni.eInvisible.Guitar = EInvisible.OFF;
 			CDTXMania.ConfigIni.bReverse.Guitar = this.iGuitarReverse.bON;
 			CDTXMania.ConfigIni.判定文字表示位置.Guitar = (E判定文字表示位置) this.iGuitarPosition.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.eRandom.Guitar = (Eランダムモード) this.iGuitarRandom.n現在選択されている項目番号;

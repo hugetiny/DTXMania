@@ -3,7 +3,7 @@
   (C) 2000 2013 DTXMania Group
 ============================================================
 
-* Requiremens
+* Requirements
 
 (1) OS ...  WindowsXP / Vista / 7 (x86, x64) / 8 (x86, x64)
 (2) .NET Framework ... Version 2.0 or later
@@ -84,11 +84,13 @@ Now, DTXMania support both WASAPI and ASIO on Release 096.
 To use WASAPI or ASIO, you can reduce the lag from hitting pads
 to output the sound.
 
-However, initially, DTXMania uses DirectSound. So if you want to
-reduce sound lags, you have to change CONFIGURATION-System-SoundType
-from "DSound" to "WASAPI" or "ASIO".
+If you use Vista or later, DTXMania initially uses WASAPI.
+(If you use XP, DTXMania initially uses DirectSound.)
+If you want to use ASIO, you have to change CONFIGURATION-
+System-SoundType to "ASIO".
 
-If you specify "WASAPI" and your system can't use it,
+
+If you specify "WASAPI" but your system can't use it,
 DTXMania automatically try to use "ASIO".
 And if "ASIO" is not used on your system, "DirectSound" is used.
 

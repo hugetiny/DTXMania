@@ -170,6 +170,7 @@ namespace DTXMania
 			public STDGBVALUE<bool> bReverse;
 			public bool bSTAGEFAILED有効;
 			public STDGBVALUE<bool> bSudden;
+			public STDGBVALUE<EInvisible> eInvisible;
 			public bool bTight;
 			public bool b演奏にMIDI入力を使用した;
 			public bool b演奏にキーボードを使用した;
@@ -244,6 +245,10 @@ namespace DTXMania
 				this.bHidden.Drums = false;
 				this.bHidden.Guitar = false;
 				this.bHidden.Bass = false;
+				this.eInvisible = new STDGBVALUE<EInvisible>();
+				this.eInvisible.Drums = EInvisible.OFF;
+				this.eInvisible.Guitar = EInvisible.OFF;
+				this.eInvisible.Bass = EInvisible.OFF;
 				this.bReverse = new STDGBVALUE<bool>();
 				this.bReverse.Drums = false;
 				this.bReverse.Guitar = false;
@@ -838,6 +843,18 @@ namespace DTXMania
 							{
 								c演奏記録.bHidden.Bass = C変換.bONorOFF( para[ 0 ] );
 							}
+							else if ( item.Equals( "InvisibleDrums" ) )
+							{
+								c演奏記録.eInvisible.Drums = (EInvisible) int.Parse( para );
+							}
+							else if ( item.Equals( "InvisibleGuitar" ) )
+							{
+								c演奏記録.eInvisible.Guitar = (EInvisible) int.Parse( para );
+							}
+							else if ( item.Equals( "InvisibleBass" ) )
+							{
+								c演奏記録.eInvisible.Bass = (EInvisible) int.Parse( para );
+							}
 							else if ( item.Equals( "ReverseDrums" ) )
 							{
 								c演奏記録.bReverse.Drums = C変換.bONorOFF( para[ 0 ] );
@@ -1287,6 +1304,9 @@ namespace DTXMania
 				writer.WriteLine( "HiddenDrums={0}", this.stセクション[ i ].bHidden.Drums ? 1 : 0 );
 				writer.WriteLine( "HiddenGuitar={0}", this.stセクション[ i ].bHidden.Guitar ? 1 : 0 );
 				writer.WriteLine( "HiddenBass={0}", this.stセクション[ i ].bHidden.Bass ? 1 : 0 );
+				writer.WriteLine( "InvisibleDrums={0}", (int) this.stセクション[ i ].eInvisible.Drums );
+				writer.WriteLine( "InvisibleGuitar={0}", (int) this.stセクション[ i ].eInvisible.Guitar );
+				writer.WriteLine( "InvisibleBass={0}", (int) this.stセクション[ i ].eInvisible.Bass );
 				writer.WriteLine( "ReverseDrums={0}", this.stセクション[ i ].bReverse.Drums ? 1 : 0 );
 				writer.WriteLine( "ReverseGuitar={0}", this.stセクション[ i ].bReverse.Guitar ? 1 : 0 );
 				writer.WriteLine( "ReverseBass={0}", this.stセクション[ i ].bReverse.Bass ? 1 : 0 );
@@ -1510,6 +1530,9 @@ namespace DTXMania
 			builder.Append( boolToChar( cc.bHidden.Drums ) );
 			builder.Append( boolToChar( cc.bHidden.Guitar ) );
 			builder.Append( boolToChar( cc.bHidden.Bass ) );
+			builder.Append( (int) cc.eInvisible.Drums );
+			builder.Append( (int) cc.eInvisible.Guitar );
+			builder.Append( (int) cc.eInvisible.Bass );
 			builder.Append( boolToChar( cc.bReverse.Drums ) );
 			builder.Append( boolToChar( cc.bReverse.Guitar ) );
 			builder.Append( boolToChar( cc.bReverse.Bass ) );

@@ -29,6 +29,17 @@ namespace DTXMania
 				return ( this.state == DTXEnumState.CompletelyDone );
 			}
 		}
+		public bool IsEnumerating
+		{
+			get
+			{
+				if ( thDTXFileEnumerate == null )
+				{
+					return false;
+				}
+				return thDTXFileEnumerate.IsAlive;
+			}
+		}
 		public bool IsSongListEnumerated				// 曲リスト探索が完了したが、実際の曲リストへの反映はまだ？
 		{
 			get
@@ -62,7 +73,7 @@ namespace DTXMania
 
 		public void ChangeEnumeratePriority( ThreadPriority tp )
 		{
-			if ( this.thDTXFileEnumerate != null )
+			if ( this.thDTXFileEnumerate != null && this.thDTXFileEnumerate.IsAlive == true )
 			{
 				this.thDTXFileEnumerate.Priority = tp;
 			}
@@ -124,7 +135,7 @@ namespace DTXMania
 		/// </summary>
 		public void StartEnumFromDisk()
 		{
-			if ( state == DTXEnumState.None )
+			if ( state == DTXEnumState.None || state == DTXEnumState.CompletelyDone )
 			{
 				Trace.TraceInformation( "★曲データ検索スレッドを起動しました。" );
 				lock ( this )
@@ -133,6 +144,10 @@ namespace DTXMania
 				}
 				// this.autoReset = new AutoResetEvent( true );
 
+				if ( this.Songs管理 == null )		// Enumerating Songs完了後、CONFIG画面から再スキャンしたときにこうなる
+				{
+					this.Songs管理 = new CSongs管理();
+				}
 				this.thDTXFileEnumerate = new Thread( new ThreadStart( this.t曲リストの構築2 ) );
 				this.thDTXFileEnumerate.Name = "曲リストの構築";
 				this.thDTXFileEnumerate.IsBackground = true;
@@ -195,6 +210,21 @@ namespace DTXMania
 
 		}
 
+		/// <summary>
+		/// 曲探索スレッドを強制終了する
+		/// </summary>
+		public void Abort()
+		{
+			if ( thDTXFileEnumerate != null )
+			{
+				thDTXFileEnumerate.Abort();
+				thDTXFileEnumerate = null;
+				this.state = DTXEnumState.None;
+
+				this.Songs管理 = null;					// Songs管理を再初期化する (途中まで作った曲リストの最後に、一から重複して追記することにならないようにする。)
+				this.Songs管理 = new CSongs管理();
+			}
+		}
 
 
 

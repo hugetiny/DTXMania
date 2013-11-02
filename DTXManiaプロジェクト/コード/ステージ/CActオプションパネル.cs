@@ -47,47 +47,53 @@ namespace DTXMania
 						12 * Scale.Y - 4,
 						this.rc譜面スピード[ drums ]
 					);
-					drums = configIni.n譜面スクロール速度.Guitar;
-					if( drums > 15 )
+					int guitar = configIni.n譜面スクロール速度.Guitar;
+					if( guitar > 15 )
 					{
-						drums = 15;
+						guitar = 15;
 					}
 					this.txオプションパネル.t2D描画(
 						device,
 						0x171 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rc譜面スピード[ drums ]
+						this.rc譜面スピード[ guitar ]
 					);
-					drums = configIni.n譜面スクロール速度.Bass;
-					if( drums > 15 )
+					int bass = configIni.n譜面スクロール速度.Bass;
+					if( bass > 15 )
 					{
-						drums = 15;
+						bass = 15;
 					}
 					this.txオプションパネル.t2D描画(
 						device,
 						0x171 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rc譜面スピード[ drums ]
+						this.rc譜面スピード[ bass ]
 					);
 					#endregion
+					#region [ Sudden/Hidden/Invisible ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x189 * Scale.X,
 						12 * Scale.Y - 4,
-						this.rcHS[ ( configIni.bHidden.Drums ? 1 : 0 ) + ( configIni.bSudden.Drums ? 2 : 0 ) ]
-					);
+						this.rcHS[ ( configIni.bHidden.Drums ? 1 : 0 ) + ( configIni.bSudden.Drums ? 2 : 0 ) +
+									( configIni.eInvisible.Drums == EInvisible.SEMI ? 4 : 0 ) +
+									( configIni.eInvisible.Drums == EInvisible.FULL ? 5 : 0 ) ] );
 					this.txオプションパネル.t2D描画(
 						device,
 						0x189 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rcHS[ ( configIni.bHidden.Guitar ? 1 : 0 ) + ( configIni.bSudden.Guitar ? 2 : 0 ) ]
-					);
+						this.rcHS[ ( configIni.bHidden.Guitar ? 1 : 0 ) + ( configIni.bSudden.Guitar ? 2 : 0 ) +
+									( configIni.eInvisible.Guitar == EInvisible.SEMI ? 4 : 0 ) +
+									( configIni.eInvisible.Guitar == EInvisible.FULL ? 5 : 0 ) ] );
 					this.txオプションパネル.t2D描画(
 						device,
 						0x189 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rcHS[ ( configIni.bHidden.Bass ? 1 : 0 ) + ( configIni.bSudden.Bass ? 2 : 0 ) ] 
-					);
+						this.rcHS[ ( configIni.bHidden.Bass ? 1 : 0 ) + ( configIni.bSudden.Bass ? 2 : 0 ) +
+									( configIni.eInvisible.Bass == EInvisible.SEMI ? 4 : 0 ) +
+									( configIni.eInvisible.Bass == EInvisible.FULL ? 5 : 0 ) ] );
+					#endregion
+					#region [ Dark ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1a1 * Scale.X,
@@ -106,6 +112,8 @@ namespace DTXMania
 						0x24 * Scale.Y - 4,
 						this.rcDark[ (int) configIni.eDark ]
 					);
+					#endregion
+					#region [ Reverse ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1b9 * Scale.X,
@@ -124,6 +132,8 @@ namespace DTXMania
 						0x24 * Scale.Y - 4,
 						this.rcReverse[ configIni.bReverse.Bass ? 1 : 0 ]
 					);
+					#endregion
+					#region [ 判定文字表示位置 ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1d1 * Scale.X,
@@ -142,12 +152,16 @@ namespace DTXMania
 						0x24 * Scale.Y - 4,
 						this.rcPosition[ (int) configIni.判定文字表示位置.Bass ]
 					);
+					#endregion
+					#region [ Tight ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1e9 * Scale.X,
 						12 * Scale.Y - 4,
 						this.rcTight[ configIni.bTight ? 1 : 0 ]
 					);
+					#endregion
+					#region [ Random ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1e9 * Scale.X,
@@ -160,12 +174,16 @@ namespace DTXMania
 						0x24 * Scale.Y - 4,
 						this.rcRandom[ (int) configIni.eRandom.Bass ]
 					);
+					#endregion
+					#region [ ComboPosigion ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x201 * Scale.X,
 						12 * Scale.Y - 4,
 						this.rcComboPos[ (int) configIni.ドラムコンボ文字の表示位置 ]
 					);
+					#endregion
+					#region [ Light ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x201 * Scale.X,
@@ -178,6 +196,8 @@ namespace DTXMania
 						0x24 * Scale.Y - 4,
 						this.rcLight[ configIni.bLight.Bass ? 1 : 0 ] 
 					);
+					#endregion
+					#region [ Left ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x219 * Scale.X,
@@ -190,6 +210,7 @@ namespace DTXMania
 						0x24 * Scale.Y - 4,
 						this.rcLeft[ configIni.bLeft.Bass ? 1 : 0 ]
 					);
+					#endregion
 				}
 			}
 			return 0;
@@ -212,10 +233,12 @@ namespace DTXMania
 			new Rectangle( (int)(0x18 * Scale.X), (int)(0x54 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
 		};
 		private readonly Rectangle[] rcHS = new Rectangle[] {
-			new Rectangle( (int)(0 * Scale.X), (int)(0 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0 * Scale.X), (int)(12 * Scale.Y),(int)( 0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0 * Scale.X), (int)(0x18 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0 * Scale.X), (int)(0x24 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
+			new Rectangle( (int)(0 * Scale.X), (int)(0 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),		// OFF
+			new Rectangle( (int)(0 * Scale.X), (int)(12 * Scale.Y),(int)( 0x18 * Scale.X), (int)(12 * Scale.Y) ),		// Hidden
+			new Rectangle( (int)(0 * Scale.X), (int)(0x18 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),		// Sudden
+			new Rectangle( (int)(0 * Scale.X), (int)(0x24 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),		// H/S
+			new Rectangle( (int)(0x60 * Scale.X), (int)(0x54 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),	// Semi-Invisible
+			new Rectangle( (int)(120 * Scale.X), (int)(0x54 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )	// Full-Invisible
 		};
 		private readonly Rectangle[] rcLeft = new Rectangle[] {
 			new Rectangle( (int)(0x60 * Scale.X), (int)(0x48 * Scale.Y),(int)( 0x18 * Scale.X), (int)(12 * Scale.Y) ),

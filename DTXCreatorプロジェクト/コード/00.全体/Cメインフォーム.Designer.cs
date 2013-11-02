@@ -190,6 +190,8 @@
 			this.toolStripMenuItem選択チップの削除 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItemすべてのチップの選択 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItemレーン内のすべてのチップの選択 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItem小節内のすべてのチップの選択 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItem小節長変更 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
@@ -1474,6 +1476,8 @@
             this.toolStripMenuItem選択チップの削除,
             this.toolStripSeparator15,
             this.toolStripMenuItemすべてのチップの選択,
+            this.toolStripMenuItemレーン内のすべてのチップの選択,
+            this.toolStripMenuItem小節内のすべてのチップの選択,
             this.toolStripSeparator16,
             this.toolStripMenuItem小節長変更,
             this.toolStripSeparator17,
@@ -1520,6 +1524,18 @@
 			this.toolStripMenuItemすべてのチップの選択.Name = "toolStripMenuItemすべてのチップの選択";
 			resources.ApplyResources( this.toolStripMenuItemすべてのチップの選択, "toolStripMenuItemすべてのチップの選択" );
 			this.toolStripMenuItemすべてのチップの選択.Click += new System.EventHandler( this.toolStripMenuItemすべてのチップの選択_Click );
+			// 
+			// toolStripMenuItemレーン内のすべてのチップの選択
+			// 
+			this.toolStripMenuItemレーン内のすべてのチップの選択.Name = "toolStripMenuItemレーン内のすべてのチップの選択";
+			resources.ApplyResources( this.toolStripMenuItemレーン内のすべてのチップの選択, "toolStripMenuItemレーン内のすべてのチップの選択" );
+			this.toolStripMenuItemレーン内のすべてのチップの選択.Click += new System.EventHandler( this.toolStripMenuItemレーン内のすべてのチップの選択_Click );
+			// 
+			// toolStripMenuItem小節内のすべてのチップの選択
+			// 
+			this.toolStripMenuItem小節内のすべてのチップの選択.Name = "toolStripMenuItem小節内のすべてのチップの選択";
+			resources.ApplyResources( this.toolStripMenuItem小節内のすべてのチップの選択, "toolStripMenuItem小節内のすべてのチップの選択" );
+			this.toolStripMenuItem小節内のすべてのチップの選択.Click += new System.EventHandler( this.toolStripMenuItem小節内のすべてのチップの選択_Click );
 			// 
 			// toolStripSeparator16
 			// 
@@ -1764,5 +1780,7 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem小節の挿入;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem小節の削除;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemレーン内のすべてのチップの選択;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem小節内のすべてのチップの選択;
 	}
 }

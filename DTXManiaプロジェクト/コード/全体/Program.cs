@@ -57,7 +57,7 @@ namespace DTXMania
 		//-----------------------------
 		#endregion
 
-		[STAThread]
+		[STAThread] 
 		private static void Main()
 		{
 			mutex二重起動防止用 = new Mutex( false, "DTXManiaMutex" );
