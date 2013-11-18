@@ -253,11 +253,11 @@ namespace DTXMania
 					CDTXMania.DTX.t全チップの再生停止();
 					base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED;
 				}
+				this.t進行描画・AVI();
 				this.t進行描画・背景();
 				this.t進行描画・MIDIBGM();
 				this.t進行描画・パネル文字列();
 				this.t進行描画・スコア();
-				this.t進行描画・AVI();
 				this.t進行描画・BGA();
 				this.t進行描画・ステータスパネル();
 				this.t進行描画・ギターベースフレーム();

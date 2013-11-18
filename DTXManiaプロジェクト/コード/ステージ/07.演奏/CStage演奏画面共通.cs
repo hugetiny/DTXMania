@@ -2684,6 +2684,7 @@ namespace DTXMania
 			try
 			{
 				this.tx背景 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+				this.tx背景.n透明度 = CDTXMania.ConfigIni.n背景の透過度;
 			}
 			catch ( CTextureCreateFailedException )
 			{

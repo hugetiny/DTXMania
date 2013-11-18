@@ -249,7 +249,10 @@ namespace DTXMania
 						this.tx描画用.texture.UnlockRectangle( 0 );
 						this.bフレームを作成した = false;
 					}
-					this.tx描画用.t2D描画( CDTXMania.app.Device, x, y );
+					this.tx描画用.vc拡大縮小倍率.X = (float) ( 640.0 / this.tx描画用.sz画像サイズ.Width );
+					this.tx描画用.vc拡大縮小倍率.Y = (float) ( 480.0 / this.tx描画用.sz画像サイズ.Height );
+					this.tx描画用.vc拡大縮小倍率.Z = (float) ( 1.0 );
+					this.tx描画用.t2D描画( CDTXMania.app.Device, 0, 0 );
 				}
 			}
 			return 0;
