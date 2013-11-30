@@ -399,10 +399,15 @@ namespace SampleFramework
 				}
 				#endregion
 				#region #23510 2010.11.13 yyagi: reset to 640x480
-				if ((m.WParam.ToInt32() & 0xFFFF) == MENU_VIEW)		
+				if ((m.WParam.ToInt32() & 0xFFFF) == ID_FULLHD)		
 				{
 					base.ClientSize = new Size(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
 					this.OnResizeEnd(new EventArgs());		// #23510 2010.11.20 yyagi: to set window size to Config.ini
+				}
+				else if ( ( m.WParam.ToInt32() & 0xFFFF ) == ID_HD )
+				{
+					base.ClientSize = new Size( 1280, 720 );
+					this.OnResizeEnd( new EventArgs() );		// #23510 2010.11.20 yyagi: to set window size to Config.ini
 				}
 				#endregion
 			}
@@ -575,7 +580,8 @@ namespace SampleFramework
 		[DllImport("user32", CharSet = CharSet.Auto)]
 		private static extern bool InsertMenuItem(IntPtr hMenu, uint uItem, bool fByPosition, ref MENUITEMINFO lpmii);
 
-		private const uint MENU_VIEW = 0x9999;
+		private const uint ID_FULLHD = 0x9999;
+		private const uint ID_HD = 0x9998;
 		private const uint MFT_SEPARATOR = 0x00000800;
 		private const uint MIIM_FTYPE = 0x00000100;
 		private const uint MIIM_STRING = 0x00000040;
@@ -599,9 +605,17 @@ namespace SampleFramework
 			MENUITEMINFO item2 = new MENUITEMINFO();
 			item2.cbSize = (uint)Marshal.SizeOf(item2);
 			item2.fMask = MIIM_STRING | MIIM_ID;
-			item2.wID = MENU_VIEW;
+			item2.wID = ID_FULLHD;
 			item2.dwTypeData = "&" + SampleFramework.GameWindowSize.Width.ToString() + "x" + SampleFramework.GameWindowSize.Height.ToString();
 			InsertMenuItem(hSysMenu, 6, true, ref item2);
+
+			//メニュー項目の挿入   
+			MENUITEMINFO item3 = new MENUITEMINFO();
+			item3.cbSize = (uint) Marshal.SizeOf( item3 );
+			item3.fMask = MIIM_STRING | MIIM_ID;
+			item3.wID = ID_HD;
+			item3.dwTypeData = "&" + "1280x720";
+			InsertMenuItem( hSysMenu, 7, true, ref item3 );
 		}   
 		#endregion
 	}

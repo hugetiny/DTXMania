@@ -62,7 +62,8 @@ namespace DTXMania
 						{
 							if( chip.rAVI != null )
 							{
-								this.Start( chip.nチャンネル番号, chip.rAVI, 0x116, 0x163, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
+								// this.Start( chip.nチャンネル番号, chip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
+								this.Start( chip.nチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 							}
 							continue;
 						}
@@ -132,13 +133,14 @@ namespace DTXMania
 					this.bフレームを作成した = true;
 				}
 				Size size = new Size( (int) this.rAVI.avi.nフレーム幅, (int) this.rAVI.avi.nフレーム高さ );
-				Size size2 = new Size( 0x116, 0x163 );
-				Size size3 = new Size( this.n開始サイズW, this.n開始サイズH );
-				Size size4 = new Size( this.n終了サイズW, this.n終了サイズH );
-				Point location = new Point( this.n画像側開始位置X, this.n画像側終了位置Y );
-				Point point2 = new Point( this.n画像側終了位置X, this.n画像側終了位置Y );
-				Point point3 = new Point( this.n表示側開始位置X, this.n表示側開始位置Y );
-				Point point4 = new Point( this.n表示側終了位置X, this.n表示側終了位置Y );
+				// Size size2 = new Size( 278, 355);
+				Size size2 = new Size( SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
+				Size 開始サイズ = new Size( this.n開始サイズW, this.n開始サイズH );
+				Size 終了サイズ = new Size( this.n終了サイズW, this.n終了サイズH );
+				Point 画像側開始位置 = new Point( this.n画像側開始位置X, this.n画像側終了位置Y );
+				Point 画像側終了位置 = new Point( this.n画像側終了位置X, this.n画像側終了位置Y );
+				Point 表示側開始位置 = new Point( this.n表示側開始位置X, this.n表示側開始位置Y );
+				Point 表示側終了位置 = new Point( this.n表示側終了位置X, this.n表示側終了位置Y );
 				long num3 = this.n総移動時間ms;
 				long num4 = this.n移動開始時刻ms;
 				if( CSound管理.rc演奏用タイマ.n現在時刻 < num4 )
@@ -148,15 +150,15 @@ namespace DTXMania
 				time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - num4 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
 				if( num3 == 0 )
 				{
-					rectangle = new Rectangle( location, size3 );
-					rectangle2 = new Rectangle( point3, size3 );
+					rectangle = new Rectangle( 画像側開始位置, 開始サイズ );
+					rectangle2 = new Rectangle( 表示側開始位置, 開始サイズ );
 				}
 				else
 				{
 					double num5 = ( (double) time ) / ( (double) num3 );
-					Size size5 = new Size( size3.Width + ( (int) ( ( size4.Width - size3.Width ) * num5 ) ), size3.Height + ( (int) ( ( size4.Height - size3.Height ) * num5 ) ) );
-					rectangle = new Rectangle( (int) ( ( point2.X - location.X ) * num5 ), (int) ( ( point2.Y - location.Y ) * num5 ), ( (int) ( ( point2.X - location.X ) * num5 ) ) + size5.Width, ( (int) ( ( point2.Y - location.Y ) * num5 ) ) + size5.Height );
-					rectangle2 = new Rectangle( (int) ( ( point4.X - point3.X ) * num5 ), (int) ( ( point4.Y - point3.Y ) * num5 ), ( (int) ( ( point4.X - point3.X ) * num5 ) ) + size5.Width, ( (int) ( ( point4.Y - point3.Y ) * num5 ) ) + size5.Height );
+					Size size5 = new Size( 開始サイズ.Width + ( (int) ( ( 終了サイズ.Width - 開始サイズ.Width ) * num5 ) ), 開始サイズ.Height + ( (int) ( ( 終了サイズ.Height - 開始サイズ.Height ) * num5 ) ) );
+					rectangle = new Rectangle( (int) ( ( 画像側終了位置.X - 画像側開始位置.X ) * num5 ), (int) ( ( 画像側終了位置.Y - 画像側開始位置.Y ) * num5 ), ( (int) ( ( 画像側終了位置.X - 画像側開始位置.X ) * num5 ) ) + size5.Width, ( (int) ( ( 画像側終了位置.Y - 画像側開始位置.Y ) * num5 ) ) + size5.Height );
+					rectangle2 = new Rectangle( (int) ( ( 表示側終了位置.X - 表示側開始位置.X ) * num5 ), (int) ( ( 表示側終了位置.Y - 表示側開始位置.Y ) * num5 ), ( (int) ( ( 表示側終了位置.X - 表示側開始位置.X ) * num5 ) ) + size5.Width, ( (int) ( ( 表示側終了位置.Y - 表示側開始位置.Y ) * num5 ) ) + size5.Height );
 					if( ( ( rectangle.Right <= 0 ) || ( rectangle.Bottom <= 0 ) ) || ( ( rectangle.Left >= size.Width ) || ( rectangle.Top >= size.Height ) ) )
 					{
 						return 0;
@@ -262,7 +264,34 @@ namespace DTXMania
 						this.tx描画用.texture.UnlockRectangle( 0 );
 						this.bフレームを作成した = false;
 					}
-					this.tx描画用.t2D描画( CDTXMania.app.Device, x, y );
+
+					// 旧動画 (278x355以下)の場合と、それ以上の場合とで、拡大/表示位置補正ロジックを変えること。
+					// 旧動画の場合は、「278x355の領域に表示される」ことを踏まえて扱う必要あり。
+					// 例: 上半分だけ動画表示するような場合は・・・「上半分だけ」という表示意図を維持すべきか？それとも無視して全画面拡大すべきか？？
+
+					#region [ アスペクト比を維持した拡大縮小 ]
+					float magX = (float) SampleFramework.GameWindowSize.Width / this.rAVI.avi.nフレーム幅;
+					float magY = (float) SampleFramework.GameWindowSize.Height / this.rAVI.avi.nフレーム高さ;
+					float mag = magX;
+					int xx = 0, yy = 0;
+					if ( magX > magY )
+					{
+						mag = magY;
+						xx = (int) ( ( SampleFramework.GameWindowSize.Width - ( this.rAVI.avi.nフレーム幅 * mag ) ) / 2 );
+					}
+					else
+					{
+						yy = (int) ( ( SampleFramework.GameWindowSize.Height- ( this.rAVI.avi.nフレーム高さ * mag ) ) / 2 );
+					}
+					#endregion
+
+					
+					this.tx描画用.vc拡大縮小倍率.X = mag;
+					this.tx描画用.vc拡大縮小倍率.Y = mag;
+					this.tx描画用.vc拡大縮小倍率.Z = 1.0f;
+					this.tx描画用.t2D描画( CDTXMania.app.Device, xx, yy );
+
+					//this.tx描画用.t2D描画( CDTXMania.app.Device, x, y );
 				}
 			}
 			return 0;
@@ -291,8 +320,10 @@ namespace DTXMania
 					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
 				this.tx描画用 = new CTexture( CDTXMania.app.Device,
-					(bIsPreviewMovie)? 204 : 278,
-					(bIsPreviewMovie)? 269 : 355,
+					//(bIsPreviewMovie)? 204 : 278,
+					//(bIsPreviewMovie)? 269 : 355,
+					( bIsPreviewMovie ) ? 204 : SampleFramework.GameWindowSize.Width,
+					( bIsPreviewMovie ) ? 269 : SampleFramework.GameWindowSize.Height,
 					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
 #endif
 				this.tx描画用.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );

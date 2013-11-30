@@ -20,7 +20,7 @@ namespace DTXMania
 
 		public CStageコンフィグ()
 		{
-			CActDFPFont font;
+			//CActDFPFont font;
 			base.eステージID = CStage.Eステージ.コンフィグ;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 			//this.actFont = font = new CActDFPFont();

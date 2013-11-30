@@ -1977,7 +1977,8 @@ namespace DTXMania
 									case EAVI種別.AVI:
 										if ( pChip.rAVI != null )
 										{
-											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 0x116, 0x163, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
+											// this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
+											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
 										}
 										break;
 
@@ -2729,6 +2730,7 @@ namespace DTXMania
 			try
 			{
 				this.tx背景 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+				this.tx背景.n透明度 = CDTXMania.ConfigIni.n背景の透過度;		// 背景動画用
 			}
 			catch ( CTextureCreateFailedException )
 			{
