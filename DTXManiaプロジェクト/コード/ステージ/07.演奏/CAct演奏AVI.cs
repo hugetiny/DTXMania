@@ -17,7 +17,18 @@ namespace DTXMania
 		{
 			base.b活性化してない = true;
 		}
+		/// <summary>
+		/// プレビュームービーかどうか
+		/// </summary>
+		/// <remarks>
+		/// On活性化()の前にフラグ操作すること。(活性化中に、本フラグを見て動作を変える部分があるため)
+		/// </remarks>
 		public bool bIsPreviewMovie
+		{
+			get;
+			set;
+		}
+		public bool bHasBGA
 		{
 			get;
 			set;
@@ -269,25 +280,40 @@ namespace DTXMania
 					// 旧動画の場合は、「278x355の領域に表示される」ことを踏まえて扱う必要あり。
 					// 例: 上半分だけ動画表示するような場合は・・・「上半分だけ」という表示意図を維持すべきか？それとも無視して全画面拡大すべきか？？
 
-					#region [ アスペクト比を維持した拡大縮小 ]
-					float magX = (float) SampleFramework.GameWindowSize.Width / this.rAVI.avi.nフレーム幅;
-					float magY = (float) SampleFramework.GameWindowSize.Height / this.rAVI.avi.nフレーム高さ;
-					float mag = magX;
-					int xx = 0, yy = 0;
-					if ( magX > magY )
+					float magX, magY;
+					int xx, yy;
+					if ( bHasBGA || bIsPreviewMovie )
 					{
-						mag = magY;
-						xx = (int) ( ( SampleFramework.GameWindowSize.Width - ( this.rAVI.avi.nフレーム幅 * mag ) ) / 2 );
+						#region [ BGA領域での再生 ]
+						xx = x;
+						yy = y;
+						magX = Scale.X;
+						magY = Scale.Y;
+						#endregion
 					}
 					else
 					{
-						yy = (int) ( ( SampleFramework.GameWindowSize.Height- ( this.rAVI.avi.nフレーム高さ * mag ) ) / 2 );
+						#region [ 全画面背景再生。アスペクト比を維持した拡大縮小 ]
+						xx = 0;
+						yy = 0;
+						magX = (float) SampleFramework.GameWindowSize.Width / this.rAVI.avi.nフレーム幅;
+						magY = (float) SampleFramework.GameWindowSize.Height / this.rAVI.avi.nフレーム高さ;
+						if ( magX > magY )
+						{
+							magX = magY;
+							xx = (int) ( ( SampleFramework.GameWindowSize.Width  - ( this.rAVI.avi.nフレーム幅   * magY ) ) / 2 );
+						}
+						else
+						{
+							magY = magX;
+							yy = (int) ( ( SampleFramework.GameWindowSize.Height - ( this.rAVI.avi.nフレーム高さ * magX ) ) / 2 );
+						}
+						#endregion
 					}
-					#endregion
 
 					
-					this.tx描画用.vc拡大縮小倍率.X = mag;
-					this.tx描画用.vc拡大縮小倍率.Y = mag;
+					this.tx描画用.vc拡大縮小倍率.X = magX;
+					this.tx描画用.vc拡大縮小倍率.Y = magY;
 					this.tx描画用.vc拡大縮小倍率.Z = 1.0f;
 					this.tx描画用.t2D描画( CDTXMania.app.Device, xx, yy );
 
@@ -307,6 +333,8 @@ namespace DTXMania
 			this.n前回表示したフレーム番号 = -1;
 			this.bフレームを作成した = false;
 			this.pBmp = IntPtr.Zero;
+			// this.bIsPreviewMovie = false;	// bIsPreviewMovieは、活性化前にtrueにすること (OnManagedリソースの作成 で参照しているため)
+			this.bHasBGA = false;
 			base.On活性化();
 		}
 		public override void OnManagedリソースの作成()

@@ -957,6 +957,9 @@ namespace DTXMania
 			public bool LeftCymbal;
 			public bool OpenGuitar;
 			public bool OpenBass;
+
+			public bool BGA;
+			public bool Movie;
 			
 			public bool this[ int index ]
 			{
@@ -1135,6 +1138,8 @@ namespace DTXMania
 			this.bチップがある.LeftCymbal = false;
 			this.bチップがある.OpenGuitar = false;
 			this.bチップがある.OpenBass = false;
+			this.bチップがある.BGA = false;
+			this.bチップがある.Movie = false;
 			this.strファイル名 = "";
 			this.strフォルダ名 = "";
 			this.strファイル名の絶対パス = "";
@@ -4983,6 +4988,15 @@ namespace DTXMania
 			else if( ( nチャンネル番号 >= 0xA0 ) && ( nチャンネル番号 <= 0xa7 ) )
 			{
 				this.bチップがある.Bass = true;
+			}
+			else if ( ( nチャンネル番号 == 0x04 ) || ( nチャンネル番号 == 0x07 ) ||
+				( ( 0x55 <= nチャンネル番号 ) && ( nチャンネル番号 <= 0x59 ) ) || ( nチャンネル番号 == 0x60 ) )
+			{
+				this.bチップがある.BGA = true;
+			}
+			else if ( nチャンネル番号 == 0x54 )
+			{
+				this.bチップがある.Movie = true;
 			}
 			switch( nチャンネル番号 )
 			{

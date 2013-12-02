@@ -1972,13 +1972,18 @@ namespace DTXMania
 							pChip.bHit = true;
 							if ( configIni.bAVI有効 )
 							{
+								if ( CDTXMania.DTX.bチップがある.BGA )
+								{
+									this.actAVI.bHasBGA = true;
+								}
 								switch ( pChip.eAVI種別 )
 								{
 									case EAVI種別.AVI:
 										if ( pChip.rAVI != null )
 										{
-											// this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
-											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
+											int startWidth  = ( CDTXMania.DTX.bチップがある.BGA ) ? 278 : SampleFramework.GameWindowSize.Width;
+											int startHeight = ( CDTXMania.DTX.bチップがある.BGA ) ? 355 : SampleFramework.GameWindowSize.Height;
+											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, startWidth, startHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
 										}
 										break;
 
