@@ -85,7 +85,7 @@ namespace DTXMania
 			if ( this.txScrollPosition != null )
 			{
 				int py = CDTXMania.stage選曲.nスクロールバー相対y座標;
-				if ( py <= 336 * Scale.Y - 6 - 8 )
+				if ( py <= 336 * Scale.Y - 6 - 8 && py >= 0 )
 				{
 					this.txScrollPosition.t2D描画(
 						CDTXMania.app.Device,
