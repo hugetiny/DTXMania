@@ -56,13 +56,6 @@ namespace DTXMania
 		{
 			this.st判定文字列 = new ST判定文字列[ 7 ];
 			Rectangle[] r = new Rectangle[] {
-				//new Rectangle( 0, (int)(0 * Scale.Y),    (int)(0x80 * Scale.X), (int)(0x2a * Scale.Y)),		// Perfect
-				//new Rectangle( 0, (int)(0x2b * Scale.Y), (int)(0x80 * Scale.X), (int)(0x2a * Scale.Y)),		// Great
-				//new Rectangle( 0, (int)(0x56 * Scale.Y), (int)(0x80 * Scale.X), (int)(0x2a * Scale.Y)),		// Good
-				//new Rectangle( 0, (int)(0 * Scale.Y),    (int)(0x80 * Scale.X), (int)(0x2a * Scale.Y)),		// Poor
-				//new Rectangle( 0, (int)(0x2b * Scale.Y), (int)(0x80 * Scale.X), (int)(0x2a * Scale.Y)),		// Miss
-				//new Rectangle( 0, (int)(0x56 * Scale.Y), (int)(0x80 * Scale.X), (int)(0x2a * Scale.Y)),		// Bad
-				//new Rectangle( 0, (int)(0 * Scale.Y),    (int)(0x80 * Scale.X), (int)(0x2a * Scale.Y))		// Auto
 				new Rectangle( 0, 256 / 3 * 0, 256, 256 / 3 ),		// Perfect
 				new Rectangle( 0, 256 / 3 * 1, 256, 256 / 3 ),		// Great
 				new Rectangle( 0, 256 / 3 * 2, 256, 256 / 3 ),		// Good

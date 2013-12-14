@@ -156,10 +156,14 @@ namespace DTXMania
 								num6 = CDTXMania.ConfigIni.bReverse.Guitar ? ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
 							}
 						}
-						int xc = (int)( ( ( ( num5 + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) ) ) * Scale.X );	// Xcenter座標
-						int x = xc - ( (int) ( ( (256f/2) * base.st状態[ j ].fX方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) );
-						int y = (int)( ( num6 + base.st状態[ j ].n相対Y座標 ) * Scale.Y ) - ( (int) ( ( ( (256f/3) * base.st状態[ j ].fY方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) / 2.0 ) );
-						if( base.tx判定文字列[ index ] != null )
+						int xc = (int) ( ( ( ( num5 + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) ) ) * Scale.X );	// Xcenter座標
+						int x = xc - ( (int) ( ( ( 256f / 2 ) * base.st状態[ j ].fX方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) );
+						int y = (int) ( ( num6 + base.st状態[ j ].n相対Y座標 ) * Scale.Y ) - ( (int) ( ( ( ( 256f / 3 ) * base.st状態[ j ].fY方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) / 2.0 ) );
+						//int xc = ( ( num5 + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) );	// Xcenter座標
+						//int x = xc - ( (int) ( ( 64f * base.st状態[ j ].fX方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) );
+						//int y = ( num6 + base.st状態[ j ].n相対Y座標 ) - ( (int) ( ( ( 43f * base.st状態[ j ].fY方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) / 2.0 ) );
+
+						if ( base.tx判定文字列[ index ] != null )
 						{
 							base.tx判定文字列[ index ].n透明度 = base.st状態[ j ].n透明度;
 							base.tx判定文字列[ index ].vc拡大縮小倍率 = new Vector3( (float) ( base.st状態[ j ].fX方向拡大率 * ( ( j < 10 ) ? 1.0 : 0.7 ) ), (float) ( base.st状態[ j ].fY方向拡大率 * ( ( j < 10 ) ? 1.0 : 0.7 ) ), 1f );
@@ -182,19 +186,19 @@ namespace DTXMania
 									{
 										minus = true;
 									}
-									x = xc - strDispLag.Length * 15 / 2;
+									x = xc - (int) ( ( strDispLag.Length * 15 / 2 ) * Scale.X );
 									for ( int i = 0; i < strDispLag.Length; i++ )
 									{
 										int p = ( strDispLag[ i ] == '-' ) ? 11 : (int) ( strDispLag[ i ] - '0' );	//int.Parse(strDispLag[i]);
 										p += minus ? 0 : 12;		// change color if it is minus value
-										base.txlag数値.t2D描画( CDTXMania.app.Device, (x + offsetX) * Scale.X, (y + 34) * Scale.Y, base.stLag数値[ p ].rc );
+										base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX * Scale.X,  y + 34 * Scale.Y, base.stLag数値[ p ].rc );
 										offsetX += 12;	// 15 -> 12
 									}
 								}
 							}
 							#endregion
 						}
-					// Label_07FC: ;
+						// Label_07FC: ;
 					}
 				}
 			}

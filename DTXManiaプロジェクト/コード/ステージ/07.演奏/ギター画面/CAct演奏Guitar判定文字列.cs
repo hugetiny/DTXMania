@@ -120,33 +120,33 @@ namespace DTXMania
 					if( !base.st状態[ j ].ct進行.b停止中 )
 					{
 						int index = base.st判定文字列[ (int) base.st状態[ j ].judge ].n画像番号;
-						int num5 = 0;
-						int num6 = 0;
+						int baseX = 0;
+						int baseY = 0;
 						if( j >= 8 )
 						{
-							if( j == 11 )
+							if( j == 11 )		// Bass
 							{
 								if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
 								{
 									// goto Label_06B7;
 									continue;
 								}
-								num5 = ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? this.stレーンサイズ[ j ].x : 0x163;
-								num6 = CDTXMania.ConfigIni.bReverse.Bass ? 0x12b : 190;
+								baseX = ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? this.stレーンサイズ[ j ].x : 0x163;
+								baseY = CDTXMania.ConfigIni.bReverse.Bass ? 0x12b : 190;
 							}
-							else if( j == 10 )
+							else if( j == 10 )	// Guitar
 							{
 								if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
 								{
 									// goto Label_06B7;
 									continue;
 								}
-								num5 = ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? this.stレーンサイズ[ j ].x : 0xaf;
-								num6 = CDTXMania.ConfigIni.bReverse.Guitar ? 0x12b : 190;
+								baseX = ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? this.stレーンサイズ[ j ].x : 0xaf;
+								baseY = CDTXMania.ConfigIni.bReverse.Guitar ? 0x12b : 190;
 							}
-							int xc = (int) ( ( ( ( num5 + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) ) ) * Scale.X );
-							int x = xc - ( (int) ( ( ( (256f/2) * base.st状態[ j ].fX方向拡大率 ) * 0.8 ) / 2.0 ) );
-							int y = (int) ( ( num6 + base.st状態[ j ].n相対Y座標 ) * Scale.Y ) - ( (int) ( ( ( (256f/3) * base.st状態[ j ].fY方向拡大率 ) * 0.8 ) / 2.0 ) );
+							int xc = (int) ( ( ( ( baseX + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) ) ) * Scale.X );
+							int x = xc - (int) ( ( (256f/2) * base.st状態[ j ].fX方向拡大率 ) * 0.8 );
+							int y = (int) ( ( baseY + base.st状態[ j ].n相対Y座標 ) * Scale.Y ) - ( (int) ( ( ( (256f/3) * base.st状態[ j ].fY方向拡大率 ) * 0.8 ) / 2.0 ) );
 							if( base.tx判定文字列[ index ] != null )
 							{
 								base.tx判定文字列[ index ].n透明度 = base.st状態[ j ].n透明度;
@@ -169,12 +169,12 @@ namespace DTXMania
 										{
 											minus = true;
 										}
-										x = xc - strDispLag.Length * 15 / 2;
+										x = xc - (int) ( ( strDispLag.Length * 15 / 2 ) * Scale.X );
 										for ( int i = 0; i < strDispLag.Length; i++ )
 										{
 											int p = ( strDispLag[ i ] == '-' ) ? 11 : (int) ( strDispLag[ i ] - '0' );	//int.Parse(strDispLag[i]);
 											p += minus ? 0 : 12;		// change color if it is minus value
-											base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX, y + 35, base.stLag数値[ p ].rc );
+											base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX * Scale.X, y + 35 * Scale.Y, base.stLag数値[ p ].rc );
 											offsetX += 15;
 										}
 									}
