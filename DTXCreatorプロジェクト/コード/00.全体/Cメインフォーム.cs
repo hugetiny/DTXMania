@@ -2706,6 +2706,7 @@ namespace DTXCreator
 		
 		#region [ GUIイベント：基本情報関連 ]
 		//-----------------
+		#region [ Title ]
 		private string textBox曲名_以前の値 = "";
 		private void textBox曲名_TextChanged( object sender, EventArgs e )
 		{
@@ -2783,7 +2784,8 @@ namespace DTXCreator
 
 			this.textBox曲名.Focus();
 		}
-
+		#endregion
+		#region [ Author ]
 		private string textBox製作者_以前の値 = "";
 		private void textBox製作者_TextChanged( object sender, EventArgs e )
 		{
@@ -2861,7 +2863,8 @@ namespace DTXCreator
 
 			this.textBox製作者.Focus();
 		}
-
+		#endregion
+		#region [ Comment ]
 		private string textBoxコメント_以前の値 = "";
 		private void textBoxコメント_TextChanged( object sender, EventArgs e )
 		{
@@ -2938,8 +2941,8 @@ namespace DTXCreator
 
 			this.textBoxコメント.Focus();
 		}
-
-
+		#endregion
+		#region [ Genre ]
 		private string textBoxGenre_以前の値 = "";
 		private void textBoxGenre_TextChanged( object sender, EventArgs e )
 		{
@@ -2963,7 +2966,7 @@ namespace DTXCreator
 
 					this.mgrUndoRedo管理者.tノードを追加する(
 						new CUndoRedoセル<string>(
-							this.textBoxコメント,
+							this.textBoxGenre,
 							new DGUndoを実行する<string>( this.textBoxGenre_Undo ),
 							new DGRedoを実行する<string>( this.textBoxGenre_Redo ),
 							this.textBoxコメント_以前の値, this.textBoxGenre.Text ) );
@@ -3016,7 +3019,9 @@ namespace DTXCreator
 
 			this.textBoxGenre.Focus();
 		}
+		#endregion
 
+		#region [ BPM ]
 		private decimal numericUpDownBPM_以前の値 = 120.0M;
 		private void numericUpDownBPM_ValueChanged( object sender, EventArgs e )
 		{
@@ -3094,7 +3099,9 @@ namespace DTXCreator
 
 			this.numericUpDownBPM.Focus();
 		}
+		#endregion
 
+		#region [ DLEVEL ]
 		private int nDLEVEL_以前の値 = 50;
 		private void textBoxDLEVEL_TextChanged( object sender, EventArgs e )
 		{
@@ -3216,7 +3223,8 @@ namespace DTXCreator
 			this.t次のプロパティ変更処理がUndoRedoリストに載らないようにする();
 			this.hScrollBarDLEVEL.Value = n変更後;
 		}
-
+		#endregion
+		#region [ GLEVEL ]
 		private int nGLEVEL_以前の値;
 		private void textBoxGLEVEL_TextChanged( object sender, EventArgs e )
 		{
@@ -3337,7 +3345,8 @@ namespace DTXCreator
 			this.t次のプロパティ変更処理がUndoRedoリストに載らないようにする();
 			this.hScrollBarGLEVEL.Value = n変更後;
 		}
-
+		#endregion
+		#region [ BLEVEL ]
 		private int nBLEVEL_以前の値;
 		private void textBoxBLEVEL_TextChanged( object sender, EventArgs e )
 		{
@@ -3459,7 +3468,9 @@ namespace DTXCreator
 			this.t次のプロパティ変更処理がUndoRedoリストに載らないようにする();
 			this.hScrollBarBLEVEL.Value = n変更後;
 		}
+		#endregion
 
+		#region [ PANEL ]
 		private string textBoxパネル_以前の値 = "";
 		private void textBoxパネル_TextChanged( object sender, EventArgs e )
 		{
@@ -3537,7 +3548,8 @@ namespace DTXCreator
 
 			this.textBoxパネル.Focus();
 		}
-
+		#endregion
+		#region [ PREVIEW ]
 		private string textBoxPREVIEW_以前の値 = "";
 		private void textBoxPREVIEW_TextChanged( object sender, EventArgs e )
 		{
@@ -3615,7 +3627,8 @@ namespace DTXCreator
 
 			this.textBoxPREVIEW.Focus();
 		}
-
+		#endregion
+		#region [ PREIMAGE ]
 		private string textBoxPREIMAGE_以前の値 = "";
 		private void textBoxPREIMAGE_TextChanged( object sender, EventArgs e )
 		{
@@ -3693,7 +3706,8 @@ namespace DTXCreator
 
 			this.textBoxPREIMAGE.Focus();
 		}
-
+		#endregion
+		#region [ STAGEFILE ]
 		private string textBoxSTAGEFILE_以前の値 = "";
 		private void textBoxSTAGEFILE_TextChanged( object sender, EventArgs e )
 		{
@@ -3771,7 +3785,8 @@ namespace DTXCreator
 
 			this.textBoxSTAGEFILE.Focus();
 		}
-
+		#endregion
+		#region [ BACKGROUND ]
 		private string textBoxBACKGROUND_以前の値 = "";
 		private void textBoxBACKGROUND_TextChanged( object sender, EventArgs e )
 		{
@@ -3849,7 +3864,8 @@ namespace DTXCreator
 
 			this.textBoxBACKGROUND.Focus();
 		}
-
+		#endregion
+		#region [ RESULTIMAGE ]
 		private string textBoxRESULTIMAGE_以前の値 = "";
 		private void textBoxRESULTIMAGE_TextChanged( object sender, EventArgs e )
 		{
@@ -3927,7 +3943,9 @@ namespace DTXCreator
 
 			this.textBoxRESULTIMAGE.Focus();
 		}
+		#endregion
 
+		#region [ PREVIEW参照ボタン ]
 		private void buttonPREVIEW参照_Click( object sender, EventArgs e )
 		{
 			string str初期フォルダ名 = this.str作業フォルダ名;
@@ -3946,6 +3964,8 @@ namespace DTXCreator
 				this.b未保存 = true;
 			}
 		}
+		#endregion
+		#region [ PREIMAGE参照ボタン ]
 		private void buttonPREIMAGE参照_Click( object sender, EventArgs e )
 		{
 			string str初期フォルダ名 = this.str作業フォルダ名;
@@ -3964,6 +3984,8 @@ namespace DTXCreator
 				this.b未保存 = true;
 			}
 		}
+		#endregion
+		#region [ STAGEFILE参照ボタン ]
 		private void buttonSTAGEFILE参照_Click( object sender, EventArgs e )
 		{
 			string str初期フォルダ名 = this.str作業フォルダ名;
@@ -3982,6 +4004,8 @@ namespace DTXCreator
 				this.b未保存 = true;
 			}
 		}
+		#endregion
+		#region [ BACKGROUND参照ボタン ]
 		private void buttonBACKGROUND参照_Click( object sender, EventArgs e )
 		{
 			string str初期フォルダ名 = this.str作業フォルダ名;
@@ -4000,6 +4024,8 @@ namespace DTXCreator
 				this.b未保存 = true;
 			}
 		}
+		#endregion
+		#region [ RESULTIMAGE参照ボタン ]
 		private void buttonRESULTIMAGE参照_Click( object sender, EventArgs e )
 		{
 			string str初期フォルダ名 = this.str作業フォルダ名;
@@ -4018,6 +4044,7 @@ namespace DTXCreator
 				this.b未保存 = true;
 			}
 		}
+		#endregion
 		//-----------------
 		#endregion
 		#region [ GUIイベント：WAVリスト関連 ]
