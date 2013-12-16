@@ -72,21 +72,21 @@ namespace DTXCreator
 						{
 							if( ce.MoveNext() )
 							{
-								StringBuilder builder2 = new StringBuilder( 0x20 );
-								if( this.tDTX入力・コマンド文字列を抜き出す( ref ce, ref builder2 ) )
+								StringBuilder sbコマンド文字列 = new StringBuilder( 0x20 );
+								if( this.tDTX入力・コマンド文字列を抜き出す( ref ce, ref sbコマンド文字列 ) )
 								{
-									StringBuilder builder3 = new StringBuilder( 0x400 );
-									if( this.tDTX入力・パラメータ文字列を抜き出す( ref ce, ref builder3 ) )
+									StringBuilder sbパラメータ文字列 = new StringBuilder( 0x400 );
+									if( this.tDTX入力・パラメータ文字列を抜き出す( ref ce, ref sbパラメータ文字列 ) )
 									{
-										StringBuilder builder4 = new StringBuilder( 0x400 );
-										if( this.tDTX入力・コメント文字列を抜き出す( ref ce, ref builder4 ) )
+										StringBuilder sbコメント文字列 = new StringBuilder( 0x400 );
+										if( this.tDTX入力・コメント文字列を抜き出す( ref ce, ref sbコメント文字列 ) )
 										{
-											if( !this.tDTX入力・行解析( ref builder2, ref builder3, ref builder4 ) )
+											if( !this.tDTX入力・行解析( ref sbコマンド文字列, ref sbパラメータ文字列, ref sbコメント文字列 ) )
 											{
-												builder.Append( string.Concat( new object[] { "#", builder2, ": ", builder3 } ) );
-												if( builder4.Length > 0 )
+												builder.Append( string.Concat( "#", sbコマンド文字列, ": ", sbパラメータ文字列 ) );
+												if( sbコメント文字列.Length > 0 )
 												{
-													builder.Append( "\t;" + builder4 );
+													builder.Append( "\t;" + sbコメント文字列 );
 												}
 												builder.Append( Environment.NewLine );
 											}
@@ -396,10 +396,29 @@ namespace DTXCreator
 		}
 		private bool tDTX入力・行解析( ref StringBuilder sbコマンド, ref StringBuilder sbパラメータ, ref StringBuilder sbコメント )
 		{
-			string str = sbコマンド.ToString();
-			string str2 = sbパラメータ.ToString().Trim();
-			string str3 = sbコメント.ToString();
-			return ( this.tDTX入力・行解析・TITLE_ARTIST_COMMENT_その他( str, str2, str3 ) || ( this.tDTX入力・行解析・WAVVOL_VOLUME( str, str2, str3 ) || ( this.tDTX入力・行解析・WAVPAN_PAN( str, str2, str3 ) || ( this.tDTX入力・行解析・WAV( str, str2, str3 ) || ( this.tDTX入力・行解析・BGMWAV( str, str2, str3 ) || ( this.tDTX入力・行解析・BMPTEX( str, str2, str3 ) || ( this.tDTX入力・行解析・BMP( str, str2, str3 ) || ( this.tDTX入力・行解析・AVI_AVIPAN( str, str2, str3 ) || ( this.tDTX入力・行解析・BPx( str, str2, str3 ) || ( this.tDTX入力・行解析・DTXC_LANEBINDEDCHIP( str, str2, str3 ) || ( this.tDTX入力・行解析・DTXC_WAVFORECOLOR( str, str2, str3 ) || ( this.tDTX入力・行解析・DTXC_WAVBACKCOLOR( str, str2, str3 ) || ( this.tDTX入力・行解析・DTXC_BMPFORECOLOR( str, str2, str3 ) || ( this.tDTX入力・行解析・DTXC_BMPBACKCOLOR( str, str2, str3 ) || ( this.tDTX入力・行解析・DTXC_AVIFORECOLOR( str, str2, str3 ) || ( this.tDTX入力・行解析・DTXC_AVIBACKCOLOR( str, str2, str3 ) || ( this.tDTX入力・行解析・DTXC_CHIPPALETTE( str, str2, str3 ) || this.tDTX入力・行解析・チャンネル( str, str2, str3 ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) );
+			string strコマンド = sbコマンド.ToString();
+			string strパラメータ = sbパラメータ.ToString().Trim();
+			string strコメント = sbコメント.ToString();
+			return (
+				this.tDTX入力・行解析・TITLE_ARTIST_COMMENT_その他( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・WAVVOL_VOLUME( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・WAVPAN_PAN( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・WAV( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・BGMWAV( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・BMPTEX( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・BMP( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・AVI_AVIPAN( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・BPx( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・DTXC_LANEBINDEDCHIP( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・DTXC_WAVFORECOLOR( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・DTXC_WAVBACKCOLOR( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・DTXC_BMPFORECOLOR( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・DTXC_BMPBACKCOLOR( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・DTXC_AVIFORECOLOR( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・DTXC_AVIBACKCOLOR( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・DTXC_CHIPPALETTE( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・チャンネル( strコマンド, strパラメータ, strコメント )
+			);
 		}
 		private bool tDTX入力・行解析・AVI_AVIPAN( string strコマンド, string strパラメータ, string strコメント )
 		{
@@ -984,7 +1003,7 @@ namespace DTXCreator
 			{
 				return false;
 			}
-			if( nCh == 2 )
+			if( nCh == 2 )	// Bar Length
 			{
 				decimal dBarLength;
 				if( !this.TryParse( strパラメータ, out dBarLength ) )	// #23880 2011.1.6 yyagi
@@ -992,9 +1011,11 @@ namespace DTXCreator
 					dBarLength = 1m;
 				}
 				this.dic小節長倍率.Add( nBar, (float)dBarLength );
+				this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );	// #32609 2013.12.16 yyagi
 				return true;
 			}
-			if( ( nCh >= 0x20 ) && ( nCh <= 0x27 ) )
+			#region [ Guitar ]
+			if ( ( nCh >= 0x20 ) && ( nCh <= 0x27 ) )
 			{
 				C小節 c小節 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );
 				int startIndex = 0;
@@ -1126,143 +1147,147 @@ namespace DTXCreator
 				}
 				return true;
 			}
-			if( ( nCh >= 0xa0 ) && ( nCh <= 0xa7 ) )
+			#endregion
+			#region [ Bass ]
+			if ( ( nCh >= 0xa0 ) && ( nCh <= 0xa7 ) )
 			{
-				C小節 c小節2 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );
-				int num12 = 0;
-				while( ( num12 = strパラメータ.IndexOf( '_' ) ) != -1 )
+				C小節 c小節 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );
+				int startIndex = 0;
+				while( ( startIndex = strパラメータ.IndexOf( '_' ) ) != -1 )
 				{
-					strパラメータ = strパラメータ.Remove( num12, 1 );
+					strパラメータ = strパラメータ.Remove( startIndex, 1 );
 				}
 				int nChips = strパラメータ.Length / 2;
-				for( int j = 0; j < nChips; j++ )
+				for( int i = 0; i < nChips; i++ )
 				{
-					int nChipNo = C変換.n36進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( j * 2, 2 ) );
+					int nChipNo = C変換.n36進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( i * 2, 2 ) );
 					if( nChipNo != 0 )
 					{
 						int nLaneBsV = this._Form.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BsV" );
 						int nLaneBsR = this._Form.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BsR" );
 						int nLanrBsG = this._Form.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BsG" );
 						int nLaneBsB = this._Form.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BsB" );
-						Cチップ cチップ2 = new Cチップ();
-						cチップ2.nレーン番号0to = nLaneBsV;
-						cチップ2.n位置grid = j;
-						cチップ2.n値・整数1to1295 = nChipNo;
-						cチップ2.n読み込み時の解像度 = nChips;
-						c小節2.listチップ.Add( cチップ2 );
+						Cチップ item = new Cチップ();
+						item.nレーン番号0to = nLaneBsV;
+						item.n位置grid = i;
+						item.n値・整数1to1295 = nChipNo;
+						item.n読み込み時の解像度 = nChips;
+						c小節.listチップ.Add( item );
 						switch( nCh )
 						{
 							case 160:
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsR;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 2;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsR;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 2;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
 								break;
 
 							case 0xa1:
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsB;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsB;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
 								break;
 
 							case 0xa2:
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLanrBsG;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
+								item = new Cチップ();
+								item.nレーン番号0to = nLanrBsG;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
 								break;
 
 							case 0xa3:
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLanrBsG;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsB;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
+								item = new Cチップ();
+								item.nレーン番号0to = nLanrBsG;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsB;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
 								break;
 
 							case 0xa4:
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsR;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsR;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
 								break;
 
 							case 0xa5:
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsR;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsB;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsR;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsB;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
 								break;
 
 							case 0xa6:
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsR;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLanrBsG;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsR;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
+								item = new Cチップ();
+								item.nレーン番号0to = nLanrBsG;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
 								break;
 
 							case 0xa7:
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsR;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLanrBsG;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
-								cチップ2 = new Cチップ();
-								cチップ2.nレーン番号0to = nLaneBsB;
-								cチップ2.n位置grid = j;
-								cチップ2.n値・整数1to1295 = 1;
-								cチップ2.n読み込み時の解像度 = nChips;
-								c小節2.listチップ.Add( cチップ2 );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsR;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
+								item = new Cチップ();
+								item.nレーン番号0to = nLanrBsG;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
+								item = new Cチップ();
+								item.nレーン番号0to = nLaneBsB;
+								item.n位置grid = i;
+								item.n値・整数1to1295 = 1;
+								item.n読み込み時の解像度 = nChips;
+								c小節.listチップ.Add( item );
 								break;
 						}
 					}
 				}
 				return true;
 			}
-			int num20 = -1;
+			#endregion
+			#region [ Other Channels ]
+			int nレーン番号 = -1;
 			bool flag = false;
-			if( this.tDTX入力・行解析・チャンネル・チャンネルに該当するレーン番号を返す( nCh, out num20, out flag ) )
+			if( this.tDTX入力・行解析・チャンネル・チャンネルに該当するレーン番号を返す( nCh, out nレーン番号, out flag ) )
 			{
-				C小節 c小節3 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );
+				C小節 c小節 = this.tDTX入力・行解析・チャンネル・小節番号に対応する小節を探すか新規に作って返す( nBar );
 				int nPosOf_ = 0;
 				while( ( nPosOf_ = strパラメータ.IndexOf( '_' ) ) != -1 )
 				{
@@ -1274,14 +1299,14 @@ namespace DTXCreator
 					int nChipNo = ( nCh == 3 ) ? C変換.n16進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( i * 2, 2 ) ) : C変換.n36進数2桁の文字列を数値に変換して返す( strパラメータ.Substring( i * 2, 2 ) );
 					if( nChipNo > 0 )
 					{
-						Cチップ cチップ3 = new Cチップ();
-						cチップ3.nチャンネル番号00toFF = nCh;
-						cチップ3.nレーン番号0to = num20;
-						cチップ3.n位置grid = i;
-						cチップ3.n読み込み時の解像度 = nChips;
-						cチップ3.n値・整数1to1295 = nChipNo;
-						cチップ3.b裏 = flag;
-						c小節3.listチップ.Add( cチップ3 );
+						Cチップ cチップ = new Cチップ();
+						cチップ.nチャンネル番号00toFF = nCh;
+						cチップ.nレーン番号0to = nレーン番号;
+						cチップ.n位置grid = i;
+						cチップ.n読み込み時の解像度 = nChips;
+						cチップ.n値・整数1to1295 = nChipNo;
+						cチップ.b裏 = flag;
+						c小節.listチップ.Add( cチップ );
 					}
 				}
 				return true;
@@ -1296,6 +1321,7 @@ namespace DTXCreator
 			CUndoRedo管理.bUndoRedoした直後 = true;
 			this._Form.textBox自由入力欄.AppendText( builder.ToString() );
 			return true;
+			#endregion
 		}
 		private int tDTX入力・行解析・チャンネル・GDAチャンネル文字列２桁をチャンネル番号にして返す( string strチャンネル文字列２桁 )
 		{

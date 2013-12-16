@@ -2939,6 +2939,84 @@ namespace DTXCreator
 			this.textBoxコメント.Focus();
 		}
 
+
+		private string textBoxGenre_以前の値 = "";
+		private void textBoxGenre_TextChanged( object sender, EventArgs e )
+		{
+			// Undo/Redo リストを修正する。
+
+			#region [ Undo/Redo リストを修正。]
+			//-----------------
+			if ( !CUndoRedo管理.bUndoRedoした直後 )
+			{
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+
+				if ( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxGenre ) )
+				{
+					// 既存のセルの値を更新。
+
+					( (CUndoRedoセル<string>) oセル仮想 ).変更後の値 = this.textBoxGenre.Text;
+				}
+				else
+				{
+					// 新しいセルを追加。
+
+					this.mgrUndoRedo管理者.tノードを追加する(
+						new CUndoRedoセル<string>(
+							this.textBoxコメント,
+							new DGUndoを実行する<string>( this.textBoxGenre_Undo ),
+							new DGRedoを実行する<string>( this.textBoxGenre_Redo ),
+							this.textBoxコメント_以前の値, this.textBoxGenre.Text ) );
+
+					// Undo ボタンを有効にする。
+
+					this.tUndoRedo用GUIの有効・無効を設定する();
+				}
+			}
+			//-----------------
+			#endregion
+
+
+			// Undo 用に値を保管しておく。
+
+			this.textBoxGenre_以前の値 = this.textBoxGenre.Text;
+
+
+			// 完了。
+
+			CUndoRedo管理.bUndoRedoした直後 = false;
+			this.b未保存 = true;
+		}
+		private void textBoxGenre_Leave( object sender, EventArgs e )
+		{
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+
+			if ( oセル仮想 != null )
+				oセル仮想.t所有権の放棄( this.textBoxGenre );
+		}
+		private void textBoxGenre_Undo( string str変更前, string str変更後 )
+		{
+			// 変更前の値に戻す。
+
+			this.tタブを選択する( Eタブ種別.基本情報 );
+
+			this.t次のプロパティ変更処理がUndoRedoリストに載らないようにする();
+			this.textBoxGenre.Text = str変更前;
+
+			this.textBoxGenre.Focus();
+		}
+		private void textBoxGenre_Redo( string str変更前, string str変更後 )
+		{
+			// 変更後の値に戻す。
+
+			this.tタブを選択する( Eタブ種別.基本情報 );
+
+			this.t次のプロパティ変更処理がUndoRedoリストに載らないようにする();
+			this.textBoxGenre.Text = str変更後;
+
+			this.textBoxGenre.Focus();
+		}
+
 		private decimal numericUpDownBPM_以前の値 = 120.0M;
 		private void numericUpDownBPM_ValueChanged( object sender, EventArgs e )
 		{
@@ -4779,6 +4857,8 @@ namespace DTXCreator
 		{
 			this.tシナリオ・Viewerを再生停止する();
 		}
+
+
 		//-----------------
 		#endregion
 
