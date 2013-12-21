@@ -389,6 +389,7 @@ namespace DTXMania
 							{
 								str = cスコア.譜面情報.ジャンル;
 							}
+#if false	// #32644 2013.12.21 yyagi "Unknown"なジャンル表示を削除。DTX/BMSなどの種別表示もしない。
 							else
 							{
 								switch( cスコア.譜面情報.曲種別 )
@@ -415,6 +416,7 @@ namespace DTXMania
 								}
 								str = "Unknown";
 							}
+#endif
 							break;
 						}
 						str = c曲リストノード.strジャンル;
