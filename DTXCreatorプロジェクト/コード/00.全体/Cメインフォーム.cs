@@ -518,6 +518,7 @@ namespace DTXCreator
 			//-----------------
 			CUndoRedo管理.bUndoRedoした直後 = true;	this.textBox曲名.Clear();
 			CUndoRedo管理.bUndoRedoした直後 = true;	this.textBox製作者.Clear();
+			CUndoRedo管理.bUndoRedoした直後 = true;	this.textBoxGenre.Clear();
 			CUndoRedo管理.bUndoRedoした直後 = true;	this.textBoxコメント.Clear();
 			CUndoRedo管理.bUndoRedoした直後 = true;	this.numericUpDownBPM.Value = 120.0M;
 			CUndoRedo管理.bUndoRedoした直後 = true;	this.textBoxDLEVEL.Text = "50";

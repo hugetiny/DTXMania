@@ -755,6 +755,12 @@ namespace DTXCreator
 				this._Form.textBox製作者.Text = strパラメータ.Trim();
 				return true;
 			}
+			if ( strコマンド.Equals( "GENRE", StringComparison.OrdinalIgnoreCase ) )
+			{
+				CUndoRedo管理.bUndoRedoした直後 = true;
+				this._Form.textBoxGenre.Text = strパラメータ.Trim();
+				return true;
+			}
 			if( strコマンド.Equals( "COMMENT", StringComparison.OrdinalIgnoreCase ) )
 			{
 				CUndoRedo管理.bUndoRedoした直後 = true;
@@ -1799,6 +1805,10 @@ namespace DTXCreator
 			if( this._Form.textBox製作者.Text.Length > 0 )
 			{
 				sw.WriteLine( "#ARTIST: " + this._Form.textBox製作者.Text );
+			}
+			if( this._Form.textBoxGenre.Text.Length > 0 )
+			{
+				sw.WriteLine( "#GENRE: " + this._Form.textBoxGenre.Text );
 			}
 			if( this._Form.textBoxコメント.Text.Length > 0 )
 			{
