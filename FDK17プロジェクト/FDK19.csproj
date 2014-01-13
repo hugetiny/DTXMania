@@ -133,6 +133,7 @@
     <Compile Include="コード\05.DirectShow\CDirectShow.cs" />
     <Compile Include="コード\05.DirectShow\CDStoWAVFileImage.cs" />
     <Compile Include="コード\05.DirectShow\MemoryRenderer.cs" />
+    <Compile Include="コード\06.Tempo\CBeatDetect.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="コード\01.フレームワーク\Properties\Resources.resx">

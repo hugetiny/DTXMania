@@ -111,12 +111,23 @@ namespace DTXCreator.譜面
 		}
 		public static void t表チップを描画する( Graphics g, Rectangle rcチップ描画領域, int nチップ番号, Color col色 )
 		{
-			t表チップを描画する・本体( g, rcチップ描画領域, col色 );
-			if( nチップ番号 >= 0 )
+			t表チップを描画する( g, rcチップ描画領域, nチップ番号, col色, Cレーン.E種別.WAV );	// とにかくCレーン.E種別.BEAT以外を指定する
+		}
+		public static void t表チップを描画する( Graphics g, Rectangle rcチップ描画領域, int nチップ番号, Color col色, Cレーン.E種別 e種別 )
+		{
+			if ( e種別 == Cレーン.E種別.BEAT )
 			{
-				string str = C変換.str数値を36進数2桁に変換して返す( nチップ番号 );
-				str = str[ 0 ] + " " + str[ 1 ];
-				t表チップを描画する・番号( g, rcチップ描画領域, str );
+				t表チップを描画する・本体( g, rcチップ描画領域, col色, e種別 );
+			}
+			else
+			{
+				t表チップを描画する・本体( g, rcチップ描画領域, col色 );
+				if ( nチップ番号 >= 0 )
+				{
+					string str = C変換.str数値を36進数2桁に変換して返す( nチップ番号 );
+					str = str[ 0 ] + " " + str[ 1 ];
+					t表チップを描画する・番号( g, rcチップ描画領域, str );
+				}
 			}
 		}
 		public static void t表チップを描画する( Graphics g, Rectangle rcチップ描画領域, float fチップ数値, Color col色 )
@@ -130,13 +141,27 @@ namespace DTXCreator.譜面
 		}
 		public static void t裏チップを描画する( Graphics g, Rectangle rcチップ描画領域, int nチップ番号, Color col色 )
 		{
-			t裏チップを描画する・本体( g, rcチップ描画領域, col色 );
-			if( nチップ番号 >= 0 )
+			t裏チップを描画する( g, rcチップ描画領域, nチップ番号, col色, Cレーン.E種別.WAV );	// とにかくCレーン.E種別.BEAT以外を指定する
+		}
+		public static void t裏チップを描画する( Graphics g, Rectangle rcチップ描画領域, int nチップ番号, Color col色, Cレーン.E種別 e種別 )
+		{
+			t裏チップを描画する・本体( g, rcチップ描画領域, col色, e種別 );
+
+			if ( e種別 == Cレーン.E種別.BEAT )
 			{
-				string str = C変換.str数値を36進数2桁に変換して返す( nチップ番号 );
-				str = str[ 0 ] + " " + str[ 1 ];
-				t裏チップを描画する・番号( g, rcチップ描画領域, str );
+				t裏チップを描画する・本体( g, rcチップ描画領域, col色, e種別 );
 			}
+			else
+			{
+				t裏チップを描画する・本体( g, rcチップ描画領域, col色 );
+				if ( nチップ番号 >= 0 )
+				{
+					string str = C変換.str数値を36進数2桁に変換して返す( nチップ番号 );
+					str = str[ 0 ] + " " + str[ 1 ];
+					t裏チップを描画する・番号( g, rcチップ描画領域, str );
+				}
+			}
+	
 		}
 		public static void t裏チップを描画する( Graphics g, Rectangle rcチップ描画領域, float fチップ数値, Color col色 )
 		{
@@ -147,7 +172,6 @@ namespace DTXCreator.譜面
 				t裏チップを描画する・番号( g, rcチップ描画領域, str );
 			}
 		}
-
 		protected static Font ftチップ文字用フォント = new Font( "MS Gothic", 8f, FontStyle.Bold );
 
 		#region [ private ]
@@ -159,35 +183,98 @@ namespace DTXCreator.譜面
 
 		private static void t表チップを描画する・番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列 )
 		{
-			StringFormat format = new StringFormat();
-			format.Alignment = StringAlignment.Center;
-			format.LineAlignment = StringAlignment.Near;
-			RectangleF layoutRectangle = new RectangleF();
-			layoutRectangle.X = rcチップ描画領域.X;
-			layoutRectangle.Y = rcチップ描画領域.Y + 1;
-			layoutRectangle.Width = rcチップ描画領域.Width;
-			layoutRectangle.Height = rcチップ描画領域.Height;
-			g.DrawString( str番号文字列, ftチップ文字用フォント, Brushes.Black, layoutRectangle, format );
-			layoutRectangle.X--;
-			layoutRectangle.Y--;
-			g.DrawString( str番号文字列, ftチップ文字用フォント, Brushes.White, layoutRectangle, format );
+			tチップを描画する・番号( g, rcチップ描画領域, str番号文字列, false );
+		}
+
+		// BEATレーン専用; ●を書く
+		private static void t表チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色, Cレーン.E種別 e種別 )
+		{
+			if ( e種別 == Cレーン.E種別.BEAT )
+			{
+				tチップを描画する・本体( g, rcチップ描画領域, col色, false, true );
+			}
+			else
+			{
+				tチップを描画する・本体( g, rcチップ描画領域, col色, false, false );
+			}
 		}
 		private static void t表チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色 )
 		{
-			SolidBrush brush = new SolidBrush( Color.FromArgb( 0x80, col色.R, col色.G, col色.B ) );
-			Pen pen = new Pen( Color.FromArgb( 0xff, col色.R, col色.G, col色.B ) );
-			Pen pen2 = new Pen( Color.FromArgb( 0x40, col色.R, col色.G, col色.B ) );
+			tチップを描画する・本体( g, rcチップ描画領域, col色, false, false );
+		}
+		private static void t裏チップを描画する・番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列 )
+		{
+			tチップを描画する・番号( g, rcチップ描画領域, str番号文字列, true );
+		}
+
+		// BEATレーン専用; ●を書く
+		private static void t裏チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色, Cレーン.E種別 e種別 )
+		{
+			if ( e種別 == Cレーン.E種別.BEAT )
+			{
+				tチップを描画する・本体( g, rcチップ描画領域, col色, true, true );
+			}
+			else
+			{
+				tチップを描画する・本体( g, rcチップ描画領域, col色, true, false );
+			}
+		}
+		private static void t裏チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色 )
+		{
+			 tチップを描画する・本体( g, rcチップ描画領域, col色, true, false );
+		}
+
+		private static void tチップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色, bool b裏チップである, bool bBEATチップである )
+		{
+			int alphaBrush = 128;
+			int alphaPen = 255;
+			int alphaPen2 = 64;
+			if ( b裏チップである )
+			{
+				rcチップ描画領域.Width -= 8;
+				rcチップ描画領域.Height -= 2;
+				rcチップ描画領域.X += 4;
+				rcチップ描画領域.Y++;
+				alphaBrush = 80;
+				alphaPen = 180;
+				alphaPen2 = 44;
+			}
+			SolidBrush brush = new SolidBrush( Color.FromArgb( alphaBrush, col色.R, col色.G, col色.B ) );
+			Pen pen = new Pen( Color.FromArgb( alphaPen, col色.R, col色.G, col色.B ) );
+			Pen pen2 = new Pen( Color.FromArgb( alphaPen2, col色.R, col色.G, col色.B ) );
 			g.FillRectangle( brush, rcチップ描画領域 );
 			g.DrawLine( pen, rcチップ描画領域.X, rcチップ描画領域.Y, rcチップ描画領域.Right, rcチップ描画領域.Y );
 			g.DrawLine( pen, rcチップ描画領域.X, rcチップ描画領域.Y, rcチップ描画領域.X, rcチップ描画領域.Bottom );
 			g.DrawLine( pen2, rcチップ描画領域.X, rcチップ描画領域.Bottom, rcチップ描画領域.Right, rcチップ描画領域.Bottom );
 			g.DrawLine( pen2, rcチップ描画領域.Right, rcチップ描画領域.Bottom, rcチップ描画領域.Right, rcチップ描画領域.Y );
+			if ( bBEATチップである )
+			{
+				SolidBrush brushWhite = new SolidBrush( Color.White );
+				g.FillEllipse(
+					brushWhite,
+					( rcチップ描画領域.X + rcチップ描画領域.Width / 2.0f ) - ( rcチップ描画領域.Height / 2.0f ),
+					( rcチップ描画領域.Y ),
+					rcチップ描画領域.Height,
+					rcチップ描画領域.Height
+				);
+				brushWhite.Dispose();
+
+				if ( b裏チップである )
+				{
+					Pen pen3 = new Pen( Color.White );
+					g.DrawLine( pen3, rcチップ描画領域.X, rcチップ描画領域.Y, rcチップ描画領域.X + rcチップ描画領域.Width, rcチップ描画領域.Y + rcチップ描画領域.Height );
+					g.DrawLine( pen3, rcチップ描画領域.X, rcチップ描画領域.Y + rcチップ描画領域.Height, rcチップ描画領域.X + rcチップ描画領域.Width, rcチップ描画領域.Y );
+					pen3.Dispose();
+				}
+			}
 			brush.Dispose();
 			pen.Dispose();
 			pen2.Dispose();
 		}
-		private static void t裏チップを描画する・番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列 )
+		private static void tチップを描画する・番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列, bool b裏チップである )
 		{
+			// 表裏に関係なく、番号描画は共通
+
 			StringFormat format = new StringFormat();
 			format.Alignment = StringAlignment.Center;
 			format.LineAlignment = StringAlignment.Near;
@@ -200,24 +287,6 @@ namespace DTXCreator.譜面
 			layoutRectangle.X--;
 			layoutRectangle.Y--;
 			g.DrawString( str番号文字列, ftチップ文字用フォント, Brushes.White, layoutRectangle, format );
-		}
-		private static void t裏チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色 )
-		{
-			rcチップ描画領域.Width -= 8;
-			rcチップ描画領域.Height -= 2;
-			rcチップ描画領域.X += 4;
-			rcチップ描画領域.Y++;
-			SolidBrush brush = new SolidBrush( Color.FromArgb( 80, col色.R, col色.G, col色.B ) );
-			Pen pen = new Pen( Color.FromArgb( 180, col色.R, col色.G, col色.B ) );
-			Pen pen2 = new Pen( Color.FromArgb( 0x2c, col色.R, col色.G, col色.B ) );
-			g.FillRectangle( brush, rcチップ描画領域 );
-			g.DrawLine( pen, rcチップ描画領域.X, rcチップ描画領域.Y, rcチップ描画領域.Right, rcチップ描画領域.Y );
-			g.DrawLine( pen, rcチップ描画領域.X, rcチップ描画領域.Y, rcチップ描画領域.X, rcチップ描画領域.Bottom );
-			g.DrawLine( pen2, rcチップ描画領域.X, rcチップ描画領域.Bottom, rcチップ描画領域.Right, rcチップ描画領域.Bottom );
-			g.DrawLine( pen2, rcチップ描画領域.Right, rcチップ描画領域.Bottom, rcチップ描画領域.Right, rcチップ描画領域.Y );
-			brush.Dispose();
-			pen.Dispose();
-			pen2.Dispose();
 		}
 		//-----------------
 		#endregion

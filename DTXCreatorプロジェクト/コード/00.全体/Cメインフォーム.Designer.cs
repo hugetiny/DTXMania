@@ -192,13 +192,17 @@
 			this.toolStripMenuItem選択チップの削除 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItemすべてのチップの選択 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItemレーン内のすべてのチップの選択 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItemレーン内のすべてのチップの選択1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem小節内のすべてのチップの選択 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItem小節長変更 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItem小節の挿入 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem小節の削除 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
+			this.ToolStripMenuItemBPMDetections = new System.Windows.Forms.ToolStripMenuItem();
+			this.generateBPMFromBeatTipsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainerタブと譜面を分割.Panel1.SuspendLayout();
 			this.splitContainerタブと譜面を分割.Panel2.SuspendLayout();
 			this.splitContainerタブと譜面を分割.SuspendLayout();
@@ -2018,13 +2022,17 @@
             this.toolStripMenuItem選択チップの削除,
             this.toolStripSeparator15,
             this.toolStripMenuItemすべてのチップの選択,
-            this.toolStripMenuItemレーン内のすべてのチップの選択,
+            this.toolStripMenuItemレーン内のすべてのチップの選択1,
+            this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2,
             this.toolStripMenuItem小節内のすべてのチップの選択,
             this.toolStripSeparator16,
             this.toolStripMenuItem小節長変更,
             this.toolStripSeparator17,
             this.toolStripMenuItem小節の挿入,
-            this.toolStripMenuItem小節の削除} );
+            this.toolStripMenuItem小節の削除,
+            this.toolStripSeparator18,
+            this.ToolStripMenuItemBPMDetections,
+            this.generateBPMFromBeatTipsToolStripMenuItem} );
 			this.contextMenuStrip譜面右メニュー.Name = "contextMenuStrip譜面右メニュー";
 			this.toolTipツールチップ.SetToolTip( this.contextMenuStrip譜面右メニュー, resources.GetString( "contextMenuStrip譜面右メニュー.ToolTip" ) );
 			// 
@@ -2089,15 +2097,25 @@
 			this.toolStripMenuItemすべてのチップの選択.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItemすべてのチップの選択.Click += new System.EventHandler( this.toolStripMenuItemすべてのチップの選択_Click );
 			// 
-			// toolStripMenuItemレーン内のすべてのチップの選択
+			// toolStripMenuItemレーン内のすべてのチップの選択1
 			// 
-			this.toolStripMenuItemレーン内のすべてのチップの選択.AccessibleDescription = null;
-			this.toolStripMenuItemレーン内のすべてのチップの選択.AccessibleName = null;
-			resources.ApplyResources( this.toolStripMenuItemレーン内のすべてのチップの選択, "toolStripMenuItemレーン内のすべてのチップの選択" );
-			this.toolStripMenuItemレーン内のすべてのチップの選択.BackgroundImage = null;
-			this.toolStripMenuItemレーン内のすべてのチップの選択.Name = "toolStripMenuItemレーン内のすべてのチップの選択";
-			this.toolStripMenuItemレーン内のすべてのチップの選択.ShortcutKeyDisplayString = null;
-			this.toolStripMenuItemレーン内のすべてのチップの選択.Click += new System.EventHandler( this.toolStripMenuItemレーン内のすべてのチップの選択_Click );
+			this.toolStripMenuItemレーン内のすべてのチップの選択1.AccessibleDescription = null;
+			this.toolStripMenuItemレーン内のすべてのチップの選択1.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemレーン内のすべてのチップの選択1, "toolStripMenuItemレーン内のすべてのチップの選択1" );
+			this.toolStripMenuItemレーン内のすべてのチップの選択1.BackgroundImage = null;
+			this.toolStripMenuItemレーン内のすべてのチップの選択1.Name = "toolStripMenuItemレーン内のすべてのチップの選択1";
+			this.toolStripMenuItemレーン内のすべてのチップの選択1.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemレーン内のすべてのチップの選択1.Click += new System.EventHandler( this.toolStripMenuItemレーン内のすべてのチップの選択_Click );
+			// 
+			// toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2
+			// 
+			this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.AccessibleDescription = null;
+			this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.AccessibleName = null;
+			resources.ApplyResources( this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2, "toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2" );
+			this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.BackgroundImage = null;
+			this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.Name = "toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2";
+			this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.ShortcutKeyDisplayString = null;
+			this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.Click += new System.EventHandler( this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降_Click );
 			// 
 			// toolStripMenuItem小節内のすべてのチップの選択
 			// 
@@ -2152,6 +2170,33 @@
 			this.toolStripMenuItem小節の削除.Name = "toolStripMenuItem小節の削除";
 			this.toolStripMenuItem小節の削除.ShortcutKeyDisplayString = null;
 			this.toolStripMenuItem小節の削除.Click += new System.EventHandler( this.toolStripMenuItem小節の削除_Click );
+			// 
+			// toolStripSeparator18
+			// 
+			this.toolStripSeparator18.AccessibleDescription = null;
+			this.toolStripSeparator18.AccessibleName = null;
+			resources.ApplyResources( this.toolStripSeparator18, "toolStripSeparator18" );
+			this.toolStripSeparator18.Name = "toolStripSeparator18";
+			// 
+			// ToolStripMenuItemBPMDetections
+			// 
+			this.ToolStripMenuItemBPMDetections.AccessibleDescription = null;
+			this.ToolStripMenuItemBPMDetections.AccessibleName = null;
+			resources.ApplyResources( this.ToolStripMenuItemBPMDetections, "ToolStripMenuItemBPMDetections" );
+			this.ToolStripMenuItemBPMDetections.BackgroundImage = null;
+			this.ToolStripMenuItemBPMDetections.Name = "ToolStripMenuItemBPMDetections";
+			this.ToolStripMenuItemBPMDetections.ShortcutKeyDisplayString = null;
+			this.ToolStripMenuItemBPMDetections.Click += new System.EventHandler( this.ToolStripMenuItemBeatChipsGeneration_Click );
+			// 
+			// generateBPMFromBeatTipsToolStripMenuItem
+			// 
+			this.generateBPMFromBeatTipsToolStripMenuItem.AccessibleDescription = null;
+			this.generateBPMFromBeatTipsToolStripMenuItem.AccessibleName = null;
+			resources.ApplyResources( this.generateBPMFromBeatTipsToolStripMenuItem, "generateBPMFromBeatTipsToolStripMenuItem" );
+			this.generateBPMFromBeatTipsToolStripMenuItem.BackgroundImage = null;
+			this.generateBPMFromBeatTipsToolStripMenuItem.Name = "generateBPMFromBeatTipsToolStripMenuItem";
+			this.generateBPMFromBeatTipsToolStripMenuItem.ShortcutKeyDisplayString = null;
+			this.generateBPMFromBeatTipsToolStripMenuItem.Click += new System.EventHandler( this.ToolStripMenuItemBPMChipsGeneration_Click );
 			// 
 			// Cメインフォーム
 			// 
@@ -2373,9 +2418,13 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem小節の挿入;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem小節の削除;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemレーン内のすべてのチップの選択;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemレーン内のすべてのチップの選択1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem小節内のすべてのチップの選択;
 		private System.Windows.Forms.Label labelGenre;
 		internal System.Windows.Forms.TextBox textBoxGenre;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator18;
+		private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemBPMDetections;
+		private System.Windows.Forms.ToolStripMenuItem generateBPMFromBeatTipsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2;
 	}
 }

@@ -6,7 +6,7 @@ namespace DTXCreator
 		/// <summary>
 		/// 必要なデザイナ変数です。
 		/// </summary>
-		private System.ComponentModel.IContainer components;
+		private System.ComponentModel.IContainer components = null;
 
 		/// <summary>
 		/// 使用中のリソースをすべてクリーンアップします。

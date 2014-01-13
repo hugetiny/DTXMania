@@ -117,14 +117,22 @@ namespace DTXCreator.譜面
 			this._Form.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
 			this._Form.pictureBox譜面パネル.Refresh();
 		}
-		public void tレーン上の全チップを選択する( int lane )			// #32134 2013.9.29 suggested by beatme
+		public void tレーン上の全チップを選択する( int lane )
 		{
+			tレーン上の全チップを選択する( lane, 0 );
+		}
+		public void tレーン上の全チップを選択する( int lane, int fromBAR )			// #32134 2013.9.29 suggested by beatme
+		{																			// fromBAR: 開始小節
 			// Debug.WriteLine( "laneno=" + lane + " " + this.mgr譜面管理者ref.listレーン[ lane ].strレーン名 );
 
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を開始する();
 			foreach ( KeyValuePair<int, C小節> pair in this.mgr譜面管理者ref.dic小節 )
 			{
 				C小節 c小節 = pair.Value;
+				if ( c小節.n小節番号0to3599 < fromBAR )
+				{
+					continue;
+				}
 				for ( int i = 0; i < c小節.listチップ.Count; i++ )
 				{
 					Cチップ cチップ = c小節.listチップ[ i ];
@@ -170,9 +178,20 @@ namespace DTXCreator.譜面
 		}
 		internal void MouseClick( MouseEventArgs e )
 		{
-			if( e.Button == MouseButtons.Right )
+			if ( e.Button == MouseButtons.Right )
 			{
 				this._Form.t選択モードのコンテクストメニューを表示する( e.X, e.Y );
+			}
+			else
+			{	// BEATレーンに限り、左クリックで裏表切り替え
+				if ( this.pt現在のドラッグ開始位置dot.X == e.X && this.pt現在のドラッグ開始位置dot.Y == e.Y )
+				{
+					int n現在のチップカーソルがあるレーン番号0to = this.mgr譜面管理者ref.nX座標dotが位置するレーン番号を返す( e.X );
+					if ( n現在のチップカーソルがあるレーン番号0to == this.mgr譜面管理者ref.nレーン名に対応するレーン番号を返す( "BEAT" ) )
+					{
+						t選択チップを表裏反転置換する( false );
+					}
+				}
 			}
 		}
 		internal void MouseDown( MouseEventArgs e )
@@ -697,6 +716,10 @@ namespace DTXCreator.譜面
 		}
 		private void t選択チップを表裏反転置換する()
 		{
+			t選択チップを表裏反転置換する( true );
+		}
+		private void t選択チップを表裏反転置換する( bool bShowResult )
+		{
 			int num = 0;
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を開始する();
 			foreach( KeyValuePair<int, C小節> pair in this._Form.mgr譜面管理者.dic小節 )
@@ -729,7 +752,10 @@ namespace DTXCreator.譜面
 			{
 				this._Form.b未保存 = true;
 				this._Form.pictureBox譜面パネル.Refresh();
-				MessageBox.Show( num + Resources.str個のチップを置換しましたMSG, Resources.str置換結果ダイアログのタイトル, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1 );
+				if ( bShowResult )
+				{
+					MessageBox.Show( num + Resources.str個のチップを置換しましたMSG, Resources.str置換結果ダイアログのタイトル, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1 );
+				}
 			}
 		}
 		private void t置換する・メイン()

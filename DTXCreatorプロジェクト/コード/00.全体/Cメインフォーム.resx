@@ -132,14 +132,17 @@
     <value>Bass level, (easy) 1 to 100 (Hard). 
 0 means no drums.</value>
   </data>
+  <data name="&gt;&gt;toolStripMenuItemレーン内のすべてのチップの選択1.Name" xml:space="preserve">
+    <value>toolStripMenuItemレーン内のすべてのチップの選択1</value>
+  </data>
   <data name="toolStripButtonWAVリストプレビュースイッチ.Text" xml:space="preserve">
     <value>toolStripButton1</value>
   </data>
   <data name="&gt;&gt;textBoxRESULTIMAGE.Name" xml:space="preserve">
     <value>textBoxRESULTIMAGE</value>
   </data>
-  <data name="splitContainerタブと譜面を分割.Panel1.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;toolStripMenuItemモード切替.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="labelPREVIEW.Location" type="System.Drawing.Point, System.Drawing">
     <value>33, 241</value>
@@ -149,6 +152,9 @@
   </data>
   <data name="&gt;&gt;toolStripMenuItem削除.Name" xml:space="preserve">
     <value>toolStripMenuItem削除</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.Name" xml:space="preserve">
+    <value>toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2</value>
   </data>
   <data name="listViewBMPリスト.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -176,12 +182,6 @@
   <data name="&gt;&gt;tabControl情報パネル.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tabPageBMP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem貼り付け.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;labelパネル.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
@@ -203,9 +203,8 @@
   <data name="&gt;&gt;tabPageAVI.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="hScrollBarDLEVEL.ToolTip" xml:space="preserve">
-    <value>Drums level, (easy) 1 to 100 (Hard). 
-0 means no drums.</value>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
+    <value>335, 22</value>
   </data>
   <data name="&gt;&gt;labelDLEVEL.Name" xml:space="preserve">
     <value>labelDLEVEL</value>
@@ -241,6 +240,9 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripButton切り取り.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="labelPREIMAGE.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="labelコメント.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 12</value>
   </data>
@@ -258,7 +260,7 @@ The image size is 204x269.</value>
 </value>
   </data>
   <data name="toolStripMenuItem選択チップの切り取り.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+    <value>267, 22</value>
   </data>
   <data name="labelBLEVEL.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
@@ -308,8 +310,11 @@ The image size is 204x269.</value>
   <data name="toolStripMenuItemすべて選択.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>Ctrl+A</value>
   </data>
-  <data name="&gt;&gt;toolStripWAVツールバー.Name" xml:space="preserve">
-    <value>toolStripWAVツールバー</value>
+  <data name="labeRESULTIMAGE.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;ToolStripMenuItemBPMDetections.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tabPage自由入力.Name" xml:space="preserve">
     <value>tabPage自由入力</value>
@@ -333,7 +338,7 @@ The image size is 204x269.</value>
     <value>148, 17</value>
   </data>
   <data name="toolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 6</value>
+    <value>264, 6</value>
   </data>
   <data name="toolStripButton先頭から再生.ToolTipText" xml:space="preserve">
     <value>Play from top with a viewer</value>
@@ -341,8 +346,8 @@ The image size is 204x269.</value>
   <data name="toolStripButtonWAVリストプレビュー再生停止.ToolTipText" xml:space="preserve">
     <value>Stop sound</value>
   </data>
-  <data name="buttonPREVIEW参照.ToolTip" xml:space="preserve">
-    <value>Select file...</value>
+  <data name="&gt;&gt;toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降.Name" xml:space="preserve">
+    <value>toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降</value>
   </data>
   <data name="hScrollBarGLEVEL.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -380,9 +385,6 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripMenuItem新規.Name" xml:space="preserve">
     <value>toolStripMenuItem新規</value>
   </data>
-  <data name="&gt;&gt;pictureBox譜面パネル.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;toolStripButton新規作成.Name" xml:space="preserve">
     <value>toolStripButton新規作成</value>
   </data>
@@ -398,23 +400,20 @@ The image size is 204x269.</value>
   <data name="splitContainerタブと譜面を分割.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="labelパネル.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="&gt;&gt;toolStripButtonリドゥ.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tooltoolStripMenuItemレーン内のすべてのチップの選択.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripButton先頭から再生.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="columnHeaderWAV_番号.Width" type="System.Int32, mscorlib">
-    <value>28</value>
-  </data>
-  <data name="labelBLEVEL.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
   <data name="&gt;&gt;toolStripButton再生停止.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="labelPREIMAGE.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="labelパネル.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
   </data>
   <data name="labelBPM.Text" xml:space="preserve">
     <value>BPM</value>
@@ -435,7 +434,7 @@ The image size is 204x269.</value>
     <value>toolStripButton再生停止</value>
   </data>
   <data name="toolStripMenuItem選択チップのコピー.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+    <value>267, 22</value>
   </data>
   <data name="&gt;&gt;buttonPREIMAGE参照.Name" xml:space="preserve">
     <value>buttonPREIMAGE参照</value>
@@ -483,11 +482,14 @@ The image size is 204x269.</value>
   <data name="toolStripComboBox演奏速度.Items3" xml:space="preserve">
     <value>x1.2</value>
   </data>
+  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
+    <value>toolStripSeparator4</value>
+  </data>
   <data name="textBoxPREVIEW.Size" type="System.Drawing.Size, System.Drawing">
     <value>156, 19</value>
   </data>
   <data name="toolStripMenuItem選択チップの削除.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+    <value>267, 22</value>
   </data>
   <data name="toolStripButtonリドゥ.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 22</value>
@@ -503,6 +505,9 @@ The image size is 204x269.</value>
   </data>
   <data name="columnHeaderWAV_ラベル.Text" xml:space="preserve">
     <value>Label</value>
+  </data>
+  <data name="toolStripMenuItem新規.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
   </data>
   <data name="columnHeaderWAV_BGM.Width" type="System.Int32, mscorlib">
     <value>34</value>
@@ -527,6 +532,9 @@ The image size is 204x269.</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem先頭から再生.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="buttonPREVIEW参照.ToolTip" xml:space="preserve">
+    <value>Select file...</value>
   </data>
   <data name="hScrollBarBLEVEL.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -582,9 +590,6 @@ The image size is 204x269.</value>
   <data name="listViewAVIリスト.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="toolStripMenuItemガイド間隔フリー.Text" xml:space="preserve">
-    <value>&amp;Free</value>
-  </data>
   <data name="labelBACKGROUND.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
   </data>
@@ -593,6 +598,9 @@ The image size is 204x269.</value>
   </data>
   <data name="&gt;&gt;labelPREIMAGE.Name" xml:space="preserve">
     <value>labelPREIMAGE</value>
+  </data>
+  <data name="splitContainerタブと譜面を分割.Panel1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="labelBACKGROUND.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -621,8 +629,8 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripMenuItemモード切替.Name" xml:space="preserve">
     <value>toolStripMenuItemモード切替</value>
   </data>
-  <data name="labeRESULTIMAGE.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopRight</value>
+  <data name="contextMenuStrip譜面右メニュー.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="buttonPREIMAGE参照.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -635,7 +643,7 @@ The image size is 204x269.</value>
     <value>False</value>
   </data>
   <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 242</value>
+    <value>268, 314</value>
   </data>
   <data name="labelDLEVEL.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -660,9 +668,6 @@ The image size is 204x269.</value>
   </data>
   <data name="labelSTAGEFILE.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 289</value>
-  </data>
-  <data name="&gt;&gt;tabPageBMP.Name" xml:space="preserve">
-    <value>tabPageBMP</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemガイド間隔12分.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -716,13 +721,13 @@ The image size is 204x269.</value>
     <value>Ctrl+V</value>
   </data>
   <data name="toolStripMenuItem小節内のすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
-  </data>
-  <data name="labeRESULTIMAGE.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+    <value>267, 22</value>
   </data>
   <data name="labelBLEVEL.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;pictureBox譜面パネル.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="textBoxGenre.Location" type="System.Drawing.Point, System.Drawing">
     <value>85, 84</value>
@@ -797,8 +802,8 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;textBoxSTAGEFILE.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="textBoxパネル.ToolTip" xml:space="preserve">
-    <value>Panel message shown in playing screen.</value>
+  <data name="labelBLEVEL.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem選択チップの切り取り.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -823,9 +828,6 @@ The image size is 204x269.</value>
   </data>
   <data name="textBoxコメント.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;textBoxコメント.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -895,6 +897,9 @@ The image size is 204x269.</value>
   </data>
   <data name="&gt;&gt;columnHeaderWAV_音量.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降.Size" type="System.Drawing.Size, System.Drawing">
+    <value>267, 22</value>
   </data>
   <data name="buttonPREIMAGE参照.Size" type="System.Drawing.Size, System.Drawing">
     <value>25, 23</value>
@@ -990,11 +995,17 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripMenuItemDTXCreaterマニュアル.Name" xml:space="preserve">
     <value>toolStripMenuItemDTXCreaterマニュアル</value>
   </data>
+  <data name="textBoxGLEVEL.Location" type="System.Drawing.Point, System.Drawing">
+    <value>85, 161</value>
+  </data>
   <data name="toolStripMenuItemガイド間隔4分.Size" type="System.Drawing.Size, System.Drawing">
     <value>138, 22</value>
   </data>
   <data name="columnHeaderAVI_ラベル.Width" type="System.Int32, mscorlib">
     <value>127</value>
+  </data>
+  <data name="toolStripSeparator18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>264, 6</value>
   </data>
   <data name="toolStripMenuItem再生停止.Text" xml:space="preserve">
     <value>&amp;Stop</value>
@@ -1008,17 +1019,20 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripMenuItemガイド間隔拡大.Name" xml:space="preserve">
     <value>toolStripMenuItemガイド間隔拡大</value>
   </data>
-  <data name="toolStripMenuItem先頭から再生.Text" xml:space="preserve">
-    <value>Play from &amp;top</value>
+  <data name="&gt;&gt;columnHeaderAVI_ラベル.Name" xml:space="preserve">
+    <value>columnHeaderAVI_ラベル</value>
   </data>
   <data name="toolStripMenuItem小節長変更.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+    <value>267, 22</value>
   </data>
   <data name="labelBPM.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem選択モード.Name" xml:space="preserve">
     <value>toolStripMenuItem選択モード</value>
+  </data>
+  <data name="&gt;&gt;toolStripWAVツールバー.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator5.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1057,7 +1071,7 @@ The image size is 204x269.</value>
     <value>1/4</value>
   </data>
   <data name="toolStripMenuItemすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+    <value>267, 22</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator12.Name" xml:space="preserve">
     <value>toolStripSeparator12</value>
@@ -1071,6 +1085,9 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripMenuItem編集.Name" xml:space="preserve">
     <value>toolStripMenuItem編集</value>
   </data>
+  <data name="&gt;&gt;generateBPMFromBeatTipsToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="labelSTAGEFILE.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 12</value>
   </data>
@@ -1080,14 +1097,14 @@ The image size is 204x269.</value>
   <data name="textBoxGLEVEL.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
   </data>
-  <data name="toolStripMenuItemガイド間隔32分.Text" xml:space="preserve">
-    <value>1/&amp;32</value>
+  <data name="&gt;&gt;generateBPMFromBeatTipsToolStripMenuItem.Name" xml:space="preserve">
+    <value>generateBPMFromBeatTipsToolStripMenuItem</value>
   </data>
   <data name="textBoxパネル.Location" type="System.Drawing.Point, System.Drawing">
     <value>85, 210</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">
-    <value>toolStripSeparator10</value>
+  <data name="generateBPMFromBeatTipsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Generate &amp;BPM from Beat chips</value>
   </data>
   <data name="&gt;&gt;label曲名.ZOrder" xml:space="preserve">
     <value>31</value>
@@ -1138,8 +1155,8 @@ The image size is 204x269.</value>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>160, 6</value>
   </data>
-  <data name="toolStripButtonアンドゥ.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="numericUpDownBPM.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Center</value>
   </data>
   <data name="&gt;&gt;toolStripツールバー.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1156,8 +1173,8 @@ The image size is 204x269.</value>
   <data name="textBox自由入力欄.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem切り取り.Name" xml:space="preserve">
-    <value>toolStripMenuItem切り取り</value>
+  <data name="&gt;&gt;toolStripButtonチップパレット.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItem現在位置から再生.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>F6</value>
@@ -1171,6 +1188,9 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripButtonWAVリストプレビュー再生開始.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="listViewBMPリスト.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
   <data name="&gt;&gt;toolStripMenuItem再生.Name" xml:space="preserve">
     <value>toolStripMenuItem再生</value>
   </data>
@@ -1183,6 +1203,9 @@ The image size is 204x269.</value>
   <data name="textBoxコメント.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;labelBPM.Name" xml:space="preserve">
+    <value>labelBPM</value>
+  </data>
   <data name="&gt;&gt;labelGLEVEL.ZOrder" xml:space="preserve">
     <value>22</value>
   </data>
@@ -1191,9 +1214,6 @@ The image size is 204x269.</value>
   </data>
   <data name="&gt;&gt;toolStripBMPツールバー.Name" xml:space="preserve">
     <value>toolStripBMPツールバー</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="numericUpDownBPM.ToolTip" xml:space="preserve">
     <value>Song's BGM (Beats Per Minute)</value>
@@ -1213,14 +1233,14 @@ The image size is 204x269.</value>
   <data name="textBox自由入力欄.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>10, 10, 10, 10</value>
   </data>
-  <data name="toolStripMenuItem名前を付けて保存.Text" xml:space="preserve">
-    <value>Save &amp;As ...</value>
-  </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
     <value>182, 6</value>
   </data>
   <data name="&gt;&gt;toolStripButtonWAVリストプレビュー再生停止.Name" xml:space="preserve">
     <value>toolStripButtonWAVリストプレビュー再生停止</value>
+  </data>
+  <data name="&gt;&gt;toolStripButtonコピー.Name" xml:space="preserve">
+    <value>toolStripButtonコピー</value>
   </data>
   <data name="textBoxBLEVEL.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1237,8 +1257,8 @@ The image size is 204x269.</value>
   <data name="buttonPREIMAGE参照.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;toolStripButtonチップパレット.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripBMPツールバー.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 390</value>
   </data>
   <data name="toolStripMenuItemガイド間隔16分.Text" xml:space="preserve">
     <value>1/1&amp;6</value>
@@ -1292,8 +1312,8 @@ The image size is 640x480.</value>
   <data name="tabPage自由入力.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="&gt;&gt;textBoxPREIMAGE.ZOrder" xml:space="preserve">
-    <value>15</value>
+  <data name="&gt;&gt;columnHeaderAVI_ファイル名.Name" xml:space="preserve">
+    <value>columnHeaderAVI_ファイル名</value>
   </data>
   <data name="labelGLEVEL.Location" type="System.Drawing.Point, System.Drawing">
     <value>29, 164</value>
@@ -1365,8 +1385,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;buttonPREVIEW参照.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;textBoxコメント.Parent" xml:space="preserve">
-    <value>tabPage基本情報</value>
+  <data name="&gt;&gt;toolStripMenuItemガイド間隔12分.Name" xml:space="preserve">
+    <value>toolStripMenuItemガイド間隔12分</value>
   </data>
   <data name="labelPREIMAGE.ToolTip" xml:space="preserve">
     <value>Preview image shown when song selected.
@@ -1390,8 +1410,8 @@ The image size is 204x269.</value>
   <data name="textBoxコメント.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 19</value>
   </data>
-  <data name="labelDLEVEL.Size" type="System.Drawing.Size, System.Drawing">
-    <value>46, 12</value>
+  <data name="&gt;&gt;toolStripButtonBMPリスト下移動.Name" xml:space="preserve">
+    <value>toolStripButtonBMPリスト下移動</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem小節長変更.Name" xml:space="preserve">
     <value>toolStripMenuItem小節長変更</value>
@@ -1434,10 +1454,13 @@ The image size is 204x269.</value>
     <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItem選択チップの貼り付け.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+    <value>267, 22</value>
   </data>
   <data name="hScrollBarDLEVEL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemレーン内のすべてのチップの選択1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="hScrollBarBLEVEL.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 17</value>
@@ -1484,8 +1507,11 @@ The image size is 204x269.</value>
   <data name="label曲名.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
   </data>
-  <data name="&gt;&gt;toolStripButton選択モード.Name" xml:space="preserve">
-    <value>toolStripButton選択モード</value>
+  <data name="toolStripButtonWAVリストプレビュースイッチ.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="toolStripツールバー.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="toolStripMenuItem編集.Text" xml:space="preserve">
     <value>&amp;Edit</value>
@@ -1499,8 +1525,8 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripButton新規作成.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBoxGLEVEL.Parent" xml:space="preserve">
-    <value>tabPage基本情報</value>
+  <data name="&gt;&gt;pictureBox譜面パネル.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripButtonWAVリスト上移動.Text" xml:space="preserve">
     <value>toolStripButton1</value>
@@ -1581,8 +1607,8 @@ The image size is 204x269.</value>
   <data name="toolStripButtonWAVリスト下移動.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 22</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem検索.Name" xml:space="preserve">
-    <value>toolStripMenuItem検索</value>
+  <data name="tabPageBMP.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripMenuItem貼り付け.Text" xml:space="preserve">
     <value>&amp;Paste</value>
@@ -1593,6 +1619,9 @@ The image size is 204x269.</value>
   <data name="pictureBox譜面パネル.ToolTip" xml:space="preserve">
     <value />
   </data>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>335, 22</value>
+  </data>
   <data name="&gt;&gt;labeRESULTIMAGE.Parent" xml:space="preserve">
     <value>tabPage基本情報</value>
   </data>
@@ -1602,8 +1631,8 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;hScrollBarGLEVEL.Name" xml:space="preserve">
     <value>hScrollBarGLEVEL</value>
   </data>
-  <data name="toolStripButtonコピー.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="toolStripMenuItemガイド間隔フリー.Text" xml:space="preserve">
+    <value>&amp;Free</value>
   </data>
   <data name="labelパネル.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
@@ -1613,6 +1642,9 @@ The image size is 204x269.</value>
   </data>
   <data name="&gt;&gt;label製作者.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="textBoxDLEVEL.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1635,9 +1667,6 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;toolStripツールバー.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="labelコメント.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 59</value>
-  </data>
   <data name="textBox自由入力欄.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -1650,14 +1679,14 @@ The image size is 204x269.</value>
   <data name="textBox製作者.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;menuStripメニューバー.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="tabControl情報パネル.Size" type="System.Drawing.Size, System.Drawing">
     <value>286, 444</value>
   </data>
   <data name="&gt;&gt;textBoxPREVIEW.ZOrder" xml:space="preserve">
     <value>16</value>
+  </data>
+  <data name="&gt;&gt;toolStripButton選択モード.Name" xml:space="preserve">
+    <value>toolStripButton選択モード</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemガイド間隔16分.Name" xml:space="preserve">
     <value>toolStripMenuItemガイド間隔16分</value>
@@ -1677,8 +1706,8 @@ The image size is 204x269.</value>
   <data name="statusStripステータスバー.Size" type="System.Drawing.Size, System.Drawing">
     <value>731, 22</value>
   </data>
-  <data name="&gt;&gt;pictureBox譜面パネル.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="labelコメント.Location" type="System.Drawing.Point, System.Drawing">
+    <value>26, 59</value>
   </data>
   <data name="&gt;&gt;toolStripButton上書き保存.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1691,6 +1720,9 @@ The image size is 204x269.</value>
   </data>
   <data name="toolStripButton現在位置からBGMのみ再生.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator18.Name" xml:space="preserve">
+    <value>toolStripSeparator18</value>
   </data>
   <data name="toolStripMenuItemガイド間隔縮小.Text" xml:space="preserve">
     <value>&amp;Narrow</value>
@@ -1738,7 +1770,10 @@ The image size is 204x269.</value>
     <value>35, 12</value>
   </data>
   <data name="toolStripMenuItem小節の削除.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+    <value>267, 22</value>
+  </data>
+  <data name="toolStripMenuItem編集モード.Size" type="System.Drawing.Size, System.Drawing">
+    <value>185, 22</value>
   </data>
   <data name="listViewBMPリスト.Font" type="System.Drawing.Font, System.Drawing">
     <value>ＭＳ ゴシック, 9pt</value>
@@ -1754,6 +1789,9 @@ The image size is 204x269.</value>
   </data>
   <data name="&gt;&gt;toolStripButtonWAVリストプレビュースイッチ.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripWAVツールバー.Name" xml:space="preserve">
+    <value>toolStripWAVツールバー</value>
   </data>
   <data name="toolStripSeparator11.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
@@ -1785,8 +1823,8 @@ The image size is 204x269.</value>
   <data name="buttonBACKGROUND参照.Location" type="System.Drawing.Point, System.Drawing">
     <value>247, 311</value>
   </data>
-  <data name="textBoxGLEVEL.Location" type="System.Drawing.Point, System.Drawing">
-    <value>85, 161</value>
+  <data name="&gt;&gt;columnHeaderWAV_番号.Name" xml:space="preserve">
+    <value>columnHeaderWAV_番号</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
     <value>182, 6</value>
@@ -1802,6 +1840,9 @@ The image size is 204x269.</value>
   </data>
   <data name="labeRESULTIMAGE.Location" type="System.Drawing.Point, System.Drawing">
     <value>11, 339</value>
+  </data>
+  <data name="tooltoolStripMenuItemレーン内のすべてのチップの選択.Text" xml:space="preserve">
+    <value>Select all in the &amp;lane (all part) []</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem小節の挿入.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1830,8 +1871,14 @@ The image size is 204x269.</value>
   <data name="toolStripButton新規作成.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
+  <data name="&gt;&gt;toolStripMenuItem検索.Name" xml:space="preserve">
+    <value>toolStripMenuItem検索</value>
+  </data>
   <data name="&gt;&gt;toolStripComboBox譜面拡大率.Name" xml:space="preserve">
     <value>toolStripComboBox譜面拡大率</value>
+  </data>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>335, 22</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
     <value>toolStripSeparator2</value>
@@ -1852,12 +1899,6 @@ The image size is 640x480.</value>
   <data name="toolStripButton貼り付け.ToolTipText" xml:space="preserve">
     <value>Paste chip(s)
 </value>
-  </data>
-  <data name="toolStripWAVツールバー.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 390</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemすべて選択.Name" xml:space="preserve">
-    <value>toolStripMenuItemすべて選択</value>
   </data>
   <data name="textBoxBLEVEL.Location" type="System.Drawing.Point, System.Drawing">
     <value>85, 182</value>
@@ -1904,8 +1945,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;textBoxコメント.Name" xml:space="preserve">
     <value>textBoxコメント</value>
   </data>
-  <data name="splitContainerタブと譜面を分割.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 49</value>
+  <data name="toolStripMenuItem名前を付けて保存.Text" xml:space="preserve">
+    <value>Save &amp;As ...</value>
   </data>
   <data name="tabPageWAV.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1928,6 +1969,9 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;hScrollBarDLEVEL.Parent" xml:space="preserve">
     <value>tabPage基本情報</value>
   </data>
+  <data name="&gt;&gt;ToolStripMenuItemBPMDetections.Name" xml:space="preserve">
+    <value>ToolStripMenuItemBPMDetections</value>
+  </data>
   <data name="&gt;&gt;textBoxGenre.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -1949,8 +1993,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;toolStripButton開く.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripMenuItemレーン内のすべてのチップの選択.Text" xml:space="preserve">
-    <value>Select all in the &amp;lane []</value>
+  <data name="tabPageWAV.Size" type="System.Drawing.Size, System.Drawing">
+    <value>278, 418</value>
   </data>
   <data name="&gt;&gt;textBoxBLEVEL.ZOrder" xml:space="preserve">
     <value>20</value>
@@ -2019,11 +2063,11 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;toolStripSeparator16.Name" xml:space="preserve">
     <value>toolStripSeparator16</value>
   </data>
-  <data name="textBoxPREIMAGE.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+  <data name="tabPageBMP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="toolStripSeparator16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 6</value>
+    <value>264, 6</value>
   </data>
   <data name="toolStripButton現在位置からBGMのみ再生.ToolTipText" xml:space="preserve">
     <value>Play BGM from currect part with a viewer</value>
@@ -2034,6 +2078,9 @@ The image size is 640x480.</value>
   <data name="toolStripMenuItemガイド間隔拡大.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
     <value>F3</value>
   </data>
+  <data name="toolStripComboBoxガイド間隔.Items8" xml:space="preserve">
+    <value>Free</value>
+  </data>
   <data name="toolStripComboBoxガイド間隔.Items7" xml:space="preserve">
     <value>1/64</value>
   </data>
@@ -2043,8 +2090,8 @@ The image size is 640x480.</value>
   <data name="columnHeaderWAV_番号.Text" xml:space="preserve">
     <value>No</value>
   </data>
-  <data name="toolStripツールバー.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;menuStripメニューバー.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="labelSTAGEFILE.Text" xml:space="preserve">
     <value>LoadingImage</value>
@@ -2058,8 +2105,11 @@ The image size is 640x480.</value>
   <data name="textBoxコメント.ToolTip" xml:space="preserve">
     <value>Comment</value>
   </data>
-  <data name="&gt;&gt;labelBPM.Name" xml:space="preserve">
-    <value>labelBPM</value>
+  <data name="ToolStripMenuItemBPMDetections.Size" type="System.Drawing.Size, System.Drawing">
+    <value>267, 22</value>
+  </data>
+  <data name="toolStripButtonAVIリスト下移動.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
   <data name="toolStripMenuItem選択チップのコピー.Text" xml:space="preserve">
     <value>&amp;Copy selected chip(s)</value>
@@ -2082,6 +2132,9 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;textBoxSTAGEFILE.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;columnHeaderBMP_ファイル名.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="labelGLEVEL.Text" xml:space="preserve">
     <value>GuitarLv.
 </value>
@@ -2089,8 +2142,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
     <value>toolStripSeparator1</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItemガイド間隔12分.Name" xml:space="preserve">
-    <value>toolStripMenuItemガイド間隔12分</value>
+  <data name="&gt;&gt;hScrollBarGLEVEL.Type" xml:space="preserve">
+    <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="listViewAVIリスト.ToolTip" xml:space="preserve">
     <value />
@@ -2188,17 +2241,11 @@ The image size is 640x480.</value>
   <data name="textBox自由入力欄.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="&gt;&gt;columnHeaderAVI_ラベル.Name" xml:space="preserve">
-    <value>columnHeaderAVI_ラベル</value>
-  </data>
-  <data name="&gt;&gt;columnHeaderWAV_番号.Name" xml:space="preserve">
-    <value>columnHeaderWAV_番号</value>
-  </data>
   <data name="buttonPREVIEW参照.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;toolStripSeparator4.Name" xml:space="preserve">
-    <value>toolStripSeparator4</value>
+  <data name="&gt;&gt;toolStripSeparator18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemチップパレット.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2224,14 +2271,14 @@ The image size is 640x480.</value>
   <data name="labelコメント.ToolTip" xml:space="preserve">
     <value>Comment</value>
   </data>
-  <data name="listViewBMPリスト.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="&gt;&gt;textBoxGLEVEL.Parent" xml:space="preserve">
+    <value>tabPage基本情報</value>
   </data>
   <data name="&gt;&gt;textBoxPREVIEW.Name" xml:space="preserve">
     <value>textBoxPREVIEW</value>
   </data>
-  <data name="toolStripMenuItem新規.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 22</value>
+  <data name="&gt;&gt;toolStripSeparator10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;buttonBACKGROUND参照.Name" xml:space="preserve">
     <value>buttonBACKGROUND参照</value>
@@ -2242,8 +2289,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;textBoxコメント.ZOrder" xml:space="preserve">
     <value>33</value>
   </data>
-  <data name="toolStripButtonWAVリストプレビュースイッチ.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="&gt;&gt;toolStripMenuItem貼り付け.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator5.Name" xml:space="preserve">
     <value>toolStripSeparator5</value>
@@ -2299,6 +2346,9 @@ The image size is 640x480.</value>
   </data>
   <data name="toolStripComboBox譜面拡大率.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
+  </data>
+  <data name="labeRESULTIMAGE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>68, 12</value>
   </data>
   <data name="&gt;&gt;hScrollBar譜面用水平スクロールバー.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -2740,8 +2790,8 @@ The image size is 640x480.</value>
         AACH/wAAh/8AAI//AAA=
 </value>
   </data>
-  <data name="&gt;&gt;toolStripButtonBMPリスト下移動.Name" xml:space="preserve">
-    <value>toolStripButtonBMPリスト下移動</value>
+  <data name="&gt;&gt;textBoxコメント.Parent" xml:space="preserve">
+    <value>tabPage基本情報</value>
   </data>
   <data name="&gt;&gt;columnHeaderBMP_ラベル.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2761,6 +2811,9 @@ The image size is 640x480.</value>
   <data name="toolStripMenuItemオプション.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 22</value>
   </data>
+  <data name="&gt;&gt;labelGLEVEL.Parent" xml:space="preserve">
+    <value>tabPage基本情報</value>
+  </data>
   <data name="&gt;&gt;textBoxDLEVEL.Parent" xml:space="preserve">
     <value>tabPage基本情報</value>
   </data>
@@ -2768,10 +2821,13 @@ The image size is 640x480.</value>
     <value>5</value>
   </data>
   <data name="toolStripMenuItem小節の挿入.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+    <value>267, 22</value>
   </data>
   <data name="&gt;&gt;labelコメント.Name" xml:space="preserve">
     <value>labelコメント</value>
+  </data>
+  <data name="tooltoolStripMenuItemレーン内のすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
+    <value>267, 22</value>
   </data>
   <data name="toolStripButton新規作成.ToolTipText" xml:space="preserve">
     <value>Create a new file</value>
@@ -2785,14 +2841,11 @@ The image size is 640x480.</value>
   <data name="toolStripMenuItemすべて選択.Size" type="System.Drawing.Size, System.Drawing">
     <value>185, 22</value>
   </data>
-  <data name="numericUpDownBPM.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
-    <value>Center</value>
+  <data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">
+    <value>toolStripSeparator10</value>
   </data>
   <data name="vScrollBar譜面用垂直スクロールバー.Size" type="System.Drawing.Size, System.Drawing">
     <value>17, 444</value>
-  </data>
-  <data name="&gt;&gt;toolStripButtonリドゥ.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem小節の挿入.Name" xml:space="preserve">
     <value>toolStripMenuItem小節の挿入</value>
@@ -2806,8 +2859,8 @@ The image size is 640x480.</value>
   <data name="toolStripMenuItem現在位置から再生.Size" type="System.Drawing.Size, System.Drawing">
     <value>235, 22</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem上書き保存.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;toolStripMenuItem切り取り.Name" xml:space="preserve">
+    <value>toolStripMenuItem切り取り</value>
   </data>
   <data name="hScrollBarBLEVEL.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -2815,8 +2868,8 @@ The image size is 640x480.</value>
   <data name="textBox曲名.Location" type="System.Drawing.Point, System.Drawing">
     <value>85, 6</value>
   </data>
-  <data name="tabPageWAV.Size" type="System.Drawing.Size, System.Drawing">
-    <value>278, 418</value>
+  <data name="toolStripButtonアンドゥ.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>731, 515</value>
@@ -2833,14 +2886,14 @@ The image size is 640x480.</value>
   <data name="tabPageBMP.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="toolStripMenuItemバージョン.Text" xml:space="preserve">
-    <value>&amp;Version</value>
+  <data name="textBoxPREIMAGE.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
   </data>
   <data name="toolStripComboBox演奏速度.Items9" xml:space="preserve">
     <value>x0.6</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>DTXCreator</value>
+  <data name="hScrollBar譜面用水平スクロールバー.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="labelBPM.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -2872,8 +2925,8 @@ The image size is 640x480.</value>
   <data name="buttonSTAGEFILE参照.Size" type="System.Drawing.Size, System.Drawing">
     <value>25, 23</value>
   </data>
-  <data name="toolStripButtonAVIリスト下移動.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
+  <data name="toolStripMenuItem先頭から再生.Text" xml:space="preserve">
+    <value>Play from &amp;top</value>
   </data>
   <data name="&gt;&gt;tabPage基本情報.Name" xml:space="preserve">
     <value>tabPage基本情報</value>
@@ -2914,8 +2967,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;statusStripステータスバー.Name" xml:space="preserve">
     <value>statusStripステータスバー</value>
   </data>
-  <data name="toolStripButtonWAVリストプレビュー再生開始.ToolTipText" xml:space="preserve">
-    <value>Play the current wave sound</value>
+  <data name="toolStripMenuItemバージョン.Text" xml:space="preserve">
+    <value>&amp;Version</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemガイド間隔64分.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2968,8 +3021,9 @@ The image size is 640x480.</value>
   <data name="textBoxPREVIEW.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="hScrollBar譜面用水平スクロールバー.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="hScrollBarDLEVEL.ToolTip" xml:space="preserve">
+    <value>Drums level, (easy) 1 to 100 (Hard). 
+0 means no drums.</value>
   </data>
   <data name="toolStripMenuItemすべてのチップの選択.Text" xml:space="preserve">
     <value>Select &amp;All</value>
@@ -2998,6 +3052,9 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;columnHeaderWAV_ラベル.Name" xml:space="preserve">
     <value>columnHeaderWAV_ラベル</value>
   </data>
+  <data name="&gt;&gt;toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;labelBACKGROUND.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -3006,9 +3063,6 @@ The image size is 640x480.</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem削除.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;splitContainerタブと譜面を分割.Parent" xml:space="preserve">
-    <value>$this</value>
   </data>
   <data name="tabControl情報パネル.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -3049,8 +3103,8 @@ The image size is 640x480.</value>
   <data name="label製作者.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;toolStripButtonコピー.Name" xml:space="preserve">
-    <value>toolStripButtonコピー</value>
+  <data name="&gt;&gt;tabPageBMP.Name" xml:space="preserve">
+    <value>tabPageBMP</value>
   </data>
   <data name="textBoxGenre.ToolTip" xml:space="preserve">
     <value>Genre</value>
@@ -3071,9 +3125,6 @@ The image size is 640x480.</value>
     <value>1/&amp;4</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemガイド間隔24分.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItemモード切替.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator8.Type" xml:space="preserve">
@@ -3121,7 +3172,7 @@ The image size is 640x480.</value>
     <value>3</value>
   </data>
   <data name="toolStripSeparator17.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 6</value>
+    <value>264, 6</value>
   </data>
   <data name="labelBPM.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>TopRight</value>
@@ -3151,8 +3202,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;labelGLEVEL.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="labeRESULTIMAGE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 12</value>
+  <data name="&gt;&gt;splitContainerタブと譜面を分割.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="toolStripButton切り取り.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 22</value>
@@ -3166,8 +3217,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;textBoxDLEVEL.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="toolStripBMPツールバー.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 390</value>
+  <data name="columnHeaderWAV_番号.Width" type="System.Int32, mscorlib">
+    <value>28</value>
   </data>
   <data name="&gt;&gt;textBoxBLEVEL.Parent" xml:space="preserve">
     <value>tabPage基本情報</value>
@@ -3233,6 +3284,9 @@ The image size is 640x480.</value>
   <data name="toolStripButton再生停止.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
+  <data name="ToolStripMenuItemBPMDetections.Text" xml:space="preserve">
+    <value>Generate &amp;Beat chips</value>
+  </data>
   <data name="&gt;&gt;buttonPREIMAGE参照.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -3250,6 +3304,9 @@ The image size is 640x480.</value>
   </data>
   <data name="textBoxBLEVEL.Size" type="System.Drawing.Size, System.Drawing">
     <value>36, 19</value>
+  </data>
+  <data name="textBoxパネル.ToolTip" xml:space="preserve">
+    <value>Panel message shown in playing screen.</value>
   </data>
   <data name="labelパネル.Location" type="System.Drawing.Point, System.Drawing">
     <value>18, 213</value>
@@ -3290,8 +3347,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;textBoxBACKGROUND.Name" xml:space="preserve">
     <value>textBoxBACKGROUND</value>
   </data>
-  <data name="&gt;&gt;labelGLEVEL.Parent" xml:space="preserve">
-    <value>tabPage基本情報</value>
+  <data name="&gt;&gt;textBoxPREIMAGE.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="&gt;&gt;label製作者.Name" xml:space="preserve">
     <value>label製作者</value>
@@ -3325,6 +3382,9 @@ The image size is 640x480.</value>
   </data>
   <data name="&gt;&gt;columnHeaderAVI_ファイル名.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="toolStripButtonコピー.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem置換.Name" xml:space="preserve">
     <value>toolStripMenuItem置換</value>
@@ -3372,9 +3432,6 @@ The image size is 640x480.</value>
   <data name="hScrollBar譜面用水平スクロールバー.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Bottom</value>
   </data>
-  <data name="contextMenuStrip譜面右メニュー.ToolTip" xml:space="preserve">
-    <value />
-  </data>
   <data name="&gt;&gt;textBoxGLEVEL.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -3387,8 +3444,8 @@ The image size is 640x480.</value>
   <data name="tabPageWAV.Text" xml:space="preserve">
     <value>WAV</value>
   </data>
-  <data name="&gt;&gt;hScrollBarDLEVEL.Type" xml:space="preserve">
-    <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="generateBPMFromBeatTipsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>267, 22</value>
   </data>
   <data name="tabPageAVI.ToolTip" xml:space="preserve">
     <value />
@@ -3408,8 +3465,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;listViewBMPリスト.Parent" xml:space="preserve">
     <value>tabPageBMP</value>
   </data>
-  <data name="toolStripComboBoxガイド間隔.Items8" xml:space="preserve">
-    <value>Free</value>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降.Text" xml:space="preserve">
+    <value>Select all in the &amp;lane to the tail []</value>
   </data>
   <data name="tabPageWAV.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -3453,8 +3510,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;toolStripMenuItem選択チップの削除.Name" xml:space="preserve">
     <value>toolStripMenuItem選択チップの削除</value>
   </data>
-  <data name="tabPageBMP.ToolTip" xml:space="preserve">
-    <value />
+  <data name="labeRESULTIMAGE.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="toolStripComboBox演奏速度.Items6" xml:space="preserve">
     <value>x0.9</value>
@@ -3471,8 +3528,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;toolStripAVIツールバー.Parent" xml:space="preserve">
     <value>tabPageAVI</value>
   </data>
-  <data name="toolStripMenuItemレーン内のすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 22</value>
+  <data name="toolStripWAVツールバー.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 390</value>
   </data>
   <data name="columnHeaderBMP_ラベル.Width" type="System.Int32, mscorlib">
     <value>127</value>
@@ -3495,8 +3552,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;toolStripMenuItem現在位置から再生.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;columnHeaderBMP_ファイル名.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripMenuItem編集モード.Text" xml:space="preserve">
+    <value>&amp;Edit mode</value>
   </data>
   <data name="toolStripButtonWAVリストプレビュー再生開始.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -3518,9 +3575,6 @@ The image size is 640x480.</value>
   </data>
   <data name="toolStripButtonBMPリスト下移動.Text" xml:space="preserve">
     <value>toolStripButton1</value>
-  </data>
-  <data name="toolStripMenuItem編集モード.Text" xml:space="preserve">
-    <value>&amp;Edit mode</value>
   </data>
   <data name="&gt;&gt;tabPageWAV.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -3549,6 +3603,9 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;pictureBox譜面パネル.Name" xml:space="preserve">
     <value>pictureBox譜面パネル</value>
   </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>DTXCreator</value>
+  </data>
   <data name="$this.ToolTip" xml:space="preserve">
     <value />
   </data>
@@ -3568,6 +3625,9 @@ The image size is 640x480.</value>
   <data name="labelコメント.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="splitContainerタブと譜面を分割.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 49</value>
+  </data>
   <data name="&gt;&gt;splitContainerタブと譜面を分割.Panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -3580,8 +3640,8 @@ The image size is 640x480.</value>
   <data name="tabPageAVI.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;columnHeaderAVI_ファイル名.Name" xml:space="preserve">
-    <value>columnHeaderAVI_ファイル名</value>
+  <data name="toolStripButtonWAVリストプレビュー再生開始.ToolTipText" xml:space="preserve">
+    <value>Play the current wave sound</value>
   </data>
   <data name="buttonSTAGEFILE参照.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -3589,8 +3649,8 @@ The image size is 640x480.</value>
   <data name="toolStripMenuItem置換.Text" xml:space="preserve">
     <value>Replace(&amp;Q)</value>
   </data>
-  <data name="&gt;&gt;tabPage基本情報.Parent" xml:space="preserve">
-    <value>tabControl情報パネル</value>
+  <data name="&gt;&gt;toolStripMenuItemすべて選択.Name" xml:space="preserve">
+    <value>toolStripMenuItemすべて選択</value>
   </data>
   <data name="&gt;&gt;numericUpDownBPM.Name" xml:space="preserve">
     <value>numericUpDownBPM</value>
@@ -3604,8 +3664,11 @@ The image size is 640x480.</value>
   <data name="tabPageAVI.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="&gt;&gt;hScrollBarGLEVEL.Type" xml:space="preserve">
-    <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;toolStripMenuItem上書き保存.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="labelDLEVEL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 12</value>
   </data>
   <data name="hScrollBar譜面用水平スクロールバー.ToolTip" xml:space="preserve">
     <value />
@@ -3619,6 +3682,9 @@ The image size is 640x480.</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemツール.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabPage基本情報.Parent" xml:space="preserve">
+    <value>tabControl情報パネル</value>
   </data>
   <data name="toolStripButton貼り付け.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 22</value>
@@ -3663,14 +3729,14 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;pictureBox譜面パネル.Parent" xml:space="preserve">
     <value>splitContainerタブと譜面を分割.Panel2</value>
   </data>
-  <data name="&gt;&gt;toolStripWAVツールバー.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;tooltoolStripMenuItemレーン内のすべてのチップの選択.Name" xml:space="preserve">
+    <value>tooltoolStripMenuItemレーン内のすべてのチップの選択</value>
   </data>
   <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
     <value>toolStripSeparator11</value>
   </data>
-  <data name="toolStripMenuItem編集モード.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 22</value>
+  <data name="&gt;&gt;columnHeaderBMP_BMP番号.Name" xml:space="preserve">
+    <value>columnHeaderBMP_BMP番号</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItemガイド間隔8分.Name" xml:space="preserve">
     <value>toolStripMenuItemガイド間隔8分</value>
@@ -3696,6 +3762,9 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;toolStripMenuItem小節の削除.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="toolStripMenuItemガイド間隔32分.Text" xml:space="preserve">
+    <value>1/&amp;32</value>
+  </data>
   <data name="toolStripMenuItem選択モード.Text" xml:space="preserve">
     <value>&amp;Select mode</value>
   </data>
@@ -3710,6 +3779,9 @@ The image size is 640x480.</value>
   </data>
   <data name="&gt;&gt;labelGenre.Parent" xml:space="preserve">
     <value>tabPage基本情報</value>
+  </data>
+  <data name="&gt;&gt;hScrollBarDLEVEL.Type" xml:space="preserve">
+    <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripMenuItem現在位置からBGMのみ再生.Text" xml:space="preserve">
     <value>Play &amp;BGM from current part</value>
@@ -3822,8 +3894,8 @@ The image size is 640x480.</value>
   <data name="&gt;&gt;toolStripMenuItemヘルプ.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;columnHeaderBMP_BMP番号.Name" xml:space="preserve">
-    <value>columnHeaderBMP_BMP番号</value>
+  <data name="&gt;&gt;textBoxコメント.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="toolStripButton編集モード.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 22</value>
@@ -3918,14 +3990,14 @@ The image size is 640x480.</value>
   <metadata name="statusStripステータスバー.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 493</value>
   </metadata>
-  <metadata name="toolTipツールチップ.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>572, 17</value>
+  <metadata name="contextMenuStrip譜面右メニュー.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>203, 39</value>
   </metadata>
   <metadata name="toolStripBMPツールバー.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>3, 390</value>
   </metadata>
-  <metadata name="contextMenuStrip譜面右メニュー.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>203, 39</value>
+  <metadata name="toolTipツールチップ.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>572, 17</value>
   </metadata>
   <metadata name="toolStripツールバー.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 24</value>
@@ -3940,7 +4012,7 @@ The image size is 640x480.</value>
     <value>0, 0</value>
   </metadata>
   <metadata name="toolStripAVIツールバー.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 387</value>
+    <value>3, 390</value>
   </metadata>
   <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>Japanese (Japan)</value>

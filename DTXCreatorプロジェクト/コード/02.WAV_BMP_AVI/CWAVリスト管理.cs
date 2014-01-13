@@ -195,6 +195,11 @@ namespace DTXCreator.WAV_BMP_AVI
 				}
 			}
 		}
+		public string tファイル名を絶対パスで返す( int nWAV番号1to1295 )
+		{
+			CWAV wc = this.WAVキャッシュ.tWAVをキャッシュから検索して返す( nWAV番号1to1295 );
+			return this._Form.strファイルの存在するディレクトリを絶対パスで返す( wc.strファイル名 );
+		}
 		public void tプレビュー音を再生する( CWAV wc )
 		{
 			if( ( wc != null ) && ( wc.strファイル名.Length != 0 ) )

@@ -6,7 +6,7 @@ namespace DTXCreator.UndoRedo
 {
 	internal abstract class CUndoRedoセル仮想
 	{
-		public E種別 eノード種別;
+		public E種別 eノード種別 = E種別.単独;
 		public enum E種別
 		{
 			単独,

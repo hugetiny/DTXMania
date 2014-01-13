@@ -19,7 +19,8 @@ namespace DTXCreator.譜面
 		}
 		internal void MouseClick( MouseEventArgs e )
 		{
-			if( e.Y < ( C譜面管理.nレーン割付チップ番号表示高さdot + 10 ) )
+			#region [ レーン割り付け ]
+			if ( e.Y < ( C譜面管理.nレーン割付チップ番号表示高さdot + 10 ) )
 			{
 				Cレーン lc = this.mgr譜面管理者ref.listレーン[ this.n現在のチップカーソルがあるレーン番号0to ];
 				if( ( ( ( lc.eレーン種別 == Cレーン.E種別.GtR ) || ( lc.eレーン種別 == Cレーン.E種別.GtG ) ) || ( ( lc.eレーン種別 == Cレーン.E種別.GtB ) || ( lc.eレーン種別 == Cレーン.E種別.BsR ) ) ) || ( ( lc.eレーン種別 == Cレーン.E種別.BsG ) || ( lc.eレーン種別 == Cレーン.E種別.BsB ) ) )
@@ -51,6 +52,7 @@ namespace DTXCreator.譜面
 					}
 				}
 			}
+			#endregion
 			else
 			{
 				this.tチップの配置または削除( e );
@@ -129,8 +131,8 @@ namespace DTXCreator.譜面
 			if( ( this.rc現在のチップカーソル領域.Width > 0 ) && ( this.rc現在のチップカーソル領域.Height > 0 ) )
 			{
 				Cレーン cレーン = this.mgr譜面管理者ref.listレーン[ this.n現在のチップカーソルがあるレーン番号0to ];
-				bool flag = ( Control.ModifierKeys & Keys.Control ) == Keys.Control;
-				int num = -1;
+				bool bCtrl押下中 = ( Control.ModifierKeys & Keys.Control ) == Keys.Control;
+				int nチップ番号 = -1;
 				switch( cレーン.eレーン種別 )
 				{
 					case Cレーン.E種別.GtR:
@@ -140,28 +142,31 @@ namespace DTXCreator.譜面
 					case Cレーン.E種別.BsG:
 					case Cレーン.E種別.BsB:
 					case Cレーン.E種別.BPM:
-						num = -1;
+						nチップ番号 = -1;
 						break;
 
+					case Cレーン.E種別.BEAT:		// BEATレーンはユーザー設置禁止のため、チップカーソルも表示しない
+						return;
+
 					default:
-						num = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
-						if( ( Control.ModifierKeys & Keys.Shift ) != Keys.Shift )
+						nチップ番号 = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
+						if( ( Control.ModifierKeys & Keys.Shift ) != Keys.Shift )	// Shift非押下中
 						{
-							int num2 = flag ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
-							if( num2 != 0 )
+							int nチップ番号・レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
+							if( nチップ番号・レーン割り付け != 0 )
 							{
-								num = num2;
+								nチップ番号 = nチップ番号・レーン割り付け;
 							}
 						}
 						break;
 				}
-				if( !flag )
+				if( !bCtrl押下中 )
 				{
-					Cチップ.t表チップを描画する( g, this.rc現在のチップカーソル領域, num, cレーン.col背景色 );
+					Cチップ.t表チップを描画する( g, this.rc現在のチップカーソル領域, nチップ番号, cレーン.col背景色, cレーン.eレーン種別 );
 				}
 				else
 				{
-					Cチップ.t裏チップを描画する( g, this.rc現在のチップカーソル領域, num, cレーン.col背景色 );
+					Cチップ.t裏チップを描画する( g, this.rc現在のチップカーソル領域, nチップ番号, cレーン.col背景色, cレーン.eレーン種別 );
 				}
 				Cチップ.tチップの周囲の太枠を描画する( g, this.rc現在のチップカーソル領域 );
 			}
@@ -172,34 +177,42 @@ namespace DTXCreator.譜面
 			{
 				if( e.Button == MouseButtons.Left )
 				{
-					bool flag = ( Control.ModifierKeys & Keys.Control ) == Keys.Control;
-					bool flag2 = ( Control.ModifierKeys & Keys.Shift ) == Keys.Shift;
+					bool bCtrl押下中 = ( Control.ModifierKeys & Keys.Control ) == Keys.Control;
+					bool bShift押下中 = ( Control.ModifierKeys & Keys.Shift ) == Keys.Shift;
 					Cレーン cレーン = this.mgr譜面管理者ref.listレーン[ this.n現在のチップカーソルがあるレーン番号0to ];
-					if( cレーン.eレーン種別 != Cレーン.E種別.BPM )
+					int nチップ番号・レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
+					switch ( cレーン.eレーン種別 )
 					{
-						if( ( cレーン.eレーン種別 == Cレーン.E種別.GtV ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsV ) )
-						{
-							int num5 = flag ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
-							if( ( num5 == 0 ) || flag2 )
+						#region [ GtV/BsVレーン ]
+						case Cレーン.E種別.GtV:
+						case Cレーン.E種別.BsV:
+							// int nチップ番号・レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
+							if ( ( nチップ番号・レーン割り付け == 0 ) || bShift押下中 )
 							{
-								num5 = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
+								nチップ番号・レーン割り付け = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
 							}
 							this._Form.mgrUndoRedo管理者.tトランザクション記録を開始する();
-							this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, num5, 0f, flag );
+							this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, nチップ番号・レーン割り付け, 0f, bCtrl押下中 );
 							if( this.b指定位置にRGBチップがひとつもない( this.n現在のチップカーソルの譜面先頭からの位置grid, this.n現在のチップカーソルがあるレーン番号0to + 1, this.n現在のチップカーソルがあるレーン番号0to + 2, this.n現在のチップカーソルがあるレーン番号0to + 3 ) )
 							{
 								this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to + 1, this.n現在のチップカーソルの譜面先頭からの位置grid, 2, 0f, false );
 							}
 							this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-						}
-						else if( ( ( cレーン.eレーン種別 == Cレーン.E種別.GtR ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtG ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtB ) )
-						{
-							if( flag )
+							break;
+						#endregion
+						#region [ Guitar R/G/B, Bass R/G/B レーン ]
+						case Cレーン.E種別.GtR:
+						case Cレーン.E種別.GtG:
+						case Cレーン.E種別.GtB:
+						case Cレーン.E種別.BsR:
+						case Cレーン.E種別.BsG:
+						case Cレーン.E種別.BsB:
+							if( bCtrl押下中 )
 							{
 								for( int i = 0; i < this.mgr譜面管理者ref.listレーン.Count; i++ )
 								{
 									Cレーン cレーン2 = this.mgr譜面管理者ref.listレーン[ i ];
-									if( cレーン2.eレーン種別 == Cレーン.E種別.GtR )
+									if( cレーン2.eレーン種別 == Cレーン.E種別.GtR || cレーン2.eレーン種別 == Cレーン.E種別.BsR )
 									{
 										this.mgr譜面管理者ref.tチップを配置または置換する( i, this.n現在のチップカーソルの譜面先頭からの位置grid, 2, 0f, false );
 										break;
@@ -210,92 +223,129 @@ namespace DTXCreator.譜面
 							{
 								this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, 1, 0f, false );
 							}
-						}
-						else if( ( ( cレーン.eレーン種別 == Cレーン.E種別.BsR ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsG ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsB ) )
-						{
-							if( flag )
+							break;
+						#endregion
+						#region [ BPMレーン ]
+						case Cレーン.E種別.BPM:
+							#region [ ダイアログでBPM値を入力させる ]
+							this._Form.dlgチップパレット.t一時的に隠蔽する();
+							C数値入力ダイアログ c数値入力ダイアログ = new C数値入力ダイアログ( this.mgr譜面管理者ref.dc譜面先頭からの位置gridにおけるBPMを返す( this.n現在のチップカーソルの譜面先頭からの位置grid ), 0.0001M, 1000M, Resources.strBPM選択ダイアログの説明文 );
+							Point point = this._Form.pictureBox譜面パネル.PointToScreen( new Point( e.X, e.Y ) );
+							c数値入力ダイアログ.Left = point.X - ( c数値入力ダイアログ.Width / 2 );
+							c数値入力ダイアログ.Top = point.Y + 4;
+							DialogResult result = c数値入力ダイアログ.ShowDialog();
+							this._Form.dlgチップパレット.t一時的な隠蔽を解除する();
+							if ( result != DialogResult.OK )
 							{
-								for( int j = 0; j < this.mgr譜面管理者ref.listレーン.Count; j++ )
-								{
-									Cレーン cレーン3 = this.mgr譜面管理者ref.listレーン[ j ];
-									if( cレーン3.eレーン種別 == Cレーン.E種別.BsR )
-									{
-										this.mgr譜面管理者ref.tチップを配置または置換する( j, this.n現在のチップカーソルの譜面先頭からの位置grid, 2, 0f, false );
-										break;
-									}
-								}
+								return;
 							}
-							else
+							#endregion
+							float fBPM = ( float ) c数値入力ダイアログ.dc数値;
+
+							tBPMチップを配置する( n現在のチップカーソルの譜面先頭からの位置grid, fBPM );
+							break;
+						#endregion
+						#region [ Beatレーン ]
+						case Cレーン.E種別.BEAT:
+							// BEATレーンに対しては、クリック押下でのチップ設置は禁止
+							break;
+						#endregion
+						#region [ その他通常チップ ]
+						default:
+							//int nチップ番号・レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
+							if( ( nチップ番号・レーン割り付け == 0 ) || bShift押下中 )
 							{
-								this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, 1, 0f, false );
+								nチップ番号・レーン割り付け = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
 							}
-						}
-						else
-						{
-							int num8 = flag ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
-							if( ( num8 == 0 ) || flag2 )
-							{
-								num8 = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
-							}
-							this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, num8, 0f, flag );
-						}
+							this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, nチップ番号・レーン割り付け, 0f, bCtrl押下中 );
+							break;
+						#endregion
 					}
-					else
+					#region [ 必要に応じて、プレビュー音を再生する ]
+					if ( this._Form.appアプリ設定.PlaySoundOnWAVChipAllocated && ( ( ( cレーン.eレーン種別 == Cレーン.E種別.WAV ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtV ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsV ) ) )
 					{
-						this._Form.dlgチップパレット.t一時的に隠蔽する();
-						C数値入力ダイアログ c数値入力ダイアログ = new C数値入力ダイアログ( this.mgr譜面管理者ref.dc譜面先頭からの位置gridにおけるBPMを返す( this.n現在のチップカーソルの譜面先頭からの位置grid ), 0.0001M, 1000M, Resources.strBPM選択ダイアログの説明文 );
-						Point point = this._Form.pictureBox譜面パネル.PointToScreen( new Point( e.X, e.Y ) );
-						c数値入力ダイアログ.Left = point.X - ( c数値入力ダイアログ.Width / 2 );
-						c数値入力ダイアログ.Top = point.Y + 4;
-						DialogResult result = c数値入力ダイアログ.ShowDialog();
-						this._Form.dlgチップパレット.t一時的な隠蔽を解除する();
-						if( result != DialogResult.OK )
+						int nWAV番号1to1295 = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
+						if( ( nWAV番号1to1295 == 0 ) || bShift押下中 )
 						{
-							return;
+							nWAV番号1to1295 = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
 						}
-						float num = (float) c数値入力ダイアログ.dc数値;
-						int key = -1;
-						foreach( KeyValuePair<int, float> pair in this.mgr譜面管理者ref.dicBPx )
-						{
-							if( pair.Value == num )
-							{
-								key = pair.Key;
-								break;
-							}
-						}
-						if( key == -1 )
-						{
-							for( int k = 1; k < 36 * 36; k++ )
-							{
-								if( !this.mgr譜面管理者ref.dicBPx.ContainsKey( k ) )
-								{
-									this.mgr譜面管理者ref.dicBPx.Add( k, num );
-									key = k;
-									break;
-								}
-							}
-						}
-						this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, key, num, false );
-					}
-					if( this._Form.appアプリ設定.PlaySoundOnWAVChipAllocated && ( ( ( cレーン.eレーン種別 == Cレーン.E種別.WAV ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtV ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsV ) ) )
-					{
-						int num9 = flag ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
-						if( ( num9 == 0 ) || flag2 )
-						{
-							num9 = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
-						}
-						CWAV wc = this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す( num9 );
+						CWAV wc = this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す( nWAV番号1to1295 );
 						if( ( wc != null ) && ( !this._Form.appアプリ設定.NoPreviewBGM || !wc.bBGMとして使用 ) )
 						{
 							this._Form.mgrWAVリスト管理者.tプレビュー音を再生する( wc );
 						}
 					}
+					#endregion
 				}
 				if( e.Button == MouseButtons.Right )
 				{
 					this.mgr譜面管理者ref.tチップを削除する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid );
 				}
 			}
+		}
+
+		// tチップの配置または削除() から株分け
+		public void tBPMチップを配置する( int _n現在のチップカーソルの譜面先頭からの位置grid, float BPM )
+		{
+			int key = -1;
+			foreach ( KeyValuePair<int, float> pair in this.mgr譜面管理者ref.dicBPx )
+			{
+				if ( pair.Value == BPM )
+				{
+					key = pair.Key;
+					break;
+				}
+			}
+			if ( key == -1 )
+			{
+				for ( int k = 1; k < 36 * 36; k++ )
+				{
+					if ( !this.mgr譜面管理者ref.dicBPx.ContainsKey( k ) )
+					{
+						this.mgr譜面管理者ref.dicBPx.Add( k, BPM );
+						key = k;
+						break;
+					}
+				}
+			}
+
+			this.n現在のチップカーソルがあるレーン番号0to = this.mgr譜面管理者ref.nレーン名に対応するレーン番号を返す( "BPM" );
+			this.n現在のチップカーソルの譜面先頭からの位置grid = _n現在のチップカーソルの譜面先頭からの位置grid;
+
+			this.mgr譜面管理者ref.tチップを配置または置換する(
+				this.n現在のチップカーソルがあるレーン番号0to,
+				this.n現在のチップカーソルの譜面先頭からの位置grid,
+				key,
+				BPM,
+				false
+			);
+		}
+
+		public void tBeatチップを配置する( int _n現在のチップカーソルの譜面先頭からの位置grid, int index, float fBeatTime, bool b裏として配置 )
+		{
+			this.n現在のチップカーソルがあるレーン番号0to = this.mgr譜面管理者ref.nレーン名に対応するレーン番号を返す( "BEAT" );
+			this.n現在のチップカーソルの譜面先頭からの位置grid = _n現在のチップカーソルの譜面先頭からの位置grid;
+
+			this.mgr譜面管理者ref.tチップを配置または置換する(
+				this.n現在のチップカーソルがあるレーン番号0to,
+				this.n現在のチップカーソルの譜面先頭からの位置grid,
+				index,
+				fBeatTime,
+				b裏として配置
+			);
+		}
+		public void tHHチップを配置する( int _n現在のチップカーソルの譜面先頭からの位置grid, int index, bool b裏として配置 )
+		{
+			this.n現在のチップカーソルがあるレーン番号0to = this.mgr譜面管理者ref.nレーン名に対応するレーン番号を返す( "HH" );
+			this.n現在のチップカーソルの譜面先頭からの位置grid = _n現在のチップカーソルの譜面先頭からの位置grid;
+
+			this.mgr譜面管理者ref.tチップを配置または置換する(
+				this.n現在のチップカーソルがあるレーン番号0to,
+				this.n現在のチップカーソルの譜面先頭からの位置grid,
+				index,
+				0,
+				b裏として配置
+			);
 		}
 		private void tレーン割付のRedo( Cレーン割付用UndoRedo lur変更前, Cレーン割付用UndoRedo lur変更後 )
 		{

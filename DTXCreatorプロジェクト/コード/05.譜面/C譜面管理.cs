@@ -262,56 +262,73 @@ namespace DTXCreator.譜面
 			C小節 c小節 = this.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
 			if( c小節 != null )
 			{
-				bool flag3;
+				bool b削除完了;
 				int num = n譜面先頭からの位置grid - this.n譜面先頭からみた小節先頭の位置gridを返す( c小節.n小節番号0to3599 );
 				this._Form.mgrUndoRedo管理者.tトランザクション記録を開始する();
+				int laneBEAT = this._Form.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BEAT" );
 				do
 				{
 					Cレーン cレーン = this.listレーン[ nレーン番号0to ];
-					bool flag = ( ( cレーン.eレーン種別 == Cレーン.E種別.GtR ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtG ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtB );
-					bool flag2 = ( ( cレーン.eレーン種別 == Cレーン.E種別.BsR ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsG ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsB );
-					flag3 = true;
+					bool bRGBGuitar = ( ( cレーン.eレーン種別 == Cレーン.E種別.GtR ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtG ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtB );
+					bool bRGBBass = ( ( cレーン.eレーン種別 == Cレーン.E種別.BsR ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsG ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsB );
+					b削除完了 = true;
 					foreach( Cチップ cチップ in c小節.listチップ )
 					{
 						if( cチップ.n位置grid == num )
 						{
+							//cチップ.nチャンネル番号00toFF = 0xF3;			// 裏チップにする (表は0xF8)
+							//cチップ.b裏 = true;
 							if( cチップ.nレーン番号0to == nレーン番号0to )
 							{
 								Cチップ cc = new Cチップ();
 								cc.tコピーfrom( cチップ );
 								Cチップ配置用UndoRedo redo = new Cチップ配置用UndoRedo( c小節.n小節番号0to3599, cc );
 								this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ配置用UndoRedo>( null, new DGUndoを実行する<Cチップ配置用UndoRedo>( this.tチップ削除のUndo ), new DGRedoを実行する<Cチップ配置用UndoRedo>( this.tチップ削除のRedo ), redo, redo ) );
-								c小節.listチップ.Remove( cチップ );
-								flag3 = false;
+
+								#region [ チップオブジェクトを削除する。ただしBEATオブジェクトは削除禁止。裏に回すだけ。]
+								if ( cチップ.nレーン番号0to != laneBEAT )
+								{
+									c小節.listチップ.Remove( cチップ );
+									b削除完了 = false;
+								}
+								else
+								{
+									int p = c小節.listチップ.IndexOf( cチップ );
+									cチップ.nチャンネル番号00toFF = (cチップ.b裏)? 0xF3 : 0xF8;		// 表裏反転
+									cチップ.b裏 = !cチップ.b裏;
+									c小節.listチップ[ p ] = cチップ;
+								}
 								this._Form.b未保存 = true;
+								#endregion
+
 								break;
 							}
-							if( ( flag && ( this.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.GtR ) ) && ( cチップ.n値・整数1to1295 == 2 ) )
+							if( ( bRGBGuitar && ( this.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.GtR ) ) && ( cチップ.n値・整数1to1295 == 2 ) )
 							{
 								Cチップ cチップ3 = new Cチップ();
 								cチップ3.tコピーfrom( cチップ );
 								Cチップ配置用UndoRedo redo2 = new Cチップ配置用UndoRedo( c小節.n小節番号0to3599, cチップ3 );
 								this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ配置用UndoRedo>( null, new DGUndoを実行する<Cチップ配置用UndoRedo>( this.tチップ削除のUndo ), new DGRedoを実行する<Cチップ配置用UndoRedo>( this.tチップ削除のRedo ), redo2, redo2 ) );
 								c小節.listチップ.Remove( cチップ );
-								flag3 = false;
+								b削除完了 = false;
 								this._Form.b未保存 = true;
 								break;
 							}
-							if( ( flag2 && ( this.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.BsR ) ) && ( cチップ.n値・整数1to1295 == 2 ) )
+							if( ( bRGBBass && ( this.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.BsR ) ) && ( cチップ.n値・整数1to1295 == 2 ) )
 							{
 								Cチップ cチップ4 = new Cチップ();
 								cチップ4.tコピーfrom( cチップ );
 								Cチップ配置用UndoRedo redo3 = new Cチップ配置用UndoRedo( c小節.n小節番号0to3599, cチップ4 );
 								this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ配置用UndoRedo>( null, new DGUndoを実行する<Cチップ配置用UndoRedo>( this.tチップ削除のUndo ), new DGRedoを実行する<Cチップ配置用UndoRedo>( this.tチップ削除のRedo ), redo3, redo3 ) );
 								c小節.listチップ.Remove( cチップ );
-								flag3 = false;
+								b削除完了 = false;
 								this._Form.b未保存 = true;
 								break;
 							}
 						}
 					}
 				}
-				while( !flag3 );
+				while( !b削除完了 );
 				this._Form.tUndoRedo用GUIの有効・無効を設定する();
 				this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
 			}
@@ -750,6 +767,7 @@ namespace DTXCreator.譜面
 			int alpha = 0x19;
 
 			this.listレーン.Add( new Cレーン( Cレーン.E種別.BPM, "BPM", 0x08, 0x03, true, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BPM, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.BEAT, "BEAT", 0xF8, 0xF3, true, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.Beat, true ) );
 
 			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "LC",  0x1a, 0x1a, true,  Color.FromArgb( alpha, 0, 0xff, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
 			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "HH",  0x11, 0x18, false, Color.FromArgb( alpha, 0, 0xff, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
@@ -925,6 +943,10 @@ namespace DTXCreator.譜面
 							Cチップ.t表チップを描画する( g, rectangle, cチップ.f値・浮動小数, cレーン.col背景色 );
 							break;
 
+						case Cレーン.E種別.BEAT:
+							Cチップ.t表チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色, Cレーン.E種別.BEAT );
+							break;
+
 						default:
 							Cチップ.t表チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色 );
 							break;
@@ -933,6 +955,10 @@ namespace DTXCreator.譜面
 				else if( cレーン.eレーン種別 == Cレーン.E種別.BPM )
 				{
 					Cチップ.t裏チップを描画する( g, rectangle, cチップ.f値・浮動小数, cレーン.col背景色 );
+				}
+				else if ( cレーン.eレーン種別 == Cレーン.E種別.BEAT )
+				{
+					Cチップ.t裏チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色, Cレーン.E種別.BEAT );
 				}
 				else
 				{
