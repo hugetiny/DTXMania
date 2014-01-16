@@ -5087,7 +5087,7 @@ namespace DTXCreator
 				nBGM位置grid = (int) ( 192f * f小節長倍率 * listBeatPositions[ n1拍目のBeatPositionIndex ].fBeatTime / ( ( 60 * 4 ) / tempo ) + 0.5 );	// ここでnBGM位置Gridが192を超えることがある
 																											// → そんな時は、tempoを2倍して再計算??
 																											// じゃなくて、192をひいて、次の小節に回す(小節長倍率が変化する可能性があることに注意)
-				cチップBGM.n位置grid =(int) (192 * f小節長倍率 + 0.5f) - nBGM位置grid;	// "192-" が必要なことに注意
+				cチップBGM.n位置grid =(int) (192 * f小節長倍率 + 0.5f) - ( nBGM位置grid % 192 );	// "192-" が必要なことに注意
 				c小節_0小節目.listチップ[ nBGMチップのindex ] = cチップBGM;
 				this.mgr譜面管理者.dic小節[ nBGMチップの小節番号 ] = c小節_0小節目;
 			}
@@ -5096,28 +5096,20 @@ namespace DTXCreator
 			#region [ 0小節目のBPMを設定し、1つ目の拍が1小節目の頭に来るようにする。]
 			// まず、0小節の頭にBPM設定を追加する。
 			this.mgr編集モード管理者.tBPMチップを配置する( 0 * 192, tempo );
-			this.numericUpDownBPM.Value = (decimal) tempo;
+			this.numericUpDownBPM.Value = (decimal) ( (int)(tempo + 0.5) );
 			numericUpDownBPM_ValueChanged( null, null );
 			numericUpDownBPM_Leave( null, null );
 
 			// 更に、先の1グリッド分の誤差をなくすために、BGMチップの位置だけでなく、0小節目のBPMも微調整する。
 			float fBGM再生直後のBPM = ( 60 * 4 ) * nBGM位置grid / ( 192.0f * f小節長倍率 ) / listBeatPositions[ n1拍目のBeatPositionIndex ].fBeatTime;
-			this.mgr編集モード管理者.tBPMチップを配置する( 192 - nBGM位置grid, fBGM再生直後のBPM );
-
-			//Debug.WriteLine( "BGM Grid  =" + nBGM位置grid );  
-			//Debug.WriteLine( "First  BPM=" + tempo );
-			//Debug.WriteLine( "Second BPM=" + fBGM再生直後のBPM );
+			this.mgr編集モード管理者.tBPMチップを配置する( 192 - ( nBGM位置grid % 192 ), fBGM再生直後のBPM );
 			#endregion
-
-			//#region [ 1小節の頭に、まずは平均テンポを設置する。本当は、次のbeat位置に向けてのBPM値を、平均BPMを使って計算したうえで、設定すべき。]
-			//this.mgr編集モード管理者.tBPMチップを配置する( 1 * 192, tempo );
-			//#endregion
 
 			#region [ BEATレーンにチップを配置する ]
 //			int lastGrid = (int) ( 192 * this.mgr譜面管理者.dic小節[ 0 ].f小節長倍率 );	// 0小節目の倍率
 			//int last小節内Grid = 0;
 			//int last小節番号 = nBGMチップの小節番号;
-			int last小節番号 = 1;
+			int n最初の拍のある小節番号 = 1 + ( nBGM位置grid / 192 );
 			float lastBeatTime = listBeatPositions[ n1拍目のBeatPositionIndex ].fBeatTime;
 
 			for ( int index = n1拍目のBeatPositionIndex; index < listBeatPositions.Count; index++ )
@@ -5131,7 +5123,7 @@ namespace DTXCreator
 
 				float deltatime = sbp.fBeatTime - lastBeatTime;
 //Debug.Write( "delta=" + deltatime );
-				int n小節番号 = last小節番号;
+				int n小節番号 = n最初の拍のある小節番号;
 				float f1小節の時間 = ( 60 / tempo ) * 4;
 				#region [ 0小節目の場合 ]
 				if ( deltatime < 0 )
@@ -5192,9 +5184,9 @@ namespace DTXCreator
 				int n小節内Grid = (int) ( 192f * f小節長倍率 * deltatime / ( ( 60 * 4 ) / tempo ) + 0.5 );
 
 				#region [ Gridを16分音符単位(==12grid単位)でquantizeする ]
-				Debug.Write( "nGrid: " + n小節内Grid + " -> " );
+				//Debug.Write( "nGrid: " + n小節内Grid + " -> " );
 				n小節内Grid = ( ( n小節内Grid + 6 ) / 12 ) * 12;
-				Debug.WriteLine( n小節内Grid );
+				//Debug.WriteLine( n小節内Grid );
 				#endregion
 
 				int nGrid = this.mgr譜面管理者.n譜面先頭からみた小節先頭の位置gridを返す( n小節番号 ) + n小節内Grid;
@@ -5264,7 +5256,7 @@ Debug.WriteLine( "[" + index + "]: n小節番号=" + n小節番号 + ", Grid= " 
 								c小節.listチップ[ index ].f値・浮動小数,
 								n小節番号,
 								this.mgr譜面管理者.n譜面先頭からみた小節先頭の位置gridを返す( n小節番号 ) + c小節.listチップ[ index ].n位置grid,
-								c小節.listチップ[ index ].n位置grid,							// 小節内のGridは以後使わないので、0にしてしまう。
+								c小節.listチップ[ index ].n位置grid,
 								c小節.listチップ[ index ].b裏,
 								true
 							)
@@ -5330,7 +5322,7 @@ Debug.WriteLine( "[" + index + "]: n小節番号=" + n小節番号 + ", Grid= " 
 				#endregion
 			}
 			#region [ デバッグ用: HHチップを置く ]
-			for ( int index = n1拍目のBeatPositionIndex + 1; index < listBeatPositions.Count; index++ )
+			for ( int index = n1拍目のBeatPositionIndex; index < listBeatPositions.Count; index++ )
 			{
 				this.mgr編集モード管理者.tHHチップを配置する( listBeatPositions[ index ].nGrid, 1, listBeatPositions[ index ].b無効 );	// デバッグ用・見やすくするために暫定的に。
 			}
