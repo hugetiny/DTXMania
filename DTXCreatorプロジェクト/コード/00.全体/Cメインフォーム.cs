@@ -1166,7 +1166,8 @@ namespace DTXCreator
 			// 後処理。
 			this.b未保存 = true;
 			this.mgrUndoRedo管理者.tトランザクション記録を終了する();
-
+			listBEATチップ.Clear();
+			listBEATチップ = null;
 
 			// 画面を再描画。
 			this.tUndoRedo用GUIの有効・無効を設定する();
@@ -5332,6 +5333,11 @@ namespace DTXCreator
 			#region [ 画面の再描画 ]
 			this.pictureBox譜面パネル.Invalidate();
 			#endregion
+
+			#region [ listBeatPositionsの開放 ]
+			listBeatPositions.Clear();
+			listBeatPositions = null;
+			#endregion
 		}
 
 		//private void ToolStripMenuItemBPMChipsGeneration_Click( object sender, EventArgs e )
@@ -5438,6 +5444,12 @@ namespace DTXCreator
 				this.mgr編集モード管理者.tHHチップを配置する( listBeatPositions[ index ].nGrid, 1, listBeatPositions[ index ].b無効 );	// デバッグ用・見やすくするために暫定的に。
 			}
 			#endregion
+
+			#region [ listBeatPositionsの開放 ]
+			listBeatPositions.Clear();
+			listBeatPositions = null;
+			#endregion
+
 			#endregion
 		}
 
