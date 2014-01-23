@@ -41,6 +41,11 @@ namespace DTXMania
 			get;
 			private set;
 		}
+		public static bool bDTXVモード
+		{
+			get;
+			set;
+		}
 		public static CConfigIni ConfigIni
 		{
 			get; 
@@ -1561,6 +1566,15 @@ for (int i = 0; i < 3; i++) {
 			{
 				bコンパクトモード = true;
 				strコンパクトモードファイル = commandLineArgs[ 1 ];
+				if ( !File.Exists( strコンパクトモードファイル ) )		// #32985 2014.1.23 yyagi 
+				{
+					Trace.TraceError( "コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。[{0}]", strコンパクトモードファイル );
+#if DEBUG
+					Environment.Exit( -1 );
+#else
+					throw new FileNotFoundException( "コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。", strコンパクトモードファイル );
+#endif
+				}
 				Trace.TraceInformation( "コンパクトモードで起動します。[{0}]", strコンパクトモードファイル );
 			}
 			//---------------------
