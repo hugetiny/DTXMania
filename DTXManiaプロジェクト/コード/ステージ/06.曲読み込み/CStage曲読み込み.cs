@@ -364,14 +364,17 @@ namespace DTXMania
 //						if ( ( nCurrentTime - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms - 1000 ) )
 						if ( ( nCurrentTime - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms ) )	// #27787 2012.3.10 yyagi 1000ms == フェードイン分の時間
 						{
-							this.actFO.tフェードアウト開始();
+							if ( !CDTXMania.DTXVmode.Enabled )
+							{
+								this.actFO.tフェードアウト開始();
+							}
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 						}
 						return (int) E曲読込画面の戻り値.継続;
 					}
 
 				case CStage.Eフェーズ.共通_フェードアウト:
-					if( this.actFO.On進行描画() == 0 )
+					if ( this.actFO.On進行描画() == 0 && !CDTXMania.DTXVmode.Enabled )		// DTXVモード時は、フェードアウト省略
 						return 0;
 
 					if ( txFilename != null )

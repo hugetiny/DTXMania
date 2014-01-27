@@ -182,6 +182,7 @@
     <Compile Include="コード\ステージ\CActFIFOWhite.cs" />
     <Compile Include="コード\ステージ\CActLVLNFont.cs" />
     <Compile Include="コード\ステージ\CActオプションパネル.cs" />
+    <Compile Include="コード\ステージ\CDTXVmode.cs" />
     <Compile Include="コード\ステージ\CStage.cs" />
     <Compile Include="コード\プラグイン\CPluginHost.cs" />
     <Compile Include="コード\プラグイン\IPluginActivity.cs" />

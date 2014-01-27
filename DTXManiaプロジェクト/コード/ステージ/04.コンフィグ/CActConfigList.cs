@@ -1752,7 +1752,7 @@ namespace DTXMania
 										0,
 										// this.iSystemASIOBufferSizeMs.n現在の値,
 										this.iSystemASIODevice.n現在選択されている項目番号 );
-				CDTXMania.app.AddSoundTypeToWindowTitle();
+				CDTXMania.app.ShowWindowTitleWithSoundType();
 			}
 			#endregion
 			#region [ サウンドのタイムストレッチモード変更 ]
@@ -2384,7 +2384,6 @@ namespace DTXMania
 //Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );
 //Trace.TraceInformation( "Skin現在System  : " + CSkin.strSystemSkinSubfolderFullName );
 //Trace.TraceInformation( "Skin現在BoxDef  : " + CSkin.strBoxDefSkinSubfolderFullName );
-		
 		}
 		private void tConfigIniへ記録する・Bass()
 		{

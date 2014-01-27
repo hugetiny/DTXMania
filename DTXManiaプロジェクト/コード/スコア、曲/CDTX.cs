@@ -369,7 +369,7 @@ namespace DTXMania
 				return builder.ToString();
 			}
 		}
-		public class CChip : IComparable<CDTX.CChip>
+		public class CChip : IComparable<CDTX.CChip>, ICloneable
 		{
 			public bool bHit;
 			public bool b可視 = true;
@@ -636,6 +636,14 @@ namespace DTXMania
 			}
 			//-----------------
 			#endregion
+			/// <summary>
+			/// shallow copyです。
+			/// </summary>
+			/// <returns></returns>
+			public object Clone()
+			{
+				return MemberwiseClone();
+			}
 		}
 		public class CWAV : IDisposable
 		{

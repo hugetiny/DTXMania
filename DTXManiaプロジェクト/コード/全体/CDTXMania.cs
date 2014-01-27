@@ -41,11 +41,11 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		public static bool bDTXVモード
-		{
-			get;
-			set;
-		}
+		//public static bool bDTXVモード
+		//{
+		//    get;
+		//    set;
+		//}
 		public static CConfigIni ConfigIni
 		{
 			get; 
@@ -81,6 +81,7 @@ namespace DTXMania
 			get;
 			private set;
 		}
+		#region [ 入力範囲ms ]
 		public static int nPerfect範囲ms
 		{
 			get
@@ -141,6 +142,7 @@ namespace DTXMania
 				return ConfigIni.nヒット範囲ms.Poor;
 			}
 		}
+		#endregion
 		public static CPad Pad 
 		{
 			get;
@@ -297,6 +299,11 @@ namespace DTXMania
 		public IntPtr WindowHandle					// 2012.10.24 yyagi; to add ASIO support
 		{
 			get { return base.Window.Handle; }
+		}
+		public static CDTXVmode DTXVmode			// #28821 2014.1.23 yyagi
+		{
+			get;
+			set;
 		}
 		#endregion
 
@@ -529,6 +536,55 @@ namespace DTXMania
 			if ( ConfigIni.nフレーム毎スリープms >= 0 )			// #xxxxx 2011.11.27 yyagi
 			{
 				Thread.Sleep( ConfigIni.nフレーム毎スリープms );
+			}
+			#endregion
+
+			#region [ DTXCreatorからの指示 ]
+			if ( this.Window.IsReceivedMessage )	// ウインドウメッセージで、
+			{
+				string strMes = this.Window.strMessage;
+				this.Window.IsReceivedMessage = false;
+
+				if ( strMes != null )
+				{
+					bool bNeedReload;
+					string strCommand;
+
+//Debug.WriteLine( "msg arg=" + strMes );
+					DTXVmode.ParseArguments( strMes, out strCommand, out bNeedReload );
+
+					if ( DTXVmode.Enabled )
+					{
+//Debug.WriteLine( "DTXV mode is enabled," );
+						bコンパクトモード = true;
+						strコンパクトモードファイル = DTXVmode.filename;
+					}
+
+					if ( strCommand == "-S" )		// DTXV再生停止
+					{
+						// 再生停止処理を入れること
+					}
+					else if ( strCommand == "-N" )
+					{
+						bコンパクトモード = true;
+						DTXVmode.Enabled = true;
+
+//Debug.WriteLine( "再生開始小節: " + DTXVmode.nStartBar );
+
+						if ( bNeedReload )
+						{
+//Debug.WriteLine( DTXVmode.filename + ": 要reload" );
+								// もし前回のものより更新されていれば、DTXを読み直し
+						}
+						else
+						{
+//Debug.WriteLine( DTXVmode.filename + ": reload不要" );
+								// さもなくば、読み直しなしで、再生位置だけを変更
+						}
+					}
+				}
+
+				// 場合によってはDTXVモードをON
 			}
 			#endregion
 
@@ -1070,6 +1126,16 @@ for (int i = 0; i < 3; i++) {
 					case CStage.Eステージ.演奏:
 						#region [ *** ]
 						//-----------------------------
+
+						if ( DTXVmode.Enabled && DTXVmode.Refreshed )
+						{
+							DTXVmode.Refreshed = false;
+							if ( !ConfigIni.bギタレボモード )
+							{
+								CDTXMania.stage演奏ドラム画面.t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+							}
+						}
+
 						switch( this.n進行描画の戻り値 )
 						{
 							case (int) E演奏画面の戻り値.継続:
@@ -1490,7 +1556,20 @@ for (int i = 0; i < 3; i++) {
 		private List<CActivity> listトップレベルActivities;
 		private int n進行描画の戻り値;
 		private MouseButtons mb = System.Windows.Forms.MouseButtons.Left;
-		private string strWindowTitle = "";
+		private string strWindowTitle
+		{
+			get
+			{
+				if ( DTXVmode.Enabled )
+				{
+					return "DTXViewer release " + VERSION;
+				}
+				else
+				{
+					return "DTXMania .NET style release " + VERSION;
+				}
+			}
+		}
 
 		private void t起動処理()
 		{
@@ -1557,7 +1636,23 @@ for (int i = 0; i < 3; i++) {
 			Trace.TraceInformation( "CLR Version: " + Environment.Version.ToString() );
 			//---------------------
 			#endregion
-			#region [ コンパクトモードスイッチの有無 ]
+			#region [ DTXVmodeクラス の初期化 ]
+			//---------------------
+			Trace.TraceInformation( "DTXVモードの初期化を行います。" );
+			Trace.Indent();
+			try
+			{
+				DTXVmode = new CDTXVmode();
+				DTXVmode.Enabled = false;
+				Trace.TraceInformation( "DTXVモードの初期化を完了しました。" );
+			}
+			finally
+			{
+				Trace.Unindent();
+			}
+			//---------------------
+			#endregion
+			#region [ コンパクトモードスイッチの有無、もしくは、DTXViewerとしての起動 ]
 			//---------------------
 			bコンパクトモード = false;
 			strコンパクトモードファイル = "";
@@ -1565,7 +1660,29 @@ for (int i = 0; i < 3; i++) {
 			if( ( commandLineArgs != null ) && ( commandLineArgs.Length > 1 ) )
 			{
 				bコンパクトモード = true;
-				strコンパクトモードファイル = commandLineArgs[ 1 ];
+				bool bNeedReload;
+				string strCommand;
+				string arg = "";
+
+				for ( int i = 1; i < commandLineArgs.Length; i++ )
+				{
+					if ( i != 1 )
+					{
+						arg += " ";
+					}
+					arg += commandLineArgs[ i ];
+				}
+				DTXVmode.ParseArguments( arg, out strCommand, out bNeedReload );
+				
+				if ( DTXVmode.Enabled )
+				{
+					strコンパクトモードファイル = DTXVmode.filename;
+				}
+				else														// 通常のコンパクトモード
+				{
+					strコンパクトモードファイル = commandLineArgs[ 1 ];
+				}
+
 				if ( !File.Exists( strコンパクトモードファイル ) )		// #32985 2014.1.23 yyagi 
 				{
 					Trace.TraceError( "コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。[{0}]", strコンパクトモードファイル );
@@ -1576,18 +1693,20 @@ for (int i = 0; i < 3; i++) {
 #endif
 				}
 				Trace.TraceInformation( "コンパクトモードで起動します。[{0}]", strコンパクトモードファイル );
+				if ( DTXVmode.Enabled )
+				{
+					Trace.TraceInformation( "DTXVモードです。" );
+				}
 			}
 			//---------------------
 			#endregion
 
 			#region [ ウィンドウ初期化 ]
 			//---------------------
-			this.strWindowTitle = "DTXMania .NET style release " + VERSION;
-
 			base.Window.StartPosition = FormStartPosition.Manual;                                                       // #30675 2013.02.04 ikanick add
 			base.Window.Location = new Point( ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y );   // #30675 2013.02.04 ikanick add
 
-			base.Window.Text = this.strWindowTitle;
+			base.Window.Text = this.strWindowTitle;		// 事前にDTXVmodeの実体を作っておくこと
 
 			base.Window.StartPosition = FormStartPosition.Manual;                                                       // #30675 2013.02.04 ikanick add
             base.Window.Location = new Point(ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y);   // #30675 2013.02.04 ikanick add
@@ -1696,6 +1815,8 @@ for (int i = 0; i < 3; i++) {
 			}
 			//---------------------
 			#endregion
+			//-----------
+
 			#region [ FPS カウンタの初期化 ]
 			//---------------------
 			Trace.TraceInformation( "FPSカウンタの初期化を行います。" );
@@ -1832,7 +1953,7 @@ for (int i = 0; i < 3; i++) {
 											0,
 											CDTXMania.ConfigIni.nASIODevice
 				);
-				AddSoundTypeToWindowTitle();
+				ShowWindowTitleWithSoundType();
 				FDK.CSound管理.bIsTimeStretch = CDTXMania.ConfigIni.bTimeStretch;
 				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );
 			}
@@ -1981,7 +2102,7 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 		}
 
-		public void AddSoundTypeToWindowTitle()
+		public void ShowWindowTitleWithSoundType()
 		{
 			string delay = "";
 			if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
@@ -2226,7 +2347,6 @@ for (int i = 0; i < 3; i++) {
 				}
 				//---------------------
 				#endregion
-
 				#region [ タイマの終了処理 ]
 				//---------------------
 				Trace.TraceInformation("タイマの終了処理を行います。");
@@ -2262,13 +2382,20 @@ for (int i = 0; i < 3; i++) {
 				Trace.Indent();
 				try
 				{
-					ConfigIni.t書き出し( str );
-					Trace.TraceInformation( "保存しました。({0})", new object[] { str } );
+					if ( DTXVmode.Enabled )
+					{
+						Trace.TraceInformation( "DTXVモードだったため、Config.iniは保存しません。" );
+					}
+					else
+					{
+						ConfigIni.t書き出し( str );
+						Trace.TraceInformation( "保存しました。({0})", str );
+					}
 				}
 				catch( Exception e )
 				{
 					Trace.TraceError( e.Message );
-					Trace.TraceError( "Config.ini の出力に失敗しました。({0})", new object[] { str } );
+					Trace.TraceError( "Config.ini の出力に失敗しました。({0})", str );
 				}
 				finally
 				{
@@ -2276,7 +2403,29 @@ for (int i = 0; i < 3; i++) {
 				}
 				//---------------------
 				#endregion
-				Trace.TraceInformation("アプリケーションの終了処理を完了しました。");
+				#region [ DTXVmodeの終了処理 ]
+				//---------------------
+				Trace.TraceInformation( "DTXVモードの終了処理を行います。" );
+				Trace.Indent();
+				try
+				{
+					if ( DTXVmode != null )
+					{
+						DTXVmode = null;
+						Trace.TraceInformation( "DTXVモードの終了処理を完了しました。" );
+					}
+					else
+					{
+						Trace.TraceInformation( "DTXVモードは使用されていません。" );
+					}
+				}
+				finally
+				{
+					Trace.Unindent();
+				}
+				//---------------------
+				#endregion
+				Trace.TraceInformation( "アプリケーションの終了処理を完了しました。" );
 
 
 				this.b終了処理完了済み = true;

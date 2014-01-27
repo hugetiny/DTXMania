@@ -27,6 +27,7 @@ using System.Reflection;
 using System.Security.Permissions;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 using SampleFramework.Properties;
 
 namespace SampleFramework
@@ -121,6 +122,16 @@ namespace SampleFramework
 			get;
 			set;
 		}
+		public string strMessage				// #28821 2014.1.23 yyagi
+		{
+			get;
+			private set;
+		}
+		public bool IsReceivedMessage
+		{
+			get;
+			set;
+		}
 
 		private Screen m_Screen;
         /// <summary>
@@ -144,6 +155,7 @@ namespace SampleFramework
 
             //Icon = GetDefaultIcon();
             Text = GetDefaultTitle();
+			strMessage = "";
         }
 
         /// <summary>
@@ -302,6 +314,8 @@ namespace SampleFramework
 		}
 		#endregion
 
+
+
 		/// <summary>
         /// Handles raw window messages.
         /// </summary>
@@ -406,17 +420,27 @@ namespace SampleFramework
 				}
 				#endregion
 			}
-
-			#region #23510 2010.11.16 yyagi add: 縦横比固定でのウインドウサイズ変更 from http://d.hatena.ne.jp/iselix/20080917/1221666614 http://hp.vector.co.jp/authors/VA016117/sizing.html
-			else if (m.Msg == WM_SIZING)
+			#region #28821 2014.1.23 yyagi (WM_COPYDATA)
+			else if ( m.Msg == WindowConstants.WM_COPYDATA )
 			{
-				RECT rc = (RECT)Marshal.PtrToStructure(m.LParam, typeof(RECT));
-				int w = rc.Right - rc.Left - (Size.Width - ClientSize.Width);
-				int h = rc.Bottom - rc.Top - (Size.Height - ClientSize.Height);
-				int dw = (int)(h * widthRatio / heightRatio + 0.5) - w;
-				int dh = (int)(w / (widthRatio / heightRatio) + 0.5) - h;
+				COPYDATASTRUCT mystr = new COPYDATASTRUCT();
+				Type mytype = mystr.GetType();
+				mystr = (COPYDATASTRUCT) m.GetLParam( mytype );
+				strMessage = mystr.lpData;
+				IsReceivedMessage = true;
+			}
+			#endregion
+			#region #23510 2010.11.16 yyagi add: 縦横比固定でのウインドウサイズ変更 from http://d.hatena.ne.jp/iselix/20080917/1221666614 http://hp.vector.co.jp/authors/VA016117/sizing.html
+			else if ( m.Msg == WM_SIZING )
+			{
+				RECT rc = (RECT) Marshal.PtrToStructure( m.LParam, typeof( RECT ) );
+				int w = rc.Right - rc.Left - ( Size.Width - ClientSize.Width );
+				int h = rc.Bottom - rc.Top - ( Size.Height - ClientSize.Height );
+				int dw = (int) ( h * widthRatio / heightRatio + 0.5 ) - w;
+				int dh = (int) ( w / ( widthRatio / heightRatio ) + 0.5 ) - h;
 
-				switch (m.WParam.ToInt32()) {
+				switch ( m.WParam.ToInt32() )
+				{
 					case WMSZ_LEFT:
 					case WMSZ_RIGHT:
 						rc.Bottom += dh;
@@ -426,7 +450,7 @@ namespace SampleFramework
 						rc.Right += dw;
 						break;
 					case WMSZ_BOTTOMRIGHT:
-						if (dw > 0)
+						if ( dw > 0 )
 						{
 							rc.Right += dw;
 						}
@@ -436,7 +460,7 @@ namespace SampleFramework
 						}
 						break;
 					case WMSZ_TOPLEFT:
-						if (dw > 0)
+						if ( dw > 0 )
 						{
 							rc.Left -= dw;
 						}
@@ -446,7 +470,7 @@ namespace SampleFramework
 						}
 						break;
 					case WMSZ_TOPRIGHT:
-						if (dw > 0)
+						if ( dw > 0 )
 						{
 							rc.Right += dw;
 						}
@@ -456,7 +480,7 @@ namespace SampleFramework
 						}
 						break;
 					case WMSZ_BOTTOMLEFT:
-						if (dw > 0)
+						if ( dw > 0 )
 						{
 							rc.Left -= dw;
 						}
@@ -468,9 +492,9 @@ namespace SampleFramework
 					case 9:		// #32383 2013.11.2 yyagi; exitting maximized window by using Aero snap
 						break;
 					default:
-						throw new ArgumentOutOfRangeException("value", "Illegal WM_SIZING value.");
+						throw new ArgumentOutOfRangeException( "value", "Illegal WM_SIZING value." );
 				}
-				Marshal.StructureToPtr(rc, m.LParam, true);
+				Marshal.StructureToPtr( rc, m.LParam, true );
 			}
 			#endregion
 

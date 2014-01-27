@@ -293,8 +293,7 @@ namespace DTXMania
 			queueMixerSound = new Queue<stmixer>( 64 );
 			bIsDirectSound = ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
 			db再生速度 = ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0;
-			bValidScore = true;
-			bDTXVmode = false;	// とりあえずfalse固定
+			bValidScore = (CDTXMania.DTXVmode.Enabled)? false : true;
 
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
 			foreach ( CDTX.CChip pChip in listChip )
@@ -607,7 +606,7 @@ namespace DTXMania
 		protected bool bIsDirectSound;							//
 		protected double db再生速度;
 		protected bool bValidScore;
-		protected bool bDTXVmode;
+//		protected bool bDTXVmode;
 		protected STDGBVALUE<int> nJudgeLinePosY_delta;			// #31602 2013.6.23 yyagi 表示遅延対策として、判定ラインの表示位置をずらす機能を追加する
 
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;

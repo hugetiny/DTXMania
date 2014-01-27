@@ -1,0 +1,162 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Diagnostics;
+using System.IO;
+using FDK;
+
+
+namespace DTXMania
+{
+	public class CDTXVmode
+	{
+		/// <summary>
+		/// DTXVモードかどうか
+		/// </summary>
+		public bool Enabled
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// 外部から再指示が発生したか
+		/// </summary>
+		public bool Refreshed
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// 演奏開始小節番号
+		/// </summary>
+		public int nStartBar
+		{
+			get;
+			set;
+		}
+
+		public string filename
+		{
+			get
+			{
+				return last_path;
+			}
+		}
+
+
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		public CDTXVmode()
+		{
+			this.last_path = "";
+			this.last_timestamp = DateTime.MinValue;
+			this.Enabled = false;
+			this.nStartBar = 0;
+			this.Refreshed = false;
+		}
+
+		/// <summary>
+		/// DTXファイルのリロードが必要かどうか判定する
+		/// </summary>
+		/// <param name="filename">DTXファイル名</param>
+		/// <returns></returns>
+		/// <exception cref="FileNotFoundException"></exception>
+		public bool bIsNeedReloadDTX( string filename )
+		{
+			if ( !File.Exists( filename ) )			// 指定したファイルが存在しないなら例外終了
+			{
+				Trace.TraceError( "ファイルが見つかりません。({0})", filename );
+				throw new FileNotFoundException();
+				//return false;
+			}
+
+			this.Refreshed = true;
+
+			// 前回とファイル名が異なるか、タイムスタンプが更新されているなら、DTX要更新
+			DateTime current_timestamp = File.GetLastWriteTime( filename );
+			if ( last_path != filename || current_timestamp > last_timestamp)
+			{
+				this.last_path = filename;
+				this.last_timestamp = current_timestamp;
+				return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="arg"></param>
+		/// <param name="nStartBar"></param>
+		/// <param name="command"></param>
+		/// <returns>DTXV用の引数であればtrue</returns>
+		/// <remarks>内部でEnabled, nStartBar, last_path, last_timestampを設定する</remarks>
+		public bool ParseArguments( string arg, out string strCommand, out bool bNeedReload )
+		{
+			bool ret = false;
+			this.nStartBar = 0;
+			strCommand = "";
+			bNeedReload = false;
+
+			if ( arg != null )
+			{
+				// -S  -Nxxx  filename
+				if ( arg.StartsWith( "-S", StringComparison.OrdinalIgnoreCase ) )		// DTXV再生停止
+				{
+					this.Enabled = true;
+					strCommand = "-S";
+					ret = true;
+				}
+				else if ( arg.StartsWith( "-N", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.Enabled = true;
+					strCommand = "-N";
+					ret = true;
+
+					arg = arg.Substring( 2 );					// "-N"を除去
+					string[] p = arg.Split( new char[] { ' ' } );
+					this.nStartBar = int.Parse( p[ 0 ] );			// 再生開始小節
+					if ( this.nStartBar < 0 )
+					{
+						this.nStartBar = 0;
+					}
+//Debug.WriteLine( "再生開始小節: " + this.nStartBar );
+
+					int startIndex = arg.IndexOf( ' ' );
+					string filename = arg.Substring( startIndex + 1　);	// 再生ファイル名(フルパス)
+					try
+					{
+//Debug.WriteLine( "filename_quoted=" + filename );
+						filename = filename.Trim( new char[] { '\"' } );
+						if ( bIsNeedReloadDTX( filename ) )
+						{
+//Debug.WriteLine( filename + ": 要reload" );
+							bNeedReload = true;
+							// もし前回のものより更新されていれば、DTXを読み直し
+						}
+						else
+						{
+//Debug.WriteLine( filename + ": reload不要" );
+							bNeedReload = false;
+							// さもなくば、読み直しなしで、再生位置だけを変更
+						}
+					}
+					catch	// 指定ファイルが存在しない
+					{
+					}
+				}
+			}
+
+			return ret;
+		}
+
+
+
+		private string last_path;
+		private DateTime last_timestamp;
+
+	}
+}
