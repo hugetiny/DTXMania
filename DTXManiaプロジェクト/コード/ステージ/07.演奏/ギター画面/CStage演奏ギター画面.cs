@@ -174,7 +174,11 @@ namespace DTXMania
 						this.actFOClear.tフェードアウト開始();
 					} 
 				}
-				if( bIsFinishedFadeout )
+				if ( this.eフェードアウト完了時の戻り値 == E演奏画面の戻り値.再読込・再演奏 )
+				{
+					bIsFinishedFadeout = true;
+				}
+				if ( bIsFinishedFadeout )
 				{
 					return (int) this.eフェードアウト完了時の戻り値;
 				}

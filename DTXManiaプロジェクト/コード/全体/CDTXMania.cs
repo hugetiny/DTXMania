@@ -41,11 +41,6 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		//public static bool bDTXVモード
-		//{
-		//    get;
-		//    set;
-		//}
 		public static CConfigIni ConfigIni
 		{
 			get; 
@@ -547,11 +542,10 @@ namespace DTXMania
 
 				if ( strMes != null )
 				{
-					bool bNeedReload;
 					string strCommand;
 
 //Debug.WriteLine( "msg arg=" + strMes );
-					DTXVmode.ParseArguments( strMes, out strCommand, out bNeedReload );
+					DTXVmode.ParseArguments( strMes, out strCommand );
 
 					if ( DTXVmode.Enabled )
 					{
@@ -570,17 +564,6 @@ namespace DTXMania
 						DTXVmode.Enabled = true;
 
 //Debug.WriteLine( "再生開始小節: " + DTXVmode.nStartBar );
-
-						if ( bNeedReload )
-						{
-//Debug.WriteLine( DTXVmode.filename + ": 要reload" );
-								// もし前回のものより更新されていれば、DTXを読み直し
-						}
-						else
-						{
-//Debug.WriteLine( DTXVmode.filename + ": reload不要" );
-								// さもなくば、読み直しなしで、再生位置だけを変更
-						}
 					}
 				}
 
@@ -1046,9 +1029,7 @@ namespace DTXMania
 						if( this.n進行描画の戻り値 != 0 )
 						{
 							CDTXMania.Pad.st検知したデバイス.Clear();	// 入力デバイスフラグクリア(2010.9.11)
-
 							r現在のステージ.On非活性化();
-
 							#region [ ESC押下時は、曲の読み込みを中止して選曲画面に戻る ]
 							if ( this.n進行描画の戻り値 == (int) E曲読込画面の戻り値.読込中止 )
 							{
@@ -1127,17 +1108,55 @@ for (int i = 0; i < 3; i++) {
 						#region [ *** ]
 						//-----------------------------
 
+						#region [ DTXVモード中にDTXCreatorから指示を受けた場合の処理 ]
 						if ( DTXVmode.Enabled && DTXVmode.Refreshed )
 						{
 							DTXVmode.Refreshed = false;
-							if ( !ConfigIni.bギタレボモード )
+
+							if ( DTXVmode.NeedReload )
 							{
-								CDTXMania.stage演奏ドラム画面.t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+								if ( !ConfigIni.bギタレボモード )
+								{
+									CDTXMania.stage演奏ドラム画面.t再読込();
+								}
+								else
+								{
+									CDTXMania.stage演奏ギター画面.t再読込();
+								}
+							}
+							else
+							{
+								if ( !ConfigIni.bギタレボモード )
+								{
+									CDTXMania.stage演奏ドラム画面.t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+								}
+								else
+								{
+									CDTXMania.stage演奏ギター画面.t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+								}
 							}
 						}
+						#endregion
 
 						switch( this.n進行描画の戻り値 )
 						{
+							case (int) E演奏画面の戻り値.再読込・再演奏:
+								#region [ DTXファイルを再読み込みして、再演奏 ]
+								DTX.t全チップの再生停止();
+								DTX.On非活性化();
+								r現在のステージ.On非活性化();
+								stage曲読み込み.On活性化();
+								r直前のステージ = r現在のステージ;
+								r現在のステージ = stage曲読み込み;
+								this.tガベージコレクションを実行する();
+								break;
+								#endregion
+
+							//case (int) E演奏画面の戻り値.再演奏:
+							#region [ 再読み込み無しで、再演奏 ]
+							#endregion
+							//	break;
+
 							case (int) E演奏画面の戻り値.継続:
 								break;
 
@@ -1660,7 +1679,6 @@ for (int i = 0; i < 3; i++) {
 			if( ( commandLineArgs != null ) && ( commandLineArgs.Length > 1 ) )
 			{
 				bコンパクトモード = true;
-				bool bNeedReload;
 				string strCommand;
 				string arg = "";
 
@@ -1676,10 +1694,11 @@ for (int i = 0; i < 3; i++) {
 						arg += commandLineArgs[ i ];
 					}
 				}
-				DTXVmode.ParseArguments( arg, out strCommand, out bNeedReload );
+				DTXVmode.ParseArguments( arg, out strCommand );
 				
 				if ( DTXVmode.Enabled )
 				{
+					DTXVmode.Refreshed = false;								// 初回起動時は再読み込みに走らせない
 					strコンパクトモードファイル = DTXVmode.filename;
 				}
 				else														// 通常のコンパクトモード

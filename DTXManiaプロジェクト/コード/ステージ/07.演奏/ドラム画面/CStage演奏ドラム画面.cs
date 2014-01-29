@@ -219,6 +219,10 @@ namespace DTXMania
 						this.actFOClear.tフェードアウト開始();
 					}
 				}
+				if ( this.eフェードアウト完了時の戻り値 == E演奏画面の戻り値.再読込・再演奏 )
+				{
+					bIsFinishedFadeout = true;
+				}
 				if( bIsFinishedFadeout )
 				{
 					Debug.WriteLine( "Total On進行描画=" + sw.ElapsedMilliseconds + "ms" );

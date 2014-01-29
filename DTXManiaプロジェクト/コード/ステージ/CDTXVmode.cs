@@ -37,6 +37,16 @@ namespace DTXMania
 			set;
 		}
 
+		/// <summary>
+		/// DTXファイルの再読み込みが必要かどうか
+		/// </summary>
+		public bool NeedReload
+		{
+			get;
+			set;
+//			private set;	// 本来はprivate setにすべきだが、デバッグが簡単になるので、しばらくはprivateなしのままにする。
+		}
+
 		public string filename
 		{
 			get
@@ -56,13 +66,16 @@ namespace DTXMania
 			this.Enabled = false;
 			this.nStartBar = 0;
 			this.Refreshed = false;
+			this.NeedReload = false;
 		}
 
 		/// <summary>
 		/// DTXファイルのリロードが必要かどうか判定する
 		/// </summary>
 		/// <param name="filename">DTXファイル名</param>
-		/// <returns></returns>
+		/// <returns>再読込が必要ならtrue</returns>
+		/// <remarks>プロパティNeedReloadにも結果が入る</remarks>
+		/// <remarks>これを呼び出すたびに、Refreshedをtrueにする</remarks>
 		/// <exception cref="FileNotFoundException"></exception>
 		public bool bIsNeedReloadDTX( string filename )
 		{
@@ -81,8 +94,10 @@ namespace DTXMania
 			{
 				this.last_path = filename;
 				this.last_timestamp = current_timestamp;
+				this.NeedReload = true;
 				return true;
 			}
+			this.NeedReload = false;
 			return false;
 		}
 
@@ -94,12 +109,11 @@ namespace DTXMania
 		/// <param name="command"></param>
 		/// <returns>DTXV用の引数であればtrue</returns>
 		/// <remarks>内部でEnabled, nStartBar, last_path, last_timestampを設定する</remarks>
-		public bool ParseArguments( string arg, out string strCommand, out bool bNeedReload )
+		public bool ParseArguments( string arg, out string strCommand )
 		{
 			bool ret = false;
 			this.nStartBar = 0;
 			strCommand = "";
-			bNeedReload = false;
 
 			if ( arg != null )
 			{
@@ -131,18 +145,7 @@ namespace DTXMania
 					{
 //Debug.WriteLine( "filename_quoted=" + filename );
 						filename = filename.Trim( new char[] { '\"' } );
-						if ( bIsNeedReloadDTX( filename ) )
-						{
-//Debug.WriteLine( filename + ": 要reload" );
-							bNeedReload = true;
-							// もし前回のものより更新されていれば、DTXを読み直し
-						}
-						else
-						{
-//Debug.WriteLine( filename + ": reload不要" );
-							bNeedReload = false;
-							// さもなくば、読み直しなしで、再生位置だけを変更
-						}
+						bIsNeedReloadDTX( filename );
 					}
 					catch	// 指定ファイルが存在しない
 					{

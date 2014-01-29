@@ -2206,13 +2206,20 @@ namespace DTXMania
 			return false;
 		}
 
+		public void t再読込()
+		{
+			CDTXMania.DTX.t全チップの再生停止();
+			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.再読込・再演奏;
+			base.eフェーズID = CStage.Eフェーズ.演奏_再読込;
+		}
+
 		public void t演奏位置の変更( int nStartBar )
 		{
 			// まず全サウンドオフにする
 			CDTXMania.DTX.t全チップの再生停止();
 
 
-			#region [テストコード: 再生開始小節の変更]
+			#region [ 再生開始小節の変更 ]
 			//int nStartBar = CDTXMania.DTXVmode.nStartBar + 1;	// +1が必要
 
 			#region [ 演奏済みフラグのついたChipをリセットする ]
