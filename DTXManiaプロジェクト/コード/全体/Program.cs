@@ -57,13 +57,6 @@ namespace DTXMania
 		//-----------------------------
 		#endregion
 
-
-
-
-		//[DllImport( "user32.dll" )]
-		//public static extern IntPtr FindWindow( string lpClassName, string lpWindowName );
-
-
 		[STAThread] 
 		private static void Main()
 		{

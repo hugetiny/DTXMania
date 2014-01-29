@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Diagnostics;
+using System.Threading;
 using SlimDX.Direct3D9;
 using FDK;
 
@@ -96,8 +97,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				bool flag = false;
-				bool flag2 = false;
+				bool bIsFinishedPlaying = false;
+				bool bIsFinishedFadeout = false;
 
 				if( base.b初めての進行描画 )
 				{
@@ -109,6 +110,17 @@ namespace DTXMania
 					this.ctWailingチップ模様アニメ = new CCounter( 0, 4, 50, CDTXMania.Timer );
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					this.actFI.tフェードイン開始();
+
+					if ( CDTXMania.DTXVmode.Enabled )			// DTXVモードなら
+					{
+						#region [ DTXV用の再生設定にする(全AUTOなど) ]
+						tDTXV用の設定();
+						CDTXMania.ConfigIni.n演奏速度 = (int) ( CDTXMania.DTX.dbDTXVPlaySpeed * 20 + 0.5 );
+						#endregion
+
+						t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+					}
+
 					base.b初めての進行描画 = false;
 				}
 				if( CDTXMania.ConfigIni.bSTAGEFAILED有効 && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
@@ -142,19 +154,27 @@ namespace DTXMania
 				this.t進行描画・WailingBonus();
 				this.t進行描画・譜面スクロール速度();
 				this.t進行描画・チップアニメ();
-				flag = this.t進行描画・チップ(E楽器パート.GUITAR);
+				bIsFinishedPlaying = this.t進行描画・チップ(E楽器パート.GUITAR);
 				this.t進行描画・演奏情報();
 				this.t進行描画・Wailing枠();
 				this.t進行描画・チップファイアGB();
 				this.t進行描画・STAGEFAILED();
-				flag2 = this.t進行描画・フェードイン・アウト();
-				if( flag && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
+				bIsFinishedFadeout = this.t進行描画・フェードイン・アウト();
+				if( bIsFinishedPlaying && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{
-					this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.ステージクリア;
-					base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト;
-					this.actFOClear.tフェードアウト開始();
+					if ( CDTXMania.DTXVmode.Enabled )
+					{
+						Thread.Sleep( 5 );
+						// DTXCからの次のメッセージを待ち続ける
+					}
+					else
+					{
+						this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.ステージクリア;
+						base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト;
+						this.actFOClear.tフェードアウト開始();
+					} 
 				}
-				if( flag2 )
+				if( bIsFinishedFadeout )
 				{
 					return (int) this.eフェードアウト完了時の戻り値;
 				}

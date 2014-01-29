@@ -1669,8 +1669,12 @@ for (int i = 0; i < 3; i++) {
 					if ( i != 1 )
 					{
 						arg += " ";
+						arg += "\"" + commandLineArgs[ i ] + "\"";
 					}
-					arg += commandLineArgs[ i ];
+					else
+					{
+						arg += commandLineArgs[ i ];
+					}
 				}
 				DTXVmode.ParseArguments( arg, out strCommand, out bNeedReload );
 				
