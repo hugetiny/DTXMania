@@ -1079,6 +1079,8 @@ namespace DTXMania
 		public string strファイル名の絶対パス;
 		public string strフォルダ名;
 		public string TITLE;
+		public double dbDTXVPlaySpeed;
+
 #if TEST_NOTEOFFMODE
 		public STLANEVALUE<bool> b演奏で直前の音を消音する;
 //		public bool bHH演奏で直前のHHを消音する;
@@ -1169,6 +1171,8 @@ namespace DTXMania
 			#endregion
 			this.nBGMAdjust = 0;
 			this.nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
+			this.dbDTXVPlaySpeed = 1.0f;
+
 #if TEST_NOTEOFFMODE
 			this.bHH演奏で直前のHHを消音する = true;
 			this.bGUITAR演奏で直前のGUITARを消音する = true;
@@ -3491,7 +3495,20 @@ namespace DTXMania
 					}
 					//-----------------
 					#endregion
+					#region [ DTXVPLAYSPEED ]
+					//-----------------
+					else if ( strコマンド.StartsWith( "DTXVPLAYSPEED", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.t入力・パラメータ食い込みチェック( "DTXVPLAYSPEED", ref strコマンド, ref strパラメータ );
 
+						double dtxvplayspeed = 0.0;
+						if ( TryParse( strパラメータ, out dtxvplayspeed ) && dtxvplayspeed > 0.0 )
+						{
+							this.dbDTXVPlaySpeed = dtxvplayspeed;
+						}
+					}
+					//-----------------
+					#endregion
 					// オブジェクト記述コマンドの処理。
 
 					else if( !this.t入力・行解析・WAVVOL_VOLUME( strコマンド, strパラメータ, strコメント ) &&

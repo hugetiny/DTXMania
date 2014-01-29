@@ -2206,6 +2206,55 @@ namespace DTXMania
 			return false;
 		}
 
+		/// <summary>
+		/// DTXV用の設定をする。(全AUTOなど)
+		/// 設定のバックアップはしないので、あとでConfig.iniを上書き保存しないこと。
+		/// </summary>
+		protected void tDTXV用の設定()
+		{
+			CDTXMania.ConfigIni.bAutoPlay.HH = true;
+			CDTXMania.ConfigIni.bAutoPlay.SD = true;
+			CDTXMania.ConfigIni.bAutoPlay.BD = true;
+			CDTXMania.ConfigIni.bAutoPlay.HT = true;
+			CDTXMania.ConfigIni.bAutoPlay.LT = true;
+			CDTXMania.ConfigIni.bAutoPlay.CY = true;
+			CDTXMania.ConfigIni.bAutoPlay.FT = true;
+			CDTXMania.ConfigIni.bAutoPlay.RD = true;
+			CDTXMania.ConfigIni.bAutoPlay.LC = true;
+			CDTXMania.ConfigIni.bAutoPlay.GtR = true;
+			CDTXMania.ConfigIni.bAutoPlay.GtB = true;
+			CDTXMania.ConfigIni.bAutoPlay.GtB = true;
+			CDTXMania.ConfigIni.bAutoPlay.GtPick = true;
+			CDTXMania.ConfigIni.bAutoPlay.GtW = true;
+			CDTXMania.ConfigIni.bAutoPlay.BsR = true;
+			CDTXMania.ConfigIni.bAutoPlay.BsB = true;
+			CDTXMania.ConfigIni.bAutoPlay.BsB = true;
+			CDTXMania.ConfigIni.bAutoPlay.BsPick = true;
+			CDTXMania.ConfigIni.bAutoPlay.BsW = true;
+
+			CDTXMania.ConfigIni.bAVI有効 = true;
+			CDTXMania.ConfigIni.bBGA有効 = true;
+			for ( int i = 0; i < 3; i++ )
+			{
+				CDTXMania.ConfigIni.bGraph[ i ] = false;
+				CDTXMania.ConfigIni.bHidden[ i ] = false;
+				CDTXMania.ConfigIni.bLeft[ i ] = false;
+				CDTXMania.ConfigIni.bLight[ i ] = false;
+				CDTXMania.ConfigIni.bReverse[ i ] = false;
+				CDTXMania.ConfigIni.bSudden[ i ] = false;
+				CDTXMania.ConfigIni.eInvisible[ i ] = EInvisible.OFF;
+			}
+
+			CDTXMania.ConfigIni.eDark = Eダークモード.OFF;
+
+			CDTXMania.ConfigIni.bScoreIniを出力する = false;
+			CDTXMania.ConfigIni.bSTAGEFAILED有効 = false;
+			CDTXMania.ConfigIni.bTight = false;
+			CDTXMania.ConfigIni.bストイックモード = false;
+			CDTXMania.ConfigIni.bドラム打音を発声する = true;
+		}
+
+
 		private bool bCheckAutoPlay( CDTX.CChip pChip )
 		{
 			bool bPChipIsAutoPlay = false;

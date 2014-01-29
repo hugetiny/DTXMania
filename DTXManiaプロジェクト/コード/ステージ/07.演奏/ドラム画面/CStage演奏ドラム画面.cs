@@ -160,6 +160,11 @@ namespace DTXMania
 
 					if ( CDTXMania.DTXVmode.Enabled )			// DTXVモードなら
 					{
+						#region [ DTXV用の再生設定にする(全AUTOなど) ]
+						tDTXV用の設定();
+						CDTXMania.ConfigIni.n演奏速度 = (int) ( CDTXMania.DTX.dbDTXVPlaySpeed * 20 + 0.5 );
+						#endregion
+
 						t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
 					}
 					base.b初めての進行描画 = false;
@@ -233,15 +238,14 @@ namespace DTXMania
 
 		public void t演奏位置の変更( int nStartBar )
 		{
-			// まず全サウンドオフにすること
+			// まず全サウンドオフにする
 			CDTXMania.DTX.t全チップの再生停止();
+
 
 			#region [テストコード: 再生開始小節の変更]
 			//int nStartBar = CDTXMania.DTXVmode.nStartBar + 1;	// +1が必要
-			#region [ 処理を開始するチップの特定 ]
-			bool bInitialized = false;
 
-			// 演奏済みフラグのついたChipをリセットする
+			#region [ 演奏済みフラグのついたChipをリセットする ]
 			for ( int i = 0; i < CDTXMania.DTX.listChip.Count; i++ )
 			{
 				CDTX.CChip pChip = CDTXMania.DTX.listChip[ i ];
@@ -252,7 +256,9 @@ namespace DTXMania
 					CDTXMania.DTX.listChip[ i ] = p;
 				}
 			}
-
+			#endregion
+	
+			#region [ 処理を開始するチップの特定 ]
 			//for ( int i = this.n現在のトップChip; i < CDTXMania.DTX.listChip.Count; i++ )
 			bool bSuccessSeek = false;
 			for ( int i = 0; i < CDTXMania.DTX.listChip.Count; i++ )
@@ -274,6 +280,7 @@ namespace DTXMania
 				this.n現在のトップChip = CDTXMania.DTX.listChip.Count - 1;
 			}
 			#endregion
+
 			#region [ 演奏開始の発声時刻msを取得し、タイマに設定 ]
 			int nStartTime = CDTXMania.DTX.listChip[ this.n現在のトップChip ].n発声時刻ms;
 			CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
