@@ -2213,6 +2213,15 @@ namespace DTXMania
 			base.eフェーズID = CStage.Eフェーズ.演奏_再読込;
 		}
 
+		public void t停止()
+		{
+			CDTXMania.DTX.t全チップの再生停止();
+			this.n現在のトップChip = CDTXMania.DTX.listChip.Count - 1;	// 終端にシーク
+			actCombo.On活性化();	// コンボ初期化
+
+			// 自分自身のOn活性化()相当の処理もすべき。
+		}
+
 		public void t演奏位置の変更( int nStartBar )
 		{
 			// まず全サウンドオフにする

@@ -542,10 +542,8 @@ namespace DTXMania
 
 				if ( strMes != null )
 				{
-					string strCommand;
-
 //Debug.WriteLine( "msg arg=" + strMes );
-					DTXVmode.ParseArguments( strMes, out strCommand );
+					DTXVmode.ParseArguments( strMes );
 
 					if ( DTXVmode.Enabled )
 					{
@@ -553,21 +551,7 @@ namespace DTXMania
 						bコンパクトモード = true;
 						strコンパクトモードファイル = DTXVmode.filename;
 					}
-
-					if ( strCommand == "-S" )		// DTXV再生停止
-					{
-						// 再生停止処理を入れること
-					}
-					else if ( strCommand == "-N" )
-					{
-						bコンパクトモード = true;
-						DTXVmode.Enabled = true;
-
-//Debug.WriteLine( "再生開始小節: " + DTXVmode.nStartBar );
-					}
 				}
-
-				// 場合によってはDTXVモードをON
 			}
 			#endregion
 
@@ -1113,26 +1097,40 @@ for (int i = 0; i < 3; i++) {
 						{
 							DTXVmode.Refreshed = false;
 
-							if ( DTXVmode.NeedReload )
+							if ( DTXVmode.Command == CDTXVmode.ECommand.Stop )
 							{
 								if ( !ConfigIni.bギタレボモード )
 								{
-									CDTXMania.stage演奏ドラム画面.t再読込();
+									CDTXMania.stage演奏ドラム画面.t停止();
 								}
 								else
 								{
-									CDTXMania.stage演奏ギター画面.t再読込();
+									CDTXMania.stage演奏ギター画面.t停止();
 								}
 							}
-							else
+							else if ( DTXVmode.Command == CDTXVmode.ECommand.Play )
 							{
-								if ( !ConfigIni.bギタレボモード )
+								if ( DTXVmode.NeedReload )
 								{
-									CDTXMania.stage演奏ドラム画面.t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+									if ( !ConfigIni.bギタレボモード )
+									{
+										CDTXMania.stage演奏ドラム画面.t再読込();
+									}
+									else
+									{
+										CDTXMania.stage演奏ギター画面.t再読込();
+									}
 								}
 								else
 								{
-									CDTXMania.stage演奏ギター画面.t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+									if ( !ConfigIni.bギタレボモード )
+									{
+										CDTXMania.stage演奏ドラム画面.t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+									}
+									else
+									{
+										CDTXMania.stage演奏ギター画面.t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+									}
 								}
 							}
 						}
@@ -1679,22 +1677,20 @@ for (int i = 0; i < 3; i++) {
 			if( ( commandLineArgs != null ) && ( commandLineArgs.Length > 1 ) )
 			{
 				bコンパクトモード = true;
-				string strCommand;
 				string arg = "";
 
 				for ( int i = 1; i < commandLineArgs.Length; i++ )
 				{
 					if ( i != 1 )
 					{
-						arg += " ";
-						arg += "\"" + commandLineArgs[ i ] + "\"";
+						arg += " " + "\"" + commandLineArgs[ i ] + "\"";
 					}
 					else
 					{
 						arg += commandLineArgs[ i ];
 					}
 				}
-				DTXVmode.ParseArguments( arg, out strCommand );
+				DTXVmode.ParseArguments( arg );
 				
 				if ( DTXVmode.Enabled )
 				{

@@ -10,6 +10,12 @@ namespace DTXMania
 {
 	public class CDTXVmode
 	{
+		public enum ECommand
+		{
+			Stop,
+			Play
+		}
+
 		/// <summary>
 		/// DTXVモードかどうか
 		/// </summary>
@@ -45,6 +51,15 @@ namespace DTXMania
 			get;
 			set;
 //			private set;	// 本来はprivate setにすべきだが、デバッグが簡単になるので、しばらくはprivateなしのままにする。
+		}
+
+		/// <summary>
+		/// DTXCからのコマンド
+		/// </summary>
+		public ECommand Command
+		{
+			get;
+			private set;
 		}
 
 		public string filename
@@ -108,12 +123,11 @@ namespace DTXMania
 		/// <param name="nStartBar"></param>
 		/// <param name="command"></param>
 		/// <returns>DTXV用の引数であればtrue</returns>
-		/// <remarks>内部でEnabled, nStartBar, last_path, last_timestampを設定する</remarks>
-		public bool ParseArguments( string arg, out string strCommand )
+		/// <remarks>内部でEnabled, nStartBar, Command, NeedReload, filename, last_path, last_timestampを設定する</remarks>
+		public bool ParseArguments( string arg )
 		{
 			bool ret = false;
 			this.nStartBar = 0;
-			strCommand = "";
 
 			if ( arg != null )
 			{
@@ -121,13 +135,14 @@ namespace DTXMania
 				if ( arg.StartsWith( "-S", StringComparison.OrdinalIgnoreCase ) )		// DTXV再生停止
 				{
 					this.Enabled = true;
-					strCommand = "-S";
+					this.Command = ECommand.Stop;
+					this.Refreshed = true;
 					ret = true;
 				}
 				else if ( arg.StartsWith( "-N", StringComparison.OrdinalIgnoreCase ) )
 				{
 					this.Enabled = true;
-					strCommand = "-N";
+					this.Command = ECommand.Play;
 					ret = true;
 
 					arg = arg.Substring( 2 );					// "-N"を除去
