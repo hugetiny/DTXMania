@@ -1657,17 +1657,17 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ DTXVmodeクラス の初期化 ]
 			//---------------------
-			Trace.TraceInformation( "DTXVモードの初期化を行います。" );
-			Trace.Indent();
+			//Trace.TraceInformation( "DTXVモードの初期化を行います。" );
+			//Trace.Indent();
 			try
 			{
 				DTXVmode = new CDTXVmode();
 				DTXVmode.Enabled = false;
-				Trace.TraceInformation( "DTXVモードの初期化を完了しました。" );
+				//Trace.TraceInformation( "DTXVモードの初期化を完了しました。" );
 			}
 			finally
 			{
-				Trace.Unindent();
+				//Trace.Unindent();
 			}
 			//---------------------
 			#endregion
@@ -1715,10 +1715,13 @@ for (int i = 0; i < 3; i++) {
 					throw new FileNotFoundException( "コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。", strコンパクトモードファイル );
 #endif
 				}
-				Trace.TraceInformation( "コンパクトモードで起動します。[{0}]", strコンパクトモードファイル );
 				if ( DTXVmode.Enabled )
 				{
-					Trace.TraceInformation( "DTXVモードです。" );
+					Trace.TraceInformation( "DTXVモードで起動します。[{0}]", strコンパクトモードファイル );
+				}
+				else
+				{
+					Trace.TraceInformation( "コンパクトモードで起動します。[{0}]", strコンパクトモードファイル );
 				}
 			}
 			//---------------------
@@ -2428,23 +2431,23 @@ for (int i = 0; i < 3; i++) {
 				#endregion
 				#region [ DTXVmodeの終了処理 ]
 				//---------------------
-				Trace.TraceInformation( "DTXVモードの終了処理を行います。" );
-				Trace.Indent();
+				//Trace.TraceInformation( "DTXVモードの終了処理を行います。" );
+				//Trace.Indent();
 				try
 				{
 					if ( DTXVmode != null )
 					{
 						DTXVmode = null;
-						Trace.TraceInformation( "DTXVモードの終了処理を完了しました。" );
+						//Trace.TraceInformation( "DTXVモードの終了処理を完了しました。" );
 					}
 					else
 					{
-						Trace.TraceInformation( "DTXVモードは使用されていません。" );
+						//Trace.TraceInformation( "DTXVモードは使用されていません。" );
 					}
 				}
 				finally
 				{
-					Trace.Unindent();
+					//Trace.Unindent();
 				}
 				//---------------------
 				#endregion
