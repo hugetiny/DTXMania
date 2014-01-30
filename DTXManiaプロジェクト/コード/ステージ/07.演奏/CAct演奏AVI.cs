@@ -56,7 +56,7 @@ namespace DTXMania
 						{
 							if( chip.rAVI != null )
 							{
-								this.Start( chip.nチャンネル番号, chip.rAVI, 0x116, 0x163, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
+								this.Start( chip.nチャンネル番号, chip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 							}
 							continue;
 						}

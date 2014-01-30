@@ -210,7 +210,7 @@ namespace DTXMania
 							}
 						}
 
-//Debug.WriteLine( "Message=" + arg );
+Trace.WriteLine( "Message=" + arg + ", len=" + arg.Length );
 
 						if ( arg != null )
 						{

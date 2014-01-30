@@ -588,6 +588,28 @@ namespace DTXMania
 					this.b自動再生音チャンネルである,
 					CDTX.tZZ( this.n整数値 ) );
 			}
+			public int GetDuration()
+			{
+				int nDuration = 0;
+
+				if ( this.bWAVを使うチャンネルである )		// WAV
+				{
+					CDTX.CWAV wc = CDTXMania.DTX.listWAV[ this.n整数値・内部番号 ];
+					nDuration = ( wc.rSound[ 0 ] == null ) ? 0 : wc.rSound[ 0 ].n総演奏時間ms;
+				}
+				else if ( this.nチャンネル番号 == 0x54 )	// AVI
+				{
+					if ( this.rAVI != null && this.rAVI.avi != null )
+					{
+						int dwRate = (int) this.rAVI.avi.dwレート;
+						int dwScale = (int) this.rAVI.avi.dwスケール;
+						nDuration = (int) ( dwScale / dwRate * 1000.0f * this.rAVI.avi.GetMaxFrameCount() );
+					}
+				}
+
+				return (int) ( nDuration / CDTXMania.DTX.db再生速度 );
+			}
+
 			#region [ IComparable 実装 ]
 			//-----------------
 			public int CompareTo( CDTX.CChip other )

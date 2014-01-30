@@ -428,6 +428,7 @@ namespace SampleFramework
 				mystr = (COPYDATASTRUCT) m.GetLParam( mytype );
 				strMessage = mystr.lpData;
 				IsReceivedMessage = true;
+Trace.WriteLine( "msg=" + strMessage + ", len=" + strMessage.Length );
 			}
 			#endregion
 			#region #23510 2010.11.16 yyagi add: 縦横比固定でのウインドウサイズ変更 from http://d.hatena.ne.jp/iselix/20080917/1221666614 http://hp.vector.co.jp/authors/VA016117/sizing.html

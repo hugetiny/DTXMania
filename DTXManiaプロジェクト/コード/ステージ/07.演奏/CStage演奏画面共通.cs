@@ -1970,7 +1970,7 @@ namespace DTXMania
 									case EAVI種別.AVI:
 										if ( pChip.rAVI != null )
 										{
-											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 0x116, 0x163, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
+											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
 										}
 										break;
 
@@ -2216,8 +2216,12 @@ namespace DTXMania
 		public void t停止()
 		{
 			CDTXMania.DTX.t全チップの再生停止();
+			this.actAVI.Stop();
+			this.actBGA.Stop();
+
 			this.n現在のトップChip = CDTXMania.DTX.listChip.Count - 1;	// 終端にシーク
 			actCombo.On活性化();	// コンボ初期化
+
 
 			// 自分自身のOn活性化()相当の処理もすべき。
 		}
@@ -2227,9 +2231,11 @@ namespace DTXMania
 			// まず全サウンドオフにする
 			CDTXMania.DTX.t全チップの再生停止();
 
+			actCombo.On活性化();	// コンボ初期化
+
 
 			#region [ 再生開始小節の変更 ]
-			//int nStartBar = CDTXMania.DTXVmode.nStartBar + 1;	// +1が必要
+			nStartBar++;									// +1が必要
 
 			#region [ 演奏済みフラグのついたChipをリセットする ]
 			for ( int i = 0; i < CDTXMania.DTX.listChip.Count; i++ )
@@ -2263,46 +2269,71 @@ namespace DTXMania
 			}
 			if ( !bSuccessSeek )
 			{
-				this.n現在のトップChip = CDTXMania.DTX.listChip.Count - 1;
+				// this.n現在のトップChip = CDTXMania.DTX.listChip.Count - 1;
+				this.n現在のトップChip = 0;		// 対象小節が存在しないなら、最初から再生
 			}
 			#endregion
 
 			#region [ 演奏開始の発声時刻msを取得し、タイマに設定 ]
 			int nStartTime = CDTXMania.DTX.listChip[ this.n現在のトップChip ].n発声時刻ms;
-			CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
 			CSound管理.rc演奏用タイマ.t一時停止();
+			CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
 			#endregion
+
+//Trace.TraceInformation( "nStartTime=" + nStartTime );
 
 			List<CSound> pausedCSound = new List<CSound>();
 
-			#region [ BGMの途中再生開始 (CDTXのt入力・行解析・チップ配置()で小節番号が+1されているのを削っておくこと) ]
-			foreach ( CDTX.CChip pChip in this.listChip )
+			#region [ BGMやギターなど、演奏開始のタイミングで再生がかかっているサウンドのの途中再生開始 ] // (CDTXのt入力・行解析・チップ配置()で小節番号が+1されているのを削っておくこと)
+			bool bAVIPlaying = false;
+			for ( int i = this.n現在のトップChip; i >= 0;  i-- )
 			{
-				if ( pChip.nチャンネル番号 == 0x01 )
+				CDTX.CChip pChip = CDTXMania.DTX.listChip[ i ];
+				int nDuration = pChip.GetDuration();
+
+				if ( pChip.bWAVを使うチャンネルである &&
+					( pChip.n発声時刻ms + nDuration > 0 ) && ( pChip.n発声時刻ms <= nStartTime ) && ( nStartTime <= pChip.n発声時刻ms + nDuration ) )
 				{
 					CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
-					int nDuration = ( wc.rSound[ 0 ] == null ) ? 0 : (int) ( wc.rSound[ 0 ].n総演奏時間ms / CDTXMania.DTX.db再生速度 );
-					//								if (wc.bIsBGMSound || wc.bIsGuitarSound || wc.bIsBassSound || wc.bIsBGMSound || wc.bIsSESound )
+					if ( ( wc.bIsBGMSound && CDTXMania.ConfigIni.bBGM音を発声する ) || ( !wc.bIsBGMSound ) )
 					{
-						if ( ( pChip.n発声時刻ms + nDuration > 0 ) && ( pChip.n発声時刻ms <= nStartTime ) && ( nStartTime <= pChip.n発声時刻ms + nDuration ) )
+						CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+						#region [ PolySoundのどれが今回のチップ再生に該当するかわからないので、全部PAUSEする ]
+//Trace.TraceInformation( "サウンド 発生時刻ms=" + pChip.n発声時刻ms + ", 再生位置=" + (nStartTime - pChip.n発声時刻ms) );
+						for ( int j = 0; j < wc.rSound.Length; j++ )
 						{
-							if ( ( wc.bIsBGMSound && CDTXMania.ConfigIni.bBGM音を発声する ) || ( !wc.bIsBGMSound ) )
+							if ( wc.rSound[ j ] != null )
 							{
-								CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
-								//CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n現在時刻ms + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
-								for ( int i = 0; i < wc.rSound.Length; i++ )
-								{
-									if ( wc.rSound[ i ] != null )
-									{
-										wc.rSound[ i ].t再生を一時停止する();
-										wc.rSound[ i ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
-										pausedCSound.Add( wc.rSound[ i ] );
-									}
-								}
+								wc.rSound[ j ].t再生を一時停止する();
+								wc.rSound[ j ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
+								pausedCSound.Add( wc.rSound[ j ] );
+							}
+						}
+						#endregion
+					}
+				}
+				else if ( pChip.nチャンネル番号 == 0x54 && !bAVIPlaying )
+				{
+					switch ( pChip.eAVI種別 )
+					{
+						case EAVI種別.AVI:
+							if ( pChip.rAVI != null )
+							{
+								this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
+//Trace.TraceInformation( "AVI 発生時刻ms=" + pChip.n発声時刻ms );
+//Trace.TraceInformation( "AVI dwRate=" + pChip.rAVI.avi.dwレート );
+//Trace.TraceInformation( "AVI dwScale=" + pChip.rAVI.avi.dwスケール );
 							}
 							break;
-						}
+
+						case EAVI種別.AVIPAN:
+							if ( pChip.rAVIPan != null )
+							{
+								this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, pChip.n発声時刻ms );
+							}
+							break;
 					}
+					bAVIPlaying = true;		// 同時に2つ以上のAVIは再生しない仕様のため、演奏開始地点以前で1つAVIチップを見つければあとはスキップできる
 				}
 			}
 			#endregion
@@ -2311,11 +2342,41 @@ namespace DTXMania
 			#endregion
 			#region [ 演奏開始時点で既に表示されているBGAの再生とシーク (BGAの動きの途中状況を反映すること) ]
 			#endregion
+
+
 			#region [ 演奏開始時点で既に表示されているAVIの再生とシーク (AVIの動きの途中状況を反映すること) ]
+			// this.actAVI.SkipStart( nStartTime );
+			// AVI再生は同時に1つだけ行われ、チップdurationの
+			//for ( int i = this.n現在のトップChip; i >= 0; i-- )
+			//{
+			//    CDTX.CChip pChip = this.listChip[ i ];
+			//    if ( pChip.nチャンネル番号 == 0x54 )	// AVI
+			//    {
+			//        switch ( pChip.eAVI種別 )
+			//        {
+			//            case EAVI種別.AVI:
+			//                if ( pChip.rAVI != null )
+			//                {
+			//                    //this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
+			//                    this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, nStartTime );
+			//                }
+			//                break;
+
+			//            case EAVI種別.AVIPAN:
+			//                if ( pChip.rAVIPan != null )
+			//                {
+			//                    //this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, pChip.n発声時刻ms );
+			//                    this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, nStartTime );
+			//                }
+			//                break;
+			//        }
+			//        break;
+			//    }
+			//}
 			#endregion
 
 			// 未実装 ここまで
-			#region [ PAUSEしていたサウンドを一斉に再生再開する ]
+			#region [ PAUSEしていたサウンドを一斉に再生再開する(ただしタイマを止めているので、ここではまだ再生開始しない) ]
 			foreach ( CSound cs in pausedCSound )
 			{
 				cs.tサウンドを再生する();
@@ -2323,9 +2384,12 @@ namespace DTXMania
 			pausedCSound.Clear();
 			pausedCSound = null;
 			#endregion
+			#region [ タイマを再開して、PAUSEから復帰する ]
 			CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
 			CDTXMania.Timer.n現在時刻 = nStartTime;				// Debug表示のTime: 表記を正しくするために必要
 			CSound管理.rc演奏用タイマ.t再開();
+			CDTXMania.Timer.t再開();
+			#endregion
 			#endregion
 		}
 
@@ -2376,6 +2440,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bTight = false;
 			CDTXMania.ConfigIni.bストイックモード = false;
 			CDTXMania.ConfigIni.bドラム打音を発声する = true;
+			CDTXMania.ConfigIni.bBGM音を発声する = true;
 		}
 
 
