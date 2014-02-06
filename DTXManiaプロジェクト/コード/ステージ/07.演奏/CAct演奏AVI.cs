@@ -17,7 +17,7 @@ namespace DTXMania
 		public CAct演奏AVI()
 		{
 			base.b活性化してない = true;
-		}
+		} 
 
 		// メソッド
 
