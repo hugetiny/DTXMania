@@ -162,14 +162,12 @@ namespace DTXMania
 					{
 						#region [ DTXV用の再生設定にする(全AUTOなど) ]
 						tDTXV用の設定();
-						CDTXMania.ConfigIni.n演奏速度 = (int) ( CDTXMania.DTX.dbDTXVPlaySpeed * 20 + 0.5 );
 						#endregion
-
 						t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
 					}
 					base.b初めての進行描画 = false;
 				}
-				if( ( CDTXMania.ConfigIni.bSTAGEFAILED有効 && this.actGauge.IsFailed(E楽器パート.DRUMS) ) && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
+				if ( ( CDTXMania.ConfigIni.bSTAGEFAILED有効 && this.actGauge.IsFailed( E楽器パート.DRUMS ) ) && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{
 					this.actStageFailed.Start();
 					CDTXMania.DTX.t全チップの再生停止();

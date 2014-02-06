@@ -150,7 +150,7 @@ namespace DTXMania
 					this.nStartBar = int.Parse( p[ 0 ] );			// 再生開始小節
 					if ( this.nStartBar < 0 )
 					{
-						this.nStartBar = 0;
+						this.nStartBar = -1;
 					}
 //Debug.WriteLine( "再生開始小節: " + this.nStartBar );
 

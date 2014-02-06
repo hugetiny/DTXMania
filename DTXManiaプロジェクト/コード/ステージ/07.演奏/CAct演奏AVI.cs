@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using SlimDX;
 using SlimDX.Direct3D9;
 using FDK;
@@ -17,10 +19,9 @@ namespace DTXMania
 			base.b活性化してない = true;
 		}
 
-
 		// メソッド
 
-		public void Start( int nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n移動開始時刻ms )
+		public void Start( int nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n表示開始時刻ms )
 		{
 			if( nチャンネル番号 == 0x54 )
 			{
@@ -38,7 +39,7 @@ namespace DTXMania
 				this.n表示側終了位置X = n表示側終了位置X;
 				this.n表示側終了位置Y = n表示側終了位置Y;
 				this.n総移動時間ms = n総移動時間ms;
-				this.n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
+				this.n表示開始時刻ms = ( n表示開始時刻ms != -1 ) ? n表示開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
 				this.n前回表示したフレーム番号 = -1;
 			}
 		}
@@ -75,23 +76,24 @@ namespace DTXMania
 		{
 			if( ( this.rAVI != null ) && ( this.rAVI.avi != null ) )
 			{
-				this.n移動開始時刻ms = -1;
+				this.n表示開始時刻ms = -1;
 			}
 		}
 		public void Cont( int n再開時刻ms )
 		{
 			if( ( this.rAVI != null ) && ( this.rAVI.avi != null ) )
 			{
-				this.n移動開始時刻ms = n再開時刻ms;
+				this.n表示開始時刻ms = n再開時刻ms;
 			}
 		}
+
 		public unsafe int t進行描画( int x, int y )
 		{
 			if( !base.b活性化してない )
 			{
 				Rectangle rectangle;
 				Rectangle rectangle2;
-				if( ( ( this.n移動開始時刻ms == -1 ) || ( this.rAVI == null ) ) || ( this.rAVI.avi == null ) )
+				if( ( ( this.n表示開始時刻ms == -1 ) || ( this.rAVI == null ) ) || ( this.rAVI.avi == null ) )
 				{
 					return 0;
 				}
@@ -99,48 +101,60 @@ namespace DTXMania
 				{
 					return 0;
 				}
-				int time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+				int time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - this.n表示開始時刻ms ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+//Trace.TraceInformation( "n現在時刻=" + CSound管理.rc演奏用タイマ.n現在時刻 +  ", n表示開始時刻ms=" + n表示開始時刻ms + ", time=" + time　);
+				if ( time < 0 )
+				{
+					return 0; 
+				}
 				int frameNoFromTime = this.rAVI.avi.GetFrameNoFromTime( time );
 				if( ( this.n総移動時間ms != 0 ) && ( this.n総移動時間ms < time ) )
 				{
 					this.n総移動時間ms = 0;
-					this.n移動開始時刻ms = -1;
+					this.n表示開始時刻ms = -1;
 					return 0;
 				}
 				if( ( this.n総移動時間ms == 0 ) && ( frameNoFromTime >= this.rAVI.avi.GetMaxFrameCount() ) )
 				{
-					this.n移動開始時刻ms = -1;
+					this.n表示開始時刻ms = -1;
 					return 0;
 				}
 				if( ( this.n前回表示したフレーム番号 != frameNoFromTime ) && !this.bフレームを作成した )
 				{
-					this.pBmp = this.rAVI.avi.GetFramePtr( frameNoFromTime );
+					//this.pBmp = this.rAVI.avi.GetFramePtr( frameNoFromTime );
 					this.n前回表示したフレーム番号 = frameNoFromTime;
 					this.bフレームを作成した = true;
 				}
 				Size size = new Size( (int) this.rAVI.avi.nフレーム幅, (int) this.rAVI.avi.nフレーム高さ );
-				Size size2 = new Size( 0x116, 0x163 );
+				Size size2 = new Size( 278, 355 );
 				Size size3 = new Size( this.n開始サイズW, this.n開始サイズH );
 				Size size4 = new Size( this.n終了サイズW, this.n終了サイズH );
 				Point location = new Point( this.n画像側開始位置X, this.n画像側終了位置Y );
 				Point point2 = new Point( this.n画像側終了位置X, this.n画像側終了位置Y );
 				Point point3 = new Point( this.n表示側開始位置X, this.n表示側開始位置Y );
 				Point point4 = new Point( this.n表示側終了位置X, this.n表示側終了位置Y );
-				long num3 = this.n総移動時間ms;
-				long num4 = this.n移動開始時刻ms;
-				if( CSound管理.rc演奏用タイマ.n現在時刻 < num4 )
+
+	
+				
+				long _n表示開始時刻 = this.n表示開始時刻ms;
+				if ( CSound管理.rc演奏用タイマ.n現在時刻 < this.n表示開始時刻ms )
 				{
-					num4 = CSound管理.rc演奏用タイマ.n現在時刻;
+					_n表示開始時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
 				}
-				time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - num4 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
-				if( num3 == 0 )
+				time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - _n表示開始時刻 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+
+				#region [ AVI ]
+				long _n総移動時間 = this.n総移動時間ms;
+				if ( _n総移動時間 == 0 )
 				{
 					rectangle = new Rectangle( location, size3 );
 					rectangle2 = new Rectangle( point3, size3 );
 				}
+				#endregion
 				else
+				#region [ AVIPAN ]
 				{
-					double num5 = ( (double) time ) / ( (double) num3 );
+					double num5 = ( (double) time ) / ( (double) _n総移動時間 );
 					Size size5 = new Size( size3.Width + ( (int) ( ( size4.Width - size3.Width ) * num5 ) ), size3.Height + ( (int) ( ( size4.Height - size3.Height ) * num5 ) ) );
 					rectangle = new Rectangle( (int) ( ( point2.X - location.X ) * num5 ), (int) ( ( point2.Y - location.Y ) * num5 ), ( (int) ( ( point2.X - location.X ) * num5 ) ) + size5.Width, ( (int) ( ( point2.Y - location.Y ) * num5 ) ) + size5.Height );
 					rectangle2 = new Rectangle( (int) ( ( point4.X - point3.X ) * num5 ), (int) ( ( point4.Y - point3.Y ) * num5 ), ( (int) ( ( point4.X - point3.X ) * num5 ) ) + size5.Width, ( (int) ( ( point4.Y - point3.Y ) * num5 ) ) + size5.Height );
@@ -225,26 +239,37 @@ namespace DTXMania
 						return 0;
 					}
 				}
+				#endregion
 				if( ( this.tx描画用 != null ) && ( this.n総移動時間ms != -1 ) )
 				{
-					if( this.bフレームを作成した && ( this.pBmp != IntPtr.Zero ) )
+					if( this.bフレームを作成した )
 					{
-						DataRectangle rectangle3 = this.tx描画用.texture.LockRectangle( 0, LockFlags.None );
-						DataStream data = rectangle3.Data;
-						int num14 = rectangle3.Pitch / this.tx描画用.szテクスチャサイズ.Width;
-						BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER = (BitmapUtil.BITMAPINFOHEADER*) this.pBmp.ToPointer();
-						if( pBITMAPINFOHEADER->biBitCount == 0x18 )
-						{
-							switch( num14 )
-							{
-								case 2:
-									this.rAVI.avi.tBitmap24ToGraphicsStreamR5G6B5( pBITMAPINFOHEADER, data, this.tx描画用.szテクスチャサイズ.Width, this.tx描画用.szテクスチャサイズ.Height );
-									break;
+						// unsafe中のローカル変数は、スタックに固定される(GCで動かされない)
+						// -> this.pBmpでなく、ローカルのpBmpを使う
 
-								case 4:
-									this.rAVI.avi.tBitmap24ToGraphicsStreamX8R8G8B8( pBITMAPINFOHEADER, data, this.tx描画用.szテクスチャサイズ.Width, this.tx描画用.szテクスチャサイズ.Height );
-									break;
+						IntPtr pBmp = this.rAVI.avi.GetFramePtr( frameNoFromTime );
+						{
+							if ( pBmp != IntPtr.Zero )
+							{
+								DataRectangle rectangle3 = this.tx描画用.texture.LockRectangle( 0, LockFlags.None );
+								DataStream data = rectangle3.Data;
+								int num14 = rectangle3.Pitch / this.tx描画用.szテクスチャサイズ.Width;
+								BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER = (BitmapUtil.BITMAPINFOHEADER*) pBmp.ToPointer();
+								if ( pBITMAPINFOHEADER->biBitCount == 24 )
+								{
+									switch ( num14 )
+									{
+										case 2:
+											this.rAVI.avi.tBitmap24ToGraphicsStreamR5G6B5( pBITMAPINFOHEADER, data, this.tx描画用.szテクスチャサイズ.Width, this.tx描画用.szテクスチャサイズ.Height );
+											break;
+
+										case 4:
+											this.rAVI.avi.tBitmap24ToGraphicsStreamX8R8G8B8( pBITMAPINFOHEADER, data, this.tx描画用.szテクスチャサイズ.Width, this.tx描画用.szテクスチャサイズ.Height );
+											break;
+									}
+								}
 							}
+
 						}
 						this.tx描画用.texture.UnlockRectangle( 0 );
 						this.bフレームを作成した = false;
@@ -261,10 +286,10 @@ namespace DTXMania
 		public override void On活性化()
 		{
 			this.rAVI = null;
-			this.n移動開始時刻ms = -1;
+			this.n表示開始時刻ms = -1;
 			this.n前回表示したフレーム番号 = -1;
 			this.bフレームを作成した = false;
-			this.pBmp = IntPtr.Zero;
+		//	this.pBmp = IntPtr.Zero;
 			base.On活性化();
 		}
 		public override void OnManagedリソースの作成()
@@ -302,7 +327,7 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 		private bool bフレームを作成した;
-		private long n移動開始時刻ms;
+		private long n表示開始時刻ms;
 		private int n画像側開始位置X;
 		private int n画像側開始位置Y;
 		private int n画像側終了位置X;
@@ -317,7 +342,7 @@ namespace DTXMania
 		private int n表示側開始位置Y;
 		private int n表示側終了位置X;
 		private int n表示側終了位置Y;
-		private IntPtr pBmp;
+//		private IntPtr pBmp;
 		private CDTX.CAVI rAVI;
 		private CTexture tx描画用;
 		//-----------------

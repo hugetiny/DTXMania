@@ -603,7 +603,8 @@ namespace DTXMania
 					{
 						int dwRate = (int) this.rAVI.avi.dwレート;
 						int dwScale = (int) this.rAVI.avi.dwスケール;
-						nDuration = (int) ( dwScale / dwRate * 1000.0f * this.rAVI.avi.GetMaxFrameCount() );
+						nDuration = (int) ( 1000.0f * dwScale / dwRate * this.rAVI.avi.GetMaxFrameCount() );
+//Trace.TraceInformation( "CAVI: nDuration=" + nDuration + ", dwScale=" + dwScale + ", dwRate=" + dwRate + ", frames=" + this.rAVI.avi.GetMaxFrameCount() );
 					}
 				}
 
@@ -2460,9 +2461,10 @@ namespace DTXMania
 						}
 						if ( this.db再生速度 > 0.0 )
 						{
+							double _db再生速度 = ( CDTXMania.DTXVmode.Enabled ) ? this.dbDTXVPlaySpeed : this.db再生速度;
 							foreach ( CChip chip in this.listChip )
 							{
-								chip.n発声時刻ms = (int) ( ( (double) chip.n発声時刻ms ) / this.db再生速度 );
+								chip.n発声時刻ms = (int) ( ( (double) chip.n発声時刻ms ) / _db再生速度 );
 							}
 						}
 						#endregion

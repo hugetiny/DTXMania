@@ -37,12 +37,12 @@ namespace FDK
 
 		public CAvi( string filename )
 		{
-			if( AVIFileOpen( out this.aviFile, filename, OpenFileFlags.OF_READ, IntPtr.Zero ) != 0 )
+			if ( AVIFileOpen( out this.aviFile, filename, OpenFileFlags.OF_READ, IntPtr.Zero ) != 0 )
 			{
 				this.Release();
 				throw new Exception( "AVIFileOpen failed." );
 			}
-			if( AVIFileGetStream( this.aviFile, out this.aviStream, streamtypeVIDEO, 0 ) != 0 )
+			if ( AVIFileGetStream( this.aviFile, out this.aviStream, streamtypeVIDEO, 0 ) != 0 )
 			{
 				this.Release();
 				throw new Exception( "AVIFileGetStream failed." );
@@ -64,7 +64,7 @@ namespace FDK
 			}
 		}
 
-	
+
 		// メソッド
 
 		public static void t初期化()

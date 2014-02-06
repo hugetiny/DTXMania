@@ -2280,99 +2280,67 @@ namespace DTXMania
 			CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
 			#endregion
 
-//Trace.TraceInformation( "nStartTime=" + nStartTime );
-
 			List<CSound> pausedCSound = new List<CSound>();
 
 			#region [ BGMやギターなど、演奏開始のタイミングで再生がかかっているサウンドのの途中再生開始 ] // (CDTXのt入力・行解析・チップ配置()で小節番号が+1されているのを削っておくこと)
 			bool bAVIPlaying = false;
-			for ( int i = this.n現在のトップChip; i >= 0;  i-- )
+			for ( int i = this.n現在のトップChip; i >= 0; i-- )
 			{
 				CDTX.CChip pChip = CDTXMania.DTX.listChip[ i ];
 				int nDuration = pChip.GetDuration();
 
-				if ( pChip.bWAVを使うチャンネルである &&
-					( pChip.n発声時刻ms + nDuration > 0 ) && ( pChip.n発声時刻ms <= nStartTime ) && ( nStartTime <= pChip.n発声時刻ms + nDuration ) )
+				if ( ( pChip.n発声時刻ms + nDuration > 0 ) && ( pChip.n発声時刻ms <= nStartTime ) && ( nStartTime <= pChip.n発声時刻ms + nDuration ) )
 				{
-					CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
-					if ( ( wc.bIsBGMSound && CDTXMania.ConfigIni.bBGM音を発声する ) || ( !wc.bIsBGMSound ) )
+					if ( pChip.bWAVを使うチャンネルである )
 					{
-						CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
-						#region [ PolySoundのどれが今回のチップ再生に該当するかわからないので、全部PAUSEする ]
-//Trace.TraceInformation( "サウンド 発生時刻ms=" + pChip.n発声時刻ms + ", 再生位置=" + (nStartTime - pChip.n発声時刻ms) );
-						for ( int j = 0; j < wc.rSound.Length; j++ )
+						CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+						if ( ( wc.bIsBGMSound && CDTXMania.ConfigIni.bBGM音を発声する ) || ( !wc.bIsBGMSound ) )
 						{
-							if ( wc.rSound[ j ] != null )
+							CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+							#region [ PAUSEする ]
+//Trace.TraceInformation( "サウンド 発生時刻ms=" + pChip.n発声時刻ms + ", 再生位置=" + ( nStartTime - pChip.n発声時刻ms ) );
+							for ( int j = 0; j < wc.rSound.Length; j++ )
 							{
-								wc.rSound[ j ].t再生を一時停止する();
-								wc.rSound[ j ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
-								pausedCSound.Add( wc.rSound[ j ] );
+								if ( wc.rSound[ j ] != null )
+								{
+									wc.rSound[ j ].t再生を一時停止する();
+									wc.rSound[ j ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
+									pausedCSound.Add( wc.rSound[ j ] );
+									break;
+								}
 							}
+							#endregion
 						}
-						#endregion
 					}
-				}
-				else if ( pChip.nチャンネル番号 == 0x54 && !bAVIPlaying )
-				{
-					switch ( pChip.eAVI種別 )
+					else if ( pChip.nチャンネル番号 == 0x54 && !bAVIPlaying )
 					{
-						case EAVI種別.AVI:
-							if ( pChip.rAVI != null )
-							{
-								this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
-//Trace.TraceInformation( "AVI 発生時刻ms=" + pChip.n発声時刻ms );
-//Trace.TraceInformation( "AVI dwRate=" + pChip.rAVI.avi.dwレート );
-//Trace.TraceInformation( "AVI dwScale=" + pChip.rAVI.avi.dwスケール );
-							}
-							break;
+						switch ( pChip.eAVI種別 )
+						{
+							case EAVI種別.AVI:
+								if ( pChip.rAVI != null )
+								{
+									this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
+								}
+								break;
 
-						case EAVI種別.AVIPAN:
-							if ( pChip.rAVIPan != null )
-							{
-								this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, pChip.n発声時刻ms );
-							}
-							break;
+							case EAVI種別.AVIPAN:
+								if ( pChip.rAVIPan != null )
+								{
+									this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, pChip.n発声時刻ms );
+								}
+								break;
+						}
+						bAVIPlaying = true;		// 同時に2つ以上のAVIは再生しない仕様のため、演奏開始地点以前で1つAVIチップを見つければあとはスキップできる
 					}
-					bAVIPlaying = true;		// 同時に2つ以上のAVIは再生しない仕様のため、演奏開始地点以前で1つAVIチップを見つければあとはスキップできる
 				}
 			}
 			#endregion
 			// 以下未実装 ここから
-			#region [ 演奏開始時点で既に演奏中になっているチップの再生とシーク (一つ手前のBGM処理のところに混ぜてもいいかも  ]
-			#endregion
 			#region [ 演奏開始時点で既に表示されているBGAの再生とシーク (BGAの動きの途中状況を反映すること) ]
 			#endregion
 
 
 			#region [ 演奏開始時点で既に表示されているAVIの再生とシーク (AVIの動きの途中状況を反映すること) ]
-			// this.actAVI.SkipStart( nStartTime );
-			// AVI再生は同時に1つだけ行われ、チップdurationの
-			//for ( int i = this.n現在のトップChip; i >= 0; i-- )
-			//{
-			//    CDTX.CChip pChip = this.listChip[ i ];
-			//    if ( pChip.nチャンネル番号 == 0x54 )	// AVI
-			//    {
-			//        switch ( pChip.eAVI種別 )
-			//        {
-			//            case EAVI種別.AVI:
-			//                if ( pChip.rAVI != null )
-			//                {
-			//                    //this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
-			//                    this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, nStartTime );
-			//                }
-			//                break;
-
-			//            case EAVI種別.AVIPAN:
-			//                if ( pChip.rAVIPan != null )
-			//                {
-			//                    //this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, pChip.n発声時刻ms );
-			//                    this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, nStartTime );
-			//                }
-			//                break;
-			//        }
-			//        break;
-			//    }
-			//}
 			#endregion
 
 			// 未実装 ここまで

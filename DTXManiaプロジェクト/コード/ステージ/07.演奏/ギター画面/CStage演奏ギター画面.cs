@@ -115,9 +115,7 @@ namespace DTXMania
 					{
 						#region [ DTXV用の再生設定にする(全AUTOなど) ]
 						tDTXV用の設定();
-						CDTXMania.ConfigIni.n演奏速度 = (int) ( CDTXMania.DTX.dbDTXVPlaySpeed * 20 + 0.5 );
 						#endregion
-
 						t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
 					}
 
