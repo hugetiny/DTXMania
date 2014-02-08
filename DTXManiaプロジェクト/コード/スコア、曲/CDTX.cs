@@ -588,6 +588,10 @@ namespace DTXMania
 					this.b自動再生音チャンネルである,
 					CDTX.tZZ( this.n整数値 ) );
 			}
+			/// <summary>
+			/// チップの再生長を取得する。現状、WAVチップとBGAチップでのみ使用可能。
+			/// </summary>
+			/// <returns>再生長(ms)</returns>
 			public int GetDuration()
 			{
 				int nDuration = 0;
@@ -604,7 +608,6 @@ namespace DTXMania
 						int dwRate = (int) this.rAVI.avi.dwレート;
 						int dwScale = (int) this.rAVI.avi.dwスケール;
 						nDuration = (int) ( 1000.0f * dwScale / dwRate * this.rAVI.avi.GetMaxFrameCount() );
-//Trace.TraceInformation( "CAVI: nDuration=" + nDuration + ", dwScale=" + dwScale + ", dwRate=" + dwRate + ", frames=" + this.rAVI.avi.GetMaxFrameCount() );
 					}
 				}
 

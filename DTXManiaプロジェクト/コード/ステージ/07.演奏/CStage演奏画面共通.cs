@@ -2220,8 +2220,6 @@ namespace DTXMania
 			this.actBGA.Stop();
 
 			this.n現在のトップChip = CDTXMania.DTX.listChip.Count - 1;	// 終端にシーク
-			actCombo.On活性化();	// コンボ初期化
-
 
 			// 自分自身のOn活性化()相当の処理もすべき。
 		}
@@ -2230,9 +2228,6 @@ namespace DTXMania
 		{
 			// まず全サウンドオフにする
 			CDTXMania.DTX.t全チップの再生停止();
-
-			actCombo.On活性化();	// コンボ初期化
-
 
 			#region [ 再生開始小節の変更 ]
 			nStartBar++;									// +1が必要
@@ -2298,52 +2293,23 @@ namespace DTXMania
 						{
 							CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
 							#region [ PAUSEする ]
-//Trace.TraceInformation( "サウンド 発生時刻ms=" + pChip.n発声時刻ms + ", 再生位置=" + ( nStartTime - pChip.n発声時刻ms ) );
-							for ( int j = 0; j < wc.rSound.Length; j++ )
+							int j = wc.n現在再生中のサウンド番号;
+							if ( wc.rSound[ j ] != null )
 							{
-								if ( wc.rSound[ j ] != null )
-								{
-									wc.rSound[ j ].t再生を一時停止する();
-									wc.rSound[ j ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
-									pausedCSound.Add( wc.rSound[ j ] );
-									break;
-								}
+								wc.rSound[ j ].t再生を一時停止する();
+								wc.rSound[ j ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
+								pausedCSound.Add( wc.rSound[ j ] );
 							}
 							#endregion
 						}
 					}
-					else if ( pChip.nチャンネル番号 == 0x54 && !bAVIPlaying )
-					{
-						switch ( pChip.eAVI種別 )
-						{
-							case EAVI種別.AVI:
-								if ( pChip.rAVI != null )
-								{
-									this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
-								}
-								break;
-
-							case EAVI種別.AVIPAN:
-								if ( pChip.rAVIPan != null )
-								{
-									this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, pChip.n発声時刻ms );
-								}
-								break;
-						}
-						bAVIPlaying = true;		// 同時に2つ以上のAVIは再生しない仕様のため、演奏開始地点以前で1つAVIチップを見つければあとはスキップできる
-					}
 				}
 			}
 			#endregion
-			// 以下未実装 ここから
-			#region [ 演奏開始時点で既に表示されているBGAの再生とシーク (BGAの動きの途中状況を反映すること) ]
+			#region [ 演奏開始時点で既に表示されているBGAとAVIの、シークと再生 ]
+			this.actBGA.SkipStart( nStartTime );
+			this.actAVI.SkipStart( nStartTime );
 			#endregion
-
-
-			#region [ 演奏開始時点で既に表示されているAVIの再生とシーク (AVIの動きの途中状況を反映すること) ]
-			#endregion
-
-			// 未実装 ここまで
 			#region [ PAUSEしていたサウンドを一斉に再生再開する(ただしタイマを止めているので、ここではまだ再生開始しない) ]
 			foreach ( CSound cs in pausedCSound )
 			{
@@ -2364,7 +2330,7 @@ namespace DTXMania
 
 		/// <summary>
 		/// DTXV用の設定をする。(全AUTOなど)
-		/// 設定のバックアップはしないので、あとでConfig.iniを上書き保存しないこと。
+		/// 元の設定のバックアップなどはしないので、あとでConfig.iniを上書き保存しないこと。
 		/// </summary>
 		protected void tDTXV用の設定()
 		{
@@ -2399,6 +2365,9 @@ namespace DTXMania
 				CDTXMania.ConfigIni.bReverse[ i ] = false;
 				CDTXMania.ConfigIni.bSudden[ i ] = false;
 				CDTXMania.ConfigIni.eInvisible[ i ] = EInvisible.OFF;
+				CDTXMania.ConfigIni.eRandom[ i ] = Eランダムモード.OFF;
+				CDTXMania.ConfigIni.n表示可能な最小コンボ数[ i ] = 65535;
+				CDTXMania.ConfigIni.判定文字表示位置[ i ] = E判定文字表示位置.表示OFF;
 			}
 
 			CDTXMania.ConfigIni.eDark = Eダークモード.OFF;
@@ -2409,6 +2378,10 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bストイックモード = false;
 			CDTXMania.ConfigIni.bドラム打音を発声する = true;
 			CDTXMania.ConfigIni.bBGM音を発声する = true;
+
+			CDTXMania.ConfigIni.nRisky = 0;
+			CDTXMania.ConfigIni.nShowLagType = 0;
+			CDTXMania.ConfigIni.ドラムコンボ文字の表示位置 = Eドラムコンボ文字の表示位置.OFF;
 		}
 
 
