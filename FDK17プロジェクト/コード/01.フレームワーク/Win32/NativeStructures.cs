@@ -66,7 +66,7 @@ namespace SampleFramework
 	{
 		public IntPtr dwData;
 		public UInt32 cbData;
-		public string lpData;
+		public IntPtr lpData;
 	}
 	#endregion
 }

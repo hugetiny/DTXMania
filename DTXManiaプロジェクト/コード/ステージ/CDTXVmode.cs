@@ -152,13 +152,11 @@ namespace DTXMania
 					{
 						this.nStartBar = -1;
 					}
-//Debug.WriteLine( "再生開始小節: " + this.nStartBar );
 
 					int startIndex = arg.IndexOf( ' ' );
 					string filename = arg.Substring( startIndex + 1　);	// 再生ファイル名(フルパス)
 					try
 					{
-//Debug.WriteLine( "filename_quoted=" + filename );
 						filename = filename.Trim( new char[] { '\"' } );
 						bIsNeedReloadDTX( filename );
 					}

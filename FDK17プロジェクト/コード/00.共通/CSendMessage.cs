@@ -18,13 +18,15 @@ namespace FDK
 			uint len = (uint) arg.Length;
 
 			SampleFramework.COPYDATASTRUCT cds;
-			cds.dwData = IntPtr.Zero;	// 使用しない
-			cds.lpData = arg;			// テキストのポインターをセット
-			cds.cbData = len + 1;		// 長さをセット
+			cds.dwData = IntPtr.Zero;		// 使用しない
+			cds.lpData = Marshal.StringToHGlobalUni( arg );			// テキストのポインターをセット
+			cds.cbData = ( len + 1 ) * 2;	// 長さをセット
 
 			//文字列を送る
 			uint result = SendMessage( MainWindowHandle, SampleFramework.WindowConstants.WM_COPYDATA, FromWindowHandle, ref cds );
-			//Debug.WriteLine( "result=" + result );
+
+			Marshal.FreeHGlobal( cds.lpData );
+
 			return result;
 		}
 	}
