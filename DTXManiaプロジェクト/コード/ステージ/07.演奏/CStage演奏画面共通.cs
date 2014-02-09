@@ -2228,6 +2228,8 @@ namespace DTXMania
 		{
 			// まず全サウンドオフにする
 			CDTXMania.DTX.t全チップの再生停止();
+			this.actAVI.Stop();
+			this.actBGA.Stop();
 
 			#region [ 再生開始小節の変更 ]
 			nStartBar++;									// +1が必要
@@ -2353,6 +2355,8 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bAutoPlay.BsB = true;
 			CDTXMania.ConfigIni.bAutoPlay.BsPick = true;
 			CDTXMania.ConfigIni.bAutoPlay.BsW = true;
+
+			this.bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay;
 
 			CDTXMania.ConfigIni.bAVI有効 = true;
 			CDTXMania.ConfigIni.bBGA有効 = true;

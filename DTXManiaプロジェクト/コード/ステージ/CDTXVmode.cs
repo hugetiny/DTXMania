@@ -62,6 +62,17 @@ namespace DTXMania
 			private set;
 		}
 
+		public ESoundDeviceType soundDeviceType
+		{
+			get;
+			private set;
+		}
+		public int nASIOdevice
+		{
+			get;
+			private set;
+		}
+
 		public string filename
 		{
 			get
@@ -139,6 +150,28 @@ namespace DTXMania
 					this.Refreshed = true;
 					ret = true;
 				}
+				else if ( arg.StartsWith( "-D", StringComparison.OrdinalIgnoreCase ) )
+				{
+					// -DW, -DA1など
+					arg = arg.Substring( 2 );	// -D を削除
+					switch ( arg.Substring( 1 ) )
+					{
+						case "D":
+							this.soundDeviceType = ESoundDeviceType.DirectSound;
+							break;
+						case "W":
+							this.soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+							break;
+						case "A":
+							this.soundDeviceType = ESoundDeviceType.ASIO;
+							arg = arg.Substring( 1 );
+							string s = "";
+							while ( arg.Substring( 1 ) == "0" )
+							{
+							}
+							break;
+					}
+				}
 				else if ( arg.StartsWith( "-N", StringComparison.OrdinalIgnoreCase ) )
 				{
 					this.Enabled = true;
@@ -154,7 +187,7 @@ namespace DTXMania
 					}
 
 					int startIndex = arg.IndexOf( ' ' );
-					string filename = arg.Substring( startIndex + 1　);	// 再生ファイル名(フルパス)
+					string filename = arg.Substring( startIndex + 1 );	// 再生ファイル名(フルパス)
 					try
 					{
 						filename = filename.Trim( new char[] { '\"' } );

@@ -1035,7 +1035,15 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			}
 			else if( this.bDirectSoundである )
 			{
-				this.Buffer.Stop();
+				try
+				{
+					this.Buffer.Stop();
+				}
+				catch ( Exception )
+				{
+					// WASAPI/ASIOとDirectSoundを同時使用すると、Bufferがlostしてここで例外発生する。→ catchして無視する。
+					// DTXCからDTXManiaを呼び出すと、DTXC終了時にこの現象が発生する。
+				}
 			}
 		}
 		

@@ -542,12 +542,14 @@ namespace DTXMania
 
 				if ( strMes != null )
 				{
-//Debug.WriteLine( "msg arg=" + strMes );
+Trace.WriteLine( "msg arg=" + strMes );
 					DTXVmode.ParseArguments( strMes );
 
+
+Trace.WriteLine( "NeedReload = " + DTXVmode.NeedReload );
 					if ( DTXVmode.Enabled )
 					{
-//Debug.WriteLine( "DTXV mode is enabled," );
+Trace.WriteLine( "DTXV mode is enabled," );
 						bコンパクトモード = true;
 						strコンパクトモードファイル = DTXVmode.filename;
 					}
@@ -1010,6 +1012,7 @@ namespace DTXMania
 					case CStage.Eステージ.曲読み込み:
 						#region [ *** ]
 						//-----------------------------
+						DTXVmode.Refreshed = false;		// 曲のリロード中に発生した再リロードは、無視する。
 						if( this.n進行描画の戻り値 != 0 )
 						{
 							CDTXMania.Pad.st検知したデバイス.Clear();	// 入力デバイスフラグクリア(2010.9.11)

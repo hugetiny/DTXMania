@@ -598,8 +598,16 @@ namespace DTXMania
 
 				if ( this.bWAVを使うチャンネルである )		// WAV
 				{
-					CDTX.CWAV wc = CDTXMania.DTX.listWAV[ this.n整数値・内部番号 ];
-					nDuration = ( wc.rSound[ 0 ] == null ) ? 0 : wc.rSound[ 0 ].n総演奏時間ms;
+					CDTX.CWAV wc;
+					CDTXMania.DTX.listWAV.TryGetValue( this.n整数値・内部番号, out wc );
+					if ( wc == null )
+					{
+						nDuration = 0;
+					}
+					else
+					{
+						nDuration = ( wc.rSound[ 0 ] == null ) ? 0 : wc.rSound[ 0 ].n総演奏時間ms;
+					}
 				}
 				else if ( this.nチャンネル番号 == 0x54 )	// AVI
 				{

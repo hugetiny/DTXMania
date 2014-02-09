@@ -44,7 +44,8 @@ namespace DTXMania
 		}
 		private static bool tDLLの存在チェック( string strDll名, string str存在しないときに表示するエラー文字列jp, string str存在しないときに表示するエラー文字列en )
 		{
-			return tDLLの存在チェック( strDll名, str存在しないときに表示するエラー文字列jp, str存在しないときに表示するエラー文字列en, false );
+			return true;
+			//return tDLLの存在チェック( strDll名, str存在しないときに表示するエラー文字列jp, str存在しないときに表示するエラー文字列en, false );
 		}
 
 		#region [DllImport]
@@ -66,6 +67,9 @@ namespace DTXMania
 			{
 				string newLine = Environment.NewLine;
 				bool bDLLnotfound = false;
+
+				Trace.WriteLine( "Current Directory: " + Environment.CurrentDirectory );
+				Trace.WriteLine( "EXEのあるフォルダ: " + Path.GetDirectoryName( Application.ExecutablePath ) );
 
 				#region [DLLの存在チェック]
 				if ( !tDLLの存在チェック( "dll\\SlimDX" + CDTXMania.SLIMDXDLL + ".dll",
@@ -182,7 +186,7 @@ namespace DTXMania
 				{
 					if ( p.Id != current.Id )	// プロセス名は同じでかつ、プロセスIDが自分自身とは異なるものを探す
 					{
-						if ( p.MainModule.FileName == current.MainModule.FileName )
+						if ( p.MainModule.FileName == current.MainModule.FileName && p.MainWindowHandle != IntPtr.Zero )
 						{
 							target = p;
 							break;

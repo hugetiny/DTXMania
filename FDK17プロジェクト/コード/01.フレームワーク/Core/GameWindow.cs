@@ -423,10 +423,11 @@ namespace SampleFramework
 			#region #28821 2014.1.23 yyagi (WM_COPYDATA)
 			else if ( m.Msg == WindowConstants.WM_COPYDATA )
 			{
+Trace.WriteLine( "FDK;msg received" );
 				COPYDATASTRUCT cds = (COPYDATASTRUCT) Marshal.PtrToStructure( m.LParam, typeof( COPYDATASTRUCT ) );
 				strMessage = Marshal.PtrToStringUni( cds.lpData );
 				IsReceivedMessage = true;
-//Trace.WriteLine( "FDK;msg=" + strMessage + ", len=" + strMessage.Length + ", truelen=" + cds.cbData );
+Trace.WriteLine( "FDK;msg=" + strMessage + ", len=" + strMessage.Length + ", truelen=" + cds.cbData );
 			}
 			#endregion
 			#region #23510 2010.11.16 yyagi add: 縦横比固定でのウインドウサイズ変更 from http://d.hatena.ne.jp/iselix/20080917/1221666614 http://hp.vector.co.jp/authors/VA016117/sizing.html
