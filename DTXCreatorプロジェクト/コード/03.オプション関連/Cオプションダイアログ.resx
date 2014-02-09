@@ -150,9 +150,6 @@
   <data name="numericUpDown最近使用したファイルの最大表示個数.Location" type="System.Drawing.Point, System.Drawing">
     <value>263, 25</value>
   </data>
-  <data name="radioButton_ASIO.Text" xml:space="preserve">
-    <value>&amp;ASIO (ASIO devices only)</value>
-  </data>
   <data name="radioButton_UseDTXViewer.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -167,9 +164,6 @@
   </data>
   <data name="checkBoxオートフォーカス.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 16</value>
-  </data>
-  <data name="radioButton_WASAPI.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="&gt;&gt;numericUpDown最近使用したファイルの最大表示個数.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -237,6 +231,9 @@
   <data name="numericUpDown最近使用したファイルの最大表示個数.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 19</value>
   </data>
+  <data name="&gt;&gt;radioButton_WASAPI.Name" xml:space="preserve">
+    <value>radioButton_WASAPI</value>
+  </data>
   <data name="groupBox_SoundDeviceSettings.Text" xml:space="preserve">
     <value>SoundDevice (*)</value>
   </data>
@@ -249,8 +246,8 @@
   <data name="tabPage全般.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="tabPageLanes.Text" xml:space="preserve">
-    <value>Lanes</value>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
   <data name="tabPageLanes.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -260,9 +257,6 @@
   </data>
   <data name="&gt;&gt;tabPage全般.Parent" xml:space="preserve">
     <value>tabControlオプション</value>
-  </data>
-  <data name="&gt;&gt;groupBox_SelectViewer.Name" xml:space="preserve">
-    <value>groupBox_SelectViewer</value>
   </data>
   <data name="&gt;&gt;label_Notice.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -294,8 +288,8 @@
   <data name="checkBoxオートフォーカス.Text" xml:space="preserve">
     <value>Auto &amp;focus</value>
   </data>
-  <data name="radioButton_WASAPI.Text" xml:space="preserve">
-    <value>&amp;WASAPI (Vista or later)</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
   </data>
   <data name="tabPageViewer.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -336,8 +330,8 @@
   <data name="&gt;&gt;groupBox_SelectViewer.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;checkBoxPreviewBGM.Name" xml:space="preserve">
-    <value>checkBoxPreviewBGM</value>
+  <data name="checkBoxオートフォーカス.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
   </data>
   <data name="&gt;&gt;checkBoxオートフォーカス.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -351,8 +345,8 @@
   <data name="&gt;&gt;radioButton_ASIO.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;buttonOK.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;buttonOK.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -363,9 +357,6 @@
   <data name="&gt;&gt;buttonOK.Name" xml:space="preserve">
     <value>buttonOK</value>
   </data>
-  <data name="checkBoxオートフォーカス.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
-  </data>
   <data name="&gt;&gt;radioButton_UseDTXViewer.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
@@ -374,6 +365,9 @@
   </data>
   <data name="&gt;&gt;radioButton_UseDTXViewer.Parent" xml:space="preserve">
     <value>groupBox_SelectViewer</value>
+  </data>
+  <data name="checkBox最近使用したファイル.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="radioButton_UseDTXViewer.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -423,8 +417,8 @@
   <data name="radioButton_ASIO.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;comboBox_ASIOdevices.Name" xml:space="preserve">
-    <value>comboBox_ASIOdevices</value>
+  <data name="&gt;&gt;buttonOK.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;radioButton_DirectSound.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -456,11 +450,11 @@
   <data name="label個まで表示する.Text" xml:space="preserve">
     <value>Show up &amp;to</value>
   </data>
-  <data name="radioButton_ASIO.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
   <data name="radioButton_UseDTXViewer.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 16</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SoundDeviceSettings.Parent" xml:space="preserve">
+    <value>groupBox_SelectViewer</value>
   </data>
   <data name="&gt;&gt;label個まで表示する.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -477,9 +471,6 @@
   <data name="&gt;&gt;labelSelectLanes.Parent" xml:space="preserve">
     <value>tabPageLanes</value>
   </data>
-  <data name="radioButton_UseDTXViewer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 18</value>
-  </data>
   <data name="&gt;&gt;tabPageViewer.Name" xml:space="preserve">
     <value>tabPageViewer</value>
   </data>
@@ -489,8 +480,8 @@
   <data name="&gt;&gt;checkBoxオートフォーカス.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="checkBoxPreviewBGM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 50</value>
+  <data name="radioButton_UseDTXViewer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 18</value>
   </data>
   <data name="&gt;&gt;numericUpDown最近使用したファイルの最大表示個数.Name" xml:space="preserve">
     <value>numericUpDown最近使用したファイルの最大表示個数</value>
@@ -543,9 +534,6 @@
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
     <value>300, 229</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
-  </data>
   <data name="&gt;&gt;tabPage全般.Name" xml:space="preserve">
     <value>tabPage全般</value>
   </data>
@@ -557,6 +545,9 @@
   </data>
   <data name="&gt;&gt;tabPageViewer.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="checkBoxPreviewBGM.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 50</value>
   </data>
   <data name="&gt;&gt;checkBox最近使用したファイル.Parent" xml:space="preserve">
     <value>tabPage全般</value>
@@ -579,14 +570,14 @@
   <data name="checkBoxオートフォーカス.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="tabPageViewer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>359, 181</value>
+  </data>
   <data name="&gt;&gt;label_Notice.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;checkBoxPlaySoundOnChip.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="radioButton_ASIO.Size" type="System.Drawing.Size, System.Drawing">
     <value>155, 16</value>
@@ -621,14 +612,8 @@
   <data name="&gt;&gt;radioButton_ASIO.Name" xml:space="preserve">
     <value>radioButton_ASIO</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>391, 264</value>
-  </data>
   <data name="tabPage全般.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
   </data>
   <data name="&gt;&gt;groupBox_SoundDeviceSettings.Name" xml:space="preserve">
     <value>groupBox_SoundDeviceSettings</value>
@@ -636,14 +621,17 @@
   <data name="radioButton_WASAPI.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="checkBox最近使用したファイル.AutoSize" type="System.Boolean, mscorlib">
+  <data name="radioButton_WASAPI.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;labelSelectLanes.Name" xml:space="preserve">
-    <value>labelSelectLanes</value>
+  <data name="&gt;&gt;comboBox_ASIOdevices.Name" xml:space="preserve">
+    <value>comboBox_ASIOdevices</value>
   </data>
-  <data name="&gt;&gt;tabPageLanes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="radioButton_ASIO.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="radioButton_WASAPI.Text" xml:space="preserve">
+    <value>&amp;WASAPI (Vista or later)</value>
   </data>
   <data name="&gt;&gt;checkedListBoxLaneSelectList.Parent" xml:space="preserve">
     <value>tabPageLanes</value>
@@ -651,8 +639,8 @@
   <data name="&gt;&gt;checkedListBoxLaneSelectList.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;button1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;labelSelectLanes.Name" xml:space="preserve">
+    <value>labelSelectLanes</value>
   </data>
   <data name="comboBox_ASIOdevices.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -666,8 +654,8 @@
   <data name="labelSelectLanes.Text" xml:space="preserve">
     <value>Select Lanes you'd like to use.</value>
   </data>
-  <data name="&gt;&gt;radioButton_WASAPI.Name" xml:space="preserve">
-    <value>radioButton_WASAPI</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>391, 264</value>
   </data>
   <data name="&gt;&gt;tabPageLanes.Parent" xml:space="preserve">
     <value>tabControlオプション</value>
@@ -690,7 +678,10 @@
   <data name="&gt;&gt;groupBox_SelectViewer.Parent" xml:space="preserve">
     <value>tabPageViewer</value>
   </data>
-  <data name="&gt;&gt;groupBox_SoundDeviceSettings.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tabPageLanes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox_SelectViewer.Name" xml:space="preserve">
     <value>groupBox_SelectViewer</value>
   </data>
   <data name="&gt;&gt;checkBoxPlaySoundOnChip.ZOrder" xml:space="preserve">
@@ -708,14 +699,17 @@
   <data name="groupBox_SelectViewer.Text" xml:space="preserve">
     <value>Viewer Settings</value>
   </data>
-  <data name="&gt;&gt;radioButton_WASAPI.Parent" xml:space="preserve">
-    <value>groupBox_SoundDeviceSettings</value>
+  <data name="radioButton_ASIO.Text" xml:space="preserve">
+    <value>&amp;ASIO (ASIO devices only)</value>
   </data>
   <data name="checkedListBoxLaneSelectList.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 6</value>
   </data>
   <data name="labelSelectLanes.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="tabControlオプション.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="labelSelectLanes.Location" type="System.Drawing.Point, System.Drawing">
     <value>133, 7</value>
@@ -725,6 +719,9 @@
 You need to reboot viewer
 after changing these
 parameters.</value>
+  </data>
+  <data name="&gt;&gt;checkBoxPreviewBGM.Name" xml:space="preserve">
+    <value>checkBoxPreviewBGM</value>
   </data>
   <data name="comboBox_ASIOdevices.Location" type="System.Drawing.Point, System.Drawing">
     <value>29, 80</value>
@@ -741,19 +738,19 @@ parameters.</value>
   <data name="checkBoxPreviewBGM.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="tabControlオプション.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;button1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="buttonOK.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="tabPageViewer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>359, 181</value>
+  <data name="&gt;&gt;radioButton_WASAPI.Parent" xml:space="preserve">
+    <value>groupBox_SoundDeviceSettings</value>
+  </data>
+  <data name="tabPageLanes.Text" xml:space="preserve">
+    <value>Lanes</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Japanese (Japan)</value>
   </metadata>
 </root>

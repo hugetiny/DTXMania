@@ -157,14 +157,20 @@
   <data name="tabPage全般.Text" xml:space="preserve">
     <value>全般</value>
   </data>
+  <data name="tabPageLanes.Text" xml:space="preserve">
+    <value>使用レーン</value>
+  </data>
   <data name="labelSelectLanes.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 12</value>
   </data>
   <data name="labelSelectLanes.Text" xml:space="preserve">
     <value>使用するレーンを選択して下さい。</value>
   </data>
-  <data name="tabPageLanes.Text" xml:space="preserve">
-    <value>使用レーン</value>
+  <data name="groupBox_SelectViewer.Text" xml:space="preserve">
+    <value>Viewerの設定</value>
+  </data>
+  <data name="groupBox_SoundDeviceSettings.Text" xml:space="preserve">
+    <value>サウンド再生方式の設定 (*)</value>
   </data>
   <data name="label_Notice.Location" type="System.Drawing.Point, System.Drawing">
     <value>211, 15</value>
@@ -196,9 +202,6 @@ Viewerの再起動が
   <data name="radioButton_ASIO.Text" xml:space="preserve">
     <value>ASIO (ASIO対応デバイスで使用可)(&amp;A)</value>
   </data>
-  <data name="groupBox_SoundDeviceSettings.Text" xml:space="preserve">
-    <value>サウンド再生方式の設定 (*)</value>
-  </data>
   <data name="radioButton_UseDTXViewer.Text" xml:space="preserve">
     <value>DTXViewerを使う(&amp;V)</value>
   </data>
@@ -207,9 +210,6 @@ Viewerの再起動が
   </data>
   <data name="radioButton_UseDTXManiaGR.Text" xml:space="preserve">
     <value>DTXManiaGRを使う(&amp;M)</value>
-  </data>
-  <data name="groupBox_SelectViewer.Text" xml:space="preserve">
-    <value>Viewerの設定</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>キャンセル</value>
