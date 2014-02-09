@@ -292,8 +292,16 @@ namespace DTXMania
 
 			queueMixerSound = new Queue<stmixer>( 64 );
 			bIsDirectSound = ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
-			db再生速度 = ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0;
-			bValidScore = (CDTXMania.DTXVmode.Enabled)? false : true;
+			if ( CDTXMania.DTXVmode.Enabled )
+			{
+				db再生速度 = CDTXMania.DTX.dbDTXVPlaySpeed;
+				CDTXMania.ConfigIni.n演奏速度 = (int) (CDTXMania.DTX.dbDTXVPlaySpeed * 20 + 0.5 );
+			}
+			else
+			{
+				db再生速度 = ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0;
+			}
+			bValidScore = ( CDTXMania.DTXVmode.Enabled ) ? false : true;
 
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
 			foreach ( CDTX.CChip pChip in listChip )

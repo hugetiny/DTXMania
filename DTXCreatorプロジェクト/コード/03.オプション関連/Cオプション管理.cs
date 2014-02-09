@@ -31,6 +31,7 @@ namespace DTXCreator.オプション関連
 			cオプションダイアログ.radioButton_UseDTXViewer.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.bViewerIsDTXV;
 			cオプションダイアログ.radioButton_UseDTXManiaGR.Checked = !this.formメインフォーム.appアプリ設定.ViewerInfo.bViewerIsDTXV;
 
+			cオプションダイアログ.groupBox_SoundDeviceSettings.Enabled = !this.formメインフォーム.appアプリ設定.ViewerInfo.bViewerIsDTXV;
 			cオプションダイアログ.radioButton_DirectSound.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == AppSetting.ViewerSoundType.DirectSound;
 			cオプションダイアログ.radioButton_WASAPI.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == AppSetting.ViewerSoundType.WASAPI;
 			cオプションダイアログ.radioButton_ASIO.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == AppSetting.ViewerSoundType.ASIO;

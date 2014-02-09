@@ -3443,6 +3443,20 @@ namespace DTXMania
 				}
 				//-----------------
 				#endregion
+				#region [ DTXVPLAYSPEED ]
+				//-----------------
+				else if ( strコマンド.StartsWith( "DTXVPLAYSPEED", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "DTXVPLAYSPEED", ref strコマンド, ref strパラメータ );
+
+					double dtxvplayspeed = 0.0;
+					if ( TryParse( strパラメータ, out dtxvplayspeed ) && dtxvplayspeed > 0.0 )
+					{
+						this.dbDTXVPlaySpeed = dtxvplayspeed;
+					}
+				}
+				//-----------------
+				#endregion
 				else if( !this.bヘッダのみ )		// ヘッダのみの解析の場合、以下は無視。
 				{
 					#region [ PANEL ]
@@ -3530,20 +3544,7 @@ namespace DTXMania
 					}
 					//-----------------
 					#endregion
-					#region [ DTXVPLAYSPEED ]
-					//-----------------
-					else if ( strコマンド.StartsWith( "DTXVPLAYSPEED", StringComparison.OrdinalIgnoreCase ) )
-					{
-						this.t入力・パラメータ食い込みチェック( "DTXVPLAYSPEED", ref strコマンド, ref strパラメータ );
-
-						double dtxvplayspeed = 0.0;
-						if ( TryParse( strパラメータ, out dtxvplayspeed ) && dtxvplayspeed > 0.0 )
-						{
-							this.dbDTXVPlaySpeed = dtxvplayspeed;
-						}
-					}
-					//-----------------
-					#endregion
+	
 					// オブジェクト記述コマンドの処理。
 
 					else if( !this.t入力・行解析・WAVVOL_VOLUME( strコマンド, strパラメータ, strコメント ) &&
