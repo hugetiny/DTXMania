@@ -352,12 +352,77 @@ namespace DTXCreator
 			}
 		}
 
+		public enum ViewerSoundType
+		{
+			DirectSound,
+			WASAPI,
+			ASIO
+		}
+
+		private const string PathDTXV = "DTXV.exe";
+		private const string PathDTXM = "DTXManiaGR.exe";
 		public class Viewer
 		{
-			public string Path = "DTXV.exe";
+			public string Path = PathDTXM;
 			public string PlayStartFromOption = "-N";
 			public string PlayStartOption = "-N-1";
 			public string PlayStopOption = "-S";
+			public ViewerSoundType SoundType =  (FDK.COS.bIsVistaOrLater)? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
+			public int ASIODeviceNo = 0;
+
+			// 引数無しのコンストラクタがないとSerializeできないのでダミー定義する
+			public Viewer()
+			{
+				Path = PathDTXM;
+				PlayStartFromOption = "-N";
+				PlayStartOption = "-N-1";
+				PlayStopOption = "-S";
+				SoundType =  (FDK.COS.bIsVistaOrLater)? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
+				ASIODeviceNo = 0;
+			}
+			public bool bViewerIsDTXV
+			{
+				get
+				{
+					return ( this.Path == PathDTXV );
+				}
+				set
+				{
+					this.Path = value ? PathDTXV : PathDTXM;
+				}
+			}
+
+			public string PlaySoundOption
+			{
+				get
+				{
+					string opt = "";
+					if ( bViewerIsDTXV )
+					{
+						opt = "";
+					}
+					else
+					{
+						string soundtypeopt = "";
+						switch ( SoundType )
+						{
+							case ViewerSoundType.DirectSound:
+								soundtypeopt = "D";
+								break;
+							case ViewerSoundType.WASAPI:
+								soundtypeopt = "W";
+								break;
+							case ViewerSoundType.ASIO:
+								soundtypeopt = "A";
+								soundtypeopt += ASIODeviceNo.ToString();
+								break;
+						}
+		
+						opt = "-D";
+					}
+					return opt;
+				}
+			}
 		}
 
 		/// <summary>

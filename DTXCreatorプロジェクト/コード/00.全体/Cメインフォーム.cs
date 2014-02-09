@@ -1639,7 +1639,8 @@ namespace DTXCreator
 		//-----------------
 		private void tシナリオ・Viewerで最初から再生する()
 		{
-			this.tViewer用の一時ファイルを出力する( false );
+			this.tViewer用の一時ファイルを出力する( false, b未保存 | !bBGMありで再生した );
+			bBGMありで再生した = true;
 
 			#region [ 再生開始オプション引数に一時ファイルを指定して DTXViewer プロセスを起動する。]
 			//-----------------
@@ -1649,14 +1650,15 @@ namespace DTXCreator
 
 				#region [ DTXViewer が起動していなければ起動する。]
 				//-----------------
-				Process.Start( strDTXViewerのパス ).WaitForInputIdle( 20 * 1000 );	// 起動完了まで最大20秒待つ
+				// DTXManiaGR.exeはコンパクトモードで起動する必要があるため、「一旦起動してから再生オプションを渡す」やり方はやめる
+				// Process.Start( strDTXViewerのパス ).WaitForInputIdle( 20 * 1000 );	// 起動完了まで最大20秒待つ
 				//-----------------
 				#endregion
 				
 				#region [ 実行中の DTXViewer に再生オプションを渡す。 ]
 				//-----------------
-				Process.Start( strDTXViewerのパス, 
-					this.appアプリ設定.ViewerInfo.PlayStartOption + " " + this.strViewer演奏用一時ファイル名 );
+				Process.Start( strDTXViewerのパス,
+					this.appアプリ設定.ViewerInfo.PlayStartOption + " " + this.strViewer演奏用一時ファイル名 ).WaitForInputIdle( 20 * 1000 );
 				//-----------------
 				#endregion
 			}
@@ -1676,7 +1678,8 @@ namespace DTXCreator
 		}
 		private void tシナリオ・Viewerで現在位置から再生する()
 		{
-			this.tViewer用の一時ファイルを出力する( false );
+			this.tViewer用の一時ファイルを出力する( false, b未保存 | !bBGMありで再生した );
+			bBGMありで再生した = true;
 
 			try
 			{
@@ -1718,7 +1721,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( true );
+			this.tViewer用の一時ファイルを出力する( true, b未保存 | bBGMありで再生した );
+			bBGMありで再生した = false;
 			//-----------------
 			#endregion
 
@@ -1783,9 +1787,14 @@ namespace DTXCreator
 		}
 
 		private string strViewer演奏用一時ファイル名 = "";
-		private void tViewer用の一時ファイルを出力する( bool bBGMのみ出力 )
+		private void tViewer用の一時ファイルを出力する( bool bBGMのみ出力, bool b前回から更新があった )
 		{
 			// 一時ファイル名を自動生成。
+
+			if ( !b前回から更新があった && File.Exists( Path.Combine( this.mgr譜面管理者.strPATH_WAV, this.strViewer演奏用一時ファイル名 ) ) )
+			{
+				return;
+			}
 
 			//this.strViewer演奏用一時ファイル名 = Path.GetTempFileName();			//
 			this.strViewer演奏用一時ファイル名 = makeTempDTX.GetTempFileName();		// #24746 2011.4.1 yyagi add; a countermeasure for temp-flooding
@@ -2146,6 +2155,7 @@ namespace DTXCreator
 		#region [ private ]
 		//-----------------
 		private bool _b未保存 = true;
+		private bool bBGMありで再生した = true;
 		private Point pt選択モードのコンテクストメニューを開いたときのマウスの位置;
 		private int n現在のガイド間隔4to64or0 = 16;		// 初期は16分間隔
 		private bool b選択チップがある
@@ -2164,11 +2174,11 @@ namespace DTXCreator
 			}
 		}
 
-		private void tDTXV演奏関連のボタンとメニューのEnabledの設定()
+		public void tDTXV演奏関連のボタンとメニューのEnabledの設定()
 		{
 			if( File.Exists( this.strDTXCのあるフォルダ名 + this.appアプリ設定.ViewerInfo.Path ) )
 			{
-				// DTXViewer が存在するなら Enable
+				// DTXViewer(DTXManiaGR) が存在するなら Enable
 
 				this.toolStripButton先頭から再生.Enabled = true;
 				this.toolStripButton現在位置から再生.Enabled = true;
@@ -2181,7 +2191,7 @@ namespace DTXCreator
 			}
 			else
 			{
-				// DTXViewer が存在しないなら Disable
+				// DTXViewer(DTXManiaGR) が存在しないなら Disable
 
 				this.toolStripButton先頭から再生.Enabled = false;
 				this.toolStripButton現在位置から再生.Enabled = false;
@@ -5439,10 +5449,10 @@ namespace DTXCreator
 				#endregion
 			}
 			#region [ デバッグ用: HHチップを置く ]
-			for ( int index = n1拍目のBeatPositionIndex; index < listBeatPositions.Count; index++ )
-			{
-				this.mgr編集モード管理者.tHHチップを配置する( listBeatPositions[ index ].nGrid, 1, listBeatPositions[ index ].b無効 );	// デバッグ用・見やすくするために暫定的に。
-			}
+			//for ( int index = n1拍目のBeatPositionIndex; index < listBeatPositions.Count; index++ )
+			//{
+			//    this.mgr編集モード管理者.tHHチップを配置する( listBeatPositions[ index ].nGrid, 1, listBeatPositions[ index ].b無効 );	// デバッグ用・見やすくするために暫定的に。
+			//}
 			#endregion
 
 			#region [ listBeatPositionsの開放 ]

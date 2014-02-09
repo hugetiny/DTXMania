@@ -656,19 +656,22 @@
     <value>編集モードに切り替えます。</value>
   </data>
   <data name="toolStripButton先頭から再生.ToolTipText" xml:space="preserve">
-    <value>DTXViewerで先頭から再生します。</value>
+    <value>Viewerで先頭から再生します。</value>
   </data>
   <data name="toolStripButton現在位置から再生.ToolTipText" xml:space="preserve">
-    <value>DTXViewerで現在の位置から再生します。</value>
+    <value>Viewerで現在の位置から再生します。</value>
   </data>
   <data name="toolStripButton現在位置からBGMのみ再生.ToolTipText" xml:space="preserve">
-    <value>DTXViewerで現在の位置からBGMのみ再生します。</value>
+    <value>Viewerで現在の位置からBGMのみ再生します。</value>
   </data>
   <data name="toolStripButton再生停止.ToolTipText" xml:space="preserve">
-    <value>DTXViewerでの再生を停止します。</value>
+    <value>Viewerでの再生を停止します。</value>
   </data>
   <data name="toolStripComboBox演奏速度.ToolTipText" xml:space="preserve">
     <value>DTXViewerでの再生速度を指定します。 (#DTXVPLAYSPEED)</value>
+  </data>
+  <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 292</value>
   </data>
   <data name="toolStripMenuItem選択チップの切り取り.Size" type="System.Drawing.Size, System.Drawing">
     <value>335, 22</value>
@@ -748,6 +751,12 @@
   <data name="toolStripSeparator18.Size" type="System.Drawing.Size, System.Drawing">
     <value>332, 6</value>
   </data>
+  <data name="experimentalFeaturesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>335, 22</value>
+  </data>
+  <data name="experimentalFeaturesToolStripMenuItem.Text" xml:space="preserve">
+    <value>実験的な機能(&amp;X)...</value>
+  </data>
   <data name="generateBeatChipsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>248, 22</value>
   </data>
@@ -759,15 +768,6 @@
   </data>
   <data name="generateBPMFromBeatChipsToolStripMenuItem.Text" xml:space="preserve">
     <value>BEATチップからBPMチップを生成(&amp;B)</value>
-  </data>
-  <data name="experimentalFeaturesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>335, 22</value>
-  </data>
-  <data name="experimentalFeaturesToolStripMenuItem.Text" xml:space="preserve">
-    <value>実験的な機能(&amp;X)...</value>
-  </data>
-  <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
-    <value>336, 314</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
