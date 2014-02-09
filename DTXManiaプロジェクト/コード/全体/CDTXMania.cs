@@ -542,14 +542,10 @@ namespace DTXMania
 
 				if ( strMes != null )
 				{
-Trace.WriteLine( "msg arg=" + strMes );
 					DTXVmode.ParseArguments( strMes );
 
-
-Trace.WriteLine( "NeedReload = " + DTXVmode.NeedReload );
 					if ( DTXVmode.Enabled )
 					{
-Trace.WriteLine( "DTXV mode is enabled," );
 						bコンパクトモード = true;
 						strコンパクトモードファイル = DTXVmode.filename;
 					}
@@ -1699,6 +1695,19 @@ for (int i = 0; i < 3; i++) {
 				{
 					DTXVmode.Refreshed = false;								// 初回起動時は再読み込みに走らせない
 					strコンパクトモードファイル = DTXVmode.filename;
+					switch ( DTXVmode.soundDeviceType )						// サウンド再生方式の設定
+					{
+						case ESoundDeviceType.DirectSound:
+							ConfigIni.nSoundDeviceType = 0;
+							break;
+						case ESoundDeviceType.ExclusiveWASAPI:
+							ConfigIni.nSoundDeviceType = 2;
+							break;
+						case ESoundDeviceType.ASIO:
+							ConfigIni.nSoundDeviceType = 1;
+							ConfigIni.nASIODevice = DTXVmode.nASIOdevice;
+							break;
+					}
 				}
 				else														// 通常のコンパクトモード
 				{

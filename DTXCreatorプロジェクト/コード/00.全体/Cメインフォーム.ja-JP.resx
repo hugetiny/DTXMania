@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="tabPage基本情報.Text" xml:space="preserve">
-    <value>基本情報</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="labelGenre.Location" type="System.Drawing.Point, System.Drawing">
     <value>37, 87</value>
@@ -310,6 +307,9 @@
   <data name="textBox曲名.ToolTip" xml:space="preserve">
     <value>演奏データのタイトルを設定します。</value>
   </data>
+  <data name="tabPage基本情報.Text" xml:space="preserve">
+    <value>基本情報</value>
+  </data>
   <data name="columnHeaderWAV_ラベル.Text" xml:space="preserve">
     <value>ラベル</value>
   </data>
@@ -361,12 +361,6 @@
   <data name="toolStripButtonAVIリスト下移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ下に移動します。</value>
   </data>
-  <data name="toolStripMenuItemファイル.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 20</value>
-  </data>
-  <data name="toolStripMenuItemファイル.Text" xml:space="preserve">
-    <value>ファイル(&amp;F)</value>
-  </data>
   <data name="toolStripMenuItem新規.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
   </data>
@@ -400,11 +394,11 @@
   <data name="toolStripMenuItem終了.Text" xml:space="preserve">
     <value>終了(&amp;X)</value>
   </data>
-  <data name="toolStripMenuItem編集.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+  <data name="toolStripMenuItemファイル.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 20</value>
   </data>
-  <data name="toolStripMenuItem編集.Text" xml:space="preserve">
-    <value>編集(&amp;E)</value>
+  <data name="toolStripMenuItemファイル.Text" xml:space="preserve">
+    <value>ファイル(&amp;F)</value>
   </data>
   <data name="toolStripMenuItemアンドゥ.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>
@@ -490,23 +484,17 @@
   <data name="toolStripMenuItem置換.Text" xml:space="preserve">
     <value>置換(&amp;Q)</value>
   </data>
-  <data name="toolStripMenuItem表示.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 20</value>
+  <data name="toolStripMenuItem編集.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 20</value>
   </data>
-  <data name="toolStripMenuItem表示.Text" xml:space="preserve">
-    <value>表示(&amp;V)</value>
+  <data name="toolStripMenuItem編集.Text" xml:space="preserve">
+    <value>編集(&amp;E)</value>
   </data>
   <data name="toolStripMenuItemチップパレット.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 22</value>
   </data>
   <data name="toolStripMenuItemチップパレット.Text" xml:space="preserve">
     <value>チップパレット(&amp;P)</value>
-  </data>
-  <data name="toolStripMenuItemガイド間隔.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 22</value>
-  </data>
-  <data name="toolStripMenuItemガイド間隔.Text" xml:space="preserve">
-    <value>ガイド間隔(&amp;G)</value>
   </data>
   <data name="toolStripMenuItemガイド間隔4分.Size" type="System.Drawing.Size, System.Drawing">
     <value>141, 22</value>
@@ -553,11 +541,17 @@
   <data name="toolStripMenuItemガイド間隔縮小.Text" xml:space="preserve">
     <value>縮小(&amp;N)</value>
   </data>
-  <data name="toolStripMenuItem再生.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 20</value>
+  <data name="toolStripMenuItemガイド間隔.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 22</value>
   </data>
-  <data name="toolStripMenuItem再生.Text" xml:space="preserve">
-    <value>再生(&amp;P)</value>
+  <data name="toolStripMenuItemガイド間隔.Text" xml:space="preserve">
+    <value>ガイド間隔(&amp;G)</value>
+  </data>
+  <data name="toolStripMenuItem表示.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 20</value>
+  </data>
+  <data name="toolStripMenuItem表示.Text" xml:space="preserve">
+    <value>表示(&amp;V)</value>
   </data>
   <data name="toolStripMenuItem先頭から再生.Size" type="System.Drawing.Size, System.Drawing">
     <value>240, 22</value>
@@ -583,11 +577,11 @@
   <data name="toolStripMenuItem再生停止.Text" xml:space="preserve">
     <value>再生停止(&amp;S)</value>
   </data>
-  <data name="toolStripMenuItemツール.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 20</value>
+  <data name="toolStripMenuItem再生.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 20</value>
   </data>
-  <data name="toolStripMenuItemツール.Text" xml:space="preserve">
-    <value>ツール(&amp;T)</value>
+  <data name="toolStripMenuItem再生.Text" xml:space="preserve">
+    <value>再生(&amp;P)</value>
   </data>
   <data name="toolStripMenuItemオプション.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 22</value>
@@ -595,11 +589,11 @@
   <data name="toolStripMenuItemオプション.Text" xml:space="preserve">
     <value>オプション(&amp;O)</value>
   </data>
-  <data name="toolStripMenuItemヘルプ.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 20</value>
+  <data name="toolStripMenuItemツール.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 20</value>
   </data>
-  <data name="toolStripMenuItemヘルプ.Text" xml:space="preserve">
-    <value>ヘルプ(&amp;H)</value>
+  <data name="toolStripMenuItemツール.Text" xml:space="preserve">
+    <value>ツール(&amp;T)</value>
   </data>
   <data name="toolStripMenuItemDTXCreaterマニュアル.Size" type="System.Drawing.Size, System.Drawing">
     <value>233, 22</value>
@@ -612,6 +606,12 @@
   </data>
   <data name="toolStripMenuItemバージョン.Text" xml:space="preserve">
     <value>バージョン情報(&amp;V)</value>
+  </data>
+  <data name="toolStripMenuItemヘルプ.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 20</value>
+  </data>
+  <data name="toolStripMenuItemヘルプ.Text" xml:space="preserve">
+    <value>ヘルプ(&amp;H)</value>
   </data>
   <data name="toolStripButton新規作成.ToolTipText" xml:space="preserve">
     <value>新しい譜面を作成します。</value>
@@ -669,9 +669,6 @@
   </data>
   <data name="toolStripComboBox演奏速度.ToolTipText" xml:space="preserve">
     <value>DTXViewerでの再生速度を指定します。 (#DTXVPLAYSPEED)</value>
-  </data>
-  <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
-    <value>336, 292</value>
   </data>
   <data name="toolStripMenuItem選択チップの切り取り.Size" type="System.Drawing.Size, System.Drawing">
     <value>335, 22</value>
@@ -751,12 +748,6 @@
   <data name="toolStripSeparator18.Size" type="System.Drawing.Size, System.Drawing">
     <value>332, 6</value>
   </data>
-  <data name="experimentalFeaturesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>335, 22</value>
-  </data>
-  <data name="experimentalFeaturesToolStripMenuItem.Text" xml:space="preserve">
-    <value>実験的な機能(&amp;X)...</value>
-  </data>
   <data name="generateBeatChipsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>248, 22</value>
   </data>
@@ -768,6 +759,15 @@
   </data>
   <data name="generateBPMFromBeatChipsToolStripMenuItem.Text" xml:space="preserve">
     <value>BEATチップからBPMチップを生成(&amp;B)</value>
+  </data>
+  <data name="experimentalFeaturesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>335, 22</value>
+  </data>
+  <data name="experimentalFeaturesToolStripMenuItem.Text" xml:space="preserve">
+    <value>実験的な機能(&amp;X)...</value>
+  </data>
+  <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
+    <value>336, 292</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

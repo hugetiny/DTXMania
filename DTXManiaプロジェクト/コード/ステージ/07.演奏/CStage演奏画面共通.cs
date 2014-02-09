@@ -2376,6 +2376,8 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.eDark = Eダークモード.OFF;
 
+			CDTXMania.ConfigIni.b演奏情報を表示する = true;
+			CDTXMania.ConfigIni.bフィルイン有効 = true;
 			CDTXMania.ConfigIni.bScoreIniを出力する = false;
 			CDTXMania.ConfigIni.bSTAGEFAILED有効 = false;
 			CDTXMania.ConfigIni.bTight = false;

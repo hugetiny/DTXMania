@@ -359,10 +359,11 @@ namespace DTXCreator
 			ASIO
 		}
 
-		private const string PathDTXV = "DTXV.exe";
-		private const string PathDTXM = "DTXManiaGR.exe";
 		public class Viewer
 		{
+			private const string PathDTXV = "DTXV.exe";
+			private const string PathDTXM = "DTXManiaGR.exe";
+
 			public string Path = PathDTXM;
 			public string PlayStartFromOption = "-N";
 			public string PlayStartOption = "-N-1";
@@ -417,8 +418,8 @@ namespace DTXCreator
 								soundtypeopt += ASIODeviceNo.ToString();
 								break;
 						}
-		
-						opt = "-D";
+
+						opt = "-D" + soundtypeopt;
 					}
 					return opt;
 				}

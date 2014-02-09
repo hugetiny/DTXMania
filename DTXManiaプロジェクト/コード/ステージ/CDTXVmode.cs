@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using FDK;
 
 
@@ -72,6 +73,14 @@ namespace DTXMania
 			get;
 			private set;
 		}
+		/// <summary>
+		/// 前回からサウンドデバイスが変更されたか
+		/// </summary>
+		public bool ChangedSoundDevice
+		{
+			get;
+			private set;
+		}
 
 		public string filename
 		{
@@ -137,68 +146,128 @@ namespace DTXMania
 		/// <remarks>内部でEnabled, nStartBar, Command, NeedReload, filename, last_path, last_timestampを設定する</remarks>
 		public bool ParseArguments( string arg )
 		{
-			bool ret = false;
+			bool ret = false, analyzing = true;
 			this.nStartBar = 0;
 
-			if ( arg != null )
+			if ( arg != null ) 
 			{
-				// -S  -Nxxx  filename
-				if ( arg.StartsWith( "-S", StringComparison.OrdinalIgnoreCase ) )		// DTXV再生停止
+				while ( analyzing )
 				{
-					this.Enabled = true;
-					this.Command = ECommand.Stop;
-					this.Refreshed = true;
-					ret = true;
-				}
-				else if ( arg.StartsWith( "-D", StringComparison.OrdinalIgnoreCase ) )
-				{
-					// -DW, -DA1など
-					arg = arg.Substring( 2 );	// -D を削除
-					switch ( arg.Substring( 1 ) )
+					if ( arg == "" )
 					{
-						case "D":
-							this.soundDeviceType = ESoundDeviceType.DirectSound;
-							break;
-						case "W":
-							this.soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
-							break;
-						case "A":
-							this.soundDeviceType = ESoundDeviceType.ASIO;
-							arg = arg.Substring( 1 );
-							string s = "";
-							while ( arg.Substring( 1 ) == "0" )
-							{
-							}
-							break;
+						analyzing = false;
 					}
-				}
-				else if ( arg.StartsWith( "-N", StringComparison.OrdinalIgnoreCase ) )
-				{
-					this.Enabled = true;
-					this.Command = ECommand.Play;
-					ret = true;
+					// -S  -Nxxx  filename
+					if ( arg.StartsWith( "-S", StringComparison.OrdinalIgnoreCase ) )		// DTXV再生停止
+					{
+						this.Enabled = true;
+						this.Command = ECommand.Stop;
+						this.Refreshed = true;
+						ret = true;
+						arg = arg.Substring( 2 );
+					}
+					else if ( arg.StartsWith( "-D", StringComparison.OrdinalIgnoreCase ) )
+					{
+						// -DW, -DA1など
+						arg = arg.Substring( 2 );	// -D を削除
+						switch ( arg[ 0 ] )
+						{
+							#region [ DirectSound ]
+							case 'D':
+								if ( this.soundDeviceType != ESoundDeviceType.DirectSound )
+								{
+									this.ChangedSoundDevice = true;
+									this.soundDeviceType = ESoundDeviceType.DirectSound;
+								}
+								else
+								{
+									this.ChangedSoundDevice = false;
+								}
+								arg = arg.Substring( 1 );
+								break;
+							#endregion
+							#region [ WASAPI ]
+							case 'W':
+								if ( this.soundDeviceType != ESoundDeviceType.ExclusiveWASAPI )
+								{
+									this.ChangedSoundDevice = true;
+									this.soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+								}
+								else
+								{
+									this.ChangedSoundDevice = false;
+								}
+								arg = arg.Substring( 1 );
+								break;
+							#endregion
+							#region [ ASIO ]
+							case 'A':
+								if ( this.soundDeviceType != ESoundDeviceType.ASIO )
+								{
+									this.ChangedSoundDevice = true;
+									this.soundDeviceType = ESoundDeviceType.ASIO;
+								}
+								else
+								{
+									this.ChangedSoundDevice = false;
+								}
+								arg = arg.Substring( 1 );
 
-					arg = arg.Substring( 2 );					// "-N"を除去
-					string[] p = arg.Split( new char[] { ' ' } );
-					this.nStartBar = int.Parse( p[ 0 ] );			// 再生開始小節
-					if ( this.nStartBar < 0 )
-					{
-						this.nStartBar = -1;
+								int nAsioDev = 0, p = 0;
+								while ( true )
+								{
+									char c = arg[ 0 ];
+									if ( '0' <= c && c <= '9' )
+									{
+										nAsioDev *= 10;
+										nAsioDev += c - '0';
+										p++;
+										arg = arg.Substring( 1 );
+										continue;
+									}
+									else
+									{
+										break;
+									}
+								}
+								if ( this.nASIOdevice != nAsioDev )
+								{
+									this.ChangedSoundDevice = true;
+									this.nASIOdevice = nAsioDev;
+								}
+								break;
+							#endregion
+						}
 					}
+					else if ( arg.StartsWith( "-N", StringComparison.OrdinalIgnoreCase ) )
+					{
+						this.Enabled = true;
+						this.Command = ECommand.Play;
+						ret = true;
 
-					int startIndex = arg.IndexOf( ' ' );
-					string filename = arg.Substring( startIndex + 1 );	// 再生ファイル名(フルパス)
-					try
-					{
-						filename = filename.Trim( new char[] { '\"' } );
-						bIsNeedReloadDTX( filename );
-					}
-					catch	// 指定ファイルが存在しない
-					{
+						arg = arg.Substring( 2 );					// "-N"を除去
+						string[] p = arg.Split( new char[] { ' ' } );
+						this.nStartBar = int.Parse( p[ 0 ] );			// 再生開始小節
+						if ( this.nStartBar < 0 )
+						{
+							this.nStartBar = -1;
+						}
+
+						int startIndex = arg.IndexOf( ' ' );
+						string filename = arg.Substring( startIndex + 1 );	// 再生ファイル名(フルパス) これで引数が終わっていることを想定
+						try
+						{
+							filename = filename.Trim( new char[] { '\"' } );
+							bIsNeedReloadDTX( filename );
+						}
+						catch	// 指定ファイルが存在しない
+						{
+						}
+						arg = "";
+						analyzing = false;
 					}
 				}
 			}
-
 			return ret;
 		}
 

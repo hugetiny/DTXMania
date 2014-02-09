@@ -1639,8 +1639,12 @@ namespace DTXCreator
 		//-----------------
 		private void tシナリオ・Viewerで最初から再生する()
 		{
+			#region [ DTXViewer 用の一時ファイルを出力する。]
+			//-----------------
 			this.tViewer用の一時ファイルを出力する( false, b未保存 | !bBGMありで再生した );
 			bBGMありで再生した = true;
+			//-----------------
+			#endregion
 
 			#region [ 再生開始オプション引数に一時ファイルを指定して DTXViewer プロセスを起動する。]
 			//-----------------
@@ -1658,7 +1662,7 @@ namespace DTXCreator
 				#region [ 実行中の DTXViewer に再生オプションを渡す。 ]
 				//-----------------
 				Process.Start( strDTXViewerのパス,
-					this.appアプリ設定.ViewerInfo.PlayStartOption + " " + this.strViewer演奏用一時ファイル名 ).WaitForInputIdle( 20 * 1000 );
+					this.appアプリ設定.ViewerInfo.PlaySoundOption + this.appアプリ設定.ViewerInfo.PlayStartOption + " " + this.strViewer演奏用一時ファイル名 ).WaitForInputIdle( 20 * 1000 );
 				//-----------------
 				#endregion
 			}
@@ -1678,8 +1682,12 @@ namespace DTXCreator
 		}
 		private void tシナリオ・Viewerで現在位置から再生する()
 		{
+			#region [ DTXViewer 用の一時ファイルを出力する。]
+			//-----------------
 			this.tViewer用の一時ファイルを出力する( false, b未保存 | !bBGMありで再生した );
 			bBGMありで再生した = true;
+			//-----------------
+			#endregion
 
 			try
 			{
@@ -1687,9 +1695,8 @@ namespace DTXCreator
 
 				#region [ DTXViewer が起動していなければ起動する。]
 				//-----------------
-				
-				Process.Start( strDTXViewerのパス ).WaitForInputIdle( 20 * 1000 );	// 起動完了まで最大20秒待つ
-				
+				// DTXManiaGR.exeはコンパクトモードで起動する必要があるため、「一旦起動してから再生オプションを渡す」やり方はやめる
+				// Process.Start( strDTXViewerのパス ).WaitForInputIdle( 20 * 1000 );	// 起動完了まで最大20秒待つ
 				//-----------------
 				#endregion
 
@@ -1700,7 +1707,7 @@ namespace DTXCreator
 					this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( this.mgr譜面管理者.n現在の譜面表示下辺の譜面先頭からの位置grid );
 				
 				Process.Start( strDTXViewerのパス,
-					this.appアプリ設定.ViewerInfo.PlayStartFromOption + c小節.n小節番号0to3599 + " " + this.strViewer演奏用一時ファイル名 );
+					this.appアプリ設定.ViewerInfo.PlaySoundOption + this.appアプリ設定.ViewerInfo.PlayStartFromOption + c小節.n小節番号0to3599 + " " + this.strViewer演奏用一時ファイル名 ).WaitForInputIdle( 20 * 1000 );
 				
 				//-----------------
 				#endregion
@@ -1732,7 +1739,8 @@ namespace DTXCreator
 
 				#region [ DTXViewer が起動していなければ起動する。]
 				//-----------------
-				Process.Start( strDTXViewerのパス ).WaitForInputIdle( 20 * 1000 );	// 起動完了まで最大20秒待つ
+				// DTXManiaGR.exeはコンパクトモードで起動する必要があるため、「一旦起動してから再生オプションを渡す」やり方はやめる
+				// Process.Start( strDTXViewerのパス ).WaitForInputIdle( 20 * 1000 );	// 起動完了まで最大20秒待つ
 				//-----------------
 				#endregion
 
@@ -1740,7 +1748,7 @@ namespace DTXCreator
 				//-----------------
 				C小節 c小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( this.mgr譜面管理者.n現在の譜面表示下辺の譜面先頭からの位置grid );
 				Process.Start( strDTXViewerのパス,
-					this.appアプリ設定.ViewerInfo.PlayStartFromOption + c小節.n小節番号0to3599 + " " + this.strViewer演奏用一時ファイル名 );
+					this.appアプリ設定.ViewerInfo.PlaySoundOption + this.appアプリ設定.ViewerInfo.PlayStartFromOption + c小節.n小節番号0to3599 + " " + this.strViewer演奏用一時ファイル名 ).WaitForInputIdle( 20 * 1000 );
 				//-----------------
 				#endregion
 			}
@@ -1791,6 +1799,8 @@ namespace DTXCreator
 		{
 			// 一時ファイル名を自動生成。
 
+			// 前回から更新がなければ(連続して再生ボタンを押した、など)、前回の生成ファイルをそのまま返す。
+			// (初めての再生の場合は、tempファイル未生成のため、このまま生成フローを続ける。)
 			if ( !b前回から更新があった && File.Exists( Path.Combine( this.mgr譜面管理者.strPATH_WAV, this.strViewer演奏用一時ファイル名 ) ) )
 			{
 				return;
