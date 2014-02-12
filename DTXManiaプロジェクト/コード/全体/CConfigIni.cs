@@ -669,6 +669,12 @@ namespace DTXMania
 		public bool bTimeStretch;					// #23664 2013.2.24 yyagi ピッチ変更無しで再生速度を変更するかどうか
 		public STDGBVALUE<EInvisible> eInvisible;	// #32072 2013.9.20 yyagi チップを非表示にする
 		public int nDisplayTimesMs, nFadeoutTimeMs;
+
+		public STDGBVALUE<int> nViewerScrollSpeed;
+		public bool bViewerVSyncWait;
+		public bool bViewerShowDebugStatus;
+		public bool bViewerTimeStretch;
+		public bool bViewerDrums有効, bViewerGuitar有効;
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1093,6 +1099,7 @@ namespace DTXMania
 				this.nInputAdjustTimeMs[ i ] = 0;
 				this.nJudgeLinePosOffset[ i ] = 0;
 				this.eInvisible[ i ] = EInvisible.OFF;
+				this.nViewerScrollSpeed[ i ] = 1;
 			}
 			this.n演奏速度 = 20;
 			#region [ AutoPlay ]
@@ -1161,6 +1168,12 @@ namespace DTXMania
 			this.bTimeStretch = false;					// #23664 2013.2.24 yyagi 初期値はfalse (再生速度変更を、ピッチ変更にて行う)
 			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
 			this.nFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
+
+			bViewerVSyncWait = true;
+			bViewerShowDebugStatus = true;
+			bViewerTimeStretch = false;
+			bViewerDrums有効 = true;
+			bViewerGuitar有効 = true;
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1679,6 +1692,51 @@ namespace DTXMania
 			sw.WriteLine( ";-------------------" );
 			#endregion
 
+			#region [ ViewerOption ]
+			sw.WriteLine( "[ViewerOption]" );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ドラム譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)" );
+			sw.WriteLine( "; for viewer mode; Drums Scroll Speed" );
+			sw.WriteLine( "ViewerDrumsScrollSpeed={0}", this.nViewerScrollSpeed.Drums );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ギター譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)");
+			sw.WriteLine( "; for viewer mode; Guitar Scroll Speed" );
+			sw.WriteLine( "ViewerGuitarScrollSpeed={0}", this.nViewerScrollSpeed.Guitar );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ベース譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)");
+			sw.WriteLine( "; for viewer mode; Bass Scroll Speed" );
+			sw.WriteLine( "ViewerBassScrollSpeed={0}", this.nViewerScrollSpeed.Bass );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 垂直帰線同期(0:OFF,1:ON)" );
+			sw.WriteLine( "; for viewer mode; Use whether Vertical Sync or not." );
+			sw.WriteLine( "ViewerVSyncWait={0}", this.bViewerVSyncWait ? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 演奏情報を表示する (0:OFF, 1:ON) ");
+			sw.WriteLine( "; for viewer mode;" );
+			sw.WriteLine( "; Showing playing info on the playing screen. (0:OFF, 1:ON) " );
+			sw.WriteLine( "ViewerShowDebugStatus={0}", this.bViewerShowDebugStatus? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 再生速度変更を、ピッチ変更で行うかどうか(0:ピッチ変更, 1:タイムストレッチ ");
+			sw.WriteLine( "; (WASAPI/ASIO使用時のみ有効)  ");
+			sw.WriteLine( "; for viewer mode;" );
+			sw.WriteLine( "; Set \"0\" if you'd like to use pitch shift with PlaySpeed. " );
+			sw.WriteLine( "; Set \"1\" for time stretch. " );
+			sw.WriteLine( "; (Only available when you're using using WASAPI or ASIO) ");
+			sw.WriteLine( "ViewerTimeStretch={0}", this.bViewerTimeStretch? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ギター/ベース有効(0:OFF,1:ON) ");
+			sw.WriteLine( "; for viewer mode;" );
+			sw.WriteLine( "; Enable Guitar/Bass or not.(0:OFF,1:ON) " );
+			sw.WriteLine( "ViewerGuitar={0}", this.bViewerGuitar有効? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ドラム有効(0:OFF,1:ON) ");
+			sw.WriteLine( "; for viewer mode;" );
+			sw.WriteLine( "; Enable Drums or not.(0:OFF,1:ON) " );
+			sw.WriteLine( "ViewerDrums={0}", this.bViewerDrums有効? 1 : 0 );
+			sw.WriteLine();
+			#endregion
+
+
 			#region [ AutoPlay ]
 			sw.WriteLine( "[AutoPlay]" );
 			sw.WriteLine();
@@ -1877,8 +1935,10 @@ namespace DTXMania
 			{
 				string str;
 				this.tキーアサインを全部クリアする();
-				StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
-				str = reader.ReadToEnd();
+				using ( StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "Shift_JIS" ) ) )
+				{
+					str = reader.ReadToEnd();
+				}
 				t文字列から読み込み( str );
 				CDTXVersion version = new CDTXVersion( this.strDTXManiaのバージョン );
 				if( version.n整数部 <= 69 )
@@ -1924,6 +1984,10 @@ namespace DTXMania
 							else if ( str2.Equals( "PlayOption" ) )
 							{
 								unknown = Eセクション種別.PlayOption;
+							}
+							else if ( str2.Equals( "ViewerOption" ) )
+							{
+								unknown = Eセクション種別.ViewerOption;
 							}
 							else if ( str2.Equals( "AutoPlay" ) )
 							{
@@ -2547,6 +2611,47 @@ namespace DTXMania
 									//-----------------------------
 									#endregion
 
+									#region [ [ViewerOption] ]
+									//-----------------------------
+									case Eセクション種別.ViewerOption:
+										{
+											if ( str3.Equals( "ViewerDrumsScrollSpeed" ) )
+											{
+												this.nViewerScrollSpeed.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Drums );
+											}
+											else if ( str3.Equals( "ViewerGuitarScrollSpeed" ) )
+											{
+												this.nViewerScrollSpeed.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Guitar );
+											}
+											else if ( str3.Equals( "ViewerBassScrollSpeed" ) )
+											{
+												this.nViewerScrollSpeed.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Bass );
+											}
+											else if ( str3.Equals( "ViewerVSyncWait" ) )
+											{
+												this.bViewerVSyncWait = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ViewerShowDebugStatus" ) )
+											{
+												this.bViewerShowDebugStatus = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ViewerTimeStretch" ) )
+											{
+												this.bViewerTimeStretch = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ViewerGuitar" ) )
+											{
+												this.bViewerGuitar有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ViewerDrums" ) )
+											{
+												this.bViewerDrums有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
 									#region [ [AutoPlay] ]
 									//-----------------------------
 									case Eセクション種別.AutoPlay:
@@ -2863,6 +2968,7 @@ namespace DTXMania
 			System,
 			Log,
 			PlayOption,
+			ViewerOption,
 			AutoPlay,
 			HitRange,
 			GUID,

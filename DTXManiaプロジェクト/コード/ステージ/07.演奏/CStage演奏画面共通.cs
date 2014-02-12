@@ -261,6 +261,10 @@ namespace DTXMania
 				this.queWailing[ k ] = new Queue<CDTX.CChip>();
 				this.r現在の歓声Chip[ k ] = null;
 				cInvisibleChip.eInvisibleMode[ k ] = CDTXMania.ConfigIni.eInvisible[ k ];
+				if ( CDTXMania.DTXVmode.Enabled )
+				{
+					CDTXMania.ConfigIni.n譜面スクロール速度[ k ] = CDTXMania.ConfigIni.nViewerScrollSpeed[ k ];
+				}
 			}
 			for ( int i = 0; i < 3; i++ )
 			{
@@ -2380,11 +2384,13 @@ namespace DTXMania
 				CDTXMania.ConfigIni.eRandom[ i ] = Eランダムモード.OFF;
 				CDTXMania.ConfigIni.n表示可能な最小コンボ数[ i ] = 65535;
 				CDTXMania.ConfigIni.判定文字表示位置[ i ] = E判定文字表示位置.表示OFF;
+				// CDTXMania.ConfigIni.n譜面スクロール速度[ i ] = CDTXMania.ConfigIni.nViewerScrollSpeed[ i ];	// これだけはOn活性化()で行うこと。
+																												// そうしないと、演奏開始直後にスクロール速度が変化して見苦しい。
 			}
 
 			CDTXMania.ConfigIni.eDark = Eダークモード.OFF;
 
-			CDTXMania.ConfigIni.b演奏情報を表示する = true;
+			CDTXMania.ConfigIni.b演奏情報を表示する = CDTXMania.ConfigIni.bViewerShowDebugStatus;
 			CDTXMania.ConfigIni.bフィルイン有効 = true;
 			CDTXMania.ConfigIni.bScoreIniを出力する = false;
 			CDTXMania.ConfigIni.bSTAGEFAILED有効 = false;

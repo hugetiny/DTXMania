@@ -271,7 +271,35 @@ namespace DTXMania
 			return ret;
 		}
 
+		/// <summary>
+		/// Viewer関連の設定のみを、Config.iniに書き出す
+		/// </summary>
+		public void tUpdateConfigIni()
+		{
+			CConfigIni cc = new CConfigIni();
+			string path = CDTXMania.strEXEのあるフォルダ + "Config.ini";
+			if ( File.Exists( path ) )
+			{
+				try
+				{
+					cc.tファイルから読み込み( path );
+				}
+				catch
+				{
+					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
+				}
+			}
 
+			cc.nViewerScrollSpeed     = CDTXMania.ConfigIni.n譜面スクロール速度;
+			cc.bViewerShowDebugStatus = CDTXMania.ConfigIni.b演奏情報を表示する;
+			cc.bViewerVSyncWait       = CDTXMania.ConfigIni.b垂直帰線待ちを行う;
+			cc.bViewerTimeStretch     = CDTXMania.ConfigIni.bTimeStretch;
+			cc.bViewerDrums有効       = CDTXMania.ConfigIni.bDrums有効;
+			cc.bViewerGuitar有効      = CDTXMania.ConfigIni.bGuitar有効;
+
+			cc.t書き出し( path );
+Trace.TraceInformation( "write configini done" );
+		}
 
 		private string last_path;
 		private DateTime last_timestamp;

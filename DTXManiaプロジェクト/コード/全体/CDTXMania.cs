@@ -2418,7 +2418,8 @@ for (int i = 0; i < 3; i++) {
 				{
 					if ( DTXVmode.Enabled )
 					{
-						Trace.TraceInformation( "DTXVモードだったため、Config.iniは保存しません。" );
+						DTXVmode.tUpdateConfigIni();
+						Trace.TraceInformation( "DTXVモードの設定情報を、Config.iniに保存しました。" );
 					}
 					else
 					{
