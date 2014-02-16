@@ -32,9 +32,9 @@ namespace DTXCreator.オプション関連
 			cオプションダイアログ.radioButton_UseDTXManiaGR.Checked = !this.formメインフォーム.appアプリ設定.ViewerInfo.bViewerIsDTXV;
 
 			cオプションダイアログ.groupBox_SoundDeviceSettings.Enabled = !this.formメインフォーム.appアプリ設定.ViewerInfo.bViewerIsDTXV;
-			cオプションダイアログ.radioButton_DirectSound.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == AppSetting.ViewerSoundType.DirectSound;
-			cオプションダイアログ.radioButton_WASAPI.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == AppSetting.ViewerSoundType.WASAPI;
-			cオプションダイアログ.radioButton_ASIO.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == AppSetting.ViewerSoundType.ASIO;
+			cオプションダイアログ.radioButton_DirectSound.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.DirectSound;
+			cオプションダイアログ.radioButton_WASAPI.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.ExclusiveWASAPI;
+			cオプションダイアログ.radioButton_ASIO.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.ASIO;
 
 			cオプションダイアログ.tASIOデバイスリストの内訳を生成する();
 			cオプションダイアログ.comboBox_ASIOdevices.SelectedIndex = this.formメインフォーム.appアプリ設定.ViewerInfo.ASIODeviceNo;
@@ -61,18 +61,22 @@ namespace DTXCreator.オプション関連
 				#region [ Viewer設定 ]
 				this.formメインフォーム.appアプリ設定.ViewerInfo.bViewerIsDTXV = cオプションダイアログ.radioButton_UseDTXViewer.Checked;
 
-				AppSetting.ViewerSoundType vst = (FDK.COS.bIsVistaOrLater)? AppSetting.ViewerSoundType.WASAPI : AppSetting.ViewerSoundType.DirectSound;
+				//AppSetting.ViewerSoundType vst = ( FDK.COS.bIsVistaOrLater ) ? AppSetting.ViewerSoundType.WASAPI : AppSetting.ViewerSoundType.DirectSound;
+				FDK.ESoundDeviceType vst = ( FDK.COS.bIsVistaOrLater ) ? FDK.ESoundDeviceType.ExclusiveWASAPI :  FDK.ESoundDeviceType.DirectSound;
 				if ( cオプションダイアログ.radioButton_DirectSound.Checked )
 				{
-					vst = AppSetting.ViewerSoundType.DirectSound;
+					//vst = AppSetting.ViewerSoundType.DirectSound;
+					vst = FDK.ESoundDeviceType.DirectSound;
 				}
 				else if ( cオプションダイアログ.radioButton_WASAPI.Checked )
 				{
-					vst = AppSetting.ViewerSoundType.WASAPI;
+					//vst = AppSetting.ViewerSoundType.WASAPI;
+					vst = FDK.ESoundDeviceType.ExclusiveWASAPI;
 				}
 				else if ( cオプションダイアログ.radioButton_ASIO.Checked )
 				{
-					vst = AppSetting.ViewerSoundType.ASIO;
+					//vst = AppSetting.ViewerSoundType.ASIO;
+					vst = FDK.ESoundDeviceType.ASIO;
 				}
 				this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType = vst;
 

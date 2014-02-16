@@ -1734,8 +1734,8 @@ namespace DTXMania
 			sw.WriteLine( "; Enable Drums or not.(0:OFF,1:ON) " );
 			sw.WriteLine( "ViewerDrums={0}", this.bViewerDrums有効? 1 : 0 );
 			sw.WriteLine();
+			sw.WriteLine( ";-------------------" );
 			#endregion
-
 
 			#region [ AutoPlay ]
 			sw.WriteLine( "[AutoPlay]" );

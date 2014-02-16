@@ -20,7 +20,13 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			this._Form = pメインフォーム;
 			this.listViewWAVリスト = pListViewWAVリスト;
-			this.sound管理 = new CSound管理( this._Form.Handle );
+//			this.sound管理 = new CSound管理( this._Form.Handle );
+//			this.sound管理 = new CSound管理( this._Form.Handle, this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo );
+
+			// DTXMania本体のDTXV化に伴い、FDK.CSound管理クラスをシングルトン化して、一つの実体でDTXC/DTXV両者を動作させるようにする
+			this.sound管理 = CSound管理.Instance;
+			this.sound管理.t初期化( this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo, this._Form.Handle );
+
 			this.soundPreview = null;
 
 			#region [ #26122 2011.8.31 yyagi; ストリーム再生のために、t再生中の処理をする()を定期的に呼び出す処理を追加 ]
@@ -263,7 +269,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		private Cメインフォーム _Form;
 		private ListView listViewWAVリスト;
 		private CSound soundPreview;
-		private CSound管理 sound管理;
+		private CSound管理 sound管理 = null;
 		private CWAVキャッシュ WAVキャッシュ = new CWAVキャッシュ();
 		private TimerCallback timerDelegate;
 		private System.Threading.Timer timer;

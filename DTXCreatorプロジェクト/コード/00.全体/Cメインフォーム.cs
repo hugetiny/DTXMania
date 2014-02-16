@@ -461,9 +461,10 @@ namespace DTXCreator
 			#region [ アプリ設定をXML形式ファイルで出力する。 ]
 			//-----------------
 			var serializer = new XmlSerializer( typeof( AppSetting ) );
-			var stream = new FileStream( str設定ファイル名, FileMode.Create );
-			serializer.Serialize( (Stream) stream, this.appアプリ設定 );
-			stream.Close();
+			using ( var stream = new FileStream( str設定ファイル名, FileMode.Create ) )		// #33204 2014.2.13 yyagi usingを使って、エラー発生時のファイルロックを回避
+			{
+				serializer.Serialize( (Stream) stream, this.appアプリ設定 );
+			}
 			//-----------------
 			#endregion
 		}
@@ -638,6 +639,11 @@ namespace DTXCreator
 			#region [ 未保存フラグをクリアする。]
 			//-----------------
 			this.b未保存 = false;
+			//-----------------
+			#endregion
+			#region [ 再生制御用フラグを立てる。(DTXVに必ずリロードさせるため) ]
+			//-----------------
+			this.bDTXファイルを開いた = true;
 			//-----------------
 			#endregion
 		}
@@ -1641,8 +1647,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( false, b未保存 | !bBGMありで再生した | b再生速度を変更した );
-			bBGMありで再生した = true;
+			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.bBGMありで再生した = true;
 			//-----------------
 			#endregion
 
@@ -1684,8 +1690,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( false, b未保存 | !bBGMありで再生した | b再生速度を変更した );
-			bBGMありで再生した = true;
+			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.bBGMありで再生した = true;
 			//-----------------
 			#endregion
 
@@ -1728,8 +1734,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( true, b未保存 | bBGMありで再生した | b再生速度を変更した );
-			bBGMありで再生した = false;
+			this.tViewer用の一時ファイルを出力する( true, this.b未保存 | this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.bBGMありで再生した = false;
 			//-----------------
 			#endregion
 
@@ -1808,6 +1814,7 @@ namespace DTXCreator
 
 			// 再生速度変更フラグをリセット。
 			b再生速度を変更した = false;
+			bDTXファイルを開いた = false;
 
 			//this.strViewer演奏用一時ファイル名 = Path.GetTempFileName();			//
 			this.strViewer演奏用一時ファイル名 = makeTempDTX.GetTempFileName();		// #24746 2011.4.1 yyagi add; a countermeasure for temp-flooding
@@ -2170,6 +2177,7 @@ namespace DTXCreator
 		private bool _b未保存 = true;
 		private bool bBGMありで再生した = true;
 		private bool b再生速度を変更した = false;
+		private bool bDTXファイルを開いた = false;
 		private Point pt選択モードのコンテクストメニューを開いたときのマウスの位置;
 		private int n現在のガイド間隔4to64or0 = 16;		// 初期は16分間隔
 		private bool b選択チップがある

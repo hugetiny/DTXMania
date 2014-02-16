@@ -1746,7 +1746,7 @@ namespace DTXMania
 						break;
 				}
 
-				FDK.CSound管理.t初期化( soundDeviceType,
+				CDTXMania.Sound管理.t初期化( soundDeviceType,
 										0,
 										// this.iSystemWASAPIBufferSizeMs.n現在の値,
 										0,

@@ -19,8 +19,31 @@ using DirectShowLib;
 namespace FDK
 {
 	#region [ DTXMania用拡張 ]
-	public class CSound管理	// : CSound
+	public sealed class CSound管理	// : CSound
 	{
+		private static int refCounter = 0;
+		private bool bInitialized = false;
+
+		private static CSound管理 m_Instance = new CSound管理();
+		/// <summary>
+		/// コンストラクタ(singletone化するため、外部には見せない)
+		/// </summary>
+		private CSound管理()
+		{
+			SoundDevice = null;
+		}
+
+		public static CSound管理 Instance
+		{
+			get
+			{
+				refCounter++;
+				return m_Instance;
+			}
+		}
+
+
+
 		public static ISoundDevice SoundDevice
 		{
 			get; set;
@@ -121,30 +144,44 @@ namespace FDK
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="handle"></param>
-		public CSound管理( IntPtr handle )	// #30803 従来のコンストラクタ相当のI/Fを追加。(DTXC用)
-		{
-			WindowHandle = handle;
-			SoundDevice = null;
-			t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
-		}
-		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice )
-		{
-			WindowHandle = handle;
-			SoundDevice = null;
-			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice );
-		}
+		//public CSound管理( IntPtr handle )	// #30803 従来のコンストラクタ相当のI/Fを追加。(DTXC用)
+		//{
+		//    WindowHandle = handle;
+		//    SoundDevice = null;
+		//    t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
+		//}
+		//public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice )
+		//{
+		//    WindowHandle = handle;
+		//    SoundDevice = null;
+		//    t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice );
+		//}
 		public void Dispose()
 		{
-			t終了();
+			if ( --refCounter <= 0 )
+			{
+				t終了();
+				refCounter = 0;
+				bInitialized = false;
+			}
 		}
 
-		public static void t初期化()
+		//public static void t初期化()
+		//{
+		//    t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
+		//}
+
+		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, IntPtr handle )
 		{
-			t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
+			if ( !bInitialized )
+			{
+				WindowHandle = handle;
+				t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice );
+				bInitialized = true;
+			}
 		}
 
-
-		public static void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
+		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
 		{
 			//SoundDevice = null;						// 後で再初期化することがあるので、null初期化はコンストラクタに回す
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）

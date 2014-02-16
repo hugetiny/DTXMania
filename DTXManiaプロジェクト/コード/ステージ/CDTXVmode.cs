@@ -298,7 +298,6 @@ namespace DTXMania
 			cc.bViewerGuitar有効      = CDTXMania.ConfigIni.bGuitar有効;
 
 			cc.t書き出し( path );
-Trace.TraceInformation( "write configini done" );
 		}
 
 		private string last_path;

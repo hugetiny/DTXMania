@@ -352,12 +352,12 @@ namespace DTXCreator
 			}
 		}
 
-		public enum ViewerSoundType
-		{
-			DirectSound,
-			WASAPI,
-			ASIO
-		}
+		//public enum ViewerSoundType
+		//{
+		//    DirectSound,
+		//    WASAPI,
+		//    ASIO
+		//}
 
 		public class Viewer
 		{
@@ -368,7 +368,8 @@ namespace DTXCreator
 			public string PlayStartFromOption = "-N";
 			public string PlayStartOption = "-N-1";
 			public string PlayStopOption = "-S";
-			public ViewerSoundType SoundType =  (FDK.COS.bIsVistaOrLater)? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
+			// public ViewerSoundType SoundType = ( FDK.COS.bIsVistaOrLater ) ? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
+			public FDK.ESoundDeviceType SoundType = ( FDK.COS.bIsVistaOrLater ) ? FDK.ESoundDeviceType.ExclusiveWASAPI : FDK.ESoundDeviceType.DirectSound;
 			public int ASIODeviceNo = 0;
 
 			// 引数無しのコンストラクタがないとSerializeできないのでダミー定義する
@@ -378,7 +379,8 @@ namespace DTXCreator
 				PlayStartFromOption = "-N";
 				PlayStartOption = "-N-1";
 				PlayStopOption = "-S";
-				SoundType =  (FDK.COS.bIsVistaOrLater)? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
+				//SoundType =  (FDK.COS.bIsVistaOrLater)? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
+				SoundType = ( FDK.COS.bIsVistaOrLater ) ? FDK.ESoundDeviceType.ExclusiveWASAPI : FDK.ESoundDeviceType.DirectSound;
 				ASIODeviceNo = 0;
 			}
 			public bool bViewerIsDTXV
@@ -407,13 +409,16 @@ namespace DTXCreator
 						string soundtypeopt = "";
 						switch ( SoundType )
 						{
-							case ViewerSoundType.DirectSound:
+							//case ViewerSoundType.DirectSound:
+							case FDK.ESoundDeviceType.DirectSound:
 								soundtypeopt = "D";
 								break;
-							case ViewerSoundType.WASAPI:
+							//case ViewerSoundType.WASAPI:
+							case FDK.ESoundDeviceType.ExclusiveWASAPI:
 								soundtypeopt = "W";
 								break;
-							case ViewerSoundType.ASIO:
+							//case ViewerSoundType.ASIO:
+							case FDK.ESoundDeviceType.ASIO:
 								soundtypeopt = "A";
 								soundtypeopt += ASIODeviceNo.ToString();
 								break;

@@ -52,6 +52,10 @@
 			this.radioButton_UseDTXManiaGR = new System.Windows.Forms.RadioButton();
 			this.button1 = new System.Windows.Forms.Button();
 			this.buttonOK = new System.Windows.Forms.Button();
+			this.groupBox_DTXManiaSettings = new System.Windows.Forms.GroupBox();
+			this.checkBox_GRmode = new System.Windows.Forms.CheckBox();
+			this.checkBox1_VSyncWait = new System.Windows.Forms.CheckBox();
+			this.checkBox_TimeStretch = new System.Windows.Forms.CheckBox();
 			this.tabPage全般.SuspendLayout();
 			( (System.ComponentModel.ISupportInitialize) ( this.numericUpDown最近使用したファイルの最大表示個数 ) ).BeginInit();
 			this.tabControlオプション.SuspendLayout();
@@ -59,6 +63,7 @@
 			this.tabPageViewer.SuspendLayout();
 			this.groupBox_SelectViewer.SuspendLayout();
 			this.groupBox_SoundDeviceSettings.SuspendLayout();
+			this.groupBox_DTXManiaSettings.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabPage全般
@@ -161,6 +166,7 @@
 			// 
 			// groupBox_SelectViewer
 			// 
+			this.groupBox_SelectViewer.Controls.Add( this.groupBox_DTXManiaSettings );
 			this.groupBox_SelectViewer.Controls.Add( this.groupBox_SoundDeviceSettings );
 			this.groupBox_SelectViewer.Controls.Add( this.radioButton_UseDTXViewer );
 			this.groupBox_SelectViewer.Controls.Add( this.radioButton_UseDTXManiaGR );
@@ -246,6 +252,33 @@
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.UseVisualStyleBackColor = true;
 			// 
+			// groupBox_DTXManiaSettings
+			// 
+			this.groupBox_DTXManiaSettings.Controls.Add( this.checkBox_TimeStretch );
+			this.groupBox_DTXManiaSettings.Controls.Add( this.checkBox1_VSyncWait );
+			this.groupBox_DTXManiaSettings.Controls.Add( this.checkBox_GRmode );
+			resources.ApplyResources( this.groupBox_DTXManiaSettings, "groupBox_DTXManiaSettings" );
+			this.groupBox_DTXManiaSettings.Name = "groupBox_DTXManiaSettings";
+			this.groupBox_DTXManiaSettings.TabStop = false;
+			// 
+			// checkBox_GRmode
+			// 
+			resources.ApplyResources( this.checkBox_GRmode, "checkBox_GRmode" );
+			this.checkBox_GRmode.Name = "checkBox_GRmode";
+			this.checkBox_GRmode.UseVisualStyleBackColor = true;
+			// 
+			// checkBox1_VSyncWait
+			// 
+			resources.ApplyResources( this.checkBox1_VSyncWait, "checkBox1_VSyncWait" );
+			this.checkBox1_VSyncWait.Name = "checkBox1_VSyncWait";
+			this.checkBox1_VSyncWait.UseVisualStyleBackColor = true;
+			// 
+			// checkBox_TimeStretch
+			// 
+			resources.ApplyResources( this.checkBox_TimeStretch, "checkBox_TimeStretch" );
+			this.checkBox_TimeStretch.Name = "checkBox_TimeStretch";
+			this.checkBox_TimeStretch.UseVisualStyleBackColor = true;
+			// 
 			// Cオプションダイアログ
 			// 
 			resources.ApplyResources( this, "$this" );
@@ -269,6 +302,8 @@
 			this.groupBox_SelectViewer.PerformLayout();
 			this.groupBox_SoundDeviceSettings.ResumeLayout( false );
 			this.groupBox_SoundDeviceSettings.PerformLayout();
+			this.groupBox_DTXManiaSettings.ResumeLayout( false );
+			this.groupBox_DTXManiaSettings.PerformLayout();
 			this.ResumeLayout( false );
 
 		}
@@ -298,6 +333,10 @@
 		internal System.Windows.Forms.ComboBox comboBox_ASIOdevices;
 		private System.Windows.Forms.Label label_Notice;
 		internal System.Windows.Forms.GroupBox groupBox_SoundDeviceSettings;
+		private System.Windows.Forms.GroupBox groupBox_DTXManiaSettings;
+		private System.Windows.Forms.CheckBox checkBox_GRmode;
+		private System.Windows.Forms.CheckBox checkBox_TimeStretch;
+		private System.Windows.Forms.CheckBox checkBox1_VSyncWait;
 
 	}
 }
