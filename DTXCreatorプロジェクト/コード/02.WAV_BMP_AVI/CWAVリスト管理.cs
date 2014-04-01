@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
+using System.Diagnostics;
 using DTXCreator.UndoRedo;
 using DTXCreator.譜面;
 using FDK;
@@ -20,12 +21,12 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			this._Form = pメインフォーム;
 			this.listViewWAVリスト = pListViewWAVリスト;
-//			this.sound管理 = new CSound管理( this._Form.Handle );
+			this.sound管理 = new CSound管理( this._Form.Handle );
 //			this.sound管理 = new CSound管理( this._Form.Handle, this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo );
 
 			// DTXMania本体のDTXV化に伴い、FDK.CSound管理クラスをシングルトン化して、一つの実体でDTXC/DTXV両者を動作させるようにする
-			this.sound管理 = CSound管理.Instance;
-			this.sound管理.t初期化( this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo, this._Form.Handle );
+			//this.sound管理 = CSound管理.Instance;
+			//FDK.CSound管理.t初期化( this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo, this._Form.Handle );
 
 			this.soundPreview = null;
 
@@ -210,14 +211,29 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			if( ( wc != null ) && ( wc.strファイル名.Length != 0 ) )
 			{
-				string str = this._Form.strファイルの存在するディレクトリを絶対パスで返す( wc.strファイル名 );
+				string strWavFilenameFullPath = this._Form.strファイルの存在するディレクトリを絶対パスで返す( wc.strファイル名 );
 				try
 				{
-					this.tプレビュー音を停止する();
-					this.soundPreview = this.sound管理.tサウンドを生成する( str );
-					this.soundPreview.n音量 = wc.n音量0to100;
-					this.soundPreview.n位置 = wc.n位置_100to100;
-					this.soundPreview.t再生を開始する();
+					bool dtxmProcess = this._Form.DetectDTXManiaProcess();
+					if ( dtxmProcess != false )	// DTXManiaがViewerとして起動中なら
+					{
+//Debug.WriteLine( "DTXManiaで再生" );
+						// DTXManiaで再生する
+						string strDTXViewerのパス = this._Form.strDTXCのあるフォルダ名 + this._Form.appアプリ設定.ViewerInfo.Path;
+						Process.Start( strDTXViewerのパス,
+							"-V" + wc.n音量0to100.ToString() + "," + wc.n位置_100to100 + "," +
+							"\"" + strWavFilenameFullPath + "\"" ).WaitForInputIdle( 20 * 1000 );
+					}
+					else
+					{
+//Debug.WriteLine( "DTXVで再生" );
+						// さもなくば、DTXC内で再生する
+						this.tプレビュー音を停止する();
+						this.soundPreview = this.sound管理.tサウンドを生成する( strWavFilenameFullPath );
+						this.soundPreview.n音量 = wc.n音量0to100;
+						this.soundPreview.n位置 = wc.n位置_100to100;
+						this.soundPreview.t再生を開始する();
+					}
 				}
 				catch
 				{
@@ -233,7 +249,13 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			if( this.soundPreview != null )
 			{
-				this.soundPreview.t再生を停止する();
+				if ( false )
+				{
+				}
+				else
+				{
+					this.soundPreview.t再生を停止する();
+				}
 			}
 		}
 		public void t行交換のRedo( int n変更前のItem番号0to1294, int n変更後のItem番号0to1294 )

@@ -548,6 +548,35 @@ namespace DTXMania
 					{
 						bコンパクトモード = true;
 						strコンパクトモードファイル = DTXVmode.filename;
+						if ( DTXVmode.Command == CDTXVmode.ECommand.Preview )
+						{
+							// preview soundの再生
+							string strPreviewFilename = DTXVmode.previewFilename;
+//Trace.TraceInformation( "Preview Filename=" + DTXVmode.previewFilename );
+							try
+							{
+								if ( this.previewSound != null )
+								{
+									this.previewSound.tサウンドを停止する();
+									this.previewSound.Dispose();
+									this.previewSound = null;
+								}
+								this.previewSound = CDTXMania.Sound管理.tサウンドを生成する( strPreviewFilename );
+								this.previewSound.n音量 = DTXVmode.previewVolume;
+								this.previewSound.n位置 = DTXVmode.previewPan;
+								this.previewSound.t再生を開始する( true );
+								Trace.TraceInformation( "プレビューサウンドを生成しました。({0})", strPreviewFilename );
+							}
+							catch
+							{
+								Trace.TraceError( "プレビューサウンドの生成に失敗しました。({0})", strPreviewFilename );
+								if ( this.previewSound != null )
+								{
+									this.previewSound.Dispose();
+								}
+								this.previewSound = null;
+							}
+						}
 					}
 				}
 			}
@@ -1106,6 +1135,12 @@ for (int i = 0; i < 3; i++) {
 								{
 									CDTXMania.stage演奏ギター画面.t停止();
 								}
+								if ( previewSound != null )
+								{
+									this.previewSound.tサウンドを停止する();
+									this.previewSound.Dispose();
+									this.previewSound = null;
+								}
 							}
 							else if ( DTXVmode.Command == CDTXVmode.ECommand.Play )
 							{
@@ -1586,6 +1621,7 @@ for (int i = 0; i < 3; i++) {
 				}
 			}
 		}
+		private CSound previewSound;
 
 		private void t起動処理()
 		{

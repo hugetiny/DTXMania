@@ -14,13 +14,23 @@ namespace DTXMania
 		public enum ECommand
 		{
 			Stop,
-			Play
+			Play,
+			Preview
 		}
 
 		/// <summary>
 		/// DTXVモードかどうか
 		/// </summary>
 		public bool Enabled
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// プレビューサウンドの再生が発生した
+		/// </summary>
+		public bool Preview
 		{
 			get;
 			set;
@@ -50,7 +60,7 @@ namespace DTXMania
 		public bool NeedReload
 		{
 			get;
-			set;
+			private set;
 //			private set;	// 本来はprivate setにすべきだが、デバッグが簡単になるので、しばらくはprivateなしのままにする。
 		}
 
@@ -90,6 +100,22 @@ namespace DTXMania
 			}
 		}
 
+		public string previewFilename
+		{
+			get;
+			private set;
+		}
+		public int previewVolume
+		{
+			get;
+			private set;
+		}
+		public int previewPan
+		{
+			get;
+			private set;
+		}
+
 
 		/// <summary>
 		/// コンストラクタ
@@ -102,6 +128,7 @@ namespace DTXMania
 			this.nStartBar = 0;
 			this.Refreshed = false;
 			this.NeedReload = false;
+			this.previewFilename = "";
 		}
 
 		/// <summary>
@@ -151,14 +178,42 @@ namespace DTXMania
 
 			if ( arg != null ) 
 			{
+Trace.TraceInformation( "arg=" + arg );
 				while ( analyzing )
 				{
 					if ( arg == "" )
 					{
 						analyzing = false;
 					}
+					else if ( arg.StartsWith( "-V", StringComparison.OrdinalIgnoreCase ) )		// サウンド再生
+					{
+						// -Vvvv,ppp,"filename"の形式。 vvv=volume, ppp=pan.
+						this.Enabled = true;
+						this.Command = ECommand.Preview;
+						this.Refreshed = true;
+						ret = true;
+						arg = arg.Substring( 2 );
+
+						int pVol = arg.IndexOf( ',' );
+//Trace.TraceInformation( "pVol=" + pVol );
+						string strVol = arg.Substring( 0, pVol );
+//Trace.TraceInformation( "strVol=" + strVol );
+						this.previewVolume = Convert.ToInt32( strVol );
+//Trace.TraceInformation( "previewVolume=" + previewVolume );
+						int pPan = arg.IndexOf( ',', pVol + 1 );
+//Trace.TraceInformation( "pPan=" + pPan );
+						string strPan = arg.Substring( pVol + 1, pPan - pVol - 1 );
+//Trace.TraceInformation( "strPan=" + strPan );
+						this.previewPan = Convert.ToInt32( strPan );
+//Trace.TraceInformation( "previewPan=" + previewPan );
+
+						arg = arg.Substring( pPan + 1 );
+						arg = arg.Trim( new char[] { '\"' } );
+						this.previewFilename = arg;
+						analyzing = false;
+					}
 					// -S  -Nxxx  filename
-					if ( arg.StartsWith( "-S", StringComparison.OrdinalIgnoreCase ) )		// DTXV再生停止
+					else if ( arg.StartsWith( "-S", StringComparison.OrdinalIgnoreCase ) )		// DTXV再生停止
 					{
 						this.Enabled = true;
 						this.Command = ECommand.Stop;

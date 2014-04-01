@@ -5500,7 +5500,59 @@ namespace DTXCreator
 			this.b再生速度を変更した = true;
 		}
 
+		public bool DetectDTXManiaProcess()
+		{
+			bool target = false;
+//Debug.WriteLine( "process start" );
+			for ( int i = 0; i < 5; i++ )		// 検索結果のハンドルがZeroになることがあるので、200ms間隔で5回リトライする
+			{
+				#region [ 既に起動中のDTXManiaプロセスを検索する。]
+				// このやり方だと、ShowInTaskbar=falseでタスクバーに表示されないパターンの時に検索に失敗するようだが
+				// DTXManiaでそのパターンはない？のでこのままいく。
+				// FindWindowを使えばこのパターンにも対応できるが、C#でビルドするアプリはウインドウクラス名を自前指定できないので、これは使わない。
 
+				//Process current = Process.GetCurrentProcess();
+				//Process[] running = Process.GetProcessesByName( current.ProcessName );
+				string appPath = Application.ExecutablePath;
+				string processname = Path.Combine( Path.GetDirectoryName( appPath ), "DTXManiaGR.exe" );
+//Debug.WriteLine( "processname=" + processname );
+				//Process[] running = Process.GetProcesses();	// .GetProcessesByName( processname );
+
+				System.Management.ManagementClass mc =
+					new System.Management.ManagementClass( "Win32_Process" );
+				System.Management.ManagementObjectCollection moc = mc.GetInstances();
+				
+				//IntPtr hWnd = FindWindow( null, "DTXMania .NET style release " + CDTXMania.VERSION );
+
+				foreach ( System.Management.ManagementObject mo in moc )
+				{
+//Debug.WriteLine( "filename=" + mo["ExecutablePath"] );
+//Debug.WriteLine( "2" );
+if ( (string)mo[ "ExecutablePath" ] == processname )
+{
+//Debug.WriteLine( "3" );
+	//if ( mo["ProcessId"] != 0 )
+	{
+//Debug.WriteLine( "4" );
+		target = true;
+		break;
+	}
+}
+//Debug.WriteLine( "5" );
+				}
+				#endregion
+
+				#region [ 起動中のDTXManiaがいれば、そのプロセスを返す ]
+				if ( target != false )
+				{
+					break;
+				}
+				#endregion
+			}
+
+//Debug.WriteLine( "process end;" );
+			return target;
+		}
 
 		//-----------------
 		#endregion
