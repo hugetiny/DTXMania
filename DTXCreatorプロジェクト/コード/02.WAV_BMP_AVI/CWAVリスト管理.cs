@@ -24,10 +24,6 @@ namespace DTXCreator.WAV_BMP_AVI
 			this.sound管理 = new CSound管理( this._Form.Handle );
 //			this.sound管理 = new CSound管理( this._Form.Handle, this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo );
 
-			// DTXMania本体のDTXV化に伴い、FDK.CSound管理クラスをシングルトン化して、一つの実体でDTXC/DTXV両者を動作させるようにする
-			//this.sound管理 = CSound管理.Instance;
-			//FDK.CSound管理.t初期化( this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo, this._Form.Handle );
-
 			this.soundPreview = null;
 
 			#region [ #26122 2011.8.31 yyagi; ストリーム再生のために、t再生中の処理をする()を定期的に呼び出す処理を追加 ]
@@ -249,13 +245,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			if( this.soundPreview != null )
 			{
-				if ( false )
-				{
-				}
-				else
-				{
-					this.soundPreview.t再生を停止する();
-				}
+				this.soundPreview.t再生を停止する();
 			}
 		}
 		public void t行交換のRedo( int n変更前のItem番号0to1294, int n変更後のItem番号0to1294 )
