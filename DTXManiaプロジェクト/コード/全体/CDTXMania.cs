@@ -2015,17 +2015,16 @@ for (int i = 0; i < 3; i++) {
 						soundDeviceType = ESoundDeviceType.Unknown;
 						break;
 				}
-//		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, IntPtr handle )
-				//Sound管理 = new CSound管理( base.Window.Handle,
-				//                            soundDeviceType,
-				//                            // CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
-				//                            0,
-				//                            // CDTXMania.ConfigIni.nASIOBufferSizeMs,
-				//                            0,
-				//                            CDTXMania.ConfigIni.nASIODevice
-				//);
-				Sound管理 = FDK.CSound管理.Instance;
-				Sound管理.t初期化( soundDeviceType, 0, 0, CDTXMania.ConfigIni.nASIODevice, base.Window.Handle );
+				Sound管理 = new CSound管理( base.Window.Handle,
+											soundDeviceType,
+					// CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
+											0,
+					// CDTXMania.ConfigIni.nASIOBufferSizeMs,
+											0,
+											CDTXMania.ConfigIni.nASIODevice
+				);
+				//Sound管理 = FDK.CSound管理.Instance;
+				//Sound管理.t初期化( soundDeviceType, 0, 0, CDTXMania.ConfigIni.nASIODevice, base.Window.Handle );
 	
 				ShowWindowTitleWithSoundType();
 				FDK.CSound管理.bIsTimeStretch = CDTXMania.ConfigIni.bTimeStretch;
