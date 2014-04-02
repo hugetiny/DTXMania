@@ -2224,10 +2224,7 @@ namespace DTXMania
 			CDTXMania.DTX.t全チップの再生停止();
 			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.再読込・再演奏;
 			base.eフェーズID = CStage.Eフェーズ.演奏_再読込;
-			if ( this.bPAUSE )
-			{
-				this.bPAUSE = false;
-			}
+			this.bPAUSE = false;
 		}
 
 		public void t停止()

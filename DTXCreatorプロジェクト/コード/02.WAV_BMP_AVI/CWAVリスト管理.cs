@@ -21,8 +21,12 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			this._Form = pメインフォーム;
 			this.listViewWAVリスト = pListViewWAVリスト;
+			tDirectSoundの初期化();
+		}
+		private void tDirectSoundの初期化()
+		{
 			this.sound管理 = new CSound管理( this._Form.Handle );
-//			this.sound管理 = new CSound管理( this._Form.Handle, this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo );
+			//			this.sound管理 = new CSound管理( this._Form.Handle, this._Form.appアプリ設定.ViewerInfo.SoundType, 0, 0, this._Form.appアプリ設定.ViewerInfo.ASIODeviceNo );
 
 			this.soundPreview = null;
 
@@ -31,6 +35,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			timer = new System.Threading.Timer( timerDelegate, null, 0, 300 );
 			#endregion
 		}
+
 		public ListViewItem tCWAVとListViewItemを生成して返す( int n行番号1to1295 )
 		{
 			return this.tWAVをキャッシュから検索して返す・なければ新規生成する( n行番号1to1295 ).t現在の内容から新しいListViewItemを作成して返す();
@@ -222,9 +227,17 @@ namespace DTXCreator.WAV_BMP_AVI
 					}
 					else
 					{
-//Debug.WriteLine( "DTXVで再生" );
+//Debug.WriteLine( "DTXCで再生" );
 						// さもなくば、DTXC内で再生する
-						this.tプレビュー音を停止する();
+						try
+						{
+							this.tプレビュー音を停止する();
+						}
+						catch ( SlimDX.DirectSound.DirectSoundException )	// DTXMania終了後はDirectSoundの再初期化が必要
+						{
+							tDirectSoundの解放();
+							tDirectSoundの初期化();
+						}
 						this.soundPreview = this.sound管理.tサウンドを生成する( strWavFilenameFullPath );
 						this.soundPreview.n音量 = wc.n音量0to100;
 						this.soundPreview.n位置 = wc.n位置_100to100;
