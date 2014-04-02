@@ -296,6 +296,7 @@ namespace DTXMania
 
 			queueMixerSound = new Queue<stmixer>( 64 );
 			bIsDirectSound = ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
+			this.bPAUSE = false;
 			if ( CDTXMania.DTXVmode.Enabled )
 			{
 				db再生速度 = CDTXMania.DTX.dbDTXVPlaySpeed;
@@ -2223,6 +2224,10 @@ namespace DTXMania
 			CDTXMania.DTX.t全チップの再生停止();
 			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.再読込・再演奏;
 			base.eフェーズID = CStage.Eフェーズ.演奏_再読込;
+			if ( this.bPAUSE )
+			{
+				this.bPAUSE = false;
+			}
 		}
 
 		public void t停止()
@@ -2285,14 +2290,16 @@ namespace DTXMania
 
 			#region [ 演奏開始の発声時刻msを取得し、タイマに設定 ]
 			int nStartTime = CDTXMania.DTX.listChip[ this.n現在のトップChip ].n発声時刻ms;
-			CSound管理.rc演奏用タイマ.t一時停止();
+			if ( !this.bPAUSE )
+			{
+				CSound管理.rc演奏用タイマ.t一時停止();
+			}
 			CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
 			#endregion
 
 			List<CSound> pausedCSound = new List<CSound>();
 
 			#region [ BGMやギターなど、演奏開始のタイミングで再生がかかっているサウンドのの途中再生開始 ] // (CDTXのt入力・行解析・チップ配置()で小節番号が+1されているのを削っておくこと)
-			bool bAVIPlaying = false;
 			for ( int i = this.n現在のトップChip; i >= 0; i-- )
 			{
 				CDTX.CChip pChip = CDTXMania.DTX.listChip[ i ];
@@ -2310,9 +2317,9 @@ namespace DTXMania
 							int j = wc.n現在再生中のサウンド番号;
 							if ( wc.rSound[ j ] != null )
 							{
-								wc.rSound[ j ].t再生を一時停止する();
-								wc.rSound[ j ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
-								pausedCSound.Add( wc.rSound[ j ] );
+							    wc.rSound[ j ].t再生を一時停止する();
+							    wc.rSound[ j ].t再生位置を変更する( nStartTime - pChip.n発声時刻ms );
+							    pausedCSound.Add( wc.rSound[ j ] );
 							}
 							#endregion
 						}
@@ -2337,6 +2344,7 @@ namespace DTXMania
 			CDTXMania.Timer.n現在時刻 = nStartTime;				// Debug表示のTime: 表記を正しくするために必要
 			CSound管理.rc演奏用タイマ.t再開();
 			CDTXMania.Timer.t再開();
+			this.bPAUSE = false;								// システムがPAUSE状態だったら、強制解除
 			#endregion
 			#endregion
 		}
