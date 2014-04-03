@@ -2287,10 +2287,12 @@ namespace DTXMania
 
 			#region [ 演奏開始の発声時刻msを取得し、タイマに設定 ]
 			int nStartTime = CDTXMania.DTX.listChip[ this.n現在のトップChip ].n発声時刻ms;
-			if ( !this.bPAUSE )
-			{
+
+			CSound管理.rc演奏用タイマ.tリセット();	// これでPAUSE解除されるので、次のPAUSEチェックは不要
+			//if ( !this.bPAUSE )
+			//{
 				CSound管理.rc演奏用タイマ.t一時停止();
-			}
+			//}
 			CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
 			#endregion
 
@@ -2338,9 +2340,10 @@ namespace DTXMania
 			#endregion
 			#region [ タイマを再開して、PAUSEから復帰する ]
 			CSound管理.rc演奏用タイマ.n現在時刻 = nStartTime;
+			CDTXMania.Timer.tリセット();						// これでPAUSE解除されるので、3行先の再開()は不要
 			CDTXMania.Timer.n現在時刻 = nStartTime;				// Debug表示のTime: 表記を正しくするために必要
 			CSound管理.rc演奏用タイマ.t再開();
-			CDTXMania.Timer.t再開();
+			//CDTXMania.Timer.t再開();
 			this.bPAUSE = false;								// システムがPAUSE状態だったら、強制解除
 			#endregion
 			#endregion

@@ -1054,6 +1054,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					// DTXCからDTXManiaを呼び出すと、DTXC終了時にこの現象が発生する。
 				}
 			}
+			this.n一時停止回数 = 0;
 		}
 		
 		public void t再生位置を先頭に戻す()
