@@ -564,12 +564,12 @@ namespace DTXMania
 								this.previewSound = CDTXMania.Sound管理.tサウンドを生成する( strPreviewFilename );
 								this.previewSound.n音量 = DTXVmode.previewVolume;
 								this.previewSound.n位置 = DTXVmode.previewPan;
-								this.previewSound.t再生を開始する( true );
-								Trace.TraceInformation( "プレビューサウンドを生成しました。({0})", strPreviewFilename );
+								this.previewSound.t再生を開始する( false);
+								Trace.TraceInformation( "DTXCからの指示で、サウンドを生成しました。({0})", strPreviewFilename );
 							}
 							catch
 							{
-								Trace.TraceError( "プレビューサウンドの生成に失敗しました。({0})", strPreviewFilename );
+								Trace.TraceError( "DTXCからの指示での、サウンドの生成に失敗しました。({0})", strPreviewFilename );
 								if ( this.previewSound != null )
 								{
 									this.previewSound.Dispose();
