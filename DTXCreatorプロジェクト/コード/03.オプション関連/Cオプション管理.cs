@@ -36,8 +36,12 @@ namespace DTXCreator.オプション関連
 			cオプションダイアログ.radioButton_WASAPI.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.ExclusiveWASAPI;
 			cオプションダイアログ.radioButton_ASIO.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.ASIO;
 
-			cオプションダイアログ.tASIOデバイスリストの内訳を生成する();
+			int nASIOdevs = cオプションダイアログ.tASIOデバイスリストの内訳を生成する();
 			cオプションダイアログ.comboBox_ASIOdevices.SelectedIndex = this.formメインフォーム.appアプリ設定.ViewerInfo.ASIODeviceNo;
+			if ( nASIOdevs == 1 && cオプションダイアログ.comboBox_ASIOdevices.Items[ 0 ].ToString() == "None" )
+			{
+				cオプションダイアログ.radioButton_ASIO.Enabled = false;
+			}
 			#endregion
 
 

@@ -178,7 +178,7 @@ namespace DTXMania
 
 			if ( arg != null ) 
 			{
-Trace.TraceInformation( "arg=" + arg );
+//Trace.TraceInformation( "arg=" + arg );
 				while ( analyzing )
 				{
 					if ( arg == "" )

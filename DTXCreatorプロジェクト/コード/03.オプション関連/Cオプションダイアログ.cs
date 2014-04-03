@@ -36,11 +36,13 @@ namespace DTXCreator.オプション関連
 			bレーンリストの内訳が生成済みである = true;
 		}
 
-		public void tASIOデバイスリストの内訳を生成する()
+		public int tASIOデバイスリストの内訳を生成する()
 		{
 			this.comboBox_ASIOdevices.Items.Clear();
 			string[] asiodevs = FDK.CEnumerateAllAsioDevices.GetAllASIODevices();
 			this.comboBox_ASIOdevices.Items.AddRange( asiodevs );
+
+			return asiodevs.Length;
 		}
 
 		private void Cオプションダイアログ_KeyDown( object sender, KeyEventArgs e )
