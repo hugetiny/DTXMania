@@ -619,7 +619,8 @@ namespace DTXMania
 					}
 				}
 
-				return (int) ( nDuration / CDTXMania.DTX.db再生速度 );
+				double _db再生速度 = ( CDTXMania.DTXVmode.Enabled ) ? CDTXMania.DTX.dbDTXVPlaySpeed : CDTXMania.DTX.db再生速度;
+				return (int) ( nDuration / _db再生速度 );
 			}
 
 			#region [ IComparable 実装 ]
@@ -1931,6 +1932,7 @@ namespace DTXMania
 					}
 					wc.n再生開始時刻[ wc.n現在再生中のサウンド番号 ] = n再生開始システム時刻ms;
 					this.tWave再生位置自動補正( wc );
+Trace.TraceInformation( "再生速度=" + sound.db再生速度 + ", wc.n再生開始時刻=" + n再生開始システム時刻ms );
 				}
 			}
 		}
