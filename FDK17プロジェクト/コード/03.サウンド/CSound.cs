@@ -617,22 +617,22 @@ namespace FDK
 		}
 		public void tASIOサウンドを作成する( string strファイル名, int hMixer )
 		{
-			this.tBASSサウンドを作成する( strファイル名, hMixer, BASSFlag.BASS_STREAM_DECODE );
+			this.tBASSサウンドを作成する( strファイル名, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_LOOP );		// BASSFlag.BASS_SAMPLE_LOOP は、koh-heyさん指摘のmp3低速再生時に再生停止する問題のworkaround。
 			this.eデバイス種別 = ESoundDeviceType.ASIO;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 		}
 		public void tASIOサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer )
 		{
-			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BASSFlag.BASS_STREAM_DECODE );
+			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_LOOP );		// BASSFlag.BASS_SAMPLE_LOOP は、koh-heyさん指摘のmp3低速再生時に再生停止する問題のworkaround。
 			this.eデバイス種別 = ESoundDeviceType.ASIO;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 		}
 		public void tWASAPIサウンドを作成する( string strファイル名, int hMixer, ESoundDeviceType eデバイス種別 )
 		{
-			this.tBASSサウンドを作成する( strファイル名, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT );
+			this.tBASSサウンドを作成する( strファイル名, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_SAMPLE_LOOP );		// BASSFlag.BASS_SAMPLE_LOOP は、koh-heyさん指摘のmp3低速再生時に再生停止する問題のworkaround。
 			this.eデバイス種別 = eデバイス種別;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 		}
 		public void tWASAPIサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, ESoundDeviceType eデバイス種別 )
 		{
-			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT );
+			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_SAMPLE_LOOP );		// BASSFlag.BASS_SAMPLE_LOOP は、koh-heyさん指摘のmp3低速再生時に再生停止する問題のworkaround。
 			this.eデバイス種別 = eデバイス種別;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 		}
 		public void tDirectSoundサウンドを作成する( string strファイル名, DirectSound DirectSound )
@@ -1446,7 +1446,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		/// <param name="user"></param>
 		private void CallbackEndofStream( int handle, int channel, int data, IntPtr user )	// #32248 2013.10.14 yyagi
 		{
-			//			Debug.WriteLine( "Callback!(remove): " + Path.GetFileName( this.strファイル名 ) );
+// Trace.TraceInformation( "Callback!(remove): " + Path.GetFileName( this.strファイル名 ) );
 			if ( b演奏終了後も再生が続くチップである )			// 演奏終了後に再生終了するチップ音のミキサー削除は、再生終了のコールバックに引っ掛けて、自前で行う。
 			{													// そうでないものは、ミキサー削除予定時刻に削除する。
 				tBASSサウンドをミキサーから削除する( channel );

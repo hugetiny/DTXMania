@@ -1932,7 +1932,6 @@ namespace DTXMania
 					}
 					wc.n再生開始時刻[ wc.n現在再生中のサウンド番号 ] = n再生開始システム時刻ms;
 					this.tWave再生位置自動補正( wc );
-Trace.TraceInformation( "再生速度=" + sound.db再生速度 + ", wc.n再生開始時刻=" + n再生開始システム時刻ms );
 				}
 			}
 		}
