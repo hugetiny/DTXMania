@@ -34,6 +34,14 @@ namespace FDK
 		public static IntPtr WindowHandle;
 
 		public static bool bIsTimeStretch = false;
+
+		/// <summary>
+		/// BASS時、mp3をストリーミング再生せずに、デコードしたraw wavをオンメモリ再生する場合はtrueにする。
+		/// 特殊なmp3を使用時はシークが乱れるので、必要に応じてtrueにすること。(Config.iniのNoMP3Streamingで設定可能。)
+		/// ただし、trueにすると、その分再生開始までの時間が長くなる。
+		/// </summary>
+		public static bool bIsMP3DecodeByWindowsCodec = false;
+
 		public static int nMixing = 0;
 		public int GetMixingStreams()
 		{
@@ -443,7 +451,7 @@ namespace FDK
 
 		public bool b演奏終了後も再生が続くチップである = false;	// これがtrueなら、本サウンドの再生終了のコールバック時に自動でミキサーから削除する
 
-		private STREAMPROC _cbStreamXA;		// make it global, so that the GC can not remove it
+		//private STREAMPROC _cbStreamXA;		// make it global, so that the GC can not remove it
 		private SYNCPROC _cbEndofStream;	// ストリームの終端まで再生されたときに呼び出されるコールバック
 //		private WaitCallback _cbRemoveMixerChannel;
 
@@ -617,22 +625,22 @@ namespace FDK
 		}
 		public void tASIOサウンドを作成する( string strファイル名, int hMixer )
 		{
-			this.tBASSサウンドを作成する( strファイル名, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_LOOP );		// BASSFlag.BASS_SAMPLE_LOOP は、koh-heyさん指摘のmp3低速再生時に再生停止する問題のworkaround。
+			this.tBASSサウンドを作成する( strファイル名, hMixer, BASSFlag.BASS_STREAM_DECODE );
 			this.eデバイス種別 = ESoundDeviceType.ASIO;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 		}
 		public void tASIOサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer )
 		{
-			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_LOOP );		// BASSFlag.BASS_SAMPLE_LOOP は、koh-heyさん指摘のmp3低速再生時に再生停止する問題のworkaround。
+			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BASSFlag.BASS_STREAM_DECODE );
 			this.eデバイス種別 = ESoundDeviceType.ASIO;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 		}
 		public void tWASAPIサウンドを作成する( string strファイル名, int hMixer, ESoundDeviceType eデバイス種別 )
 		{
-			this.tBASSサウンドを作成する( strファイル名, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_SAMPLE_LOOP );		// BASSFlag.BASS_SAMPLE_LOOP は、koh-heyさん指摘のmp3低速再生時に再生停止する問題のworkaround。
+			this.tBASSサウンドを作成する( strファイル名, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT );
 			this.eデバイス種別 = eデバイス種別;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 		}
 		public void tWASAPIサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, ESoundDeviceType eデバイス種別 )
 		{
-			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_SAMPLE_LOOP );		// BASSFlag.BASS_SAMPLE_LOOP は、koh-heyさん指摘のmp3低速再生時に再生停止する問題のworkaround。
+			this.tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_SAMPLE_FLOAT );
 			this.eデバイス種別 = eデバイス種別;		// 作成後に設定する。（作成に失敗してると例外発出されてここは実行されない）
 		}
 		public void tDirectSoundサウンドを作成する( string strファイル名, DirectSound DirectSound )
@@ -713,7 +721,7 @@ namespace FDK
 			int nPCMサイズbyte;
 			CWin32.WAVEFORMATEX cw32wfx;
 			tオンメモリ方式でデコードする( strファイル名, out this.byArrWAVファイルイメージ,
-			out nPCMデータの先頭インデックス, out nPCMサイズbyte, out cw32wfx );
+			out nPCMデータの先頭インデックス, out nPCMサイズbyte, out cw32wfx, false );
 
 			wfx.AverageBytesPerSecond = (int) cw32wfx.nAvgBytesPerSec;
 			wfx.BitsPerSample = (short) cw32wfx.wBitsPerSample;
@@ -1073,7 +1081,12 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		{
 			if( this.bBASSサウンドである )
 			{
-				BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, Bass.BASS_ChannelSeconds2Bytes( this.hBassStream, n位置ms * this.db周波数倍率 * this.db再生速度 / 1000.0 ), BASSMode.BASS_POS_BYTES );
+				bool b = BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, Bass.BASS_ChannelSeconds2Bytes( this.hBassStream, n位置ms * this.db周波数倍率 * this.db再生速度 / 1000.0 ), BASSMode.BASS_POS_BYTES );
+				if ( !b )
+				{
+					BASSError be = Bass.BASS_ErrorGetCode();
+					Trace.TraceInformation( Path.GetFileName( this.strファイル名 ) + ": Seek error: " + be.ToString() );
+				}
 			}
 			else if( this.bDirectSoundである )
 			{
@@ -1303,7 +1316,14 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		{
 			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 )	// caselessで文字列比較
 			{
-				tBASSサウンドを作成するXA( strファイル名, hMixer, flags );
+				tBASSサウンドを作成するXAmp3( strファイル名, hMixer, flags );
+				return;
+			}
+			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 && CSound管理.bIsMP3DecodeByWindowsCodec )
+			{
+				// 特定mp3を特定低速度で再生させたときに音が途中で切れる問題(koh-heyさん問題)のworkaround。
+				// mp3をオンメモリでwavにデコードして、再生してしまう。
+				tBASSサウンドを作成するXAmp3( strファイル名, hMixer, flags );
 				return;
 			}
 
@@ -1338,14 +1358,14 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 	
 			tBASSサウンドを作成する・ストリーム生成後の共通処理( hMixer );
 		}
-		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
+		private void tBASSサウンドを作成するXAmp3( string strファイル名, int hMixer, BASSFlag flags )
 		{
 			int nPCMデータの先頭インデックス;
 			CWin32.WAVEFORMATEX wfx;
 			int totalPCMSize;
 
 			tオンメモリ方式でデコードする( strファイル名, out this.byArrWAVファイルイメージ,
-				out nPCMデータの先頭インデックス, out totalPCMSize, out wfx );
+				out nPCMデータの先頭インデックス, out totalPCMSize, out wfx, true );
 
 			nBytes = totalPCMSize;
 
@@ -1354,12 +1374,13 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
 
-			_cbStreamXA = new STREAMPROC( CallbackPlayingXA );
+			//_cbStreamXA = new STREAMPROC( CallbackPlayingXA );
 
 			// BASSファイルストリームを作成。
 
 			//this.hBassStream = Bass.BASS_StreamCreate( xa.xaheader.nSamplesPerSec, xa.xaheader.nChannels, BASSFlag.BASS_STREAM_DECODE, _myStreamCreate, IntPtr.Zero );
-			this._hBassStream = Bass.BASS_StreamCreate( (int) wfx.nSamplesPerSec, (int) wfx.nChannels, BASSFlag.BASS_STREAM_DECODE, _cbStreamXA, IntPtr.Zero );
+			//this._hBassStream = Bass.BASS_StreamCreate( (int) wfx.nSamplesPerSec, (int) wfx.nChannels, BASSFlag.BASS_STREAM_DECODE, _cbStreamXA, IntPtr.Zero );
+			this._hBassStream = Bass.BASS_StreamCreateFile( this.hGC.AddrOfPinnedObject(), 0L, nBytes, flags );
 			if ( this._hBassStream == 0 )
 			{
 				hGC.Free();
@@ -1408,7 +1429,9 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			CSound.listインスタンス.Add( this );
 
 			// n総演奏時間の取得; DTXMania用に追加。
-			double seconds = Bass.BASS_ChannelBytes2Seconds( this._hBassStream, nBytes );
+			long length = Bass.BASS_ChannelGetLength( _hBassStream );						//
+			double seconds = Bass.BASS_ChannelBytes2Seconds( this._hBassStream, length );	//
+			//double seconds = Bass.BASS_ChannelBytes2Seconds( this._hBassStream, nBytes );	// nBytesを使うと、mp3の低速再生時に途中で切れる場合がある。
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
 			this.pos = 0;
 			this.hMixer = hMixer;
@@ -1492,7 +1515,8 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 		#region [ tオンメモリ方式でデコードする() ]
 		public void tオンメモリ方式でデコードする( string strファイル名, out byte[] buffer,
-			out int nPCMデータの先頭インデックス, out int totalPCMSize, out CWin32.WAVEFORMATEX wfx )
+			out int nPCMデータの先頭インデックス, out int totalPCMSize, out CWin32.WAVEFORMATEX wfx,
+			bool bIntegrateWaveHeader )
 		{
 			nPCMデータの先頭インデックス = 0;
 			//int nPCMサイズbyte = (int) ( xa.xaheader.nSamples * xa.xaheader.nChannels * 2 );	// nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
@@ -1535,8 +1559,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				throw new Exception( string.Format( "GetTotalPCMSize() に失敗しました。({0})", strファイル名 ) );
 			}
 			totalPCMSize += ( ( totalPCMSize % 2 ) != 0 ) ? 1 : 0;
-			buffer = new byte[ totalPCMSize ];
-			GCHandle handle = GCHandle.Alloc( buffer, GCHandleType.Pinned );
+			int wavheadersize = ( bIntegrateWaveHeader ) ? 44 : 0;
+			byte[] buffer_rawdata = new byte[ totalPCMSize ];
+			buffer = new byte[ wavheadersize + totalPCMSize ];
+			GCHandle handle = GCHandle.Alloc( buffer_rawdata, GCHandleType.Pinned );
 			try
 			{
 				if ( sounddecoder.Decode( nHandle, handle.AddrOfPinnedObject(), (uint) totalPCMSize, 0 ) < 0 )
@@ -1544,6 +1570,50 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					buffer = null;
 					throw new Exception( string.Format( "デコードに失敗しました。({0})", strファイル名 ) );
 				}
+				if ( bIntegrateWaveHeader )
+				{
+					// wave headerを書き込む
+
+					int wfx拡張領域_Length = 0;
+					var ms = new MemoryStream();
+					var bw = new BinaryWriter( ms );
+					bw.Write( new byte[] { 0x52, 0x49, 0x46, 0x46 } );		// 'RIFF'
+					bw.Write( (UInt32) totalPCMSize + 44 - 8 );				// ファイルサイズ - 8 [byte]；今は不明なので後で上書きする。
+					bw.Write( new byte[] { 0x57, 0x41, 0x56, 0x45 } );		// 'WAVE'
+					bw.Write( new byte[] { 0x66, 0x6D, 0x74, 0x20 } );		// 'fmt '
+					bw.Write( (UInt32) ( 16 + ( ( wfx拡張領域_Length > 0 ) ? ( 2/*sizeof(WAVEFORMATEX.cbSize)*/ + wfx拡張領域_Length ) : 0 ) ) );	// fmtチャンクのサイズ[byte]
+					bw.Write( (UInt16) wfx.wFormatTag );					// フォーマットID（リニアPCMなら1）
+					bw.Write( (UInt16) wfx.nChannels );						// チャンネル数
+					bw.Write( (UInt32) wfx.nSamplesPerSec );				// サンプリングレート
+					bw.Write( (UInt32) wfx.nAvgBytesPerSec );				// データ速度
+					bw.Write( (UInt16) wfx.nBlockAlign );					// ブロックサイズ
+					bw.Write( (UInt16) wfx.wBitsPerSample );				// サンプルあたりのビット数
+					//if ( wfx拡張領域_Length > 0 )
+					//{
+					//    bw.Write( (UInt16) wfx拡張領域.Length );			// 拡張領域のサイズ[byte]
+					//    bw.Write( wfx拡張領域 );							// 拡張データ
+					//}
+					bw.Write( new byte[] { 0x64, 0x61, 0x74, 0x61 } );		// 'data'
+					//int nDATAチャンクサイズ位置 = (int) ms.Position;
+					bw.Write( (UInt32) totalPCMSize );						// dataチャンクのサイズ[byte]；今は不明なので後で上書きする。
+
+					byte[] bs = ms.ToArray();
+
+					bw.Close();
+					ms.Close();
+
+					for ( int i = 0; i < bs.Length; i++ )
+					{
+						buffer[ i ] = bs[ i ];
+					}
+				}
+				int s = ( bIntegrateWaveHeader ) ? 44 : 0;
+				for ( int i = 0; i < totalPCMSize; i++ )
+				{
+					buffer[ i + s ] = buffer_rawdata[ i ];
+				}
+				totalPCMSize += wavheadersize;
+				nPCMデータの先頭インデックス = wavheadersize;
 			}
 			finally
 			{

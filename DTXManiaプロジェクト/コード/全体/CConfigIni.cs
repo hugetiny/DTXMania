@@ -675,6 +675,7 @@ namespace DTXMania
 		public bool bViewerShowDebugStatus;
 		public bool bViewerTimeStretch;
 		public bool bViewerDrums有効, bViewerGuitar有効;
+		public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1174,6 +1175,8 @@ namespace DTXMania
 			bViewerTimeStretch = false;
 			bViewerDrums有効 = true;
 			bViewerGuitar有効 = true;
+
+			this.bNoMP3Streaming = false;
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1522,6 +1525,13 @@ namespace DTXMania
 			sw.WriteLine( "; Set \"1\" for time stretch." );								//
 			sw.WriteLine( "; (Only available when you're using using WASAPI or ASIO)" );	//
 			sw.WriteLine( "TimeStretch={0}", this.bTimeStretch ? 1 : 0 );					//
+			sw.WriteLine();
+			sw.WriteLine( "; WASAPI/ASIO使用時に、MP3をストリーム再生するかどうか(0:ストリーム再生する, 1:しない" );			//
+			sw.WriteLine( "; (mp3のシークがおかしくなる場合は、これを1にしてください) " );	//
+			sw.WriteLine( "; Set \"0\" if you'd like to use mp3 streaming playback on WASAPI/ASIO." );		//
+			sw.WriteLine( "; Set \"1\" not to use streaming playback for mp3." );			//
+			sw.WriteLine( "; (If you feel illegal seek with mp3, please set it to 1.)" );	//
+			sw.WriteLine( "NoMP3Streaming={0}", this.bNoMP3Streaming ? 1 : 0 );				//
 			sw.WriteLine();
 			#region [ Adjust ]
 			sw.WriteLine( "; 判定タイミング調整(ドラム, ギター, ベース)(-99～99)[ms]" );		// #23580 2011.1.3 yyagi
@@ -2438,6 +2448,10 @@ namespace DTXMania
 												this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
 											}
 											#endregion
+											else if ( str3.Equals( "NoMP3Streaming" ) )
+											{
+												this.bNoMP3Streaming = C変換.bONorOFF( str4[ 0 ] );
+											}
 											continue;
 										}
 									//-----------------------------
