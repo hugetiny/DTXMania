@@ -1154,6 +1154,16 @@ for (int i = 0; i < 3; i++) {
 									{
 										CDTXMania.stage演奏ギター画面.t再読込();
 									}
+
+									CDTXMania.ConfigIni.bDrums有効 = !DTXVmode.GRmode;
+									CDTXMania.ConfigIni.bGuitar有効 = true;
+									CDTXMania.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
+									CSound管理.bIsTimeStretch = DTXVmode.TimeStretch;
+									if ( CDTXMania.ConfigIni.b垂直帰線待ちを行う != DTXVmode.VSyncWait )
+									{
+										CDTXMania.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
+										CDTXMania.app.b次のタイミングで垂直帰線同期切り替えを行う = true;
+									}
 								}
 								else
 								{
@@ -1481,6 +1491,12 @@ for (int i = 0; i < 3; i++) {
 #if !GPUFlushAfterPresent
 			actFlushGPU.On進行描画();		// Flush GPU	// EndScene()～Present()間 (つまりVSync前) でFlush実行
 #endif
+			//if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
+			//{
+			//    Sound管理.t再生中の処理をする();	// サウンドバッファの更新; 画面描画と同期させることで、スクロールをスムーズにする
+			//}
+
+
 			#region [ 全画面・ウインドウ切り替え ]
 			if ( this.b次のタイミングで全画面・ウィンドウ切り替えを行う )
 			{
@@ -1744,6 +1760,11 @@ for (int i = 0; i < 3; i++) {
 							ConfigIni.nASIODevice = DTXVmode.nASIOdevice;
 							break;
 					}
+
+					CDTXMania.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
+					CDTXMania.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
+					CDTXMania.ConfigIni.bDrums有効 = !DTXVmode.GRmode;
+					CDTXMania.ConfigIni.bGuitar有効 = true;
 				}
 				else														// 通常のコンパクトモード
 				{

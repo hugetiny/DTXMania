@@ -157,20 +157,48 @@
   <data name="tabPage全般.Text" xml:space="preserve">
     <value>全般</value>
   </data>
-  <data name="tabPageLanes.Text" xml:space="preserve">
-    <value>使用レーン</value>
-  </data>
   <data name="labelSelectLanes.Size" type="System.Drawing.Size, System.Drawing">
     <value>165, 12</value>
   </data>
   <data name="labelSelectLanes.Text" xml:space="preserve">
     <value>使用するレーンを選択して下さい。</value>
   </data>
-  <data name="groupBox_SelectViewer.Text" xml:space="preserve">
-    <value>Viewerの設定</value>
+  <data name="tabPageLanes.Text" xml:space="preserve">
+    <value>使用レーン</value>
   </data>
-  <data name="groupBox_SoundDeviceSettings.Text" xml:space="preserve">
-    <value>サウンド再生方式の設定 (*)</value>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>167, 37</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 24</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>(再生速度 x0.8 - x1.2
+ の範囲で使用可能です)</value>
+  </data>
+  <data name="checkBox_TimeStretch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>154, 18</value>
+  </data>
+  <data name="checkBox_TimeStretch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 16</value>
+  </data>
+  <data name="checkBox_TimeStretch.Text" xml:space="preserve">
+    <value>TimeStretch使用(&amp;T)</value>
+  </data>
+  <data name="checkBox_VSyncWait.Size" type="System.Drawing.Size, System.Drawing">
+    <value>137, 16</value>
+  </data>
+  <data name="checkBox_VSyncWait.Text" xml:space="preserve">
+    <value>垂直同期待ちをする(&amp;V)</value>
+  </data>
+  <data name="checkBox_GRmode.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 16</value>
+  </data>
+  <data name="checkBox_GRmode.Text" xml:space="preserve">
+    <value>ギター専用画面(&amp;G)</value>
+  </data>
+  <data name="groupBox_DTXManiaSettings.Text" xml:space="preserve">
+    <value>他のDTXManiaGRの設定</value>
   </data>
   <data name="label_Notice.Location" type="System.Drawing.Point, System.Drawing">
     <value>211, 15</value>
@@ -202,6 +230,9 @@ Viewerの再起動が
   <data name="radioButton_ASIO.Text" xml:space="preserve">
     <value>ASIO (ASIO対応デバイスで使用可)(&amp;A)</value>
   </data>
+  <data name="groupBox_SoundDeviceSettings.Text" xml:space="preserve">
+    <value>サウンド再生方式の設定 (*)</value>
+  </data>
   <data name="radioButton_UseDTXViewer.Text" xml:space="preserve">
     <value>DTXViewerを使う(&amp;V)</value>
   </data>
@@ -210,6 +241,9 @@ Viewerの再起動が
   </data>
   <data name="radioButton_UseDTXManiaGR.Text" xml:space="preserve">
     <value>DTXManiaGRを使う(&amp;M)</value>
+  </data>
+  <data name="groupBox_SelectViewer.Text" xml:space="preserve">
+    <value>Viewerの設定</value>
   </data>
   <data name="button1.Text" xml:space="preserve">
     <value>キャンセル</value>

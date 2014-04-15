@@ -371,6 +371,9 @@ namespace DTXCreator
 			// public ViewerSoundType SoundType = ( FDK.COS.bIsVistaOrLater ) ? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
 			public FDK.ESoundDeviceType SoundType = ( FDK.COS.bIsVistaOrLater ) ? FDK.ESoundDeviceType.ExclusiveWASAPI : FDK.ESoundDeviceType.DirectSound;
 			public int ASIODeviceNo = 0;
+			public bool GRmode;
+			public bool TimeStretch;
+			public bool VSyncWait = true;
 
 			// 引数無しのコンストラクタがないとSerializeできないのでダミー定義する
 			public Viewer()
@@ -382,6 +385,9 @@ namespace DTXCreator
 				//SoundType =  (FDK.COS.bIsVistaOrLater)? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
 				SoundType = ( FDK.COS.bIsVistaOrLater ) ? FDK.ESoundDeviceType.ExclusiveWASAPI : FDK.ESoundDeviceType.DirectSound;
 				ASIODeviceNo = 0;
+				GRmode = false;
+				TimeStretch = false;
+				VSyncWait = true;
 			}
 			public bool bViewerIsDTXV
 			{
@@ -425,6 +431,9 @@ namespace DTXCreator
 						}
 
 						opt = "-D" + soundtypeopt;
+						opt += GRmode     ? "Y" : "N";	// この辺は手抜き
+						opt += TimeStretch? "Y" : "N";	//
+						opt += VSyncWait  ? "Y" : "N";	//
 					}
 					return opt;
 				}

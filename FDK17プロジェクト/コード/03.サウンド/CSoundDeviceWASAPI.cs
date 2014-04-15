@@ -155,7 +155,8 @@ namespace FDK
 			#endregion
 
 //Retry:
-			var flags = ( mode == Eデバイスモード.排他 ) ?BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
+			var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
+			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
 			if ( BassWasapi.BASS_WASAPI_Init( nデバイス, n周波数, nチャンネル数, flags, ( n希望バッファサイズms / 1000.0f ), ( n更新間隔ms / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
 			{
 				if( mode == Eデバイスモード.排他 )

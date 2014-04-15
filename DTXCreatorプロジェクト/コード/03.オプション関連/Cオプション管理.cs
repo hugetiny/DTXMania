@@ -42,6 +42,10 @@ namespace DTXCreator.オプション関連
 			{
 				cオプションダイアログ.radioButton_ASIO.Enabled = false;
 			}
+
+			cオプションダイアログ.checkBox_GRmode.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.GRmode;
+			cオプションダイアログ.checkBox_TimeStretch.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.TimeStretch;
+			cオプションダイアログ.checkBox_VSyncWait.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.VSyncWait;
 			#endregion
 
 
@@ -85,6 +89,11 @@ namespace DTXCreator.オプション関連
 				this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType = vst;
 
 				this.formメインフォーム.appアプリ設定.ViewerInfo.ASIODeviceNo = cオプションダイアログ.comboBox_ASIOdevices.SelectedIndex;
+
+				this.formメインフォーム.appアプリ設定.ViewerInfo.GRmode = cオプションダイアログ.checkBox_GRmode.Checked;
+				this.formメインフォーム.appアプリ設定.ViewerInfo.TimeStretch = cオプションダイアログ.checkBox_TimeStretch.Checked;
+				this.formメインフォーム.appアプリ設定.ViewerInfo.VSyncWait = cオプションダイアログ.checkBox_VSyncWait.Checked;
+
 				this.formメインフォーム.tDTXV演奏関連のボタンとメニューのEnabledの設定();
 
 				#endregion

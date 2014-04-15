@@ -115,6 +115,36 @@ namespace DTXMania
 			get;
 			private set;
 		}
+		public bool GRmode
+		{
+			get;
+			private set;
+		}
+		public bool lastGRmode
+		{
+			get;
+			private set;
+		}
+		public bool TimeStretch
+		{
+			get;
+			private set;
+		}
+		public bool lastTimeStretch
+		{
+			get;
+			private set;
+		}
+		public bool VSyncWait
+		{
+			get;
+			private set;
+		}
+		public bool lastVSyncWait
+		{
+			get;
+			private set;
+		}
 
 
 		/// <summary>
@@ -129,6 +159,12 @@ namespace DTXMania
 			this.Refreshed = false;
 			this.NeedReload = false;
 			this.previewFilename = "";
+			this.GRmode = false;
+			this.lastGRmode = false;
+			this.TimeStretch = false;
+			this.lastTimeStretch = false;
+			this.VSyncWait = true;
+			this.lastVSyncWait = true;
 		}
 
 		/// <summary>
@@ -150,12 +186,18 @@ namespace DTXMania
 
 			this.Refreshed = true;
 
-			// 前回とファイル名が異なるか、タイムスタンプが更新されているなら、DTX要更新
+			// 前回とファイル名が異なるか、タイムスタンプが更新されているか、
+			// GRmode等の設定を変更したなら、DTX要更新
 			DateTime current_timestamp = File.GetLastWriteTime( filename );
-			if ( last_path != filename || current_timestamp > last_timestamp)
+			if ( last_path != filename || current_timestamp > last_timestamp ||
+				this.lastGRmode != this.GRmode || this.lastTimeStretch != this.TimeStretch || this.lastVSyncWait != this.VSyncWait )
 			{
 				this.last_path = filename;
 				this.last_timestamp = current_timestamp;
+				this.lastGRmode = this.GRmode;
+				this.lastTimeStretch = this.TimeStretch;
+				this.lastVSyncWait = this.VSyncWait;
+
 				this.NeedReload = true;
 				return true;
 			}
@@ -293,6 +335,16 @@ namespace DTXMania
 								break;
 							#endregion
 						}
+						#region [ GRmode, TimeStretch, VSyncWait ]
+						{
+							// Reload判定は、-Nのところで行う
+							this.GRmode =      ( arg[ 0 ] == 'Y' );
+							this.TimeStretch = ( arg[ 1 ] == 'Y' );
+							this.VSyncWait =   ( arg[ 2 ] == 'Y' );
+
+							arg = arg.Substring( 3 );
+						}
+						#endregion
 					}
 					else if ( arg.StartsWith( "-N", StringComparison.OrdinalIgnoreCase ) )
 					{

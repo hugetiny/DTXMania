@@ -1526,7 +1526,7 @@ namespace DTXMania
 			sw.WriteLine( "; (Only available when you're using using WASAPI or ASIO)" );	//
 			sw.WriteLine( "TimeStretch={0}", this.bTimeStretch ? 1 : 0 );					//
 			sw.WriteLine();
-			sw.WriteLine( "; WASAPI/ASIO使用時に、MP3をストリーム再生するかどうか(0:ストリーム再生する, 1:しない" );			//
+			sw.WriteLine( "; WASAPI/ASIO使用時に、MP3をストリーム再生するかどうか(0:ストリーム再生する, 1:しない)" );			//
 			sw.WriteLine( "; (mp3のシークがおかしくなる場合は、これを1にしてください) " );	//
 			sw.WriteLine( "; Set \"0\" if you'd like to use mp3 streaming playback on WASAPI/ASIO." );		//
 			sw.WriteLine( "; Set \"1\" not to use streaming playback for mp3." );			//
