@@ -407,6 +407,8 @@ namespace DTXMania
 		protected override void Initialize()
 		{
 //			new GCBeep();
+			sw.Start();
+			swlist = new List<double>( 8192 );
 			if( this.listトップレベルActivities != null )
 			{
 				foreach( CActivity activity in this.listトップレベルActivities )
@@ -1120,6 +1122,9 @@ for (int i = 0; i < 3; i++) {
 						#region [ *** ]
 						//-----------------------------
 
+						double n = (double)sw.ElapsedTicks / (double)Stopwatch.Frequency;
+						swlist.Add(n);
+
 						#region [ DTXVモード中にDTXCreatorから指示を受けた場合の処理 ]
 						if ( DTXVmode.Enabled && DTXVmode.Refreshed )
 						{
@@ -1207,6 +1212,25 @@ for (int i = 0; i < 3; i++) {
 								//-----------------------------
 								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Play canceled" );
 
+								double lastd = 0f;
+								int f = 0;
+								foreach ( double d in swlist )
+								{
+									double dif = d - lastd;
+									string s = "";
+									if ( 0.016 < dif && dif < 0.017 )
+									{
+									}
+									else
+									{
+										s = "★";
+									}
+									//Trace.TraceInformation( "frame " + f + ": " + d + " (" + dif + ")" + s );
+									lastd = d;
+									f++;
+								}
+								swlist.Clear();
+		
 								#region [ プラグイン On演奏キャンセル() の呼び出し ]
 								//---------------------
 								foreach( STPlugin pg in this.listプラグイン )
@@ -1491,10 +1515,10 @@ for (int i = 0; i < 3; i++) {
 #if !GPUFlushAfterPresent
 			actFlushGPU.On進行描画();		// Flush GPU	// EndScene()～Present()間 (つまりVSync前) でFlush実行
 #endif
-			//if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
-			//{
-			//    Sound管理.t再生中の処理をする();	// サウンドバッファの更新; 画面描画と同期させることで、スクロールをスムーズにする
-			//}
+			if ( Sound管理.GetCurrentSoundDeviceType() != "DirectSound" )
+			{
+				Sound管理.t再生中の処理をする();	// サウンドバッファの更新; 画面描画と同期させることで、スクロールをスムーズにする
+			}
 
 
 			#region [ 全画面・ウインドウ切り替え ]
@@ -2731,6 +2755,10 @@ for (int i = 0; i < 3; i++) {
 		//}
 	
 		//-----------------
+
+		Stopwatch sw = new Stopwatch();
+		List<double> swlist;
+
 		#endregion
 	}
 }

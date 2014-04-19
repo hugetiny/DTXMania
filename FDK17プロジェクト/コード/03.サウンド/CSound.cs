@@ -213,12 +213,21 @@ namespace FDK
 			}
 			if ( soundDeviceType == ESoundDeviceType.ExclusiveWASAPI || soundDeviceType == ESoundDeviceType.ASIO )
 			{
-				Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, 4 );
-				Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 );
+				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, 4 );
+				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 );
 
 				Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
 				Trace.TraceInformation( "BASS_CONFIG_UpdateThreads=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS ) );
 			}
+		}
+
+		public void tDisableUpdateBufferAutomatically()
+		{
+			//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, 0 );
+			//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 );
+
+			//Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
+			//Trace.TraceInformation( "BASS_CONFIG_UpdateThreads=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS ) );
 		}
 
 
@@ -303,8 +312,12 @@ namespace FDK
 			//TimeSpan ts = now - lastUpdateTime;
 			//if ( ts.Milliseconds > 5 )
 			//{
-			//    Bass.BASS_Update( 100 * 2 );
+			//    bool b = Bass.BASS_Update( 100 * 2 );
 			//    lastUpdateTime = DateTime.Now;
+			//    if ( !b )
+			//    {
+			//        Trace.TraceInformation( "BASS_UPdate() failed: " + Bass.BASS_ErrorGetCode().ToString() );
+			//    }
 			//}
 		}
 
@@ -1086,7 +1099,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			if( this.bBASSサウンドである )
 			{
 				BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, 0 );
-				pos = 0;
+				//pos = 0;
 			}
 			else if( this.bDirectSoundである )
 			{
@@ -1332,14 +1345,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		{
 			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 )	// caselessで文字列比較
 			{
-				tBASSサウンドを作成するXAmp3( strファイル名, hMixer, flags );
-				return;
-			}
-			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 && CSound管理.bIsMP3DecodeByWindowsCodec )
-			{
-				// 特定mp3を特定低速度で再生させたときに音が途中で切れる問題(koh-heyさん問題)のworkaround。
-				// mp3をオンメモリでwavにデコードして、再生してしまう。
-				tBASSサウンドを作成するXAmp3( strファイル名, hMixer, flags );
+				tBASSサウンドを作成するXA( strファイル名, hMixer, flags );
 				return;
 			}
 
@@ -1374,7 +1380,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 	
 			tBASSサウンドを作成する・ストリーム生成後の共通処理( hMixer );
 		}
-		private void tBASSサウンドを作成するXAmp3( string strファイル名, int hMixer, BASSFlag flags )
+		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
 		{
 			int nPCMデータの先頭インデックス;
 			CWin32.WAVEFORMATEX wfx;
@@ -1389,19 +1395,23 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			this.strファイル名 = strファイル名;
 			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
-
 			//_cbStreamXA = new STREAMPROC( CallbackPlayingXA );
 
 			// BASSファイルストリームを作成。
 
 			//this.hBassStream = Bass.BASS_StreamCreate( xa.xaheader.nSamplesPerSec, xa.xaheader.nChannels, BASSFlag.BASS_STREAM_DECODE, _myStreamCreate, IntPtr.Zero );
 			//this._hBassStream = Bass.BASS_StreamCreate( (int) wfx.nSamplesPerSec, (int) wfx.nChannels, BASSFlag.BASS_STREAM_DECODE, _cbStreamXA, IntPtr.Zero );
-			this._hBassStream = Bass.BASS_StreamCreateFile( this.hGC.AddrOfPinnedObject(), 0L, nBytes, flags );
+
+			// StreamCreate()で作成したstreamはseek不可のため、StreamCreateFile()を使う。
+			this._hBassStream = Bass.BASS_StreamCreateFile( this.hGC.AddrOfPinnedObject(), 0L, totalPCMSize, flags );
 			if ( this._hBassStream == 0 )
 			{
 				hGC.Free();
 				throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_SampleCreate)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 			}
+
+			nBytes = Bass.BASS_ChannelGetLength( this._hBassStream );
+
 
 			tBASSサウンドを作成する・ストリーム生成後の共通処理( hMixer );
 		}
@@ -1445,11 +1455,9 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			CSound.listインスタンス.Add( this );
 
 			// n総演奏時間の取得; DTXMania用に追加。
-			long length = Bass.BASS_ChannelGetLength( _hBassStream );						//
-			double seconds = Bass.BASS_ChannelBytes2Seconds( this._hBassStream, length );	//
-			//double seconds = Bass.BASS_ChannelBytes2Seconds( this._hBassStream, nBytes );	// nBytesを使うと、mp3の低速再生時に途中で切れる場合がある。
+			double seconds = Bass.BASS_ChannelBytes2Seconds( this._hBassStream, nBytes );
 			this.n総演奏時間ms = (int) ( seconds * 1000 );
-			this.pos = 0;
+			//this.pos = 0;
 			this.hMixer = hMixer;
 			float freq = 0.0f;
 			if ( !Bass.BASS_ChannelGetAttribute( this._hBassStream, BASSAttribute.BASS_ATTRIB_FREQ, ref freq ) )
@@ -1461,21 +1469,20 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		}
 		//-----------------
 
-		private int pos = 0;
-		private int CallbackPlayingXA( int handle, IntPtr buffer, int length, IntPtr user )
-		{
-			int bytesread = ( pos + length > Convert.ToInt32(nBytes) ) ? Convert.ToInt32(nBytes) - pos : length;
+		//private int pos = 0;
+		//private int CallbackPlayingXA( int handle, IntPtr buffer, int length, IntPtr user )
+		//{
+		//    int bytesread = ( pos + length > Convert.ToInt32( nBytes ) ) ? Convert.ToInt32( nBytes ) - pos : length;
 
-			Marshal.Copy( byArrWAVファイルイメージ, pos, buffer, bytesread );
-			pos += bytesread;
-
-			if ( pos >= nBytes )
-			{
-				// set indicator flag
-				bytesread |= (int) BASSStreamProc.BASS_STREAMPROC_END;
-			}
-			return bytesread;
-		}
+		//    Marshal.Copy( byArrWAVファイルイメージ, pos, buffer, bytesread );
+		//    pos += bytesread;
+		//    if ( pos >= nBytes )
+		//    {
+		//        // set indicator flag
+		//        bytesread |= (int) BASSStreamProc.BASS_STREAMPROC_END;
+		//    }
+		//    return bytesread;
+		//}
 		/// <summary>
 		/// ストリームの終端まで再生したときに呼び出されるコールバック
 		/// </summary>
@@ -1614,7 +1621,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					//}
 					bw.Write( new byte[] { 0x64, 0x61, 0x74, 0x61 } );		// 'data'
 					//int nDATAチャンクサイズ位置 = (int) ms.Position;
-					bw.Write( (UInt32) totalPCMSize );						// dataチャンクのサイズ[byte]；今は不明なので後で上書きする。
+					bw.Write( (UInt32) totalPCMSize );						// dataチャンクのサイズ[byte]
 
 					byte[] bs = ms.ToArray();
 

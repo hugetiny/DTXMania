@@ -387,14 +387,19 @@ namespace DTXMania
 			string path = CDTXMania.strEXEのあるフォルダ + "Config.ini";
 			if ( File.Exists( path ) )
 			{
-				try
+				FileInfo fi = new FileInfo( path );
+				if ( fi.Length > 0 )	// Config.iniが0byteだったなら、読み込まない
 				{
-					cc.tファイルから読み込み( path );
+					try
+					{
+						cc.tファイルから読み込み( path );
+					}
+					catch
+					{
+						//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
+					}
 				}
-				catch
-				{
-					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
-				}
+				fi = null;
 			}
 
 			cc.nViewerScrollSpeed     = CDTXMania.ConfigIni.n譜面スクロール速度;

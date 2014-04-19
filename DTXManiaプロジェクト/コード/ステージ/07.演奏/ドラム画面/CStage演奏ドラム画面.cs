@@ -165,6 +165,8 @@ namespace DTXMania
 						#endregion
 						t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
 					}
+
+					CDTXMania.Sound管理.tDisableUpdateBufferAutomatically();
 					base.b初めての進行描画 = false;
 				}
 				if ( ( CDTXMania.ConfigIni.bSTAGEFAILED有効 && this.actGauge.IsFailed( E楽器パート.DRUMS ) ) && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )

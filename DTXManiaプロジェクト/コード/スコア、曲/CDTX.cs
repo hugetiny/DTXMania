@@ -2717,7 +2717,8 @@ namespace DTXMania
 						if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 						{
 							CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
-							duration = ( wc.rSound[ 0 ] == null ) ? 0 : (int) ( wc.rSound[ 0 ].n総演奏時間ms / this.db再生速度 );	// #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
+							double _db再生速度 = ( CDTXMania.DTXVmode.Enabled ) ? this.dbDTXVPlaySpeed : this.db再生速度;
+							duration = ( wc.rSound[ 0 ] == null ) ? 0 : (int) ( wc.rSound[ 0 ].n総演奏時間ms / _db再生速度 );	// #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
 						}
 //Debug.WriteLine("duration=" + duration );
 						int n新RemoveMixer時刻ms, n新RemoveMixer位置;

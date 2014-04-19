@@ -1248,6 +1248,12 @@ namespace DTXMania
 			#region [ スキン関連 ]
 			#region [ Skinパスの絶対パス→相対パス変換 ]
 			Uri uriRoot = new Uri( System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
+			if ( strSystemSkinSubfolderFullName != null && strSystemSkinSubfolderFullName.Length == 0 )
+			{
+				// Config.iniが空の状態でDTXManiaをViewerとして起動・終了すると、strSystemSkinSubfolderFullName が空の状態でここに来る。
+				// → 初期値として Default/ を設定する。
+				strSystemSkinSubfolderFullName = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar + "Default" + System.IO.Path.DirectorySeparatorChar );
+			}
 			Uri uriPath = new Uri( System.IO.Path.Combine( this.strSystemSkinSubfolderFullName, "." + System.IO.Path.DirectorySeparatorChar ) );
 			string relPath = uriRoot.MakeRelativeUri( uriPath ).ToString();				// 相対パスを取得
 			relPath = System.Web.HttpUtility.UrlDecode( relPath );						// デコードする
@@ -1526,13 +1532,13 @@ namespace DTXMania
 			sw.WriteLine( "; (Only available when you're using using WASAPI or ASIO)" );	//
 			sw.WriteLine( "TimeStretch={0}", this.bTimeStretch ? 1 : 0 );					//
 			sw.WriteLine();
-			sw.WriteLine( "; WASAPI/ASIO使用時に、MP3をストリーム再生するかどうか(0:ストリーム再生する, 1:しない)" );			//
-			sw.WriteLine( "; (mp3のシークがおかしくなる場合は、これを1にしてください) " );	//
-			sw.WriteLine( "; Set \"0\" if you'd like to use mp3 streaming playback on WASAPI/ASIO." );		//
-			sw.WriteLine( "; Set \"1\" not to use streaming playback for mp3." );			//
-			sw.WriteLine( "; (If you feel illegal seek with mp3, please set it to 1.)" );	//
-			sw.WriteLine( "NoMP3Streaming={0}", this.bNoMP3Streaming ? 1 : 0 );				//
-			sw.WriteLine();
+			//sw.WriteLine( "; WASAPI/ASIO使用時に、MP3をストリーム再生するかどうか(0:ストリーム再生する, 1:しない)" );			//
+			//sw.WriteLine( "; (mp3のシークがおかしくなる場合は、これを1にしてください) " );	//
+			//sw.WriteLine( "; Set \"0\" if you'd like to use mp3 streaming playback on WASAPI/ASIO." );		//
+			//sw.WriteLine( "; Set \"1\" not to use streaming playback for mp3." );			//
+			//sw.WriteLine( "; (If you feel illegal seek with mp3, please set it to 1.)" );	//
+			//sw.WriteLine( "NoMP3Streaming={0}", this.bNoMP3Streaming ? 1 : 0 );				//
+			//sw.WriteLine();
 			#region [ Adjust ]
 			sw.WriteLine( "; 判定タイミング調整(ドラム, ギター, ベース)(-99～99)[ms]" );		// #23580 2011.1.3 yyagi
 			sw.WriteLine("; Revision value to adjust judgement timing for the drums, guitar and bass.");	//
@@ -2448,10 +2454,10 @@ namespace DTXMania
 												this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
 											}
 											#endregion
-											else if ( str3.Equals( "NoMP3Streaming" ) )
-											{
-												this.bNoMP3Streaming = C変換.bONorOFF( str4[ 0 ] );
-											}
+											//else if ( str3.Equals( "NoMP3Streaming" ) )
+											//{
+											//    this.bNoMP3Streaming = C変換.bONorOFF( str4[ 0 ] );
+											//}
 											continue;
 										}
 									//-----------------------------
