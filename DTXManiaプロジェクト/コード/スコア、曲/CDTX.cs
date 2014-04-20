@@ -1656,6 +1656,10 @@ namespace DTXMania
 					{
 						cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( str );
 						cwav.rSound[ 0 ].n音量 = 100;
+						if ( !CDTXMania.ConfigIni.bDynamicBassMixerManagement )
+						{
+							cwav.rSound[ 0 ].tBASSサウンドをミキサーに追加する();
+						}
 						if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 						{
 							Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
@@ -1701,6 +1705,10 @@ namespace DTXMania
 							{
 								cwav.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( str );
 								cwav.rSound[ i ].n音量 = 100;
+								if ( !CDTXMania.ConfigIni.bDynamicBassMixerManagement )
+								{
+									cwav.rSound[ i ].tBASSサウンドをミキサーに追加する();
+								}
 								if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 								{
 									Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );

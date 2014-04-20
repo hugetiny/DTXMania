@@ -1350,12 +1350,11 @@ namespace DTXMania
 			//sw.WriteLine( "ASIOBufferSizeMs={0}", (int) this.nASIOBufferSizeMs );
 			//sw.WriteLine();
 
-			//sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。");
-			//sw.WriteLine( "; ONにすると、ギター曲などチップ音の多い曲も再生できますが、画面が少しがたつきます。" );
-			//sw.WriteLine( "; (0=行わない, 1=行う)" );
-			//sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement? 1 : 0 );
-			//sw.WriteLine();
-
+			sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。" );
+			sw.WriteLine( "; ONにすると、ギター曲などチップ音の多い曲も再生できますが、画面が少しがたつきます。" );
+			sw.WriteLine( "; (0=行わない, 1=行う)" );
+			sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement ? 1 : 0 );
+			sw.WriteLine();
 			#endregion
 			#region [ ギター/ベース/ドラム 有効/無効 ]
 			sw.WriteLine( "; ギター/ベース有効(0:OFF,1:ON)" );
@@ -2187,10 +2186,10 @@ namespace DTXMania
 											//{
 											//    this.nASIOBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nASIOBufferSizeMs );
 											//}
-											//else if ( str3.Equals( "DynamicBassMixerManagement" ) )
-											//{
-											//    this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
-											//}
+											else if ( str3.Equals( "DynamicBassMixerManagement" ) )
+											{
+												this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
+											}
 											#endregion
 											else if ( str3.Equals( "VSyncWait" ) )
 											{
