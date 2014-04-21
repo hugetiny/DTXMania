@@ -141,7 +141,8 @@ namespace DTXMania
 			{
 				bool bIsFinishedPlaying = false;
 				bool bIsFinishedFadeout = false;
-				if( base.b初めての進行描画 )
+				#region [ 初めての進行描画 ]
+				if ( base.b初めての進行描画 )
 				{
                     CSound管理.rc演奏用タイマ.tリセット();
 					CDTXMania.Timer.tリセット();
@@ -169,6 +170,7 @@ namespace DTXMania
 					CDTXMania.Sound管理.tDisableUpdateBufferAutomatically();
 					base.b初めての進行描画 = false;
 				}
+				#endregion
 				if ( ( CDTXMania.ConfigIni.bSTAGEFAILED有効 && this.actGauge.IsFailed( E楽器パート.DRUMS ) ) && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{
 					this.actStageFailed.Start();
@@ -209,6 +211,12 @@ namespace DTXMania
 				{
 					if ( CDTXMania.DTXVmode.Enabled )
 					{
+						// 何かサウンドが鳴っている間は、待機する
+						//if ( CDTXMania.Timer.b停止していない )
+						//{
+						//    this.actPanel.SetPanelString( "" );	// まだPANELの復活ができていない
+						//    CDTXMania.Timer.t一時停止();
+						//}
 						Thread.Sleep( 5 );
 						// DTXCからの次のメッセージを待ち続ける
 					}

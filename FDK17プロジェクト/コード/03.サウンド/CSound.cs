@@ -35,12 +35,12 @@ namespace FDK
 
 		public static bool bIsTimeStretch = false;
 
-		/// <summary>
-		/// BASS時、mp3をストリーミング再生せずに、デコードしたraw wavをオンメモリ再生する場合はtrueにする。
-		/// 特殊なmp3を使用時はシークが乱れるので、必要に応じてtrueにすること。(Config.iniのNoMP3Streamingで設定可能。)
-		/// ただし、trueにすると、その分再生開始までの時間が長くなる。
-		/// </summary>
-		public static bool bIsMP3DecodeByWindowsCodec = false;
+		///// <summary>
+		///// BASS時、mp3をストリーミング再生せずに、デコードしたraw wavをオンメモリ再生する場合はtrueにする。
+		///// 特殊なmp3を使用時はシークが乱れるので、必要に応じてtrueにすること。(Config.iniのNoMP3Streamingで設定可能。)
+		///// ただし、trueにすると、その分再生開始までの時間が長くなる。
+		///// </summary>
+		//public static bool bIsMP3DecodeByWindowsCodec = false;
 
 		public static int nMixing = 0;
 		public int GetMixingStreams()
@@ -207,7 +207,8 @@ namespace FDK
 					Trace.TraceInformation( e.Message );
 					if ( ESoundDeviceTypes[ n初期デバイス ] == ESoundDeviceType.Unknown )
 					{
-						throw new Exception( string.Format( "サウンドデバイスの初期化に失敗しました。" ) );
+						Trace.TraceError( string.Format( "サウンドデバイスの初期化に失敗しました。" ) );
+						break;
 					}
 				}
 			}
@@ -1064,6 +1065,14 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			this.t再生位置を先頭に戻す();
 			this.tサウンドを再生する();
 		}
+		public void tサウンドを停止してMixerからも削除する()
+		{
+			tサウンドを停止する( false );
+			if ( bBASSサウンドである )
+			{
+				tBASSサウンドをミキサーから削除する();
+			}
+		}
 		public void tサウンドを停止する()
 		{
 			tサウンドを停止する( false );
@@ -1532,7 +1541,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
 				//bool b2 = BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
-//				Debug.WriteLine( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
+//Trace.TraceInformation( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
 				Bass.BASS_ChannelUpdate( this.hBassStream, 0 );	// pre-buffer
 				return b1;	// &b2;
 			}

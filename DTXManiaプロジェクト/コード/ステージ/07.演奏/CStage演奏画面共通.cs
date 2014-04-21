@@ -317,7 +317,7 @@ namespace DTXMania
 					if ( pChip.nチャンネル番号 == 0xDA )
 					{
 						pChip.bHit = true;
-//						Debug.WriteLine( "first [DA] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms );
+//						Trace.TraceInformation( "first [DA] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms );
 						if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 						{
 							CDTX.CWAV wc = listWAV[ pChip.n整数値・内部番号 ];
@@ -2221,7 +2221,7 @@ namespace DTXMania
 
 		public void t再読込()
 		{
-			CDTXMania.DTX.t全チップの再生停止();
+			CDTXMania.DTX.t全チップの再生停止とミキサーからの削除();
 			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.再読込・再演奏;
 			base.eフェーズID = CStage.Eフェーズ.演奏_再読込;
 			this.bPAUSE = false;
@@ -2229,7 +2229,7 @@ namespace DTXMania
 
 		public void t停止()
 		{
-			CDTXMania.DTX.t全チップの再生停止();
+			CDTXMania.DTX.t全チップの再生停止とミキサーからの削除();
 			this.actAVI.Stop();
 			this.actBGA.Stop();
 

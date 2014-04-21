@@ -1593,6 +1593,10 @@ namespace DTXMania
 		}
 		public void tWavの再生停止( int nWaveの内部番号 )
 		{
+			tWavの再生停止( nWaveの内部番号, false );
+		}
+		public void tWavの再生停止( int nWaveの内部番号, bool bミキサーからも削除する )
+		{
 			if( this.listWAV.ContainsKey( nWaveの内部番号 ) )
 			{
 				CWAV cwav = this.listWAV[ nWaveの内部番号 ];
@@ -1600,7 +1604,14 @@ namespace DTXMania
 				{
 					if( cwav.rSound[ i ] != null && cwav.rSound[ i ].b再生中 )
 					{
-						cwav.rSound[ i ].t再生を停止する();
+						if ( bミキサーからも削除する )
+						{
+							cwav.rSound[ i ].tサウンドを停止してMixerからも削除する();
+						}
+						else
+						{
+							cwav.rSound[ i ].t再生を停止する();
+						}
 					}
 				}
 			}
@@ -2007,6 +2018,13 @@ namespace DTXMania
 			foreach( CWAV cwav in this.listWAV.Values )
 			{
 				this.tWavの再生停止( cwav.n内部番号 );
+			}
+		}
+		public void t全チップの再生停止とミキサーからの削除()
+		{
+			foreach( CWAV cwav in this.listWAV.Values )
+			{
+				this.tWavの再生停止( cwav.n内部番号, true );
 			}
 		}
 		#endregion
@@ -2673,7 +2691,7 @@ namespace DTXMania
 					case 0x80:	case 0x81:	case 0x82:	case 0x83:	case 0x84:	case 0x85:	case 0x86:	case 0x87:	case 0x88:	case 0x89:
 					case 0x90:	case 0x91:	case 0x92:
 
-						#region [ 発音1秒前のタイミングを記録 ]
+						#region [ 発音1秒前のタイミングを算出 ]
 						int n発音前余裕ms = 1000, n発音後余裕ms = 800;
 						{
 							int ch = pChip.nチャンネル番号 >> 4;
@@ -2688,19 +2706,21 @@ namespace DTXMania
 								n発音前余裕ms = 500;
 							}
 						}
-						if ( pChip.nチャンネル番号 == 0x01 )	// BGMチップは即ミキサーに追加
-						{
-							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
-							{
-								CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
-								if ( wc.rSound[ 0 ] != null )
-								{
-									CDTXMania.Sound管理.AddMixer( wc.rSound[ 0 ] );	// BGMは多重再生しない仕様としているので、1個目だけミキサーに登録すればよい
-								}
-							}
-
-						}
-
+						#endregion
+						#region [ BGMチップならば即ミキサーに追加 ]
+						//if ( pChip.nチャンネル番号 == 0x01 )	// BGMチップは即ミキサーに追加
+						//{
+						//    if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
+						//    {
+						//        CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+						//        if ( wc.rSound[ 0 ] != null )
+						//        {
+						//            CDTXMania.Sound管理.AddMixer( wc.rSound[ 0 ] );	// BGMは多重再生しない仕様としているので、1個目だけミキサーに登録すればよい
+						//        }
+						//    }
+						//}
+						#endregion
+						#region [ 発音1秒前のタイミングを算出 ]
 						int nAddMixer時刻ms, nAddMixer位置 = 0;
 //Debug.WriteLine("==================================================================");
 //Debug.WriteLine( "Start: ch=" + pChip.nチャンネル番号.ToString("x2") + ", nWAV番号=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms + ", lasttime=" + listChip[ listChip.Count - 1 ].n発声時刻ms );
