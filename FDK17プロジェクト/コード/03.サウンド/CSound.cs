@@ -531,7 +531,7 @@ namespace FDK
 					}
 					else if( this._n位置 == 100 )
 					{
-						this._n位置db = 100000;
+						this._n位置db = 10000;
 					}
 					else if( this._n位置 < 0 )
 					{
