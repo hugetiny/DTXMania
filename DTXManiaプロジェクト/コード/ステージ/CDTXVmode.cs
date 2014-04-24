@@ -220,7 +220,6 @@ namespace DTXMania
 
 			if ( arg != null ) 
 			{
-//Trace.TraceInformation( "arg=" + arg );
 				while ( analyzing )
 				{
 					if ( arg == "" )
@@ -236,18 +235,12 @@ namespace DTXMania
 						ret = true;
 						arg = arg.Substring( 2 );
 
-						int pVol = arg.IndexOf( ',' );
-//Trace.TraceInformation( "pVol=" + pVol );
-						string strVol = arg.Substring( 0, pVol );
-//Trace.TraceInformation( "strVol=" + strVol );
-						this.previewVolume = Convert.ToInt32( strVol );
-//Trace.TraceInformation( "previewVolume=" + previewVolume );
-						int pPan = arg.IndexOf( ',', pVol + 1 );
-//Trace.TraceInformation( "pPan=" + pPan );
-						string strPan = arg.Substring( pVol + 1, pPan - pVol - 1 );
-//Trace.TraceInformation( "strPan=" + strPan );
-						this.previewPan = Convert.ToInt32( strPan );
-//Trace.TraceInformation( "previewPan=" + previewPan );
+						int pVol = arg.IndexOf( ',' );									//Trace.TraceInformation( "pVol=" + pVol );
+						string strVol = arg.Substring( 0, pVol );						//Trace.TraceInformation( "strVol=" + strVol );
+						this.previewVolume = Convert.ToInt32( strVol );					//Trace.TraceInformation( "previewVolume=" + previewVolume );
+						int pPan = arg.IndexOf( ',', pVol + 1 );						//Trace.TraceInformation( "pPan=" + pPan );
+						string strPan = arg.Substring( pVol + 1, pPan - pVol - 1 );		//Trace.TraceInformation( "strPan=" + strPan );
+						this.previewPan = Convert.ToInt32( strPan );					//Trace.TraceInformation( "previewPan=" + previewPan );
 
 						arg = arg.Substring( pPan + 1 );
 						arg = arg.Trim( new char[] { '\"' } );
@@ -379,7 +372,7 @@ namespace DTXMania
 		}
 
 		/// <summary>
-		/// Viewer関連の設定のみを、Config.iniに書き出す
+		/// Viewer関連の設定のみを更新して、Config.iniに書き出す
 		/// </summary>
 		public void tUpdateConfigIni()
 		{

@@ -5384,9 +5384,9 @@ namespace DTXCreator
 			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBPM, 1 );
 			this.tシナリオ・削除();
 
-			int laneHH = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "HH" );
-			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneHH, 1 );
-			this.tシナリオ・削除();
+			//int laneHH = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "HH" );
+			//this.mgr選択モード管理者.tレーン上の全チップを選択する( laneHH, 1 );
+			//this.tシナリオ・削除();
 			#endregion
 
 			#region [ BEATレーンから、listBestPositionを生成 ]
