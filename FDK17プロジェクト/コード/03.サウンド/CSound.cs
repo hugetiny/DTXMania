@@ -30,6 +30,9 @@ namespace FDK
 			get; set;
 		}
 		public static CSoundTimer rc演奏用タイマ = null;
+		public static bool bUseOSTimer = false;		// OSのタイマーを使うか、CSoundTimerを使うか。DTXCではfalse, DTXManiaではtrue。
+													// DTXC(DirectSound)でCSoundTimerを使うと、内部で無音のループサウンドを再生するため
+													// サウンドデバイスを占有してしまい、Viewerとして呼び出されるDTXManiaで、ASIOが使えなくなる。
 
 		public static IntPtr WindowHandle;
 
@@ -125,20 +128,30 @@ namespace FDK
 		#endregion
 
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	/// <param name="handle"></param>
+		/// <summary>
+		/// DTXC用コンストラクタ
+		/// </summary>
+		/// <param name="handle"></param>
 		public CSound管理( IntPtr handle )	// #30803 従来のコンストラクタ相当のI/Fを追加。(DTXC用)
 		{
 			WindowHandle = handle;
 			SoundDevice = null;
+			bUseOSTimer = true;
 			t初期化( ESoundDeviceType.DirectSound, 0, 0, 0 );
 		}
+		/// <summary>
+		/// DTXMania用コンストラクタ
+		/// </summary>
+		/// <param name="handle"></param>
+		/// <param name="soundDeviceType"></param>
+		/// <param name="nSoundDelayExclusiveWASAPI"></param>
+		/// <param name="nSoundDelayASIO"></param>
+		/// <param name="nASIODevice"></param>
 		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice )
 		{
 			WindowHandle = handle;
 			SoundDevice = null;
+			bUseOSTimer = false;
 			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice );
 		}
 		public void Dispose()
@@ -275,7 +288,7 @@ namespace FDK
 					break;
 
 				case ESoundDeviceType.DirectSound:
-					SoundDevice = new CSoundDeviceDirectSound( WindowHandle, SoundDelayDirectSound );
+					SoundDevice = new CSoundDeviceDirectSound( WindowHandle, SoundDelayDirectSound, bUseOSTimer );
 					break;
 
 				default:
