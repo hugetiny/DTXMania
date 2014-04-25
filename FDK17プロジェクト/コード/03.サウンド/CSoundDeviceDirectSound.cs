@@ -72,6 +72,10 @@ namespace FDK
 				else
 				{
 					long nRet = ctimer.nシステム時刻ms - this.n前に経過時間を測定したシステム時刻ms;
+					if ( nRet < 0 )	// カウンタがループしたときは
+					{
+						nRet = ( ctimer.nシステム時刻 - long.MinValue ) + ( long.MaxValue - this.n前に経過時間を測定したシステム時刻ms ) + 1;
+					}
 					this.n前に経過時間を測定したシステム時刻ms = ctimer.nシステム時刻ms;
 	
 					return nRet;
@@ -175,7 +179,7 @@ namespace FDK
 			{
 				ctimer = new CTimer( CTimer.E種別.MultiMedia );
 			}
-			Trace.TraceInformation( "DirectSound を初期化しました。({0})", ( priority ) ? "Priority" : "Normal" );
+			Trace.TraceInformation( "DirectSound を初期化しました。({0})({1})", ( priority ) ? "Priority" : "Normal", bUseOSTimer? "OStimer" : "FDKtimer" );
 		}
 
 		public CSound tサウンドを作成する( string strファイル名 )
