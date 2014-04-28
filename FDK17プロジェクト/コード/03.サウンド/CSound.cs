@@ -38,6 +38,63 @@ namespace FDK
 
 		public static bool bIsTimeStretch = false;
 
+		private static int _nMasterVolume;
+		public int nMasterVolume
+		{
+			get
+			{
+				return _nMasterVolume;
+			}
+			//get
+			//{
+			//    if ( SoundDeviceType == ESoundDeviceType.ExclusiveWASAPI || SoundDeviceType == ESoundDeviceType.ASIO )
+			//    {
+			//        return Bass.BASS_GetConfig(BASSConfig.BASS_CONFIG_GVOL_STREAM ) / 100;
+			//    }
+			//    else
+			//    {
+			//        return 100;
+			//    }
+			//}
+			//set
+			//{
+			//    if ( SoundDeviceType == ESoundDeviceType.ExclusiveWASAPI )
+			//    {
+			//        bool b = BassWasapi.BASS_WASAPI_SetVolume( BASSWASAPIVolume.BASS_WASAPI_CURVE_LINEAR, value / 100.0f );
+			//        if ( !b )
+			//        {
+			//            BASSError be = Bass.BASS_ErrorGetCode();
+			//            Trace.TraceInformation( "WASAPI Master Volume Set Error: " + be.ToString() );
+			//        }
+			//    }
+			//}
+			//set
+			//{
+			//    if ( SoundDeviceType == ESoundDeviceType.ExclusiveWASAPI || SoundDeviceType == ESoundDeviceType.ASIO )
+			//    {
+			//        bool b = Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_GVOL_STREAM, value * 100 );
+			//        if ( !b )
+			//        {
+			//            BASSError be = Bass.BASS_ErrorGetCode();
+			//            Trace.TraceInformation( "Master Volume Set Error: " + be.ToString() );
+			//        }
+			//    }
+			//}
+			//set
+			//{
+			//    if ( SoundDeviceType == ESoundDeviceType.ExclusiveWASAPI || SoundDeviceType == ESoundDeviceType.ASIO )
+			//    {
+			//        var nodes = new BASS_MIXER_NODE[ 1 ] { new BASS_MIXER_NODE( 0, (float) value ) };
+			//        BassMix.BASS_Mixer_ChannelSetEnvelope( SoundDevice.hMixer, BASSMIXEnvelope.BASS_MIXER_ENV_VOL, nodes );
+			//    }
+			//}
+			set
+			{
+				SoundDevice.nMasterVolume = value;
+				_nMasterVolume = value;
+			}
+		}
+
 		///// <summary>
 		///// BASS時、mp3をストリーミング再生せずに、デコードしたraw wavをオンメモリ再生する場合はtrueにする。
 		///// 特殊なmp3を使用時はシークが乱れるので、必要に応じてtrueにすること。(Config.iniのNoMP3Streamingで設定可能。)
@@ -301,6 +358,8 @@ namespace FDK
 			rc演奏用タイマ = new CSoundTimer( SoundDevice );
 			//-----------------
 			#endregion
+
+			SoundDevice.nMasterVolume = _nMasterVolume;					// サウンドデバイスに対して、マスターボリュームを再設定する
 
 			CSound.tすべてのサウンドを再構築する( SoundDevice );		// すでに生成済みのサウンドがあれば作り直す。
 		}

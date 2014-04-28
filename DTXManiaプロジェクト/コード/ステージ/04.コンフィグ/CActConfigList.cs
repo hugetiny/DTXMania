@@ -346,6 +346,19 @@ namespace DTXMania
 			//    "     the setting take effect." );
 			//this.list項目リスト.Add( this.iSystemASIOBufferSizeMs );
 
+			// #24820 2013.1.3 yyagi
+			this.iSystemMasterVolume = new CItemInteger( "MasterVolume", 0, 100, CDTXMania.ConfigIni.nMasterVolume,
+				"マスターボリュームの設定:\n" +
+				"全体の音量を設定します。\n" +
+				"0が無音で、100が最大値です。\n" +
+				"(WASAPI/ASIO時のみ有効です)",
+				"Master Volume:\n" +
+				"You can set 0 - 100.\n" +
+				"\n" +
+				"Note:\n" + 
+				"Only for WASAPI/ASIO mode." );
+			this.list項目リスト.Add( this.iSystemMasterVolume );
+
 			this.iSystemSkinSubfolder = new CItemList( "Skin (General)", CItemBase.Eパネル種別.通常, nSkinIndex,
 				"スキン切替：\n" +
 				"スキンを切り替えます。\n",
@@ -1636,6 +1649,7 @@ namespace DTXMania
 			if( this.b要素値にフォーカス中 )
 			{
 				this.list項目リスト[ this.n現在の選択項目 ].t項目値を前へ移動();
+				t要素値を上下に変更中の処理();
 			}
 			else
 			{
@@ -1648,10 +1662,18 @@ namespace DTXMania
 			if( this.b要素値にフォーカス中 )
 			{
 				this.list項目リスト[ this.n現在の選択項目 ].t項目値を次へ移動();
+				t要素値を上下に変更中の処理();
 			}
 			else
 			{
 				this.n目標のスクロールカウンタ -= 100;
+			}
+		}
+		private void t要素値を上下に変更中の処理()
+		{
+			if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemMasterVolume )				// #33700 2014.4.26 yyagi
+			{
+				CDTXMania.Sound管理.nMasterVolume = this.iSystemMasterVolume.n現在の値;
 			}
 		}
 
@@ -2265,6 +2287,7 @@ namespace DTXMania
 		private CItemList iGuitarSudHid;					// #32072 2013.9.20 yyagi
 		private CItemList iBassSudHid;						// #32072 2013.9.20 yyagi
 		private CItemBase iSystemReloadDTX;					// #32081 2013.10.21 yyagi
+		private CItemInteger iSystemMasterVolume;			// #33700 2014.4.26 yyagi
 
 		private int t前の項目( int nItem )
 		{
@@ -2384,6 +2407,7 @@ namespace DTXMania
 //Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );
 //Trace.TraceInformation( "Skin現在System  : " + CSkin.strSystemSkinSubfolderFullName );
 //Trace.TraceInformation( "Skin現在BoxDef  : " + CSkin.strBoxDefSkinSubfolderFullName );
+			CDTXMania.ConfigIni.nMasterVolume = this.iSystemMasterVolume.n現在の値;							// #33700 2014.4.26 yyagi
 		}
 		private void tConfigIniへ記録する・Bass()
 		{

@@ -81,6 +81,30 @@ namespace FDK
 			protected set;
 		}
 
+		public int nMasterVolume
+		{
+			get
+			{
+				float f音量 = BassAsio.BASS_ASIO_ChannelGetVolume( false, -1 );
+				if ( f音量 == -1.0f )
+				{
+					BASSError be = BassAsio.BASS_ASIO_ErrorGetCode();
+					Trace.TraceInformation( "ASIO Master Volume Get Error: " + be.ToString() );
+					f音量 = 0.0f;
+				}
+				return (int) ( f音量 * 100 );
+			}
+			set
+			{
+				bool b = BassAsio.BASS_ASIO_ChannelSetVolume( false, -1, value / 100.0f );
+				if ( !b )
+				{
+					BASSError be = BassAsio.BASS_ASIO_ErrorGetCode();
+					Trace.TraceInformation( "ASIO Master Volume Set Error: " + be.ToString() );
+				}
+			}
+		}
+
 		// メソッド
 
 		public CSoundDeviceASIO( long n希望バッファサイズms, int _nASIODevice )

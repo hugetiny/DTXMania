@@ -92,6 +92,18 @@ namespace FDK
 			protected set;
 		}
 
+		public int nMasterVolume
+		{
+			get
+			{
+				return (int) 100;
+			}
+			set
+			{
+				// 特に何もしない
+			}
+		}
+
 
 		// メソッド
 

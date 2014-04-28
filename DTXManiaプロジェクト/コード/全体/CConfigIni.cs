@@ -675,7 +675,8 @@ namespace DTXMania
 		public bool bViewerShowDebugStatus;
 		public bool bViewerTimeStretch;
 		public bool bViewerDrums有効, bViewerGuitar有効;
-		public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
+		//public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
+		public int nMasterVolume;
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1176,7 +1177,8 @@ namespace DTXMania
 			bViewerDrums有効 = true;
 			bViewerGuitar有効 = true;
 
-			this.bNoMP3Streaming = false;
+			//this.bNoMP3Streaming = false;
+			this.nMasterVolume = 100;					// #33700 2014.4.26 yyagi マスターボリュームの設定(WASAPI/ASIO用)
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1350,10 +1352,17 @@ namespace DTXMania
 			//sw.WriteLine( "ASIOBufferSizeMs={0}", (int) this.nASIOBufferSizeMs );
 			//sw.WriteLine();
 
-			sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。" );
-			sw.WriteLine( "; ONにすると、ギター曲などチップ音の多い曲も再生できますが、画面が少しがたつきます。" );
-			sw.WriteLine( "; (0=行わない, 1=行う)" );
-			sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement ? 1 : 0 );
+			//sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。" );
+			//sw.WriteLine( "; ONにすると、ギター曲などチップ音の多い曲も再生できますが、画面が少しがたつきます。" );
+			//sw.WriteLine( "; (0=行わない, 1=行う)" );
+			//sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement ? 1 : 0 );
+			//sw.WriteLine();
+
+			sw.WriteLine( "; 全体ボリュームの設定" );
+			sw.WriteLine( "; (0=無音 ～ 100=最大。WASAPI/ASIO時のみ有効)" );
+			sw.WriteLine( "; Master volume settings" );
+			sw.WriteLine( "; (0=Silent - 100=Max)" );
+			sw.WriteLine( "MasterVolume={0}", this.nMasterVolume );
 			sw.WriteLine();
 			#endregion
 			#region [ ギター/ベース/ドラム 有効/無効 ]
@@ -2186,9 +2195,13 @@ namespace DTXMania
 											//{
 											//    this.nASIOBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nASIOBufferSizeMs );
 											//}
-											else if ( str3.Equals( "DynamicBassMixerManagement" ) )
+											//else if ( str3.Equals( "DynamicBassMixerManagement" ) )
+											//{
+											//    this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
+											//}
+											else if ( str3.Equals( "MasterVolume" ) )
 											{
-												this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
+												this.nMasterVolume = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.nMasterVolume );
 											}
 											#endregion
 											else if ( str3.Equals( "VSyncWait" ) )
