@@ -14,6 +14,10 @@
 If you don't install any libraries descrived above,
 you'll fail to start DTXMania.
 
+And there is DTXManiaGR.exe.config file in the same folder
+as DTXManiaGR.exe. Don't rename/remove it.
+If that config file doesn't find, DTXManiaGR.exe cant open.
+
 
 * Installing DirectX End User Runtime
 
