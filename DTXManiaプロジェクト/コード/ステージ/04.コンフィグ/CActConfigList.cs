@@ -346,7 +346,7 @@ namespace DTXMania
 			//    "     the setting take effect." );
 			//this.list項目リスト.Add( this.iSystemASIOBufferSizeMs );
 
-			// #24820 2013.1.3 yyagi
+			// #33700 2013.1.3 yyagi
 			this.iSystemMasterVolume = new CItemInteger( "MasterVolume", 0, 100, CDTXMania.ConfigIni.nMasterVolume,
 				"マスターボリュームの設定:\n" +
 				"全体の音量を設定します。\n" +
