@@ -159,12 +159,16 @@ namespace DTXMania
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					this.actFI.tフェードイン開始();
 
+Trace.TraceInformation( "n現在のトップChip=" + this.n現在のトップChip + ", Total Chips=" + CDTXMania.DTX.listChip.Count );
+Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc演奏用タイマ.n現在時刻 );
 					if ( CDTXMania.DTXVmode.Enabled )			// DTXVモードなら
 					{
 						#region [ DTXV用の再生設定にする(全AUTOなど) ]
 						tDTXV用の設定();
 						#endregion
 						t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
+Trace.TraceInformation( "n現在のトップChip(DTXV)=" + this.n現在のトップChip + ", StartTime=" + CDTXMania.DTX.listChip[ this.n現在のトップChip ].n発声時刻ms );
+Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc演奏用タイマ.n現在時刻 );
 					}
 
 					CDTXMania.Sound管理.tDisableUpdateBufferAutomatically();

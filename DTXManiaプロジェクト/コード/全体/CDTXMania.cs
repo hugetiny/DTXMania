@@ -1704,7 +1704,7 @@ for (int i = 0; i < 3; i++) {
 			{
 				try
 				{
-					Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( "DTXManiaLog.txt", false, Encoding.GetEncoding( "Shift_JIS" ) ) ) );
+					Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( System.IO.Path.Combine( strEXEのあるフォルダ, "DTXManiaLog.txt" ), true, Encoding.GetEncoding( "Shift_JIS" ) ) ) );
 				}
 				catch ( System.UnauthorizedAccessException )			// #24481 2011.2.20 yyagi
 				{
@@ -1976,7 +1976,8 @@ for (int i = 0; i < 3; i++) {
 			Trace.Indent();
 			try
 			{
-				Input管理 = new CInput管理( base.Window.Handle );
+				bool bUseMIDIIn = !DTXVmode.Enabled;
+				Input管理 = new CInput管理( base.Window.Handle, bUseMIDIIn );
 				foreach( IInputDevice device in Input管理.list入力デバイス )
 				{
 					if( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && !ConfigIni.dicJoystick.ContainsValue( device.GUID ) )
