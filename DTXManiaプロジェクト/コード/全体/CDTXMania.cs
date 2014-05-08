@@ -1801,7 +1801,14 @@ for (int i = 0; i < 3; i++) {
 #if DEBUG
 					Environment.Exit( -1 );
 #else
-					throw new FileNotFoundException( "コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。", strコンパクトモードファイル );
+					if ( strコンパクトモードファイル == "" )	// DTXMania未起動状態で、DTXCで再生停止ボタンを押した場合は、何もせず終了
+					{
+						Environment.Exit( -1 );
+					}
+					else
+					{
+						throw new FileNotFoundException( "コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。", strコンパクトモードファイル );
+					}
 #endif
 				}
 				if ( DTXVmode.Enabled )
