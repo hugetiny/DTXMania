@@ -215,12 +215,11 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 				{
 					if ( CDTXMania.DTXVmode.Enabled )
 					{
-						// 何かサウンドが鳴っている間は、待機する
-						//if ( CDTXMania.Timer.b停止していない )
-						//{
-						//    this.actPanel.SetPanelString( "" );	// まだPANELの復活ができていない
-						//    CDTXMania.Timer.t一時停止();
-						//}
+						if ( CDTXMania.Timer.b停止していない )
+						{
+							this.actPanel.Stop();				// PANEL表示停止
+						    CDTXMania.Timer.t一時停止();		// 再生時刻カウンタ停止
+						}
 						Thread.Sleep( 5 );
 						// DTXCからの次のメッセージを待ち続ける
 					}

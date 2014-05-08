@@ -2232,6 +2232,8 @@ namespace DTXMania
 			CDTXMania.DTX.t全チップの再生停止とミキサーからの削除();
 			this.actAVI.Stop();
 			this.actBGA.Stop();
+			this.actPanel.Stop();				// PANEL表示停止
+			CDTXMania.Timer.t一時停止();		// 再生時刻カウンタ停止
 
 			this.n現在のトップChip = CDTXMania.DTX.listChip.Count - 1;	// 終端にシーク
 
@@ -2348,6 +2350,7 @@ namespace DTXMania
 			CSound管理.rc演奏用タイマ.t再開();
 			//CDTXMania.Timer.t再開();
 			this.bPAUSE = false;								// システムがPAUSE状態だったら、強制解除
+			this.actPanel.Start();
 			#endregion
 			#endregion
 		}

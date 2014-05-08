@@ -119,6 +119,7 @@ namespace DTXMania
 						t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
 					}
 
+					CDTXMania.Sound管理.tDisableUpdateBufferAutomatically();
 					base.b初めての進行描画 = false;
 				}
 				if( CDTXMania.ConfigIni.bSTAGEFAILED有効 && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
@@ -162,6 +163,11 @@ namespace DTXMania
 				{
 					if ( CDTXMania.DTXVmode.Enabled )
 					{
+						if ( CDTXMania.Timer.b停止していない )
+						{
+							this.actPanel.Stop();				// PANEL表示停止
+							CDTXMania.Timer.t一時停止();		// 再生時刻カウンタ停止
+						}
 						Thread.Sleep( 5 );
 						// DTXCからの次のメッセージを待ち続ける
 					}
