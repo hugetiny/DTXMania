@@ -296,6 +296,7 @@ namespace DTXMania
 
 			queueMixerSound = new Queue<stmixer>( 64 );
 			bIsDirectSound = ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound" );
+			bUseOSTimer = CDTXMania.ConfigIni.bUseOSTimer;
 			this.bPAUSE = false;
 			if ( CDTXMania.DTXVmode.Enabled )
 			{
@@ -642,6 +643,7 @@ namespace DTXMania
 		protected List<CDTX.CChip> listChip;
 		protected Dictionary<int, CDTX.CWAV> listWAV;
 		protected CInvisibleChip cInvisibleChip;
+		protected bool bUseOSTimer;
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;

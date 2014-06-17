@@ -34,6 +34,9 @@ namespace FDK
 													// DTXC(DirectSound)でCSoundTimerを使うと、内部で無音のループサウンドを再生するため
 													// サウンドデバイスを占有してしまい、Viewerとして呼び出されるDTXManiaで、ASIOが使えなくなる。
 
+													// DTXMania単体でこれをtrueにすると、WASAPI/ASIO時に演奏タイマーとしてFDKタイマーではなく
+													// システムのタイマーを使うようになる。こうするとスクロールは滑らかになるが、音ズレが出るかもしれない。
+		
 		public static IntPtr WindowHandle;
 
 		public static bool bIsTimeStretch = false;
@@ -204,12 +207,13 @@ namespace FDK
 		/// <param name="nSoundDelayExclusiveWASAPI"></param>
 		/// <param name="nSoundDelayASIO"></param>
 		/// <param name="nASIODevice"></param>
-		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice )
+		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice, bool _bUseOSTimer )
 		{
 			WindowHandle = handle;
 			SoundDevice = null;
-			bUseOSTimer = false;
-			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice );
+			bUseOSTimer = _bUseOSTimer;
+			//bUseOSTimer = false;
+			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice, _bUseOSTimer );
 		}
 		public void Dispose()
 		{
@@ -230,8 +234,12 @@ namespace FDK
 				//bInitialized = true;
 			}
 		}
-
 		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
+		{
+			t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice, false );
+		}
+
+		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool bUseOSTimer )
 		{
 			//SoundDevice = null;						// 後で再初期化することがあるので、null初期化はコンストラクタに回す
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）

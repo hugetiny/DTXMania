@@ -346,6 +346,33 @@ namespace DTXMania
 			//    "     the setting take effect." );
 			//this.list項目リスト.Add( this.iSystemASIOBufferSizeMs );
 
+			// #33689 2014.6.17 yyagi
+			this.iSystemSoundTimerType = new CItemToggle( "UseOSTimer", CDTXMania.ConfigIni.bUseOSTimer,
+				"OSタイマーを使用するかどうか:\n" +
+				"演奏タイマーとして、DTXMania独自の\n" +
+				"タイマーを使うか、OS標準のタイマー\n" +
+				"を使うかを選択します。\n" +
+				"OS標準タイマーを使うとスクロールが\n" +
+				"滑らかになりますが、演奏で音ズレが\n" +
+				"発生することがあります。(そのため\n" +
+				"AdjustWavesの効果が適用されます。)\n" +
+				"\n" +
+				"この指定はWASAPI/ASIO使用時のみ有効\n" +
+				"です。\n",
+				"Use OS Timer or not:\n" +
+				"If this settings is ON, DTXMania uses\n" +
+				"OS Standard timer. It brings smooth\n" +
+				"scroll, but may cause some sound lag.\n" +
+				"(so AdjustWaves is also avilable)\n" +
+				"\n" +
+				"If OFF, DTXMania uses its original\n" +
+				"timer and the effect is vice versa.\n" +
+				"\n" +
+				"This settings is avilable only when\n" +
+				"you uses WASAPI/ASIO.\n"
+			);
+			this.list項目リスト.Add( this.iSystemSoundTimerType );
+
 			// #33700 2013.1.3 yyagi
 			this.iSystemMasterVolume = new CItemInteger( "MasterVolume", 0, 100, CDTXMania.ConfigIni.nMasterVolume,
 				"マスターボリュームの設定:\n" +
@@ -1725,6 +1752,7 @@ namespace DTXMania
 			// this.iSystemWASAPIBufferSizeMs_initial	= this.iSystemWASAPIBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
 			// this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
 			this.iSystemASIODevice_initial			= this.iSystemASIODevice.n現在選択されている項目番号;	//
+			this.iSystemSoundTimerType_initial      = this.iSystemSoundTimerType.GetIndex();				//
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -1745,11 +1773,13 @@ namespace DTXMania
 			#endregion
 
 			// #24820 2013.1.22 yyagi CONFIGでWASAPI/ASIO/DirectSound関連の設定を変更した場合、サウンドデバイスを再構築する。
+			// #33689 2014.6.17 yyagi CONFIGでSoundTimerTypeの設定を変更した場合も、サウンドデバイスを再構築する。
 			#region [ サウンドデバイス変更 ]
 			if ( this.iSystemSoundType_initial != this.iSystemSoundType.n現在選択されている項目番号 ||
 				// this.iSystemWASAPIBufferSizeMs_initial != this.iSystemWASAPIBufferSizeMs.n現在の値 ||
 				// this.iSystemASIOBufferSizeMs_initial != this.iSystemASIOBufferSizeMs.n現在の値 ||
-				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 )
+				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 ||
+				this.iSystemSoundTimerType_initial != this.iSystemSoundTimerType.GetIndex() )
 			{
 				ESoundDeviceType soundDeviceType;
 				switch ( this.iSystemSoundType.n現在選択されている項目番号 )
@@ -1773,7 +1803,8 @@ namespace DTXMania
 										// this.iSystemWASAPIBufferSizeMs.n現在の値,
 										0,
 										// this.iSystemASIOBufferSizeMs.n現在の値,
-										this.iSystemASIODevice.n現在選択されている項目番号 );
+										this.iSystemASIODevice.n現在選択されている項目番号,
+										this.iSystemSoundTimerType.bON );
 				CDTXMania.app.ShowWindowTitleWithSoundType();
 			}
 			#endregion
@@ -2194,6 +2225,8 @@ namespace DTXMania
 //		private int iSystemWASAPIBufferSizeMs_initial;
 //		private int iSystemASIOBufferSizeMs_initial;
 		private int iSystemASIODevice_initial;
+		private CItemToggle iSystemSoundTimerType;			// #33689 2014.6.17 yyagi
+		private int iSystemSoundTimerType_initial;			// #33689 2014.6.17 yyagi
 
 		private CItemToggle iSystemTimeStretch;				// #23664 2013.2.24 yyagi
 
@@ -2401,6 +2434,7 @@ namespace DTXMania
 //			CDTXMania.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
 //			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
 			CDTXMania.ConfigIni.nASIODevice = this.iSystemASIODevice.n現在選択されている項目番号;			// #24820 2013.1.17 yyagi
+			CDTXMania.ConfigIni.bUseOSTimer = this.iSystemSoundTimerType.bON;								// #33689 2014.6.17 yyagi
 
 			CDTXMania.ConfigIni.bTimeStretch = this.iSystemTimeStretch.bON;									// #23664 2013.2.24 yyagi
 //Trace.TraceInformation( "saved" );

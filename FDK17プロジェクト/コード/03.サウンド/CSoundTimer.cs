@@ -42,9 +42,16 @@ namespace FDK
 					}
 					else
 					{
-						return this.Device.n経過時間ms
-							+ ( this.Device.tmシステムタイマ.nシステム時刻ms - this.Device.n経過時間を更新したシステム時刻ms );
-						//return ctDInputTimer.nシステム時刻ms;				// 仮にCSoundTimerをCTimer相当の動作にしてみた
+						if ( FDK.CSound管理.bUseOSTimer )
+						//if ( true )
+						{
+							return ctDInputTimer.nシステム時刻ms;				// 仮にCSoundTimerをCTimer相当の動作にしてみた
+						}
+						else
+						{
+							return this.Device.n経過時間ms
+								+ ( this.Device.tmシステムタイマ.nシステム時刻ms - this.Device.n経過時間を更新したシステム時刻ms );
+						}
 					}
 				}
 				else if( this.Device.e出力デバイス == ESoundDeviceType.DirectSound )

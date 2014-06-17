@@ -665,6 +665,7 @@ namespace DTXMania
 //		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
 //		public int nASIOBufferSizeMs;				// #24820 2012.12.28 yyagi ASIOのバッファサイズ
 		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
+		public bool bUseOSTimer;					// #33689 2014.6.6 yyagi 演奏タイマーの種類
 		public bool bDynamicBassMixerManagement;	// #24820
 		public bool bTimeStretch;					// #23664 2013.2.24 yyagi ピッチ変更無しで再生速度を変更するかどうか
 		public STDGBVALUE<EInvisible> eInvisible;	// #32072 2013.9.20 yyagi チップを非表示にする
@@ -1166,6 +1167,7 @@ namespace DTXMania
 //			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 //			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
+			this.bUseOSTimer = false;;					// #33689 2014.6.6 yyagi 初期値はfalse (FDKのタイマー。ＦＲＯＭ氏考案の独自タイマー)
 			this.bDynamicBassMixerManagement = true;	//
 			this.bTimeStretch = false;					// #23664 2013.2.24 yyagi 初期値はfalse (再生速度変更を、ピッチ変更にて行う)
 			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
@@ -1358,12 +1360,19 @@ namespace DTXMania
 			//sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement ? 1 : 0 );
 			//sw.WriteLine();
 
+			sw.WriteLine( "; WASAPI/ASIO時に使用する演奏タイマーの種類" );
+			sw.WriteLine( "; Playback timer used for WASAPI/ASIO" );
+			sw.WriteLine( "; (0=FDK Timer, 1=System Timer)" );
+			sw.WriteLine( "SoundTimerType={0}", this.bUseOSTimer ? 1 : 0 );
+			sw.WriteLine();
+
 			sw.WriteLine( "; 全体ボリュームの設定" );
 			sw.WriteLine( "; (0=無音 ～ 100=最大。WASAPI/ASIO時のみ有効)" );
 			sw.WriteLine( "; Master volume settings" );
 			sw.WriteLine( "; (0=Silent - 100=Max)" );
 			sw.WriteLine( "MasterVolume={0}", this.nMasterVolume );
 			sw.WriteLine();
+
 			#endregion
 			#region [ ギター/ベース/ドラム 有効/無効 ]
 			sw.WriteLine( "; ギター/ベース有効(0:OFF,1:ON)" );
@@ -2199,6 +2208,10 @@ namespace DTXMania
 											//{
 											//    this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
 											//}
+											else if ( str3.Equals( "SoundTimerType" ) )			// #33689 2014.6.6 yyagi
+											{
+												this.bUseOSTimer = C変換.bONorOFF( str4[ 0 ] );
+											}
 											else if ( str3.Equals( "MasterVolume" ) )
 											{
 												this.nMasterVolume = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.nMasterVolume );

@@ -2102,7 +2102,7 @@ for (int i = 0; i < 3; i++) {
 			Trace.TraceInformation( "サウンドデバイスの初期化を行います。" );
 			Trace.Indent();
 			try
-			{				
+			{
 				ESoundDeviceType soundDeviceType;
 				switch ( CDTXMania.ConfigIni.nSoundDeviceType )
 				{
@@ -2125,7 +2125,8 @@ for (int i = 0; i < 3; i++) {
 											0,
 					// CDTXMania.ConfigIni.nASIOBufferSizeMs,
 											0,
-											CDTXMania.ConfigIni.nASIODevice
+											CDTXMania.ConfigIni.nASIODevice,
+											CDTXMania.ConfigIni.bUseOSTimer
 				);
 				//Sound管理 = FDK.CSound管理.Instance;
 				//Sound管理.t初期化( soundDeviceType, 0, 0, CDTXMania.ConfigIni.nASIODevice, base.Window.Handle );
