@@ -211,7 +211,6 @@ namespace FDK
 		{
 			WindowHandle = handle;
 			SoundDevice = null;
-			bUseOSTimer = _bUseOSTimer;
 			//bUseOSTimer = false;
 			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice, _bUseOSTimer );
 		}
@@ -239,7 +238,7 @@ namespace FDK
 			t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice, false );
 		}
 
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool bUseOSTimer )
+		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool _bUseOSTimer )
 		{
 			//SoundDevice = null;						// 後で再初期化することがあるので、null初期化はコンストラクタに回す
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
@@ -248,6 +247,7 @@ namespace FDK
 			SoundDelayExclusiveWASAPI = _nSoundDelayExclusiveWASAPI;
 			SoundDelayASIO = _nSoundDelayASIO;
 			ASIODevice = _nASIODevice;
+			bUseOSTimer = _bUseOSTimer;
 
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
 			{
