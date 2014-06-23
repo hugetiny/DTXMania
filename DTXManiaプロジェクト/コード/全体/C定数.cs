@@ -158,7 +158,8 @@ namespace DTXMania
 	internal enum E判定文字表示位置
 	{
 		レーン上,
-		判定ライン上または横,
+		コンボ下,
+		判定ライン上,
 		表示OFF
 	}
 	internal enum EAVI種別

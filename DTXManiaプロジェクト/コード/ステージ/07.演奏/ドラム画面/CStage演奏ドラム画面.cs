@@ -343,7 +343,7 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 				bool flag2 = this.bフィルイン中 && this.bフィルイン区間の最後のChipである( pChip );
 				// bool flag3 = flag2;
 				// #31602 2013.6.24 yyagi 判定ラインの表示位置をずらしたら、チップのヒットエフェクトの表示もずらすために、nJudgeLine..を追加
-				this.actChipFireD.Start( (Eレーン)nLane, flag, flag2, flag2, nJudgeLinePosY_delta.Drums );
+				this.actChipFireD.Start( (Eレーン)nLane, flag, flag2, flag2, 演奏判定ライン座標.nJudgeLinePosY_delta.Drums );
 			}
 			if( CDTXMania.ConfigIni.bドラム打音を発声する )
 			{
@@ -417,9 +417,13 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 
 		protected override void t進行描画・Wailing枠()
 		{
+			int yG = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ], true );
+			int yB = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ], true );
 			base.t進行描画・Wailing枠( 587, 478,
-				CDTXMania.ConfigIni.bReverse.Guitar ? ( 400 - this.txWailing枠.sz画像サイズ.Height ) : 69,
-				CDTXMania.ConfigIni.bReverse.Bass ? ( 400 - this.txWailing枠.sz画像サイズ.Height ) : 69
+				yG,
+				yB
+			//	CDTXMania.ConfigIni.bReverse.Guitar ? ( 400 - this.txWailing枠.sz画像サイズ.Height ) : 69,	// 350:69
+			//	CDTXMania.ConfigIni.bReverse.Bass ? ( 400 - this.txWailing枠.sz画像サイズ.Height ) : 69		// 350:69
 			);
 		}
 		private void t進行描画・ギターベースフレーム()
@@ -464,7 +468,7 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 374 + nJudgeLinePosY_delta.Guitar : 95 - nJudgeLinePosY_delta.Guitar ) - 3;
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ] );
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバーGB != null )
 					{
@@ -477,7 +481,7 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Bass ? 374 + nJudgeLinePosY_delta.Bass : 95 - nJudgeLinePosY_delta.Bass ) - 3;
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ] );
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバーGB != null )
 					{
@@ -1976,7 +1980,7 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 					bool flag2 = this.bフィルイン中 && this.bフィルイン区間の最後のChipである( pChip );
 					//bool flag3 = flag2;
 					// #31602 2013.6.24 yyagi 判定ラインの表示位置をずらしたら、チップのヒットエフェクトの表示もずらすために、nJudgeLine..を追加
-					this.actChipFireD.Start( (Eレーン)indexSevenLanes, flag, flag2, flag2, nJudgeLinePosY_delta.Drums );
+					this.actChipFireD.Start( (Eレーン)indexSevenLanes, flag, flag2, flag2, 演奏判定ライン座標.nJudgeLinePosY_delta.Drums );
 					this.actPad.Hit( this.nチャンネル0Atoパッド08[ pChip.nチャンネル番号 - 0x11 ] );
 					this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, E楽器パート.DRUMS, dTX.nモニタを考慮した音量( E楽器パート.DRUMS ) );
 					this.tチップのヒット処理( pChip.n発声時刻ms, pChip );

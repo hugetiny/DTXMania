@@ -251,6 +251,7 @@ namespace DTXMania
 			this.r現在の空うちギターChip = null;
 			this.r現在の空うちベースChip = null;
 			cInvisibleChip = new CInvisibleChip( CDTXMania.ConfigIni.nDisplayTimesMs, CDTXMania.ConfigIni.nFadeoutTimeMs );
+			this.演奏判定ライン座標 = new C演奏判定ライン座標共通();
 			for ( int k = 0; k < 3; k++ )
 			{
 				//for ( int n = 0; n < 5; n++ )
@@ -265,6 +266,14 @@ namespace DTXMania
 				{
 					CDTXMania.ConfigIni.n譜面スクロール速度[ k ] = CDTXMania.ConfigIni.nViewerScrollSpeed[ k ];
 				}
+
+				this.nInputAdjustTimeMs[ k ] = CDTXMania.ConfigIni.nInputAdjustTimeMs[ k ];			// #23580 2011.1.3 yyagi
+																									//        2011.1.7 ikanick 修正
+				//this.nJudgeLinePosY_delta[ k ] = CDTXMania.ConfigIni.nJudgeLinePosOffset[ k ];		// #31602 2013.6.23 yyagi
+
+				this.演奏判定ライン座標.nJudgeLinePosY_delta[ k ] = CDTXMania.ConfigIni.nJudgeLinePosOffset[ k ];
+				this.bReverse[ k ]             = CDTXMania.ConfigIni.bReverse[ k ];					//
+
 			}
 			for ( int i = 0; i < 3; i++ )
 			{
@@ -278,14 +287,11 @@ namespace DTXMania
 			base.On活性化();
 			this.tステータスパネルの選択();
 			this.tパネル文字列の設定();
+			//this.演奏判定ライン座標();
 
-			this.nInputAdjustTimeMs.Drums = CDTXMania.ConfigIni.nInputAdjustTimeMs.Drums;		// #23580 2011.1.3 yyagi
-			this.nInputAdjustTimeMs.Guitar = CDTXMania.ConfigIni.nInputAdjustTimeMs.Guitar;		//        2011.1.7 ikanick 修正
-			this.nInputAdjustTimeMs.Bass = CDTXMania.ConfigIni.nInputAdjustTimeMs.Bass;			//
-			this.nJudgeLinePosY_delta.Drums  = CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums;	// #31602 2013.6.23 yyagi
-			this.nJudgeLinePosY_delta.Guitar = CDTXMania.ConfigIni.nJudgeLinePosOffset.Guitar;	//
-			this.nJudgeLinePosY_delta.Bass   = CDTXMania.ConfigIni.nJudgeLinePosOffset.Bass;	//
 			this.bIsAutoPlay = CDTXMania.ConfigIni.bAutoPlay;									// #24239 2011.1.23 yyagi
+
+			
 			//this.bIsAutoPlay.Guitar = CDTXMania.ConfigIni.bギターが全部オートプレイである;
 			//this.bIsAutoPlay.Bass = CDTXMania.ConfigIni.bベースが全部オートプレイである;
 //			this.nRisky = CDTXMania.ConfigIni.nRisky;											// #23559 2011.7.28 yyagi
@@ -589,6 +595,7 @@ namespace DTXMania
 		protected CAct演奏ステータスパネル共通 actStatusPanels;
 		protected CAct演奏WailingBonus共通 actWailingBonus;
 		protected CAct演奏スクロール速度 act譜面スクロール速度;
+		public    C演奏判定ライン座標共通 演奏判定ライン座標;
 		protected bool bPAUSE;
 		protected STDGBVALUE<bool> b演奏にMIDI入力を使った;
 		protected STDGBVALUE<bool> b演奏にキーボードを使った;
@@ -621,7 +628,8 @@ namespace DTXMania
 		protected double db再生速度;
 		protected bool bValidScore;
 //		protected bool bDTXVmode;
-		protected STDGBVALUE<int> nJudgeLinePosY_delta;			// #31602 2013.6.23 yyagi 表示遅延対策として、判定ラインの表示位置をずらす機能を追加する
+//		protected STDGBVALUE<int> nJudgeLinePosY_delta;			// #31602 2013.6.23 yyagi 表示遅延対策として、判定ラインの表示位置をずらす機能を追加する
+		protected STDGBVALUE<bool> bReverse;
 
 		protected STDGBVALUE<Queue<CDTX.CChip>> queWailing;
 		protected STDGBVALUE<CDTX.CChip> r現在の歓声Chip;
@@ -2588,15 +2596,15 @@ namespace DTXMania
 					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
 					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 0 + lo, nJudgeLinePosY_delta );
+						this.actChipFireGB.Start( 0 + lo, 演奏判定ライン座標.nJudgeLinePosY_delta );
 					}
 					if ( ( bChipHasG && ( autoG || pushingG ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 1 + lo, nJudgeLinePosY_delta );
+						this.actChipFireGB.Start( 1 + lo, 演奏判定ライン座標.nJudgeLinePosY_delta );
 					}
 					if ( ( bChipHasB && ( autoB || pushingB ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 2 + lo, nJudgeLinePosY_delta );
+						this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標.nJudgeLinePosY_delta );
 					}
 					#endregion
 					if ( autoPick )
@@ -2789,7 +2797,7 @@ namespace DTXMania
 		{
 			if ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
 			{
-				int y = CDTXMania.ConfigIni.bReverse.Drums ? 53 - nJudgeLinePosY_delta.Drums : 419 + nJudgeLinePosY_delta.Drums;
+				int y = CDTXMania.ConfigIni.bReverse.Drums ? 53 - 演奏判定ライン座標.nJudgeLinePosY_delta.Drums : 419 + 演奏判定ライン座標.nJudgeLinePosY_delta.Drums;
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 				if ( this.txヒットバー != null )
 				{
@@ -2802,20 +2810,20 @@ namespace DTXMania
 		}
 		protected void t進行描画・判定文字列()
 		{
-			this.actJudgeString.On進行描画();
+			this.actJudgeString.t進行描画( 演奏判定ライン座標 );
 		}
 		protected void t進行描画・判定文字列1・通常位置指定の場合()
 		{
-			if ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) != E判定文字表示位置.判定ライン上または横 )
+			if ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) != E判定文字表示位置.コンボ下 )	// 判定ライン上または横
 			{
-				this.actJudgeString.On進行描画();
+				this.actJudgeString.t進行描画( 演奏判定ライン座標 );
 			}
 		}
 		protected void t進行描画・判定文字列2・判定ライン上指定の場合()
 		{
-			if ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.判定ライン上または横 )
+			if ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.コンボ下 )	// 判定ライン上または横
 			{
-				this.actJudgeString.On進行描画();
+				this.actJudgeString.t進行描画( 演奏判定ライン座標 );
 			}
 		}
 
@@ -3024,17 +3032,17 @@ namespace DTXMania
 							if ( ( bChipHasR && ( autoR || pushingR != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingR != 0 ) || autoR || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( R, nJudgeLinePosY_delta );
+								this.actChipFireGB.Start( R, 演奏判定ライン座標.nJudgeLinePosY_delta );
 							}
 							if ( ( bChipHasG && ( autoG || pushingG != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingG != 0 ) || autoG || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( G, nJudgeLinePosY_delta );
+								this.actChipFireGB.Start( G, 演奏判定ライン座標.nJudgeLinePosY_delta );
 							}
 							if ( ( bChipHasB && ( autoB || pushingB != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingB != 0 ) || autoB || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( B, nJudgeLinePosY_delta );
+								this.actChipFireGB.Start( B, 演奏判定ライン座標.nJudgeLinePosY_delta );
 							}
 							this.tチップのヒット処理( nTime, pChip );
 							this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.nシステム時刻, inst, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する[indexInst], e判定 == E判定.Poor );

@@ -867,6 +867,8 @@ namespace DTXMania
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iGuitarReturnToMenu );
+
+			#region [ AutoPlay ]
 			//this.iGuitarAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Guitar,
 			//    "ギターパートを自動で演奏します。",
 			//    "To play the guitar part automatically." );
@@ -898,7 +900,7 @@ namespace DTXMania
 				"ウェイリングを自動で演奏します。",
 				"To play wailing automatically." );
 			this.list項目リスト.Add( this.iGuitarW );
-
+			#endregion
 			this.iGuitarScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Guitar,
 				"演奏時のギター譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
 				"To change the scroll speed for the\nguitar lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)" );
@@ -960,9 +962,20 @@ namespace DTXMania
 				"The scroll way is reversed. Guitar chips\nflow from the top to the bottom." );
 			this.list項目リスト.Add( this.iGuitarReverse );
 			this.iGuitarPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Guitar,
-				"ギターの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない",
-				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the COMBO indication.\n OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "OFF" } );
+				"ギターの判定文字の表示位置を指定\n" +
+				"します。\n" +
+				" P-A: レーン上\n" +
+				" P-B: COMBO の下\n" +
+				" P-C: 判定ラインの上\n" +
+				" OFF: 表示しない",
+				"The position to show judgement mark.\n" +
+				"(Perfect, Great, ...)\n" +
+				"\n" +
+				" P-A: on the lanes.\n" +
+				" P-B: under the COMBO indication.\n" +
+				" P-C: over the hit bar.\n" +
+				" OFF: no judgement mark.",
+				new string[] { "P-A", "P-B", "P-C", "OFF" } );
 			this.list項目リスト.Add( this.iGuitarPosition );
 			this.iGuitarRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eRandom.Guitar,
 				"ギターのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
@@ -1021,6 +1034,8 @@ namespace DTXMania
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iBassReturnToMenu );
+
+			#region [ AutoPlay ]
 			//this.iBassAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Bass,
 			//    "ベースパートを自動で演奏します。",
 			//    "To play the bass part automatically." );
@@ -1052,6 +1067,7 @@ namespace DTXMania
 				"ウェイリングを自動で演奏します。",
 				"To play wailing automatically." );
 			this.list項目リスト.Add( this.iBassW );
+			#endregion
 
 			this.iBassScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Bass,
 				"演奏時のベース譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
@@ -1115,9 +1131,20 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iBassReverse );
 			this.iBassPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常,
 				(int) CDTXMania.ConfigIni.判定文字表示位置.Bass,
-				"ベースの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない",
-				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the COMBO indication.\n OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "OFF" } );
+				"ベースの判定文字の表示位置を指定\n" +
+				"します。\n" +
+				" P-A: レーン上\n" +
+				" P-B: COMBO の下\n" +
+				" P-C: 判定ラインの上\n" +
+				" OFF: 表示しない",
+				"The position to show judgement mark.\n" +
+				"(Perfect, Great, ...)\n" +
+				"\n" +
+				" P-A: on the lanes.\n" +
+				" P-B: under the COMBO indication.\n" +
+				" P-C: over the hit bar.\n" +
+				" OFF: no judgement mark.",
+				new string[] { "P-A", "P-B", "P-C", "OFF" } );
 			this.list項目リスト.Add( this.iBassPosition );
 			this.iBassRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常,
 				(int) CDTXMania.ConfigIni.eRandom.Bass,

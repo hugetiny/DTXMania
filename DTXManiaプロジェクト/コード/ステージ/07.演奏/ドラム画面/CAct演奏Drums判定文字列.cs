@@ -40,8 +40,11 @@ namespace DTXMania
 		
 		
 		// CActivity 実装（共通クラスからの差分のみ）
-
 		public override int On進行描画()
+		{
+			throw new InvalidOperationException( "t進行描画(C演奏判定ライン座標共通 演奏判定ライン共通 ) のほうを使用してください。" );
+		}
+		public override int t進行描画( C演奏判定ライン座標共通 演奏判定ライン座標 )
 		{
 			if( !base.b活性化してない )
 			{
@@ -121,44 +124,82 @@ namespace DTXMania
 					if( !base.st状態[ j ].ct進行.b停止中 )
 					{
 						int index = base.st判定文字列[ (int) base.st状態[ j ].judge ].n画像番号;
-						int num5 = 0;
-						int num6 = 0;
+						int baseX = 0;
+						int baseY = 0;
 						if( j < 8 )			// Drums
 						{
-							num5 = this.stレーンサイズ[ j ].x;
-							num6 = CDTXMania.ConfigIni.bReverse.Drums ? ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 240 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 50 ) : ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 180 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 450 );
+							baseX = this.stレーンサイズ[ j ].x;
+							baseY = CDTXMania.ConfigIni.bReverse.Drums ?
+								( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 240 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 50 ) :
+								( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 180 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 450 );
 						}
 						else if( j == 11 )	// Bass
 						{
 							if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
 							{
-								// goto Label_07FC;
 								continue;
 							}
-							num5 = this.stレーンサイズ[ j ].x;
-							num6 = CDTXMania.ConfigIni.bReverse.Bass ? ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
+							//baseX = this.stレーンサイズ[ j ].x;
+							//baseY = CDTXMania.ConfigIni.bReverse.Bass ?
+							//	( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) :
+							//	( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
+						
+							switch ( CDTXMania.ConfigIni.判定文字表示位置.Bass )
+							{
+								case E判定文字表示位置.コンボ下:
+									baseX = this.stレーンサイズ[ j ].x;
+									baseY = ( CDTXMania.ConfigIni.bReverse.Bass ? 100 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
+									break;
+								case E判定文字表示位置.レーン上:
+									baseX = this.stレーンサイズ[ j ].x;
+									baseY = ( CDTXMania.ConfigIni.bReverse.Bass ? 240 : 180 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
+									break;
+								case E判定文字表示位置.判定ライン上:
+									baseX = this.stレーンサイズ[ j ].x;
+									int yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
+									baseY = CDTXMania.ConfigIni.bReverse.Bass ? yB + 30 : yB - 24;
+									break;
+							}
 						}
 						else if( j == 10 )	// Guitar
 						{
 							if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
 							{
-								// goto Label_07FC;
 								continue;
 							}
-							if( !CDTXMania.DTX.bチップがある.Bass && ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.判定ライン上または横 ) )
+							//if( !CDTXMania.DTX.bチップがある.Bass && ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.コンボ下 ) )	// 判定ライン上または横
+							//{
+							//    baseX = 0x198;
+							//    baseY = 0x93;
+							//}
+							//else
+							//{
+							//    baseX = this.stレーンサイズ[ j ].x;
+							//    baseY = CDTXMania.ConfigIni.bReverse.Guitar ?
+							//        ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) :
+							//        ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
+							//}
+
+							switch ( CDTXMania.ConfigIni.判定文字表示位置.Guitar )
 							{
-								num5 = 0x198;
-								num6 = 0x93;
-							}
-							else
-							{
-								num5 = this.stレーンサイズ[ j ].x;
-								num6 = CDTXMania.ConfigIni.bReverse.Guitar ? ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
+							    case E判定文字表示位置.コンボ下:
+									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
+									baseY = ( CDTXMania.ConfigIni.bReverse.Guitar ? 100 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
+									break;
+							    case E判定文字表示位置.レーン上:
+									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
+									baseY = ( CDTXMania.ConfigIni.bReverse.Guitar ? 240 : 180 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
+									break;
+							    case E判定文字表示位置.判定ライン上:
+									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
+									int yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
+							        baseY = CDTXMania.ConfigIni.bReverse.Guitar ? yG + 30 : yG - 24;
+							        break;
 							}
 						}
-						int xc = ( ( num5 + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) );	// Xcenter座標
+						int xc = ( ( baseX + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) );	// Xcenter座標
 						int x = xc - ( (int) ( ( 64f * base.st状態[ j ].fX方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) );
-						int y = ( num6 + base.st状態[ j ].n相対Y座標 ) - ( (int) ( ( ( 43f * base.st状態[ j ].fY方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) / 2.0 ) );
+						int y = ( baseY + base.st状態[ j ].n相対Y座標 ) - ( (int) ( ( ( 43f * base.st状態[ j ].fY方向拡大率 ) * ( ( j < 10 ) ? 1.0 : 0.7 ) ) / 2.0 ) );
 						if( base.tx判定文字列[ index ] != null )
 						{
 							base.tx判定文字列[ index ].n透明度 = base.st状態[ j ].n透明度;

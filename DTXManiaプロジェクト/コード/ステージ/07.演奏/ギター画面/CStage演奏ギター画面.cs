@@ -234,9 +234,13 @@ namespace DTXMania
 
 		protected override void t進行描画・Wailing枠()
 		{
+			int yG = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, bReverse[ (int) E楽器パート.GUITAR ], true );
+			int yB = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   true, bReverse[ (int) E楽器パート.BASS   ], true );
 			base.t進行描画・Wailing枠( 0x8b, 0x251,
-				CDTXMania.ConfigIni.bReverse.Guitar ? 340 : 11,
-				CDTXMania.ConfigIni.bReverse.Bass ?   340 : 11
+				yG,
+				yB
+				//CDTXMania.ConfigIni.bReverse.Guitar ? 340 : 11,
+				//CDTXMania.ConfigIni.bReverse.Bass ?   340 : 11
 			);
 		}
 		private void t進行描画・ギターベース判定ライン()	// yyagi: ドラム画面とは座標が違うだけですが、まとめづらかったのでそのまま放置してます。
@@ -245,7 +249,7 @@ namespace DTXMania
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Guitar ? 369 + nJudgeLinePosY_delta.Guitar : 40 - nJudgeLinePosY_delta.Guitar ) - 3;
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, bReverse[ (int) E楽器パート.GUITAR ] );
 															// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバー != null )
 					{
@@ -257,7 +261,7 @@ namespace DTXMania
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = ( CDTXMania.ConfigIni.bReverse.Bass ? 369 + nJudgeLinePosY_delta.Bass : 40 - nJudgeLinePosY_delta.Bass ) - 3;
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, bReverse[ (int) E楽器パート.BASS   ] );
 															// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバー != null )
 					{

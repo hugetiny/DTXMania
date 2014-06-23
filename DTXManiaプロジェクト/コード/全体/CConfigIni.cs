@@ -1695,10 +1695,12 @@ namespace DTXMania
 			sw.WriteLine( "; ドラム判定文字表示位置(0:レーン上,1:判定ライン上,2:表示OFF)" );
 			sw.WriteLine( "DrumsPosition={0}", (int) this.判定文字表示位置.Drums );
 			sw.WriteLine();
-			sw.WriteLine( "; ギター判定文字表示位置(0:レーン上,1:判定ライン横,2:表示OFF)" );
+			sw.WriteLine( "; ギター判定文字表示位置(0:レーン上,1:コンボ下,2:判定ライン上,3:表示OFF)" );
+			sw.WriteLine( "; Guitar Judgement display position (0:on the lane, 1:under combo, 2:over the judge line, 3:OFF" );
 			sw.WriteLine( "GuitarPosition={0}", (int) this.判定文字表示位置.Guitar );
 			sw.WriteLine();
-			sw.WriteLine( "; ベース判定文字表示位置(0:レーン上,1:判定ライン横,2:表示OFF)" );
+			sw.WriteLine( "; ベース判定文字表示位置(0:レーン上,1:コンボ下,2:判定ライン上,3:表示OFF)" );
+			sw.WriteLine( "; Bass Judgement display position (0:on the lane, 1:under combo, 2:over the judge line, 3:OFF" );
 			sw.WriteLine( "BassPosition={0}", (int) this.判定文字表示位置.Bass );
 			sw.WriteLine();
 			sw.WriteLine( "; ドラム譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)" );
@@ -2617,11 +2619,11 @@ namespace DTXMania
 											}
 											else if( str3.Equals( "GuitarPosition" ) )
 											{
-												this.判定文字表示位置.Guitar = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Guitar );
+												this.判定文字表示位置.Guitar = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.判定文字表示位置.Guitar );
 											}
 											else if( str3.Equals( "BassPosition" ) )
 											{
-												this.判定文字表示位置.Bass = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Bass );
+												this.判定文字表示位置.Bass = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.判定文字表示位置.Bass );
 											}
 											else if( str3.Equals( "DrumsScrollSpeed" ) )
 											{

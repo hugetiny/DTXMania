@@ -144,5 +144,10 @@ namespace DTXMania
 				base.OnManagedリソースの解放();
 			}
 		}
+
+		public virtual int t進行描画( C演奏判定ライン座標共通 演奏判定ライン座標共通 )
+		{
+			return 0;
+		}
 	}
 }
