@@ -271,6 +271,7 @@ namespace DTXMania
 																									//        2011.1.7 ikanick 修正
 				//this.nJudgeLinePosY_delta[ k ] = CDTXMania.ConfigIni.nJudgeLinePosOffset[ k ];		// #31602 2013.6.23 yyagi
 
+				this.演奏判定ライン座標.bVseries[ k ] = CDTXMania.ConfigIni.bVseries[ k ];
 				this.演奏判定ライン座標.nJudgeLinePosY_delta[ k ] = CDTXMania.ConfigIni.nJudgeLinePosOffset[ k ];
 				this.bReverse[ k ]             = CDTXMania.ConfigIni.bReverse[ k ];					//
 
@@ -1671,7 +1672,7 @@ namespace DTXMania
 		{
 			if ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
 			{
-				this.actRGB.On進行描画();
+				this.actRGB.t進行描画( 演奏判定ライン座標 );
 			}
 		}
 		protected void t進行描画・STAGEFAILED()
@@ -2596,15 +2597,15 @@ namespace DTXMania
 					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
 					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 0 + lo, 演奏判定ライン座標.nJudgeLinePosY_delta );
+						this.actChipFireGB.Start( 0 + lo, 演奏判定ライン座標 );
 					}
 					if ( ( bChipHasG && ( autoG || pushingG ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 1 + lo, 演奏判定ライン座標.nJudgeLinePosY_delta );
+						this.actChipFireGB.Start( 1 + lo, 演奏判定ライン座標 );
 					}
 					if ( ( bChipHasB && ( autoB || pushingB ) && autoPick ) || bSuccessOPEN )
 					{
-						this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標.nJudgeLinePosY_delta );
+						this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標 );
 					}
 					#endregion
 					if ( autoPick )
@@ -3032,17 +3033,17 @@ namespace DTXMania
 							if ( ( bChipHasR && ( autoR || pushingR != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingR != 0 ) || autoR || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( R, 演奏判定ライン座標.nJudgeLinePosY_delta );
+								this.actChipFireGB.Start( R, 演奏判定ライン座標 );
 							}
 							if ( ( bChipHasG && ( autoG || pushingG != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingG != 0 ) || autoG || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( G, 演奏判定ライン座標.nJudgeLinePosY_delta );
+								this.actChipFireGB.Start( G, 演奏判定ライン座標 );
 							}
 							if ( ( bChipHasB && ( autoB || pushingB != 0 ) ) || bSuccessOPEN )
 							//if ( ( pushingB != 0 ) || autoB || ( flagRGB == 0 ) )
 							{
-								this.actChipFireGB.Start( B, 演奏判定ライン座標.nJudgeLinePosY_delta );
+								this.actChipFireGB.Start( B, 演奏判定ライン座標 );
 							}
 							this.tチップのヒット処理( nTime, pChip );
 							this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.nシステム時刻, inst, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する[indexInst], e判定 == E判定.Poor );

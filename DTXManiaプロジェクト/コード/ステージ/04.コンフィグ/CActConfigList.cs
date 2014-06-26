@@ -961,6 +961,16 @@ namespace DTXMania
 				"ギターチップが譜面の上から下に流\nれるようになります。",
 				"The scroll way is reversed. Guitar chips\nflow from the top to the bottom." );
 			this.list項目リスト.Add( this.iGuitarReverse );
+
+			this.iSystemVseriesCompatibilityGuitar = new CItemToggle( "V Series", CDTXMania.ConfigIni.bVseries.Guitar,
+				"Vシリーズ相当の判定位置:\n" +
+				"判定ラインとRGBボタンが、少し下側に\n" +
+				"表示されるようになります。",
+				"V Series compatible judge positon\n" +
+				"The judge line and RGB buttons will^n" +
+				"be displayed lower position." );
+			this.list項目リスト.Add( this.iSystemVseriesCompatibilityGuitar );
+
 			this.iGuitarPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Guitar,
 				"ギターの判定文字の表示位置を指定\n" +
 				"します。\n" +
@@ -1129,6 +1139,16 @@ namespace DTXMania
 				"ベースチップが譜面の上から下に流\nれるようになります。",
 				"The scroll way is reversed. Bass chips\nflow from the top to the bottom." );
 			this.list項目リスト.Add( this.iBassReverse );
+
+			this.iSystemVseriesCompatibilityBass = new CItemToggle( "V Series", CDTXMania.ConfigIni.bVseries.Bass,
+				"Vシリーズ相当の判定位置:\n" +
+				"判定ラインとRGBボタンが、少し下側に\n" +
+				"表示されるようになります。",
+				"V Series compatible judge positon\n" +
+				"The judge line and RGB buttons will^n" +
+				"be displayed lower position." );
+			this.list項目リスト.Add( this.iSystemVseriesCompatibilityBass );
+			
 			this.iBassPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常,
 				(int) CDTXMania.ConfigIni.判定文字表示位置.Bass,
 				"ベースの判定文字の表示位置を指定\n" +
@@ -2170,6 +2190,7 @@ namespace DTXMania
 		private bool b要素値にフォーカス中;
 		private CCounter ct三角矢印アニメ;
 		private Eメニュー種別 eメニュー種別;
+		#region [ キーコンフィグ ]
 		private CItemBase iKeyAssignSystemCapture;			// #24609
 		private CItemBase iKeyAssignSystemReturnToMenu;		// #24609
 		private CItemBase iKeyAssignBassB;
@@ -2200,6 +2221,7 @@ namespace DTXMania
 		private CItemBase iKeyAssignGuitarR;
 		private CItemBase iKeyAssignGuitarReturnToMenu;
 		private CItemBase iKeyAssignGuitarWail;
+		#endregion
 		private CItemToggle iLogOutputLog;
 		private CItemToggle iSystemAdjustWaves;
 		private CItemToggle iSystemAudienceSound;
@@ -2256,6 +2278,8 @@ namespace DTXMania
 		private int iSystemSoundTimerType_initial;			// #33689 2014.6.17 yyagi
 
 		private CItemToggle iSystemTimeStretch;				// #23664 2013.2.24 yyagi
+		private CItemToggle iSystemVseriesCompatibilityGuitar;	// #33891 2014.6.26 yyagi
+		private CItemToggle iSystemVseriesCompatibilityBass;	// #33891 2014.6.26 yyagi
 
 
 		private List<CItemBase> list項目リスト;
@@ -2451,7 +2475,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.nShowLagType = this.iSystemShowLag.n現在選択されている項目番号;				// #25370 2011.6.3 yyagi
 			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;					// #25399 2011.6.9 yyagi
 
-			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;										// #23559 2911.7.27 yyagi
+			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;										// #23559 2011.7.27 yyagi
 
 			CDTXMania.ConfigIni.strSystemSkinSubfolderFullName = skinSubFolders[ nSkinIndex ];				// #28195 2012.5.2 yyagi
 			CDTXMania.Skin.SetCurrentSkinSubfolderFullName( CDTXMania.ConfigIni.strSystemSkinSubfolderFullName, true );
@@ -2495,6 +2519,7 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.b演奏音を強調する.Bass = this.iSystemSoundMonitorBass.bON;
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass = this.iSystemMinComboBass.n現在の値;
+			CDTXMania.ConfigIni.bVseries.Bass = this.iSystemVseriesCompatibilityBass.bON;				// #33891 2014.6.26 yyagi
 		}
 		private void tConfigIniへ記録する・Drums()
 		{
@@ -2562,6 +2587,7 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar = this.iSystemMinComboGuitar.n現在の値;
 			CDTXMania.ConfigIni.b演奏音を強調する.Guitar = this.iSystemSoundMonitorGuitar.bON;
+			CDTXMania.ConfigIni.bVseries.Guitar = this.iSystemVseriesCompatibilityGuitar.bON;				// #33891 2014.6.26 yyagi
 		}
 		//-----------------
 		#endregion

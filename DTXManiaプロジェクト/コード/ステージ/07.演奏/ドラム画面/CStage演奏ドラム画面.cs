@@ -468,7 +468,7 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ] );
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ] ) - 3;
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバーGB != null )
 					{
@@ -481,7 +481,7 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ] );
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ] ) - 3;
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバーGB != null )
 					{

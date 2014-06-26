@@ -9,7 +9,7 @@ namespace DTXMania
 	{
 		// メソッド
 
-		public override void Start( int nLane, STDGBVALUE<int> _nJudgeLinePosY_delta )
+		public override void Start( int nLane, C演奏判定ライン座標共通 演奏判定ライン座標 )
 		{
 			if( ( nLane < 0 ) && ( nLane > 5 ) )
 			{
@@ -22,13 +22,14 @@ namespace DTXMania
 				index = ( ( index / 3 ) * 3 ) + ( 2 - ( index % 3 ) );
 			}
 			int x = this.pt中央[ index ].X;
-			int y = this.pt中央[ index ].Y;
-			if ( CDTXMania.ConfigIni.bReverse[ (int)e楽器パート ] )
-			{
-				y = ( nLane < 3 ) ? 374 : 374;
+			//int y = this.pt中央[ index ].Y;
+			int y = 演奏判定ライン座標.n判定ラインY座標( e楽器パート, true, CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] );
+			//if ( CDTXMania.ConfigIni.bReverse[ (int)e楽器パート ] )
+			//{
+			//    y = 374;
 
-			}
-			base.Start( nLane, x, y, _nJudgeLinePosY_delta );
+			//}
+			base.Start( nLane, x, y, 演奏判定ライン座標 );
 
 		}
 
@@ -37,7 +38,14 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private readonly Point[] pt中央 = new Point[] { new Point( 0x207, 0x5f ), new Point( 0x221, 0x5f ), new Point( 0x23b, 0x5f ), new Point( 410, 0x5f ), new Point( 0x1b4, 0x5f ), new Point( 0x1ce, 0x5f ) };
+		private readonly Point[] pt中央 = new Point[] {
+			new Point( 519, 95 ),	// GtR
+			new Point( 545, 95 ),	// GtG
+			new Point( 571, 95 ),	// GtB
+			new Point( 410, 95 ),		// BsR
+			new Point( 436, 95 ),	// BsG
+			new Point( 462, 95 )	// BsB
+		};
 		//-----------------
 		#endregion
 	}

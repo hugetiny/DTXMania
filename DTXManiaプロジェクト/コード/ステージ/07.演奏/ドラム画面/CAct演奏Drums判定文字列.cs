@@ -139,11 +139,6 @@ namespace DTXMania
 							{
 								continue;
 							}
-							//baseX = this.stレーンサイズ[ j ].x;
-							//baseY = CDTXMania.ConfigIni.bReverse.Bass ?
-							//	( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) :
-							//	( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
-						
 							switch ( CDTXMania.ConfigIni.判定文字表示位置.Bass )
 							{
 								case E判定文字表示位置.コンボ下:
@@ -167,19 +162,6 @@ namespace DTXMania
 							{
 								continue;
 							}
-							//if( !CDTXMania.DTX.bチップがある.Bass && ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.コンボ下 ) )	// 判定ライン上または横
-							//{
-							//    baseX = 0x198;
-							//    baseY = 0x93;
-							//}
-							//else
-							//{
-							//    baseX = this.stレーンサイズ[ j ].x;
-							//    baseY = CDTXMania.ConfigIni.bReverse.Guitar ?
-							//        ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 240 : 100 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) :
-							//        ( ( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.レーン上 ) ? 180 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 ) );
-							//}
-
 							switch ( CDTXMania.ConfigIni.判定文字表示位置.Guitar )
 							{
 							    case E判定文字表示位置.コンボ下:

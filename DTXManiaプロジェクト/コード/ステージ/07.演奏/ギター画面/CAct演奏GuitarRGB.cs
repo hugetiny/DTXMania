@@ -19,6 +19,10 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
+			throw new InvalidOperationException( "t進行描画(C演奏判定ライン座標共通 演奏判定ライン共通 ) のほうを使用してください。" );
+		}
+		public override int t進行描画( C演奏判定ライン座標共通 演奏判定ライン座標 )
+		{
 			if( !base.b活性化してない )
 			{
 				if( !CDTXMania.ConfigIni.bGuitar有効 )
@@ -37,7 +41,9 @@ namespace DTXMania
 						}
 						if( base.txRGB != null )
 						{
-							base.txRGB.t2D描画( CDTXMania.app.Device, 0x1f + ( j * 0x24 ), 3, rectangle );
+							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar );
+						//	int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar, false, false );
+							base.txRGB.t2D描画( CDTXMania.app.Device, 0x1f + ( j * 0x24 ), y, rectangle );
 						}
 					}
 				}
@@ -45,15 +51,17 @@ namespace DTXMania
 				{
 					for( int k = 0; k < 3; k++ )
 					{
-						int num4 = CDTXMania.ConfigIni.bLeft.Bass ? ( 2 - k ) : k;
-						Rectangle rectangle2 = new Rectangle( num4 * 0x18, 0, 0x18, 0x20 );
-						if( base.b押下状態[ num4 + 3 ] )
+						int index = CDTXMania.ConfigIni.bLeft.Bass ? ( 2 - k ) : k;
+						Rectangle rectangle2 = new Rectangle( index * 0x18, 0, 0x18, 0x20 );
+						if( base.b押下状態[ index + 3 ] )
 						{
 							rectangle2.Y += 0x20;
 						}
 						if( base.txRGB != null )
 						{
-							base.txRGB.t2D描画( CDTXMania.app.Device, 0x1e5 + ( k * 0x24 ), 3, rectangle2 );
+							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass );
+							//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass, false, false );
+							base.txRGB.t2D描画( CDTXMania.app.Device, 0x1e5 + ( k * 0x24 ), y, rectangle2 );
 						}
 					}
 				}

@@ -249,7 +249,7 @@ namespace DTXMania
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, bReverse[ (int) E楽器パート.GUITAR ] );
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, bReverse[ (int) E楽器パート.GUITAR ] ) - 3;
 															// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバー != null )
 					{
@@ -261,7 +261,7 @@ namespace DTXMania
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, bReverse[ (int) E楽器パート.BASS   ] );
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, bReverse[ (int) E楽器パート.BASS   ] ) - 3;
 															// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					if ( this.txヒットバー != null )
 					{
@@ -331,7 +331,10 @@ namespace DTXMania
 		protected override void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
 		{
 			base.t進行描画・チップ・ギターベース( configIni, ref dTX, ref pChip, inst,
-				40, 369, 0, 409, 26, 480, 0, 192, 103, 8, 32, 26, 98, 480, 552, 36, 32 );
+				演奏判定ライン座標.n判定ラインY座標( inst, true, false ),	// 40
+				演奏判定ライン座標.n判定ラインY座標( inst, true, true ),	// 369
+				0, 409, 26, 480, 0, 192, 103, 8, 32, 26, 98, 480, 552, 36, 32
+			);
 		}
 #if false
 		protected override void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
@@ -467,7 +470,10 @@ namespace DTXMania
 					{
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
-					int[] y_base = { 40, 369 };			// ドラム画面かギター画面かで変わる値
+					int[] y_base = {
+						演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, false ),		// 40
+						演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, true )		// 369
+					};			// ドラム画面かギター画面かで変わる値
 					int offset = 0;						// ドラム画面かギター画面かで変わる値
 
 					const int WailingWidth = 20;		// 4種全て同じ値
@@ -660,7 +666,10 @@ namespace DTXMania
 					{
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
-					int[] y_base = { 40, 369 };			// ドラム画面かギター画面かで変わる値
+					int[] y_base = {
+						演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, false ),		// 40
+						演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, true )		// 369
+					};			// ドラム画面かギター画面かで変わる値
 					int offset = 0;						// ドラム画面かギター画面かで変わる値
 
 					const int WailingWidth = 20;		// 4種全て同じ値
