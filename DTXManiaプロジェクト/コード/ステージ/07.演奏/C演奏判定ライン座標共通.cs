@@ -8,7 +8,7 @@ namespace DTXMania
 	/// <summary>
 	/// 判定ライン関係の座標処理をまとめたクラス
 	/// </summary>
-	public class C演奏判定ライン座標共通
+	internal class C演奏判定ライン座標共通
 	{
 		/// <summary>
 		/// 判定ラインのy座標
@@ -26,7 +26,7 @@ namespace DTXMania
 		/// 判定ライン表示位置を、Vシリーズ互換にするかどうか。
 		/// 設定は外部から行うこと。
 		/// </summary>
-		public STDGBVALUE<bool> bVseries;
+		public STDGBVALUE<E判定位置> n判定位置;
 
 		/// <summary>
 		/// コンストラクタ(座標値の初期化)
@@ -74,20 +74,20 @@ namespace DTXMania
 			#region [ RGBボタン座標の初期化]
 			// Normal, Drums画面, RGBボタン
 			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Guitar = 0;
-			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Bass   = 0;
+			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Guitar = 57;
+			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Bass   = 57;
 			// Reverse, Drums画面, RGBボタン
 			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Guitar = 0;
-			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Bass   = 0;
+			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Guitar = 57;
+			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Bass   = 57;
 			// Normal, Drums画面, RGBボタン(Vシリーズ)
 			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Guitar = 0;
-			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Bass   = 0;
+			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Guitar = 107;
+			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Bass   = 107;
 			// Reverse, Drums画面, RGBボタン(Vシリーズ)
 			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Guitar = 0;
-			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Bass   = 0;
+			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Guitar = 107;
+			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Bass   = 107;
 
 			// Normal, GR画面, RGBボタン
 			n演奏RGBボタンY座標元データ[ 0, 1, 0 ].Drums  = 0;		// 未使用
@@ -107,10 +107,10 @@ namespace DTXMania
 			n演奏RGBボタンY座標元データ[ 1, 1, 1 ].Bass   = 44;
 			#endregion
 
-			bVseries = new STDGBVALUE<bool>();
-			bVseries.Drums  = false;
-			bVseries.Guitar = false;
-			bVseries.Bass   = false;
+			n判定位置 = new STDGBVALUE<E判定位置>();
+			n判定位置.Drums  = E判定位置.標準;
+			n判定位置.Guitar = E判定位置.標準;
+			n判定位置.Bass   = E判定位置.標準;
 
 			// 補正値は、Normal/Reverse, Drums/GR画面共通
 			nJudgeLinePosY_delta.Drums  = 0;
@@ -165,12 +165,12 @@ namespace DTXMania
 				int ret = this.n判定ラインY座標元データ[ nReverse, nGRmode, nWailing ][ nInst ];		// 補正無しの値
 				if ( bReverse )
 				{
-					if ( bVseries[ nInst] )	ret += 13;
+					if ( n判定位置[ nInst ] == E判定位置.V互換 ) ret += 13;
 					if ( b補正あり )		ret += nJudgeLinePosY_delta[ nInst ];
 				}
 				else
 				{
-					if ( bVseries[ nInst] )	ret += 52;
+					if ( n判定位置[ nInst ] == E判定位置.V互換 ) ret += 52;
 					if ( b補正あり )		ret -= nJudgeLinePosY_delta[ nInst ];
 				}
 				return ret;
@@ -192,7 +192,7 @@ namespace DTXMania
 				int nInst    = (int) eInst;
 				int nGRmode  = bGRmode ?  1 : 0;
 				int nReverse = bReverse ? 1 : 0;
-				int nVseries = bVseries[ nInst ] ? 1 : 0;
+				int nVseries = (int) n判定位置[ nInst ];
 				int ret = n演奏RGBボタンY座標元データ[ nReverse, nGRmode, nVseries ][ nInst ];		// 補正無しの値
 
 				return ret;

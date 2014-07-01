@@ -98,7 +98,6 @@ namespace DTXMania
 			}
 			// MODIFY_END #25398
 			dtLastQueueOperation = DateTime.MinValue;
-
 		}
 		public override void On非活性化()
 		{
@@ -159,16 +158,12 @@ namespace DTXMania
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					this.actFI.tフェードイン開始();
 
-Trace.TraceInformation( "n現在のトップChip=" + this.n現在のトップChip + ", Total Chips=" + CDTXMania.DTX.listChip.Count );
-Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc演奏用タイマ.n現在時刻 );
 					if ( CDTXMania.DTXVmode.Enabled )			// DTXVモードなら
 					{
 						#region [ DTXV用の再生設定にする(全AUTOなど) ]
 						tDTXV用の設定();
 						#endregion
 						t演奏位置の変更( CDTXMania.DTXVmode.nStartBar );
-Trace.TraceInformation( "n現在のトップChip(DTXV)=" + this.n現在のトップChip + ", StartTime=" + CDTXMania.DTX.listChip[ this.n現在のトップChip ].n発声時刻ms );
-Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc演奏用タイマ.n現在時刻 );
 					}
 
 					CDTXMania.Sound管理.tDisableUpdateBufferAutomatically();
@@ -1998,8 +1993,11 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 		protected override void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
 		{
 			base.t進行描画・チップ・ギターベース( configIni, ref dTX, ref pChip, inst,
-				95, 374, 57, 412, 509, 400,
-				268, 144, 76, 6,
+				// 95, 374,
+				演奏判定ライン座標.n判定ラインY座標( inst, false, false ),		// 95  Normal
+				演奏判定ライン座標.n判定ラインY座標( inst,   false, true ),		// 374 Reverse
+				57, 412, 509, 400,
+				268, 144, 76, 6,		// オープンチップの x, y, w, h
 				24, 509, 561, 400, 452, 26, 24 );
 		}
 #if false
@@ -2135,7 +2133,11 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 					{
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
-					int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
+					int[] y_base = {
+						演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, false ),	// 95
+						演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, true )		// 374
+					};			// ドラム画面かギター画面かで変わる値
+					//int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
 					int offset = 0x39;					// ドラム画面かギター画面かで変わる値
 
 					const int WailingWidth = 20;		// ウェイリングチップ画像の幅: 4種全て同じ値
@@ -2351,7 +2353,11 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 					{
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
-					int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
+					int[] y_base = {
+						演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, false ),
+						演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, true )
+					};			// ドラム画面かギター画面かで変わる値
+					//int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
 					int offset = 0x39;					// ドラム画面かギター画面かで変わる値
 
 					const int WailingWidth = 20;		// ウェイリングチップ画像の幅: 4種全て同じ値
@@ -2440,13 +2446,33 @@ Trace.TraceInformation( "rc演奏用タイマ.n現在時刻=" + CSound管理.rc�
 			if ( ( pChip.b可視 && configIni.bGuitar有効 ) && ( configIni.eDark != Eダークモード.FULL ) && ( this.txチップ != null ) )
 			{
 				this.txチップ.n透明度 = 255;
-				int y = configIni.bReverse.Guitar ? ( ( 0x176 - pChip.nバーからの距離dot.Guitar ) - 1 ) : ( ( 0x5f + pChip.nバーからの距離dot.Guitar ) - 1 );
+				//int y = configIni.bReverse.Guitar ?
+				//    ( ( 0x176 - pChip.nバーからの距離dot.Guitar ) - 1 ) :
+				//    ( ( 0x5f + pChip.nバーからの距離dot.Guitar ) - 1 );
+				int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, configIni.bReverse.Guitar );
+				if ( configIni.bReverse.Guitar )
+				{
+					y = y - pChip.nバーからの距離dot.Guitar - 1;
+				}
+				else
+				{
+					y = y + pChip.nバーからの距離dot.Guitar - 1;
+				}
 				if ( ( dTX.bチップがある.Guitar && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) )
 				{
 					this.txチップ.t2D描画( CDTXMania.app.Device, 0x1fb, y, new Rectangle( 0, 450, 0x4e, 1 ) );
 				}
-				y = configIni.bReverse.Bass ? ( ( 0x176 - pChip.nバーからの距離dot.Bass ) - 1 ) : ( ( 0x5f + pChip.nバーからの距離dot.Bass ) - 1 );
-				if ( ( dTX.bチップがある.Bass && ( y > 0x39 ) ) && ( ( y < 0x19c )  ) )
+				//y = configIni.bReverse.Bass ? ( ( 0x176 - pChip.nバーからの距離dot.Bass ) - 1 ) : ( ( 0x5f + pChip.nバーからの距離dot.Bass ) - 1 );
+				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, configIni.bReverse.Bass );
+				if ( configIni.bReverse.Bass )
+				{
+					y = y - pChip.nバーからの距離dot.Bass - 1;
+				}
+				else
+				{
+					y = y + pChip.nバーからの距離dot.Bass - 1;
+				}
+				if ( ( dTX.bチップがある.Bass && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) )
 				{
 					this.txチップ.t2D描画( CDTXMania.app.Device, 0x18e, y, new Rectangle( 0, 450, 0x4e, 1 ) );
 				}

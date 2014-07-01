@@ -12,7 +12,9 @@ namespace DTXMania
 		{
 			int x = 230;
 			int y = CDTXMania.ConfigIni.bReverse.Guitar ? 0x103 : 150;
-			if( base.txCOMBOギター != null )
+			//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
+			//y += CDTXMania.ConfigIni.bReverse.Guitar ? -134 : +174;
+			if ( base.txCOMBOギター != null )
 			{
 				base.txCOMBOギター.n透明度 = 0xff;
 			}
@@ -25,7 +27,9 @@ namespace DTXMania
 		{
 			int x = 410;
 			int y = CDTXMania.ConfigIni.bReverse.Bass ? 0x103 : 150;
-			if( base.txCOMBOギター != null )
+			//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
+			//y += CDTXMania.ConfigIni.bReverse.Bass ? -134 : +174;
+			if ( base.txCOMBOギター != null )
 			{
 				base.txCOMBOギター.n透明度 = 0xff;
 			}

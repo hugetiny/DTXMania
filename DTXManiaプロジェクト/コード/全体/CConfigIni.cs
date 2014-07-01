@@ -437,7 +437,7 @@ namespace DTXMania
 		public bool bLog曲検索ログ出力;
 		public bool bLog作成解放ログ出力;
 		public STDGBVALUE<bool> bReverse;
-		public STDGBVALUE<bool> bVseries;			// #33891 2014.6.26 yyagi
+		public STDGBVALUE<E判定位置> e判定位置;			// #33891 2014.6.26 yyagi
 		public bool bScoreIniを出力する;
 		public bool bSTAGEFAILED有効;
 		public STDGBVALUE<bool> bSudden;
@@ -1085,7 +1085,7 @@ namespace DTXMania
 			this.eRandom = new STDGBVALUE<Eランダムモード>();
 			this.bLight = new STDGBVALUE<bool>();
 			this.bLeft = new STDGBVALUE<bool>();
-			this.bVseries = new STDGBVALUE<bool>();				// #33891 2014.6.26 yyagi
+			this.e判定位置 = new STDGBVALUE<E判定位置>();		// #33891 2014.6.26 yyagi
 			this.判定文字表示位置 = new STDGBVALUE<E判定文字表示位置>();
 			this.n譜面スクロール速度 = new STDGBVALUE<int>();
 			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
@@ -1105,7 +1105,7 @@ namespace DTXMania
 				this.nJudgeLinePosOffset[ i ] = 0;
 				this.eInvisible[ i ] = EInvisible.OFF;
 				this.nViewerScrollSpeed[ i ] = 1;
-				this.bVseries[ i ] = false;
+				this.e判定位置[ i ] = E判定位置.標準;
 			}
 			this.n演奏速度 = 20;
 			#region [ AutoPlay ]
@@ -1369,12 +1369,12 @@ namespace DTXMania
 			sw.WriteLine( "SoundTimerType={0}", this.bUseOSTimer ? 1 : 0 );
 			sw.WriteLine();
 
-			sw.WriteLine( "; 全体ボリュームの設定" );
-			sw.WriteLine( "; (0=無音 ～ 100=最大。WASAPI/ASIO時のみ有効)" );
-			sw.WriteLine( "; Master volume settings" );
-			sw.WriteLine( "; (0=Silent - 100=Max)" );
-			sw.WriteLine( "MasterVolume={0}", this.nMasterVolume );
-			sw.WriteLine();
+			//sw.WriteLine( "; 全体ボリュームの設定" );
+			//sw.WriteLine( "; (0=無音 ～ 100=最大。WASAPI/ASIO時のみ有効)" );
+			//sw.WriteLine( "; Master volume settings" );
+			//sw.WriteLine( "; (0=Silent - 100=Max)" );
+			//sw.WriteLine( "MasterVolume={0}", this.nMasterVolume );
+			//sw.WriteLine();
 
 			#endregion
 			#region [ ギター/ベース/ドラム 有効/無効 ]
@@ -1573,10 +1573,11 @@ namespace DTXMania
 			sw.WriteLine( "JudgeLinePosOffsetGuitar={0}", this.nJudgeLinePosOffset.Guitar );	//
 			sw.WriteLine( "JudgeLinePosOffsetBass={0}",   this.nJudgeLinePosOffset.Bass );		//
 
-			sw.WriteLine( "; 判定ラインの表示位置(ギター, ベース)をVシリーズ互換にするかどうか" );	// #33891 2014.6.26 yyagi
+			sw.WriteLine( "; 判定ラインの表示位置(ギター, ベース)" );	// #33891 2014.6.26 yyagi
+			sw.WriteLine( "; 0=Normal, 1=Lower" );
 			sw.WriteLine( "; Position of the Judgement line and RGB button; Vseries compatible(1) or not(0)." );	//
-			sw.WriteLine( "JudgeLinePosCompatibilityGuitar={0}", this.bVseries.Guitar ? 1 : 0 );	//
-			sw.WriteLine( "JudgeLinePosCompatibilityBass={0}", this.bVseries.Bass ? 1 : 0 );		//
+			sw.WriteLine( "JudgeLinePosModeGuitar={0}", (int) this.e判定位置.Guitar );	//
+			sw.WriteLine( "JudgeLinePosModeBass={0}  ", (int) this.e判定位置.Bass );	//
 			
 			sw.WriteLine();
 			#endregion
@@ -2223,10 +2224,10 @@ namespace DTXMania
 											{
 												this.bUseOSTimer = C変換.bONorOFF( str4[ 0 ] );
 											}
-											else if ( str3.Equals( "MasterVolume" ) )
-											{
-												this.nMasterVolume = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.nMasterVolume );
-											}
+											//else if ( str3.Equals( "MasterVolume" ) )
+											//{
+											//    this.nMasterVolume = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.nMasterVolume );
+											//}
 											#endregion
 											else if ( str3.Equals( "VSyncWait" ) )
 											{
@@ -2443,13 +2444,13 @@ namespace DTXMania
 											{
 												this.nJudgeLinePosOffset.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Bass );
 											}
-											else if ( str3.Equals( "JudgeLinePosCompatibilityGuitar" ) )	// #33891 2014.6.26 yyagi
+											else if ( str3.Equals( "JudgeLinePosModeGuitar" ) )	// #33891 2014.6.26 yyagi
 											{
-												this.bVseries.Guitar = C変換.bONorOFF( str4[ 0 ] );
+												this.e判定位置.Guitar = (E判定位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.e判定位置.Guitar );
 											}
-											else if ( str3.Equals( "JudgeLinePosCompatibilityBass" ) )		// #33891 2014.6.26 yyagi
+											else if ( str3.Equals( "JudgeLinePosModeBass" ) )		// #33891 2014.6.26 yyagi
 											{
-												this.bVseries.Bass = C変換.bONorOFF( str4[ 0 ] );
+												this.e判定位置.Bass = (E判定位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.e判定位置.Bass );
 											}
 											#endregion
 											else if( str3.Equals( "BufferedInput" ) )

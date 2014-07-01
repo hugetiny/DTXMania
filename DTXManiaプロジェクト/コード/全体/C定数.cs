@@ -162,6 +162,12 @@ namespace DTXMania
 		判定ライン上,
 		表示OFF
 	}
+	internal enum E判定位置
+	{
+		標準	= 0,
+		V互換,
+		MAX
+	}
 	internal enum EAVI種別
 	{
 		Unknown,

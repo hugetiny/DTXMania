@@ -271,11 +271,12 @@ namespace DTXMania
 																									//        2011.1.7 ikanick 修正
 				//this.nJudgeLinePosY_delta[ k ] = CDTXMania.ConfigIni.nJudgeLinePosOffset[ k ];		// #31602 2013.6.23 yyagi
 
-				this.演奏判定ライン座標.bVseries[ k ] = CDTXMania.ConfigIni.bVseries[ k ];
+				this.演奏判定ライン座標.n判定位置[ k ] = CDTXMania.ConfigIni.e判定位置[ k ];
 				this.演奏判定ライン座標.nJudgeLinePosY_delta[ k ] = CDTXMania.ConfigIni.nJudgeLinePosOffset[ k ];
 				this.bReverse[ k ]             = CDTXMania.ConfigIni.bReverse[ k ];					//
 
 			}
+			actCombo.演奏判定ライン座標 = 演奏判定ライン座標;
 			for ( int i = 0; i < 3; i++ )
 			{
 				this.b演奏にキーボードを使った[ i ] = false;
@@ -2545,7 +2546,9 @@ namespace DTXMania
 							if ( pChip.nチャンネル番号 == OPEN )
 							{
 								int xo = ( inst == E楽器パート.GUITAR ) ? openXg : openXb;
-								this.txチップ.t2D描画( CDTXMania.app.Device, xo, y - 2, new Rectangle( rectOpenOffsetX, rectOpenOffsetY + ( ( nアニメカウンタ現在の値 % 5 ) * chipHeight ), openChipWidth, chipHeight ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device, xo, y - 2,
+									new Rectangle( rectOpenOffsetX, rectOpenOffsetY + ( ( nアニメカウンタ現在の値 % 5 ) * chipHeight ),
+										openChipWidth, chipHeight ) );
 							}
 							Rectangle rc = new Rectangle( rectOpenOffsetX, nアニメカウンタ現在の値 * chipHeight, chipWidth, chipHeight );
 							int x;

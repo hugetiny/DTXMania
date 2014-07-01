@@ -133,6 +133,7 @@ namespace DTXMania
 								{
 									continue;
 								}
+								int yB;
 								switch ( CDTXMania.ConfigIni.判定文字表示位置.Bass )
 								{
 									case E判定文字表示位置.コンボ下:
@@ -141,11 +142,13 @@ namespace DTXMania
 										break;
 									case E判定文字表示位置.レーン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										baseY = CDTXMania.ConfigIni.bReverse.Bass ? 0x12b : 190;
+										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass );
+										baseY = CDTXMania.ConfigIni.bReverse.Bass ? yB - 95 - 52 + 10 : yB + 95 + 52;
+										//baseY = CDTXMania.ConfigIni.bReverse.Bass ? 0x12b : 190;
 										break;
 									case E判定文字表示位置.判定ライン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										int yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass );
+										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass );
 										baseY = CDTXMania.ConfigIni.bReverse.Bass ? yB + 30 : yB - 20;
 										break;
 								}
@@ -156,6 +159,7 @@ namespace DTXMania
 								{
 									continue;
 								}
+								int yG;
 								switch ( CDTXMania.ConfigIni.判定文字表示位置.Guitar )
 								{
 									case E判定文字表示位置.コンボ下:
@@ -164,11 +168,13 @@ namespace DTXMania
 										break;
 									case E判定文字表示位置.レーン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										baseY = CDTXMania.ConfigIni.bReverse.Guitar ? 0x12b : 190;
+										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar );
+										baseY = CDTXMania.ConfigIni.bReverse.Guitar ? yG - 95 - 52 + 10 : yG + 95 + 52;
+										//baseY = CDTXMania.ConfigIni.bReverse.Guitar ? 0x12b : 190;
 										break;
 									case E判定文字表示位置.判定ライン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										int yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar );
+										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar );
 										baseY = CDTXMania.ConfigIni.bReverse.Guitar ? yG + 30 : yG - 20;
 										break;
 								}

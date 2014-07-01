@@ -333,7 +333,9 @@ namespace DTXMania
 			base.t進行描画・チップ・ギターベース( configIni, ref dTX, ref pChip, inst,
 				演奏判定ライン座標.n判定ラインY座標( inst, true, false ),	// 40
 				演奏判定ライン座標.n判定ラインY座標( inst, true, true ),	// 369
-				0, 409, 26, 480, 0, 192, 103, 8, 32, 26, 98, 480, 552, 36, 32
+				0, 409, 26, 480,
+				0, 192, 103, 8,		// オープンチップの x, y, w, h
+				32, 26, 98, 480, 552, 36, 32
 			);
 		}
 #if false
@@ -739,12 +741,31 @@ namespace DTXMania
 			if ( ( pChip.b可視 && configIni.bGuitar有効 ) && ( configIni.eDark != Eダークモード.FULL ) && ( this.txチップ != null ) )
 			{
 				this.txチップ.n透明度 = 255;
-				int y = configIni.bReverse.Guitar ? ( ( 0x171 - pChip.nバーからの距離dot.Guitar ) - 1 ) : ( ( 40 + pChip.nバーからの距離dot.Guitar ) - 1 );
+				//int y = configIni.bReverse.Guitar ? ( ( 0x171 - pChip.nバーからの距離dot.Guitar ) - 1 ) : ( ( 40 + pChip.nバーからの距離dot.Guitar ) - 1 );
+				int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, configIni.bReverse.Guitar );
+				if ( configIni.bReverse.Guitar )
+				{
+					y = y - pChip.nバーからの距離dot.Guitar - 1;
+				}
+				else
+				{
+					y = y + pChip.nバーからの距離dot.Guitar - 1;
+				}
 				if ( ( dTX.bチップがある.Guitar && ( y > 0 ) ) && ( ( y < 0x199 ) ) )
 				{
 					this.txチップ.t2D描画( CDTXMania.app.Device, 0x1a, y, new Rectangle( 0, 0xeb, 0x68, 1 ) );
 				}
-				y = configIni.bReverse.Bass ? ( ( 0x171 - pChip.nバーからの距離dot.Bass ) - 1 ) : ( ( 40 + pChip.nバーからの距離dot.Bass ) - 1 );
+				//y = configIni.bReverse.Bass ? ( ( 0x171 - pChip.nバーからの距離dot.Bass ) - 1 ) : ( ( 40 + pChip.nバーからの距離dot.Bass ) - 1 );
+				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, configIni.bReverse.Bass );
+				if ( configIni.bReverse.Bass )
+				{
+					y = y - pChip.nバーからの距離dot.Bass - 1;
+				}
+				else
+				{
+					y = y + pChip.nバーからの距離dot.Bass - 1;
+				}
+
 				if ( ( dTX.bチップがある.Bass && ( y > 0 ) ) && ( ( y < 0x199 ) ) )
 				{
 					this.txチップ.t2D描画( CDTXMania.app.Device, 480, y, new Rectangle( 0, 0xeb, 0x68, 1 ) );

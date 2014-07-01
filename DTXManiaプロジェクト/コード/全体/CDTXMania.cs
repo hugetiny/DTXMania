@@ -20,7 +20,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "098(131101)";
+		public static readonly string VERSION = "099(140707)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
         //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -407,12 +407,12 @@ namespace DTXMania
 		protected override void Initialize()
 		{
 //			new GCBeep();
-			sw.Start();
-			swlist1 = new List<int>( 8192 );
-			swlist2 = new List<int>( 8192 );
-			swlist3 = new List<int>( 8192 );
-			swlist4 = new List<int>( 8192 );
-			swlist5 = new List<int>( 8192 );
+			//sw.Start();
+			//swlist1 = new List<int>( 8192 );
+			//swlist2 = new List<int>( 8192 );
+			//swlist3 = new List<int>( 8192 );
+			//swlist4 = new List<int>( 8192 );
+			//swlist5 = new List<int>( 8192 );
 			if ( this.listトップレベルActivities != null )
 			{
 				foreach( CActivity activity in this.listトップレベルActivities )
@@ -1125,17 +1125,17 @@ for (int i = 0; i < 3; i++) {
 					case CStage.Eステージ.演奏:
 						#region [ *** ]
 						//-----------------------------
-						long n1 = FDK.CSound管理.rc演奏用タイマ.nシステム時刻ms;
-						long n2 = FDK.CSound管理.SoundDevice.n経過時間ms;
-						long n3 = FDK.CSound管理.SoundDevice.tmシステムタイマ.nシステム時刻ms;
-						long n4 = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
-						long n5 = FDK.CSound管理.SoundDevice.n経過時間を更新したシステム時刻ms;
+						//long n1 = FDK.CSound管理.rc演奏用タイマ.nシステム時刻ms;
+						//long n2 = FDK.CSound管理.SoundDevice.n経過時間ms;
+						//long n3 = FDK.CSound管理.SoundDevice.tmシステムタイマ.nシステム時刻ms;
+						//long n4 = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
+						//long n5 = FDK.CSound管理.SoundDevice.n経過時間を更新したシステム時刻ms;
 
-						swlist1.Add( Convert.ToInt32(n1) );
-						swlist2.Add( Convert.ToInt32(n2) );
-						swlist3.Add( Convert.ToInt32( n3 ) );
-						swlist4.Add( Convert.ToInt32( n4 ) );
-						swlist5.Add( Convert.ToInt32( n5 ) );
+						//swlist1.Add( Convert.ToInt32(n1) );
+						//swlist2.Add( Convert.ToInt32(n2) );
+						//swlist3.Add( Convert.ToInt32( n3 ) );
+						//swlist4.Add( Convert.ToInt32( n4 ) );
+						//swlist5.Add( Convert.ToInt32( n5 ) );
 
 						#region [ DTXVモード中にDTXCreatorから指示を受けた場合の処理 ]
 						if ( DTXVmode.Enabled && DTXVmode.Refreshed )
@@ -1158,37 +1158,37 @@ for (int i = 0; i < 3; i++) {
 									this.previewSound.Dispose();
 									this.previewSound = null;
 								}
-								{
-									int lastd = 0;
-									int f = 0;
-									for ( int i = 0; i < swlist1.Count; i++ )
-									{
-										int d1 = swlist1[ i ];
-										int d2 = swlist2[ i ];
-										int d3 = swlist3[ i ];
-										int d4 = swlist4[ i ];
-										int d5 = swlist5[ i ];
+								//{
+								//    int lastd = 0;
+								//    int f = 0;
+								//    for ( int i = 0; i < swlist1.Count; i++ )
+								//    {
+								//        int d1 = swlist1[ i ];
+								//        int d2 = swlist2[ i ];
+								//        int d3 = swlist3[ i ];
+								//        int d4 = swlist4[ i ];
+								//        int d5 = swlist5[ i ];
 
-										int dif = d1 - lastd;
-										string s = "";
-										if ( 16 <= dif && dif <= 17 )
-										{
-										}
-										else
-										{
-											s = "★";
-										}
-										Trace.TraceInformation( "frame {0:D4}: {1:D3} ( {2:D3}, {3:D3} - {7:D3}, {4:D3} ) {5}, n現在時刻={6}", f, dif, d1, d2, d3, s, d4, d5 );
-										lastd = d1;
-										f++;
-									}
-									swlist1.Clear();
-									swlist2.Clear();
-									swlist3.Clear();
-									swlist4.Clear();
-									swlist5.Clear();
+								//        int dif = d1 - lastd;
+								//        string s = "";
+								//        if ( 16 <= dif && dif <= 17 )
+								//        {
+								//        }
+								//        else
+								//        {
+								//            s = "★";
+								//        }
+								//        Trace.TraceInformation( "frame {0:D4}: {1:D3} ( {2:D3}, {3:D3} - {7:D3}, {4:D3} ) {5}, n現在時刻={6}", f, dif, d1, d2, d3, s, d4, d5 );
+								//        lastd = d1;
+								//        f++;
+								//    }
+								//    swlist1.Clear();
+								//    swlist2.Clear();
+								//    swlist3.Clear();
+								//    swlist4.Clear();
+								//    swlist5.Clear();
 
-								}
+								//}
 							}
 							else if ( DTXVmode.Command == CDTXVmode.ECommand.Play )
 							{
@@ -1255,32 +1255,32 @@ for (int i = 0; i < 3; i++) {
 								//-----------------------------
 								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Play canceled" );
 
-								int lastd = 0;
-								int f = 0;
-								for (int i = 0; i < swlist1.Count; i++)
-								{
-									int d1 = swlist1[ i ];
-									int d2 = swlist2[ i ];
-									int d3 = swlist3[ i ];
-									int d4 = swlist4[ i ];
+								//int lastd = 0;
+								//int f = 0;
+								//for (int i = 0; i < swlist1.Count; i++)
+								//{
+								//    int d1 = swlist1[ i ];
+								//    int d2 = swlist2[ i ];
+								//    int d3 = swlist3[ i ];
+								//    int d4 = swlist4[ i ];
 
-									int dif = d1 - lastd;
-									string s = "";
-									if ( 16 <= dif && dif <= 17 )
-									{
-									}
-									else
-									{
-										s = "★";
-									}
-									Trace.TraceInformation( "frame {0:D4}: {1:D3} ( {2:D3}, {3:D3}, {4:D3} ) {5}, n現在時刻={6}", f, dif, d1, d2, d3, s, d4 );
-									lastd = d1;
-									f++;
-								}
-								swlist1.Clear();
-								swlist2.Clear();
-								swlist3.Clear();
-								swlist4.Clear();
+								//    int dif = d1 - lastd;
+								//    string s = "";
+								//    if ( 16 <= dif && dif <= 17 )
+								//    {
+								//    }
+								//    else
+								//    {
+								//        s = "★";
+								//    }
+								//    Trace.TraceInformation( "frame {0:D4}: {1:D3} ( {2:D3}, {3:D3}, {4:D3} ) {5}, n現在時刻={6}", f, dif, d1, d2, d3, s, d4 );
+								//    lastd = d1;
+								//    f++;
+								//}
+								//swlist1.Clear();
+								//swlist2.Clear();
+								//swlist3.Clear();
+								//swlist4.Clear();
 		
 								#region [ プラグイン On演奏キャンセル() の呼び出し ]
 								//---------------------
@@ -2817,8 +2817,8 @@ for (int i = 0; i < 3; i++) {
 	
 		//-----------------
 
-		Stopwatch sw = new Stopwatch();
-		List<int> swlist1, swlist2, swlist3, swlist4, swlist5;
+		//Stopwatch sw = new Stopwatch();
+		//List<int> swlist1, swlist2, swlist3, swlist4, swlist5;
 
 		#endregion
 	}
