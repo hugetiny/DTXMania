@@ -192,14 +192,22 @@ namespace DTXMania
 				this.t進行描画・DANGER();
 				this.t進行描画・判定ライン();
 				this.t進行描画・RGBボタン();
-				this.t進行描画・判定文字列1・通常位置指定の場合();
-				this.t進行描画・コンボ();
+				if ( this.e判定表示優先度 == E判定表示優先度.Chipより下 )
+				{
+					this.t進行描画・判定文字列1・通常位置指定の場合();
+					this.t進行描画・コンボ();
+				}
 				this.t進行描画・WailingBonus();
 				this.t進行描画・譜面スクロール速度();
 				this.t進行描画・チップアニメ();
 				bIsFinishedPlaying = this.t進行描画・チップ(E楽器パート.DRUMS);
 				this.t進行描画・演奏情報();
 				this.t進行描画・ドラムパッド();
+				if ( this.e判定表示優先度 == E判定表示優先度.Chipより上 )
+				{
+					this.t進行描画・判定文字列1・通常位置指定の場合();
+					this.t進行描画・コンボ();
+				}
 				this.t進行描画・判定文字列2・判定ライン上指定の場合();
 				this.t進行描画・Wailing枠();
 				this.t進行描画・チップファイアD();

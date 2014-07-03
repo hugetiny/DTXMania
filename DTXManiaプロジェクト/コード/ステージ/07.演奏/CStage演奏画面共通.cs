@@ -299,6 +299,7 @@ namespace DTXMania
 //			this.nRisky = CDTXMania.ConfigIni.nRisky;											// #23559 2011.7.28 yyagi
 			actGauge.Init( CDTXMania.ConfigIni.nRisky );									// #23559 2011.7.28 yyagi
 			this.nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
+			e判定表示優先度 = CDTXMania.ConfigIni.e判定表示優先度;
 
 			CDTXMania.Skin.tRemoveMixerAll();	// 効果音のストリームをミキサーから解除しておく
 
@@ -654,6 +655,7 @@ namespace DTXMania
 		protected Dictionary<int, CDTX.CWAV> listWAV;
 		protected CInvisibleChip cInvisibleChip;
 		protected bool bUseOSTimer;
+		protected E判定表示優先度 e判定表示優先度;
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;

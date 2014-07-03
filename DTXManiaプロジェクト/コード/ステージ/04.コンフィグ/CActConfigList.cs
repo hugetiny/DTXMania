@@ -241,7 +241,20 @@ namespace DTXMania
 				"AutoSaveResult:\nTurn ON to save your result screen\n image automatically when you get\n hiscore/hiskill." );
 			this.list項目リスト.Add( this.iSystemAutoResultCapture );
 
-	
+			this.iSystemJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度,
+				"判定文字列とコンボ表示の優先順位を\n" +
+				"指定します。\n" +
+				"\n" +
+				" Under: チップの下に表示します。\n" +
+				" Over:  チップの上に表示します。",
+				"The display prioity between chips\n" +
+				" and judge mark/combo.\n" +
+				"\n" +
+				" Under: Show them under the chips.\n" +
+				" Over:  Show them over the chips.",
+				new string[] { "Under", "Over" } );
+			this.list項目リスト.Add( this.iSystemJudgeDispPriority );	
+
 			this.iSystemBufferedInput = new CItemToggle( "BufferedInput", CDTXMania.ConfigIni.bバッファ入力を行う,
 				"バッファ入力モード：\nON にすると、FPS を超える入力解像\n度を実現します。\nOFF にすると、入力解像度は FPS に\n等しくなります。",
 				"To select joystick input method.\n\nON to use buffer input. No lost/lags.\nOFF to use realtime input. It may\n causes lost/lags for input.\n Moreover, input frequency is\n synchronized with FPS." );
@@ -624,6 +637,21 @@ namespace DTXMania
 				" OFF: no judgement mark.",
 				new string[] { "P-A", "P-B", "OFF" } );
 			this.list項目リスト.Add( this.iDrumsPosition );
+
+			//this.iDrumsJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Drums,
+			//    "判定文字列とコンボ表示の優先順位を\n" +
+			//    "指定します。\n" +
+			//    "\n" +
+			//    " Under: チップの下に表示します。\n" +
+			//    " Over:  チップの上に表示します。",
+			//    "The display prioity between chips\n" +
+			//    " and judge mark/combo.\n" +
+			//    "\n" +
+			//    " Under: Show them under the chips.\n" +
+			//    " Over:  Show them over the chips.",
+			//    new string[] { "Under", "Over" } );
+			//this.list項目リスト.Add( this.iDrumsJudgeDispPriority );
+
 			#endregion
 			#region [ Group ]
 			this.iSystemHHGroup = new CItemList( "HH Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHHGroup,
@@ -958,8 +986,11 @@ namespace DTXMania
 			//this.list項目リスト.Add( this.iGuitarInvisible );
 
 			this.iGuitarReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Guitar,
-				"ギターチップが譜面の上から下に流\nれるようになります。",
-				"The scroll way is reversed. Guitar chips\nflow from the top to the bottom." );
+				"ギターチップが譜面の上から下に\n" +
+				"流れるようになります。",
+				"The scroll way is reversed\n" +
+				"Guitar chips flow from the top\n" +
+				"to the bottom." );
 			this.list項目リスト.Add( this.iGuitarReverse );
 
 			this.iSystemJudgePosGuitar = new CItemList( "JudgePos", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定位置.Guitar,
@@ -967,7 +998,7 @@ namespace DTXMania
 				"判定ラインとRGBボタンが、少し下側に\n" +
 				"表示されるようになります。",
 				"Judge Line position:\n" +
-				"The judge line and RGB buttons will^n" +
+				"The judge line and RGB buttons will\n" +
 				"be displayed lower position.",
 				new string[] { "Normal", "Lower" } );
 			this.list項目リスト.Add( this.iSystemJudgePosGuitar );
@@ -988,6 +1019,21 @@ namespace DTXMania
 				" OFF: no judgement mark.",
 				new string[] { "P-A", "P-B", "P-C", "OFF" } );
 			this.list項目リスト.Add( this.iGuitarPosition );
+
+			//this.iGuitarJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Guitar,
+			//    "判定文字列とコンボ表示の優先順位を\n" +
+			//    "指定します。\n" +
+			//    "\n" +
+			//    " Under: チップの下に表示します。\n" +
+			//    " Over:  チップの上に表示します。",
+			//    "The display prioity between chips\n" +
+			//    " and judge mark/combo.\n" +
+			//    "\n" +
+			//    " Under: Show them under the chips.\n" +
+			//    " Over:  Show them over the chips.",
+			//    new string[] { "Under", "Over" } );
+			//this.list項目リスト.Add( this.iGuitarJudgeDispPriority );
+
 			this.iGuitarRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eRandom.Guitar,
 				"ギターのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
 				"Guitar chips come randomly.\n\n Part: swapping lanes randomly for each\n  measures.\n Super: swapping chip randomly\n Hyper: swapping randomly\n  (number of lanes also changes)",
@@ -1137,8 +1183,11 @@ namespace DTXMania
 			//this.list項目リスト.Add( this.iBassInvisible );
 			
 			this.iBassReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Bass,
-				"ベースチップが譜面の上から下に流\nれるようになります。",
-				"The scroll way is reversed. Bass chips\nflow from the top to the bottom." );
+				"ベースチップが譜面の上から下に\n" + 
+				"流れるようになります。",
+				"The scroll way is reversed.\n" +
+				"Bass chips flow from the top\n" +
+				"to the bottom." );
 			this.list項目リスト.Add( this.iBassReverse );
 
 			this.iSystemJudgePosBass = new CItemList( "JudgePos", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定位置.Bass,
@@ -1146,7 +1195,7 @@ namespace DTXMania
 				"判定ラインとRGBボタンが、少し下側に\n" +
 				"表示されるようになります。",
 				"Judge Line position:\n" +
-				"The judge line and RGB buttons will^n" +
+				"The judge line and RGB buttons will\n" +
 				"be displayed lower position.",
 				new string[] { "Normal", "Lower" } );
 			this.list項目リスト.Add( this.iSystemJudgePosBass );
@@ -1168,6 +1217,21 @@ namespace DTXMania
 				" OFF: no judgement mark.",
 				new string[] { "P-A", "P-B", "P-C", "OFF" } );
 			this.list項目リスト.Add( this.iBassPosition );
+
+			//this.iBassJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Bass,
+			//"判定文字列とコンボ表示の優先順位を\n" +
+			//"指定します。\n" +
+			//"\n" +
+			//" Under: チップの下に表示します。\n" +
+			//" Over:  チップの上に表示します。",
+			//"The display prioity between chips\n" +
+			//" and judge mark/combo.\n" +
+			//"\n" +
+			//" Under: Show them under the chips.\n" +
+			//" Over:  Show them over the chips.",
+			//new string[] { "Under", "Over" } );
+			//this.list項目リスト.Add( this.iBassJudgeDispPriority );
+
 			this.iBassRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常,
 				(int) CDTXMania.ConfigIni.eRandom.Bass,
 				"ベースのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
@@ -2283,6 +2347,10 @@ namespace DTXMania
 		private CItemList iSystemJudgePosGuitar;			// #33891 2014.6.26 yyagi
 		private CItemList iSystemJudgePosBass;				// #33891 2014.6.26 yyagi
 
+		//private CItemList iDrumsJudgeDispPriority;	//
+		//private CItemList iGuitarJudgeDispPriority;	//
+		//private CItemList iBassJudgeDispPriority;		//
+		private CItemList iSystemJudgeDispPriority;
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -2495,6 +2563,7 @@ namespace DTXMania
 //Trace.TraceInformation( "Skin現在System  : " + CSkin.strSystemSkinSubfolderFullName );
 //Trace.TraceInformation( "Skin現在BoxDef  : " + CSkin.strBoxDefSkinSubfolderFullName );
 			//CDTXMania.ConfigIni.nMasterVolume = this.iSystemMasterVolume.n現在の値;							// #33700 2014.4.26 yyagi
+			CDTXMania.ConfigIni.e判定表示優先度 = (E判定表示優先度) this.iSystemJudgeDispPriority.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する・Bass()
 		{
@@ -2522,6 +2591,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.b演奏音を強調する.Bass = this.iSystemSoundMonitorBass.bON;
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass = this.iSystemMinComboBass.n現在の値;
 			CDTXMania.ConfigIni.e判定位置.Bass = (E判定位置) this.iSystemJudgePosBass.n現在選択されている項目番号;					// #33891 2014.6.26 yyagi
+			//CDTXMania.ConfigIni.e判定表示優先度.Bass = (E判定表示優先度) this.iBassJudgeDispPriority.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する・Drums()
 		{
@@ -2563,6 +2633,7 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.eDark = (Eダークモード)this.iCommonDark.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
+			//CDTXMania.ConfigIni.e判定表示優先度.Drums = (E判定表示優先度) this.iDrumsJudgeDispPriority.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{
@@ -2590,6 +2661,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar = this.iSystemMinComboGuitar.n現在の値;
 			CDTXMania.ConfigIni.b演奏音を強調する.Guitar = this.iSystemSoundMonitorGuitar.bON;
 			CDTXMania.ConfigIni.e判定位置.Guitar = (E判定位置) this.iSystemJudgePosGuitar.n現在選択されている項目番号;					// #33891 2014.6.26 yyagi
+			//CDTXMania.ConfigIni.e判定表示優先度.Guitar = (E判定表示優先度) this.iGuitarJudgeDispPriority.n現在選択されている項目番号;
 		}
 		//-----------------
 		#endregion

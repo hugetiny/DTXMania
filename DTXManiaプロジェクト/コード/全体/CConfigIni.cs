@@ -437,6 +437,8 @@ namespace DTXMania
 		public bool bLog曲検索ログ出力;
 		public bool bLog作成解放ログ出力;
 		public STDGBVALUE<bool> bReverse;
+		//public STDGBVALUE<E判定表示優先度> e判定表示優先度;
+		public E判定表示優先度 e判定表示優先度;
 		public STDGBVALUE<E判定位置> e判定位置;			// #33891 2014.6.26 yyagi
 		public bool bScoreIniを出力する;
 		public bool bSTAGEFAILED有効;
@@ -1090,6 +1092,7 @@ namespace DTXMania
 			this.n譜面スクロール速度 = new STDGBVALUE<int>();
 			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
 			this.nJudgeLinePosOffset = new STDGBVALUE<int>();	// #31602 2013.6.23 yyagi
+			this.e判定表示優先度 = E判定表示優先度.Chipより下;
 			for ( int i = 0; i < 3; i++ )
 			{
 				this.b演奏音を強調する[ i ] = true;
@@ -1106,6 +1109,7 @@ namespace DTXMania
 				this.eInvisible[ i ] = EInvisible.OFF;
 				this.nViewerScrollSpeed[ i ] = 1;
 				this.e判定位置[ i ] = E判定位置.標準;
+				//this.e判定表示優先度[ i ] = E判定表示優先度.Chipより下;
 			}
 			this.n演奏速度 = 20;
 			#region [ AutoPlay ]
@@ -1540,6 +1544,9 @@ namespace DTXMania
 			sw.WriteLine( "; Whether displaying the lag times from the just timing or not." );	//
 			sw.WriteLine( "ShowLagTime={0}", this.nShowLagType );							//
 			sw.WriteLine();
+			sw.WriteLine( "; 判定・コンボ表示優先度(0:チップの下, 1:チップの上)" );
+			sw.WriteLine( "JudgeDispPriority={0}" , (int) this.e判定表示優先度 );
+			sw.WriteLine();
 			sw.WriteLine( "; リザルト画像自動保存機能(0:OFF, 1:ON)" );						// #25399 2011.6.9 yyagi
 			sw.WriteLine( "; Set \"1\" if you'd like to save result screen image automatically");	//
 			sw.WriteLine( "; when you get hiscore/hiskill.");								//
@@ -1728,6 +1735,11 @@ namespace DTXMania
 			sw.WriteLine( "; ドラムCOMBO文字表示位置(0:左, 1:中, 2:右, 3:OFF)" );
 			sw.WriteLine( "ComboPosition={0}", (int) this.ドラムコンボ文字の表示位置 );
 			sw.WriteLine();
+			//sw.WriteLine( "; 判定・コンボ表示優先度(0:チップの下, 1:チップの上)" );
+			//sw.WriteLine( "JudgeDispPriorityDrums={0}" , (int) this.e判定表示優先度.Drums );
+			//sw.WriteLine( "JudgeDispPriorityGuitar={0}", (int) this.e判定表示優先度.Guitar );
+			//sw.WriteLine( "JudgeDispPriorityBass={0}"  , (int) this.e判定表示優先度.Bass );
+			//sw.WriteLine();
 
             // #24074 2011.01.23 add ikanick
 			sw.WriteLine( "; ドラムグラフ表示(0:OFF, 1:ON)" );
@@ -2411,6 +2423,10 @@ namespace DTXMania
 											{
 												this.nShowLagType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nShowLagType );
 											}
+											else if ( str3.Equals( "JudgeDispPriority" ) )
+											{
+												this.e判定表示優先度 = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度 );
+											}
 											else if ( str3.Equals( "AutoResultCapture" ) )			// #25399 2011.6.9 yyagi
 											{
 												this.bIsAutoResultCapture = C変換.bONorOFF( str4[ 0 ] );
@@ -2663,7 +2679,19 @@ namespace DTXMania
 											{
 												this.ドラムコンボ文字の表示位置 = (Eドラムコンボ文字の表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.ドラムコンボ文字の表示位置 );
 											}
-											else if( str3.Equals( "Risky" ) )					// #23559 2011.6.23  yyagi
+											//else if ( str3.Equals( "JudgeDispPriorityDrums" ) )
+											//{
+											//    this.e判定表示優先度.Drums = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度.Drums );
+											//}
+											//else if ( str3.Equals( "JudgeDispPriorityGuitar" ) )
+											//{
+											//    this.e判定表示優先度.Guitar = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度.Guitar );
+											//}
+											//else if ( str3.Equals( "JudgeDispPriorityBass" ) )
+											//{
+											//    this.e判定表示優先度.Bass = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度.Bass );
+											//}
+											else if ( str3.Equals( "Risky" ) )					// #23559 2011.6.23  yyagi
 											{
 												this.nRisky = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 10, this.nRisky );
 											}

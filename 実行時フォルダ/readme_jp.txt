@@ -10,6 +10,7 @@
 　(Win8では、.NET Framework 3.5の追加インストールが必要です)
 (3) DirectX エンドユーザ ランタイム ... June 2010 以降
 　(Win8では、DirectX 9.0cの追加インストールが必要です)
+(4) Microsoft Visual C++ 2008 Redistributable Package (x86)
 
 上記が導入されていない場合、以下のようなエラーダイアログが
 表示され、DTXMania を起動することができません。

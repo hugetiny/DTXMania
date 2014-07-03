@@ -168,6 +168,11 @@ namespace DTXMania
 		V互換,
 		MAX
 	}
+	internal enum E判定表示優先度
+	{
+		Chipより下,
+		Chipより上
+	}
 	internal enum EAVI種別
 	{
 		Unknown,
