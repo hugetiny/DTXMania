@@ -2455,9 +2455,7 @@ namespace DTXMania
 			if ( ( pChip.b可視 && configIni.bGuitar有効 ) && ( configIni.eDark != Eダークモード.FULL ) && ( this.txチップ != null ) )
 			{
 				this.txチップ.n透明度 = 255;
-				//int y = configIni.bReverse.Guitar ?
-				//    ( ( 0x176 - pChip.nバーからの距離dot.Guitar ) - 1 ) :
-				//    ( ( 0x5f + pChip.nバーからの距離dot.Guitar ) - 1 );
+				//int y = configIni.bReverse.Guitar ? ( ( 0x176 - pChip.nバーからの距離dot.Guitar ) - 1 ) : ( ( 0x5f + pChip.nバーからの距離dot.Guitar ) - 1 );
 				int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, configIni.bReverse.Guitar );
 				if ( configIni.bReverse.Guitar )
 				{
@@ -2467,7 +2465,14 @@ namespace DTXMania
 				{
 					y = y + pChip.nバーからの距離dot.Guitar - 1;
 				}
-				if ( ( dTX.bチップがある.Guitar && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) )
+				int n小節線消失距離dot;
+				// Reverse時の小節線消失位置を、RGBボタンの真ん中程度に。
+				// 非Reverse時の消失処理は、従来通りt進行描画・チップ()にお任せ。
+				n小節線消失距離dot = configIni.bReverse.Guitar ? -100 : ( configIni.e判定位置.Guitar == E判定位置.標準 ) ? -20 : -25;
+
+				if ( ( dTX.bチップがある.Guitar && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) &&
+					( pChip.nバーからの距離dot.Guitar >= n小節線消失距離dot )
+					)
 				{
 					this.txチップ.t2D描画( CDTXMania.app.Device, 0x1fb, y, new Rectangle( 0, 450, 0x4e, 1 ) );
 				}
@@ -2481,7 +2486,10 @@ namespace DTXMania
 				{
 					y = y + pChip.nバーからの距離dot.Bass - 1;
 				}
-				if ( ( dTX.bチップがある.Bass && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) )
+				n小節線消失距離dot = configIni.bReverse.Bass ? -100 : ( configIni.e判定位置.Bass == E判定位置.標準 ) ? -20 : -25;
+				if ( ( dTX.bチップがある.Bass && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) &&
+					( pChip.nバーからの距離dot.Bass >= n小節線消失距離dot )
+					)
 				{
 					this.txチップ.t2D描画( CDTXMania.app.Device, 0x18e, y, new Rectangle( 0, 450, 0x4e, 1 ) );
 				}

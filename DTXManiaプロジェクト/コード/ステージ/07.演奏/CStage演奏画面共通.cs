@@ -1788,13 +1788,16 @@ namespace DTXMania
 				}
 //				if ( ( ( nCurrentTopChip == this.n現在のトップChip ) && ( pChip.nバーからの距離dot.Drums < -65 ) ) && pChip.bHit )
 				// #28026 2012.4.5 yyagi; 信心ワールドエンドの曲終了後リザルトになかなか行かない問題の修正
-				if ( ( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Drums < -65 ) && dTX.listChip[ this.n現在のトップChip ].bHit )
+
+				if (( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Drums < -65 ) &&	// 小節線の消失処理などに影響するため、
+					( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Guitar < -65 ) &&	// Drumsのスクロールスピードだけには依存させない。
+					( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Bass < -65 ) && 
+					dTX.listChip[ this.n現在のトップChip ].bHit )
 				{
-//					nCurrentTopChip = ++this.n現在のトップChip;
+					//					nCurrentTopChip = ++this.n現在のトップChip;
 					++this.n現在のトップChip;
 					continue;
 				}
-
 				bool bPChipIsAutoPlay = bCheckAutoPlay( pChip );
 
 				int nInputAdjustTime = ( bPChipIsAutoPlay || (pChip.e楽器パート == E楽器パート.UNKNOWN) )? 0 : this.nInputAdjustTimeMs[ (int) pChip.e楽器パート ];
