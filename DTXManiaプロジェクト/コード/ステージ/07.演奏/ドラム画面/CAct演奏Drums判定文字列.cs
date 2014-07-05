@@ -128,6 +128,10 @@ namespace DTXMania
 						int baseY = 0;
 						if( j < 8 )			// Drums
 						{
+							if ( CDTXMania.ConfigIni.判定文字表示位置.Drums == E判定文字表示位置.表示OFF )
+							{
+								continue;
+							}
 							baseX = this.stレーンサイズ[ j ].x;
 							baseY = CDTXMania.ConfigIni.bReverse.Drums ?
 								( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 240 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 50 ) :

@@ -635,7 +635,7 @@ namespace DTXMania
 				" P-A: on the lanes.\n" +
 				" P-B: under the hit bar.\n" +
 				" OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "OFF" } );
+				new string[] { "OFF", "P-A", "P-B" } );
 			this.list項目リスト.Add( this.iDrumsPosition );
 
 			//this.iDrumsJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Drums,
@@ -1007,17 +1007,17 @@ namespace DTXMania
 				"ギターの判定文字の表示位置を指定\n" +
 				"します。\n" +
 				" P-A: レーン上\n" +
-				" P-B: COMBO の下\n" +
-				" P-C: 判定ラインの上\n" +
+				" P-B: 判定ラインの上\n" +
+				" P-C: COMBO の下\n" +
 				" OFF: 表示しない",
 				"The position to show judgement mark.\n" +
 				"(Perfect, Great, ...)\n" +
 				"\n" +
 				" P-A: on the lanes.\n" +
-				" P-B: under the COMBO indication.\n" +
-				" P-C: over the hit bar.\n" +
+				" P-B: over the hit bar.\n" +
+				" P-C: under the COMBO indication.\n" +
 				" OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "P-C", "OFF" } );
+				new string[] { "OFF", "P-A", "P-B", "P-C" } );
 			this.list項目リスト.Add( this.iGuitarPosition );
 
 			//this.iGuitarJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Guitar,
@@ -1205,17 +1205,17 @@ namespace DTXMania
 				"ベースの判定文字の表示位置を指定\n" +
 				"します。\n" +
 				" P-A: レーン上\n" +
-				" P-B: COMBO の下\n" +
-				" P-C: 判定ラインの上\n" +
+				" P-B: 判定ラインの上\n" +
+				" P-C: COMBO の下\n" +
 				" OFF: 表示しない",
 				"The position to show judgement mark.\n" +
 				"(Perfect, Great, ...)\n" +
 				"\n" +
 				" P-A: on the lanes.\n" +
-				" P-B: under the COMBO indication.\n" +
-				" P-C: over the hit bar.\n" +
+				" P-B: over the hit bar.\n" +
+				" P-C: under the COMBO indication.\n" +
 				" OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "P-C", "OFF" } );
+				new string[] { "OFF", "P-A", "P-B", "P-C" } );
 			this.list項目リスト.Add( this.iBassPosition );
 
 			//this.iBassJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Bass,

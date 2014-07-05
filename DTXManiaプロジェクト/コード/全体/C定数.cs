@@ -157,10 +157,10 @@ namespace DTXMania
 	}
 	internal enum E判定文字表示位置
 	{
+		表示OFF,
 		レーン上,
-		コンボ下,
 		判定ライン上,
-		表示OFF
+		コンボ下
 	}
 	internal enum E判定位置
 	{
