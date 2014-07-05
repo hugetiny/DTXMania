@@ -191,9 +191,9 @@ namespace DTXMania
 				this.t進行描画・レーンフラッシュD();
 				this.t進行描画・DANGER();
 				this.t進行描画・判定ライン();
-				this.t進行描画・RGBボタン();
 				if ( this.e判定表示優先度 == E判定表示優先度.Chipより下 )
 				{
+					this.t進行描画・RGBボタン();
 					this.t進行描画・判定文字列1・通常位置指定の場合();
 					this.t進行描画・コンボ();
 				}
@@ -205,6 +205,7 @@ namespace DTXMania
 				this.t進行描画・ドラムパッド();
 				if ( this.e判定表示優先度 == E判定表示優先度.Chipより上 )
 				{
+					this.t進行描画・RGBボタン();
 					this.t進行描画・判定文字列1・通常位置指定の場合();
 					this.t進行描画・コンボ();
 				}

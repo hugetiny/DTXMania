@@ -147,9 +147,9 @@ namespace DTXMania
 				this.t進行描画・ギターベース判定ライン();
 				this.t進行描画・ゲージ();
 				this.t進行描画・DANGER();
-				this.t進行描画・RGBボタン();
 				if ( this.e判定表示優先度 == E判定表示優先度.Chipより下 )
 				{
+					this.t進行描画・RGBボタン();
 					this.t進行描画・判定文字列();
 					this.t進行描画・コンボ();
 				}
@@ -159,6 +159,7 @@ namespace DTXMania
 				bIsFinishedPlaying = this.t進行描画・チップ(E楽器パート.GUITAR);
 				if ( this.e判定表示優先度 == E判定表示優先度.Chipより上 )
 				{
+					this.t進行描画・RGBボタン();
 					this.t進行描画・判定文字列();
 					this.t進行描画・コンボ();
 				}
@@ -750,7 +751,7 @@ namespace DTXMania
 			{
 				this.txチップ.n透明度 = 255;
 				//int y = configIni.bReverse.Guitar ? ( ( 0x171 - pChip.nバーからの距離dot.Guitar ) - 1 ) : ( ( 40 + pChip.nバーからの距離dot.Guitar ) - 1 );
-				int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, configIni.bReverse.Guitar );
+				int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, configIni.bReverse.Guitar );
 				if ( configIni.bReverse.Guitar )
 				{
 					y = y - pChip.nバーからの距離dot.Guitar - 1;
@@ -764,7 +765,7 @@ namespace DTXMania
 					this.txチップ.t2D描画( CDTXMania.app.Device, 0x1a, y, new Rectangle( 0, 0xeb, 0x68, 1 ) );
 				}
 				//y = configIni.bReverse.Bass ? ( ( 0x171 - pChip.nバーからの距離dot.Bass ) - 1 ) : ( ( 40 + pChip.nバーからの距離dot.Bass ) - 1 );
-				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, configIni.bReverse.Bass );
+				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, configIni.bReverse.Bass );
 				if ( configIni.bReverse.Bass )
 				{
 					y = y - pChip.nバーからの距離dot.Bass - 1;
