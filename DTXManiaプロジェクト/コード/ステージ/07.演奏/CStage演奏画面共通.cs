@@ -1802,10 +1802,11 @@ namespace DTXMania
 
 				int nInputAdjustTime = ( bPChipIsAutoPlay || (pChip.e楽器パート == E楽器パート.UNKNOWN) )? 0 : this.nInputAdjustTimeMs[ (int) pChip.e楽器パート ];
 
+				int instIndex = (int) pChip.e楽器パート;
 				if ( ( ( pChip.e楽器パート != E楽器パート.UNKNOWN ) && !pChip.bHit ) &&
-					( ( pChip.nバーからの距離dot.Drums < 0 ) && ( this.e指定時刻からChipのJUDGEを返す( CSound管理.rc演奏用タイマ.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss ) ) )
+				    ( ( pChip.nバーからの距離dot[ instIndex ] < -40 ) && ( this.e指定時刻からChipのJUDGEを返す( CSound管理.rc演奏用タイマ.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss ) ) )
 				{
-					this.tチップのヒット処理( CSound管理.rc演奏用タイマ.n現在時刻, pChip );
+				    this.tチップのヒット処理( CSound管理.rc演奏用タイマ.n現在時刻, pChip );
 				}
 				switch ( pChip.nチャンネル番号 )
 				{
@@ -2543,6 +2544,15 @@ namespace DTXMania
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
 					int y = configIni.bReverse[ instIndex ] ? ( barYReverse - pChip.nバーからの距離dot[ instIndex ] ) : ( barYNormal + pChip.nバーからの距離dot[ instIndex ] );
+					int n小節線消失距離dot = configIni.bReverse[ instIndex ] ? -100 : ( configIni.e判定位置[ instIndex ] == E判定位置.標準 ) ? -50 : -25;
+					if ( configIni.bReverse[ instIndex ] )
+					{
+						showRangeY1 = barYReverse - n小節線消失距離dot;
+					}
+					else
+					{
+						showRangeY0 = barYNormal + n小節線消失距離dot;
+					}
 					if ( ( showRangeY0 < y ) && ( y < showRangeY1 ) )
 					{
 						if ( this.txチップ != null )
@@ -2616,6 +2626,7 @@ namespace DTXMania
 						this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標 );
 					}
 					#endregion
+					#region [ autopick ]
 					if ( autoPick )
 					{
 						bool bMiss = true;
@@ -2651,6 +2662,7 @@ namespace DTXMania
 							this.queWailing[ instIndex ].Enqueue( item );
 						}
 					}
+					#endregion
 				}
 				return;
 			}	// end of "if configIni.bGuitar有効"

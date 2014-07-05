@@ -2005,7 +2005,8 @@ namespace DTXMania
 				// 95, 374,
 				演奏判定ライン座標.n判定ラインY座標( inst, false, false ),		// 95  Normal
 				演奏判定ライン座標.n判定ラインY座標( inst,   false, true ),		// 374 Reverse
-				57, 412, 509, 400,
+				57, 412,				// チップのY軸表示範囲
+				509, 400,
 				268, 144, 76, 6,		// オープンチップの x, y, w, h
 				24, 509, 561, 400, 452, 26, 24 );
 		}
@@ -2468,7 +2469,7 @@ namespace DTXMania
 				int n小節線消失距離dot;
 				// Reverse時の小節線消失位置を、RGBボタンの真ん中程度に。
 				// 非Reverse時の消失処理は、従来通りt進行描画・チップ()にお任せ。
-				n小節線消失距離dot = configIni.bReverse.Guitar ? -100 : ( configIni.e判定位置.Guitar == E判定位置.標準 ) ? -20 : -25;
+				n小節線消失距離dot = configIni.bReverse.Guitar ? -100 : ( configIni.e判定位置.Guitar == E判定位置.標準 ) ? -50 : -25;
 
 				if ( ( dTX.bチップがある.Guitar && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) &&
 					( pChip.nバーからの距離dot.Guitar >= n小節線消失距離dot )
@@ -2486,7 +2487,7 @@ namespace DTXMania
 				{
 					y = y + pChip.nバーからの距離dot.Bass - 1;
 				}
-				n小節線消失距離dot = configIni.bReverse.Bass ? -100 : ( configIni.e判定位置.Bass == E判定位置.標準 ) ? -20 : -25;
+				n小節線消失距離dot = configIni.bReverse.Bass ? -100 : ( configIni.e判定位置.Bass == E判定位置.標準 ) ? -50 : -25;
 				if ( ( dTX.bチップがある.Bass && ( y > 0x39 ) ) && ( ( y < 0x19c ) ) &&
 					( pChip.nバーからの距離dot.Bass >= n小節線消失距離dot )
 					)
