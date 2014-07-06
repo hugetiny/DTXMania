@@ -764,9 +764,9 @@ namespace DTXMania
 				int n小節線消失距離dot;
 				// Reverse時の小節線消失位置を、RGBボタンの真ん中程度に。
 				// 非Reverse時の消失処理は、従来通りt進行描画・チップ()にお任せ。
-				n小節線消失距離dot = configIni.bReverse.Guitar ? -100 : ( configIni.e判定位置.Guitar == E判定位置.標準 ) ? -20 : -25;
+				n小節線消失距離dot = configIni.bReverse.Guitar ? -100 : ( configIni.e判定位置.Guitar == E判定位置.標準 ) ? -36 : -25;
 
-				if ( ( dTX.bチップがある.Guitar && ( y > 0 ) ) && ( ( y < 0x199 ) ) &&
+				if ( dTX.bチップがある.Guitar && ( y > 0 ) && ( y < 0x199 ) &&
 					( pChip.nバーからの距離dot.Guitar >= n小節線消失距離dot )
 					)
 				{
@@ -785,7 +785,7 @@ namespace DTXMania
 					y = y + pChip.nバーからの距離dot.Bass - 1;
 				}
 
-				n小節線消失距離dot = configIni.bReverse.Bass ? -100 : ( configIni.e判定位置.Bass == E判定位置.標準 ) ? -20 : -25;
+				n小節線消失距離dot = configIni.bReverse.Bass ? -100 : ( configIni.e判定位置.Bass == E判定位置.標準 ) ? -36 : -25;
 				if ( ( dTX.bチップがある.Bass && ( y > 0 ) ) && ( ( y < 0x199 ) ) &&
 					( pChip.nバーからの距離dot.Bass >= n小節線消失距離dot )
 					)
