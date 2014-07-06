@@ -165,12 +165,12 @@ namespace DTXMania
 				int ret = this.n判定ラインY座標元データ[ nReverse, nGRmode, nWailing ][ nInst ];		// 補正無しの値
 				if ( bReverse )
 				{
-					if ( n判定位置[ nInst ] == E判定位置.V互換 ) ret += 13;
+					if ( n判定位置[ nInst ] == E判定位置.Lower ) ret += 13;
 					if ( b補正あり )		ret += nJudgeLinePosY_delta[ nInst ];
 				}
 				else
 				{
-					if ( n判定位置[ nInst ] == E判定位置.V互換 ) ret += 52;
+					if ( n判定位置[ nInst ] == E判定位置.Lower ) ret += 52;
 					if ( b補正あり )		ret -= nJudgeLinePosY_delta[ nInst ];
 				}
 				return ret;

@@ -2544,10 +2544,10 @@ namespace DTXMania
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
 					int y = configIni.bReverse[ instIndex ] ? ( barYReverse - pChip.nバーからの距離dot[ instIndex ] ) : ( barYNormal + pChip.nバーからの距離dot[ instIndex ] );
-					int n小節線消失距離dot = configIni.bReverse[ instIndex ] ? -100 : ( configIni.e判定位置[ instIndex ] == E判定位置.標準 ) ? -50 : -25;
+					int n小節線消失距離dot = configIni.bReverse[ instIndex ] ? -100 : ( configIni.e判定位置[ instIndex ] == E判定位置.標準 ) ? -36 : -25;
 					if ( configIni.bReverse[ instIndex ] )
 					{
-						showRangeY1 = barYReverse - n小節線消失距離dot;
+						//showRangeY1 = barYReverse - n小節線消失距離dot;
 					}
 					else
 					{

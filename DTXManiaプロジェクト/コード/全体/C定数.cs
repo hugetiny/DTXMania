@@ -165,7 +165,7 @@ namespace DTXMania
 	internal enum E判定位置
 	{
 		標準	= 0,
-		V互換,
+		Lower,
 		MAX
 	}
 	internal enum E判定表示優先度
