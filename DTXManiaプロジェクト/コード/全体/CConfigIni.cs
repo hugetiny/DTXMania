@@ -437,6 +437,9 @@ namespace DTXMania
 		public bool bLog曲検索ログ出力;
 		public bool bLog作成解放ログ出力;
 		public STDGBVALUE<bool> bReverse;
+		//public STDGBVALUE<E判定表示優先度> e判定表示優先度;
+		public E判定表示優先度 e判定表示優先度;
+		public STDGBVALUE<E判定位置> e判定位置;			// #33891 2014.6.26 yyagi
 		public bool bScoreIniを出力する;
 		public bool bSTAGEFAILED有効;
 		public STDGBVALUE<bool> bSudden;
@@ -665,10 +668,19 @@ namespace DTXMania
 //		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
 //		public int nASIOBufferSizeMs;				// #24820 2012.12.28 yyagi ASIOのバッファサイズ
 		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
+		public bool bUseOSTimer;					// #33689 2014.6.6 yyagi 演奏タイマーの種類
 		public bool bDynamicBassMixerManagement;	// #24820
 		public bool bTimeStretch;					// #23664 2013.2.24 yyagi ピッチ変更無しで再生速度を変更するかどうか
 		public STDGBVALUE<EInvisible> eInvisible;	// #32072 2013.9.20 yyagi チップを非表示にする
 		public int nDisplayTimesMs, nFadeoutTimeMs;
+
+		public STDGBVALUE<int> nViewerScrollSpeed;
+		public bool bViewerVSyncWait;
+		public bool bViewerShowDebugStatus;
+		public bool bViewerTimeStretch;
+		public bool bViewerDrums有効, bViewerGuitar有効;
+		//public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
+		public int nMasterVolume;
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1075,10 +1087,12 @@ namespace DTXMania
 			this.eRandom = new STDGBVALUE<Eランダムモード>();
 			this.bLight = new STDGBVALUE<bool>();
 			this.bLeft = new STDGBVALUE<bool>();
+			this.e判定位置 = new STDGBVALUE<E判定位置>();		// #33891 2014.6.26 yyagi
 			this.判定文字表示位置 = new STDGBVALUE<E判定文字表示位置>();
 			this.n譜面スクロール速度 = new STDGBVALUE<int>();
 			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
 			this.nJudgeLinePosOffset = new STDGBVALUE<int>();	// #31602 2013.6.23 yyagi
+			this.e判定表示優先度 = E判定表示優先度.Chipより下;
 			for ( int i = 0; i < 3; i++ )
 			{
 				this.b演奏音を強調する[ i ] = true;
@@ -1093,6 +1107,9 @@ namespace DTXMania
 				this.nInputAdjustTimeMs[ i ] = 0;
 				this.nJudgeLinePosOffset[ i ] = 0;
 				this.eInvisible[ i ] = EInvisible.OFF;
+				this.nViewerScrollSpeed[ i ] = 1;
+				this.e判定位置[ i ] = E判定位置.標準;
+				//this.e判定表示優先度[ i ] = E判定表示優先度.Chipより下;
 			}
 			this.n演奏速度 = 20;
 			#region [ AutoPlay ]
@@ -1157,10 +1174,20 @@ namespace DTXMania
 //			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 //			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
+			this.bUseOSTimer = false;;					// #33689 2014.6.6 yyagi 初期値はfalse (FDKのタイマー。ＦＲＯＭ氏考案の独自タイマー)
 			this.bDynamicBassMixerManagement = true;	//
 			this.bTimeStretch = false;					// #23664 2013.2.24 yyagi 初期値はfalse (再生速度変更を、ピッチ変更にて行う)
 			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
 			this.nFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
+
+			bViewerVSyncWait = true;
+			bViewerShowDebugStatus = true;
+			bViewerTimeStretch = false;
+			bViewerDrums有効 = true;
+			bViewerGuitar有効 = true;
+
+			//this.bNoMP3Streaming = false;
+			this.nMasterVolume = 100;					// #33700 2014.4.26 yyagi マスターボリュームの設定(WASAPI/ASIO用)
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1232,6 +1259,12 @@ namespace DTXMania
 			#region [ スキン関連 ]
 			#region [ Skinパスの絶対パス→相対パス変換 ]
 			Uri uriRoot = new Uri( System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
+			if ( strSystemSkinSubfolderFullName != null && strSystemSkinSubfolderFullName.Length == 0 )
+			{
+				// Config.iniが空の状態でDTXManiaをViewerとして起動・終了すると、strSystemSkinSubfolderFullName が空の状態でここに来る。
+				// → 初期値として Default/ を設定する。
+				strSystemSkinSubfolderFullName = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar + "Default" + System.IO.Path.DirectorySeparatorChar );
+			}
 			Uri uriPath = new Uri( System.IO.Path.Combine( this.strSystemSkinSubfolderFullName, "." + System.IO.Path.DirectorySeparatorChar ) );
 			string relPath = uriRoot.MakeRelativeUri( uriPath ).ToString();				// 相対パスを取得
 			relPath = System.Web.HttpUtility.UrlDecode( relPath );						// デコードする
@@ -1328,10 +1361,23 @@ namespace DTXMania
 			//sw.WriteLine( "ASIOBufferSizeMs={0}", (int) this.nASIOBufferSizeMs );
 			//sw.WriteLine();
 
-			//sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。");
+			//sw.WriteLine( "; Bass.Mixの制御を動的に行うか否か。" );
 			//sw.WriteLine( "; ONにすると、ギター曲などチップ音の多い曲も再生できますが、画面が少しがたつきます。" );
 			//sw.WriteLine( "; (0=行わない, 1=行う)" );
-			//sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement? 1 : 0 );
+			//sw.WriteLine( "DynamicBassMixerManagement={0}", this.bDynamicBassMixerManagement ? 1 : 0 );
+			//sw.WriteLine();
+
+			sw.WriteLine( "; WASAPI/ASIO時に使用する演奏タイマーの種類" );
+			sw.WriteLine( "; Playback timer used for WASAPI/ASIO" );
+			sw.WriteLine( "; (0=FDK Timer, 1=System Timer)" );
+			sw.WriteLine( "SoundTimerType={0}", this.bUseOSTimer ? 1 : 0 );
+			sw.WriteLine();
+
+			//sw.WriteLine( "; 全体ボリュームの設定" );
+			//sw.WriteLine( "; (0=無音 ～ 100=最大。WASAPI/ASIO時のみ有効)" );
+			//sw.WriteLine( "; Master volume settings" );
+			//sw.WriteLine( "; (0=Silent - 100=Max)" );
+			//sw.WriteLine( "MasterVolume={0}", this.nMasterVolume );
 			//sw.WriteLine();
 
 			#endregion
@@ -1498,6 +1544,9 @@ namespace DTXMania
 			sw.WriteLine( "; Whether displaying the lag times from the just timing or not." );	//
 			sw.WriteLine( "ShowLagTime={0}", this.nShowLagType );							//
 			sw.WriteLine();
+			sw.WriteLine( "; 判定・コンボ表示優先度(0:チップの下, 1:チップの上)" );
+			sw.WriteLine( "JudgeDispPriority={0}" , (int) this.e判定表示優先度 );
+			sw.WriteLine();
 			sw.WriteLine( "; リザルト画像自動保存機能(0:OFF, 1:ON)" );						// #25399 2011.6.9 yyagi
 			sw.WriteLine( "; Set \"1\" if you'd like to save result screen image automatically");	//
 			sw.WriteLine( "; when you get hiscore/hiskill.");								//
@@ -1510,6 +1559,13 @@ namespace DTXMania
 			sw.WriteLine( "; (Only available when you're using using WASAPI or ASIO)" );	//
 			sw.WriteLine( "TimeStretch={0}", this.bTimeStretch ? 1 : 0 );					//
 			sw.WriteLine();
+			//sw.WriteLine( "; WASAPI/ASIO使用時に、MP3をストリーム再生するかどうか(0:ストリーム再生する, 1:しない)" );			//
+			//sw.WriteLine( "; (mp3のシークがおかしくなる場合は、これを1にしてください) " );	//
+			//sw.WriteLine( "; Set \"0\" if you'd like to use mp3 streaming playback on WASAPI/ASIO." );		//
+			//sw.WriteLine( "; Set \"1\" not to use streaming playback for mp3." );			//
+			//sw.WriteLine( "; (If you feel illegal seek with mp3, please set it to 1.)" );	//
+			//sw.WriteLine( "NoMP3Streaming={0}", this.bNoMP3Streaming ? 1 : 0 );				//
+			//sw.WriteLine();
 			#region [ Adjust ]
 			sw.WriteLine( "; 判定タイミング調整(ドラム, ギター, ベース)(-99～99)[ms]" );		// #23580 2011.1.3 yyagi
 			sw.WriteLine("; Revision value to adjust judgement timing for the drums, guitar and bass.");	//
@@ -1523,6 +1579,13 @@ namespace DTXMania
 			sw.WriteLine( "JudgeLinePosOffsetDrums={0}",  this.nJudgeLinePosOffset.Drums );		//
 			sw.WriteLine( "JudgeLinePosOffsetGuitar={0}", this.nJudgeLinePosOffset.Guitar );	//
 			sw.WriteLine( "JudgeLinePosOffsetBass={0}",   this.nJudgeLinePosOffset.Bass );		//
+
+			sw.WriteLine( "; 判定ラインの表示位置(ギター, ベース)" );	// #33891 2014.6.26 yyagi
+			sw.WriteLine( "; 0=Normal, 1=Lower" );
+			sw.WriteLine( "; Position of the Judgement line and RGB button; Vseries compatible(1) or not(0)." );	//
+			sw.WriteLine( "JudgeLinePosModeGuitar={0}", (int) this.e判定位置.Guitar );	//
+			sw.WriteLine( "JudgeLinePosModeBass={0}  ", (int) this.e判定位置.Bass );	//
+			
 			sw.WriteLine();
 			#endregion
 			#region [ VelocityMin ]
@@ -1646,13 +1709,16 @@ namespace DTXMania
 			sw.WriteLine( "; TIGHT mode. 0=OFF, 1=ON " );
 			sw.WriteLine( "DrumsTight={0}", this.bTight ? 1 : 0 );
 			sw.WriteLine();
-			sw.WriteLine( "; ドラム判定文字表示位置(0:レーン上,1:判定ライン上,2:表示OFF)" );
+			sw.WriteLine( "; ドラム判定文字表示位置(0:表示OFF, 1:レーン上, 2:判定ライン上)" );
+			sw.WriteLine( "; Drums Judgement display position (0:OFF, 1:on the lane, 2:over the judge line)" );
 			sw.WriteLine( "DrumsPosition={0}", (int) this.判定文字表示位置.Drums );
 			sw.WriteLine();
-			sw.WriteLine( "; ギター判定文字表示位置(0:レーン上,1:判定ライン横,2:表示OFF)" );
+			sw.WriteLine( "; ギター判定文字表示位置(0:表示IFF, 1:レーン上, 2:判定ライン上, 3:コンボ下)" );
+			sw.WriteLine( "; Guitar Judgement display position (0:OFF, 1:on the lane, 2:over the judge line, 3:under combo)" );
 			sw.WriteLine( "GuitarPosition={0}", (int) this.判定文字表示位置.Guitar );
 			sw.WriteLine();
-			sw.WriteLine( "; ベース判定文字表示位置(0:レーン上,1:判定ライン横,2:表示OFF)" );
+			sw.WriteLine( "; ベース判定文字表示位置(0:表示OFF, 1:レーン上, 2:判定ライン上, 3:コンボ下)" );
+			sw.WriteLine( "; Bass Judgement display position (0:OFF, 1:on the lane, 2:over the judge line, 3:under combo)" );
 			sw.WriteLine( "BassPosition={0}", (int) this.判定文字表示位置.Bass );
 			sw.WriteLine();
 			sw.WriteLine( "; ドラム譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)" );
@@ -1670,12 +1736,62 @@ namespace DTXMania
 			sw.WriteLine( "; ドラムCOMBO文字表示位置(0:左, 1:中, 2:右, 3:OFF)" );
 			sw.WriteLine( "ComboPosition={0}", (int) this.ドラムコンボ文字の表示位置 );
 			sw.WriteLine();
+			//sw.WriteLine( "; 判定・コンボ表示優先度(0:チップの下, 1:チップの上)" );
+			//sw.WriteLine( "JudgeDispPriorityDrums={0}" , (int) this.e判定表示優先度.Drums );
+			//sw.WriteLine( "JudgeDispPriorityGuitar={0}", (int) this.e判定表示優先度.Guitar );
+			//sw.WriteLine( "JudgeDispPriorityBass={0}"  , (int) this.e判定表示優先度.Bass );
+			//sw.WriteLine();
 
             // #24074 2011.01.23 add ikanick
 			sw.WriteLine( "; ドラムグラフ表示(0:OFF, 1:ON)" );
 			sw.WriteLine( "DrumsGraph={0}", this.bGraph.Drums ? 1 : 0 );
 			sw.WriteLine();
 
+			sw.WriteLine( ";-------------------" );
+			#endregion
+
+			#region [ ViewerOption ]
+			sw.WriteLine( "[ViewerOption]" );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ドラム譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)" );
+			sw.WriteLine( "; for viewer mode; Drums Scroll Speed" );
+			sw.WriteLine( "ViewerDrumsScrollSpeed={0}", this.nViewerScrollSpeed.Drums );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ギター譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)");
+			sw.WriteLine( "; for viewer mode; Guitar Scroll Speed" );
+			sw.WriteLine( "ViewerGuitarScrollSpeed={0}", this.nViewerScrollSpeed.Guitar );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ベース譜面スクロール速度(0:x0.5, 1:x1.0, 2:x1.5,…,1999:x1000.0)");
+			sw.WriteLine( "; for viewer mode; Bass Scroll Speed" );
+			sw.WriteLine( "ViewerBassScrollSpeed={0}", this.nViewerScrollSpeed.Bass );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 垂直帰線同期(0:OFF,1:ON)" );
+			sw.WriteLine( "; for viewer mode; Use whether Vertical Sync or not." );
+			sw.WriteLine( "ViewerVSyncWait={0}", this.bViewerVSyncWait ? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 演奏情報を表示する (0:OFF, 1:ON) ");
+			sw.WriteLine( "; for viewer mode;" );
+			sw.WriteLine( "; Showing playing info on the playing screen. (0:OFF, 1:ON) " );
+			sw.WriteLine( "ViewerShowDebugStatus={0}", this.bViewerShowDebugStatus? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 再生速度変更を、ピッチ変更で行うかどうか(0:ピッチ変更, 1:タイムストレッチ ");
+			sw.WriteLine( "; (WASAPI/ASIO使用時のみ有効)  ");
+			sw.WriteLine( "; for viewer mode;" );
+			sw.WriteLine( "; Set \"0\" if you'd like to use pitch shift with PlaySpeed. " );
+			sw.WriteLine( "; Set \"1\" for time stretch. " );
+			sw.WriteLine( "; (Only available when you're using using WASAPI or ASIO) ");
+			sw.WriteLine( "ViewerTimeStretch={0}", this.bViewerTimeStretch? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ギター/ベース有効(0:OFF,1:ON) ");
+			sw.WriteLine( "; for viewer mode;" );
+			sw.WriteLine( "; Enable Guitar/Bass or not.(0:OFF,1:ON) " );
+			sw.WriteLine( "ViewerGuitar={0}", this.bViewerGuitar有効? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード時専用 ドラム有効(0:OFF,1:ON) ");
+			sw.WriteLine( "; for viewer mode;" );
+			sw.WriteLine( "; Enable Drums or not.(0:OFF,1:ON) " );
+			sw.WriteLine( "ViewerDrums={0}", this.bViewerDrums有効? 1 : 0 );
+			sw.WriteLine();
 			sw.WriteLine( ";-------------------" );
 			#endregion
 
@@ -1877,8 +1993,10 @@ namespace DTXMania
 			{
 				string str;
 				this.tキーアサインを全部クリアする();
-				StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
-				str = reader.ReadToEnd();
+				using ( StreamReader reader = new StreamReader( this.ConfigIniファイル名, Encoding.GetEncoding( "Shift_JIS" ) ) )
+				{
+					str = reader.ReadToEnd();
+				}
 				t文字列から読み込み( str );
 				CDTXVersion version = new CDTXVersion( this.strDTXManiaのバージョン );
 				if( version.n整数部 <= 69 )
@@ -1924,6 +2042,10 @@ namespace DTXMania
 							else if ( str2.Equals( "PlayOption" ) )
 							{
 								unknown = Eセクション種別.PlayOption;
+							}
+							else if ( str2.Equals( "ViewerOption" ) )
+							{
+								unknown = Eセクション種別.ViewerOption;
 							}
 							else if ( str2.Equals( "AutoPlay" ) )
 							{
@@ -2111,6 +2233,14 @@ namespace DTXMania
 											//{
 											//    this.bDynamicBassMixerManagement = C変換.bONorOFF( str4[ 0 ] );
 											//}
+											else if ( str3.Equals( "SoundTimerType" ) )			// #33689 2014.6.6 yyagi
+											{
+												this.bUseOSTimer = C変換.bONorOFF( str4[ 0 ] );
+											}
+											//else if ( str3.Equals( "MasterVolume" ) )
+											//{
+											//    this.nMasterVolume = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.nMasterVolume );
+											//}
 											#endregion
 											else if ( str3.Equals( "VSyncWait" ) )
 											{
@@ -2294,6 +2424,10 @@ namespace DTXMania
 											{
 												this.nShowLagType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nShowLagType );
 											}
+											else if ( str3.Equals( "JudgeDispPriority" ) )
+											{
+												this.e判定表示優先度 = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度 );
+											}
 											else if ( str3.Equals( "AutoResultCapture" ) )			// #25399 2011.6.9 yyagi
 											{
 												this.bIsAutoResultCapture = C変換.bONorOFF( str4[ 0 ] );
@@ -2326,6 +2460,14 @@ namespace DTXMania
 											else if ( str3.Equals( "JudgeLinePosOffsetBass" ) )			// #31602 2013.6.23 yyagi
 											{
 												this.nJudgeLinePosOffset.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Bass );
+											}
+											else if ( str3.Equals( "JudgeLinePosModeGuitar" ) )	// #33891 2014.6.26 yyagi
+											{
+												this.e判定位置.Guitar = (E判定位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.e判定位置.Guitar );
+											}
+											else if ( str3.Equals( "JudgeLinePosModeBass" ) )		// #33891 2014.6.26 yyagi
+											{
+												this.e判定位置.Bass = (E判定位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.e判定位置.Bass );
 											}
 											#endregion
 											else if( str3.Equals( "BufferedInput" ) )
@@ -2374,6 +2516,10 @@ namespace DTXMania
 												this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
 											}
 											#endregion
+											//else if ( str3.Equals( "NoMP3Streaming" ) )
+											//{
+											//    this.bNoMP3Streaming = C変換.bONorOFF( str4[ 0 ] );
+											//}
 											continue;
 										}
 									//-----------------------------
@@ -2508,11 +2654,11 @@ namespace DTXMania
 											}
 											else if( str3.Equals( "GuitarPosition" ) )
 											{
-												this.判定文字表示位置.Guitar = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Guitar );
+												this.判定文字表示位置.Guitar = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.判定文字表示位置.Guitar );
 											}
 											else if( str3.Equals( "BassPosition" ) )
 											{
-												this.判定文字表示位置.Bass = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.判定文字表示位置.Bass );
+												this.判定文字表示位置.Bass = (E判定文字表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.判定文字表示位置.Bass );
 											}
 											else if( str3.Equals( "DrumsScrollSpeed" ) )
 											{
@@ -2534,13 +2680,66 @@ namespace DTXMania
 											{
 												this.ドラムコンボ文字の表示位置 = (Eドラムコンボ文字の表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 3, (int) this.ドラムコンボ文字の表示位置 );
 											}
-											else if( str3.Equals( "Risky" ) )					// #23559 2011.6.23  yyagi
+											//else if ( str3.Equals( "JudgeDispPriorityDrums" ) )
+											//{
+											//    this.e判定表示優先度.Drums = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度.Drums );
+											//}
+											//else if ( str3.Equals( "JudgeDispPriorityGuitar" ) )
+											//{
+											//    this.e判定表示優先度.Guitar = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度.Guitar );
+											//}
+											//else if ( str3.Equals( "JudgeDispPriorityBass" ) )
+											//{
+											//    this.e判定表示優先度.Bass = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度.Bass );
+											//}
+											else if ( str3.Equals( "Risky" ) )					// #23559 2011.6.23  yyagi
 											{
 												this.nRisky = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 10, this.nRisky );
 											}
 											else if ( str3.Equals( "DrumsTight" ) )				// #29500 2012.9.11 kairera0467
 											{
 												this.bTight = C変換.bONorOFF( str4[ 0 ] );
+											}
+											continue;
+										}
+									//-----------------------------
+									#endregion
+
+									#region [ [ViewerOption] ]
+									//-----------------------------
+									case Eセクション種別.ViewerOption:
+										{
+											if ( str3.Equals( "ViewerDrumsScrollSpeed" ) )
+											{
+												this.nViewerScrollSpeed.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Drums );
+											}
+											else if ( str3.Equals( "ViewerGuitarScrollSpeed" ) )
+											{
+												this.nViewerScrollSpeed.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Guitar );
+											}
+											else if ( str3.Equals( "ViewerBassScrollSpeed" ) )
+											{
+												this.nViewerScrollSpeed.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1999, this.nViewerScrollSpeed.Bass );
+											}
+											else if ( str3.Equals( "ViewerVSyncWait" ) )
+											{
+												this.bViewerVSyncWait = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ViewerShowDebugStatus" ) )
+											{
+												this.bViewerShowDebugStatus = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ViewerTimeStretch" ) )
+											{
+												this.bViewerTimeStretch = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ViewerGuitar" ) )
+											{
+												this.bViewerGuitar有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "ViewerDrums" ) )
+											{
+												this.bViewerDrums有効 = C変換.bONorOFF( str4[ 0 ] );
 											}
 											continue;
 										}
@@ -2863,6 +3062,7 @@ namespace DTXMania
 			System,
 			Log,
 			PlayOption,
+			ViewerOption,
 			AutoPlay,
 			HitRange,
 			GUID,

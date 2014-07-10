@@ -10,12 +10,14 @@ namespace DTXMania
 {
 	internal class CAct演奏パネル文字列 : CActivity
 	{
+
 		// コンストラクタ
 
 		public CAct演奏パネル文字列()
 		{
 			base.b活性化してない = true;
 			this.strパネル文字列 = "";
+			this.Start();
 		}
 		
 		
@@ -51,7 +53,17 @@ namespace DTXMania
 					}
 					this.ct進行用 = new CCounter( -278, this.n文字列の長さdot / 2, 8, CDTXMania.Timer );
 				}
+				this.Start();
 			}
+		}
+
+		public void Stop()
+		{
+			this.bMute = true;
+		}
+		public void Start()
+		{
+			this.bMute = false;
 		}
 
 
@@ -63,6 +75,7 @@ namespace DTXMania
 			this.n文字列の長さdot = 0;
 			this.txPanel = null;
 			this.ct進行用 = new CCounter();
+			this.Start();
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -98,7 +111,7 @@ namespace DTXMania
 		}
 		public int t進行描画( int x, int y )
 		{
-			if( !base.b活性化してない )
+			if( !base.b活性化してない && !this.bMute )
 			{
 				this.ct進行用.t進行Loop();
 				if( ( string.IsNullOrEmpty( this.strパネル文字列 ) || ( this.txPanel == null ) ) || ( this.ct進行用 == null ) )
@@ -132,6 +145,7 @@ namespace DTXMania
 		private int n文字列の長さdot;
 		private string strパネル文字列;
 		private CTexture txPanel;
+		private bool bMute;
 		//-----------------
 		#endregion
 	}

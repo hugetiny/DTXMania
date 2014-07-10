@@ -12,6 +12,7 @@ namespace FDK
 	public interface ISoundDevice : IDisposable
 	{
 		ESoundDeviceType e出力デバイス { get; }
+		int nMasterVolume { get; set; }
 		long n実出力遅延ms { get; }
 		long n実バッファサイズms { get; }
 		long n経過時間ms { get; }

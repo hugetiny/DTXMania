@@ -241,7 +241,20 @@ namespace DTXMania
 				"AutoSaveResult:\nTurn ON to save your result screen\n image automatically when you get\n hiscore/hiskill." );
 			this.list項目リスト.Add( this.iSystemAutoResultCapture );
 
-	
+			this.iSystemJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度,
+				"判定文字列とコンボ表示の優先順位を\n" +
+				"指定します。\n" +
+				"\n" +
+				" Under: チップの下に表示します。\n" +
+				" Over:  チップの上に表示します。",
+				"The display prioity between chips\n" +
+				" and judge mark/combo.\n" +
+				"\n" +
+				" Under: Show them under the chips.\n" +
+				" Over:  Show them over the chips.",
+				new string[] { "Under", "Over" } );
+			this.list項目リスト.Add( this.iSystemJudgeDispPriority );	
+
 			this.iSystemBufferedInput = new CItemToggle( "BufferedInput", CDTXMania.ConfigIni.bバッファ入力を行う,
 				"バッファ入力モード：\nON にすると、FPS を超える入力解像\n度を実現します。\nOFF にすると、入力解像度は FPS に\n等しくなります。",
 				"To select joystick input method.\n\nON to use buffer input. No lost/lags.\nOFF to use realtime input. It may\n causes lost/lags for input.\n Moreover, input frequency is\n synchronized with FPS." );
@@ -345,6 +358,46 @@ namespace DTXMania
 			//    "Note: Exit CONFIGURATION to make\n" +
 			//    "     the setting take effect." );
 			//this.list項目リスト.Add( this.iSystemASIOBufferSizeMs );
+
+			// #33689 2014.6.17 yyagi
+			this.iSystemSoundTimerType = new CItemToggle( "UseOSTimer", CDTXMania.ConfigIni.bUseOSTimer,
+				"OSタイマーを使用するかどうか:\n" +
+				"演奏タイマーとして、DTXMania独自の\n" +
+				"タイマーを使うか、OS標準のタイマー\n" +
+				"を使うかを選択します。\n" +
+				"OS標準タイマーを使うとスクロールが\n" +
+				"滑らかになりますが、演奏で音ズレが\n" +
+				"発生することがあります。(そのため\n" +
+				"AdjustWavesの効果が適用されます。)\n" +
+				"\n" +
+				"この指定はWASAPI/ASIO使用時のみ有効\n" +
+				"です。\n",
+				"Use OS Timer or not:\n" +
+				"If this settings is ON, DTXMania uses\n" +
+				"OS Standard timer. It brings smooth\n" +
+				"scroll, but may cause some sound lag.\n" +
+				"(so AdjustWaves is also avilable)\n" +
+				"\n" +
+				"If OFF, DTXMania uses its original\n" +
+				"timer and the effect is vice versa.\n" +
+				"\n" +
+				"This settings is avilable only when\n" +
+				"you uses WASAPI/ASIO.\n"
+			);
+			this.list項目リスト.Add( this.iSystemSoundTimerType );
+
+			// #33700 2013.1.3 yyagi
+			//this.iSystemMasterVolume = new CItemInteger( "MasterVolume", 0, 100, CDTXMania.ConfigIni.nMasterVolume,
+			//    "マスターボリュームの設定:\n" +
+			//    "全体の音量を設定します。\n" +
+			//    "0が無音で、100が最大値です。\n" +
+			//    "(WASAPI/ASIO時のみ有効です)",
+			//    "Master Volume:\n" +
+			//    "You can set 0 - 100.\n" +
+			//    "\n" +
+			//    "Note:\n" +
+			//    "Only for WASAPI/ASIO mode." );
+			//this.list項目リスト.Add( this.iSystemMasterVolume );
 
 			this.iSystemSkinSubfolder = new CItemList( "Skin (General)", CItemBase.Eパネル種別.通常, nSkinIndex,
 				"スキン切替：\n" +
@@ -582,8 +635,23 @@ namespace DTXMania
 				" P-A: on the lanes.\n" +
 				" P-B: under the hit bar.\n" +
 				" OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "OFF" } );
+				new string[] { "OFF", "P-A", "P-B" } );
 			this.list項目リスト.Add( this.iDrumsPosition );
+
+			//this.iDrumsJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Drums,
+			//    "判定文字列とコンボ表示の優先順位を\n" +
+			//    "指定します。\n" +
+			//    "\n" +
+			//    " Under: チップの下に表示します。\n" +
+			//    " Over:  チップの上に表示します。",
+			//    "The display prioity between chips\n" +
+			//    " and judge mark/combo.\n" +
+			//    "\n" +
+			//    " Under: Show them under the chips.\n" +
+			//    " Over:  Show them over the chips.",
+			//    new string[] { "Under", "Over" } );
+			//this.list項目リスト.Add( this.iDrumsJudgeDispPriority );
+
 			#endregion
 			#region [ Group ]
 			this.iSystemHHGroup = new CItemList( "HH Group", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eHHGroup,
@@ -827,6 +895,8 @@ namespace DTXMania
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iGuitarReturnToMenu );
+
+			#region [ AutoPlay ]
 			//this.iGuitarAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Guitar,
 			//    "ギターパートを自動で演奏します。",
 			//    "To play the guitar part automatically." );
@@ -858,7 +928,7 @@ namespace DTXMania
 				"ウェイリングを自動で演奏します。",
 				"To play wailing automatically." );
 			this.list項目リスト.Add( this.iGuitarW );
-
+			#endregion
 			this.iGuitarScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Guitar,
 				"演奏時のギター譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
 				"To change the scroll speed for the\nguitar lanes.\nYou can set it from x0.5 to x1000.0.\n(ScrollSpeed=x0.5 means half speed)" );
@@ -916,14 +986,54 @@ namespace DTXMania
 			//this.list項目リスト.Add( this.iGuitarInvisible );
 
 			this.iGuitarReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Guitar,
-				"ギターチップが譜面の上から下に流\nれるようになります。",
-				"The scroll way is reversed. Guitar chips\nflow from the top to the bottom." );
+				"ギターチップが譜面の上から下に\n" +
+				"流れるようになります。",
+				"The scroll way is reversed\n" +
+				"Guitar chips flow from the top\n" +
+				"to the bottom." );
 			this.list項目リスト.Add( this.iGuitarReverse );
+
+			this.iSystemJudgePosGuitar = new CItemList( "JudgePos", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定位置.Guitar,
+				"判定ライン表示位置:\n" +
+				"判定ラインとRGBボタンが、少し下側に\n" +
+				"表示されるようになります。",
+				"Judge Line position:\n" +
+				"The judge line and RGB buttons will\n" +
+				"be displayed lower position.",
+				new string[] { "Normal", "Lower" } );
+			this.list項目リスト.Add( this.iSystemJudgePosGuitar );
+
 			this.iGuitarPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Guitar,
-				"ギターの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない",
-				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the COMBO indication.\n OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "OFF" } );
+				"ギターの判定文字の表示位置を指定\n" +
+				"します。\n" +
+				" P-A: レーン上\n" +
+				" P-B: 判定ラインの上\n" +
+				" P-C: COMBO の下\n" +
+				" OFF: 表示しない",
+				"The position to show judgement mark.\n" +
+				"(Perfect, Great, ...)\n" +
+				"\n" +
+				" P-A: on the lanes.\n" +
+				" P-B: over the hit bar.\n" +
+				" P-C: under the COMBO indication.\n" +
+				" OFF: no judgement mark.",
+				new string[] { "OFF", "P-A", "P-B", "P-C" } );
 			this.list項目リスト.Add( this.iGuitarPosition );
+
+			//this.iGuitarJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Guitar,
+			//    "判定文字列とコンボ表示の優先順位を\n" +
+			//    "指定します。\n" +
+			//    "\n" +
+			//    " Under: チップの下に表示します。\n" +
+			//    " Over:  チップの上に表示します。",
+			//    "The display prioity between chips\n" +
+			//    " and judge mark/combo.\n" +
+			//    "\n" +
+			//    " Under: Show them under the chips.\n" +
+			//    " Over:  Show them over the chips.",
+			//    new string[] { "Under", "Over" } );
+			//this.list項目リスト.Add( this.iGuitarJudgeDispPriority );
+
 			this.iGuitarRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eRandom.Guitar,
 				"ギターのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
 				"Guitar chips come randomly.\n\n Part: swapping lanes randomly for each\n  measures.\n Super: swapping chip randomly\n Hyper: swapping randomly\n  (number of lanes also changes)",
@@ -981,6 +1091,8 @@ namespace DTXMania
 				"左側のメニューに戻ります。",
 				"Return to left menu." );
 			this.list項目リスト.Add( this.iBassReturnToMenu );
+
+			#region [ AutoPlay ]
 			//this.iBassAutoPlay = new CItemToggle( "AutoPlay", CDTXMania.ConfigIni.bAutoPlay.Bass,
 			//    "ベースパートを自動で演奏します。",
 			//    "To play the bass part automatically." );
@@ -1012,6 +1124,7 @@ namespace DTXMania
 				"ウェイリングを自動で演奏します。",
 				"To play wailing automatically." );
 			this.list項目リスト.Add( this.iBassW );
+			#endregion
 
 			this.iBassScrollSpeed = new CItemInteger( "ScrollSpeed", 0, 0x7cf, CDTXMania.ConfigIni.n譜面スクロール速度.Bass,
 				"演奏時のベース譜面のスクロールの\n速度を指定します。\nx0.5 ～ x1000.0 までを指定可能です。",
@@ -1070,15 +1183,55 @@ namespace DTXMania
 			//this.list項目リスト.Add( this.iBassInvisible );
 			
 			this.iBassReverse = new CItemToggle( "Reverse", CDTXMania.ConfigIni.bReverse.Bass,
-				"ベースチップが譜面の上から下に流\nれるようになります。",
-				"The scroll way is reversed. Bass chips\nflow from the top to the bottom." );
+				"ベースチップが譜面の上から下に\n" + 
+				"流れるようになります。",
+				"The scroll way is reversed.\n" +
+				"Bass chips flow from the top\n" +
+				"to the bottom." );
 			this.list項目リスト.Add( this.iBassReverse );
+
+			this.iSystemJudgePosBass = new CItemList( "JudgePos", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定位置.Bass,
+				"判定ライン表示位置:\n" +
+				"判定ラインとRGBボタンが、少し下側に\n" +
+				"表示されるようになります。",
+				"Judge Line position:\n" +
+				"The judge line and RGB buttons will\n" +
+				"be displayed lower position.",
+				new string[] { "Normal", "Lower" } );
+			this.list項目リスト.Add( this.iSystemJudgePosBass );
+			
 			this.iBassPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常,
 				(int) CDTXMania.ConfigIni.判定文字表示位置.Bass,
-				"ベースの判定文字の表示位置を指定\nします。\n  P-A: レーン上\n  P-B: COMBO の下\n  OFF: 表示しない",
-				"The position to show judgement mark.\n(Perfect, Great, ...)\n\n P-A: on the lanes.\n P-B: under the COMBO indication.\n OFF: no judgement mark.",
-				new string[] { "P-A", "P-B", "OFF" } );
+				"ベースの判定文字の表示位置を指定\n" +
+				"します。\n" +
+				" P-A: レーン上\n" +
+				" P-B: 判定ラインの上\n" +
+				" P-C: COMBO の下\n" +
+				" OFF: 表示しない",
+				"The position to show judgement mark.\n" +
+				"(Perfect, Great, ...)\n" +
+				"\n" +
+				" P-A: on the lanes.\n" +
+				" P-B: over the hit bar.\n" +
+				" P-C: under the COMBO indication.\n" +
+				" OFF: no judgement mark.",
+				new string[] { "OFF", "P-A", "P-B", "P-C" } );
 			this.list項目リスト.Add( this.iBassPosition );
+
+			//this.iBassJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Bass,
+			//"判定文字列とコンボ表示の優先順位を\n" +
+			//"指定します。\n" +
+			//"\n" +
+			//" Under: チップの下に表示します。\n" +
+			//" Over:  チップの上に表示します。",
+			//"The display prioity between chips\n" +
+			//" and judge mark/combo.\n" +
+			//"\n" +
+			//" Under: Show them under the chips.\n" +
+			//" Over:  Show them over the chips.",
+			//new string[] { "Under", "Over" } );
+			//this.list項目リスト.Add( this.iBassJudgeDispPriority );
+
 			this.iBassRandom = new CItemList( "Random", CItemBase.Eパネル種別.通常,
 				(int) CDTXMania.ConfigIni.eRandom.Bass,
 				"ベースのチップがランダムに降ってき\nます。\n  Part: 小節・レーン単位で交換\n  Super: チップ単位で交換\n  Hyper: 全部完全に変更",
@@ -1636,6 +1789,7 @@ namespace DTXMania
 			if( this.b要素値にフォーカス中 )
 			{
 				this.list項目リスト[ this.n現在の選択項目 ].t項目値を前へ移動();
+				t要素値を上下に変更中の処理();
 			}
 			else
 			{
@@ -1648,11 +1802,19 @@ namespace DTXMania
 			if( this.b要素値にフォーカス中 )
 			{
 				this.list項目リスト[ this.n現在の選択項目 ].t項目値を次へ移動();
+				t要素値を上下に変更中の処理();
 			}
 			else
 			{
 				this.n目標のスクロールカウンタ -= 100;
 			}
+		}
+		private void t要素値を上下に変更中の処理()
+		{
+			//if ( this.list項目リスト[ this.n現在の選択項目 ] == this.iSystemMasterVolume )				// #33700 2014.4.26 yyagi
+			//{
+			//    CDTXMania.Sound管理.nMasterVolume = this.iSystemMasterVolume.n現在の値;
+			//}
 		}
 
 
@@ -1703,6 +1865,7 @@ namespace DTXMania
 			// this.iSystemWASAPIBufferSizeMs_initial	= this.iSystemWASAPIBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
 			// this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
 			this.iSystemASIODevice_initial			= this.iSystemASIODevice.n現在選択されている項目番号;	//
+			this.iSystemSoundTimerType_initial      = this.iSystemSoundTimerType.GetIndex();				//
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -1723,11 +1886,13 @@ namespace DTXMania
 			#endregion
 
 			// #24820 2013.1.22 yyagi CONFIGでWASAPI/ASIO/DirectSound関連の設定を変更した場合、サウンドデバイスを再構築する。
+			// #33689 2014.6.17 yyagi CONFIGでSoundTimerTypeの設定を変更した場合も、サウンドデバイスを再構築する。
 			#region [ サウンドデバイス変更 ]
 			if ( this.iSystemSoundType_initial != this.iSystemSoundType.n現在選択されている項目番号 ||
 				// this.iSystemWASAPIBufferSizeMs_initial != this.iSystemWASAPIBufferSizeMs.n現在の値 ||
 				// this.iSystemASIOBufferSizeMs_initial != this.iSystemASIOBufferSizeMs.n現在の値 ||
-				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 )
+				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 ||
+				this.iSystemSoundTimerType_initial != this.iSystemSoundTimerType.GetIndex() )
 			{
 				ESoundDeviceType soundDeviceType;
 				switch ( this.iSystemSoundType.n現在選択されている項目番号 )
@@ -1746,13 +1911,14 @@ namespace DTXMania
 						break;
 				}
 
-				FDK.CSound管理.t初期化( soundDeviceType,
+				CDTXMania.Sound管理.t初期化( soundDeviceType,
 										0,
 										// this.iSystemWASAPIBufferSizeMs.n現在の値,
 										0,
 										// this.iSystemASIOBufferSizeMs.n現在の値,
-										this.iSystemASIODevice.n現在選択されている項目番号 );
-				CDTXMania.app.AddSoundTypeToWindowTitle();
+										this.iSystemASIODevice.n現在選択されている項目番号,
+										this.iSystemSoundTimerType.bON );
+				CDTXMania.app.ShowWindowTitleWithSoundType();
 			}
 			#endregion
 			#region [ サウンドのタイムストレッチモード変更 ]
@@ -2090,6 +2256,7 @@ namespace DTXMania
 		private bool b要素値にフォーカス中;
 		private CCounter ct三角矢印アニメ;
 		private Eメニュー種別 eメニュー種別;
+		#region [ キーコンフィグ ]
 		private CItemBase iKeyAssignSystemCapture;			// #24609
 		private CItemBase iKeyAssignSystemReturnToMenu;		// #24609
 		private CItemBase iKeyAssignBassB;
@@ -2120,6 +2287,7 @@ namespace DTXMania
 		private CItemBase iKeyAssignGuitarR;
 		private CItemBase iKeyAssignGuitarReturnToMenu;
 		private CItemBase iKeyAssignGuitarWail;
+		#endregion
 		private CItemToggle iLogOutputLog;
 		private CItemToggle iSystemAdjustWaves;
 		private CItemToggle iSystemAudienceSound;
@@ -2172,9 +2340,17 @@ namespace DTXMania
 //		private int iSystemWASAPIBufferSizeMs_initial;
 //		private int iSystemASIOBufferSizeMs_initial;
 		private int iSystemASIODevice_initial;
+		private CItemToggle iSystemSoundTimerType;			// #33689 2014.6.17 yyagi
+		private int iSystemSoundTimerType_initial;			// #33689 2014.6.17 yyagi
 
 		private CItemToggle iSystemTimeStretch;				// #23664 2013.2.24 yyagi
+		private CItemList iSystemJudgePosGuitar;			// #33891 2014.6.26 yyagi
+		private CItemList iSystemJudgePosBass;				// #33891 2014.6.26 yyagi
 
+		//private CItemList iDrumsJudgeDispPriority;	//
+		//private CItemList iGuitarJudgeDispPriority;	//
+		//private CItemList iBassJudgeDispPriority;		//
+		private CItemList iSystemJudgeDispPriority;
 
 		private List<CItemBase> list項目リスト;
 		private long nスクロール用タイマ値;
@@ -2265,6 +2441,7 @@ namespace DTXMania
 		private CItemList iGuitarSudHid;					// #32072 2013.9.20 yyagi
 		private CItemList iBassSudHid;						// #32072 2013.9.20 yyagi
 		private CItemBase iSystemReloadDTX;					// #32081 2013.10.21 yyagi
+		//private CItemInteger iSystemMasterVolume;			// #33700 2014.4.26 yyagi
 
 		private int t前の項目( int nItem )
 		{
@@ -2368,7 +2545,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.nShowLagType = this.iSystemShowLag.n現在選択されている項目番号;				// #25370 2011.6.3 yyagi
 			CDTXMania.ConfigIni.bIsAutoResultCapture = this.iSystemAutoResultCapture.bON;					// #25399 2011.6.9 yyagi
 
-			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;										// #23559 2911.7.27 yyagi
+			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;										// #23559 2011.7.27 yyagi
 
 			CDTXMania.ConfigIni.strSystemSkinSubfolderFullName = skinSubFolders[ nSkinIndex ];				// #28195 2012.5.2 yyagi
 			CDTXMania.Skin.SetCurrentSkinSubfolderFullName( CDTXMania.ConfigIni.strSystemSkinSubfolderFullName, true );
@@ -2378,13 +2555,15 @@ namespace DTXMania
 //			CDTXMania.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
 //			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
 			CDTXMania.ConfigIni.nASIODevice = this.iSystemASIODevice.n現在選択されている項目番号;			// #24820 2013.1.17 yyagi
+			CDTXMania.ConfigIni.bUseOSTimer = this.iSystemSoundTimerType.bON;								// #33689 2014.6.17 yyagi
 
 			CDTXMania.ConfigIni.bTimeStretch = this.iSystemTimeStretch.bON;									// #23664 2013.2.24 yyagi
 //Trace.TraceInformation( "saved" );
 //Trace.TraceInformation( "Skin現在Current : " + CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true) );
 //Trace.TraceInformation( "Skin現在System  : " + CSkin.strSystemSkinSubfolderFullName );
 //Trace.TraceInformation( "Skin現在BoxDef  : " + CSkin.strBoxDefSkinSubfolderFullName );
-		
+			//CDTXMania.ConfigIni.nMasterVolume = this.iSystemMasterVolume.n現在の値;							// #33700 2014.4.26 yyagi
+			CDTXMania.ConfigIni.e判定表示優先度 = (E判定表示優先度) this.iSystemJudgeDispPriority.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する・Bass()
 		{
@@ -2411,6 +2590,8 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.b演奏音を強調する.Bass = this.iSystemSoundMonitorBass.bON;
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Bass = this.iSystemMinComboBass.n現在の値;
+			CDTXMania.ConfigIni.e判定位置.Bass = (E判定位置) this.iSystemJudgePosBass.n現在選択されている項目番号;					// #33891 2014.6.26 yyagi
+			//CDTXMania.ConfigIni.e判定表示優先度.Bass = (E判定表示優先度) this.iBassJudgeDispPriority.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する・Drums()
 		{
@@ -2452,6 +2633,7 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.eDark = (Eダークモード)this.iCommonDark.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
+			//CDTXMania.ConfigIni.e判定表示優先度.Drums = (E判定表示優先度) this.iDrumsJudgeDispPriority.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{
@@ -2478,6 +2660,8 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.n表示可能な最小コンボ数.Guitar = this.iSystemMinComboGuitar.n現在の値;
 			CDTXMania.ConfigIni.b演奏音を強調する.Guitar = this.iSystemSoundMonitorGuitar.bON;
+			CDTXMania.ConfigIni.e判定位置.Guitar = (E判定位置) this.iSystemJudgePosGuitar.n現在選択されている項目番号;					// #33891 2014.6.26 yyagi
+			//CDTXMania.ConfigIni.e判定表示優先度.Guitar = (E判定表示優先度) this.iGuitarJudgeDispPriority.n現在選択されている項目番号;
 		}
 		//-----------------
 		#endregion

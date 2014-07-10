@@ -61,7 +61,8 @@ namespace DTXMania
 			NOWLOADING_システムサウンドBGMの完了を待つ,
 			演奏_STAGE_FAILED,
 			演奏_STAGE_FAILED_フェードアウト,
-			演奏_STAGE_CLEAR_フェードアウト
+			演奏_STAGE_CLEAR_フェードアウト,
+			演奏_再読込
 		}
 	}
 }

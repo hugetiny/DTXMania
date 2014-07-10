@@ -36,9 +36,22 @@ namespace DTXCreator.オプション関連
 			bレーンリストの内訳が生成済みである = true;
 		}
 
+		public int tASIOデバイスリストの内訳を生成する()
+		{
+			this.comboBox_ASIOdevices.Items.Clear();
+			string[] asiodevs = FDK.CEnumerateAllAsioDevices.GetAllASIODevices();
+			this.comboBox_ASIOdevices.Items.AddRange( asiodevs );
+
+			return asiodevs.Length;
+		}
+
 		private void Cオプションダイアログ_KeyDown( object sender, KeyEventArgs e )
 		{
-			if ( e.KeyCode == Keys.Escape )
+			if ( e.KeyCode == Keys.Return )
+			{
+				this.buttonOK.PerformClick();
+			}
+			else if ( e.KeyCode == Keys.Escape )
 			{
 				this.button1.PerformClick();
 			}
@@ -50,6 +63,39 @@ namespace DTXCreator.オプション関連
 			{
 				this.button1.PerformClick();
 			}
+		}
+
+		private void radioButton_UseDTXViewer_CheckedChanged( object sender, EventArgs e )
+		{
+			this.radioButton_DirectSound.Enabled = false;
+			this.radioButton_WASAPI.Enabled = false;
+			this.radioButton_ASIO.Enabled = false;
+			this.comboBox_ASIOdevices.Enabled = false;
+			this.groupBox_SoundDeviceSettings.Enabled = false;
+		}
+
+		private void radioButton_UseDTXManiaGR_CheckedChanged( object sender, EventArgs e )
+		{
+			this.radioButton_DirectSound.Enabled = true;
+			this.radioButton_WASAPI.Enabled = true;
+			this.radioButton_ASIO.Enabled = true;
+			this.comboBox_ASIOdevices.Enabled = true;
+			this.groupBox_SoundDeviceSettings.Enabled = true;
+		}
+
+		private void radioButton_DirectSound_CheckedChanged( object sender, EventArgs e )
+		{
+			this.comboBox_ASIOdevices.Enabled = false;
+		}
+
+		private void radioButton_WASAPI_CheckedChanged( object sender, EventArgs e )
+		{
+			this.comboBox_ASIOdevices.Enabled = false;
+		}
+
+		private void radioButton_ASIO_CheckedChanged( object sender, EventArgs e )
+		{
+			this.comboBox_ASIOdevices.Enabled = true;
 		}
 	}
 }

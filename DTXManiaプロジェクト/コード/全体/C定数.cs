@@ -157,9 +157,21 @@ namespace DTXMania
 	}
 	internal enum E判定文字表示位置
 	{
+		表示OFF,
 		レーン上,
-		判定ライン上または横,
-		表示OFF
+		判定ライン上,
+		コンボ下
+	}
+	internal enum E判定位置
+	{
+		標準	= 0,
+		Lower,
+		MAX
+	}
+	internal enum E判定表示優先度
+	{
+		Chipより下,
+		Chipより上
 	}
 	internal enum EAVI種別
 	{
@@ -229,7 +241,9 @@ namespace DTXMania
 		継続,
 		演奏中断,
 		ステージ失敗,
-		ステージクリア
+		ステージクリア,
+		再読込・再演奏,
+		再演奏
 	}
 	internal enum E曲読込画面の戻り値
 	{

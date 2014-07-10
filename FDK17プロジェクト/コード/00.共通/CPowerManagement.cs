@@ -18,7 +18,7 @@ namespace FDK
 		}
 
 		/// <summary>
-		/// 本体/モニタの省電力モニタ以降抑制を解除する
+		/// 本体/モニタの省電力モード移行抑制を解除する
 		/// </summary>
 		public static void tEnableMonitorSuspend()
 		{

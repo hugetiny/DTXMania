@@ -10,13 +10,10 @@
    (You'll need to install .NET Framework 3.5 additionaly on Win8.)
 (3) DirectX End User Runtime ... June 2010 Version or later
    (You'll need to install DirextX 9.0c additionaly on Win8.)
+(4) Microsoft Visual C++ 2008 Redistributable Package (x86)
 
 If you don't install any libraries descrived above,
 you'll fail to start DTXMania.
-
-And there is DTXManiaGR.exe.config file in the same folder
-as DTXManiaGR.exe. Don't rename/remove it.
-If that config file doesn't find, DTXManiaGR.exe cant open.
 
 
 * Installing DirectX End User Runtime

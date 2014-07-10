@@ -369,7 +369,7 @@ namespace DTXMania
 				return builder.ToString();
 			}
 		}
-		public class CChip : IComparable<CDTX.CChip>
+		public class CChip : IComparable<CDTX.CChip>, ICloneable
 		{
 			public bool bHit;
 			public bool b可視 = true;
@@ -588,6 +588,41 @@ namespace DTXMania
 					this.b自動再生音チャンネルである,
 					CDTX.tZZ( this.n整数値 ) );
 			}
+			/// <summary>
+			/// チップの再生長を取得する。現状、WAVチップとBGAチップでのみ使用可能。
+			/// </summary>
+			/// <returns>再生長(ms)</returns>
+			public int GetDuration()
+			{
+				int nDuration = 0;
+
+				if ( this.bWAVを使うチャンネルである )		// WAV
+				{
+					CDTX.CWAV wc;
+					CDTXMania.DTX.listWAV.TryGetValue( this.n整数値・内部番号, out wc );
+					if ( wc == null )
+					{
+						nDuration = 0;
+					}
+					else
+					{
+						nDuration = ( wc.rSound[ 0 ] == null ) ? 0 : wc.rSound[ 0 ].n総演奏時間ms;
+					}
+				}
+				else if ( this.nチャンネル番号 == 0x54 )	// AVI
+				{
+					if ( this.rAVI != null && this.rAVI.avi != null )
+					{
+						int dwRate = (int) this.rAVI.avi.dwレート;
+						int dwScale = (int) this.rAVI.avi.dwスケール;
+						nDuration = (int) ( 1000.0f * dwScale / dwRate * this.rAVI.avi.GetMaxFrameCount() );
+					}
+				}
+
+				double _db再生速度 = ( CDTXMania.DTXVmode.Enabled ) ? CDTXMania.DTX.dbDTXVPlaySpeed : CDTXMania.DTX.db再生速度;
+				return (int) ( nDuration / _db再生速度 );
+			}
+
 			#region [ IComparable 実装 ]
 			//-----------------
 			public int CompareTo( CDTX.CChip other )
@@ -636,6 +671,14 @@ namespace DTXMania
 			}
 			//-----------------
 			#endregion
+			/// <summary>
+			/// shallow copyです。
+			/// </summary>
+			/// <returns></returns>
+			public object Clone()
+			{
+				return MemberwiseClone();
+			}
 		}
 		public class CWAV : IDisposable
 		{
@@ -1071,6 +1114,8 @@ namespace DTXMania
 		public string strファイル名の絶対パス;
 		public string strフォルダ名;
 		public string TITLE;
+		public double dbDTXVPlaySpeed;
+
 #if TEST_NOTEOFFMODE
 		public STLANEVALUE<bool> b演奏で直前の音を消音する;
 //		public bool bHH演奏で直前のHHを消音する;
@@ -1161,6 +1206,8 @@ namespace DTXMania
 			#endregion
 			this.nBGMAdjust = 0;
 			this.nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
+			this.dbDTXVPlaySpeed = 1.0f;
+
 #if TEST_NOTEOFFMODE
 			this.bHH演奏で直前のHHを消音する = true;
 			this.bGUITAR演奏で直前のGUITARを消音する = true;
@@ -1546,6 +1593,10 @@ namespace DTXMania
 		}
 		public void tWavの再生停止( int nWaveの内部番号 )
 		{
+			tWavの再生停止( nWaveの内部番号, false );
+		}
+		public void tWavの再生停止( int nWaveの内部番号, bool bミキサーからも削除する )
+		{
 			if( this.listWAV.ContainsKey( nWaveの内部番号 ) )
 			{
 				CWAV cwav = this.listWAV[ nWaveの内部番号 ];
@@ -1553,7 +1604,14 @@ namespace DTXMania
 				{
 					if( cwav.rSound[ i ] != null && cwav.rSound[ i ].b再生中 )
 					{
-						cwav.rSound[ i ].t再生を停止する();
+						if ( bミキサーからも削除する )
+						{
+							cwav.rSound[ i ].tサウンドを停止してMixerからも削除する();
+						}
+						else
+						{
+							cwav.rSound[ i ].t再生を停止する();
+						}
 					}
 				}
 			}
@@ -1609,6 +1667,10 @@ namespace DTXMania
 					{
 						cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( str );
 						cwav.rSound[ 0 ].n音量 = 100;
+						if ( !CDTXMania.ConfigIni.bDynamicBassMixerManagement )
+						{
+							cwav.rSound[ 0 ].tBASSサウンドをミキサーに追加する();
+						}
 						if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 						{
 							Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
@@ -1654,6 +1716,10 @@ namespace DTXMania
 							{
 								cwav.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( str );
 								cwav.rSound[ i ].n音量 = 100;
+								if ( !CDTXMania.ConfigIni.bDynamicBassMixerManagement )
+								{
+									cwav.rSound[ i ].tBASSサウンドをミキサーに追加する();
+								}
 								if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
 								{
 									Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
@@ -1952,6 +2018,13 @@ namespace DTXMania
 			foreach( CWAV cwav in this.listWAV.Values )
 			{
 				this.tWavの再生停止( cwav.n内部番号 );
+			}
+		}
+		public void t全チップの再生停止とミキサーからの削除()
+		{
+			foreach( CWAV cwav in this.listWAV.Values )
+			{
+				this.tWavの再生停止( cwav.n内部番号, true );
 			}
 		}
 		#endregion
@@ -2426,9 +2499,10 @@ namespace DTXMania
 						}
 						if ( this.db再生速度 > 0.0 )
 						{
+							double _db再生速度 = ( CDTXMania.DTXVmode.Enabled ) ? this.dbDTXVPlaySpeed : this.db再生速度;
 							foreach ( CChip chip in this.listChip )
 							{
-								chip.n発声時刻ms = (int) ( ( (double) chip.n発声時刻ms ) / this.db再生速度 );
+								chip.n発声時刻ms = (int) ( ( (double) chip.n発声時刻ms ) / _db再生速度 );
 							}
 						}
 						#endregion
@@ -2617,7 +2691,7 @@ namespace DTXMania
 					case 0x80:	case 0x81:	case 0x82:	case 0x83:	case 0x84:	case 0x85:	case 0x86:	case 0x87:	case 0x88:	case 0x89:
 					case 0x90:	case 0x91:	case 0x92:
 
-						#region [ 発音1秒前のタイミングを記録 ]
+						#region [ 発音1秒前のタイミングを算出 ]
 						int n発音前余裕ms = 1000, n発音後余裕ms = 800;
 						{
 							int ch = pChip.nチャンネル番号 >> 4;
@@ -2632,19 +2706,21 @@ namespace DTXMania
 								n発音前余裕ms = 500;
 							}
 						}
-						if ( pChip.nチャンネル番号 == 0x01 )	// BGMチップは即ミキサーに追加
-						{
-							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
-							{
-								CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
-								if ( wc.rSound[ 0 ] != null )
-								{
-									CDTXMania.Sound管理.AddMixer( wc.rSound[ 0 ] );	// BGMは多重再生しない仕様としているので、1個目だけミキサーに登録すればよい
-								}
-							}
-
-						}
-
+						#endregion
+						#region [ BGMチップならば即ミキサーに追加 ]
+						//if ( pChip.nチャンネル番号 == 0x01 )	// BGMチップは即ミキサーに追加
+						//{
+						//    if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
+						//    {
+						//        CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+						//        if ( wc.rSound[ 0 ] != null )
+						//        {
+						//            CDTXMania.Sound管理.AddMixer( wc.rSound[ 0 ] );	// BGMは多重再生しない仕様としているので、1個目だけミキサーに登録すればよい
+						//        }
+						//    }
+						//}
+						#endregion
+						#region [ 発音1秒前のタイミングを算出 ]
 						int nAddMixer時刻ms, nAddMixer位置 = 0;
 //Debug.WriteLine("==================================================================");
 //Debug.WriteLine( "Start: ch=" + pChip.nチャンネル番号.ToString("x2") + ", nWAV番号=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms + ", lasttime=" + listChip[ listChip.Count - 1 ].n発声時刻ms );
@@ -2669,7 +2745,8 @@ namespace DTXMania
 						if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 						{
 							CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
-							duration = ( wc.rSound[ 0 ] == null ) ? 0 : (int) ( wc.rSound[ 0 ].n総演奏時間ms / this.db再生速度 );	// #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
+							double _db再生速度 = ( CDTXMania.DTXVmode.Enabled ) ? this.dbDTXVPlaySpeed : this.db再生速度;
+							duration = ( wc.rSound[ 0 ] == null ) ? 0 : (int) ( wc.rSound[ 0 ].n総演奏時間ms / _db再生速度 );	// #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
 						}
 //Debug.WriteLine("duration=" + duration );
 						int n新RemoveMixer時刻ms, n新RemoveMixer位置;
@@ -3396,6 +3473,20 @@ namespace DTXMania
 				}
 				//-----------------
 				#endregion
+				#region [ DTXVPLAYSPEED ]
+				//-----------------
+				else if ( strコマンド.StartsWith( "DTXVPLAYSPEED", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力・パラメータ食い込みチェック( "DTXVPLAYSPEED", ref strコマンド, ref strパラメータ );
+
+					double dtxvplayspeed = 0.0;
+					if ( TryParse( strパラメータ, out dtxvplayspeed ) && dtxvplayspeed > 0.0 )
+					{
+						this.dbDTXVPlaySpeed = dtxvplayspeed;
+					}
+				}
+				//-----------------
+				#endregion
 				else if( !this.bヘッダのみ )		// ヘッダのみの解析の場合、以下は無視。
 				{
 					#region [ PANEL ]
@@ -3483,7 +3574,7 @@ namespace DTXMania
 					}
 					//-----------------
 					#endregion
-
+	
 					// オブジェクト記述コマンドの処理。
 
 					else if( !this.t入力・行解析・WAVVOL_VOLUME( strコマンド, strパラメータ, strコメント ) &&

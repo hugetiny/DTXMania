@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BCD40908-F3E2-4707-BFAA-1DD99DF6357D}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="コード\00.共通\COS.cs" />
     <Compile Include="コード\00.共通\CPowerManagement.cs" />
+    <Compile Include="コード\00.共通\CSendMessage.cs" />
     <Compile Include="コード\00.共通\CTimerBase.cs" />
     <Compile Include="コード\00.共通\C一定間隔処理.cs" />
     <Compile Include="コード\00.共通\C共通.cs" />
