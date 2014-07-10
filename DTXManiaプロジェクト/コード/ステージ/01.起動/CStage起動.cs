@@ -151,7 +151,7 @@ namespace DTXMania
 					foreach( string str in this.list進行文字列 )
 					{
 						CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.灰細, str );
-						y += 14;
+						y += 14 * 2;
 					}
 					CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.灰細, this.str現在進行中 );
 				}

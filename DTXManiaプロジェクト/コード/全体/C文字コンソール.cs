@@ -72,7 +72,7 @@ namespace DTXMania
 			{
 				for (int j = 0; j < str表記可能文字.Length; j++)
 				{
-					const int regionX = 128, regionY = 16;
+					const int regionX = 128 * 2, regionY = 16;
 					this.rc文字の矩形領域[ i, j ].X = ( ( i / 2 ) * regionX ) + ( ( j % regionY ) * nFontWidth );
 					this.rc文字の矩形領域[ i, j ].Y = ( ( i % 2 ) * regionX ) + ( ( j / regionY ) * nFontHeight );
 					this.rc文字の矩形領域[ i, j ].Width = nFontWidth;
@@ -120,7 +120,7 @@ namespace DTXMania
 		//-----------------
 		private Rectangle[,] rc文字の矩形領域;
 		private const string str表記可能文字 = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ";
-		private const int nFontWidth = 8, nFontHeight = 16;
+		private const int nFontWidth = 8 * 2, nFontHeight = 16 * 2;
 		private CTexture[] txフォント8x16 = new CTexture[ 2 ];
 		//-----------------
 		#endregion
