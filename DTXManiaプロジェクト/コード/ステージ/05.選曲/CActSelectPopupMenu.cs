@@ -19,11 +19,11 @@ namespace DTXMania
 	
 		public int GetIndex(int pos)
 		{
-			return lciMenuItems[ pos ].GetIndex();
+			return lciMenuItems[ pos ].cItem.GetIndex();
 		}
 		public object GetObj現在値( int pos )
 		{
-			return lciMenuItems[ pos ].obj現在値();
+			return lciMenuItems[ pos ].cItem.obj現在値();
 		}
 		public bool bGotoDetailConfig
 		{
@@ -60,8 +60,24 @@ namespace DTXMania
 
 		public void Initialize( List<CItemBase> menulist, bool showAllItems, string title, int defaultPos )
 		{
-			strMenuTitle = title;
-			lciMenuItems = menulist;
+
+			prvFont = new CPrivateFastFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );
+
+			stqMenuTitle = new stQuickMenuItem();
+			stqMenuTitle.cItem = new CItemBase();
+			stqMenuTitle.cItem.str項目名 = title;
+			stqMenuTitle.txName = CDTXMania.tテクスチャの生成( prvFont.DrawPrivateFont( title, Color.White, Color.Black ), false );
+			stqMenuTitle.rectName = prvFont.RectStrings;
+			lciMenuItems = new stQuickMenuItem[ menulist.Count ];
+			for (int i = 0; i < menulist.Count; i++ )
+			{
+				stQuickMenuItem stqm = new stQuickMenuItem();
+				stqm.cItem = menulist[ i ];
+				stqm.txName = CDTXMania.tテクスチャの生成( prvFont.DrawPrivateFont( menulist[ i ].str項目名, Color.White, Color.Black ), false );
+				stqm.rectName = prvFont.RectStrings;
+				lciMenuItems[ i ] = stqm;
+			}
+
 			bShowAllItems = showAllItems;
 			n現在の選択行 = defaultPos;
 		}
@@ -73,19 +89,19 @@ namespace DTXMania
 			{
 				CDTXMania.Skin.sound決定音.t再生する();
 
-				if ( this.n現在の選択行 != lciMenuItems.Count - 1 )
+				if ( this.n現在の選択行 != lciMenuItems.Length - 1 )
 				{
-					if ( lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.リスト ||
-						 lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.ONorOFFトグル ||
-						 lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.ONorOFFor不定スリーステート	)
+					if ( lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.リスト ||
+						 lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.ONorOFFトグル ||
+						 lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.ONorOFFor不定スリーステート	)
 					{
-						lciMenuItems[ n現在の選択行 ].t項目値を次へ移動();
+						lciMenuItems[ n現在の選択行 ].cItem.t項目値を次へ移動();
 					}
-					else if ( lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.整数 )
+					else if ( lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.整数 )
 					{
 						bIsSelectingIntItem = !bIsSelectingIntItem;		// 選択状態/選択解除状態を反転する
 					}
-					else if ( lciMenuItems[ n現在の選択行 ].e種別 == CItemBase.E種別.切替リスト )
+					else if ( lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.切替リスト )
 					{
 						// 特に何もしない
 					}
@@ -95,7 +111,7 @@ namespace DTXMania
 					}
 					nItemSelecting = n現在の選択行;
 				}
-				tEnter押下Main( (int) lciMenuItems[ n現在の選択行 ].GetIndex() );
+				tEnter押下Main( (int) lciMenuItems[ n現在の選択行 ].cItem.GetIndex() );
 
 				this.bキー入力待ち = true;
 			}
@@ -129,11 +145,11 @@ namespace DTXMania
 				CDTXMania.Skin.soundカーソル移動音.t再生する();
 				if ( bIsSelectingIntItem )
 				{
-					 lciMenuItems[ n現在の選択行 ].t項目値を前へ移動();		// 項目移動と数値上下は方向が逆になるので注意
+					 lciMenuItems[ n現在の選択行 ].cItem.t項目値を前へ移動();		// 項目移動と数値上下は方向が逆になるので注意
 				}
 				else
 				{
-					if ( ++this.n現在の選択行 >= this.lciMenuItems.Count )
+					if ( ++this.n現在の選択行 >= this.lciMenuItems.Length )
 					{
 						this.n現在の選択行 = 0;
 					}
@@ -147,13 +163,13 @@ namespace DTXMania
 				CDTXMania.Skin.soundカーソル移動音.t再生する();
 				if ( bIsSelectingIntItem )
 				{
-					lciMenuItems[ n現在の選択行 ].t項目値を次へ移動();		// 項目移動と数値上下は方向が逆になるので注意
+					lciMenuItems[ n現在の選択行 ].cItem.t項目値を次へ移動();		// 項目移動と数値上下は方向が逆になるので注意
 				}
 				else
 				{
 					if ( --this.n現在の選択行 < 0 )
 					{
-						this.n現在の選択行 = this.lciMenuItems.Count - 1;
+						this.n現在の選択行 = this.lciMenuItems.Length - 1;
 					}
 				}
 			}
@@ -172,19 +188,20 @@ namespace DTXMania
 			base.b活性化してない = true;
 
 			this.bIsActivePopupMenu = false;
-			this.font = new CActDFPFont();
-			base.list子Activities.Add( this.font );
+//			this.font = new CActDFPFont();
+//			base.list子Activities.Add( this.font );
 			nItemSelecting = -1;
 
+			
 			base.On活性化();
 		}
 		public override void On非活性化()
 		{
 			if ( !base.b活性化してない )
 			{
-				base.list子Activities.Remove( this.font );
-				this.font.On非活性化();
-				this.font = null;
+//				base.list子Activities.Remove( this.font );
+//				this.font.On非活性化();
+//				this.font = null;
 
 				CDTXMania.tテクスチャの解放( ref this.txCursor );
 				CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
@@ -192,6 +209,20 @@ namespace DTXMania
 				{
 					this.ctキー反復用[ i ] = null;
 				}
+
+				// 解放はGCに任せてみる
+				//if ( lciMenuItems != null )
+				//{
+				//    for ( int i = 0; i < lciMenuItems.Length; i++ )
+				//    {
+				//        lciMenuItems[ i ].cItem = null;
+				//        CDTXMania.tテクスチャの解放( ref lciMenuItems[ i ].txName );
+				//        lciMenuItems[ i ].txName = null;
+				//    }
+				//    lciMenuItems = null;
+				//}
+				//CDTXMania.tテクスチャの解放( ref txMenuTitle );
+
 				base.On非活性化();
 			}
 		}
@@ -300,60 +331,71 @@ namespace DTXMania
 				#region [ ポップアップメニュー 背景描画 ]
 				if ( this.txPopupMenuBackground != null )
 				{
-					this.txPopupMenuBackground.t2D描画( CDTXMania.app.Device, 160, 40 );
+					this.txPopupMenuBackground.t2D描画( CDTXMania.app.Device, 160 * Scale.X, 40 * Scale.Y );
 				}
 				#endregion
 				#region [ ソートメニュータイトル描画 ]
-				int x = 240, y = 44;
-				font.t文字列描画( x, y, strMenuTitle, false, 1.0f );
+				int x = (int) ( 240 * Scale.X ), y = (int) ( 44 * Scale.Y );
+				stqMenuTitle.txName.t2D描画( CDTXMania.app.Device, x, y );						//font.t文字列描画( x, y, strMenuTitle, false, 1.0f );
 				#endregion
 				#region [ カーソル描画 ]
 				if ( this.txCursor != null )
 				{
-					int height = 32;
-					int curX = 180;
-					int curY = 46 + ( height * ( this.n現在の選択行 + 1 ) );
-					this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, new Rectangle( 0, 0, 16, 32 ) );
-					curX += 0x10;
-					Rectangle rectangle = new Rectangle( 8, 0, 0x10, 0x20 );
-					for ( int j = 0; j < 16; j++ )
+					int height = stqMenuTitle.rectName.Height;
+					int curX = (int)(180 * Scale.X);
+					int curY = (int)(46 * Scale.Y) + ( height / 4 - 6) +  ( height * ( this.n現在の選択行 + 1 ) );
+					this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, new Rectangle( 0, 0, (int)(16 * Scale.X), (int)(32 * Scale.Y) ) );
+					curX += (int)(0x10 * Scale.X);
+					Rectangle rectangle = new Rectangle( (int)(8 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) );
+					for ( int j = 0; j < 16 + 3; j++ )
 					{
 						this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, rectangle );
-						curX += 16;
+						curX += (int)(16 * Scale.Y);
 					}
-					this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, new Rectangle( 0x10, 0, 16, 32 ) );
+					this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, new Rectangle( (int)(0x10 * Scale.X), 0, (int)(16 * Scale.X), (int)(32 * Scale.Y) ) );
 				}
 				#endregion
 				#region [ ソート候補文字列描画 ]
-				for ( int i = 0; i < lciMenuItems.Count; i++ )
+				for ( int i = 0; i < lciMenuItems.Length; i++ )
 				{
 					bool bItemBold = ( i == nItemSelecting && !bShowAllItems ) ? true : false;
-					font.t文字列描画( 190, 80 + i * 32, lciMenuItems[i].str項目名, bItemBold, 1.0f );
+					//font.t文字列描画( 190, 80 + i * 32, lciMenuItems[i].cItem.str項目名, bItemBold, 1.0f );
+					if ( lciMenuItems[ i ].txName != null )
+					{
+						int height = lciMenuItems[ i ].rectName.Height;
+						lciMenuItems[ i ].txName.t2D描画( CDTXMania.app.Device, 190 * Scale.X, ( 80 * Scale.Y ) + i * height );
+					}
 
 					bool bValueBold = (bItemBold || (i == nItemSelecting && bIsSelectingIntItem)) ? true : false;
 					if ( bItemBold || bShowAllItems )
 					{
 						string s;
-						switch ( lciMenuItems[i].str項目名 )
+						switch ( lciMenuItems[i].cItem.str項目名 )
 						{
 							case "PlaySpeed":
 								{
-									double d = (double) ((int)lciMenuItems[ i ].obj現在値() / 20.0);
+									double d = (double) ((int)lciMenuItems[ i ].cItem.obj現在値() / 20.0);
 									s = "x" + d.ToString( "0.000" );
 								}
 								break;
 							case "ScrollSpeed":
 								{
-									double d = (double) ( ( ( (int) lciMenuItems[ i ].obj現在値() ) + 1 ) / 2.0 );
+									double d = (double) ( ( ( (int) lciMenuItems[ i ].cItem.obj現在値() ) + 1 ) / 2.0 );
 									s = "x" + d.ToString( "0.0" );
 								}
 								break;
 
 							default:
-								s = lciMenuItems[ i ].obj現在値().ToString();
+								s = lciMenuItems[ i ].cItem.obj現在値().ToString();
 								break;
 						}
-						font.t文字列描画( 340, 80 + i * 32, s, bValueBold, 1.0f );
+						//font.t文字列描画( (int)(340 * Scale.X), (int)(80 + i * 32), s, bValueBold, 1.0f * Scale.Y);
+						Bitmap bmpStr = bValueBold?
+							prvFont.DrawPrivateFont( s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) : 
+							prvFont.DrawPrivateFont( s, Color.White, Color.Black );
+						CTexture ctStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+						ctStr.t2D描画( CDTXMania.app.Device, 340 * Scale.X, ( 80 * Scale.Y ) + i * prvFont.RectStrings.Height );
+						CDTXMania.tテクスチャの解放( ref ctStr );
 					}
 				}
 				#endregion
@@ -375,13 +417,21 @@ namespace DTXMania
 
 		private CTexture txPopupMenuBackground;
 		private CTexture txCursor;
-		private CActDFPFont font;
+		//private CActDFPFont font;
 
-		private string strMenuTitle;
-		private List<CItemBase> lciMenuItems;
+		internal struct stQuickMenuItem
+		{
+			internal CItemBase cItem;
+			internal CTexture txName;
+			internal Rectangle rectName;
+		}
+		private stQuickMenuItem[] lciMenuItems;
+		CPrivateFastFont prvFont;
+
+		private stQuickMenuItem stqMenuTitle;
 		private bool bShowAllItems;
 		private bool bIsSelectingIntItem;
-
+	
 		[StructLayout( LayoutKind.Sequential )]
 		private struct STキー反復用カウンタ
 		{

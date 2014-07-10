@@ -55,8 +55,8 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.n本体X = 3;
-			this.n本体Y = 0x15d;
+			this.n本体X = (int)(3 * Scale.X);
+			this.n本体Y = (int)(0x15d * Scale.Y);
 			this.n現在選択中の曲の難易度 = 0;
 			for( int i = 0; i < 3; i++ )
 			{
@@ -149,15 +149,15 @@ namespace DTXMania
 				{
 					if( this.ct登場アニメ用.b終了値に達した )
 					{
-						this.n本体X = 3;
-						this.n本体Y = 0x15d;
+						this.n本体X = (int)(3 * Scale.X);
+						this.n本体Y = (int)(0x15d * Scale.Y);
 					}
 					else
 					{
-						double num2 = ( (double) ( 100 - this.ct登場アニメ用.n現在の値 ) ) / 100.0;
+						double num2 = ( (double) ( (int)(100 * Scale.X)- this.ct登場アニメ用.n現在の値 ) ) / 100.0;
 						double num3 = Math.Sin( Math.PI / 2 * num2 );
 						this.n本体X = 3 - ( (int) ( ( this.txパネル本体.sz画像サイズ.Width * num3 ) * num3 ) );
-						this.n本体Y = 0x15d;
+						this.n本体Y = (int)(0x15d * Scale.Y);
 					}
 					this.txパネル本体.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y );
 				}
@@ -218,14 +218,19 @@ namespace DTXMania
 
 				if( index > 0 )
 				{
-					int x = this.n本体X + 20;
-					int y = this.n本体Y + 0x10;
+					int x = this.n本体X + (int)(20 * Scale.X);
+					int y = this.n本体Y + (int)(0x10 * Scale.Y);
 					index = this.n難易度開始文字位置;
 					flag = true;
-					while( index < ( this.n難易度開始文字位置 + 0x24 ) )
+					while( index < ( this.n難易度開始文字位置 + 55 ) )	 // 0x24 -> 55
 					{
-						CDTXMania.act文字コンソール.tPrint( x, y, eフォント種別Array[ index ], chArray[ index ].ToString() );
-						x += 8;
+						CDTXMania.act文字コンソール.tPrint(
+							x,
+							y + 5,
+							eフォント種別Array[ index ],
+							chArray[ index ].ToString()
+						);
+						x += 8 * 2;
 						index++;
 						if( chArray[ index ] == '\0' )
 						{
@@ -235,20 +240,20 @@ namespace DTXMania
 					}
 					if( this.n難易度開始文字位置 > 0 )
 					{
-						int num9 = ( this.n本体X + 12 ) - this.ct難易度矢印用.n現在の値;
-						int num10 = ( this.n本体Y + 0x10 ) + 5;
+						int num9 = ( this.n本体X + (int)(12 * Scale.X) ) - (int)(this.ct難易度矢印用.n現在の値 * Scale.X);
+						int num10 = ( this.n本体Y + (int)(0x10 * Scale.Y) ) + (int)(5 * Scale.Y);
 						if( this.tx難易度用矢印 != null )
 						{
-							this.tx難易度用矢印.t2D描画( CDTXMania.app.Device, num9, num10, new Rectangle( 0, 0, 8, 0x10 ) );
+							this.tx難易度用矢印.t2D描画( CDTXMania.app.Device, num9, num10, new Rectangle( 0, 0, (int)(8 * Scale.X), (int)(0x10 * Scale.Y) ) );
 						}
 					}
 					if( flag )
 					{
-						int num11 = ( ( this.n本体X + 20 ) + 0x120 ) + this.ct難易度矢印用.n現在の値;
-						int num12 = ( this.n本体Y + 0x10 ) + 5;
+						int num11 = ( ( this.n本体X + (int)(20 * Scale.X) ) + (int)(0x120 * Scale.X) ) + (int)(this.ct難易度矢印用.n現在の値 * Scale.Y);
+						int num12 = ( this.n本体Y + (int)(0x10 * Scale.Y) ) + (int)(5 * Scale.Y);
 						if( this.tx難易度用矢印 != null )
 						{
-							this.tx難易度用矢印.t2D描画( CDTXMania.app.Device, num11, num12, new Rectangle( 8, 0, 8, 0x10 ) );
+							this.tx難易度用矢印.t2D描画( CDTXMania.app.Device, num11, num12, new Rectangle( (int)(8 * Scale.X), 0, (int)(8 * Scale.X), (int)(0x10 * Scale.Y) ) );
 						}
 					}
 				}
@@ -263,11 +268,11 @@ namespace DTXMania
 				{
 					for( int i = 0; i < 3; i++ )
 					{
-						int[,] nDispPosYOffset = { { 0, 21, 42 }, { 0, 42, 21} };	// #24063 2011.1.27 yyagi
+						int[ , ] nDispPosYOffset = { { 0, (int) ( 21 * Scale.Y ), (int) ( 42 * Scale.Y ) }, { 0, (int) ( 42 * Scale.Y ), (int) ( 21 * Scale.Y ) } };	// #24063 2011.1.27 yyagi
 						Rectangle rect十の位;
 						Rectangle rect一の位;
-						int nDispPosX = this.n本体X + 66;
-						int nDispPosY = this.n本体Y + 50 + nDispPosYOffset[ (CDTXMania.ConfigIni.bIsSwappedGuitarBass? 1 : 0), i ];
+						int nDispPosX = this.n本体X + (int) ( 66 * Scale.X );
+						int nDispPosY = this.n本体Y + (int) ( 50 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						int nLevel = this.n現在選択中の曲のレベル[ i ];
 						if( nLevel < 0 )
 						{
@@ -279,8 +284,8 @@ namespace DTXMania
 						}
 						// Lv25刻みで、白→オレンジ→黄色→赤、と色を変える
 						// 
-						int nRectOffsetX = ( ( nLevel / 25 ) < 2 ) ? 64 : 0;
-						int nRectOffsetY = ( ( ( nLevel / 25 ) % 2 ) == 0 ) ? 64 : 0;
+						int nRectOffsetX = ( ( nLevel / 25 ) < 2 ) ? (int) ( 64 * Scale.X ) : 0;
+						int nRectOffsetY = ( ( ( nLevel / 25 ) % 2 ) == 0 ) ? (int) ( 64 * Scale.Y ) : 0;
 						if( nLevel == 0 )
 						{
 							rect十の位 = this.rc数字[ 11 ];		// "--"
@@ -301,7 +306,7 @@ namespace DTXMania
 						rect一の位.X += nRectOffsetX;
 						rect一の位.Y += nRectOffsetY;
 						this.txレベル数字.t2D描画( CDTXMania.app.Device, nDispPosX,      nDispPosY, rect十の位 );
-						this.txレベル数字.t2D描画( CDTXMania.app.Device, nDispPosX + 13, nDispPosY, rect一の位 );
+						this.txレベル数字.t2D描画( CDTXMania.app.Device, nDispPosX + (int) ( 13 * Scale.X ), nDispPosY, rect一の位 );
 					}
 				}
 				//-----------------
@@ -310,16 +315,16 @@ namespace DTXMania
 				//-----------------
 				for( int i = 0; i < 3; i++ )
 				{
-					int[ , ] nDispPosYOffset = { { 0, 21, 42 }, { 0, 42, 21 } };
+					int[ , ] nDispPosYOffset = { { 0, (int) ( 21 * Scale.Y ), (int) ( 42 * Scale.Y ) }, { 0, (int) ( 42 * Scale.Y ), (int) ( 21 * Scale.Y ) } };	// #24063 2011.1.27 yyagi
 					if ( this.n現在選択中の曲のレベル[ i ] != 0 )
 					{
 						double dMaxSkill = this.db現在選択中の曲の最高スキル値[ i ];
 						if( dMaxSkill != 0.0 )
 						{
-							int nDispPosX = this.n本体X + 100;
-							int nDispPosY = this.n本体Y + 53 + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+							int nDispPosX = this.n本体X + (int)(100 * Scale.X);
+							int nDispPosY = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 							this.txスキルゲージ.t2D描画( CDTXMania.app.Device, nDispPosX, nDispPosY,
-														new Rectangle( 0, 0, (int) ( 170.0 * dMaxSkill / 100.0 ), 10 ) );
+														new Rectangle( 0, 0, (int) ( 170.0 * Scale.X * dMaxSkill / 100.0 ), (int) ( 10 * Scale.Y ) ) );
 						}
 						string sMaxSkillString = dMaxSkill.ToString( "##0.00" );
 						int nMaxSkillStringWidth = 0;
@@ -334,8 +339,8 @@ namespace DTXMania
 								}
 							}
 						}
-						int x = this.n本体X + 182 - nMaxSkillStringWidth / 2;
-						int y = this.n本体Y + 53 + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+						int x = this.n本体X + (int) ( 182 * Scale.X ) - nMaxSkillStringWidth / 2;
+						int y = this.n本体Y + (int) ( 53 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						foreach( char ch in sMaxSkillString )
 						{
 							for( int j = 0; j < 12; j++ )
@@ -354,11 +359,11 @@ namespace DTXMania
 					}
 					else
 					{
-						int x = this.n本体X + 182 - 20;
-						int y = this.n本体Y + 53 + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+						int x = this.n本体X + (int) ( ( 182 - 20 ) * Scale.X );
+						int y = this.n本体Y + (int) ( 53 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						if( this.txゲージ用数字他 != null )
 						{
-							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 22, 40, 10 ) );
+							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, (int) ( 22 * Scale.Y ), (int) ( 40 * Scale.X ), (int) ( 10 * Scale.Y ) ) );
 						}
 					}
 				}
@@ -379,9 +384,9 @@ namespace DTXMania
 						{
 							nMaxRank = 6;
 						}
-						int[ , ] nDispPosYOffset = { { 0, 21, 42 }, { 0, 42, 21 } };
-						int x = this.n本体X + 278;
-						int y = this.n本体Y + 55 + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+						int[ , ] nDispPosYOffset = { { 0, (int) ( 21 * Scale.Y ), (int) ( 42 * Scale.Y ) }, { 0, (int) ( 42 * Scale.Y ), (int) ( 21 * Scale.Y ) } };	// #24063 2011.1.27 yyagi
+						int x = this.n本体X + (int) ( 278 * Scale.X );
+						int y = this.n本体Y + (int) ( 55 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						if( this.txゲージ用数字他 != null )
 						{
 							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, this.rcランク[ nMaxRank ] );
@@ -392,14 +397,14 @@ namespace DTXMania
 				#endregion
 				#region [ 選択曲の FullCombo の 描画 ]
 				//-----------------
-				Rectangle rectFullCombo = new Rectangle( 30, 32, 30, 16 );
+				Rectangle rectFullCombo = new Rectangle( (int) ( 30 * Scale.X ), (int) ( 32 * Scale.Y ), (int) ( 30 * Scale.X ), (int) ( 16 * Scale.Y ) );
 				for( int i = 0; i < 3; i++ )
 				{
 					if( this.b現在選択中の曲がフルコンボ[ i ] )
 					{
-						int[ , ] nDispPosYOffset = { { 0, 21, 42 }, { 0, 42, 21 } };
-						int x = this.n本体X + 290;
-						int y = this.n本体Y + 53 + nDispPosYOffset[ (CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i ];
+						int[ , ] nDispPosYOffset = { { 0, (int) ( 21 * Scale.Y ), (int) ( 42 * Scale.Y ) }, { 0, (int) ( 42 * Scale.Y ), (int) ( 21 * Scale.Y ) } };	// #24063 2011.1.27 yyagi
+						int x = this.n本体X + (int)(290 * Scale.X);
+						int y = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[ (CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i ];
 						if( this.txゲージ用数字他 != null )
 						{
 							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, rectFullCombo );
@@ -441,11 +446,45 @@ namespace DTXMania
 		private const int n難易度表示可能文字数 = 0x24;
 		private int n本体X;
 		private int n本体Y;
-		private readonly Rectangle[] rcランク = new Rectangle[] { new Rectangle( 0, 0x20, 10, 10 ), new Rectangle( 10, 0x20, 10, 10 ), new Rectangle( 20, 0x20, 10, 10 ), new Rectangle( 0, 0x2a, 10, 10 ), new Rectangle( 10, 0x2a, 10, 10 ), new Rectangle( 20, 0x2a, 10, 10 ), new Rectangle( 0, 0x34, 10, 10 ) };
-		private readonly Rectangle[] rc数字 = new Rectangle[] { new Rectangle( 0, 0, 15, 0x13 ), new Rectangle( 15, 0, 15, 0x13 ), new Rectangle( 30, 0, 15, 0x13 ), new Rectangle( 0x2d, 0, 15, 0x13 ), new Rectangle( 0, 0x13, 15, 0x13 ), new Rectangle( 15, 0x13, 15, 0x13 ), new Rectangle( 30, 0x13, 15, 0x13 ), new Rectangle( 0x2d, 0x13, 15, 0x13 ), new Rectangle( 0, 0x26, 15, 0x13 ), new Rectangle( 15, 0x26, 15, 0x13 ), new Rectangle( 30, 0x26, 15, 0x13 ), new Rectangle( 0x2d, 0x26, 15, 0x13 ) };
+		private readonly Rectangle[] rcランク = new Rectangle[] {
+			new Rectangle( (int)(0 * Scale.X), (int)(0x20 * Scale.Y), (int)(10 * Scale.X), (int)(10 * Scale.Y) ),
+			new Rectangle( (int)(10 * Scale.X), (int)(0x20 * Scale.Y), (int)(10 * Scale.X), (int)(10 * Scale.Y) ),
+			new Rectangle( (int)(20 * Scale.X), (int)(0x20 * Scale.Y), (int)(10 * Scale.X), (int)(10 * Scale.Y) ),
+			new Rectangle( (int)(0 * Scale.X), (int)(0x2a * Scale.Y), (int)(10 * Scale.X), (int)(10 * Scale.Y) ),
+			new Rectangle( (int)(10 * Scale.X), (int)(0x2a * Scale.Y), (int)(10 * Scale.X), (int)(10 * Scale.Y) ),
+			new Rectangle( (int)(20 * Scale.X), (int)(0x2a * Scale.Y), (int)(10 * Scale.X), (int)(10 * Scale.Y) ),
+			new Rectangle( (int)(0 * Scale.X), (int)(0x34 * Scale.Y), (int)(10 * Scale.X), (int)(10 * Scale.Y) )
+		};
+		private readonly Rectangle[] rc数字 = new Rectangle[] {
+			new Rectangle( (int)(0 * Scale.X), (int)(0 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(15 * Scale.X), (int)(0 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(30 * Scale.X), (int)(0 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(0x2d * Scale.X), (int)(0 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(0 * Scale.X), (int)(0x13 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(15 * Scale.X), (int)(0x13 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(30 * Scale.X), (int)(0x13 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(0x2d * Scale.X), (int)(0x13 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(0 * Scale.X), (int)(0x26 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(15 * Scale.X),(int)(0x26 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(30 * Scale.X), (int)(0x26 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) ),
+			new Rectangle( (int)(0x2d * Scale.X), (int)(0x26 * Scale.Y), (int)(15 * Scale.X), (int)(0x13 * Scale.Y) )
+		};
 		private C曲リストノード r直前の曲;
 		private string[] str難易度ラベル = new string[] { "", "", "", "", "" };
-		private readonly ST数字[] st数字 = new ST数字[] { new ST数字( '0', new Rectangle( 0, 0, 8, 11 ) ), new ST数字( '1', new Rectangle( 8, 0, 8, 11 ) ), new ST数字( '2', new Rectangle( 0x10, 0, 8, 11 ) ), new ST数字( '3', new Rectangle( 0x18, 0, 8, 11 ) ), new ST数字( '4', new Rectangle( 0x20, 0, 8, 11 ) ), new ST数字( '5', new Rectangle( 40, 0, 8, 11 ) ), new ST数字( '6', new Rectangle( 0, 11, 8, 11 ) ), new ST数字( '7', new Rectangle( 8, 11, 8, 11 ) ), new ST数字( '8', new Rectangle( 0x10, 11, 8, 11 ) ), new ST数字( '9', new Rectangle( 0x18, 11, 8, 11 ) ), new ST数字( '.', new Rectangle( 0x20, 11, 4, 11 ) ), new ST数字( 'p', new Rectangle( 0x24, 11, 15, 11 ) ) };
+		private readonly ST数字[] st数字 = new ST数字[] {
+			new ST数字( '0', new Rectangle( (int)(0 * Scale.X), (int)(0 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '1', new Rectangle( (int)(8 * Scale.X), (int)(0 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '2', new Rectangle( (int)(0x10 * Scale.X), (int)(0 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '3', new Rectangle( (int)(0x18 * Scale.X), (int)(0 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '4', new Rectangle( (int)(0x20 * Scale.X), (int)(0 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '5', new Rectangle( (int)(40 * Scale.X), (int)(0 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '6', new Rectangle( (int)(0 * Scale.X), (int)(11 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '7', new Rectangle( (int)(8 * Scale.X), (int)(11 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '8', new Rectangle( (int)(0x10 * Scale.X), (int)(11 * Scale.Y), (int)(8 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( '9', new Rectangle( (int)(0x18 * Scale.X), (int)(11 * Scale.Y), (int)(8 * Scale.X),(int)( 11 * Scale.Y) ) ),
+			new ST数字( '.', new Rectangle( (int)(0x20 * Scale.X), (int)(11 * Scale.Y), (int)(4 * Scale.X), (int)(11 * Scale.Y) ) ),
+			new ST数字( 'p', new Rectangle( (int)(0x24 * Scale.X), (int)(11 * Scale.Y), (int)(15 * Scale.X), (int)(11 * Scale.Y) ) )
+		};
 		private CTexture txゲージ用数字他;
 		private CTexture txスキルゲージ;
 		private CTexture txパネル本体;
@@ -471,7 +510,7 @@ namespace DTXMania
 					num += length + 2;
 				}
 			}
-			if( num >= ( this.n難易度開始文字位置 + 0x24 ) )
+			if( num >= ( this.n難易度開始文字位置 + 55 ) )	// 0x24 -> 55
 			{
 				return 1;
 			}
@@ -479,7 +518,7 @@ namespace DTXMania
 			{
 				return -1;
 			}
-			if( ( ( num + length ) - 1 ) >= ( this.n難易度開始文字位置 + 0x24 ) )
+			if( ( ( num + length ) - 1 ) >= ( this.n難易度開始文字位置 + 55 ) )	// 0x24 -> 55
 			{
 				return 1;
 			}

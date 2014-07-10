@@ -32,7 +32,7 @@ namespace DTXMania
 		{
 			this.n本体X = 0;
 			this.n本体Y = 0x18b;
-			this.ft曲名用フォント = new Font( "MS PGothic", 44f, FontStyle.Bold, GraphicsUnit.Pixel );
+			this.ft曲名用フォント = new Font( "MS PGothic", 44f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel );
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -52,13 +52,13 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txバー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult song bar.png" ) );
+				this.txバー = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult song bar.png" ), false );
 				try
 				{
-					Bitmap image = new Bitmap( 0x3a8, 0x36 );
+					Bitmap image = new Bitmap( (int)(0x3a8 * Scale.X), (int)(0x36 * Scale.Y) );
 					Graphics graphics = Graphics.FromImage( image );
 					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					graphics.DrawString( CDTXMania.DTX.TITLE, this.ft曲名用フォント, Brushes.White, ( float ) 8f, ( float ) 0f );
+					graphics.DrawString( CDTXMania.DTX.TITLE, this.ft曲名用フォント, Brushes.White, ( float ) 8f * Scale.X, ( float ) 0f );
 					this.tx曲名 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
 					this.tx曲名.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 					graphics.Dispose();
@@ -133,17 +133,41 @@ namespace DTXMania
 				}
 				if( this.txバー != null )
 				{
-					this.txバー.t2D描画( CDTXMania.app.Device, num6 + num8, y, rectangle );
+					Rectangle rectangle1 = rectangle;
+					rectangle1.X = (int) ( rectangle1.X * Scale.X );
+					rectangle1.Y = (int) ( rectangle1.Y * Scale.Y );
+					rectangle1.Width = (int) ( rectangle1.Width * Scale.X );
+					rectangle1.Height = (int) ( rectangle1.Height * Scale.Y );
+					this.txバー.t2D描画(
+						CDTXMania.app.Device,
+						(num6 + num8) * Scale.X,
+						y * Scale.Y,
+						rectangle1
+					);
 				}
 				num8 += rectangle.Width;
 			}
 			if( this.txバー != null )
 			{
-				this.txバー.t2D描画( CDTXMania.app.Device, num6 + num8, y, new Rectangle( 0x40, 0, 0x40, 0x40 ) );
+				this.txバー.t2D描画(
+					CDTXMania.app.Device,
+					(num6 + num8) * Scale.X,
+					y * Scale.Y,
+					new Rectangle(
+						(int)(0x40 * Scale.X),
+						0,
+						(int)(0x40 * Scale.X),
+						(int)(0x40 * Scale.Y)
+						)
+					);
 			}
 			if( this.tx曲名 != null )
 			{
-				this.tx曲名.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y + 20 );
+				this.tx曲名.t2D描画(
+					CDTXMania.app.Device,
+					this.n本体X * Scale.X,
+					(this.n本体Y + 20) * Scale.Y
+				);
 			}
 			if( !this.ct登場用.b終了値に達した )
 			{
@@ -161,7 +185,7 @@ namespace DTXMania
 		private Font ft曲名用フォント;
 		private int n本体X;
 		private int n本体Y;
-		private CTexture txバー;
+		private CTextureAf txバー;
 		private CTexture tx曲名;
 		//-----------------
 		#endregion

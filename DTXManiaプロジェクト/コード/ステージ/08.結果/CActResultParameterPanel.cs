@@ -18,96 +18,96 @@ namespace DTXMania
 			ST文字位置[] st文字位置Array = new ST文字位置[ 11 ];
 			ST文字位置 st文字位置 = new ST文字位置();
 			st文字位置.ch = '0';
-			st文字位置.pt = new Point( 0, 0 );
+			st文字位置.pt = new Point( (int)(0 * Scale.X), (int)(0 * Scale.Y) );
 			st文字位置Array[ 0 ] = st文字位置;
 			ST文字位置 st文字位置2 = new ST文字位置();
 			st文字位置2.ch = '1';
-			st文字位置2.pt = new Point( 11, 0 );
+			st文字位置2.pt = new Point( (int)(11 * Scale.X), (int)(0 * Scale.Y) );
 			st文字位置Array[ 1 ] = st文字位置2;
 			ST文字位置 st文字位置3 = new ST文字位置();
 			st文字位置3.ch = '2';
-			st文字位置3.pt = new Point( 0x16, 0 );
+			st文字位置3.pt = new Point( (int)(0x16 * Scale.X), (int)(0 * Scale.Y) );
 			st文字位置Array[ 2 ] = st文字位置3;
 			ST文字位置 st文字位置4 = new ST文字位置();
 			st文字位置4.ch = '3';
-			st文字位置4.pt = new Point( 0x21, 0 );
+			st文字位置4.pt = new Point( (int)(0x21 * Scale.X), (int)(0 * Scale.Y) );
 			st文字位置Array[ 3 ] = st文字位置4;
 			ST文字位置 st文字位置5 = new ST文字位置();
 			st文字位置5.ch = '4';
-			st文字位置5.pt = new Point( 0x2c, 0 );
+			st文字位置5.pt = new Point( (int)(0x2c * Scale.X), (int)(0 * Scale.Y) );
 			st文字位置Array[ 4 ] = st文字位置5;
 			ST文字位置 st文字位置6 = new ST文字位置();
 			st文字位置6.ch = '5';
-			st文字位置6.pt = new Point( 0, 0x10 );
+			st文字位置6.pt = new Point( (int)(0 * Scale.X), (int)(0x10 * Scale.Y) );
 			st文字位置Array[ 5 ] = st文字位置6;
 			ST文字位置 st文字位置7 = new ST文字位置();
 			st文字位置7.ch = '6';
-			st文字位置7.pt = new Point( 11, 0x10 );
+			st文字位置7.pt = new Point( (int)(11 * Scale.X), (int)(0x10 * Scale.Y) );
 			st文字位置Array[ 6 ] = st文字位置7;
 			ST文字位置 st文字位置8 = new ST文字位置();
 			st文字位置8.ch = '7';
-			st文字位置8.pt = new Point( 0x16, 0x10 );
+			st文字位置8.pt = new Point( (int)(0x16 * Scale.X), (int)(0x10 * Scale.Y) );
 			st文字位置Array[ 7 ] = st文字位置8;
 			ST文字位置 st文字位置9 = new ST文字位置();
 			st文字位置9.ch = '8';
-			st文字位置9.pt = new Point( 0x21, 0x10 );
+			st文字位置9.pt = new Point( (int)(0x21 * Scale.X), (int)(0x10 * Scale.Y) );
 			st文字位置Array[ 8 ] = st文字位置9;
 			ST文字位置 st文字位置10 = new ST文字位置();
 			st文字位置10.ch = '9';
-			st文字位置10.pt = new Point( 0x2c, 0x10 );
+			st文字位置10.pt = new Point( (int)(0x2c * Scale.X), (int)(0x10 * Scale.Y) );
 			st文字位置Array[ 9 ] = st文字位置10;
 			ST文字位置 st文字位置11 = new ST文字位置();
 			st文字位置11.ch = '.';
-			st文字位置11.pt = new Point( 0x37, 0x10 );
+			st文字位置11.pt = new Point( (int)(0x37 * Scale.X), (int)(0x10 * Scale.Y) );
 			st文字位置Array[ 10 ] = st文字位置11;
 			this.st大文字位置 = st文字位置Array;
 			ST文字位置[] st文字位置Array2 = new ST文字位置[ 11 ];
 			ST文字位置 st文字位置12 = new ST文字位置();
 			st文字位置12.ch = '0';
-			st文字位置12.pt = new Point( 0, 0x20 );
+			st文字位置12.pt = new Point( (int)(0 * Scale.X), (int)(0x20 * Scale.Y) );
 			st文字位置Array2[ 0 ] = st文字位置12;
 			ST文字位置 st文字位置13 = new ST文字位置();
 			st文字位置13.ch = '1';
-			st文字位置13.pt = new Point( 11, 0x20 );
+			st文字位置13.pt = new Point( (int)(11 * Scale.X), (int)(0x20 * Scale.Y) );
 			st文字位置Array2[ 1 ] = st文字位置13;
 			ST文字位置 st文字位置14 = new ST文字位置();
 			st文字位置14.ch = '2';
-			st文字位置14.pt = new Point( 0x16, 0x20 );
+			st文字位置14.pt = new Point( (int)(0x16 * Scale.X), (int)(0x20 * Scale.Y) );
 			st文字位置Array2[ 2 ] = st文字位置14;
 			ST文字位置 st文字位置15 = new ST文字位置();
 			st文字位置15.ch = '3';
-			st文字位置15.pt = new Point( 0x21, 0x20 );
+			st文字位置15.pt = new Point( (int)(0x21 * Scale.X), (int)(0x20 * Scale.Y) );
 			st文字位置Array2[ 3 ] = st文字位置15;
 			ST文字位置 st文字位置16 = new ST文字位置();
 			st文字位置16.ch = '4';
-			st文字位置16.pt = new Point( 0x2c, 0x20 );
+			st文字位置16.pt = new Point( (int)(0x2c * Scale.X), (int)(0x20 * Scale.Y) );
 			st文字位置Array2[ 4 ] = st文字位置16;
 			ST文字位置 st文字位置17 = new ST文字位置();
 			st文字位置17.ch = '5';
-			st文字位置17.pt = new Point( 0, 0x30 );
+			st文字位置17.pt = new Point( (int)(0 * Scale.X), (int)(0x30 * Scale.Y) );
 			st文字位置Array2[ 5 ] = st文字位置17;
 			ST文字位置 st文字位置18 = new ST文字位置();
 			st文字位置18.ch = '6';
-			st文字位置18.pt = new Point( 11, 0x30 );
+			st文字位置18.pt = new Point( (int)(11 * Scale.X), (int)(0x30 * Scale.Y) );
 			st文字位置Array2[ 6 ] = st文字位置18;
 			ST文字位置 st文字位置19 = new ST文字位置();
 			st文字位置19.ch = '7';
-			st文字位置19.pt = new Point( 0x16, 0x30 );
+			st文字位置19.pt = new Point( (int)(0x16 * Scale.X), (int)(0x30 * Scale.Y) );
 			st文字位置Array2[ 7 ] = st文字位置19;
 			ST文字位置 st文字位置20 = new ST文字位置();
 			st文字位置20.ch = '8';
-			st文字位置20.pt = new Point( 0x21, 0x30 );
+			st文字位置20.pt = new Point( (int)(0x21 * Scale.X), (int)(0x30 * Scale.Y) );
 			st文字位置Array2[ 8 ] = st文字位置20;
 			ST文字位置 st文字位置21 = new ST文字位置();
 			st文字位置21.ch = '9';
-			st文字位置21.pt = new Point( 0x2c, 0x30 );
+			st文字位置21.pt = new Point( (int)(0x2c * Scale.X), (int)(0x30 * Scale.Y) );
 			st文字位置Array2[ 9 ] = st文字位置21;
 			ST文字位置 st文字位置22 = new ST文字位置();
 			st文字位置22.ch = '%';
-			st文字位置22.pt = new Point( 0x37, 0x30 );
+			st文字位置22.pt = new Point( (int)(0x37 * Scale.X), (int)(0x30 * Scale.Y) );
 			st文字位置Array2[ 10 ] = st文字位置22;
 			this.st小文字位置 = st文字位置Array2;
-			this.ptFullCombo位置 = new Point[] { new Point( 0x80, 0xed ), new Point( 0xdf, 0xed ), new Point( 0x141, 0xed ) };
+			this.ptFullCombo位置 = new Point[] { new Point( (int) ( 0x80 * Scale.X ), (int) ( 0xed * Scale.Y ) ), new Point( (int) ( 0xdf * Scale.X ), (int) ( 0xed * Scale.Y ) ), new Point( (int) ( 0x141 * Scale.X ), (int) ( 0xed * Scale.Y ) ) };
 			base.b活性化してない = true;
 		}
 
@@ -124,8 +124,8 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.n本体X = 0xf2;
-			this.n本体Y = 0x44;
+			this.n本体X = (int)(0xf2 * Scale.X);
+			this.n本体Y = (int)(0x44 * Scale.Y);
 			this.sdDTXで指定されたフルコンボ音 = null;
 			this.bフルコンボ音再生済み = false;
 			base.On活性化();
@@ -181,10 +181,14 @@ namespace DTXMania
 			this.ct表示用.t進行();
 			if( this.txパネル本体 != null )
 			{
-				this.txパネル本体.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y );
+				this.txパネル本体.t2D描画(
+					CDTXMania.app.Device,
+					this.n本体X,
+					this.n本体Y
+				);
 			}
 			int num = this.ct表示用.n現在の値;
-			Point[] pointArray = new Point[] { new Point( 0x68, 0x29 ), new Point( 0xc7, 0x29 ), new Point( 0x129, 0x29 ) };
+			Point[] pointArray = new Point[] { new Point( (int) ( 0x68 * Scale.X ), (int) ( 0x29 * Scale.Y ) ), new Point( (int) ( 0xc7 * Scale.X ), (int) ( 0x29 * Scale.Y ) ), new Point( (int) ( 0x129 * Scale.X ), (int) ( 0x29 * Scale.Y ) ) };
 			for( int i = 0; i < 3; i++ )
 			{
 				int x = this.n本体X + pointArray[ i ].X;
@@ -195,59 +199,59 @@ namespace DTXMania
 				}
 				if( num >= 100 )
 				{
-					this.t大文字表示( x, y + 0x16, CDTXMania.stage結果.st演奏記録[ i ].nGreat数.ToString( "00000" ) );
+					this.t大文字表示( x, y + (int)(0x16 * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nGreat数.ToString( "00000" ) );
 				}
 				if( num >= 200 )
 				{
-					this.t大文字表示( x, y + 0x2c, CDTXMania.stage結果.st演奏記録[ i ].nGood数.ToString( "00000" ) );
+					this.t大文字表示( x, y + (int)(0x2c * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nGood数.ToString( "00000" ) );
 				}
 				if( num >= 300 )
 				{
-					this.t大文字表示( x, y + 0x42, CDTXMania.stage結果.st演奏記録[ i ].nPoor数.ToString( "00000" ) );
+					this.t大文字表示( x, y + (int)(0x42 * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nPoor数.ToString( "00000" ) );
 				}
 				if( num >= 400 )
 				{
-					this.t大文字表示( x, y + 0x58, CDTXMania.stage結果.st演奏記録[ i ].nMiss数.ToString( "00000" ) );
+					this.t大文字表示( x, y + (int)(0x58 * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nMiss数.ToString( "00000" ) );
 				}
 				if( num >= 0 )
 				{
-					this.t小文字表示( x + 0x30, y, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fPerfect率[ i ] ) );
+					this.t小文字表示( x + (int) ( 0x30 * Scale.X ), y, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fPerfect率[ i ] ) );
 				}
 				if( num >= 100 )
 				{
-					this.t小文字表示( x + 0x30, y + 0x16, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fGreat率[ i ] ) );
+					this.t小文字表示( x + (int)(0x30 * Scale.X), y + (int)(0x16 * Scale.Y), string.Format( "{0,3:##0}%", CDTXMania.stage結果.fGreat率[ i ] ) );
 				}
 				if( num >= 200 )
 				{
-					this.t小文字表示( x + 0x30, y + 0x2c, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fGood率[ i ] ) );
+					this.t小文字表示( x + (int)(0x30 * Scale.X), y + (int)(0x2c * Scale.Y), string.Format( "{0,3:##0}%", CDTXMania.stage結果.fGood率[ i ] ) );
 				}
 				if( num >= 300 )
 				{
-					this.t小文字表示( x + 0x30, y + 0x42, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fPoor率[ i ] ) );
+					this.t小文字表示( x + (int)(0x30 * Scale.X), y + (int)(0x42 * Scale.Y), string.Format( "{0,3:##0}%", CDTXMania.stage結果.fPoor率[ i ] ) );
 				}
 				if( num >= 400 )
 				{
-					this.t小文字表示( x + 0x30, y + 0x58, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fMiss率[ i ] ) );
+					this.t小文字表示( x + (int)(0x30 * Scale.X), y + (int)(0x58 * Scale.Y), string.Format( "{0,3:##0}%", CDTXMania.stage結果.fMiss率[ i ] ) );
 				}
 				if( num >= 500 )
 				{
-					this.t大文字表示( x, y + 110, string.Format( "{0,9:########0}", CDTXMania.stage結果.st演奏記録[ i ].n最大コンボ数 ) );
+					this.t大文字表示( x, y + (int)(110 * Scale.Y), string.Format( "{0,9:########0}", CDTXMania.stage結果.st演奏記録[ i ].n最大コンボ数 ) );
 				}
 				if( num >= 600 )
 				{
-					this.t大文字表示( x, y + 0x84, CDTXMania.stage結果.st演奏記録[ i ].nスコア.ToString( "000000000" ), CDTXMania.stage結果.b新記録スコア[ i ] );
+					this.t大文字表示( x, y + (int)(0x84 * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nスコア.ToString( "000000000" ), CDTXMania.stage結果.b新記録スコア[ i ] );
 				}
 				if( num >= 700 )
 				{
-					this.t大文字表示( x, y + 0x9a, string.Format( "{0,9:#####0.00}", CDTXMania.stage結果.st演奏記録[ i ].db演奏型スキル値 ), CDTXMania.stage結果.b新記録スキル[ i ] );
+					this.t大文字表示( x - (int)(11 * Scale.X), y + (int)(0x9a * Scale.Y), string.Format( "{0,9:#####0.00}", CDTXMania.stage結果.st演奏記録[ i ].db演奏型スキル値 ), CDTXMania.stage結果.b新記録スキル[ i ] );
 				}
 				if( num >= 700 )
 				{
-					this.t小文字表示( x + 0x48, y + 0x9a, "%" );
+					this.t小文字表示( x + (int)(0x48 * Scale.X), y + (int)(0x9a * Scale.Y), "%" );
 				}
 				if( num >= 800 )
 				{
-					this.t大文字表示( x, y + 0xb0, string.Format( "{0,9:########0}", CDTXMania.stage結果.n演奏回数[ i ] ) );
+					this.t大文字表示( x, y + (int)(0xb0 * Scale.Y), string.Format( "{0,9:########0}", CDTXMania.stage結果.n演奏回数[ i ] ) );
 				}
 			}
 			if( this.ct表示用.n現在の値 < 900 )
@@ -269,7 +273,17 @@ namespace DTXMania
 						{
 							rectangle.Width = num9;
 						}
-						this.txWhite.t2D描画( CDTXMania.app.Device, num7, num8, rectangle );
+						Rectangle rect = rectangle;
+						rect.X = (int) ( rect.X * Scale.X );
+						rect.Y = (int) ( rect.Y * Scale.Y );
+						rect.Width = (int) ( rect.Width * Scale.X );
+						rect.Height = (int) ( rect.Height * Scale.Y );
+						this.txWhite.t2D描画(
+							CDTXMania.app.Device,
+							num7 * Scale.X,
+							num8 * Scale.Y,
+							rect
+						);
 						num7 += 0x40;
 						num9 -= 0x40;
 					}
@@ -285,7 +299,11 @@ namespace DTXMania
 						{
 							if( this.txFullCombo != null )
 							{
-								this.txFullCombo.t2D描画( CDTXMania.app.Device, this.n本体X + this.ptFullCombo位置[ j ].X, this.n本体Y + this.ptFullCombo位置[ j ].Y );
+								this.txFullCombo.t2D描画(
+									CDTXMania.app.Device,
+									this.n本体X + this.ptFullCombo位置[ j ].X,
+									this.n本体Y + this.ptFullCombo位置[ j ].Y
+								);
 							}
 							if( !this.bフルコンボ音再生済み )
 							{
@@ -375,11 +393,16 @@ namespace DTXMania
 				{
 					if( this.st小文字位置[ i ].ch == ch )
 					{
-						Rectangle rectangle = new Rectangle( this.st小文字位置[ i ].pt.X, this.st小文字位置[ i ].pt.Y, 11, 0x10 );
+						Rectangle rectangle = new Rectangle(
+							this.st小文字位置[ i ].pt.X,
+							this.st小文字位置[ i ].pt.Y,
+							(int)(11 * Scale.X),
+							(int)(0x10 * Scale.Y)
+						);
 						if( ch == '%' )
 						{
-							rectangle.Width -= 2;
-							rectangle.Height -= 2;
+							rectangle.Width -= (int)(2 * Scale.X);
+							rectangle.Height -= (int)(2 * Scale.Y);
 						}
 						if( this.tx文字[ b強調 ? 1 : 0 ] != null )
 						{
@@ -388,7 +411,8 @@ namespace DTXMania
 						break;
 					}
 				}
-				x += 8;
+				//x += (int) ( 8 * Scale.X );
+				x += (int) ( 9 * Scale.X );
 			}
 		}
 		private void t大文字表示( int x, int y, string str )
@@ -403,11 +427,16 @@ namespace DTXMania
 				{
 					if( this.st大文字位置[ i ].ch == ch )
 					{
-						Rectangle rectangle = new Rectangle( this.st大文字位置[ i ].pt.X, this.st大文字位置[ i ].pt.Y, 11, 0x10 );
+						Rectangle rectangle = new Rectangle(
+							this.st大文字位置[ i ].pt.X,
+							this.st大文字位置[ i ].pt.Y,
+							(int)(11 * Scale.X),
+							(int)(0x10 * Scale.Y)
+						);
 						if( ch == '.' )
 						{
-							rectangle.Width -= 2;
-							rectangle.Height -= 2;
+							rectangle.Width -= (int)(2 * Scale.X);
+							rectangle.Height -= (int)(2 * Scale.Y);
 						}
 						if( this.tx文字[ b強調 ? 1 : 0 ] != null )
 						{
@@ -416,7 +445,8 @@ namespace DTXMania
 						break;
 					}
 				}
-				x += 8;
+				//x += (int) ( 8 * Scale.X );
+				x += 27;
 			}
 		}
 		//-----------------

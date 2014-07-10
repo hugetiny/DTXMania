@@ -49,6 +49,9 @@ namespace DTXMania
 			base.list子Activities.Add( this.actOption = new CActオプションパネル() );
 			base.list子Activities.Add( this.actFI = new CActFIFOWhite() );
 			base.list子Activities.Add( this.actFO = new CActFIFOBlack() );
+			base.list子Activities.Add( this.actAVI = new CAct演奏AVI() );
+
+			this.actResultImage.actAVI = this.actAVI;
 		}
 
 		
@@ -281,8 +284,8 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult background.jpg" ) );
-				this.tx上部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult header panel.png" ), true );
-				this.tx下部パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult footer panel.png" ), true );
+				this.tx上部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult header panel.png" ), true );
+				this.tx下部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult footer panel.png" ), true );
 				this.txオプションパネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ) );
 				base.OnManagedリソースの作成();
 			}
@@ -350,11 +353,11 @@ namespace DTXMania
 				}
 				if( this.tx上部パネル != null )
 				{
-					this.tx上部パネル.t2D描画( CDTXMania.app.Device, 0, num );
+					this.tx上部パネル.t2D描画( CDTXMania.app.Device, 0, num * Scale.Y );
 				}
 				if( this.tx下部パネル != null )
 				{
-					this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, 480 - this.tx下部パネル.sz画像サイズ.Height );
+					this.tx下部パネル.t2D描画( CDTXMania.app.Device, 0, ( SampleFramework.GameWindowSize.Height - this.tx下部パネル.sz画像サイズ.Height) );
 				}
 				this.actOption.On進行描画();
 				if( this.actResultImage.On進行描画() == 0 )
@@ -523,6 +526,7 @@ namespace DTXMania
 		private CActFIFOWhite actFI;
 		private CActFIFOBlack actFO;
 		private CActオプションパネル actOption;
+		private CAct演奏AVI actAVI;
 		private CActResultParameterPanel actParameterPanel;
 		private CActResultRank actRank;
 		private CActResultImage actResultImage;
@@ -534,8 +538,8 @@ namespace DTXMania
 		private int n最後に再生したHHのチャンネル番号;
 		private CSound rResultSound;
 		private CTexture txオプションパネル;
-		private CTexture tx下部パネル;
-		private CTexture tx上部パネル;
+		private CTextureAf tx下部パネル;
+		private CTextureAf tx上部パネル;
 		private CTexture tx背景;
 
 		#region [ #24609 リザルト画像をpngで保存する ]		// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
