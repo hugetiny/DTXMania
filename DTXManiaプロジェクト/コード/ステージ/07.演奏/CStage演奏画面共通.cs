@@ -880,6 +880,10 @@ namespace DTXMania
 			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++)
 			{
 				CDTX.CChip chip = listChip[ nIndex_NearestChip_Future ];
+				if ( chip.b空打ちチップである )
+				{
+					continue;
+				}
 				if ( ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) ) )
 				{
 					if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -915,6 +919,10 @@ namespace DTXMania
 			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
 			{
 				CDTX.CChip chip = listChip[ nIndex_NearestChip_Past ];
+				if ( chip.b空打ちチップである )
+				{
+					continue;
+				}
 				if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) )
 				{
 					if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -1403,6 +1411,10 @@ namespace DTXMania
 				CDTX.CChip chip = listChip[ nIndex_NearestChip_Future ];
 				if ( !chip.bHit )
 				{
+					if ( chip.b空打ちチップである )
+					{
+						continue;
+					}
 					if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) )
 					{
 						if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -1439,7 +1451,11 @@ namespace DTXMania
 			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
 			{
 				CDTX.CChip chip = listChip[ nIndex_NearestChip_Past ];
-				if ( (!chip.bHit) &&
+				if ( chip.b空打ちチップである )
+				{
+					continue;
+				}
+				if ( ( !chip.bHit ) &&
 						(
 							( ( nChannel >= 0x11 ) && ( nChannel <= 0x1a ) &&
 								( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
