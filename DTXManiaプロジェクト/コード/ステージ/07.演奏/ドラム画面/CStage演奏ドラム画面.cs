@@ -268,7 +268,7 @@ namespace DTXMania
 		{
 			Eパッド.HH, Eパッド.SD, Eパッド.BD, Eパッド.HT,
 			Eパッド.LT, Eパッド.CY, Eパッド.FT, Eパッド.HHO,
-			Eパッド.RD, Eパッド.UNKNOWN, Eパッド.UNKNOWN, Eパッド.LC
+			Eパッド.RD, Eパッド.LC
 		};
 		private readonly int[] nチャンネルtoX座標 = new int[] { 76, 110, 145, 192, 226, 294, 260, 79, 300, 35 };
 		private CTexture txヒットバーGB;
@@ -2424,7 +2424,7 @@ namespace DTXMania
 			if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 			{
 				pChip.bHit = true;
-				this.r現在の空うちドラムChip[ (int) this.eチャンネルtoパッド[ pChip.nチャンネル番号 - 0xb1 ] ] = pChip;
+				this.r現在の空うちドラムChip[ (int) this.eチャンネルtoパッド[ pChip.nチャンネル番号 - 0x11 ] ] = pChip;
 				//pChip.nチャンネル番号 = ( pChip.nチャンネル番号 != 0xbc ) ? ( ( pChip.nチャンネル番号 - 0xb1 ) + 0x11 ) : 0x1a;
 			}
 		}

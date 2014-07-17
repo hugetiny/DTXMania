@@ -513,6 +513,7 @@ namespace DTXMania
 			}
 			public bool bIsAutoPlayed;							// 2011.6.10 yyagi
 			public bool b演奏終了後も再生が続くチップである;	// #32248 2013.10.14 yyagi
+			public bool b空打ちチップである;					// #34029 2014.7.15 yyagi
 
 			public CChip()
 			{
@@ -533,6 +534,7 @@ namespace DTXMania
 				this.nLag = -999;
 				this.bIsAutoPlayed = false;
 				this.b演奏終了後も再生が続くチップである = false;
+				this.b空打ちチップである = false;
 				this.dbチップサイズ倍率 = 1.0;
 				this.bHit = false;
 				this.b可視 = true;
@@ -2522,7 +2524,7 @@ namespace DTXMania
 						foreach ( CChip chip in this.listChip )
 						{
 							int c = chip.nチャンネル番号;
-							if ( ( 0x11 <= c ) && ( c <= 0x1a ) )
+							if ( ( 0x11 <= c ) && ( c <= 0x1a ) && !chip.b空打ちチップである )
 							{
 								this.n可視チップ数[ c - 0x11 ]++;
 							}
@@ -2550,7 +2552,11 @@ namespace DTXMania
 								switch ( c )
 								{
 									case 0x01:
-										this.listWAV[ chip.n整数値・内部番号 ].bIsDrumsSound = true; break;
+										if ( !chip.b空打ちチップである )
+										{
+											this.listWAV[ chip.n整数値・内部番号 ].bIsDrumsSound = true;
+										}
+										break;
 									case 0x02:
 										this.listWAV[ chip.n整数値・内部番号 ].bIsGuitarSound = true; break;
 									case 0x0A:
@@ -5184,7 +5190,6 @@ namespace DTXMania
 
 				var chip = new CChip();
 
-				chip.nチャンネル番号 = nチャンネル番号;
 				chip.n発声位置 = ( n小節番号 * 384 ) + ( ( 384 * i ) / ( n文字数 / 2 ) );
 				chip.n整数値 = nオブジェクト数値;
 				chip.n整数値・内部番号 = nオブジェクト数値;
@@ -5205,6 +5210,26 @@ namespace DTXMania
 				}
 				//-----------------
 				#endregion
+
+				// #34029 2014.7.15 yyagi
+				#region [ ドラムの空打ち音だったら、フラグを立てたうえで、通常チップのチャンネル番号に変更。ギターベースの空打ち音はとりあえずフラグを立てるだけ。 ]
+				if ( 0xB1 <= nチャンネル番号 && nチャンネル番号 <= 0xB9 )
+				{
+					chip.b空打ちチップである = true;
+					nチャンネル番号 = nチャンネル番号 - 0xB0 + 0x10;
+				}
+				else if ( nチャンネル番号 == 0xBA || nチャンネル番号 == 0xBB )
+				{
+					chip.b空打ちチップである = true;
+				}
+				else if ( nチャンネル番号 == 0xBC )
+				{
+					chip.b空打ちチップである = true;
+					nチャンネル番号 = 0x1A;
+				}
+				#endregion
+
+				chip.nチャンネル番号 = nチャンネル番号;
 
 				#region [ 無限定義への対応 → 内部番号の取得。]
 				//-----------------

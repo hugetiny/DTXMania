@@ -880,6 +880,10 @@ namespace DTXMania
 			for ( ; nIndex_NearestChip_Future < count; nIndex_NearestChip_Future++)
 			{
 				CDTX.CChip chip = listChip[ nIndex_NearestChip_Future ];
+				if ( chip.b空打ちチップである )
+				{
+					continue;
+				}
 				if ( ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) ) )
 				{
 					if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -915,6 +919,10 @@ namespace DTXMania
 			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
 			{
 				CDTX.CChip chip = listChip[ nIndex_NearestChip_Past ];
+				if ( chip.b空打ちチップである )
+				{
+					continue;
+				}
 				if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) )
 				{
 					if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -1403,6 +1411,10 @@ namespace DTXMania
 				CDTX.CChip chip = listChip[ nIndex_NearestChip_Future ];
 				if ( !chip.bHit )
 				{
+					if ( chip.b空打ちチップである )
+					{
+						continue;
+					}
 					if ( ( 0x11 <= nChannel ) && ( nChannel <= 0x1a ) )
 					{
 						if ( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -1439,7 +1451,11 @@ namespace DTXMania
 			for ( ; nIndex_NearestChip_Past >= 0; nIndex_NearestChip_Past-- )
 			{
 				CDTX.CChip chip = listChip[ nIndex_NearestChip_Past ];
-				if ( (!chip.bHit) &&
+				if ( chip.b空打ちチップである )
+				{
+					continue;
+				}
+				if ( ( !chip.bHit ) &&
 						(
 							( ( nChannel >= 0x11 ) && ( nChannel <= 0x1a ) &&
 								( ( chip.nチャンネル番号 == nChannel ) || ( chip.nチャンネル番号 == ( nChannel + 0x20 ) ) )
@@ -1902,7 +1918,14 @@ namespace DTXMania
 					case 0x18:
 					case 0x19:
 					case 0x1a:
-						this.t進行描画・チップ・ドラムス( configIni, ref dTX, ref pChip );
+						if ( pChip.b空打ちチップである )
+						{
+							this.t進行描画・チップ・空打ち音設定・ドラム( configIni, ref dTX, ref pChip );
+						}
+						else
+						{
+							this.t進行描画・チップ・ドラムス( configIni, ref dTX, ref pChip );
+						}
 						break;
 					#endregion
 					#region [ 1f: フィルインサウンド(ドラム) ]
@@ -2131,6 +2154,7 @@ namespace DTXMania
 					case 0xb8:
 					case 0xb9:
 					case 0xbc:
+						// ここには来なくなったはずだが、一応残しておく
 						this.t進行描画・チップ・空打ち音設定・ドラム( configIni, ref dTX, ref pChip );
 						break;
 					#endregion
@@ -2243,6 +2267,15 @@ namespace DTXMania
 			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.再読込・再演奏;
 			base.eフェーズID = CStage.Eフェーズ.演奏_再読込;
 			this.bPAUSE = false;
+
+			// #34048 2014.7.16 yyagi
+			#region [ 読み込み画面に遷移する前に、設定変更した可能性があるパラメータをConfigIniクラスに書き戻す ]
+			for ( int i = 0; i < 3; i++ )
+			{
+				CDTXMania.ConfigIni.nViewerScrollSpeed[ i ] = CDTXMania.ConfigIni.n譜面スクロール速度[ i ];
+			}
+			CDTXMania.ConfigIni.b演奏情報を表示する = CDTXMania.ConfigIni.bViewerShowDebugStatus;
+			#endregion
 		}
 
 		public void t停止()
@@ -2326,7 +2359,7 @@ namespace DTXMania
 
 				if ( ( pChip.n発声時刻ms + nDuration > 0 ) && ( pChip.n発声時刻ms <= nStartTime ) && ( nStartTime <= pChip.n発声時刻ms + nDuration ) )
 				{
-					if ( pChip.bWAVを使うチャンネルである && ( pChip.nチャンネル番号 >> 4 ) != 0xB )	// wav系チャンネル、且つ、空打ちチップではない
+					if ( pChip.bWAVを使うチャンネルである && !pChip.b空打ちチップである )	// wav系チャンネル、且つ、空打ちチップではない
 					{
 						CDTX.CWAV wc;
 						bool b = CDTXMania.DTX.listWAV.TryGetValue( pChip.n整数値・内部番号, out wc );
