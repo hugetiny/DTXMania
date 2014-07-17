@@ -36,7 +36,7 @@ namespace DTXMania
 				this.strSTAGEFILE = "";
 				this.b音符を表示する = false;
 				this.n音符の表示位置X = 0x308;
-				this.ftタイトル表示用フォント = new Font( "MS PGothic", 48f, GraphicsUnit.Pixel );
+				this.ftタイトル表示用フォント = new Font( "MS PGothic", fFontSizeTitle * Scale.Y, GraphicsUnit.Pixel );
 				this.nBGM再生開始時刻 = -1;
 				this.nBGMの総再生時間ms = 0;
 				if( this.sd読み込み音 != null )
@@ -106,7 +106,12 @@ namespace DTXMania
 			{
 				this.tx音符 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\\ScreenNowLoading onpu.png" ), false );
 				this.tx背景 = CDTXMania.tテクスチャの生成( this.strSTAGEFILE, false );
-				if( this.b音符を表示する )
+
+				if ( !this.b音符を表示する && this.tx背景 != null )
+				{
+					this.tx背景.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );	// とりあえずFullHD化
+				}
+				if ( this.b音符を表示する )
 				{
 					try
 					{
@@ -126,12 +131,12 @@ namespace DTXMania
 							this.txタイトル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
 							this.txタイトル.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 							image.Dispose();
-							this.n音符の表示位置X = ( ( 640 - ( (int) ( size.Width * this.txタイトル.vc拡大縮小倍率.X ) ) ) - ( ( this.tx音符 != null ) ? this.tx音符.sz画像サイズ.Width : 0 ) ) - 2;
+							this.n音符の表示位置X = ( ( SampleFramework.GameWindowSize.Width - ( (int) ( size.Width * this.txタイトル.vc拡大縮小倍率.X ) ) ) - ( ( this.tx音符 != null ) ? this.tx音符.sz画像サイズ.Width : 0 ) ) - 2;
 						}
 						else
 						{
 							this.txタイトル = null;
-							this.n音符の表示位置X = ( 640 - ( ( this.tx音符 != null ) ? this.tx音符.sz画像サイズ.Width : 0 ) ) - 2;
+							this.n音符の表示位置X = ( SampleFramework.GameWindowSize.Width - ( ( this.tx音符 != null ) ? this.tx音符.sz画像サイズ.Width : 0 ) ) - 2;
 						}
 					}
 					catch( CTextureCreateFailedException )
@@ -191,10 +196,10 @@ namespace DTXMania
 				base.b初めての進行描画 = false;
 
 				nWAVcount = 1;
-				bitmapFilename = new Bitmap( 640, 24 );
+				bitmapFilename = new Bitmap( SampleFramework.GameWindowSize.Width, (int)(fFontSizeFilename * Scale.X) );
 				graphicsFilename = Graphics.FromImage( bitmapFilename );
 				graphicsFilename.TextRenderingHint = TextRenderingHint.AntiAlias;
-				ftFilename = new Font( "MS PGothic", 24f, FontStyle.Bold, GraphicsUnit.Pixel );
+				ftFilename = new Font( "MS PGothic", fFontSizeFilename * Scale.X, FontStyle.Bold, GraphicsUnit.Pixel );
 			}
 			//-----------------------------
 			#endregion
@@ -216,16 +221,24 @@ namespace DTXMania
 			if( this.tx背景 != null )
 				this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
 
-			if( this.b音符を表示する )
+			if ( this.b音符を表示する )
 			{
-				int y = 480 - 45;
-				if( this.tx音符 != null )
+				int y = SampleFramework.GameWindowSize.Height - (int) ( fFontSizeTitle * Scale.Y ) + (int) ( 3 * Scale.X ); 	// 480 - 45;
+				if ( this.tx音符 != null )
 				{
-					this.tx音符.t2D描画( CDTXMania.app.Device, this.n音符の表示位置X, y );
+					this.tx音符.t2D描画(
+						CDTXMania.app.Device,
+						this.n音符の表示位置X,
+						y
+					);
 				}
-				if( this.txタイトル != null )
+				if ( this.txタイトル != null )
 				{
-					this.txタイトル.t2D描画( CDTXMania.app.Device, (int) ( 640 - ( this.txタイトル.sz画像サイズ.Width * this.txタイトル.vc拡大縮小倍率.X ) ), y );
+					this.txタイトル.t2D描画(
+						CDTXMania.app.Device,
+						(int) ( SampleFramework.GameWindowSize.Width - ( this.txタイトル.sz画像サイズ.Width * this.txタイトル.vc拡大縮小倍率.X ) ),
+						y
+					);
 				}
 			}
 			//-----------------------------
@@ -410,14 +423,18 @@ namespace DTXMania
 			if ( graphicsFilename != null && ftFilename != null )
 			{
 				graphicsFilename.Clear( Color.Transparent );
-				graphicsFilename.DrawString( strファイル名, ftFilename, Brushes.White, new RectangleF( 0, 0, 640, 24 ) );
+				graphicsFilename.DrawString( strファイル名, ftFilename, Brushes.White, new RectangleF( 0, 0, SampleFramework.GameWindowSize.Width, fFontSizeFilename * Scale.X ) );
 				if ( txFilename != null )
 				{
 					txFilename.Dispose();
 				}
 				txFilename = new CTexture( CDTXMania.app.Device, bitmapFilename, CDTXMania.TextureFormat );
 				txFilename.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
-				txFilename.t2D描画( CDTXMania.app.Device, 0, 480 - 16 );
+				txFilename.t2D描画(
+					CDTXMania.app.Device,
+					0,
+					( SampleFramework.GameWindowSize.Height - (int) ( txFilename.szテクスチャサイズ.Height * 0.5 ) )
+				);
 			}
 		}
 
@@ -445,6 +462,8 @@ namespace DTXMania
 		private Bitmap bitmapFilename;
 		private Graphics graphicsFilename;
 		private Font ftFilename;
+		private const float fFontSizeFilename = 12.0f;
+		private const float fFontSizeTitle = 48;
 		//-----------------
 		#endregion
 	}
