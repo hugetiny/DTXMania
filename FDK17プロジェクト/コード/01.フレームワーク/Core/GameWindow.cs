@@ -418,6 +418,18 @@ namespace SampleFramework
 					base.ClientSize = new Size(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
 					this.OnResizeEnd(new EventArgs());		// #23510 2010.11.20 yyagi: to set window size to Config.ini
 				}
+				else
+				if ((m.WParam.ToInt32() & 0xFFFF) == MENU_VIEW - 1)		
+				{
+					base.ClientSize = new Size( 1280, 720 );
+					this.OnResizeEnd(new EventArgs());		// #23510 2010.11.20 yyagi: to set window size to Config.ini
+				}
+				else
+				if ((m.WParam.ToInt32() & 0xFFFF) == MENU_VIEW - 2)		
+				{
+					base.ClientSize = new Size( 640, 480 );
+					this.OnResizeEnd(new EventArgs());		// #23510 2010.11.20 yyagi: to set window size to Config.ini
+				}
 				#endregion
 			}
 			#region #28821 2014.1.23 yyagi (WM_COPYDATA)
@@ -576,7 +588,7 @@ namespace SampleFramework
             return (Icon)Resources.sdx_icon_black.Clone();
 		}
 
-		#region システムメニューに"640x480"を追加 #23510 2010.11.13 yyagi add: to set "640x480" menu in systemmenu. See also http://cs2ch.blog123.fc2.com/blog-entry-80.html
+		#region システムメニューに"1920x1080", "1280x720", "640x480" を追加 #23510 2010.11.13 yyagi add: to set "1920x1020","1280x720","640x480" menu in systemmenu. See also http://cs2ch.blog123.fc2.com/blog-entry-80.html
 		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
 		private struct MENUITEMINFO
 		{
@@ -619,13 +631,29 @@ namespace SampleFramework
 			item1.fType = MFT_SEPARATOR;
 			InsertMenuItem(hSysMenu, 5, true, ref item1);
 
-			//メニュー項目の挿入   
+			//メニュー項目(1920x1080)の挿入   
 			MENUITEMINFO item2 = new MENUITEMINFO();
 			item2.cbSize = (uint)Marshal.SizeOf(item2);
 			item2.fMask = MIIM_STRING | MIIM_ID;
 			item2.wID = MENU_VIEW;
 			item2.dwTypeData = "&" + SampleFramework.GameWindowSize.Width.ToString() + "x" + SampleFramework.GameWindowSize.Height.ToString();
 			InsertMenuItem(hSysMenu, 6, true, ref item2);
+
+			//メニュー項目(1280x720)の挿入   
+			MENUITEMINFO item3 = new MENUITEMINFO();
+			item3.cbSize = (uint) Marshal.SizeOf( item3 );
+			item3.fMask = MIIM_STRING | MIIM_ID;
+			item3.wID = MENU_VIEW - 1;
+			item3.dwTypeData = "&1280x720";
+			InsertMenuItem( hSysMenu, 6, true, ref item3 );
+
+			//メニュー項目(640x480)の挿入   
+			MENUITEMINFO item4 = new MENUITEMINFO();
+			item4.cbSize = (uint) Marshal.SizeOf( item4 );
+			item4.fMask = MIIM_STRING | MIIM_ID;
+			item4.wID = MENU_VIEW - 2;
+			item4.dwTypeData = "&640x480";
+			InsertMenuItem( hSysMenu, 6, true, ref item4 );
 		}   
 		#endregion
 	}

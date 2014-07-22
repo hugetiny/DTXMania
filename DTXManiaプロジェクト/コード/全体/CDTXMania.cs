@@ -1920,6 +1920,18 @@ for (int i = 0; i < 3; i++) {
 			base.Window.StartPosition = FormStartPosition.Manual;                                                       // #30675 2013.02.04 ikanick add
             base.Window.Location = new Point(ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y);   // #30675 2013.02.04 ikanick add
 
+			if ( ConfigIni.nウインドウwidth <= 0 && ConfigIni.nウインドウheight <= 0 )		// #34069 2014.7.24 yyagi 初回起動時は1280x720にする
+			{
+				ConfigIni.nウインドウwidth  = 1280;
+				ConfigIni.nウインドウheight = 720;
+				//w = this.Window.Screen.WorkingArea.Width;
+				//h = this.Window.Screen.WorkingArea.Height;
+				//w = base.Window.Screen.Bounds.Width;
+				//h = base.Window.Screen.Bounds.Height;
+				//ConfigIni.nウインドウwidth = SampleFramework.GameWindowSize.Width;
+				//ConfigIni.nウインドウheight = SampleFramework.GameWindowSize.Height;
+			}
+
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #34510 yyagi 2010.10.31 to change window size got from Config.ini
 #if !WindowedFullscreen
 			if (!ConfigIni.bウィンドウモード)						// #23510 2010.11.02 yyagi: add; to recover window size in case bootup with fullscreen mode
