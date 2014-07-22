@@ -50,8 +50,8 @@ namespace DTXMania
 			this.strファイル名 = new string[] { @"Graphics\ScreenPlayDrums lane flush cymbal.png", @"Graphics\ScreenPlayDrums lane flush hihat.png", @"Graphics\ScreenPlayDrums lane flush snare.png", @"Graphics\ScreenPlayDrums lane flush bass.png", @"Graphics\ScreenPlayDrums lane flush hitom.png", @"Graphics\ScreenPlayDrums lane flush lowtom.png", @"Graphics\ScreenPlayDrums lane flush floortom.png", @"Graphics\ScreenPlayDrums lane flush cymbal.png", @"Graphics\ScreenPlayDrums lane flush cymbal reverse.png", @"Graphics\ScreenPlayDrums lane flush hihat reverse.png", @"Graphics\ScreenPlayDrums lane flush snare reverse.png", @"Graphics\ScreenPlayDrums lane flush bass reverse.png", @"Graphics\ScreenPlayDrums lane flush hitom reverse.png", @"Graphics\ScreenPlayDrums lane flush lowtom reverse.png", @"Graphics\ScreenPlayDrums lane flush floortom reverse.png", @"Graphics\ScreenPlayDrums lane flush cymbal reverse.png" };
 			base.b活性化してない = true;
 		}
-		
-		
+
+
 		// メソッド
 
 		public void Start( Eレーン lane, float f強弱度合い )
@@ -65,7 +65,7 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			for( int i = 0; i < 8; i++ )
+			for ( int i = 0; i < 8; i++ )
 			{
 				this.ct進行[ i ] = new CCounter();
 			}
@@ -73,7 +73,7 @@ namespace DTXMania
 		}
 		public override void On非活性化()
 		{
-			for( int i = 0; i < 8; i++ )
+			for ( int i = 0; i < 8; i++ )
 			{
 				this.ct進行[ i ] = null;
 			}
@@ -81,9 +81,9 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
-				for( int i = 0; i < 0x10; i++ )
+				for ( int i = 0; i < 0x10; i++ )
 				{
 					this.txFlush[ i ] = CDTXMania.tテクスチャの生成( CSkin.Path( this.strファイル名[ i ] ) );
 				}
@@ -92,9 +92,9 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
-				for( int i = 0; i < 0x10; i++ )
+				for ( int i = 0; i < 0x10; i++ )
 				{
 					CDTXMania.tテクスチャの解放( ref this.txFlush[ i ] );
 				}
@@ -103,48 +103,68 @@ namespace DTXMania
 		}
 		public override int On進行描画()
 		{
-			if( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
-				for( int i = 0; i < 8; i++ )
+				for ( int i = 0; i < 8; i++ )
 				{
-					if( !this.ct進行[ i ].b停止中 )
+					if ( !this.ct進行[ i ].b停止中 )
 					{
 						this.ct進行[ i ].t進行();
-						if( this.ct進行[ i ].b終了値に達した )
+						if ( this.ct進行[ i ].b終了値に達した )
 						{
 							this.ct進行[ i ].t停止();
 						}
 					}
 				}
-				for( int j = 0; j < 8; j++ )
+				for ( int j = 0; j < 8; j++ )
 				{
-					if( !this.ct進行[ j ].b停止中 )
+					if ( !this.ct進行[ j ].b停止中 )
 					{
 						int x = this.stレーンサイズ[ j ].x;
 						int w = this.stレーンサイズ[ j ].w;
-						for( int k = 0; k < 3; k++ )
+						for ( int k = 0; k < 3; k++ )
 						{
-							if( CDTXMania.ConfigIni.bReverse.Drums )
+							if ( CDTXMania.ConfigIni.bReverse.Drums )
 							{
 								int y = ( k * 0x80 ) - ( ( this.ct進行[ j ].n現在の値 * 0x180 ) / 100 );
-								for( int m = 0; m < w; m += 0x2a )
+								for ( int m = 0; m < w; m += 0x2a )
 								{
-									if( this.txFlush[ j + 8 ] != null )
+									if ( this.txFlush[ j + 8 ] != null )
 									{
-										this.txFlush[ j + 8 ].t2D描画( CDTXMania.app.Device, x + m, y, new Rectangle( ( k * 0x2a ) + 2, 0, ( ( w - m ) < 0x2a ) ? ( w - m ) : 0x2a, 0x80 ) );
+										this.txFlush[ j + 8 ].t2D描画(
+											CDTXMania.app.Device,
+											( x + m ) * Scale.X,
+											y * Scale.Y,
+											new Rectangle(
+												(int) ( ( ( k * 0x2a ) + 2 ) * Scale.X ),
+												0,
+												( ( w - m ) < 0x2a ) ? (int) ( ( w - m ) * Scale.X ) : (int) ( 0x2a * Scale.X ),
+												(int) ( 0x80 * Scale.Y )
+											)
+										);
 									}
 								}
 							}
 							else
 							{
 								int num8 = ( 0x60 + ( k * 0x80 ) ) + ( ( this.ct進行[ j ].n現在の値 * 0x180 ) / 100 );
-								if( num8 < 480 )
+								if ( num8 < 480 )
 								{
-									for( int n = 0; n < w; n += 0x2a )
+									for ( int n = 0; n < w; n += 0x2a )
 									{
-										if( this.txFlush[ j ] != null )
+										if ( this.txFlush[ j ] != null )
 										{
-											this.txFlush[ j ].t2D描画( CDTXMania.app.Device, x + n, num8, new Rectangle( k * 0x2a, 0, ( ( w - n ) < 0x2a ) ? ( w - n ) : 0x2a, 0x80 ) );
+											this.txFlush[ j ].t2D描画(
+												CDTXMania.app.Device,
+												(int) ( ( x + n ) * Scale.X ),
+												(int) ( num8 * Scale.Y ),
+												new Rectangle(
+													(int) ( k * 0x2a * Scale.X ),
+													0,
+													( ( w - n ) < 0x2a ) ? (int) ( ( w - n ) * Scale.X ) : (int) ( 0x2a * Scale.X ),
+													(int) ( 0x80 * Scale.Y )
+												)
+											);
 										}
 									}
 								}
@@ -156,7 +176,7 @@ namespace DTXMania
 			return 0;
 		}
 
-		
+
 		// その他
 
 		#region [ private ]

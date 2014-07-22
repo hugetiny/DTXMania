@@ -74,10 +74,14 @@ namespace DTXMania
 			if( this.ct進行.n現在の値 < 100 )
 			{
 				int x = (int) ( 320.0 * Math.Cos( ( Math.PI / 2 * this.ct進行.n現在の値 ) / 100.0 ) );
-				if( ( x != 320 ) && ( this.txStageFailed != null ) )
+				if ( ( x != 320 ) && ( this.txStageFailed != null ) )
 				{
-					this.txStageFailed.t2D描画( CDTXMania.app.Device, 0, 0, new Rectangle( x, 0, 320 - x, 480 ) );
-					this.txStageFailed.t2D描画( CDTXMania.app.Device, 320 + x, 0, new Rectangle( 320, 0, 320 - x, 480 ) );
+					this.txStageFailed.t2D描画( CDTXMania.app.Device,
+						0, 0,
+						new Rectangle( (int) ( x * Scale.X ), 0, (int) ( ( 320 - x ) * Scale.X ), (int) ( 480 * Scale.Y ) ) );
+					this.txStageFailed.t2D描画( CDTXMania.app.Device,
+						(int) ( ( 320 + x ) * Scale.X ), 0,
+						new Rectangle( (int) ( 320 * Scale.X ), 0, (int) ( ( 320 - x ) * Scale.X ), (int) ( 480 * Scale.Y ) ) );
 				}
 			}
 			else
@@ -92,7 +96,7 @@ namespace DTXMania
 					int y = CDTXMania.Random.Next( 5 ) - 2;
 					if( this.txStageFailed != null )
 					{
-						this.txStageFailed.t2D描画( CDTXMania.app.Device, num2, y );
+						this.txStageFailed.t2D描画( CDTXMania.app.Device, num2 * Scale.X, y * Scale.Y );
 					}
 				}
 				if( !this.b効果音再生済み )

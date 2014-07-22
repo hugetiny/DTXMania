@@ -120,16 +120,16 @@ namespace DTXMania
 
 		protected enum EEvent { 非表示, 数値更新, 同一数値, ミス通知 }
 		protected enum EMode { 非表示中, 進行表示中, 残像表示中 }
-		protected const int nギターコンボのCOMBO文字の高さ = 16;
-		protected const int nギターコンボのCOMBO文字の幅 = 45;
-		protected const int nギターコンボの高さ = 35;
-		protected const int nギターコンボの幅 = 23;
-		protected const int nギターコンボの文字間隔 = 1;
-		protected const int nドラムコンボのCOMBO文字の高さ = 32;
-		protected const int nドラムコンボのCOMBO文字の幅 = 90;
-		protected const int nドラムコンボの高さ = 70;
-		protected const int nドラムコンボの幅 = 45;
-		protected const int nドラムコンボの文字間隔 = 2;
+		protected const int nギターコンボのCOMBO文字の高さ = (int) ( 16 * Scale.Y );
+		protected const int nギターコンボのCOMBO文字の幅 = (int) ( 45 * Scale.X );
+		protected const int nギターコンボの高さ = (int) ( 35 * Scale.Y );
+		protected const int nギターコンボの幅 = (int) ( 23 * Scale.X );
+		protected const int nギターコンボの文字間隔 = (int) ( 1 * Scale.X );
+		protected const int nドラムコンボのCOMBO文字の高さ = (int) ( 32 * Scale.Y );
+		protected const int nドラムコンボのCOMBO文字の幅 = (int) ( 90 * Scale.X );
+		protected const int nドラムコンボの高さ = (int) ( 70 * Scale.Y );
+		protected const int nドラムコンボの幅 = (int) ( 45 * Scale.X );
+		protected const int nドラムコンボの文字間隔 = (int) ( 2 * Scale.X );
 		protected int[] nジャンプ差分値 = new int[ 180 ];
 		protected CSTATUS status;
 		protected CTexture txCOMBOギター;
@@ -201,7 +201,7 @@ namespace DTXMania
 
 			// 180度分のジャンプY座標差分を取得。(0度: 0 → 90度:-15 → 180度: 0)
 			for( int i = 0; i < 180; i++ )
-				this.nジャンプ差分値[ i ] = (int) ( -15.0 * Math.Sin( ( Math.PI * i ) / 180.0 ) );
+				this.nジャンプ差分値[ i ] = (int) ( -15.0 * Math.Sin( ( Math.PI * i ) / 180.0 ) * Scale.Y );
 			演奏判定ライン座標 = new C演奏判定ライン座標共通();
 		}
 
@@ -261,22 +261,22 @@ namespace DTXMania
 			//-----------------
 			const int n1桁ごとのジャンプの遅れ = 50;	// 1桁につき 50 インデックス遅れる
 
-			int nX中央位置px = 187;
+			int nX中央位置px = (int) ( 187 * Scale.X );
 			switch( e表示位置 )
 			{
 				case Eドラムコンボ文字の表示位置.LEFT:
-					nX中央位置px = 187;
+					nX中央位置px = (int) ( 187 * Scale.X );
 					break;
 
 				case Eドラムコンボ文字の表示位置.CENTER:
-					nX中央位置px = 320;
+					nX中央位置px = (int) ( 320 * Scale.X );
 					break;
 
 				case Eドラムコンボ文字の表示位置.RIGHT:
-					nX中央位置px = 485;
+					nX中央位置px = (int) ( 485 * Scale.X );
 					break;
 			}
-			int nY上辺位置px = CDTXMania.ConfigIni.bReverse.Drums ? 350 : 60;
+			int nY上辺位置px = CDTXMania.ConfigIni.bReverse.Drums ? (int) ( 350 * Scale.Y ) : (int) ( 60 * Scale.Y );
 			int n数字とCOMBOを合わせた画像の全長px = ( ( nドラムコンボの幅 + nドラムコンボの文字間隔 ) * n桁数 ) + nドラムコンボのCOMBO文字の幅;
 			int x = ( nX中央位置px + ( n数字とCOMBOを合わせた画像の全長px / 2 ) ) - nドラムコンボのCOMBO文字の幅;
 			int y = ( nY上辺位置px + nドラムコンボの高さ ) - nドラムコンボのCOMBO文字の高さ;
@@ -285,7 +285,9 @@ namespace DTXMania
 				y += this.nジャンプ差分値[ nJump ];
 
 			if( this.txCOMBOドラム != null )
-				this.txCOMBOドラム.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 140, 90, 32 ) );	// "COMBO" を表示。
+				this.txCOMBOドラム.t2D描画( CDTXMania.app.Device,
+					x, y,
+					new Rectangle( 0, (int) ( 140 * Scale.Y ), (int) ( 90 * Scale.X ), (int) ( 32 * Scale.Y ) ) );	// "COMBO" を表示。
 
 			// COMBO値を1の位から順に表示。
 
@@ -300,7 +302,8 @@ namespace DTXMania
 
 				if( this.txCOMBOドラム != null )
 				{
-					this.txCOMBOドラム.t2D描画( CDTXMania.app.Device, x, y,
+					this.txCOMBOドラム.t2D描画( CDTXMania.app.Device,
+						x, y,
 						new Rectangle( ( n位の数[ i ] % 5 ) * nドラムコンボの幅, ( n位の数[ i ] / 5 ) * nドラムコンボの高さ, nドラムコンボの幅, nドラムコンボの高さ ) );
 				}
 			}
@@ -370,16 +373,27 @@ namespace DTXMania
 			#endregion
 			#region [ "COMBO" 文字を表示。]
 			//-----------------
-			int x = n表示中央X - ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
-			int y = n表示中央Y;
-			
-			if( this.txCOMBOギター != null )
-				this.txCOMBOギター.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, 70, 45, 16 ) );
+			int x = (int) ( n表示中央X * Scale.X ) - ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
+			int y = (int) ( n表示中央Y * Scale.Y );
+
+			if ( this.txCOMBOギター != null )
+				this.txCOMBOギター.t2D描画(
+					CDTXMania.app.Device,
+					x,
+					y,
+					new Rectangle(
+						0,
+						(int) ( 70 * Scale.Y ),
+						(int) ( 45 * Scale.X ),
+						(int) ( 16 * Scale.Y )
+					)
+				); 
 			//-----------------
 			#endregion
 
+			//x = (int) ( n表示中央X * Scale.X ) + ( n全桁の合計幅 / 2 );
 			x = n表示中央X + ( n全桁の合計幅 / 2 );
-			for( int i = 0; i < n桁数; i++ )
+			for ( int i = 0; i < n桁数; i++ )
 			{
 				#region [ 数字の拡大率を設定。]
 				//-----------------
@@ -394,6 +408,7 @@ namespace DTXMania
 				#region [ 数字を1桁表示。]
 				//-----------------
 				x -= nギターコンボの幅 + nギターコンボの文字間隔;
+				//y = (int) ( n表示中央Y * Scale.Y ) - nギターコンボの高さ;
 				y = n表示中央Y - nギターコンボの高さ;
 
 				if( this.txCOMBOギター != null )

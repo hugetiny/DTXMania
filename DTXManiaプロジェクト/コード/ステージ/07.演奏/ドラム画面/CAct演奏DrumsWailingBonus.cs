@@ -116,8 +116,8 @@ namespace DTXMania
 								{
 									num4 = ( 0x163 - num4 ) - 0xf4;
 								}
-								Rectangle rectangle = new Rectangle( 0, 0, 0x1a, 0x7a );
-								if( ( 0x163 - num4 ) < rectangle.Bottom )
+								Rectangle rectangle = new Rectangle( 0, 0, 0x1a, 0x7a * 2 );
+								if ( ( 0x163 - num4 ) < rectangle.Bottom )
 								{
 									rectangle.Height = ( 0x163 - num4 ) - rectangle.Top;
 								}
@@ -126,25 +126,34 @@ namespace DTXMania
 									rectangle.Y = -num4;
 									num5 = -num4;
 								}
-								if( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
+								if ( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
 								{
-									this.txWailingBonus.t2D描画( CDTXMania.app.Device, x, ( ( ( e楽器パート == E楽器パート.GUITAR ) ? 0x39 : 0x39 ) + num4 ) + num5, rectangle );
+									rectangle.X = (int) ( rectangle.X * Scale.X );
+									rectangle.Y = (int) ( rectangle.Y * Scale.Y );
+									rectangle.Width = (int) ( rectangle.Width * Scale.X );
+									rectangle.Height = (int) ( rectangle.Height * Scale.Y );
+									this.txWailingBonus.t2D描画(
+										CDTXMania.app.Device,
+										x * Scale.X,
+										( ( ( ( e楽器パート == E楽器パート.GUITAR ) ? 0x39 : 0x39 ) + num4 ) + num5 ) * Scale.Y,
+										rectangle
+									);
 								}
-								num5 = 0;
-								rectangle = new Rectangle( 0x1a, 0, 0x1a, 0x7a );
-								if( ( 0x163 - ( num4 + 0x7a ) ) < rectangle.Bottom )
-								{
-									rectangle.Height = ( 0x163 - ( num4 + 0x7a ) ) - rectangle.Top;
-								}
-								if( ( num4 + 0x7a ) < 0 )
-								{
-									rectangle.Y = -( num4 + 0x7a );
-									num5 = -( num4 + 0x7a );
-								}
-								if( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
-								{
-									this.txWailingBonus.t2D描画( CDTXMania.app.Device, x, ( ( ( ( e楽器パート == E楽器パート.GUITAR ) ? 0x39 : 0x39 ) + num4 ) + num5 ) + 0x7a, rectangle );
-								}
+								//num5 = 0;
+								//rectangle = new Rectangle( 0x1a, 0, 0x1a, 0x7a );
+								//if( ( 0x163 - ( num4 + 0x7a ) ) < rectangle.Bottom )
+								//{
+								//    rectangle.Height = ( 0x163 - ( num4 + 0x7a ) ) - rectangle.Top;
+								//}
+								//if( ( num4 + 0x7a ) < 0 )
+								//{
+								//    rectangle.Y = -( num4 + 0x7a );
+								//    num5 = -( num4 + 0x7a );
+								//}
+								//if( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
+								//{
+								//    this.txWailingBonus.t2D描画( CDTXMania.app.Device, x, ( ( ( ( e楽器パート == E楽器パート.GUITAR ) ? 0x39 : 0x39 ) + num4 ) + num5 ) + 0x7a, rectangle );
+								//}
 							}
 						}
 					}

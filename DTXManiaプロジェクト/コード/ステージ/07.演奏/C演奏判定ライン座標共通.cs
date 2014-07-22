@@ -37,74 +37,74 @@ namespace DTXMania
 			#region [ 判定ライン座標の初期化]
 			// Normal, Drums画面, 判定ライン
 			n判定ラインY座標元データ[ 0, 0, 0 ].Drums  = 0;		//未使用
-			n判定ラインY座標元データ[ 0, 0, 0 ].Guitar = 95;
-			n判定ラインY座標元データ[ 0, 0, 0 ].Bass   = 95;
+			n判定ラインY座標元データ[ 0, 0, 0 ].Guitar = (int)(95 * Scale.Y);
+			n判定ラインY座標元データ[ 0, 0, 0 ].Bass   = (int)(95 * Scale.Y);
 			// Reverse, Drums画面, 判定ライン
 			n判定ラインY座標元データ[ 1, 0, 0 ].Drums  = 0;		//未使用
-			n判定ラインY座標元データ[ 1, 0, 0 ].Guitar = 374;
-			n判定ラインY座標元データ[ 1, 0, 0 ].Bass   = 374;
+			n判定ラインY座標元データ[ 1, 0, 0 ].Guitar = (int)(374 * Scale.Y);
+			n判定ラインY座標元データ[ 1, 0, 0 ].Bass   = (int)(374 * Scale.Y);
 			// Normal, Drums画面, Wailing枠
 			n判定ラインY座標元データ[ 0, 0, 1 ].Drums  = 0;		//未使用
-			n判定ラインY座標元データ[ 0, 0, 1 ].Guitar = 69;
-			n判定ラインY座標元データ[ 0, 0, 1 ].Bass   = 69;
+			n判定ラインY座標元データ[ 0, 0, 1 ].Guitar = (int)(69 * Scale.Y);
+			n判定ラインY座標元データ[ 0, 0, 1 ].Bass   = (int)(69 * Scale.Y);
 			// Reverse, Drums画面, Wailing枠
 			n判定ラインY座標元データ[ 1, 0, 1 ].Drums  = 0;		//未使用
-			n判定ラインY座標元データ[ 1, 0, 1 ].Guitar = 350;
-			n判定ラインY座標元データ[ 1, 0, 1 ].Bass   = 350;
+			n判定ラインY座標元データ[ 1, 0, 1 ].Guitar = (int)(350 * Scale.Y);
+			n判定ラインY座標元データ[ 1, 0, 1 ].Bass   = (int)(350 * Scale.Y);
 
 			// Normal, GR画面, 判定ライン
 			n判定ラインY座標元データ[ 0, 1, 0 ].Drums  = 0;		//未使用
-			n判定ラインY座標元データ[ 0, 1, 0 ].Guitar = 40;
-			n判定ラインY座標元データ[ 0, 1, 0 ].Bass   = 40;
+			n判定ラインY座標元データ[ 0, 1, 0 ].Guitar = (int)(40 * Scale.Y);
+			n判定ラインY座標元データ[ 0, 1, 0 ].Bass   = (int)(40 * Scale.Y);
 			// Reverse, GR画面, 判定ライン
 			n判定ラインY座標元データ[ 1, 1, 0 ].Drums  = 0;		//未使用
-			n判定ラインY座標元データ[ 1, 1, 0 ].Guitar = 369;
-			n判定ラインY座標元データ[ 1, 1, 0 ].Bass   = 369;
+			n判定ラインY座標元データ[ 1, 1, 0 ].Guitar = (int)(369 * Scale.Y);
+			n判定ラインY座標元データ[ 1, 1, 0 ].Bass   = (int)(369 * Scale.Y);
 			// Normal, GR画面, Wailing枠
 			n判定ラインY座標元データ[ 0, 1, 1 ].Drums  = 0;		//未使用
-			n判定ラインY座標元データ[ 0, 1, 1 ].Guitar = 11;
-			n判定ラインY座標元データ[ 0, 1, 1 ].Bass   = 11;
+			n判定ラインY座標元データ[ 0, 1, 1 ].Guitar = (int)(11 * Scale.Y);
+			n判定ラインY座標元データ[ 0, 1, 1 ].Bass   = (int)(11 * Scale.Y);
 			// Reverse, GR画面, Wailing枠
 			n判定ラインY座標元データ[ 1, 1, 1 ].Drums  = 0;		//未使用
-			n判定ラインY座標元データ[ 1, 1, 1 ].Guitar = 340;
-			n判定ラインY座標元データ[ 1, 1, 1 ].Bass   = 340;
+			n判定ラインY座標元データ[ 1, 1, 1 ].Guitar = (int)(340 * Scale.Y);
+			n判定ラインY座標元データ[ 1, 1, 1 ].Bass   = (int)(340 * Scale.Y);
 			#endregion
 
 			n演奏RGBボタンY座標元データ = new STDGBVALUE<int>[ 2, 2, 2 ];
 			#region [ RGBボタン座標の初期化]
 			// Normal, Drums画面, RGBボタン
 			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Guitar = 57;
-			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Bass   = 57;
+			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Guitar = (int)(57 * Scale.Y);
+			n演奏RGBボタンY座標元データ[ 0, 0, 0 ].Bass   = (int)(57 * Scale.Y);
 			// Reverse, Drums画面, RGBボタン
 			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Guitar = 57;
-			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Bass   = 57;
+			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Guitar = (int)(57 * Scale.Y);
+			n演奏RGBボタンY座標元データ[ 1, 0, 0 ].Bass   = (int)(57 * Scale.Y);
 			// Normal, Drums画面, RGBボタン(Vシリーズ)
 			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Guitar = 107;
-			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Bass   = 107;
+			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Guitar = (int)(107 * Scale.Y);
+			n演奏RGBボタンY座標元データ[ 0, 0, 1 ].Bass   = (int)(107 * Scale.Y);
 			// Reverse, Drums画面, RGBボタン(Vシリーズ)
 			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Guitar = 107;
-			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Bass   = 107;
+			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Guitar = (int)(107 * Scale.Y);
+			n演奏RGBボタンY座標元データ[ 1, 0, 1 ].Bass   = (int)(107 * Scale.Y);
 
 			// Normal, GR画面, RGBボタン
 			n演奏RGBボタンY座標元データ[ 0, 1, 0 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 0, 1, 0 ].Guitar = 3;
-			n演奏RGBボタンY座標元データ[ 0, 1, 0 ].Bass   = 3;
+			n演奏RGBボタンY座標元データ[ 0, 1, 0 ].Guitar = (int)(3 * Scale.Y);
+			n演奏RGBボタンY座標元データ[ 0, 1, 0 ].Bass   = (int)(3 * Scale.Y);
 			// Reverse, GR画面, RGBボタン
 			n演奏RGBボタンY座標元データ[ 1, 1, 0 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 1, 1, 0 ].Guitar = 3;
-			n演奏RGBボタンY座標元データ[ 1, 1, 0 ].Bass   = 3;
+			n演奏RGBボタンY座標元データ[ 1, 1, 0 ].Guitar = (int)(3 * Scale.Y);
+			n演奏RGBボタンY座標元データ[ 1, 1, 0 ].Bass   = (int)(3 * Scale.Y);
 			// Normal, GR画面, RGBボタン(Vシリーズ)
 			n演奏RGBボタンY座標元データ[ 0, 1, 1 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 0, 1, 1 ].Guitar = 44;
-			n演奏RGBボタンY座標元データ[ 0, 1, 1 ].Bass   = 44;
+			n演奏RGBボタンY座標元データ[ 0, 1, 1 ].Guitar = (int)(44 * Scale.Y);
+			n演奏RGBボタンY座標元データ[ 0, 1, 1 ].Bass   = (int)(44 * Scale.Y);
 			// Reverse, GR画面, RGBボタン(Vシリーズ)
 			n演奏RGBボタンY座標元データ[ 1, 1, 1 ].Drums  = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[ 1, 1, 1 ].Guitar = 44;
-			n演奏RGBボタンY座標元データ[ 1, 1, 1 ].Bass   = 44;
+			n演奏RGBボタンY座標元データ[ 1, 1, 1 ].Guitar = (int)(44 * Scale.Y);
+			n演奏RGBボタンY座標元データ[ 1, 1, 1 ].Bass = (int) ( 44 * Scale.Y );
 			#endregion
 
 			n判定位置 = new STDGBVALUE<E判定位置>();
@@ -129,7 +129,7 @@ namespace DTXMania
 		/// <returns></returns>
 		public int n判定ラインY座標( E楽器パート eInst, bool bGRmode, bool bReverse )
 		{
-			return n判定ラインY座標( eInst, bGRmode, bReverse, false );
+			return n判定ラインY座標( eInst, bGRmode, bReverse, false, false );
 		}
 
 		public int n判定ラインY座標( E楽器パート eInst, bool bGRmode, bool bReverse, bool bWailingFrame )
@@ -165,12 +165,12 @@ namespace DTXMania
 				int ret = this.n判定ラインY座標元データ[ nReverse, nGRmode, nWailing ][ nInst ];		// 補正無しの値
 				if ( bReverse )
 				{
-					if ( n判定位置[ nInst ] == E判定位置.Lower ) ret += 13;
+					if ( n判定位置[ nInst ] == E判定位置.Lower ) ret += (int)(13 * Scale.Y);
 					if ( b補正あり )		ret += nJudgeLinePosY_delta[ nInst ];
 				}
 				else
 				{
-					if ( n判定位置[ nInst ] == E判定位置.Lower ) ret += 52;
+					if ( n判定位置[ nInst ] == E判定位置.Lower ) ret += (int) ( 52 * Scale.Y );
 					if ( b補正あり )		ret -= nJudgeLinePosY_delta[ nInst ];
 				}
 				return ret;

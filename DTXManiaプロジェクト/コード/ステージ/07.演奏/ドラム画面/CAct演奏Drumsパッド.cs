@@ -17,53 +17,53 @@ namespace DTXMania
 			ST基本位置 st基本位置 = new ST基本位置();
 			st基本位置.x = 0x16;
 			st基本位置.y = 0;
-			st基本位置.rc = new Rectangle( 0, 0, 0x40, 0x40 );
+			st基本位置.rc = new Rectangle( (int) ( 0 * Scale.X ), (int) ( 0 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 0 ] = st基本位置;
 			ST基本位置 st基本位置2 = new ST基本位置();
 			st基本位置2.x = 0x3d;
 			st基本位置2.y = 11;
-			st基本位置2.rc = new Rectangle( 0x40, 0, 0x40, 0x40 );
+			st基本位置2.rc = new Rectangle( (int) ( 0x40 * Scale.X ), (int) ( 0 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 1 ] = st基本位置2;
 			ST基本位置 st基本位置3 = new ST基本位置();
 			st基本位置3.x = 0x60;
 			st基本位置3.y = 8;
-			st基本位置3.rc = new Rectangle( 0x80, 0, 0x40, 0x40 );
+			st基本位置3.rc = new Rectangle( (int) ( 0x80 * Scale.X ), (int) ( 0 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 2 ] = st基本位置3;
 			ST基本位置 st基本位置4 = new ST基本位置();
 			st基本位置4.x = 0x8a;
 			st基本位置4.y = 7;
-			st基本位置4.rc = new Rectangle( 0, 0x40, 0x40, 0x40 );
+			st基本位置4.rc = new Rectangle( (int) ( 0 * Scale.X ), (int) ( 0x40 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 3 ] = st基本位置4;
 			ST基本位置 st基本位置5 = new ST基本位置();
 			st基本位置5.x = 0xb3;
 			st基本位置5.y = 0;
-			st基本位置5.rc = new Rectangle( 0x40, 0x40, 0x40, 0x40 );
+			st基本位置5.rc = new Rectangle( (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 4 ] = st基本位置5;
 			ST基本位置 st基本位置6 = new ST基本位置();
 			st基本位置6.x = 0xd4;
 			st基本位置6.y = 5;
-			st基本位置6.rc = new Rectangle( 0x80, 0x40, 0x40, 0x40 );
+			st基本位置6.rc = new Rectangle( (int) ( 0x80 * Scale.X ), (int) ( 0x40 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 5 ] = st基本位置6;
 			ST基本位置 st基本位置7 = new ST基本位置();
 			st基本位置7.x = 250;
 			st基本位置7.y = 15;
-			st基本位置7.rc = new Rectangle( 0, 0x80, 0x40, 0x40 );
+			st基本位置7.rc = new Rectangle( (int) ( 0 * Scale.X ), (int) ( 0x80 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 6 ] = st基本位置7;
 			ST基本位置 st基本位置8 = new ST基本位置();
 			st基本位置8.x = 0x11a;
 			st基本位置8.y = 0;
-			st基本位置8.rc = new Rectangle( 0x40, 0x80, 0x40, 0x40 );
+			st基本位置8.rc = new Rectangle( (int) ( 0x40 * Scale.X ), (int) ( 0x80 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 7 ] = st基本位置8;
 			ST基本位置 st基本位置9 = new ST基本位置();
 			st基本位置9.x = 0x130;
 			st基本位置9.y = 8;
-			st基本位置9.rc = new Rectangle( 0x80, 0x80, 0x40, 0x40 );
+			st基本位置9.rc = new Rectangle( (int) ( 0x80 * Scale.X ), (int) ( 0x80 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) );
 			st基本位置Array[ 8 ] = st基本位置9;
 			this.st基本位置 = st基本位置Array;
 			base.b活性化してない = true;
 		}
-		
-		
+
+
 		// メソッド
 
 		public void Hit( int nLane )
@@ -79,7 +79,7 @@ namespace DTXMania
 		{
 			this.nフラッシュ制御タイマ = -1;
 			this.nY座標制御タイマ = -1;
-			for( int i = 0; i < 9; i++ )
+			for ( int i = 0; i < 9; i++ )
 			{
 				STパッド状態 stパッド状態2 = new STパッド状態();
 				STパッド状態 stパッド状態 = stパッド状態2;
@@ -92,7 +92,7 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
 				this.txパッド = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums pads.png" ) );
 				this.tx光るパッド = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums pads flush.png" ) );
@@ -101,7 +101,7 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
 				CDTXMania.tテクスチャの解放( ref this.txパッド );
 				CDTXMania.tテクスチャの解放( ref this.tx光るパッド );
@@ -110,24 +110,24 @@ namespace DTXMania
 		}
 		public override int On進行描画()
 		{
-			if( !base.b活性化してない )
+			if ( !base.b活性化してない )
 			{
-				if( base.b初めての進行描画 )
+				if ( base.b初めての進行描画 )
 				{
 					this.nフラッシュ制御タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
 					this.nY座標制御タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
 					base.b初めての進行描画 = false;
 				}
 				long num = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
-				if( num < this.nフラッシュ制御タイマ )
+				if ( num < this.nフラッシュ制御タイマ )
 				{
 					this.nフラッシュ制御タイマ = num;
 				}
-				while( ( num - this.nフラッシュ制御タイマ ) >= 15 )
+				while ( ( num - this.nフラッシュ制御タイマ ) >= 15 )
 				{
-					for( int j = 0; j < 9; j++ )
+					for ( int j = 0; j < 9; j++ )
 					{
-						if( this.stパッド状態[ j ].n明るさ > 0 )
+						if ( this.stパッド状態[ j ].n明るさ > 0 )
 						{
 							this.stパッド状態[ j ].n明るさ--;
 						}
@@ -135,21 +135,21 @@ namespace DTXMania
 					this.nフラッシュ制御タイマ += 15;
 				}
 				long num3 = CSound管理.rc演奏用タイマ.n現在時刻;
-				if( num3 < this.nY座標制御タイマ )
+				if ( num3 < this.nY座標制御タイマ )
 				{
 					this.nY座標制御タイマ = num3;
 				}
-				while( ( num3 - this.nY座標制御タイマ ) >= 5 )
+				while ( ( num3 - this.nY座標制御タイマ ) >= 5 )
 				{
-					for( int k = 0; k < 9; k++ )
+					for ( int k = 0; k < 9; k++ )
 					{
 						this.stパッド状態[ k ].nY座標オフセットdot += this.stパッド状態[ k ].nY座標加速度dot;
-						if( this.stパッド状態[ k ].nY座標オフセットdot > 15 )
+						if ( this.stパッド状態[ k ].nY座標オフセットdot > 15 )
 						{
 							this.stパッド状態[ k ].nY座標オフセットdot = 15;
 							this.stパッド状態[ k ].nY座標加速度dot = -1;
 						}
-						else if( this.stパッド状態[ k ].nY座標オフセットdot < 0 )
+						else if ( this.stパッド状態[ k ].nY座標オフセットdot < 0 )
 						{
 							this.stパッド状態[ k ].nY座標オフセットdot = 0;
 							this.stパッド状態[ k ].nY座標加速度dot = 0;
@@ -157,19 +157,28 @@ namespace DTXMania
 					}
 					this.nY座標制御タイマ += 5;
 				}
-				for( int i = 0; i < 9; i++ )
+				for ( int i = 0; i < 9; i++ )
 				{
 					int index = this.n描画順[ i ];
 					int x = this.st基本位置[ index ].x;
 					int y = ( this.st基本位置[ index ].y + ( CDTXMania.ConfigIni.bReverse.Drums ? -10 : 0x19e ) ) + this.stパッド状態[ index ].nY座標オフセットdot;
-					if( this.txパッド != null )
+					if ( this.txパッド != null )
 					{
-						this.txパッド.t2D描画( CDTXMania.app.Device, x, y, this.st基本位置[ index ].rc );
+						this.txパッド.t2D描画(
+							CDTXMania.app.Device,
+							x * Scale.X,
+							y * Scale.Y,
+							this.st基本位置[ index ].rc
+						);
 					}
-					if( this.tx光るパッド != null )
+					if ( this.tx光るパッド != null )
 					{
 						this.tx光るパッド.n透明度 = ( this.stパッド状態[ index ].n明るさ * 40 ) + 15;
-						this.tx光るパッド.t2D描画( CDTXMania.app.Device, x, y, this.st基本位置[ index ].rc );
+						this.tx光るパッド.t2D描画(
+							CDTXMania.app.Device,
+							x * Scale.X,
+							y * Scale.Y,
+							this.st基本位置[ index ].rc );
 					}
 				}
 			}

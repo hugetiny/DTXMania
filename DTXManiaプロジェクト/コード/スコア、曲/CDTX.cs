@@ -46,16 +46,24 @@ namespace DTXMania
 				#region [ strAVIファイル名の作成。]
 				//-----------------
 				string strAVIファイル名;
-				if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-					strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+
+				if ( CDTXMania.DTX != null && !Path.IsPathRooted( this.strファイル名 ) )	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
+				{																			// 演奏終了直後はCDTXオブジェクトが残っているので、ファイル名がフルパスかどうかでプレビュー判定する
+					if ( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+						strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					else
+						strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				}
 				else
-					strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+				{
+					strAVIファイル名 = this.strファイル名;
+				}
 				//-----------------
 				#endregion
 
 				if( !File.Exists( strAVIファイル名 ) )
 				{
-					Trace.TraceWarning( "ファイルが存在しません。({0})({1})", this.strコメント文, strAVIファイル名 );
+					Trace.TraceWarning( "CAVI: ファイルが存在しません。({0})({1})", this.strコメント文, Path.GetFileName( strAVIファイル名 ) );
 					this.avi = null;
 					return;
 				}
@@ -65,12 +73,12 @@ namespace DTXMania
 				try
 				{
 					this.avi = new CAvi( strAVIファイル名 );
-					Trace.TraceInformation( "動画を生成しました。({0})({1})({2}frames)", this.strコメント文, strAVIファイル名, this.avi.GetMaxFrameCount() );
+					Trace.TraceInformation( "CAVI: 動画を生成しました。({0})({1})({2}frames)", this.strコメント文, Path.GetFileName( strAVIファイル名 ), this.avi.GetMaxFrameCount() );
 				}
-				catch( Exception e )
+				catch ( Exception e )
 				{
 					Trace.TraceError( e.Message );
-					Trace.TraceError( "動画の生成に失敗しました。({0})({1})", this.strコメント文, strAVIファイル名 );
+					Trace.TraceError( "CAVI: 動画の生成に失敗しました。({0})({1})", this.strコメント文, Path.GetFileName( strAVIファイル名 ) );
 					this.avi = null;
 				}
 			}
@@ -88,22 +96,28 @@ namespace DTXMania
 
 				if( this.avi != null )
 				{
-					#region [ strAVIファイル名 の作成。 ]
+					#region [ strAVIファイル名 の作成。なぜDispose時にファイル名の生成をしているのかと思ったら、デバッグログ用でした。 ]
 					//-----------------
 					string strAVIファイル名;
-					if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-						strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					if ( CDTXMania.DTX != null && !Path.IsPathRooted( this.strファイル名 ) )	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
+					{																			// 演奏終了直後はCDTXオブジェクトが残っているので、ファイル名がフルパスかどうかでプレビュー判定する
+						if ( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
+							strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+						else
+							strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					}
 					else
-						strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					{
+						strAVIファイル名 = this.strファイル名;
+					}
 					//-----------------
 					#endregion
 
 					this.avi.Dispose();
 					this.avi = null;
 					
-					Trace.TraceInformation( "動画を解放しました。({0})({1})", this.strコメント文, strAVIファイル名 );
+					Trace.TraceInformation( "動画を解放しました。({0})({1})", this.strコメント文, Path.GetFileName( strAVIファイル名 ) );
 				}
-
 				this.bDispose済み = true;
 			}
 			//-----------------
@@ -397,11 +411,10 @@ namespace DTXMania
 			{
 				get
 				{
-					if (this.nチャンネル番号 == 3 || this.nチャンネル番号 == 8) {
-						return true;
-					} else {
-						return false;
-					}
+					return (
+						this.nチャンネル番号 == (int) Ech定義.BPM ||
+						this.nチャンネル番号 == (int) Ech定義.BPMEx
+					);
 				}
 			}
 			public bool bWAVを使うチャンネルである
@@ -673,6 +686,169 @@ namespace DTXMania
 			}
 			//-----------------
 			#endregion
+
+			#region [ チャンネル番号→Chipの種類、の変換。今後の拡張を容易にするために追加。 ]
+			public ESoundChipType tチャンネル番号からESoundChipTypeを得る()
+			{
+				switch ( this.nチャンネル番号 )
+				{
+					#region [ Drums ]
+					case (int) Ech定義.HiHatClose:
+					case (int) Ech定義.Snare:
+					case (int) Ech定義.BassDrum:
+					case (int) Ech定義.HighTom:
+					case (int) Ech定義.LowTom:
+					case (int) Ech定義.Cymbal:
+					case (int) Ech定義.FloorTom:
+					case (int) Ech定義.HiHatOpen:
+					case (int) Ech定義.RideCymbal:
+					case (int) Ech定義.LeftCymbal:
+
+					case (int) Ech定義.HiHatClose_Hidden:
+					case (int) Ech定義.Snare_Hidden:
+					case (int) Ech定義.BassDrum_Hidden:
+					case (int) Ech定義.HighTom_Hidden:
+					case (int) Ech定義.LowTom_Hidden:
+					case (int) Ech定義.Cymbal_Hidden:
+					case (int) Ech定義.FloorTom_Hidden:
+					case (int) Ech定義.HiHatOpen_Hidden:
+					case (int) Ech定義.RideCymbal_Hidden:
+					case (int) Ech定義.LeftCymbal_Hidden:
+
+					case (int) Ech定義.HiHatClose_NoChip:
+					case (int) Ech定義.Snare_NoChip:
+					case (int) Ech定義.BassDrum_NoChip:
+					case (int) Ech定義.HighTom_NoChip:
+					case (int) Ech定義.LowTom_NoChip:
+					case (int) Ech定義.Cymbal_NoChip:
+					case (int) Ech定義.FloorTom_NoChip:
+					case (int) Ech定義.HiHatOpen_NoChip:
+					case (int) Ech定義.RideCymbal_NoChip:
+					case (int) Ech定義.LeftCymbal_NoChip:
+						return ESoundChipType.Drums;
+					#endregion
+
+					#region [ Guitar ]
+					case (int) Ech定義.Guitar_Open:
+					case (int) Ech定義.Guitar_xxB:
+					case (int) Ech定義.Guitar_xGx:
+					case (int) Ech定義.Guitar_xGB:
+					case (int) Ech定義.Guitar_Rxx:
+					case (int) Ech定義.Guitar_RxB:
+					case (int) Ech定義.Guitar_RGx:
+					case (int) Ech定義.Guitar_RGB:
+					case (int) Ech定義.Guitar_Wailing:
+					case (int) Ech定義.Guitar_WailingSound:
+					case (int) Ech定義.Guitar_NoChip:
+						return ESoundChipType.Guitar;
+					#endregion
+
+					#region [ Bass ]
+					case (int) Ech定義.Bass_Open:
+					case (int) Ech定義.Bass_xxB:
+					case (int) Ech定義.Bass_xGx:
+					case (int) Ech定義.Bass_xGB:
+					case (int) Ech定義.Bass_Rxx:
+					case (int) Ech定義.Bass_RxB:
+					case (int) Ech定義.Bass_RGx:
+					case (int) Ech定義.Bass_RGB:
+					case (int) Ech定義.Bass_Wailing:
+					case (int) Ech定義.Bass_WailingSound:
+					case (int) Ech定義.Bass_NoChip:
+						return ESoundChipType.Bass;
+					#endregion
+
+					#region [ SE ]
+					case (int) Ech定義.SE01:
+					case (int) Ech定義.SE02:
+					case (int) Ech定義.SE03:
+					case (int) Ech定義.SE04:
+					case (int) Ech定義.SE05:
+					case (int) Ech定義.SE06:
+					case (int) Ech定義.SE07:
+					case (int) Ech定義.SE08:
+					case (int) Ech定義.SE09:
+					case (int) Ech定義.SE10:
+					case (int) Ech定義.SE11:
+					case (int) Ech定義.SE12:
+					case (int) Ech定義.SE13:
+					case (int) Ech定義.SE14:
+					case (int) Ech定義.SE15:
+					case (int) Ech定義.SE16:
+					case (int) Ech定義.SE17:
+					case (int) Ech定義.SE18:
+					case (int) Ech定義.SE19:
+					case (int) Ech定義.SE20:
+					case (int) Ech定義.SE21:
+					case (int) Ech定義.SE22:
+					case (int) Ech定義.SE23:
+					case (int) Ech定義.SE24:
+					case (int) Ech定義.SE25:
+					case (int) Ech定義.SE26:
+					case (int) Ech定義.SE27:
+					case (int) Ech定義.SE28:
+					case (int) Ech定義.SE29:
+					case (int) Ech定義.SE30:
+					case (int) Ech定義.SE31:
+					case (int) Ech定義.SE32:
+						return ESoundChipType.SE;
+					#endregion
+
+					#region [ BGM ]
+					case (int) Ech定義.BGM:
+						return ESoundChipType.BGM;
+					#endregion
+
+					#region [ その他 ]
+					default:
+						return ESoundChipType.UNKNOWN;
+					#endregion
+				}
+			}
+			#endregion
+
+			public bool bIsVisibleChip
+			{
+				get
+				{
+					switch ( this.nチャンネル番号 )
+					{
+						case (int) Ech定義.HiHatClose:
+						case (int) Ech定義.Snare:
+						case (int) Ech定義.BassDrum:
+						case (int) Ech定義.HighTom:
+						case (int) Ech定義.LowTom:
+						case (int) Ech定義.Cymbal:
+						case (int) Ech定義.FloorTom:
+						case (int) Ech定義.HiHatOpen:
+						case (int) Ech定義.RideCymbal:
+						case (int) Ech定義.LeftCymbal:
+
+						case (int) Ech定義.Guitar_Open:
+						case (int) Ech定義.Guitar_xxB:
+						case (int) Ech定義.Guitar_xGx:
+						case (int) Ech定義.Guitar_xGB:
+						case (int) Ech定義.Guitar_Rxx:
+						case (int) Ech定義.Guitar_RxB:
+						case (int) Ech定義.Guitar_RGx:
+						case (int) Ech定義.Guitar_RGB:
+
+						case (int) Ech定義.Bass_Open:
+						case (int) Ech定義.Bass_xxB:
+						case (int) Ech定義.Bass_xGx:
+						case (int) Ech定義.Bass_xGB:
+						case (int) Ech定義.Bass_Rxx:
+						case (int) Ech定義.Bass_RxB:
+						case (int) Ech定義.Bass_RGx:
+						case (int) Ech定義.Bass_RGB:
+							return true;
+
+						default:
+							return false;
+					}
+				}
+			}
+
 			/// <summary>
 			/// shallow copyです。
 			/// </summary>
@@ -988,6 +1164,9 @@ namespace DTXMania
 			public bool LeftCymbal;
 			public bool OpenGuitar;
 			public bool OpenBass;
+
+			public bool BGA;
+			public bool Movie;
 			
 			public bool this[ int index ]
 			{
@@ -1124,7 +1303,7 @@ namespace DTXMania
 //		public bool bGUITAR演奏で直前のGUITARを消音する;
 //		public bool bBASS演奏で直前のBASSを消音する;
 #endif
-		// コンストラクタ
+		#region [ コンストラクタ ]
 
 		public CDTX()
 		{
@@ -1168,6 +1347,8 @@ namespace DTXMania
 			this.bチップがある.LeftCymbal = false;
 			this.bチップがある.OpenGuitar = false;
 			this.bチップがある.OpenBass = false;
+			this.bチップがある.BGA = false;
+			this.bチップがある.Movie = false; 
 			this.strファイル名 = "";
 			this.strフォルダ名 = "";
 			this.strファイル名の絶対パス = "";
@@ -1215,7 +1396,7 @@ namespace DTXMania
 			this.bGUITAR演奏で直前のGUITARを消音する = true;
 			this.bBASS演奏で直前のBASSを消音する = true;
 #endif
-	
+
 		}
 		public CDTX( string str全入力文字列 )
 			: this()
@@ -1241,6 +1422,7 @@ namespace DTXMania
 			this.On活性化();
 			this.t入力( strファイル名, bヘッダのみ, db再生速度, nBGMAdjust );
 		}
+		#endregion
 
 
 		// メソッド
@@ -2549,24 +2731,21 @@ namespace DTXMania
 								this.listWAV[ chip.n整数値・内部番号 ].listこのWAVを使用するチャンネル番号の集合.Add( chip.nチャンネル番号 );
 
 								int c = chip.nチャンネル番号 >> 4;
-								switch ( c )
+								switch ( chip.tチャンネル番号からESoundChipTypeを得る() )
 								{
-									case 0x01:
+									case ESoundChipType.Drums:
 										if ( !chip.b空打ちチップである )
 										{
 											this.listWAV[ chip.n整数値・内部番号 ].bIsDrumsSound = true;
 										}
 										break;
-									case 0x02:
+									case ESoundChipType.Guitar:
 										this.listWAV[ chip.n整数値・内部番号 ].bIsGuitarSound = true; break;
-									case 0x0A:
+									case ESoundChipType.Bass:
 										this.listWAV[ chip.n整数値・内部番号 ].bIsBassSound = true; break;
-									case 0x06:
-									case 0x07:
-									case 0x08:
-									case 0x09:
+									case ESoundChipType.SE:
 										this.listWAV[ chip.n整数値・内部番号 ].bIsSESound = true; break;
-									case 0x00:
+									case ESoundChipType.BGM:
 										if ( chip.nチャンネル番号 == 0x01 )
 										{
 											this.listWAV[ chip.n整数値・内部番号 ].bIsBGMSound = true; break;
@@ -2697,7 +2876,7 @@ namespace DTXMania
 					case 0x80:	case 0x81:	case 0x82:	case 0x83:	case 0x84:	case 0x85:	case 0x86:	case 0x87:	case 0x88:	case 0x89:
 					case 0x90:	case 0x91:	case 0x92:
 
-						#region [ 発音1秒前のタイミングを算出 ]
+						#region [ 発音1秒前のタイミングを記録 ]
 						int n発音前余裕ms = 1000, n発音後余裕ms = 800;
 						{
 							int ch = pChip.nチャンネル番号 >> 4;
@@ -5067,7 +5246,17 @@ namespace DTXMania
 			{
 				this.bチップがある.Bass = true;
 			}
-			switch( nチャンネル番号 )
+			else if ( ( nチャンネル番号 == 0x04 ) || ( nチャンネル番号 == 0x07 ) ||
+				( ( 0x55 <= nチャンネル番号 ) && ( nチャンネル番号 <= 0x59 ) ) || ( nチャンネル番号 == 0x60 ) )
+			{
+				this.bチップがある.BGA = true;
+			}
+			else if ( nチャンネル番号 == 0x54 )
+			{
+				this.bチップがある.Movie = true;
+			}
+
+			switch ( nチャンネル番号 )
 			{
 				case 0x18:
 					this.bチップがある.HHOpen = true;

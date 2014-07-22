@@ -248,8 +248,8 @@ namespace DTXMania
 						identity *= Matrix.RotationZ( num3 + ( (float) Math.PI / 2 ) );
 						float num5 = ( (float) ( 0.8 * Math.Sin( num2 * Math.PI / 2 ) ) ) * this.st火花[ i ].fサイズ;
 						identity *= Matrix.Translation(
-							(this.nレーンの中央X座標[this.st火花[i].nLane] + (((float)Math.Cos((double)num3)) * num5)) - SampleFramework.GameWindowSize.Width / 2,
-							-( ( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f - nJudgeLinePosY_delta_Drums : 425f + nJudgeLinePosY_delta_Drums ) + ( ( (float)Math.Sin( (double)num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Height / 2 ),
+							( this.nレーンの中央X座標[ this.st火花[ i ].nLane ] * Scale.X + ( ( (float) Math.Cos( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Width / 2,
+							-( ( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) + ( ( (float) Math.Sin( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Height / 2 ),
 							0f
 						);
 						if( this.tx火花 != null )
@@ -281,8 +281,8 @@ namespace DTXMania
 						float x = (float) ( this.st青い星[ i ].f半径 * Math.Cos( ( Math.PI / 2 * this.st青い星[ i ].ct進行.n現在の値 ) / 100.0 ) );
 						mat *= Matrix.Scaling( x, x, 1f );
 						mat *= Matrix.Translation(
-							this.st青い星[i].fX - SampleFramework.GameWindowSize.Width / 2,
-							-(this.st青い星[i].fY - SampleFramework.GameWindowSize.Height / 2),
+							this.st青い星[ i ].fX * Scale.X - SampleFramework.GameWindowSize.Width / 2,
+							-( this.st青い星[ i ].fY * Scale.Y - SampleFramework.GameWindowSize.Height / 2 ),
 							0f
 						);
 						if( this.tx青い星 != null )
@@ -333,8 +333,8 @@ namespace DTXMania
 							matrix3 *= Matrix.RotationX( this.st大波[ i ].f角度X );
 							matrix3 *= Matrix.RotationY( this.st大波[ i ].f角度Y );
 							matrix3 *= Matrix.Translation(
-								this.nレーンの中央X座標[this.st大波[i].nLane] - SampleFramework.GameWindowSize.Width / 2,
-								-((CDTXMania.ConfigIni.bReverse.Drums ? 55f - nJudgeLinePosY_delta_Drums : 425f + nJudgeLinePosY_delta_Drums ) - SampleFramework.GameWindowSize.Height / 2),
+								this.nレーンの中央X座標[ this.st大波[ i ].nLane ] * Scale.X - SampleFramework.GameWindowSize.Width / 2,
+								-( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) - SampleFramework.GameWindowSize.Height / 2 ),
 								0f );
 							if( this.tx大波 != null )
 							{
@@ -368,8 +368,8 @@ namespace DTXMania
 							matrix4 *= Matrix.RotationX( this.st細波[ i ].f角度X );
 							matrix4 *= Matrix.RotationY( this.st細波[ i ].f角度Y );
 							matrix4 *= Matrix.Translation(
-								this.nレーンの中央X座標[this.st細波[i].nLane] - SampleFramework.GameWindowSize.Width / 2,
-								-((CDTXMania.ConfigIni.bReverse.Drums ? 55f - nJudgeLinePosY_delta_Drums : 425f + nJudgeLinePosY_delta_Drums ) - SampleFramework.GameWindowSize.Height / 2),
+								this.nレーンの中央X座標[ this.st細波[ i ].nLane ] * Scale.X - SampleFramework.GameWindowSize.Width / 2,
+								-( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) - SampleFramework.GameWindowSize.Height / 2 ),
 								0f
 							);
 							if (this.tx細波 != null)

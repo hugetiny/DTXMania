@@ -1668,7 +1668,7 @@ namespace DTXMania
 		{
 			if ( ( ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) ) && ( !CDTXMania.ConfigIni.bストイックモード && CDTXMania.ConfigIni.bAVI有効 ) )
 			{
-				this.actAVI.t進行描画( x, y );
+				this.actAVI.t進行描画( (int) ( x * Scale.X ), (int) ( y * Scale.Y ) );
 			}
 		}
 		protected abstract void t進行描画・BGA();
@@ -1785,9 +1785,9 @@ namespace DTXMania
 			//double speed = 264.0;	// BPM150の時の1小節の長さ[dot]
 			const double speed = 234.0;	// BPM150の時の1小節の長さ[dot]
 
-			double ScrollSpeedDrums = ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Drums + 1.0 ) * 0.5 * 37.5 * speed / 60000.0;
+			double ScrollSpeedDrums =  ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Drums  + 1.0 ) * 0.5       * 37.5 * speed / 60000.0;
 			double ScrollSpeedGuitar = ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Guitar + 1.0 ) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
-			double ScrollSpeedBass = ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Bass + 1.0 ) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
+			double ScrollSpeedBass =   ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Bass   + 1.0 ) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
 
 			CDTX dTX = CDTXMania.DTX;
 			CConfigIni configIni = CDTXMania.ConfigIni;
@@ -1995,7 +1995,13 @@ namespace DTXMania
 						}
 						if ( ( ePlayMode == E楽器パート.DRUMS ) && ( configIni.eDark != Eダークモード.FULL ) && pChip.b可視 && ( this.txチップ != null ) )
 						{
-							this.txチップ.t2D描画( CDTXMania.app.Device, 0x23, configIni.bReverse.Drums ? ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) : ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ), new Rectangle( 0, 0x1bf, 0x128, 1 ) );
+							this.txチップ.t2D描画( CDTXMania.app.Device,
+								0x23 * Scale.X,
+								configIni.bReverse.Drums ?
+									(int) ( ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ) :
+									(int) ( ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ),
+								new Rectangle( 0, (int) ( 0x1bf * Scale.Y ), (int) ( 0x128 * Scale.X ), (int) ( 1 * Scale.Y ) )
+							);
 						}
 						break;
 					#endregion
@@ -2019,12 +2025,17 @@ namespace DTXMania
 							pChip.bHit = true;
 							if ( configIni.bAVI有効 )
 							{
+								if ( CDTXMania.DTX.bチップがある.BGA )
+								{
+									this.actAVI.bHasBGA = true;
+								}
 								switch ( pChip.eAVI種別 )
 								{
 									case EAVI種別.AVI:
-										if ( pChip.rAVI != null )
 										{
-											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
+											int startWidth = ( CDTXMania.DTX.bチップがある.BGA ) ? 278 : SampleFramework.GameWindowSize.Width;
+											int startHeight = ( CDTXMania.DTX.bチップがある.BGA ) ? 355 : SampleFramework.GameWindowSize.Height;
+											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, startWidth, startHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
 										}
 										break;
 
@@ -2535,9 +2546,10 @@ namespace DTXMania
 		protected abstract void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst );
 
 		protected void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst,
-			int barYNormal, int barYReverse, int showRangeY0, int showRangeY1, int openXg, int openXb,
-			int rectOpenOffsetX, int rectOpenOffsetY, int openChipWidth, int chipHeight,
-			int chipWidth, int guitarNormalX, int guitarLeftyX, int bassNormalX, int bassLeftyX, int drawDeltaX, int chipTexDeltaX )
+			int barYNormal, int barYReverse,
+			int showRangeY0, int showRangeY1, int openXg, int openXb,
+			int rectOpenOffsetX, int rectOpenOffsetY, int openChipWidth, int chipHeight, int chipWidth,
+			int guitarNormalX, int guitarLeftyX, int bassNormalX, int bassLeftyX, int drawDeltaX, int chipTexDeltaX )
 		{
 			int instIndex = (int) inst;
 			if ( configIni.bGuitar有効 )
@@ -2576,8 +2588,12 @@ namespace DTXMania
 					{
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
-					int y = configIni.bReverse[ instIndex ] ? ( barYReverse - pChip.nバーからの距離dot[ instIndex ] ) : ( barYNormal + pChip.nバーからの距離dot[ instIndex ] );
-					int n小節線消失距離dot = configIni.bReverse[ instIndex ] ? -100 : ( configIni.e判定位置[ instIndex ] == E判定位置.標準 ) ? -36 : -25;
+					int y = configIni.bReverse[ instIndex ] ?
+						(int) ( barYReverse - pChip.nバーからの距離dot[ instIndex ] * Scale.Y ) :
+						(int) ( barYNormal  + pChip.nバーからの距離dot[ instIndex ] * Scale.Y );
+					int n小節線消失距離dot = configIni.bReverse[ instIndex ] ?
+						(int) ( -100 * Scale.Y ) :
+						( configIni.e判定位置[ instIndex ] == E判定位置.標準 ) ? (int) ( -36 * Scale.Y ) : (int) ( -25 * Scale.Y );
 					if ( configIni.bReverse[ instIndex ] )
 					{
 						//showRangeY1 = barYReverse - n小節線消失距離dot;
@@ -2591,14 +2607,29 @@ namespace DTXMania
 						if ( this.txチップ != null )
 						{
 							int nアニメカウンタ現在の値 = this.ctチップ模様アニメ[ instIndex ].n現在の値;
+							#region [ OPENチップの描画 ]
 							if ( pChip.nチャンネル番号 == OPEN )
 							{
 								int xo = ( inst == E楽器パート.GUITAR ) ? openXg : openXb;
-								this.txチップ.t2D描画( CDTXMania.app.Device, xo, y - 2,
-									new Rectangle( rectOpenOffsetX, rectOpenOffsetY + ( ( nアニメカウンタ現在の値 % 5 ) * chipHeight ),
-										openChipWidth, chipHeight ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									xo * Scale.X,
+									y - ( 2 * Scale.Y ),
+									new Rectangle(
+										(int) ( rectOpenOffsetX * Scale.X ),
+										(int) ( rectOpenOffsetY * Scale.Y ) + (int) ( ( ( nアニメカウンタ現在の値 % 5 ) * chipHeight * Scale.Y ) ),
+										(int) ( openChipWidth * Scale.X ),
+										(int) ( chipHeight * Scale.Y )
+									)
+								);
 							}
-							Rectangle rc = new Rectangle( rectOpenOffsetX, nアニメカウンタ現在の値 * chipHeight, chipWidth, chipHeight );
+							#endregion
+							Rectangle rc = new Rectangle(
+								(int) ( rectOpenOffsetX * Scale.X ),
+								(int) ( nアニメカウンタ現在の値 * chipHeight * Scale.Y ),
+								(int) ( chipWidth * Scale.X ),
+								(int) ( chipHeight * Scale.Y )
+							);
+							#region [ RGBチップのX座標初期化 ]
 							int x;
 							if ( inst == E楽器パート.GUITAR )
 							{
@@ -2609,24 +2640,42 @@ namespace DTXMania
 								x = ( configIni.bLeft.Bass ) ? bassLeftyX : bassNormalX;
 							}
 							int deltaX = ( configIni.bLeft[ instIndex ] ) ? -drawDeltaX : +drawDeltaX;
-
-//Trace.TraceInformation( "chip={0:x2}, E楽器パート={1}, x={2}", pChip.nチャンネル番号, inst, x );
+							#endregion
+							//Trace.TraceInformation( "chip={0:x2}, E楽器パート={1}, x={2}", pChip.nチャンネル番号, inst, x );
+							#region [ Rチップ描画 ]
 							if ( bChipHasR )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - chipHeight / 2, rc );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x * Scale.X,
+									y - ( chipHeight / 2 ) * Scale.Y,
+									rc
+								);
 							}
-							rc.X += chipTexDeltaX;
+							#endregion
+							#region [ Gチップ描画 ]
+							rc.X += (int) ( chipTexDeltaX * Scale.X );
 							x += deltaX;
 							if ( bChipHasG )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - chipHeight / 2, rc );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x * Scale.X,
+									y - ( chipHeight / 2 ) * Scale.Y,
+									rc
+								);
 							}
-							rc.X += chipTexDeltaX;
+							#endregion
+							#region [ Bチップ描画 ]
+							rc.X += (int) ( chipTexDeltaX * Scale.X );
 							x += deltaX;
 							if ( bChipHasB )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - chipHeight / 2, rc );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x * Scale.X,
+									y - ( chipHeight / 2 ) * Scale.Y,
+									rc
+								);
 							}
+							#endregion
 						}
 					}
 				}
@@ -2851,13 +2900,16 @@ namespace DTXMania
 		{
 			if ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
 			{
-				int y = CDTXMania.ConfigIni.bReverse.Drums ? 53 - 演奏判定ライン座標.nJudgeLinePosY_delta.Drums : 419 + 演奏判定ライン座標.nJudgeLinePosY_delta.Drums;
+				int y = CDTXMania.ConfigIni.bReverse.Drums ? (int) ( 53 * Scale.Y ) - 演奏判定ライン座標.nJudgeLinePosY_delta.Drums : (int) ( 419 * Scale.Y ) + 演奏判定ライン座標.nJudgeLinePosY_delta.Drums;
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 				if ( this.txヒットバー != null )
 				{
 					for ( int i = 32; i < 335; i += 8 )
 					{
-						this.txヒットバー.t2D描画( CDTXMania.app.Device, i, y, new Rectangle( 0, 0, ( ( i + 8 ) >= 335 ) ? ( 7 - ( ( i + 8 ) - 335 ) ) : 8, 8 ) );
+						this.txヒットバー.t2D描画( CDTXMania.app.Device,
+							i * Scale.X,
+							y,
+							new Rectangle( 0, 0, ( ( i + 8 ) >= 335 ) ? (int) ( ( 7 - ( ( i + 8 ) - 335 ) ) * Scale.X ) : (int) ( 8 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
 					}
 				}
 			}
@@ -2896,26 +2948,38 @@ namespace DTXMania
 			{
 				try
 				{
-					Bitmap bitmap2 = null;
-					bitmap2 = new Bitmap( bgfilename );
-					if ( ( bitmap2.Size.Width == 0 ) && ( bitmap2.Size.Height == 0 ) )
+					Bitmap bitmap1 = null;
+					bitmap1 = new Bitmap( bgfilename );
+					if ( ( bitmap1.Size.Width == 0 ) && ( bitmap1.Size.Height == 0 ) )
 					{
 						this.tx背景 = null;
 						return;
 					}
-					Bitmap bitmap3 = new Bitmap(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
-					Graphics graphics = Graphics.FromImage( bitmap3 );
+
+					int newWidth = (int) ( bitmap1.Width * Scale.X );
+					int newHeight = (int) ( bitmap1.Height * Scale.Y );
+					Bitmap bitmap2 = new Bitmap( newWidth, newHeight );
+					Graphics graphic2 = Graphics.FromImage( bitmap2 );
+					graphic2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+					graphic2.DrawImage( bitmap1, 0, 0, newWidth, newHeight );
+					graphic2.Dispose();
+					bitmap1.Dispose();
+
+
+					Bitmap bitmap3 = new Bitmap( SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height );
+					Graphics graphics3 = Graphics.FromImage( bitmap3 );
 					for ( int i = 0; i < SampleFramework.GameWindowSize.Height; i += bitmap2.Size.Height )
 					{
 						for ( int j = 0; j < SampleFramework.GameWindowSize.Width; j += bitmap2.Size.Width )
 						{
-							graphics.DrawImage( bitmap2, j, i, bitmap2.Width, bitmap2.Height );
+							graphics3.DrawImage( bitmap2, j, i, bitmap2.Width, bitmap2.Height );
 						}
 					}
-					graphics.Dispose();
+					graphics3.Dispose(); 
+					
 					bitmap2.Dispose();
 					image = new Bitmap( CSkin.Path( DefaultBgFilename ) );
-					graphics = Graphics.FromImage( image );
+					graphics3 = Graphics.FromImage( image );
 					ColorMatrix matrix2 = new ColorMatrix();
 					matrix2.Matrix00 = 1f;
 					matrix2.Matrix11 = 1f;
@@ -2925,10 +2989,10 @@ namespace DTXMania
 					ColorMatrix newColorMatrix = matrix2;
 					ImageAttributes imageAttr = new ImageAttributes();
 					imageAttr.SetColorMatrix( newColorMatrix );
-					graphics.DrawImage( bitmap3, new Rectangle( 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height ), 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, GraphicsUnit.Pixel, imageAttr );
+					graphics3.DrawImage( bitmap3, new Rectangle( 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height ), 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, GraphicsUnit.Pixel, imageAttr );
 					imageAttr.Dispose();
-					graphics.DrawImage( bitmap3, bgrect, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height, GraphicsUnit.Pixel );
-					graphics.Dispose();
+					graphics3.DrawImage( bitmap3, bgrect, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height, GraphicsUnit.Pixel );
+					graphics3.Dispose();
 					bitmap3.Dispose();
 					flag = false;
 				}
@@ -2960,6 +3024,7 @@ namespace DTXMania
 			try
 			{
 				this.tx背景 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+				this.tx背景.n透明度 = CDTXMania.ConfigIni.n背景の透過度;		// 背景動画用
 			}
 			catch ( CTextureCreateFailedException )
 			{

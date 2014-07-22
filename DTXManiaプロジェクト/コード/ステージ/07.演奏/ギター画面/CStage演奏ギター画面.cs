@@ -245,7 +245,9 @@ namespace DTXMania
 		{
 			int yG = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, bReverse[ (int) E楽器パート.GUITAR ], true );
 			int yB = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   true, bReverse[ (int) E楽器パート.BASS   ], true );
-			base.t進行描画・Wailing枠( 0x8b, 0x251,
+			base.t進行描画・Wailing枠(
+				(int) ( 0x8b * Scale.X ),
+				(int) ( 0x251 * Scale.X ),
 				yG,
 				yB
 				//CDTXMania.ConfigIni.bReverse.Guitar ? 340 : 11,
@@ -342,10 +344,11 @@ namespace DTXMania
 			base.t進行描画・チップ・ギターベース( configIni, ref dTX, ref pChip, inst,
 				演奏判定ライン座標.n判定ラインY座標( inst, true, false ),	// 40
 				演奏判定ライン座標.n判定ラインY座標( inst, true, true ),	// 369
-				0, 409,				// Y軸表示範囲
-				26, 480,			// openチップのX座標(Gt, Bs)
-				0, 192, 103, 8,		// オープンチップの x, y, w, h
-				32, 26, 98, 480, 552, 36, 32
+				(int) ( 0 * Scale.Y ), (int) ( 409 * Scale.Y ),				// Y軸表示範囲
+				26, 480,					// openチップのX座標(Gt, Bs)
+				0, 192, 103, 8, 32,			// オープンチップregionの x, y, w, h, 通常チップのw
+				26, 98, 480, 552,			// GtのX, Gt左利きのX, BsのX, Bs左利きのX,
+				36, 32						// 描画のX座標間隔, テクスチャのX座標間隔
 			);
 		}
 #if false

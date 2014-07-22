@@ -64,19 +64,38 @@ namespace DTXMania
 		}
 		public override int On進行描画()
 		{
-			if( !base.b活性化してない && ( this.txStatusPanels != null ) )
+			if ( !base.b活性化してない && ( this.txStatusPanels != null ) )
 			{
-				this.txStatusPanels.t2D描画( CDTXMania.app.Device, 0x26f, 0x14f, new Rectangle( this.nStatus * 15, 0xb7, 15, 0x49 ) );
+				this.txStatusPanels.t2D描画(
+					CDTXMania.app.Device,
+					0x26f * Scale.X,
+					0x14f * Scale.Y,
+					new Rectangle(
+						(int) ( this.nStatus * 15 * Scale.X ),
+						(int) ( 0xb7 * Scale.Y ),
+						(int) ( 15 * Scale.X ),
+						(int) ( 0x49 * Scale.Y )
+					)
+				);
 				int drums = CDTXMania.ConfigIni.n譜面スクロール速度.Drums;
-				if( drums < 0 )
+				if ( drums < 0 )
 				{
 					drums = 0;
 				}
-				if( drums > 15 )
+				if ( drums > 15 )
 				{
 					drums = 15;
 				}
-				this.txStatusPanels.t2D描画( CDTXMania.app.Device, 0x26f, 0x3b, new Rectangle( drums * 15, 0, 15, 0xac ) );
+				this.txStatusPanels.t2D描画( CDTXMania.app.Device,
+					0x26f * Scale.X,
+					0x3b * Scale.Y,
+					new Rectangle(
+						(int) ( drums * 15 * Scale.X ),
+						0,
+						(int) ( 15 * Scale.X ),
+						(int) ( 0xac * Scale.Y )
+					)
+				);
 			}
 			return 0;
 		}
