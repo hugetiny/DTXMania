@@ -44,7 +44,7 @@ namespace DTXMania
 			int x = ( int ) ( 0x1b5 * Scale.X );
 			//int y = CDTXMania.ConfigIni.bReverse.Bass ? 0xaf : 270;
 			int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
-			y += CDTXMania.ConfigIni.bReverse.Guitar ? (int) ( -134 * Scale.Y ) : (int) ( +174 * Scale.Y );
+			y += CDTXMania.ConfigIni.bReverse.Bass ? (int) ( -134 * Scale.Y ) : (int) ( +174 * Scale.Y );
 			if ( base.txCOMBOギター != null )
 			{
 				base.txCOMBOギター.n透明度 = 120;

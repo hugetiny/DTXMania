@@ -154,12 +154,13 @@ namespace DTXMania
 							{
 								case E判定文字表示位置.コンボ下:
 									baseX = this.stレーンサイズ[ j ].x;
+									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 									baseY = (
 												CDTXMania.ConfigIni.bReverse.Bass ?
-													(int) ( 100 * Scale.Y ) :
-													(int) ( 300 * Scale.Y )
+													yB + (int) ( ( -134 + 0 ) * Scale.Y ) :
+													yB + (int) ( ( +174 + 0 ) * Scale.Y )
 											)
-											+ (int) ( this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
+											+ (int) (  this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
 									break;
 								case E判定文字表示位置.レーン上:
 									baseX = this.stレーンサイズ[ j ].x;
@@ -168,7 +169,7 @@ namespace DTXMania
 									baseY = (
 												CDTXMania.ConfigIni.bReverse.Bass ?
 													yB - (int) ( 134 * Scale.Y ) :
-													yB + (int) (  85 * Scale.Y )
+													yB + (int) (  75 * Scale.Y )
 											)
 											+ (int) ( this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
 									break;
@@ -194,12 +195,13 @@ namespace DTXMania
 							{
 							    case E判定文字表示位置.コンボ下:
 									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
+									yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
 									baseY = (
 												CDTXMania.ConfigIni.bReverse.Guitar ?
-													(int) ( 100 * Scale.Y ) :
-													(int) ( 300 * Scale.Y )
+													yG + (int) ( ( -134 + 0 ) * Scale.Y ) :
+													yG + (int) ( ( +174 + 0 ) * Scale.Y )
 											)
-											+ (int) ( this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
+											+ (int) (  this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
 									break;
 							    case E判定文字表示位置.レーン上:
 									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
@@ -208,7 +210,7 @@ namespace DTXMania
 									baseY = (
 												CDTXMania.ConfigIni.bReverse.Guitar ?
 													yG - (int) ( 134 * Scale.Y ):
-													yG + (int) (  85 * Scale.Y )
+													yG + (int) (  75 * Scale.Y )
 											)
 											+ (int) ( this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
 									break;
