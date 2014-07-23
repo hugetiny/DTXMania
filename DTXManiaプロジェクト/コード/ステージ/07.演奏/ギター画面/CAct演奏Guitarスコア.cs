@@ -52,23 +52,43 @@ namespace DTXMania
 						char ch = str[ k ];
 						if( ch.Equals( ' ' ) )
 						{
-							rectangle = new Rectangle( 0, 0, 12, 0x18 );
+							rectangle = new Rectangle(
+								0,
+								0,
+								(int) ( 12 * Scale.X ),
+								(int) ( 0x18 * Scale.Y )
+								);
 						}
 						else
 						{
 							int num5 = int.Parse( str.Substring( k, 1 ) );
 							if( num5 < 5 )
 							{
-								rectangle = new Rectangle( num5 * 12, 0, 12, 0x18 );
+								rectangle = new Rectangle(
+									(int) ( num5 * 12 * Scale.X ),
+									0,
+									(int) ( 12 * Scale.X ),
+									(int) ( 0x18 * Scale.Y )
+								);
 							}
 							else
 							{
-								rectangle = new Rectangle( ( num5 - 5 ) * 12, 0x18, 12, 0x18 );
+								rectangle = new Rectangle(
+									(int) ( ( num5 - 5 ) * 12 * Scale.X ),
+									(int) ( 0x18 * Scale.Y ),
+									(int) ( 12 * Scale.X ),
+									(int) ( 0x18 * Scale.Y )
+								);
 							}
 						}
 						if( base.txScore != null )
 						{
-							base.txScore.t2D描画( CDTXMania.app.Device, this.ptSCORE[ i - 1 ].X + ( k * 12 ), this.ptSCORE[ i - 1 ].Y, rectangle );
+							base.txScore.t2D描画(
+								CDTXMania.app.Device,
+								( this.ptSCORE[ i - 1 ].X + ( k * 12 ) ) * Scale.X,
+								this.ptSCORE[ i - 1 ].Y * Scale.Y,
+								rectangle
+							);
 						}
 					}
 				}

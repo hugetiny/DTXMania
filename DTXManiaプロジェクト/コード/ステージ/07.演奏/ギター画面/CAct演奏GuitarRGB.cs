@@ -34,16 +34,26 @@ namespace DTXMania
 					for( int j = 0; j < 3; j++ )
 					{
 						int index = CDTXMania.ConfigIni.bLeft.Guitar ? ( 2 - j ) : j;
-						Rectangle rectangle = new Rectangle( index * 0x18, 0, 0x18, 0x20 );
+						Rectangle rectangle = new Rectangle(
+							(int) ( index * 0x18 * Scale.X ),
+							0,
+							(int) ( 0x18 * Scale.X ),
+							(int) ( 0x20 * Scale.Y )
+						);
 						if( base.b押下状態[ index ] )
 						{
-							rectangle.Y += 0x20;
+							rectangle.Y += (int) ( 0x20 * Scale.Y );
 						}
 						if( base.txRGB != null )
 						{
 							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar );
 						//	int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar, false, false );
-							base.txRGB.t2D描画( CDTXMania.app.Device, 0x1f + ( j * 0x24 ), y, rectangle );
+							base.txRGB.t2D描画(
+								CDTXMania.app.Device,
+								( 0x1f + ( j * 0x24 ) ) * Scale.X,
+								y,
+								rectangle
+							);
 						}
 					}
 				}
@@ -52,16 +62,26 @@ namespace DTXMania
 					for( int k = 0; k < 3; k++ )
 					{
 						int index = CDTXMania.ConfigIni.bLeft.Bass ? ( 2 - k ) : k;
-						Rectangle rectangle2 = new Rectangle( index * 0x18, 0, 0x18, 0x20 );
+						Rectangle rectangle2 = new Rectangle(
+							(int) ( index * 0x18 * Scale.X ),
+							0,
+							(int) ( 0x18 * Scale.X ),
+							(int) ( 0x20 * Scale.Y )
+						);
 						if( base.b押下状態[ index + 3 ] )
 						{
-							rectangle2.Y += 0x20;
+							rectangle2.Y += (int) ( 0x20 * Scale.Y );
 						}
 						if( base.txRGB != null )
 						{
 							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass );
 							//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass, false, false );
-							base.txRGB.t2D描画( CDTXMania.app.Device, 0x1e5 + ( k * 0x24 ), y, rectangle2 );
+							base.txRGB.t2D描画(
+								CDTXMania.app.Device,
+								( 0x1e5 + ( k * 0x24 ) ) * Scale.X,
+								y,
+								rectangle2
+							);
 						}
 					}
 				}

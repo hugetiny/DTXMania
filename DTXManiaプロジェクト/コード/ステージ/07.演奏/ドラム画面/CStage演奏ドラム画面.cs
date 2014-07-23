@@ -2198,6 +2198,7 @@ namespace DTXMania
 						{
 							rect.Height -= numB - ( showRangeY1 - numA );
 						}
+						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
 						{
 							this.txチップ.t2D描画( CDTXMania.app.Device,
 								drawX,
@@ -2368,7 +2369,7 @@ namespace DTXMania
 						演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, true )
 					};			// ドラム画面かギター画面かで変わる値
 					//int[] y_base = { 0x5f, 0x176 };		// 判定バーのY座標: ドラム画面かギター画面かで変わる値
-					int offset = 0x39;					// ドラム画面かギター画面かで変わる値
+					int offset = (int) ( 0x39 * Scale.Y );					// ドラム画面かギター画面かで変わる値
 
 					const int WailingWidth  = (int) ( 20 * Scale.X );		// ウェイリングチップ画像の幅: 4種全て同じ値
 					const int WailingHeight = (int) ( 50 * Scale.Y );		// ウェイリングチップ画像の高さ: 4種全て同じ値

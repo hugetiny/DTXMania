@@ -179,9 +179,14 @@ namespace DTXMania
 										break;
 								}
 							}
-							int xc = ( ( baseX + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) );
-							int x = xc - ( (int) ( ( ( 128f * base.st状態[ j ].fX方向拡大率 ) * 0.8 ) / 2.0 ) );
-							int y = ( baseY + base.st状態[ j ].n相対Y座標 ) - ( (int) ( ( ( 43f * base.st状態[ j ].fY方向拡大率 ) * 0.8 ) / 2.0 ) );
+							//int xc = ( ( baseX + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) );
+							//int x = xc - ( (int) ( ( ( 128f * base.st状態[ j ].fX方向拡大率 ) * 0.8 ) / 2.0 ) );
+							//int y = ( baseY + base.st状態[ j ].n相対Y座標 ) - ( (int) ( ( ( 43f * base.st状態[ j ].fY方向拡大率 ) * 0.8 ) / 2.0 ) );
+
+							int xc = (int) ( ( ( ( baseX + base.st状態[ j ].n相対X座標 ) + ( this.stレーンサイズ[ j ].w / 2 ) ) ) * Scale.X );
+							int x = xc - (int) ( ( ( 256f / 2 ) * base.st状態[ j ].fX方向拡大率 ) * 0.8 );
+							int y = (int) ( ( baseY + base.st状態[ j ].n相対Y座標 ) * Scale.Y ) - ( (int) ( ( ( ( 256f / 3 ) * base.st状態[ j ].fY方向拡大率 ) * 0.8 ) / 2.0 ) );
+
 							if( base.tx判定文字列[ index ] != null )
 							{
 								base.tx判定文字列[ index ].n透明度 = base.st状態[ j ].n透明度;

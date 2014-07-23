@@ -70,7 +70,17 @@ namespace DTXMania
 			{
 				if( this.tx左パネル != null )
 				{
-					this.tx左パネル.t2D描画( CDTXMania.app.Device, 3, 0x143, new Rectangle( this.nStatus * 15, 0xb7, 15, 0x49 ) );
+					this.tx左パネル.t2D描画(
+						CDTXMania.app.Device,
+						3 * Scale.X,
+						0x143 * Scale.Y,
+						new Rectangle(
+							(int) ( this.nStatus * 15 * Scale.X ),
+							(int) ( 0xb7 * Scale.Y ),
+							(int) ( 15 * Scale.X ),
+							(int) ( 0x49 * Scale.Y )
+						)
+					);
 					int guitar = CDTXMania.ConfigIni.n譜面スクロール速度.Guitar;
 					if( guitar < 0 )
 					{
@@ -80,11 +90,31 @@ namespace DTXMania
 					{
 						guitar = 15;
 					}
-					this.tx左パネル.t2D描画( CDTXMania.app.Device, 3, 0x35, new Rectangle( guitar * 15, 0, 15, 0xac ) );
+					this.tx左パネル.t2D描画(
+						CDTXMania.app.Device,
+						3 * Scale.X,
+						0x35 * Scale.Y,
+						new Rectangle(
+							(int) ( guitar * 15 * Scale.X ),
+							0,
+							(int) ( 15 * Scale.X ),
+							(int) ( 0xac * Scale.Y )
+						)
+					);
 				}
 				if( this.tx右パネル != null )
 				{
-					this.tx右パネル.t2D描画( CDTXMania.app.Device, 0x26e, 0x143, new Rectangle( this.nStatus * 15, 0xb7, 15, 0x49 ) );
+					this.tx右パネル.t2D描画(
+						CDTXMania.app.Device,
+						0x26e * Scale.X,
+						0x143 * Scale.Y,
+						new Rectangle(
+							(int) ( this.nStatus * 15 * Scale.X ),
+							(int) ( 0xb7 * Scale.Y ),
+							(int) ( 15 * Scale.X ),
+							(int) ( 0x49 * Scale.Y )
+						)
+					);
 					int bass = CDTXMania.ConfigIni.n譜面スクロール速度.Bass;
 					if( bass < 0 )
 					{
@@ -94,7 +124,17 @@ namespace DTXMania
 					{
 						bass = 15;
 					}
-					this.tx右パネル.t2D描画( CDTXMania.app.Device, 0x26e, 0x35, new Rectangle( bass * 15, 0, 15, 0xac ) );
+					this.tx右パネル.t2D描画(
+						CDTXMania.app.Device,
+						0x26e * Scale.X,
+						0x35 * Scale.Y,
+						new Rectangle(
+							(int) ( bass * 15 * Scale.X ),
+							0,
+							(int) ( 15 * Scale.X ),
+							(int) ( 0xac * Scale.Y )
+						)
+					);
 				}
 			}
 			return 0;

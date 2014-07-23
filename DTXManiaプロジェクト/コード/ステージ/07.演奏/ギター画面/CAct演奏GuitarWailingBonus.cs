@@ -111,7 +111,7 @@ namespace DTXMania
 							{
 								num6 = ( 0x199 - num6 ) - 0xf4;
 							}
-							Rectangle rectangle = new Rectangle( 0, 0, 0x1a, 0x7a );
+							Rectangle rectangle = new Rectangle( 0, 0, 0x1a, 0x7a * 2 );
 							if( ( 0x199 - num6 ) < rectangle.Bottom )
 							{
 								rectangle.Height = ( 0x199 - num6 ) - rectangle.Top;
@@ -122,26 +122,36 @@ namespace DTXMania
 								rectangle.Height -= -num6;
 								num7 = -num6;
 							}
-							if( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
+							if ( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
 							{
-								this.txWailingBonus.t2D描画( CDTXMania.app.Device, x, num6 + num7, rectangle );
+								rectangle.X = (int) ( rectangle.X * Scale.X );
+								rectangle.Y = (int) ( rectangle.Y * Scale.Y );
+								rectangle.Width = (int) ( rectangle.Width * Scale.X );
+								rectangle.Height = (int) ( rectangle.Height * Scale.Y );
+
+								this.txWailingBonus.t2D描画(
+									CDTXMania.app.Device,
+									x * Scale.X,
+									( num6 + num7 ) * Scale.Y,
+									rectangle
+								);
 							}
-							num7 = 0;
-							rectangle = new Rectangle( 0x1a, 0, 0x1a, 0x7a );
-							if( ( 0x199 - ( num6 + 0x7a ) ) < rectangle.Bottom )
-							{
-								rectangle.Height = ( 0x199 - ( num6 + 0x7a ) ) - rectangle.Top;
-							}
-							if( ( num6 + 0x7a ) < 0 )
-							{
-								rectangle.Y = -( num6 + 0x7a );
-								rectangle.Height -= rectangle.Y;
-								num7 = -( num6 + 0x7a );
-							}
-							if( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
-							{
-								this.txWailingBonus.t2D描画( CDTXMania.app.Device, x, ( num6 + num7 ) + 0x7a, rectangle );
-							}
+							//num7 = 0;
+							//rectangle = new Rectangle( 0x1a, 0, 0x1a, 0x7a );
+							//if( ( 0x199 - ( num6 + 0x7a ) ) < rectangle.Bottom )
+							//{
+							//    rectangle.Height = ( 0x199 - ( num6 + 0x7a ) ) - rectangle.Top;
+							//}
+							//if( ( num6 + 0x7a ) < 0 )
+							//{
+							//    rectangle.Y = -( num6 + 0x7a );
+							//    rectangle.Height -= rectangle.Y;
+							//    num7 = -( num6 + 0x7a );
+							//}
+							//if( ( rectangle.Top < rectangle.Bottom ) && ( this.txWailingBonus != null ) )
+							//{
+							//    this.txWailingBonus.t2D描画( CDTXMania.app.Device, x, ( num6 + num7 ) + 0x7a, rectangle );
+							//}
 						}
 					}
 				}

@@ -373,8 +373,8 @@ namespace DTXMania
 			#endregion
 			#region [ "COMBO" 文字を表示。]
 			//-----------------
-			int x = (int) ( n表示中央X * Scale.X ) - ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
-			int y = (int) ( n表示中央Y * Scale.Y );
+			int x = (int) ( n表示中央X ) - ( (int) ( ( nギターコンボのCOMBO文字の幅 * f拡大率 ) / 2.0f ) );
+			int y = (int) ( n表示中央Y );
 
 			if ( this.txCOMBOギター != null )
 				this.txCOMBOギター.t2D描画(
