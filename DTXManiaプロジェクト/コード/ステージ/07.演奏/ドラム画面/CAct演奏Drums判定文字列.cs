@@ -148,11 +148,12 @@ namespace DTXMania
 							{
 								case E判定文字表示位置.コンボ下:
 									baseX = this.stレーンサイズ[ j ].x;
-									baseY = ( CDTXMania.ConfigIni.bReverse.Bass ? 100 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
+									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
+									baseY = ( CDTXMania.ConfigIni.bReverse.Bass ? yB - 134 + 10 : yB + 174 + 10 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
+									//														134と174は、COMBO表示位置
 									break;
 								case E判定文字表示位置.レーン上:
 									baseX = this.stレーンサイズ[ j ].x;
-									//baseY = ( CDTXMania.ConfigIni.bReverse.Bass ? 240 : 180 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
 									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 									baseY = ( CDTXMania.ConfigIni.bReverse.Bass ? yB - 134 : yB + 85 ) +( this.n文字の縦表示位置[ j ] * 0x20 );
 									break;
@@ -174,7 +175,9 @@ namespace DTXMania
 							{
 							    case E判定文字表示位置.コンボ下:
 									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
-									baseY = ( CDTXMania.ConfigIni.bReverse.Guitar ? 100 : 300 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
+									yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
+									baseY = ( CDTXMania.ConfigIni.bReverse.Guitar ? yG - 134 + 10 : yG + 174 + 10 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
+									//														134と174は、COMBO表示位置
 									break;
 							    case E判定文字表示位置.レーン上:
 									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
