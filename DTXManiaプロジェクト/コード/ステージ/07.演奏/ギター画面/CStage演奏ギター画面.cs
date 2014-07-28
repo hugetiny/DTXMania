@@ -246,8 +246,8 @@ namespace DTXMania
 			int yG = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, bReverse[ (int) E楽器パート.GUITAR ], true );
 			int yB = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   true, bReverse[ (int) E楽器パート.BASS   ], true );
 			base.t進行描画・Wailing枠(
-				(int) ( 0x8b * Scale.X ),
-				(int) ( 0x251 * Scale.X ),
+				(int) ( 139 * Scale.X ),
+				(int) ( 593 * Scale.X ),
 				yG,
 				yB
 				//CDTXMania.ConfigIni.bReverse.Guitar ? 340 : 11,
@@ -507,9 +507,9 @@ namespace DTXMania
 					const int WailingHeight = (int) ( 50 * Scale.Y );		// 4種全て同じ値
 					const int baseTextureOffsetX = (int) ( 96 * Scale.X );	// ドラム画面かギター画面かで変わる値
 					const int baseTextureOffsetY = (int) (  0 * Scale.Y );	// ドラム画面かギター画面かで変わる値
-					const int drawX = (int) ( 139 * Scale.X );				// 4種全て異なる値
+					const int drawX = (int) ( 140 * Scale.X );				// 4種全て異なる値
 
-					const int numA = (int)( 25 * Scale.Y );				// 4種全て同じ値;
+					const int numA = (int)( 29 * Scale.Y );				// 4種全て同じ値;
 					int y = configIni.bReverse.Guitar ?
 						( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) ) :
 						( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) );
@@ -695,9 +695,9 @@ namespace DTXMania
 					const int WailingHeight = (int) ( 50 * Scale.Y );		// 4種全て同じ値
 					const int baseTextureOffsetX = (int) ( 96 * Scale.X );	// ドラム画面かギター画面かで変わる値
 					const int baseTextureOffsetY = (int) (  0 * Scale.Y );	// ドラム画面かギター画面かで変わる値
-					const int drawX =(int) ( 593 * Scale.X );				// 4種全て異なる値
+					const int drawX =(int) ( 594 * Scale.X );				// 4種全て異なる値
 
-					const int numA = (int) ( 25 * Scale.Y );				// 4種全て同じ値
+					const int numA = (int) ( 29 * Scale.Y );				// 4種全て同じ値
 					int y = configIni.bReverse.Bass ?
 						( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) ) :
 						( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) );

@@ -2172,7 +2172,7 @@ namespace DTXMania
 					const int baseTextureOffsetY = (int) ( 174 * Scale.Y );	// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
 					const int drawX = (int) ( 588 * Scale.X );				// ウェイリングチップ描画位置X座標: 4種全て異なる値
 
-					const int numA = (int) ( 25 * Scale.Y );				// 4種全て同じ値
+					const int numA = (int) ( 26 * Scale.Y );				// 4種全て同じ値
 					int y = configIni.bReverse.Guitar ?
 						( y_base[1] - (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) ) :
 						( y_base[0] + (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) );
@@ -2377,7 +2377,7 @@ namespace DTXMania
 					const int baseTextureOffsetY = (int) ( 174 * Scale.Y );	// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
 					const int drawX = (int) ( 479 * Scale.X );				// ウェイリングチップ描画位置X座標: 4種全て異なる値
 
-					const int numA = (int) ( 25 * Scale.Y );				// 4種全て同じ値
+					const int numA = (int) ( 26 * Scale.Y );				// 4種全て同じ値
 					int y = configIni.bReverse.Bass ?
 						( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) ) :
 						( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) );
