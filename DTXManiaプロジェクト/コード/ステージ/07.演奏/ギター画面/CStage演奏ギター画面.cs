@@ -492,9 +492,9 @@ namespace DTXMania
 					const int WailingHeight = 50;		// 4種全て同じ値
 					const int baseTextureOffsetX = 96;	// ドラム画面かギター画面かで変わる値
 					const int baseTextureOffsetY = 0;	// ドラム画面かギター画面かで変わる値
-					const int drawX = 139;				// 4種全て異なる値
+					const int drawX = 140;				// 4種全て異なる値
 
-					const int numA = 25;				// 4種全て同じ値;
+					const int numA = 29;				// 4種全て同じ値;
 					int y = configIni.bReverse.Guitar ? ( y_base[ 1 ] - pChip.nバーからの距離dot.Guitar ) : ( y_base[ 0 ] + pChip.nバーからの距離dot.Guitar );
 					int numB = y - offset;				// 4種全て同じ定義
 					int numC = 0;						// 4種全て同じ初期値
@@ -688,9 +688,9 @@ namespace DTXMania
 					const int WailingHeight = 50;		// 4種全て同じ値
 					const int baseTextureOffsetX = 96;	// ドラム画面かギター画面かで変わる値
 					const int baseTextureOffsetY = 0;	// ドラム画面かギター画面かで変わる値
-					const int drawX = 593;				// 4種全て異なる値
+					const int drawX = 594;				// 4種全て異なる値
 
-					const int numA = 25;				// 4種全て同じ値
+					const int numA = 29;				// 4種全て同じ値
 					int y = configIni.bReverse.Bass ? ( y_base[ 1 ] - pChip.nバーからの距離dot.Bass ) : ( y_base[ 0 ] + pChip.nバーからの距離dot.Bass );
 					int numB = y - offset;				// 4種全て同じ定義
 					int numC = 0;						// 4種全て同じ初期値
