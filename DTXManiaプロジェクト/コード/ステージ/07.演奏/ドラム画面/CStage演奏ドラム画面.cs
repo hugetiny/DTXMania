@@ -1835,7 +1835,7 @@ namespace DTXMania
 		protected override void t背景テクスチャの生成()
 		{
 			Rectangle bgrect = new Rectangle( (int) ( 338 * Scale.X ), (int) ( 57 * Scale.Y ), (int) ( 278 * Scale.X ), (int) ( 355 * Scale.Y ) );
-			string DefaultBgFilename = @"Graphics\ScreenPlayDrums background.jpg";
+			string DefaultBgFilename = @"Graphics\ScreenPlayDrums background.png";
 			string BgFilename = "";
 			if ( ( ( CDTXMania.DTX.BACKGROUND != null ) && ( CDTXMania.DTX.BACKGROUND.Length > 0 ) ) && !CDTXMania.ConfigIni.bストイックモード )
 			{
@@ -2172,7 +2172,7 @@ namespace DTXMania
 					const int baseTextureOffsetY = (int) ( 174 * Scale.Y );	// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
 					const int drawX = (int) ( 588 * Scale.X );				// ウェイリングチップ描画位置X座標: 4種全て異なる値
 
-					const int numA = (int) ( 26 * Scale.Y );				// 4種全て同じ値
+					const int numA = (int) ( 26 * Scale.Y );				// ドラム画面かギター画面かで変わる値
 					int y = configIni.bReverse.Guitar ?
 						( y_base[1] - (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) ) :
 						( y_base[0] + (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) );
@@ -2377,7 +2377,7 @@ namespace DTXMania
 					const int baseTextureOffsetY = (int) ( 174 * Scale.Y );	// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
 					const int drawX = (int) ( 479 * Scale.X );				// ウェイリングチップ描画位置X座標: 4種全て異なる値
 
-					const int numA = (int) ( 26 * Scale.Y );				// 4種全て同じ値
+					const int numA = (int) ( 26 * Scale.Y );				// ドラム画面かギター画面かで変わる値
 					int y = configIni.bReverse.Bass ?
 						( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) ) :
 						( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) );

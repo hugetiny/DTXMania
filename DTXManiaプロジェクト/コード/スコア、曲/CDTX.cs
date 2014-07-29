@@ -573,7 +573,7 @@ namespace DTXMania
 					"??", "??", "??", "??", "??", "??", "??", "??", 
 					"??", "??", "??", "??", "??", "??", "??", "??", 
 					"小節線", "拍線", "MIDIコーラス", "フィルイン", "AVI", "BMPレイヤ3", "BMPレイヤ4", "BMPレイヤ5",
-					"BMPレイヤ6", "BMPレイヤ7", "??", "??", "??", "??", "??", "??", 
+					"BMPレイヤ6", "BMPレイヤ7", "AVIFull", "??", "??", "??", "??", "??", 
 					"BMPレイヤ8", "SE01", "SE02", "SE03", "SE04", "SE05", "SE06", "SE07",
 					"SE08", "SE09", "??", "??", "??", "??", "??", "??", 
 					"SE10", "SE11", "SE12", "SE13", "SE14", "SE15", "SE16", "SE17",
@@ -1296,6 +1296,7 @@ namespace DTXMania
 		public string strフォルダ名;
 		public string TITLE;
 		public double dbDTXVPlaySpeed;
+		public bool bMovieをFullscreen再生する;
 
 #if TEST_NOTEOFFMODE
 		public STLANEVALUE<bool> b演奏で直前の音を消音する;
@@ -1348,7 +1349,8 @@ namespace DTXMania
 			this.bチップがある.OpenGuitar = false;
 			this.bチップがある.OpenBass = false;
 			this.bチップがある.BGA = false;
-			this.bチップがある.Movie = false; 
+			this.bチップがある.Movie = false;
+			this.bMovieをFullscreen再生する = false;
 			this.strファイル名 = "";
 			this.strフォルダ名 = "";
 			this.strファイル名の絶対パス = "";
@@ -1472,7 +1474,7 @@ namespace DTXMania
 			{
 				foreach( CChip chip in this.listChip )
 				{
-					if( chip.nチャンネル番号 == 0x54 )
+					if( chip.nチャンネル番号 == (int) Ech定義.Movie || chip.nチャンネル番号 == (int) Ech定義.MovieFull )
 					{
 						chip.eAVI種別 = EAVI種別.Unknown;
 						chip.rAVI = null;
@@ -2640,7 +2642,7 @@ namespace DTXMania
 
 								case 0x05:	// Extended Object (非対応)
 								case 0x06:	// Missアニメ (非対応)
-								case 0x5A:	// 未定義
+								//case 0x5A:	// 未定義
 								case 0x5b:	// 未定義
 								case 0x5c:	// 未定義
 								case 0x5d:	// 未定義
@@ -2660,6 +2662,7 @@ namespace DTXMania
 										continue;
 									}
 								case 0x54:	// 動画再生
+								case 0x5A:
 									{
 										if ( this.listAVIPAN.ContainsKey( chip.n整数値 ) )
 										{
@@ -2746,11 +2749,7 @@ namespace DTXMania
 									case ESoundChipType.SE:
 										this.listWAV[ chip.n整数値・内部番号 ].bIsSESound = true; break;
 									case ESoundChipType.BGM:
-										if ( chip.nチャンネル番号 == 0x01 )
-										{
-											this.listWAV[ chip.n整数値・内部番号 ].bIsBGMSound = true; break;
-										}
-										break;
+										this.listWAV[ chip.n整数値・内部番号 ].bIsBGMSound = true; break;
 								}
 							}
 						}
@@ -5232,7 +5231,7 @@ namespace DTXMania
 			}
 			//-----------------
 			#endregion
-			#region [ 取得したチャンネル番号で、this.bチップがある に該当があれば設定する。]
+			#region [ 取得したチャンネル番号で、this.bチップがある に該当したり、this.bMovieをFullscreen再生する の条件を満足するなら、設定する。]
 			//-----------------
 			if( ( nチャンネル番号 >= 0x11 ) && ( nチャンネル番号 <= 0x1a ) )
 			{
@@ -5251,9 +5250,18 @@ namespace DTXMania
 			{
 				this.bチップがある.BGA = true;
 			}
-			else if ( nチャンネル番号 == 0x54 )
+			else if ( nチャンネル番号 == (int) Ech定義.Movie )
 			{
 				this.bチップがある.Movie = true;
+				if ( CDTXMania.ConfigIni.bForceAVIFullscreen )
+				{
+					this.bMovieをFullscreen再生する = true;
+				}
+			}
+			else if ( nチャンネル番号 == (int) Ech定義.MovieFull )
+			{
+				this.bチップがある.Movie = true;
+				this.bMovieをFullscreen再生する = true;
 			}
 
 			switch ( nチャンネル番号 )

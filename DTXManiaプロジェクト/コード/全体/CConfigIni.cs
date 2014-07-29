@@ -427,6 +427,7 @@ namespace DTXMania
 		//----------------------------------------
 #endif
 		public int nBGAlpha;
+		public bool bForceAVIFullscreen;
 		public bool bAVI有効;
 		public bool bBGA有効;
 		public bool bBGM音を発声する;
@@ -1056,9 +1057,10 @@ namespace DTXMania
 			this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
 			this._bGuitar有効 = true;
 			this._bDrums有効 = true;
-			this.nBGAlpha = 100;
+			this.nBGAlpha = 200;
 			this.eダメージレベル = Eダメージレベル.普通;
 			this.bSTAGEFAILED有効 = true;
+			this.bForceAVIFullscreen = false;
 			this.bAVI有効 = true;
 			this.bBGA有効 = true;
 			this.bフィルイン有効 = true;
@@ -1391,8 +1393,8 @@ namespace DTXMania
 			sw.WriteLine( "Drums={0}", this.bDrums有効 ? 1 : 0 );
 			sw.WriteLine();
 			#endregion
-			sw.WriteLine( "; 背景画像の半透明割合(0:透明～255:不透明)" );
-			sw.WriteLine( "; Transparency for background image in playing screen.(0:tranaparent - 255:no transparent)" );
+			sw.WriteLine( "; 背景画像の半透明割合(0:不透明～255:透明)" );
+			sw.WriteLine( "; Transparency for background image in playing screen.(0:no tranaparent - 255:transparent)" );
 			sw.WriteLine( "BGAlpha={0}", this.nBGAlpha );
 			sw.WriteLine();
 			sw.WriteLine( "; Missヒット時のゲージ減少割合(0:少, 1:普通, 2:大)" );
@@ -1438,6 +1440,10 @@ namespace DTXMania
 			#region [ AVI/BGA ]
 			sw.WriteLine( "; AVIの表示(0:OFF, 1:ON)" );
 			sw.WriteLine( "AVI={0}", this.bAVI有効 ? 1 : 0 );
+			sw.WriteLine();
+			sw.WriteLine( "; 旧サイズのAVI表示を強制的に全画面化する(0:OFF, 1:ON)" );
+			sw.WriteLine( "; Forcely show BGA-sized movie as Fullscreen." );
+			sw.WriteLine( "ForceAVIFullscreen={0}", this.bForceAVIFullscreen ? 1 : 0 );
 			sw.WriteLine();
 			sw.WriteLine( "; BGAの表示(0:OFF, 1:ON)" );
 			sw.WriteLine( "BGA={0}", this.bBGA有効 ? 1 : 0 );
@@ -2311,7 +2317,11 @@ namespace DTXMania
 											{
 												this.bAVI有効 = C変換.bONorOFF( str4[ 0 ] );
 											}
-											else if( str3.Equals( "BGA" ) )
+											else if ( str3.Equals( "ForceAVIFullscreen" ) )
+											{
+												this.bForceAVIFullscreen = C変換.bONorOFF( str4[ 0 ] );
+											}
+											else if ( str3.Equals( "BGA" ) )
 											{
 												this.bBGA有効 = C変換.bONorOFF( str4[ 0 ] );
 											}

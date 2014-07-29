@@ -33,13 +33,18 @@ namespace DTXMania
 			get;
 			set;
 		}
+		public bool bFullScreenMovie
+		{
+			get;
+			set;
+		}
 
 
 		// メソッド
 
 		public void Start( int nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n移動開始時刻ms )
 		{
-			if( nチャンネル番号 == 0x54 )
+			if( nチャンネル番号 == (int) Ech定義.Movie || nチャンネル番号 == (int) Ech定義.MovieFull )
 			{
 				this.rAVI = rAVI;
 				this.n開始サイズW = n開始サイズW;
@@ -282,7 +287,8 @@ namespace DTXMania
 
 					float magX, magY;
 					int xx, yy;
-					if ( bHasBGA || bIsPreviewMovie )
+					if ( ! bFullScreenMovie )
+					//if ( bHasBGA || bIsPreviewMovie )
 					{
 						#region [ BGA領域での再生 ]
 						xx = x;
@@ -335,6 +341,7 @@ namespace DTXMania
 			this.pBmp = IntPtr.Zero;
 			// this.bIsPreviewMovie = false;	// bIsPreviewMovieは、活性化前にtrueにすること (OnManagedリソースの作成 で参照しているため)
 			this.bHasBGA = false;
+			this.bFullScreenMovie = false;
 			base.On活性化();
 		}
 		public override void OnManagedリソースの作成()

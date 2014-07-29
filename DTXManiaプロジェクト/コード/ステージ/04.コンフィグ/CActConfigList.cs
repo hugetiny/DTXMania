@@ -183,6 +183,13 @@ namespace DTXMania
 				"AVI の再生には、それなりのマシンパワーが必要とされます。",
 				"To use AVI playback or not." );
 			this.list項目リスト.Add( this.iSystemAVI );
+			this.iSystemForceAVIFullscreen = new CItemToggle( "FullAVI", CDTXMania.ConfigIni.bForceAVIFullscreen,
+				"旧AVIの全画面表示：\n" +
+				"旧仕様の動画(AVI)の表示をを、強制的に全画面化します。\n" +
+				"BGAと併用している場合は、表示がおかしくなります。",
+				"Forcely show the legacy-spec AVI to fullscreen.\n" +
+				"If the data contains both AVI and BGA, the screen will corrupt." );
+			this.list項目リスト.Add( this.iSystemForceAVIFullscreen );
 			this.iSystemBGA = new CItemToggle( "BGA", CDTXMania.ConfigIni.bBGA有効,
 				"BGAの使用：\n" +
 				"演奏中に画像(BGA)を表示する場合にON にします。\n" +
@@ -211,12 +218,12 @@ namespace DTXMania
 				"You can ON/OFF the indications by pushing [Del] while playing drums, guitar or bass." );
 			this.list項目リスト.Add( this.iSystemDebugInfo );
 			this.iSystemBGAlpha = new CItemInteger( "BG Alpha", 0, 0xff, CDTXMania.ConfigIni.n背景の透過度,
-				"背景画像の半透明割合：\n" +
+				"背景画像の透明割合：\n" +
 				"背景画像をDTXManiaのフレーム画像と合成する際の、背景画像の透明度を指定します。\n" +
-				"0 が完全透明で、255 が完全不透明となります。",
+				"0 が完全不透明で、255 が完全透明となります。",
 				"The degree for transparing playing screen and wallpaper.\n" +
 				"\n" +
-				"0=completely transparent, 255=no transparency." );
+				"0=no transparent, 255=completely transparency." );
 			this.list項目リスト.Add( this.iSystemBGAlpha );
 			this.iSystemBGMSound = new CItemToggle( "BGM Sound", CDTXMania.ConfigIni.bBGM音を発声する,
 				"BGMの再生：\n" +
@@ -2411,6 +2418,7 @@ namespace DTXMania
 		private CItemToggle iSystemAudienceSound;
 		private CItemInteger iSystemAutoChipVolume;
 		private CItemToggle iSystemAVI;
+		private CItemToggle iSystemForceAVIFullscreen;
 		private CItemToggle iSystemBGA;
 //		private CItemToggle iSystemGraph; #24074 2011.01.23 comment-out ikanick オプション(Drums)へ移行
 		private CItemInteger iSystemBGAlpha;
@@ -2656,6 +2664,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.b垂直帰線待ちを行う = this.iSystemVSyncWait.bON;
 			CDTXMania.ConfigIni.bバッファ入力を行う = this.iSystemBufferedInput.bON;
 			CDTXMania.ConfigIni.bAVI有効 = this.iSystemAVI.bON;
+			CDTXMania.ConfigIni.bForceAVIFullscreen = this.iSystemForceAVIFullscreen.bON;
 			CDTXMania.ConfigIni.bBGA有効 = this.iSystemBGA.bON;
 //			CDTXMania.ConfigIni.bGraph有効 = this.iSystemGraph.bON;#24074 2011.01.23 comment-out ikanick オプション(Drums)へ移行
 			CDTXMania.ConfigIni.n曲が選択されてからプレビュー音が鳴るまでのウェイトms = this.iSystemPreviewSoundWait.n現在の値;

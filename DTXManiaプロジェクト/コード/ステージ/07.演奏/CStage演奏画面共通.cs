@@ -2018,8 +2018,9 @@ namespace DTXMania
 						this.t進行描画・チップ・フィルイン( configIni, ref dTX, ref pChip );
 						break;
 					#endregion
-					#region [ 54: 動画再生 ]
-					case 0x54:	// 動画再生
+					#region [ 54: 動画再生(BGA領域), 5A: 動画再生(全画面) ]
+					case (int) Ech定義.Movie:		// 動画再生 (BGA領域)
+					case (int) Ech定義.MovieFull:	// 動画再生 (全画面)
 						if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 						{
 							pChip.bHit = true;
@@ -2029,12 +2030,19 @@ namespace DTXMania
 								{
 									this.actAVI.bHasBGA = true;
 								}
+								if ( pChip.nチャンネル番号 == (int) Ech定義.MovieFull || CDTXMania.ConfigIni.bForceAVIFullscreen )
+								{
+									this.actAVI.bFullScreenMovie = true;
+								}
 								switch ( pChip.eAVI種別 )
 								{
 									case EAVI種別.AVI:
+										//if ( pChip.rAVI != null )
 										{
-											int startWidth = ( CDTXMania.DTX.bチップがある.BGA ) ? 278 : SampleFramework.GameWindowSize.Width;
-											int startHeight = ( CDTXMania.DTX.bチップがある.BGA ) ? 355 : SampleFramework.GameWindowSize.Height;
+											//int startWidth = ( CDTXMania.DTX.bチップがある.BGA ) ? 278 : SampleFramework.GameWindowSize.Width;
+											//int startHeight = ( CDTXMania.DTX.bチップがある.BGA ) ? 355 : SampleFramework.GameWindowSize.Height;
+											int startWidth  = !this.actAVI.bFullScreenMovie ? 278 : SampleFramework.GameWindowSize.Width;
+											int startHeight = !this.actAVI.bFullScreenMovie ? 355 : SampleFramework.GameWindowSize.Height;
 											this.actAVI.Start( pChip.nチャンネル番号, pChip.rAVI, startWidth, startHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms );
 										}
 										break;
@@ -2940,14 +2948,15 @@ namespace DTXMania
 
 		protected abstract void t背景テクスチャの生成();
 		protected void t背景テクスチャの生成( string DefaultBgFilename, Rectangle bgrect, string bgfilename )
-		{
+		{									// Default...: レーン等があるレイヤー		bgfilename: DTXファイルで指定する背景
 			Bitmap image = null;
-			bool flag = true;
+			bool bSuccessLoadDTXbgfile = false;
 
-			if ( bgfilename != null && File.Exists( bgfilename ) )
+			if ( bgfilename != null && File.Exists( bgfilename ) && !CDTXMania.DTX.bチップがある.Movie )
 			{
 				try
 				{
+					#region [ DTXデータで指定されている背景画像を読み込む ]
 					Bitmap bitmap1 = null;
 					bitmap1 = new Bitmap( bgfilename );
 					if ( ( bitmap1.Size.Width == 0 ) && ( bitmap1.Size.Height == 0 ) )
@@ -2955,17 +2964,29 @@ namespace DTXMania
 						this.tx背景 = null;
 						return;
 					}
+					#endregion
 
 					int newWidth = (int) ( bitmap1.Width * Scale.X );
 					int newHeight = (int) ( bitmap1.Height * Scale.Y );
-					Bitmap bitmap2 = new Bitmap( newWidth, newHeight );
-					Graphics graphic2 = Graphics.FromImage( bitmap2 );
-					graphic2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-					graphic2.DrawImage( bitmap1, 0, 0, newWidth, newHeight );
-					graphic2.Dispose();
+					Bitmap bitmap2;
+
+					#region [ 背景画像がVGAサイズ以下なら、FullHDサイズに拡大する ]
+					if ( bitmap1.Width <= 640 && bitmap1.Height <= 480 )
+					{
+						bitmap2 = new Bitmap( newWidth, newHeight );
+						Graphics graphic2 = Graphics.FromImage( bitmap2 );
+						graphic2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+						graphic2.DrawImage( bitmap1, 0, 0, newWidth, newHeight );
+						graphic2.Dispose();
+					}
+					else
+					{
+						bitmap2 = (Bitmap) bitmap1.Clone();
+					}
 					bitmap1.Dispose();
+					#endregion
 
-
+					#region [ 実背景に格子状に配置するよう、コピーしていく ]
 					Bitmap bitmap3 = new Bitmap( SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height );
 					Graphics graphics3 = Graphics.FromImage( bitmap3 );
 					for ( int i = 0; i < SampleFramework.GameWindowSize.Height; i += bitmap2.Size.Height )
@@ -2975,9 +2996,11 @@ namespace DTXMania
 							graphics3.DrawImage( bitmap2, j, i, bitmap2.Width, bitmap2.Height );
 						}
 					}
-					graphics3.Dispose(); 
-					
+					graphics3.Dispose();
 					bitmap2.Dispose();
+					#endregion
+
+					#region [ レーンフレームを合成 ]
 					image = new Bitmap( CSkin.Path( DefaultBgFilename ) );
 					graphics3 = Graphics.FromImage( image );
 					ColorMatrix matrix2 = new ColorMatrix();
@@ -2994,14 +3017,16 @@ namespace DTXMania
 					graphics3.DrawImage( bitmap3, bgrect, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height, GraphicsUnit.Pixel );
 					graphics3.Dispose();
 					bitmap3.Dispose();
-					flag = false;
+					#endregion
+					bSuccessLoadDTXbgfile = true;
 				}
 				catch
 				{
-					Trace.TraceError( "背景画像の読み込みに失敗しました。({0})", new object[] { bgfilename } );
+					Trace.TraceError( "背景画像とレーン画像の合成に失敗しました。({0})", bgfilename );
 				}
 			}
-			if ( flag )
+			#region [ DTXデータで指定する背景画像を合成しない場合は、レーン画像単体を背景画像とする ]
+			if ( !bSuccessLoadDTXbgfile )
 			{
 				bgfilename = CSkin.Path( DefaultBgFilename );
 				try
@@ -3010,27 +3035,35 @@ namespace DTXMania
 				}
 				catch
 				{
-					Trace.TraceError( "背景画像の読み込みに失敗しました。({0})", new object[] { bgfilename } );
+					Trace.TraceError( "レーン画像の読み込みに失敗しました。({0})", bgfilename );
 					this.tx背景 = null;
 					return;
 				}
 			}
+			#endregion
+			#region [ BGA画像を表示する予定がある場合は、背景画像からあらかじめその領域を黒抜きにしておく ]
 			if ( ( CDTXMania.DTX.listBMP.Count > 0 ) || ( CDTXMania.DTX.listBMPTEX.Count > 0 ) )
 			{
 				Graphics graphics2 = Graphics.FromImage( image );
 				graphics2.FillRectangle( Brushes.Black, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height );
 				graphics2.Dispose();
 			}
+			#endregion
+			#region [ 背景画像をテクスチャにする。背景動画の表示予定上がる場合は、更に透明度を付与する。 ]
 			try
 			{
 				this.tx背景 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
-				this.tx背景.n透明度 = CDTXMania.ConfigIni.n背景の透過度;		// 背景動画用
+				if ( CDTXMania.DTX.bMovieをFullscreen再生する )						// Fullscreen動画再生が発生する場合は、動画レイヤーに対してレーン＋背景レイヤーに透明度を設定する
+				{
+					this.tx背景.n透明度 = 255 - CDTXMania.ConfigIni.n背景の透過度;	// 背景動画用
+				}
 			}
 			catch ( CTextureCreateFailedException )
 			{
 				Trace.TraceError( "背景テクスチャの生成に失敗しました。" );
 				this.tx背景 = null;
 			}
+			#endregion
 			image.Dispose();
 		}
 

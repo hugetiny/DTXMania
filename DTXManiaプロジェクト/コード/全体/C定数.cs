@@ -97,7 +97,7 @@ namespace DTXMania
 		BGALayer5			= 0x57,
 		BGALayer6			= 0x58,
 		BGALayer7			= 0x59,
-		//nouse_5a			= 0x5A,
+		MovieFull			= 0x5A,
 		//nouse_5b			= 0x5B,
 		//nouse_5c			= 0x5C,
 		//nouse_5d			= 0x5D,
