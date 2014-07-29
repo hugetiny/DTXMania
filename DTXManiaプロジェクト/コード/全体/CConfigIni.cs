@@ -680,6 +680,10 @@ namespace DTXMania
 		public bool bViewerShowDebugStatus;
 		public bool bViewerTimeStretch;
 		public bool bViewerDrums有効, bViewerGuitar有効;
+		public int  nViewer初期ウィンドウ開始位置X;
+		public int  nViewer初期ウィンドウ開始位置Y;
+		public int  nViewerウインドウwidth;
+		public int  nViewerウインドウheight;
 		//public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
 		public int nMasterVolume;
 #if false
@@ -1182,11 +1186,15 @@ namespace DTXMania
 			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
 			this.nFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
 
-			bViewerVSyncWait = true;
-			bViewerShowDebugStatus = true;
-			bViewerTimeStretch = false;
-			bViewerDrums有効 = true;
-			bViewerGuitar有効 = true;
+			this.bViewerVSyncWait = true;
+			this.bViewerShowDebugStatus = true;
+			this.bViewerTimeStretch = false;
+			this.bViewerDrums有効 = true;
+			this.bViewerGuitar有効 = true;
+			this.nViewer初期ウィンドウ開始位置X = 0;
+			this.nViewer初期ウィンドウ開始位置Y = 0;
+			this.nViewerウインドウwidth = 640;
+			this.nViewerウインドウheight = 360;
 
 			//this.bNoMP3Streaming = false;
 			this.nMasterVolume = 100;					// #33700 2014.4.26 yyagi マスターボリュームの設定(WASAPI/ASIO用)
@@ -1797,6 +1805,23 @@ namespace DTXMania
 			sw.WriteLine( "; for viewer mode;" );
 			sw.WriteLine( "; Enable Drums or not.(0:OFF,1:ON) " );
 			sw.WriteLine( "ViewerDrums={0}", this.bViewerDrums有効? 1 : 0 );
+			sw.WriteLine();
+
+			sw.WriteLine( "; Viewerモード専用 ウインドウモード時の画面幅" );
+			sw.WriteLine( "; A width size in the window mode, for viewer mode." );
+			sw.WriteLine( "ViewerWindowWidth={0}", this.nViewerウインドウwidth );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード専用 ウインドウモード時の画面高さ" );
+			sw.WriteLine( "; A height size in the window mode, for viewer mode." );
+			sw.WriteLine( "ViewerWindowHeight={0}", this.nViewerウインドウheight );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード専用 ウィンドウモード時の位置X" );
+			sw.WriteLine( "; X position in the window mode, for viewer mode." );
+			sw.WriteLine( "ViewerWindowX={0}", this.nViewer初期ウィンドウ開始位置X );
+			sw.WriteLine();
+			sw.WriteLine( "; Viewerモード専用 ウィンドウモード時の位置Y" );
+			sw.WriteLine( "; Y position in the window mode, for viewer mode." );
+			sw.WriteLine( "ViewerWindowY={0}", this.nViewer初期ウィンドウ開始位置Y );
 			sw.WriteLine();
 			sw.WriteLine( ";-------------------" );
 			#endregion
@@ -2750,6 +2775,23 @@ namespace DTXMania
 											else if ( str3.Equals( "ViewerDrums" ) )
 											{
 												this.bViewerDrums有効 = C変換.bONorOFF( str4[ 0 ] );
+											}
+
+											else if ( str3.Equals( "ViewerWindowWidth" ) )
+											{
+												this.nViewerウインドウwidth = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 65535, this.nViewerウインドウwidth );
+											}
+											else if ( str3.Equals( "ViewerWindowHeight" ) )
+											{
+												this.nViewerウインドウheight = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 65535, this.nViewerウインドウheight );
+											}
+											else if ( str3.Equals( "ViewerWindowX" ) )
+											{
+												this.nViewer初期ウィンドウ開始位置X = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 65535, this.nViewer初期ウィンドウ開始位置X );
+											}
+											else if ( str3.Equals( "ViewerWindowY" ) )
+											{
+												this.nViewer初期ウィンドウ開始位置Y = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 65535, this.nViewer初期ウィンドウ開始位置Y );
 											}
 											continue;
 										}

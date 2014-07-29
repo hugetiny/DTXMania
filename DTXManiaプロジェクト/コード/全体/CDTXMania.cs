@@ -1876,6 +1876,11 @@ for (int i = 0; i < 3; i++) {
 					CDTXMania.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
 					CDTXMania.ConfigIni.bDrums有効 = !DTXVmode.GRmode;
 					CDTXMania.ConfigIni.bGuitar有効 = true;
+
+					CDTXMania.ConfigIni.nウインドウwidth = CDTXMania.ConfigIni.nViewerウインドウwidth;
+					CDTXMania.ConfigIni.nウインドウheight = CDTXMania.ConfigIni.nViewerウインドウheight;
+					CDTXMania.ConfigIni.n初期ウィンドウ開始位置X = CDTXMania.ConfigIni.nViewer初期ウィンドウ開始位置X;
+					CDTXMania.ConfigIni.n初期ウィンドウ開始位置Y = CDTXMania.ConfigIni.nViewer初期ウィンドウ開始位置Y;
 				}
 				else														// 通常のコンパクトモード
 				{

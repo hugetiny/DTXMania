@@ -368,8 +368,8 @@ namespace DTXMania
 					}
 				}
 			}
-string[] s = { "Stop", "Play", "Preview" };
-Trace.TraceInformation( "Command: " + s[ (int) this.Command ] );
+//string[] s = { "Stop", "Play", "Preview" };
+//Trace.TraceInformation( "Command: " + s[ (int) this.Command ] );
 			return ret;
 		}
 
@@ -403,6 +403,11 @@ Trace.TraceInformation( "Command: " + s[ (int) this.Command ] );
 			cc.bViewerTimeStretch     = CDTXMania.ConfigIni.bTimeStretch;
 			cc.bViewerDrums有効       = CDTXMania.ConfigIni.bDrums有効;
 			cc.bViewerGuitar有効      = CDTXMania.ConfigIni.bGuitar有効;
+
+			cc.nViewerウインドウwidth = CDTXMania.ConfigIni.nウインドウwidth;
+			cc.nViewerウインドウheight = CDTXMania.ConfigIni.nウインドウheight;
+			cc.nViewer初期ウィンドウ開始位置X = CDTXMania.ConfigIni.n初期ウィンドウ開始位置X;
+			cc.nViewer初期ウィンドウ開始位置Y = CDTXMania.ConfigIni.n初期ウィンドウ開始位置Y;
 
 			cc.t書き出し( path );
 		}
