@@ -265,11 +265,10 @@ namespace DTXMania
 										base.txlag数値.t2D描画(
 											CDTXMania.app.Device,
 											x + offsetX * Scale.X,
-											y + 34 * Scale.Y,
+											y + 38 * Scale.Y,
 											base.stLag数値[ p ].rc
 										);
 										offsetX += 12;	// 15 -> 12
-										offsetX += 15;
 									}
 								}
 							}

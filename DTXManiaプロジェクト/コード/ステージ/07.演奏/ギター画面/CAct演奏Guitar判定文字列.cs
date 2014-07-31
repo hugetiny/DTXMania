@@ -206,13 +206,18 @@ namespace DTXMania
 										{
 											minus = true;
 										}
-										x = xc - strDispLag.Length * 15 / 2;
+										x = xc - (int) ( strDispLag.Length * 15 / 2 * Scale.X );
 										for ( int i = 0; i < strDispLag.Length; i++ )
 										{
 											int p = ( strDispLag[ i ] == '-' ) ? 11 : (int) ( strDispLag[ i ] - '0' );	//int.Parse(strDispLag[i]);
 											p += minus ? 0 : 12;		// change color if it is minus value
-											base.txlag数値.t2D描画( CDTXMania.app.Device, x + offsetX, y + 35, base.stLag数値[ p ].rc );
-											offsetX += 15;
+											base.txlag数値.t2D描画(
+												CDTXMania.app.Device,
+												x + offsetX * Scale.X,
+												y + 35 * Scale.Y,
+												base.stLag数値[ p ].rc
+											);
+											offsetX += 12;
 										}
 									}
 								}
