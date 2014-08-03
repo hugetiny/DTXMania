@@ -136,11 +136,11 @@ namespace DTXMania
 						base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED;
 					}
 				}
+				this.t進行描画・AVI();
 				this.t進行描画・背景();
 				this.t進行描画・MIDIBGM();
 				this.t進行描画・パネル文字列();
 				this.t進行描画・スコア();
-				this.t進行描画・AVI();
 				this.t進行描画・BGA();
 				this.t進行描画・ステータスパネル();
 				this.t進行描画・レーンフラッシュGB();
@@ -333,7 +333,7 @@ namespace DTXMania
 		protected override void t背景テクスチャの生成()
 		{
 			Rectangle bgrect = new Rectangle( (int) ( 181 * Scale.X ), (int) ( 50 * Scale.Y ), (int) ( 278 * Scale.X ), (int) ( 355 * Scale.Y ) );
-			string DefaultBgFilename = @"Graphics\ScreenPlayGuitar background.jpg";
+			string DefaultBgFilename = @"Graphics\ScreenPlayGuitar background.png";
 			string BgFilename = "";
 			string BACKGROUND = null;
 			if ( ( CDTXMania.DTX.BACKGROUND_GR != null ) && ( CDTXMania.DTX.BACKGROUND_GR.Length > 0 ) )
