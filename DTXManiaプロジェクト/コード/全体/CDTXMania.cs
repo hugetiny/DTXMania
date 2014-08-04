@@ -1628,6 +1628,10 @@ for (int i = 0; i < 3; i++) {
 				return null;
 			}
 		}
+		public static CTextureAf tテクスチャの生成Af( string fileName )
+		{
+			return tテクスチャの生成Af( fileName, false );
+		}
 		public static CTextureAf tテクスチャの生成Af( string fileName, bool b黒を透過する )
 		{
 			if ( app == null )

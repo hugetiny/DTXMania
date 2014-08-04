@@ -10,7 +10,7 @@ namespace DTXMania
 		// プロパティ
 
 		protected CCounter[] ct進行 = new CCounter[ 6 ];
-		protected CTexture[] txFlush = new CTexture[ 6 ];
+		protected CTextureAf[] txFlush = new CTextureAf[ 6 ];
 
 
 		// コンストラクタ
@@ -55,12 +55,12 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txFlush[ 0 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay lane flush red.png" ) );
-				this.txFlush[ 1 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay lane flush green.png" ) );
-				this.txFlush[ 2 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay lane flush blue.png" ) );
-				this.txFlush[ 3 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay lane flush red reverse.png" ) );
-				this.txFlush[ 4 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay lane flush green reverse.png" ) );
-				this.txFlush[ 5 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay lane flush blue reverse.png" ) );
+				this.txFlush[ 0 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush red.png" ) );
+				this.txFlush[ 1 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush green.png" ) );
+				this.txFlush[ 2 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush blue.png" ) );
+				this.txFlush[ 3 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush red reverse.png" ) );
+				this.txFlush[ 4 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush green reverse.png" ) );
+				this.txFlush[ 5 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush blue reverse.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
