@@ -318,6 +318,18 @@ namespace DTXMania
 			}
 			bValidScore = ( CDTXMania.DTXVmode.Enabled ) ? false : true;
 
+			cWailingChip = new CWailingChip共通[ 3 ];	// 0:未使用, 1:Gutiar, 2:Bass
+			if ( CDTXMania.ConfigIni.bDrums有効 )
+			{
+				cWailingChip[ 1 ] = new CWailngChip_Guitar_Drum画面( ref 演奏判定ライン座標 );
+				cWailingChip[ 2 ] = new CWailngChip_Bass_Drum画面( ref 演奏判定ライン座標 );
+			}
+			else
+			{
+				cWailingChip[ 1 ] = new CWailngChip_Guitar_GR画面( ref 演奏判定ライン座標 );
+				cWailingChip[ 2 ] = new CWailngChip_Bass_GR画面( ref 演奏判定ライン座標 );
+			}
+
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
 			foreach ( CDTX.CChip pChip in listChip )
 			{
@@ -656,6 +668,7 @@ namespace DTXMania
 		protected CInvisibleChip cInvisibleChip;
 		protected bool bUseOSTimer;
 		protected E判定表示優先度 e判定表示優先度;
+		protected CWailingChip共通[] cWailingChip;
 
 		protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
 		protected Stopwatch sw2;
@@ -1951,7 +1964,7 @@ namespace DTXMania
 					#endregion
 					#region [ 28: ウェイリング(ギター) ]
 					case 0x28:	// ウェイリング(ギター)
-						this.t進行描画・チップ・ギター・ウェイリング( configIni, ref dTX, ref pChip );
+						this.t進行描画・チップ・ギター・ウェイリング( configIni, ref dTX, ref pChip, !CDTXMania.ConfigIni.bDrums有効 );
 						break;
 					#endregion
 					#region [ 2f: ウェイリングサウンド(ギター) ]
@@ -2150,7 +2163,7 @@ namespace DTXMania
 					#endregion
 					#region [ a8: ウェイリング(ベース) ]
 					case 0xa8:	// ウェイリング(ベース)
-						this.t進行描画・チップ・ベース・ウェイリング( configIni, ref dTX, ref pChip );
+						this.t進行描画・チップ・ベース・ウェイリング( configIni, ref dTX, ref pChip, !CDTXMania.ConfigIni.bDrums有効 );
 						break;
 					#endregion
 					#region [ af: ウェイリングサウンド(ベース) ]
@@ -2764,7 +2777,8 @@ namespace DTXMania
 		}
 
 		
-		protected virtual void t進行描画・チップ・ギターベース・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
+		protected virtual void t進行描画・チップ・ギターベース・ウェイリング(
+			CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst, bool bGRmode )
 		{
 			int indexInst = (int) inst;
 			if ( configIni.bGuitar有効 )
@@ -2785,9 +2799,12 @@ namespace DTXMania
 					pChip.b可視 = false;
 				}
 				#endregion
-				//
-				// ここにチップ更新処理が入る(overrideで入れる)。といっても座標とチップサイズが違うだけで処理はまるまる同じ。
-				//
+
+				cWailingChip[ indexInst ].t進行描画・チップ・ギターベース・ウェイリング(
+					configIni, ref dTX, ref pChip,
+					ref txチップ, ref 演奏判定ライン座標, ref ctWailingチップ模様アニメ
+				);
+
 				if ( !pChip.bHit && ( pChip.nバーからの距離dot[indexInst] < 0 ) )
 				{
 					if ( pChip.nバーからの距離dot[indexInst] < -234 )	// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec). 
@@ -2811,17 +2828,20 @@ namespace DTXMania
 			}
 			pChip.bHit = true;
 		}
-		protected virtual void t進行描画・チップ・ギター・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected virtual void t進行描画・チップ・ギター・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, bool bGRmode )
 		{
-			t進行描画・チップ・ギターベース・ウェイリング( configIni, ref dTX, ref pChip, E楽器パート.GUITAR );
+			t進行描画・チップ・ギターベース・ウェイリング( configIni, ref dTX, ref pChip, E楽器パート.GUITAR, bGRmode );
 		}
 		protected abstract void t進行描画・チップ・フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected abstract void t進行描画・チップ・小節線( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		//protected abstract void t進行描画・チップ・ベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
-		protected virtual void t進行描画・チップ・ベース・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected virtual void t進行描画・チップ・ベース・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, bool bGRmode )
 		{
-			t進行描画・チップ・ギターベース・ウェイリング( configIni, ref dTX, ref pChip, E楽器パート.BASS );
+			t進行描画・チップ・ギターベース・ウェイリング( configIni, ref dTX, ref pChip, E楽器パート.BASS, bGRmode );
 		}
+
+	
+		
 		protected abstract void t進行描画・チップ・空打ち音設定・ドラム( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected void t進行描画・チップアニメ()
 		{

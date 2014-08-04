@@ -484,70 +484,70 @@ namespace DTXMania
 			}
 		}
 #endif
-		protected override void t進行描画・チップ・ギター・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected void t進行描画・チップ・ギター・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
-			if ( configIni.bGuitar有効 )
-			{
-				//
-				// 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
-				//
-				if ( !pChip.bHit && pChip.b可視 )
-				{
-					if ( this.txチップ != null )
-					{
-						this.txチップ.n透明度 = pChip.n透明度;
-					}
-					int[] y_base = {
-						演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, false ),		// 40
-						演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, true )		// 369
-					};			// ドラム画面かギター画面かで変わる値
-					int offset = 0;						// ドラム画面かギター画面かで変わる値
+			//if ( configIni.bGuitar有効 )
+			//{
+			//    //
+			//    // 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
+			//    //
+			//    if ( !pChip.bHit && pChip.b可視 )
+			//    {
+			//        if ( this.txチップ != null )
+			//        {
+			//            this.txチップ.n透明度 = pChip.n透明度;
+			//        }
+			//        int[] y_base = {
+			//            演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, false ),		// 40
+			//            演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, true )		// 369
+			//        };			// ドラム画面かギター画面かで変わる値
+			//        int offset = 0;						// ドラム画面かギター画面かで変わる値
 
-					const int WailingWidth  = (int) ( 20 * Scale.X );		// 4種全て同じ値
-					const int WailingHeight = (int) ( 50 * Scale.Y );		// 4種全て同じ値
-					const int baseTextureOffsetX = (int) ( 96 * Scale.X );	// ドラム画面かギター画面かで変わる値
-					const int baseTextureOffsetY = (int) (  0 * Scale.Y );	// ドラム画面かギター画面かで変わる値
-					const int drawX = (int) ( 140 * Scale.X );				// 4種全て異なる値
+			//        const int WailingWidth  = (int) ( 20 * Scale.X );		// 4種全て同じ値
+			//        const int WailingHeight = (int) ( 50 * Scale.Y );		// 4種全て同じ値
+			//        const int baseTextureOffsetX = (int) ( 96 * Scale.X );	// ドラム画面かギター画面かで変わる値
+			//        const int baseTextureOffsetY = (int) (  0 * Scale.Y );	// ドラム画面かギター画面かで変わる値
+			//        const int drawX = (int) ( 140 * Scale.X );				// 4種全て異なる値
 
-					const int numA = (int) ( 29 * Scale.Y );				// ドラム画面かギター画面かで変わる値
-					int y = configIni.bReverse.Guitar ?
-						( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) ) :
-						( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) );
-					int numB = y - offset;				// 4種全て同じ定義
-					int numC = 0;						// 4種全て同じ初期値
-					const int showRangeY1 = (int) ( 409 * Scale.Y );				// ドラム画面かギター画面かで変わる値
-					if ( ( numB < ( showRangeY1 + numA ) ) && ( numB > -numA ) )	// 以下のロジックは4種全て同じ
-					{
-						int c = this.ctWailingチップ模様アニメ.n現在の値;
-						Rectangle rect = new Rectangle(
-							baseTextureOffsetX + ( c * WailingWidth ),
-							baseTextureOffsetY,
-							WailingWidth,
-							WailingHeight
-						);
-						if ( numB < numA )
-						{
-							rect.Y += numA - numB;
-							rect.Height -= numA - numB;
-							numC = numA - numB;
-						}
-						if ( numB > ( showRangeY1 - numA ) )
-						{
-							rect.Height -= numB - ( showRangeY1 - numA );
-						}
-						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
-						{
-							this.txチップ.t2D描画(
-								CDTXMania.app.Device,
-								drawX,
-								( ( y - numA ) + numC ),
-								rect
-							);
-						}
-					}
-				}
-			}
-			base.t進行描画・チップ・ギター・ウェイリング( configIni, ref dTX, ref pChip );
+			//        const int numA = (int) ( 29 * Scale.Y );				// ドラム画面かギター画面かで変わる値
+			//        int y = configIni.bReverse.Guitar ?
+			//            ( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) ) :
+			//            ( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) );
+			//        int numB = y - offset;				// 4種全て同じ定義
+			//        int numC = 0;						// 4種全て同じ初期値
+			//        const int showRangeY1 = (int) ( 409 * Scale.Y );				// ドラム画面かギター画面かで変わる値
+			//        if ( ( numB < ( showRangeY1 + numA ) ) && ( numB > -numA ) )	// 以下のロジックは4種全て同じ
+			//        {
+			//            int c = this.ctWailingチップ模様アニメ.n現在の値;
+			//            Rectangle rect = new Rectangle(
+			//                baseTextureOffsetX + ( c * WailingWidth ),
+			//                baseTextureOffsetY,
+			//                WailingWidth,
+			//                WailingHeight
+			//            );
+			//            if ( numB < numA )
+			//            {
+			//                rect.Y += numA - numB;
+			//                rect.Height -= numA - numB;
+			//                numC = numA - numB;
+			//            }
+			//            if ( numB > ( showRangeY1 - numA ) )
+			//            {
+			//                rect.Height -= numB - ( showRangeY1 - numA );
+			//            }
+			//            if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
+			//            {
+			//                this.txチップ.t2D描画(
+			//                    CDTXMania.app.Device,
+			//                    drawX,
+			//                    ( ( y - numA ) + numC ),
+			//                    rect
+			//                );
+			//            }
+			//        }
+			//    }
+			//}
+			base.t進行描画・チップ・ギター・ウェイリング( configIni, ref dTX, ref pChip, true );
 		}
 		protected override void t進行描画・チップ・フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
@@ -672,69 +672,69 @@ namespace DTXMania
 			}
 		}
 #endif
-		protected override void t進行描画・チップ・ベース・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected void t進行描画・チップ・ベース・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
 			if ( configIni.bGuitar有効 )
 			{
 				//
 				// 後日、以下の部分を何とかCStage演奏画面共通.csに移したい。
 				//
-				if ( !pChip.bHit && pChip.b可視 )
-				{
-					if ( this.txチップ != null )
-					{
-						this.txチップ.n透明度 = pChip.n透明度;
-					}
-					int[] y_base = {
-						演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, false ),		// 40
-						演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, true )			// 369
-					};			// ドラム画面かギター画面かで変わる値
-					int offset = 0;						// ドラム画面かギター画面かで変わる値
+				//if ( !pChip.bHit && pChip.b可視 )
+				//{
+				//    if ( this.txチップ != null )
+				//    {
+				//        this.txチップ.n透明度 = pChip.n透明度;
+				//    }
+				//    int[] y_base = {
+				//        演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, false ),		// 40
+				//        演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, true )			// 369
+				//    };			// ドラム画面かギター画面かで変わる値
+				//    int offset = 0;						// ドラム画面かギター画面かで変わる値
 
-					const int WailingWidth  = (int) ( 20 * Scale.X );		// 4種全て同じ値
-					const int WailingHeight = (int) ( 50 * Scale.Y );		// 4種全て同じ値
-					const int baseTextureOffsetX = (int) ( 96 * Scale.X );	// ドラム画面かギター画面かで変わる値
-					const int baseTextureOffsetY = (int) (  0 * Scale.Y );	// ドラム画面かギター画面かで変わる値
-					const int drawX =(int) ( 594 * Scale.X );				// 4種全て異なる値
+				//    const int WailingWidth  = (int) ( 20 * Scale.X );		// 4種全て同じ値
+				//    const int WailingHeight = (int) ( 50 * Scale.Y );		// 4種全て同じ値
+				//    const int baseTextureOffsetX = (int) ( 96 * Scale.X );	// ドラム画面かギター画面かで変わる値
+				//    const int baseTextureOffsetY = (int) (  0 * Scale.Y );	// ドラム画面かギター画面かで変わる値
+				//    const int drawX =(int) ( 594 * Scale.X );				// 4種全て異なる値
 
-					const int numA = (int) ( 29 * Scale.Y );				// ドラム画面かギター画面かで変わる値
-					int y = configIni.bReverse.Bass ?
-						( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) ) :
-						( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) );
-					int numB = y - offset;				// 4種全て同じ定義
-					int numC = 0;						// 4種全て同じ初期値
-					const int showRangeY1 = (int) ( 409 * Scale.Y );				// ドラム画面かギター画面かで変わる値
-					if ( ( numB < ( showRangeY1 + numA ) ) && ( numB > -numA ) )	// 以下のロジックは4種全て同じ
-					{
-						int c = this.ctWailingチップ模様アニメ.n現在の値;
-						Rectangle rect = new Rectangle(
-							baseTextureOffsetX + ( c * WailingWidth ),
-							baseTextureOffsetY,
-							WailingWidth,
-							WailingHeight
-						);
-						if ( numB < numA )						// 上にスクロールして、見切れる場合
-						{
-							rect.Y += numA - numB;
-							rect.Height -= numA - numB;
-							numC = numA - numB;
-						}
-						if ( numB > ( showRangeY1 - numA ) )	// 下にスクロールして、見切れる場合
-						{
-							rect.Height -= numB - ( showRangeY1 - numA );
-						}
-						if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
-						{
-							this.txチップ.t2D描画(
-								CDTXMania.app.Device,
-								drawX,
-								( ( y - numA ) + numC ),
-								rect
-							);
-						}
-					}
-				}
-				base.t進行描画・チップ・ベース・ウェイリング( configIni, ref dTX, ref pChip );
+				//    const int numA = (int) ( 29 * Scale.Y );				// ドラム画面かギター画面かで変わる値
+				//    int y = configIni.bReverse.Bass ?
+				//        ( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) ) :
+				//        ( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) );
+				//    int numB = y - offset;				// 4種全て同じ定義
+				//    int numC = 0;						// 4種全て同じ初期値
+				//    const int showRangeY1 = (int) ( 409 * Scale.Y );				// ドラム画面かギター画面かで変わる値
+				//    if ( ( numB < ( showRangeY1 + numA ) ) && ( numB > -numA ) )	// 以下のロジックは4種全て同じ
+				//    {
+				//        int c = this.ctWailingチップ模様アニメ.n現在の値;
+				//        Rectangle rect = new Rectangle(
+				//            baseTextureOffsetX + ( c * WailingWidth ),
+				//            baseTextureOffsetY,
+				//            WailingWidth,
+				//            WailingHeight
+				//        );
+				//        if ( numB < numA )						// 上にスクロールして、見切れる場合
+				//        {
+				//            rect.Y += numA - numB;
+				//            rect.Height -= numA - numB;
+				//            numC = numA - numB;
+				//        }
+				//        if ( numB > ( showRangeY1 - numA ) )	// 下にスクロールして、見切れる場合
+				//        {
+				//            rect.Height -= numB - ( showRangeY1 - numA );
+				//        }
+				//        if ( ( rect.Bottom > rect.Top ) && ( this.txチップ != null ) )
+				//        {
+				//            this.txチップ.t2D描画(
+				//                CDTXMania.app.Device,
+				//                drawX,
+				//                ( ( y - numA ) + numC ),
+				//                rect
+				//            );
+				//        }
+				//    }
+				//}
+				base.t進行描画・チップ・ベース・ウェイリング( configIni, ref dTX, ref pChip, true );
 			}
 		}
 		protected override void t進行描画・チップ・空打ち音設定・ドラム( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
