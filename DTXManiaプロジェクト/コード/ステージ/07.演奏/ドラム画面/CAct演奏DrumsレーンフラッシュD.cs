@@ -47,7 +47,24 @@ namespace DTXMania
 			stレーンサイズ8.w = 0x24;
 			stレーンサイズArray[ 7 ] = stレーンサイズ8;
 			this.stレーンサイズ = stレーンサイズArray;
-			this.strファイル名 = new string[] { @"Graphics\ScreenPlayDrums lane flush cymbal.png", @"Graphics\ScreenPlayDrums lane flush hihat.png", @"Graphics\ScreenPlayDrums lane flush snare.png", @"Graphics\ScreenPlayDrums lane flush bass.png", @"Graphics\ScreenPlayDrums lane flush hitom.png", @"Graphics\ScreenPlayDrums lane flush lowtom.png", @"Graphics\ScreenPlayDrums lane flush floortom.png", @"Graphics\ScreenPlayDrums lane flush cymbal.png", @"Graphics\ScreenPlayDrums lane flush cymbal reverse.png", @"Graphics\ScreenPlayDrums lane flush hihat reverse.png", @"Graphics\ScreenPlayDrums lane flush snare reverse.png", @"Graphics\ScreenPlayDrums lane flush bass reverse.png", @"Graphics\ScreenPlayDrums lane flush hitom reverse.png", @"Graphics\ScreenPlayDrums lane flush lowtom reverse.png", @"Graphics\ScreenPlayDrums lane flush floortom reverse.png", @"Graphics\ScreenPlayDrums lane flush cymbal reverse.png" };
+			this.strファイル名 = new string[] {
+				@"Graphics\ScreenPlayDrums lane flush cymbal.png",
+				@"Graphics\ScreenPlayDrums lane flush hihat.png",
+				@"Graphics\ScreenPlayDrums lane flush snare.png",
+				@"Graphics\ScreenPlayDrums lane flush bass.png",
+				@"Graphics\ScreenPlayDrums lane flush hitom.png",
+				@"Graphics\ScreenPlayDrums lane flush lowtom.png",
+				@"Graphics\ScreenPlayDrums lane flush floortom.png",
+				@"Graphics\ScreenPlayDrums lane flush cymbal.png",
+				@"Graphics\ScreenPlayDrums lane flush cymbal reverse.png",
+				@"Graphics\ScreenPlayDrums lane flush hihat reverse.png",
+				@"Graphics\ScreenPlayDrums lane flush snare reverse.png",
+				@"Graphics\ScreenPlayDrums lane flush bass reverse.png",
+				@"Graphics\ScreenPlayDrums lane flush hitom reverse.png",
+				@"Graphics\ScreenPlayDrums lane flush lowtom reverse.png",
+				@"Graphics\ScreenPlayDrums lane flush floortom reverse.png",
+				@"Graphics\ScreenPlayDrums lane flush cymbal reverse.png"
+			};
 			base.b活性化してない = true;
 		}
 
@@ -85,7 +102,7 @@ namespace DTXMania
 			{
 				for ( int i = 0; i < 0x10; i++ )
 				{
-					this.txFlush[ i ] = CDTXMania.tテクスチャの生成( CSkin.Path( this.strファイル名[ i ] ) );
+					this.txFlush[ i ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( this.strファイル名[ i ] ) );
 				}
 				base.OnManagedリソースの作成();
 			}
@@ -122,7 +139,8 @@ namespace DTXMania
 					{
 						int x = this.stレーンサイズ[ j ].x;
 						int w = this.stレーンサイズ[ j ].w;
-						for ( int k = 0; k < 3; k++ )
+						//for ( int k = 0; k < 3; k++ )
+						int k = 0;
 						{
 							if ( CDTXMania.ConfigIni.bReverse.Drums )
 							{
@@ -139,7 +157,7 @@ namespace DTXMania
 												(int) ( ( ( k * 0x2a ) + 2 ) * Scale.X ),
 												0,
 												( ( w - m ) < 0x2a ) ? (int) ( ( w - m ) * Scale.X ) : (int) ( 0x2a * Scale.X ),
-												(int) ( 0x80 * Scale.Y )
+												(int) ( 0x80 * 3 * Scale.Y )
 											)
 										);
 									}
@@ -162,7 +180,7 @@ namespace DTXMania
 													(int) ( k * 0x2a * Scale.X ),
 													0,
 													( ( w - n ) < 0x2a ) ? (int) ( ( w - n ) * Scale.X ) : (int) ( 0x2a * Scale.X ),
-													(int) ( 0x80 * Scale.Y )
+													(int) ( 0x80 * 3 * Scale.Y )
 												)
 											);
 										}
@@ -191,7 +209,7 @@ namespace DTXMania
 		private CCounter[] ct進行 = new CCounter[ 8 ];
 		private readonly string[] strファイル名;
 		private readonly STレーンサイズ[] stレーンサイズ;
-		private CTexture[] txFlush = new CTexture[ 0x10 ];
+		private CTextureAf[] txFlush = new CTextureAf[ 0x10 ];
 		//-----------------
 		#endregion
 	}
