@@ -27,12 +27,11 @@ namespace DTXMania
 					if( !base.ct進行[ i ].b停止中 )
 					{
 						E楽器パート e楽器パート = ( i < 3 ) ? E楽器パート.GUITAR : E楽器パート.BASS;
-						CTexture texture = CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] ? base.txFlush[ ( i % 3 ) + 3 ] : base.txFlush[ i % 3 ];
+						CTextureAf texture = CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] ? base.txFlush[ ( i % 3 ) + 3 ] : base.txFlush[ i % 3 ];
 						int num2 = CDTXMania.ConfigIni.bLeft[ (int) e楽器パート ] ? 1 : 0;
-						for( int j = 0; j < 3; j++ )
 						{
 							int x = ( ( ( i < 3 ) ? 0x1a : 480 ) + this.nRGBのX座標[ num2, i ] ) + ( ( 0x10 * base.ct進行[ i ].n現在の値 ) / 100 );
-							int y = CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] ? ( 0x37 + ( j * 0x76 ) ) : ( j * 0x76 );
+							int y = CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] ? 0x37 : 0;
 							if( texture != null )
 							{
 								texture.t2D描画(
@@ -40,10 +39,10 @@ namespace DTXMania
 									x * Scale.X,
 									y * Scale.Y,
 									new Rectangle(
-										(int) ( j * 0x20 * Scale.X ),
+										0,
 										0,
 										(int) ( ( ( 0x20 * ( 100 - base.ct進行[ i ].n現在の値 ) ) / 100 ) * Scale.X ),
-										(int) ( 0x76 * Scale.Y )
+										(int) ( 0x76 * 3 * Scale.Y )
 									)
 								);
 							}
