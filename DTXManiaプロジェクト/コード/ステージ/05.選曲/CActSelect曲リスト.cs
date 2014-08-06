@@ -465,9 +465,11 @@ namespace DTXMania
 			this.tx曲名バー.Score = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect bar score.png" ), false );
 			this.tx曲名バー.Box = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect bar box.png" ), false );
 			this.tx曲名バー.Other = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect bar other.png" ), false );
+
 			this.tx選曲バー.Score = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect bar score selected.png" ), false );
 			this.tx選曲バー.Box = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect bar box selected.png" ), false );
 			this.tx選曲バー.Other = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect bar other selected.png" ), false );
+
 			this.txスキル数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill number on list.png" ), false );
 			for( int i = 0; i < 13; i++ )
 				this.t曲名バーの生成( i, this.stバー情報[ i ].strタイトル文字列, this.stバー情報[ i ].col文字色 );
@@ -1283,17 +1285,17 @@ namespace DTXMania
 						new Rectangle(
 							0,
 							0,
-							(int)(128 * Scale.X),
-							(int)(64 * Scale.Y)
+							256,		//(int)(128 * Scale.X),
+							128			//(int)(64 * Scale.Y)
 						)
 					);	// ヘサキ
 				x += this.tx選曲バー[(int)type].sz画像サイズ.Width;
 
 				var rc = new Rectangle(
-					(int)(64 * Scale.X),
+					128,				//(int)(64 * Scale.X),
 					0,
-					(int)(64 * Scale.X),
-					(int)(64 * Scale.Y)
+					128,				//(int)(64 * Scale.X),
+					128					//(int)(64 * Scale.Y)
 				);
 				while( x < SampleFramework.GameWindowSize.Width )
 				{
@@ -1304,7 +1306,7 @@ namespace DTXMania
 							y,
 							rc
 						);	// 胴体；64pxずつ横につなげていく。
-					x += (int)(64 * Scale.Y);
+					x += 128;		//(int)(64 * Scale.Y);
 				}
 				//-----------------
 				#endregion
@@ -1321,17 +1323,28 @@ namespace DTXMania
 						new Rectangle(
 							0,
 							0,
-							(int)(64 * Scale.X),
-							(int)(32 * Scale.Y)
+							128,	//(int) ( 64 * Scale.X ),
+							64		//(int) ( 32 * Scale.Y )
+							//(int)(64 * Scale.X),
+							//(int)(32 * Scale.Y)
 						)
 					);		// ヘサキ
-				x += (int)(64 * Scale.X);
+				x += 64;		//(int) ( 64 * Scale.X );
 
 				var rc = new Rectangle(
+					64,
 					0,
-					(int)(32 * Scale.Y),
-					(int)(64 * Scale.X),
-					(int)(32 * Scale.Y)
+					64,
+					64
+					//0,
+					//(int)(32 * Scale.Y),
+					//(int)(64 * Scale.X),
+					//(int)(32 * Scale.Y)
+
+					//128,		//0,
+					//0,		//(int)(32 * Scale.Y),
+					//128,		//(int)(64 * Scale.X),
+					//128			//(int)(32 * Scale.Y)
 				);
 				while( x < SampleFramework.GameWindowSize.Width )
 				{
@@ -1342,7 +1355,7 @@ namespace DTXMania
 							y,
 							rc
 						);	// 胴体；64pxずつ横につなげていく。
-					x += (int)(64 * Scale.X);
+					x += 64;	// (int) ( 64 * Scale.X );
 				}
 				//-----------------
 				#endregion
