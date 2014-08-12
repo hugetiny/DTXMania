@@ -121,14 +121,14 @@ namespace DTXMania
 		protected enum EEvent { 非表示, 数値更新, 同一数値, ミス通知 }
 		protected enum EMode { 非表示中, 進行表示中, 残像表示中 }
 		protected const int nギターコンボのCOMBO文字の高さ = (int) ( 16 * Scale.Y );
-		protected const int nギターコンボのCOMBO文字の幅 = (int) ( 45 * Scale.X );
-		protected const int nギターコンボの高さ = (int) ( 35 * Scale.Y );
-		protected const int nギターコンボの幅 = (int) ( 23 * Scale.X );
+		protected const int nギターコンボのCOMBO文字の幅 = (int) ( 124 );
+		protected const int nギターコンボの高さ = (int) ( 78 );
+		protected const int nギターコンボの幅 = (int) ( 64 );
 		protected const int nギターコンボの文字間隔 = (int) ( 1 * Scale.X );
 		protected const int nドラムコンボのCOMBO文字の高さ = (int) ( 32 * Scale.Y );
-		protected const int nドラムコンボのCOMBO文字の幅 = (int) ( 90 * Scale.X );
-		protected const int nドラムコンボの高さ = (int) ( 70 * Scale.Y );
-		protected const int nドラムコンボの幅 = (int) ( 45 * Scale.X );
+		protected const int nドラムコンボのCOMBO文字の幅 = (int) 256;	//( 90 * Scale.X );
+		protected const int nドラムコンボの高さ = (int) ( 158 );
+		protected const int nドラムコンボの幅 = (int) ( 128 );
 		protected const int nドラムコンボの文字間隔 = (int) ( 2 * Scale.X );
 		protected int[] nジャンプ差分値 = new int[ 180 ];
 		protected CSTATUS status;
@@ -285,9 +285,16 @@ namespace DTXMania
 				y += this.nジャンプ差分値[ nJump ];
 
 			if( this.txCOMBOドラム != null )
-				this.txCOMBOドラム.t2D描画( CDTXMania.app.Device,
+				this.txCOMBOドラム.t2D描画(
+					CDTXMania.app.Device,
 					x, y,
-					new Rectangle( 0, (int) ( 140 * Scale.Y ), (int) ( 90 * Scale.X ), (int) ( 32 * Scale.Y ) ) );	// "COMBO" を表示。
+					new Rectangle(
+						256,
+						(int) 315,	//( 140 * Scale.Y ),
+						(int) 256,	//( 90 * Scale.X ),
+						(int) ( 32 * Scale.Y )
+					)
+			);	// "COMBO" を表示。
 
 			// COMBO値を1の位から順に表示。
 
@@ -304,7 +311,12 @@ namespace DTXMania
 				{
 					this.txCOMBOドラム.t2D描画( CDTXMania.app.Device,
 						x, y,
-						new Rectangle( ( n位の数[ i ] % 5 ) * nドラムコンボの幅, ( n位の数[ i ] / 5 ) * nドラムコンボの高さ, nドラムコンボの幅, nドラムコンボの高さ ) );
+						new Rectangle(
+							( n位の数[ i ] % 4 ) * nドラムコンボの幅,
+							( n位の数[ i ] / 4 ) * nドラムコンボの高さ,
+							nドラムコンボの幅,
+							nドラムコンボの高さ )
+						);
 				}
 			}
 			//-----------------
@@ -382,9 +394,9 @@ namespace DTXMania
 					x,
 					y,
 					new Rectangle(
-						0,
-						(int) ( 70 * Scale.Y ),
-						(int) ( 45 * Scale.X ),
+						128,
+						(int) ( 158 ),
+						(int) ( 124 ),
 						(int) ( 16 * Scale.Y )
 					)
 				); 
@@ -417,7 +429,13 @@ namespace DTXMania
 						CDTXMania.app.Device,
 						x - ( (int) ( ( ( f拡大率 - 1.0f ) * nギターコンボの幅 ) / 2.0f ) ),
 						y - ( (int) ( ( ( f拡大率 - 1.0f ) * nギターコンボの高さ ) / 2.0f ) ),
-						new Rectangle( ( n位の数[ i ] % 5 ) * nギターコンボの幅, ( n位の数[ i ] / 5 ) * nギターコンボの高さ, nギターコンボの幅, nギターコンボの高さ ) );
+						new Rectangle(
+							( n位の数[ i ] % 4 ) * nギターコンボの幅,
+							( n位の数[ i ] / 4 ) * nギターコンボの高さ,
+							nギターコンボの幅,
+							nギターコンボの高さ
+						)
+					);
 				}
 				//-----------------
 				#endregion
@@ -456,8 +474,8 @@ namespace DTXMania
 			if( this.b活性化してない )
 				return;
 
-			this.txCOMBOドラム = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums combo drums.png" ) );
-			this.txCOMBOギター = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums combo guitar.png" ) );
+			this.txCOMBOドラム = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums-combo-drums2.png" ) );
+			this.txCOMBOギター = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums-combo-guitar2.png" ) );
 
 			base.OnManagedリソースの作成();
 		}
