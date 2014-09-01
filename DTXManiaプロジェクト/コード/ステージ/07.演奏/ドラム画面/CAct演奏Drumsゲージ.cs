@@ -44,6 +44,7 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 				this.txゲージ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums gauge.png" ) );
+				this.txゲージ白 = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlayDrums_gauge_white.png " ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -51,6 +52,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
+				CDTXMania.tテクスチャの解放( ref this.txゲージ白 );
 				CDTXMania.tテクスチャの解放( ref this.txゲージ );
 				base.OnManagedリソースの解放();
 			}
@@ -143,40 +145,44 @@ namespace DTXMania
 				}
 				#endregion
 				#region [ 光彩 ]
-				if ( this.txゲージ != null )
+				if ( this.txゲージ白 != null )
 				{
-					//this.txゲージ.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
-					this.txゲージ.n透明度 = 180;
-					this.txゲージ.b加算合成 = true;
+					this.txゲージ白.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
+					this.txゲージ白.n透明度 = 180;
+					this.txゲージ白.b加算合成 = true;
 				}
-				for ( int i = 0; i < 4; i++ )
 				{
 					Rectangle rect = new Rectangle(
-						(int) ( ( 0x40 + ( i * 0x10 ) ) * Scale.X ),
 						0,
-						(int) ( 0x10 * Scale.X ),
-						(int) ( 0x40 * Scale.Y )
+						0,
+						(int) ( 0x10 *     Scale.X ),
+						(int) ( 0x40 * 4 * Scale.Y )
 					);
-					#region [ clipping ]
-					int ylight = ( n表示ゲージ最大値 - n表示するゲージの高さ ) + (int) ( i * 0x40 * Scale.Y );
+					#region [ clipping1 ]
+					int ylight = ( n表示ゲージ最大値 - n表示するゲージの高さ ) + (int) ( 0 * 0x40 * Scale.Y );
 					if ( ylight >= n表示ゲージ最大値 )
 					{
-						break;
-					}
-					if ( ( ylight + rect.Height ) > n表示ゲージ最大値 )
-					{
-						int d = ( ylight + rect.Height ) - n表示ゲージ最大値;
-						rect.Height -= d;
+						//break;
 					}
 					#endregion
-					if ( ( rect.Top < rect.Bottom ) && ( this.txゲージ != null ) )
+					else
 					{
-						this.txゲージ.t2D描画(
-							CDTXMania.app.Device,
-							(int) ( 6 * Scale.X ),
-							(int) ( ylight + 0.5f ),
-							rect
-						);
+						#region [ Clipping2 ]
+						if ( ( ylight + rect.Height ) > n表示ゲージ最大値 )
+						{
+							int d = ( ylight + rect.Height ) - n表示ゲージ最大値;
+							rect.Height -= d;
+						}
+						#endregion
+						if ( ( rect.Top < rect.Bottom ) && ( this.txゲージ白 != null ) )
+						{
+							this.txゲージ白.t2D描画(
+								CDTXMania.app.Device,
+								(int) ( 6 * Scale.X ),
+								(int) ( ylight + 0.5f ),
+								rect
+							);
+						}
 					}
 				}
 				#endregion
@@ -219,34 +225,34 @@ namespace DTXMania
 				#region [ 泡 ]
 				if ( this.txゲージ != null )
 				{
-				    this.txゲージ.b加算合成 = true;
+					this.txゲージ.b加算合成 = true;
 				}
 				for ( int j = 0; j < 24; j++ )
 				{
-				    this.st白い星[ j ].ct進行.t進行Loop();
-				    int x = 6 + this.st白い星[ j ].x;
+					this.st白い星[ j ].ct進行.t進行Loop();
+					int x = 6 + this.st白い星[ j ].x;
 					int y泡 = ( n表示ゲージ最大値 - n表示するゲージの高さ ) + (int) ( ( 0x160 - this.st白い星[ j ].ct進行.n現在の値 ) * Scale.Y );
-				    int n透明度 = ( this.st白い星[ j ].ct進行.n現在の値 < 0xb0 ) ? 0 : ( (int) ( 255.0 * ( ( (double) ( this.st白い星[ j ].ct進行.n現在の値 - 0xb0 ) ) / 176.0 ) ) );
-				    if ( ( n透明度 != 0 ) && ( y泡 < (int) ( 0x191 * Scale.Y ) ) )
-				    {
-				        Rectangle rect = new Rectangle(
-				            (int) ( 0 * Scale.X ),
-				            (int) ( 0x20 * Scale.Y ),
-				            (int) ( 0x20 * Scale.X ),
-				            (int) ( 0x20 * Scale.Y )
-				        );
-				        if ( this.txゲージ != null )
-				        {
-				            this.txゲージ.vc拡大縮小倍率 = new Vector3( this.st白い星[ j ].fScale, this.st白い星[ j ].fScale, 1f );
-				            this.txゲージ.n透明度 = n透明度;
-				            this.txゲージ.t2D描画(
-				                CDTXMania.app.Device,
-				                (int) ( x * Scale.X ),
-				                (int) ( y泡 + 0.5f ),
-				                rect
-				            );
-				        }
-				    }
+					int n透明度 = ( this.st白い星[ j ].ct進行.n現在の値 < 0xb0 ) ? 0 : ( (int) ( 255.0 * ( ( (double) ( this.st白い星[ j ].ct進行.n現在の値 - 0xb0 ) ) / 176.0 ) ) );
+					if ( ( n透明度 != 0 ) && ( y泡 < (int) ( 0x191 * Scale.Y ) ) )
+					{
+						Rectangle rect = new Rectangle(
+							(int) ( 0 * Scale.X ),
+							(int) ( 0x20 * Scale.Y ),
+							(int) ( 0x20 * Scale.X ),
+							(int) ( 0x20 * Scale.Y )
+						);
+						if ( this.txゲージ != null )
+						{
+							this.txゲージ.vc拡大縮小倍率 = new Vector3( this.st白い星[ j ].fScale, this.st白い星[ j ].fScale, 1f );
+							this.txゲージ.n透明度 = n透明度;
+							this.txゲージ.t2D描画(
+								CDTXMania.app.Device,
+								(int) ( x * Scale.X ),
+								(int) ( y泡 + 0.5f ),
+								rect
+							);
+						}
+					}
 				}
 				#endregion
 			}
@@ -266,7 +272,7 @@ namespace DTXMania
 			public CCounter ct進行;
 		}
 
-
+		private CTextureAf txゲージ白;
 		private const int STAR_MAX = 0x18;
 		private ST白い星[] st白い星 = new ST白い星[ 0x18 ];
 		//-----------------
