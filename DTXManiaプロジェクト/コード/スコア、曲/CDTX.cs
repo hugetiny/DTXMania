@@ -2848,8 +2848,10 @@ namespace DTXMania
 			List<CChip> listRemoveMixerChannel = new List<CChip>( 128 );
 			List<CChip> listRemoveTiming = new List<CChip>( 128 );
 
-			foreach ( CChip pChip in listChip )
+			//foreach ( CChip pChip in listChip )
+			for ( int i = 0; i < listChip.Count; i++ )
 			{
+				CChip pChip = listChip[ i ];
 				switch ( pChip.nチャンネル番号 )
 				{
 					// BGM, 演奏チャネル, 不可視サウンド, フィルインサウンド, 空打ち音はミキサー管理の対象
@@ -2876,22 +2878,22 @@ namespace DTXMania
 					case 0x90:	case 0x91:	case 0x92:
 
 						#region [ 発音1秒前のタイミングを記録 ]
-						int n発音前余裕ms = 1000, n発音後余裕ms = 800;
+						int n発音前余裕ms = 1000, n発音後余裕ms = 800;						// Drums
 						{
 							int ch = pChip.nチャンネル番号 >> 4;
-							if ( ch == 0x02 || ch == 0x0A )
+							if ( ch == 0x02 || ch == 0x0A )									// Guitar/Bass
 							{
 								n発音前余裕ms = 800;
-								n発音前余裕ms = 500;
+								//n発音後余裕ms = 500;
 							}
-							if ( ch == 0x06 || ch == 0x07 || ch == 0x08 || ch == 0x09 )
+							if ( ch == 0x06 || ch == 0x07 || ch == 0x08 || ch == 0x09 )		// SE
 							{
 								n発音前余裕ms = 200;
-								n発音前余裕ms = 500;
+								//n発音後余裕ms = 500;
 							}
 						}
 						#endregion
-						#region [ BGMチップならば即ミキサーに追加 ]
+						#region [ BGMチップならば即ミキサーに追加・・・はしない (全て注釈化) ]
 						//if ( pChip.nチャンネル番号 == 0x01 )	// BGMチップは即ミキサーに追加
 						//{
 						//    if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
@@ -2925,14 +2927,49 @@ namespace DTXMania
 //DebugOut_CChipList( listAddMixerChannel );
 						#endregion
 
-						int duration = 0;
+						#region [ そのチップ音のfullduration(チップ音wavの最大再生時間)を取得 ]
+						int fullduration = 0;
 						if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 						{
 							CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
 							double _db再生速度 = ( CDTXMania.DTXVmode.Enabled ) ? this.dbDTXVPlaySpeed : this.db再生速度;
-							duration = ( wc.rSound[ 0 ] == null ) ? 0 : (int) ( wc.rSound[ 0 ].n総演奏時間ms / _db再生速度 );	// #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
+							fullduration = ( wc.rSound[ 0 ] == null ) ? 0 : (int) ( wc.rSound[ 0 ].n総演奏時間ms / _db再生速度 );	// #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
 						}
-//Debug.WriteLine("duration=" + duration );
+						//Debug.WriteLine("fullduration=" + fullduration );
+						#endregion
+
+						#region [ そのチップのduration (GtBsが次の音にかき消されることを加味した再生時間) を取得・・・のコードは未使用。mixing抑制の効果が薄いため。]
+						int duration = 0;
+						//{
+						//    int ch = ( pChip.nチャンネル番号 >> 4 );
+						//    bool bGtBs = ( ch == 0x02 || ch == 0x0A );
+						//    if ( bGtBs )			// Guitar/Bassの場合
+						//    {
+						//        int p = i;
+						//        int chNext;
+						//        do
+						//        {
+						//            if ( ++p >= listChip.Count )
+						//            {
+						//                break;
+						//            }
+						//            chNext = ( listChip[ p ].nチャンネル番号 >> 4 );
+						//            duration = listChip[ p ].n発声時刻ms - pChip.n発声時刻ms;
+						//            if ( ch == chNext )
+						//            {
+						//                break;
+						//            }
+						//        }
+						//        while ( duration < fullduration );
+						//    }
+						//    else					// ドラムスの場合
+						//    {
+						//        duration = fullduration;
+						//    }
+						//}
+						#endregion
+						//Debug.WriteLine( i + ": duration diff= " + (fullduration - duration ) );
+						duration = fullduration;
 						int n新RemoveMixer時刻ms, n新RemoveMixer位置;
 						t発声時刻msと発声位置を取得する( pChip.n発声時刻ms + duration + n発音後余裕ms, out n新RemoveMixer時刻ms, out n新RemoveMixer位置 );
 //Debug.WriteLine( "n新RemoveMixer時刻ms=" + n新RemoveMixer時刻ms + ",n新RemoveMixer位置=" + n新RemoveMixer位置 );
@@ -3039,6 +3076,15 @@ namespace DTXMania
 				Debug.WriteLine( i + ": ch=" + c[ i ].nチャンネル番号.ToString("x2") + ", WAV番号=" + c[ i ].n整数値 + ", time=" + c[ i ].n発声時刻ms );
 			}
 		}
+
+		/// <summary>
+		/// 発声時刻msから発声位置を逆算することはできないため、近似計算する。
+		/// 具体的には、希望発声位置前後の2つのチップの発声位置の中間を取る。
+		/// </summary>
+		/// <param name="n希望発声時刻ms"></param>
+		/// <param name="n新発声時刻ms"></param>
+		/// <param name="n新発声位置"></param>
+		/// <returns></returns>
 		private bool t発声時刻msと発声位置を取得する( int n希望発声時刻ms, out int n新発声時刻ms, out int n新発声位置 )
 		{
 			// 発声時刻msから発声位置を逆算することはできないため、近似計算する。
