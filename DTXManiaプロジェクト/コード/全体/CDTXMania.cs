@@ -1761,6 +1761,7 @@ for (int i = 0; i < 3; i++) {
 // BEGIN #23629 2010.11.13 from: デバッグ時は Application.ExecutablePath が ($SolutionDir)/bin/x86/Debug/ などになり System/ の読み込みに失敗するので、カレントディレクトリを採用する。（プロジェクトのプロパティ→デバッグ→作業ディレクトリが有効になる）
 #if DEBUG
 			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
+			//strEXEのあるフォルダ = Path.GetDirectoryName( Environment.GetCommandLineArgs()[ 0 ] ) + @"\";
 #else
 			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\";	// #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
 #endif
@@ -1857,7 +1858,6 @@ for (int i = 0; i < 3; i++) {
 					}
 				}
 				DTXVmode.ParseArguments( arg );
-				
 				if ( DTXVmode.Enabled )
 				{
 					DTXVmode.Refreshed = false;								// 初回起動時は再読み込みに走らせない
