@@ -366,6 +366,10 @@ namespace DTXMania
 						arg = "";
 						analyzing = false;
 					}
+					else
+					{
+						analyzing = false;
+					}
 				}
 			}
 string[] s = { "Stop", "Play", "Preview" };
