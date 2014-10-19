@@ -2644,17 +2644,17 @@ namespace DTXMania
 					bool pushingB = CDTXMania.Pad.b押されている( inst, Eパッド.B );
 
 					cInvisibleChip.StartSemiInvisible( inst );
-					#region [ Chip Fire effects ]
+					#region [ Chip Fire effects (auto時用) ]
 					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
-					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || bSuccessOPEN )
+					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || ( bSuccessOPEN && autoPick ) )
 					{
 						this.actChipFireGB.Start( 0 + lo, 演奏判定ライン座標 );
 					}
-					if ( ( bChipHasG && ( autoG || pushingG ) && autoPick ) || bSuccessOPEN )
+					if ( ( bChipHasG && ( autoG || pushingG ) && autoPick ) || ( bSuccessOPEN && autoPick ) )
 					{
 						this.actChipFireGB.Start( 1 + lo, 演奏判定ライン座標 );
 					}
-					if ( ( bChipHasB && ( autoB || pushingB ) && autoPick ) || bSuccessOPEN )
+					if ( ( bChipHasB && ( autoB || pushingB ) && autoPick ) || ( bSuccessOPEN && autoPick ) )
 					{
 						this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標 );
 					}
