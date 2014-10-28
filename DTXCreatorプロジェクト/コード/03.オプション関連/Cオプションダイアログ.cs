@@ -97,5 +97,15 @@ namespace DTXCreator.オプション関連
 		{
 			this.comboBox_ASIOdevices.Enabled = true;
 		}
+
+		private void radioButtonSelectMode_CheckedChanged( object sender, EventArgs e )
+		{
+
+		}
+
+		private void radioButtonEditMove_CheckedChanged( object sender, EventArgs e )
+		{
+
+		}
 	}
 }

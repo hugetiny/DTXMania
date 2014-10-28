@@ -35,6 +35,7 @@ namespace DTXCreator
 			this.tDTX出力・AVIリスト( sw );
 			this.tDTX出力・小節長倍率( sw );
 			this.tDTX出力・BPxリスト( sw );
+			this.tDTX出力・BEATチップのf値( sw );
 			this.tDTX出力・全チップ( sw );
 			sw.WriteLine();
 			this.tDTX出力・レーン割付チップ( sw );
@@ -49,6 +50,7 @@ namespace DTXCreator
 			if( str全入力文字列.Length != 0 )
 			{
 				this.dic小節長倍率 = new Dictionary<int, float>();
+				this.dicBEATチップf値 = new Dictionary<int, float>();
 				this.listチップパレット = new List<int>();
 				this.listBGMWAV番号 = new List<int>();											// #26775 2011.11.21 yyagi
 				this.nLastBarConverted = -1;
@@ -106,7 +108,8 @@ namespace DTXCreator
 					this.tDTX入力・BPMチップにBPx数値をバインドする();
 					this.tDTX入力・キャッシュからListViewを一括構築する();
 					this.tDTX入力・チップパレットのListViewを一括構築する();
-					if( this.listBGMWAV番号.Count > 0 )							// #26775 2011.11.21 yyagi
+					//this.tDTX入力・BEATチップにf値をバインドする();
+					if ( this.listBGMWAV番号.Count > 0 )							// #26775 2011.11.21 yyagi
 					{
 						foreach ( int nBGMWAV番号 in listBGMWAV番号 )			// #26775 2011.11.21 yyagi
 						{
@@ -182,6 +185,7 @@ namespace DTXCreator
 		private IEnumerator eDTXbgmChs;			// #25990 2011.8.12 yyagi BMS/BME→DTX変換用
 #endregion
 		private Dictionary<int, float> dic小節長倍率;
+		private Dictionary<int, float> dicBEATチップf値;
 		private E種別 e種別;
 		private List<int> listチップパレット;
 		private List<int> listBGMWAV番号 = null;			// #26775 2011.11.21 yyagi
@@ -217,6 +221,39 @@ namespace DTXCreator
 				}
 			}
 		}
+		//private void tDTX入力・BEATチップにf値をバインドする()
+		//{
+		//    foreach ( KeyValuePair<int, C小節> pair in this._Form.mgr譜面管理者.dic小節 )
+		//    {
+		//        C小節 c小節 = pair.Value;
+		//        for ( int i = 0; i < c小節.listチップ.Count; i++ )
+		//        {
+		//            Cチップ cチップ = c小節.listチップ[ i ];
+		//            float num2 = 0f;
+		//            if ( ( cチップ.nチャンネル番号00toFF == 0xF8 || cチップ.nチャンネル番号00toFF == 0xF3 )
+		//                && this._Form.mgr譜面管理者.dicBPx.TryGetValue( cチップ.n値・整数1to1295, out num2 ) )
+		//            {
+		//                cチップ.f値・浮動小数 = num2;
+		//            }
+		//            if ( cチップ.nチャンネル番号00toFF == 3 )
+		//            {
+		//                cチップ.nチャンネル番号00toFF = 8;
+		//                cチップ.f値・浮動小数 = cチップ.n値・整数1to1295;
+		//                cチップ.b裏 = false;
+		//                for ( int j = 1; j <= 36 * 36 - 1; j++ )
+		//                {
+		//                    if ( !this._Form.mgr譜面管理者.dicBPx.ContainsKey( j ) )
+		//                    {
+		//                        this._Form.mgr譜面管理者.dicBPx.Add( j, cチップ.f値・浮動小数 );
+		//                        cチップ.n値・整数1to1295 = j;
+		//                        break;
+		//                    }
+		//                }
+		//            }
+		//        }
+		//    }
+		//}
+
 		private void tDTX入力・キャッシュからListViewを一括構築する()
 		{
 			for( int i = 1; i <= 36 * 36 - 1; i++ )
@@ -417,8 +454,88 @@ namespace DTXCreator
 				this.tDTX入力・行解析・DTXC_AVIFORECOLOR( strコマンド, strパラメータ, strコメント ) ||
 				this.tDTX入力・行解析・DTXC_AVIBACKCOLOR( strコマンド, strパラメータ, strコメント ) ||
 				this.tDTX入力・行解析・DTXC_CHIPPALETTE( strコマンド, strパラメータ, strコメント ) ||
+				this.tDTX入力・行解析・BEATチップのf値( strコマンド, strパラメータ, strコメント ) ||
 				this.tDTX入力・行解析・チャンネル( strコマンド, strパラメータ, strコメント )
 			);
+		}
+		private bool tDTX入力・行解析・BEATチップのf値( string strコマンド, string strパラメータ, string strコメント )
+		{
+			if ( strコマンド.StartsWith( "BEAT", StringComparison.OrdinalIgnoreCase ) )
+			{
+				strコマンド = strコマンド.Substring( 4 );
+			}
+			else
+			{
+				return false;
+			}
+			int num = C変換.n値を文字列から取得して返す( strコマンド, 0 );
+			if ( num < 0 )
+			{
+				return false;
+			}
+
+			// 小節番号, grid, f値
+			string[] strParams = strパラメータ.Split( new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries );
+
+			#region [ パラメータ引数は全3個ないと無効。]
+			//-----------------
+			if ( strParams.Length < 3 )
+			{
+				//Trace.TraceError( "BEAT: 引数が足りません。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数 );
+				return false;
+			}
+			//-----------------
+			#endregion
+
+			int i = 0;
+
+			#region [ 1. 小節番号 ]
+			//-----------------
+			if ( string.IsNullOrEmpty( strParams[ i ] ) )
+			{
+				//Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
+				return false;
+			}
+			int n小節番号 = C変換.n値を文字列から取得して返す( strParams[ i ], 0 );
+			if ( n小節番号 < 0 )
+			{
+				//Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
+				return false;
+			}
+			i++;
+			#endregion
+			#region [ 2. Grid ]
+			//-----------------
+			if ( string.IsNullOrEmpty( strParams[ i ] ) )
+			{
+				//Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
+				return false;
+			}
+			int nGrid = C変換.n値を文字列から取得して返す( strParams[ i ], 0 );
+			if ( nGrid < 0 )
+			{
+				//Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
+				return false;
+			}
+			i++;
+			#endregion
+			#region [ 3. f値 ]
+			//-----------------
+			if ( string.IsNullOrEmpty( strParams[ i ] ) )
+			{
+				//Trace.TraceError( "BGAPAN: {2}番目の数（BMP番号）が異常です。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数, i + 1 );
+				return false;
+			}
+			decimal f値 = 0;
+			if ( ( !this.TryParse( strParams[ i ], out f値 ) || ( f値 < 0 ) ) )
+			{
+				return false;
+			}
+			#endregion
+//Debug.WriteLine( "入力: n小節番号=" + n小節番号 + ", nGrid=" + nGrid + ", f値=" + f値 + ", strParam=" + strParams[i] );
+			this.dicBEATチップf値.Add( n小節番号 * 192 + nGrid, (float) f値 );
+
+			return true;
 		}
 		private bool tDTX入力・行解析・AVI_AVIPAN( string strコマンド, string strパラメータ, string strコメント )
 		{
@@ -1312,6 +1429,13 @@ namespace DTXCreator
 						cチップ.n読み込み時の解像度 = nChips;
 						cチップ.n値・整数1to1295 = nChipNo;
 						cチップ.b裏 = flag;
+						float f;
+						if ( ( nCh == 0xF8 || nCh == 0xF3 ) &&												// BEATチップの場合
+							dicBEATチップf値.TryGetValue( nBar * 192 + (i * 192 / nChips ), out f ) )
+						{
+							cチップ.f値・浮動小数 = f;
+//Debug.WriteLine( "f値: nBar=" + nBar + ", f値=" + f );
+						}
 						c小節.listチップ.Add( cチップ );
 					}
 				}
@@ -1905,6 +2029,27 @@ namespace DTXCreator
 				{
 					num = c小節.f小節長倍率;
 					sw.WriteLine( "#{0}02: {1}", C変換.str小節番号を文字列3桁に変換して返す( c小節.n小節番号0to3599 ), num );
+				}
+			}
+		}
+		private void tDTX出力・BEATチップのf値( StreamWriter sw )
+		{
+			sw.WriteLine();
+			int laneBEAT = this._Form.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BEAT" );
+// Debug.WriteLine( "laneBEAT=" + laneBEAT );
+			int c = 0;
+			foreach ( KeyValuePair<int, C小節> pair in this._Form.mgr譜面管理者.dic小節 )
+			{
+				C小節 c小節 = pair.Value;
+				for ( int index = 0; index < c小節.listチップ.Count; index++ )
+				{
+					if ( c小節.listチップ[ index ].nレーン番号0to == laneBEAT )
+					{
+// int n小節番号 = c小節.n小節番号0to3599;
+// Debug.WriteLine( "n小節番号=" + c小節.n小節番号0to3599 + ", 小節内Grid=" + c小節.listチップ[ index ].n位置grid + ",lane=" + c小節.listチップ[ index ].nレーン番号0to + ", f値=" + c小節.listチップ[ index ].f値・浮動小数 );
+						//string str = C変換.str数値を36進数2桁に変換して返す( c );
+						sw.WriteLine( "#BEAT{0}: {1}, {2}, {3}", c++, c小節.n小節番号0to3599, c小節.listチップ[ index ].n位置grid, c小節.listチップ[ index ].f値・浮動小数 );
+					}
 				}
 			}
 		}

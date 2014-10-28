@@ -47,6 +47,7 @@ namespace DTXCreator
 			this._MovieListColumnWidth[ 2 ] = 120;
 			this._LastWorkFolder = Directory.GetCurrentDirectory();
 			this._ViewerInfo = new Viewer();
+			this._InitialOperationMode = false;
 		}
 		//-----------------
 		#endregion
@@ -352,6 +353,23 @@ namespace DTXCreator
 			}
 		}
 
+		/// <summary>
+		/// 操作モードの初期値
+		/// false: 編集モード
+		/// true:  選択モード
+		/// </summary>
+		public bool InitialOperationMode
+		{
+			get
+			{
+				return this._InitialOperationMode;
+			}
+			set
+			{
+				this._InitialOperationMode = value;
+			}
+		}
+
 		//public enum ViewerSoundType
 		//{
 		//    DirectSound,
@@ -483,6 +501,7 @@ namespace DTXCreator
 		private int _Width = 600;
 		private int _X;
 		private int _Y;
+		private bool _InitialOperationMode;
 		//-----------------
 		#endregion
 	}

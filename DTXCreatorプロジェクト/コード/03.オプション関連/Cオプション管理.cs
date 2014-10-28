@@ -20,6 +20,8 @@ namespace DTXCreator.オプション関連
 			cオプションダイアログ.numericUpDown最近使用したファイルの最大表示個数.Value = this.formメインフォーム.appアプリ設定.RecentFilesNum;
 			cオプションダイアログ.checkBoxPreviewBGM.CheckState = this.formメインフォーム.appアプリ設定.NoPreviewBGM ? CheckState.Checked : CheckState.Unchecked;
 			cオプションダイアログ.checkBoxPlaySoundOnChip.CheckState = this.formメインフォーム.appアプリ設定.PlaySoundOnWAVChipAllocated ? CheckState.Checked : CheckState.Unchecked;
+			cオプションダイアログ.radioButton_SelectMode.Checked = this.formメインフォーム.appアプリ設定.InitialOperationMode;
+			cオプションダイアログ.radioButton_EditMode.Checked = !this.formメインフォーム.appアプリ設定.InitialOperationMode;
 			#endregion
 			#region [ Laneタブ ]
 			if ( !cオプションダイアログ.bレーンリストの内訳が生成済みである )
@@ -58,6 +60,8 @@ namespace DTXCreator.オプション関連
 				this.formメインフォーム.appアプリ設定.NoPreviewBGM = cオプションダイアログ.checkBoxPreviewBGM.Checked;
 				this.formメインフォーム.appアプリ設定.PlaySoundOnWAVChipAllocated = cオプションダイアログ.checkBoxPlaySoundOnChip.Checked;
 
+				this.formメインフォーム.appアプリ設定.InitialOperationMode = cオプションダイアログ.radioButton_SelectMode.Checked;
+				
 				for ( int i = 0; i < this.formメインフォーム.mgr譜面管理者.listレーン.Count; i++ )
 				{
 					DTXCreator.譜面.Cレーン.ELaneType e = this.formメインフォーム.mgr譜面管理者.listレーン[ i ].eLaneType;
