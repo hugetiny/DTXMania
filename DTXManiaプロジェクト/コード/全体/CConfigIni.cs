@@ -441,6 +441,7 @@ namespace DTXMania
 		//public STDGBVALUE<E判定表示優先度> e判定表示優先度;
 		public E判定表示優先度 e判定表示優先度;
 		public STDGBVALUE<E判定位置> e判定位置;			// #33891 2014.6.26 yyagi
+		public Eドラムレーン表示位置 eドラムレーン表示位置;
 		public bool bScoreIniを出力する;
 		public bool bSTAGEFAILED有効;
 		public STDGBVALUE<bool> bSudden;
@@ -1095,6 +1096,7 @@ namespace DTXMania
 			this.bLeft = new STDGBVALUE<bool>();
 			this.e判定位置 = new STDGBVALUE<E判定位置>();		// #33891 2014.6.26 yyagi
 			this.判定文字表示位置 = new STDGBVALUE<E判定文字表示位置>();
+			this.eドラムレーン表示位置 = new Eドラムレーン表示位置();
 			this.n譜面スクロール速度 = new STDGBVALUE<int>();
 			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
 			this.nJudgeLinePosOffset = new STDGBVALUE<int>();	// #31602 2013.6.23 yyagi
@@ -1559,8 +1561,15 @@ namespace DTXMania
 			sw.WriteLine( "ShowLagTime={0}", this.nShowLagType );							//
 			sw.WriteLine();
 			sw.WriteLine( "; 判定・コンボ表示優先度(0:チップの下, 1:チップの上)" );
+			sw.WriteLine( "; judgement/combo display priority (0:under chips, 1:over chips)" );
 			sw.WriteLine( "JudgeDispPriority={0}" , (int) this.e判定表示優先度 );
 			sw.WriteLine();
+			sw.WriteLine( "; ドラムのレーン表示位置(0:左側, 1:中央)" );
+			sw.WriteLine( "; drums lane position (0:LEFT, 1:CENTER)" );
+			sw.WriteLine( "DrumsLanePosition={0}", (int) this.eドラムレーン表示位置 );
+			sw.WriteLine();
+
+
 			sw.WriteLine( "; リザルト画像自動保存機能(0:OFF, 1:ON)" );						// #25399 2011.6.9 yyagi
 			sw.WriteLine( "; Set \"1\" if you'd like to save result screen image automatically");	//
 			sw.WriteLine( "; when you get hiscore/hiskill.");								//
@@ -2468,6 +2477,10 @@ namespace DTXMania
 											{
 												this.e判定表示優先度 = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度 );
 											}
+											else if ( str3.Equals( "DrumsLanePosition" ) )
+											{
+												this.eドラムレーン表示位置 = (Eドラムレーン表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eドラムレーン表示位置 );
+											}
 											else if ( str3.Equals( "AutoResultCapture" ) )			// #25399 2011.6.9 yyagi
 											{
 												this.bIsAutoResultCapture = C変換.bONorOFF( str4[ 0 ] );
@@ -2477,15 +2490,15 @@ namespace DTXMania
 												this.bTimeStretch = C変換.bONorOFF( str4[ 0 ] );
 											}
 											#region [ AdjustTime ]
-											else if( str3.Equals( "InputAdjustTimeDrums" ) )		// #23580 2011.1.3 yyagi
+											else if ( str3.Equals( "InputAdjustTimeDrums" ) )		// #23580 2011.1.3 yyagi
 											{
 												this.nInputAdjustTimeMs.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nInputAdjustTimeMs.Drums );
 											}
-											else if( str3.Equals( "InputAdjustTimeGuitar" ) )	// #23580 2011.1.3 yyagi
+											else if ( str3.Equals( "InputAdjustTimeGuitar" ) )	// #23580 2011.1.3 yyagi
 											{
 												this.nInputAdjustTimeMs.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nInputAdjustTimeMs.Guitar );
 											}
-											else if( str3.Equals( "InputAdjustTimeBass" ) )		// #23580 2011.1.3 yyagi
+											else if ( str3.Equals( "InputAdjustTimeBass" ) )		// #23580 2011.1.3 yyagi
 											{
 												this.nInputAdjustTimeMs.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nInputAdjustTimeMs.Bass );
 											}
@@ -2510,7 +2523,7 @@ namespace DTXMania
 												this.e判定位置.Bass = (E判定位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, (int) this.e判定位置.Bass );
 											}
 											#endregion
-											else if( str3.Equals( "BufferedInput" ) )
+											else if ( str3.Equals( "BufferedInput" ) )
 											{
 												this.bバッファ入力を行う = C変換.bONorOFF( str4[ 0 ] );
 											}
@@ -2523,35 +2536,35 @@ namespace DTXMania
 											{
 												this.nVelocityMin.LC = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LC );
 											}
-											else if( str3.Equals( "HHVelocityMin" ) )
+											else if ( str3.Equals( "HHVelocityMin" ) )
 											{
 												this.nVelocityMin.HH = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.HH );
 											}
-											else if( str3.Equals( "SDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											else if ( str3.Equals( "SDVelocityMin" ) )			// #23857 2011.1.31 yyagi
 											{
 												this.nVelocityMin.SD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.SD );
 											}
-											else if( str3.Equals( "BDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											else if ( str3.Equals( "BDVelocityMin" ) )			// #23857 2011.1.31 yyagi
 											{
 												this.nVelocityMin.BD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.BD );
 											}
-											else if( str3.Equals( "HTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											else if ( str3.Equals( "HTVelocityMin" ) )			// #23857 2011.1.31 yyagi
 											{
 												this.nVelocityMin.HT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.HT );
 											}
-											else if( str3.Equals( "LTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											else if ( str3.Equals( "LTVelocityMin" ) )			// #23857 2011.1.31 yyagi
 											{
 												this.nVelocityMin.LT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.LT );
 											}
-											else if( str3.Equals( "FTVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											else if ( str3.Equals( "FTVelocityMin" ) )			// #23857 2011.1.31 yyagi
 											{
 												this.nVelocityMin.FT = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.FT );
 											}
-											else if( str3.Equals( "CYVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											else if ( str3.Equals( "CYVelocityMin" ) )			// #23857 2011.1.31 yyagi
 											{
 												this.nVelocityMin.CY = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.CY );
 											}
-											else if( str3.Equals( "RDVelocityMin" ) )			// #23857 2011.1.31 yyagi
+											else if ( str3.Equals( "RDVelocityMin" ) )			// #23857 2011.1.31 yyagi
 											{
 												this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
 											}

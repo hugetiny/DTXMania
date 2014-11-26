@@ -447,6 +447,11 @@ namespace DTXMania
 		Chipより下,
 		Chipより上
 	}
+	internal enum Eドラムレーン表示位置
+	{
+		Left = 0,
+		Center = 1
+	}
 	internal enum EAVI種別
 	{
 		Unknown,

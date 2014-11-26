@@ -2244,6 +2244,8 @@ namespace DTXMania
 							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
 							{
 								CDTX.CWAV wc = listWAV[ pChip.n整数値・内部番号 ];
+//Debug.Write( "[AddMixer] BAR=" + pChip.n発声位置 / 384 + ", wav=" + Path.GetFileName( wc.strファイル名 ) + ", time=" + pChip.n発声時刻ms );
+
 								for ( int i = 0; i < nPolyphonicSounds; i++ )
 								{
 									if ( wc.rSound[ i ] != null )
@@ -2251,6 +2253,15 @@ namespace DTXMania
 										//CDTXMania.Sound管理.AddMixer( wc.rSound[ i ] );
 										AddMixer( wc.rSound[ i ], pChip.b演奏終了後も再生が続くチップである );
 									}
+									//else
+									//{
+									//    Debug.WriteLine( ", nPoly=" + i + ", Mix=" + CDTXMania.Sound管理.GetMixingStreams() );
+									//    break;
+									//}
+									//if ( i == nPolyphonicSounds - 1 )
+									//{
+									//    Debug.WriteLine( ", nPoly=" + nPolyphonicSounds + ", Mix=" + CDTXMania.Sound管理.GetMixingStreams() );
+									//}
 								}
 							}
 						}
@@ -2265,7 +2276,8 @@ namespace DTXMania
 							if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )	// 参照が遠いので後日最適化する
 							{
 							    CDTX.CWAV wc = listWAV[ pChip.n整数値・内部番号 ];
-							    for ( int i = 0; i < nPolyphonicSounds; i++ )
+//Debug.Write( "[DelMixer] BAR=" + pChip.n発声位置 / 384 +  ", wav=" + Path.GetFileName( wc.strファイル名 ) + ", time=" + pChip.n発声時刻ms );
+								for ( int i = 0; i < nPolyphonicSounds; i++ )
 							    {
 									if ( wc.rSound[ i ] != null )
 									{
@@ -2275,7 +2287,16 @@ namespace DTXMania
 											RemoveMixer( wc.rSound[ i ] );							// (ミキサー解除のタイミングが遅延する場合の対応が面倒なので。)
 										}															// そこで、代わりにフラグをチェックしてミキサー削除ロジックへの遷移をカットする。
 									}
-							    }
+									//else
+									//{
+									//    Debug.WriteLine( ", nPoly=" + i + ", Mix=" + CDTXMania.Sound管理.GetMixingStreams() );
+									//    break;
+									//}
+									//if ( i == nPolyphonicSounds - 1 )
+									//{
+									//    Debug.WriteLine( ", nPoly=" + nPolyphonicSounds + ", Mix=" + CDTXMania.Sound管理.GetMixingStreams() );
+									//}
+								}
 							}
 						}
 						break;
@@ -2714,19 +2735,22 @@ namespace DTXMania
 					bool pushingB = CDTXMania.Pad.b押されている( inst, Eパッド.B );
 
 					cInvisibleChip.StartSemiInvisible( inst );
-					#region [ Chip Fire effects ]
+					#region [ Chip Fire effects (auto時用) ]
 					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
-					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || bSuccessOPEN )
+					if ( autoPick )			// autoPickでない時の処理は、 t入力処理・ギターベース(E楽器パート) で行う
 					{
-						this.actChipFireGB.Start( 0 + lo, 演奏判定ライン座標 );
-					}
-					if ( ( bChipHasG && ( autoG || pushingG ) && autoPick ) || bSuccessOPEN )
-					{
-						this.actChipFireGB.Start( 1 + lo, 演奏判定ライン座標 );
-					}
-					if ( ( bChipHasB && ( autoB || pushingB ) && autoPick ) || bSuccessOPEN )
-					{
-						this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標 );
+						if ( ( bChipHasR && ( autoR || pushingR ) ) || bSuccessOPEN )
+						{
+							this.actChipFireGB.Start( 0 + lo, 演奏判定ライン座標 );
+						}
+						if ( ( bChipHasG && ( autoG || pushingG ) ) || bSuccessOPEN )
+						{
+							this.actChipFireGB.Start( 1 + lo, 演奏判定ライン座標 );
+						}
+						if ( ( bChipHasB && ( autoB || pushingB ) ) || bSuccessOPEN )
+						{
+							this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標 );
+						}
 					}
 					#endregion
 					#region [ autopick ]
@@ -2967,10 +2991,13 @@ namespace DTXMania
 		}
 
 		protected abstract void t背景テクスチャの生成();
-		protected void t背景テクスチャの生成( string DefaultBgFilename, Rectangle bgrect, string bgfilename )
+		protected void t背景テクスチャの生成( string DefaultBgFilename, string DefaultLaneFilename, Rectangle bgrect, string bgfilename )
 		{									// Default...: レーン等があるレイヤー		bgfilename: DTXファイルで指定する背景
 			Bitmap image = null;
 			bool bSuccessLoadDTXbgfile = false;
+
+			int[] offsetX = new int[2]{ 96, 506 };
+			int nLanePosition = (int) CDTXMania.ConfigIni.eドラムレーン表示位置;
 
 			if ( bgfilename != null && File.Exists( bgfilename ) && !CDTXMania.DTX.bチップがある.Movie )
 			{
@@ -3020,9 +3047,19 @@ namespace DTXMania
 					bitmap2.Dispose();
 					#endregion
 
-					#region [ レーンフレームを合成 ]
-					image = new Bitmap( CSkin.Path( DefaultBgFilename ) );
+					#region [ レーン外・レーンそのもののフレームを合成 ]
+					image = new Bitmap( CSkin.Path( DefaultBgFilename ) );	// レーン外のフレーム
 					graphics3 = Graphics.FromImage( image );
+
+					#region [ レーンのフレームがあれば、それを合成 ]
+					if ( DefaultLaneFilename != "" )
+					{
+						Bitmap bmLane = new Bitmap( CSkin.Path( DefaultLaneFilename ) );
+						graphics3.DrawImage( bmLane, offsetX[ nLanePosition ], 0 );
+						bmLane.Dispose();
+					}
+					#endregion
+		
 					ColorMatrix matrix2 = new ColorMatrix();
 					matrix2.Matrix00 = 1f;
 					matrix2.Matrix11 = 1f;
@@ -3033,11 +3070,12 @@ namespace DTXMania
 					ImageAttributes imageAttr = new ImageAttributes();
 					imageAttr.SetColorMatrix( newColorMatrix );
 					graphics3.DrawImage( bitmap3, new Rectangle( 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height ), 0, 0, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, GraphicsUnit.Pixel, imageAttr );
-					imageAttr.Dispose();
-					graphics3.DrawImage( bitmap3, bgrect, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height, GraphicsUnit.Pixel );
-					graphics3.Dispose();
+				//	graphics3.DrawImage( bitmap3, bgrect, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height, GraphicsUnit.Pixel );
 					bitmap3.Dispose();
 					#endregion
+
+					imageAttr.Dispose();
+					graphics3.Dispose();
 					bSuccessLoadDTXbgfile = true;
 				}
 				catch
@@ -3052,6 +3090,15 @@ namespace DTXMania
 				try
 				{
 					image = new Bitmap( bgfilename );
+
+					if ( DefaultLaneFilename != "" )
+					{
+						Bitmap bmLane = new Bitmap( CSkin.Path( DefaultLaneFilename ) );
+						Graphics g = Graphics.FromImage( image );
+						g.DrawImage( bmLane, offsetX[ nLanePosition ], 0 );
+						g.Dispose();
+						bmLane.Dispose();
+					}
 				}
 				catch
 				{

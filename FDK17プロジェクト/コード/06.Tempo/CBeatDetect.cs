@@ -75,6 +75,7 @@ namespace FDK
 			#endregion
 			#region [ BASS の初期化。]
 			int nデバイス = 0;		// 0:"no sound" … BASS からはデバイスへアクセスさせない。
+			//int nデバイス = -1;		// 0:"no sound" … BASS からはデバイスへアクセスさせない。
 			int n周波数 = 44100;	// 仮決め。lデバイス（≠ドライバ）がネイティブに対応している周波数であれば何でもいい？ようだ。いずれにしろBASSMXで自動的にリサンプリングされる。
 			if ( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
 				throw new Exception( string.Format( "BASS の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
@@ -83,6 +84,7 @@ namespace FDK
 			#region [ 指定されたサウンドファイルをBASSでオープンし、必要最小限の情報を取得する。]
 			//this.hBassStream = Bass.BASS_StreamCreateFile( this.filename, 0, 0, BASSFlag.BASS_STREAM_PRESCAN | BASSFlag.BASS_STREAM_DECODE );
 			this.hBassStream = Bass.BASS_StreamCreateFile( this.filename, 0, 0, BASSFlag.BASS_STREAM_DECODE );
+			//this.hBassStream = Bass.BASS_StreamCreateFile( this.filename, 0, 0, BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_PRESCAN );
 			if ( this.hBassStream == 0 )
 				throw new Exception( string.Format( "{0}: サウンドストリームの生成に失敗しました。(BASS_StreamCreateFile)[{1}]", filename, Bass.BASS_ErrorGetCode().ToString() ) );
 
@@ -95,6 +97,31 @@ namespace FDK
 				Bass.BASS_Free();
 				throw new Exception( errmes );
 			}
+
+
+
+			int bs = Bass.BASS_ChannelSetFX( this.hBassStream, BASSFXType.BASS_FX_BFX_BQF, 1 );
+
+			BASS_BFX_BQF param = new BASS_BFX_BQF(
+				BASSBFXBQF.BASS_BFX_BQF_LOWPASS,	// filter
+				800.0f,								// center	default=200
+				15,									// gain deafult=0
+				0,									// bandwidth
+				1,	//0.67f,									// Q
+				0,									// s
+				BASSFXChan.BASS_BFX_CHANALL			//chans
+			);
+
+			bool b = Bass.BASS_FXSetParameters( bs, param );
+			if ( b == false )
+			{
+				Debug.WriteLine( "effect set failed: " + Bass.BASS_ErrorGetCode().ToString() );
+			}
+			//bool b2 = Bass.BASS_ChannelPlay( this.hBassStream, false );
+			//if ( b2 == false )
+			//{
+			//    Debug.WriteLine( "plyback failed: " + Bass.BASS_ErrorGetCode().ToString() );
+			//}
 			#endregion
 		}
 		#endregion
@@ -157,6 +184,12 @@ namespace FDK
 			#endregion
 
 			BPMBEATPROC _beatProc = new BPMBEATPROC( GetBeat_ProgressCallback );
+
+			//
+			//
+			// LPFを通してから、BeatDecodeGetしてみること。
+			//
+			//
 
 			bool ret = BassFx.BASS_FX_BPM_BeatDecodeGet(
 				this.hBassStream,

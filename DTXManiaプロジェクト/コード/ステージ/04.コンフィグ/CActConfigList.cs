@@ -609,6 +609,14 @@ namespace DTXMania
 			//    new string[] { "OFF", "SEMI", "FULL" } );
 			//this.list項目リスト.Add( this.iDrumsInvisible );
 
+			this.iDrumsLanePosition = new CItemList( "LanePosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eドラムレーン表示位置,
+				"ドラムのレーン表示位置を設定します。\n" +
+				"LEFT(左側), またはCENTER(中央)を設定できます。",
+				"Choose drums lane position.\n" +
+				"You can choose LEFT or CENTER.",
+				new string[] { "LEFT", "CENTER" } );
+			this.list項目リスト.Add( this.iDrumsLanePosition );
+
 			this.iCommonDark = new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
 				"HALF: 背景、レーン、ゲージが表示されなくなります。\n" +
 				"FULL: さらに小節線、拍線、判定ライン、パッドも表示されなくなります。",
@@ -2552,6 +2560,7 @@ namespace DTXMania
 		//private CItemToggle iDrumsSudden;
 		private CItemToggle iDrumsTight;
 		private CItemToggle iDrumsGraph;        // #24074 2011.01.23 add ikanick
+		private CItemList iDrumsLanePosition;
 
 		//private CItemToggle iGuitarAutoPlay;
 		private CItemThreeState iGuitarAutoPlayAll;			// #23886 2012.5.8 yyagi
@@ -2773,6 +2782,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eDark = (Eダークモード)this.iCommonDark.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
 			//CDTXMania.ConfigIni.e判定表示優先度.Drums = (E判定表示優先度) this.iDrumsJudgeDispPriority.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eドラムレーン表示位置 = (Eドラムレーン表示位置) this.iDrumsLanePosition.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{

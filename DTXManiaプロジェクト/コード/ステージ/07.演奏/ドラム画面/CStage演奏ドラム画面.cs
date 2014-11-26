@@ -1835,13 +1835,14 @@ namespace DTXMania
 		protected override void t背景テクスチャの生成()
 		{
 			Rectangle bgrect = new Rectangle( (int) ( 338 * Scale.X ), (int) ( 57 * Scale.Y ), (int) ( 278 * Scale.X ), (int) ( 355 * Scale.Y ) );
-			string DefaultBgFilename = @"Graphics\ScreenPlayDrums background.png";
+			string DefaultBgFilename   = @"Graphics\ScreenPlayDrums-background.png";
+			string DefaultLaneFilename = @"Graphics\ScreenPlayDrums_Lane_parts_drums.png";
 			string BgFilename = "";
 			if ( ( ( CDTXMania.DTX.BACKGROUND != null ) && ( CDTXMania.DTX.BACKGROUND.Length > 0 ) ) && !CDTXMania.ConfigIni.bストイックモード )
 			{
 				BgFilename = CDTXMania.DTX.strフォルダ名 + CDTXMania.DTX.BACKGROUND;
 			}
-			base.t背景テクスチャの生成( DefaultBgFilename, bgrect, BgFilename );
+			base.t背景テクスチャの生成( DefaultBgFilename, DefaultLaneFilename, bgrect, BgFilename );
 		}
 
 		protected override void t進行描画・チップ・ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )

@@ -334,6 +334,7 @@ namespace DTXMania
 		{
 			Rectangle bgrect = new Rectangle( (int) ( 181 * Scale.X ), (int) ( 50 * Scale.Y ), (int) ( 278 * Scale.X ), (int) ( 355 * Scale.Y ) );
 			string DefaultBgFilename = @"Graphics\ScreenPlayGuitar background.png";
+			string DefaultLaneFilename = "";
 			string BgFilename = "";
 			string BACKGROUND = null;
 			if ( ( CDTXMania.DTX.BACKGROUND_GR != null ) && ( CDTXMania.DTX.BACKGROUND_GR.Length > 0 ) )
@@ -348,7 +349,7 @@ namespace DTXMania
 			{
 				BgFilename = CDTXMania.DTX.strフォルダ名 + BACKGROUND;
 			}
-			base.t背景テクスチャの生成( DefaultBgFilename, bgrect, BgFilename );
+			base.t背景テクスチャの生成( DefaultBgFilename, DefaultLaneFilename, bgrect, BgFilename );
 		}
 
 		protected override void t進行描画・チップ・ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )

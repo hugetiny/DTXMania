@@ -1199,11 +1199,22 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		{
 			if( this.bBASSサウンドである )
 			{
-				bool b = BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, Bass.BASS_ChannelSeconds2Bytes( this.hBassStream, n位置ms * this.db周波数倍率 * this.db再生速度 / 1000.0 ), BASSMode.BASS_POS_BYTES );
-				if ( !b )
+				bool b = true;
+				try
 				{
-					BASSError be = Bass.BASS_ErrorGetCode();
-					Trace.TraceInformation( Path.GetFileName( this.strファイル名 ) + ": Seek error: " + be.ToString() );
+					b = BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, Bass.BASS_ChannelSeconds2Bytes( this.hBassStream, n位置ms * this.db周波数倍率 * this.db再生速度 / 1000.0 ), BASSMode.BASS_POS_BYTES );
+				}
+				catch( Exception e )
+				{
+					Trace.TraceInformation( Path.GetFileName( this.strファイル名 ) + ": Seek error: " + e.ToString() );
+				}
+				finally
+				{
+					if ( !b )
+					{
+						BASSError be = Bass.BASS_ErrorGetCode();
+						Trace.TraceInformation( Path.GetFileName( this.strファイル名 ) + ": Seek error: " + be.ToString() );
+					}
 				}
 			}
 			else if( this.bDirectSoundである )
