@@ -354,12 +354,20 @@ namespace DTXMania
 					355,
 					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
-				this.tx描画用 = new CTexture( CDTXMania.app.Device,
-					//(bIsPreviewMovie)? 204 : 278,
-					//(bIsPreviewMovie)? 269 : 355,
-					( bIsPreviewMovie ) ? 204 : SampleFramework.GameWindowSize.Width,
-					( bIsPreviewMovie ) ? 269 : SampleFramework.GameWindowSize.Height,
-					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
+				try
+				{
+					this.tx描画用 = new CTexture( CDTXMania.app.Device,
+						//(bIsPreviewMovie)? 204 : 278,
+						//(bIsPreviewMovie)? 269 : 355,
+						( bIsPreviewMovie ) ? 204 : SampleFramework.GameWindowSize.Width,
+						( bIsPreviewMovie ) ? 269 : SampleFramework.GameWindowSize.Height,
+						CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
+				}
+				catch ( CTextureCreateFailedException e )
+				{
+					Trace.TraceError( "CActAVI: OnManagedリソースの作成(): " + e.Message );
+					this.tx描画用 = null;
+				}
 #endif
 				this.tx描画用.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
 				//this.tx描画用.vc拡大縮小倍率 = new Vector3( 2f, 2f, 1f );

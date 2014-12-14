@@ -118,7 +118,7 @@ namespace FDK
 		#region [ WASAPI/ASIO/DirectSound設定値 ]
 		/// <summary>
 		/// <para>WASAPI 排他モード出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
-		/// <para>→ WASAPI初期化時に自動設定するようにしたため、ここで設定した値は使用しないようになった。</para>
+		/// <para>0以下の値を指定すると、この数値はWASAPI初期化時に自動設定する。正数を指定すると、その値を設定しようと試みる。</para>
 		/// </summary>
 		public static int SoundDelayExclusiveWASAPI = 0;		// SSTでは、50ms
 		public int GetSoundExclusiveWASAPI()
@@ -1220,7 +1220,14 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			else if( this.bDirectSoundである )
 			{
 				int n位置sample = (int) ( this.Buffer.Format.SamplesPerSecond * n位置ms * 0.001 * _db周波数倍率 * _db再生速度 );	// #30839 2013.2.24 yyagi; add _db周波数倍率 and _db再生速度
-				this.Buffer.CurrentPlayPosition = n位置sample * this.Buffer.Format.BlockAlignment;
+				try
+				{
+					this.Buffer.CurrentPlayPosition = n位置sample * this.Buffer.Format.BlockAlignment;
+				}
+				catch ( DirectSoundException e )
+				{
+					Trace.TraceError( "{0}: Seek error: {1}", Path.GetFileName( this.strファイル名 ), n位置ms, e.Message );
+				}
 			}
 		}
 
