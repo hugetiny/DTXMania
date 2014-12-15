@@ -334,6 +334,7 @@ namespace DTXMania
 				"To take it effective, you need to re-open DTXMania." );
 			this.list項目リスト.Add( this.iLogOutputLog );
 
+			#region [ WASAPI / ASIO ]
 			// #24820 2013.1.3 yyagi
 			this.iSystemSoundType = new CItemList( "SoundType", CItemList.Eパネル種別.通常, CDTXMania.ConfigIni.nSoundDeviceType,
 				"サウンドの出力方式:\n" +
@@ -354,26 +355,26 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iSystemSoundType );
 
 			// #24820 2013.1.15 yyagi
-			//this.iSystemWASAPIBufferSizeMs = new CItemInteger( "WASAPIBufSize", 0, 99999, CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
-			//    "WASAPI使用時のバッファサイズ:\n" +
-			//    "0～99999ms を指定可能です。\n" +
-			//    "0を指定すると、OSがバッファの\n" +
-			//    "サイズを自動設定します。\n" +
-			//    "値を小さくするほど発音ラグが\n" +
-			//    "減少しますが、音割れや異常動作を\n" +
-			//    "引き起こす場合があります。\n" +
-			//    "※ 設定はCONFIGURATION画面の\n" +
-			//    "　終了時に有効になります。",
-			//    "Sound buffer size for WASAPI:\n" +
-			//    "You can set from 0 to 99999ms.\n" +
-			//    "Set 0 to use a default sysytem\n" +
-			//    "buffer size.\n" +
-			//    "Smaller value makes smaller lag,\n" +
-			//    "but it may cause sound troubles.\n" +
-			//    "\n" +
-			//    "Note: Exit CONFIGURATION to make\n" +
-			//    "     the setting take effect." );
-			//this.list項目リスト.Add( this.iSystemWASAPIBufferSizeMs );
+			this.iSystemWASAPIBufferSizeMs = new CItemInteger( "WASAPI BufferSize", 0, 99999, CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
+			    "WASAPI使用時のバッファサイズ:\n" +
+				"\n" +
+			  //  "0～99999ms を指定可能です。\n" +
+			    "0を指定すると、設定可能な最小のバッファサイズを自動設定します。" +
+				"1以上を指定すると、その値以上で指定可能な最小のバッファサイズを自動設定します。\n" +
+				"\n" +
+			    "値を小さくするほど発音遅延が減少しますが、音割れや性能低下などの問題が発生する場合があります。" +
+				"タブレットなど性能の低いPCを使う場合は、手動で大きめの値を指定してください。\n" +
+				"\n" +
+			    "※ 設定はCONFIGURATION画面の終了時に\n" +
+				"　有効になります。",
+			    "Sound buffer size for WASAPI:\n" +
+			    "You can set from 0 to 99999ms.\n" +
+			    "Set 0 to use a minimum buffer size automatically.\n" +
+			    "Smaller value makes smaller lag, but it may cause sound troubles. " +
+				"So if you use poor CPU PC (tablet etc), please specify a little bigger value.\n" +
+			    "\n" +
+			    "Note: Exit CONFIGURATION to make the setting take effect." );
+			this.list項目リスト.Add( this.iSystemWASAPIBufferSizeMs );
 
 			// #24820 2013.1.17 yyagi
 			string[] asiodevs = CEnumerateAllAsioDevices.GetAllASIODevices();
@@ -431,7 +432,7 @@ namespace DTXMania
 				"This settings is avilable only when you use WASAPI/ASIO.\n"
 			);
 			this.list項目リスト.Add( this.iSystemSoundTimerType );
-
+			#endregion
 			// #33700 2013.1.3 yyagi
 			//this.iSystemMasterVolume = new CItemInteger( "MasterVolume", 0, 100, CDTXMania.ConfigIni.nMasterVolume,
 			//    "マスターボリュームの設定:\n" +
@@ -609,13 +610,13 @@ namespace DTXMania
 			//    new string[] { "OFF", "SEMI", "FULL" } );
 			//this.list項目リスト.Add( this.iDrumsInvisible );
 
-			this.iDrumsLanePosition = new CItemList( "LanePosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eドラムレーン表示位置,
-				"ドラムのレーン表示位置を設定します。\n" +
-				"LEFT(左側), またはCENTER(中央)を設定できます。",
-				"Choose drums lane position.\n" +
-				"You can choose LEFT or CENTER.",
-				new string[] { "LEFT", "CENTER" } );
-			this.list項目リスト.Add( this.iDrumsLanePosition );
+			//this.iDrumsLanePosition = new CItemList( "LanePosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eドラムレーン表示位置,
+			//    "ドラムのレーン表示位置を設定します。\n" +
+			//    "LEFT(左側), またはCENTER(中央)を設定できます。",
+			//    "Choose drums lane position.\n" +
+			//    "You can choose LEFT or CENTER.",
+			//    new string[] { "LEFT", "CENTER" } );
+			//this.list項目リスト.Add( this.iDrumsLanePosition );
 
 			this.iCommonDark = new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
 				"HALF: 背景、レーン、ゲージが表示されなくなります。\n" +
@@ -1914,7 +1915,7 @@ namespace DTXMania
 			this.ct三角矢印アニメ = new CCounter();
 
 			this.iSystemSoundType_initial			= this.iSystemSoundType.n現在選択されている項目番号;	// CONFIGに入ったときの値を保持しておく
-			// this.iSystemWASAPIBufferSizeMs_initial	= this.iSystemWASAPIBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
+			this.iSystemWASAPIBufferSizeMs_initial	= this.iSystemWASAPIBufferSizeMs.n現在の値;				// CONFIG脱出時にこの値から変更されているようなら
 			// this.iSystemASIOBufferSizeMs_initial	= this.iSystemASIOBufferSizeMs.n現在の値;				// サウンドデバイスを再構築する
 			this.iSystemASIODevice_initial			= this.iSystemASIODevice.n現在選択されている項目番号;	//
 			this.iSystemSoundTimerType_initial      = this.iSystemSoundTimerType.GetIndex();				//
@@ -1944,7 +1945,7 @@ namespace DTXMania
 			// #33689 2014.6.17 yyagi CONFIGでSoundTimerTypeの設定を変更した場合も、サウンドデバイスを再構築する。
 			#region [ サウンドデバイス変更 ]
 			if ( this.iSystemSoundType_initial != this.iSystemSoundType.n現在選択されている項目番号 ||
-				// this.iSystemWASAPIBufferSizeMs_initial != this.iSystemWASAPIBufferSizeMs.n現在の値 ||
+				this.iSystemWASAPIBufferSizeMs_initial != this.iSystemWASAPIBufferSizeMs.n現在の値 ||
 				// this.iSystemASIOBufferSizeMs_initial != this.iSystemASIOBufferSizeMs.n現在の値 ||
 				this.iSystemASIODevice_initial != this.iSystemASIODevice.n現在選択されている項目番号 ||
 				this.iSystemSoundTimerType_initial != this.iSystemSoundTimerType.GetIndex() )
@@ -1967,8 +1968,7 @@ namespace DTXMania
 				}
 
 				CDTXMania.Sound管理.t初期化( soundDeviceType,
-										0,
-										// this.iSystemWASAPIBufferSizeMs.n現在の値,
+										this.iSystemWASAPIBufferSizeMs.n現在の値,
 										0,
 										// this.iSystemASIOBufferSizeMs.n現在の値,
 										this.iSystemASIODevice.n現在選択されている項目番号,
@@ -2466,12 +2466,12 @@ namespace DTXMania
 		private CItemToggle iSystemBufferedInput;
 		private CItemInteger iSystemRisky;					// #23559 2011.7.27 yyagi
 		private CItemList iSystemSoundType;					// #24820 2013.1.3 yyagi
-//		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
+		private CItemInteger iSystemWASAPIBufferSizeMs;		// #24820 2013.1.15 yyagi
 //		private CItemInteger iSystemASIOBufferSizeMs;		// #24820 2013.1.3 yyagi
 		private CItemList	iSystemASIODevice;				// #24820 2013.1.17 yyagi
 
 		private int iSystemSoundType_initial;
-//		private int iSystemWASAPIBufferSizeMs_initial;
+		private int iSystemWASAPIBufferSizeMs_initial;
 //		private int iSystemASIOBufferSizeMs_initial;
 		private int iSystemASIODevice_initial;
 		private CItemToggle iSystemSoundTimerType;			// #33689 2014.6.17 yyagi
@@ -2560,7 +2560,7 @@ namespace DTXMania
 		//private CItemToggle iDrumsSudden;
 		private CItemToggle iDrumsTight;
 		private CItemToggle iDrumsGraph;        // #24074 2011.01.23 add ikanick
-		private CItemList iDrumsLanePosition;
+		//private CItemList iDrumsLanePosition;
 
 		//private CItemToggle iGuitarAutoPlay;
 		private CItemThreeState iGuitarAutoPlayAll;			// #23886 2012.5.8 yyagi
@@ -2700,7 +2700,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bUseBoxDefSkin = this.iSystemUseBoxDefSkin.bON;								// #28195 2012.5.6 yyagi
 
 			CDTXMania.ConfigIni.nSoundDeviceType = this.iSystemSoundType.n現在選択されている項目番号;		// #24820 2013.1.3 yyagi
-//			CDTXMania.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
+			CDTXMania.ConfigIni.nWASAPIBufferSizeMs = this.iSystemWASAPIBufferSizeMs.n現在の値;				// #24820 2013.1.15 yyagi
 //			CDTXMania.ConfigIni.nASIOBufferSizeMs = this.iSystemASIOBufferSizeMs.n現在の値;					// #24820 2013.1.3 yyagi
 			CDTXMania.ConfigIni.nASIODevice = this.iSystemASIODevice.n現在選択されている項目番号;			// #24820 2013.1.17 yyagi
 			CDTXMania.ConfigIni.bUseOSTimer = this.iSystemSoundTimerType.bON;								// #33689 2014.6.17 yyagi
@@ -2782,7 +2782,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eDark = (Eダークモード)this.iCommonDark.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
 			//CDTXMania.ConfigIni.e判定表示優先度.Drums = (E判定表示優先度) this.iDrumsJudgeDispPriority.n現在選択されている項目番号;
-			CDTXMania.ConfigIni.eドラムレーン表示位置 = (Eドラムレーン表示位置) this.iDrumsLanePosition.n現在選択されている項目番号;
+			//CDTXMania.ConfigIni.eドラムレーン表示位置 = (Eドラムレーン表示位置) this.iDrumsLanePosition.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する・Guitar()
 		{

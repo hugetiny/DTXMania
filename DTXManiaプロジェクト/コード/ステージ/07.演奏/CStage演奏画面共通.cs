@@ -2997,8 +2997,9 @@ namespace DTXMania
 			bool bSuccessLoadDTXbgfile = false;
 
 			int[] offsetX = new int[2]{ 96, 506 };
-			int nLanePosition = (int) CDTXMania.ConfigIni.eドラムレーン表示位置;
-
+			//int nLanePosition = (int) CDTXMania.ConfigIni.eドラムレーン表示位置;
+			int nLanePosition = (int) Eドラムレーン表示位置.Left;
+			
 			if ( bgfilename != null && File.Exists( bgfilename ) && !CDTXMania.DTX.bチップがある.Movie )
 			{
 				try

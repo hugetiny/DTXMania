@@ -441,7 +441,7 @@ namespace DTXMania
 		//public STDGBVALUE<E判定表示優先度> e判定表示優先度;
 		public E判定表示優先度 e判定表示優先度;
 		public STDGBVALUE<E判定位置> e判定位置;			// #33891 2014.6.26 yyagi
-		public Eドラムレーン表示位置 eドラムレーン表示位置;
+//		public Eドラムレーン表示位置 eドラムレーン表示位置;
 		public bool bScoreIniを出力する;
 		public bool bSTAGEFAILED有効;
 		public STDGBVALUE<bool> bSudden;
@@ -668,7 +668,6 @@ namespace DTXMania
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
 		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
-		public bool bWASAPIBufferAutoSet;
 //		public int nASIOBufferSizeMs;				// #24820 2012.12.28 yyagi ASIOのバッファサイズ
 		public int nASIODevice;						// #24820 2013.1.17 yyagi ASIOデバイス
 		public bool bUseOSTimer;					// #33689 2014.6.6 yyagi 演奏タイマーの種類
@@ -1097,7 +1096,7 @@ namespace DTXMania
 			this.bLeft = new STDGBVALUE<bool>();
 			this.e判定位置 = new STDGBVALUE<E判定位置>();		// #33891 2014.6.26 yyagi
 			this.判定文字表示位置 = new STDGBVALUE<E判定文字表示位置>();
-			this.eドラムレーン表示位置 = new Eドラムレーン表示位置();
+			//this.eドラムレーン表示位置 = new Eドラムレーン表示位置();
 			this.n譜面スクロール速度 = new STDGBVALUE<int>();
 			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
 			this.nJudgeLinePosOffset = new STDGBVALUE<int>();	// #31602 2013.6.23 yyagi
@@ -1178,11 +1177,14 @@ namespace DTXMania
 			this.strSystemSkinSubfolderFullName = "";	// #28195 2012.5.2 yyagi 使用中のSkinサブフォルダ名
 			this.bUseBoxDefSkin = true;					// #28195 2012.5.6 yyagi box.defによるスキン切替機能を使用するか否か
 			this.bTight = false;                        // #29500 2012.9.11 kairera0467 TIGHTモード
+			#region [ WASAPI/ASIO ]
 			this.nSoundDeviceType = FDK.COS.bIsVistaOrLater ?
 				(int) ESoundDeviceTypeForConfig.WASAPI : (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM | #31927 2013.8.25 yyagi OSにより初期値変更
-//			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
+			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 //			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
+			#endregion
+
 			this.bUseOSTimer = false;;					// #33689 2014.6.6 yyagi 初期値はfalse (FDKのタイマー。ＦＲＯＭ氏考案の独自タイマー)
 			this.bDynamicBassMixerManagement = true;	//
 			this.bTimeStretch = false;					// #23664 2013.2.24 yyagi 初期値はfalse (再生速度変更を、ピッチ変更にて行う)
@@ -1349,12 +1351,12 @@ namespace DTXMania
 			sw.WriteLine();
 
 			sw.WriteLine( "; WASAPI使用時のサウンドバッファサイズ" );
-			sw.WriteLine( "; (0=デバイスに設定されている値を使用, 1～9999=バッファサイズ(単位:ms)の手動指定" );
+			sw.WriteLine( "; (0=デバイスに設定可能な最小値を自動設定, 1～9999=バッファサイズ(単位:ms)の手動指定" );
 			sw.WriteLine( "; WASAPI Sound Buffer Size." );
-			sw.WriteLine( "; (0=Use system default buffer size, 1-9999=specify the buffer size(ms) by yourself)" );
+			sw.WriteLine( "; (0=set minimum buffer size automaticcaly, 1-9999=specify the buffer size(ms) by yourself)" );
 			sw.WriteLine( "WASAPIBufferSizeMs={0}", (int) this.nWASAPIBufferSizeMs );
 			sw.WriteLine();
-
+				
 			sw.WriteLine( "; ASIO使用時のサウンドデバイス" );
 			sw.WriteLine( "; 存在しないデバイスを指定すると、DTXManiaが起動しないことがあります。" );
 			sw.WriteLine( "; Sound device used by ASIO." );
@@ -1565,10 +1567,10 @@ namespace DTXMania
 			sw.WriteLine( "; judgement/combo display priority (0:under chips, 1:over chips)" );
 			sw.WriteLine( "JudgeDispPriority={0}" , (int) this.e判定表示優先度 );
 			sw.WriteLine();
-			sw.WriteLine( "; ドラムのレーン表示位置(0:左側, 1:中央)" );
-			sw.WriteLine( "; drums lane position (0:LEFT, 1:CENTER)" );
-			sw.WriteLine( "DrumsLanePosition={0}", (int) this.eドラムレーン表示位置 );
-			sw.WriteLine();
+			//sw.WriteLine( "; ドラムのレーン表示位置(0:左側, 1:中央)" );
+			//sw.WriteLine( "; drums lane position (0:LEFT, 1:CENTER)" );
+			//sw.WriteLine( "DrumsLanePosition={0}", (int) this.eドラムレーン表示位置 );
+			//sw.WriteLine();
 
 
 			sw.WriteLine( "; リザルト画像自動保存機能(0:OFF, 1:ON)" );						// #25399 2011.6.9 yyagi
@@ -2262,10 +2264,10 @@ namespace DTXMania
 											{
 												this.nSoundDeviceType = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 2, this.nSoundDeviceType );
 											}
-											//else if ( str3.Equals( "WASAPIBufferSizeMs" ) )
-											//{
-											//    this.nWASAPIBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nWASAPIBufferSizeMs );
-											//}
+											else if ( str3.Equals( "WASAPIBufferSizeMs" ) )
+											{
+												this.nWASAPIBufferSizeMs = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 9999, this.nWASAPIBufferSizeMs );
+											}
 											else if ( str3.Equals( "ASIODevice" ) )
 											{
 												string[] asiodev = CEnumerateAllAsioDevices.GetAllASIODevices();
@@ -2478,10 +2480,10 @@ namespace DTXMania
 											{
 												this.e判定表示優先度 = (E判定表示優先度) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.e判定表示優先度 );
 											}
-											else if ( str3.Equals( "DrumsLanePosition" ) )
-											{
-												this.eドラムレーン表示位置 = (Eドラムレーン表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eドラムレーン表示位置 );
-											}
+											//else if ( str3.Equals( "DrumsLanePosition" ) )
+											//{
+											//    this.eドラムレーン表示位置 = (Eドラムレーン表示位置) C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 1, (int) this.eドラムレーン表示位置 );
+											//}
 											else if ( str3.Equals( "AutoResultCapture" ) )			// #25399 2011.6.9 yyagi
 											{
 												this.bIsAutoResultCapture = C変換.bONorOFF( str4[ 0 ] );
