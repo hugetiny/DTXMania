@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using System.Diagnostics;
 using SlimDX;
 using SlimDX.Direct3D9;
 using FDK;
@@ -271,11 +272,19 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
+				try
+				{
 #if TEST_Direct3D9Ex
-				this.tx描画用 = new CTexture( CDTXMania.app.Device, 320, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
+					this.tx描画用 = new CTexture( CDTXMania.app.Device, 320, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
-				this.tx描画用 = new CTexture( CDTXMania.app.Device, 278, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
+					this.tx描画用 = new CTexture( CDTXMania.app.Device, 278, 355, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Managed );
 #endif
+				}
+				catch ( CTextureCreateFailedException e )
+				{
+					Trace.TraceError( "CActAVI: OnManagedリソースの作成(): " + e.Message );
+					this.tx描画用 = null;
+				}
 				base.OnManagedリソースの作成();
 			}
 		}

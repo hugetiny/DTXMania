@@ -2646,17 +2646,20 @@ namespace DTXMania
 					cInvisibleChip.StartSemiInvisible( inst );
 					#region [ Chip Fire effects (auto時用) ]
 					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
-					if ( ( bChipHasR && ( autoR || pushingR ) && autoPick ) || ( bSuccessOPEN && autoPick ) )
+					if ( autoPick )			// autoPickでない時の処理は、 t入力処理・ギターベース(E楽器パート) で行う
 					{
-						this.actChipFireGB.Start( 0 + lo, 演奏判定ライン座標 );
-					}
-					if ( ( bChipHasG && ( autoG || pushingG ) && autoPick ) || ( bSuccessOPEN && autoPick ) )
-					{
-						this.actChipFireGB.Start( 1 + lo, 演奏判定ライン座標 );
-					}
-					if ( ( bChipHasB && ( autoB || pushingB ) && autoPick ) || ( bSuccessOPEN && autoPick ) )
-					{
-						this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標 );
+						if ( ( bChipHasR && ( autoR || pushingR ) ) || bSuccessOPEN )
+						{
+							this.actChipFireGB.Start( 0 + lo, 演奏判定ライン座標 );
+						}
+						if ( ( bChipHasG && ( autoG || pushingG ) ) || bSuccessOPEN )
+						{
+							this.actChipFireGB.Start( 1 + lo, 演奏判定ライン座標 );
+						}
+						if ( ( bChipHasB && ( autoB || pushingB ) ) || bSuccessOPEN )
+						{
+							this.actChipFireGB.Start( 2 + lo, 演奏判定ライン座標 );
+						}
 					}
 					#endregion
 					#region [ autopick ]
