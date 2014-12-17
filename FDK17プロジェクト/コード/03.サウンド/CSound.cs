@@ -63,6 +63,7 @@ namespace FDK
 			//{
 			//    if ( SoundDeviceType == ESoundDeviceType.ExclusiveWASAPI )
 			//    {
+			//			// LINEARでなくWINDOWS(2)を使う必要があるが、exclusive時は使用不可、またデバイス側が対応してないと使用不可
 			//        bool b = BassWasapi.BASS_WASAPI_SetVolume( BASSWASAPIVolume.BASS_WASAPI_CURVE_LINEAR, value / 100.0f );
 			//        if ( !b )
 			//        {

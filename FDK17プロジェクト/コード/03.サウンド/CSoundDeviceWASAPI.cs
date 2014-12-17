@@ -71,8 +71,16 @@ namespace FDK
 			}
 			set
 			{
-				bool b = Bass.BASS_SetVolume( value / 100.0f );
-				// hMixerに対するBASS_ChannelSetAttribute()でBASS_ATTRIB_VOLを変更: 出力音量に反映されず
+				// bool b = Bass.BASS_SetVolume( value / 100.0f );
+				// →Exclusiveモード時は無効
+
+//				bool b = BassWasapi.BASS_WASAPI_SetVolume( BASSWASAPIVolume.BASS_WASAPI_VOL_SESSION, (float) ( value / 100 ) );
+//				bool b = BassWasapi.BASS_WASAPI_SetVolume( BASSWASAPIVolume.BASS_WASAPI_CURVE_WINDOWS, (float) ( value / 100 ) );
+				bool b = Bass.BASS_ChannelSetAttribute( this.hMixer, BASSAttribute.BASS_ATTRIB_VOL, (float) ( value / 100.0 ) );
+				// If you would like to have a volume control in exclusive mode too, and you're using the BASSmix add-on,
+				// you can adjust the source's BASS_ATTRIB_VOL setting via BASS_ChannelSetAttribute.
+				// しかし、hMixerに対するBASS_ChannelSetAttribute()でBASS_ATTRIB_VOLを変更: なぜか出力音量に反映されず
+
 				// Bass_SetVolume(): BASS_ERROR_NOTAVIL ("no sound" deviceには適用不可)
 
 				// Mixer_ChannelSetEnvelope():
@@ -87,8 +95,8 @@ namespace FDK
 				}
 				else
 				{
-					//int n = this.nMasterVolume;	
-					//Trace.TraceInformation( "WASAPI Master Volume Set Success: " + value );
+					int n = this.nMasterVolume;	
+					Trace.TraceInformation( "WASAPI Master Volume Set Success: " + value );
 
 				}
 			}
