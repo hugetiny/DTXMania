@@ -296,13 +296,14 @@ namespace FDK
 				info.freq,
 				info.chans,
 				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
-			if (this.hMixer == 0)
+				//BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT );
+			if ( this.hMixer == 0 )
 			{
 				BASSError errcode = Bass.BASS_ErrorGetCode();
 				BassWasapi.BASS_WASAPI_Free();
 				Bass.BASS_Free();
 				this.bIsBASSFree = true;
-				throw new Exception( string.Format( "BASSミキサの作成に失敗しました。[{0}]", errcode ) );
+				throw new Exception( string.Format( "BASSミキサ(mixing)の作成に失敗しました。[{0}]", errcode ) );
 			}
 
 
@@ -311,6 +312,38 @@ namespace FDK
 			var mixerInfo = Bass.BASS_ChannelGetInfo( this.hMixer );
 			long nミキサーの1サンプルあたりのバイト数 = mixerInfo.chans * 4;	// 4 = sizeof(FLOAT)
 			this.nミキサーの1秒あたりのバイト数 = nミキサーの1サンプルあたりのバイト数 * mixerInfo.freq;
+
+
+
+			// 単純に、hMixerの音量をMasterVolumeとして制御しても、
+			// ChannelGetData()の内容には反映されない。
+			// そのため、もう一段mixerを噛ませて、一段先のmixerからChannelGetData()することで、
+			// hMixerの音量制御を反映させる。
+			this.hMixer_DeviceOut = BassMix.BASS_Mixer_StreamCreate(
+				info.freq,
+				info.chans,
+				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
+			if ( this.hMixer_DeviceOut == 0 )
+			{
+				BASSError errcode = Bass.BASS_ErrorGetCode();
+				BassWasapi.BASS_WASAPI_Free();
+				Bass.BASS_Free();
+				this.bIsBASSFree = true;
+				throw new Exception( string.Format( "BASSミキサ(最終段)の作成に失敗しました。[{0}]", errcode ) );
+			}
+
+			{
+				bool b1 = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer_DeviceOut, this.hMixer, BASSFlag.BASS_DEFAULT );
+				if ( !b1 )
+				{
+					BASSError errcode = Bass.BASS_ErrorGetCode();
+					BassWasapi.BASS_WASAPI_Free();
+					Bass.BASS_Free();
+					this.bIsBASSFree = true;
+					throw new Exception( string.Format( "BASSミキサ(最終段とmixing)の接続に失敗しました。[{0}]", errcode ) );
+				};
+			}
+
 
 			// 出力を開始。
 
@@ -372,13 +405,14 @@ namespace FDK
 		#endregion
 
 		protected int hMixer = -1;
+		protected int hMixer_DeviceOut = -1;
 		protected WASAPIPROC tWasapiProc = null;
 
 		protected int tWASAPI処理( IntPtr buffer, int length, IntPtr user )
 		{
 			// BASSミキサからの出力データをそのまま WASAPI buffer へ丸投げ。
 
-			int num = Bass.BASS_ChannelGetData( this.hMixer, buffer, length );		// num = 実際に転送した長さ
+			int num = Bass.BASS_ChannelGetData( this.hMixer_DeviceOut, buffer, length );		// num = 実際に転送した長さ
 			if ( num == -1 ) num = 0;
 
 
