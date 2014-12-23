@@ -281,7 +281,10 @@ namespace DTXMania
 			int nEdgePt = (bEdge)? _pt / 4 : 0;
 
 			// 描画サイズを測定する
-			Size stringSize = System.Windows.Forms.TextRenderer.MeasureText( drawstr, this._font );
+			Size stringSize = System.Windows.Forms.TextRenderer.MeasureText( drawstr, this._font, new Size( int.MaxValue, int.MaxValue ),
+				System.Windows.Forms.TextFormatFlags.NoPrefix |
+				System.Windows.Forms.TextFormatFlags.NoPadding
+			);
 
 			//取得した描画サイズを基に、描画先のbitmapを作成する
 			Bitmap bmp = new Bitmap( stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2 );
