@@ -81,26 +81,38 @@ namespace FDK
 			protected set;
 		}
 
+
+		// マスターボリュームの制御コードは、WASAPI/ASIOで全く同じ。
 		public int nMasterVolume
 		{
 			get
 			{
-				float f音量 = BassAsio.BASS_ASIO_ChannelGetVolume( false, -1 );
-				if ( f音量 == -1.0f )
+				float f音量 = 0.0f;
+				bool b = Bass.BASS_ChannelGetAttribute( this.hMixer, BASSAttribute.BASS_ATTRIB_VOL, ref f音量 );
+				if ( !b )
 				{
-					BASSError be = BassAsio.BASS_ASIO_ErrorGetCode();
-					Trace.TraceInformation( "ASIO Master Volume Get Error: " + be.ToString() );
-					f音量 = 0.0f;
+					BASSError be = Bass.BASS_ErrorGetCode();
+					Trace.TraceInformation( "WASAPI Master Volume Get Error: " + be.ToString() );
+				}
+				else
+				{
+					//Trace.TraceInformation( "WASAPI Master Volume Get Success: " + (f音量 * 100) );
+
 				}
 				return (int) ( f音量 * 100 );
 			}
 			set
 			{
-				bool b = BassAsio.BASS_ASIO_ChannelSetVolume( false, -1, value / 100.0f );
+				bool b = Bass.BASS_ChannelSetAttribute( this.hMixer, BASSAttribute.BASS_ATTRIB_VOL, (float) ( value / 100.0 ) );
 				if ( !b )
 				{
-					BASSError be = BassAsio.BASS_ASIO_ErrorGetCode();
-					Trace.TraceInformation( "ASIO Master Volume Set Error: " + be.ToString() );
+					BASSError be = Bass.BASS_ErrorGetCode();
+					Trace.TraceInformation( "WASAPI Master Volume Set Error: " + be.ToString() );
+				}
+				else
+				{
+					// int n = this.nMasterVolume;	
+					// Trace.TraceInformation( "WASAPI Master Volume Set Success: " + value );
 				}
 			}
 		}
@@ -273,7 +285,7 @@ namespace FDK
 				BassAsio.BASS_ASIO_Free();
 				Bass.BASS_Free();
 				this.bIsBASSFree = true;
-				throw new Exception( string.Format( "BASSミキサの作成に失敗しました。[{0}]", err ) );
+				throw new Exception( string.Format( "BASSミキサ(mixing)の作成に失敗しました。[{0}]", err ) );
 			}
 
 			// BASS ミキサーの1秒あたりのバイト数を算出。
@@ -290,7 +302,35 @@ namespace FDK
 			//long nミキサーの1サンプルあたりのバイト数 = /*mixerInfo.chans*/ 2 * nサンプルサイズbyte;
 			long nミキサーの1サンプルあたりのバイト数 = mixerInfo.chans * nサンプルサイズbyte;
 			this.nミキサーの1秒あたりのバイト数 = nミキサーの1サンプルあたりのバイト数 * mixerInfo.freq;
-		
+
+
+			// 単純に、hMixerの音量をMasterVolumeとして制御しても、
+			// ChannelGetData()の内容には反映されない。
+			// そのため、もう一段mixerを噛ませて、一段先のmixerからChannelGetData()することで、
+			// hMixerの音量制御を反映させる。
+			this.hMixer_DeviceOut = BassMix.BASS_Mixer_StreamCreate(
+				(int) this.db周波数, this.n出力チャンネル数, flag );
+			if ( this.hMixer_DeviceOut == 0 )
+			{
+				BASSError errcode = Bass.BASS_ErrorGetCode();
+				BassAsio.BASS_ASIO_Free();
+				Bass.BASS_Free();
+				this.bIsBASSFree = true;
+				throw new Exception( string.Format( "BASSミキサ(最終段)の作成に失敗しました。[{0}]", errcode ) );
+			}
+			{
+				bool b1 = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer_DeviceOut, this.hMixer, BASSFlag.BASS_DEFAULT );
+				if ( !b1 )
+				{
+					BASSError errcode = Bass.BASS_ErrorGetCode();
+					BassAsio.BASS_ASIO_Free();
+					Bass.BASS_Free();
+					this.bIsBASSFree = true;
+					throw new Exception( string.Format( "BASSミキサ(最終段とmixing)の接続に失敗しました。[{0}]", errcode ) );
+				};
+			}
+
+
 			// 出力を開始。
 
 			this.nバッファサイズsample = (int) ( n希望バッファサイズms * this.db周波数 / 1000.0 );
@@ -371,6 +411,7 @@ namespace FDK
 
 
 		protected int hMixer = -1;
+		protected int hMixer_DeviceOut = -1; 
 		protected int n出力チャンネル数 = 0;
 		protected double db周波数 = 0.0;
 		protected int nバッファサイズsample = 0;
@@ -386,7 +427,7 @@ namespace FDK
 
 			// BASSミキサからの出力データをそのまま ASIO buffer へ丸投げ。
 
-			int num = Bass.BASS_ChannelGetData( this.hMixer, buffer, length );		// num = 実際に転送した長さ
+			int num = Bass.BASS_ChannelGetData( this.hMixer_DeviceOut, buffer, length );		// num = 実際に転送した長さ
 
 			if ( num == -1 ) num = 0;
 

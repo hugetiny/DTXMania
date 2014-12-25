@@ -95,8 +95,8 @@ namespace FDK
 				}
 				else
 				{
-					int n = this.nMasterVolume;	
-					Trace.TraceInformation( "WASAPI Master Volume Set Success: " + value );
+					// int n = this.nMasterVolume;	
+					// Trace.TraceInformation( "WASAPI Master Volume Set Success: " + value );
 
 				}
 			}
@@ -296,7 +296,6 @@ namespace FDK
 				info.freq,
 				info.chans,
 				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
-				//BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT );
 			if ( this.hMixer == 0 )
 			{
 				BASSError errcode = Bass.BASS_ErrorGetCode();
