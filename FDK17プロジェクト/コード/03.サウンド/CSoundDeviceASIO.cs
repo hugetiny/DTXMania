@@ -92,11 +92,11 @@ namespace FDK
 				if ( !b )
 				{
 					BASSError be = Bass.BASS_ErrorGetCode();
-					Trace.TraceInformation( "WASAPI Master Volume Get Error: " + be.ToString() );
+					Trace.TraceInformation( "ASIO Master Volume Get Error: " + be.ToString() );
 				}
 				else
 				{
-					//Trace.TraceInformation( "WASAPI Master Volume Get Success: " + (f音量 * 100) );
+					//Trace.TraceInformation( "ASIO Master Volume Get Success: " + (f音量 * 100) );
 
 				}
 				return (int) ( f音量 * 100 );
@@ -107,12 +107,12 @@ namespace FDK
 				if ( !b )
 				{
 					BASSError be = Bass.BASS_ErrorGetCode();
-					Trace.TraceInformation( "WASAPI Master Volume Set Error: " + be.ToString() );
+					Trace.TraceInformation( "ASIO Master Volume Set Error: " + be.ToString() );
 				}
 				else
 				{
 					// int n = this.nMasterVolume;	
-					// Trace.TraceInformation( "WASAPI Master Volume Set Success: " + value );
+					// Trace.TraceInformation( "ASIO Master Volume Set Success: " + value );
 				}
 			}
 		}

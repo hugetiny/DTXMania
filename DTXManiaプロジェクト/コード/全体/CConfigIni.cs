@@ -1388,12 +1388,12 @@ namespace DTXMania
 			sw.WriteLine( "SoundTimerType={0}", this.bUseOSTimer ? 1 : 0 );
 			sw.WriteLine();
 
-			//sw.WriteLine( "; 全体ボリュームの設定" );
-			//sw.WriteLine( "; (0=無音 ～ 100=最大。WASAPI/ASIO時のみ有効)" );
-			//sw.WriteLine( "; Master volume settings" );
-			//sw.WriteLine( "; (0=Silent - 100=Max)" );
-			//sw.WriteLine( "MasterVolume={0}", this.nMasterVolume );
-			//sw.WriteLine();
+			sw.WriteLine( "; 全体ボリュームの設定" );
+			sw.WriteLine( "; (0=無音 ～ 100=最大。WASAPI/ASIO時のみ有効)" );
+			sw.WriteLine( "; Master volume settings" );
+			sw.WriteLine( "; (0=Silent - 100=Max)" );
+			sw.WriteLine( "MasterVolume={0}", this.nMasterVolume );
+			sw.WriteLine();
 
 			#endregion
 			#region [ ギター/ベース/ドラム 有効/無効 ]
@@ -2285,10 +2285,10 @@ namespace DTXMania
 											{
 												this.bUseOSTimer = C変換.bONorOFF( str4[ 0 ] );
 											}
-											//else if ( str3.Equals( "MasterVolume" ) )
-											//{
-											//    this.nMasterVolume = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.nMasterVolume );
-											//}
+											else if ( str3.Equals( "MasterVolume" ) )
+											{
+											    this.nMasterVolume = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 100, this.nMasterVolume );
+											}
 											#endregion
 											else if ( str3.Equals( "VSyncWait" ) )
 											{
