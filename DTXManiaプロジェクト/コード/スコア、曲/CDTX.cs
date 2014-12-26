@@ -1772,11 +1772,40 @@ namespace DTXMania
 							//);
 							// wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
 							wc.rSound[ i ].t再生位置を変更する( nAbsTimeFromStartPlaying );	// WASAPI/ASIO用
+//Debug.WriteLine( "再生位置を変更: " + Path.GetFileName( wc.strファイル名 ) + nAbsTimeFromStartPlaying + "ms");
 						}
 					}
 				}
 			}
 		}
+
+		/// <summary>
+		/// デバッグ用
+		/// </summary>
+		public void tWaveBGM再生位置表示()
+		{
+			foreach ( CWAV wc in this.listWAV.Values )
+			{
+				if ( wc.rSound[ 0 ] != null && wc.rSound[ 0 ].n総演奏時間ms >= 5000 )
+				{
+					for ( int i = 0; i < nPolyphonicSounds; i++ )
+					{
+						if ( ( wc.rSound[ i ] != null ) && ( wc.rSound[ i ].b再生中 ) )
+						{
+							long n位置byte;
+							double db位置ms;
+							wc.rSound[ i ].t再生位置を取得する( out n位置byte, out db位置ms );
+							Trace.TraceInformation( "再生位置: {0}, seek先={1}ms / {2}byte, 全音長={3}ms",
+							    Path.GetFileName( wc.rSound[ 0 ].strファイル名 ),
+							    db位置ms, n位置byte,
+							    wc.rSound[ 0 ].n総演奏時間ms
+							);
+						}
+					}
+				}
+			}
+		}
+
 		public void tWavの再生停止( int nWaveの内部番号 )
 		{
 			tWavの再生停止( nWaveの内部番号, false );

@@ -2436,6 +2436,11 @@ namespace DTXMania
 				{
 					dTX.tWave再生位置自動補正();
 				}
+//#if DEBUG
+//                {
+//                    dTX.tWaveBGM再生位置表示();		//デバッグ用
+//                }
+//#endif
 			}
 			#region [ Drumsの小節線と、小節番号 ]
 			if ( configIni.bDrums有効 )
