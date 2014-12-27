@@ -1407,11 +1407,25 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{
-			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 )	// caselessで文字列比較
+			#region [ xaとwav(RIFF chunked vorbis)に対しては専用の処理をする ]
+			switch ( Path.GetExtension( strファイル名 ) )
 			{
-				tBASSサウンドを作成するXA( strファイル名, hMixer, flags );
-				return;
-			}
+				case ".xa":
+					tBASSサウンドを作成するXA( strファイル名, hMixer, flags );
+					return;
+
+				case ".wav":
+					if ( tRIFFchunkedVorbisならDirectShowでDecodeする( strファイル名, ref byArrWAVファイルイメージ ) )
+					{
+						tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, flags );
+						return;
+					}
+					break;
+
+				default:
+					break;
+				}
+			#endregion
 
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
@@ -1443,6 +1457,41 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			nBytes = Bass.BASS_ChannelGetLength( this._hBassStream );
 	
 			tBASSサウンドを作成する・ストリーム生成後の共通処理( hMixer );
+		}
+		/// <summary>
+		/// Decode "RIFF chunked Vorbis" to "raw wave"
+		/// because BASE.DLL has two problems for RIFF chunked Vorbis;
+		/// 1. time seek is not fine  2. delay occurs (about 10ms)
+		/// </summary>
+		/// <param name="strファイル名">wave filename</param>
+		/// <param name="byArrWAVファイルイメージ">wav file image</param>
+		/// <returns></returns>
+		private bool tRIFFchunkedVorbisならDirectShowでDecodeする( string strファイル名, ref byte[] byArrWAVファイルイメージ )
+		{
+			bool bファイルにVorbisコンテナが含まれている = false;
+
+			#region [ ファイルがWAVかつ、Vorbisコンテナが含まれているかを調べ、それに該当するなら、DirectShowでデコードする。]
+			//-----------------
+			try
+			{
+				using ( var ws = new WaveStream( strファイル名 ) )
+				{
+					if ( ws.Format.FormatTag == (WaveFormatTag) 0x6770 ||	// Ogg Vorbis Mode 2+
+						 ws.Format.FormatTag == (WaveFormatTag) 0x6771 )	// Ogg Vorbis Mode 3+
+					{
+						Trace.TraceInformation( Path.GetFileName( strファイル名 ) + ": RIFF chunked Vorbis. Decode to raw Wave first, to avoid BASS.DLL troubles" );
+						CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
+						bファイルにVorbisコンテナが含まれている = true;
+					}
+				}
+			}
+			catch
+			{
+				Trace.TraceWarning( "Error: " + Path.GetFileName( strファイル名 ) + " : RIFF chunked Vorbisのデコードに失敗しました。" );
+			}
+			#endregion
+
+			return bファイルにVorbisコンテナが含まれている;
 		}
 		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
 		{
