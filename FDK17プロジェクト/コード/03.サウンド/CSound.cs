@@ -1484,7 +1484,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{
 			#region [ xaとwav(RIFF chunked vorbis)に対しては専用の処理をする ]
-			switch ( Path.GetExtension( strファイル名 ) )
+			switch ( Path.GetExtension( strファイル名 ).ToLower() )
 			{
 				case ".xa":
 					tBASSサウンドを作成するXA( strファイル名, hMixer, flags );
