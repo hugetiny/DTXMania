@@ -1255,7 +1255,7 @@ namespace DTXMania
 			this.iniファイルのあるフォルダ名 = Path.GetDirectoryName( iniファイル名 );
 			this.iniファイル名 = Path.GetFileName( iniファイル名 );
 
-			StreamWriter writer = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );
+			StreamWriter writer = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "utf-16" ) );
 			writer.WriteLine( "[File]" );
 			writer.WriteLine( "Title={0}", this.stファイル.Title );
 			writer.WriteLine( "Name={0}", this.stファイル.Name );
@@ -1569,7 +1569,7 @@ namespace DTXMania
 			builder.Append( cc.strDTXManiaのバージョン );
 			builder.Append( cc.最終更新日時 );
 
-			byte[] bytes = Encoding.GetEncoding( "Shift_JIS" ).GetBytes( builder.ToString() );
+			byte[] bytes = Encoding.GetEncoding( "utf-16" ).GetBytes( builder.ToString() );
 			StringBuilder builder2 = new StringBuilder(0x21);
 			{
 				MD5CryptoServiceProvider m = new MD5CryptoServiceProvider();

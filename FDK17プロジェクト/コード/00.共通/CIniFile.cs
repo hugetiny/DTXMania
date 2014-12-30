@@ -114,7 +114,7 @@ namespace FDK
 			StreamWriter sw = null;
 			try
 			{
-				sw = new StreamWriter( this.strファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );	// オープン失敗の場合は例外発生。
+				sw = new StreamWriter( this.strファイル名, false, Encoding.GetEncoding( "utf-16" ) );	// オープン失敗の場合は例外発生。
 
 				foreach( CSection section in this.Sections )
 				{

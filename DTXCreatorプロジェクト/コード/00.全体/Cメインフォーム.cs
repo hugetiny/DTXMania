@@ -923,7 +923,7 @@ namespace DTXCreator
 
 			#region [ DTXファイルを出力する。]
 			//-----------------
-			var sw = new StreamWriter( this.str作業フォルダ名 + this.strDTXファイル名, false, Encoding.GetEncoding( 932/*Shift-JIS*/ ) );
+			var sw = new StreamWriter( this.str作業フォルダ名 + this.strDTXファイル名, false, Encoding.GetEncoding( "utf-16" ) );
 			new CDTX入出力( this ).tDTX出力( sw );
 			sw.Close();
 			//-----------------

@@ -1238,7 +1238,7 @@ namespace DTXMania
 		}
 		public void t書き出し( string iniファイル名 )
 		{
-			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "Shift_JIS" ) );
+			StreamWriter sw = new StreamWriter( iniファイル名, false, Encoding.GetEncoding( "utf-16" ) );
 			sw.WriteLine( ";-------------------" );
 			
 			#region [ System ]
