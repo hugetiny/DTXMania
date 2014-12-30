@@ -127,7 +127,7 @@ namespace DTXMania
 		protected const int nギターコンボの文字間隔 = (int) ( 1 * Scale.X );
 		protected const int nドラムコンボのCOMBO文字の高さ = (int) ( 32 * Scale.Y );
 		protected const int nドラムコンボのCOMBO文字の幅 = (int) 256;	//( 90 * Scale.X );
-		protected const int nドラムコンボの高さ = (int) ( 158 );
+		protected const int nドラムコンボの高さ = (int) ( 157 );
 		protected const int nドラムコンボの幅 = (int) ( 128 );
 		protected const int nドラムコンボの文字間隔 = (int) ( 2 * Scale.X );
 		protected int[] nジャンプ差分値 = new int[ 180 ];

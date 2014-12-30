@@ -2948,7 +2948,9 @@ namespace DTXMania
 			}
 			else
 			{
-				CDTXMania.app.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 0f, 0 );
+				// FullHD版では、背景描画のさらに奥でAVI描画をするため、
+				// Dark!=OFF時下記の画面クリアをすると、AVI描画がクリアされてしまう
+				// CDTXMania.app.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 0f, 0 );
 			}
 		}
 
@@ -3114,14 +3116,14 @@ namespace DTXMania
 			}
 			#endregion
 			#region [ BGA画像を表示する予定がある場合は、背景画像からあらかじめその領域を黒抜きにしておく ]
-			if ( ( CDTXMania.DTX.listBMP.Count > 0 ) || ( CDTXMania.DTX.listBMPTEX.Count > 0 ) )
+			if ( ( CDTXMania.DTX.listBMP.Count > 0 ) || ( CDTXMania.DTX.listBMPTEX.Count > 0 ) || CDTXMania.DTX.listAVI.Count > 0 )
 			{
 				Graphics graphics2 = Graphics.FromImage( image );
 				graphics2.FillRectangle( Brushes.Black, bgrect.X, bgrect.Y, bgrect.Width, bgrect.Height );
 				graphics2.Dispose();
 			}
 			#endregion
-			#region [ 背景画像をテクスチャにする。背景動画の表示予定上がる場合は、更に透明度を付与する。 ]
+			#region [ 背景画像をテクスチャにする。背景動画の表示予定がある場合は、更に透明度を付与する。 ]
 			try
 			{
 				this.tx背景 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
