@@ -765,11 +765,11 @@ namespace DTXMania
 				int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, configIni.bReverse.Guitar );
 				if ( configIni.bReverse.Guitar )
 				{
-					y = y - (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) - 1;
+					y = y - (int) ( pChip.nバーからの距離dot.Guitar ) - 1;
 				}
 				else
 				{
-					y = y + (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) - 1;
+					y = y + (int) ( pChip.nバーからの距離dot.Guitar ) - 1;
 				}
 				int n小節線消失距離dot;
 				// Reverse時の小節線消失位置を、RGBボタンの真ん中程度に。
@@ -802,11 +802,11 @@ namespace DTXMania
 				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, configIni.bReverse.Bass );
 				if ( configIni.bReverse.Bass )
 				{
-					y = y - (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) - 1;
+					y = y - (int) ( pChip.nバーからの距離dot.Bass ) - 1;
 				}
 				else
 				{
-					y = y + (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) - 1;
+					y = y + (int) ( pChip.nバーからの距離dot.Bass ) - 1;
 				}
 				n小節線消失距離dot = configIni.bReverse.Bass ?
 					(int) ( -100 * Scale.Y ) :

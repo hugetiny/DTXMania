@@ -56,8 +56,8 @@ namespace DTXMania
 						txチップ.n透明度 = pChip.n透明度;
 					}
 					int y = configIni.bReverse.Guitar ?
-						( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) ) :
-						( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) );
+						( y_base[ 1 ] - (int) ( pChip.nバーからの距離dot.Guitar ) ) :
+						( y_base[ 0 ] + (int) ( pChip.nバーからの距離dot.Guitar ) );
 					numB = y - offset;				// 4種全て同じ定義
 					numC = 0;						// 4種全て同じ初期値
 					if ( ( numB < ( showRangeY1 + numA ) ) && ( numB > -numA ) )	// 以下のロジックは4種全て同じ

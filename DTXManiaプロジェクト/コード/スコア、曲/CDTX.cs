@@ -1590,13 +1590,22 @@ namespace DTXMania
 						{
 							CBMP cbmp;
 							//Trace.TraceInformation( "Main: Lock Begin for dequeue1." );
-							lock ( lockQueue )
+							try
 							{
-								cbmp = (CBMP) queueCBMPbaseDone.Dequeue();
-								//  Trace.TraceInformation( "Main: Dequeued(" + queueCBMPbaseDone.Count + "): " + cbmp.strファイル名 );
+								lock ( lockQueue )
+								{
+									cbmp = ( CBMP ) queueCBMPbaseDone.Dequeue();
+									//  Trace.TraceInformation( "Main: Dequeued(" + queueCBMPbaseDone.Count + "): " + cbmp.strファイル名 );
+								}
+								cbmp.OnDeviceCreated( cbmp.bitmap, cbmp.GetFullPathname );
 							}
-							cbmp.OnDeviceCreated( cbmp.bitmap, cbmp.GetFullPathname );
-							nLoadDone++;
+							catch ( InvalidCastException )	// bmp読み込み失敗時は、キャストに失敗する
+							{
+							}
+							finally
+							{
+								nLoadDone++;
+							}
 							//Trace.TraceInformation( "Main: OnDeviceCreated: " + cbmp.strファイル名 );
 						}
 						else
@@ -1634,13 +1643,22 @@ namespace DTXMania
 						{
 							CBMPTEX cbmptex;
 							//Trace.TraceInformation( "Main: Lock Begin for dequeue1." );
-							lock ( lockQueue )
+							try
 							{
-								cbmptex = (CBMPTEX) queueCBMPbaseDone.Dequeue();
-								//  Trace.TraceInformation( "Main: Dequeued(" + queueCBMPbaseDone.Count + "): " + cbmp.strファイル名 );
+								lock ( lockQueue )
+								{
+									cbmptex = ( CBMPTEX ) queueCBMPbaseDone.Dequeue();
+									//  Trace.TraceInformation( "Main: Dequeued(" + queueCBMPbaseDone.Count + "): " + cbmp.strファイル名 );
+								}
+								cbmptex.OnDeviceCreated( cbmptex.bitmap, cbmptex.GetFullPathname );
 							}
-							cbmptex.OnDeviceCreated( cbmptex.bitmap, cbmptex.GetFullPathname );
-							nLoadDone++;
+							catch ( InvalidCastException )
+							{
+							}
+							finally
+							{
+								nLoadDone++;
+							}
 							//Trace.TraceInformation( "Main: OnDeviceCreated: " + cbmp.strファイル名 );
 						}
 						else

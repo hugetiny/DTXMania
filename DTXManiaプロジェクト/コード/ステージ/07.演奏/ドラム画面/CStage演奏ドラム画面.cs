@@ -1860,15 +1860,15 @@ namespace DTXMania
 					#region [ Sudden処理 ]
 					if ( configIni.bSudden.Drums )
 					{
-						if ( pChip.nバーからの距離dot.Drums < 200 )
+						if ( pChip.nバーからの距離dot.Drums < 200 * Scale.Y )
 						{
 							pChip.b可視 = true;
 							pChip.n透明度 = 0xff;
 						}
-						else if ( pChip.nバーからの距離dot.Drums < 250 )
+						else if ( pChip.nバーからの距離dot.Drums < 250 * Scale.Y )
 						{
 							pChip.b可視 = true;
-							pChip.n透明度 = 0xff - ( (int) ( ( ( (double) ( pChip.nバーからの距離dot.Drums - 200 ) ) * 255.0 ) / 50.0 ) );
+							pChip.n透明度 = 0xff - ( (int) ( ( ( (double) ( pChip.nバーからの距離dot.Drums - 200 * Scale.Y ) ) * 255.0 ) / 50.0 ) );
 						}
 						else
 						{
@@ -1880,14 +1880,14 @@ namespace DTXMania
 					#region [ Hidden処理 ]
 					if ( configIni.bHidden.Drums )
 					{
-						if ( pChip.nバーからの距離dot.Drums < 100 )
+						if ( pChip.nバーからの距離dot.Drums < 100 * Scale.Y )
 						{
 							pChip.b可視 = false;
 						}
-						else if ( pChip.nバーからの距離dot.Drums < 150 )
+						else if ( pChip.nバーからの距離dot.Drums < 150 * Scale.Y )
 						{
 							pChip.b可視 = true;
-							pChip.n透明度 = (int) ( ( ( (double) ( pChip.nバーからの距離dot.Drums - 100 ) ) * 255.0 ) / 50.0 );
+							pChip.n透明度 = (int) ( ( ( (double) ( pChip.nバーからの距離dot.Drums - 100 * Scale.Y ) ) * 255.0 ) / 50.0 );
 						}
 					}
 					#endregion
@@ -1899,9 +1899,10 @@ namespace DTXMania
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
 					int x = this.nチャンネルtoX座標[ pChip.nチャンネル番号 - 0x11 ];
-					int y = configIni.bReverse.Drums ? ( 0x38 + pChip.nバーからの距離dot.Drums ) : ( 0x1a6 - pChip.nバーからの距離dot.Drums );
+					int y = configIni.bReverse.Drums ?
+						(int) ( 0x38 * Scale.Y + pChip.nバーからの距離dot.Drums ) :
+						(int) ( 0x1a6 * Scale.Y - pChip.nバーからの距離dot.Drums );
 					x = (int) ( x * Scale.X );
-					y = (int) ( y * Scale.Y );
 					if ( this.txチップ != null )
 					{
 						this.txチップ.vc拡大縮小倍率 = new Vector3( (float) pChip.dbチップサイズ倍率, (float) pChip.dbチップサイズ倍率, 1f );
@@ -2451,8 +2452,8 @@ namespace DTXMania
 					CDTXMania.act文字コンソール.tPrint(
 						(int) ( 0x14d * Scale.X ),
 						configIni.bReverse.Drums ?
-							(int) ( ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 0x11 ) * Scale.X ) :
-							(int) ( ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 0x11 ) * Scale.Y ),
+							(int) ( 0x38 * Scale.Y + pChip.nバーからの距離dot.Drums ) :
+							(int) ( 0x195 * Scale.Y - pChip.nバーからの距離dot.Drums ),
 						C文字コンソール.Eフォント種別.白,
 						n小節番号.ToString()
 					);
@@ -2463,9 +2464,11 @@ namespace DTXMania
 					this.txチップ.t2D描画( CDTXMania.app.Device,
 						0x23 * Scale.X,
 						configIni.bReverse.Drums ?
-							(int) ( ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ) :
-							(int) ( ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ),
-						new Rectangle( 0, (int) ( 0x1bc * Scale.Y ), (int) ( 0x128 * Scale.X ), (int) ( 2 * Scale.Y ) ) );
+							//( int ) ( ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ) :
+							//( int ) ( ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ),
+							(int) ( 0x37 * Scale.Y + pChip.nバーからの距離dot.Drums ) :
+							(int) ( 0x1a5 * Scale.Y - pChip.nバーからの距離dot.Drums ),
+						new Rectangle( 0, ( int ) ( 0x1bc * Scale.Y ), ( int ) ( 0x128 * Scale.X ), ( int ) ( 2 * Scale.Y ) ) );
 				}
 			}
 			#endregion
@@ -2477,11 +2480,11 @@ namespace DTXMania
 				int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, configIni.bReverse.Guitar );
 				if ( configIni.bReverse.Guitar )
 				{
-					y = y - (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) - 1;
+					y = y - (int) ( pChip.nバーからの距離dot.Guitar ) - 1;
 				}
 				else
 				{
-					y = y + (int) ( pChip.nバーからの距離dot.Guitar * Scale.Y ) - 1;
+					y = y + (int) ( pChip.nバーからの距離dot.Guitar ) - 1;
 				}
 				int n小節線消失距離dot;
 				// Reverse時の小節線消失位置を、RGBボタンの真ん中程度に。
@@ -2513,11 +2516,11 @@ namespace DTXMania
 				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, configIni.bReverse.Bass );
 				if ( configIni.bReverse.Bass )
 				{
-					y = y - (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) - 1;
+					y = y - (int) ( pChip.nバーからの距離dot.Bass ) - 1;
 				}
 				else
 				{
-					y = y + (int) ( pChip.nバーからの距離dot.Bass * Scale.Y ) - 1;
+					y = y + (int) ( pChip.nバーからの距離dot.Bass ) - 1;
 				}
 				n小節線消失距離dot = configIni.bReverse.Bass ?
 					(int) ( -100 * Scale.Y ) :

@@ -154,7 +154,7 @@ namespace DTXMania
 											( x + m ) * Scale.X,
 											y * Scale.Y,
 											new Rectangle(
-												(int) ( ( ( k * 0x2a ) + 2 ) * Scale.X ),
+												(int) ( ( k * 0x2a ) * Scale.X ),
 												0,
 												( ( w - m ) < 0x2a ) ? (int) ( ( w - m ) * Scale.X ) : (int) ( 0x2a * Scale.X ),
 												(int) ( 0x80 * 3 * Scale.Y )

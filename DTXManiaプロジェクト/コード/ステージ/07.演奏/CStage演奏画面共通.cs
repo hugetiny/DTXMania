@@ -1796,7 +1796,7 @@ namespace DTXMania
 			}
 
 			//double speed = 264.0;	// BPM150の時の1小節の長さ[dot]
-			const double speed = 234.0;	// BPM150の時の1小節の長さ[dot]
+			const double speed = 234.0 * Scale.Y;	// BPM150の時の1小節の長さ[dot]
 
 			double ScrollSpeedDrums =  ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Drums  + 1.0 ) * 0.5       * 37.5 * speed / 60000.0;
 			double ScrollSpeedGuitar = ( this.act譜面スクロール速度.db現在の譜面スクロール速度.Guitar + 1.0 ) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
@@ -1811,16 +1811,16 @@ namespace DTXMania
 				pChip.nバーからの距離dot.Drums = (int) ( ( pChip.n発声時刻ms - CSound管理.rc演奏用タイマ.n現在時刻 ) * ScrollSpeedDrums );
 				pChip.nバーからの距離dot.Guitar = (int) ( ( pChip.n発声時刻ms - CSound管理.rc演奏用タイマ.n現在時刻 ) * ScrollSpeedGuitar );
 				pChip.nバーからの距離dot.Bass = (int) ( ( pChip.n発声時刻ms - CSound管理.rc演奏用タイマ.n現在時刻 ) * ScrollSpeedBass );
-				if ( Math.Min( Math.Min( pChip.nバーからの距離dot.Drums, pChip.nバーからの距離dot.Guitar ), pChip.nバーからの距離dot.Bass ) > 450 )
+				if ( Math.Min( Math.Min( pChip.nバーからの距離dot.Drums, pChip.nバーからの距離dot.Guitar ), pChip.nバーからの距離dot.Bass ) > 450 * Scale.Y )
 				{
 					break;
 				}
 //				if ( ( ( nCurrentTopChip == this.n現在のトップChip ) && ( pChip.nバーからの距離dot.Drums < -65 ) ) && pChip.bHit )
 				// #28026 2012.4.5 yyagi; 信心ワールドエンドの曲終了後リザルトになかなか行かない問題の修正
 
-				if (( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Drums < -65 ) &&	// 小節線の消失処理などに影響するため、
-					( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Guitar < -65 ) &&	// Drumsのスクロールスピードだけには依存させない。
-					( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Bass < -65 ) && 
+				if (( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Drums < -65 * Scale.Y ) &&	// 小節線の消失処理などに影響するため、
+					( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Guitar < -65 * Scale.Y ) &&	// Drumsのスクロールスピードだけには依存させない。
+					( dTX.listChip[ this.n現在のトップChip ].nバーからの距離dot.Bass < -65 * Scale.Y ) && 
 					dTX.listChip[ this.n現在のトップChip ].bHit )
 				{
 					//					nCurrentTopChip = ++this.n現在のトップChip;
@@ -1833,7 +1833,7 @@ namespace DTXMania
 
 				int instIndex = (int) pChip.e楽器パート;
 				if ( ( ( pChip.e楽器パート != E楽器パート.UNKNOWN ) && !pChip.bHit ) &&
-				    ( ( pChip.nバーからの距離dot[ instIndex ] < -40 ) && ( this.e指定時刻からChipのJUDGEを返す( CSound管理.rc演奏用タイマ.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss ) ) )
+				    ( ( pChip.nバーからの距離dot[ instIndex ] < -40 * Scale.Y ) && ( this.e指定時刻からChipのJUDGEを返す( CSound管理.rc演奏用タイマ.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss ) ) )
 				{
 				    this.tチップのヒット処理( CSound管理.rc演奏用タイマ.n現在時刻, pChip );
 				}
@@ -2013,8 +2013,10 @@ namespace DTXMania
 							this.txチップ.t2D描画( CDTXMania.app.Device,
 								0x23 * Scale.X,
 								configIni.bReverse.Drums ?
-									(int) ( ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ) :
-									(int) ( ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ),
+									//(int) ( ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ) :
+									//(int) ( ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ),
+									(int) ( 0x37 * Scale.Y + pChip.nバーからの距離dot.Drums ) :
+									(int) ( 0x1a5 * Scale.Y - pChip.nバーからの距離dot.Drums ),
 								new Rectangle( 0, (int) ( 0x1bf * Scale.Y ), (int) ( 0x128 * Scale.X ), (int) ( 1 * Scale.Y ) )
 							);
 						}
@@ -2609,9 +2611,9 @@ namespace DTXMania
 					#region [ Hidden/Sudden処理 ]
 					if ( configIni.bSudden[ instIndex ] )
 					{
-						pChip.b可視 = pChip.nバーからの距離dot[ instIndex ] < 200;
+						pChip.b可視 = ( pChip.nバーからの距離dot[ instIndex ] < 200 * Scale.Y );
 					}
-					if ( configIni.bHidden[ instIndex ] && ( pChip.nバーからの距離dot[ instIndex ] < 100 ) )
+					if ( configIni.bHidden[ instIndex ] && ( pChip.nバーからの距離dot[ instIndex ] < 100 * Scale.Y ) )
 					{
 						pChip.b可視 = false;
 					}
@@ -2633,8 +2635,8 @@ namespace DTXMania
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
 					int y = configIni.bReverse[ instIndex ] ?
-						(int) ( barYReverse - pChip.nバーからの距離dot[ instIndex ] * Scale.Y ) :
-						(int) ( barYNormal  + pChip.nバーからの距離dot[ instIndex ] * Scale.Y );
+						(int) ( barYReverse - pChip.nバーからの距離dot[ instIndex ] ) :
+						(int) ( barYNormal  + pChip.nバーからの距離dot[ instIndex ] );
 					int n小節線消失距離dot = configIni.bReverse[ instIndex ] ?
 						(int) ( -100 * Scale.Y ) :
 						( configIni.e判定位置[ instIndex ] == E判定位置.標準 ) ? (int) ( -36 * Scale.Y ) : (int) ( -25 * Scale.Y );
@@ -2818,9 +2820,9 @@ namespace DTXMania
 				#region [ Sudden/Hidden処理 ]
 				if ( configIni.bSudden[indexInst] )
 				{
-					pChip.b可視 = pChip.nバーからの距離dot[indexInst] < 200;
+					pChip.b可視 = ( pChip.nバーからの距離dot[indexInst] < 200 * Scale.Y );
 				}
-				if ( configIni.bHidden[indexInst] && ( pChip.nバーからの距離dot[indexInst] < 100 ) )
+				if ( configIni.bHidden[indexInst] && ( pChip.nバーからの距離dot[indexInst] < 100 * Scale.Y ) )
 				{
 					pChip.b可視 = false;
 				}
@@ -2833,7 +2835,7 @@ namespace DTXMania
 
 				if ( !pChip.bHit && ( pChip.nバーからの距離dot[indexInst] < 0 ) )
 				{
-					if ( pChip.nバーからの距離dot[indexInst] < -234 )	// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec). 
+					if ( pChip.nバーからの距離dot[indexInst] < -234 * Scale.Y )	// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec). 
 					{
 						pChip.bHit = true;
 					}
