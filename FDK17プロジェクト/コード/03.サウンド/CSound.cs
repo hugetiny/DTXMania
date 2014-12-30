@@ -1557,14 +1557,26 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 						 ws.Format.FormatTag == (WaveFormatTag) 0x6771 )	// Ogg Vorbis Mode 3+
 					{
 						Trace.TraceInformation( Path.GetFileName( strファイル名 ) + ": RIFF chunked Vorbis. Decode to raw Wave first, to avoid BASS.DLL troubles" );
-						CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
-						bファイルにVorbisコンテナが含まれている = true;
+						try
+						{
+							CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
+							bファイルにVorbisコンテナが含まれている = true;
+						}
+						catch
+						{
+							Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : RIFF chunked Vorbisのデコードに失敗しました。" );
+						}
 					}
 				}
 			}
-			catch
+			catch ( InvalidDataException )
 			{
-				Trace.TraceWarning( "Error: " + Path.GetFileName( strファイル名 ) + " : RIFF chunked Vorbisのデコードに失敗しました。" );
+				// DirectShowのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
+				// Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : デコードに失敗しました。" );
+			}
+			catch ( Exception e )
+			{
+				Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : 読み込みに失敗しました。" );
 			}
 			#endregion
 
