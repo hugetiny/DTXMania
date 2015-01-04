@@ -78,17 +78,20 @@ namespace FDK
 			// this.timer = new CTimer( CTimer.E種別.MultiMedia );
 
 			this.list入力デバイス = new List<IInputDevice>( 10 );
-			#region [ Enumerate keyboard: exception will be thrown if no keyboard is connected ]
-			this.list入力デバイス.Add( new CInputKeyboard( hWnd, directInput ) );
-			#endregion
-			#region [ Enumerate mouse: exception is masked if mouse is not connected ]
+			#region [ Enumerate keyboard/mouse: exception is masked if keyboard/mouse is not connected ]
+			CInputKeyboard cinputkeyboard = null;
 			CInputMouse cinputmouse = null;
 			try
 			{
-				cinputmouse = new CInputMouse(hWnd, directInput);
+				cinputkeyboard = new CInputKeyboard( hWnd, directInput );
+				cinputmouse = new CInputMouse( hWnd, directInput );
 			}
 			catch ( DirectInputException )
 			{
+			}
+			if (cinputkeyboard != null)
+			{
+				this.list入力デバイス.Add( cinputkeyboard );
 			}
 			if ( cinputmouse != null )
 			{

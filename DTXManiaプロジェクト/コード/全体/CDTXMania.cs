@@ -1758,14 +1758,14 @@ for (int i = 0; i < 3; i++) {
 		{
 			#region [ strEXEのあるフォルダを決定する ]
 			//-----------------
-// BEGIN #23629 2010.11.13 from: デバッグ時は Application.ExecutablePath が ($SolutionDir)/bin/x86/Debug/ などになり System/ の読み込みに失敗するので、カレントディレクトリを採用する。（プロジェクトのプロパティ→デバッグ→作業ディレクトリが有効になる）
+			// BEGIN #23629 2010.11.13 from: デバッグ時は Application.ExecutablePath が ($SolutionDir)/bin/x86/Debug/ などになり System/ の読み込みに失敗するので、カレントディレクトリを採用する。（プロジェクトのプロパティ→デバッグ→作業ディレクトリが有効になる）
 #if DEBUG
 			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
 			//strEXEのあるフォルダ = Path.GetDirectoryName( Environment.GetCommandLineArgs()[ 0 ] ) + @"\";
 #else
 			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\";	// #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
 #endif
-// END #23629 2010.11.13 from
+			// END #23629 2010.11.13 from
 			//-----------------
 			#endregion
 
@@ -1773,11 +1773,11 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			ConfigIni = new CConfigIni();
 			string path = strEXEのあるフォルダ + "Config.ini";
-			if( File.Exists( path ) )
+			if (File.Exists(path))
 			{
 				try
 				{
-					ConfigIni.tファイルから読み込み( path );
+					ConfigIni.tファイルから読み込み(path);
 				}
 				catch
 				{
@@ -1792,32 +1792,32 @@ for (int i = 0; i < 3; i++) {
 			#region [ ログ出力開始 ]
 			//---------------------
 			Trace.AutoFlush = true;
-			if( ConfigIni.bログ出力 )
+			if (ConfigIni.bログ出力)
 			{
 				try
 				{
-					Trace.Listeners.Add( new CTraceLogListener( new StreamWriter( System.IO.Path.Combine( strEXEのあるフォルダ, "DTXManiaLog.txt" ), false, Encoding.GetEncoding( "utf-16" ) ) ) );
+					Trace.Listeners.Add(new CTraceLogListener(new StreamWriter(System.IO.Path.Combine(strEXEのあるフォルダ, "DTXManiaLog.txt"), false, Encoding.GetEncoding("utf-16"))));
 				}
-				catch ( System.UnauthorizedAccessException )			// #24481 2011.2.20 yyagi
+				catch (System.UnauthorizedAccessException)			// #24481 2011.2.20 yyagi
 				{
-					int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja")? 0 : 1;
+					int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
 					string[] mes_writeErr = {
 						"DTXManiaLog.txtへの書き込みができませんでした。書き込みできるようにしてから、再度起動してください。",
 						"Failed to write DTXManiaLog.txt. Please set it writable and try again."
 					};
-					MessageBox.Show( mes_writeErr[c], "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+					MessageBox.Show(mes_writeErr[c], "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					Environment.Exit(1);
 				}
 			}
 			Trace.WriteLine("");
-			Trace.WriteLine( "DTXMania powered by YAMAHA Silent Session Drums" );
-			Trace.WriteLine( string.Format( "Release: {0}", VERSION ) );
-			Trace.WriteLine( "" );
-			Trace.TraceInformation( "----------------------" );
-			Trace.TraceInformation( "■ アプリケーションの初期化" );
-			Trace.TraceInformation( "OS Version: " + Environment.OSVersion );
-			Trace.TraceInformation( "ProcessorCount: " + Environment.ProcessorCount.ToString() );
-			Trace.TraceInformation( "CLR Version: " + Environment.Version.ToString() );
+			Trace.WriteLine("DTXMania powered by YAMAHA Silent Session Drums");
+			Trace.WriteLine(string.Format("Release: {0}", VERSION));
+			Trace.WriteLine("");
+			Trace.TraceInformation("----------------------");
+			Trace.TraceInformation("■ アプリケーションの初期化");
+			Trace.TraceInformation("OS Version: " + Environment.OSVersion);
+			Trace.TraceInformation("ProcessorCount: " + Environment.ProcessorCount.ToString());
+			Trace.TraceInformation("CLR Version: " + Environment.Version.ToString());
 			//---------------------
 			#endregion
 			#region [ DTXVmodeクラス の初期化 ]
@@ -1841,28 +1841,28 @@ for (int i = 0; i < 3; i++) {
 			bコンパクトモード = false;
 			strコンパクトモードファイル = "";
 			string[] commandLineArgs = Environment.GetCommandLineArgs();
-			if( ( commandLineArgs != null ) && ( commandLineArgs.Length > 1 ) )
+			if ((commandLineArgs != null) && (commandLineArgs.Length > 1))
 			{
 				bコンパクトモード = true;
 				string arg = "";
 
-				for ( int i = 1; i < commandLineArgs.Length; i++ )
+				for (int i = 1; i < commandLineArgs.Length; i++)
 				{
-					if ( i != 1 )
+					if (i != 1)
 					{
-						arg += " " + "\"" + commandLineArgs[ i ] + "\"";
+						arg += " " + "\"" + commandLineArgs[i] + "\"";
 					}
 					else
 					{
-						arg += commandLineArgs[ i ];
+						arg += commandLineArgs[i];
 					}
 				}
-				DTXVmode.ParseArguments( arg );
-				if ( DTXVmode.Enabled )
+				DTXVmode.ParseArguments(arg);
+				if (DTXVmode.Enabled)
 				{
 					DTXVmode.Refreshed = false;								// 初回起動時は再読み込みに走らせない
 					strコンパクトモードファイル = DTXVmode.filename;
-					switch ( DTXVmode.soundDeviceType )						// サウンド再生方式の設定
+					switch (DTXVmode.soundDeviceType)						// サウンド再生方式の設定
 					{
 						case ESoundDeviceType.DirectSound:
 							ConfigIni.nSoundDeviceType = 0;
@@ -1888,14 +1888,14 @@ for (int i = 0; i < 3; i++) {
 				}
 				else														// 通常のコンパクトモード
 				{
-					strコンパクトモードファイル = commandLineArgs[ 1 ];
+					strコンパクトモードファイル = commandLineArgs[1];
 				}
 
-				if ( !File.Exists( strコンパクトモードファイル ) )		// #32985 2014.1.23 yyagi 
+				if (!File.Exists(strコンパクトモードファイル))		// #32985 2014.1.23 yyagi 
 				{
-					Trace.TraceError( "コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。[{0}]", strコンパクトモードファイル );
+					Trace.TraceError("コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。[{0}]", strコンパクトモードファイル);
 #if DEBUG
-					Environment.Exit( -1 );
+					Environment.Exit(-1);
 #else
 					if ( strコンパクトモードファイル == "" )	// DTXMania未起動状態で、DTXCで再生停止ボタンを押した場合は、何もせず終了
 					{
@@ -1907,14 +1907,72 @@ for (int i = 0; i < 3; i++) {
 					}
 #endif
 				}
-				if ( DTXVmode.Enabled )
+				if (DTXVmode.Enabled)
 				{
-					Trace.TraceInformation( "DTXVモードで起動します。[{0}]", strコンパクトモードファイル );
+					Trace.TraceInformation("DTXVモードで起動します。[{0}]", strコンパクトモードファイル);
 				}
 				else
 				{
-					Trace.TraceInformation( "コンパクトモードで起動します。[{0}]", strコンパクトモードファイル );
+					Trace.TraceInformation("コンパクトモードで起動します。[{0}]", strコンパクトモードファイル);
 				}
+			}
+			//---------------------
+			#endregion
+
+
+			#region [ Input管理 の初期化 ]
+			//---------------------
+			Trace.TraceInformation("DirectInput, MIDI入力の初期化を行います。");
+			Trace.Indent();
+			try
+			{
+				bool bUseMIDIIn = !DTXVmode.Enabled;
+				Input管理 = new CInput管理(base.Window.Handle, bUseMIDIIn);
+				foreach (IInputDevice device in Input管理.list入力デバイス)
+				{
+					if ((device.e入力デバイス種別 == E入力デバイス種別.Joystick) && !ConfigIni.dicJoystick.ContainsValue(device.GUID))
+					{
+						int key = 0;
+						while (ConfigIni.dicJoystick.ContainsKey(key))
+						{
+							key++;
+						}
+						ConfigIni.dicJoystick.Add(key, device.GUID);
+					}
+				}
+				foreach (IInputDevice device2 in Input管理.list入力デバイス)
+				{
+					if (device2.e入力デバイス種別 == E入力デバイス種別.Joystick)
+					{
+						foreach (KeyValuePair<int, string> pair in ConfigIni.dicJoystick)
+						{
+							if (device2.GUID.Equals(pair.Value))
+							{
+								((CInputJoystick)device2).SetID(pair.Key);
+								break;
+							}
+						}
+						continue;
+					}
+				}
+				Trace.TraceInformation("DirectInput の初期化を完了しました。");
+			}
+			catch (Exception exception2)
+			{
+				Trace.TraceError(exception2.Message);
+				Trace.TraceError("DirectInput, MIDI入力の初期化に失敗しました。");
+
+				int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
+				string[] mes_writeErr = {
+						"DirectInputまたはMIDI入力の初期化に失敗しました。DTXManiaGRを終了します。",
+						"Failed to initialize DirectInput (or MIDI-IN)."
+				};
+				MessageBox.Show(mes_writeErr[c], "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				Environment.Exit(1);
+			}
+			finally
+			{
+				Trace.Unindent();
 			}
 			//---------------------
 			#endregion
@@ -1922,16 +1980,16 @@ for (int i = 0; i < 3; i++) {
 			#region [ ウィンドウ初期化 ]
 			//---------------------
 			base.Window.StartPosition = FormStartPosition.Manual;                                                       // #30675 2013.02.04 ikanick add
-			base.Window.Location = new Point( ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y );   // #30675 2013.02.04 ikanick add
+			base.Window.Location = new Point(ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y);   // #30675 2013.02.04 ikanick add
 
 			base.Window.Text = this.strWindowTitle;		// 事前にDTXVmodeの実体を作っておくこと
 
 			base.Window.StartPosition = FormStartPosition.Manual;                                                       // #30675 2013.02.04 ikanick add
-            base.Window.Location = new Point(ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y);   // #30675 2013.02.04 ikanick add
+			base.Window.Location = new Point(ConfigIni.n初期ウィンドウ開始位置X, ConfigIni.n初期ウィンドウ開始位置Y);   // #30675 2013.02.04 ikanick add
 
-			if ( ConfigIni.nウインドウwidth <= 0 && ConfigIni.nウインドウheight <= 0 )		// #34069 2014.7.24 yyagi 初回起動時は1280x720にする
+			if (ConfigIni.nウインドウwidth <= 0 && ConfigIni.nウインドウheight <= 0)		// #34069 2014.7.24 yyagi 初回起動時は1280x720にする
 			{
-				ConfigIni.nウインドウwidth  = 1280;
+				ConfigIni.nウインドウwidth = 1280;
 				ConfigIni.nウインドウheight = 720;
 				//w = this.Window.Screen.WorkingArea.Width;
 				//h = this.Window.Screen.WorkingArea.Height;
@@ -1946,21 +2004,21 @@ for (int i = 0; i < 3; i++) {
 			if (!ConfigIni.bウィンドウモード)						// #23510 2010.11.02 yyagi: add; to recover window size in case bootup with fullscreen mode
 			{														// #30666 2013.02.02 yyagi: currentClientSize should be always made
 #endif
-				currentClientSize = new Size( ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight );
+			currentClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);
 #if !WindowedFullscreen
 			}
 #endif
 			base.Window.MaximizeBox = true;							// #23510 2010.11.04 yyagi: to support maximizing window
 			base.Window.FormBorderStyle = FormBorderStyle.Sizable;	// #23510 2010.10.27 yyagi: changed from FixedDialog to Sizable, to support window resize
-																		// #30666 2013.02.02 yyagi: moved the code to t全画面・ウインドウモード切り替え()
+			// #30666 2013.02.02 yyagi: moved the code to t全画面・ウインドウモード切り替え()
 			base.Window.ShowIcon = true;
 			base.Window.Icon = Properties.Resources.dtx;
-			base.Window.KeyDown += new KeyEventHandler( this.Window_KeyDown );
-			base.Window.MouseUp +=new MouseEventHandler( this.Window_MouseUp);
+			base.Window.KeyDown += new KeyEventHandler(this.Window_KeyDown);
+			base.Window.MouseUp += new MouseEventHandler(this.Window_MouseUp);
 			base.Window.MouseDoubleClick += new MouseEventHandler(this.Window_MouseDoubleClick);	// #23510 2010.11.13 yyagi: to go fullscreen mode
 			base.Window.ResizeEnd += new EventHandler(this.Window_ResizeEnd);						// #23510 2010.11.20 yyagi: to set resized window size in Config.ini
 			base.Window.ApplicationActivated += new EventHandler(this.Window_ApplicationActivated);
-			base.Window.ApplicationDeactivated += new EventHandler( this.Window_ApplicationDeactivated );
+			base.Window.ApplicationDeactivated += new EventHandler(this.Window_ApplicationDeactivated);
 			//---------------------
 			#endregion
 			#region [ Direct3D9Exを使うかどうか判定 ]
@@ -1975,14 +2033,14 @@ for (int i = 0; i < 3; i++) {
 #endif
 			settings.BackBufferWidth = SampleFramework.GameWindowSize.Width;
 			settings.BackBufferHeight = SampleFramework.GameWindowSize.Height;
-//			settings.BackBufferCount = 3;
+			//			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
-//			settings.BackBufferFormat = Format.A8R8G8B8;
-//			settings.MultisampleType = MultisampleType.FourSamples;
-//			settings.MultisampleQuality = 4;
-//			settings.MultisampleType = MultisampleType.None;
-//			settings.MultisampleQuality = 0;
-			
+			//			settings.BackBufferFormat = Format.A8R8G8B8;
+			//			settings.MultisampleType = MultisampleType.FourSamples;
+			//			settings.MultisampleQuality = 4;
+			//			settings.MultisampleType = MultisampleType.None;
+			//			settings.MultisampleQuality = 0;
+
 			try
 			{
 				base.GraphicsDeviceManager.ChangeDevice(settings);
@@ -1993,12 +2051,12 @@ for (int i = 0; i < 3; i++) {
 				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Initialize Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(-1);
 			}
-			
+
 			base.IsFixedTimeStep = false;
-//			base.TargetElapsedTime = TimeSpan.FromTicks( 10000000 / 75 );
+			//			base.TargetElapsedTime = TimeSpan.FromTicks( 10000000 / 75 );
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
 			base.InactiveSleepTime = TimeSpan.FromMilliseconds((float)(ConfigIni.n非フォーカス時スリープms));	// #23568 2010.11.3 yyagi: to support valiable sleep value when !IsActive
-																												// #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
+			// #23568 2010.11.4 ikanick changed ( 1 -> ConfigIni )
 #if WindowedFullscreen
 			this.t全画面・ウィンドウモード切り替え();				// #30666 2013.2.2 yyagi: finalize settings for "Maximized window mode"
 #endif
@@ -2010,17 +2068,17 @@ for (int i = 0; i < 3; i++) {
 
 			#region [ Skin の初期化 ]
 			//---------------------
-			Trace.TraceInformation( "スキンの初期化を行います。" );
+			Trace.TraceInformation("スキンの初期化を行います。");
 			Trace.Indent();
 			try
 			{
-				Skin = new CSkin( CDTXMania.ConfigIni.strSystemSkinSubfolderFullName, CDTXMania.ConfigIni.bUseBoxDefSkin );
-				CDTXMania.ConfigIni.strSystemSkinSubfolderFullName = CDTXMania.Skin.GetCurrentSkinSubfolderFullName( true );	// 旧指定のSkinフォルダが消滅していた場合に備える
-				Trace.TraceInformation( "スキンの初期化を完了しました。" );
+				Skin = new CSkin(CDTXMania.ConfigIni.strSystemSkinSubfolderFullName, CDTXMania.ConfigIni.bUseBoxDefSkin);
+				CDTXMania.ConfigIni.strSystemSkinSubfolderFullName = CDTXMania.Skin.GetCurrentSkinSubfolderFullName(true);	// 旧指定のSkinフォルダが消滅していた場合に備える
+				Trace.TraceInformation("スキンの初期化を完了しました。");
 			}
 			catch
 			{
-				Trace.TraceInformation( "スキンの初期化に失敗しました。" );
+				Trace.TraceInformation("スキンの初期化に失敗しました。");
 				throw;
 			}
 			finally
@@ -2032,12 +2090,12 @@ for (int i = 0; i < 3; i++) {
 			//-----------
 			#region [ Timer の初期化 ]
 			//---------------------
-			Trace.TraceInformation( "タイマの初期化を行います。" );
+			Trace.TraceInformation("タイマの初期化を行います。");
 			Trace.Indent();
 			try
 			{
-				Timer = new CTimer( CTimer.E種別.MultiMedia );
-				Trace.TraceInformation( "タイマの初期化を完了しました。" );
+				Timer = new CTimer(CTimer.E種別.MultiMedia);
+				Trace.TraceInformation("タイマの初期化を完了しました。");
 			}
 			finally
 			{
@@ -2049,12 +2107,12 @@ for (int i = 0; i < 3; i++) {
 
 			#region [ FPS カウンタの初期化 ]
 			//---------------------
-			Trace.TraceInformation( "FPSカウンタの初期化を行います。" );
+			Trace.TraceInformation("FPSカウンタの初期化を行います。");
 			Trace.Indent();
 			try
 			{
 				FPS = new CFPS();
-				Trace.TraceInformation( "FPSカウンタを生成しました。" );
+				Trace.TraceInformation("FPSカウンタを生成しました。");
 			}
 			finally
 			{
@@ -2064,69 +2122,20 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ act文字コンソールの初期化 ]
 			//---------------------
-			Trace.TraceInformation( "文字コンソールの初期化を行います。" );
+			Trace.TraceInformation("文字コンソールの初期化を行います。");
 			Trace.Indent();
 			try
 			{
 				act文字コンソール = new C文字コンソール();
-				Trace.TraceInformation( "文字コンソールを生成しました。" );
+				Trace.TraceInformation("文字コンソールを生成しました。");
 				act文字コンソール.On活性化();
-				Trace.TraceInformation( "文字コンソールを活性化しました。" );
-				Trace.TraceInformation( "文字コンソールの初期化を完了しました。" );
+				Trace.TraceInformation("文字コンソールを活性化しました。");
+				Trace.TraceInformation("文字コンソールの初期化を完了しました。");
 			}
-			catch( Exception exception )
+			catch (Exception exception)
 			{
-				Trace.TraceError( exception.Message );
-				Trace.TraceError( "文字コンソールの初期化に失敗しました。" );
-			}
-			finally
-			{
-				Trace.Unindent();
-			}
-			//---------------------
-			#endregion
-			#region [ Input管理 の初期化 ]
-			//---------------------
-			Trace.TraceInformation( "DirectInput, MIDI入力の初期化を行います。" );
-			Trace.Indent();
-			try
-			{
-				bool bUseMIDIIn = !DTXVmode.Enabled;
-				Input管理 = new CInput管理( base.Window.Handle, bUseMIDIIn );
-				foreach( IInputDevice device in Input管理.list入力デバイス )
-				{
-					if( ( device.e入力デバイス種別 == E入力デバイス種別.Joystick ) && !ConfigIni.dicJoystick.ContainsValue( device.GUID ) )
-					{
-						int key = 0;
-						while( ConfigIni.dicJoystick.ContainsKey( key ) )
-						{
-							key++;
-						}
-						ConfigIni.dicJoystick.Add( key, device.GUID );
-					}
-				}
-				foreach( IInputDevice device2 in Input管理.list入力デバイス )
-				{
-					if( device2.e入力デバイス種別 == E入力デバイス種別.Joystick )
-					{
-						foreach( KeyValuePair<int, string> pair in ConfigIni.dicJoystick )
-						{
-							if( device2.GUID.Equals( pair.Value ) )
-							{
-								( (CInputJoystick) device2 ).SetID( pair.Key );
-								break;
-							}
-						}
-						continue;
-					}
-				}
-				Trace.TraceInformation( "DirectInput の初期化を完了しました。" );
-			}
-			catch( Exception exception2 )
-			{
-				Trace.TraceError( exception2.Message );
-				Trace.TraceError( "DirectInput, MIDI入力の初期化に失敗しました。" );
-				throw;
+				Trace.TraceError(exception.Message);
+				Trace.TraceError("文字コンソールの初期化に失敗しました。");
 			}
 			finally
 			{
@@ -2136,32 +2145,32 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Pad の初期化 ]
 			//---------------------
-			Trace.TraceInformation( "パッドの初期化を行います。" );
+			Trace.TraceInformation("パッドの初期化を行います。");
 			Trace.Indent();
 			try
 			{
-				Pad = new CPad( ConfigIni, Input管理 );
-				Trace.TraceInformation( "パッドの初期化を完了しました。" );
+				Pad = new CPad(ConfigIni, Input管理);
+				Trace.TraceInformation("パッドの初期化を完了しました。");
 			}
-			catch( Exception exception3 )
+			catch (Exception exception3)
 			{
-				Trace.TraceError( exception3.Message );
-				Trace.TraceError( "パッドの初期化に失敗しました。" );
+				Trace.TraceError(exception3.Message);
+				Trace.TraceError("パッドの初期化に失敗しました。");
 			}
 			finally
 			{
 				Trace.Unindent();
 			}
-			//---------------------
+			 //---------------------
 			#endregion
 			#region [ Sound管理 の初期化 ]
 			//---------------------
-			Trace.TraceInformation( "サウンドデバイスの初期化を行います。" );
+			Trace.TraceInformation("サウンドデバイスの初期化を行います。");
 			Trace.Indent();
 			try
 			{
 				ESoundDeviceType soundDeviceType;
-				switch ( CDTXMania.ConfigIni.nSoundDeviceType )
+				switch (CDTXMania.ConfigIni.nSoundDeviceType)
 				{
 					case 0:
 						soundDeviceType = ESoundDeviceType.DirectSound;
@@ -2176,26 +2185,26 @@ for (int i = 0; i < 3; i++) {
 						soundDeviceType = ESoundDeviceType.Unknown;
 						break;
 				}
-				Sound管理 = new CSound管理( base.Window.Handle,
+				Sound管理 = new CSound管理(base.Window.Handle,
 											soundDeviceType,
 											CDTXMania.ConfigIni.nWASAPIBufferSizeMs,
-										// CDTXMania.ConfigIni.nASIOBufferSizeMs,
+					// CDTXMania.ConfigIni.nASIOBufferSizeMs,
 											0,
 											CDTXMania.ConfigIni.nASIODevice,
 											CDTXMania.ConfigIni.bUseOSTimer
 				);
 				//Sound管理 = FDK.CSound管理.Instance;
 				//Sound管理.t初期化( soundDeviceType, 0, 0, CDTXMania.ConfigIni.nASIODevice, base.Window.Handle );
-	
+
 				ShowWindowTitleWithSoundType();
 				FDK.CSound管理.bIsTimeStretch = CDTXMania.ConfigIni.bTimeStretch;
 				Sound管理.nMasterVolume = CDTXMania.ConfigIni.nMasterVolume;
 				//FDK.CSound管理.bIsMP3DecodeByWindowsCodec = CDTXMania.ConfigIni.bNoMP3Streaming;
-				Trace.TraceInformation( "サウンドデバイスの初期化を完了しました。" );
+				Trace.TraceInformation("サウンドデバイスの初期化を完了しました。");
 			}
 			catch (Exception e)
 			{
-				Trace.TraceError( e.Message );
+				Trace.TraceError(e.Message);
 				throw;
 			}
 			finally
@@ -2206,20 +2215,20 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Songs管理 の初期化 ]
 			//---------------------
-			Trace.TraceInformation( "曲リストの初期化を行います。" );
+			Trace.TraceInformation("曲リストの初期化を行います。");
 			Trace.Indent();
 			try
 			{
 				Songs管理 = new CSongs管理();
-//				Songs管理_裏読 = new CSongs管理();
+				//				Songs管理_裏読 = new CSongs管理();
 				EnumSongs = new CEnumSongs();
 				actEnumSongs = new CActEnumSongs();
-				Trace.TraceInformation( "曲リストの初期化を完了しました。" );
+				Trace.TraceInformation("曲リストの初期化を完了しました。");
 			}
-			catch( Exception e )
+			catch (Exception e)
 			{
-				Trace.TraceError( e.Message );
-				Trace.TraceError( "曲リストの初期化に失敗しました。" );
+				Trace.TraceError(e.Message);
+				Trace.TraceError("曲リストの初期化に失敗しました。");
 			}
 			finally
 			{
@@ -2234,7 +2243,7 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ Random の初期化 ]
 			//---------------------
-			Random = new Random( (int) Timer.nシステム時刻 );
+			Random = new Random((int)Timer.nシステム時刻);
 			//---------------------
 			#endregion
 			#region [ ステージの初期化 ]
@@ -2243,7 +2252,7 @@ for (int i = 0; i < 3; i++) {
 			r直前のステージ = null;
 			stage起動 = new CStage起動();
 			stageタイトル = new CStageタイトル();
-//			stageオプション = new CStageオプション();
+			//			stageオプション = new CStageオプション();
 			stageコンフィグ = new CStageコンフィグ();
 			stage選曲 = new CStage選曲();
 			stage曲読み込み = new CStage曲読み込み();
@@ -2253,32 +2262,32 @@ for (int i = 0; i < 3; i++) {
 			stageChangeSkin = new CStageChangeSkin();
 			stage終了 = new CStage終了();
 			this.listトップレベルActivities = new List<CActivity>();
-			this.listトップレベルActivities.Add( actEnumSongs );
-			this.listトップレベルActivities.Add( act文字コンソール );
-			this.listトップレベルActivities.Add( stage起動 );
-			this.listトップレベルActivities.Add( stageタイトル );
-//			this.listトップレベルActivities.Add( stageオプション );
-			this.listトップレベルActivities.Add( stageコンフィグ );
-			this.listトップレベルActivities.Add( stage選曲 );
-			this.listトップレベルActivities.Add( stage曲読み込み );
-			this.listトップレベルActivities.Add( stage演奏ドラム画面 );
-			this.listトップレベルActivities.Add( stage演奏ギター画面 );
-			this.listトップレベルActivities.Add( stage結果 );
-			this.listトップレベルActivities.Add( stageChangeSkin );
-			this.listトップレベルActivities.Add( stage終了 );
-			this.listトップレベルActivities.Add( actFlushGPU );
+			this.listトップレベルActivities.Add(actEnumSongs);
+			this.listトップレベルActivities.Add(act文字コンソール);
+			this.listトップレベルActivities.Add(stage起動);
+			this.listトップレベルActivities.Add(stageタイトル);
+			//			this.listトップレベルActivities.Add( stageオプション );
+			this.listトップレベルActivities.Add(stageコンフィグ);
+			this.listトップレベルActivities.Add(stage選曲);
+			this.listトップレベルActivities.Add(stage曲読み込み);
+			this.listトップレベルActivities.Add(stage演奏ドラム画面);
+			this.listトップレベルActivities.Add(stage演奏ギター画面);
+			this.listトップレベルActivities.Add(stage結果);
+			this.listトップレベルActivities.Add(stageChangeSkin);
+			this.listトップレベルActivities.Add(stage終了);
+			this.listトップレベルActivities.Add(actFlushGPU);
 			//---------------------
 			#endregion
 			#region [ プラグインの検索と生成 ]
 			//---------------------
 			PluginHost = new CPluginHost();
 
-			Trace.TraceInformation( "プラグインの検索と生成を行います。" );
+			Trace.TraceInformation("プラグインの検索と生成を行います。");
 			Trace.Indent();
 			try
 			{
 				this.tプラグイン検索と生成();
-				Trace.TraceInformation( "プラグインの検索と生成を完了しました。" );
+				Trace.TraceInformation("プラグインの検索と生成を完了しました。");
 			}
 			finally
 			{
@@ -2288,25 +2297,25 @@ for (int i = 0; i < 3; i++) {
 			#endregion
 			#region [ プラグインの初期化 ]
 			//---------------------
-			if( this.listプラグイン != null && this.listプラグイン.Count > 0 )
+			if (this.listプラグイン != null && this.listプラグイン.Count > 0)
 			{
-				Trace.TraceInformation( "プラグインの初期化を行います。" );
+				Trace.TraceInformation("プラグインの初期化を行います。");
 				Trace.Indent();
 				try
 				{
-					foreach( STPlugin st in this.listプラグイン )
+					foreach (STPlugin st in this.listプラグイン)
 					{
-						Directory.SetCurrentDirectory( st.strプラグインフォルダ );
-						st.plugin.On初期化( this.PluginHost );
+						Directory.SetCurrentDirectory(st.strプラグインフォルダ);
+						st.plugin.On初期化(this.PluginHost);
 						st.plugin.OnManagedリソースの作成();
 						st.plugin.OnUnmanagedリソースの作成();
-						Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
+						Directory.SetCurrentDirectory(CDTXMania.strEXEのあるフォルダ);
 					}
-					Trace.TraceInformation( "すべてのプラグインの初期化を完了しました。" );
+					Trace.TraceInformation("すべてのプラグインの初期化を完了しました。");
 				}
 				catch
 				{
-					Trace.TraceError( "プラグインのどれかの初期化に失敗しました。" );
+					Trace.TraceError("プラグインのどれかの初期化に失敗しました。");
 					throw;
 				}
 				finally
@@ -2318,14 +2327,14 @@ for (int i = 0; i < 3; i++) {
 			//---------------------
 			#endregion
 
-			Trace.TraceInformation( "アプリケーションの初期化を完了しました。" );
-			
+			Trace.TraceInformation("アプリケーションの初期化を完了しました。");
+
 			#region [ 最初のステージの起動 ]
 			//---------------------
-			Trace.TraceInformation( "----------------------" );
-			Trace.TraceInformation( "■ 起動" );
+			Trace.TraceInformation("----------------------");
+			Trace.TraceInformation("■ 起動");
 
-			if ( CDTXMania.bコンパクトモード )
+			if (CDTXMania.bコンパクトモード)
 			{
 				r現在のステージ = stage曲読み込み;
 			}
