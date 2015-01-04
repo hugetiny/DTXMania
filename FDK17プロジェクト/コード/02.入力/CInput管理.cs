@@ -78,13 +78,29 @@ namespace FDK
 			// this.timer = new CTimer( CTimer.E種別.MultiMedia );
 
 			this.list入力デバイス = new List<IInputDevice>( 10 );
+			#region [ Enumerate keyboard: exception will be thrown if no keyboard is connected ]
 			this.list入力デバイス.Add( new CInputKeyboard( hWnd, directInput ) );
-			this.list入力デバイス.Add( new CInputMouse( hWnd, directInput ) );
-			foreach( DeviceInstance instance in this.directInput.GetDevices( DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly ) )
+			#endregion
+			#region [ Enumerate mouse: exception is masked if mouse is not connected ]
+			CInputMouse cinputmouse = null;
+			try
+			{
+				cinputmouse = new CInputMouse(hWnd, directInput);
+			}
+			catch ( DirectInputException )
+			{
+			}
+			if ( cinputmouse != null )
+			{
+				this.list入力デバイス.Add( cinputmouse );
+			}
+			#endregion
+			#region [ Enumerate joypad ]
+			foreach ( DeviceInstance instance in this.directInput.GetDevices( DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly ) )
 			{
 				this.list入力デバイス.Add( new CInputJoystick( hWnd, instance, directInput ) );
 			}
-
+			#endregion
 			if ( bUseMidiIn )
 			{
 				this.proc = new CWin32.MidiInProc( this.MidiInCallback );
