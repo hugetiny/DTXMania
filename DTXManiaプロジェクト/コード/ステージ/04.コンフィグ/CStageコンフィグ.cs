@@ -319,6 +319,31 @@ namespace DTXMania
 						base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 					}
 				}
+				#region [ ← ]
+				else if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.LeftArrow ) )	// 左カーソルキー
+				{
+					if ( !this.bメニューにフォーカス中 )
+					{
+						if ( this.eItemPanelモード == EItemPanelモード.キーコード一覧 )
+						{
+							//キーコンフィグ画面中は、[←]押下に反応させない
+							return 0;
+						}
+						if ( this.actList.bIsFocusingParameter )
+						{
+							// パラメータを増減している最中も、[←]押下に反応させない
+							return 0;
+						}
+						if ( !this.actList.bIsKeyAssignSelected && !this.actList.bIsFocusingParameter )	// #24525 2011.3.15 yyagi, #32059 2013.9.17 yyagi
+						{
+							this.bメニューにフォーカス中 = true;
+						}
+						CDTXMania.Skin.sound取消音.t再生する();
+						this.t説明文パネルに現在選択されているメニューの説明を描画する();
+						this.actList.tEsc押下();								// #24525 2011.3.15 yyagi ESC押下時の右メニュー描画用
+					}
+				}
+				#endregion
 				else if ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) )
 				{
 					#region [ EXIT ]
@@ -358,6 +383,23 @@ namespace DTXMania
 						}
 					}
 				}
+				#region [ → ]
+				else if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.RightArrow ) )	// 右カーソルキー
+				{
+					#region [ EXIT ]
+					if ( this.n現在のメニュー番号 == 4 )
+					{
+						// 何もしない
+					}
+					#endregion
+					else if ( this.bメニューにフォーカス中 )
+					{
+						CDTXMania.Skin.sound決定音.t再生する();
+						this.bメニューにフォーカス中 = false;
+						this.t説明文パネルに現在選択されている項目の説明を描画する();
+					}
+				}
+				#endregion
 				this.ctキー反復用.Up.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 				this.ctキー反復用.R.tキー反復( CDTXMania.Pad.b押されているGB( Eパッド.HH ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 				if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )

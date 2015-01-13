@@ -1930,7 +1930,16 @@ namespace DTXMania
 							x += (int) ( 0x16 * Scale.X ) - ( (int) ( ( 44.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 5 * Scale.Y, new Rectangle( (int) ( 0 * Scale.X ), (int) ( num9 * 9 * Scale.Y ), (int) ( 0x2c * Scale.X ), (int) ( 10 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 11,
+									new Rectangle(
+										(int) ( 0 * Scale.X ),
+										(int) ( num9 * (22-2) ),
+										(int) ( 44 * Scale.X ),
+										(int) ( 22 )
+									)
+								);
 							}
 							break;
 

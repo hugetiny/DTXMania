@@ -431,9 +431,32 @@ namespace DTXMania
 						#endregion
 						if ( this.act曲リスト.r現在選択中の曲 != null )
 						{
+							#region [ Right ]
+							if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.RightArrow ) )
+							{
+								if ( this.act曲リスト.r現在選択中の曲 != null )
+								{
+									switch ( this.act曲リスト.r現在選択中の曲.eノード種別 )
+									{
+										case C曲リストノード.Eノード種別.BOX:
+											{
+												CDTXMania.Skin.sound決定音.t再生する();
+												bool bNeedChangeSkin = this.act曲リスト.tBOXに入る();
+												if ( bNeedChangeSkin )
+												{
+													this.eフェードアウト完了時の戻り値 = E戻り値.スキン変更;
+													base.eフェーズID = Eフェーズ.選曲_NowLoading画面へのフェードアウト;
+												}
+											}
+											break;
+									}
+								}
+							}
+							#endregion
 							#region [ Decide ]
-							if ( ( CDTXMania.Pad.b押されたDGB( Eパッド.Decide ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) ||
-								( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) )
+							if (( CDTXMania.Pad.b押されたDGB( Eパッド.Decide ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) ||
+								( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) ||
+								( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) )
 							{
 								CDTXMania.Skin.sound決定音.t再生する();
 								if ( this.act曲リスト.r現在選択中の曲 != null )
@@ -493,8 +516,11 @@ namespace DTXMania
 								this.tカーソルを下へ移動する();
 							}
 							#endregion
-							#region [ Upstairs ]
-							if ( ( ( this.act曲リスト.r現在選択中の曲 != null ) && ( this.act曲リスト.r現在選択中の曲.r親ノード != null ) ) && ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT ) || CDTXMania.Pad.b押されたGB( Eパッド.Cancel ) ) )
+							#region [ Upstairs / Left ]
+							if ( ( ( this.act曲リスト.r現在選択中の曲 != null ) && ( this.act曲リスト.r現在選択中の曲.r親ノード != null ) ) &&
+								( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT ) ||
+								  CDTXMania.Pad.b押されたGB( Eパッド.Cancel ) ||
+								  CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.LeftArrow ) ) )
 							{
 								this.actPresound.tサウンド停止();
 								CDTXMania.Skin.sound取消音.t再生する();
@@ -523,7 +549,6 @@ namespace DTXMania
 								EパッドFlag[] comChangeDifficulty = new EパッドFlag[] { EパッドFlag.HH, EパッドFlag.HH };
 								if ( CommandHistory.CheckCommand( comChangeDifficulty, E楽器パート.DRUMS ) )
 								{
-									Debug.WriteLine( "ドラムス難易度変更" );
 									this.act曲リスト.t難易度レベルをひとつ進める();
 									CDTXMania.Skin.sound変更音.t再生する();
 								}
