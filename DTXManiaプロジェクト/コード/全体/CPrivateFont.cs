@@ -127,7 +127,10 @@ namespace DTXMania
 					throw new ArgumentException( "フォント{0}は適切なスタイルを選択できず、使用できません。", Path.GetFileName( fontpath ) );
 				}
 			}
-			this._font = new Font( this._fontfamily, pt, style );			//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
+			//this._font = new Font(this._fontfamily, pt, style);			//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
+			float emSize = pt * 96.0f / 72.0f;
+			this._font = new Font(this._fontfamily, emSize, style, GraphicsUnit.Pixel );	//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
+			//HighDPI対応のため、pxサイズで指定
 		}
 
 		[Flags]
