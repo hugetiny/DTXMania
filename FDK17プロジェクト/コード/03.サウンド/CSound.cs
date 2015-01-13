@@ -1574,7 +1574,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				// DirectShowのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
 				// Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : デコードに失敗しました。" );
 			}
-			catch ( Exception e )
+			catch ( Exception )
 			{
 				Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : 読み込みに失敗しました。" );
 			}

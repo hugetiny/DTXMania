@@ -83,9 +83,20 @@ namespace FDK
 		{
 			if ( this.Device.e出力デバイス != ESoundDeviceType.DirectSound )
 			{
-				this.nDInputTimerCounter = this.ctDInputTimer.nシステム時刻ms;
-				this.nSoundTimerCounter = this.nシステム時刻ms;
-				//Debug.WriteLine( "BaseCounter: " + nDInputTimerCounter + ", " + nSoundTimerCounter );
+				try
+				{
+					this.nDInputTimerCounter = this.ctDInputTimer.nシステム時刻ms;
+					this.nSoundTimerCounter = this.nシステム時刻ms;
+					//Debug.WriteLine( "BaseCounter: " + nDInputTimerCounter + ", " + nSoundTimerCounter );
+				}
+				catch ( Exception e )
+				// サウンド設定変更時に、timer.Dispose()した後、timerが実際に停止する前にここに来てしまう場合があり
+				// その際にNullReferenceExceptionが発生する
+				// timerが実際に停止したことを検出してから次の設定をすべきだが、実装が難しいため、
+				// ここで単に例外破棄することで代替する
+				{
+					Trace.TraceInformation("FDK: CSoundTimer.SnapTimers(): 例外発生しましたが、継続します。" + e.Message );
+				}
 			}
 		}
 		public long nサウンドタイマーのシステム時刻msへの変換( long nDInputのタイムスタンプ )
@@ -177,6 +188,8 @@ Debug.WriteLine( "B" );
 			if ( timer != null )
 			{
 				timer.Change( System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite );
+				// ここで、実際にtimerが停止したことを確認するコードを追加すべきだが、やり方わからず。
+				// 代替策として、SnapTimers()中で、例外発生を破棄している。
 				timer.Dispose();
 				timer = null;
 			}
@@ -190,7 +203,7 @@ Debug.WriteLine( "B" );
 
 		public ISoundDevice Device = null;	// debugのため、一時的にprotectedをpublicにする。後で元に戻しておくこと。
 		//protected Thread thSendInput = null;
-		protected Thread thSnapTimers = null;
+		//protected Thread thSnapTimers = null;
 		private CTimer ctDInputTimer = null;
 		private long nDInputTimerCounter = 0;
 		private long nSoundTimerCounter = 0;
