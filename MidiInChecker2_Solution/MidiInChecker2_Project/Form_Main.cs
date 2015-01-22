@@ -49,7 +49,7 @@ namespace MidiInChecker2
 					{
 						foreach ( STInputEvent ev in device.list入力イベント )
 						{
-							int nMIDIevent = ev.nKey & 0xF0;
+							int nMIDIevent = ev.nKey & 0xFF;
 							int nNote = ( ev.nKey >> 8 ) & 0xFF;	// note#
 							// int nVelo = ( ev.nKey >> 16 ) & 0xFF;	// velocity
 

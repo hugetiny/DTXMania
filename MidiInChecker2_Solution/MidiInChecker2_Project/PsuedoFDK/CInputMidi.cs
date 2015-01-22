@@ -32,11 +32,11 @@ namespace MidiInChecker2
 		{
 			if ( wMsg == CWin32.MIM_DATA )
 			{
-				int nMIDIevent = dwParam1 & 0xF0;
+				int nMIDIevent = dwParam1 & 0xFF;
 				int nPara1 = ( dwParam1 >> 8 ) & 0xFF;
 				int nPara2 = ( dwParam1 >> 16 ) & 0xFF;
 
-				// Trace.TraceInformation( "MIDIevent={0:X2} para1={1:X2} para2={2:X2}", nMIDIevent, nPara1, nPara2 );
+				Trace.TraceInformation( "MIDIevent={0:X2} para1={1:X2} para2={2:X2}", nMIDIevent, nPara1, nPara2 );
 
 //				if ( ( nMIDIevent == 0x90 ) && ( nPara2 != 0 ) )
 				{
