@@ -38,7 +38,16 @@ namespace FDK
 
 // Trace.TraceInformation( "MIDIevent={0:X2} para1={1:X2} para2={2:X2}", nMIDIevent, nPara1, nPara2 );
 			
-				if( ( nMIDIevent == 0x90 ) && ( nPara2 != 0 ) )
+				if( ( nMIDIevent == 0x90 ) && ( nPara2 != 0 ) )		// Note ON
+				{
+					STInputEvent item = new STInputEvent();
+					item.nKey = nPara1;
+					item.b押された = true;
+					item.nTimeStamp = n受信システム時刻;
+					item.nVelocity = nPara2;
+					this.listEventBuffer.Add( item );
+				}
+				else if ( ( nMIDIevent == 0xB0 ) && ( nPara1 == 4 ) )	// Ctrl Chg #04: Foot Controller
 				{
 					STInputEvent item = new STInputEvent();
 					item.nKey = nPara1;
