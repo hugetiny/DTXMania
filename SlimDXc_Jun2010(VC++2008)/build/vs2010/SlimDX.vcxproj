@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -37,37 +37,44 @@
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Public|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>true</CLRSupport>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings"></ImportGroup>
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Public|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -110,6 +117,20 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Public|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Public|x64'">true</GenerateManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkKeyFile>:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania4\trunk\DTXManiaプロジェクト\SlimDXKey_yyagi.snk</LinkKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Public|Win32'">
+    <LinkKeyFile>"C:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania4\trunk\DTXManiaプロジェクト\SlimDXKey_yyagi.snk"</LinkKeyFile>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -125,17 +146,21 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>user32.lib;gdi32.lib;dxguid.lib;d3d9.lib;d3dx9.lib;dxgi.lib;d3d10.lib;d3dx10.lib;d3d10_1.lib;dinput8.lib;xinput.lib;dxerr.lib;ole32.lib;x3daudio.lib;xapobase.lib;winmm.lib;dsound.lib;d3dcompiler.lib;d3d11.lib;d3dx11.lib;d2d1.lib;dwrite.lib;d3dcsx.lib;Effects11.lib;advapi32.lib</AdditionalDependencies>
-      <Version>0.0.0.0</Version>
+      <Version>0.0</Version>
       <AdditionalLibraryDirectories>$(OutDir);$(DXSDK_DIR)Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>d3d9.dll;d3dx9_43.dll;d3dx10_43.dll;d3dx11_43.dll;d3dcompiler_43.dll;d3dcsx_43.dll;d3d10.dll;d3d10_1.dll;d3d11.dll;d2d1.dll;dwrite.dll;dxgi.dll;dinput8.dll;x3daudio1_7.dll;xinput1_3.dll;dsound.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
-      <LinkTimeCodeGeneration></LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention></DataExecutionPrevention>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <KeyFile></KeyFile>
-      <KeyContainer></KeyContainer>
+      <KeyFile>
+      </KeyFile>
+      <KeyContainer>
+      </KeyContainer>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
@@ -162,12 +187,16 @@
       <DelayLoadDLLs>d3d9.dll;d3dx9_43.dll;d3dx10_43.dll;d3dx11_43.dll;d3dcompiler_43.dll;d3dcsx_43.dll;d3d10.dll;d3d10_1.dll;d3d11.dll;d2d1.dll;dwrite.dll;dxgi.dll;dinput8.dll;x3daudio1_7.dll;xinput1_3.dll;dsound.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
-      <LinkTimeCodeGeneration></LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention></DataExecutionPrevention>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <KeyFile></KeyFile>
-      <KeyContainer></KeyContainer>
+      <KeyFile>
+      </KeyFile>
+      <KeyContainer>
+      </KeyContainer>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
@@ -190,14 +219,16 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>user32.lib;gdi32.lib;dxguid.lib;d3d9.lib;d3dx9.lib;dxgi.lib;d3d10.lib;d3dx10.lib;d3d10_1.lib;dinput8.lib;xinput.lib;dxerr.lib;ole32.lib;x3daudio.lib;xapobase.lib;winmm.lib;dsound.lib;d3dcompiler.lib;d3d11.lib;d3dx11.lib;d2d1.lib;dwrite.lib;d3dcsx.lib;Effects11.lib;advapi32.lib</AdditionalDependencies>
-      <Version>0.0.0.0</Version>
+      <Version>0.0</Version>
       <AdditionalLibraryDirectories>$(OutDir);$(DXSDK_DIR)Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>d3d9.dll;d3dx9_43.dll;d3dx10_43.dll;d3dx11_43.dll;d3dcompiler_43.dll;d3dcsx_43.dll;d3d10.dll;d3d10_1.dll;d3d11.dll;d2d1.dll;dwrite.dll;dxgi.dll;dinput8.dll;x3daudio1_7.dll;xinput1_3.dll;dsound.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention></DataExecutionPrevention>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <KeyFile></KeyFile>
+      <KeyFile>
+      </KeyFile>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
@@ -227,9 +258,11 @@
       <DelayLoadDLLs>d3d9.dll;d3dx9_43.dll;d3dx10_43.dll;d3dx11_43.dll;d3dcompiler_43.dll;d3dcsx_43.dll;d3d10.dll;d3d10_1.dll;d3d11.dll;d2d1.dll;dwrite.dll;dxgi.dll;dinput8.dll;x3daudio1_7.dll;xinput1_3.dll;dsound.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention></DataExecutionPrevention>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
-      <KeyFile></KeyFile>
+      <KeyFile>
+      </KeyFile>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
     </Link>
   </ItemDefinitionGroup>
@@ -250,19 +283,20 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>user32.lib;gdi32.lib;dxguid.lib;d3d9.lib;d3dx9.lib;dxgi.lib;d3d10.lib;d3dx10.lib;d3d10_1.lib;dinput8.lib;xinput.lib;dxerr.lib;ole32.lib;x3daudio.lib;xapobase.lib;winmm.lib;dsound.lib;d3dcompiler.lib;d3d11.lib;d3dx11.lib;d2d1.lib;dwrite.lib;d3dcsx.lib;Effects11.lib;advapi32.lib</AdditionalDependencies>
-      <Version>4.0.10.43</Version>
+      <Version>4.0</Version>
       <AdditionalLibraryDirectories>$(OutDir);$(DXSDK_DIR)Lib\x86;$(OutDir)..\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>d3d9.dll;d3dx9_43.dll;d3dx10_43.dll;d3dx11_43.dll;d3dcompiler_43.dll;d3dcsx_43.dll;d3d10.dll;d3d10_1.dll;d3d11.dll;d2d1.dll;dwrite.dll;dxgi.dll;dinput8.dll;x3daudio1_7.dll;xinput1_3.dll;dsound.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention></DataExecutionPrevention>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <KeyFile>D:\slimdxKey.snk</KeyFile>
       <DelaySign>false</DelaySign>
       <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>
     </Link>
     <PostBuildEvent>
-      <Command>sn -R $(TargetPath) D:\slimdxKey.snk</Command>
+      <Command>sn -R "$(TargetPath)" "C:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania4\trunk\DTXManiaプロジェクト\SlimDXKey_yyagi.snk"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Public|x64'">
@@ -290,7 +324,8 @@
       <DelayLoadDLLs>d3d9.dll;d3dx9_43.dll;d3dx10_43.dll;d3dx11_43.dll;d3dcompiler_43.dll;d3dcsx_43.dll;d3d10.dll;d3d10_1.dll;d3d11.dll;d2d1.dll;dwrite.dll;dxgi.dll;dinput8.dll;x3daudio1_7.dll;xinput1_3.dll;dsound.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention></DataExecutionPrevention>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
       <TargetMachine>MachineX64</TargetMachine>
       <KeyFile>D:\slimdxKey.snk</KeyFile>
       <DelaySign>false</DelaySign>
@@ -1699,5 +1734,6 @@
     <None Include="..\.\ReleaseNotes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets"></ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>
