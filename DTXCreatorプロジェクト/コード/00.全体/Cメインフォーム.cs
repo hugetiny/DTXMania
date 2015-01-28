@@ -2007,6 +2007,7 @@ namespace DTXCreator
 			//-----------------
 			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( pt選択モードのコンテクストメニューを開いたときのマウスの位置.Y );
 			C小節 csクリックされた小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
+			if ( csクリックされた小節 == null ) return;		// 小節が生成されていないところで右クリックした場合は何もしない(NullReferenceException回避)
 			int nPartNo = csクリックされた小節.n小節番号0to3599;
 			string strPartNo = C変換.str小節番号を文字列3桁に変換して返す( nPartNo );
 			//-----------------
