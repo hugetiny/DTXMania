@@ -1691,6 +1691,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				throw new NotImplementedException();
 			}
 
+			if ( !File.Exists( strファイル名 ) )
+			{
+				throw new Exception( string.Format( "ファイルが見つかりませんでした。({0})", strファイル名 ) );
+			}
 			int nHandle = sounddecoder.Open( strファイル名 );
 			if ( nHandle < 0 )
 			{
