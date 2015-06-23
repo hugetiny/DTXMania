@@ -18,7 +18,7 @@ namespace DTXMania
 		protected int[] y_base;
 		protected int offset;
 		protected const int	WailingWidth  = (int) ( 20 * Scale.X );			// ウェイリングチップ画像の幅: 4種全て同じ値
-		protected const int WailingHeight = (int) ( 50 * Scale.Y );			// ウェイリングチップ画像の高さ: 4種全て同じ値
+		protected const int WailingHeight = (int) 120;	//( 50 * Scale.Y );			// ウェイリングチップ画像の高さ: 4種全て同じ値
 		protected int baseTextureOffsetX, baseTextureOffsetY;
 
 		protected int drawX;

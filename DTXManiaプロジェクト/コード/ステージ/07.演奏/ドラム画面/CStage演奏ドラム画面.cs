@@ -1910,15 +1910,24 @@ namespace DTXMania
 					int num9 = this.ctチップ模様アニメ.Drums.n現在の値;
 					switch ( pChip.nチャンネル番号 )
 					{
-						case 0x11:
+						case 0x11:	// HH
 							x += (int) ( 0x10 * Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0x2c * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x20 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9,
+									new Rectangle(
+										(int) ( 44 * Scale.X ),
+										(int) ( num9 * (18-2) ),
+										(int) ( 32 * Scale.X ),
+										(int) ( 18 )
+									)
+								);
 							}
 							break;
 
-						case 0x12:
+						case 0x12:	// SD
 							x += (int) ( 0x10 * Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
@@ -1926,7 +1935,7 @@ namespace DTXMania
 							}
 							break;
 
-						case 0x13:
+						case 0x13:	// BD
 							x += (int) ( 0x16 * Scale.X ) - ( (int) ( ( 44.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{

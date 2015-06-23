@@ -2590,7 +2590,30 @@ namespace DTXMania
 		protected abstract void t進行描画・チップ・ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		//protected abstract void t進行描画・チップ・ギター( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
 		protected abstract void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst );
-
+		/// <summary>
+		/// ギター・ベースのチップ表示
+		/// </summary>
+		/// <param name="configIni"></param>
+		/// <param name="dTX"></param>
+		/// <param name="pChip">描画するチップ</param>
+		/// <param name="inst">楽器種別</param>
+		/// <param name="barYNormal">Normal時判定ライン表示Y座標</param>
+		/// <param name="barYReverse">Reverse時判定ライン表示Y座標</param>
+		/// <param name="showRangeY0">チップ表示Y座標範囲(最小値)</param>
+		/// <param name="showRangeY1">チップ表示Y座標範囲(最大値)</param>
+		/// <param name="openXg">オープンチップの表示X座標(ギター用)</param>
+		/// <param name="openXb">オープンチップの表示X座標(ベース用)</param>
+		/// <param name="rectOpenOffsetX">テクスチャ内のオープンチップregionのx座標</param>
+		/// <param name="rectOpenOffsetY">テクスチャ内のオープンチップregionのy座標</param>
+		/// <param name="openChipWidth">テクスチャ内のオープンチップregionのwidth</param>
+		/// <param name="chipHeight">テクスチャ内のチップのheight</param>
+		/// <param name="chipWidth">テクスチャ内のチップのwidth</param>
+		/// <param name="guitarNormalX">ギターチップ描画のx座標(Normal)</param>
+		/// <param name="guitarLeftyX">ギターチップ描画のx座標(Lefty)</param>
+		/// <param name="bassNormalX">ベースチップ描画のx座標(Normal)</param>
+		/// <param name="bassLeftyX">ベースチップ描画のx座標(Lefty)</param>
+		/// <param name="drawDeltaX">描画のX座標間隔(R,G,B...)</param>
+		/// <param name="chipTexDeltaX">テクスチャののX座標間隔(R,G,B...)</param>
 		protected void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst,
 			int barYNormal, int barYReverse,
 			int showRangeY0, int showRangeY1, int openXg, int openXb,
