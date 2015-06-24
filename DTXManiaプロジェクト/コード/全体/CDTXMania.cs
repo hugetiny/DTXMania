@@ -2788,9 +2788,11 @@ for (int i = 0; i < 3; i++) {
 						}
 					}
 				}
-				catch
+				catch (Exception e)
 				{
 					Trace.TraceInformation( dllName + " からプラグインを生成することに失敗しました。スキップします。" );
+					Trace.TraceInformation( e.ToString() );
+					Trace.TraceInformation( e.Message );
 				}
 			}
 

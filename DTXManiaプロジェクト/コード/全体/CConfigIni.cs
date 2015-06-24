@@ -1180,7 +1180,7 @@ namespace DTXMania
 			#region [ WASAPI/ASIO ]
 			this.nSoundDeviceType = FDK.COS.bIsVistaOrLater ?
 				(int) ESoundDeviceTypeForConfig.WASAPI : (int) ESoundDeviceTypeForConfig.ACM;	// #24820 2012.12.23 yyagi 初期値はACM | #31927 2013.8.25 yyagi OSにより初期値変更
-			this.nWASAPIBufferSizeMs = 0;				// #24820 2013.1.15 yyagi 初期値は0(自動設定)
+			this.nWASAPIBufferSizeMs = 50;				// #24820 2013.1.15 yyagi 初期値は50(0で自動設定)
 			this.nASIODevice = 0;						// #24820 2013.1.17 yyagi
 //			this.nASIOBufferSizeMs = 0;					// #24820 2012.12.25 yyagi 初期値は0(自動設定)
 			#endregion
