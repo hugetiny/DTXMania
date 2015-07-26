@@ -87,7 +87,7 @@ namespace DTXCreator.譜面
 					}
 				}
 				this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-				this._Form.tUndoRedo用GUIの有効・無効を設定する();
+				this._Form.tUndoRedo用GUIの有効無効を設定する();
 				list.Clear();
 			}
 		}

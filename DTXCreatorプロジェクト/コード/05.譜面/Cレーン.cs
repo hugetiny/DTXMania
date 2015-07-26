@@ -47,10 +47,10 @@ namespace DTXCreator.譜面
 		public bool b左側の線が太線;
 		public Color col背景色 = Color.Black;
 		public E種別 eレーン種別 = E種別.WAV;
-		public int nチャンネル番号・表00toFF;
-		public int nチャンネル番号・裏00toFF;
-		public int nレーン割付チップ・表0or1to1295;
-		public int nレーン割付チップ・裏0or1to1295;
+		public int nチャンネル番号_表00toFF;
+		public int nチャンネル番号_裏00toFF;
+		public int nレーン割付チップ_表0or1to1295;
+		public int nレーン割付チップ_裏0or1to1295;
 		public int n位置Xdot;
 		public int n幅dot = 30;
 		public string strレーン名 = "";
@@ -75,8 +75,8 @@ namespace DTXCreator.譜面
 		{
 			this.eレーン種別 = E種別.WAV;
 			this.strレーン名 = "";
-			this.nチャンネル番号・表00toFF = 0;
-			this.nチャンネル番号・裏00toFF = 0;
+			this.nチャンネル番号_表00toFF = 0;
+			this.nチャンネル番号_裏00toFF = 0;
 			this.b左側の線が太線 = false;
 			this.col背景色 = Color.FromArgb(0, 0, 0, 0);
 			this.n位置Xdot = 0;
@@ -100,7 +100,7 @@ namespace DTXCreator.譜面
 		/// <param name="bIsVisible"></param>
 		public Cレーン(
 			E種別 eレーン種別_, string strレーン名_,
-			int nチャンネル番号・表00toFF_, int nチャンネル番号・裏00toFF_,
+			int nチャンネル番号_表00toFF_, int nチャンネル番号_裏00toFF_,
 			bool b左側の線が太線_,
 			Color col背景色_,
 			int n位置Xdot_, int n幅dot_,
@@ -109,8 +109,8 @@ namespace DTXCreator.譜面
 		{
 			this.eレーン種別 = eレーン種別_;
 			this.strレーン名 = strレーン名_;
-			this.nチャンネル番号・表00toFF = nチャンネル番号・表00toFF_;
-			this.nチャンネル番号・裏00toFF = nチャンネル番号・裏00toFF_;
+			this.nチャンネル番号_表00toFF = nチャンネル番号_表00toFF_;
+			this.nチャンネル番号_裏00toFF = nチャンネル番号_裏00toFF_;
 			this.b左側の線が太線 = b左側の線が太線_;
 			this.col背景色 = col背景色_;
 			this.n位置Xdot = n位置Xdot_;

@@ -29,26 +29,26 @@ namespace DTXCreator.譜面
 				}
 				if( ( Control.ModifierKeys & Keys.Control ) != Keys.Control )
 				{
-					int num = ( e.Button == MouseButtons.Left ) ? ( this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1 ) : 0;
-					if( num != lc.nレーン割付チップ・表0or1to1295 )
+					int num = ( e.Button == MouseButtons.Left ) ? ( this._Form.n現在選択中のWAV_BMP_AVIリストの行番号0to1294 + 1 ) : 0;
+					if( num != lc.nレーン割付チップ_表0or1to1295)
 					{
-						Cレーン割付用UndoRedo redo = new Cレーン割付用UndoRedo( lc, lc.nレーン割付チップ・表0or1to1295, false );
+						Cレーン割付用UndoRedo redo = new Cレーン割付用UndoRedo( lc, lc.nレーン割付チップ_表0or1to1295, false );
 						Cレーン割付用UndoRedo redo2 = new Cレーン割付用UndoRedo( lc, num, false );
 						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cレーン割付用UndoRedo>( null, new DGUndoを実行する<Cレーン割付用UndoRedo>( this.tレーン割付のUndo ), new DGRedoを実行する<Cレーン割付用UndoRedo>( this.tレーン割付のRedo ), redo, redo2 ) );
-						this._Form.tUndoRedo用GUIの有効・無効を設定する();
-						lc.nレーン割付チップ・表0or1to1295 = num;
+						this._Form.tUndoRedo用GUIの有効無効を設定する();
+						lc.nレーン割付チップ_表0or1to1295 = num;
 					}
 				}
 				else
 				{
-					int num2 = ( e.Button == MouseButtons.Left ) ? ( this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1 ) : 0;
-					if( num2 != lc.nレーン割付チップ・裏0or1to1295 )
+					int num2 = ( e.Button == MouseButtons.Left ) ? ( this._Form.n現在選択中のWAV_BMP_AVIリストの行番号0to1294 + 1 ) : 0;
+					if( num2 != lc.nレーン割付チップ_裏0or1to1295)
 					{
-						Cレーン割付用UndoRedo redo3 = new Cレーン割付用UndoRedo( lc, lc.nレーン割付チップ・裏0or1to1295, true );
+						Cレーン割付用UndoRedo redo3 = new Cレーン割付用UndoRedo( lc, lc.nレーン割付チップ_裏0or1to1295, true );
 						Cレーン割付用UndoRedo redo4 = new Cレーン割付用UndoRedo( lc, num2, true );
 						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cレーン割付用UndoRedo>( null, new DGUndoを実行する<Cレーン割付用UndoRedo>( this.tレーン割付のUndo ), new DGRedoを実行する<Cレーン割付用UndoRedo>( this.tレーン割付のRedo ), redo3, redo4 ) );
-						this._Form.tUndoRedo用GUIの有効・無効を設定する();
-						lc.nレーン割付チップ・裏0or1to1295 = num2;
+						this._Form.tUndoRedo用GUIの有効無効を設定する();
+						lc.nレーン割付チップ_裏0or1to1295 = num2;
 					}
 				}
 			}
@@ -71,7 +71,7 @@ namespace DTXCreator.譜面
 		{
 			Rectangle rectangle = new Rectangle( this.rc現在のチップカーソル領域.Location, this.rc現在のチップカーソル領域.Size );
 			this.n現在のチップカーソルがあるレーン番号0to = this.mgr譜面管理者ref.nX座標dotが位置するレーン番号を返す( e.X );
-			this.n現在のチップカーソルの譜面先頭からの位置grid = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す・ガイド幅単位( e.Y );
+			this.n現在のチップカーソルの譜面先頭からの位置grid = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す_ガイド幅単位( e.Y );
 			bool bOutOfLanes = false;
 			if( e.Y < ( C譜面管理.nレーン割付チップ番号表示高さdot + 10 ) )
 			{
@@ -149,13 +149,13 @@ namespace DTXCreator.譜面
 						return;
 
 					default:
-						nチップ番号 = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
+						nチップ番号 = this._Form.n現在選択中のWAV_BMP_AVIリストの行番号0to1294 + 1;
 						if( ( Control.ModifierKeys & Keys.Shift ) != Keys.Shift )	// Shift非押下中
 						{
-							int nチップ番号・レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
-							if( nチップ番号・レーン割り付け != 0 )
+							int nチップ番号_レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ_裏0or1to1295 : cレーン.nレーン割付チップ_表0or1to1295;
+							if( nチップ番号_レーン割り付け != 0 )
 							{
-								nチップ番号 = nチップ番号・レーン割り付け;
+								nチップ番号 = nチップ番号_レーン割り付け;
 							}
 						}
 						break;
@@ -180,19 +180,19 @@ namespace DTXCreator.譜面
 					bool bCtrl押下中 = ( Control.ModifierKeys & Keys.Control ) == Keys.Control;
 					bool bShift押下中 = ( Control.ModifierKeys & Keys.Shift ) == Keys.Shift;
 					Cレーン cレーン = this.mgr譜面管理者ref.listレーン[ this.n現在のチップカーソルがあるレーン番号0to ];
-					int nチップ番号・レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
+					int nチップ番号_レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ_裏0or1to1295 : cレーン.nレーン割付チップ_表0or1to1295;
 					switch ( cレーン.eレーン種別 )
 					{
 						#region [ GtV/BsVレーン ]
 						case Cレーン.E種別.GtV:
 						case Cレーン.E種別.BsV:
 							// int nチップ番号・レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
-							if ( ( nチップ番号・レーン割り付け == 0 ) || bShift押下中 )
+							if ( ( nチップ番号_レーン割り付け == 0 ) || bShift押下中 )
 							{
-								nチップ番号・レーン割り付け = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
+								nチップ番号_レーン割り付け = this._Form.n現在選択中のWAV_BMP_AVIリストの行番号0to1294 + 1;
 							}
 							this._Form.mgrUndoRedo管理者.tトランザクション記録を開始する();
-							this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, nチップ番号・レーン割り付け, 0f, bCtrl押下中 );
+							this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, nチップ番号_レーン割り付け, 0f, bCtrl押下中 );
 							if( this.b指定位置にRGBチップがひとつもない( this.n現在のチップカーソルの譜面先頭からの位置grid, this.n現在のチップカーソルがあるレーン番号0to + 1, this.n現在のチップカーソルがあるレーン番号0to + 2, this.n現在のチップカーソルがあるレーン番号0to + 3 ) )
 							{
 								this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to + 1, this.n現在のチップカーソルの譜面先頭からの位置grid, 2, 0f, false );
@@ -253,21 +253,21 @@ namespace DTXCreator.譜面
 						#region [ その他通常チップ ]
 						default:
 							//int nチップ番号・レーン割り付け = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
-							if( ( nチップ番号・レーン割り付け == 0 ) || bShift押下中 )
+							if( ( nチップ番号_レーン割り付け == 0 ) || bShift押下中 )
 							{
-								nチップ番号・レーン割り付け = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
+								nチップ番号_レーン割り付け = this._Form.n現在選択中のWAV_BMP_AVIリストの行番号0to1294 + 1;
 							}
-							this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, nチップ番号・レーン割り付け, 0f, bCtrl押下中 );
+							this.mgr譜面管理者ref.tチップを配置または置換する( this.n現在のチップカーソルがあるレーン番号0to, this.n現在のチップカーソルの譜面先頭からの位置grid, nチップ番号_レーン割り付け, 0f, bCtrl押下中 );
 							break;
 						#endregion
 					}
 					#region [ 必要に応じて、プレビュー音を再生する ]
 					if ( this._Form.appアプリ設定.PlaySoundOnWAVChipAllocated && ( ( ( cレーン.eレーン種別 == Cレーン.E種別.WAV ) || ( cレーン.eレーン種別 == Cレーン.E種別.GtV ) ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsV ) ) )
 					{
-						int nWAV番号1to1295 = bCtrl押下中 ? cレーン.nレーン割付チップ・裏0or1to1295 : cレーン.nレーン割付チップ・表0or1to1295;
+						int nWAV番号1to1295 = bCtrl押下中 ? cレーン.nレーン割付チップ_裏0or1to1295 : cレーン.nレーン割付チップ_表0or1to1295;
 						if( ( nWAV番号1to1295 == 0 ) || bShift押下中 )
 						{
-							nWAV番号1to1295 = this._Form.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 + 1;
+							nWAV番号1to1295 = this._Form.n現在選択中のWAV_BMP_AVIリストの行番号0to1294 + 1;
 						}
 						CWAV wc = this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す( nWAV番号1to1295 );
 						if( ( wc != null ) && ( !this._Form.appアプリ設定.NoPreviewBGM || !wc.bBGMとして使用 ) )
@@ -351,11 +351,11 @@ namespace DTXCreator.譜面
 		{
 			if( !lur変更前.b裏 )
 			{
-				lur変更前.lc.nレーン割付チップ・表0or1to1295 = lur変更後.n番号0or1to1295;
+				lur変更前.lc.nレーン割付チップ_表0or1to1295 = lur変更後.n番号0or1to1295;
 			}
 			else
 			{
-				lur変更前.lc.nレーン割付チップ・裏0or1to1295 = lur変更後.n番号0or1to1295;
+				lur変更前.lc.nレーン割付チップ_裏0or1to1295 = lur変更後.n番号0or1to1295;
 			}
 			this._Form.pictureBox譜面パネル.Refresh();
 		}
@@ -363,11 +363,11 @@ namespace DTXCreator.譜面
 		{
 			if( !lur変更前.b裏 )
 			{
-				lur変更前.lc.nレーン割付チップ・表0or1to1295 = lur変更前.n番号0or1to1295;
+				lur変更前.lc.nレーン割付チップ_表0or1to1295 = lur変更前.n番号0or1to1295;
 			}
 			else
 			{
-				lur変更前.lc.nレーン割付チップ・裏0or1to1295 = lur変更前.n番号0or1to1295;
+				lur変更前.lc.nレーン割付チップ_裏0or1to1295 = lur変更前.n番号0or1to1295;
 			}
 			this._Form.pictureBox譜面パネル.Refresh();
 		}

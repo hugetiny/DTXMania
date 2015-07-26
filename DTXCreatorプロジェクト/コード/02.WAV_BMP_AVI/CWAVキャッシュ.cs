@@ -33,7 +33,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			}
 			return null;
 		}
-		public CWAV tWAVをキャッシュから検索して返す・なければ新規生成する( int nWAV番号1to1295 )
+		public CWAV tWAVをキャッシュから検索して返す_なければ新規生成する( int nWAV番号1to1295 )
 		{
 			if( ( nWAV番号1to1295 < 1 ) || ( nWAV番号1to1295 > 36 * 36 - 1 ) )
 			{

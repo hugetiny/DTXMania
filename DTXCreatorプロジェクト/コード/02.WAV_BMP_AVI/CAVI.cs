@@ -15,7 +15,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public string strファイル名 = "";
 		public string strラベル名 = "";
 
-		public bool b内容が同じ・AVI番号を除くwith( CAVI ac )
+		public bool b内容が同じ_AVI番号を除くwith( CAVI ac )
 		{
 			return ( ( this.strラベル名.Equals( ac.strラベル名 ) && this.strファイル名.Equals( ac.strファイル名 ) ) && ( ( this.col文字色 == ac.col文字色 ) && ( this.col背景色 == ac.col背景色 ) ) );
 		}

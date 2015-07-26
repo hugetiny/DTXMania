@@ -55,7 +55,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			dialog.InitialDirectory = this.str初期フォルダ;
 			if( dialog.ShowDialog() == DialogResult.OK )
 			{
-				string str = Cファイル選択・パス変換.str基点からの相対パスに変換して返す( dialog.FileName, this.str相対パスの基点フォルダ );
+				string str = Cファイル選択_パス変換.str基点からの相対パスに変換して返す( dialog.FileName, this.str相対パスの基点フォルダ );
 				str.Replace( '/', '\\' );
 				this.textBoxファイル.Text = str;
 			}
