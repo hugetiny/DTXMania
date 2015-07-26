@@ -33,7 +33,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			}
 			return null;
 		}
-		public CAVI tAVIをキャッシュから検索して返す・なければ新規生成する( int nAVI番号1to1295 )
+		public CAVI tAVIをキャッシュから検索して返す_なければ新規生成する( int nAVI番号1to1295 )
 		{
 			if( ( nAVI番号1to1295 < 1 ) || ( nAVI番号1to1295 > 36 * 36 - 1 ) )
 			{

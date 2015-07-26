@@ -365,7 +365,7 @@ namespace DTXMania
 				#endregion
 				if( !this.bBGM再生済み && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{
-					CDTXMania.Skin.bgm選曲画面.n音量・次に鳴るサウンド = 100;
+					CDTXMania.Skin.bgm選曲画面.n音量_次に鳴るサウンド = 100;
 					CDTXMania.Skin.bgm選曲画面.t再生する();
 					this.bBGM再生済み = true;
 				}
@@ -860,7 +860,7 @@ namespace DTXMania
 			{
 				if( song.listランダム用ノードリスト == null )
 				{
-					song.listランダム用ノードリスト = this.t指定された曲が存在する場所の曲を列挙する・子リスト含む( song );
+					song.listランダム用ノードリスト = this.t指定された曲が存在する場所の曲を列挙する_子リスト含む( song );
 				}
 				int count = song.listランダム用ノードリスト.Count;
 				if( count == 0 )
@@ -934,7 +934,7 @@ namespace DTXMania
 			}
 			CDTXMania.Skin.bgm選曲画面.t停止する();
 		}
-		private List<C曲リストノード> t指定された曲が存在する場所の曲を列挙する・子リスト含む( C曲リストノード song )
+		private List<C曲リストノード> t指定された曲が存在する場所の曲を列挙する_子リスト含む( C曲リストノード song )
 		{
 			List<C曲リストノード> list = new List<C曲リストノード>();
 			song = song.r親ノード;
@@ -948,15 +948,15 @@ namespace DTXMania
 					}
 					if( ( c曲リストノード.list子リスト != null ) && CDTXMania.ConfigIni.bランダムセレクトで子BOXを検索対象とする )
 					{
-						this.t指定された曲の子リストの曲を列挙する・孫リスト含む( c曲リストノード, ref list );
+						this.t指定された曲の子リストの曲を列挙する_孫リスト含む( c曲リストノード, ref list );
 					}
 				}
 				return list;
 			}
-			this.t指定された曲の子リストの曲を列挙する・孫リスト含む( song, ref list );
+			this.t指定された曲の子リストの曲を列挙する_孫リスト含む( song, ref list );
 			return list;
 		}
-		private void t指定された曲の子リストの曲を列挙する・孫リスト含む( C曲リストノード r親, ref List<C曲リストノード> list )
+		private void t指定された曲の子リストの曲を列挙する_孫リスト含む( C曲リストノード r親, ref List<C曲リストノード> list )
 		{
 			if( ( r親 != null ) && ( r親.list子リスト != null ) )
 			{
@@ -968,7 +968,7 @@ namespace DTXMania
 					}
 					if( ( c曲リストノード.list子リスト != null ) && CDTXMania.ConfigIni.bランダムセレクトで子BOXを検索対象とする )
 					{
-						this.t指定された曲の子リストの曲を列挙する・孫リスト含む( c曲リストノード, ref list );
+						this.t指定された曲の子リストの曲を列挙する_孫リスト含む( c曲リストノード, ref list );
 					}
 				}
 			}

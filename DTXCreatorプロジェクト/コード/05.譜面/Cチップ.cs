@@ -12,7 +12,7 @@ namespace DTXCreator.譜面
 		public bool b移動済;
 		public bool b確定選択中;
 		public bool b裏;
-		public float f値・浮動小数;
+		public float f値_浮動小数;
 		public int n移動開始時のレーン番号0to;
 		public int n移動開始時の小節内の位置grid;
 		public int n移動開始時の小節番号0to;
@@ -59,11 +59,11 @@ namespace DTXCreator.譜面
 				this._n位置grid = value;
 			}
 		}
-		public int n値・整数1to1295
+		public int n値_整数1to1295
 		{
 			get
 			{
-				return this._n値・整数1to1295;
+				return this._n値_整数1to1295;
 			}
 			set
 			{
@@ -71,7 +71,7 @@ namespace DTXCreator.譜面
 				{
 					throw new Exception( "値が範囲(0～1295)を超えています。-->[" + value + "]" );
 				}
-				this._n値・整数1to1295 = value;
+				this._n値_整数1to1295 = value;
 			}
 		}
 		public static readonly int nチップの高さdot = 9;
@@ -82,16 +82,16 @@ namespace DTXCreator.譜面
 		}
 		public static void tOPENチップを描画する( Graphics g, Rectangle rcチップ描画領域 )
 		{
-			t表チップを描画する・本体( g, rcチップ描画領域, Color.White );
+			t表チップを描画する_本体( g, rcチップ描画領域, Color.White );
 			string str = "O P E N";
-			t表チップを描画する・番号( g, rcチップ描画領域, str );
+			t表チップを描画する_番号( g, rcチップ描画領域, str );
 		}
 		public void tコピーfrom( Cチップ ccコピー元 )
 		{
 			this._nチャンネル番号00toFF = ccコピー元._nチャンネル番号00toFF;
 			this._nレーン番号0to = ccコピー元._nレーン番号0to;
-			this._n値・整数1to1295 = ccコピー元._n値・整数1to1295;
-			this.f値・浮動小数 = ccコピー元.f値・浮動小数;
+			this._n値_整数1to1295 = ccコピー元._n値_整数1to1295;
+			this.f値_浮動小数 = ccコピー元.f値_浮動小数;
 			this._n位置grid = ccコピー元._n位置grid;
 			this.b裏 = ccコピー元.b裏;
 			this.bドラッグで選択中 = ccコピー元.bドラッグで選択中;
@@ -117,26 +117,26 @@ namespace DTXCreator.譜面
 		{
 			if ( e種別 == Cレーン.E種別.BEAT )
 			{
-				t表チップを描画する・本体( g, rcチップ描画領域, col色, e種別 );
+				t表チップを描画する_本体( g, rcチップ描画領域, col色, e種別 );
 			}
 			else
 			{
-				t表チップを描画する・本体( g, rcチップ描画領域, col色 );
+				t表チップを描画する_本体( g, rcチップ描画領域, col色 );
 				if ( nチップ番号 >= 0 )
 				{
 					string str = C変換.str数値を36進数2桁に変換して返す( nチップ番号 );
 					str = str[ 0 ] + " " + str[ 1 ];
-					t表チップを描画する・番号( g, rcチップ描画領域, str );
+					t表チップを描画する_番号( g, rcチップ描画領域, str );
 				}
 			}
 		}
 		public static void t表チップを描画する( Graphics g, Rectangle rcチップ描画領域, float fチップ数値, Color col色 )
 		{
-			t表チップを描画する・本体( g, rcチップ描画領域, col色 );
+			t表チップを描画する_本体( g, rcチップ描画領域, col色 );
 			if( fチップ数値 >= 0f )
 			{
 				string str = fチップ数値.ToString();
-				t表チップを描画する・番号( g, rcチップ描画領域, str );
+				t表チップを描画する_番号( g, rcチップ描画領域, str );
 			}
 		}
 		public static void t裏チップを描画する( Graphics g, Rectangle rcチップ描画領域, int nチップ番号, Color col色 )
@@ -145,31 +145,31 @@ namespace DTXCreator.譜面
 		}
 		public static void t裏チップを描画する( Graphics g, Rectangle rcチップ描画領域, int nチップ番号, Color col色, Cレーン.E種別 e種別 )
 		{
-			t裏チップを描画する・本体( g, rcチップ描画領域, col色, e種別 );
+			t裏チップを描画する_本体( g, rcチップ描画領域, col色, e種別 );
 
 			if ( e種別 == Cレーン.E種別.BEAT )
 			{
-				t裏チップを描画する・本体( g, rcチップ描画領域, col色, e種別 );
+				t裏チップを描画する_本体( g, rcチップ描画領域, col色, e種別 );
 			}
 			else
 			{
-				t裏チップを描画する・本体( g, rcチップ描画領域, col色 );
+				t裏チップを描画する_本体( g, rcチップ描画領域, col色 );
 				if ( nチップ番号 >= 0 )
 				{
 					string str = C変換.str数値を36進数2桁に変換して返す( nチップ番号 );
 					str = str[ 0 ] + " " + str[ 1 ];
-					t裏チップを描画する・番号( g, rcチップ描画領域, str );
+					t裏チップを描画する_番号( g, rcチップ描画領域, str );
 				}
 			}
 	
 		}
 		public static void t裏チップを描画する( Graphics g, Rectangle rcチップ描画領域, float fチップ数値, Color col色 )
 		{
-			t裏チップを描画する・本体( g, rcチップ描画領域, col色 );
+			t裏チップを描画する_本体( g, rcチップ描画領域, col色 );
 			if( fチップ数値 >= 0f )
 			{
 				string str = fチップ数値.ToString();
-				t裏チップを描画する・番号( g, rcチップ描画領域, str );
+				t裏チップを描画する_番号( g, rcチップ描画領域, str );
 			}
 		}
 		protected static Font ftチップ文字用フォント = new Font( "MS Gothic", 8f, FontStyle.Bold );
@@ -179,52 +179,52 @@ namespace DTXCreator.譜面
 		private int _nチャンネル番号00toFF;
 		private int _nレーン番号0to;
 		private int _n位置grid;
-		private int _n値・整数1to1295;
+		private int _n値_整数1to1295;
 
-		private static void t表チップを描画する・番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列 )
+		private static void t表チップを描画する_番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列 )
 		{
-			tチップを描画する・番号( g, rcチップ描画領域, str番号文字列, false );
-		}
-
-		// BEATレーン専用; ●を書く
-		private static void t表チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色, Cレーン.E種別 e種別 )
-		{
-			if ( e種別 == Cレーン.E種別.BEAT )
-			{
-				tチップを描画する・本体( g, rcチップ描画領域, col色, false, true );
-			}
-			else
-			{
-				tチップを描画する・本体( g, rcチップ描画領域, col色, false, false );
-			}
-		}
-		private static void t表チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色 )
-		{
-			tチップを描画する・本体( g, rcチップ描画領域, col色, false, false );
-		}
-		private static void t裏チップを描画する・番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列 )
-		{
-			tチップを描画する・番号( g, rcチップ描画領域, str番号文字列, true );
+			tチップを描画する_番号( g, rcチップ描画領域, str番号文字列, false );
 		}
 
 		// BEATレーン専用; ●を書く
-		private static void t裏チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色, Cレーン.E種別 e種別 )
+		private static void t表チップを描画する_本体( Graphics g, Rectangle rcチップ描画領域, Color col色, Cレーン.E種別 e種別 )
 		{
 			if ( e種別 == Cレーン.E種別.BEAT )
 			{
-				tチップを描画する・本体( g, rcチップ描画領域, col色, true, true );
+				tチップを描画する_本体( g, rcチップ描画領域, col色, false, true );
 			}
 			else
 			{
-				tチップを描画する・本体( g, rcチップ描画領域, col色, true, false );
+				tチップを描画する_本体( g, rcチップ描画領域, col色, false, false );
 			}
 		}
-		private static void t裏チップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色 )
+		private static void t表チップを描画する_本体( Graphics g, Rectangle rcチップ描画領域, Color col色 )
 		{
-			 tチップを描画する・本体( g, rcチップ描画領域, col色, true, false );
+			tチップを描画する_本体( g, rcチップ描画領域, col色, false, false );
+		}
+		private static void t裏チップを描画する_番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列 )
+		{
+			tチップを描画する_番号( g, rcチップ描画領域, str番号文字列, true );
 		}
 
-		private static void tチップを描画する・本体( Graphics g, Rectangle rcチップ描画領域, Color col色, bool b裏チップである, bool bBEATチップである )
+		// BEATレーン専用; ●を書く
+		private static void t裏チップを描画する_本体( Graphics g, Rectangle rcチップ描画領域, Color col色, Cレーン.E種別 e種別 )
+		{
+			if ( e種別 == Cレーン.E種別.BEAT )
+			{
+				tチップを描画する_本体( g, rcチップ描画領域, col色, true, true );
+			}
+			else
+			{
+				tチップを描画する_本体( g, rcチップ描画領域, col色, true, false );
+			}
+		}
+		private static void t裏チップを描画する_本体( Graphics g, Rectangle rcチップ描画領域, Color col色 )
+		{
+			tチップを描画する_本体( g, rcチップ描画領域, col色, true, false );
+		}
+
+		private static void tチップを描画する_本体( Graphics g, Rectangle rcチップ描画領域, Color col色, bool b裏チップである, bool bBEATチップである )
 		{
 			int alphaBrush = 128;
 			int alphaPen = 255;
@@ -271,7 +271,7 @@ namespace DTXCreator.譜面
 			pen.Dispose();
 			pen2.Dispose();
 		}
-		private static void tチップを描画する・番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列, bool b裏チップである )
+		private static void tチップを描画する_番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列, bool b裏チップである )
 		{
 			// 表裏に関係なく、番号描画は共通
 

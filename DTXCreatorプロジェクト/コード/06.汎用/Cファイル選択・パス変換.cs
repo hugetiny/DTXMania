@@ -5,7 +5,7 @@ using System.IO;
 
 namespace DTXCreator.汎用
 {
-	public class Cファイル選択・パス変換
+	public class Cファイル選択_パス変換
 	{
 		public static bool b絶対パスである( string strパス )
 		{

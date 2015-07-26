@@ -190,7 +190,7 @@ namespace DTXCreator.チップパレット関連
 			{
 				ListViewItem item = this.listViewチップリスト.Items[ this.listViewチップリスト.SelectedIndices[ 0 ] ];
 				int num = C変換.n36進数2桁の文字列を数値に変換して返す( item.SubItems[ 1 ].Text );
-				this.formメインフォーム.tWAV・BMP・AVIリストのカーソルを全部同じ行に合わせる( num - 1 );
+				this.formメインフォーム.tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( num - 1 );
 				this.formメインフォーム.tタブを選択する( (Cメインフォーム.Eタブ種別) ( item.ImageIndex + 1 ) );
 			}
 		}

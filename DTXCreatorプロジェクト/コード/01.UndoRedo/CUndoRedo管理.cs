@@ -35,7 +35,7 @@ namespace DTXCreator.UndoRedo
 			this.root.n次にノードが追加される位置0to--;
 			return this.root.listノード[ this.root.n次にノードが追加される位置0to ];
 		}
-		public CUndoRedoセル仮想 tUndoするノードを取得して返す・見るだけ()
+		public CUndoRedoセル仮想 tUndoするノードを取得して返す_見るだけ()
 		{
 			this.urd現在のリストノード = this.root;
 			if( this.root.nUndo可能な回数 <= 0 )

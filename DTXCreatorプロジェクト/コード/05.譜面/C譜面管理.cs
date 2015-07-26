@@ -29,7 +29,7 @@ namespace DTXCreator.譜面
 		public bool bOPENチップである( Cチップ cc )
 		{
 			Cレーン cレーン = this.listレーン[ cc.nレーン番号0to ];
-			return ( ( cc.n値・整数1to1295 == 2 ) && ( ( cレーン.eレーン種別 == Cレーン.E種別.GtR ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsR ) ) );
+			return ( ( cc.n値_整数1to1295 == 2 ) && ( ( cレーン.eレーン種別 == Cレーン.E種別.GtR ) || ( cレーン.eレーン種別 == Cレーン.E種別.BsR ) ) );
 		}
 		public bool b確定選択中のチップがある()
 		{
@@ -61,7 +61,7 @@ namespace DTXCreator.譜面
 						{
 							if( ( cチップ.nチャンネル番号00toFF == 8 ) && ( ( num3 + cチップ.n位置grid ) <= n譜面先頭からの位置grid ) )
 							{
-								num = (decimal) cチップ.f値・浮動小数;
+								num = (decimal) cチップ.f値_浮動小数;
 							}
 						}
 					}
@@ -87,9 +87,9 @@ namespace DTXCreator.譜面
 			}
 			return -1;
 		}
-		public int nY座標dotが位置するgridを返す・ガイド幅単位( int nY )
+		public int nY座標dotが位置するgridを返す_ガイド幅単位( int nY )
 		{
-			int num = this.nY座標dotが位置するgridを返す・最高解像度( nY );
+			int num = this.nY座標dotが位置するgridを返す_最高解像度( nY );
 			C小節 c小節 = this.p譜面先頭からの位置gridを含む小節を返す( num );
 			if( c小節 == null )
 			{
@@ -99,7 +99,7 @@ namespace DTXCreator.譜面
 			int num3 = ( ( num - num2 ) / this.n現在のガイド幅grid ) * this.n現在のガイド幅grid;
 			return ( num2 + num3 );
 		}
-		public int nY座標dotが位置するgridを返す・最高解像度( int nY )
+		public int nY座標dotが位置するgridを返す_最高解像度( int nY )
 		{
 			int num = this._Form.pictureBox譜面パネル.ClientSize.Height - nY;
 			return ( ( num / C小節.n１グリッドの高さdot ) + this.n現在の譜面表示下辺の譜面先頭からの位置grid );
@@ -195,7 +195,7 @@ namespace DTXCreator.譜面
 			int num = this.nX座標dotが位置するレーン番号を返す( x );
 			if( num >= 0 )
 			{
-				int num2 = this.nY座標dotが位置するgridを返す・最高解像度( y );
+				int num2 = this.nY座標dotが位置するgridを返す_最高解像度( y );
 				C小節 c小節 = this.p譜面先頭からの位置gridを含む小節を返す( num2 );
 				if( c小節 == null )
 				{
@@ -303,7 +303,7 @@ namespace DTXCreator.譜面
 
 								break;
 							}
-							if( ( bRGBGuitar && ( this.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.GtR ) ) && ( cチップ.n値・整数1to1295 == 2 ) )
+							if( ( bRGBGuitar && ( this.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.GtR ) ) && ( cチップ.n値_整数1to1295 == 2 ) )
 							{
 								Cチップ cチップ3 = new Cチップ();
 								cチップ3.tコピーfrom( cチップ );
@@ -314,7 +314,7 @@ namespace DTXCreator.譜面
 								this._Form.b未保存 = true;
 								break;
 							}
-							if( ( bRGBBass && ( this.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.BsR ) ) && ( cチップ.n値・整数1to1295 == 2 ) )
+							if( ( bRGBBass && ( this.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.BsR ) ) && ( cチップ.n値_整数1to1295 == 2 ) )
 							{
 								Cチップ cチップ4 = new Cチップ();
 								cチップ4.tコピーfrom( cチップ );
@@ -329,29 +329,29 @@ namespace DTXCreator.譜面
 					}
 				}
 				while( !b削除完了 );
-				this._Form.tUndoRedo用GUIの有効・無効を設定する();
+				this._Form.tUndoRedo用GUIの有効無効を設定する();
 				this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
 			}
 		}
-		public void tチップを配置または置換する( int nレーン番号0to, int n譜面先頭からの位置grid, int nチップ値・整数, float fチップ値・浮動小数, bool b裏として配置 )
+		public void tチップを配置または置換する( int nレーン番号0to, int n譜面先頭からの位置grid, int nチップ値_整数, float fチップ値_浮動小数, bool b裏として配置 )
 		{
 			C小節 c小節 = this.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
 			if( c小節 != null )
 			{
 				this._Form.mgrUndoRedo管理者.tトランザクション記録を開始する();
 				this.tチップを削除する( nレーン番号0to, n譜面先頭からの位置grid );
-				if( ( ( this.listレーン[ nレーン番号0to ].eレーン種別 == Cレーン.E種別.GtR ) || ( this.listレーン[ nレーン番号0to ].eレーン種別 == Cレーン.E種別.BsR ) ) && ( nチップ値・整数 == 2 ) )
+				if( ( ( this.listレーン[ nレーン番号0to ].eレーン種別 == Cレーン.E種別.GtR ) || ( this.listレーン[ nレーン番号0to ].eレーン種別 == Cレーン.E種別.BsR ) ) && (nチップ値_整数 == 2 ) )
 				{
 					this.tチップを削除する( nレーン番号0to + 1, n譜面先頭からの位置grid );
 					this.tチップを削除する( nレーン番号0to + 2, n譜面先頭からの位置grid );
 				}
 				Cレーン cレーン = this.listレーン[ nレーン番号0to ];
 				Cチップ item = new Cチップ();
-				item.nチャンネル番号00toFF = b裏として配置 ? cレーン.nチャンネル番号・裏00toFF : cレーン.nチャンネル番号・表00toFF;
+				item.nチャンネル番号00toFF = b裏として配置 ? cレーン.nチャンネル番号_裏00toFF : cレーン.nチャンネル番号_表00toFF;
 				item.nレーン番号0to = nレーン番号0to;
 				item.n位置grid = n譜面先頭からの位置grid - this.n譜面先頭からみた小節先頭の位置gridを返す( c小節.n小節番号0to3599 );
-				item.n値・整数1to1295 = nチップ値・整数;
-				item.f値・浮動小数 = fチップ値・浮動小数;
+				item.n値_整数1to1295 = nチップ値_整数;
+				item.f値_浮動小数 = fチップ値_浮動小数;
 				item.b裏 = b裏として配置;
 				c小節.listチップ.Add( item );
 				Cチップ cc = new Cチップ();
@@ -368,7 +368,7 @@ namespace DTXCreator.譜面
 					}
 				}
 				this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-				this._Form.tUndoRedo用GUIの有効・無効を設定する();
+				this._Form.tUndoRedo用GUIの有効無効を設定する();
 				this._Form.b未保存 = true;
 			}
 		}
@@ -465,7 +465,7 @@ namespace DTXCreator.譜面
 			Cチップ cチップ = this.p指定位置にあるチップを返す( ur変更前.n小節番号0to, ur変更前.nレーン番号0to, ur変更前.n位置grid );
 			if( cチップ != null )
 			{
-				cチップ.n値・整数1to1295 = ur変更後.n値・整数1to1295;
+				cチップ.n値_整数1to1295 = ur変更後.n値_整数1to1295;
 				this._Form.b未保存 = true;
 			}
 		}
@@ -474,7 +474,7 @@ namespace DTXCreator.譜面
 			Cチップ cチップ = this.p指定位置にあるチップを返す( ur変更後.n小節番号0to, ur変更後.nレーン番号0to, ur変更後.n位置grid );
 			if( cチップ != null )
 			{
-				cチップ.n値・整数1to1295 = ur変更前.n値・整数1to1295;
+				cチップ.n値_整数1to1295 = ur変更前.n値_整数1to1295;
 				this._Form.b未保存 = true;
 			}
 		}
@@ -485,12 +485,12 @@ namespace DTXCreator.譜面
 			{
 				if( cチップ.b裏 )
 				{
-					cチップ.nチャンネル番号00toFF = this.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号・表00toFF;
+					cチップ.nチャンネル番号00toFF = this.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号_表00toFF;
 					cチップ.b裏 = false;
 				}
 				else
 				{
-					cチップ.nチャンネル番号00toFF = this.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号・裏00toFF;
+					cチップ.nチャンネル番号00toFF = this.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号_裏00toFF;
 					cチップ.b裏 = true;
 				}
 				this._Form.b未保存 = true;
@@ -503,12 +503,12 @@ namespace DTXCreator.譜面
 			{
 				if( cチップ.b裏 )
 				{
-					cチップ.nチャンネル番号00toFF = this.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号・表00toFF;
+					cチップ.nチャンネル番号00toFF = this.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号_表00toFF;
 					cチップ.b裏 = false;
 				}
 				else
 				{
-					cチップ.nチャンネル番号00toFF = this.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号・裏00toFF;
+					cチップ.nチャンネル番号00toFF = this.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号_裏00toFF;
 					cチップ.b裏 = true;
 				}
 				this._Form.b未保存 = true;
@@ -516,10 +516,10 @@ namespace DTXCreator.譜面
 		}
 		public void t初期化()
 		{
-			this.t初期化・listレーンの生成();
-			this.t初期化・小節を１０個まで作成する();
-			this.t初期化・背景画像を生成する();
-			this.t初期化・スクロールバーを初期設定する();
+			this.t初期化_listレーンの生成();
+			this.t初期化_小節を１０個まで作成する();
+			this.t初期化_背景画像を生成する();
+			this.t初期化_スクロールバーを初期設定する();
 		}
 		public void t小節削除のRedo( int nダミー, int n削除する小節番号0to )
 		{
@@ -666,16 +666,16 @@ namespace DTXCreator.譜面
 					{
 						Rectangle rectangle = new Rectangle( 0, sz描画対象サイズdot.Height - ( num2 - num3 ), sz描画対象サイズdot.Width, num2 - h );
 						Rectangle rectangle2 = new Rectangle( rc可視領域dot.X, rectangle.Y, rc可視領域dot.Width, rectangle.Height );
-						this.t譜面を描画する・１小節を描画する( g, cs, rectangle, rectangle2 );
+						this.t譜面を描画する_１小節を描画する( g, cs, rectangle, rectangle2 );
 					}
 				}
 				bar++;
 				h = num2;
 			}
 			Rectangle rectangle3 = new Rectangle( 0, 0, sz描画対象サイズdot.Width, nレーン割付チップ番号表示高さdot );
-			this.t譜面を描画する・レーン割付チップを描画する( g, rectangle3 );
+			this.t譜面を描画する_レーン割付チップを描画する( g, rectangle3 );
 			rectangle3 = new Rectangle( 0, 10, sz描画対象サイズdot.Width, nレーン番号表示高さdot );
-			this.t譜面を描画する・レーン名を描画する( g, rectangle3 );
+			this.t譜面を描画する_レーン名を描画する( g, rectangle3 );
 		}
 
 		/// <summary>
@@ -724,7 +724,7 @@ namespace DTXCreator.譜面
 		public void tRefreshDisplayLanes()
 		{
 			this.tRecalc_n位置XdotX();											// レーン位置が変わったので、レーン毎のX座標を再計算
-			this.t初期化・背景画像を生成する();									// レーン数が変わったので、レーン画像を納める背景も再生成
+			this.t初期化_背景画像を生成する();									// レーン数が変わったので、レーン画像を納める背景も再生成
 			this.t水平スクロールバーと譜面パネル左右位置の調整();				// レーン数が変わったので、スクロールバーの長さも再調整
 		}
 
@@ -760,7 +760,7 @@ namespace DTXCreator.譜面
 		private StringFormat strfmtレーン名文字フォーマット = new StringFormat();
 		private StringFormat strfmt小節番号文字フォーマット = new StringFormat();
 
-		private void t初期化・listレーンの生成()
+		private void t初期化_listレーンの生成()
 		{
 			this.listレーン.Clear();
 			int width = Cレーン.LANEWIDTH;
@@ -844,7 +844,7 @@ namespace DTXCreator.譜面
 										// (初期化の際に1つ1つまじめに計算しても良いが、単純にコード記述量が減るのでここでまとめて計算している)
 
 		}
-		private void t初期化・スクロールバーを初期設定する()
+		private void t初期化_スクロールバーを初期設定する()
 		{
 			this._Form.hScrollBar譜面用水平スクロールバー.Value = 0;
 			this._Form.vScrollBar譜面用垂直スクロールバー.Value = 0;
@@ -852,14 +852,14 @@ namespace DTXCreator.譜面
 			this.t垂直スクロールバーと譜面可視領域の上下位置の調整();
 			this._Form.vScrollBar譜面用垂直スクロールバー.Value = ( this._Form.vScrollBar譜面用垂直スクロールバー.Maximum + 1 ) - this._Form.vScrollBar譜面用垂直スクロールバー.LargeChange;
 		}
-		private void t初期化・小節を１０個まで作成する()
+		private void t初期化_小節を１０個まで作成する()
 		{
 			for( int i = 0; i < 10; i++ )
 			{
 				this.dic小節.Add( i, new C小節( i ) );
 			}
 		}
-		private void t初期化・背景画像を生成する()
+		private void t初期化_背景画像を生成する()
 		{
 			int width = 0;
 			foreach( Cレーン cレーン in this.listレーン )
@@ -879,16 +879,16 @@ namespace DTXCreator.譜面
 			this._Form.pictureBox譜面パネル.BackgroundImage = this.bmp背景画像;
 			this._Form.pictureBox譜面パネル.BackgroundImageLayout = ImageLayout.Tile;
 		}
-		private void t譜面を描画する・１小節を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域, Rectangle rc小節のPicBox内可視領域 )
+		private void t譜面を描画する_１小節を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域, Rectangle rc小節のPicBox内可視領域 )
 		{
-			this.t譜面を描画する・１小節を描画する・小節番号を描画する( g, cs, rc小節のPicBox内可視領域 );
-			this.t譜面を描画する・１小節を描画する・ガイド線を描画する( g, cs, rc小節のPicBox内描画領域 );
-			this.t譜面を描画する・１小節を描画する・拍線を描画する( g, cs, rc小節のPicBox内描画領域 );
-			this.t譜面を描画する・１小節を描画する・レーン区分線を描画する( g, cs, rc小節のPicBox内描画領域 );
-			this.t譜面を描画する・１小節を描画する・小節線を描画する( g, cs, rc小節のPicBox内描画領域 );
-			this.t譜面を描画する・１小節を描画する・チップを描画する( g, cs, rc小節のPicBox内描画領域 );
+			this.t譜面を描画する_１小節を描画する_小節番号を描画する( g, cs, rc小節のPicBox内可視領域 );
+			this.t譜面を描画する_１小節を描画する_ガイド線を描画する( g, cs, rc小節のPicBox内描画領域 );
+			this.t譜面を描画する_１小節を描画する_拍線を描画する( g, cs, rc小節のPicBox内描画領域 );
+			this.t譜面を描画する_１小節を描画する_レーン区分線を描画する( g, cs, rc小節のPicBox内描画領域 );
+			this.t譜面を描画する_１小節を描画する_小節線を描画する( g, cs, rc小節のPicBox内描画領域 );
+			this.t譜面を描画する_１小節を描画する_チップを描画する( g, cs, rc小節のPicBox内描画領域 );
 		}
-		private void t譜面を描画する・１小節を描画する・ガイド線を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
+		private void t譜面を描画する_１小節を描画する_ガイド線を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
 		{
 			if( this.n現在のガイド幅grid > 1 )
 			{
@@ -900,7 +900,7 @@ namespace DTXCreator.譜面
 				}
 			}
 		}
-		private void t譜面を描画する・１小節を描画する・チップを描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
+		private void t譜面を描画する_１小節を描画する_チップを描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
 		{
 			cs.listチップ.Sort();
 			Rectangle rectangle = new Rectangle( 0, 0, 0, 0 );
@@ -930,7 +930,7 @@ namespace DTXCreator.譜面
 						case Cレーン.E種別.BsR:
 						case Cレーン.E種別.BsG:
 						case Cレーン.E種別.BsB:
-							if( ( ( cレーン.eレーン種別 != Cレーン.E種別.GtR ) || ( cチップ.n値・整数1to1295 != 2 ) ) && ( ( cレーン.eレーン種別 != Cレーン.E種別.BsR ) || ( cチップ.n値・整数1to1295 != 2 ) ) )
+							if( ( ( cレーン.eレーン種別 != Cレーン.E種別.GtR ) || ( cチップ.n値_整数1to1295 != 2 ) ) && ( ( cレーン.eレーン種別 != Cレーン.E種別.BsR ) || ( cチップ.n値_整数1to1295 != 2 ) ) )
 							{
 								Cチップ.t表チップを描画する( g, rectangle, -1, cレーン.col背景色 );
 								break;
@@ -940,29 +940,29 @@ namespace DTXCreator.譜面
 							break;
 
 						case Cレーン.E種別.BPM:
-							Cチップ.t表チップを描画する( g, rectangle, cチップ.f値・浮動小数, cレーン.col背景色 );
+							Cチップ.t表チップを描画する( g, rectangle, cチップ.f値_浮動小数, cレーン.col背景色 );
 							break;
 
 						case Cレーン.E種別.BEAT:
-							Cチップ.t表チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色, Cレーン.E種別.BEAT );
+							Cチップ.t表チップを描画する( g, rectangle, cチップ.n値_整数1to1295, cレーン.col背景色, Cレーン.E種別.BEAT );
 							break;
 
 						default:
-							Cチップ.t表チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色 );
+							Cチップ.t表チップを描画する( g, rectangle, cチップ.n値_整数1to1295, cレーン.col背景色 );
 							break;
 					}
 				}
 				else if( cレーン.eレーン種別 == Cレーン.E種別.BPM )
 				{
-					Cチップ.t裏チップを描画する( g, rectangle, cチップ.f値・浮動小数, cレーン.col背景色 );
+					Cチップ.t裏チップを描画する( g, rectangle, cチップ.f値_浮動小数, cレーン.col背景色 );
 				}
 				else if ( cレーン.eレーン種別 == Cレーン.E種別.BEAT )
 				{
-					Cチップ.t裏チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色, Cレーン.E種別.BEAT );
+					Cチップ.t裏チップを描画する( g, rectangle, cチップ.n値_整数1to1295, cレーン.col背景色, Cレーン.E種別.BEAT );
 				}
 				else
 				{
-					Cチップ.t裏チップを描画する( g, rectangle, cチップ.n値・整数1to1295, cレーン.col背景色 );
+					Cチップ.t裏チップを描画する( g, rectangle, cチップ.n値_整数1to1295, cレーン.col背景色 );
 				}
 				if ( cチップ.bドラッグで選択中 || cチップ.b確定選択中 )
 				{
@@ -970,7 +970,7 @@ namespace DTXCreator.譜面
 				}
 			}
 		}
-		private void t譜面を描画する・１小節を描画する・レーン区分線を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
+		private void t譜面を描画する_１小節を描画する_レーン区分線を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
 		{
 			int num = 0;
 			foreach( Cレーン cレーン in this.listレーン )
@@ -980,17 +980,17 @@ namespace DTXCreator.譜面
 				num += cレーン.n幅dot;
 			}
 		}
-		private void t譜面を描画する・１小節を描画する・小節線を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
+		private void t譜面を描画する_１小節を描画する_小節線を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
 		{
 			Rectangle rectangle = rc小節のPicBox内描画領域;
 			g.DrawLine( this.pen小節線ペン, rectangle.X, rectangle.Bottom, rectangle.Right, rectangle.Bottom );
 			g.DrawLine( this.pen小節線ペン, rectangle.X, rectangle.Top, rectangle.Right, rectangle.Top );
 		}
-		private void t譜面を描画する・１小節を描画する・小節番号を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内可視領域 )
+		private void t譜面を描画する_１小節を描画する_小節番号を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内可視領域 )
 		{
 			g.DrawString( C変換.str小節番号を文字列3桁に変換して返す( cs.n小節番号0to3599 ), this.ft小節番号文字フォント, this.br小節番号文字ブラシ, rc小節のPicBox内可視領域, this.strfmt小節番号文字フォーマット );
 		}
-		private void t譜面を描画する・１小節を描画する・拍線を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
+		private void t譜面を描画する_１小節を描画する_拍線を描画する( Graphics g, C小節 cs, Rectangle rc小節のPicBox内描画領域 )
 		{
 			int num = cs.n小節長倍率を考慮した現在の小節の高さgrid;
 			for( int i = 0; i < num; i += C小節.n基準の高さgrid / 4 )
@@ -999,7 +999,7 @@ namespace DTXCreator.譜面
 				g.DrawLine( this.pen拍線ペン, rc小節のPicBox内描画領域.X, num3, rc小節のPicBox内描画領域.Right, num3 );
 			}
 		}
-		private void t譜面を描画する・レーン割付チップを描画する( Graphics g, Rectangle rc小節のPicBox内描画領域 )
+		private void t譜面を描画する_レーン割付チップを描画する( Graphics g, Rectangle rc小節のPicBox内描画領域 )
 		{
 			LinearGradientBrush brush = new LinearGradientBrush( rc小節のPicBox内描画領域, Color.FromArgb( 0xff, 0, 0, 100 ), Color.FromArgb( 0xff, 100, 100, 0xff ), LinearGradientMode.Vertical );
 			g.FillRectangle( brush, rc小節のPicBox内描画領域 );
@@ -1015,9 +1015,9 @@ namespace DTXCreator.譜面
 				layoutRectangle.Y = rc小節のPicBox内描画領域.Y + 1;
 				layoutRectangle.Width = cレーン.n幅dot;
 				layoutRectangle.Height = rc小節のPicBox内描画領域.Height;
-				if ( cレーン.nレーン割付チップ・表0or1to1295 > 0 )
+				if ( cレーン.nレーン割付チップ_表0or1to1295 > 0 )
 				{
-					string s = C変換.str数値を36進数2桁に変換して返す( cレーン.nレーン割付チップ・表0or1to1295 );
+					string s = C変換.str数値を36進数2桁に変換して返す( cレーン.nレーン割付チップ_表0or1to1295);
 					g.DrawString( s, this.ftレーン割付チップ番号文字フォント, this.brレーン割付番号文字ブラシ影, layoutRectangle, this.strfmtレーン割付チップ番号文字フォーマット );
 					layoutRectangle.X--;
 					layoutRectangle.Y--;
@@ -1026,9 +1026,9 @@ namespace DTXCreator.譜面
 					layoutRectangle.Y++;
 				}
 				layoutRectangle.X += cレーン.n幅dot / 2;
-				if ( cレーン.nレーン割付チップ・裏0or1to1295 > 0 )
+				if ( cレーン.nレーン割付チップ_裏0or1to1295 > 0 )
 				{
-					string str2 = C変換.str数値を36進数2桁に変換して返す( cレーン.nレーン割付チップ・裏0or1to1295 );
+					string str2 = C変換.str数値を36進数2桁に変換して返す( cレーン.nレーン割付チップ_裏0or1to1295);
 					g.DrawString( str2, this.ftレーン割付チップ番号文字フォント, this.brレーン割付番号文字ブラシ影, layoutRectangle, this.strfmtレーン割付チップ番号文字フォーマット );
 					layoutRectangle.X--;
 					layoutRectangle.Y--;
@@ -1036,7 +1036,7 @@ namespace DTXCreator.譜面
 				}
 			}
 		}
-		private void t譜面を描画する・レーン名を描画する( Graphics g, Rectangle rcレーン名のPicBox内描画領域 )
+		private void t譜面を描画する_レーン名を描画する( Graphics g, Rectangle rcレーン名のPicBox内描画領域 )
 		{
 			LinearGradientBrush brush = new LinearGradientBrush( rcレーン名のPicBox内描画領域, Color.FromArgb( 0xff, 100, 100, 0xff ), Color.FromArgb( 0, 0, 0, 0xff ), LinearGradientMode.Vertical );
 			g.FillRectangle( brush, rcレーン名のPicBox内描画領域 );

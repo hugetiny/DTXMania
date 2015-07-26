@@ -25,9 +25,9 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			return this.AVIキャッシュ.tAVIをキャッシュから検索して返す( nAVI番号1to1295 );
 		}
-		public CAVI tAVIをキャッシュから検索して返す・なければ新規生成する( int nAVI番号1to1295 )
+		public CAVI tAVIをキャッシュから検索して返す_なければ新規生成する( int nAVI番号1to1295 )
 		{
-			return this.AVIキャッシュ.tAVIをキャッシュから検索して返す・なければ新規生成する( nAVI番号1to1295 );
+			return this.AVIキャッシュ.tAVIをキャッシュから検索して返す_なければ新規生成する( nAVI番号1to1295 );
 		}
 		public ListViewItem tAVI番号に対応するListViewItemを返す( int nAVI番号1to1295 )
 		{
@@ -43,7 +43,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			CAVI cavi = this.AVIキャッシュ.tAVIをキャッシュから検索して返す( num );
 			cavi.tコピーfrom( ac変更後 );
 			cavi.tコピーto( this.listViewAVIリスト.Items[ num - 1 ] );
-			this._Form.tWAV・BMP・AVIリストのカーソルを全部同じ行に合わせる( cavi.nAVI番号1to1295 - 1 );
+			this._Form.tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( cavi.nAVI番号1to1295 - 1 );
 			this._Form.tタブを選択する( Cメインフォーム.Eタブ種別.AVI );
 			this.listViewAVIリスト.Refresh();
 		}
@@ -53,28 +53,28 @@ namespace DTXCreator.WAV_BMP_AVI
 			CAVI cavi = this.AVIキャッシュ.tAVIをキャッシュから検索して返す( num );
 			cavi.tコピーfrom( ac変更前 );
 			cavi.tコピーto( this.listViewAVIリスト.Items[ num - 1 ] );
-			this._Form.tWAV・BMP・AVIリストのカーソルを全部同じ行に合わせる( cavi.nAVI番号1to1295 - 1 );
+			this._Form.tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( cavi.nAVI番号1to1295 - 1 );
 			this._Form.tタブを選択する( Cメインフォーム.Eタブ種別.AVI );
 			this.listViewAVIリスト.Refresh();
 		}
 		public ListViewItem tCAVIとListViewItemを生成して返す( int n行番号1to1295 )
 		{
-			return this.tAVIをキャッシュから検索して返す・なければ新規生成する( n行番号1to1295 ).t現在の内容から新しいListViewItemを作成して返す();
+			return this.tAVIをキャッシュから検索して返す_なければ新規生成する( n行番号1to1295 ).t現在の内容から新しいListViewItemを作成して返す();
 		}
 		public void tItemを交換する( int nItem番号1, int nItem番号2 )
 		{
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
 				this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<int>( null, new DGUndoを実行する<int>( this.t行交換のUndo ), new DGRedoを実行する<int>( this.t行交換のRedo ), nItem番号1, nItem番号2 ) );
-				this._Form.tUndoRedo用GUIの有効・無効を設定する();
+				this._Form.tUndoRedo用GUIの有効無効を設定する();
 			}
 			CUndoRedo管理.bUndoRedoした直後 = false;
-			this.tItemを交換する・ListViewItem( nItem番号1, nItem番号2 );
-			this.tItemを交換する・AVIキャッシュ( nItem番号1, nItem番号2 );
-			this.tItemを交換する・チップパレット( nItem番号1, nItem番号2 );
-			this.tItemを交換する・譜面上のチップ( nItem番号1, nItem番号2 );
-			this.tItemを交換する・レーン割付チップ( nItem番号1, nItem番号2 );
-			this.tItemを交換する・カーソル移動( nItem番号1, nItem番号2 );
+			this.tItemを交換する_ListViewItem( nItem番号1, nItem番号2 );
+			this.tItemを交換する_AVIキャッシュ( nItem番号1, nItem番号2 );
+			this.tItemを交換する_チップパレット( nItem番号1, nItem番号2 );
+			this.tItemを交換する_譜面上のチップ( nItem番号1, nItem番号2 );
+			this.tItemを交換する_レーン割付チップ( nItem番号1, nItem番号2 );
+			this.tItemを交換する_カーソル移動( nItem番号1, nItem番号2 );
 			this._Form.listViewAVIリスト.Refresh();
 			this._Form.pictureBox譜面パネル.Refresh();
 			this._Form.b未保存 = true;
@@ -116,7 +116,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public void t新規生成のRedo( CAVI ac生成前はNull, CAVI ac生成されたAVIの複製 )
 		{
 			int num = ac生成されたAVIの複製.nAVI番号1to1295;
-			CAVI cavi = this.AVIキャッシュ.tAVIをキャッシュから検索して返す・なければ新規生成する( num );
+			CAVI cavi = this.AVIキャッシュ.tAVIをキャッシュから検索して返す_なければ新規生成する( num );
 			cavi.tコピーfrom( ac生成されたAVIの複製 );
 			cavi.tコピーto( this.listViewAVIリスト.Items[ num - 1 ] );
 			this._Form.tタブを選択する( Cメインフォーム.Eタブ種別.AVI );
@@ -133,7 +133,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public void t動画プロパティを開いて編集する( int nAVI番号1to1295, string str相対パスの基本フォルダ )
 		{
 			this._Form.dlgチップパレット.t一時的に隠蔽する();
-			CAVI cavi = this.tAVIをキャッシュから検索して返す・なければ新規生成する( nAVI番号1to1295 );
+			CAVI cavi = this.tAVIをキャッシュから検索して返す_なければ新規生成する( nAVI番号1to1295 );
 			ListViewItem item = cavi.t現在の内容から新しいListViewItemを作成して返す();
 			string directoryName = "";
 			if( item.SubItems[ 2 ].Text.Length > 0 )
@@ -161,7 +161,7 @@ namespace DTXCreator.WAV_BMP_AVI
 					avi = new CAVI();
 					avi.tコピーfrom( c動画プロパティダイアログ.avi );
 					this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<CAVI>( null, new DGUndoを実行する<CAVI>( this.tAVI編集のUndo ), new DGRedoを実行する<CAVI>( this.tAVI編集のRedo ), avi, cavi3 ) );
-					this._Form.tUndoRedo用GUIの有効・無効を設定する();
+					this._Form.tUndoRedo用GUIの有効無効を設定する();
 					c動画プロパティダイアログ.avi.tコピーfrom( cavi3 );
 					if( this.tAVI番号に対応するListViewItemを返す( nAVI番号1to1295 ) != null )
 					{
@@ -186,7 +186,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		private CAVIキャッシュ AVIキャッシュ = new CAVIキャッシュ();
 		private ListView listViewAVIリスト;
 
-		private void tItemを交換する・AVIキャッシュ( int nItem番号1, int nItem番号2 )
+		private void tItemを交換する_AVIキャッシュ( int nItem番号1, int nItem番号2 )
 		{
 			int num = nItem番号1 + 1;
 			int num2 = nItem番号2 + 1;
@@ -199,7 +199,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			cavi2.tコピーfrom( cavi3 );
 			cavi2.nAVI番号1to1295 = num2;
 		}
-		private void tItemを交換する・ListViewItem( int nItem番号1, int nItem番号2 )
+		private void tItemを交換する_ListViewItem( int nItem番号1, int nItem番号2 )
 		{
 			int num = nItem番号1 + 1;
 			int num2 = nItem番号2 + 1;
@@ -212,41 +212,41 @@ namespace DTXCreator.WAV_BMP_AVI
 			cavi2.tコピーto( this.listViewAVIリスト.Items[ nItem番号1 ] );
 			cavi.tコピーto( this.listViewAVIリスト.Items[ nItem番号2 ] );
 		}
-		private void tItemを交換する・カーソル移動( int nItem番号1, int nItem番号2 )
+		private void tItemを交換する_カーソル移動( int nItem番号1, int nItem番号2 )
 		{
 			this.tItemを選択する( nItem番号2 );
 		}
-		private void tItemを交換する・チップパレット( int nItem番号1, int nItem番号2 )
+		private void tItemを交換する_チップパレット( int nItem番号1, int nItem番号2 )
 		{
 			this._Form.dlgチップパレット.tパレットセルの番号を置換する( 2, nItem番号1 + 1, nItem番号2 + 1 );
 		}
-		private void tItemを交換する・レーン割付チップ( int nItem番号1, int nItem番号2 )
+		private void tItemを交換する_レーン割付チップ( int nItem番号1, int nItem番号2 )
 		{
 			for( int i = 0; i < this._Form.mgr譜面管理者.listレーン.Count; i++ )
 			{
 				Cレーン cレーン = this._Form.mgr譜面管理者.listレーン[ i ];
 				if( cレーン.eレーン種別 == Cレーン.E種別.AVI )
 				{
-					if( cレーン.nレーン割付チップ・表0or1to1295 == ( nItem番号1 + 1 ) )
+					if( cレーン.nレーン割付チップ_表0or1to1295 == ( nItem番号1 + 1 ) )
 					{
-						cレーン.nレーン割付チップ・表0or1to1295 = nItem番号2 + 1;
+						cレーン.nレーン割付チップ_表0or1to1295 = nItem番号2 + 1;
 					}
-					else if( cレーン.nレーン割付チップ・表0or1to1295 == ( nItem番号2 + 1 ) )
+					else if( cレーン.nレーン割付チップ_表0or1to1295 == ( nItem番号2 + 1 ) )
 					{
-						cレーン.nレーン割付チップ・表0or1to1295 = nItem番号1 + 1;
+						cレーン.nレーン割付チップ_表0or1to1295 = nItem番号1 + 1;
 					}
-					if( cレーン.nレーン割付チップ・裏0or1to1295 == ( nItem番号1 + 1 ) )
+					if( cレーン.nレーン割付チップ_裏0or1to1295 == ( nItem番号1 + 1 ) )
 					{
-						cレーン.nレーン割付チップ・裏0or1to1295 = nItem番号2 + 1;
+						cレーン.nレーン割付チップ_裏0or1to1295 = nItem番号2 + 1;
 					}
-					else if( cレーン.nレーン割付チップ・裏0or1to1295 == ( nItem番号2 + 1 ) )
+					else if( cレーン.nレーン割付チップ_裏0or1to1295 == ( nItem番号2 + 1 ) )
 					{
-						cレーン.nレーン割付チップ・裏0or1to1295 = nItem番号1 + 1;
+						cレーン.nレーン割付チップ_裏0or1to1295 = nItem番号1 + 1;
 					}
 				}
 			}
 		}
-		private void tItemを交換する・譜面上のチップ( int nItem番号1, int nItem番号2 )
+		private void tItemを交換する_譜面上のチップ( int nItem番号1, int nItem番号2 )
 		{
 			foreach( KeyValuePair<int, C小節> pair in this._Form.mgr譜面管理者.dic小節 )
 			{
@@ -256,13 +256,13 @@ namespace DTXCreator.WAV_BMP_AVI
 					Cチップ cチップ = c小節.listチップ[ i ];
 					if( this._Form.mgr譜面管理者.listレーン[ cチップ.nレーン番号0to ].eレーン種別 == Cレーン.E種別.AVI )
 					{
-						if( cチップ.n値・整数1to1295 == ( nItem番号1 + 1 ) )
+						if( cチップ.n値_整数1to1295 == ( nItem番号1 + 1 ) )
 						{
-							cチップ.n値・整数1to1295 = nItem番号2 + 1;
+							cチップ.n値_整数1to1295 = nItem番号2 + 1;
 						}
-						else if( cチップ.n値・整数1to1295 == ( nItem番号2 + 1 ) )
+						else if( cチップ.n値_整数1to1295 == ( nItem番号2 + 1 ) )
 						{
-							cチップ.n値・整数1to1295 = nItem番号1 + 1;
+							cチップ.n値_整数1to1295 = nItem番号1 + 1;
 						}
 					}
 				}

@@ -82,7 +82,7 @@ namespace DTXCreator
 				return this.numericUpDownBPM.Value;
 			}
 		}
-		internal int n現在選択中のWAV・BMP・AVIリストの行番号0to1294;
+		internal int n現在選択中のWAV_BMP_AVIリストの行番号0to1294;
 
 		/// <summary>
 		/// DTXC.exe のあるフォルダの絶対パス。
@@ -482,7 +482,7 @@ namespace DTXCreator
 		#endregion
 		#region [ 新規作成 ]
 		//-----------------
-		private void tシナリオ・新規作成()
+		private void tシナリオ_新規作成()
 		{
 			// 作成前の保存確認。
 
@@ -558,7 +558,7 @@ namespace DTXCreator
 			this.listViewAVIリスト.Items.Clear();
 			this.mgrAVIリスト管理者 = new CAVIリスト管理( this, this.listViewAVIリスト );
 
-			this.tWAV・BMP・AVIリストのカーソルを全部同じ行に合わせる( 0 );
+			this.tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( 0 );
 			//-----------------
 			#endregion
 			
@@ -630,7 +630,7 @@ namespace DTXCreator
 			this.mgrUndoRedo管理者 = new CUndoRedo管理();
 
 			CUndoRedo管理.bUndoRedoした直後 = false;
-			this.tUndoRedo用GUIの有効・無効を設定する();
+			this.tUndoRedo用GUIの有効無効を設定する();
 			//-----------------
 			#endregion
 
@@ -668,7 +668,7 @@ namespace DTXCreator
 		#endregion
 		#region [ 開く ]
 		//-----------------
-		private void tシナリオ・開く()
+		private void tシナリオ_開く()
 		{
 			// 作成前の保存確認。
 
@@ -710,7 +710,7 @@ namespace DTXCreator
 			//-----------------
 			#endregion
 		}
-		private void tシナリオ・DragDropされたファイルを開く( string[] DropFiles )
+		private void tシナリオ_DragDropされたファイルを開く( string[] DropFiles )
 		{
 			// 開くファイルを決定する。
 
@@ -870,7 +870,7 @@ namespace DTXCreator
 		#endregion
 		#region [ 上書き保存／名前をつけて保存 ]
 		//-----------------
-		private void tシナリオ・上書き保存()
+		private void tシナリオ_上書き保存()
 		{
 			// 前処理。
 
@@ -949,7 +949,7 @@ namespace DTXCreator
 			this.dlgチップパレット.t一時的な隠蔽を解除する();
 			this.b未保存 = false;
 		}
-		private void tシナリオ・名前をつけて保存()
+		private void tシナリオ_名前をつけて保存()
 		{
 			// 前処理。
 
@@ -981,7 +981,7 @@ namespace DTXCreator
 
 			// 保存する。
 			
-			this.tシナリオ・上書き保存();
+			this.tシナリオ_上書き保存();
 
 
 			// 後処理。
@@ -1029,7 +1029,7 @@ namespace DTXCreator
 		#endregion
 		#region [ 終了 ]
 		//-----------------
-		private void tシナリオ・終了()
+		private void tシナリオ_終了()
 		{
 			// ウィンドウを閉じる。
 
@@ -1039,11 +1039,11 @@ namespace DTXCreator
 		#endregion
 		#region [ 検索／置換 ]
 		//-----------------
-		private void tシナリオ・検索()
+		private void tシナリオ_検索()
 		{
 			this.mgr選択モード管理者.t検索する();	// モードによらず、検索はすべて選択モード管理者が行う。
 		}
-		private void tシナリオ・置換()
+		private void tシナリオ_置換()
 		{
 			this.mgr選択モード管理者.t置換する();	// モードによらず、置換はすべて選択モード管理者が行う。
 		}
@@ -1051,7 +1051,7 @@ namespace DTXCreator
 		#endregion
 		#region [ 小節長変更／小節の挿入／小節の削除 ]
 		//-----------------
-		private void tシナリオ・小節長を変更する( C小節 cs )
+		private void tシナリオ_小節長を変更する( C小節 cs )
 		{
 			// 前処理。
 
@@ -1114,7 +1114,7 @@ namespace DTXCreator
 				int n新Grid数 = (int) ( dlg.f倍率 * 192 + 0.5 );
 				int nGrid増減 = n旧Grid数 - n新Grid数;
 
-				this.t小節長を変更する・小節単位( n小節番号, dlg.f倍率 );
+				this.t小節長を変更する_小節単位( n小節番号, dlg.f倍率 );
 
 				// そして、Gridの増減があった分だけ、コピーしたBEATチップのGridを増減する
 				int nGrid_BAR = this.mgr譜面管理者.n譜面先頭からみた小節先頭の位置gridを返す( n変更開始小節番号 );
@@ -1182,7 +1182,7 @@ namespace DTXCreator
 			#region [ コピーしておいた(そして、nGridを更新した))BEATチップを、BEATレーンに戻す ]
 			foreach ( Cチップ cチップ in listBEATチップ )
 			{
-				this.mgr編集モード管理者.tBeatチップを配置する( cチップ.n位置grid, cチップ.n値・整数1to1295, cチップ.f値・浮動小数, cチップ.b裏 );
+				this.mgr編集モード管理者.tBeatチップを配置する( cチップ.n位置grid, cチップ.n値_整数1to1295, cチップ.f値_浮動小数, cチップ.b裏 );
 			}
 			#endregion
 
@@ -1193,10 +1193,10 @@ namespace DTXCreator
 			listBEATチップ = null;
 
 			// 画面を再描画。
-			this.tUndoRedo用GUIの有効・無効を設定する();
+			this.tUndoRedo用GUIの有効無効を設定する();
 
 		}
-		private void t小節長を変更する・小節単位( int n小節番号, float f倍率 )
+		private void t小節長を変更する_小節単位( int n小節番号, float f倍率 )
 		{
 			// 対象の小節を取得。
 
@@ -1287,9 +1287,9 @@ namespace DTXCreator
 
 			// 画面を再描画。
 
-			this.tUndoRedo用GUIの有効・無効を設定する();
+			this.tUndoRedo用GUIの有効無効を設定する();
 		}
-		private void tシナリオ・小節を挿入する( int n挿入位置の小節番号 )
+		private void tシナリオ_小節を挿入する( int n挿入位置の小節番号 )
 		{
 			// 作業を記録。
 
@@ -1345,10 +1345,10 @@ namespace DTXCreator
 
 			// 後処理。
 
-			this.tUndoRedo用GUIの有効・無効を設定する();
+			this.tUndoRedo用GUIの有効無効を設定する();
 			this.b未保存 = true;
 		}
-		private void tシナリオ・小節を削除する( int n削除位置の小節番号 )
+		private void tシナリオ_小節を削除する( int n削除位置の小節番号 )
 		{
 			// 作業記録開始。
 
@@ -1445,7 +1445,7 @@ namespace DTXCreator
 	
 			// 後処理。
 
-			this.tUndoRedo用GUIの有効・無効を設定する();
+			this.tUndoRedo用GUIの有効無効を設定する();
 			this.pictureBox譜面パネル.Refresh();
 			this.b未保存 = true;
 		}
@@ -1453,7 +1453,7 @@ namespace DTXCreator
 		#endregion
 		#region [ 選択チップの切り取り／コピー／貼り付け／削除 ]
 		//-----------------
-		private void tシナリオ・切り取り()
+		private void tシナリオ_切り取り()
 		{
 			// 事前チェック。
 
@@ -1469,12 +1469,12 @@ namespace DTXCreator
 
 			#region [ 切り取り ＝ コピー ＋ 削除 ]
 			//-----------------
-			this.tシナリオ・コピー();
-			this.tシナリオ・削除();
+			this.tシナリオ_コピー();
+			this.tシナリオ_削除();
 			//-----------------
 			#endregion
 		}
-		private void tシナリオ・コピー()
+		private void tシナリオ_コピー()
 		{
 			// 事前チェック。
 
@@ -1495,12 +1495,12 @@ namespace DTXCreator
 
 			#region [ 画面を再描画する。]
 			//-----------------
-			this.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this.pictureBox譜面パネル.Refresh();
 			//-----------------
 			#endregion
 		}
-		private void tシナリオ・貼り付け( int n譜面先頭からの位置grid )
+		private void tシナリオ_貼り付け( int n譜面先頭からの位置grid )
 		{
 			// 事前チェック。
 
@@ -1536,12 +1536,12 @@ namespace DTXCreator
 
 			#region [ 画面を再描画する。]
 			//-----------------
-			this.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this.pictureBox譜面パネル.Refresh();
 			//-----------------
 			#endregion
 		}
-		private void tシナリオ・削除()
+		private void tシナリオ_削除()
 		{
 			// 事前チェック。
 
@@ -1652,15 +1652,15 @@ namespace DTXCreator
 
 			// 画面を再描画する。
 
-			this.tUndoRedo用GUIの有効・無効を設定する();
-			this.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this.tUndoRedo用GUIの有効無効を設定する();
+			this.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this.pictureBox譜面パネル.Refresh();
 		}
 		//-----------------
 		#endregion
 		#region [ DTXViewer での再生・停止 ]
 		//-----------------
-		private void tシナリオ・Viewerで最初から再生する()
+		private void tシナリオ_Viewerで最初から再生する()
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
@@ -1703,7 +1703,7 @@ namespace DTXCreator
 			//-----------------
 			#endregion
 		}
-		private void tシナリオ・Viewerで現在位置から再生する()
+		private void tシナリオ_Viewerで現在位置から再生する()
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
@@ -1747,7 +1747,7 @@ namespace DTXCreator
 				#endregion
 			}
 		}
-		private void tシナリオ・Viewerで現在位置からBGMのみ再生する()
+		private void tシナリオ_Viewerで現在位置からBGMのみ再生する()
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
@@ -1787,7 +1787,7 @@ namespace DTXCreator
 				#endregion
 			}
 		}
-		private void tシナリオ・Viewerを再生停止する()
+		private void tシナリオ_Viewerを再生停止する()
 		{
 			try
 			{
@@ -1874,7 +1874,7 @@ namespace DTXCreator
 		#endregion
 		#region [ Undo / Redo ]
 		//-----------------
-		private void tシナリオ・Undoする()
+		private void tシナリオ_Undoする()
 		{
 			// Undo を実行する。
 
@@ -1896,13 +1896,13 @@ namespace DTXCreator
 
 			#region [ GUI を再描画する。]
 			//-----------------
-			this.tUndoRedo用GUIの有効・無効を設定する();
-			this.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this.tUndoRedo用GUIの有効無効を設定する();
+			this.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this.pictureBox譜面パネル.Refresh();
 			//-----------------
 			#endregion
 		}
-		private void tシナリオ・Redoする()
+		private void tシナリオ_Redoする()
 		{
 			// Redo を実行する。
 
@@ -1924,8 +1924,8 @@ namespace DTXCreator
 
 			#region [ GUI を再描画する。]
 			//-----------------
-			this.tUndoRedo用GUIの有効・無効を設定する();
-			this.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this.tUndoRedo用GUIの有効無効を設定する();
+			this.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this.pictureBox譜面パネル.Refresh();
 			//-----------------
 			#endregion
@@ -1961,7 +1961,7 @@ namespace DTXCreator
 			this.toolStripMenuItem選択モード.CheckState = CheckState.Unchecked;
 			this.toolStripMenuItem編集モード.CheckState = CheckState.Checked;
 		}
-		public void t選択チップの有無に応じて編集用GUIの有効・無効を設定する()
+		public void t選択チップの有無に応じて編集用GUIの有効無効を設定する()
 		{
 			bool b譜面上に選択チップがある = this.b選択チップがある;
 			bool bクリップボードに選択チップがある = ( this.cbクリップボード != null ) && ( this.cbクリップボード.nセル数 > 0 );
@@ -2005,7 +2005,7 @@ namespace DTXCreator
 
 			#region [ クリックされた箇所の小節番号を取得する。]
 			//-----------------
-			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( pt選択モードのコンテクストメニューを開いたときのマウスの位置.Y );
+			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( pt選択モードのコンテクストメニューを開いたときのマウスの位置.Y );
 			C小節 csクリックされた小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
 			if ( csクリックされた小節 == null ) return;		// 小節が生成されていないところで右クリックした場合は何もしない(NullReferenceException回避)
 			int nPartNo = csクリックされた小節.n小節番号0to3599;
@@ -2131,7 +2131,7 @@ namespace DTXCreator
 			//-----------------
 			#endregion
 		}
-		public void tWAV・BMP・AVIリストのカーソルを全部同じ行に合わせる( int nIndex番号0to1294 )
+		public void tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( int nIndex番号0to1294 )
 		{
 			if( nIndex番号0to1294 >= 0 && nIndex番号0to1294 <= 1294 )
 			{
@@ -2139,7 +2139,7 @@ namespace DTXCreator
 				this.mgrBMPリスト管理者.tItemを選択する( nIndex番号0to1294 );
 				this.mgrAVIリスト管理者.tItemを選択する( nIndex番号0to1294 );
 
-				this.n現在選択中のWAV・BMP・AVIリストの行番号0to1294 = nIndex番号0to1294;
+				this.n現在選択中のWAV_BMP_AVIリストの行番号0to1294 = nIndex番号0to1294;
 			}
 		}
 		public string strファイルの存在するディレクトリを絶対パスで返す( string strファイル )
@@ -2175,7 +2175,7 @@ namespace DTXCreator
 		{
 			return new Size( this.splitContainerタブと譜面を分割.Panel2.Width, this.pictureBox譜面パネル.Height );
 		}
-		public void tUndoRedo用GUIの有効・無効を設定する()
+		public void tUndoRedo用GUIの有効無効を設定する()
 		{
 			this.toolStripMenuItemアンドゥ.Enabled = this.mgrUndoRedo管理者.nUndo可能な回数 > 0;
 			this.toolStripMenuItemリドゥ.Enabled = this.mgrUndoRedo管理者.nRedo可能な回数 > 0;
@@ -2257,7 +2257,7 @@ namespace DTXCreator
 			};
 			if( dialog.ShowDialog() == DialogResult.OK )
 			{
-				str相対ファイル名 = Cファイル選択・パス変換.str基点からの相対パスに変換して返す( dialog.FileName, this.str作業フォルダ名 );
+				str相対ファイル名 = Cファイル選択_パス変換.str基点からの相対パスに変換して返す( dialog.FileName, this.str作業フォルダ名 );
 				str相対ファイル名.Replace( '/', '\\' );
 			}
 			else
@@ -2283,7 +2283,7 @@ namespace DTXCreator
 				// YES なら上書き保存。
 
 				if( result == DialogResult.Yes )
-					this.tシナリオ・上書き保存();
+					this.tシナリオ_上書き保存();
 
 
 				// 画面を再描画。
@@ -2404,7 +2404,7 @@ namespace DTXCreator
 			string[] data = (string[]) e.Data.GetData( DataFormats.FileDrop );
 			if( data.Length >= 1 )
 			{
-				this.tシナリオ・DragDropされたファイルを開く( data );
+				this.tシナリオ_DragDropされたファイルを開く( data );
 			}
 		}
 		private void Cメインフォーム_DragEnter( object sender, DragEventArgs e )
@@ -2712,11 +2712,11 @@ namespace DTXCreator
 		//-----------------
 		private void toolStripMenuItem選択チップの切り取り_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・切り取り();
+			this.tシナリオ_切り取り();
 		}
 		private void toolStripMenuItem選択チップのコピー_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・コピー();
+			this.tシナリオ_コピー();
 		}
 		private void toolStripMenuItem選択チップの貼り付け_Click( object sender, EventArgs e )
 		{
@@ -2728,11 +2728,11 @@ namespace DTXCreator
 
 			// Y座標から位置gridを得て、そこへ貼り付ける。
 
-			this.tシナリオ・貼り付け( this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptMenuClient.Y ) );
+			this.tシナリオ_貼り付け( this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( ptMenuClient.Y ) );
 		}
 		private void toolStripMenuItem選択チップの削除_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・削除();
+			this.tシナリオ_削除();
 		}
 
 		private void toolStripMenuItemすべてのチップの選択_Click( object sender, EventArgs e )
@@ -2801,7 +2801,7 @@ namespace DTXCreator
 			if ( this.mgr譜面管理者.nX座標dotが位置するレーン番号を返す( ptマウスの位置.X ) < 0 )
 				return;		// クリックされた箇所にレーンがない
 
-			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptマウスの位置.Y );
+			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( ptマウスの位置.Y );
 
 			C小節 csクリックされた小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
 			//-----------------
@@ -2828,7 +2828,7 @@ namespace DTXCreator
 			if ( this.mgr譜面管理者.nX座標dotが位置するレーン番号を返す( ptマウスの位置.X ) < 0 )
 				return;		// クリックされた箇所にレーンがない
 
-			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptマウスの位置.Y );
+			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( ptマウスの位置.Y );
 			C小節 csクリックされた小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
 			//-----------------
 			#endregion
@@ -2852,7 +2852,7 @@ namespace DTXCreator
 			if( this.mgr譜面管理者.nX座標dotが位置するレーン番号を返す( ptマウス位置.X ) < 0 )
 				return;		// クリックされた箇所にレーンがないなら無視。
 
-			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptマウス位置.Y );
+			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( ptマウス位置.Y );
 			C小節 csクリックされた小節 =  this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
 			//-----------------
 			#endregion
@@ -2860,7 +2860,7 @@ namespace DTXCreator
 			#region [ 取得した小節の小節長を変更する。]
 			//-----------------
 			if( csクリックされた小節 != null )
-				this.tシナリオ・小節長を変更する( csクリックされた小節 );
+				this.tシナリオ_小節長を変更する( csクリックされた小節 );
 			//-----------------
 			#endregion
 		}
@@ -2880,7 +2880,7 @@ namespace DTXCreator
 			if( this.mgr譜面管理者.nX座標dotが位置するレーン番号を返す( ptマウスの位置.X ) < 0 )
 				return;		// クリックされた箇所にレーンがない
 
-			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptマウスの位置.Y );
+			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( ptマウスの位置.Y );
 			C小節 csクリックされた小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
 			//-----------------
 			#endregion
@@ -2888,7 +2888,7 @@ namespace DTXCreator
 			#region [ 該当小節の下へ新しい小節を挿入する。]
 			//-----------------
 			if( csクリックされた小節 != null )
-				this.tシナリオ・小節を挿入する( csクリックされた小節.n小節番号0to3599 );
+				this.tシナリオ_小節を挿入する( csクリックされた小節.n小節番号0to3599 );
 			//-----------------
 			#endregion
 		}
@@ -2908,7 +2908,7 @@ namespace DTXCreator
 			if( this.mgr譜面管理者.nX座標dotが位置するレーン番号を返す( ptマウス位置.X ) < 0 )
 				return;		// クリックされた箇所にレーンがないなら無視。
 
-			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptマウス位置.Y );
+			int n譜面先頭からの位置grid = this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( ptマウス位置.Y );
 			C小節 cs削除する小節 = this.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( n譜面先頭からの位置grid );
 			//-----------------
 			#endregion
@@ -2916,7 +2916,7 @@ namespace DTXCreator
 			#region [ 該当小節を削除する。]
 			//-----------------
 			if( cs削除する小節 != null )
-				this.tシナリオ・小節を削除する( cs削除する小節.n小節番号0to3599 );
+				this.tシナリオ_小節を削除する( cs削除する小節.n小節番号0to3599 );
 			//-----------------
 			#endregion
 		}
@@ -2935,7 +2935,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBox曲名 ) )
 				{
@@ -2957,7 +2957,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -2976,7 +2976,7 @@ namespace DTXCreator
 		}
 		private void textBox曲名_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBox曲名 );
@@ -3014,7 +3014,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBox製作者 ) )
 				{
@@ -3036,7 +3036,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3055,7 +3055,7 @@ namespace DTXCreator
 		}
 		private void textBox製作者_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 		
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBox製作者 );
@@ -3093,7 +3093,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxコメント ) )
 				{
@@ -3114,7 +3114,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3133,7 +3133,7 @@ namespace DTXCreator
 		}
 		private void textBoxコメント_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 		
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBoxコメント );
@@ -3171,7 +3171,7 @@ namespace DTXCreator
 			//-----------------
 			if ( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if ( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxGenre ) )
 				{
@@ -3192,7 +3192,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3211,7 +3211,7 @@ namespace DTXCreator
 		}
 		private void textBoxGenre_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 			if ( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBoxGenre );
@@ -3250,7 +3250,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.numericUpDownBPM ) )
 				{
@@ -3272,7 +3272,7 @@ namespace DTXCreator
 
 					// Undoボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3291,7 +3291,7 @@ namespace DTXCreator
 		}
 		private void numericUpDownBPM_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 		
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.numericUpDownBPM );
@@ -3369,7 +3369,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( oセル仮想 != null && oセル仮想.b所有権がある( this.hScrollBarDLEVEL ) )
 				{
@@ -3391,7 +3391,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3491,7 +3491,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.hScrollBarGLEVEL ) )
 				{
@@ -3513,7 +3513,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 					
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3614,7 +3614,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.hScrollBarBLEVEL ) )
 				{
@@ -3636,7 +3636,7 @@ namespace DTXCreator
 		
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3699,7 +3699,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxパネル ) )
 				{
@@ -3721,7 +3721,7 @@ namespace DTXCreator
 
 					// Undoボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3740,7 +3740,7 @@ namespace DTXCreator
 		}
 		private void textBoxパネル_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBoxパネル );
@@ -3778,7 +3778,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxPREVIEW ) )
 				{
@@ -3800,7 +3800,7 @@ namespace DTXCreator
 					
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3819,7 +3819,7 @@ namespace DTXCreator
 		}
 		private void textBoxPREVIEW_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBoxPREVIEW );
@@ -3857,7 +3857,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxPREIMAGE ) )
 				{
@@ -3879,7 +3879,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3898,7 +3898,7 @@ namespace DTXCreator
 		}
 		private void textBoxPREIMAGE_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBoxPREIMAGE );
@@ -3936,7 +3936,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxSTAGEFILE ) )
 				{
@@ -3958,7 +3958,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -3977,7 +3977,7 @@ namespace DTXCreator
 		}
 		private void textBoxSTAGEFILE_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBoxSTAGEFILE );
@@ -4015,7 +4015,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxBACKGROUND ) )
 				{
@@ -4037,7 +4037,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -4056,7 +4056,7 @@ namespace DTXCreator
 		}
 		private void textBoxBACKGROUND_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBoxBACKGROUND );
@@ -4094,7 +4094,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBoxRESULTIMAGE ) )
 				{
@@ -4116,7 +4116,7 @@ namespace DTXCreator
 
 					// Undo ボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -4135,7 +4135,7 @@ namespace DTXCreator
 		}
 		private void textBoxRESULTIMAGE_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 		
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBoxRESULTIMAGE );
@@ -4343,7 +4343,7 @@ namespace DTXCreator
 			#region [ WAV, BMP, AVI のカーソルを、選択された行に全部合わせる。]
 			//-----------------
 			if( this.listViewWAVリスト.SelectedIndices.Count > 0 )
-				this.tWAV・BMP・AVIリストのカーソルを全部同じ行に合わせる( this.listViewWAVリスト.SelectedIndices[ 0 ] );
+				this.tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( this.listViewWAVリスト.SelectedIndices[ 0 ] );
 			//-----------------
 			#endregion
 		}
@@ -4484,7 +4484,7 @@ namespace DTXCreator
 			#region [ WAV, BMP, AVI のカーソルを、選択された行に全部合わせる。]
 			//-----------------
 			if( this.listViewBMPリスト.SelectedIndices.Count > 0 )
-				this.tWAV・BMP・AVIリストのカーソルを全部同じ行に合わせる( this.listViewBMPリスト.SelectedIndices[ 0 ] );
+				this.tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( this.listViewBMPリスト.SelectedIndices[ 0 ] );
 			//-----------------
 			#endregion
 		}
@@ -4589,7 +4589,7 @@ namespace DTXCreator
 			#region [ WAV, BMP, AVI のカーソルを、選択された行に全部合わせる。]
 			//-----------------
 			if( this.listViewAVIリスト.SelectedIndices.Count > 0 )
-				this.tWAV・BMP・AVIリストのカーソルを全部同じ行に合わせる( this.listViewAVIリスト.SelectedIndices[ 0 ] );
+				this.tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( this.listViewAVIリスト.SelectedIndices[ 0 ] );
 			//-----------------
 			#endregion
 		}
@@ -4639,7 +4639,7 @@ namespace DTXCreator
 			//-----------------
 			if( !CUndoRedo管理.bUndoRedoした直後 )
 			{
-				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 				if( ( oセル仮想 != null ) && oセル仮想.b所有権がある( this.textBox自由入力欄 ) )
 				{
@@ -4661,7 +4661,7 @@ namespace DTXCreator
 
 					// Undoボタンを有効にする。
 
-					this.tUndoRedo用GUIの有効・無効を設定する();
+					this.tUndoRedo用GUIの有効無効を設定する();
 				}
 			}
 			//-----------------
@@ -4680,7 +4680,7 @@ namespace DTXCreator
 		}
 		private void textBox自由入力欄_Leave( object sender, EventArgs e )
 		{
-			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す・見るだけ();
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
 
 			if( oセル仮想 != null )
 				oセル仮想.t所有権の放棄( this.textBox自由入力欄 );
@@ -4714,23 +4714,23 @@ namespace DTXCreator
 		//-----------------
 		private void toolStripMenuItem新規_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・新規作成();
+			this.tシナリオ_新規作成();
 		}
 		private void toolStripMenuItem開く_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・開く();
+			this.tシナリオ_開く();
 		}
 		private void toolStripMenuItem上書き保存_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・上書き保存();
+			this.tシナリオ_上書き保存();
 		}
 		private void toolStripMenuItem名前を付けて保存_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・名前をつけて保存();
+			this.tシナリオ_名前をつけて保存();
 		}
 		private void toolStripMenuItem終了_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・終了();
+			this.tシナリオ_終了();
 		}
 		private void toolStripMenuItem最近使ったファイル_Click( object sender, EventArgs e )
 		{
@@ -4748,19 +4748,19 @@ namespace DTXCreator
 		//-----------------
 		private void toolStripMenuItemアンドゥ_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Undoする();
+			this.tシナリオ_Undoする();
 		}
 		private void toolStripMenuItemリドゥ_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Redoする();
+			this.tシナリオ_Redoする();
 		}
 		private void toolStripMenuItem切り取り_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・切り取り();
+			this.tシナリオ_切り取り();
 		}
 		private void toolStripMenuItemコピー_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・コピー();
+			this.tシナリオ_コピー();
 		}
 		private void toolStripMenuItem貼り付け_Click( object sender, EventArgs e )
 		{
@@ -4774,18 +4774,18 @@ namespace DTXCreator
 			{
 				// マウスが譜面上になかった → 表示領域下辺から貼り付ける
 
-				this.tシナリオ・貼り付け( this.mgr譜面管理者.n現在の譜面表示下辺の譜面先頭からの位置grid );
+				this.tシナリオ_貼り付け( this.mgr譜面管理者.n現在の譜面表示下辺の譜面先頭からの位置grid );
 			}
 			else
 			{
 				// マウスが譜面上にあった
 
-				this.tシナリオ・貼り付け( this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptマウス位置.Y ) );
+				this.tシナリオ_貼り付け( this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( ptマウス位置.Y ) );
 			}
 		}
 		private void toolStripMenuItem削除_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・削除();
+			this.tシナリオ_削除();
 		}
 		private void toolStripMenuItemすべて選択_Click( object sender, EventArgs e )
 		{
@@ -4820,11 +4820,11 @@ namespace DTXCreator
 		}
 		private void toolStripMenuItem検索_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・検索();
+			this.tシナリオ_検索();
 		}
 		private void toolStripMenuItem置換_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・置換();
+			this.tシナリオ_置換();
 		}
 		//-----------------
 		#endregion
@@ -4913,19 +4913,19 @@ namespace DTXCreator
 		//-----------------
 		private void toolStripMenuItem先頭から再生_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Viewerで最初から再生する();
+			this.tシナリオ_Viewerで最初から再生する();
 		}
 		private void toolStripMenuItem現在位置から再生_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Viewerで現在位置から再生する();
+			this.tシナリオ_Viewerで現在位置から再生する();
 		}
 		private void toolStripMenuItem現在位置からBGMのみ再生_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Viewerで現在位置からBGMのみ再生する();
+			this.tシナリオ_Viewerで現在位置からBGMのみ再生する();
 		}
 		private void toolStripMenuItem再生停止_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Viewerを再生停止する();
+			this.tシナリオ_Viewerを再生停止する();
 		}
 		//-----------------
 		#endregion
@@ -4970,23 +4970,23 @@ namespace DTXCreator
 		//-----------------
 		private void toolStripButton新規作成_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・新規作成();
+			this.tシナリオ_新規作成();
 		}
 		private void toolStripButton開く_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・開く();
+			this.tシナリオ_開く();
 		}
 		private void toolStripButton上書き保存_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・上書き保存();
+			this.tシナリオ_上書き保存();
 		}
 		private void toolStripButton切り取り_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・切り取り();
+			this.tシナリオ_切り取り();
 		}
 		private void toolStripButtonコピー_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・コピー();
+			this.tシナリオ_コピー();
 		}
 		private void toolStripButton貼り付け_Click( object sender, EventArgs e )
 		{
@@ -5000,26 +5000,26 @@ namespace DTXCreator
 			{
 				// マウスが譜面上になかった → 表示領域下辺から貼り付ける
 
-				this.tシナリオ・貼り付け( this.mgr譜面管理者.n現在の譜面表示下辺の譜面先頭からの位置grid );
+				this.tシナリオ_貼り付け( this.mgr譜面管理者.n現在の譜面表示下辺の譜面先頭からの位置grid );
 			}
 			else
 			{
 				// マウスが譜面上にあった
 
-				this.tシナリオ・貼り付け( this.mgr譜面管理者.nY座標dotが位置するgridを返す・ガイド幅単位( ptマウスの位置.Y ) );
+				this.tシナリオ_貼り付け( this.mgr譜面管理者.nY座標dotが位置するgridを返す_ガイド幅単位( ptマウスの位置.Y ) );
 			}
 		}
 		private void toolStripButton削除_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・削除();
+			this.tシナリオ_削除();
 		}
 		private void toolStripButtonアンドゥ_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Undoする();
+			this.tシナリオ_Undoする();
 		}
 		private void toolStripButtonリドゥ_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Redoする();
+			this.tシナリオ_Redoする();
 		}
 		private void toolStripButtonチップパレット_Click( object sender, EventArgs e )
 		{
@@ -5089,19 +5089,19 @@ namespace DTXCreator
 		}
 		private void toolStripButton先頭から再生_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Viewerで最初から再生する();
+			this.tシナリオ_Viewerで最初から再生する();
 		}
 		private void toolStripButton現在位置から再生_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Viewerで現在位置から再生する();
+			this.tシナリオ_Viewerで現在位置から再生する();
 		}
 		private void toolStripButton現在位置からBGMのみ再生_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Viewerで現在位置からBGMのみ再生する();
+			this.tシナリオ_Viewerで現在位置からBGMのみ再生する();
 		}
 		private void toolStripButton再生停止_Click( object sender, EventArgs e )
 		{
-			this.tシナリオ・Viewerを再生停止する();
+			this.tシナリオ_Viewerを再生停止する();
 		}
 
 		//private void ToolStripMenuItemBeatChipsGeneration_Click( object sender, EventArgs e )			// Beat Detections
@@ -5128,9 +5128,9 @@ namespace DTXCreator
 
 			#region [ BPM,BEATレーンの情報を消去 ]
 			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBPM );
-			this.tシナリオ・削除();
+			this.tシナリオ_削除();
 			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBEAT );
-			this.tシナリオ・削除();
+			this.tシナリオ_削除();
 			#endregion
 
 			#region [ BGMレーンにあるチップを抽出して、beat検出する対象のサウンドファイルを決める ]
@@ -5150,7 +5150,7 @@ namespace DTXCreator
 				if ( nBGMチップのindex >= 0 )
 				{
 					nBGMチップの小節番号 = c小節.n小節番号0to3599;
-					filename = this.mgrWAVリスト管理者.tファイル名を絶対パスで返す( c小節.listチップ[ nBGMチップのindex ].n値・整数1to1295 );
+					filename = this.mgrWAVリスト管理者.tファイル名を絶対パスで返す( c小節.listチップ[ nBGMチップのindex ].n値_整数1to1295);
 					Debug.WriteLine( filename );
 					break;	// とりあえず1個見つけたらbreakしちゃう
 				}
@@ -5414,12 +5414,12 @@ namespace DTXCreator
 			#region [ BPMレーンとHHレーンを消去(0小節目を除く) ]
 			int laneBPM = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BPM" );
 			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBPM, 1 );
-			this.tシナリオ・削除();
+			this.tシナリオ_削除();
 
 			#region [ デバッグ用: HHレーンを消去 ]
 			int laneHH = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "HH" );
 			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneHH, 1 );
-			this.tシナリオ・削除();
+			this.tシナリオ_削除();
 			#endregion
 			#endregion
 
@@ -5442,7 +5442,7 @@ namespace DTXCreator
 		
 						listBeatPositions.Add(
 							new CBeatDetect.stBeatPos(
-								c小節.listチップ[ index ].f値・浮動小数,
+								c小節.listチップ[ index ].f値_浮動小数,
 								n小節番号,
 								this.mgr譜面管理者.n譜面先頭からみた小節先頭の位置gridを返す( n小節番号 ) + c小節.listチップ[ index ].n位置grid,
 								c小節.listチップ[ index ].n位置grid,

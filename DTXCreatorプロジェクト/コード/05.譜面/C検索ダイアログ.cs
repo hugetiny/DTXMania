@@ -180,7 +180,7 @@ namespace DTXCreator.譜面
 					this.checkedListBoxレーン選択リスト.Items.Add( str前回値_レーンリスト[ i ], b前回値_レーンリストチェック[ i ] );
 				}
 			}
-			this.tチェックに連動して有効・無効が決まるパーツについてEnabledを設定する();
+			this.tチェックに連動して有効無効が決まるパーツについてEnabledを設定する();
 		}
 		public bool bレーンが検索対象である( int nレーン番号 )
 		{
@@ -205,7 +205,7 @@ namespace DTXCreator.譜面
 			str前回値_レーンリスト = strリスト要素;
 		}
 
-		private void tチェックに連動して有効・無効が決まるパーツについてEnabledを設定する()
+		private void tチェックに連動して有効無効が決まるパーツについてEnabledを設定する()
 		{
 			bool flag = this.checkBoxレーン指定.Checked;
 			this.buttonALL.Enabled = flag;
@@ -344,7 +344,7 @@ namespace DTXCreator.譜面
 		}
 		private void checkBox小節範囲指定_CheckStateChanged( object sender, EventArgs e )
 		{
-			this.tチェックに連動して有効・無効が決まるパーツについてEnabledを設定する();
+			this.tチェックに連動して有効無効が決まるパーツについてEnabledを設定する();
 		}
 		private void checkBox小節範囲指定_KeyDown( object sender, KeyEventArgs e )
 		{
@@ -359,7 +359,7 @@ namespace DTXCreator.譜面
 		}
 		private void checkBoxチップ範囲指定_CheckStateChanged( object sender, EventArgs e )
 		{
-			this.tチェックに連動して有効・無効が決まるパーツについてEnabledを設定する();
+			this.tチェックに連動して有効無効が決まるパーツについてEnabledを設定する();
 		}
 		private void checkBoxチップ範囲指定_KeyDown( object sender, KeyEventArgs e )
 		{
@@ -374,7 +374,7 @@ namespace DTXCreator.譜面
 		}
 		private void checkBoxレーン指定_CheckStateChanged( object sender, EventArgs e )
 		{
-			this.tチェックに連動して有効・無効が決まるパーツについてEnabledを設定する();
+			this.tチェックに連動して有効無効が決まるパーツについてEnabledを設定する();
 		}
 		private void checkBoxレーン指定_KeyDown( object sender, KeyEventArgs e )
 		{

@@ -8,7 +8,7 @@ namespace DTXMania
 	{
 		// CAct演奏Combo共通 実装
 
-		protected override void tコンボ表示・ギター( int nCombo値, int nジャンプインデックス )
+		protected override void tコンボ表示_ギター( int nCombo値, int nジャンプインデックス )
 		{
 			int x = (int) ( 230 * Scale.X );
 			int y = CDTXMania.ConfigIni.bReverse.Guitar ? 0x103 : 150;
@@ -19,12 +19,12 @@ namespace DTXMania
 			{
 				base.txCOMBOギター.n透明度 = 0xff;
 			}
-			base.tコンボ表示・ギター( nCombo値, x, y, nジャンプインデックス );
+			base.tコンボ表示_ギター( nCombo値, x, y, nジャンプインデックス );
 		}
-		protected override void tコンボ表示・ドラム( int nCombo値, int nジャンプインデックス )
+		protected override void tコンボ表示_ドラム( int nCombo値, int nジャンプインデックス )
 		{
 		}
-		protected override void tコンボ表示・ベース( int nCombo値, int nジャンプインデックス )
+		protected override void tコンボ表示_ベース( int nCombo値, int nジャンプインデックス )
 		{
 			int x = (int) ( 410 * Scale.X );
 			int y = CDTXMania.ConfigIni.bReverse.Bass ? 0x103 : 150;
@@ -35,7 +35,7 @@ namespace DTXMania
 			{
 				base.txCOMBOギター.n透明度 = 0xff;
 			}
-			base.tコンボ表示・ベース( nCombo値, x, y, nジャンプインデックス );
+			base.tコンボ表示_ベース( nCombo値, x, y, nジャンプインデックス );
 		}
 	}
 }

@@ -127,7 +127,7 @@ namespace DTXMania
 						this.bキー入力待ち = false;
 						CDTXMania.Input管理.tポーリング( CDTXMania.app.bApplicationActive, false );
 					}
-					else if( ( this.tキーチェックとアサイン・Keyboard() || this.tキーチェックとアサイン・MidiIn() ) || ( this.tキーチェックとアサイン・Joypad() || this.tキーチェックとアサイン・Mouse() ) )
+					else if( ( this.tキーチェックとアサイン_Keyboard() || this.tキーチェックとアサイン_MidiIn() ) || ( this.tキーチェックとアサイン_Joypad() || this.tキーチェックとアサイン_Mouse() ) )
 					{
 						this.bキー入力待ち = false;
 						CDTXMania.Input管理.tポーリング( CDTXMania.app.bApplicationActive, false );
@@ -177,19 +177,19 @@ namespace DTXMania
 					switch( stkeyassignArray[ i ].入力デバイス )
 					{
 						case E入力デバイス.キーボード:
-							this.tアサインコードの描画・Keyboard( i + 1, x + 20, y, stkeyassignArray[ i ].ID, stkeyassignArray[ i ].コード, this.n現在の選択行 == i );
+							this.tアサインコードの描画_Keyboard( i + 1, x + 20, y, stkeyassignArray[ i ].ID, stkeyassignArray[ i ].コード, this.n現在の選択行 == i );
 							break;
 
 						case E入力デバイス.MIDI入力:
-							this.tアサインコードの描画・MidiIn( i + 1, x + 20, y, stkeyassignArray[ i ].ID, stkeyassignArray[ i ].コード, this.n現在の選択行 == i );
+							this.tアサインコードの描画_MidiIn( i + 1, x + 20, y, stkeyassignArray[ i ].ID, stkeyassignArray[ i ].コード, this.n現在の選択行 == i );
 							break;
 
 						case E入力デバイス.ジョイパッド:
-							this.tアサインコードの描画・Joypad( i + 1, x + 20, y, stkeyassignArray[ i ].ID, stkeyassignArray[ i ].コード, this.n現在の選択行 == i );
+							this.tアサインコードの描画_Joypad( i + 1, x + 20, y, stkeyassignArray[ i ].ID, stkeyassignArray[ i ].コード, this.n現在の選択行 == i );
 							break;
 
 						case E入力デバイス.マウス:
-							this.tアサインコードの描画・Mouse( i + 1, x + 20, y, stkeyassignArray[ i ].ID, stkeyassignArray[ i ].コード, this.n現在の選択行 == i );
+							this.tアサインコードの描画_Mouse( i + 1, x + 20, y, stkeyassignArray[ i ].ID, stkeyassignArray[ i ].コード, this.n現在の選択行 == i );
 							break;
 
 						default:
@@ -283,7 +283,7 @@ namespace DTXMania
 		private CTexture txカーソル;
 		private CPrivateFastFont prvFont;
 
-		private void tアサインコードの描画・Joypad( int line, int x, int y, int nID, int nCode, bool b強調 )
+		private void tアサインコードの描画_Joypad( int line, int x, int y, int nID, int nCode, bool b強調 )
 		{
 			string str = "";
 			switch( nCode )
@@ -338,7 +338,7 @@ namespace DTXMania
 			CDTXMania.t安全にDisposeする( ref bmpStr );
 			//			CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. Joypad #{1} ", line, nID ) + str, b強調, 0.75f );
 		}
-		private void tアサインコードの描画・Keyboard( int line, int x, int y, int nID, int nCode, bool b強調 )
+		private void tアサインコードの描画_Keyboard( int line, int x, int y, int nID, int nCode, bool b強調 )
 		{
 			string str = null;
 			foreach( STKEYLABEL stkeylabel in this.KeyLabel )
@@ -365,7 +365,7 @@ namespace DTXMania
 			CDTXMania.t安全にDisposeする( ref bmpStr );
 			//CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, str, b強調, 0.75f );
 		}
-		private void tアサインコードの描画・MidiIn( int line, int x, int y, int nID, int nCode, bool b強調 )
+		private void tアサインコードの描画_MidiIn( int line, int x, int y, int nID, int nCode, bool b強調 )
 		{
 			string str = string.Format( "{0,2}. MidiIn #{1} code.{2}", line, nID, nCode );
 			Bitmap bmpStr = b強調 ?
@@ -379,7 +379,7 @@ namespace DTXMania
 			CDTXMania.t安全にDisposeする( ref bmpStr );
 			//CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. MidiIn #{1} code.{2}", line, nID, nCode ), b強調, 0.75f );
 		}
-		private void tアサインコードの描画・Mouse( int line, int x, int y, int nID, int nCode, bool b強調 )
+		private void tアサインコードの描画_Mouse( int line, int x, int y, int nID, int nCode, bool b強調 )
 		{
 			string str = string.Format( "{0,2}. Mouse Button{1}", line, nCode );
 			Bitmap bmpStr = b強調 ?
@@ -393,7 +393,7 @@ namespace DTXMania
 			CDTXMania.t安全にDisposeする( ref bmpStr );
 			//CDTXMania.stageコンフィグ.actFont.t文字列描画( x, y, string.Format( "{0,2}. Mouse Button{1}", line, nCode ), b強調, 0.75f );
 		}
-		private bool tキーチェックとアサイン・Joypad()
+		private bool tキーチェックとアサイン_Joypad()
 		{
 			foreach( IInputDevice device in CDTXMania.Input管理.list入力デバイス )
 			{
@@ -415,7 +415,7 @@ namespace DTXMania
 			}
 			return false;
 		}
-		private bool tキーチェックとアサイン・Keyboard()
+		private bool tキーチェックとアサイン_Keyboard()
 		{
 			for( int i = 0; i < 0x100; i++ )
 			{
@@ -437,7 +437,7 @@ namespace DTXMania
 			}
 			return false;
 		}
-		private bool tキーチェックとアサイン・MidiIn()
+		private bool tキーチェックとアサイン_MidiIn()
 		{
 			foreach( IInputDevice device in CDTXMania.Input管理.list入力デバイス )
 			{
@@ -459,7 +459,7 @@ namespace DTXMania
 			}
 			return false;
 		}
-		private bool tキーチェックとアサイン・Mouse()
+		private bool tキーチェックとアサイン_Mouse()
 		{
 			for( int i = 0; i < 8; i++ )
 			{

@@ -19,14 +19,14 @@ namespace DTXCreator.譜面
 		public void t検索する()
 		{
 			this._Form.dlgチップパレット.t一時的に隠蔽する();
-			this.t検索する・メイン();
+			this.t検索する_メイン();
 			this._Form.dlgチップパレット.t一時的な隠蔽を解除する();
 		}
 		public void t個別選択解除( Cチップ cc )
 		{
-			Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( this.mgr譜面管理者ref.pチップの存在する小節を返す( cc ).n小節番号0to3599, cc.nレーン番号0to, cc.n位置grid, cc.n値・整数1to1295 );
+			Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( this.mgr譜面管理者ref.pチップの存在する小節を返す( cc ).n小節番号0to3599, cc.nレーン番号0to, cc.n位置grid, cc.n値_整数1to1295);
 			this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択解除のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択解除のRedo ), redo, redo ) );
-			this._Form.tUndoRedo用GUIの有効・無効を設定する();
+			this._Form.tUndoRedo用GUIの有効無効を設定する();
 			cc.b確定選択中 = false;
 		}
 		public void t全チップの選択を解除する()
@@ -83,7 +83,7 @@ namespace DTXCreator.譜面
 					Cチップ cチップ6 = c小節3.listチップ[ n ];
 					if( cチップ6.b確定選択中 )
 					{
-						Cチップ位置用UndoRedo redo3 = new Cチップ位置用UndoRedo( c小節3.n小節番号0to3599, cチップ6.nレーン番号0to, cチップ6.n位置grid, cチップ6.n値・整数1to1295 );
+						Cチップ位置用UndoRedo redo3 = new Cチップ位置用UndoRedo( c小節3.n小節番号0to3599, cチップ6.nレーン番号0to, cチップ6.n位置grid, cチップ6.n値_整数1to1295);
 						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択解除のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択解除のRedo ), redo3, redo3 ) );
 						cチップ6.b移動済 = false;
 						cチップ6.bドラッグで選択中 = false;
@@ -92,7 +92,7 @@ namespace DTXCreator.譜面
 				}
 			}
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-			this._Form.tUndoRedo用GUIの有効・無効を設定する();
+			this._Form.tUndoRedo用GUIの有効無効を設定する();
 		}
 		public void t全チップを選択する()
 		{
@@ -105,7 +105,7 @@ namespace DTXCreator.譜面
 					Cチップ cチップ = c小節.listチップ[ i ];
 					if( !cチップ.b確定選択中 )
 					{
-						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値_整数1to1295);
 						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のRedo ), redo, redo ) );
 						cチップ.bドラッグで選択中 = false;
 						cチップ.b確定選択中 = true;
@@ -113,8 +113,8 @@ namespace DTXCreator.譜面
 				}
 			}
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-			this._Form.tUndoRedo用GUIの有効・無効を設定する();
-			this._Form.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this._Form.tUndoRedo用GUIの有効無効を設定する();
+			this._Form.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this._Form.pictureBox譜面パネル.Refresh();
 		}
 		public void tレーン上の全チップを選択する( int lane )
@@ -138,7 +138,7 @@ namespace DTXCreator.譜面
 					Cチップ cチップ = c小節.listチップ[ i ];
 					if ( cチップ.nレーン番号0to == lane && !cチップ.b確定選択中 )
 					{
-						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値_整数1to1295);
 						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のRedo ), redo, redo ) );
 						cチップ.bドラッグで選択中 = false;
 						cチップ.b確定選択中 = true;
@@ -146,8 +146,8 @@ namespace DTXCreator.譜面
 				}
 			}
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-			this._Form.tUndoRedo用GUIの有効・無効を設定する();
-			this._Form.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this._Form.tUndoRedo用GUIの有効無効を設定する();
+			this._Form.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this._Form.pictureBox譜面パネル.Refresh();
 		}
 		public void t小節上の全チップを選択する( int n小節番号 )			// #32134 2013.9.29 suggested by beatme
@@ -159,21 +159,21 @@ namespace DTXCreator.譜面
 				Cチップ cチップ = c小節.listチップ[ i ];
 				if ( !cチップ.b確定選択中 )
 				{
-					Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+					Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値_整数1to1295);
 					this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のRedo ), redo, redo ) );
 					cチップ.bドラッグで選択中 = false;
 					cチップ.b確定選択中 = true;
 				}
 			}
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-			this._Form.tUndoRedo用GUIの有効・無効を設定する();
-			this._Form.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this._Form.tUndoRedo用GUIの有効無効を設定する();
+			this._Form.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this._Form.pictureBox譜面パネル.Refresh();
 		}
 		public void t置換する()
 		{
 			this._Form.dlgチップパレット.t一時的に隠蔽する();
-			this.t置換する・メイン();
+			this.t置換する_メイン();
 			this._Form.dlgチップパレット.t一時的な隠蔽を解除する();
 		}
 		internal void MouseClick( MouseEventArgs e )
@@ -398,9 +398,9 @@ namespace DTXCreator.譜面
 			rectangle.Height = Math.Abs( (int) ( this.pt現在のドラッグ開始位置dot.Y - this.pt現在のドラッグ終了位置dot.Y ) );
 			Rectangle rectangle2 = new Rectangle();
 			rectangle2.X = this.mgr譜面管理者ref.nX座標dotが位置するレーン番号を返す( rectangle.X );
-			rectangle2.Y = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す・最高解像度( rectangle.Y );
+			rectangle2.Y = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す_最高解像度( rectangle.Y );
 			rectangle2.Width = this.mgr譜面管理者ref.nX座標dotが位置するレーン番号を返す( rectangle.Right ) - rectangle2.X;
-			rectangle2.Height = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す・最高解像度( rectangle.Bottom ) - rectangle2.Y;
+			rectangle2.Height = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す_最高解像度( rectangle.Bottom ) - rectangle2.Y;
 			int num = 0;
 			for( int i = 0; i < this.mgr譜面管理者ref.dic小節.Count; i++ )
 			{
@@ -445,7 +445,7 @@ namespace DTXCreator.譜面
 			this.pt現在のドラッグ開始位置dot.X = this.pt現在のドラッグ終了位置dot.X = e.X;
 			this.pt現在のドラッグ開始位置dot.Y = this.pt現在のドラッグ終了位置dot.Y = e.Y;
 			this.pt前回の位置LaneGrid.X = this.mgr譜面管理者ref.nX座標dotが位置するレーン番号を返す( e.X );
-			this.pt前回の位置LaneGrid.Y = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す・ガイド幅単位( e.Y );
+			this.pt前回の位置LaneGrid.Y = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す_ガイド幅単位( e.Y );
 			foreach( KeyValuePair<int, C小節> pair in this._Form.mgr譜面管理者.dic小節 )
 			{
 				C小節 c小節 = pair.Value;
@@ -479,10 +479,10 @@ namespace DTXCreator.譜面
 					if( cチップ.b確定選択中 && ( cチップ.n枠外レーン数 == 0 ) )
 					{
 						Cレーン cレーン = this.mgr譜面管理者ref.listレーン[ cチップ.nレーン番号0to ];
-						cチップ.nチャンネル番号00toFF = cチップ.b裏 ? cレーン.nチャンネル番号・裏00toFF : cレーン.nチャンネル番号・表00toFF;
-						if( ( cレーン.bパターンレーンである() && ( cチップ.n値・整数1to1295 != 1 ) ) && ( cチップ.n値・整数1to1295 != 2 ) )
+						cチップ.nチャンネル番号00toFF = cチップ.b裏 ? cレーン.nチャンネル番号_裏00toFF : cレーン.nチャンネル番号_表00toFF;
+						if( ( cレーン.bパターンレーンである() && ( cチップ.n値_整数1to1295 != 1 ) ) && ( cチップ.n値_整数1to1295 != 2 ) )
 						{
-							cチップ.n値・整数1to1295 = 1;
+							cチップ.n値_整数1to1295 = 1;
 						}
 					}
 				}
@@ -496,13 +496,13 @@ namespace DTXCreator.譜面
 					Cチップ cチップ2 = c小節.listチップ[ j ];
 					if( cチップ2.b確定選択中 && ( ( ( cチップ2.n移動開始時の小節番号0to != c小節.n小節番号0to3599 ) || ( cチップ2.n移動開始時のレーン番号0to != cチップ2.nレーン番号0to ) ) || ( cチップ2.n移動開始時の小節内の位置grid != cチップ2.n位置grid ) ) )
 					{
-						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( cチップ2.n移動開始時の小節番号0to, cチップ2.n移動開始時のレーン番号0to, cチップ2.n移動開始時の小節内の位置grid, cチップ2.n値・整数1to1295 );
-						Cチップ位置用UndoRedo redo2 = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ2.nレーン番号0to, cチップ2.n位置grid, cチップ2.n値・整数1to1295 );
+						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( cチップ2.n移動開始時の小節番号0to, cチップ2.n移動開始時のレーン番号0to, cチップ2.n移動開始時の小節内の位置grid, cチップ2.n値_整数1to1295);
+						Cチップ位置用UndoRedo redo2 = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ2.nレーン番号0to, cチップ2.n位置grid, cチップ2.n値_整数1to1295);
 						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.tチップ移動のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.tチップ移動のRedo ), redo, redo2 ) );
 					}
 				}
 			}
-			this._Form.tUndoRedo用GUIの有効・無効を設定する();
+			this._Form.tUndoRedo用GUIの有効無効を設定する();
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
 		}
 		private void t画面上下にマウスカーソルがあるなら譜面を縦スクロールする( MouseEventArgs e )
@@ -550,7 +550,7 @@ namespace DTXCreator.譜面
 		{
 			Point point = new Point();
 			point.X = this.mgr譜面管理者ref.nX座標dotが位置するレーン番号を返す( this.pt現在のドラッグ終了位置dot.X );
-			point.Y = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す・ガイド幅単位( this.pt現在のドラッグ終了位置dot.Y );
+			point.Y = this.mgr譜面管理者ref.nY座標dotが位置するgridを返す_ガイド幅単位( this.pt現在のドラッグ終了位置dot.Y );
 			Point point2 = new Point();
 			point2.X = point.X - this.pt前回の位置LaneGrid.X;
 			point2.Y = point.Y - this.pt前回の位置LaneGrid.Y;
@@ -585,7 +585,7 @@ namespace DTXCreator.譜面
 				this.pt前回の位置LaneGrid.Y = point.Y;
 			}
 		}
-		private void t検索する・メイン()
+		private void t検索する_メイン()
 		{
 			C検索ダイアログ c検索ダイアログ = new C検索ダイアログ();
 			if( !c検索ダイアログ.bレーンリストの内訳が生成済みである )
@@ -626,9 +626,9 @@ namespace DTXCreator.譜面
 							for( int k = 0; k < c小節.listチップ.Count; k++ )
 							{
 								Cチップ cチップ = c小節.listチップ[ k ];
-								if( ( ( !c検索ダイアログ.bレーン指定CheckBoxがチェックされている || c検索ダイアログ.bレーンが検索対象である( cチップ.nレーン番号0to ) ) && ( ( cチップ.n値・整数1to1295 >= num3 ) && ( cチップ.n値・整数1to1295 <= num4 ) ) ) && ( ( c検索ダイアログ.b表チップCheckBoxがチェックされている && !cチップ.b裏 ) || ( c検索ダイアログ.b裏チップCheckBoxがチェックされている && cチップ.b裏 ) ) )
+								if( ( ( !c検索ダイアログ.bレーン指定CheckBoxがチェックされている || c検索ダイアログ.bレーンが検索対象である( cチップ.nレーン番号0to ) ) && ( ( cチップ.n値_整数1to1295 >= num3 ) && ( cチップ.n値_整数1to1295 <= num4 ) ) ) && ( ( c検索ダイアログ.b表チップCheckBoxがチェックされている && !cチップ.b裏 ) || ( c検索ダイアログ.b裏チップCheckBoxがチェックされている && cチップ.b裏 ) ) )
 								{
-									Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+									Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値_整数1to1295);
 									this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のRedo ), redo, redo ) );
 									cチップ.b確定選択中 = true;
 									num7++;
@@ -637,11 +637,11 @@ namespace DTXCreator.譜面
 						}
 					}
 					this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-					this._Form.tUndoRedo用GUIの有効・無効を設定する();
+					this._Form.tUndoRedo用GUIの有効無効を設定する();
 					this._Form.pictureBox譜面パネル.Refresh();
 					if( num7 > 0 )
 					{
-						this._Form.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+						this._Form.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 						MessageBox.Show( num7 + Resources.str個のチップが選択されましたMSG, Resources.str検索結果ダイアログのタイトル, MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1 );
 					}
 					else
@@ -690,18 +690,18 @@ namespace DTXCreator.譜面
 					for( int i = 0; i < c小節.listチップ.Count; i++ )
 					{
 						Cチップ cチップ = c小節.listチップ[ i ];
-						if( cチップ.b確定選択中 && ( cチップ.n値・整数1to1295 == n元番号 ) )
+						if( cチップ.b確定選択中 && ( cチップ.n値_整数1to1295 == n元番号 ) )
 						{
-							Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+							Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値_整数1to1295);
 							Cチップ位置用UndoRedo redo2 = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, n先番号 );
 							this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ番号置換のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ番号置換のRedo ), redo, redo2 ) );
-							cチップ.n値・整数1to1295 = n先番号;
+							cチップ.n値_整数1to1295 = n先番号;
 							num++;
 						}
 					}
 				}
 				this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-				this._Form.tUndoRedo用GUIの有効・無効を設定する();
+				this._Form.tUndoRedo用GUIの有効無効を設定する();
 				if( num > 0 )
 				{
 					this._Form.b未保存 = true;
@@ -730,16 +730,16 @@ namespace DTXCreator.譜面
 					Cチップ cチップ = c小節.listチップ[ i ];
 					if( cチップ.b確定選択中 )
 					{
-						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値_整数1to1295);
 						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ表裏反転のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ表裏反転のRedo ), redo, redo ) );
 						if( cチップ.b裏 )
 						{
-							cチップ.nチャンネル番号00toFF = this._Form.mgr譜面管理者.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号・表00toFF;
+							cチップ.nチャンネル番号00toFF = this._Form.mgr譜面管理者.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号_表00toFF;
 							cチップ.b裏 = false;
 						}
 						else
 						{
-							cチップ.nチャンネル番号00toFF = this._Form.mgr譜面管理者.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号・裏00toFF;
+							cチップ.nチャンネル番号00toFF = this._Form.mgr譜面管理者.listレーン[ cチップ.nレーン番号0to ].nチャンネル番号_裏00toFF;
 							cチップ.b裏 = true;
 						}
 						num++;
@@ -747,7 +747,7 @@ namespace DTXCreator.譜面
 				}
 			}
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-			this._Form.tUndoRedo用GUIの有効・無効を設定する();
+			this._Form.tUndoRedo用GUIの有効無効を設定する();
 			if( num > 0 )
 			{
 				this._Form.b未保存 = true;
@@ -758,7 +758,7 @@ namespace DTXCreator.譜面
 				}
 			}
 		}
-		private void t置換する・メイン()
+		private void t置換する_メイン()
 		{
 			C置換ダイアログ c置換ダイアログ = new C置換ダイアログ();
 			bool flag = false;
@@ -777,9 +777,9 @@ namespace DTXCreator.譜面
 					{
 						if( num < 0 )
 						{
-							num = cチップ.n値・整数1to1295;
+							num = cチップ.n値_整数1to1295;
 						}
-						else if( num != cチップ.n値・整数1to1295 )
+						else if( num != cチップ.n値_整数1to1295)
 						{
 							flag2 = false;
 							break;
@@ -841,13 +841,13 @@ namespace DTXCreator.譜面
 					Cチップ cチップ = c小節.listチップ[ i ];
 					if( cチップ.bドラッグで選択中 && !cチップ.b確定選択中 )
 					{
-						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値・整数1to1295 );
+						Cチップ位置用UndoRedo redo = new Cチップ位置用UndoRedo( c小節.n小節番号0to3599, cチップ.nレーン番号0to, cチップ.n位置grid, cチップ.n値_整数1to1295);
 						this._Form.mgrUndoRedo管理者.tノードを追加する( new CUndoRedoセル<Cチップ位置用UndoRedo>( null, new DGUndoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のUndo ), new DGRedoを実行する<Cチップ位置用UndoRedo>( this.mgr譜面管理者ref.tチップ選択のRedo ), redo, redo ) );
 					}
 				}
 			}
 			this._Form.mgrUndoRedo管理者.tトランザクション記録を終了する();
-			this._Form.tUndoRedo用GUIの有効・無効を設定する();
+			this._Form.tUndoRedo用GUIの有効無効を設定する();
 			foreach( KeyValuePair<int, C小節> pair2 in this.mgr譜面管理者ref.dic小節 )
 			{
 				C小節 c小節2 = pair2.Value;
@@ -861,7 +861,7 @@ namespace DTXCreator.譜面
 					}
 				}
 			}
-			this._Form.t選択チップの有無に応じて編集用GUIの有効・無効を設定する();
+			this._Form.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 		}
 		//-----------------
 		#endregion
