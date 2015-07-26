@@ -78,7 +78,7 @@ namespace DTXMania
 				//this.n前回描画したフレーム番号 = -1;
 				//this.b動画フレームを作成した = false;
 				//this.pAVIBmp = IntPtr.Zero;
-				this.tプレビュー画像・動画の変更();
+				this.tプレビュー画像_動画の変更();
 				base.OnManagedリソースの作成();
 
 				this.actAVI.OnManagedリソースの作成();
@@ -120,7 +120,7 @@ namespace DTXMania
 					this.ct遅延表示.t進行();
 					if ( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
 					{
-						this.tプレビュー画像・動画の変更();
+						this.tプレビュー画像_動画の変更();
 						CDTXMania.Timer.t更新();
 						this.ct遅延表示.n現在の経過時間ms = CDTXMania.Timer.n現在時刻;
 						this.b新しいプレビューファイルを読み込んだ = true;
@@ -145,11 +145,11 @@ namespace DTXMania
 				//        this.pAVIBmp = this.avi.GetFramePtr( frameNoFromTime );
 				//    }
 				//}
-				this.t描画処理・パネル本体();
-				this.t描画処理・ジャンル文字列();
-				this.t描画処理・プレビュー画像();
-				this.t描画処理・センサ光();
-				this.t描画処理・センサ本体();
+				this.t描画処理_パネル本体();
+				this.t描画処理_ジャンル文字列();
+				this.t描画処理_プレビュー画像();
+				this.t描画処理_センサ光();
+				this.t描画処理_センサ本体();
 
 			}
 			return 0;
@@ -229,7 +229,7 @@ namespace DTXMania
 		//    }
 		//    sf.UnlockRectangle();
 		//}
-		private void tプレビュー画像・動画の変更()
+		private void tプレビュー画像_動画の変更()
 		{
 			this.actAVI.Stop();
 			if ( this.rAVI != null )
@@ -399,7 +399,7 @@ namespace DTXMania
 			}
 			return true;
 		}
-		private void t描画処理・ジャンル文字列()
+		private void t描画処理_ジャンル文字列()
 		{
 			C曲リストノード c曲リストノード = CDTXMania.stage選曲.r現在選択中の曲;
 			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
@@ -476,7 +476,7 @@ namespace DTXMania
 				);
 			}
 		}
-		private void t描画処理・センサ光()
+		private void t描画処理_センサ光()
 		{
 			int num = this.ctセンサ光.n現在の値;
 			if( num < 12 )
@@ -522,7 +522,7 @@ namespace DTXMania
 				}
 			}
 		}
-		private void t描画処理・センサ本体()
+		private void t描画処理_センサ本体()
 		{
 			int x = this.n本体X + (int)(0xcd * Scale.X);
 			int y = this.n本体Y - (int)(4 * Scale.Y);
@@ -533,7 +533,7 @@ namespace DTXMania
 				this.txセンサ.t2D描画( CDTXMania.app.Device, x, y, this.rcセンサ本体下半分 );
 			}
 		}
-		private void t描画処理・パネル本体()
+		private void t描画処理_パネル本体()
 		{
 			if( this.ct登場アニメ用.b終了値に達した || ( this.txパネル本体 != null ) )
 			{
@@ -552,7 +552,7 @@ namespace DTXMania
 				this.txパネル本体.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y );
 			}
 		}
-		private unsafe void t描画処理・プレビュー画像()
+		private unsafe void t描画処理_プレビュー画像()
 		{
 			if( !CDTXMania.stage選曲.bスクロール中 && ( ( ( this.ct遅延表示 != null ) && ( this.ct遅延表示.n現在の値 > 0 ) ) && !this.b新しいプレビューファイルをまだ読み込んでいない ) )
 			{

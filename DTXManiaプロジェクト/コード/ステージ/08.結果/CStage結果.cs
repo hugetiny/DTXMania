@@ -462,7 +462,7 @@ namespace DTXMania
 										if( ( nLane == 1 ) && ( ( rChip.nチャンネル番号 == 0x11 ) || ( ( rChip.nチャンネル番号 == 0x18 ) && ( this.n最後に再生したHHのチャンネル番号 != 0x18 ) ) ) )
 										{
 											CDTXMania.DTX.tWavの再生停止( this.n最後に再生したHHのWAV番号 );
-											this.n最後に再生したHHのWAV番号 = rChip.n整数値・内部番号;
+											this.n最後に再生したHHのWAV番号 = rChip.n整数値_内部番号;
 											this.n最後に再生したHHのチャンネル番号 = rChip.nチャンネル番号;
 										}
 										CDTXMania.DTX.tチップの再生( rChip, CDTXMania.Timer.nシステム時刻, nLane, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );

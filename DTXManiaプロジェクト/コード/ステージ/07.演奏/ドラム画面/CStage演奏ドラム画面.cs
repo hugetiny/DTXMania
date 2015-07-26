@@ -52,9 +52,9 @@ namespace DTXMania
 
 		public void t演奏結果を格納する( out CScoreIni.C演奏記録 Drums, out CScoreIni.C演奏記録 Guitar, out CScoreIni.C演奏記録 Bass, out CDTX.CChip[] r空打ちドラムチップ )
 		{
-			base.t演奏結果を格納する・ドラム( out Drums );
-			base.t演奏結果を格納する・ギター( out Guitar );
-			base.t演奏結果を格納する・ベース( out Bass );
+			base.t演奏結果を格納する_ドラム( out Drums );
+			base.t演奏結果を格納する_ギター( out Guitar );
+			base.t演奏結果を格納する_ベース( out Bass );
 
 			r空打ちドラムチップ = new CDTX.CChip[ 10 ];
 			for ( int i = 0; i < 10; i++ )
@@ -62,7 +62,7 @@ namespace DTXMania
 				r空打ちドラムチップ[ i ] = this.r空うちChip( E楽器パート.DRUMS, (Eパッド) i );
 				if( r空打ちドラムチップ[ i ] == null )
 				{
-					r空打ちドラムチップ[ i ] = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( CSound管理.rc演奏用タイマ.n現在時刻, this.nパッド0Atoチャンネル0A[ i ], this.nInputAdjustTimeMs.Drums );
+					r空打ちドラムチップ[ i ] = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( CSound管理.rc演奏用タイマ.n現在時刻, this.nパッド0Atoチャンネル0A[ i ], this.nInputAdjustTimeMs.Drums );
 				}
 			}
 
@@ -176,45 +176,45 @@ namespace DTXMania
 					CDTXMania.DTX.t全チップの再生停止();
 					base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED;
 				}
-				this.t進行描画・AVI();
-				this.t進行描画・背景();
-				this.t進行描画・MIDIBGM();
-				this.t進行描画・パネル文字列();
-				this.t進行描画・スコア();
-				this.t進行描画・BGA();
-				this.t進行描画・ステータスパネル();
-				this.t進行描画・ギターベースフレーム();
-				this.t進行描画・レーンフラッシュGB();
-                this.t進行描画・ギターベース判定ライン();
-                this.t進行描画・ゲージ();
-                this.t進行描画・グラフ();   // #24074 2011.01.23 add ikanick
-				this.t進行描画・レーンフラッシュD();
-				this.t進行描画・DANGER();
-				this.t進行描画・判定ライン();
+				this.t進行描画_AVI();
+				this.t進行描画_背景();
+				this.t進行描画_MIDIBGM();
+				this.t進行描画_パネル文字列();
+				this.t進行描画_スコア();
+				this.t進行描画_BGA();
+				this.t進行描画_ステータスパネル();
+				this.t進行描画_ギターベースフレーム();
+				this.t進行描画_レーンフラッシュGB();
+                this.t進行描画_ギターベース判定ライン();
+                this.t進行描画_ゲージ();
+                this.t進行描画_グラフ();   // #24074 2011.01.23 add ikanick
+				this.t進行描画_レーンフラッシュD();
+				this.t進行描画_DANGER();
+				this.t進行描画_判定ライン();
 				if ( this.e判定表示優先度 == E判定表示優先度.Chipより下 )
 				{
-					this.t進行描画・RGBボタン();
-					this.t進行描画・判定文字列1・通常位置指定の場合();
-					this.t進行描画・コンボ();
+					this.t進行描画_RGBボタン();
+					this.t進行描画_判定文字列1_通常位置指定の場合();
+					this.t進行描画_コンボ();
 				}
-				this.t進行描画・WailingBonus();
-				this.t進行描画・譜面スクロール速度();
-				this.t進行描画・チップアニメ();
-				bIsFinishedPlaying = this.t進行描画・チップ(E楽器パート.DRUMS);
-				this.t進行描画・演奏情報();
-				this.t進行描画・ドラムパッド();
+				this.t進行描画_WailingBonus();
+				this.t進行描画_譜面スクロール速度();
+				this.t進行描画_チップアニメ();
+				bIsFinishedPlaying = this.t進行描画_チップ(E楽器パート.DRUMS);
+				this.t進行描画_演奏情報();
+				this.t進行描画_ドラムパッド();
 				if ( this.e判定表示優先度 == E判定表示優先度.Chipより上 )
 				{
-					this.t進行描画・RGBボタン();
-					this.t進行描画・判定文字列1・通常位置指定の場合();
-					this.t進行描画・コンボ();
+					this.t進行描画_RGBボタン();
+					this.t進行描画_判定文字列1_通常位置指定の場合();
+					this.t進行描画_コンボ();
 				}
-				this.t進行描画・判定文字列2・判定ライン上指定の場合();
-				this.t進行描画・Wailing枠();
-				this.t進行描画・チップファイアD();
-				this.t進行描画・チップファイアGB();
-				this.t進行描画・STAGEFAILED();
-				bIsFinishedFadeout = this.t進行描画・フェードイン・アウト();
+				this.t進行描画_判定文字列2_判定ライン上指定の場合();
+				this.t進行描画_Wailing枠();
+				this.t進行描画_チップファイアD();
+				this.t進行描画_チップファイアGB();
+				this.t進行描画_STAGEFAILED();
+				bIsFinishedFadeout = this.t進行描画_フェードイン_アウト();
 				if( bIsFinishedPlaying && ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) )
 				{
 					if ( CDTXMania.DTXVmode.Enabled )
@@ -234,7 +234,7 @@ namespace DTXMania
 						this.actFOClear.tフェードアウト開始();
 					}
 				}
-				if ( this.eフェードアウト完了時の戻り値 == E演奏画面の戻り値.再読込・再演奏 )
+				if ( this.eフェードアウト完了時の戻り値 == E演奏画面の戻り値.再読込_再演奏)
 				{
 					bIsFinishedFadeout = true;
 				}
@@ -301,17 +301,17 @@ namespace DTXMania
 		{
 			E判定 eJudgeResult = tチップのヒット処理( nHitTime, pChip, E楽器パート.DRUMS, bCorrectLane );
 			// #24074 2011.01.23 add ikanick
-			this.actGraph.dbグラフ値現在_渡 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Drums, this.nヒット数・Auto含まない.Drums.Perfect, this.nヒット数・Auto含まない.Drums.Great, this.nヒット数・Auto含まない.Drums.Good, this.nヒット数・Auto含まない.Drums.Poor, this.nヒット数・Auto含まない.Drums.Miss, E楽器パート.DRUMS,  bIsAutoPlay );
+			this.actGraph.dbグラフ値現在_渡 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Drums, this.nヒット数_Auto含まない.Drums.Perfect, this.nヒット数_Auto含まない.Drums.Great, this.nヒット数_Auto含まない.Drums.Good, this.nヒット数_Auto含まない.Drums.Poor, this.nヒット数_Auto含まない.Drums.Miss, E楽器パート.DRUMS,  bIsAutoPlay );
 			return eJudgeResult;
 		}
 
-		protected override void tチップのヒット処理・BadならびにTight時のMiss( E楽器パート part )
+		protected override void tチップのヒット処理_BadならびにTight時のMiss( E楽器パート part )
 		{
-			this.tチップのヒット処理・BadならびにTight時のMiss( part, 0, E楽器パート.DRUMS );
+			this.tチップのヒット処理_BadならびにTight時のMiss( part, 0, E楽器パート.DRUMS );
 		}
-		protected override void tチップのヒット処理・BadならびにTight時のMiss( E楽器パート part, int nLane )
+		protected override void tチップのヒット処理_BadならびにTight時のMiss( E楽器パート part, int nLane )
 		{
-			this.tチップのヒット処理・BadならびにTight時のMiss( part, nLane, E楽器パート.DRUMS );
+			this.tチップのヒット処理_BadならびにTight時のMiss( part, nLane, E楽器パート.DRUMS );
 		}
 
 		private bool tドラムヒット処理( long nHitTime, Eパッド type, CDTX.CChip pChip, int n強弱度合い0to127 )
@@ -384,7 +384,7 @@ namespace DTXMania
 					{
 						hH = Eパッド.HH;
 					}
-					rChip = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nHitTime, this.nパッド0Atoチャンネル0A[ (int) hH ], nInputAdjustTime );
+					rChip = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nHitTime, this.nパッド0Atoチャンネル0A[ (int) hH ], nInputAdjustTime );
 					if( rChip == null )
 					{
 						rChip = pChip;
@@ -405,25 +405,25 @@ namespace DTXMania
 		}
 
 	
-		protected override void t進行描画・AVI()
+		protected override void t進行描画_AVI()
 		{
-			base.t進行描画・AVI( 338, 57 );
+			base.t進行描画_AVI( 338, 57 );
 		}
-		protected override void t進行描画・BGA()
+		protected override void t進行描画_BGA()
 		{
-			base.t進行描画・BGA( 338, 57 );
+			base.t進行描画_BGA( 338, 57 );
 		}
-		protected override void t進行描画・DANGER()
+		protected override void t進行描画_DANGER()
 		{
 //			this.actDANGER.t進行描画( this.actGauge.db現在のゲージ値.Drums < 0.3, false, false );
 			this.actDANGER.t進行描画( this.actGauge.IsDanger(E楽器パート.DRUMS), false, false );
 		}
 
-		protected override void t進行描画・Wailing枠()
+		protected override void t進行描画_Wailing枠()
 		{
 			int yG = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ], true );
 			int yB = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ], true );
-			base.t進行描画・Wailing枠(
+			base.t進行描画_Wailing枠(
 				(int) ( 587 * Scale.X ),
 				(int) ( 478 * Scale.X ),
 				yG,
@@ -432,7 +432,7 @@ namespace DTXMania
 			//	CDTXMania.ConfigIni.bReverse.Bass ? ( 400 - this.txWailing枠.sz画像サイズ.Height ) : 69		// 350:69
 			);
 		}
-		private void t進行描画・ギターベースフレーム()
+		private void t進行描画_ギターベースフレーム()
 		{
 			if( ( ( CDTXMania.ConfigIni.eDark != Eダークモード.HALF ) && ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL ) ) && CDTXMania.ConfigIni.bGuitar有効 )
 			{
@@ -477,7 +477,7 @@ namespace DTXMania
 				}
 			}
 		}
-		private void t進行描画・ギターベース判定ライン()		// yyagi: ギタレボモードとは座標が違うだけですが、まとめづらかったのでそのまま放置してます。
+		private void t進行描画_ギターベース判定ライン()		// yyagi: ギタレボモードとは座標が違うだけですが、まとめづらかったのでそのまま放置してます。
 		{
 			if ( ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL ) && CDTXMania.ConfigIni.bGuitar有効 )
 			{
@@ -521,7 +521,7 @@ namespace DTXMania
 			}
 		}
 
-		private void t進行描画・グラフ()
+		private void t進行描画_グラフ()
         {
 			if ( !CDTXMania.ConfigIni.bストイックモード && !CDTXMania.ConfigIni.bドラムが全部オートプレイである && CDTXMania.ConfigIni.bGraph.Drums )
 			{
@@ -529,29 +529,29 @@ namespace DTXMania
             }
         }
 
-		private void t進行描画・チップファイアD()
+		private void t進行描画_チップファイアD()
 		{
 			this.actChipFireD.On進行描画();
 		}
 
-		private void t進行描画・ドラムパッド()
+		private void t進行描画_ドラムパッド()
 		{
 			if( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
 			{
 				this.actPad.On進行描画();
 			}
 		}
-		protected override void t進行描画・パネル文字列()
+		protected override void t進行描画_パネル文字列()
 		{
-			base.t進行描画・パネル文字列( 336, 427+1 );
+			base.t進行描画_パネル文字列( 336, 427+1 );
 		}
 
-		protected override void t進行描画・演奏情報()
+		protected override void t進行描画_演奏情報()
 		{
-			base.t進行描画・演奏情報( 338, 57 );
+			base.t進行描画_演奏情報( 338, 57 );
 		}
 
-		protected override void t入力処理・ドラム()
+		protected override void t入力処理_ドラム()
 		{
 			for( int nPad = 0; nPad < (int) Eパッド.MAX; nPad++ )		// #27029 2012.1.4 from: <10 to <=10; Eパッドの要素が１つ（HP）増えたため。
 																		//		  2012.1.5 yyagi: (int)Eパッド.MAX に変更。Eパッドの要素数への依存を無くすため。
@@ -1577,9 +1577,9 @@ namespace DTXMania
 									#region [ *** ]
 									//-----------------------------
 									{
-										CDTX.CChip chipHC = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 0 ], nInputAdjustTime );
-										CDTX.CChip chipHO = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 7 ], nInputAdjustTime );
-										CDTX.CChip chipLC = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 9 ], nInputAdjustTime );
+										CDTX.CChip chipHC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 0 ], nInputAdjustTime );
+										CDTX.CChip chipHO = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 7 ], nInputAdjustTime );
+										CDTX.CChip chipLC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 9 ], nInputAdjustTime );
 										switch( CDTXMania.ConfigIni.eHHGroup )
 										{
 											case EHHGroup.ハイハットのみ打ち分ける:
@@ -1626,8 +1626,8 @@ namespace DTXMania
 									#region [ *** ]
 									//-----------------------------
 									{
-										CDTX.CChip chipLT = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 4 ], nInputAdjustTime );
-										CDTX.CChip chipFT = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 5 ], nInputAdjustTime );
+										CDTX.CChip chipLT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 4 ], nInputAdjustTime );
+										CDTX.CChip chipFT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 5 ], nInputAdjustTime );
 										if( CDTXMania.ConfigIni.eFTGroup != EFTGroup.打ち分ける )
 											rChip = ( chipLT != null ) ? chipLT : chipFT;
 										else
@@ -1641,8 +1641,8 @@ namespace DTXMania
 									#region [ *** ]
 									//-----------------------------
 									{
-										CDTX.CChip chipLT = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 4 ], nInputAdjustTime );
-										CDTX.CChip chipFT = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 5 ], nInputAdjustTime );
+										CDTX.CChip chipLT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 4 ], nInputAdjustTime );
+										CDTX.CChip chipFT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 5 ], nInputAdjustTime );
 										if( CDTXMania.ConfigIni.eFTGroup != EFTGroup.打ち分ける )
 											rChip = ( chipFT != null ) ? chipFT : chipLT;
 										else
@@ -1656,8 +1656,8 @@ namespace DTXMania
 									#region [ *** ]
 									//-----------------------------
 									{
-										CDTX.CChip chipCY = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 6 ], nInputAdjustTime );
-										CDTX.CChip chipRD = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 8 ], nInputAdjustTime );
+										CDTX.CChip chipCY = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 6 ], nInputAdjustTime );
+										CDTX.CChip chipRD = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 8 ], nInputAdjustTime );
 										if( CDTXMania.ConfigIni.eCYGroup != ECYGroup.打ち分ける )
 											rChip = ( chipCY != null ) ? chipCY : chipRD;
 										else
@@ -1671,9 +1671,9 @@ namespace DTXMania
 									#region [ *** ]
 									//-----------------------------
 									{
-										CDTX.CChip chipHC = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 0 ], nInputAdjustTime );
-										CDTX.CChip chipHO = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 7 ], nInputAdjustTime );
-										CDTX.CChip chipLC = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 9 ], nInputAdjustTime );
+										CDTX.CChip chipHC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 0 ], nInputAdjustTime );
+										CDTX.CChip chipHO = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 7 ], nInputAdjustTime );
+										CDTX.CChip chipLC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 9 ], nInputAdjustTime );
 										switch( CDTXMania.ConfigIni.eHHGroup )
 										{
 											case EHHGroup.全部打ち分ける:
@@ -1720,8 +1720,8 @@ namespace DTXMania
 									#region [ *** ]
 									//-----------------------------
 									{
-										CDTX.CChip chipCY = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 6 ], nInputAdjustTime );
-										CDTX.CChip chipRD = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 8 ], nInputAdjustTime );
+										CDTX.CChip chipCY = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 6 ], nInputAdjustTime );
+										CDTX.CChip chipRD = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 8 ], nInputAdjustTime );
 										if( CDTXMania.ConfigIni.eCYGroup != ECYGroup.打ち分ける )
 											rChip = ( chipRD != null ) ? chipRD : chipCY;
 										else
@@ -1735,9 +1735,9 @@ namespace DTXMania
 									#region [ *** ]
 									//-----------------------------
 									{
-										CDTX.CChip chipHC = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 0 ], nInputAdjustTime );
-										CDTX.CChip chipHO = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 7 ], nInputAdjustTime );
-										CDTX.CChip chipLC = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 9 ], nInputAdjustTime );
+										CDTX.CChip chipHC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 0 ], nInputAdjustTime );
+										CDTX.CChip chipHO = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 7 ], nInputAdjustTime );
+										CDTX.CChip chipLC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ 9 ], nInputAdjustTime );
 										switch( CDTXMania.ConfigIni.eHHGroup )
 										{
 											case EHHGroup.全部打ち分ける:
@@ -1777,7 +1777,7 @@ namespace DTXMania
 								default:
 									#region [ *** ]
 									//-----------------------------
-									rChip = this.r指定時刻に一番近いChip・ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ pad ], nInputAdjustTime );
+									rChip = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮( nTime, this.nパッド0Atoチャンネル0A[ pad ], nInputAdjustTime );
 									//-----------------------------
 									#endregion
 									break;
@@ -1794,7 +1794,7 @@ namespace DTXMania
 					
 					// BAD or TIGHT 時の処理。
 					if( CDTXMania.ConfigIni.bTight )
-						this.tチップのヒット処理・BadならびにTight時のMiss( E楽器パート.DRUMS, this.nパッド0Atoレーン07[ pad ] );
+						this.tチップのヒット処理_BadならびにTight時のMiss( E楽器パート.DRUMS, this.nパッド0Atoレーン07[ pad ] );
 					//-----------------------------
 					#endregion
 				}
@@ -1845,7 +1845,7 @@ namespace DTXMania
 			base.t背景テクスチャの生成( DefaultBgFilename, DefaultLaneFilename, bgrect, BgFilename );
 		}
 
-		protected override void t進行描画・チップ・ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected override void t進行描画_チップ_ドラムス( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
 			if ( configIni.bDrums有効 )
 			{
@@ -2043,9 +2043,9 @@ namespace DTXMania
 				pChip.bHit = true;
 			}
 		}
-		protected override void t進行描画・チップ・ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
+		protected override void t進行描画_チップ_ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
 		{
-			base.t進行描画・チップ・ギターベース( configIni, ref dTX, ref pChip, inst,
+			base.t進行描画_チップ_ギターベース( configIni, ref dTX, ref pChip, inst,
 				演奏判定ライン座標.n判定ラインY座標( inst, false, false ),		// 95  Normal
 				演奏判定ライン座標.n判定ラインY座標( inst, false, true ),		// 374 Reverse
 				(int) ( 57 * Scale.Y ), (int) ( 412 * Scale.Y ),				// チップのY軸表示範囲
@@ -2168,7 +2168,7 @@ namespace DTXMania
 			}
 		}
 #endif
-		protected void t進行描画・チップ・ギター・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected void t進行描画_チップ_ギター_ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
 			//if ( configIni.bGuitar有効 )
 			//{
@@ -2229,9 +2229,9 @@ namespace DTXMania
 			//        }
 			//    }
 			//}
-			base.t進行描画・チップ・ギター・ウェイリング( configIni, ref dTX, ref pChip, false );
+			base.t進行描画_チップ_ギター_ウェイリング( configIni, ref dTX, ref pChip, false );
 		}
-		protected override void t進行描画・チップ・フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected override void t進行描画_チップ_フィルイン( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
 			if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 			{
@@ -2258,7 +2258,7 @@ namespace DTXMania
 							}
 							else
 							{
-								CDTXMania.Skin.sound歓声音.n位置・次に鳴るサウンド = 0;
+								CDTXMania.Skin.sound歓声音.n位置_次に鳴るサウンド = 0;
 								CDTXMania.Skin.sound歓声音.t再生する();
 							}
 						}
@@ -2373,7 +2373,7 @@ namespace DTXMania
 			}
 		}
 #endif
-		protected void t進行描画・チップ・ベース・ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected void t進行描画_チップ_ベース_ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
 			//if ( configIni.bGuitar有効 )
 			//{
@@ -2433,9 +2433,9 @@ namespace DTXMania
 			//        }
 			//    }
 			//}
-			base.t進行描画・チップ・ベース・ウェイリング( configIni, ref dTX, ref pChip, false );
+			base.t進行描画_チップ_ベース_ウェイリング( configIni, ref dTX, ref pChip, false );
 		}
-		protected override void t進行描画・チップ・空打ち音設定・ドラム( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected override void t進行描画_チップ_空打ち音設定_ドラム( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
 			if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 			{
@@ -2444,7 +2444,7 @@ namespace DTXMania
 				//pChip.nチャンネル番号 = ( pChip.nチャンネル番号 != 0xbc ) ? ( ( pChip.nチャンネル番号 - 0xb1 ) + 0x11 ) : 0x1a;
 			}
 		}
-		protected override void t進行描画・チップ・小節線( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
+		protected override void t進行描画_チップ_小節線( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip )
 		{
 			int n小節番号plus1 = pChip.n発声位置 / 384;
 			if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )

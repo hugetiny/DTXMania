@@ -841,7 +841,7 @@ namespace FDK
 			wfx.SamplesPerSecond = (int) cw32wfx.nSamplesPerSec;
 
 			// セカンダリバッファを作成し、PCMデータを書き込む。
-			tDirectSoundサウンドを作成する・セカンダリバッファの作成とWAVデータ書き込み
+			tDirectSoundサウンドを作成する_セカンダリバッファの作成とWAVデータ書き込み
 				( ref this.byArrWAVファイルイメージ, DirectSound, CSoundDeviceDirectSound.DefaultFlags, wfx,
 				  nPCMサイズbyte, nPCMデータの先頭インデックス );
 		}
@@ -951,11 +951,11 @@ namespace FDK
 
 
 			// セカンダリバッファを作成し、PCMデータを書き込む。
-			tDirectSoundサウンドを作成する・セカンダリバッファの作成とWAVデータ書き込み(
+			tDirectSoundサウンドを作成する_セカンダリバッファの作成とWAVデータ書き込み(
 				ref byArrWAVファイルイメージ, DirectSound, flags, wfx, nPCMサイズbyte, nPCMデータの先頭インデックス );
 		}
 
-		private void tDirectSoundサウンドを作成する・セカンダリバッファの作成とWAVデータ書き込み
+		private void tDirectSoundサウンドを作成する_セカンダリバッファの作成とWAVデータ書き込み
 			( ref byte[] byArrWAVファイルイメージ, DirectSound DirectSound, BufferFlags flags, WaveFormat wfx,
 			int nPCMサイズbyte, int nPCMデータの先頭インデックス )
 		{
@@ -1514,7 +1514,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			
 			nBytes = Bass.BASS_ChannelGetLength( this._hBassStream );
 			
-			tBASSサウンドを作成する・ストリーム生成後の共通処理( hMixer );
+			tBASSサウンドを作成する_ストリーム生成後の共通処理( hMixer );
 		}
 		private void tBASSサウンドを作成する( byte[] byArrWAVファイルイメージ, int hMixer, BASSFlag flags )
 		{
@@ -1531,7 +1531,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 			nBytes = Bass.BASS_ChannelGetLength( this._hBassStream );
 	
-			tBASSサウンドを作成する・ストリーム生成後の共通処理( hMixer );
+			tBASSサウンドを作成する_ストリーム生成後の共通処理( hMixer );
 		}
 
 		/// <summary>
@@ -1615,11 +1615,11 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			nBytes = Bass.BASS_ChannelGetLength( this._hBassStream );
 
 
-			tBASSサウンドを作成する・ストリーム生成後の共通処理( hMixer );
+			tBASSサウンドを作成する_ストリーム生成後の共通処理( hMixer );
 		}
 
 
-		private void tBASSサウンドを作成する・ストリーム生成後の共通処理( int hMixer )
+		private void tBASSサウンドを作成する_ストリーム生成後の共通処理( int hMixer )
 		{
 			CSound管理.nStreams++;
 

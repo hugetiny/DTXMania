@@ -145,7 +145,7 @@ namespace DTXMania
 					);
 				}
 			}
-			this.t描画・白波();
+			this.t描画_白波();
 			if( !this.ctランク表示.b終了値に達した )
 			{
 				return 0;
@@ -166,7 +166,7 @@ namespace DTXMania
 		private CTexture txランク文字;
 		private CTexture tx白波;
 		
-		private void t描画・白波()
+		private void t描画_白波()
 		{
 			if( !this.ctランク表示.b終了値に達してない )
 			{
