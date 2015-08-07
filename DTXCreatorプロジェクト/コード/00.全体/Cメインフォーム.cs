@@ -936,6 +936,9 @@ namespace DTXCreator
 			//-----------------
 			#endregion
 
+			#region [ Viewer用の一時ファイルを削除する (修正＋保存、直後のViewer再生時に、直前の修正が反映されなくなることへの対応) ]
+			tViewer用の一時ファイルを削除する();
+			#endregion
 
 			// 後処理。
 
@@ -1664,8 +1667,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
-			this.bBGMありで再生した = true;
+			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.b前回BGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.b前回BGMありで再生した = true;
 			//-----------------
 			#endregion
 
@@ -1707,8 +1710,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
-			this.bBGMありで再生した = true;
+			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.b前回BGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.b前回BGMありで再生した = true;
 			//-----------------
 			#endregion
 
@@ -1751,8 +1754,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( true, this.b未保存 | this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
-			this.bBGMありで再生した = false;
+			this.tViewer用の一時ファイルを出力する( true, this.b未保存 | this.b前回BGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.b前回BGMありで再生した = false;
 			//-----------------
 			#endregion
 
@@ -1869,6 +1872,10 @@ namespace DTXCreator
 			{
 				this.mgr譜面管理者.strPATH_WAV = "";
 			}
+		}
+		private void tViewer用の一時ファイルを削除する()
+		{
+			this.strViewer演奏用一時ファイル名 = "";		// #35351 2015.7.23 yyagi add; to fix viewer plyback correctly just after save.
 		}
 		//-----------------
 		#endregion
@@ -2193,7 +2200,7 @@ namespace DTXCreator
 		#region [ private ]
 		//-----------------
 		private bool _b未保存 = true;
-		private bool bBGMありで再生した = true;
+		private bool b前回BGMありで再生した = true;
 		private bool b再生速度を変更した = false;
 		private bool bDTXファイルを開いた = false;
 		private Point pt選択モードのコンテクストメニューを開いたときのマウスの位置;
