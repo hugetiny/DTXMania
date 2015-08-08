@@ -920,7 +920,10 @@ namespace DTXCreator
 			#endregion
 
 			#region [ Viewer用の一時ファイルを削除する (修正＋保存、直後のViewer再生時に、直前の修正が反映されなくなることへの対応) ]
-			tViewer用の一時ファイルを削除する();
+			if ( this.b未保存 )
+			{
+				tViewer用の一時ファイルを削除する();
+			}
 			#endregion
 
 			// 後処理。
@@ -970,7 +973,10 @@ namespace DTXCreator
 			this.tシナリオ・上書き保存();
 
 			#region [ Viewer用の一時ファイルを削除する (修正＋保存、直後のViewer再生時に、直前の修正が反映されなくなることへの対応) ]
-			tViewer用の一時ファイルを削除する();
+			if ( this.b未保存 )
+			{
+				tViewer用の一時ファイルを削除する();
+			}
 			#endregion
 
 			// 後処理。
