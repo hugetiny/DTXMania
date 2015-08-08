@@ -185,7 +185,7 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iSystemAVI );
 			this.iSystemForceAVIFullscreen = new CItemToggle( "FullAVI", CDTXMania.ConfigIni.bForceAVIFullscreen,
 				"旧AVIの全画面表示：\n" +
-				"旧仕様の動画(AVI)の表示をを、強制的に全画面化します。\n" +
+				"旧仕様の動画(AVI)の表示を、強制的に全画面化します。\n" +
 				"BGAと併用している場合は、表示がおかしくなります。",
 				"Forcely show the legacy-spec AVI to fullscreen.\n" +
 				"If the data contains both AVI and BGA, the screen will corrupt." );
