@@ -358,7 +358,9 @@ namespace DTXCreator
 			
 			if( Directory.Exists( this.str作業フォルダ名 ) )
 			{
-				Directory.SetCurrentDirectory( this.str作業フォルダ名 );
+				//Directory.SetCurrentDirectory( this.str作業フォルダ名 );		// #35399: 2015/8/15 カレントディレクトリを変更すると、.NET4以降用にbuildしたDTXMania本体での再生に失敗するため、カレントディレクトリの変更を中止する
+				// #35399: ただし作業フォルダは維持する(書き設定行は不要だが、if分岐は残す必要あり)
+				// this.str作業フォルダ名 = this.appアプリ設定.LastWorkFolder;	
 			}
 			else
 			{
@@ -833,7 +835,7 @@ namespace DTXCreator
 
 			this.strDTXファイル名 = Path.ChangeExtension( Path.GetFileName( strファイル名 ), ".dtx" );		// 拡張子は強制的に .dtx に変更。
 			this.str作業フォルダ名 = Path.GetDirectoryName( strファイル名 ) + @"\";		// 読み込み後、カレントフォルダは、作業ファイルのあるフォルダに移動する。
-
+																						// #35399: カレントディレクトリの変更はしない。.NET4以降でbuildしたDTXMania本体で再生できなくなるため。
 			//-----------------
 			#endregion
 
