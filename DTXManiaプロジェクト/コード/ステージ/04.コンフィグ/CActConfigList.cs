@@ -807,6 +807,7 @@ namespace DTXMania
 				" Pad sound is prior to the chip sound.",
 				new string[] { "C>P", "P>C" } );
 			this.list項目リスト.Add( this.iSystemHitSoundPriorityCY );
+			#endregion
 
 			this.iSystemFillIn = new CItemToggle( "FillIn", CDTXMania.ConfigIni.bフィルイン有効,
 				"フィルインエフェクトの使用：\n" +
@@ -814,13 +815,11 @@ namespace DTXMania
 				"フィルインエフェクトの描画にはそれなりのマシンパワーが必要とされます。",
 				"To show bursting effects at the fill-in zone." );
 			this.list項目リスト.Add( this.iSystemFillIn );
-			#endregion
-
 
 			this.iSystemHitSound = new CItemToggle( "HitSound", CDTXMania.ConfigIni.bドラム打音を発声する,
 				"打撃音の再生：\n" +
 				"これをOFFにすると、パッドを叩いたときの音を再生しなくなります（ドラムのみ）。\n" +
-				"DTX本来の音色で演奏したい場合などにOFF にします。\n" +
+				"電子ドラム本来の音色で演奏したい場合などにOFF にします。\n" +
 				"\n" +
 				"注意：BD Group が BD-1 である場合は不具合が生じます。\n",
 				"Turn OFF if you don't want to play hitting chip sound.\n" +
