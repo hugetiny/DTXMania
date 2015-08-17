@@ -20,7 +20,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "101(150101)";
+		public static readonly string VERSION = "103(150815)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
         //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -2750,6 +2750,24 @@ for (int i = 0; i < 3; i++) {
 				Trace.TraceInformation( this.listプラグイン.Count + " 個のプラグインを読み込みました。" );
 		}
 		#region [ Windowイベント処理 ]
+
+		private System.Reflection.Assembly CurrentDomain_AssemblyResolve( object sender, ResolveEventArgs args )
+		{
+			var domain = (AppDomain) sender;
+
+
+			foreach ( var assembly in domain.GetAssemblies() )
+			{
+				if ( assembly.FullName == args.Name )
+					return assembly;
+			}
+
+
+			return null;
+
+
+
+		}
 		private void t指定フォルダ内でのプラグイン検索と生成( string strプラグインフォルダパス, string strプラグイン型名 )
 		{
 			// 指定されたパスが存在しないとエラー
@@ -2758,6 +2776,9 @@ for (int i = 0; i < 3; i++) {
 				Trace.TraceWarning( "プラグインフォルダが存在しません。(" + strプラグインフォルダパス + ")" );
 				return;
 			}
+
+			AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+
 
 			// (1) すべての *.dll について…
 			string[] strDLLs = System.IO.Directory.GetFiles( strプラグインフォルダパス, "*.dll" );
@@ -2769,13 +2790,14 @@ for (int i = 0; i < 3; i++) {
 					System.Reflection.Assembly asm = System.Reflection.Assembly.LoadFrom( dllName );
 
 					// (1-2) アセンブリ内のすべての型について、プラグインとして有効か調べる
-					foreach( Type t in asm.GetTypes() )
+					foreach ( Type t in asm.GetTypes() )
 					{
 						//  (1-3) ↓クラスであり↓Publicであり↓抽象クラスでなく↓IPlugin型のインスタンスが作れる　型を持っていれば有効
-						if( t.IsClass && t.IsPublic && !t.IsAbstract && t.GetInterface( strプラグイン型名 ) != null )
+						if ( t.IsClass && t.IsPublic && !t.IsAbstract && t.GetInterface( strプラグイン型名 ) != null )
 						{
 							// (1-4) クラス名からインスタンスを作成する
-							var st = new STPlugin() {
+							var st = new STPlugin()
+							{
 								plugin = (IPluginActivity) asm.CreateInstance( t.FullName ),
 								strプラグインフォルダ = Path.GetDirectoryName( dllName ),
 								strアセンブリ簡易名 = asm.GetName().Name,
@@ -2788,7 +2810,33 @@ for (int i = 0; i < 3; i++) {
 						}
 					}
 				}
-				catch (Exception e)
+				catch ( System.Reflection.ReflectionTypeLoadException e )
+				{
+					Trace.TraceInformation( dllName + " からプラグインを生成することに失敗しました。スキップします。" );
+					Trace.TraceInformation( e.ToString() );
+					Trace.TraceInformation( e.Message );
+{
+    StringBuilder sb = new StringBuilder();
+    foreach (Exception exSub in e.LoaderExceptions)
+    {
+        sb.AppendLine(exSub.Message);
+        FileNotFoundException exFileNotFound = exSub as FileNotFoundException;
+        if (exFileNotFound != null)
+        {                
+            if(!string.IsNullOrEmpty(exFileNotFound.FusionLog))
+            {
+                sb.AppendLine("Fusion Log:");
+                sb.AppendLine(exFileNotFound.FusionLog);
+            }
+        }
+        sb.AppendLine();
+    }
+    string errorMessage = sb.ToString();
+    //Display or log the error based on your application.
+	Trace.TraceInformation( errorMessage );
+}
+				}
+				catch ( Exception e )
 				{
 					Trace.TraceInformation( dllName + " からプラグインを生成することに失敗しました。スキップします。" );
 					Trace.TraceInformation( e.ToString() );

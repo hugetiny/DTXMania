@@ -56,7 +56,9 @@ using namespace System::Security::Permissions;
 #if _MSC_VER < 1600
 [assembly:AssemblyVersionAttribute("1002.0.10.43")];
 #else
-[assembly:AssemblyVersionAttribute("4.0.10.43")];
+//[assembly:AssemblyVersionAttribute("4.0.10.43")];
+[assembly:AssemblyVersionAttribute("1002.0.10.43")];
+[assembly:AssemblyDefaultAliasAttribute("SlimDXc_net20x86_Jun2010")]
 #endif
 
 [assembly:ComVisible(false)];

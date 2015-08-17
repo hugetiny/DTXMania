@@ -358,7 +358,9 @@ namespace DTXCreator
 			
 			if( Directory.Exists( this.str作業フォルダ名 ) )
 			{
-				Directory.SetCurrentDirectory( this.str作業フォルダ名 );
+				//Directory.SetCurrentDirectory( this.str作業フォルダ名 );		// #35399: 2015/8/15 カレントディレクトリを変更すると、.NET4以降用にbuildしたDTXMania本体での再生に失敗するため、カレントディレクトリの変更を中止する
+				// #35399: ただし作業フォルダは維持する(書き設定行は不要だが、if分岐は残す必要あり)
+				// this.str作業フォルダ名 = this.appアプリ設定.LastWorkFolder;	
 			}
 			else
 			{
@@ -833,7 +835,7 @@ namespace DTXCreator
 
 			this.strDTXファイル名 = Path.ChangeExtension( Path.GetFileName( strファイル名 ), ".dtx" );		// 拡張子は強制的に .dtx に変更。
 			this.str作業フォルダ名 = Path.GetDirectoryName( strファイル名 ) + @"\";		// 読み込み後、カレントフォルダは、作業ファイルのあるフォルダに移動する。
-
+																						// #35399: カレントディレクトリの変更はしない。.NET4以降でbuildしたDTXMania本体で再生できなくなるため。
 			//-----------------
 			#endregion
 
@@ -936,6 +938,9 @@ namespace DTXCreator
 			//-----------------
 			#endregion
 
+			#region [ Viewer用の一時ファイルを削除する (修正＋保存、直後のViewer再生時に、直前の修正が反映されなくなることへの対応) ]
+			tViewer用の一時ファイルを削除する();
+			#endregion
 
 			// 後処理。
 
@@ -1664,8 +1669,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
-			this.bBGMありで再生した = true;
+			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.b前回BGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.b前回BGMありで再生した = true;
 			//-----------------
 			#endregion
 
@@ -1707,8 +1712,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
-			this.bBGMありで再生した = true;
+			this.tViewer用の一時ファイルを出力する( false, this.b未保存 | !this.b前回BGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.b前回BGMありで再生した = true;
 			//-----------------
 			#endregion
 
@@ -1751,8 +1756,8 @@ namespace DTXCreator
 		{
 			#region [ DTXViewer 用の一時ファイルを出力する。]
 			//-----------------
-			this.tViewer用の一時ファイルを出力する( true, this.b未保存 | this.bBGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
-			this.bBGMありで再生した = false;
+			this.tViewer用の一時ファイルを出力する( true, this.b未保存 | this.b前回BGMありで再生した | this.b再生速度を変更した | this.bDTXファイルを開いた );
+			this.b前回BGMありで再生した = false;
 			//-----------------
 			#endregion
 
@@ -1869,6 +1874,10 @@ namespace DTXCreator
 			{
 				this.mgr譜面管理者.strPATH_WAV = "";
 			}
+		}
+		private void tViewer用の一時ファイルを削除する()
+		{
+			this.strViewer演奏用一時ファイル名 = "";		// #35351 2015.7.23 yyagi add; to fix viewer plyback correctly just after save.
 		}
 		//-----------------
 		#endregion
@@ -2193,7 +2202,7 @@ namespace DTXCreator
 		#region [ private ]
 		//-----------------
 		private bool _b未保存 = true;
-		private bool bBGMありで再生した = true;
+		private bool b前回BGMありで再生した = true;
 		private bool b再生速度を変更した = false;
 		private bool bDTXファイルを開いた = false;
 		private Point pt選択モードのコンテクストメニューを開いたときのマウスの位置;

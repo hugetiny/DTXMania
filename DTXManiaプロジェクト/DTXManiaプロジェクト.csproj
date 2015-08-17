@@ -15,8 +15,7 @@
     <ApplicationIcon>dtx.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>SlimDXKey_yyagi.snk</AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <ApplicationManifest>DTXManiaGR.exe.x86.manifest</ApplicationManifest>
     <FileUpgradeFlags>
@@ -70,8 +69,7 @@
       <HintPath>..\実行時フォルダ\dll\FDK.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, PublicKeyToken=53d0e4ef1f1579f5, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SlimDXc_net20x86_Jun2010">
       <HintPath>..\実行時フォルダ\dll\SlimDXc_net20x86_Jun2010.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -216,6 +214,7 @@
     <Compile Include="コード\全体\C定数.cs" />
     <Compile Include="コード\全体\C文字コンソール.cs" />
     <Compile Include="コード\全体\Program.cs" />
+    <None Include="SlimDXKey_yyagi.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="dtx.ico" />
@@ -257,10 +256,11 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ"
-move /Y "$(TargetDir)\Bass.Net.dll" "$(TargetDir)dll"
-move /Y "$(TargetDir)\DirectShowLib-2005.dll" "$(TargetDir)dll"
-move /Y "$(TargetDir)\FDK.dll" "$(TargetDir)dll"
-move /Y "$(TargetDir)\SlimDXc_net20x86_Jun2010.dll" "$(TargetDir)dll"
+copy /Y "$(TargetPath)".config "$(SolutionDir)..\実行時フォルダ"
+move /Y "$(TargetDir)Bass.Net.dll" "$(TargetDir)dll"
+move /Y "$(TargetDir)DirectShowLib-2005.dll" "$(TargetDir)dll"
+move /Y "$(TargetDir)FDK.dll" "$(TargetDir)dll"
+move /Y "$(TargetDir)SlimDXc_net20x86_Jun2010.dll" "$(TargetDir)dll"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

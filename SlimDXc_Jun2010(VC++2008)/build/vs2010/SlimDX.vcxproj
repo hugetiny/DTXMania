@@ -130,6 +130,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Public|Win32'">
     <LinkKeyFile>"C:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania4\trunk\DTXManiaプロジェクト\SlimDXKey_yyagi.snk"</LinkKeyFile>
+    <TargetName>SlimDXc_net20x86_Jun2010</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -272,7 +273,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\external\;$(ProjectDir)..\..\external\Effects11\Inc;$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;D3D_DEBUG_INFO;WINVER=0x501;_WIN32_WINNT=0x501;DIRECTINPUT_VERSION=0x0800;XMLDOCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;D3D_DEBUG_INFO;WINVER=0x501;_WIN32_WINNT=0x501;DIRECTINPUT_VERSION=0x0800;XMLDOCS;%(PreprocessorDefinitions);PUBLIC</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
@@ -298,6 +299,10 @@
     <PostBuildEvent>
       <Command>sn -R "$(TargetPath)" "C:\Users\yyagi\Documents\Visual Studio 2008\Projects\dtxmania4\trunk\DTXManiaプロジェクト\SlimDXKey_yyagi.snk"</Command>
     </PostBuildEvent>
+    <Manifest>
+      <AssemblyIdentity>
+      </AssemblyIdentity>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Public|x64'">
     <Midl>

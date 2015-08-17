@@ -191,8 +191,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
-    <None Include="DTXCreator.exe.x86.manifest" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DTXCreator.exe.x86.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -364,6 +368,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ(DTXCreator)"
+copy /Y "$(TargetPath)".config "$(SolutionDir)..\実行時フォルダ(DTXCreator)"
 mkdir "$(SolutionDir)..\実行時フォルダ(DTXCreator)\ja-JP"
 copy /Y "$(TargetDir)ja-JP" "$(SolutionDir)..\実行時フォルダ(DTXCreator)\ja-JP"
 mkdir "$(SolutionDir)..\実行時フォルダ(DTXCreator)\dll"

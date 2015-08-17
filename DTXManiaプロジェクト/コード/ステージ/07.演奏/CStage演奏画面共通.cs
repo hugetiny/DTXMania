@@ -2480,12 +2480,12 @@ namespace DTXMania
 			CDTXMania.ConfigIni.bAutoPlay.RD = true;
 			CDTXMania.ConfigIni.bAutoPlay.LC = true;
 			CDTXMania.ConfigIni.bAutoPlay.GtR = true;
-			CDTXMania.ConfigIni.bAutoPlay.GtB = true;
+			CDTXMania.ConfigIni.bAutoPlay.GtG = true;
 			CDTXMania.ConfigIni.bAutoPlay.GtB = true;
 			CDTXMania.ConfigIni.bAutoPlay.GtPick = true;
 			CDTXMania.ConfigIni.bAutoPlay.GtW = true;
 			CDTXMania.ConfigIni.bAutoPlay.BsR = true;
-			CDTXMania.ConfigIni.bAutoPlay.BsB = true;
+			CDTXMania.ConfigIni.bAutoPlay.BsG = true;
 			CDTXMania.ConfigIni.bAutoPlay.BsB = true;
 			CDTXMania.ConfigIni.bAutoPlay.BsPick = true;
 			CDTXMania.ConfigIni.bAutoPlay.BsW = true;
