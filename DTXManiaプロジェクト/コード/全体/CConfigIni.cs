@@ -665,6 +665,12 @@ namespace DTXMania
 		    get;
 		    set;
 		}
+		public bool bIsSwappedGuitarBass_PlaySettingsAreSwapped	// #35417 2015.8.18 yyagi FLIP中にalt-f4終了で、演奏設定がswapした状態でconfig.iniが出力されてしまうことを避けるためのフラグ
+		{
+		    get;
+		    set;
+		}
+
 		public STAUTOPLAY bAutoPlay;
 		public int nSoundDeviceType;				// #24820 2012.12.23 yyagi 出力サウンドデバイス(0=ACM(にしたいが設計がきつそうならDirectShow), 1=ASIO, 2=WASAPI)
 		public int nWASAPIBufferSizeMs;				// #24820 2013.1.15 yyagi WASAPIのバッファサイズ
@@ -1027,7 +1033,31 @@ namespace DTXMania
 
 			CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
 		}
-		
+		public void SwapGuitarBassInfos_PlaySettings()			// #35417 2015.8.18 yyagi: 演奏設定のFLIP機能を追加
+		{
+			bool b;
+			b = bGraph.Bass;	bGraph.Bass = bGraph.Guitar;	bGraph.Guitar = b;
+			b = bHidden.Bass;	bHidden.Bass = bHidden.Guitar;	bHidden.Guitar = b;
+			b = bLeft.Bass;		bLeft.Bass = bLeft.Guitar;		bLeft.Guitar = b;
+			b = bLight.Bass;	bLight.Bass = bLight.Guitar;	bLight.Guitar = b;
+			b = bReverse.Bass;	bReverse.Bass = bReverse.Guitar;	bReverse.Guitar = b;
+			b = bSudden.Bass;	bSudden.Bass = bSudden.Guitar;	bSudden.Guitar = b;
+
+			EInvisible ei;
+			ei = eInvisible.Bass;	eInvisible.Bass = eInvisible.Guitar;	eInvisible.Guitar = ei;
+			Eランダムモード er;
+			er = eRandom.Bass;	eRandom.Bass = eRandom.Guitar; eRandom.Guitar = er;
+			E判定文字表示位置 ej;
+			ej = 判定文字表示位置.Bass; 判定文字表示位置.Bass = 判定文字表示位置.Guitar;	判定文字表示位置.Guitar = ej;
+			int n;
+			n = n表示可能な最小コンボ数.Bass; n表示可能な最小コンボ数.Bass = n表示可能な最小コンボ数.Guitar; n表示可能な最小コンボ数.Guitar = n;
+
+			// 譜面スクロール速度の変更だけは、On活性化()で行うこと。そうしないと、演奏開始直後にスクロール速度が変化して見苦しい。
+			n = n譜面スクロール速度.Bass; n譜面スクロール速度.Bass = n譜面スクロール速度.Guitar; n譜面スクロール速度.Guitar = n;
+
+			CDTXMania.ConfigIni.bIsSwappedGuitarBass_PlaySettingsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_PlaySettingsAreSwapped;
+
+		}
 		// コンストラクタ
 
 		public CConfigIni()

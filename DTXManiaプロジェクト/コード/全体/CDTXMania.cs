@@ -1254,6 +1254,11 @@ for (int i = 0; i < 3; i++) {
 								#region [ 演奏キャンセル ]
 								//-----------------------------
 								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新( "Play canceled" );
+								if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #35417 2015.8.18 yyagi Gt/Bsを入れ替えていたなら、演奏設定を元に戻す
+								{
+									//CDTXMania.DTX.SwapGuitarBassInfos();						// 譜面情報も元に戻す (現在は再演奏機能なしのため、元に戻す必要はない)
+									CDTXMania.ConfigIni.SwapGuitarBassInfos_PlaySettings();		// 演奏設定も元に戻す
+								}
 
 								//int lastd = 0;
 								//int f = 0;
@@ -1395,6 +1400,9 @@ for (int i = 0; i < 3; i++) {
 									c演奏記録_Bass = t;
 
 									CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
+									CDTXMania.ConfigIni.SwapGuitarBassInfos_PlaySettings();		// 演奏設定も元に戻す
+									// #35417 2015.8.18 yyagi: AUTO系のフラグ入れ替えは削除可能!?。以後AUTOフラグに全くアクセスしておらず、意味がないため。
+									// (直下でb全AUTOである にアクセスしているが、既に計算済みのクラスへのアクセスであり、ここでの交換対象ではない)
 									CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
 																					// リザルト集計時のみ、Auto系のフラグも元に戻す。
 																					// これを戻すのは、リザルト集計後。
@@ -1498,6 +1506,7 @@ for (int i = 0; i < 3; i++) {
 						//-----------------------------
 						if( this.n進行描画の戻り値 != 0 )
 						{
+							// #35417 2015.8.18 yyagi: AUTO系のフラグ入れ替えは削除可能!?。以後AUTOフラグに全くアクセスしておらず、意味がないため。
 							if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24415 2011.2.27 yyagi Gt/Bsを入れ替えていたなら、Auto状態をリザルト画面終了後に元に戻す
 							{
 								CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
@@ -2622,6 +2631,10 @@ for (int i = 0; i < 3; i++) {
 				if ( ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped )	// #24415 2011.2.21 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、AUTOのフラグをswapして戻す
 				{
 				    ConfigIni.SwapGuitarBassInfos_AutoFlags();
+				}
+				if ( ConfigIni.bIsSwappedGuitarBass_PlaySettingsAreSwapped)	// #35417 2015/8/18 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、演奏設定のフラグをswapして戻す
+				{
+					ConfigIni.SwapGuitarBassInfos_PlaySettings();
 				}
 				string str = strEXEのあるフォルダ + "Config.ini";
 				Trace.Indent();
