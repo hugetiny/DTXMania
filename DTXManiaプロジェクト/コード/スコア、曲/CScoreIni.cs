@@ -1422,7 +1422,7 @@ namespace DTXMania
 			double ret = ( 100.0 * ( ( Math.Pow( 1.03, y ) - 1.0 ) / ( Math.Pow( 1.03, 100.0 ) - 1.0 ) ) );
 
 			ret *= dbCalcReviseValForDrGtBsAutoLanes( inst, bAutoPlay );
-			return ret;
+			return ret;    
 		}
 		internal static double dbCalcReviseValForDrGtBsAutoLanes( E楽器パート inst, STAUTOPLAY bAutoPlay )	// #28607 2012.6.7 yyagi
 		{
