@@ -252,15 +252,13 @@ namespace DTXMania
 			this.r現在の空うちベースChip = null;
 			cInvisibleChip = new CInvisibleChip( CDTXMania.ConfigIni.nDisplayTimesMs, CDTXMania.ConfigIni.nFadeoutTimeMs );
 			this.演奏判定ライン座標 = new C演奏判定ライン座標共通();
-            this.n最大コンボ数_TargetGhost = new STDGBVALUE<int>(); // #35411 2015.08.21 chnmr0 add
-            for (int k = 0; k < 3; k++)
+			for ( int k = 0; k < 3; k++ )
 			{
 				//for ( int n = 0; n < 5; n++ )
 				//{
 					this.nヒット数_Auto含まない[ k ] = new CHITCOUNTOFRANK();
 					this.nヒット数_Auto含む[ k ] = new CHITCOUNTOFRANK();
-                    this.nヒット数_TargetGhost[k] = new CHITCOUNTOFRANK(); // #35411 2015.08.21 chnmr0 add
-    			//}
+				//}
 				this.queWailing[ k ] = new Queue<CDTX.CChip>();
 				this.r現在の歓声Chip[ k ] = null;
 				cInvisibleChip.eInvisibleMode[ k ] = CDTXMania.ConfigIni.eInvisible[ k ];
@@ -630,9 +628,6 @@ namespace DTXMania
 		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };	
 		protected STDGBVALUE<CHITCOUNTOFRANK> nヒット数_Auto含まない;
 		protected STDGBVALUE<CHITCOUNTOFRANK> nヒット数_Auto含む;
-        protected STDGBVALUE<CHITCOUNTOFRANK> nヒット数_TargetGhost; // #35411 2015.08.21 chnmr0 add
-        protected STDGBVALUE<int> nコンボ数_TargetGhost;
-        protected STDGBVALUE<int> n最大コンボ数_TargetGhost;
 		protected int n現在のトップChip = -1;
 		protected int[] n最後に再生したBGMの実WAV番号 = new int[ 50 ];
 		protected int n最後に再生したHHのチャンネル番号;
@@ -728,19 +723,12 @@ namespace DTXMania
 			}
 		}
 
-		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime, bool saveLag = true )
+		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime )
 		{
 			if ( pChip != null )
 			{
-                // #35411 2015.08.22 chnmr0 modified
-                int lag = (int)(nTime + nInputAdjustTime - pChip.n発声時刻ms);
-                if (saveLag)
-                {
-                    pChip.nLag = lag;		// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
-                }
-                // #35411 modify end
-
-				int nDeltaTime = Math.Abs( lag );
+				pChip.nLag = (int) ( nTime + nInputAdjustTime - pChip.n発声時刻ms );		// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
+				int nDeltaTime = Math.Abs( pChip.nLag );
 				//Debug.WriteLine("nAbsTime=" + (nTime - pChip.n発声時刻ms) + ", nDeltaTime=" + (nTime + nInputAdjustTime - pChip.n発声時刻ms));
 				if ( nDeltaTime <= CDTXMania.nPerfect範囲ms )
 				{
@@ -1238,32 +1226,32 @@ namespace DTXMania
 
 			pChip.bIsAutoPlayed = bPChipIsAutoPlay;			// 2011.6.10 yyagi
 			E判定 eJudgeResult = E判定.Auto;
+			switch ( pChip.e楽器パート )
+			{
+				case E楽器パート.DRUMS:
+					{
+						int nInputAdjustTime = bPChipIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Drums;
+						eJudgeResult = (bCorrectLane)? this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTime ) : E判定.Miss;
+						this.actJudgeString.Start( this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ], bPChipIsAutoPlay ? E判定.Auto : eJudgeResult, pChip.nLag );
+					}
+					break;
 
-            // #35411 2015.08.20 chnmr0 modified (begin)
-            bool bIsPerfectGhost = CDTXMania.ConfigIni.eAutoGhost[(int)pChip.e楽器パート] == EAutoGhostData.PERFECT ||
-                CDTXMania.listAutoGhostLag[(int)pChip.e楽器パート] == null;
-            int nInputAdjustTime = bPChipIsAutoPlay && bIsPerfectGhost ? 0 : this.nInputAdjustTimeMs[(int)pChip.e楽器パート];
-            eJudgeResult = (bCorrectLane) ? this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, nInputAdjustTime) : E判定.Miss;
+				case E楽器パート.GUITAR:
+					{
+						int nInputAdjustTime = bPChipIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Guitar;
+						eJudgeResult = (bCorrectLane)? this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTime ) : E判定.Miss;
+						this.actJudgeString.Start( 10, bPChipIsAutoPlay ? E判定.Auto : eJudgeResult, pChip.nLag );
+						break;
+					}
 
-            if( pChip.e楽器パート != E楽器パート.UNKNOWN )
-            {
-                int nChannel = -1;
-                switch( pChip.e楽器パート )
-                {
-                    case E楽器パート.DRUMS:
-                        nChannel = this.nチャンネル0Atoレーン07[pChip.nチャンネル番号 - 0x11];
-                        break;
-                    case E楽器パート.GUITAR:
-                        nChannel = 10;
-                        break;
-                    case E楽器パート.BASS:
-                        nChannel = 11;
-                        break;
-                }
-                this.actJudgeString.Start(nChannel, bPChipIsAutoPlay && bIsPerfectGhost ? E判定.Auto : eJudgeResult, pChip.nLag);
-            }
-            // #35411 end
-
+				case E楽器パート.BASS:
+					{
+						int nInputAdjustTime = bPChipIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Bass;
+						eJudgeResult = (bCorrectLane)? this.e指定時刻からChipのJUDGEを返す( nHitTime, pChip, nInputAdjustTime ) : E判定.Miss;
+						this.actJudgeString.Start( 11, bPChipIsAutoPlay ? E判定.Auto : eJudgeResult, pChip.nLag );
+					}
+					break;
+			}
 			if ( !bPChipIsAutoPlay && ( pChip.e楽器パート != E楽器パート.UNKNOWN ) )
 			{
 				// this.t判定にあわせてゲージを増減する( screenmode, pChip.e楽器パート, eJudgeResult );
@@ -1849,44 +1837,6 @@ namespace DTXMania
 				{
 				    this.tチップのヒット処理( CSound管理.rc演奏用タイマ.n現在時刻, pChip );
 				}
-
-                // #35411 chnmr0 add (ターゲットゴースト)
-                if ( CDTXMania.ConfigIni.eTargetGhost[instIndex] != ETargetGhostData.NONE &&
-                     CDTXMania.listTargetGhsotLag[instIndex] != null &&
-                     pChip.e楽器パート != E楽器パート.UNKNOWN &&
-                     pChip.nバーからの距離dot[instIndex] < 0 )
-                {
-                    if ( !pChip.bTargetGhost判定済み )
-                    {
-                        pChip.bTargetGhost判定済み = true;
-
-                        int ghostLag = 1 + Byte.MaxValue;
-                        if( 0 <= pChip.n楽器パートでの出現順 && pChip.n楽器パートでの出現順 < CDTXMania.listTargetGhsotLag[instIndex].Count )
-                        {
-                            ghostLag = CDTXMania.listTargetGhsotLag[instIndex][pChip.n楽器パートでの出現順];
-                        }
-                        else if( CDTXMania.ConfigIni.eTargetGhost[instIndex] == ETargetGhostData.PERFECT )
-                        {
-                            ghostLag = 0;
-                        }
-                        
-                        if ( ghostLag <= Byte.MaxValue )
-                        {
-                            E判定 eJudge = this.e指定時刻からChipのJUDGEを返す(pChip.n発声時刻ms + ghostLag , pChip, 0, false);
-                            this.nヒット数_TargetGhost[instIndex][(int)eJudge]++;
-                            if (eJudge == E判定.Miss || eJudge == E判定.Poor)
-                            {
-                                this.n最大コンボ数_TargetGhost[instIndex] = Math.Max(this.n最大コンボ数_TargetGhost[instIndex], this.nコンボ数_TargetGhost[instIndex]);
-                                this.nコンボ数_TargetGhost[instIndex] = 0;
-                            }
-                            else
-                            {
-                                this.nコンボ数_TargetGhost[instIndex]++;
-                            }
-                        }
-                    }
-                }
- 
 				switch ( pChip.nチャンネル番号 )
 				{
 					#region [ 01: BGM ]
@@ -2634,7 +2584,6 @@ namespace DTXMania
 						bPChipIsAutoPlay = false;
 				}
 			}
-
 			return bPChipIsAutoPlay;
 		}
 
@@ -2801,53 +2750,21 @@ namespace DTXMania
 				}
 				#endregion
 				//if ( ( configIni.bAutoPlay.Guitar && !pChip.bHit ) && ( pChip.nバーからの距離dot.Guitar < 0 ) )
-
-
-                // #35411 2015.08.20 chnmr0 changed
-                bool autoPlayCondition = (!pChip.bHit) && (pChip.nバーからの距離dot[instIndex] < 0);
-				if ( autoPlayCondition )
-                {
-                    cInvisibleChip.StartSemiInvisible( inst );
-                }
-
-                bool autoPick = ( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtPick : bIsAutoPlay.BsPick;
-                autoPlayCondition = !pChip.bHit && autoPick;
-                long ghostLag = 0;
-                bool bUsePerfectGhost = true;
-
-                if ( (pChip.e楽器パート == E楽器パート.GUITAR || pChip.e楽器パート == E楽器パート.BASS ) &&
-                    CDTXMania.ConfigIni.eAutoGhost[(int)(pChip.e楽器パート)] != EAutoGhostData.PERFECT &&
-                    CDTXMania.listAutoGhostLag[(int)pChip.e楽器パート] != null &&
-                    ( pChip.e楽器パート == E楽器パート.GUITAR ?
-                      CDTXMania.ConfigIni.bギターが全部オートプレイである :
-                      CDTXMania.ConfigIni.bベースが全部オートプレイである ) &&
-                    0 <= pChip.n楽器パートでの出現順 &&
-                    pChip.n楽器パートでの出現順 < CDTXMania.listAutoGhostLag[(int)pChip.e楽器パート].Count)
-                {
-                    ghostLag = CDTXMania.listAutoGhostLag[(int)pChip.e楽器パート][pChip.n楽器パートでの出現順]
-                        - (pChip.e楽器パート == E楽器パート.GUITAR ? nInputAdjustTimeMs.Guitar : nInputAdjustTimeMs.Bass);
-                    autoPlayCondition &= (pChip.n発声時刻ms + ghostLag <= CSound管理.rc演奏用タイマ.n現在時刻ms);
-                    bUsePerfectGhost = false;
-                }
-                
-                if( bUsePerfectGhost )
-                {
-                    autoPlayCondition &= (pChip.nバーからの距離dot[instIndex] < 0);
-                }
-
-                if ( autoPlayCondition )
-                {
+				if ( ( !pChip.bHit ) && ( pChip.nバーからの距離dot[ instIndex ] < 0 ) )
+				{
 					int lo = ( inst == E楽器パート.GUITAR ) ? 0 : 3;	// lane offset
 					bool autoR = ( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtR : bIsAutoPlay.BsR;
 					bool autoG = ( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtG : bIsAutoPlay.BsG;
 					bool autoB = ( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtB : bIsAutoPlay.BsB;
+					bool autoPick = ( inst == E楽器パート.GUITAR ) ? bIsAutoPlay.GtPick : bIsAutoPlay.BsPick;
 					bool pushingR = CDTXMania.Pad.b押されている( inst, Eパッド.R );
 					bool pushingG = CDTXMania.Pad.b押されている( inst, Eパッド.G );
 					bool pushingB = CDTXMania.Pad.b押されている( inst, Eパッド.B );
 
+					cInvisibleChip.StartSemiInvisible( inst );
 					#region [ Chip Fire effects (auto時用) ]
-                    // autoPickでない時の処理は、 t入力処理・ギターベース(E楽器パート) で行う
-                    bool bSuccessOPEN = bChipIsO && (autoR || !pushingR) && (autoG || !pushingG) && (autoB || !pushingB);
+					bool bSuccessOPEN = bChipIsO && ( autoR || !pushingR ) && ( autoG || !pushingG ) && ( autoB || !pushingB );
+					if ( autoPick )			// autoPickでない時の処理は、 t入力処理・ギターベース(E楽器パート) で行う
 					{
 						if ( ( bChipHasR && ( autoR || pushingR ) ) || bSuccessOPEN )
 						{
@@ -2864,6 +2781,7 @@ namespace DTXMania
 					}
 					#endregion
 					#region [ autopick ]
+					if ( autoPick )
 					{
 						bool bMiss = true;
 						if ( bChipHasR == autoR && bChipHasG == autoG && bChipHasB == autoB )		// autoレーンとチップレーン一致時はOK
@@ -2880,19 +2798,19 @@ namespace DTXMania
 							bMiss = false;
 						}
 						pChip.bHit = true;
-						this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms + ghostLag, inst, dTX.nモニタを考慮した音量( inst ), false, bMiss );
+						this.tサウンド再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, inst, dTX.nモニタを考慮した音量( inst ), false, bMiss );
 						this.r次にくるギターChip = null;
 						if ( !bMiss )
 						{
-                            this.tチップのヒット処理(pChip.n発声時刻ms + ghostLag, pChip);
+							this.tチップのヒット処理( pChip.n発声時刻ms, pChip );
 						}
 						else
 						{
 							pChip.nLag = 0;		// tチップのヒット処理()の引数最後がfalseの時はpChip.nLagを計算しないため、ここでAutoPickかつMissのLag=0を代入
-                            this.tチップのヒット処理(pChip.n発声時刻ms + ghostLag, pChip, false);
+							this.tチップのヒット処理( pChip.n発声時刻ms, pChip, false );
 						}
 						int chWailingChip = ( inst == E楽器パート.GUITAR ) ? 0x28 : 0xA8;
-                        CDTX.CChip item = this.r指定時刻に一番近い未ヒットChip(pChip.n発声時刻ms + ghostLag, chWailingChip, this.nInputAdjustTimeMs[instIndex], 140);
+						CDTX.CChip item = this.r指定時刻に一番近い未ヒットChip( pChip.n発声時刻ms, chWailingChip, this.nInputAdjustTimeMs[ instIndex ], 140 );
 						if ( item != null && !bMiss )
 						{
 							this.queWailing[ instIndex ].Enqueue( item );
