@@ -503,6 +503,8 @@ namespace DTXMania
 		public bool bIsEnabledSystemMenu;			// #28200 2012.5.1 yyagi System Menuの使用可否切替
 		public string strSystemSkinSubfolderFullName;	// #28195 2012.5.2 yyagi Skin切替用 System/以下のサブフォルダ名
 		public bool bUseBoxDefSkin;						// #28195 2012.5.6 yyagi Skin切替用 box.defによるスキン変更機能を使用するか否か
+        public STDGBVALUE<EAutoGhostData> eAutoGhost;               // #35411 2015.8.18 chnmr0 プレー時使用ゴーストデータ種別
+        public STDGBVALUE<ETargetGhostData> eTargetGhost;               // #35411 2015.8.18 chnmr0 ゴーストデータ再生方法
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
 			get
@@ -1773,6 +1775,18 @@ namespace DTXMania
 			sw.WriteLine( "DrumsGraph={0}", this.bGraph.Drums ? 1 : 0 );
 			sw.WriteLine();
 
+            // #35411 2015.8.18 chnmr0 add
+            sw.WriteLine("; AUTOゴースト種別 (0:PERFECT, 1:LAST_PLAY, 2:HI_SKILL, 3:HI_SCORE, 4:ONLINE)" );
+            sw.WriteLine("DrumAutoGhost={0}", (int)eAutoGhost.Drums);
+            sw.WriteLine("GuitarAutoGhost={0}", (int)eAutoGhost.Guitar);
+            sw.WriteLine("BassAutoGhost={0}", (int)eAutoGhost.Bass);
+            sw.WriteLine();
+            sw.WriteLine("; ターゲットゴースト種別 (0:NONE, 1:PERFECT, 2:LAST_PLAY, 3:HI_SKILL, 4:HI_SCORE, 5:ONLINE)");
+            sw.WriteLine("DrumTargetGhost={0}", (int)eTargetGhost.Drums);
+            sw.WriteLine("GuitarTargetGhost={0}", (int)eTargetGhost.Guitar);
+            sw.WriteLine("BassTargetGhost={0}", (int)eTargetGhost.Bass);
+            sw.WriteLine();
+
 			sw.WriteLine( ";-------------------" );
 			#endregion
 
@@ -2025,8 +2039,8 @@ namespace DTXMania
 			}
 			sw.WriteLine( ";-------------------" );
 			#endregion
-			
-			sw.Close();
+
+            sw.Close();
 		}
 		public void tファイルから読み込み( string iniファイル名 )
 		{
@@ -2572,7 +2586,7 @@ namespace DTXMania
 												this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
 											}
 											#endregion
-											//else if ( str3.Equals( "NoMP3Streaming" ) )
+                                            //else if ( str3.Equals( "NoMP3Streaming" ) )
 											//{
 											//    this.bNoMP3Streaming = C変換.bONorOFF( str4[ 0 ] );
 											//}
@@ -2618,7 +2632,32 @@ namespace DTXMania
 											{
 												this.bGraph.Drums = C変換.bONorOFF( str4[ 0 ] );
 											}
-											#region [ Sudden ]
+                                            else if (str3.Equals("DrumAutoGhost")) // #35411 2015.08.18 chnmr0 add
+                                            {
+                                                this.eAutoGhost.Drums = (EAutoGhostData)C変換.n値を文字列から取得して返す(str4, 0);
+                                            }
+                                            else if (str3.Equals("GuitarAutoGhost")) // #35411 2015.08.18 chnmr0 add
+                                            {
+                                                this.eAutoGhost.Guitar = (EAutoGhostData)C変換.n値を文字列から取得して返す(str4, 0);
+                                            }
+                                            else if (str3.Equals("BassAutoGhost")) // #35411 2015.08.18 chnmr0 add
+                                            {
+                                                this.eAutoGhost.Bass = (EAutoGhostData)C変換.n値を文字列から取得して返す(str4, 0);
+                                            }
+                                            else if (str3.Equals("DrumTargetGhost")) // #35411 2015.08.18 chnmr0 add
+                                            {
+                                                this.eTargetGhost.Drums = (ETargetGhostData)C変換.n値を文字列から取得して返す(str4, 0);
+                                            }
+                                            else if (str3.Equals("GuitarTargetGhost")) // #35411 2015.08.18 chnmr0 add
+                                            {
+                                                this.eTargetGhost.Guitar = (ETargetGhostData)C変換.n値を文字列から取得して返す(str4, 0);
+                                            }
+                                            else if (str3.Equals("BassTargetGhost")) // #35411 2015.08.18 chnmr0 add
+                                            {
+                                                this.eTargetGhost.Bass = (ETargetGhostData)C変換.n値を文字列から取得して返す(str4, 0);
+                                            }
+
+                                            #region [ Sudden ]
 											else if( str3.Equals( "DrumsSudden" ) )
 											{
 												this.bSudden.Drums = C変換.bONorOFF( str4[ 0 ] );
@@ -3311,5 +3350,5 @@ Capture=K065
 		}
 		//-----------------
 		#endregion
-	}
+    }
 }

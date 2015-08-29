@@ -331,11 +331,11 @@ namespace DTXMania
 				#region [ ポップアップメニュー 背景描画 ]
 				if ( this.txPopupMenuBackground != null )
 				{
-					this.txPopupMenuBackground.t2D描画( CDTXMania.app.Device, 160 * Scale.X, 40 * Scale.Y );
+					this.txPopupMenuBackground.t2D描画( CDTXMania.app.Device, 160 * Scale.X, 10 * Scale.Y );
 				}
 				#endregion
 				#region [ ソートメニュータイトル描画 ]
-				int x = (int) ( 240 * Scale.X ), y = (int) ( 44 * Scale.Y );
+				int x = (int) ( 240 * Scale.X ), y = (int) ( 16 * Scale.Y );
 				stqMenuTitle.txName.t2D描画( CDTXMania.app.Device, x, y );						//font.t文字列描画( x, y, strMenuTitle, false, 1.0f );
 				#endregion
 				#region [ カーソル描画 ]
@@ -343,7 +343,7 @@ namespace DTXMania
 				{
 					int height = stqMenuTitle.rectName.Height;
 					int curX = (int)(180 * Scale.X);
-					int curY = (int)(46 * Scale.Y) + ( height / 4 - 6) +  ( height * ( this.n現在の選択行 + 1 ) );
+					int curY = (int)(16 * Scale.Y) + ( height / 4 - 6) +  ( height * ( this.n現在の選択行 + 1 ) );
 					this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, new Rectangle( 0, 0, (int)(16 * Scale.X), (int)(32 * Scale.Y) ) );
 					curX += (int)(0x10 * Scale.X);
 					Rectangle rectangle = new Rectangle( (int)(8 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) );
@@ -363,7 +363,7 @@ namespace DTXMania
 					if ( lciMenuItems[ i ].txName != null )
 					{
 						int height = lciMenuItems[ i ].rectName.Height;
-						lciMenuItems[ i ].txName.t2D描画( CDTXMania.app.Device, 190 * Scale.X, ( 80 * Scale.Y ) + i * height );
+						lciMenuItems[ i ].txName.t2D描画( CDTXMania.app.Device, 190 * Scale.X, ( 50 * Scale.Y ) + i * height );
 					}
 
 					bool bValueBold = (bItemBold || (i == nItemSelecting && bIsSelectingIntItem)) ? true : false;
@@ -394,7 +394,7 @@ namespace DTXMania
 							prvFont.DrawPrivateFont( s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) : 
 							prvFont.DrawPrivateFont( s, Color.White, Color.Black );
 						CTexture ctStr = CDTXMania.tテクスチャの生成( bmpStr, false );
-						ctStr.t2D描画( CDTXMania.app.Device, 340 * Scale.X, ( 80 * Scale.Y ) + i * prvFont.RectStrings.Height );
+						ctStr.t2D描画( CDTXMania.app.Device, 340 * Scale.X, ( 50 * Scale.Y ) + i * prvFont.RectStrings.Height );
 						CDTXMania.tテクスチャの解放( ref ctStr );
 					}
 				}

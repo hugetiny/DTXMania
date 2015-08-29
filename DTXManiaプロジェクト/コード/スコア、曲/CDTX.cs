@@ -524,9 +524,11 @@ namespace DTXMania
 					return true;
 				}
 			}
-			public bool bIsAutoPlayed;							// 2011.6.10 yyagi
+			public bool bIsAutoPlayed;						// 2011.6.10 yyagi
 			public bool b演奏終了後も再生が続くチップである;	// #32248 2013.10.14 yyagi
 			public bool b空打ちチップである;					// #34029 2014.7.15 yyagi
+            public int n楽器パートでの出現順;                // #35411 2015.08.20 chnmr0
+            public bool bTargetGhost判定済み;               // #35411 2015.08.22 chnmr0
 
 			public CChip()
 			{
@@ -545,7 +547,9 @@ namespace DTXMania
 				this.n発声位置 = 0;
 				this.n発声時刻ms = 0;
 				this.nLag = -999;
-				this.bIsAutoPlayed = false;
+                this.n楽器パートでの出現順 = -1;
+                this.bTargetGhost判定済み = false;
+                this.bIsAutoPlayed = false;
 				this.b演奏終了後も再生が続くチップである = false;
 				this.b空打ちチップである = false;
 				this.dbチップサイズ倍率 = 1.0;
@@ -3232,7 +3236,7 @@ namespace DTXMania
 			this.listAVIPAN = new Dictionary<int, CAVIPAN>();
 			this.listAVI = new Dictionary<int, CAVI>();
 			this.listChip = new List<CChip>();
-			base.On活性化();
+            base.On活性化();
 		}
 		public override void On非活性化()
 		{
@@ -5554,7 +5558,6 @@ namespace DTXMania
 				#endregion
 
 				// チップを配置。
-
 				this.listChip.Add( chip );
 			}
 			return true;

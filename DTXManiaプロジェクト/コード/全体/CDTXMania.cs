@@ -299,7 +299,10 @@ namespace DTXMania
 		{
 			get;
 			set;
-		}
+		}        
+        public static STDGBVALUE< List<int> > listAutoGhostLag = new STDGBVALUE<List<int>>();
+        public static STDGBVALUE< List<int> > listTargetGhsotLag = new STDGBVALUE<List<int>>();
+        
 		#endregion
 
 		// コンストラクタ
@@ -1378,6 +1381,15 @@ for (int i = 0; i < 3; i++) {
 								//-----------------------------
 								CScoreIni.C演奏記録 c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass;
 								CDTX.CChip[] chipArray = new CDTX.CChip[ 10 ];
+
+                                if( CDTXMania.ConfigIni.bIsSwappedGuitarBass )
+                                {
+                                	CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
+													// リザルト集計時のみ、Auto系のフラグも元に戻す。
+													// これを戻すのは、リザルト集計後。
+                                                    // "case CStage.Eステージ.結果:"のところ。
+                                }
+
 								if( ConfigIni.bギタレボモード )
 								{
 									stage演奏ギター画面.t演奏結果を格納する( out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass );
@@ -1387,18 +1399,15 @@ for (int i = 0; i < 3; i++) {
 									stage演奏ドラム画面.t演奏結果を格納する( out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass, out chipArray );
 								}
 
-								if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
-								{
-									CScoreIni.C演奏記録 t;
-									t = c演奏記録_Guitar;
-									c演奏記録_Guitar = c演奏記録_Bass;
-									c演奏記録_Bass = t;
+                                if (CDTXMania.ConfigIni.bIsSwappedGuitarBass)		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
+                                {
+                                    CScoreIni.C演奏記録 t;
+                                    t = c演奏記録_Guitar;
+                                    c演奏記録_Guitar = c演奏記録_Bass;
+                                    c演奏記録_Bass = t;
 
-									CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
-									CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
-																					// リザルト集計時のみ、Auto系のフラグも元に戻す。
-																					// これを戻すのは、リザルト集計後。
-								}													// "case CStage.Eステージ.結果:"のところ。
+                                    CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
+                                }
 
 								double ps = 0.0, gs = 0.0;
 								if ( !c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0) {

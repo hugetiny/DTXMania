@@ -9,7 +9,8 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CActSelectQuickConfig : CActSelectPopupMenu
+	internal class 
+        CActSelectQuickConfig : CActSelectPopupMenu
 	{
 		private readonly string QuickCfgTitle = "Quick Config";
 
@@ -23,19 +24,21 @@ namespace DTXMania
 
 		private void CActSelectQuickConfigMain()
 		{
-/*
-•Target: Drums/Guitar/Bass 
-•Auto Mode: All ON/All OFF/CUSTOM 
-•Auto Lane: 
-•Scroll Speed: 
-•Play Speed: 
-•Risky: 
-•Hidden/Sudden: None/Hidden/Sudden/Both 
-•Conf SET: SET-1/SET-2/SET-3 
-•More... 
-•EXIT 
-*/
-			lci = new List<List<List<CItemBase>>>();									// この画面に来る度に、メニューを作り直す。
+            /*
+            •Target: Drums/Guitar/Bass 
+            •Auto Mode: All ON/All OFF/CUSTOM 
+            •Auto Lane: 
+            •Scroll Speed: 
+            •Play Speed: 
+            •Risky: 
+            •Hidden/Sudden: None/Hidden/Sudden/Both 
+            •AUTO Ghost: Perfect/Last Play/Hi Skill/Hi Score/Online
+            •Target Ghost: None/Perfect/Last Play/Hi Skill/Hi Score/Online
+            •Conf SET: SET-1/SET-2/SET-3 
+            •More... 
+            •EXIT 
+            */
+            lci = new List<List<List<CItemBase>>>();									// この画面に来る度に、メニューを作り直す。
 			for ( int nConfSet = 0; nConfSet < 3; nConfSet++ )
 			{
 				lci.Add( new List<List<CItemBase>>() );									// ConfSet用の3つ分の枠。
@@ -123,8 +126,21 @@ namespace DTXMania
 			l.Add( new CItemList( "Sud/Hid", CItemBase.Eパネル種別.通常, nSuddenHidden, "", "",
 				new string[] { "None", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } ) );
 			#endregion
-			#region [ 共通 SET切り替え/More/Return ]
-			l.Add( new CSwitchItemList( "Config Set", CItemBase.Eパネル種別.通常, nCurrentConfigSet, "", "", new string[] { "SET-1", "SET-2", "SET-3" } ) );
+            #region [ 個別 Ghost ]
+            l.Add( new CItemList("AUTO Ghost", CItemBase.Eパネル種別.通常, (int)CDTXMania.ConfigIni.eAutoGhost[ nInst ],
+                "AUTOプレーのゴーストを指定します。\n",
+                "Specify Play Ghost data.\n",
+                new string[] {"Perfect", "Last Play", "Hi Skill", "Hi Score", "Online" }
+                ));
+            l.Add(new CItemList("Target Ghost", CItemBase.Eパネル種別.通常, (int)CDTXMania.ConfigIni.eTargetGhost[ nInst ],
+                "ターゲットゴーストを指定します。\n",
+                "Specify Target Ghost data.\n",
+                new string[] {"None", "Perfect", "Last Play", "Hi Skill", "Hi Score", "Online" }
+                ));
+            #endregion
+            #region [ 共通 SET切り替え/More/Return ]
+            l.Add( new CSwitchItemList( "Config Set", CItemBase.Eパネル種別.通常, nCurrentConfigSet, "", "", new string[] { "SET-1", "SET-2", "SET-3" } ) );
+            
 			l.Add( new CSwitchItemList( "More...", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "" } ) );
 			l.Add( new CSwitchItemList( "Return", CItemBase.Eパネル種別.通常, 0, "", "", new string[] { "", "" } ) );
 			#endregion
@@ -370,6 +386,16 @@ namespace DTXMania
 						CDTXMania.ConfigIni.eInvisible[ nCurrentTarget ] = ( EInvisible ) ( sh - 3 );
 					}
 					break;
+                case (int) EOrder.AutoGhost: // #35411 chnmr0 AUTOゴーストデータ
+                    EAutoGhostData gd = (EAutoGhostData)GetIndex((int)EOrder.AutoGhost);
+                    CDTXMania.ConfigIni.eAutoGhost[ nCurrentTarget ] = gd;
+                    break;
+
+                case (int)EOrder.TargetGhost: // #35411 chnmr0 ターゲットゴーストデータ
+                    ETargetGhostData gtd = (ETargetGhostData)GetIndex((int)EOrder.TargetGhost);
+                    CDTXMania.ConfigIni.eTargetGhost[ nCurrentTarget ] = gtd;
+                    break;
+
 				case (int) EOrder.ConfSet:			// CONF-SET切り替え
 					nCurrentConfigSet = (int) GetIndex( (int) EOrder.ConfSet );
 					//Initialize( lci[ nCurrentConfigSet ], true, QuickCfgTitle, pos );
@@ -558,6 +584,8 @@ namespace DTXMania
 			Risky,
 			PlaySpeed,
 			SuddenHidden,
+            AutoGhost,
+            TargetGhost,
 			ConfSet,
 			More,
 			Return, END,
