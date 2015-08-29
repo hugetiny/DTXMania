@@ -550,6 +550,33 @@ namespace DTXMania
 		FULL		// チップを常に透明化する
 	}
 
+    /// <summary>
+    /// 使用するAUTOゴーストデータの種類 (#35411 chnmr0)
+    /// </summary>
+    public enum EAutoGhostData
+    {
+        PERFECT = 0, // 従来のAUTO
+        LAST_PLAY = 1, // (.score.ini) の LastPlay ゴースト
+        HI_SKILL = 2, // (.score.ini) の HiSkill ゴースト
+        HI_SCORE = 3, // (.score.ini) の HiScore ゴースト
+        ONLINE = 4 // オンラインゴースト (DTXMOS からプラグインが取得、本体のみでは指定しても無効)
+    }
+
+    /// <summary>
+    /// 使用するターゲットゴーストデータの種類 (#35411 chnmr0)
+    /// ここでNONE以外を指定してかつ、ゴーストが利用可能な場合グラフの目標値に描画される
+    /// NONE の場合従来の動作
+    /// </summary>
+    public enum ETargetGhostData
+    {
+        NONE = 0,
+        PERFECT = 1,
+        LAST_PLAY = 2, // (.score.ini) の LastPlay ゴースト
+        HI_SKILL = 3, // (.score.ini) の HiSkill ゴースト
+        HI_SCORE = 4, // (.score.ini) の HiScore ゴースト
+        ONLINE = 5 // オンラインゴースト (DTXMOS からプラグインが取得、本体のみでは指定しても無効)
+    }
+
 	/// <summary>
 	/// Drum/Guitar/Bass の値を扱う汎用の構造体。
 	/// </summary>

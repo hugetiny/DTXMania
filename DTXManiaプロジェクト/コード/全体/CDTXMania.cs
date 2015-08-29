@@ -300,6 +300,8 @@ namespace DTXMania
 			get;
 			set;
 		}
+        public static STDGBVALUE< List<int> > listAutoGhostLag = new STDGBVALUE<List<int>>();
+        public static STDGBVALUE< List<int> > listTargetGhsotLag = new STDGBVALUE<List<int>>();
 		#endregion
 
 		// コンストラクタ

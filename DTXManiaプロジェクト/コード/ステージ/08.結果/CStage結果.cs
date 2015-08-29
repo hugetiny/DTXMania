@@ -94,15 +94,15 @@ namespace DTXMania
 						switch( i )
 						{
 							case 0:
-                                bIsAutoPlay = CDTXMania.ConfigIni.bドラムが全部オートプレイである;
+                                bIsAutoPlay = CDTXMania.ConfigIni.bドラムが全部オートプレイである || !CDTXMania.ConfigIni.bDrums有効; // #35411 chnmr0 add Drums が有効でない場合 AUTO 扱いとして LastPlay 更新しない
 								break;
 
 							case 1:
-								bIsAutoPlay = CDTXMania.ConfigIni.bギターが全部オートプレイである;
+								bIsAutoPlay = CDTXMania.ConfigIni.bギターが全部オートプレイである || !CDTXMania.ConfigIni.bGuitar有効; // #35411 chnmr0 add
 								break;
 
 							case 2:
-								bIsAutoPlay = CDTXMania.ConfigIni.bベースが全部オートプレイである;
+								bIsAutoPlay = CDTXMania.ConfigIni.bベースが全部オートプレイである || !CDTXMania.ConfigIni.bGuitar有効;
 								break;
 						}
 						this.fPerfect率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPerfect数 ) / ( (float) part.n全チップ数 ) );
@@ -150,6 +150,7 @@ namespace DTXMania
 					{
 						this.b新記録スコア[ i ] = true;
 						ini.stセクション[ i * 2 ] = this.st演奏記録[ i ];
+                        this.SaveGhost( i * 2 ); // #35411 chnmr0 add
 					}
 
                     // 新記録スキルチェック
@@ -157,12 +158,14 @@ namespace DTXMania
                     {
                         this.b新記録スキル[ i ] = true;
                         ini.stセクション[(i * 2) + 1] = this.st演奏記録[ i ];
+                        this.SaveGhost((i * 2) + 1); // #35411 chnmr0 add
                     }
 
 					// ラストプレイ #23595 2011.1.9 ikanick
                     // オートじゃなければプレイ結果を書き込む
                     if (this.bオート[ i ] == false) {
                         ini.stセクション[i + 6] = this.st演奏記録[ i ];
+                        this.SaveGhost(i + 6); // #35411 chnmr0 add
                     }
 
                     // #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
@@ -270,6 +273,117 @@ namespace DTXMania
 				Trace.Unindent();
 			}
 		}
+
+        // #35411 chnmr0 add
+        private void SaveGhost(int sectionIndex)
+        {
+            STDGBVALUE<bool> saveCond = new STDGBVALUE<bool>();
+            saveCond.Drums = true;
+            saveCond.Guitar = true;
+            saveCond.Bass = true;
+            
+            foreach( CDTX.CChip chip in CDTXMania.DTX.listChip )
+            {
+                if( chip.bIsAutoPlayed )
+                {
+                    saveCond[(int)(chip.e楽器パート)] = false;
+                }
+            }
+            for(int instIndex = 0; instIndex < 3; ++instIndex)
+            {
+                saveCond[instIndex] &= CDTXMania.listAutoGhostLag.Drums == null;
+            }
+
+            string directory = CDTXMania.DTX.strフォルダ名;
+            string filename = CDTXMania.DTX.strファイル名 + ".";
+            E楽器パート inst = E楽器パート.UNKNOWN;
+
+            if ( sectionIndex == 0 )
+            {
+                filename += "hiscore.dr.ghost";
+                inst = E楽器パート.DRUMS;
+            }
+            else if (sectionIndex == 1 )
+            {
+                filename += "hiskill.dr.ghost";
+                inst = E楽器パート.DRUMS;
+            }
+            if (sectionIndex == 2 )
+            {
+                filename += "hiscore.gt.ghost";
+                inst = E楽器パート.GUITAR;
+            }
+            else if (sectionIndex == 3 )
+            {
+                filename += "hiskill.gt.ghost";
+                inst = E楽器パート.GUITAR;
+            }
+            if (sectionIndex == 4 )
+            {
+                filename += "hiscore.bs.ghost";
+                inst = E楽器パート.BASS;
+            }
+            else if (sectionIndex == 5)
+            {
+                filename += "hiskill.bs.ghost";
+                inst = E楽器パート.BASS;
+            }
+            else if (sectionIndex == 6)
+            {
+                filename += "lastplay.dr.ghost";
+                inst = E楽器パート.DRUMS;
+            }
+            else if (sectionIndex == 7 )
+            {
+                filename += "lastplay.gt.ghost";
+                inst = E楽器パート.GUITAR;
+            }
+            else if (sectionIndex == 8)
+            {
+                filename += "lastplay.bs.ghost";
+                inst = E楽器パート.BASS;
+            }
+
+            if (inst == E楽器パート.UNKNOWN)
+            {
+                return;
+            }
+
+            int cnt = 0;
+            foreach (DTXMania.CDTX.CChip chip in CDTXMania.DTX.listChip)
+            {
+                if (chip.e楽器パート == inst)
+                {
+                    ++cnt;
+                }
+            }
+
+            if( saveCond[(int)inst] )
+            {
+                using (FileStream fs = new FileStream(directory + "\\" + filename, FileMode.Create, FileAccess.Write))
+                {
+                    using (BinaryWriter bw = new BinaryWriter(fs))
+                    {
+                        bw.Write((Int32)cnt);
+                        foreach (DTXMania.CDTX.CChip chip in CDTXMania.DTX.listChip)
+                        {
+                            if (chip.e楽器パート == inst)
+                            {
+                            	// -128 ms から 127 ms までのラグしか保存しない
+                            	// その範囲を超えているラグはクランプ
+                                int data = chip.nLag;
+                                int mx = SByte.MaxValue;
+                                int mn = SByte.MinValue;
+                                data = Math.Min(mx, data);
+                                data = Math.Max(mn, data);
+                                bw.Write((SByte)data);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 		public override void On非活性化()
 		{
 			if( this.rResultSound != null )
