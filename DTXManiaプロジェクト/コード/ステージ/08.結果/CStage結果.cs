@@ -286,7 +286,10 @@ namespace DTXMania
             {
                 if( chip.bIsAutoPlayed )
                 {
-                    saveCond[(int)(chip.e楽器パート)] = false;
+					if (chip.nチャンネル番号 != 0x28 && chip.nチャンネル番号 != 0xA8) // Guitar/Bass Wailing は OK
+					{
+						saveCond[(int)(chip.e楽器パート)] = false;
+					}
                 }
             }
             for(int instIndex = 0; instIndex < 3; ++instIndex)
