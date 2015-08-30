@@ -91,6 +91,8 @@ namespace DTXMania
 				Drums.strDTXManiaのバージョン = CDTXMania.VERSION;
 				Drums.最終更新日時 = DateTime.Now.ToString();
 				Drums.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Drums );
+				Drums.nRisky = CDTXMania.ConfigIni.nRisky; // #35461 chnmr0 add
+				Drums.bギターとベースを入れ替えた = CDTXMania.ConfigIni.bIsSwappedGuitarBass; // #35417 chnmr0 add
 			}
 		}
 		#endregion
@@ -156,6 +158,7 @@ namespace DTXMania
 				Guitar.strDTXManiaのバージョン = CDTXMania.VERSION;
 				Guitar.最終更新日時 = DateTime.Now.ToString();
 				Guitar.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Guitar );
+				Guitar.bギターとベースを入れ替えた = CDTXMania.ConfigIni.bIsSwappedGuitarBass; // #35417 chnmr0 add
 			}
 		}
 		#endregion
@@ -221,6 +224,7 @@ namespace DTXMania
 				Bass.strDTXManiaのバージョン = CDTXMania.VERSION;
 				Bass.最終更新日時 = DateTime.Now.ToString();
 				Bass.Hash = CScoreIni.t演奏セクションのMD5を求めて返す( Bass );
+				Bass.bギターとベースを入れ替えた = CDTXMania.ConfigIni.bIsSwappedGuitarBass; // #35417 chnmr0 add
 			}
 		}
 		#endregion

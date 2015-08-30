@@ -212,6 +212,7 @@ namespace DTXMania
 			public bool レーン9モード;
 			public int nRisky;		// #23559 2011.6.20 yyagi 0=OFF, 1-10=Risky
 			public string 最終更新日時;
+			public bool bギターとベースを入れ替えた; // #35417 2015.08.30 chnmr0 add
 
 			public C演奏記録()
 			{
@@ -284,6 +285,7 @@ namespace DTXMania
 				this.Hash = "00000000000000000000000000000000";
 				this.レーン9モード = true;
 				this.nRisky = 0;									// #23559 2011.6.20 yyagi
+				this.bギターとベースを入れ替えた = false; // #35417 2015.08.30 chnmr0 add
 			}
 
 			public bool bフルコンボじゃない
@@ -811,6 +813,10 @@ namespace DTXMania
 									}
 								}
 							}
+							else if ( item.Equals("GBFlip" ) )
+							{
+								c演奏記録.bギターとベースを入れ替えた = C変換.bONorOFF( para[0] );
+							}
 							else if ( item.Equals( "Risky" ) )
 							{
 								c演奏記録.nRisky = int.Parse( para );
@@ -1297,6 +1303,7 @@ namespace DTXMania
 					writer.Write( this.stセクション[ i ].bAutoPlay[ j ] ? 1 : 0 );
 				}
 				writer.WriteLine();
+				writer.WriteLine( "GBFlip={0}", this.stセクション[i].bギターとベースを入れ替えた ? 1 : 0);
 				writer.WriteLine( "Risky={0}", this.stセクション[ i ].nRisky );
 				writer.WriteLine( "SuddenDrums={0}", this.stセクション[ i ].bSudden.Drums ? 1 : 0 );
 				writer.WriteLine( "SuddenGuitar={0}", this.stセクション[ i ].bSudden.Guitar ? 1 : 0 );
