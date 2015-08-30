@@ -1257,7 +1257,6 @@ for (int i = 0; i < 3; i++) {
 								if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #35417 2015.8.18 yyagi Gt/Bsを入れ替えていたなら、演奏設定を元に戻す
 								{
 									//CDTXMania.DTX.SwapGuitarBassInfos();						// 譜面情報も元に戻す (現在は再演奏機能なしのため、元に戻す必要はない)
-									CDTXMania.ConfigIni.SwapGuitarBassInfos_PlaySettings();		// 演奏設定も元に戻す
 								}
 
 								//int lastd = 0;
@@ -1400,10 +1399,11 @@ for (int i = 0; i < 3; i++) {
 									c演奏記録_Bass = t;
 
 									CDTXMania.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
-									CDTXMania.ConfigIni.SwapGuitarBassInfos_PlaySettings();		// 演奏設定も元に戻す
+									// #35417 2015.08.30 changed フラグにアクセスしている箇所が見つかったため有効化
 									// #35417 2015.8.18 yyagi: AUTO系のフラグ入れ替えは削除可能!?。以後AUTOフラグに全くアクセスしておらず、意味がないため。
 									// (直下でb全AUTOである にアクセスしているが、既に計算済みのクラスへのアクセスであり、ここでの交換対象ではない)
-									//CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// #24415 2011.2.27 yyagi
+									CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();
+																					// #24415 2011.2.27 yyagi
 																					// リザルト集計時のみ、Auto系のフラグも元に戻す。
 																					// これを戻すのは、リザルト集計後。
 								}													// "case CStage.Eステージ.結果:"のところ。
@@ -1506,11 +1506,12 @@ for (int i = 0; i < 3; i++) {
 						//-----------------------------
 						if( this.n進行描画の戻り値 != 0 )
 						{
+							// #35417 2015.08.30 chnmr0 changed : ステージクリア処理で入れ替えるため元に戻した
 							// #35417 2015.8.18 yyagi: AUTO系のフラグ入れ替えは削除可能!?。以後AUTOフラグに全くアクセスしておらず、意味がないため。
-							//if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24415 2011.2.27 yyagi Gt/Bsを入れ替えていたなら、Auto状態をリザルト画面終了後に元に戻す
-							//{
-							//	CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
-							//}
+							if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )		// #24415 2011.2.27 yyagi Gt/Bsを入れ替えていたなら、Auto状態をリザルト画面終了後に元に戻す
+							{
+								CDTXMania.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
+							}
 
 							DTX.t全チップの再生一時停止();
 							DTX.On非活性化();

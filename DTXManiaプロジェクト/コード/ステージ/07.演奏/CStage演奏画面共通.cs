@@ -368,7 +368,6 @@ namespace DTXMania
 			if ( CDTXMania.ConfigIni.bIsSwappedGuitarBass )	// #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
 			{
 				CDTXMania.DTX.SwapGuitarBassInfos();
-				CDTXMania.ConfigIni.SwapGuitarBassInfos_PlaySettings();
 			}
 			this.sw = new Stopwatch();
 			this.sw2 = new Stopwatch();
