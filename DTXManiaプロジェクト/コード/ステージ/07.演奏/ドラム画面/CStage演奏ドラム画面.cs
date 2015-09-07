@@ -321,7 +321,7 @@ namespace DTXMania
 				this.actGraph.dbグラフ値現在_渡 = 100 *
 								(this.nヒット数_Auto含まない.Drums.Perfect * 17 +
 								 this.nヒット数_Auto含まない.Drums.Great * 7 +
-								 this.actCombo.n現在のコンボ数.Drums最高値 * 3) / (20 * CDTXMania.DTX.n可視チップ数.Drums);
+								 this.actCombo.n現在のコンボ数.Drums最高値 * 3) / (20.0 * CDTXMania.DTX.n可視チップ数.Drums);
 			}
 			return eJudgeResult;
 		}
@@ -2093,7 +2093,7 @@ namespace DTXMania
                             val = 100 *
                                 (this.nヒット数_TargetGhost.Drums.Perfect * 17 +
                                  this.nヒット数_TargetGhost.Drums.Great * 7 +
-                                 this.n最大コンボ数_TargetGhost.Drums * 3) / (20 * CDTXMania.DTX.n可視チップ数.Drums);
+                                 this.n最大コンボ数_TargetGhost.Drums * 3) / (20.0 * CDTXMania.DTX.n可視チップ数.Drums);
                         }
                     }
                     else
