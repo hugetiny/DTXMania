@@ -312,6 +312,17 @@ namespace DTXMania
 			E判定 eJudgeResult = tチップのヒット処理( nHitTime, pChip, E楽器パート.DRUMS, bCorrectLane );
 			// #24074 2011.01.23 add ikanick
 			this.actGraph.dbグラフ値現在_渡 = CScoreIni.t演奏型スキルを計算して返す( CDTXMania.DTX.n可視チップ数.Drums, this.nヒット数_Auto含まない.Drums.Perfect, this.nヒット数_Auto含まない.Drums.Great, this.nヒット数_Auto含まない.Drums.Good, this.nヒット数_Auto含まない.Drums.Poor, this.nヒット数_Auto含まない.Drums.Miss, E楽器パート.DRUMS,  bIsAutoPlay );
+			// #35411 2015.09.07 add chnmr0
+			if( CDTXMania.listTargetGhsotLag.Drums != null &&
+                CDTXMania.ConfigIni.eTargetGhost.Drums == ETargetGhostData.ONLINE &&
+				CDTXMania.DTX.n可視チップ数.Drums > 0 )
+			{
+				// Online Stats の計算式
+				this.actGraph.dbグラフ値現在_渡 = 100 *
+								(this.nヒット数_Auto含まない.Drums.Perfect * 17 +
+								 this.nヒット数_Auto含まない.Drums.Great * 7 +
+								 this.actCombo.n現在のコンボ数.Drums最高値 * 3) / (20 * CDTXMania.DTX.n可視チップ数.Drums);
+			}
 			return eJudgeResult;
 		}
 
