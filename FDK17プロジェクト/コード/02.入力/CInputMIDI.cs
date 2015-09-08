@@ -47,15 +47,15 @@ namespace FDK
 					item.nVelocity = nPara2;
 					this.listEventBuffer.Add( item );
 				}
-				else if ( ( nMIDIevent == 0xB0 ) && ( nPara1 == 4 ) )	// Ctrl Chg #04: Foot Controller
-				{
-					STInputEvent item = new STInputEvent();
-					item.nKey = nPara1;
-					item.b押された = true;
-					item.nTimeStamp = n受信システム時刻;
-					item.nVelocity = nPara2;
-					this.listEventBuffer.Add( item );
-				}
+				//else if ( ( nMIDIevent == 0xB0 ) && ( nPara1 == 4 ) )	// Ctrl Chg #04: Foot Controller
+				//{
+				//	STInputEvent item = new STInputEvent();
+				//	item.nKey = nPara1;
+				//	item.b押された = true;
+				//	item.nTimeStamp = n受信システム時刻;
+				//	item.nVelocity = nPara2;
+				//	this.listEventBuffer.Add( item );
+				//}
 			}
 		}
 
