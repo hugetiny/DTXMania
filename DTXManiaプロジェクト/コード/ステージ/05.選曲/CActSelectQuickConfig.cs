@@ -47,7 +47,7 @@ namespace DTXMania
 					lci[ nConfSet ][ nInst ] = MakeListCItemBase( nConfSet, nInst );
 				}
 			}
-			base.Initialize( lci[ nCurrentConfigSet ][ 0 ], true, QuickCfgTitle, 2 );	// ConfSet=0, nInst=Drums
+			base.Initialize( lci[ nCurrentConfigSet ][ nCurrentTarget ], true, QuickCfgTitle, 2 );	// ConfSet=0, nInst=Drums
 		}
 
 		private List<CItemBase> MakeListCItemBase( int nConfigSet, int nInst )

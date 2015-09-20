@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace DTXMania
 {
-	internal class CBoxDef
+	public class CBoxDef
 	{
 		// プロパティ
 
