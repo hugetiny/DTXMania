@@ -527,6 +527,8 @@ namespace DTXMania
 			public bool bIsAutoPlayed;							// 2011.6.10 yyagi
 			public bool b演奏終了後も再生が続くチップである;	// #32248 2013.10.14 yyagi
 			public bool b空打ちチップである;					// #34029 2014.7.15 yyagi
+            public int n楽器パートでの出現順;                // #35411 2015.08.20 chnmr0
+            public bool bTargetGhost判定済み;               // #35411 2015.08.22 chnmr0
 
 			public CChip()
 			{
@@ -545,6 +547,8 @@ namespace DTXMania
 				this.n発声位置 = 0;
 				this.n発声時刻ms = 0;
 				this.nLag = -999;
+                this.n楽器パートでの出現順 = -1;
+                this.bTargetGhost判定済み = false;
 				this.bIsAutoPlayed = false;
 				this.b演奏終了後も再生が続くチップである = false;
 				this.b空打ちチップである = false;
