@@ -401,6 +401,7 @@ namespace DTXMania
 			public int n発声位置;
 			public int n発声時刻ms;
 			public int nLag;				// 2011.2.1 yyagi
+			public int nCurrentComboForGhost; // 2015.9.29 chnmr0
 			public CDTX.CAVI rAVI;
 			public CDTX.CAVIPAN rAVIPan;
 			public CDTX.CBGA rBGA;

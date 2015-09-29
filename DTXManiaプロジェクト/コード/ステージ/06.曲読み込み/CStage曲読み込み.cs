@@ -77,6 +77,11 @@ namespace DTXMania
                 // Read ghost data by config
                 // It does not exist a ghost file for 'perfect' actually
                 string [] inst = {"dr", "gt", "bs"};
+				if( CDTXMania.ConfigIni.bIsSwappedGuitarBass )
+				{
+					inst[1] = "bs";
+					inst[2] = "gt";
+				}
                 
                 for(int instIndex = 0; instIndex < inst.Length; ++instIndex)
                 {
@@ -141,7 +146,7 @@ namespace DTXMania
                             int cnt = br.ReadInt32();
                             for (int i = 0; i < cnt; ++i)
                             {
-                                SByte lag = br.ReadSByte();
+                                short lag = br.ReadInt16();
                                 list.Add(lag);
                             }
                         }

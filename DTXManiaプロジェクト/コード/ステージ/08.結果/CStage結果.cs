@@ -374,12 +374,19 @@ namespace DTXMania
                             {
                             	// -128 ms から 127 ms までのラグしか保存しない
                             	// その範囲を超えているラグはクランプ
-                                int data = chip.nLag;
-                                int mx = SByte.MaxValue;
-                                int mn = SByte.MinValue;
-                                data = Math.Min(mx, data);
-                                data = Math.Max(mn, data);
-                                bw.Write((SByte)data);
+								// ラグデータの 上位８ビットでそのチップの前でギター空打ちBADがあったことを示す
+								int lag = chip.nLag;
+								if (lag < -128)
+								{
+									lag = -128;
+								}
+								if (lag > 127)
+								{
+									lag = 127;
+								}
+								byte lower = (byte)(lag + 128);
+								int upper = chip.nCurrentComboForGhost == 0 ? 1 : 0;
+								bw.Write((short)( (upper<<8) | lower));
                             }
                         }
                     }

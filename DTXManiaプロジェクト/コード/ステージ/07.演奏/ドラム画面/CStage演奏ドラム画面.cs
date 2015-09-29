@@ -2048,13 +2048,14 @@ namespace DTXMania
 
                 if( CDTXMania.ConfigIni.eAutoGhost.Drums != EAutoGhostData.PERFECT &&
                     CDTXMania.listAutoGhostLag.Drums != null &&
-                    CDTXMania.ConfigIni.bドラムが全部オートプレイである &&
                     0 <= pChip.n楽器パートでの出現順 && pChip.n楽器パートでの出現順 < CDTXMania.listAutoGhostLag.Drums.Count)
 
                 {
                     // ゴーストデータが有効 : ラグに合わせて判定
-                    ghostLag = CDTXMania.listAutoGhostLag.Drums[pChip.n楽器パートでの出現順] - this.nInputAdjustTimeMs.Drums;
-                    autoPlayCondition &= !pChip.bHit && (ghostLag + pChip.n発声時刻ms <= CSound管理.rc演奏用タイマ.n現在時刻ms);
+					ghostLag = CDTXMania.listAutoGhostLag.Drums[pChip.n楽器パートでの出現順];
+					ghostLag = (ghostLag & 255) - 128;
+					ghostLag -= this.nInputAdjustTimeMs.Drums;
+					autoPlayCondition &= !pChip.bHit && (ghostLag + pChip.n発声時刻ms <= CSound管理.rc演奏用タイマ.n現在時刻ms);
                     UsePerfectGhost = false;
                 }
                 if( UsePerfectGhost )

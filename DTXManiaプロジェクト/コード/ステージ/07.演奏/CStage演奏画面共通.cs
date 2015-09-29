@@ -741,6 +741,7 @@ namespace DTXMania
                 if (saveLag)
                 {
                     pChip.nLag = lag;		// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
+					pChip.nCurrentComboForGhost = this.actCombo.n現在のコンボ数[(int)pChip.e楽器パート];
                 }
                 // #35411 modify end
 
@@ -1862,17 +1863,23 @@ namespace DTXMania
                     {
                         pChip.bTargetGhost判定済み = true;
 
-                        int ghostLag = 1 + Byte.MaxValue;
-                        if( 0 <= pChip.n楽器パートでの出現順 && pChip.n楽器パートでの出現順 < CDTXMania.listTargetGhsotLag[instIndex].Count )
+						int ghostLag = 128;
+						if( 0 <= pChip.n楽器パートでの出現順 && pChip.n楽器パートでの出現順 < CDTXMania.listTargetGhsotLag[instIndex].Count )
                         {
                             ghostLag = CDTXMania.listTargetGhsotLag[instIndex][pChip.n楽器パートでの出現順];
-                        }
+							// 上位８ビットが１ならコンボが途切れている（ギターBAD空打ちでコンボ数を再現するための措置）
+							if( ghostLag > 255 )
+							{
+								this.nコンボ数_TargetGhost[instIndex] = 0;
+							}
+							ghostLag = (ghostLag & 255) - 128;
+						}
                         else if( CDTXMania.ConfigIni.eTargetGhost[instIndex] == ETargetGhostData.PERFECT )
                         {
                             ghostLag = 0;
                         }
                         
-                        if ( ghostLag <= Byte.MaxValue )
+                        if ( ghostLag <= 127 )
                         {
                             E判定 eJudge = this.e指定時刻からChipのJUDGEを返す(pChip.n発声時刻ms + ghostLag , pChip, 0, false);
                             this.nヒット数_TargetGhost[instIndex][(int)eJudge]++;
@@ -2820,18 +2827,21 @@ namespace DTXMania
                 if ( (pChip.e楽器パート == E楽器パート.GUITAR || pChip.e楽器パート == E楽器パート.BASS ) &&
                     CDTXMania.ConfigIni.eAutoGhost[(int)(pChip.e楽器パート)] != EAutoGhostData.PERFECT &&
                     CDTXMania.listAutoGhostLag[(int)pChip.e楽器パート] != null &&
-                    ( pChip.e楽器パート == E楽器パート.GUITAR ?
-                      CDTXMania.ConfigIni.bギターが全部オートプレイである :
-                      CDTXMania.ConfigIni.bベースが全部オートプレイである ) &&
                     0 <= pChip.n楽器パートでの出現順 &&
                     pChip.n楽器パートでの出現順 < CDTXMania.listAutoGhostLag[(int)pChip.e楽器パート].Count)
                 {
                 	// #35411 (mod) Ghost data が有効なので 従来のAUTOではなくゴーストのラグを利用
                 	// 発生時刻と現在時刻からこのタイミングで演奏するかどうかを決定
-                    ghostLag = CDTXMania.listAutoGhostLag[(int)pChip.e楽器パート][pChip.n楽器パートでの出現順]
-                        - (pChip.e楽器パート == E楽器パート.GUITAR ? nInputAdjustTimeMs.Guitar : nInputAdjustTimeMs.Bass);
+					ghostLag = CDTXMania.listAutoGhostLag[(int)pChip.e楽器パート][pChip.n楽器パートでの出現順];
+					bool resetCombo = ghostLag > 255;
+					ghostLag = (ghostLag & 255) - 128;
+					ghostLag -= (pChip.e楽器パート == E楽器パート.GUITAR ? nInputAdjustTimeMs.Guitar : nInputAdjustTimeMs.Bass);
                     autoPlayCondition &= (pChip.n発声時刻ms + ghostLag <= CSound管理.rc演奏用タイマ.n現在時刻ms);
-                    bUsePerfectGhost = false;
+					if (resetCombo && autoPlayCondition )
+					{
+						this.actCombo.n現在のコンボ数[(int)pChip.e楽器パート] = 0;
+					}
+					bUsePerfectGhost = false;
                 }
                 
                 if( bUsePerfectGhost )
