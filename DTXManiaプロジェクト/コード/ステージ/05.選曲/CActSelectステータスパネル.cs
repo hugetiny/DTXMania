@@ -363,7 +363,7 @@ namespace DTXMania
 						int y = this.n本体Y + (int) ( 53 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						if( this.txゲージ用数字他 != null )
 						{
-							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, (int) ( 22 * Scale.Y ), (int) ( 40 * Scale.X ), (int) ( 10 * Scale.Y ) ) );
+							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, (int) ( 22 * Scale.Y ), (int) ( 42 * Scale.X ), (int) ( 10 * Scale.Y ) ) );
 						}
 					}
 				}
