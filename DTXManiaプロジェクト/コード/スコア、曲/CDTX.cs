@@ -1518,7 +1518,16 @@ namespace DTXMania
 				cbmp.bitmap = null;
 				return;
 			}
-			cbmp.bitmap = new Bitmap( filename );
+			try
+			{
+				cbmp.bitmap = new Bitmap(filename);
+			}
+			catch( ArgumentException )
+			{
+				Trace.TraceWarning("引数が不正です。ファイルが破損している可能性があります。({0})", filename);
+				cbmp.bitmap = null;
+				return;
+			}
 		}
 		private static void BMPLoadAll( Dictionary<int, CBMP> listB )	// バックグラウンドスレッドで、テクスチャファイルをひたすら読み込んではキューに追加する
 		{
