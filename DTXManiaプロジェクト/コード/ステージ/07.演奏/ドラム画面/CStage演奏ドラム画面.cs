@@ -1931,7 +1931,8 @@ namespace DTXMania
 					int num9 = this.ctチップ模様アニメ.Drums.n現在の値;
 					switch ( pChip.nチャンネル番号 )
 					{
-						case 0x11:	// HH
+							// HH
+						case 0x11:
 							x += (int) ( 0x10 * Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
@@ -1948,15 +1949,24 @@ namespace DTXMania
 							}
 							break;
 
-						case 0x12:	// SD
+							// SD
+						case 0x12:
 							x += (int) ( 0x10 * Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0x4c * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x20 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9,
+									new Rectangle(
+										(int) ( 0x4c * Scale.X ),
+										(int) ( num9 * (18 - 2) ),
+										(int) ( 0x20 * Scale.X ),
+										(int) ( 18 ) ) );
 							}
 							break;
-
-						case 0x13:	// BD
+						
+							// BD
+						case 0x13:
 							x += (int) ( 0x16 * Scale.X ) - ( (int) ( ( 44.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
@@ -1973,63 +1983,154 @@ namespace DTXMania
 							}
 							break;
 
+							// HT
 						case 0x14:
 							x += (int) ( 0x10 * Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0x6c * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x20 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9,
+									new Rectangle(
+										(int) ( 0x6c * Scale.X ),
+										(int) ( num9 * (18 - 2) ),
+										(int) ( 0x20 * Scale.X ),
+										(int) ( 18 ) ) );
 							}
 							break;
 
+							// LT
 						case 0x15:
 							x += (int) ( 0x10 * Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 140 * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x20 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9,
+									new Rectangle(
+										(int) ( 140 * Scale.X ),
+										(int) ( num9 * (18 - 2) ),
+										(int) ( 0x20 * Scale.X ),
+										(int) ( 18 ) ) );
 							}
 							break;
 
+							// CY
 						case 0x16:
 							x += (int) ( 0x13 * Scale.X ) - ( (int) ( ( 38.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 0x15 * Scale.Y, new Rectangle( (int) ( 0xcc * Scale.X ), (int) ( 0x158 * Scale.Y ), (int) ( 0x26 * Scale.X ), (int) ( 0x24 * Scale.Y ) ) );
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0xcc * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x26 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 46,
+									new Rectangle(
+										(int) ( 0xcc * Scale.X ),
+										(int) ( 786 ),
+										(int) ( 0x26 * Scale.X ),
+										(int) ( 78 ) ) );
+
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9, 
+									new Rectangle(
+										(int) ( 0xcc * Scale.X ),
+										(int) ( num9 * (18 - 2) ),
+										(int) ( 0x26 * Scale.X ),
+										(int) ( 18 ) ) );
 							}
 							break;
 
+							// FT
 						case 0x17:
 							x += (int) ( 0x10 * Scale.X ) - ( (int) ( ( 32.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0xac * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x20 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9,
+									new Rectangle( 
+										(int) ( 0xac * Scale.X ),
+										(int) ( num9 * (18 - 2) ),
+										(int) ( 0x20 * Scale.X ),
+										(int) ( 18 ) ) );
 							}
 							break;
 
+							// HHO
 						case 0x18:
 							x += (int) ( 13 * Scale.X ) - ( (int) ( ( 26.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0xf2 * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x1a * Scale.X ), (int) ( 8 * Scale.Y ) ) );
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 9 * Scale.Y, new Rectangle( (int) ( 0xf2 * Scale.X ), (int) ( 0x158 * Scale.Y ), (int) ( 0x1a * Scale.X ), (int) ( 0x12 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9,
+									new Rectangle(
+										(int) ( 0xf2 * Scale.X ),
+										(int) ( num9 * (18 - 2) ),
+										(int) ( 0x1a * Scale.X ),
+										(int) ( 18 )
+										) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 16,
+									new Rectangle(
+										(int) ( 0xf2 * Scale.X ),
+										(int) ( 790 ),
+										(int) ( 0x1a * Scale.X ),
+										(int) ( 30 )
+										) );
 							}
 							break;
 
+							// RCY
 						case 0x19:
 							x += (int) ( 13 * Scale.X ) - ( (int) ( ( 26.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0xf2 * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x1a * Scale.X ), (int) ( 8 * Scale.Y ) ) );
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 9 * Scale.Y, new Rectangle( (int) ( 0xf2 * Scale.X ), (int) ( 0x158 * Scale.Y ), (int) ( 0x1a * Scale.X ), (int) ( 0x12 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9,
+									new Rectangle( 
+										(int) ( 0xf2 * Scale.X ),
+										(int) ( num9 * ( 18 - 2 ) ),
+										(int) ( 0x1a * Scale.X ),
+										(int) ( 18 )
+										) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 16,
+									new Rectangle( 
+										(int) ( 0xf2 * Scale.X ), 
+										(int) ( 790 ),
+										(int) ( 0x1a * Scale.X ),
+										(int) ( 30 )
+										) );
 							}
 							break;
 
+							// LCY
 						case 0x1a:
 							x += (int) ( 0x13 * Scale.X ) - ( (int) ( ( 38.0 * pChip.dbチップサイズ倍率 * Scale.X ) / 2.0 ) );
 							if ( this.txチップ != null )
 							{
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 0x15 * Scale.Y, new Rectangle( (int) ( 0xcc * Scale.X ), (int) ( 0x158 * Scale.Y ), (int) ( 0x26 * Scale.X ), (int) ( 0x24 * Scale.Y ) ) );
-								this.txチップ.t2D描画( CDTXMania.app.Device, x, y - 4 * Scale.Y, new Rectangle( (int) ( 0xcc * Scale.X ), (int) ( num9 * 7 * Scale.Y ), (int) ( 0x26 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 46,
+									new Rectangle(
+										(int) ( 0xcc * Scale.X ),
+										(int) ( 786 ),
+										(int) ( 0x26 * Scale.X ),
+										(int) ( 78 )
+										) );
+								this.txチップ.t2D描画( CDTXMania.app.Device,
+									x,
+									y - 9,
+									new Rectangle(
+										(int) ( 0xcc * Scale.X ),
+										(int) ( num9 * (18 - 2) ),
+										(int) ( 0x26 * Scale.X ),
+										(int) ( 18 )
+										) );
 							}
 							break;
 					}
