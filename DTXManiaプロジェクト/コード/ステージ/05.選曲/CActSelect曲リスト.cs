@@ -840,7 +840,7 @@ namespace DTXMania
 							int width = (int) ( (425.0 -0.8f)* Scale.X / Math.Sin( Math.PI * 3 / 5 ) );
 							//int width = (int) ( ( (double) ( ( SampleFramework.GameWindowSize.Width - this.ptバーの基本座標[ i ].X ) + 1 ) ) / Math.Sin( Math.PI * 3 / 5 ) );
 							int x = SampleFramework.GameWindowSize.Width - ( (int) ( width * db回転率 ) );
-							int y = (int)(181* Scale.Y);
+							int y = 415;
 							this.tバーの描画( x, y, this.stバー情報[ nパネル番号 ].eバー種別, true );
 							//-----------------
 							#endregion
@@ -850,15 +850,16 @@ namespace DTXMania
 								this.stバー情報[ nパネル番号 ].txタイトル名.t2D描画(
 									CDTXMania.app.Device,
 									( x + (int) ( 44 * Scale.X ) ) + (int) ( (16f+0.5f) * Scale.X ),
+									y + 35
 									//( y + (int) ( 0 * Scale.Y ) ) + (int) ( 16 * Scale.Y )
-									( y + (int) ( 5 * Scale.Y ) ) + (int) ( (16f-2f) * Scale.Y)
+									// ( y + (int) ( 5 * Scale.Y ) ) + (int) ( (16f-2f) * Scale.Y)
 								);
 							//-----------------
 							#endregion
 							#region [ スキル値を描画。]
 							//-----------------
 							if( ( this.stバー情報[ nパネル番号 ].eバー種別 == Eバー種別.Score ) && ( this.e楽器パート != E楽器パート.UNKNOWN ) )
-								this.tスキル値の描画( x + (int)(28 * Scale.X), y + (int)(30 * Scale.Y), this.stバー情報[ nパネル番号 ].nスキル値[ (int) this.e楽器パート ] );
+								this.tスキル値の描画( x + (int)(28 * Scale.X), y + (int)(59), this.stバー情報[ nパネル番号 ].nスキル値[ (int) this.e楽器パート ] );
 							//-----------------
 							#endregion
 						}
@@ -880,7 +881,7 @@ namespace DTXMania
 								this.stバー情報[ nパネル番号 ].txタイトル名.t2D描画(
 									CDTXMania.app.Device,
 									x + (int)(44 * Scale.X),
-									y + (int)(3 * Scale.Y)
+									y + 7
 								);
 							//-----------------
 							#endregion
@@ -918,7 +919,7 @@ namespace DTXMania
 
 						#region [ バーテクスチャを描画。]
 						//-----------------
-						this.tバーの描画( (int) ( 216 * Scale.X ), (int) ( 181 * Scale.Y ), this.stバー情報[ nパネル番号 ].eバー種別, true );
+						this.tバーの描画( (int) ( 216 * Scale.X ), (int) ( 415 ), this.stバー情報[ nパネル番号 ].eバー種別, true );
 						//-----------------
 						#endregion
 						#region [ タイトル名テクスチャを描画。]
@@ -929,7 +930,7 @@ namespace DTXMania
 								//0x114 * Scale.X,
 								//(0xc9 - 1)* Scale.Y
 								( x + ( (44f + 0.5f) * Scale.X ) ),
-								( y + (int) ( 3 * Scale.Y ) )
+								( y + 7 )
 							);
 						//-----------------
 						#endregion
@@ -959,7 +960,7 @@ namespace DTXMania
 							this.stバー情報[ nパネル番号 ].txタイトル名.t2D描画(
 								CDTXMania.app.Device,
 								x + (int)(44 * Scale.X),
-								y + (int)(3 * Scale.Y)
+								y + 7
 							);
 						//-----------------
 						#endregion
@@ -1324,7 +1325,7 @@ namespace DTXMania
 							0,
 							0,
 							128,	//(int) ( 64 * Scale.X ),
-							64		//(int) ( 32 * Scale.Y )
+							69		//(int) ( 32 * Scale.Y )
 							//(int)(64 * Scale.X),
 							//(int)(32 * Scale.Y)
 						)
@@ -1335,7 +1336,7 @@ namespace DTXMania
 					64,
 					0,
 					64,
-					64
+					69
 					//0,
 					//(int)(32 * Scale.Y),
 					//(int)(64 * Scale.X),
