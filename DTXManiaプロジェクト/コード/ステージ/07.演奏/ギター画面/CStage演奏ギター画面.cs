@@ -229,11 +229,11 @@ namespace DTXMania
 
 		protected override void t進行描画_AVI()
 		{
-		    base.t進行描画_AVI( 0xb5, 50 );
+		    base.t進行描画_AVI( 682, 112 );
 		}
 		protected override void t進行描画_BGA()
 		{
-		    base.t進行描画_BGA( 0xb5, 50 );
+		    base.t進行描画_BGA( 682, 112 );
 		}
 		protected override void t進行描画_DANGER()			// #23631 2011.4.19 yyagi
 		{

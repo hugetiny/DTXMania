@@ -152,7 +152,7 @@ namespace DTXMania
 			//if ( ( ( this.nAVI再生開始時刻 != -1 ) && ( this.avi != null ) ) && ( this.sfリザルトAVI画像 != null ) )
 			if ( this.rAVI != null )
 			{
-				this.actAVI.t進行描画( (int) ( x * Scale.X ), (int) ( y * Scale.Y ) );
+				this.actAVI.t進行描画( (int) ( x * Scale.X ), (int) ( y * Scale.Y ), 612, 605 );
 			}
 			#region [ プレビュー画像表示 ]
 			else if( this.r表示するリザルト画像 != null )

@@ -428,11 +428,11 @@ namespace DTXMania
 	
 		protected override void t進行描画_AVI()
 		{
-			base.t進行描画_AVI( 338, 57 );
+			base.t進行描画_AVI( 1153, 128 );
 		}
 		protected override void t進行描画_BGA()
 		{
-			base.t進行描画_BGA( 338, 57 );
+			base.t進行描画_BGA( 1153, 128 );
 		}
 		protected override void t進行描画_DANGER()
 		{

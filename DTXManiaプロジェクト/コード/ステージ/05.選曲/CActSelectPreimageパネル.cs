@@ -561,7 +561,7 @@ namespace DTXMania
 
 				if ( this.rAVI != null )
 				{
-					this.actAVI.t進行描画( x, y );
+					this.actAVI.t進行描画( x, y, 612, 605 );
 					return;
 				}
 

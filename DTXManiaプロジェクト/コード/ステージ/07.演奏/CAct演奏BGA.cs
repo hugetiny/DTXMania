@@ -170,53 +170,59 @@ namespace DTXMania
 				{
 					if( ( ( this.stLayer[ i ].n移動開始時刻ms != -1 ) && ( ( this.stLayer[ i ].rBMP != null ) || ( this.stLayer[ i ].rBMPTEX != null ) ) ) && ( ( ( this.stLayer[ i ].rBMP == null ) || ( this.stLayer[ i ].rBMP.bUse && ( this.stLayer[ i ].rBMP.tx画像 != null ) ) ) && ( ( this.stLayer[ i ].rBMPTEX == null ) || ( this.stLayer[ i ].rBMPTEX.bUse && ( this.stLayer[ i ].rBMPTEX.tx画像 != null ) ) ) ) )
 					{
-						Size size = this.stLayer[ i ].sz開始サイズ;
-						Size size2 = this.stLayer[ i ].sz終了サイズ;
-						Point point = this.stLayer[ i ].pt画像側開始位置;
-						Point point2 = this.stLayer[ i ].pt画像側終了位置;
-						Point point3 = this.stLayer[ i ].pt表示側開始位置;
-						Point point4 = this.stLayer[ i ].pt表示側終了位置;
-						long num2 = this.stLayer[ i ].n総移動時間ms;
-						long num3 = this.stLayer[ i ].n移動開始時刻ms;
-						if( CDTXMania.Timer.n現在時刻 < num3 )
+						Size sizeStart = this.stLayer[ i ].sz開始サイズ;
+						Size sizeEnd = this.stLayer[ i ].sz終了サイズ;
+						Point ptImgStart = this.stLayer[ i ].pt画像側開始位置;
+						Point ptImgEnd = this.stLayer[ i ].pt画像側終了位置;
+						Point ptDispStart = this.stLayer[ i ].pt表示側開始位置;
+						Point ptDispEnd = this.stLayer[ i ].pt表示側終了位置;
+						long timeTotal = this.stLayer[ i ].n総移動時間ms;
+						long timeMoveStart = this.stLayer[ i ].n移動開始時刻ms;
+						if( CDTXMania.Timer.n現在時刻 < timeMoveStart )
 						{
-							num3 = CDTXMania.Timer.n現在時刻;
+							timeMoveStart = CDTXMania.Timer.n現在時刻;
 						}
-						Size size3 = new Size( 0x116, 0x163 );
+						// Size size3 = new Size( 0x116, 0x163 );
+						Size size3 = new Size(556, 710);
+						// #34192 2015/10/30 (chnrm0)
+						// 表示域を２倍に変更した。
+						// x,yについては次のように変更した。
+						// 338,57 => 1014+139,128 (Dr.) 139は278の半分で、GR領域の中央によせるためにすこし右側にずらした。
+						// 181,50 => 682, 112 (Gt.)
 						Size size4 = new Size( ( this.stLayer[ i ].rBMP != null ) ? this.stLayer[ i ].rBMP.n幅 : this.stLayer[ i ].rBMPTEX.tx画像.sz画像サイズ.Width, ( this.stLayer[ i ].rBMP != null ) ? this.stLayer[ i ].rBMP.n高さ : this.stLayer[ i ].rBMPTEX.tx画像.sz画像サイズ.Height );
-						int num4 = (int) ( ( CDTXMania.Timer.n現在時刻 - num3 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
-						if( ( num2 != 0 ) && ( num2 < num4 ) )
+						int num4 = (int) ( ( CDTXMania.Timer.n現在時刻 - timeMoveStart ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+						if( ( timeTotal != 0 ) && ( timeTotal < num4 ) )
 						{
-							this.stLayer[ i ].pt画像側開始位置 = point = point2;
-							this.stLayer[ i ].pt表示側開始位置 = point3 = point4;
-							this.stLayer[ i ].sz開始サイズ = size = size2;
-							this.stLayer[ i ].n総移動時間ms = num2 = 0;
+							this.stLayer[ i ].pt画像側開始位置 = ptImgStart = ptImgEnd;
+							this.stLayer[ i ].pt表示側開始位置 = ptDispStart = ptDispEnd;
+							this.stLayer[ i ].sz開始サイズ = sizeStart = sizeEnd;
+							this.stLayer[ i ].n総移動時間ms = timeTotal = 0;
 						}
 						Rectangle rectangle = new Rectangle();
 						Rectangle rectangle2 = new Rectangle();
-						if( num2 == 0 )
+						if( timeTotal == 0 )
 						{
-							rectangle.X = point.X;
-							rectangle.Y = point.Y;
-							rectangle.Width = size.Width;
-							rectangle.Height = size.Height;
-							rectangle2.X = point3.X;
-							rectangle2.Y = point3.Y;
-							rectangle2.Width = size.Width;
-							rectangle2.Height = size.Height;
+							rectangle.X = ptImgStart.X;
+							rectangle.Y = ptImgStart.Y;
+							rectangle.Width = sizeStart.Width;
+							rectangle.Height = sizeStart.Height;
+							rectangle2.X = ptDispStart.X;
+							rectangle2.Y = ptDispStart.Y;
+							rectangle2.Width = sizeStart.Width;
+							rectangle2.Height = sizeStart.Height;
 						}
 						else
 						{
-							double num5 = ( (double) num4 ) / ( (double) num2 );
-							Size size5 = new Size( size.Width + ( (int) ( ( size2.Width - size.Width ) * num5 ) ), size.Height + ( (int) ( ( size2.Height - size.Height ) * num5 ) ) );
-							rectangle.X = point.X + ( (int) ( ( point2.X - point.X ) * num5 ) );
-							rectangle.Y = point.Y + ( (int) ( ( point2.Y - point.Y ) * num5 ) );
-							rectangle.Width = size5.Width;
-							rectangle.Height = size5.Height;
-							rectangle2.X = point3.X + ( (int) ( ( point4.X - point3.X ) * num5 ) );
-							rectangle2.Y = point3.Y + ( (int) ( ( point4.Y - point3.Y ) * num5 ) );
-							rectangle2.Width = size5.Width;
-							rectangle2.Height = size5.Height;
+							double coefSizeWhileMoving = ( (double) num4 ) / ( (double) timeTotal );
+							Size sizeWhileMoving = new Size( sizeStart.Width + ( (int) ( ( sizeEnd.Width - sizeStart.Width ) * coefSizeWhileMoving ) ), sizeStart.Height + ( (int) ( ( sizeEnd.Height - sizeStart.Height ) * coefSizeWhileMoving ) ) );
+							rectangle.X = ptImgStart.X + ( (int) ( ( ptImgEnd.X - ptImgStart.X ) * coefSizeWhileMoving ) );
+							rectangle.Y = ptImgStart.Y + ( (int) ( ( ptImgEnd.Y - ptImgStart.Y ) * coefSizeWhileMoving ) );
+							rectangle.Width = sizeWhileMoving.Width;
+							rectangle.Height = sizeWhileMoving.Height;
+							rectangle2.X = ptDispStart.X + ( (int) ( ( ptDispEnd.X - ptDispStart.X ) * coefSizeWhileMoving ) );
+							rectangle2.Y = ptDispStart.Y + ( (int) ( ( ptDispEnd.Y - ptDispStart.Y ) * coefSizeWhileMoving ) );
+							rectangle2.Width = sizeWhileMoving.Width;
+							rectangle2.Height = sizeWhileMoving.Height;
 						}
 						if( ( ( ( rectangle.Right > 0 ) && ( rectangle.Bottom > 0 ) ) && ( ( rectangle.Left < size4.Width ) && ( rectangle.Top < size4.Height ) ) ) && ( ( ( rectangle2.Right > 0 ) && ( rectangle2.Bottom > 0 ) ) && ( ( rectangle2.Left < size3.Width ) && ( rectangle2.Top < size3.Height ) ) ) )
 						{
@@ -270,24 +276,39 @@ namespace DTXMania
 							}
 							if( ( ( ( ( rectangle.Left < rectangle.Right ) && ( rectangle.Top < rectangle.Bottom ) ) && ( ( rectangle2.Left < rectangle2.Right ) && ( rectangle2.Top < rectangle2.Bottom ) ) ) && ( ( ( rectangle.Right >= 0 ) && ( rectangle.Bottom >= 0 ) ) && ( ( rectangle.Left <= size4.Width ) && ( rectangle.Top <= size4.Height ) ) ) ) && ( ( ( rectangle2.Right >= 0 ) && ( rectangle2.Bottom >= 0 ) ) && ( ( rectangle2.Left <= size3.Width ) && ( rectangle2.Top <= size3.Height ) ) ) )
 							{
-								if( ( this.stLayer[ i ].rBMP != null ) && ( this.stLayer[ i ].rBMP.tx画像 != null ) )
+								bool b2倍可能 = false;
+								if( ( rectangle2.Left * 2 <= size3.Width ) && (rectangle2.Top * 2 <= size3.Height ) )
 								{
-									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
-									//this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率 = new Vector3( 2f, 2f, 1f );
+									b2倍可能 = true;
+								}
+								if ( ( this.stLayer[ i ].rBMP != null ) && ( this.stLayer[ i ].rBMP.tx画像 != null ) )
+								{
+									//this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+									if (b2倍可能)
+									{
+										this.stLayer[i].rBMP.tx画像.vc拡大縮小倍率 = new Vector3(2f, 2f, 1f);
+										rectangle2.X *= 2;
+										rectangle2.Y *= 2;
+									}
 									this.stLayer[ i ].rBMP.tx画像.t2D描画(
 										CDTXMania.app.Device,
-										(x + rectangle2.X) * Scale.X,
-										(y + rectangle2.Y) * Scale.Y,
+										(x + rectangle2.X),
+										(y + rectangle2.Y),
 										rectangle );
 								}
 								else if( ( this.stLayer[ i ].rBMPTEX != null ) && ( this.stLayer[ i ].rBMPTEX.tx画像 != null ) )
 								{
-									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
-									//this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率 = new Vector3( 2f, 2f, 1f );
+									//this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+									if (b2倍可能)
+									{
+										this.stLayer[i].rBMPTEX.tx画像.vc拡大縮小倍率 = new Vector3(2f, 2f, 1f);
+										rectangle2.X *= 2;
+										rectangle2.Y *= 2;
+									}
 									this.stLayer[ i ].rBMPTEX.tx画像.t2D描画(
 										CDTXMania.app.Device,
-										(x + rectangle2.X) * Scale.X,
-										(y + rectangle2.Y) * Scale.Y,
+										(x + rectangle2.X),
+										(y + rectangle2.Y),
 										rectangle );
 								}
 							}

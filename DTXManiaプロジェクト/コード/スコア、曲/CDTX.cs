@@ -35,7 +35,7 @@ namespace DTXMania
 
 		public class CAVI : IDisposable
 		{
-			public CAvi avi;
+			public CAviDS avi;
 			private bool bDispose済み;
 			public int n番号;
 			public string strコメント文 = "";
@@ -72,13 +72,13 @@ namespace DTXMania
 
 				try
 				{
-					this.avi = new CAvi( strAVIファイル名 );
-					Trace.TraceInformation( "CAVI: 動画を生成しました。({0})({1})({2}frames)", this.strコメント文, Path.GetFileName( strAVIファイル名 ), this.avi.GetMaxFrameCount() );
+					this.avi = new CAviDS( strAVIファイル名 );
+					Trace.TraceInformation( "CAviDS: 動画を生成しました。({0})({1})({2}msec)", this.strコメント文, Path.GetFileName( strAVIファイル名 ), this.avi.GetDuration() );
 				}
 				catch ( Exception e )
 				{
 					Trace.TraceError( e.Message );
-					Trace.TraceError( "CAVI: 動画の生成に失敗しました。({0})({1})", this.strコメント文, Path.GetFileName( strAVIファイル名 ) );
+					Trace.TraceError( "CAviDS: 動画の生成に失敗しました。({0})({1})", this.strコメント文, Path.GetFileName( strAVIファイル名 ) );
 					this.avi = null;
 				}
 			}
@@ -633,9 +633,10 @@ namespace DTXMania
 				{
 					if ( this.rAVI != null && this.rAVI.avi != null )
 					{
-						int dwRate = (int) this.rAVI.avi.dwレート;
-						int dwScale = (int) this.rAVI.avi.dwスケール;
-						nDuration = (int) ( 1000.0f * dwScale / dwRate * this.rAVI.avi.GetMaxFrameCount() );
+						// int dwRate = (int) this.rAVI.avi.dwレート;
+						// int dwScale = (int) this.rAVI.avi.dwスケール;
+						// (int) ( 1000.0f * dwScale / dwRate * this.rAVI.avi.GetMaxFrameCount() );
+						nDuration = this.rAVI.avi.GetDuration();
 					}
 				}
 
