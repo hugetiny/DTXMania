@@ -345,12 +345,7 @@ namespace DTXMania
 			}
 			try
 			{
-				this.rAVI = new CDTX.CAVI()
-				{
-					n番号 = 00,
-					strファイル名 = this.strAVIファイル名,
-					strコメント文 = ""
-				};
+				this.rAVI = new CDTX.CAVI(00, this.strAVIファイル名, "", CDTXMania.ConfigIni.n演奏速度);
 				this.rAVI.OnDeviceCreated();
 				this.actAVI.Start( 0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
 
@@ -421,12 +416,7 @@ namespace DTXMania
 			}
 			try
 			{
-				this.rAVI = new CDTX.CAVI()
-				{
-					n番号 = 00,
-					strファイル名 = this.strAVIファイル名,
-					strコメント文 = ""
-				};
+				this.rAVI = new CDTX.CAVI(00, this.strAVIファイル名, "", CDTXMania.ConfigIni.n演奏速度);
 				this.rAVI.OnDeviceCreated();
 				this.actAVI.Start( 0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
 

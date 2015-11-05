@@ -37,9 +37,19 @@ namespace DTXMania
 		{
 			public CAviDS avi;
 			private bool bDispose済み;
-			public int n番号;
-			public string strコメント文 = "";
-			public string strファイル名 = "";
+			
+			int n番号;
+			string strコメント文 = "";
+			string strファイル名 = "";
+			double dbPlaySpeed = 1;
+
+			public CAVI(int number, string filename, string comment, double playSpeed)
+			{
+				n番号 = number;
+				strファイル名 = filename;
+				strコメント文 = comment;
+				dbPlaySpeed = playSpeed;
+			}
 
 			public void OnDeviceCreated()
 			{
@@ -72,7 +82,7 @@ namespace DTXMania
 
 				try
 				{
-					this.avi = new CAviDS( strAVIファイル名 );
+					this.avi = new CAviDS(strAVIファイル名, this.dbPlaySpeed);
 					Trace.TraceInformation( "CAviDS: 動画を生成しました。({0})({1})({2}msec)", this.strコメント文, Path.GetFileName( strAVIファイル名 ), this.avi.GetDuration() );
 				}
 				catch ( Exception e )
@@ -3931,12 +3941,8 @@ namespace DTXMania
 
 			#region [ AVIリストに {zz, avi} の組を登録する。 ]
 			//-----------------
-			var avi = new CAVI() {
-				n番号 = zz,
-				strファイル名 = strパラメータ,
-				strコメント文 = strコメント,
-			};
-
+			var avi = new CAVI(zz, strパラメータ, strコメント, CDTXMania.ConfigIni.n演奏速度);
+			
 			if( this.listAVI.ContainsKey( zz ) )	// 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listAVI.Remove( zz );
 

@@ -309,27 +309,16 @@ namespace DTXMania
 			    }
 			    try
 			    {
-					this.rAVI = new CDTX.CAVI()
-					{
-						n番号 = 00,
-						strファイル名 = this.str現在のファイル名,
-						strコメント文 = ""
-					};
+					this.rAVI = new CDTX.CAVI(00, this.str現在のファイル名, "", CDTXMania.ConfigIni.n演奏速度);
 					this.rAVI.OnDeviceCreated();
-					this.actAVI.Start( 0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
-
-			//        this.avi = new CAvi( filename );
-			//        this.nAVI再生開始時刻 = CDTXMania.Timer.n現在時刻;
-			//        this.n前回描画したフレーム番号 = -1;
-			//        this.b動画フレームを作成した = false;
-			//        this.tサーフェイスをクリアする( this.sfAVI画像 );
-			//        Trace.TraceInformation( "動画を生成しました。({0})", Path.GetFileName( filename ) );
-			    }
-				catch
+					this.actAVI.Start(0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
+				}
+				catch (Exception e)
 				{
-				    Trace.TraceError( "動画の生成に失敗しました。({0})", Path.GetFileName( filename ) );
-				    this.rAVI = null;
-				    //this.nAVI再生開始時刻 = -1;
+					Trace.TraceError("動画の生成に失敗しました。({0})", Path.GetFileName(filename));
+					Trace.TraceError("例外メッセージ:{0}", e.Message);
+					Trace.TraceError("　　スタックトレース:{0}", e.StackTrace);
+					this.rAVI = null;
 				}
 			}
 			return false;

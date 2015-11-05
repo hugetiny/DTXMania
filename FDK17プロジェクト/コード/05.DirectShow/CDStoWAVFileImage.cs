@@ -85,7 +85,7 @@ namespace FDK
 
 				// ビデオレンダラを除去。
 
-				CDirectShow.tビデオレンダラをグラフから除去する( graphBuilder );		// オーディオレンダラをNullに変えるより前に実行すること。（CDirectShow.tオーディオレンダラをNullレンダラに変えてフォーマットを取得する() の中で一度再生するので、そのときにActiveウィンドウが表示されてしまうため。）
+				CDirectShow.tビデオレンダラをグラフから除去してNullレンダラに接続する( graphBuilder );		// オーディオレンダラをNullに変えるより前に実行すること。（CDirectShow.tオーディオレンダラをNullレンダラに変えてフォーマットを取得する() の中で一度再生するので、そのときにActiveウィンドウが表示されてしまうため。）
 	
 
 				// オーディオレンダラを NullRenderer に置換。

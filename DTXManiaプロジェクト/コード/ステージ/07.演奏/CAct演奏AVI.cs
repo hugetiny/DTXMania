@@ -81,7 +81,7 @@ namespace DTXMania
 				this.n総移動時間ms = n総移動時間ms;
 				this.n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
 				this.CreateTexture((int)this.rAVI.avi.nフレーム幅, (int)this.rAVI.avi.nフレーム高さ);
-				// this.n前回表示したフレーム番号 = -1;
+				this.rAVI.avi.Run();
 			}
 		}
 		public void SkipStart( int n移動開始時刻ms )
@@ -98,7 +98,6 @@ namespace DTXMania
 						{
 							if( chip.rAVI != null )
 							{
-								// this.Start( chip.nチャンネル番号, chip.rAVI, 278, 355, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 								this.Start( chip.nチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 							}
 							continue;
@@ -134,6 +133,7 @@ namespace DTXMania
 			{
 				// Rectangle rectangle;
 				// Rectangle rectangle2;
+
 				if ( ( ( this.n移動開始時刻ms == -1 ) || ( this.rAVI == null ) ) || ( this.rAVI.avi == null ) )
 				{
 					return 0;
@@ -143,14 +143,13 @@ namespace DTXMania
 					return 0;
 				}
 				int time = (int)((CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms) * (((double)CDTXMania.ConfigIni.n演奏速度) / 20.0));
-				// int frameNoFromTime = this.rAVI.avi.GetFrameNoFromTime( time );
 				if( ( this.n総移動時間ms != 0 ) && ( this.n総移動時間ms < time ) )
 				{
 					this.n総移動時間ms = 0;
 					this.n移動開始時刻ms = -1;
 					return 0;
 				}
-				if( ( this.n総移動時間ms == 0 ) && time >= this.rAVI.avi.GetDuration() ) // ( frameNoFromTime >= this.rAVI.avi.GetMaxFrameCount() ) )
+				if( ( this.n総移動時間ms == 0 ) && time >= this.rAVI.avi.GetDuration() )
 				{
 					if ( !bIsPreviewMovie )
 					{
@@ -160,7 +159,7 @@ namespace DTXMania
 					// PREVIEW時はループ再生する。移動開始時刻msを現時刻にして(=AVIを最初に巻き戻して)、ここまでに行った計算をやり直す。
 					this.n移動開始時刻ms = CSound管理.rc演奏用タイマ.n現在時刻;
 					time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
-					// frameNoFromTime = this.rAVI.avi.GetFrameNoFromTime( time );
+					this.rAVI.avi.Seek(0);
 				}
 				/*
 				if( ( this.n前回表示したフレーム番号 != frameNoFromTime ) && !this.bフレームを作成した )
@@ -280,31 +279,7 @@ namespace DTXMania
 				*/
 				if ((this.tx描画用 != null) && (this.n総移動時間ms != -1))
 				{
-					this.rAVI.avi.tGetBitmap(CDTXMania.app.Device, this.tx描画用, time);
-					/*
-					if (this.bフレームを作成した && (this.pBmp != IntPtr.Zero))
-					{
-						DataRectangle rectangle3 = this.tx描画用.texture.LockRectangle( 0, LockFlags.None );
-						DataStream data = rectangle3.Data;
-						int num14 = rectangle3.Pitch / this.tx描画用.szテクスチャサイズ.Width;
-						BitmapUtil.BITMAPINFOHEADER* pBITMAPINFOHEADER = (BitmapUtil.BITMAPINFOHEADER*) this.pBmp.ToPointer();
-						if( pBITMAPINFOHEADER->biBitCount == 0x18 )
-						{
-							switch( num14 )
-							{
-								case 2:
-									this.rAVI.avi.tBitmap24ToGraphicsStreamR5G6B5( pBITMAPINFOHEADER, data, this.tx描画用.szテクスチャサイズ.Width, this.tx描画用.szテクスチャサイズ.Height );
-									break;
-
-								case 4:
-									this.rAVI.avi.tBitmap24ToGraphicsStreamX8R8G8B8( pBITMAPINFOHEADER, data, this.tx描画用.szテクスチャサイズ.Width, this.tx描画用.szテクスチャサイズ.Height );
-									break;
-							}
-						}
-						this.tx描画用.texture.UnlockRectangle( 0 );
-						this.bフレームを作成した = false;
-					}
-					*/
+					this.rAVI.avi.tGetBitmap( CDTXMania.app.Device, this.tx描画用, time);
 					// 旧動画 (278x355以下)の場合と、それ以上の場合とで、拡大/表示位置補正ロジックを変えること。
 					// 旧動画の場合は、「278x355の領域に表示される」ことを踏まえて扱う必要あり。
 					// 例: 上半分だけ動画表示するような場合は・・・「上半分だけ」という表示意図を維持すべきか？それとも無視して全画面拡大すべきか？？
@@ -338,8 +313,6 @@ namespace DTXMania
 					this.tx描画用.vc拡大縮小倍率.Y = magY;
 					this.tx描画用.vc拡大縮小倍率.Z = 1.0f;
 					this.tx描画用.t2D描画( CDTXMania.app.Device, xx, yy );
-
-					//this.tx描画用.t2D描画( CDTXMania.app.Device, x, y );
 				}
 			}
 			return 0;
@@ -352,10 +325,6 @@ namespace DTXMania
 		{
 			this.rAVI = null;
 			this.n移動開始時刻ms = -1;
-			// this.n前回表示したフレーム番号 = -1;
-			// this.bフレームを作成した = false;
-			// this.pBmp = IntPtr.Zero;
-			// this.bIsPreviewMovie = false;	// bIsPreviewMovieは、活性化前にtrueにすること (OnManagedリソースの作成 で参照しているため)
 			this.bHasBGA = false;
 			this.bFullScreenMovie = false;
 			base.On活性化();
@@ -376,7 +345,6 @@ namespace DTXMania
 						);
 #endif
 				this.tx描画用.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
-				//this.tx描画用.vc拡大縮小倍率 = new Vector3( 2f, 2f, 1f );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -402,7 +370,6 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		// private bool bフレームを作成した;
 		private long n移動開始時刻ms;
 		private int n画像側開始位置X;
 		private int n画像側開始位置Y;
@@ -412,13 +379,11 @@ namespace DTXMania
 		private int n開始サイズW;
 		private int n終了サイズH;
 		private int n終了サイズW;
-		// private int n前回表示したフレーム番号;
 		private int n総移動時間ms;
 		private int n表示側開始位置X;
 		private int n表示側開始位置Y;
 		private int n表示側終了位置X;
 		private int n表示側終了位置Y;
-		//private IntPtr pBmp;
 		private CDTX.CAVI rAVI;
 		private CTexture tx描画用;
 		//-----------------
