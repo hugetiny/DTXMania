@@ -50,7 +50,7 @@ namespace FDK
 		{
 			int hr = 0x0;
 
-			builder = (IGraphBuilder)new FilterGraphNoThread();
+			builder = (IGraphBuilder)new FilterGraph();
 
 			#region [Sample Grabber]
 			{
