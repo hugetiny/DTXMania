@@ -45,6 +45,7 @@ namespace FDK
 		IMediaSeeking seeker;
 		FilterState state;
 		AMMediaType mediaType;
+		IntPtr bufferPtr = IntPtr.Zero;
 
 		public CAviDS(string filename, double playSpeed)
 		{
@@ -102,6 +103,8 @@ namespace FDK
 
 			hr = grabber.SetBufferSamples(true);
 			DsError.ThrowExceptionForHR(hr);
+			Run();
+			Stop();
 		}
 
 		public void Seek(int timeInMs)
@@ -120,24 +123,57 @@ namespace FDK
 			DsError.ThrowExceptionForHR(hr);
 		}
 
+		public void Stop()
+		{
+			int hr = control.Stop();
+			DsError.ThrowExceptionForHR(hr);
+			hr = control.GetState(timeOutMs, out state);
+			DsError.ThrowExceptionForHR(hr);
+		}
+
+		public void Pause()
+		{
+			int hr = control.Pause();
+			DsError.ThrowExceptionForHR(hr);
+			hr = control.GetState(timeOutMs, out state);
+			DsError.ThrowExceptionForHR(hr);
+		}
+
+		public void ToggleRun()
+		{
+			int hr = control.GetState(timeOutMs, out state);
+			DsError.ThrowExceptionForHR(hr);
+			if( state == FilterState.Paused )
+			{
+				Run();
+			}
+			else if( state == FilterState.Running )
+			{
+				Pause();
+			}
+		}
+
 		public unsafe void tGetBitmap(SlimDX.Direct3D9.Device device, CTexture ctex, int timeMs)
 		{
-			IntPtr bufferPtr = IntPtr.Zero;
-			try
+			int bufferSize = 0;
+			int hr = grabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);
+			DsError.ThrowExceptionForHR(hr);
+
+			if (bufferPtr == IntPtr.Zero)
 			{
-				int bufferSize = 0;
-				grabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);
-
 				bufferPtr = Marshal.AllocHGlobal(bufferSize);
-				grabber.GetCurrentBuffer(ref bufferSize, bufferPtr);
+			}
+			hr = grabber.GetCurrentBuffer(ref bufferSize, bufferPtr);
+			DsError.ThrowExceptionForHR(hr);
 
-				byte* sourcePtr = (byte*)bufferPtr.ToPointer();
-				int stride = (nWidth * 3) + ((4 - ((nWidth * 3) % 4)) % 4); // BMP 1行ごとのバイト数 (4の倍数になるように調整)
+			byte* sourcePtr = (byte*)bufferPtr.ToPointer();
+			int stride = (nWidth * 3) + ((4 - ((nWidth * 3) % 4)) % 4); // BMP 1行ごとのバイト数 (4の倍数になるように調整)
 
-				DataRectangle rectangle3 = ctex.texture.LockRectangle(0, SlimDX.Direct3D9.LockFlags.None);
-				rectangle3.Data.Seek(0, System.IO.SeekOrigin.Begin);
-				uint* outPtr = (uint*)rectangle3.Data.DataPointer.ToPointer();
-				for (int i = 0; i < nHeight; ++i)
+			DataRectangle rectangle3 = ctex.texture.LockRectangle(0, SlimDX.Direct3D9.LockFlags.None);
+			rectangle3.Data.Seek(0, System.IO.SeekOrigin.Begin);
+			uint* outPtr = (uint*)rectangle3.Data.DataPointer.ToPointer();
+			Parallel.For(0, nHeight, i =>
+			{
 				{
 					for (int j = 0; j < nWidth; ++j)
 					{
@@ -148,15 +184,10 @@ namespace FDK
 						*(outPtr + (i * nWidth + j)) = ((uint)R << 16) | ((uint)G << 8) | B;
 					}
 				}
-				ctex.texture.UnlockRectangle(0);
-			}
-			finally
-			{
-				if (bufferPtr != IntPtr.Zero)
-				{
-					Marshal.FreeHGlobal(bufferPtr);
-				}
-			}
+			});
+
+			ctex.texture.UnlockRectangle(0);
+
 		}
 
 		#region [ Dispose-Finalize パターン実装 ]
@@ -169,10 +200,19 @@ namespace FDK
 					Marshal.ReleaseComObject(builder);
 					builder = null;
 				}
+				if( null != grabber )
+				{
+					Marshal.ReleaseComObject(grabber);
+					grabber = null;
+				}
 				if (null != mediaType)
 				{
 					DsUtils.FreeAMMediaType(mediaType);
 					mediaType = null;
+				}
+				if (bufferPtr != IntPtr.Zero)
+				{
+					Marshal.FreeHGlobal(bufferPtr);
 				}
 
 				GC.SuppressFinalize(this);

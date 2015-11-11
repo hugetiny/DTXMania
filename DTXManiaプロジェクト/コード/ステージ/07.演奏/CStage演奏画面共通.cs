@@ -1620,12 +1620,14 @@ namespace DTXMania
                     CSound管理.rc演奏用タイマ.t一時停止();
 					CDTXMania.Timer.t一時停止();
 					CDTXMania.DTX.t全チップの再生一時停止();
+					CDTXMania.DTX.tAVIの一時停止再生切り替え();
 				}
 				else
 				{
                     CSound管理.rc演奏用タイマ.t再開();
 					CDTXMania.Timer.t再開();
 					CDTXMania.DTX.t全チップの再生再開();
+					CDTXMania.DTX.tAVIの一時停止再生切り替え();
 				}
 			}
 			if ( ( !this.bPAUSE && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )

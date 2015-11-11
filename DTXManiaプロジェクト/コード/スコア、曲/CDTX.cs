@@ -5634,5 +5634,19 @@ namespace DTXMania
 		#endregion
 		//-----------------
 		#endregion
+
+		internal void tAVIの一時停止再生切り替え()
+		{
+			// AVI の一時停止
+			foreach (var avi in listAVI)
+			{
+				avi.Value.avi.ToggleRun();
+			}
+			// AVIPAN の一時停止
+			foreach (var avi in listAVIPAN)
+			{
+				// avi.Value.avi.ToggleRun();
+			}
+		}
 	}
 }
