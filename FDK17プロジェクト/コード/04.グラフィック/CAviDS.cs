@@ -12,6 +12,8 @@ namespace FDK
 {
 	public class CAviDS : IDisposable
 	{
+		const int timeOutMs = 1000; // グラフ state の遷移完了を待つタイムアウト期間 
+
 		public uint nフレーム高さ
 		{
 			get
@@ -30,23 +32,27 @@ namespace FDK
 
 		int nWidth;
 		int nHeight;
-		long mediaLength; // [ms]
-		VideoInfoHeader videoInfo;
-		const int timeOutMs = 1000;
+		int nStride;
+		long nMediaLength; // [ms]
 
 		public int GetDuration()
 		{
-			return (int)(mediaLength / 10000);
+			return (int)(nMediaLength / 10000);
 		}
 
 		IGraphBuilder builder;
+		VideoInfoHeader videoInfo;
 		ISampleGrabber grabber;
 		IMediaControl control;
 		IMediaSeeking seeker;
 		FilterState state;
 		AMMediaType mediaType;
-		IntPtr bufferPtr = IntPtr.Zero;
+		IntPtr samplePtr = IntPtr.Zero;
+		unsafe byte* bSrcPtr; // for Transfer
+		unsafe uint* bDstPtr; // for Transfer
+		int nParallel;
 
+		delegate void TransferDelegate(int i);
 		public CAviDS(string filename, double playSpeed)
 		{
 			int hr = 0x0;
@@ -88,7 +94,7 @@ namespace FDK
 			#region[ Seeker ]
 			{
 				seeker = builder as IMediaSeeking;
-				hr = seeker.GetDuration(out mediaLength);
+				hr = seeker.GetDuration(out nMediaLength);
 				DsError.ThrowExceptionForHR(hr);
 				hr = seeker.SetRate(playSpeed / 20);
 				DsError.ThrowExceptionForHR(hr);
@@ -103,6 +109,7 @@ namespace FDK
 
 			hr = grabber.SetBufferSamples(true);
 			DsError.ThrowExceptionForHR(hr);
+	
 			Run();
 			Stop();
 		}
@@ -159,35 +166,65 @@ namespace FDK
 			int hr = grabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);
 			DsError.ThrowExceptionForHR(hr);
 
-			if (bufferPtr == IntPtr.Zero)
+			if (samplePtr == IntPtr.Zero)
 			{
-				bufferPtr = Marshal.AllocHGlobal(bufferSize);
+				samplePtr = Marshal.AllocHGlobal(bufferSize);
 			}
-			hr = grabber.GetCurrentBuffer(ref bufferSize, bufferPtr);
+			hr = grabber.GetCurrentBuffer(ref bufferSize, samplePtr);
 			DsError.ThrowExceptionForHR(hr);
-
-			byte* sourcePtr = (byte*)bufferPtr.ToPointer();
-			int stride = (nWidth * 3) + ((4 - ((nWidth * 3) % 4)) % 4); // BMP 1行ごとのバイト数 (4の倍数になるように調整)
-
+			
 			DataRectangle rectangle3 = ctex.texture.LockRectangle(0, SlimDX.Direct3D9.LockFlags.None);
 			rectangle3.Data.Seek(0, System.IO.SeekOrigin.Begin);
-			uint* outPtr = (uint*)rectangle3.Data.DataPointer.ToPointer();
-			Parallel.For(0, nHeight, i =>
-			{
-				{
-					for (int j = 0; j < nWidth; ++j)
-					{
-						// 上下反転しつつコピー
-						byte B = *((sourcePtr + (((nHeight - i) - 1) * stride)) + (j * 3) + 0);
-						byte G = *((sourcePtr + (((nHeight - i) - 1) * stride)) + (j * 3) + 1);
-						byte R = *((sourcePtr + (((nHeight - i) - 1) * stride)) + (j * 3) + 2);
-						*(outPtr + (i * nWidth + j)) = ((uint)R << 16) | ((uint)G << 8) | B;
-					}
-				}
-			});
-
+			Transfer(rectangle3.Data.DataPointer);			
 			ctex.texture.UnlockRectangle(0);
+		}
 
+		unsafe private void Transfer(IntPtr dstPtr)
+		{
+			nStride = (nWidth * 3) + ((4 - ((nWidth * 3) % 4)) % 4); // BMP 1行ごとのバイト数 (4の倍数になるように調整)
+			nParallel = Environment.ProcessorCount;
+
+			bSrcPtr = (byte*)samplePtr.ToPointer();
+			bDstPtr = (uint*)dstPtr.ToPointer();
+
+			TransferDelegate[] workers = new TransferDelegate[nParallel];
+			IAsyncResult[] ars = new IAsyncResult[nParallel];
+			for(int i = 0; i < workers.Length; ++i)
+			{
+				workers[i] = new TransferDelegate(TransferSlave);
+				ars[i] = workers[i].BeginInvoke(i, null, null);
+			}
+			for(int i = 0; i < workers.Length; ++i)
+			{
+				workers[i].EndInvoke(ars[i]);
+			}
+		}
+
+		unsafe private void TransferSlave(int start)
+		{
+			const int unroll = 8;
+			for (int i = start; i < nHeight; i += nParallel)
+			{
+				byte* srcLine = bSrcPtr + nStride * (nHeight - 1 - i);
+				uint* dstLine = bDstPtr + nWidth * i;
+
+				for(int j = 0; j < nWidth / unroll; ++j)
+				{
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+				}
+				for(int j = 0; j < nWidth % unroll; ++j)
+				{
+					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
+				}
+			}
 		}
 
 		#region [ Dispose-Finalize パターン実装 ]
@@ -210,9 +247,9 @@ namespace FDK
 					DsUtils.FreeAMMediaType(mediaType);
 					mediaType = null;
 				}
-				if (bufferPtr != IntPtr.Zero)
+				if (samplePtr != IntPtr.Zero)
 				{
-					Marshal.FreeHGlobal(bufferPtr);
+					Marshal.FreeHGlobal(samplePtr);
 				}
 
 				GC.SuppressFinalize(this);
