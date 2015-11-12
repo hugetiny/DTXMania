@@ -45,6 +45,7 @@ namespace FDK
 		ISampleGrabber grabber;
 		IMediaControl control;
 		IMediaSeeking seeker;
+		IMediaFilter filter;
 		FilterState state;
 		AMMediaType mediaType;
 		IntPtr samplePtr = IntPtr.Zero;
@@ -78,7 +79,13 @@ namespace FDK
 
 			// Null レンダラに接続しないとウィンドウが表示される。
 			// また、レンダリングを行わないため処理速度を向上できる。
-			CDirectShow.tビデオレンダラをグラフから除去してNullレンダラに接続する(builder);
+			// CDirectShow.tビデオレンダラをグラフから除去してNullレンダラに接続する(builder);
+
+			IVideoWindow videoWindow = builder as IVideoWindow;
+			if (videoWindow != null)
+			{
+				videoWindow.put_AutoShow(OABool.False);
+			}
 
 			#region [Video Info]
 			{
@@ -107,9 +114,15 @@ namespace FDK
 			}
 			#endregion
 
+			#region [Filter]
+			{
+				filter = builder as IMediaFilter;
+			}
+			#endregion
+
 			hr = grabber.SetBufferSamples(true);
 			DsError.ThrowExceptionForHR(hr);
-	
+
 			Run();
 			Stop();
 		}
