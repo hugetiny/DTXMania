@@ -283,7 +283,8 @@ namespace DTXMania
 					// 旧動画 (278x355以下)の場合と、それ以上の場合とで、拡大/表示位置補正ロジックを変えること。
 					// 旧動画の場合は、「278x355の領域に表示される」ことを踏まえて扱う必要あり。
 					// 例: 上半分だけ動画表示するような場合は・・・「上半分だけ」という表示意図を維持すべきか？それとも無視して全画面拡大すべきか？？
-					// chnmr0 (2015/10/31) : フルスクリーンかどうかにかかわらず、表示領域いっぱいにアス比保持で拡縮します。
+					// chnmr0 : プレビューの場合表示領域いっぱいにアス比保持で拡縮します。
+					//          プレビューでない場合単純に縦横2倍、位置変更なしで表示します。
 
 					float magX = 1, magY = 1;
 					int xx = x, yy = y;
@@ -294,18 +295,27 @@ namespace DTXMania
 						xx = 0;
 						yy = 0;
 					}
+
 					#region [ アスペクト比を維持した拡大縮小 ]
 					magX = (float)areaDrawingWidth / this.rAVI.avi.nフレーム幅;
 					magY = (float)areaDrawingHeight / this.rAVI.avi.nフレーム高さ;
-					if (magX > magY)
+					if (!bFullScreenMovie && !bIsPreviewMovie )
 					{
-						magX = magY;
-						xx += (int)((areaDrawingWidth - (this.rAVI.avi.nフレーム幅 * magY)) / 2);
+						magX = magY = 2;
 					}
 					else
 					{
-						magY = magX;
-						yy += (int)((areaDrawingHeight - (this.rAVI.avi.nフレーム高さ * magX)) / 2);
+						// フルスクリーンまたはプレビュー
+						if (magX > magY)
+						{
+							magX = magY;
+							xx += (int)((areaDrawingWidth - (this.rAVI.avi.nフレーム幅 * magY)) / 2);
+						}
+						else
+						{
+							magY = magX;
+							yy += (int)((areaDrawingHeight - (this.rAVI.avi.nフレーム高さ * magX)) / 2);
+						}
 					}
 					#endregion
 
