@@ -74,10 +74,10 @@ namespace DTXMania
 				this.n画像側開始位置Y = n画像側開始位置Y;
 				this.n画像側終了位置X = n画像側終了位置X;
 				this.n画像側終了位置Y = n画像側終了位置Y;
-				this.n表示側開始位置X = n表示側開始位置X;
-				this.n表示側開始位置Y = n表示側開始位置Y;
-				this.n表示側終了位置X = n表示側終了位置X;
-				this.n表示側終了位置Y = n表示側終了位置Y;
+				this.n表示側開始位置X = n表示側開始位置X * 2;
+				this.n表示側開始位置Y = n表示側開始位置Y * 2;
+				this.n表示側終了位置X = n表示側終了位置X * 2;
+				this.n表示側終了位置Y = n表示側終了位置Y * 2;
 				this.n総移動時間ms = n総移動時間ms;
 				this.n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
 				this.CreateTexture((int)this.rAVI.avi.nフレーム幅, (int)this.rAVI.avi.nフレーム高さ);
@@ -285,48 +285,60 @@ namespace DTXMania
 					// 例: 上半分だけ動画表示するような場合は・・・「上半分だけ」という表示意図を維持すべきか？それとも無視して全画面拡大すべきか？？
 					// chnmr0 : プレビューの場合表示領域いっぱいにアス比保持で拡縮します。
 					//          プレビューでない場合単純に縦横2倍、位置変更なしで表示します。
+					// yyagi: BGAの有無を見ないで、単純にFullScreenMovieならアス比保持で拡縮、そうでないなら縦横2倍＋位置変更なし。
 
-					float magX = 1, magY = 1;
+					float magX = 2, magY = 2;
 					int xx = x, yy = y;
-					if ( !bHasBGA )
+					//if ( !bHasBGA )
+					//{
+						//if (bFullScreenMovie)
+						//{
+						//	// BGAがなくフルスクリーン
+						//	areaDrawingHeight = SampleFramework.GameWindowSize.Height;
+						//	areaDrawingWidth = SampleFramework.GameWindowSize.Width;
+						//	xx = 0;
+						//	yy = 0;
+						//}
+						//else
+						//{
+						//	// BGAがなくフルスクリーンでない
+						//	areaDrawingHeight = 355 * 2;
+						//	areaDrawingWidth = 278 * 2;
+						//}
+					//}
+					//else
+					//{
+					//	// BGAがある場合そのまま表示
+					//	areaDrawingHeight = (int)rAVI.avi.nフレーム高さ;
+					//	areaDrawingWidth = (int)rAVI.avi.nフレーム幅;
+					//}
+
+					if ( bFullScreenMovie )
 					{
-						if (bFullScreenMovie)
+						xx = 0;
+						yy = 0;
+						#region [ アスペクト比を維持した拡大縮小 ]
+						areaDrawingWidth  = SampleFramework.GameWindowSize.Width;
+						areaDrawingHeight = SampleFramework.GameWindowSize.Height;
+						magX = (float)areaDrawingWidth / this.rAVI.avi.nフレーム幅;
+						magY = (float)areaDrawingHeight / this.rAVI.avi.nフレーム高さ;
+						if (magX > magY)
 						{
-							// BGAがなくフルスクリーン
-							areaDrawingHeight = SampleFramework.GameWindowSize.Height;
-							areaDrawingWidth = SampleFramework.GameWindowSize.Width;
-							xx = 0;
-							yy = 0;
+							magX = magY;
+							xx += (int)((areaDrawingWidth - (this.rAVI.avi.nフレーム幅 * magY)) / 2);
 						}
 						else
 						{
-							// BGAがなくフルスクリーンでない
-							areaDrawingHeight = 710;
-							areaDrawingWidth = 556;
+							magY = magX;
+							yy += (int)((areaDrawingHeight - (this.rAVI.avi.nフレーム高さ * magX)) / 2);
 						}
+						#endregion
 					}
 					else
 					{
-						// BGAがある場合そのまま表示
-						areaDrawingHeight = (int)rAVI.avi.nフレーム高さ;
-						areaDrawingWidth = (int)rAVI.avi.nフレーム幅;
+						magX = 2;
+						magY = 2;
 					}
-
-					#region [ アスペクト比を維持した拡大縮小 ]
-					magX = (float)areaDrawingWidth / this.rAVI.avi.nフレーム幅;
-					magY = (float)areaDrawingHeight / this.rAVI.avi.nフレーム高さ;
-					if (magX > magY)
-					{
-						magX = magY;
-						xx += (int)((areaDrawingWidth - (this.rAVI.avi.nフレーム幅 * magY)) / 2);
-					}
-					else
-					{
-						magY = magX;
-						yy += (int)((areaDrawingHeight - (this.rAVI.avi.nフレーム高さ * magX)) / 2);
-					}
-					#endregion
-
 					this.tx描画用.vc拡大縮小倍率.X = magX;
 					this.tx描画用.vc拡大縮小倍率.Y = magY;
 					this.tx描画用.vc拡大縮小倍率.Z = 1.0f;

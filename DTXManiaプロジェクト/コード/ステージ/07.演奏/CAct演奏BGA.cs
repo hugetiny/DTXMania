@@ -54,10 +54,10 @@ namespace DTXMania
 					this.stLayer[ i ].pt画像側開始位置.Y = n画像側開始位置Y;
 					this.stLayer[ i ].pt画像側終了位置.X = n画像側終了位置X;
 					this.stLayer[ i ].pt画像側終了位置.Y = n画像側終了位置Y;
-					this.stLayer[ i ].pt表示側開始位置.X = n表示側開始位置X;
-					this.stLayer[ i ].pt表示側開始位置.Y = n表示側開始位置Y;
-					this.stLayer[ i ].pt表示側終了位置.X = n表示側終了位置X;
-					this.stLayer[ i ].pt表示側終了位置.Y = n表示側終了位置Y;
+					this.stLayer[ i ].pt表示側開始位置.X = n表示側開始位置X * 2;
+					this.stLayer[ i ].pt表示側開始位置.Y = n表示側開始位置Y * 2;
+					this.stLayer[ i ].pt表示側終了位置.X = n表示側終了位置X * 2;
+					this.stLayer[ i ].pt表示側終了位置.Y = n表示側終了位置Y * 2;
 					this.stLayer[ i ].n総移動時間ms = n総移動時間ms;
 					this.stLayer[ i ].n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CDTXMania.Timer.n現在時刻;
 				}
@@ -184,7 +184,7 @@ namespace DTXMania
 							timeMoveStart = CDTXMania.Timer.n現在時刻;
 						}
 						// Size size3 = new Size( 0x116, 0x163 );
-						Size size表示域 = new Size(556, 710);
+						Size size表示域 = new Size( 278 * 2, 355 * 2 );
 						// chnrm0 : #34192
 						// 表示域を２倍に変更した。
 						// x,yについては次のように変更した。
@@ -228,8 +228,8 @@ namespace DTXMania
 							rect画像側.Height = sizeWhileMoving.Height;
 							rect表示側.X = ptDispStart.X + ( (int) ( ( ptDispEnd.X - ptDispStart.X ) * coefSizeWhileMoving ) );
 							rect表示側.Y = ptDispStart.Y + ( (int) ( ( ptDispEnd.Y - ptDispStart.Y ) * coefSizeWhileMoving ) );
-							rect表示側.Width = sizeWhileMoving.Width;
-							rect表示側.Height = sizeWhileMoving.Height;
+							rect表示側.Width = sizeWhileMoving.Width * 2;
+							rect表示側.Height = sizeWhileMoving.Height * 2;
 						}
 						if(
 							( rect画像側.Right > 0 ) &&
@@ -285,12 +285,12 @@ namespace DTXMania
 							}
 							if( rect表示側.Right > size表示域.Width )
 							{
-								rect画像側.Width -= rect表示側.Right - size表示域.Width;
+								rect画像側.Width -= ( rect表示側.Right - size表示域.Width ) / 2;
 								rect表示側.Width -= rect表示側.Right - size表示域.Width;
 							}
 							if( rect表示側.Bottom > size表示域.Height )
 							{
-								rect画像側.Height -= rect表示側.Bottom - size表示域.Height;
+								rect画像側.Height -= ( rect表示側.Bottom - size表示域.Height ) / 2;
 								rect表示側.Height -= rect表示側.Bottom - size表示域.Height;
 							}
 							
@@ -312,6 +312,9 @@ namespace DTXMania
 							{
 								if ( ( this.stLayer[ i ].rBMP != null ) && ( this.stLayer[ i ].rBMP.tx画像 != null ) )
 								{
+									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率.X = 2.0f;
+									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率.Y = 2.0f;
+									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率.Z = 1.0f;
 									this.stLayer[ i ].rBMP.tx画像.t2D描画(
 										CDTXMania.app.Device,
 										(x + rect表示側.X),
@@ -320,6 +323,9 @@ namespace DTXMania
 								}
 								else if( ( this.stLayer[ i ].rBMPTEX != null ) && ( this.stLayer[ i ].rBMPTEX.tx画像 != null ) )
 								{
+									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率.X = 2.0f;
+									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率.Y = 2.0f;
+									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率.Z = 1.0f;
 									this.stLayer[ i ].rBMPTEX.tx画像.t2D描画(
 										CDTXMania.app.Device,
 										(x + rect表示側.X),
