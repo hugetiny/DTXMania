@@ -334,6 +334,11 @@ namespace DTXMania
 						}
 						#endregion
 					}
+					else if ( bIsPreviewMovie )
+					{
+						magX = (float) ( SampleFramework.GameWindowSize.Width  / 640.0 );
+						magY = (float) ( SampleFramework.GameWindowSize.Height / 480.0 );
+					}
 					else
 					{
 						magX = 2;
