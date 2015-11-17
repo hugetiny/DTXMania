@@ -288,34 +288,42 @@ namespace DTXMania
 
 					float magX = 1, magY = 1;
 					int xx = x, yy = y;
-					if (bFullScreenMovie)
+					if ( !bHasBGA )
 					{
-						areaDrawingHeight = SampleFramework.GameWindowSize.Height;
-						areaDrawingWidth = SampleFramework.GameWindowSize.Width;
-						xx = 0;
-						yy = 0;
+						if (bFullScreenMovie)
+						{
+							// BGAがなくフルスクリーン
+							areaDrawingHeight = SampleFramework.GameWindowSize.Height;
+							areaDrawingWidth = SampleFramework.GameWindowSize.Width;
+							xx = 0;
+							yy = 0;
+						}
+						else
+						{
+							// BGAがなくフルスクリーンでない
+							areaDrawingHeight = 710;
+							areaDrawingWidth = 556;
+						}
+					}
+					else
+					{
+						// BGAがある場合そのまま表示
+						areaDrawingHeight = (int)rAVI.avi.nフレーム高さ;
+						areaDrawingWidth = (int)rAVI.avi.nフレーム幅;
 					}
 
 					#region [ アスペクト比を維持した拡大縮小 ]
 					magX = (float)areaDrawingWidth / this.rAVI.avi.nフレーム幅;
 					magY = (float)areaDrawingHeight / this.rAVI.avi.nフレーム高さ;
-					if (!bFullScreenMovie && !bIsPreviewMovie )
+					if (magX > magY)
 					{
-						magX = magY = 2;
+						magX = magY;
+						xx += (int)((areaDrawingWidth - (this.rAVI.avi.nフレーム幅 * magY)) / 2);
 					}
 					else
 					{
-						// フルスクリーンまたはプレビュー
-						if (magX > magY)
-						{
-							magX = magY;
-							xx += (int)((areaDrawingWidth - (this.rAVI.avi.nフレーム幅 * magY)) / 2);
-						}
-						else
-						{
-							magY = magX;
-							yy += (int)((areaDrawingHeight - (this.rAVI.avi.nフレーム高さ * magX)) / 2);
-						}
+						magY = magX;
+						yy += (int)((areaDrawingHeight - (this.rAVI.avi.nフレーム高さ * magX)) / 2);
 					}
 					#endregion
 

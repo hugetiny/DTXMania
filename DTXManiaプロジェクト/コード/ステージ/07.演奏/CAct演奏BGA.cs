@@ -293,24 +293,7 @@ namespace DTXMania
 								rect画像側.Height -= rect表示側.Bottom - size表示域.Height;
 								rect表示側.Height -= rect表示側.Bottom - size表示域.Height;
 							}
-
-							if ((rect表示側.Width * 2 <= size表示域.Width) && (rect表示側.Height * 2 <= size表示域.Height))
-							{
-								// 2倍可能
-								if ((this.stLayer[i].rBMP != null) && (this.stLayer[i].rBMP.tx画像 != null))
-								{
-									this.stLayer[i].rBMP.tx画像.vc拡大縮小倍率 = new Vector3(2f, 2f, 1f);
-									rect表示側.X *= 2;
-									rect表示側.Y *= 2;
-								}
-								else if ((this.stLayer[i].rBMPTEX != null) && (this.stLayer[i].rBMPTEX.tx画像 != null))
-								{
-									this.stLayer[i].rBMPTEX.tx画像.vc拡大縮小倍率 = new Vector3(2f, 2f, 1f);
-									rect表示側.X *= 2;
-									rect表示側.Y *= 2;
-								}
-							}
-
+							
 							if(
 								( rect画像側.Width > 0 ) &&
 								( rect画像側.Height > 0 ) &&
