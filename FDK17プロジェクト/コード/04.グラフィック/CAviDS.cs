@@ -32,7 +32,6 @@ namespace FDK
 
 		int nWidth;
 		int nHeight;
-		int nStride;
 		long nMediaLength; // [ms]
 
 		public int GetDuration()
@@ -49,11 +48,7 @@ namespace FDK
 		FilterState state;
 		AMMediaType mediaType;
 		IntPtr samplePtr = IntPtr.Zero;
-		unsafe byte* bSrcPtr; // for Transfer
-		unsafe uint* bDstPtr; // for Transfer
-		int nParallel;
-
-		delegate void TransferDelegate(int i);
+		
 		public CAviDS(string filename, double playSpeed)
 		{
 			int hr = 0x0;
@@ -65,10 +60,11 @@ namespace FDK
 				grabber = new SampleGrabber() as ISampleGrabber;
 				mediaType = new AMMediaType();
 				mediaType.majorType = MediaType.Video;
-				mediaType.subType = MediaSubType.RGB24;
+				mediaType.subType = MediaSubType.RGB32;
 				mediaType.formatType = FormatType.VideoInfo;
 				hr = grabber.SetMediaType(mediaType);
 				DsError.ThrowExceptionForHR(hr);
+
 				hr = builder.AddFilter((IBaseFilter)grabber, "Sample Grabber");
 				DsError.ThrowExceptionForHR(hr);
 			}
@@ -79,7 +75,8 @@ namespace FDK
 
 			// Null レンダラに接続しないとウィンドウが表示される。
 			// また、レンダリングを行わないため処理速度を向上できる。
-			// CDirectShow.tビデオレンダラをグラフから除去してNullレンダラに接続する(builder);
+			CDirectShow.ConnectNullRendererFromSampleGrabber(builder, grabber as IBaseFilter);
+			CDirectShow.tグラフを解析しデバッグ出力する(builder);
 
 			IVideoWindow videoWindow = builder as IVideoWindow;
 			if (videoWindow != null)
@@ -120,11 +117,7 @@ namespace FDK
 			}
 			#endregion
 
-			hr = grabber.SetBufferSamples(true);
-			DsError.ThrowExceptionForHR(hr);
-
-			Run();
-			Stop();
+			grabber.SetBufferSamples(true);
 		}
 
 		public void Seek(int timeInMs)
@@ -176,68 +169,20 @@ namespace FDK
 		public unsafe void tGetBitmap(SlimDX.Direct3D9.Device device, CTexture ctex, int timeMs)
 		{
 			int bufferSize = 0;
-			int hr = grabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);
+			int hr = 0x0;
+			
+			hr = grabber.GetCurrentBuffer(ref bufferSize, IntPtr.Zero);
 			DsError.ThrowExceptionForHR(hr);
 
-			if (samplePtr == IntPtr.Zero)
+			if ( samplePtr == IntPtr.Zero )
 			{
 				samplePtr = Marshal.AllocHGlobal(bufferSize);
 			}
-			hr = grabber.GetCurrentBuffer(ref bufferSize, samplePtr);
-			DsError.ThrowExceptionForHR(hr);
-			
+
 			DataRectangle rectangle3 = ctex.texture.LockRectangle(0, SlimDX.Direct3D9.LockFlags.None);
-			rectangle3.Data.Seek(0, System.IO.SeekOrigin.Begin);
-			Transfer(rectangle3.Data.DataPointer);			
+			hr = grabber.GetCurrentBuffer(ref bufferSize, rectangle3.Data.DataPointer);
+			DsError.ThrowExceptionForHR(hr);
 			ctex.texture.UnlockRectangle(0);
-		}
-
-		unsafe private void Transfer(IntPtr dstPtr)
-		{
-			nStride = (nWidth * 3) + ((4 - ((nWidth * 3) % 4)) % 4); // BMP 1行ごとのバイト数 (4の倍数になるように調整)
-			nParallel = Environment.ProcessorCount;
-
-			bSrcPtr = (byte*)samplePtr.ToPointer();
-			bDstPtr = (uint*)dstPtr.ToPointer();
-
-			TransferDelegate[] workers = new TransferDelegate[nParallel];
-			IAsyncResult[] ars = new IAsyncResult[nParallel];
-			for(int i = 0; i < workers.Length; ++i)
-			{
-				workers[i] = new TransferDelegate(TransferSlave);
-				ars[i] = workers[i].BeginInvoke(i, null, null);
-			}
-			for(int i = 0; i < workers.Length; ++i)
-			{
-				workers[i].EndInvoke(ars[i]);
-			}
-		}
-
-		unsafe private void TransferSlave(int start)
-		{
-			const int unroll = 8;
-			for (int i = start; i < nHeight; i += nParallel)
-			{
-				byte* srcLine = bSrcPtr + nStride * (nHeight - 1 - i);
-				uint* dstLine = bDstPtr + nWidth * i;
-
-				for(int j = 0; j < nWidth / unroll; ++j)
-				{
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-				}
-				for(int j = 0; j < nWidth % unroll; ++j)
-				{
-					*dstLine++ = (*srcLine++) | ((uint)(*srcLine++) << 8) | ((uint)(*srcLine++) << 16) | 0xFF000000;
-				}
-			}
 		}
 
 		#region [ Dispose-Finalize パターン実装 ]

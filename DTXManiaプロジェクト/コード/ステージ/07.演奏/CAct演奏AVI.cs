@@ -286,40 +286,22 @@ namespace DTXMania
 					// chnmr0 : プレビューの場合表示領域いっぱいにアス比保持で拡縮します。
 					//          プレビューでない場合単純に縦横2倍、位置変更なしで表示します。
 					// yyagi: BGAの有無を見ないで、単純にFullScreenMovieならアス比保持で拡縮、そうでないなら縦横2倍＋位置変更なし。
+					// chnmr0 : 従来の大きさ以上のプレビュー動画で不都合が起きますのでここは常にアス比保持でフィッティングします。
 
 					float magX = 2, magY = 2;
 					int xx = x, yy = y;
-					//if ( !bHasBGA )
-					//{
-						//if (bFullScreenMovie)
-						//{
-						//	// BGAがなくフルスクリーン
-						//	areaDrawingHeight = SampleFramework.GameWindowSize.Height;
-						//	areaDrawingWidth = SampleFramework.GameWindowSize.Width;
-						//	xx = 0;
-						//	yy = 0;
-						//}
-						//else
-						//{
-						//	// BGAがなくフルスクリーンでない
-						//	areaDrawingHeight = 355 * 2;
-						//	areaDrawingWidth = 278 * 2;
-						//}
-					//}
-					//else
-					//{
-					//	// BGAがある場合そのまま表示
-					//	areaDrawingHeight = (int)rAVI.avi.nフレーム高さ;
-					//	areaDrawingWidth = (int)rAVI.avi.nフレーム幅;
-					//}
 
-					if ( bFullScreenMovie )
+					if ( bFullScreenMovie || bIsPreviewMovie )
 					{
-						xx = 0;
-						yy = 0;
 						#region [ アスペクト比を維持した拡大縮小 ]
-						areaDrawingWidth  = SampleFramework.GameWindowSize.Width;
-						areaDrawingHeight = SampleFramework.GameWindowSize.Height;
+						if (bFullScreenMovie)
+						{
+							xx = 0;
+							yy = 0;
+							areaDrawingWidth = SampleFramework.GameWindowSize.Width;
+							areaDrawingHeight = SampleFramework.GameWindowSize.Height;
+						}
+						
 						magX = (float)areaDrawingWidth / this.rAVI.avi.nフレーム幅;
 						magY = (float)areaDrawingHeight / this.rAVI.avi.nフレーム高さ;
 						if (magX > magY)
@@ -334,19 +316,11 @@ namespace DTXMania
 						}
 						#endregion
 					}
-					else if ( bIsPreviewMovie )
-					{
-						magX = (float) ( SampleFramework.GameWindowSize.Width  / 640.0 );
-						magY = (float) ( SampleFramework.GameWindowSize.Height / 480.0 );
-					}
-					else
-					{
-						magX = 2;
-						magY = 2;
-					}
+
 					this.tx描画用.vc拡大縮小倍率.X = magX;
 					this.tx描画用.vc拡大縮小倍率.Y = magY;
 					this.tx描画用.vc拡大縮小倍率.Z = 1.0f;
+					this.tx描画用.bFlipY = true;
 					this.tx描画用.t2D描画( CDTXMania.app.Device, xx, yy );
 				}
 			}

@@ -84,10 +84,13 @@ namespace FDK
 
 
 				// ビデオレンダラを除去。
-
-				CDirectShow.tビデオレンダラをグラフから除去してNullレンダラに接続する( graphBuilder );		// オーディオレンダラをNullに変えるより前に実行すること。（CDirectShow.tオーディオレンダラをNullレンダラに変えてフォーマットを取得する() の中で一度再生するので、そのときにActiveウィンドウが表示されてしまうため。）
-	
-
+				// オーディオレンダラをNullに変えるより前に実行すること。
+				// （CDirectShow.tオーディオレンダラをNullレンダラに変えてフォーマットを取得する() の中で一度再生するので、
+				// そのときにActiveウィンドウが表示されてしまうため。）
+				// chnmr0 : ウィンドウを表示しないだけなら IVideoWindow で put_AutoShow した。
+				IVideoWindow vw = graphBuilder as IVideoWindow;
+				vw.put_AutoShow(OABool.False);
+				
 				// オーディオレンダラを NullRenderer に置換。
 
 				WaveFormat wfx;

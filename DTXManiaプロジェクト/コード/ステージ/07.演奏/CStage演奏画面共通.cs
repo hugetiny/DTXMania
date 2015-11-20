@@ -740,8 +740,11 @@ namespace DTXMania
                 int lag = (int)(nTime + nInputAdjustTime - pChip.n発声時刻ms);
                 if (saveLag)
                 {
-                    pChip.nLag = lag;		// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
-					pChip.nCurrentComboForGhost = this.actCombo.n現在のコンボ数[(int)pChip.e楽器パート];
+                    pChip.nLag = lag;       // #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
+					if (pChip.e楽器パート != E楽器パート.UNKNOWN)
+					{
+						pChip.nCurrentComboForGhost = this.actCombo.n現在のコンボ数[(int)pChip.e楽器パート];
+					}
                 }
                 // #35411 modify end
 

@@ -19,6 +19,11 @@ namespace FDK
 			get;
 			set; 
 		}
+		public bool bFlipY
+		{
+			get;
+			set;
+		}
 		public float fZ軸中心回転
 		{
 			get;
@@ -81,6 +86,7 @@ namespace FDK
 			this.b加算合成 = false;
 			this.fZ軸中心回転 = 0f;
 			this.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
+			this.bFlipY = false;
 //			this._txData = null;
 		}
 		
@@ -392,7 +398,14 @@ namespace FDK
 				this.color4.Alpha = ( (float) this._透明度 ) / 255f;
 				int color = this.color4.ToArgb();
 
-				if( this.cvTransformedColoredVertexies == null )
+				if( this.bFlipY )
+				{
+					float swap = f上V値;
+					f上V値 = f下V値;
+					f下V値 = swap;
+				}
+
+				if ( this.cvTransformedColoredVertexies == null )
 					this.cvTransformedColoredVertexies = new TransformedColoredTexturedVertex[ 4 ];
 
 				// #27122 2012.1.13 from: 以下、マネージドオブジェクト（＝ガベージ）の量産を抑えるため、new は使わず、メンバに値を１つずつ直接上書きする。
@@ -483,8 +496,8 @@ namespace FDK
 				this.cvPositionColoredVertexies[ 3 ].TextureCoordinates.X = f右U値;
 				this.cvPositionColoredVertexies[ 3 ].TextureCoordinates.Y = f下V値;
 
-				int n描画領域内X = x + ( rc画像内の描画領域.Width / 2 );
-				int n描画領域内Y = y + ( rc画像内の描画領域.Height / 2 );
+				int n描画領域内X = (int)(x + this.vc拡大縮小倍率.X * ( rc画像内の描画領域.Width / 2 ));
+				int n描画領域内Y = (int)(y + this.vc拡大縮小倍率.Y * ( rc画像内の描画領域.Height / 2 ));
 				var vc3移動量 = new Vector3( n描画領域内X - ( ( (float) device.Viewport.Width ) / 2f ), -( n描画領域内Y - ( ( (float) device.Viewport.Height ) / 2f ) ), 0f );
 				
 				var matrix = Matrix.Identity * Matrix.Scaling( this.vc拡大縮小倍率 );
