@@ -732,6 +732,28 @@ namespace DTXMania
 			}
 		}
 
+		/// <summary>
+		/// 演奏開始前に適切なサイズのAVIテクスチャを作成しておくことで、AVI再生開始時のもたつきをなくす
+		/// </summary>
+		protected void PrepareAVITexture()
+		{
+			if ( CDTXMania.ConfigIni.bAVI有効 )
+			{
+				foreach ( CDTX.CChip pChip in listChip )
+				{
+					if ( pChip.nチャンネル番号 == (int) Ech定義.Movie || pChip.nチャンネル番号 == (int) Ech定義.MovieFull )
+					{
+						// 最初に再生するAVIチップに合わせて、テクスチャを準備しておく
+						if (pChip.rAVI != null )
+						{
+							this.actAVI.PrepareProperSizeTexture( (int) pChip.rAVI.avi.nフレーム幅, (int) pChip.rAVI.avi.nフレーム高さ );
+						}
+						break;
+					}
+				}
+			}
+		}
+
 		protected E判定 e指定時刻からChipのJUDGEを返す( long nTime, CDTX.CChip pChip, int nInputAdjustTime, bool saveLag = true )
 		{
 			if ( pChip != null )
@@ -1623,14 +1645,14 @@ namespace DTXMania
                     CSound管理.rc演奏用タイマ.t一時停止();
 					CDTXMania.Timer.t一時停止();
 					CDTXMania.DTX.t全チップの再生一時停止();
-					CDTXMania.DTX.tAVIの一時停止再生切り替え();
+					CDTXMania.DTX.t全AVIの一時停止();
 				}
 				else
 				{
                     CSound管理.rc演奏用タイマ.t再開();
 					CDTXMania.Timer.t再開();
 					CDTXMania.DTX.t全チップの再生再開();
-					CDTXMania.DTX.tAVIの一時停止再生切り替え();
+					CDTXMania.DTX.t全AVIの再生再開();
 				}
 			}
 			if ( ( !this.bPAUSE && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )

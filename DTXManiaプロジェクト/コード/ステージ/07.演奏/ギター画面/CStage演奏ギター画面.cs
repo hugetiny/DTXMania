@@ -102,7 +102,9 @@ namespace DTXMania
 
 				if( base.b初めての進行描画 )
 				{
-                    CSound管理.rc演奏用タイマ.tリセット();
+					this.PrepareAVITexture();
+
+					CSound管理.rc演奏用タイマ.tリセット();
 					CDTXMania.Timer.tリセット();
 					this.ctチップ模様アニメ.Guitar = new CCounter( 0, 0x17, 20, CDTXMania.Timer );
 					this.ctチップ模様アニメ.Bass = new CCounter( 0, 0x17, 20, CDTXMania.Timer );

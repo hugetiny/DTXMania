@@ -29,10 +29,26 @@ namespace FDK
 				return (uint)nWidth;
 			}
 		}
+		public bool b再生中
+		{
+			get
+			{
+				return bPlaying;
+			}
+		}
+		public bool b一時停止中
+		{
+			get
+			{
+				return bPause;
+			}
+		}
 
 		int nWidth;
 		int nHeight;
 		long nMediaLength; // [ms]
+		bool bPlaying;
+		bool bPause;
 
 		public int GetDuration()
 		{
@@ -118,6 +134,11 @@ namespace FDK
 			#endregion
 
 			grabber.SetBufferSamples(true);
+			this.Run();
+			this.Pause();
+
+			bPlaying = false;
+			bPause = false;		// 外見えには演奏停止している。PAUSE中として外に見せないこと。
 		}
 
 		public void Seek(int timeInMs)
@@ -134,6 +155,8 @@ namespace FDK
 			DsError.ThrowExceptionForHR(hr);
 			hr = control.GetState(timeOutMs, out state);
 			DsError.ThrowExceptionForHR(hr);
+			bPlaying = true;
+			bPause = false;
 		}
 
 		public void Stop()
@@ -142,6 +165,8 @@ namespace FDK
 			DsError.ThrowExceptionForHR(hr);
 			hr = control.GetState(timeOutMs, out state);
 			DsError.ThrowExceptionForHR(hr);
+			bPlaying = false;
+			bPause = false;
 		}
 
 		public void Pause()
@@ -150,6 +175,7 @@ namespace FDK
 			DsError.ThrowExceptionForHR(hr);
 			hr = control.GetState(timeOutMs, out state);
 			DsError.ThrowExceptionForHR(hr);
+			bPause = true;
 		}
 
 		public void ToggleRun()

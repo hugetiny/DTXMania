@@ -39,19 +39,23 @@ namespace DTXMania
 			set;
 		}
 
-		private void CreateTexture(int width, int height)
+		public void PrepareProperSizeTexture(int width, int height)
 		{
 			try
 			{
-				if (this.tx描画用 != null)
+				if ( this.tx描画用 != null && ( this.tx描画用.szテクスチャサイズ.Width != width || this.tx描画用.szテクスチャサイズ.Height != height ) )
 				{
+//Debug.WriteLine( "orgW=" + this.tx描画用.szテクスチャサイズ.Width + ", W=" + width + ", orgH=" + this.tx描画用.szテクスチャサイズ.Height + ", H=" + height );
 					this.tx描画用.Dispose();
 					this.tx描画用 = null;
 				}
-				this.tx描画用 = new CTexture(
-					CDTXMania.app.Device, width, height,
-					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat,
-					Pool.Managed);
+				if ( this.tx描画用 == null )
+				{
+					this.tx描画用 = new CTexture(
+						CDTXMania.app.Device, width, height,
+						CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat,
+						Pool.Managed);
+				}
 			}
 			catch (CTextureCreateFailedException e)
 			{
@@ -79,9 +83,10 @@ namespace DTXMania
 				this.n表示側終了位置X = n表示側終了位置X * 2;
 				this.n表示側終了位置Y = n表示側終了位置Y * 2;
 				this.n総移動時間ms = n総移動時間ms;
+				this.PrepareProperSizeTexture((int)this.rAVI.avi.nフレーム幅, (int)this.rAVI.avi.nフレーム高さ);
 				this.n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
-				this.CreateTexture((int)this.rAVI.avi.nフレーム幅, (int)this.rAVI.avi.nフレーム高さ);
-				this.rAVI.avi.Run();
+				//this.rAVI.avi.Run();
+				this.rAVI.avi.ToggleRun();
 			}
 		}
 		public void SkipStart( int n移動開始時刻ms )
@@ -348,7 +353,7 @@ namespace DTXMania
 					355,
 					CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
-				this.CreateTexture(
+				this.PrepareProperSizeTexture(
 						(bIsPreviewMovie) ? 204 : SampleFramework.GameWindowSize.Width,
 						(bIsPreviewMovie) ? 269 : SampleFramework.GameWindowSize.Height
 						);
