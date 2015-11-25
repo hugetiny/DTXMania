@@ -280,7 +280,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   Select an AVI file に類似しているローカライズされた文字列を検索します。
+        ///   Select a Movie file に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str動画ファイル選択ダイアログのタイトル {
             get {
@@ -289,7 +289,7 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
-        ///   AVI files(*.avi)|*.avi|All files(*.*)|*.* に類似しているローカライズされた文字列を検索します。
+        ///   Movie files (*.avi, *.mp4, *.mpg,*.wmv)|*.avi; *.mp4; *.mpg; *.wmv|All files(*.*)|*.* に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string str動画ファイル選択ダイアログのフィルタ {
             get {

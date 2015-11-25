@@ -191,10 +191,10 @@
     <value>Initializing...</value>
   </data>
   <data name="str動画ファイル選択ダイアログのタイトル" xml:space="preserve">
-    <value>Select an AVI file</value>
+    <value>Select a Movie file</value>
   </data>
   <data name="str動画ファイル選択ダイアログのフィルタ" xml:space="preserve">
-    <value>AVI files(*.avi)|*.avi|All files(*.*)|*.*</value>
+    <value>Movie files (*.avi, *.mp4, *.mpg,*.wmv)|*.avi; *.mp4; *.mpg; *.wmv|All files(*.*)|*.*</value>
   </data>
   <data name="str名前を付けて保存ダイアログのタイトル" xml:space="preserve">
     <value>Save As</value>
