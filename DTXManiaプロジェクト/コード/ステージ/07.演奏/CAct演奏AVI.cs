@@ -85,8 +85,7 @@ namespace DTXMania
 				this.n総移動時間ms = n総移動時間ms;
 				this.PrepareProperSizeTexture((int)this.rAVI.avi.nフレーム幅, (int)this.rAVI.avi.nフレーム高さ);
 				this.n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
-				//this.rAVI.avi.Run();
-				this.rAVI.avi.ToggleRun();
+				this.rAVI.avi.Run();
 			}
 		}
 		public void SkipStart( int n移動開始時刻ms )
@@ -103,6 +102,7 @@ namespace DTXMania
 						{
 							if( chip.rAVI != null )
 							{
+								this.rAVI.avi.Seek( n移動開始時刻ms - chip.n発声時刻ms );
 								this.Start( chip.nチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 							}
 							continue;
@@ -111,6 +111,7 @@ namespace DTXMania
 						{
 							if( chip.rAVIPan != null )
 							{
+								this.rAVI.avi.Seek( n移動開始時刻ms - chip.n発声時刻ms );
 								this.Start( chip.nチャンネル番号, chip.rAVI, chip.rAVIPan.sz開始サイズ.Width, chip.rAVIPan.sz開始サイズ.Height, chip.rAVIPan.sz終了サイズ.Width, chip.rAVIPan.sz終了サイズ.Height, chip.rAVIPan.pt動画側開始位置.X, chip.rAVIPan.pt動画側開始位置.Y, chip.rAVIPan.pt動画側終了位置.X, chip.rAVIPan.pt動画側終了位置.Y, chip.rAVIPan.pt表示側開始位置.X, chip.rAVIPan.pt表示側開始位置.Y, chip.rAVIPan.pt表示側終了位置.X, chip.rAVIPan.pt表示側終了位置.Y, chip.n総移動時間, chip.n発声時刻ms );
 							}
 							continue;
