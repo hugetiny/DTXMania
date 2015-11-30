@@ -102,6 +102,11 @@ namespace DTXMania
 						{
 							if( chip.rAVI != null )
 							{
+								if (this.rAVI == null )
+								{
+									this.rAVI = chip.rAVI;		// DTXVモードで、最初に途中再生で起動したときに、ここに来る
+								}
+								this.bFullScreenMovie = ( chip.nチャンネル番号 == (int) Ech定義.MovieFull || CDTXMania.ConfigIni.bForceAVIFullscreen );		// DTXVモードで、最初に途中再生で起動したときのために必要
 								this.rAVI.avi.Seek( n移動開始時刻ms - chip.n発声時刻ms );
 								this.Start( chip.nチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 							}
@@ -111,6 +116,11 @@ namespace DTXMania
 						{
 							if( chip.rAVIPan != null )
 							{
+								if ( this.rAVI == null )
+								{
+									this.rAVI = chip.rAVI;		// DTXVモードで、最初に途中再生で起動したときに、ここに来る
+								}
+								this.bFullScreenMovie = ( chip.nチャンネル番号 == (int) Ech定義.MovieFull || CDTXMania.ConfigIni.bForceAVIFullscreen );		// DTXVモードで、最初に途中再生で起動したときのために必要
 								this.rAVI.avi.Seek( n移動開始時刻ms - chip.n発声時刻ms );
 								this.Start( chip.nチャンネル番号, chip.rAVI, chip.rAVIPan.sz開始サイズ.Width, chip.rAVIPan.sz開始サイズ.Height, chip.rAVIPan.sz終了サイズ.Width, chip.rAVIPan.sz終了サイズ.Height, chip.rAVIPan.pt動画側開始位置.X, chip.rAVIPan.pt動画側開始位置.Y, chip.rAVIPan.pt動画側終了位置.X, chip.rAVIPan.pt動画側終了位置.Y, chip.rAVIPan.pt表示側開始位置.X, chip.rAVIPan.pt表示側開始位置.Y, chip.rAVIPan.pt表示側終了位置.X, chip.rAVIPan.pt表示側終了位置.Y, chip.n総移動時間, chip.n発声時刻ms );
 							}
