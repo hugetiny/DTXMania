@@ -265,15 +265,15 @@ namespace DTXMania
 			switch( e表示位置 )
 			{
 				case Eドラムコンボ文字の表示位置.LEFT:
-					nX中央位置px = (int) ( 187 * Scale.X );
+					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 187 * Scale.X ) : 400;
 					break;
 
 				case Eドラムコンボ文字の表示位置.CENTER:
-					nX中央位置px = (int) ( 320 * Scale.X );
+					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (int) ( 320 * Scale.X ) : 960;
 					break;
 
 				case Eドラムコンボ文字の表示位置.RIGHT:
-					nX中央位置px = (int) ( 485 * Scale.X );
+					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 485 * Scale.X ) : 1920 - 300;
 					break;
 			}
 			int nY上辺位置px = CDTXMania.ConfigIni.bReverse.Drums ? (int) ( 350 * Scale.Y ) : (int) ( 60 * Scale.Y );

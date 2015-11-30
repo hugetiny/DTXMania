@@ -2097,13 +2097,18 @@ namespace DTXMania
 						if ( ( ePlayMode == E楽器パート.DRUMS ) && ( configIni.eDark != Eダークモード.FULL ) && pChip.b可視 && ( this.txチップ != null ) )
 						{
 							this.txチップ.t2D描画( CDTXMania.app.Device,
-								0x23 * Scale.X,
+								configIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ?
+									105 : 619,
 								configIni.bReverse.Drums ?
 									//(int) ( ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ) :
 									//(int) ( ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ),
-									(int) ( 0x37 * Scale.Y + pChip.nバーからの距離dot.Drums ) :
-									(int) ( 0x1a5 * Scale.Y - pChip.nバーからの距離dot.Drums ),
-								new Rectangle( 0, (int) ( 0x1bf * Scale.Y ), (int) ( 0x128 * Scale.X ), (int) ( 1 * Scale.Y ) )
+									124 + pChip.nバーからの距離dot.Drums : 947 - pChip.nバーからの距離dot.Drums,
+								new Rectangle(
+									0,
+									1006,
+									( configIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 888 : 682,
+									2
+								)
 							);
 						}
 						break;
@@ -3106,16 +3111,26 @@ namespace DTXMania
 		{
 			if ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
 			{
-				int y = CDTXMania.ConfigIni.bReverse.Drums ? (int) ( 53 * Scale.Y ) - 演奏判定ライン座標.nJudgeLinePosY_delta.Drums : (int) ( 419 * Scale.Y ) + 演奏判定ライン座標.nJudgeLinePosY_delta.Drums;
+				int y = CDTXMania.ConfigIni.bReverse.Drums ?
+					119 - 演奏判定ライン座標.nJudgeLinePosY_delta.Drums :
+					942 + 演奏判定ライン座標.nJudgeLinePosY_delta.Drums;
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 				if ( this.txヒットバー != null )
 				{
-					for ( int i = 32; i < 335; i += 8 )
+					int xStart = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?  32 * 3 : 619;
+					int xEnd   = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 335 * 3 : 619 + 682;
+					for ( int x = xStart; x < xEnd; x += 24 )
 					{
 						this.txヒットバー.t2D描画( CDTXMania.app.Device,
-							i * Scale.X,
+							x,
 							y,
-							new Rectangle( 0, 0, ( ( i + 8 ) >= 335 ) ? (int) ( ( 7 - ( ( i + 8 ) - 335 ) ) * Scale.X ) : (int) ( 8 * Scale.X ), (int) ( 8 * Scale.Y ) ) );
+							new Rectangle(
+								0,
+								0,
+								( ( x + 24 ) >= xEnd ) ? (int) ( ( 23 - ( ( x + 24 ) - xEnd ) ) ) : 24,
+								18
+							)
+						);
 					}
 				}
 			}
@@ -3151,8 +3166,8 @@ namespace DTXMania
 			bool bSuccessLoadDTXbgfile = false;
 
 			int[] offsetX = new int[2]{ 96, 506 };
-			//int nLanePosition = (int) CDTXMania.ConfigIni.eドラムレーン表示位置;
-			int nLanePosition = (int) Eドラムレーン表示位置.Left;
+			int nLanePosition = (int) CDTXMania.ConfigIni.eドラムレーン表示位置;
+			//int nLanePosition = (int) Eドラムレーン表示位置.Left;
 			
 			if ( bgfilename != null && File.Exists( bgfilename ) && !CDTXMania.DTX.bチップがある.Movie )
 			{
@@ -3206,14 +3221,14 @@ namespace DTXMania
 					image = new Bitmap( CSkin.Path( DefaultBgFilename ) );	// レーン外のフレーム
 					graphics3 = Graphics.FromImage( image );
 
-					#region [ レーンのフレームがあれば、それを合成 ]
-					if ( DefaultLaneFilename != "" )
-					{
-						Bitmap bmLane = new Bitmap( CSkin.Path( DefaultLaneFilename ) );
-						graphics3.DrawImage( bmLane, offsetX[ nLanePosition ], 0 );
-						bmLane.Dispose();
-					}
-					#endregion
+					//#region [ レーンのフレームがあれば、それを合成 ]
+					//if ( DefaultLaneFilename != "" )
+					//{
+					//	Bitmap bmLane = new Bitmap( CSkin.Path( DefaultLaneFilename ) );
+					//	graphics3.DrawImage( bmLane, offsetX[ nLanePosition ], 0 );
+					//	bmLane.Dispose();
+					//}
+					//#endregion
 		
 					ColorMatrix matrix2 = new ColorMatrix();
 					matrix2.Matrix00 = 1f;

@@ -13,28 +13,27 @@ namespace DTXMania
 
 		public CAct演奏Drums判定文字列()
 		{
-			this.stレーンサイズ = new STレーンサイズ[ 12 ];
-			STレーンサイズ stレーンサイズ = new STレーンサイズ();
-			int[,] sizeXW = new int[,] {
-				{ 0x24, 0x24 },
-				{ 0x4d, 30 },
-				{ 0x6f, 30 },
-				{ 0x92, 0x2a },
-				{ 0xc1, 30 },
-				{ 0xe3, 30 },
-				{ 0x105, 30 },
-				{ 0x127, 0x24 },
-				{ 0, 0 },
-				{ 0, 0 },
-				{ 0x1fb, 80 },
-				{ 0x18e, 80 }
-			};
-			for ( int i = 0; i < 12; i++ )
+			this.stレーンサイズ = new STレーンサイズ[ 12 ]
 			{
-				this.stレーンサイズ[i] = new STレーンサイズ();
-				this.stレーンサイズ[i].x = sizeXW[i, 0];
-				this.stレーンサイズ[i].w = sizeXW[i, 1];
-			}
+				new STレーンサイズ(  36 - 36, 36 ),
+				new STレーンサイズ(  77 - 36, 30 ),
+				new STレーンサイズ( 111 - 36, 30 ),
+				new STレーンサイズ( 146 - 36, 42 ),
+				new STレーンサイズ( 192 - 36, 30 ),
+				new STレーンサイズ( 227 - 36, 30 ),
+				new STレーンサイズ( 261 - 36, 30 ),
+				new STレーンサイズ( 295 - 36, 36 ),
+				new STレーンサイズ(   0 - 36, 0 ),
+				new STレーンサイズ(   0 - 36, 0 ),
+				new STレーンサイズ( 507 - 36, 80 ),
+				new STレーンサイズ( 398 - 36, 80 )
+			};
+			//for ( int i = 0; i < 12; i++ )
+			//{
+			//	this.stレーンサイズ[i] = new STレーンサイズ();
+			//	this.stレーンサイズ[i].x = sizeXW[i, 0];
+			//	this.stレーンサイズ[i].w = sizeXW[i, 1];
+			//}
 			base.b活性化してない = true;
 		}
 		
@@ -136,6 +135,8 @@ namespace DTXMania
 								continue;
 							}
 							baseX = this.stレーンサイズ[ j ].x;
+							baseX = (int) ( baseX * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) );
+							baseX += ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 36 : 205 );
 							baseY = CDTXMania.ConfigIni.bReverse.Drums ?
 								( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 240 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 50 ) :
 								( ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) == E判定文字表示位置.レーン上 ) ? ( 180 + ( this.n文字の縦表示位置[ j ] * 0x20 ) ) : 450 );
@@ -153,7 +154,7 @@ namespace DTXMania
 							switch ( CDTXMania.ConfigIni.判定文字表示位置.Bass )
 							{
 								case E判定文字表示位置.コンボ下:
-									baseX = this.stレーンサイズ[ j ].x;
+									baseX = this.stレーンサイズ[ j ].x + 36;
 									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 									baseY = (
 												CDTXMania.ConfigIni.bReverse.Bass ?
@@ -163,7 +164,7 @@ namespace DTXMania
 											+ (int) (  this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
 									break;
 								case E判定文字表示位置.レーン上:
-									baseX = this.stレーンサイズ[ j ].x;
+									baseX = this.stレーンサイズ[ j ].x + 36;
 									//baseY = ( CDTXMania.ConfigIni.bReverse.Bass ? 240 : 180 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
 									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 									baseY = (
@@ -174,7 +175,7 @@ namespace DTXMania
 											+ (int) ( this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
 									break;
 								case E判定文字表示位置.判定ライン上:
-									baseX = this.stレーンサイズ[ j ].x;
+									baseX = this.stレーンサイズ[ j ].x + 36;
 									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 									baseY = CDTXMania.ConfigIni.bReverse.Bass ?
 										yB + (int) ( 20 * Scale.Y ) :
@@ -194,7 +195,7 @@ namespace DTXMania
 							switch ( CDTXMania.ConfigIni.判定文字表示位置.Guitar )
 							{
 							    case E判定文字表示位置.コンボ下:
-									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
+									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x + 36 : 0x198;
 									yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
 									baseY = (
 												CDTXMania.ConfigIni.bReverse.Guitar ?
@@ -204,7 +205,7 @@ namespace DTXMania
 											+ (int) (  this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
 									break;
 							    case E判定文字表示位置.レーン上:
-									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
+									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x + 36 : 0x198;
 									//baseY = ( CDTXMania.ConfigIni.bReverse.Guitar ? 240 : 180 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
 									yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
 									baseY = (
@@ -215,7 +216,7 @@ namespace DTXMania
 											+ (int) ( this.n文字の縦表示位置[ j ] * 0x20 * Scale.Y );
 									break;
 							    case E判定文字表示位置.判定ライン上:
-									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x : 0x198;
+									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x + 36 : 0x198;
 									yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
 							        baseY = CDTXMania.ConfigIni.bReverse.Guitar ?
 										yG + (int) ( 20 * Scale.Y ) :
@@ -291,6 +292,12 @@ namespace DTXMania
 		{
 			public int x;
 			public int w;
+			public STレーンサイズ( int x_, int w_ )
+			{
+				x = x_;
+				w = w_;
+			}
+
 		}
 
 		private readonly int[] n文字の縦表示位置 = new int[] { 1, 2, 0, 1, 3, 2, 1, 0, 0, 0, 1, 1 };

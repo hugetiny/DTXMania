@@ -80,7 +80,9 @@ namespace DTXMania
 							double num7 = 0.9 + ( ( (double) CDTXMania.Random.Next( 40 ) ) / 100.0 );
 							this.st青い星[ j ].nLane = (int) lane;
 							this.st青い星[ j ].ct進行 = new CCounter( 0, 100, 7, CDTXMania.Timer );
-							this.st青い星[ j ].fX = this.nレーンの中央X座標[ (int) lane ];
+							this.st青い星[ j ].fX =
+								(int) ( this.nレーンの中央X座標[ (int) lane ] * (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75) ) +
+											( (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? (float)(54 * 3) : (float)(619 + 12 + 40) );
 							this.st青い星[ j ].fY = CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 55 - nJudgeLinePosY_delta_Drums ) : ( (float) 425 + nJudgeLinePosY_delta_Drums );
 							this.st青い星[ j ].f加速度X = (float) ( num7 * Math.Cos( ( Math.PI * 2 * n回転初期値 ) / 360.0 ) );
 							this.st青い星[ j ].f加速度Y = (float) ( num7 * ( Math.Sin( ( Math.PI * 2 * n回転初期値 ) / 360.0 ) - 0.2 ) );
@@ -248,7 +250,10 @@ namespace DTXMania
 						identity *= Matrix.RotationZ( num3 + ( (float) Math.PI / 2 ) );
 						float num5 = ( (float) ( 0.8 * Math.Sin( num2 * Math.PI / 2 ) ) ) * this.st火花[ i ].fサイズ;
 						identity *= Matrix.Translation(
-							( this.nレーンの中央X座標[ this.st火花[ i ].nLane ] * Scale.X + ( ( (float) Math.Cos( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Width / 2,
+							( (int)(this.nレーンの中央X座標[ this.st火花[ i ].nLane ] * ((CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 1.0 : 0.75))
+							+
+								( (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? (float)(54 * 3) : (float)(619 + 12 + 40) ) +
+								( ( (float) Math.Cos( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Width / 2,
 							-( ( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) + ( ( (float) Math.Sin( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Height / 2 ),
 							0f
 						);
@@ -333,7 +338,9 @@ namespace DTXMania
 							matrix3 *= Matrix.RotationX( this.st大波[ i ].f角度X );
 							matrix3 *= Matrix.RotationY( this.st大波[ i ].f角度Y );
 							matrix3 *= Matrix.Translation(
-								this.nレーンの中央X座標[ this.st大波[ i ].nLane ] * Scale.X - SampleFramework.GameWindowSize.Width / 2,
+								(int)(this.nレーンの中央X座標[ this.st大波[ i ].nLane ] * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75)) +
+									( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) )
+									- SampleFramework.GameWindowSize.Width / 2,
 								-( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) - SampleFramework.GameWindowSize.Height / 2 ),
 								0f );
 							if( this.tx大波 != null )
@@ -368,7 +375,9 @@ namespace DTXMania
 							matrix4 *= Matrix.RotationX( this.st細波[ i ].f角度X );
 							matrix4 *= Matrix.RotationY( this.st細波[ i ].f角度Y );
 							matrix4 *= Matrix.Translation(
-								this.nレーンの中央X座標[ this.st細波[ i ].nLane ] * Scale.X - SampleFramework.GameWindowSize.Width / 2,
+								(int)( this.nレーンの中央X座標[ this.st細波[ i ].nLane ] * (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75 ) ) +
+								( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) )
+									-SampleFramework.GameWindowSize.Width / 2,
 								-( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) - SampleFramework.GameWindowSize.Height / 2 ),
 								0f
 							);
@@ -446,7 +455,8 @@ namespace DTXMania
 		private const int FIRE_MAX = 8 * 8;
 		private readonly float[] fY波の最小仰角 = new float[] { -130f, -126f, -120f, -118f, -110f, -108f, -103f, -97f };
 		private readonly float[] fY波の最大仰角 = new float[] { 70f, 72f, 77f, 84f, 89f, 91f, 99f, 107f };
-		private readonly int[] nレーンの中央X座標 = new int[] { 0x36, 0x5c, 0x7e, 0xa7, 0xd0, 0xf2, 0x114, 0x139 };
+		private readonly int[] nレーンの中央X座標 = new int[] { 54 * 3 - 54 * 3, 92 * 3 - 54 * 3, 126 * 3 - 54 * 3, 167 * 3 - 54 * 3,
+																208 * 3 - 54 * 3, 242 * 3 - 54 * 3, 276 * 3 - 54 * 3, 313 * 3 - 54 * 3 };
 		private const int STAR_MAX = 0x100;
 		private ST火花[] st火花 = new ST火花[ FIRE_MAX ];
 		private ST大波[] st大波 = new ST大波[ BIGWAVE_MAX ];

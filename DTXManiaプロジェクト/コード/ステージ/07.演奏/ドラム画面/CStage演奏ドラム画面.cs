@@ -282,7 +282,22 @@ namespace DTXMania
 			Eパッド.LT, Eパッド.CY, Eパッド.FT, Eパッド.HHO,
 			Eパッド.RD, Eパッド.LC
 		};
-		private readonly int[] nチャンネルtoX座標 = new int[] { 76, 110, 145, 192, 226, 294, 260, 79, 300, 35 };
+		private readonly int[,] nチャンネルtoX座標 = new int[,] {
+				{ 76 * 3, 110 * 3, 145 * 3, 192 * 3, 226 * 3, 294 * 3, 260 * 3, 79 * 3, 300 * 3, 35 * 3 },
+				// 619 - 35 * 3= 584
+				{
+				 76 * 3 * 3 / 4 + 548,
+				110 * 3 * 3 / 4  + 548,
+				145 * 3 * 3 / 4  + 548,
+				192 * 3 * 3 / 4  + 548,
+				226 * 3 * 3 / 4  + 548,
+				294 * 3 * 3 / 4  + 548,
+				260 * 3 * 3 / 4  + 548,
+				 79 * 3 * 3 / 4  + 548,
+				300 * 3 * 3 / 4  + 548,
+				 35 * 3 * 3 / 4  + 548
+				}
+		};
 		private CTexture txヒットバーGB;
 		private CTexture txレーンフレームGB;
 		//-----------------
@@ -430,11 +445,25 @@ namespace DTXMania
 	
 		protected override void t進行描画_AVI()
 		{
-			base.t進行描画_AVI( 1153, 128 );
+			if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left )
+			{
+				base.t進行描画_AVI( 1153, 128 );
+			}
+			else
+			{
+				base.t進行描画_AVI( 619 + 682, 128 );
+			}
 		}
 		protected override void t進行描画_BGA()
 		{
-			base.t進行描画_BGA( 1153, 128 );
+			if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left )
+			{
+				base.t進行描画_BGA( 1153, 128 );
+			}
+			else
+			{
+				base.t進行描画_BGA( 619 + 682, 128 );
+			}
 		}
 		protected override void t進行描画_DANGER()
 		{
@@ -566,12 +595,15 @@ namespace DTXMania
 		}
 		protected override void t進行描画_パネル文字列()
 		{
+			Point[] pd = new Point[] { new Point(336, 427 + 1), new Point(336, 427 + 1) };
 			base.t進行描画_パネル文字列( 336, 427+1 );
 		}
 
 		protected override void t進行描画_演奏情報()
 		{
-			base.t進行描画_演奏情報( 338, 57 );
+			Point[] pd = new Point[] { new Point( 338, 57 ), new Point( 450 + 8, 57 ) };
+			Point p = pd[ (int) CDTXMania.ConfigIni.eドラムレーン表示位置 ];
+			base.t進行描画_演奏情報( p.X, p.Y );
 		}
 
 		protected override void t入力処理_ドラム()
@@ -1857,9 +1889,19 @@ namespace DTXMania
 
 		protected override void t背景テクスチャの生成()
 		{
-			Rectangle bgrect = new Rectangle( (int) ( 338 * Scale.X ), (int) ( 57 * Scale.Y ), (int) ( 278 * Scale.X ), (int) ( 355 * Scale.Y ) );
-			string DefaultBgFilename   = @"Graphics\ScreenPlayDrums-background.png";
-			string DefaultLaneFilename = @"Graphics\ScreenPlayDrums_Lane_parts_drums.png";
+			Rectangle bgrect;
+			if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left )
+			{
+				bgrect = new Rectangle( (int) ( 338 * Scale.X ), (int) ( 57 * Scale.Y ), (int) ( 278 * 2 ), (int) ( 355 * 2 ) );
+			}
+			else
+			{
+				bgrect = new Rectangle( 619 + 682, (int) ( 57 * Scale.Y ), (int) ( 278 * 2 ), (int) ( 355 * 2 ) );
+			}
+			string DefaultBgFilename = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?
+										@"Graphics\ScreenPlayDrums background.png" :
+										@"Graphics\ScreenPlayDrums-background-center.png";
+			string DefaultLaneFilename = "";	//  @"Graphics\ScreenPlayDrums_Lane_parts_drums.png";
 			string BgFilename = "";
 			if ( ( ( CDTXMania.DTX.BACKGROUND != null ) && ( CDTXMania.DTX.BACKGROUND.Length > 0 ) ) && !CDTXMania.ConfigIni.bストイックモード )
 			{
@@ -1921,14 +1963,19 @@ namespace DTXMania
 					{
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
-					int x = this.nチャンネルtoX座標[ pChip.nチャンネル番号 - 0x11 ];
+					int x = this.nチャンネルtoX座標[(int) CDTXMania.ConfigIni.eドラムレーン表示位置, pChip.nチャンネル番号 - 0x11 ];
 					int y = configIni.bReverse.Drums ?
 						(int) ( 0x38 * Scale.Y + pChip.nバーからの距離dot.Drums ) :
 						(int) ( 0x1a6 * Scale.Y - pChip.nバーからの距離dot.Drums );
-					x = (int) ( x * Scale.X );
+					//x = (int) ( x * Scale.X );
 					if ( this.txチップ != null )
 					{
-						this.txチップ.vc拡大縮小倍率 = new Vector3( (float) pChip.dbチップサイズ倍率, (float) pChip.dbチップサイズ倍率, 1f );
+						double d = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0 : 0.75;
+						this.txチップ.vc拡大縮小倍率 = new Vector3(
+														(float) ( pChip.dbチップサイズ倍率 * d ),
+														(float) pChip.dbチップサイズ倍率,
+														1f
+													);
 					}
 					int num9 = this.ctチップ模様アニメ.Drums.n現在の値;
 					switch ( pChip.nチャンネル番号 )
@@ -2649,10 +2696,11 @@ namespace DTXMania
 				{
 					int n小節番号 = n小節番号plus1 - 1;
 					CDTXMania.act文字コンソール.tPrint(
-						(int) ( 0x14d * Scale.X ),
+						configIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ?
+							999 : 619 + 682,
 						configIni.bReverse.Drums ?
-							(int) ( 0x38 * Scale.Y + pChip.nバーからの距離dot.Drums ) :
-							(int) ( 0x195 * Scale.Y - pChip.nバーからの距離dot.Drums ),
+							126 + pChip.nバーからの距離dot.Drums :
+							911 - pChip.nバーからの距離dot.Drums,
 						C文字コンソール.Eフォント種別.白,
 						n小節番号.ToString()
 					);
@@ -2661,13 +2709,18 @@ namespace DTXMania
 				{
 					this.txチップ.n透明度 = 255;
 					this.txチップ.t2D描画( CDTXMania.app.Device,
-						0x23 * Scale.X,
+						//3, 2.25
+						configIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ?
+							105 : 619,
 						configIni.bReverse.Drums ?
-							//( int ) ( ( ( 0x38 + pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ) :
-							//( int ) ( ( ( 0x1a6 - pChip.nバーからの距離dot.Drums ) - 1 ) * Scale.Y ),
-							(int) ( 0x37 * Scale.Y + pChip.nバーからの距離dot.Drums ) :
-							(int) ( 0x1a5 * Scale.Y - pChip.nバーからの距離dot.Drums ),
-						new Rectangle( 0, ( int ) ( 0x1bc * Scale.Y ), ( int ) ( 0x128 * Scale.X ), ( int ) ( 2 * Scale.Y ) ) );
+							124 + pChip.nバーからの距離dot.Drums : 947 - pChip.nバーからの距離dot.Drums,
+						new Rectangle(
+							0,
+							999,
+							(configIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 888: 682,
+							4
+						)
+					);
 				}
 			}
 			#endregion

@@ -13,40 +13,17 @@ namespace DTXMania
 
 		public CAct演奏DrumsレーンフラッシュD()
 		{
-			STレーンサイズ[] stレーンサイズArray = new STレーンサイズ[ 8 ];
-			STレーンサイズ stレーンサイズ = new STレーンサイズ();
-			stレーンサイズ.x = 0x24;
-			stレーンサイズ.w = 0x24;
-			stレーンサイズArray[ 0 ] = stレーンサイズ;
-			STレーンサイズ stレーンサイズ2 = new STレーンサイズ();
-			stレーンサイズ2.x = 0x4d;
-			stレーンサイズ2.w = 30;
-			stレーンサイズArray[ 1 ] = stレーンサイズ2;
-			STレーンサイズ stレーンサイズ3 = new STレーンサイズ();
-			stレーンサイズ3.x = 0x6f;
-			stレーンサイズ3.w = 30;
-			stレーンサイズArray[ 2 ] = stレーンサイズ3;
-			STレーンサイズ stレーンサイズ4 = new STレーンサイズ();
-			stレーンサイズ4.x = 0x92;
-			stレーンサイズ4.w = 0x2a;
-			stレーンサイズArray[ 3 ] = stレーンサイズ4;
-			STレーンサイズ stレーンサイズ5 = new STレーンサイズ();
-			stレーンサイズ5.x = 0xc1;
-			stレーンサイズ5.w = 30;
-			stレーンサイズArray[ 4 ] = stレーンサイズ5;
-			STレーンサイズ stレーンサイズ6 = new STレーンサイズ();
-			stレーンサイズ6.x = 0xe3;
-			stレーンサイズ6.w = 30;
-			stレーンサイズArray[ 5 ] = stレーンサイズ6;
-			STレーンサイズ stレーンサイズ7 = new STレーンサイズ();
-			stレーンサイズ7.x = 0x105;
-			stレーンサイズ7.w = 30;
-			stレーンサイズArray[ 6 ] = stレーンサイズ7;
-			STレーンサイズ stレーンサイズ8 = new STレーンサイズ();
-			stレーンサイズ8.x = 0x127;
-			stレーンサイズ8.w = 0x24;
-			stレーンサイズArray[ 7 ] = stレーンサイズ8;
-			this.stレーンサイズ = stレーンサイズArray;
+			this.stレーンサイズ = new STレーンサイズ[ 8 ]
+			{
+				new STレーンサイズ(  36 * 3 - 36 * 3, 36 ),
+				new STレーンサイズ(  77 * 3 - 36 * 3, 30 ),
+				new STレーンサイズ( 111 * 3 - 36 * 3, 30 ),
+				new STレーンサイズ( 146 * 3 - 36 * 3, 42 ),
+				new STレーンサイズ( 193 * 3 - 36 * 3, 30 ),
+				new STレーンサイズ( 227 * 3 - 36 * 3, 30 ),
+				new STレーンサイズ( 261 * 3 - 36 * 3, 30 ),
+				new STレーンサイズ( 295 * 3 - 36 * 3, 36 )
+			};
 			this.strファイル名 = new string[] {
 				@"Graphics\ScreenPlayDrums lane flush cymbal.png",
 				@"Graphics\ScreenPlayDrums lane flush hihat.png",
@@ -139,19 +116,24 @@ namespace DTXMania
 					{
 						int x = this.stレーンサイズ[ j ].x;
 						int w = this.stレーンサイズ[ j ].w;
+
+						x = (int) ( x * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) );
+						x += ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 36 * 3 : 619 - 24 + 36;
+						w = (int) ( w * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) );
+
 						//for ( int k = 0; k < 3; k++ )
 						int k = 0;
 						{
 							if ( CDTXMania.ConfigIni.bReverse.Drums )
 							{
 								int y = ( k * 0x80 ) - ( ( this.ct進行[ j ].n現在の値 * 0x180 ) / 100 );
-								for ( int m = 0; m < w; m += 0x2a )
+								for ( int m = 0; m < w; m += 42 )
 								{
 									if ( this.txFlush[ j + 8 ] != null )
 									{
 										this.txFlush[ j + 8 ].t2D描画(
 											CDTXMania.app.Device,
-											( x + m ) * Scale.X,
+											( x + m ),
 											y * Scale.Y,
 											new Rectangle(
 												(int) ( ( k * 0x2a ) * Scale.X ),
@@ -165,17 +147,17 @@ namespace DTXMania
 							}
 							else
 							{
-								int num8 = ( 0x60 + ( k * 0x80 ) ) + ( ( this.ct進行[ j ].n現在の値 * 0x180 ) / 100 );
-								if ( num8 < 480 )
+								int y = ( 0x60 + ( k * 0x80 ) ) + ( ( this.ct進行[ j ].n現在の値 * 0x180 ) / 100 );
+								if ( y < 480 )
 								{
-									for ( int n = 0; n < w; n += 0x2a )
+									for ( int n = 0; n < w; n += 42 )
 									{
 										if ( this.txFlush[ j ] != null )
 										{
 											this.txFlush[ j ].t2D描画(
 												CDTXMania.app.Device,
-												(int) ( ( x + n ) * Scale.X ),
-												(int) ( num8 * Scale.Y ),
+												( x + n ),
+												(int) ( y * Scale.Y ),
 												new Rectangle(
 													(int) ( k * 0x2a * Scale.X ),
 													0,
@@ -204,6 +186,11 @@ namespace DTXMania
 		{
 			public int x;
 			public int w;
+			public STレーンサイズ( int x_, int w_ )
+			{
+				x = x_;
+				w = w_;
+			}
 		}
 
 		private CCounter[] ct進行 = new CCounter[ 8 ];
