@@ -265,7 +265,7 @@ namespace DTXMania
 			switch( e表示位置 )
 			{
 				case Eドラムコンボ文字の表示位置.LEFT:
-					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 187 * Scale.X ) : 400;
+					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 187 * Scale.X ) : 360;
 					break;
 
 				case Eドラムコンボ文字の表示位置.CENTER:
@@ -273,21 +273,19 @@ namespace DTXMania
 					break;
 
 				case Eドラムコンボ文字の表示位置.RIGHT:
-					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 485 * Scale.X ) : 1920 - 300;
+					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 485 * Scale.X ) : 1920 - 360;
 					break;
 			}
 			int nY上辺位置px = CDTXMania.ConfigIni.bReverse.Drums ? (int) ( 350 * Scale.Y ) : (int) ( 60 * Scale.Y );
-			int n数字とCOMBOを合わせた画像の全長px = ( ( nドラムコンボの幅 + nドラムコンボの文字間隔 ) * n桁数 ) + nドラムコンボのCOMBO文字の幅;
-			int x = ( nX中央位置px + ( n数字とCOMBOを合わせた画像の全長px / 2 ) ) - nドラムコンボのCOMBO文字の幅;
-			int y = ( nY上辺位置px + nドラムコンボの高さ ) - nドラムコンボのCOMBO文字の高さ;
-			int nJump = nジャンプインデックス - ( n桁数 * n1桁ごとのジャンプの遅れ );
-			if( ( nJump >= 0 ) && ( nJump < 180 ) )
-				y += this.nジャンプ差分値[ nJump ];
+			int n数字の全長px = ((nドラムコンボの幅 + nドラムコンボの文字間隔) * n桁数);// +nドラムコンボのCOMBO文字の幅;
+			int x = (nX中央位置px + (n数字の全長px / 2));// -nドラムコンボのCOMBO文字の幅;
+			int y = (nY上辺位置px + nドラムコンボの高さ);// -nドラムコンボのCOMBO文字の高さ;
 
 			if( this.txCOMBOドラム != null )
 				this.txCOMBOドラム.t2D描画(
 					CDTXMania.app.Device,
-					x, y,
+					nX中央位置px - nドラムコンボのCOMBO文字の幅 / 2,
+					y,//nドラムコンボのCOMBO文字の高さ / 2,
 					new Rectangle(
 						256,
 						(int) 315,	//( 140 * Scale.Y ),
@@ -296,8 +294,11 @@ namespace DTXMania
 					)
 			);	// "COMBO" を表示。
 
-			// COMBO値を1の位から順に表示。
+			int nJump = nジャンプインデックス - (n桁数 * n1桁ごとのジャンプの遅れ);
+			if ((nJump >= 0) && (nJump < 180))
+				y += this.nジャンプ差分値[nJump];
 
+			// COMBO値を1の位から順に表示。
 			for( int i = 0; i < n桁数; i++ )
 			{
 				x -= nドラムコンボの幅 + nドラムコンボの文字間隔;

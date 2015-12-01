@@ -22,6 +22,13 @@ namespace DTXMania
         // 修正等
         // ・画像がないと落ちる→修正済
 
+		private int XPos = 3 * 345;
+		private int YPos = 200;
+		private int DispHeight = 400;
+		private int DispWidth = 60;
+		private CCounter counterYposInImg = null;
+		private readonly int slices = 10;
+
 		// プロパティ
 
         public double dbグラフ値現在_渡
@@ -93,99 +100,100 @@ namespace DTXMania
 			{
 				if( base.b初めての進行描画 )
 				{
+					/* #35804 エフェクトを変更しました。
 					for( int k = 0; k < 64; k++ )
 					{
-						this.stキラキラ[ k ].x = 0 + CDTXMania.Random.Next( 8 );
+						this.stキラキラ[ k ].x = CDTXMania.Random.Next( 30 );
 						this.stキラキラ[ k ].fScale = 1f + ( CDTXMania.Random.Next( 9 ) * 0.2f );
 						this.stキラキラ[ k ].Trans = 0 + CDTXMania.Random.Next( 32 ) ;
                         if (k < 32)
                         {
-                            this.stキラキラ[ k ].ct進行 = new CCounter(0, 230, 10 + CDTXMania.Random.Next(20), CDTXMania.Timer);
+                            this.stキラキラ[ k ].ct進行 = new CCounter(0, DispHeight, 10 + CDTXMania.Random.Next(20), CDTXMania.Timer);
                         }
                         else if (k < 64)
                         {
-                            this.stキラキラ[ k ].ct進行 = new CCounter(0, 230, 20 + CDTXMania.Random.Next(50), CDTXMania.Timer);
+                            this.stキラキラ[ k ].ct進行 = new CCounter(0, DispHeight, 20 + CDTXMania.Random.Next(50), CDTXMania.Timer);
                         }
-                        this.stキラキラ[ k ].ct進行.n現在の値 = CDTXMania.Random.Next(230);
+                        this.stキラキラ[ k ].ct進行.n現在の値 = CDTXMania.Random.Next(DispHeight);
 					}
 					for( int k = 0; k < 16; k++ )
 					{
 						this.stフラッシュ[ k ].y = -1;
 						this.stフラッシュ[ k ].Trans = 0;
 					}
+					*/
 					base.b初めての進行描画 = false;
+					counterYposInImg = new CCounter(0, 35, 16, CDTXMania.Timer);
                 }
+
+				counterYposInImg.t進行Loop();
+				int stYposInImg = counterYposInImg.n現在の値;
+
+				// レーン表示位置によって変更
+				if( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center )
+				{
+					XPos = 1350;
+				}
+
                 // 背景暗幕
-                Rectangle rectangle = new Rectangle(
-					(int)(22 * Scale.X),
-					(int)(0 * Scale.Y),
-					(int)(1* Scale.X),
-					(int)(1 * Scale.Y)
-				);
                 if (this.txグラフ != null)
                 {
-                    this.txグラフ.vc拡大縮小倍率 = new Vector3(38f, 230f, 1f);
+					this.txグラフ.vc拡大縮小倍率 = new Vector3(DispWidth, DispHeight, 1f);
                     this.txグラフ.n透明度 = 128;
                     this.txグラフ.t2D描画(
 						CDTXMania.app.Device,
-						345 * Scale.X,
-						88 * Scale.Y,
-						rectangle
+						XPos,
+						YPos,
+						new Rectangle(62, 0, 1, 1)
 					);
                 }
                 
                 // 基準線
-                rectangle = new Rectangle(
-					(int)(20 * Scale.X),
-					(int)(0 * Scale.Y),
-					(int)(1* Scale.X),
-					(int)(1 * Scale.Y)
-				);
-                if (this.txグラフ != null)
+
+				if (this.txグラフ != null)
                 {
-                    this.txグラフ.n透明度 = 32;
-                    this.txグラフ.vc拡大縮小倍率 = new Vector3(38f, 1f, 1f);
-                    for (int i = 0; i < 20; i++)
+					this.txグラフ.n透明度 = 128;
+                    this.txグラフ.vc拡大縮小倍率 = new Vector3(DispWidth, 1f, 1f);
+                    for (int i = 0; i < slices; i++)
                     {
                         this.txグラフ.t2D描画(
 							CDTXMania.app.Device,
-							345 * Scale.X,
-							(88 + (int)(11.5 * i)) * Scale.Y,
-							rectangle
+							XPos,
+							YPos + DispHeight * i / slices,
+							new Rectangle(60, 0, 1, 1)
 						);
                     }
-                    this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 230f, 1f);
+					/* #35804 chnmr0 縦線は非表示にしました。
+                    this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, DispHeight, 1f);
                     for (int i = 0; i < 2; i++)
                     {
                         this.txグラフ.t2D描画(
 							CDTXMania.app.Device,
-							(349 + i * 18) * Scale.X,
-							(88 * Scale.Y),
+							(XPos + 12 + i * 54),
+							YPos,
 							rectangle
 						);
                         this.txグラフ.t2D描画(
 							CDTXMania.app.Device,
-							(360 + i * 18) * Scale.X,
-							(88 * Scale.Y),
+							(45 + XPos + i * 54),
+							YPos,
 							rectangle
 						);
                     }
+					*/
                 }
+
                 if (this.txグラフ != null)
                 {
-                    this.txグラフ.vc拡大縮小倍率 = new Vector3(38f, 1f, 1f);
+                    this.txグラフ.vc拡大縮小倍率 = new Vector3(DispWidth, 1f, 1f);
                 }
                 for (int i = 0; i < 5; i++)
                 {
+					Rectangle rectangle;
                     // 基準線を越えたら線が黄色くなる
-                    if (this.dbグラフ値現在 >= (100 - i * 10))
+                    if (this.dbグラフ値現在 >= (100 - i * slices))
                     {
-                        rectangle = new Rectangle(	//黄色
-							(int)(21 * Scale.X),
-							(int)(0 * Scale.Y),
-							(int)(1* Scale.X),
-							(int)(1 * Scale.Y)
-						);
+                        rectangle = new Rectangle(61,0,1,1);	//黄色
 						if (this.txグラフ != null)
                         {
                             this.txグラフ.n透明度 = 224;
@@ -193,12 +201,7 @@ namespace DTXMania
                     }
                     else
                     {
-                        rectangle = new Rectangle(
-							(int)(20 * Scale.X),
-							(int)(0 * Scale.Y),
-							(int)(1* Scale.X),
-							(int)(1 * Scale.Y)
-						);
+                        rectangle = new Rectangle(60,0,1,1);
                         if (this.txグラフ != null)
                         {
                             this.txグラフ.n透明度 = 160;
@@ -209,8 +212,8 @@ namespace DTXMania
                     {
                         this.txグラフ.t2D描画(
 							CDTXMania.app.Device,
-							345 * Scale.X,
-							(88 + i * 23) * Scale.Y,
+							XPos,
+							YPos + i * DispHeight / slices,
 							rectangle
 						);
                     }
@@ -225,32 +228,29 @@ namespace DTXMania
                 {
                     this.dbグラフ値現在_表示 = this.dbグラフ値現在;
                 }
-                rectangle = new Rectangle(
-					(int)(0 * Scale.X),
-					(int)(0 * Scale.Y),
-					(int)(10* Scale.X),
-					(int)((int)(230f * this.dbグラフ値現在_表示 / 100) * Scale.Y)
-				);
+				int ar = (int)(DispHeight * this.dbグラフ値現在_表示 / 100.0);
 
 				if (this.txグラフ != null)
                 {
                     this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
-                    this.txグラフ.n透明度 = 192;
+                    this.txグラフ.n透明度 = 255;
                     this.txグラフ.t2D描画(
 						CDTXMania.app.Device,
-						350 * Scale.X,
-						(318 - (int)(230f * this.dbグラフ値現在_表示 / 100)) * Scale.Y,
-						rectangle
+						XPos,
+						YPos + DispHeight - ar,
+						new Rectangle(0,5 + stYposInImg,30,ar)
 					);
-                }
+					this.txグラフ.t2D描画( // 上部白いバー
+						CDTXMania.app.Device,
+						XPos,
+						YPos + DispHeight - ar,
+						new Rectangle(0, 0, 30, 5)
+					);
+				}
+				/*
 				for( int k = 0; k < 32; k++ )
 				{
-                    rectangle = new Rectangle(
-						(int)(20 * Scale.X),
-						(int)(0 * Scale.Y),
-						(int)(1* Scale.X),
-						(int)(1 * Scale.Y)
-					);
+                    rectangle = new Rectangle(60,0,1,1);
                     if (this.txグラフ != null)
                     {
 				    	this.stキラキラ[ k ].ct進行.t進行Loop();
@@ -262,14 +262,17 @@ namespace DTXMania
                         {
                             this.txグラフ.t2D描画(
 								CDTXMania.app.Device,
-								(350+num1) * Scale.X,
-								(318-num2) * Scale.Y,
+								XPos + 15 + num1,
+								YPos + DispHeight - num2,
 								rectangle
 							);
                         }
                     }
 				}
+				*/
+
                 // --現在値_追加エフェクト
+				/*
                 if (this.dbグラフ値直前 != this.dbグラフ値現在)
                 {
                     this.stフラッシュ[ nグラフフラッシュct ].y = 0;
@@ -281,52 +284,47 @@ namespace DTXMania
                     }
                 }
                 this.dbグラフ値直前 = this.dbグラフ値現在;
+
                 for (int m = 0; m < 16; m++)
                 {
-					rectangle = new Rectangle(
-						(int) ( 20 * Scale.X ),
-						(int) ( 0 * Scale.Y ),
-						(int) ( 1 * Scale.X ),
-						(int) ( 1 * Scale.Y )
-					);
-                    if ((this.stフラッシュ[ m ].y >= 0) && (this.stフラッシュ[ m ].y+3 < (int)(230f * this.dbグラフ値現在_表示 / 100)) && (this.txグラフ != null))
+					rectangle = new Rectangle(60,0,1,1);
+
+					if ((this.stフラッシュ[ m ].y >= 0) &&
+						(this.stフラッシュ[ m ].y+3 < ar) &&
+						(this.txグラフ != null))
                     {
-                        this.txグラフ.vc拡大縮小倍率 = new Vector3(10f, 1f, 1f);
+                        // this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
                         this.txグラフ.n透明度 = this.stフラッシュ[ m ].Trans;
                         this.txグラフ.t2D描画(
 							CDTXMania.app.Device,
-							350 * Scale.X,
-							(this.stフラッシュ[ m ].y + (318 - (int)(230f * this.dbグラフ値現在_表示 / 100))) * Scale.Y,
+							XPos + 15,
+							(this.stフラッシュ[ m ].y + YPos + DispHeight - ar),
 							rectangle
 						);
                         this.txグラフ.n透明度 = this.stフラッシュ[ m ].Trans;
                         this.txグラフ.t2D描画(
 							CDTXMania.app.Device,
-							350 * Scale.X,
-							(this.stフラッシュ[ m ].y + 2 + (318 - (int)(230f * this.dbグラフ値現在_表示 / 100))) * Scale.Y,
+							XPos + 15,
+							(this.stフラッシュ[ m ].y + 2 + YPos + DispHeight - ar),
 							rectangle
 						);
                     }
                     this.stフラッシュ[ m ].y += 4;
                     this.stフラッシュ[ m ].Trans -= 4;
                 }
+				*/
+
                 // --現在値_目標越
-				rectangle = new Rectangle(
-					(int) ( 0 * Scale.X ),
-					(int) ( 0 * Scale.Y ),
-					(int) ( 10 * Scale.X ),
-					(int) ( (int)(230f * this.dbグラフ値現在_表示 / 100) * Scale.Y )
-				);
                 if ((dbグラフ値現在 >= dbグラフ値目標) && (this.txグラフ != null))
                 {
-                    this.txグラフ.vc拡大縮小倍率 = new Vector3(1.4f, 1f, 1f);
+                    // this.txグラフ.vc拡大縮小倍率 = new Vector3(1.4f, 1f, 1f);
                     this.txグラフ.n透明度 = 128;
                     this.txグラフ.b加算合成 = true;
                     this.txグラフ.t2D描画(
 						CDTXMania.app.Device,
-						348 * Scale.X,
-						(318 - (int)(230f * this.dbグラフ値現在_表示 / 100)) * Scale.Y,
-						rectangle
+						XPos,
+						YPos + DispHeight - ar,
+						new Rectangle(0, 5 + stYposInImg, 30, ar)
 					);
                     this.txグラフ.b加算合成 = false;
                 }
@@ -339,41 +337,42 @@ namespace DTXMania
                 {
                     this.dbグラフ値目標_表示 = this.dbグラフ値目標;
                 }
-                rectangle = new Rectangle(
-					(int) ( 10 * Scale.X ),
-					(int) ( 0 * Scale.Y ),
-					(int) ( 10 * Scale.X ),
-					(int) ( (int)(230f * this.dbグラフ値目標_表示 / 100) * Scale.Y )
-				);
-                if (this.txグラフ != null)
+				ar = (int)(DispHeight * this.dbグラフ値目標_表示 / 100.0);
+
+				if (this.txグラフ != null)
                 {
-                    this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
-                    this.txグラフ.n透明度 = 192;
+                    // this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
+                    // this.txグラフ.n透明度 = 192;
                     this.txグラフ.t2D描画(
 						CDTXMania.app.Device,
-						368 * Scale.X,
-						(318 - (int)(230f * this.dbグラフ値目標_表示 / 100))*Scale.Y,
-						rectangle
+						XPos + 30,
+						YPos + DispHeight - ar,
+						new Rectangle(30, 5 + stYposInImg, 30, ar)
 					);
-                    this.txグラフ.vc拡大縮小倍率 = new Vector3(1.4f, 1f, 1f);
+					this.txグラフ.n透明度 = 255;
+					this.txグラフ.t2D描画( // 上部白いバー
+						CDTXMania.app.Device,
+						XPos + 30,
+						YPos + DispHeight - ar,
+						new Rectangle(30, 0, 30, 5)
+					);
+					/*
+                    // this.txグラフ.vc拡大縮小倍率 = new Vector3(1.4f, 1f, 1f);
                     this.txグラフ.n透明度 = 48;
                     this.txグラフ.b加算合成 = true;
                     this.txグラフ.t2D描画(
 						CDTXMania.app.Device,
-						366 * Scale.X,
-						(318 - (int)(230f * this.dbグラフ値目標_表示 / 100)) * Scale.Y,
+						XPos + 63,
+						YPos + DispHeight - ar,
 						rectangle
 					);
                     this.txグラフ.b加算合成 = false;
+					*/
                 }
+				/*
 				for( int k = 32; k < 64; k++ )
 				{
-                    rectangle = new Rectangle(
-						(int) ( 20 * Scale.X ),
-						(int) ( 0 * Scale.Y ),
-						(int) ( 1 * Scale.X ),
-						(int) ( 1 * Scale.Y )
-					);
+                    rectangle = new Rectangle(60,0,1,1);
                     if (this.txグラフ != null)
                     {
 				    	this.stキラキラ[ k ].ct進行.t進行Loop();
@@ -385,13 +384,14 @@ namespace DTXMania
                         {
                             this.txグラフ.t2D描画(
 								CDTXMania.app.Device,
-								(368+num1) * Scale.X,
-								(318-num2) * Scale.Y,
+								(XPos + 69 + 3 * num1),
+								YPos + DispHeight - num2,
 								rectangle
 							);
                         }
                     }
 				}
+				*/
                 
 			}
 			return 0;
@@ -402,6 +402,7 @@ namespace DTXMania
 
 		#region [ private ]
 		//----------------
+		/*
 		[StructLayout( LayoutKind.Sequential )]
 		private struct STキラキラ
 		{
@@ -411,15 +412,16 @@ namespace DTXMania
 			public int Trans;
 			public CCounter ct進行;
 		}
-        private STキラキラ[] stキラキラ = new STキラキラ[ 64 ];
-        private STキラキラ[] stフラッシュ = new STキラキラ[ 16 ];
+		*/
+        // private STキラキラ[] stキラキラ = new STキラキラ[ 64 ];
+        // private STキラキラ[] stフラッシュ = new STキラキラ[ 16 ];
 
         private double dbグラフ値目標;
         private double dbグラフ値目標_表示;
         private double dbグラフ値現在;
         private double dbグラフ値現在_表示;
-        private double dbグラフ値直前;
-        private int nグラフフラッシュct;
+        // private double dbグラフ値直前;
+        // private int nグラフフラッシュct;
 
 		private CTexture txグラフ;
 		//-----------------
