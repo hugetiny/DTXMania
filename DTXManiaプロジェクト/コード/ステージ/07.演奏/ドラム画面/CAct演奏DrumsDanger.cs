@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using SlimDX;
 using FDK;
 
 namespace DTXMania
@@ -86,13 +87,16 @@ namespace DTXMania
 				}
 				num = this.ct移動用.n現在の値;
 				int num2 = CDTXMania.ConfigIni.bReverse.Drums ? ( 0x7f - num ) : num;
+                float[,] n基準X座標 = new float[,] { { 38, 298 }, { 211f, 405.5f } };
 				for( int i = -1; i < 4; i++ )
 				{
 					if( this.txDANGER != null )
 					{
-						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26 * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
+                        float d = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
+                        this.txDANGER.vc拡大縮小倍率 = new Vector3( d, d, d );
+						this.txDANGER.t2D描画( CDTXMania.app.Device, n基準X座標[( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 0 : 1 ), 0] * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
 						//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26 * Scale.X, ( ( ( i * 0x80 ) + num2 ) + 0x40 ) * Scale.Y, this.rc領域[ 1 ] );
-						this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
+						this.txDANGER.t2D描画( CDTXMania.app.Device, n基準X座標[( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 0 : 1 ), 1] * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
 						//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a * Scale.X, ( ( ( i * 0x80 ) + num2 ) + 0x40 ) * Scale.Y, this.rc領域[ 1 ] );
 					}
 				}
