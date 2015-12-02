@@ -82,55 +82,78 @@ namespace DTXMania
 				{
 					this._pfc = new System.Drawing.Text.PrivateFontCollection();	//PrivateFontCollectionオブジェクトを作成する
 					this._pfc.AddFontFile( fontpath );								//PrivateFontCollectionにフォントを追加する
+					_fontfamily = _pfc.Families[ 0 ];
 				}
 				catch ( System.IO.FileNotFoundException )
 				{
-					Trace.TraceError( "プライベートフォントの追加に失敗しました。({0})", fontpath );
-					throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
+					Trace.TraceWarning( "プライベートフォントの追加に失敗しました({0})。代わりにMS PGothicの使用を試みます。", fontpath );
+					//throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
 					//return;
+					_fontfamily = null;
 				}
 
-				//foreach ( FontFamily ff in pfc.Families )
+				//foreach ( FontFamily ff in _pfc.Families )
 				//{
-				//    Debug.WriteLine( "fontname=" + ff.Name );
-				//    if ( ff.Name == Path.GetFileNameWithoutExtension( fontpath ) )
-				//    {
-				//        _fontfamily = ff;
-				//        break;
-				//    }
+				//	Debug.WriteLine( "fontname=" + ff.Name );
+				//	if ( ff.Name == Path.GetFileNameWithoutExtension( fontpath ) )
+				//	{
+				//		_fontfamily = ff;
+				//		break;
+				//	}
 				//}
 				//if ( _fontfamily == null )
 				//{
-				//    Trace.TraceError( "プライベートフォントの追加後、検索に失敗しました。({0})", fontpath );
-				//    return;
+				//	Trace.TraceError( "プライベートフォントの追加後、検索に失敗しました。({0})", fontpath );
+				//	return;
 				//}
-				_fontfamily = _pfc.Families[ 0 ];
 			}
 
 			// 指定されたフォントスタイルが適用できない場合は、フォント内で定義されているスタイルから候補を選んで使用する
 			// 何もスタイルが使えないようなフォントなら、例外を出す。
-			if ( !_fontfamily.IsStyleAvailable( style ) )
+			if ( _fontfamily != null )
 			{
-				FontStyle[] FS = { FontStyle.Regular, FontStyle.Bold, FontStyle.Italic, FontStyle.Underline, FontStyle.Strikeout };
-				style = FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline | FontStyle.Strikeout;	// null非許容型なので、代わりに全盛をNGワードに設定
-				foreach ( FontStyle ff in FS )
+				if ( !_fontfamily.IsStyleAvailable( style ) )
 				{
-					if ( this._fontfamily.IsStyleAvailable( ff ) )
+					FontStyle[] FS = { FontStyle.Regular, FontStyle.Bold, FontStyle.Italic, FontStyle.Underline, FontStyle.Strikeout };
+					style = FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline | FontStyle.Strikeout;	// null非許容型なので、代わりに全盛をNGワードに設定
+					foreach ( FontStyle ff in FS )
 					{
-						style = ff;
-						Trace.TraceWarning( "フォント{0}へのスタイル指定を、{1}に変更しました。", Path.GetFileName( fontpath ), style.ToString() );
-						break;
+						if ( this._fontfamily.IsStyleAvailable( ff ) )
+						{
+							style = ff;
+							Trace.TraceWarning( "フォント{0}へのスタイル指定を、{1}に変更しました。", Path.GetFileName( fontpath ), style.ToString() );
+							break;
+						}
+					}
+					if ( style == ( FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline | FontStyle.Strikeout ) )
+					{
+						Trace.TraceWarning( "フォント{0}は適切なスタイル{1}を選択できませんでした。", Path.GetFileName( fontpath ), style.ToString() );
 					}
 				}
-				if ( style == ( FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline | FontStyle.Strikeout ) )
-				{
-					throw new ArgumentException( "フォント{0}は適切なスタイルを選択できず、使用できません。", Path.GetFileName( fontpath ) );
-				}
+				//this._font = new Font(this._fontfamily, pt, style);			//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
+				float emSize = pt * 96.0f / 72.0f;
+				this._font = new Font( this._fontfamily, emSize, style, GraphicsUnit.Pixel );	//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
+				//HighDPI対応のため、pxサイズで指定
 			}
-			//this._font = new Font(this._fontfamily, pt, style);			//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
-			float emSize = pt * 96.0f / 72.0f;
-			this._font = new Font(this._fontfamily, emSize, style, GraphicsUnit.Pixel );	//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
-			//HighDPI対応のため、pxサイズで指定
+			else
+			// フォントファイルが見つからなかった場合 (MS PGothicを代わりに指定する)
+			{
+				float emSize = pt * 96.0f / 72.0f;
+				this._font = new Font( "MS PGothic", emSize, style, GraphicsUnit.Pixel );	//MS PGothicのFontオブジェクトを作成する
+				FontFamily[] ffs = new System.Drawing.Text.InstalledFontCollection().Families;
+				int lcid = System.Globalization.CultureInfo.GetCultureInfo( "en-us" ).LCID;
+				foreach ( FontFamily ff in ffs )
+				{
+					// Trace.WriteLine( lcid ) );
+					if ( ff.GetName( lcid  ) == "MS PGothic" )
+					{
+						this._fontfamily = ff;
+						Trace.TraceInformation( "MS PGothicを代わりに指定しました。" );
+						return;
+					}
+				}
+				throw new FileNotFoundException( "プライベートフォントの追加に失敗し、MS PGothicでの代替処理にも失敗しました。({0})", Path.GetFileName( fontpath ) );
+			}
 		}
 
 		[Flags]
