@@ -104,6 +104,7 @@ namespace DTXMania
 							else if ( str.StartsWith( "#SKINPATH100", StringComparison.OrdinalIgnoreCase ) )
 							{
 								this.SkinPath = str.Substring( 12 ).Trim( ignoreChars );
+
 							}
 							else if ( str.StartsWith( "#FONTCOLOR", StringComparison.OrdinalIgnoreCase ) )
 							{
