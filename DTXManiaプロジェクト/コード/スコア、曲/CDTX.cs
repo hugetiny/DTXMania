@@ -1329,7 +1329,16 @@ namespace DTXMania
 				cbmp.bitmap = null;
 				return;
 			}
-			cbmp.bitmap = new Bitmap( filename );
+			try
+			{
+				cbmp.bitmap = new Bitmap( filename );
+			}
+			catch ( Exception e )
+			{
+				Trace.TraceError( "ファイルの読み込みに失敗しました。({0})({1})", e.Message, filename );
+				cbmp.bitmap = null;
+				return;
+			}
 		}
 		private static void BMPLoadAll( Dictionary<int, CBMP> listB )	// バックグラウンドスレッドで、テクスチャファイルをひたすら読み込んではキューに追加する
 		{
