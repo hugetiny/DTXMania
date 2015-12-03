@@ -548,6 +548,7 @@ namespace DTXMania
 				"(ScrollSpeed=x0.5 means half speed)" );
 			this.list項目リスト.Add( this.iDrumsScrollSpeed );
 
+			#region [ SudHid ]
 			this.iDrumsSudHid = new CItemList( "Sud+Hid", CItemBase.Eパネル種別.通常, getDefaultSudHidValue( E楽器パート.DRUMS ),
 				"ドラムチップの表示方式:\n" +
 				"OFF:　　チップを常に表示します。\n" +
@@ -579,7 +580,7 @@ namespace DTXMania
 				"        You can't see the chips at all.",
 				new string[] { "OFF", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } );
 			this.list項目リスト.Add( this.iDrumsSudHid );
-
+			#endregion
 			//this.iDrumsSudden = new CItemToggle( "Sudden", CDTXMania.ConfigIni.bSudden.Drums,
 			//    "ドラムチップが譜面の下の方から表\n" +
 			//    "示されるようになります。",
@@ -650,13 +651,30 @@ namespace DTXMania
 			this.list項目リスト.Add( this.iDrumsTight );
 
 			#region [ Position ]
+
+			#region [ DrumsLanePosition ]
+			this.iDrumsLanePosition = new CItemList( "LanePosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eドラムレーン表示位置,
+				"ドラムレーンの位置を指定します。\n" + 
+				"\n" +
+				"Left:   画面の左側にドラムレーンを表示します。\n" +
+				"Center: 画面の中央にドラムレーンを表示します。\n",
+				"The display position for Drums Lane." +
+				"\n" +
+				" Left:   Drums lanes are shown in the left of screen.\n" +
+				" Center: Drums lanes are shown in the center of screen.",
+				//"Note that it doesn't take effect at Autoplay ([Left] is forcely used).",
+				new string[] { "Left", "Center" } );
+			this.list項目リスト.Add( this.iDrumsLanePosition );
+			#endregion
+			#region [ ComboPosition ]
 			this.iDrumsComboPosition = new CItemList( "ComboPosition", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.ドラムコンボ文字の表示位置,
 				"演奏時のドラムコンボ文字列の位置を指定します。",
 				"The display position for Drums Combo.",
 				//"Note that it doesn't take effect at Autoplay ([Left] is forcely used).",
 				new string[] { "Left", "Center", "Right", "OFF" } );
 			this.list項目リスト.Add( this.iDrumsComboPosition );
-
+			#endregion
+			#region [ Position ]
 			this.iDrumsPosition = new CItemList( "Position", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.判定文字表示位置.Drums,
 				"ドラムの判定文字の表示位置を指定\n" +
 				"します。\n" +
@@ -671,6 +689,7 @@ namespace DTXMania
 				" OFF: no judgement mark.",
 				new string[] { "OFF", "P-A", "P-B" } );
 			this.list項目リスト.Add( this.iDrumsPosition );
+			#endregion
 
 			//this.iDrumsJudgeDispPriority = new CItemList( "JudgePriority", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.e判定表示優先度.Drums,
 			//    "判定文字列とコンボ表示の優先順位を\n" +
@@ -2559,7 +2578,7 @@ namespace DTXMania
 		//private CItemToggle iDrumsSudden;
 		private CItemToggle iDrumsTight;
 		private CItemToggle iDrumsGraph;        // #24074 2011.01.23 add ikanick
-		//private CItemList iDrumsLanePosition;
+		private CItemList iDrumsLanePosition;
 
 		//private CItemToggle iGuitarAutoPlay;
 		private CItemThreeState iGuitarAutoPlayAll;			// #23886 2012.5.8 yyagi
@@ -2781,7 +2800,7 @@ namespace DTXMania
 			CDTXMania.ConfigIni.eDark = (Eダークモード)this.iCommonDark.n現在選択されている項目番号;
 			CDTXMania.ConfigIni.nRisky = this.iSystemRisky.n現在の値;						// #23559 2911.7.27 yyagi
 			//CDTXMania.ConfigIni.e判定表示優先度.Drums = (E判定表示優先度) this.iDrumsJudgeDispPriority.n現在選択されている項目番号;
-			//CDTXMania.ConfigIni.eドラムレーン表示位置 = (Eドラムレーン表示位置) this.iDrumsLanePosition.n現在選択されている項目番号;
+			CDTXMania.ConfigIni.eドラムレーン表示位置 = (Eドラムレーン表示位置) this.iDrumsLanePosition.n現在選択されている項目番号;
 		}
 		private void tConfigIniへ記録する_Guitar()
 		{
