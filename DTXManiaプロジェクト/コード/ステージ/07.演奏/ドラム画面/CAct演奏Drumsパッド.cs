@@ -14,15 +14,15 @@ namespace DTXMania
 		public CAct演奏Drumsパッド()
 		{
 			this.st基本位置 = new ST基本位置[ 9 ] {
-				new ST基本位置(  22 * 3 - 66,  0, new Rectangle( (int) ( 0 * Scale.X ), (int) ( 0 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) ),
-				new ST基本位置(  61 * 3 - 66, 11, new Rectangle( (int) ( 0x40 * Scale.X ), (int) ( 0 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) ),
-				new ST基本位置(  96 * 3 - 66,  8, new Rectangle( (int) ( 0x80 * Scale.X ), (int) ( 0 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) ),
-				new ST基本位置( 138 * 3 - 66,  7, new Rectangle( (int) ( 0 * Scale.X ), (int) ( 0x40 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) ),
-				new ST基本位置( 179 * 3 - 66,  0, new Rectangle( (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) ),
-				new ST基本位置( 212 * 3 - 66,  5, new Rectangle( (int) ( 0x80 * Scale.X ), (int) ( 0x40 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) ),
-				new ST基本位置( 250 * 3 - 66, 15, new Rectangle( (int) ( 0 * Scale.X ), (int) ( 0x80 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) ),
-				new ST基本位置( 282 * 3 - 66,  0, new Rectangle( (int) ( 0x40 * Scale.X ), (int) ( 0x80 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) ),
-				new ST基本位置( 304 * 3 - 66,  8, new Rectangle( (int) ( 0x80 * Scale.X ), (int) ( 0x80 * Scale.Y ), (int) ( 0x40 * Scale.X ), (int) ( 0x40 * Scale.Y ) ) )
+				new ST基本位置(  22 * 3 - 66,  0, new Rectangle( 0, 0, 170, 130 ) ),
+				new ST基本位置(  61 * 3 - 66, 11, new Rectangle( 170, 0, 170, 130 ) ),
+				new ST基本位置(  96 * 3 - 66,  8, new Rectangle( 340, 0, 170, 130 ) ),
+				new ST基本位置( 138 * 3 - 66,  7, new Rectangle( 0, 130, 170, 130 ) ),
+				new ST基本位置( 179 * 3 - 66,  0, new Rectangle( 170, 130, 170, 130 ) ),
+				new ST基本位置( 212 * 3 - 66,  5, new Rectangle( 340, 130, 170, 130 ) ),
+				new ST基本位置( 250 * 3 - 66, 15, new Rectangle( 0, 260, 170, 130) ),
+				new ST基本位置( 282 * 3 - 66,  0, new Rectangle( 170, 260, 170, 130 ) ),
+				new ST基本位置( 304 * 3 - 66,  8, new Rectangle( 340, 260, 170, 130 ) )
 			};
 			base.b活性化してない = true;
 		}
@@ -127,7 +127,7 @@ namespace DTXMania
 					int y = ( this.st基本位置[ index ].y + ( CDTXMania.ConfigIni.bReverse.Drums ? -10 : 0x19e ) ) + this.stパッド状態[ index ].nY座標オフセットdot;
 					if ( this.txパッド != null )
 					{
-						this.txパッド.vc拡大縮小倍率.X = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
+						// this.txパッド.vc拡大縮小倍率.X = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
 						this.txパッド.t2D描画(
 							CDTXMania.app.Device,
 							x,
@@ -137,7 +137,7 @@ namespace DTXMania
 					}
 					if ( this.tx光るパッド != null )
 					{
-						this.tx光るパッド.vc拡大縮小倍率.X = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
+						// this.tx光るパッド.vc拡大縮小倍率.X = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
 						this.tx光るパッド.n透明度 = ( this.stパッド状態[ index ].n明るさ * 40 ) + 15;
 						this.tx光るパッド.t2D描画(
 							CDTXMania.app.Device,
