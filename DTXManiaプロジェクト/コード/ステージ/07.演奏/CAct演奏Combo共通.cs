@@ -127,7 +127,7 @@ namespace DTXMania
 		protected const int nギターコンボの文字間隔 = (int) ( 1 * Scale.X );
 		protected const int nドラムコンボのCOMBO文字の高さ = (int) ( 32 * Scale.Y );
 		protected const int nドラムコンボのCOMBO文字の幅 = (int) 256;	//( 90 * Scale.X );
-		protected const int nドラムコンボの高さ = (int) ( 157 );
+		protected const int nドラムコンボの高さ = (int) ( 158 );
 		protected const int nドラムコンボの幅 = (int) ( 128 );
 		protected const int nドラムコンボの文字間隔 = (int) ( 2 * Scale.X );
 		protected int[] nジャンプ差分値 = new int[ 180 ];
@@ -273,7 +273,7 @@ namespace DTXMania
 					break;
 
 				case Eドラムコンボ文字の表示位置.RIGHT:
-					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 485 * Scale.X ) : 1920 - 360;
+					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 485 * Scale.X ) : 1920 - 340;
 					break;
 			}
 			int nY上辺位置px = CDTXMania.ConfigIni.bReverse.Drums ? (int) ( 350 * Scale.Y ) : (int) ( 60 * Scale.Y );
@@ -288,9 +288,9 @@ namespace DTXMania
 					y,//nドラムコンボのCOMBO文字の高さ / 2,
 					new Rectangle(
 						256,
-						(int) 315,	//( 140 * Scale.Y ),
+						(int) 316,	//( 140 * Scale.Y ),
 						(int) 256,	//( 90 * Scale.X ),
-						(int) ( 32 * Scale.Y )
+						(int) 72
 					)
 			);	// "COMBO" を表示。
 

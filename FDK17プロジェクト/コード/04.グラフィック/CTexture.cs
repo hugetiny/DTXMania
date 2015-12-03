@@ -262,10 +262,10 @@ namespace FDK
 				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
 				int colorKey = ( b黒を透過する ) ? unchecked( (int) 0xFF000000 ) : 0;
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
-				if ( ( device.Capabilities.TextureFilterCaps & FilterCaps.MagPoint ) != 0 )
-				{
-					device.SetSamplerState( 0, SamplerState.MagFilter, TextureFilter.Point );
-				}
+				//if ( ( device.Capabilities.TextureFilterCaps & FilterCaps.MagPoint ) != 0 )
+				//{
+				//	device.SetSamplerState( 0, SamplerState.MagFilter, TextureFilter.Point );
+				//}
 #if TEST_Direct3D9Ex
 				pool = poolvar;
 #endif
@@ -298,10 +298,10 @@ namespace FDK
 				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
 				int colorKey = ( b黒を透過する ) ? unchecked( (int) 0xFF000000 ) : 0;
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
-				if ( ( device.Capabilities.TextureFilterCaps & FilterCaps.MagPoint ) != 0 )
-				{
-					device.SetSamplerState( 0, SamplerState.MagFilter, TextureFilter.Point );
-				}
+				//if ( ( device.Capabilities.TextureFilterCaps & FilterCaps.MagPoint ) != 0 )
+				//{
+				//	device.SetSamplerState( 0, SamplerState.MagFilter, TextureFilter.Point );
+				//}
 #if TEST_Direct3D9Ex
 				pool = poolvar;
 #endif

@@ -51,7 +51,7 @@ namespace DTXMania
 						Trace.TraceError( "パネル文字列テクスチャの生成に失敗しました。" );
 						this.txPanel = null;
 					}
-					this.ct進行用 = new CCounter( (int) ( -278 * Scale.X ), this.n文字列の長さdot / 2, unchecked( (int) ( 8.0f / Scale.X ) ), CDTXMania.Timer );
+					this.ct進行用 = new CCounter( (int) ( -278 * Scale.X ), this.n文字列の長さdot / 2, unchecked( (int) ( 12.0f / Scale.X ) ), CDTXMania.Timer );
 				}
 				this.Start();
 			}
@@ -118,16 +118,18 @@ namespace DTXMania
 				{
 					return 0;
 				}
-				float num = this.txPanel.vc拡大縮小倍率.X;
+				float magX = this.txPanel.vc拡大縮小倍率.X;
 				Rectangle rectangle = new Rectangle(
-					(int) ( ( (float) this.ct進行用.n現在の値 ) / num ),
+					(int) ( ( (float) this.ct進行用.n現在の値 ) / magX ),
 					0,
-					(int) ( 278f / num * Scale.X ),
+					(CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)?
+						(int) ( 278f / magX * Scale.X ) :
+						(int) ( 180f / magX * Scale.X ),
 					(int) this.ft表示用フォント.Size
 					);
 				if ( rectangle.X < 0 )
 				{
-					x -= (int) ( rectangle.X * num / Scale.X );
+					x -= (int) ( rectangle.X * magX / Scale.X );
 					rectangle.Width += rectangle.X;
 					rectangle.X = 0;
 				}

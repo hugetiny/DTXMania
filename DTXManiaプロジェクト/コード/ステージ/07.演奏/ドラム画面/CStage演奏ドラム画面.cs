@@ -595,13 +595,14 @@ namespace DTXMania
 		}
 		protected override void t進行描画_パネル文字列()
 		{
-			Point[] pd = new Point[] { new Point(336, 427 + 1), new Point(336, 427 + 1) };
-			base.t進行描画_パネル文字列( 336, 427+1 );
+			Point[] pd = new Point[] { new Point(336, 427 + 1), new Point(434, 427 + 1) };
+			Point p = pd[ (int) CDTXMania.ConfigIni.eドラムレーン表示位置 ];
+			base.t進行描画_パネル文字列( p.X, p.Y );
 		}
 
 		protected override void t進行描画_演奏情報()
 		{
-			Point[] pd = new Point[] { new Point( 338, 57 ), new Point( 450 + 8, 57 ) };
+			Point[] pd = new Point[] { new Point( 338, 57 ), new Point( 450, 57 ) };
 			Point p = pd[ (int) CDTXMania.ConfigIni.eドラムレーン表示位置 ];
 			base.t進行描画_演奏情報( p.X, p.Y );
 		}
