@@ -896,8 +896,15 @@ namespace DTXCreator
 				string str絶対パスファイル名 = this.tファイル保存ダイアログを開いてファイル名を取得する();
 
 				if( string.IsNullOrEmpty( str絶対パスファイル名 ) )
+				{
+					#region [「保存中です」ポップアップを閉じる。]	// #35813 2015.12.4 yyagi
+					//-----------------
+					msg.Close();
+					this.Refresh();		// リスト内容等を消すために再描画する。
+					//-----------------
+					#endregion
 					return;	// ファイル保存ダイアログがキャンセルされたのならここで打ち切り。
-
+				}
 				//this.str作業フォルダ名 = Directory.GetCurrentDirectory() + @"\";	// ダイアログでディレクトリを変更した場合、カレントディレクトリも変更されている。
 				this.str作業フォルダ名 = Path.GetDirectoryName(str絶対パスファイル名) + @"\";
 				this.strDTXファイル名 = Path.GetFileName( str絶対パスファイル名 );
