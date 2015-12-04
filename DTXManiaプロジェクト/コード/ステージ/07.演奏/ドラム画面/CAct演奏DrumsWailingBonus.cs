@@ -92,7 +92,11 @@ namespace DTXMania
 							else
 							{
 								this.ct進行用[ (int) e楽器パート, j ].t進行();
-								int x = ( ( e楽器パート == E楽器パート.GUITAR ) ? 0x1fb : 0x18e ) + 0x4e;
+								int x = ( ( e楽器パート == E楽器パート.GUITAR ) ? 1521+234 : 1194+234 );
+								if (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+								{
+									x -= ( e楽器パート == E楽器パート.GUITAR ) ? 71 : 994;
+								}
 								int num4 = 0;
 								int num5 = 0;
 								int num6 = this.ct進行用[ (int) e楽器パート, j ].n現在の値;
@@ -134,7 +138,7 @@ namespace DTXMania
 									rectangle.Height = (int) ( rectangle.Height * Scale.Y );
 									this.txWailingBonus.t2D描画(
 										CDTXMania.app.Device,
-										x * Scale.X,
+										x,
 										( ( ( ( e楽器パート == E楽器パート.GUITAR ) ? 0x39 : 0x39 ) + num4 ) + num5 ) * Scale.Y,
 										rectangle
 									);

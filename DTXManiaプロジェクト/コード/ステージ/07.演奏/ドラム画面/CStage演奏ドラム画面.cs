@@ -476,8 +476,8 @@ namespace DTXMania
 			int yG = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ], true );
 			int yB = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ], true );
 			base.t進行描画_Wailing枠(
-				(int) ( 587 * Scale.X ),
-				(int) ( 478 * Scale.X ),
+				( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?  1761 : 1690,
+				( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?  1434 : 440,
 				yG,
 				yB
 			//	CDTXMania.ConfigIni.bReverse.Guitar ? ( 400 - this.txWailing枠.sz画像サイズ.Height ) : 69,	// 350:69
@@ -488,41 +488,43 @@ namespace DTXMania
 		{
 			if( ( ( CDTXMania.ConfigIni.eDark != Eダークモード.HALF ) && ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL ) ) && CDTXMania.ConfigIni.bGuitar有効 )
 			{
-				if( CDTXMania.DTX.bチップがある.Guitar )
+				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
+					int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1521 : 1450;
 					for ( int i = 0; i < 355; i += 0x80 )
 					{
-						Rectangle rectangle = new Rectangle( 0, 0, (int) ( 0x6d * Scale.X ), (int) ( 0x80 * Scale.Y ) );
+						Rectangle rc = new Rectangle( 0, 0, 327, 288 );
 						if ( ( i + 0x80 ) > 355 )
 						{
-							rectangle.Height -= (int) ( ( i + 0x80 - 355 ) * Scale.Y );
+							rc.Height -= (int) ( ( i + 0x80 - 355 ) * Scale.Y );
 						}
 						if ( this.txレーンフレームGB != null )
 						{
 							this.txレーンフレームGB.t2D描画(
 								CDTXMania.app.Device,
-								0x1fb * Scale.X,
-								( 0x39 + i ) * Scale.Y,
-								rectangle
+								x,
+								( 57 + i ) * Scale.Y,
+								rc
 							);
 						}
 					}
 				}
 				if( CDTXMania.DTX.bチップがある.Bass )
 				{
-					for ( int j = 0; j < 355; j += 0x80 )
+					int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1194 : 200;
+					for ( int i = 0; i < 355; i += 0x80 )
 					{
-						Rectangle rectangle2 = new Rectangle( 0, 0, (int) ( 0x6d * Scale.X ), (int) ( 0x80 * Scale.Y ) );
-						if ( ( j + 0x80 ) > 355 )
+						Rectangle rc = new Rectangle( 0, 0, 327, 288 );
+						if ( ( i + 0x80 ) > 355 )
 						{
-							rectangle2.Height -= (int) ( ( j + 0x80 - 355 ) * Scale.Y );
+							rc.Height -= (int) ( ( i + 0x80 - 355 ) * Scale.Y );
 						}
 						if ( this.txレーンフレームGB != null )
 						{
 							this.txレーンフレームGB.t2D描画( CDTXMania.app.Device,
-								0x18e * Scale.X,
-								( 0x39 + j ) * Scale.Y,
-								rectangle2
+								x,
+								( 57 + i ) * Scale.Y,
+								rc
 							);
 						}
 					}
@@ -535,38 +537,45 @@ namespace DTXMania
 			{
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ] ) - (int)(3 * Scale.Y);
+					int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1527 : 1456;
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ] ) - (int) ( 3 * Scale.Y );
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
+					Rectangle rc = new Rectangle( 0, 0, 30, 36 );
 					if ( this.txヒットバーGB != null )
 					{
 						for ( int i = 0; i < 3; i++ )
 						{
 							this.txヒットバーGB.t2D描画( CDTXMania.app.Device,
-								( 509 + ( 26 * i ) ) * Scale.X,
+								x + ( 3 * 26 * i ),
 								y
 							);
 							this.txヒットバーGB.t2D描画( CDTXMania.app.Device,
-								( ( 509 + ( 26 * i ) ) + 16 ) * Scale.X,
+								x + ( 3 * 26 * i ) + 48,
 								y,
-								new Rectangle( 0, 0, (int) ( 10 * Scale.X ), (int) ( 16 * Scale.Y ) ) );
+								rc
+							);
 						}
 					}
 				}
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
-					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ] ) - (int)(3 * Scale.Y);
+					int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1200 : 206;
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, bReverse[ (int) E楽器パート.BASS ] ) - (int) ( 3 * Scale.Y );
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
+					Rectangle rc = new Rectangle( 0, 0, 30, 36 );
 					if ( this.txヒットバーGB != null )
 					{
 						for ( int j = 0; j < 3; j++ )
 						{
 							this.txヒットバーGB.t2D描画( CDTXMania.app.Device,
-								( 400 + ( 26 * j ) ) * Scale.X,
-								y );
+								x + ( 3 * 26 * j ),
+								y
+							);
 							this.txヒットバーGB.t2D描画( CDTXMania.app.Device,
-								( ( 400 + ( 26 * j ) ) + 16 ) * Scale.X,
+								x + ( 3 * 26 * j ) + 48,
 								y,
-								new Rectangle( 0, 0, (int) ( 10 * Scale.X ), (int) ( 16 * Scale.Y ) ) );
+								rc
+							);
 						}
 					}
 				}
@@ -2274,13 +2283,18 @@ namespace DTXMania
 		}
 		protected override void t進行描画_チップ_ギターベース( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip, E楽器パート inst )
 		{
+			int xGtO = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 509 : 485;
+			int xBsO = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 400 : 69;
+			int xGtL = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 561 : 537;
+			int xBsL = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 452 : 121;
+
 			base.t進行描画_チップ_ギターベース( configIni, ref dTX, ref pChip, inst,
 				演奏判定ライン座標.n判定ラインY座標( inst, false, false ),		// 95  Normal
 				演奏判定ライン座標.n判定ラインY座標( inst, false, true ),		// 374 Reverse
 				(int) ( 57 * Scale.Y ), (int) ( 412 * Scale.Y ),				// チップのY軸表示範囲
-				509, 400,					// openチップのX座標(Gt, Bs)
-				268, 144, 76, 6, 24,		// オープンチップregionの x, y, w, h, 通常チップのw
-				509, 561, 400, 452,			// GtのX, Gt左利きのX, BsのX, Bs左利きのX,
+				xGtO, xBsO,					// openチップのX座標(Gt, Bs)
+				268,   144, 76, 6, 24,		// オープンチップregionの x, y, w, h, 通常チップのw
+				xGtO, xGtL, xBsO, xBsL,		// GtのX, Gt左利きのX, BsのX, Bs左利きのX,
 				26, 24						// 描画のX座標間隔, テクスチャのX座標間隔
 			);
 		}
@@ -2753,7 +2767,7 @@ namespace DTXMania
 				{
 					this.txチップ.t2D描画(
 						CDTXMania.app.Device,
-						0x1fb * Scale.X,
+						(CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 1521 : 1450,
 						y,
 						new Rectangle(
 							0,
@@ -2786,7 +2800,7 @@ namespace DTXMania
 				{
 					this.txチップ.t2D描画(
 						CDTXMania.app.Device,
-						0x18e * Scale.X,
+						( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1194 : 200,
 						y,
 						new Rectangle(
 							0,

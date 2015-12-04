@@ -22,7 +22,11 @@ namespace DTXMania
 			{
 				index = ( ( index / 3 ) * 3 ) + ( 2 - ( index % 3 ) );
 			}
-			int x = (int) ( this.pt中央[ index ].X * Scale.X );
+			int x = this.pt中央[ index ].X;
+			if (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+			{
+				x -= ( e楽器パート == E楽器パート.GUITAR ) ? 71 : 994;
+			}
 			//int y = this.pt中央[ index ].Y;
 			int y = 演奏判定ライン座標.n判定ラインY座標( e楽器パート, false, CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] );
 
@@ -35,12 +39,12 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 		private readonly Point[] pt中央 = new Point[] {
-			new Point( 519, 95 ),	// GtR
-			new Point( 545, 95 ),	// GtG
-			new Point( 571, 95 ),	// GtB
-			new Point( 410, 95 ),		// BsR
-			new Point( 436, 95 ),	// BsG
-			new Point( 462, 95 )	// BsB
+			new Point( 519 * 3, (int) (95 * 2.25) ),	// GtR
+			new Point( 545 * 3, (int) (95 * 2.25) ),	// GtG
+			new Point( 571 * 3, (int) (95 * 2.25) ),	// GtB
+			new Point( 410 * 3, (int) (95 * 2.25) ),	// BsR
+			new Point( 436 * 3, (int) (95 * 2.25) ),	// BsG
+			new Point( 462 * 3, (int) (95 * 2.25) )		// BsB
 		};
 		//-----------------
 		#endregion

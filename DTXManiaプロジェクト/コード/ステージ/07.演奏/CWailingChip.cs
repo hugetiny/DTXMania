@@ -114,10 +114,10 @@ namespace DTXMania
 																								// 判定バーのY座標:ドラム画面かギター画面かで変わる値
 			offset = (int) ( 0x39 * Scale.Y );												// ドラム画面かギター画面かで変わる値
 
-			baseTextureOffsetX  = (int) ( 268 * Scale.X );	// テクスチャ画像中のウェイリングチップ画像の位置X: ドラム画面かギター画面かで変わる値
-			baseTextureOffsetY  = (int) ( 174 * Scale.Y );	// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
+			baseTextureOffsetX  = 804;	// テクスチャ画像中のウェイリングチップ画像の位置X: ドラム画面かギター画面かで変わる値
+			baseTextureOffsetY  = 392;	// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
 
-			drawX = (int) ( 588 * Scale.X );		// ウェイリングチップ描画位置X座標: 4種全て異なる値
+			drawX = (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 1764 : 1764 - 71;	// ウェイリングチップ描画位置X座標: 4種全て異なる値
 
 			numA = (int) ( 26 * Scale.Y );			// ドラム画面かギター画面かで変わる値
 			showRangeY1 = (int) ( 355 * Scale.Y );	// ドラム画面かギター画面かで変わる値
@@ -139,10 +139,10 @@ namespace DTXMania
 			// 判定バーのY座標:ドラム画面かギター画面かで変わる値
 			offset = (int) ( 0x39 * Scale.Y );												// ドラム画面かギター画面かで変わる値
 
-			baseTextureOffsetX = (int) ( 268 * Scale.X );				// テクスチャ画像中のウェイリングチップ画像の位置X: ドラム画面かギター画面かで変わる値
-			baseTextureOffsetY = (int) ( 174 * Scale.Y );				// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
+			baseTextureOffsetX = 804;				// テクスチャ画像中のウェイリングチップ画像の位置X: ドラム画面かギター画面かで変わる値
+			baseTextureOffsetY = 392;				// テクスチャ画像中のウェイリングチップ画像の位置Y: ドラム画面かギター画面かで変わる値
 
-			drawX = (int) ( 479 * Scale.X );							// ウェイリングチップ描画位置X座標: 4種全て異なる値
+			drawX = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1437 : 1437 - 994;	// ウェイリングチップ描画位置X座標: 4種全て異なる値
 
 			numA = (int) ( 26 * Scale.Y );			// ドラム画面かギター画面かで変わる値
 			showRangeY1 = (int) ( 355 * Scale.Y );	// ドラム画面かギター画面かで変わる値

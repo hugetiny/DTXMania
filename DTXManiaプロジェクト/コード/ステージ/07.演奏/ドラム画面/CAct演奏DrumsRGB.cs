@@ -23,18 +23,19 @@ namespace DTXMania
 				}
 				if( CDTXMania.DTX.bチップがある.Guitar )
 				{
-					for( int j = 0; j < 3; j++ )
+					int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1527 : 1456;
+					for( int i = 0; i < 3; i++ )
 					{
-						int index = CDTXMania.ConfigIni.bLeft.Guitar ? ( 2 - j ) : j;
-						Rectangle rectangle = new Rectangle(
-							(int) ( index * 0x18 * Scale.X ),
+						int index = CDTXMania.ConfigIni.bLeft.Guitar ? ( 2 - i ) : i;
+						Rectangle rc = new Rectangle(
+							index * 72,
 							0,
-							(int) ( 0x18 * Scale.X ),
-							(int) ( 0x20 * Scale.Y )
+							72,
+							72
 						);
 						if ( base.b押下状態[ index ] )
 						{
-							rectangle.Y += (int) ( 0x20 * Scale.Y );
+							rc.Y += 72;
 						}
 						if( base.txRGB != null )
 						{
@@ -43,36 +44,37 @@ namespace DTXMania
 							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
 							base.txRGB.t2D描画(
 								CDTXMania.app.Device,
-								( 0x1fd + ( j * 0x1a ) ) * Scale.X,
+								x + ( i * 26 * 3 ),
 								y,
-								rectangle
+								rc
 							);
 						}
 					}
 				}
 				if( CDTXMania.DTX.bチップがある.Bass )
 				{
-					for( int k = 0; k < 3; k++ )
+					for( int i = 0; i < 3; i++ )
 					{
-						int num4 = CDTXMania.ConfigIni.bLeft.Bass ? ( 2 - k ) : k;
-						Rectangle rectangle2 = new Rectangle(
-							(int) ( num4 * 0x18 * Scale.X ),
-							(int) ( 0 * Scale.Y ),
-							(int) ( 0x18 * Scale.X ),
-							(int) ( 0x20 * Scale.Y )
+						int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1200 : 206;
+						int index = CDTXMania.ConfigIni.bLeft.Bass ? ( 2 - i ) : i;
+						Rectangle rc = new Rectangle(
+							index * 72,
+							0,
+							72,
+							72
 						);
-						if( base.b押下状態[ num4 + 3 ] )
+						if( base.b押下状態[ index + 3 ] )
 						{
-							rectangle2.Y += (int) ( 0x20 * Scale.Y );
+							rc.Y += 72;
 						}
 						if( base.txRGB != null )
 						{
 							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 							base.txRGB.t2D描画(
 								CDTXMania.app.Device,
-								( 400 + ( k * 0x1a )) * Scale.X,
+								x + ( i * 26 * 3 ),
 								y,
-								rectangle2
+								rc
 							);
 						}
 					}

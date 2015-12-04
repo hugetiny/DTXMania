@@ -155,6 +155,10 @@ namespace DTXMania
 							{
 								case E判定文字表示位置.コンボ下:
 									baseX = this.stレーンサイズ[ j ].x + 36;
+									if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+									{
+										baseX -= 331+1;
+									}
 									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 									baseY = (
 												CDTXMania.ConfigIni.bReverse.Bass ?
@@ -165,6 +169,10 @@ namespace DTXMania
 									break;
 								case E判定文字表示位置.レーン上:
 									baseX = this.stレーンサイズ[ j ].x + 36;
+									if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+									{
+										baseX -= 331+1;
+									}
 									//baseY = ( CDTXMania.ConfigIni.bReverse.Bass ? 240 : 180 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
 									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 									baseY = (
@@ -176,6 +184,10 @@ namespace DTXMania
 									break;
 								case E判定文字表示位置.判定ライン上:
 									baseX = this.stレーンサイズ[ j ].x + 36;
+									if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+									{
+										baseX -= 331+1;
+									}
 									yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
 									baseY = CDTXMania.ConfigIni.bReverse.Bass ?
 										yB + (int) ( 20 * Scale.Y ) :
@@ -196,6 +208,11 @@ namespace DTXMania
 							{
 							    case E判定文字表示位置.コンボ下:
 									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x + 36 : 0x198;
+									if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+									{
+										baseX = this.stレーンサイズ[ j ].x + 36;	// 判定表示がドラムレーンにかぶらないよう、ベース有りの時と同じ表示方法にする
+										baseX -= 24 + 1;
+									}
 									yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
 									baseY = (
 												CDTXMania.ConfigIni.bReverse.Guitar ?
@@ -206,6 +223,11 @@ namespace DTXMania
 									break;
 							    case E判定文字表示位置.レーン上:
 									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x + 36 : 0x198;
+									if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+									{
+										baseX = this.stレーンサイズ[ j ].x + 36;	// 判定表示がドラムレーンにかぶらないよう、ベース有りの時と同じ表示方法にする
+										baseX -= 24+1;
+									}
 									//baseY = ( CDTXMania.ConfigIni.bReverse.Guitar ? 240 : 180 ) + ( this.n文字の縦表示位置[ j ] * 0x20 );
 									yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
 									baseY = (
@@ -217,6 +239,11 @@ namespace DTXMania
 									break;
 							    case E判定文字表示位置.判定ライン上:
 									baseX = ( CDTXMania.DTX.bチップがある.Bass ) ? this.stレーンサイズ[ j ].x + 36 : 0x198;
+									if ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+									{
+										baseX = this.stレーンサイズ[ j ].x + 36;	// 判定表示がドラムレーンにかぶらないよう、ベース有りの時と同じ表示方法にする
+										baseX -= 24 + 1;
+									}
 									yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
 							        baseY = CDTXMania.ConfigIni.bReverse.Guitar ?
 										yG + (int) ( 20 * Scale.Y ) :

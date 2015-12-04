@@ -20,14 +20,18 @@ namespace DTXMania
 					{
 						E楽器パート e楽器パート = ( i < 3 ) ? E楽器パート.GUITAR : E楽器パート.BASS;
 						CTextureAf texture = CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] ? base.txFlush[ ( i % 3 ) + 3 ] : base.txFlush[ i % 3 ];
-						int num2 = CDTXMania.ConfigIni.bLeft[ (int) e楽器パート ] ? 1 : 0;
-						int x = ( ( ( i < 3 ) ? 0x1fb : 0x18e ) + this.nRGBのX座標[ num2, i ] ) + ( ( 0x10 * base.ct進行[ i ].n現在の値 ) / 100 );
+						int bLeft = CDTXMania.ConfigIni.bLeft[ (int) e楽器パート ] ? 1 : 0;
+						int x = ( ( ( i < 3 ) ? 1521 : 1194 ) + this.nRGBのX座標[ bLeft, i ] * 3 ) + ( ( 16 * base.ct進行[ i ].n現在の値 ) / 100 ) * 3;
+						if (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+						{
+							x -= ( e楽器パート == E楽器パート.GUITAR ) ? 71 : 994;
+						}
 						int y = ( ( i < 3 ) ? 0x39 : 0x39 );
 						if ( texture != null )
 						{
 							texture.t2D描画(
 								CDTXMania.app.Device,
-								x * Scale.X,
+								x,
 								y * Scale.Y,
 								new Rectangle(
 									0, //(int) ( ( j * 0x20 ) * Scale.X ),
