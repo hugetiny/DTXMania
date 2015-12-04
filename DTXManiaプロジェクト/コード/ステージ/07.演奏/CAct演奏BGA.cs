@@ -312,9 +312,12 @@ namespace DTXMania
 							{
 								if ( ( this.stLayer[ i ].rBMP != null ) && ( this.stLayer[ i ].rBMP.tx画像 != null ) )
 								{
-									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率.X = 2.0f;
-									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率.Y = 2.0f;
-									this.stLayer[ i ].rBMP.tx画像.vc拡大縮小倍率.Z = 1.0f;
+									if ( CDTXMania.DTX != null && !CDTXMania.DTX.bUse556x710BGAAVI )
+									{
+										this.stLayer[i].rBMP.tx画像.vc拡大縮小倍率.X = 2.0f;
+										this.stLayer[i].rBMP.tx画像.vc拡大縮小倍率.Y = 2.0f;
+										this.stLayer[i].rBMP.tx画像.vc拡大縮小倍率.Z = 1.0f;
+									}
 									this.stLayer[ i ].rBMP.tx画像.t2D描画(
 										CDTXMania.app.Device,
 										(x + rect表示側.X),
@@ -323,9 +326,12 @@ namespace DTXMania
 								}
 								else if( ( this.stLayer[ i ].rBMPTEX != null ) && ( this.stLayer[ i ].rBMPTEX.tx画像 != null ) )
 								{
-									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率.X = 2.0f;
-									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率.Y = 2.0f;
-									this.stLayer[ i ].rBMPTEX.tx画像.vc拡大縮小倍率.Z = 1.0f;
+									if ( CDTXMania.DTX != null && !CDTXMania.DTX.bUse556x710BGAAVI )
+									{
+										this.stLayer[i].rBMPTEX.tx画像.vc拡大縮小倍率.X = 2.0f;
+										this.stLayer[i].rBMPTEX.tx画像.vc拡大縮小倍率.Y = 2.0f;
+										this.stLayer[i].rBMPTEX.tx画像.vc拡大縮小倍率.Z = 1.0f;
+									}
 									this.stLayer[ i ].rBMPTEX.tx画像.t2D描画(
 										CDTXMania.app.Device,
 										(x + rect表示側.X),

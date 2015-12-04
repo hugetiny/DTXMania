@@ -1313,6 +1313,7 @@ namespace DTXMania
 		public string TITLE;
 		public double dbDTXVPlaySpeed;
 		public bool bMovieをFullscreen再生する;
+		public bool bUse556x710BGAAVI;
 
 #if TEST_NOTEOFFMODE
 		public STLANEVALUE<bool> b演奏で直前の音を消音する;
@@ -1408,6 +1409,7 @@ namespace DTXMania
 			this.nBGMAdjust = 0;
 			this.nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
 			this.dbDTXVPlaySpeed = 1.0f;
+			this.bUse556x710BGAAVI = false;
 
 #if TEST_NOTEOFFMODE
 			this.bHH演奏で直前のHHを消音する = true;
@@ -3722,6 +3724,14 @@ namespace DTXMania
 					this.PREMOVIE = strパラメータ;
 				}
 				//-----------------
+				#endregion
+				#region [ USE 556 x 710 BGAAVI ]
+
+				else if( strコマンド.StartsWith( "USE556X710BGAAVI", StringComparison.OrdinalIgnoreCase ) )
+				{
+					this.t入力_パラメータ食い込みチェック("USE556X710BGAAVI", ref strコマンド, ref strパラメータ);
+					this.bUse556x710BGAAVI = strパラメータ == "1" ? true : false;
+				}
 				#endregion
 				#region [ BACKGROUND_GR ]
 				//-----------------

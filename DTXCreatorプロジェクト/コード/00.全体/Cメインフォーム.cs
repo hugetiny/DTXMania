@@ -546,6 +546,7 @@ namespace DTXCreator
 			CUndoRedo管理.bUndoRedoした直後 = true;	this.textBoxSTAGEFILE.Clear();
 			CUndoRedo管理.bUndoRedoした直後 = true;	this.textBoxBACKGROUND.Clear();
 			CUndoRedo管理.bUndoRedoした直後 = true;	this.textBoxRESULTIMAGE.Clear();
+			CUndoRedo管理.bUndoRedoした直後 = true; this.check556x710BGAAVI.Checked = false;
 			//-----------------
 			#endregion
 			
@@ -875,6 +876,7 @@ namespace DTXCreator
 		private void tシナリオ_上書き保存()
 		{
 			// 前処理。
+			bool bDoSave = true;
 
 			this.dlgチップパレット.t一時的に隠蔽する();
 
@@ -895,61 +897,58 @@ namespace DTXCreator
 
 				string str絶対パスファイル名 = this.tファイル保存ダイアログを開いてファイル名を取得する();
 
-				if( string.IsNullOrEmpty( str絶対パスファイル名 ) )
+				if (string.IsNullOrEmpty(str絶対パスファイル名))
 				{
-					#region [「保存中です」ポップアップを閉じる。]	// #35813 2015.12.4 yyagi
-					//-----------------
-					msg.Close();
-					this.Refresh();		// リスト内容等を消すために再描画する。
-					//-----------------
-					#endregion
-					return;	// ファイル保存ダイアログがキャンセルされたのならここで打ち切り。
+					bDoSave = false;
 				}
-				//this.str作業フォルダ名 = Directory.GetCurrentDirectory() + @"\";	// ダイアログでディレクトリを変更した場合、カレントディレクトリも変更されている。
-				this.str作業フォルダ名 = Path.GetDirectoryName(str絶対パスファイル名) + @"\";
-				this.strDTXファイル名 = Path.GetFileName( str絶対パスファイル名 );
+				else
+				{
+					//this.str作業フォルダ名 = Directory.GetCurrentDirectory() + @"\";	// ダイアログでディレクトリを変更した場合、カレントディレクトリも変更されている。
+					this.str作業フォルダ名 = Path.GetDirectoryName(str絶対パスファイル名) + @"\";
+					this.strDTXファイル名 = Path.GetFileName(str絶対パスファイル名);
 
-
-				// WAV・BMP・AVIリストにあるすべてのファイル名を、作業フォルダに対する相対パスに変換する。
-
-				this.mgrWAVリスト管理者.tファイル名の相対パス化( this.str作業フォルダ名 );
-				this.mgrBMPリスト管理者.tファイル名の相対パス化( this.str作業フォルダ名 );
-				this.mgrAVIリスト管理者.tファイル名の相対パス化( this.str作業フォルダ名 );
+					// WAV・BMP・AVIリストにあるすべてのファイル名を、作業フォルダに対する相対パスに変換する。
+					this.mgrWAVリスト管理者.tファイル名の相対パス化(this.str作業フォルダ名);
+					this.mgrBMPリスト管理者.tファイル名の相対パス化(this.str作業フォルダ名);
+					this.mgrAVIリスト管理者.tファイル名の相対パス化(this.str作業フォルダ名);
+				}
 			}
 			//-----------------
 			#endregion
 
-
 			// DTXファイルへ出力。
+			if (bDoSave)
+			{
 
+				#region [ 選択モードだったなら選択を解除する。]
+				//-----------------
+				if (this.b選択モードである)
+					this.mgr選択モード管理者.t全チップの選択を解除する();
+				//-----------------
+				#endregion
 
-			#region [ 選択モードだったなら選択を解除する。]
-			//-----------------
-			if( this.b選択モードである )
-				this.mgr選択モード管理者.t全チップの選択を解除する();
-			//-----------------
-			#endregion
+				#region [ DTXファイルを出力する。]
+				//-----------------
+				var sw = new StreamWriter(this.str作業フォルダ名 + this.strDTXファイル名, false, Encoding.GetEncoding("utf-16"));
+				new CDTX入出力(this).tDTX出力(sw);
+				sw.Close();
+				//-----------------
+				#endregion
 
-			#region [ DTXファイルを出力する。]
-			//-----------------
-			var sw = new StreamWriter( this.str作業フォルダ名 + this.strDTXファイル名, false, Encoding.GetEncoding( "utf-16" ) );
-			new CDTX入出力( this ).tDTX出力( sw );
-			sw.Close();
-			//-----------------
-			#endregion
+				#region [ 出力したファイルのパスを、[ファイル]メニューの最近使ったファイル一覧に追加する。 ]
+				//-----------------
+				this.appアプリ設定.AddRecentUsedFile(this.str作業フォルダ名 + this.strDTXファイル名);
+				this.t最近使ったファイルをFileメニューへ追加する();
+				//-----------------
+				#endregion
 
-			#region [ 出力したファイルのパスを、[ファイル]メニューの最近使ったファイル一覧に追加する。 ]
-			//-----------------
-			this.appアプリ設定.AddRecentUsedFile( this.str作業フォルダ名 + this.strDTXファイル名 );
-			this.t最近使ったファイルをFileメニューへ追加する();
-			//-----------------
-			#endregion
+				#region [ Viewer用の一時ファイルを削除する (修正＋保存、直後のViewer再生時に、直前の修正が反映されなくなることへの対応) ]
+				tViewer用の一時ファイルを削除する();
+				#endregion
 
-			#region [ Viewer用の一時ファイルを削除する (修正＋保存、直後のViewer再生時に、直前の修正が反映されなくなることへの対応) ]
-			tViewer用の一時ファイルを削除する();
-			#endregion
-
-			// 後処理。
+				// 後処理。
+				this.b未保存 = false;
+			}
 
 			#region [「保存中です」ポップアップを閉じる。]
 			//-----------------
@@ -959,7 +958,6 @@ namespace DTXCreator
 			#endregion
 
 			this.dlgチップパレット.t一時的な隠蔽を解除する();
-			this.b未保存 = false;
 		}
 		private void tシナリオ_名前をつけて保存()
 		{
@@ -3204,7 +3202,7 @@ namespace DTXCreator
 							this.textBoxGenre,
 							new DGUndoを実行する<string>( this.textBoxGenre_Undo ),
 							new DGRedoを実行する<string>( this.textBoxGenre_Redo ),
-							this.textBoxコメント_以前の値, this.textBoxGenre.Text ) );
+							this.textBoxGenre_以前の値, this.textBoxGenre.Text ) );
 
 					// Undo ボタンを有効にする。
 
@@ -4278,6 +4276,84 @@ namespace DTXCreator
 				this.textBoxRESULTIMAGE.Text = strファイル名;
 				this.b未保存 = true;
 			}
+		}
+		#endregion
+		#region [ Use 556 x 710 BGA/AVI ]
+		private bool check556x710BGAAVI_以前の値 = false;
+		private void check556x710BGAAVI_CheckedChanged(object sender, EventArgs e)
+		{
+			// Undo/Redo リストを修正する。
+
+			#region [ Undo/Redo リストを修正。]
+			//-----------------
+			if (!CUndoRedo管理.bUndoRedoした直後)
+			{
+				CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
+
+				if ((oセル仮想 != null) && oセル仮想.b所有権がある(this.check556x710BGAAVI))
+				{
+					// 既存のセルの値を更新。
+
+					((CUndoRedoセル<bool>)oセル仮想).変更後の値 = this.check556x710BGAAVI.Checked;
+				}
+				else
+				{
+					// 新しいセルを追加。
+
+					this.mgrUndoRedo管理者.tノードを追加する(
+						new CUndoRedoセル<bool>(
+							this.check556x710BGAAVI.Checked,
+							new DGUndoを実行する<bool>(this.check556x710BGAAVI_Undo),
+							new DGRedoを実行する<bool>(this.check556x710BGAAVI_Redo),
+							this.check556x710BGAAVI_以前の値, this.check556x710BGAAVI.Checked));
+
+					// Undo ボタンを有効にする。
+
+					this.tUndoRedo用GUIの有効無効を設定する();
+				}
+			}
+			//-----------------
+			#endregion
+
+
+			// Undo 用に値を保管しておく。
+
+			this.check556x710BGAAVI_以前の値 = this.check556x710BGAAVI.Checked;
+			
+
+			// 完了。
+
+			CUndoRedo管理.bUndoRedoした直後 = false;
+			this.b未保存 = true;
+		}
+		private void check556x710BGAAVI_Leave(object sender, EventArgs e)
+		{
+			CUndoRedoセル仮想 oセル仮想 = this.mgrUndoRedo管理者.tUndoするノードを取得して返す_見るだけ();
+
+			if (oセル仮想 != null)
+				oセル仮想.t所有権の放棄(this.check556x710BGAAVI);
+		}
+		private void check556x710BGAAVI_Undo(bool b変更前, bool b変更後)
+		{
+			// 変更前の値に戻す。
+
+			this.tタブを選択する(Eタブ種別.基本情報);
+
+			this.t次のプロパティ変更処理がUndoRedoリストに載らないようにする();
+			this.check556x710BGAAVI.Checked = b変更前;
+
+			this.check556x710BGAAVI.Focus();
+		}
+		private void check556x710BGAAVI_Redo(bool b変更前, bool b変更後)
+		{
+			// 変更後の値に戻す。
+
+			this.tタブを選択する(Eタブ種別.基本情報);
+
+			this.t次のプロパティ変更処理がUndoRedoリストに載らないようにする();
+			this.check556x710BGAAVI.Checked = b変更後;
+
+			this.check556x710BGAAVI.Focus();
 		}
 		#endregion
 		//-----------------

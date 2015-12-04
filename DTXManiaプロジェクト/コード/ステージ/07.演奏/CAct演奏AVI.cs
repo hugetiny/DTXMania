@@ -307,6 +307,11 @@ namespace DTXMania
 					float magX = 2, magY = 2;
 					int xx = x, yy = y;
 
+					if( CDTXMania.DTX != null && CDTXMania.DTX.bUse556x710BGAAVI )
+					{
+						magX = magY = 1;
+					}
+
 					if ( bFullScreenMovie || bIsPreviewMovie )
 					{
 						#region [ アスペクト比を維持した拡大縮小 ]
