@@ -86,7 +86,7 @@ namespace FDK
 			}
 			#endregion
 
-			hr = builder.RenderFile(filename, "");
+			hr = builder.RenderFile(filename, null);
 			DsError.ThrowExceptionForHR(hr);
 
 			// Null レンダラに接続しないとウィンドウが表示される。
