@@ -65,6 +65,15 @@ namespace DTXMania
 		{
 			this.bIsPreview = bIsPreview;
 
+            // #35820 画像サイズに関係なく、プレビュー領域に合わせる add ikanick 15.12.08
+            this.width = width_fhd_set;
+            this.height = height_fhd_set;
+            this.magX = magX_org * width_vga_set / width_org * Scale.X;
+            this.magY = magY_org * height_vga_set / height_org * Scale.Y;
+            return;
+
+            // FHD対応の名残？
+
 			#region [ HD版DTXManiaのプレビュー画像は特別扱いする ]
 			if ( width_org == width_hd_set && height_org == height_hd_set )			// HD版DTXManiaのプレビュー画像は特別扱いする
 			{
