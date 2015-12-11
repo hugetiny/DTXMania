@@ -112,12 +112,22 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="check556x710BGAAVI.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 28</value>
+  </data>
+  <data name="check556x710BGAAVI.Text" xml:space="preserve">
+    <value>556x710サイズのBGA/AVIを
+使用する</value>
+  </data>
+  <data name="check556x710BGAAVI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="labelGenre.Location" type="System.Drawing.Point, System.Drawing">
     <value>37, 87</value>
   </data>
@@ -310,6 +320,9 @@
   <data name="tabPage基本情報.Text" xml:space="preserve">
     <value>基本情報</value>
   </data>
+  <data name="tabPage基本情報.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="columnHeaderWAV_ラベル.Text" xml:space="preserve">
     <value>ラベル</value>
   </data>
@@ -321,6 +334,9 @@
   </data>
   <data name="columnHeaderWAV_位置.Text" xml:space="preserve">
     <value>位置</value>
+  </data>
+  <data name="listViewWAVリスト.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripButtonWAVリスト上移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ上に移動します。</value>
@@ -337,11 +353,20 @@
   <data name="toolStripButtonWAVリストプレビュースイッチ.ToolTipText" xml:space="preserve">
     <value>行をクリックしたときにプレビュー音を再生します。</value>
   </data>
+  <data name="toolStripWAVツールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPageWAV.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="columnHeaderBMP_ラベル.Text" xml:space="preserve">
     <value>ラベル</value>
   </data>
   <data name="columnHeaderBMP_ファイル名.Text" xml:space="preserve">
     <value>ファイル</value>
+  </data>
+  <data name="listViewBMPリスト.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripButtonBMPリスト上移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ上に移動します。</value>
@@ -349,17 +374,59 @@
   <data name="toolStripButtonBMPリスト下移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ下に移動します。</value>
   </data>
+  <data name="toolStripBMPツールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPageBMP.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="columnHeaderAVI_ラベル.Text" xml:space="preserve">
     <value>ラベル</value>
   </data>
   <data name="columnHeaderAVI_ファイル名.Text" xml:space="preserve">
     <value>ファイル</value>
   </data>
+  <data name="listViewAVIリスト.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="toolStripButtonAVIリスト上移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ上に移動します。</value>
   </data>
   <data name="toolStripButtonAVIリスト下移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ下に移動します。</value>
+  </data>
+  <data name="toolStripAVIツールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPageAVI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textBox自由入力欄.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPage自由入力.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabControl情報パネル.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainerタブと譜面を分割.Panel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="pictureBox譜面パネル.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="hScrollBar譜面用水平スクロールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainerタブと譜面を分割.Panel2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainerタブと譜面を分割.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="statusStripステータスバー.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripMenuItem新規.Size" type="System.Drawing.Size, System.Drawing">
     <value>195, 22</value>
@@ -613,6 +680,9 @@
   <data name="toolStripMenuItemヘルプ.Text" xml:space="preserve">
     <value>ヘルプ(&amp;H)</value>
   </data>
+  <data name="menuStripメニューバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="toolStripButton新規作成.ToolTipText" xml:space="preserve">
     <value>新しい譜面を作成します。</value>
   </data>
@@ -669,6 +739,12 @@
   </data>
   <data name="toolStripComboBox演奏速度.ToolTipText" xml:space="preserve">
     <value>DTXViewerでの再生速度を指定します。 (#DTXVPLAYSPEED)</value>
+  </data>
+  <data name="toolStripツールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="vScrollBar譜面用垂直スクロールバー.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripMenuItem選択チップの切り取り.Size" type="System.Drawing.Size, System.Drawing">
     <value>335, 22</value>
@@ -768,6 +844,9 @@
   </data>
   <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
     <value>336, 292</value>
+  </data>
+  <data name="contextMenuStrip譜面右メニュー.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1193,5 +1272,8 @@
         AAAAAAAAAAAAAP//AAD8fwAA9H8AAOA/AADAAwAAAAEAAAAAAACAAAAAAAAAAIB/AACB/wAAg/8AAIP/
         AACH/wAAh/8AAI//AAA=
 </value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

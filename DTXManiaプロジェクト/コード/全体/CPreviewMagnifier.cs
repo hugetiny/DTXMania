@@ -72,8 +72,7 @@ namespace DTXMania
             this.magY = magY_org * height_vga_set / height_org * Scale.Y;
             return;
 
-            // FHD対応の名残？
-
+#if false	// FHD対応の名残
 			#region [ HD版DTXManiaのプレビュー画像は特別扱いする ]
 			if ( width_org == width_hd_set && height_org == height_hd_set )			// HD版DTXManiaのプレビュー画像は特別扱いする
 			{
@@ -130,6 +129,7 @@ namespace DTXMania
 				this.magY = magY_org * Scale.Y;
 			}
 			#endregion
+#endif
 		}
 
 		#region [ bIsPreviewによる配列→定数読み替え ]
