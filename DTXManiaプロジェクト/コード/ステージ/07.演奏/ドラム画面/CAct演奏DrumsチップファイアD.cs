@@ -67,13 +67,13 @@ namespace DTXMania
 					}
 				}
 			}
-			if( bフィルイン && ( this.tx青い星 != null ) )
+			if ( bフィルイン && ( this.tx青い星 != null ) )
 			{
-				for( int i = 0; i < 0x10; i++ )
+				for ( int i = 0; i < 0x10; i++ )
 				{
-					for( int j = 0; j < STAR_MAX; j++ )
+					for ( int j = 0; j < STAR_MAX; j++ )
 					{
-						if( !this.st青い星[ j ].b使用中 )
+						if ( !this.st青い星[ j ].b使用中 )
 						{
 							this.st青い星[ j ].b使用中 = true;
 							int n回転初期値 = CDTXMania.Random.Next( 360 );
@@ -81,8 +81,8 @@ namespace DTXMania
 							this.st青い星[ j ].nLane = (int) lane;
 							this.st青い星[ j ].ct進行 = new CCounter( 0, 100, 7, CDTXMania.Timer );
 							this.st青い星[ j ].fX =
-								(int) ( this.nレーンの中央X座標[ (int) lane ] * (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75) ) +
-											( (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? (float)(54 * 3) : (float)(619 + 12 + 40) );
+								(int) ( this.nレーンの中央X座標[ (int) lane ] * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) ) +
+											( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) );
 							this.st青い星[ j ].fY = CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 55 - nJudgeLinePosY_delta_Drums ) : ( (float) 425 + nJudgeLinePosY_delta_Drums );
 							this.st青い星[ j ].f加速度X = (float) ( num7 * Math.Cos( ( Math.PI * 2 * n回転初期値 ) / 360.0 ) );
 							this.st青い星[ j ].f加速度Y = (float) ( num7 * ( Math.Sin( ( Math.PI * 2 * n回転初期値 ) / 360.0 ) - 0.2 ) );
@@ -263,18 +263,18 @@ namespace DTXMania
 						}
 					}
 				}
-				for( int i = 0; i < STAR_MAX; i++ )
+				for ( int i = 0; i < STAR_MAX; i++ )
 				{
-					if( this.st青い星[ i ].b使用中 )
+					if ( this.st青い星[ i ].b使用中 )
 					{
 						this.st青い星[ i ].n前回のValue = this.st青い星[ i ].ct進行.n現在の値;
 						this.st青い星[ i ].ct進行.t進行();
-						if( this.st青い星[ i ].ct進行.b終了値に達した )
+						if ( this.st青い星[ i ].ct進行.b終了値に達した )
 						{
 							this.st青い星[ i ].ct進行.t停止();
 							this.st青い星[ i ].b使用中 = false;
 						}
-						for( int n = this.st青い星[ i ].n前回のValue; n < this.st青い星[ i ].ct進行.n現在の値; n++ )
+						for ( int n = this.st青い星[ i ].n前回のValue; n < this.st青い星[ i ].ct進行.n現在の値; n++ )
 						{
 							this.st青い星[ i ].fX += this.st青い星[ i ].f加速度X;
 							this.st青い星[ i ].fY -= this.st青い星[ i ].f加速度Y;
@@ -286,11 +286,11 @@ namespace DTXMania
 						float x = (float) ( this.st青い星[ i ].f半径 * Math.Cos( ( Math.PI / 2 * this.st青い星[ i ].ct進行.n現在の値 ) / 100.0 ) );
 						mat *= Matrix.Scaling( x, x, 1f );
 						mat *= Matrix.Translation(
-							this.st青い星[ i ].fX * Scale.X - SampleFramework.GameWindowSize.Width / 2,
+							this.st青い星[ i ].fX - SampleFramework.GameWindowSize.Width / 2,
 							-( this.st青い星[ i ].fY * Scale.Y - SampleFramework.GameWindowSize.Height / 2 ),
 							0f
 						);
-						if( this.tx青い星 != null )
+						if ( this.tx青い星 != null )
 						{
 							this.tx青い星.t3D描画( CDTXMania.app.Device, mat );
 						}
