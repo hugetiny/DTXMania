@@ -435,89 +435,23 @@ namespace DTXMania
 					switch( this.nチャンネル番号 )
 					{
 						case 0x01:
-						case 0x11:
-						case 0x12:
-						case 0x13:
-						case 0x14:
-						case 0x15:
-						case 0x16:
-						case 0x17:
-						case 0x18:
-						case 0x19:
-						case 0x1a:
-						case 0x1f:
-						case 0x20:
-						case 0x21:
-						case 0x22:
-						case 0x23:
-						case 0x24:
-						case 0x25:
-						case 0x26:
-						case 0x27:
-						case 0x2f:
-						case 0x31:
-						case 0x32:
-						case 0x33:
-						case 0x34:
-						case 0x35:
-						case 0x36:
-						case 0x37:
-						case 0x38:
-						case 0x39:
-						case 0x3a:
-						case 0x61:
-						case 0x62:
-						case 0x63:
-						case 0x64:
-						case 0x65:
-						case 0x66:
-						case 0x67:
-						case 0x68:
-						case 0x69:
-						case 0x70:
-						case 0x71:
-						case 0x72:
-						case 0x73:
-						case 0x74:
-						case 0x75:
-						case 0x76:
-						case 0x77:
-						case 0x78:
-						case 0x79:
-						case 0x80:
-						case 0x81:
-						case 0x82:
-						case 0x83:
-						case 0x84:
-						case 0x85:
-						case 0x86:
-						case 0x87:
-						case 0x88:
-						case 0x89:
-						case 0x90:
-						case 0x91:
-						case 0x92:
-						case 0xa0:
-						case 0xa1:
-						case 0xa2:
-						case 0xa3:
-						case 0xa4:
-						case 0xa5:
-						case 0xa6:
-						case 0xa7:
-						case 0xaf:
-						case 0xb1:
-						case 0xb2:
-						case 0xb3:
-						case 0xb4:
-						case 0xb5:
-						case 0xb6:
-						case 0xb7:
-						case 0xb8:
-						case 0xb9:
-						case 0xba:
-						case 0xbb:
-						case 0xbc:
+									case 0x11:	case 0x12:	case 0x13:	case 0x14:	case 0x15:	case 0x16:	case 0x17:
+						case 0x18:	case 0x19:	case 0x1a:	case 0x1b:	case 0x1c:							case 0x1f:
+						case 0x20:	case 0x21:	case 0x22:	case 0x23:	case 0x24:	case 0x25:	case 0x26:	case 0x27:
+																												case 0x2f:
+									case 0x31:	case 0x32:	case 0x33:	case 0x34:	case 0x35:	case 0x36:	case 0x37:
+						case 0x38:	case 0x39:	case 0x3a:
+									case 0x61:	case 0x62:	case 0x63:	case 0x64:	case 0x65:	case 0x66:	case 0x67:
+						case 0x68:	case 0x69:
+						case 0x70:	case 0x71:	case 0x72:	case 0x73:	case 0x74:	case 0x75:	case 0x76:	case 0x77:
+						case 0x78:	case 0x79:
+						case 0x80:	case 0x81:	case 0x82:	case 0x83:	case 0x84:	case 0x85:	case 0x86:	case 0x87:
+						case 0x88:	case 0x89:
+						case 0x90:	case 0x91:	case 0x92:
+						case 0xa0:	case 0xa1:	case 0xa2:	case 0xa3:	case 0xa4:	case 0xa5:	case 0xa6:	case 0xa7:
+																											case 0xaf:
+									case 0xb1:	case 0xb2:	case 0xb3:	case 0xb4:	case 0xb5:	case 0xb6:	case 0xb7:
+						case 0xb8:	case 0xb9:	case 0xba:	case 0xbb:	case 0xbc:
 							return true;
 					}
 					return false;
@@ -580,7 +514,7 @@ namespace DTXMania
 					"??", "バックコーラス", "小節長変更", "BPM変更", "BMPレイヤ1", "??", "??", "BMPレイヤ2",
 					"BPM変更(拡張)", "??", "??", "??", "??", "??", "??", "??",
 					"??", "HHClose", "Snare", "Kick", "HiTom", "LowTom", "Cymbal", "FloorTom",
-					"HHOpen", "RideCymbal", "LeftCymbal", "", "", "", "", "ドラム歓声切替",
+					"HHOpen", "RideCymbal", "LeftCymbal", "LeftPedal", "LeftBassDrum", "", "", "ドラム歓声切替",
 					"ギターOPEN", "ギター - - B", "ギター - G -", "ギター - G B", "ギター R - -", "ギター R - B", "ギター R G -", "ギター R G B",
 					"ギターWailing", "??", "??", "??", "??", "??", "??", "ギターWailing音切替",
 					"??", "HHClose(不可視)", "Snare(不可視)", "Kick(不可視)", "HiTom(不可視)", "LowTom(不可視)", "Cymbal(不可視)", "FloorTom(不可視)",
@@ -600,11 +534,11 @@ namespace DTXMania
 					"ベースOPEN", "ベース - - B", "ベース - G -", "ベース - G B", "ベース R - -", "ベース R - B", "ベース R G -", "ベース R G B",
 					"ベースWailing", "??", "??", "??", "??", "??", "??", "ベースWailing音切替",
 					"??", "HHClose(空うち)", "Snare(空うち)", "Kick(空うち)", "HiTom(空うち)", "LowTom(空うち)", "Cymbal(空うち)", "FloorTom(空うち)",
-					"HHOpen(空うち)", "RideCymbal(空うち)", "ギター(空打ち)", "ベース(空打ち)", "LeftCymbal(空うち)", "??", "??", "??", 
+					"HHOpen(空うち)", "RideCymbal(空うち)", "ギター(空打ち)", "ベース(空打ち)", "LeftCymbal(空うち)", "LeftPedal(空打ち)", "LeftBassDrum(空打ち)", "??", 
 					"??", "??", "??", "??", "BGAスコープ画像切替1", "??", "??", "BGAスコープ画像切替2",
 					"??", "??", "??", "??", "??", "??", "??", "??", 
 					"??", "??", "??", "??", "??", "BGAスコープ画像切替3", "BGAスコープ画像切替4", "BGAスコープ画像切替5",
-					"BGAスコープ画像切替6", "BGAスコープ画像切替7", "??", "??", "??", "??", "??", "??", 
+					"BGAスコープ画像切替6", "BGAスコープ画像切替7", "ミキサー登録", "ミキサー削除", "??", "??", "??", "??", 
 					"BGAスコープ画像切替8"
 				};
 				return string.Format( "CChip: 位置:{0:D4}.{1:D3}, 時刻{2:D6}, Ch:{3:X2}({4}), Pn:{5}({11})(内部{6}), Pd:{7}, Sz:{8}, UseWav:{9}, Auto:{10}",
@@ -639,7 +573,7 @@ namespace DTXMania
 						nDuration = ( wc.rSound[ 0 ] == null ) ? 0 : wc.rSound[ 0 ].n総演奏時間ms;
 					}
 				}
-				else if ( this.nチャンネル番号 == 0x54 )	// AVI
+				else if ( this.nチャンネル番号 == 0x54 || this.nチャンネル番号 == 0x5A )	// AVI
 				{
 					if ( this.rAVI != null && this.rAVI.avi != null )
 					{
@@ -719,6 +653,8 @@ namespace DTXMania
 					case (int) Ech定義.HiHatOpen:
 					case (int) Ech定義.RideCymbal:
 					case (int) Ech定義.LeftCymbal:
+					case (int) Ech定義.LeftPedal:
+					case (int) Ech定義.LeftBassDrum:
 
 					case (int) Ech定義.HiHatClose_Hidden:
 					case (int) Ech定義.Snare_Hidden:
@@ -730,6 +666,8 @@ namespace DTXMania
 					case (int) Ech定義.HiHatOpen_Hidden:
 					case (int) Ech定義.RideCymbal_Hidden:
 					case (int) Ech定義.LeftCymbal_Hidden:
+					case (int) Ech定義.LeftPedal_Hidden:
+					case (int) Ech定義.LeftBassDrum_Hidden:
 
 					case (int) Ech定義.HiHatClose_NoChip:
 					case (int) Ech定義.Snare_NoChip:
@@ -741,7 +679,10 @@ namespace DTXMania
 					case (int) Ech定義.HiHatOpen_NoChip:
 					case (int) Ech定義.RideCymbal_NoChip:
 					case (int) Ech定義.LeftCymbal_NoChip:
-						return ESoundChipType.Drums;
+					case (int) Ech定義.LeftPedal_NoChip:
+					case (int) Ech定義.LeftBassDrum_NoChip:
+
+					return ESoundChipType.Drums;
 					#endregion
 
 					#region [ Guitar ]
@@ -839,6 +780,8 @@ namespace DTXMania
 						case (int) Ech定義.HiHatOpen:
 						case (int) Ech定義.RideCymbal:
 						case (int) Ech定義.LeftCymbal:
+						case (int) Ech定義.LeftPedal:
+						case (int) Ech定義.LeftBassDrum:
 
 						case (int) Ech定義.Guitar_Open:
 						case (int) Ech定義.Guitar_xxB:
@@ -980,11 +923,14 @@ namespace DTXMania
 			public int RD;
 			public int LC;
 
+			public int LP;
+			public int LBD;
+
 			public int Drums
 			{
 				get
 				{
-					return this.HH + this.SD + this.BD + this.HT + this.LT + this.CY + this.FT + this.HHO + this.RD + this.LC;
+					return this.HH + this.SD + this.BD + this.HT + this.LT + this.CY + this.FT + this.HHO + this.RD + this.LC + this.LP + this.LBD;
 				}
 			}
 			public int Guitar;
@@ -1031,6 +977,12 @@ namespace DTXMania
 
 						case 11:
 							return this.Bass;
+
+						case 12:
+							return this.LP;
+		
+						case 13:
+							return this.LBD;
 					}
 					throw new IndexOutOfRangeException();
 				}
@@ -1088,6 +1040,14 @@ namespace DTXMania
 
 						case 11:
 							this.Bass = value;
+							return;
+
+						case 12:
+							this.LP = value;
+							return;
+
+						case 13:
+							this.LBD = value;
 							return;
 					}
 					throw new IndexOutOfRangeException();
@@ -1183,7 +1143,10 @@ namespace DTXMania
 
 			public bool BGA;
 			public bool Movie;
-			
+
+			public bool LeftPedal;
+			public bool LeftBassDrum;
+
 			public bool this[ int index ]
 			{
 				get
@@ -1213,6 +1176,12 @@ namespace DTXMania
 
 						case 7:
 							return this.OpenBass;
+
+						case 8:
+							return this.LeftPedal;
+
+						case 9:
+							return this.LeftBassDrum;
 					}
 					throw new IndexOutOfRangeException();
 				}
@@ -1250,6 +1219,14 @@ namespace DTXMania
 
 						case 7:
 							this.OpenBass = value;
+							return;
+
+						case 8:
+							this.LeftPedal = value;
+							return;
+
+						case 9:
+							this.LeftBassDrum = value;
 							return;
 					}
 					throw new IndexOutOfRangeException();
@@ -1367,6 +1344,8 @@ namespace DTXMania
 			this.bチップがある.OpenBass = false;
 			this.bチップがある.BGA = false;
 			this.bチップがある.Movie = false;
+			this.bチップがある.LeftPedal = false;
+			this.bチップがある.LeftBassDrum = false;
 			this.bMovieをFullscreen再生する = false;
 			this.strファイル名 = "";
 			this.strフォルダ名 = "";
@@ -2251,12 +2230,16 @@ namespace DTXMania
 				{
 					if( ( cwav.rSound[ i ] != null ) && cwav.rSound[ i ].b再生中 )
 					{
-						cwav.rSound[ i ].t再生を一時停止する();
 						cwav.n一時停止時刻[ i ] = CSound管理.rc演奏用タイマ.nシステム時刻ms;
+						cwav.rSound[ i ].t再生を一時停止する();
 					}
 				}
 			}
 		}
+		/// <summary>
+		/// 全チップの再生を再開する。しかし一時停止と再開を繰り返すと、再生位置が徐々にずれる問題あり。
+		/// 泥臭い回避方法は、CStage演奏画面共通.cs の tキー入力()を参照のこと。
+		/// </summary>
 		public void t全チップの再生再開()
 		{
 			foreach( CWAV cwav in this.listWAV.Values )
@@ -2267,7 +2250,6 @@ namespace DTXMania
 					{
 						//long num1 = cwav.n一時停止時刻[ i ];
 						//long num2 = cwav.n再生開始時刻[ i ];
-						cwav.rSound[ i ].t再生を再開する( cwav.n一時停止時刻[ i ] - cwav.n再生開始時刻[ i ] );
 						cwav.n再生開始時刻[ i ] += CSound管理.rc演奏用タイマ.nシステム時刻ms - cwav.n一時停止時刻[ i ];
 					}
 				}
@@ -2783,7 +2765,7 @@ namespace DTXMania
 						foreach ( CChip chip in this.listChip )
 						{
 							int c = chip.nチャンネル番号;
-							if ( ( 0x11 <= c ) && ( c <= 0x1a ) && !chip.b空打ちチップである )
+							if ( ( 0x11 <= c ) && ( c <= 0x1c ) && !chip.b空打ちチップである )
 							{
 								this.n可視チップ数[ c - 0x11 ]++;
 							}
@@ -2932,17 +2914,18 @@ namespace DTXMania
 					// BGM:
 					case 0x01:
 					// Dr演奏チャネル
-					case 0x11:	case 0x12:	case 0x13:	case 0x14:	case 0x15:	case 0x16:	case 0x17:	case 0x18:	case 0x19:	case 0x1A:
+					case 0x11:	case 0x12:	case 0x13:	case 0x14:	case 0x15:	case 0x16:	case 0x17:	case 0x18:	case 0x19:
+					case 0x1A:	case 0x1B:	case 0x1c:
 					// Gt演奏チャネル
 					case 0x20:	case 0x21:	case 0x22:	case 0x23:	case 0x24:	case 0x25:	case 0x26:	case 0x27:	case 0x28:
 					// Bs演奏チャネル
 					case 0xA0:	case 0xA1:	case 0xA2:	case 0xA3:	case 0xA4:	case 0xA5:	case 0xA6:	case 0xA7:	case 0xA8:
 					// Dr不可視チップ
 					case 0x31:	case 0x32:	case 0x33:	case 0x34:	case 0x35:	case 0x36:	case 0x37:
-					case 0x38:	case 0x39:	case 0x3A:
+					case 0x38:	case 0x39:	case 0x3A:	case 0x3B:	case 0x3C:
 					// Dr/Gt/Bs空打ち
 					case 0xB1:	case 0xB2:	case 0xB3:	case 0xB4:	case 0xB5:	case 0xB6:	case 0xB7:	case 0xB8:
-					case 0xB9:	case 0xBA:	case 0xBB:	case 0xBC:
+					case 0xB9:	case 0xBA:	case 0xBB:	case 0xBC:	case 0xBD:	case 0xBE:
 					// フィルインサウンド
 					case 0x1F:	case 0x2F:	case 0xAF:
 					// 自動演奏チップ
@@ -5357,17 +5340,54 @@ namespace DTXMania
 			#endregion
 			#region [ 取得したチャンネル番号で、this.bチップがある に該当したり、this.bMovieをFullscreen再生する の条件を満足するなら、設定する。]
 			//-----------------
-			if( ( nチャンネル番号 >= 0x11 ) && ( nチャンネル番号 <= 0x1a ) )
+			if( ( nチャンネル番号 >= 0x11 ) && ( nチャンネル番号 <= 0x1c ) )
 			{
 				this.bチップがある.Drums = true;
+
+				switch ( nチャンネル番号 )
+				{
+					case 0x18:
+						this.bチップがある.HHOpen = true;
+						break;
+
+					case 0x19:
+						this.bチップがある.Ride = true;
+						break;
+
+					case 0x1a:
+						this.bチップがある.LeftCymbal = true;
+						break;
+
+					case 0x1b:
+						this.bチップがある.LeftPedal = true;
+						break;
+
+					case 0x1c:
+						this.bチップがある.LeftBassDrum = true;
+						break;
+				}
 			}
 			else if( ( nチャンネル番号 >= 0x20 ) && ( nチャンネル番号 <= 0x27 ) )
 			{
 				this.bチップがある.Guitar = true;
+
+				switch ( nチャンネル番号 )
+				{
+					case 0x20:
+						this.bチップがある.OpenGuitar = true;
+						break;
+				}
 			}
 			else if( ( nチャンネル番号 >= 0xA0 ) && ( nチャンネル番号 <= 0xa7 ) )
 			{
 				this.bチップがある.Bass = true;
+
+				switch ( nチャンネル番号 )
+				{
+					case 0xA0:
+						this.bチップがある.OpenBass = true;
+						break;
+				}
 			}
 			else if ( ( nチャンネル番号 == 0x04 ) || ( nチャンネル番号 == 0x07 ) ||
 				( ( 0x55 <= nチャンネル番号 ) && ( nチャンネル番号 <= 0x59 ) ) || ( nチャンネル番号 == 0x60 ) )
@@ -5388,28 +5408,6 @@ namespace DTXMania
 				this.bMovieをFullscreen再生する = true;
 			}
 
-			switch ( nチャンネル番号 )
-			{
-				case 0x18:
-					this.bチップがある.HHOpen = true;
-					break;
-
-				case 0x19:
-					this.bチップがある.Ride = true;
-					break;
-
-				case 0x1a:
-					this.bチップがある.LeftCymbal = true;
-					break;
-
-				case 0x20:
-					this.bチップがある.OpenGuitar = true;
-					break;
-
-				case 0xA0:
-					this.bチップがある.OpenBass = true;
-					break;
-			}
 			//-----------------
 			#endregion
 
@@ -5517,7 +5515,7 @@ namespace DTXMania
 
 				#region [ chip.e楽器パート = ... ]
 				//-----------------
-				if( ( nチャンネル番号 >= 0x11 ) && ( nチャンネル番号 <= 0x1A ) )
+				if( ( nチャンネル番号 >= 0x11 ) && ( nチャンネル番号 <= 0x1C ) )
 				{
 					chip.e楽器パート = E楽器パート.DRUMS;
 				}
@@ -5547,6 +5545,16 @@ namespace DTXMania
 				{
 					chip.b空打ちチップである = true;
 					nチャンネル番号 = 0x1A;
+				}
+				else if ( nチャンネル番号 == 0xBD )
+				{
+					chip.b空打ちチップである = true;
+					nチャンネル番号 = 0x1B;
+				}
+				else if ( nチャンネル番号 == 0xBE )
+				{
+					chip.b空打ちチップである = true;
+					nチャンネル番号 = 0x1C;
 				}
 				#endregion
 
@@ -5650,7 +5658,7 @@ namespace DTXMania
 			// AVI の一時停止
 			foreach (var avi in listAVI)
 			{
-				if ( avi.Value.avi.b再生中 )
+				if ( avi.Value.avi != null && avi.Value.avi.b再生中 )
 				{
 					avi.Value.avi.Pause();
 				}
@@ -5659,7 +5667,7 @@ namespace DTXMania
 			// AVIPAN の一時停止
 			foreach (var avi in listAVIPAN)
 			{
-				//if ( avi.Value.avi.b再生中 )
+				//if ( avi.Value.avi != null && avi.Value.avi.b再生中 )
 				//{
 				//	avi.Value.avi.ToggleRun();
 				//}
@@ -5670,7 +5678,7 @@ namespace DTXMania
 			// AVI の再生再開
 			foreach ( var avi in listAVI )
 			{
-				if ( avi.Value.avi.b一時停止中 )
+				if ( avi.Value.avi != null && avi.Value.avi.b一時停止中 )
 				{
 					avi.Value.avi.ToggleRun();
 				}
@@ -5678,7 +5686,7 @@ namespace DTXMania
 			// AVIPAN の再生再開
 			foreach ( var avi in listAVIPAN )
 			{
-				//if ( avi.Value.avi.b一時停止中 )
+				//if ( avi.Value.avi != null && avi.Value.avi.b一時停止中 )
 				//{
 				//	avi.Value.avi.ToggleRun();
 				//}
