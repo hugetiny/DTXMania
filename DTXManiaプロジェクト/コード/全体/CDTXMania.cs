@@ -360,16 +360,16 @@ namespace DTXMania
 				}
 				if ( ConfigIni.bウィンドウモード )
 				{
-				    if ( !this.bマウスカーソル表示中 )
-				    {
-				        Cursor.Show();
-				        this.bマウスカーソル表示中 = true;
-				    }
+					if ( !this.bマウスカーソル表示中 )
+					{
+						Cursor.Show();
+						this.bマウスカーソル表示中 = true;
+					}
 				}
 				else if ( this.bマウスカーソル表示中 )
 				{
-				    Cursor.Hide();
-				    this.bマウスカーソル表示中 = false;
+					Cursor.Hide();
+					this.bマウスカーソル表示中 = false;
 				}
 #endif
 			}
@@ -442,13 +442,13 @@ namespace DTXMania
 		{
 			if ( ConfigIni.bウィンドウモード )
 			{
-				if( !this.bマウスカーソル表示中 )
+				if ( !this.bマウスカーソル表示中 )
 				{
 					Cursor.Show();
 					this.bマウスカーソル表示中 = true;
 				}
 			}
-			else if( this.bマウスカーソル表示中 )
+			else if ( this.bマウスカーソル表示中 )
 			{
 				Cursor.Hide();
 				this.bマウスカーソル表示中 = false;
@@ -1583,7 +1583,14 @@ for (int i = 0; i < 3; i++) {
 				Sound管理.t再生中の処理をする();	// サウンドバッファの更新; 画面描画と同期させることで、スクロールをスムーズにする
 			}
 
-
+			#region [ マウスカーソル消去制御 ]
+			ccMouseShow.t進行();
+			if ( bマウスカーソル表示中 && ccMouseShow.b終了値に達した )
+			{
+				Cursor.Hide();
+				bマウスカーソル表示中 = false;
+			}
+			#endregion
 			#region [ 全画面・ウインドウ切り替え ]
 			if ( this.b次のタイミングで全画面_ウィンドウ切り替えを行う)
 			{
@@ -1765,6 +1772,7 @@ for (int i = 0; i < 3; i++) {
 			}
 		}
 		private CSound previewSound;
+		private CCounter ccMouseShow;
 
 		private void t起動処理()
 		{
@@ -2032,6 +2040,7 @@ for (int i = 0; i < 3; i++) {
 			base.Window.ResizeEnd += new EventHandler(this.Window_ResizeEnd);						// #23510 2010.11.20 yyagi: to set resized window size in Config.ini
 			base.Window.ApplicationActivated += new EventHandler(this.Window_ApplicationActivated);
 			base.Window.ApplicationDeactivated += new EventHandler(this.Window_ApplicationDeactivated);
+			base.Window.MouseMove += new MouseEventHandler(this.Window_MouseMove);
 			//---------------------
 			#endregion
 			#region [ Direct3D9Exを使うかどうか判定 ]
@@ -2115,6 +2124,9 @@ for (int i = 0; i < 3; i++) {
 				Trace.Unindent();
 			}
 			//---------------------
+			#endregion
+			#region [ マウス消去用のタイマーを初期化 ]
+			ccMouseShow = new CCounter();
 			#endregion
 			//-----------
 
@@ -2921,7 +2933,17 @@ for (int i = 0; i < 3; i++) {
 				this.t全画面_ウィンドウモード切り替え();
 			}
 		}
-		private void Window_ResizeEnd(object sender, EventArgs e)				// #23510 2010.11.20 yyagi: to get resized window size
+		private void Window_MouseMove( object sender, MouseEventArgs e )
+		{
+			if ( this.bマウスカーソル表示中 == false )
+			{
+				Cursor.Show();
+				this.bマウスカーソル表示中 = true;
+			}
+			ccMouseShow.t開始( 0, 1, 2000, Timer );
+		}
+
+		private void Window_ResizeEnd( object sender, EventArgs e )				// #23510 2010.11.20 yyagi: to get resized window size
 		{
 			if ( ConfigIni.bウィンドウモード )
 			{
