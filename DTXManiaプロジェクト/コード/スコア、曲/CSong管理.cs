@@ -1527,6 +1527,7 @@ namespace DTXMania
 			int nL12345 = (int) p[ 0 ]; 
 			ノードリスト.Sort( delegate( C曲リストノード n1, C曲リストノード n2 )
 			{
+				#region [ 共通処理 ]
 				if ( n1 == n2 )
 				{
 					return 0;
@@ -1536,18 +1537,31 @@ namespace DTXMania
 				{
 					return order * System.Math.Sign( num );
 				}
+				#endregion
 				string strAuthorN1 = "";
 				string strAuthorN2 = "";
-				if (n1.arスコア[ nL12345 ] != null ) {
-					strAuthorN1 = n1.arスコア[ nL12345 ].譜面情報.アーティスト名;
-				}
-				if ( n2.arスコア[ nL12345 ] != null )
+				int nL12345補正後1 = nL12345;
+				int nL12345補正後2 = nL12345;
+				if ( n1.arスコア[ nL12345 ] == null )
 				{
-					strAuthorN2 = n2.arスコア[ nL12345 ].譜面情報.アーティスト名;
+ 					nL12345補正後1 = n現在のアンカ難易度レベルに最も近い難易度レベルを返す( n1, nL12345 );
+				}
+				if ( n1.arスコア[ nL12345補正後1 ] != null )
+				{
+					strAuthorN1 = n1.arスコア[ nL12345補正後1 ].譜面情報.アーティスト名;
+				}
+				if ( n2.arスコア[ nL12345 ] == null )
+				{
+					nL12345補正後2 = n現在のアンカ難易度レベルに最も近い難易度レベルを返す( n2, nL12345 );
+				}
+				if ( n2.arスコア[ nL12345補正後2 ] != null )
+				{
+					strAuthorN2 = n2.arスコア[ nL12345補正後2 ].譜面情報.アーティスト名;
 				}
 
 				return order * strAuthorN1.CompareTo( strAuthorN2 );
 			} );
+			#region [ デバッグ用 ]
 			foreach ( C曲リストノード c曲リストノード in ノードリスト )
 			{
 				string s = "";
@@ -1555,8 +1569,62 @@ namespace DTXMania
 				{
 					s = c曲リストノード.arスコア[ nL12345 ].譜面情報.アーティスト名;
 				}
-Debug.WriteLine( s + ":" + c曲リストノード.strタイトル );
+//Debug.WriteLine( s + ":" + c曲リストノード.strタイトル );
 			}
+			#endregion
+		}
+		/// <summary>
+		/// CActSelect曲リスト のメソッドのデッドコピー。美しくない実装ですみません。
+		/// </summary>
+		/// <param name="song"></param>
+		/// <param name="n現在のアンカ難易度レベル"></param>
+		/// <returns></returns>
+		public int n現在のアンカ難易度レベルに最も近い難易度レベルを返す( C曲リストノード song, int n現在のアンカ難易度レベル )
+		{
+			// 事前チェック。
+
+			if ( song == null )
+				return n現在のアンカ難易度レベル;	// 曲がまったくないよ
+
+			if ( song.arスコア[ n現在のアンカ難易度レベル ] != null )
+				return n現在のアンカ難易度レベル;	// 難易度ぴったりの曲があったよ
+
+			if ( ( song.eノード種別 == C曲リストノード.Eノード種別.BOX ) || ( song.eノード種別 == C曲リストノード.Eノード種別.BACKBOX ) )
+				return 0;								// BOX と BACKBOX は関係無いよ
+
+
+			// 現在のアンカレベルから、難易度上向きに検索開始。
+
+			int n最も近いレベル = n現在のアンカ難易度レベル;
+
+			for ( int i = 0; i < 5; i++ )
+			{
+				if ( song.arスコア[ n最も近いレベル ] != null )
+					break;	// 曲があった。
+
+				n最も近いレベル = ( n最も近いレベル + 1 ) % 5;	// 曲がなかったので次の難易度レベルへGo。（5以上になったら0に戻る。）
+			}
+
+
+			// 見つかった曲がアンカより下のレベルだった場合……
+			// アンカから下向きに検索すれば、もっとアンカに近い曲があるんじゃね？
+
+			if ( n最も近いレベル < n現在のアンカ難易度レベル )
+			{
+				// 現在のアンカレベルから、難易度下向きに検索開始。
+
+				n最も近いレベル = n現在のアンカ難易度レベル;
+
+				for ( int i = 0; i < 5; i++ )
+				{
+					if ( song.arスコア[ n最も近いレベル ] != null )
+						break;	// 曲があった。
+
+					n最も近いレベル = ( ( n最も近いレベル - 1 ) + 5 ) % 5;	// 曲がなかったので次の難易度レベルへGo。（0未満になったら4に戻る。）
+				}
+			}
+
+			return n最も近いレベル;
 		}
 #if TEST_SORTBGM
 		public void t曲リストのソート9_BPM順( List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p )
