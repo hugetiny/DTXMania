@@ -2122,10 +2122,12 @@ namespace DTXCreator
 
 				#region [ ToolStripMenuItem を手動で作って [ファイル] のサブメニューリストに追加する。]
 				//-----------------
+				string strShotenPath = AdjustPathString( path );	// #35890 2016.1.3 yyagi; shorten "RecentFiles" text if needed
 				var item2 = new ToolStripMenuItem() {
 					Name = "最近使ったファイル" + i,
 					Size = this.toolStripMenuItem終了.Size,
-					Text = "&" + i + " " + path,
+					Text = "&" + i + " " + strShotenPath,
+					ToolTipText = path,
 				};
 				item2.Click += new EventHandler( this.toolStripMenuItem最近使ったファイル_Click );
 				this.toolStripMenuItemファイル.DropDownItems.Add( item2 );
@@ -2145,6 +2147,53 @@ namespace DTXCreator
 			//-----------------
 			#endregion
 		}
+		// 参考: http://gushwell.ldblog.jp/archives/50815731.html
+		private string AdjustPathString( string text )
+		{
+			int nTargetWidth = (int)(this.Width * 0.8f);
+			Bitmap bmp = new Bitmap(nTargetWidth, this.Height);
+			Graphics g = Graphics.FromImage( bmp );
+			var item = new ToolStripMenuItem();
+			SizeF size = g.MeasureString( text, item.Font );
+//Debug.WriteLine( "WinWidth"+ this.Width + ", now=" + size.Width + ", font=" + this.Font.ToString());
+			while ( nTargetWidth < size.Width )
+			{
+				string text2 = ShortenPathString( text );
+				if ( text == text2 )
+					break;
+				size = g.MeasureString( text2, this.Font );
+				text = text2;
+//Debug.WriteLine( "winWidth" + this.Width + ", now=" + size.Width + ", font=" + this.Font.ToString() );
+			}
+			item.Dispose();
+			g.Dispose();
+			bmp.Dispose();
+			return text;
+		}
+		private string ShortenPathString( string text )
+		{
+			int nWidth = this.Width;
+			List<string> list = new List<string>(text.Split('\\'));
+			int i = list.Count / 2;
+	        if ( list[i] != "..." )
+			{
+			    list[i] = "...";
+	        }
+			else
+			{
+	            if ( list.Count % 2 == 0 && i > 1 )
+		            list.RemoveAt(i - 1);
+			    else if ( list.Count % 2 == 1 && i < list.Count - 2 )
+				    list.RemoveAt(i + 1);
+	        }
+	        StringBuilder sb = new StringBuilder(list[0]);
+		    for ( int n = 1; n < list.Count; n++ ) {
+			    sb.Append('\\').Append(list[n]);
+	        }
+//Debug.WriteLine( "org:" + text );
+//Debug.WriteLine( "now:" + sb );
+			return sb.ToString();
+	    }
 		public void tWAV_BMP_AVIリストのカーソルを全部同じ行に合わせる( int nIndex番号0to1294 )
 		{
 			if( nIndex番号0to1294 >= 0 && nIndex番号0to1294 <= 1294 )
