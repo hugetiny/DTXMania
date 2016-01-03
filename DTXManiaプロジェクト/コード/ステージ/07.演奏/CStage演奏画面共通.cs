@@ -629,7 +629,7 @@ namespace DTXMania
 		protected readonly int[,] nBGAスコープチャンネルマップ = new int[ , ] { { 0xc4, 0xc7, 0xd5, 0xd6, 0xd7, 0xd8, 0xd9, 0xe0 }, { 4, 7, 0x55, 0x56, 0x57, 0x58, 0x59, 0x60 } };
 		protected readonly int[] nチャンネル0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 8, 0 };
 		protected readonly int[] nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
-		protected readonly int[] nパッド0Atoチャンネル0A = new int[] { 0x11, 0x12, 0x13, 0x14, 0x15, 0x17, 0x16, 0x18, 0x19, 0x1a };
+		protected readonly int[] nパッド0Atoチャンネル0A = new int[] { 0x11, 0x12, 0x13, 20, 0x15, 0x17, 0x16, 0x18, 0x19, 0x1a };
 		protected readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };	// パッド画像のヒット処理用
 		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };	
 		protected STDGBVALUE<CHITCOUNTOFRANK> nヒット数_Auto含まない;
@@ -1633,7 +1633,6 @@ namespace DTXMania
 		protected abstract void t入力処理_ドラム();
 		protected abstract void ドラムスクロール速度アップ();
 		protected abstract void ドラムスクロール速度ダウン();
-		private int nStartTime_ = 0;
 		protected void tキー入力()
 		{
 			IInputDevice keyboard = CDTXMania.Input管理.Keyboard;
@@ -1643,7 +1642,6 @@ namespace DTXMania
 				this.bPAUSE = !this.bPAUSE;
 				if ( this.bPAUSE )
 				{
-					nStartTime_ = (int) CSound管理.rc演奏用タイマ.n現在時刻;
                     CSound管理.rc演奏用タイマ.t一時停止();
 					CDTXMania.Timer.t一時停止();
 					CDTXMania.DTX.t全チップの再生一時停止();
@@ -1651,47 +1649,10 @@ namespace DTXMania
 				}
 				else
 				{
-					CDTXMania.DTX.t全AVIの再生再開();
-					//CDTXMania.DTX.t全チップの再生再開();
-					#region [ PAUSE連打でのBGMずれ対策 (AVIはずれたままになるが無視・・・) ]
-					List<CSound> pausedCSound = new List<CSound>();
-					for ( int i = this.n現在のトップChip; i >= 0; i-- )
-					{
-						CDTX.CChip pChip = CDTXMania.DTX.listChip[ i ];
-						int nDuration = pChip.GetDuration();
-
-						if ( ( pChip.n発声時刻ms + nDuration > 0 ) && ( pChip.n発声時刻ms <= nStartTime_ ) && ( nStartTime_ <= pChip.n発声時刻ms + nDuration ) )
-						{
-							if ( pChip.bWAVを使うチャンネルである && !pChip.b空打ちチップである )	// wav系チャンネル、且つ、空打ちチップではない
-							{
-								CDTX.CWAV wc;
-								bool b = CDTXMania.DTX.listWAV.TryGetValue( pChip.n整数値_内部番号, out wc );
-								if ( !b ) continue;
-
-								if ( ( wc.bIsBGMSound && CDTXMania.ConfigIni.bBGM音を発声する ) || ( !wc.bIsBGMSound ) )
-								{
-									CDTXMania.DTX.tチップの再生( pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
-									#region [ PAUSEする ]
-									int j = wc.n現在再生中のサウンド番号;
-									if ( wc.rSound[ j ] != null )
-									{
-										wc.rSound[ j ].t再生を一時停止する();
-										wc.rSound[ j ].t再生位置を変更する( nStartTime_ - pChip.n発声時刻ms );
-										pausedCSound.Add( wc.rSound[ j ] );
-									}
-									#endregion
-								}
-							}
-						}
-					}
-					foreach ( CSound cs in pausedCSound )
-					{
-						cs.tサウンドを再生する();
-					}
-					#endregion
+                    CSound管理.rc演奏用タイマ.t再開();
 					CDTXMania.Timer.t再開();
-					CSound管理.rc演奏用タイマ.t再開();
-
+					CDTXMania.DTX.t全チップの再生再開();
+					CDTXMania.DTX.t全AVIの再生再開();
 				}
 			}
 			if ( ( !this.bPAUSE && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED ) ) && ( base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト ) )
@@ -2478,11 +2439,6 @@ namespace DTXMania
 			// 自分自身のOn活性化()相当の処理もすべき。
 		}
 
-		/// <summary>
-		/// 演奏位置を変更する。
-		/// </summary>
-		/// <param name="nStartBar">演奏開始小節番号</param>
-		/// <param name="bResetHitStatus">演奏済み情報(bHit)をクリアするかどうか</param>
 		public void t演奏位置の変更( int nStartBar )
 		{
 			// まず全サウンドオフにする
