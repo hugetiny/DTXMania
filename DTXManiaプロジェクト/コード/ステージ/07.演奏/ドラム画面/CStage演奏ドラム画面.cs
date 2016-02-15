@@ -197,12 +197,10 @@ namespace DTXMania
 				this.t進行描画_ステータスパネル();
 				this.t進行描画_ギターベースフレーム();
 				this.t進行描画_レーンフラッシュGB();
-                this.t進行描画_ギターベース判定ライン();
                 this.t進行描画_ゲージ();
                 this.t進行描画_グラフ();   // #24074 2011.01.23 add ikanick
 				this.t進行描画_レーンフラッシュD();
 				this.t進行描画_DANGER();
-				this.t進行描画_判定ライン();
 				if ( this.e判定表示優先度 == E判定表示優先度.Chipより下 )
 				{
 					this.t進行描画_RGBボタン();
@@ -211,10 +209,12 @@ namespace DTXMania
 				}
 				this.t進行描画_WailingBonus();
 				this.t進行描画_譜面スクロール速度();
+				this.t進行描画_ドラムパッド();
+				this.t進行描画_ギターベース判定ライン();
+				this.t進行描画_判定ライン();
 				this.t進行描画_チップアニメ();
 				bIsFinishedPlaying = this.t進行描画_チップ(E楽器パート.DRUMS);
 				this.t進行描画_演奏情報();
-				this.t進行描画_ドラムパッド();
 				if ( this.e判定表示優先度 == E判定表示優先度.Chipより上 )
 				{
 					this.t進行描画_RGBボタン();
@@ -435,11 +435,21 @@ namespace DTXMania
 
 		protected override void ドラムスクロール速度アップ()
 		{
+			float f = (float) this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums / (CDTXMania.ConfigIni.n譜面スクロール速度.Drums + 1);
+Debug.WriteLine( "scr=" + CDTXMania.ConfigIni.n譜面スクロール速度.Drums + ", f1=" + f );
 			CDTXMania.ConfigIni.n譜面スクロール速度.Drums = Math.Min( CDTXMania.ConfigIni.n譜面スクロール速度.Drums + 1, 1999 );
+			f *= ( CDTXMania.ConfigIni.n譜面スクロール速度.Drums + 1 );
+Debug.WriteLine( "scr=" + CDTXMania.ConfigIni.n譜面スクロール速度.Drums + ", f2=" + f );
+			this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums = (int) ( f + 0.5 );
+			CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums = (int) ( f + 0.5 );
 		}
 		protected override void ドラムスクロール速度ダウン()
 		{
+			float f = (float) this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums / (CDTXMania.ConfigIni.n譜面スクロール速度.Drums + 1);
 			CDTXMania.ConfigIni.n譜面スクロール速度.Drums = Math.Max( CDTXMania.ConfigIni.n譜面スクロール速度.Drums - 1, 0 );
+			f *= ( CDTXMania.ConfigIni.n譜面スクロール速度.Drums + 1 );
+			this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums = (int) ( f + 0.5 );
+			CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums = (int) ( f + 0.5 );
 		}
 
 	
@@ -473,8 +483,8 @@ namespace DTXMania
 
 		protected override void t進行描画_Wailing枠()
 		{
-			int yG = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ], true );
-			int yB = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ], true );
+			int yG = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ], true, true );
+			int yB = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS,   false, bReverse[ (int) E楽器パート.BASS   ], true, true );
 			base.t進行描画_Wailing枠(
 				( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?  1761 : 1690,
 				( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?  1434 : 440,
@@ -538,7 +548,7 @@ namespace DTXMania
 				if ( CDTXMania.DTX.bチップがある.Guitar )
 				{
 					int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1527 : 1456;
-					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ] ) - (int) ( 3 * Scale.Y );
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, bReverse[ (int) E楽器パート.GUITAR ], false, true ) - (int) ( 3 * Scale.Y );
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					Rectangle rc = new Rectangle( 0, 0, 30, 36 );
 					if ( this.txヒットバーGB != null )
@@ -560,7 +570,7 @@ namespace DTXMania
 				if ( CDTXMania.DTX.bチップがある.Bass )
 				{
 					int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1200 : 206;
-					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, bReverse[ (int) E楽器パート.BASS ] ) - (int) ( 3 * Scale.Y );
+					int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, bReverse[ (int) E楽器パート.BASS ], false, true ) - (int) ( 3 * Scale.Y );
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 					Rectangle rc = new Rectangle( 0, 0, 30, 36 );
 					if ( this.txヒットバーGB != null )

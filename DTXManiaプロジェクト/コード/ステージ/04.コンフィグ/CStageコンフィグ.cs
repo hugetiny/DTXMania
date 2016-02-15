@@ -66,6 +66,10 @@ namespace DTXMania
 				}																				//
 				this.bメニューにフォーカス中 = true;											// ここまでOPTIONと共通
 				this.eItemPanelモード = EItemPanelモード.パッド一覧;
+
+				fDisplayLagTimeBaseMs.Drums = (float) CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums / ( CDTXMania.ConfigIni.n譜面スクロール速度.Drums + 1 );
+				fDisplayLagTimeBaseMs.Guitar = (float) CDTXMania.ConfigIni.nJudgeLinePosOffset.Guitar / ( CDTXMania.ConfigIni.n譜面スクロール速度.Guitar + 1 );
+				fDisplayLagTimeBaseMs.Bass = (float) CDTXMania.ConfigIni.nJudgeLinePosOffset.Bass / ( CDTXMania.ConfigIni.n譜面スクロール速度.Bass + 1 );
 			}
 			finally
 			{
@@ -90,6 +94,11 @@ namespace DTXMania
 				{
 					this.ctキー反復用[ i ] = null;
 				}
+
+				CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums =  (int) ( fDisplayLagTimeBaseMs.Drums  * ( CDTXMania.ConfigIni.n譜面スクロール速度.Drums + 1 ) );
+				CDTXMania.ConfigIni.nJudgeLinePosOffset.Guitar = (int) ( fDisplayLagTimeBaseMs.Guitar * ( CDTXMania.ConfigIni.n譜面スクロール速度.Guitar + 1 ) );
+				CDTXMania.ConfigIni.nJudgeLinePosOffset.Bass =   (int) ( fDisplayLagTimeBaseMs.Bass   * ( CDTXMania.ConfigIni.n譜面スクロール速度.Bass + 1 ) );
+
 				base.On非活性化();
 			}
 			catch ( UnauthorizedAccessException e )
@@ -498,6 +507,7 @@ namespace DTXMania
 		private CTexture tx背景;
 		private CPrivateFastFont prvFont;
 		private CTexture[ , ] txMenuItemLeft;
+		private STDGBVALUE<float> fDisplayLagTimeBaseMs;
 
 		private void tカーソルを下へ移動する()
 		{

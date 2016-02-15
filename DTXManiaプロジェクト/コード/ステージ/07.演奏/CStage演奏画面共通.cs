@@ -254,7 +254,7 @@ namespace DTXMania
 			}
 			this.r現在の空うちギターChip = null;
 			this.r現在の空うちベースChip = null;
-			cInvisibleChip = new CInvisibleChip( CDTXMania.ConfigIni.nDisplayTimesMs, CDTXMania.ConfigIni.nFadeoutTimeMs );
+			cInvisibleChip = new CInvisibleChip( CDTXMania.ConfigIni.nChipDisplayTimeMs, CDTXMania.ConfigIni.nChipFadeoutTimeMs );
 			this.演奏判定ライン座標 = new C演奏判定ライン座標共通();
             this.n最大コンボ数_TargetGhost = new STDGBVALUE<int>(); // #35411 2015.08.21 chnmr0 add
 			for ( int k = 0; k < 3; k++ )
@@ -1729,6 +1729,28 @@ namespace DTXMania
 				{
 					ChangeInputAdjustTimeInPlaying( keyboard, +1 );
 				}
+				else if ( keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F5 ) )
+				{
+					int n描画遅延ms = CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums;
+					n描画遅延ms = Math.Max( n描画遅延ms - 1, -99);
+					CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums =
+					CDTXMania.ConfigIni.nJudgeLinePosOffset.Guitar =
+					CDTXMania.ConfigIni.nJudgeLinePosOffset.Bass = n描画遅延ms;
+					this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums =
+					this.演奏判定ライン座標.nJudgeLinePosY_delta.Guitar =
+					this.演奏判定ライン座標.nJudgeLinePosY_delta.Bass = n描画遅延ms;
+				}
+				else if ( keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F6 ) )
+				{
+					int n描画遅延ms = CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums;
+					n描画遅延ms = Math.Min( n描画遅延ms + 1, 99 );
+					CDTXMania.ConfigIni.nJudgeLinePosOffset.Drums =
+					CDTXMania.ConfigIni.nJudgeLinePosOffset.Guitar =
+					CDTXMania.ConfigIni.nJudgeLinePosOffset.Bass = n描画遅延ms;
+					this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums =
+					this.演奏判定ライン座標.nJudgeLinePosY_delta.Guitar =
+					this.演奏判定ライン座標.nJudgeLinePosY_delta.Bass = n描画遅延ms;
+				}
 				else if ( ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 ) && ( keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape ) || CDTXMania.Pad.b押されたGB( Eパッド.FT ) ) )
 				{	// escape (exit)
 					this.actFO.tフェードアウト開始();
@@ -1914,9 +1936,20 @@ namespace DTXMania
 
 				int instIndex = (int) pChip.e楽器パート;
 				if ( ( ( pChip.e楽器パート != E楽器パート.UNKNOWN ) && !pChip.bHit ) &&
-				    ( ( pChip.nバーからの距離dot[ instIndex ] < -40 * Scale.Y ) && ( this.e指定時刻からChipのJUDGEを返す( CSound管理.rc演奏用タイマ.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss ) ) )
+				    ( ( pChip.nバーからの距離dot[ instIndex ] < -40 * Scale.Y ) &&
+					( this.e指定時刻からChipのJUDGEを返す( CSound管理.rc演奏用タイマ.n現在時刻, pChip, nInputAdjustTime ) == E判定.Miss ) ) )
 				{
-				    this.tチップのヒット処理( CSound管理.rc演奏用タイマ.n現在時刻, pChip );
+				    this.tチップのヒット処理( CSound管理.rc演奏用タイマ.n現在時刻, pChip );	//チップ消失(Hitせずスルーした場合)
+				}
+				if ( ( ( pChip.e楽器パート != E楽器パート.UNKNOWN ) && !pChip.bHit ) &&
+					( ( pChip.nバーからの距離dot[ instIndex ] + this.演奏判定ライン座標.nJudgeLinePosY_delta[instIndex] < 0 ) ) )
+				{
+					//Debug.WriteLine( "透明度＝" + pChip.n透明度 );
+					pChip.n透明度 -= 12;		// チップが判定バーを越えたら、徐々に透明にする。VSyncWaitの有無で加減が変わるが・・
+					if ( pChip.n透明度 < 0 )
+					{
+						pChip.n透明度 = 0;
+					}
 				}
 
                 // #35411 chnmr0 add (ターゲットゴースト)
@@ -3155,9 +3188,8 @@ namespace DTXMania
 		{
 			if ( CDTXMania.ConfigIni.eDark != Eダークモード.FULL )
 			{
-				int y = CDTXMania.ConfigIni.bReverse.Drums ?
-					119 - 演奏判定ライン座標.nJudgeLinePosY_delta.Drums :
-					942 + 演奏判定ライン座標.nJudgeLinePosY_delta.Drums;
+				int y = this.演奏判定ライン座標.n判定ラインY座標( E楽器パート.DRUMS, false, bReverse[ (int) E楽器パート.DRUMS ], false, true );	// -(int) ( 3 * Scale.Y );
+				// #31602 2016.2.11 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 																// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 				if ( this.txヒットバー != null )
 				{
@@ -3364,11 +3396,21 @@ namespace DTXMania
 			#region [ スクロール速度変更 ]
 			if ( CDTXMania.Pad.b押されている( inst, Eパッド.Decide ) && CDTXMania.Pad.b押された( inst, Eパッド.B ) )
 			{
-				CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] = Math.Min( CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] + 1, 0x7cf );
+				float f = (float) this.演奏判定ライン座標.nJudgeLinePosY_delta[indexInst] / ( CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] + 1 );
+				CDTXMania.ConfigIni.n譜面スクロール速度[ indexInst ] = Math.Min( CDTXMania.ConfigIni.n譜面スクロール速度[ indexInst ] + 1, 1999 );
+				f *= CDTXMania.ConfigIni.n譜面スクロール速度[ indexInst ];
+				this.演奏判定ライン座標.nJudgeLinePosY_delta[ indexInst ] = (int) ( f + 0.5 );
+				CDTXMania.ConfigIni.nJudgeLinePosOffset[ indexInst ] = (int) ( f + 0.5 );
 			}
 			if ( CDTXMania.Pad.b押されている( inst, Eパッド.Decide ) && CDTXMania.Pad.b押された( inst, Eパッド.R ) )
 			{
 				CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] = Math.Max( CDTXMania.ConfigIni.n譜面スクロール速度[indexInst] - 1, 0 );
+
+				float f = (float) this.演奏判定ライン座標.nJudgeLinePosY_delta[ indexInst ] / ( CDTXMania.ConfigIni.n譜面スクロール速度[ indexInst ] + 1 );
+				CDTXMania.ConfigIni.n譜面スクロール速度[ indexInst ] = Math.Max( CDTXMania.ConfigIni.n譜面スクロール速度[ indexInst ] - 1, 0 );
+				f *= CDTXMania.ConfigIni.n譜面スクロール速度[ indexInst ];
+				this.演奏判定ライン座標.nJudgeLinePosY_delta[ indexInst ] = (int) ( f + 0.5 );
+				CDTXMania.ConfigIni.nJudgeLinePosOffset[ indexInst ] = (int) ( f + 0.5 );
 			}
 			#endregion
 

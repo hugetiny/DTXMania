@@ -83,7 +83,8 @@ namespace DTXMania
 							this.st青い星[ j ].fX =
 								(int) ( this.nレーンの中央X座標[ (int) lane ] * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) ) +
 											( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) );
-							this.st青い星[ j ].fY = CDTXMania.ConfigIni.bReverse.Drums ? ( (float) 55 - nJudgeLinePosY_delta_Drums ) : ( (float) 425 + nJudgeLinePosY_delta_Drums );
+							this.st青い星[ j ].fY = CDTXMania.ConfigIni.bReverse.Drums ?
+								(float) (119 + 4) - nJudgeLinePosY_delta_Drums : (float) (942 + 14) + nJudgeLinePosY_delta_Drums;
 							this.st青い星[ j ].f加速度X = (float) ( num7 * Math.Cos( ( Math.PI * 2 * n回転初期値 ) / 360.0 ) );
 							this.st青い星[ j ].f加速度Y = (float) ( num7 * ( Math.Sin( ( Math.PI * 2 * n回転初期値 ) / 360.0 ) - 0.2 ) );
 							this.st青い星[ j ].f加速度の加速度X = 0.995f;
@@ -254,7 +255,9 @@ namespace DTXMania
 							+
 								( (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? (float)(54 * 3) : (float)(619 + 12 + 40) ) +
 								( ( (float) Math.Cos( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Width / 2,
-							-( ( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) + ( ( (float) Math.Sin( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Height / 2 ),
+							-( ( ( CDTXMania.ConfigIni.bReverse.Drums ?
+								( 119 + 4 ) - nJudgeLinePosY_delta_Drums : ( 942 + 14 ) + nJudgeLinePosY_delta_Drums )
+							+ ( ( (float) Math.Sin( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Height / 2 ),
 							0f
 						);
 						if( this.tx火花 != null )
@@ -341,7 +344,9 @@ namespace DTXMania
 								(int)(this.nレーンの中央X座標[ this.st大波[ i ].nLane ] * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75)) +
 									( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) )
 									- SampleFramework.GameWindowSize.Width / 2,
-								-( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) - SampleFramework.GameWindowSize.Height / 2 ),
+								-( ( CDTXMania.ConfigIni.bReverse.Drums ?
+								(119 + 4) - nJudgeLinePosY_delta_Drums : (942 + 14) + nJudgeLinePosY_delta_Drums )
+								- SampleFramework.GameWindowSize.Height / 2 ),
 								0f );
 							if( this.tx大波 != null )
 							{
@@ -378,7 +383,9 @@ namespace DTXMania
 								(int)( this.nレーンの中央X座標[ this.st細波[ i ].nLane ] * (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75 ) ) +
 								( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) )
 									-SampleFramework.GameWindowSize.Width / 2,
-								-( ( CDTXMania.ConfigIni.bReverse.Drums ? 55f * Scale.Y - nJudgeLinePosY_delta_Drums : 425f * Scale.Y + nJudgeLinePosY_delta_Drums ) - SampleFramework.GameWindowSize.Height / 2 ),
+								-( ( CDTXMania.ConfigIni.bReverse.Drums ?
+								(119 + 4) - nJudgeLinePosY_delta_Drums : (942 + 14) + nJudgeLinePosY_delta_Drums )
+								- SampleFramework.GameWindowSize.Height / 2 ),
 								0f
 							);
 							if (this.tx細波 != null)

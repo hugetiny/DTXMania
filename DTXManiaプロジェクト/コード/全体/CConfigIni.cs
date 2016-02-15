@@ -496,6 +496,7 @@ namespace DTXMania
 //		public int n切り捨て下限Velocity;			// #23857 2010.12.12 yyagi VelocityMin
 		public STDGBVALUE<int> nInputAdjustTimeMs;	// #23580 2011.1.3 yyagi タイミングアジャスト機能
 		public STDGBVALUE<int> nJudgeLinePosOffset;	// #31602 2013.6.23 yyagi 判定ライン表示位置のオフセット
+		public STDGBVALUE<float> fJudgeLinePosOffsetBase;
 		public int	nShowLagType;					// #25370 2011.6.5 yyagi ズレ時間表示機能
 		public bool bIsAutoResultCapture;			// #25399 2011.6.9 yyagi リザルト画像自動保存機能のON/OFF制御
 		public int nPoliphonicSounds;				// #28228 2012.5.1 yyagi レーン毎の最大同時発音数
@@ -683,7 +684,7 @@ namespace DTXMania
 		public bool bDynamicBassMixerManagement;	// #24820
 		public bool bTimeStretch;					// #23664 2013.2.24 yyagi ピッチ変更無しで再生速度を変更するかどうか
 		public STDGBVALUE<EInvisible> eInvisible;	// #32072 2013.9.20 yyagi チップを非表示にする
-		public int nDisplayTimesMs, nFadeoutTimeMs;
+		public int nChipDisplayTimeMs, nChipFadeoutTimeMs;	// Invisible対応
 
 		public STDGBVALUE<int> nViewerScrollSpeed;
 		public bool bViewerVSyncWait;
@@ -1147,11 +1148,13 @@ namespace DTXMania
 				this.n譜面スクロール速度[ i ] = 1;
 				this.nInputAdjustTimeMs[ i ] = 0;
 				this.nJudgeLinePosOffset[ i ] = 0;
+				this.fJudgeLinePosOffsetBase[ i ] = 0.0f;
 				this.eInvisible[ i ] = EInvisible.OFF;
 				this.nViewerScrollSpeed[ i ] = 1;
 				this.e判定位置[ i ] = E判定位置.標準;
 				//this.e判定表示優先度[ i ] = E判定表示優先度.Chipより下;
 			}
+
 			this.n演奏速度 = 20;
 			#region [ AutoPlay ]
 			this.bAutoPlay = new STAUTOPLAY();
@@ -1221,8 +1224,8 @@ namespace DTXMania
 			this.bUseOSTimer = false;;					// #33689 2014.6.6 yyagi 初期値はfalse (FDKのタイマー。ＦＲＯＭ氏考案の独自タイマー)
 			this.bDynamicBassMixerManagement = true;	//
 			this.bTimeStretch = false;					// #23664 2013.2.24 yyagi 初期値はfalse (再生速度変更を、ピッチ変更にて行う)
-			this.nDisplayTimesMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
-			this.nFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
+			this.nChipDisplayTimeMs = 3000;				// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップ再表示期間
+			this.nChipFadeoutTimeMs = 2000;					// #32072 2013.10.24 yyagi Semi-Invisibleでの、チップフェードアウト時間
 
 			this.bViewerVSyncWait = true;
 			this.bViewerShowDebugStatus = true;
@@ -1633,18 +1636,18 @@ namespace DTXMania
 			sw.WriteLine("InputAdjustTimeBass={0}", this.nInputAdjustTimeMs.Bass);			//
 			sw.WriteLine();
 
-			sw.WriteLine( "; 判定ラインの表示位置調整(ドラム, ギター, ベース)(-99～99)[px]" );	// #31602 2013.6.23 yyagi 判定ラインの表示位置オフセット
+			sw.WriteLine( "; 判定ラインの表示位置調整(x0.5相当;ドラム, ギター, ベース)[px]" );	// #31602 2013.6.23 yyagi 判定ラインの表示位置オフセット
 			sw.WriteLine( "; Offset value to adjust displaying judgement line for the drums, guitar and bass." );	//
-			sw.WriteLine( "JudgeLinePosOffsetDrums={0}",  this.nJudgeLinePosOffset.Drums );		//
-			sw.WriteLine( "JudgeLinePosOffsetGuitar={0}", this.nJudgeLinePosOffset.Guitar );	//
-			sw.WriteLine( "JudgeLinePosOffsetBass={0}",   this.nJudgeLinePosOffset.Bass );		//
+			sw.WriteLine( "JudgeLinePosOffsetDrums={0}",  (float) (this.nJudgeLinePosOffset.Drums  / ( this.n譜面スクロール速度.Drums  + 1 ) ) );	//
+			sw.WriteLine( "JudgeLinePosOffsetGuitar={0}", (float) (this.nJudgeLinePosOffset.Guitar / ( this.n譜面スクロール速度.Guitar + 1 ) ) );	//
+			sw.WriteLine( "JudgeLinePosOffsetBass={0}",   (float) (this.nJudgeLinePosOffset.Bass   / ( this.n譜面スクロール速度.Bass   + 1 ) ) );	//
 
 			sw.WriteLine( "; 判定ラインの表示位置(ギター, ベース)" );	// #33891 2014.6.26 yyagi
 			sw.WriteLine( "; 0=Normal, 1=Lower" );
 			sw.WriteLine( "; Position of the Judgement line and RGB button; Vseries compatible(1) or not(0)." );	//
 			sw.WriteLine( "JudgeLinePosModeGuitar={0}", (int) this.e判定位置.Guitar );	//
 			sw.WriteLine( "JudgeLinePosModeBass={0}  ", (int) this.e判定位置.Bass );	//
-			
+
 			sw.WriteLine();
 			#endregion
 			#region [ VelocityMin ]
@@ -2552,15 +2555,15 @@ namespace DTXMania
 											}
 											else if ( str3.Equals( "JudgeLinePosOffsetDrums" ) )		// #31602 2013.6.23 yyagi
 											{
-												this.nJudgeLinePosOffset.Drums = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Drums );
+												this.fJudgeLinePosOffsetBase.Drums = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Drums );
 											}
 											else if ( str3.Equals( "JudgeLinePosOffsetGuitar" ) )		// #31602 2013.6.23 yyagi
 											{
-												this.nJudgeLinePosOffset.Guitar = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Guitar );
+												this.fJudgeLinePosOffsetBase.Guitar = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Guitar );
 											}
 											else if ( str3.Equals( "JudgeLinePosOffsetBass" ) )			// #31602 2013.6.23 yyagi
 											{
-												this.nJudgeLinePosOffset.Bass = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Bass );
+												this.fJudgeLinePosOffsetBase.Bass = C変換.n値を文字列から取得して範囲内にちゃんと丸めて返す( str4, -99, 99, this.nJudgeLinePosOffset.Bass );
 											}
 											else if ( str3.Equals( "JudgeLinePosModeGuitar" ) )	// #33891 2014.6.26 yyagi
 											{
@@ -3173,6 +3176,11 @@ namespace DTXMania
 						continue;
 					}
 				}
+			}
+
+			for (int i = 0; i < 3; i++ )
+			{
+				nJudgeLinePosOffset[ i ] = (int) ( fJudgeLinePosOffsetBase[ i ] * ( this.n譜面スクロール速度[ i ] + 1 ) );
 			}
 		}
 

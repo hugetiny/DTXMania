@@ -36,11 +36,11 @@ namespace DTXMania
 			n判定ラインY座標元データ = new STDGBVALUE<int>[ 2, 2, 2 ];
 			#region [ 判定ライン座標の初期化]
 			// Normal, Drums画面, 判定ライン
-			n判定ラインY座標元データ[ 0, 0, 0 ].Drums  = 0;		//未使用
+			n判定ラインY座標元データ[ 0, 0, 0 ].Drums  = 942;
 			n判定ラインY座標元データ[ 0, 0, 0 ].Guitar = (int)(95 * Scale.Y);
 			n判定ラインY座標元データ[ 0, 0, 0 ].Bass   = (int)(95 * Scale.Y);
 			// Reverse, Drums画面, 判定ライン
-			n判定ラインY座標元データ[ 1, 0, 0 ].Drums  = 0;		//未使用
+			n判定ラインY座標元データ[ 1, 0, 0 ].Drums  = 119;
 			n判定ラインY座標元データ[ 1, 0, 0 ].Guitar = (int)(374 * Scale.Y);
 			n判定ラインY座標元データ[ 1, 0, 0 ].Bass   = (int)(374 * Scale.Y);
 			// Normal, Drums画面, Wailing枠
@@ -121,7 +121,7 @@ namespace DTXMania
 
 	
 		/// <summary>
-		/// 判定ラインのY座標を返す。とりあえずGuitar/Bassのみ対応。
+		/// 判定ラインのY座標を返す。
 		/// </summary>
 		/// <param name="eInst">E楽器パート</param>
 		/// <param name="bGRmode">GRmodeか否か</param>
@@ -138,7 +138,7 @@ namespace DTXMania
 		}
 
 		/// <summary>
-		/// 判定ラインのY座標を返す。とりあえずGuitar/Bassのみ対応。
+		/// 判定ラインのY座標を返す。
 		/// </summary>
 		/// <param name="eInst">E楽器パート</param>
 		/// <param name="bGRmode">GRmodeか否か</param>
@@ -148,11 +148,7 @@ namespace DTXMania
 		/// <returns></returns>
 		public int n判定ラインY座標( E楽器パート eInst, bool bGRmode, bool bReverse, bool bWailingFrame, bool b補正あり )
 		{
-			if ( eInst == E楽器パート.DRUMS )
-			{
-				throw new NotImplementedException();
-			}
-			else if ( eInst == E楽器パート.UNKNOWN )
+			if ( eInst == E楽器パート.UNKNOWN )
 			{
 				throw new ArgumentOutOfRangeException();
 			}
@@ -165,13 +161,38 @@ namespace DTXMania
 				int ret = this.n判定ラインY座標元データ[ nReverse, nGRmode, nWailing ][ nInst ];		// 補正無しの値
 				if ( bReverse )
 				{
-					if ( n判定位置[ nInst ] == E判定位置.Lower ) ret += (int)(13 * Scale.Y);
-					if ( b補正あり )		ret += nJudgeLinePosY_delta[ nInst ];
+					if ( eInst != E楽器パート.DRUMS && n判定位置[ nInst ] == E判定位置.Lower )
+						ret += (int) ( 13 * Scale.Y );
+					if ( b補正あり )
+					{ 
+						if (eInst == E楽器パート.DRUMS)
+						{
+							ret += nJudgeLinePosY_delta[ nInst ];
+
+						}
+						else
+						{
+							ret -= nJudgeLinePosY_delta[ nInst ];
+						}
+					}
+
 				}
 				else
 				{
-					if ( n判定位置[ nInst ] == E判定位置.Lower ) ret += (int) ( 52 * Scale.Y );
-					if ( b補正あり )		ret -= nJudgeLinePosY_delta[ nInst ];
+					if ( eInst != E楽器パート.DRUMS &&  n判定位置[ nInst ] == E判定位置.Lower )
+						ret += (int) ( 52 * Scale.Y );
+					if ( b補正あり )
+					{
+						if ( eInst == E楽器パート.DRUMS )
+						{
+							ret += nJudgeLinePosY_delta[ nInst ];
+
+						}
+						else
+						{
+							ret -= nJudgeLinePosY_delta[ nInst ];
+						}
+					}
 				}
 				return ret;
 			}
