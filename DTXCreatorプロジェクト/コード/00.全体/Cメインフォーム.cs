@@ -5741,6 +5741,22 @@ if ( (string)mo[ "ExecutablePath" ] == processname )
 			return target;
 		}
 
+		private void calcDifficultyToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			DTXCreator.コード._05.譜面.C難易度自動計算マン f = new コード._05.譜面.C難易度自動計算マン(this);
+
+      Cメッセージポップアップ pop = new Cメッセージポップアップ(Resources.str難易度計算マン計算中);
+      pop.Owner = this;
+      pop.Show();
+      pop.Refresh();
+
+			f.Prepare();
+      hScrollBarDLEVEL.Value = f.DLevel;
+			hScrollBarGLEVEL.Value = f.GLevel;
+			hScrollBarBLEVEL.Value = f.BLevel;
+      pop.Close();
+		}
+
 		//-----------------
 		#endregion
 

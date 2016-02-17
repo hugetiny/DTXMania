@@ -311,4 +311,7 @@ Do you want to save the changes?</value>
   <data name="str名前を付けて保存ダイアログのフィルタ" xml:space="preserve">
     <value>DTX files(*.dtx)|*.dtx</value>
   </data>
+  <data name="str難易度計算マン計算中" xml:space="preserve">
+    <value>Calculating DGB levels</value>
+  </data>
 </root>

@@ -739,6 +739,26 @@ namespace DTXCreator.譜面
 			}
 		}
 
+		// チップのプロパティにすべきだが譜面管理者必要なため
+		public bool IsDrumsChip(Cチップ chip)
+		{
+			return chip.nレーン番号0to >= nレーン名に対応するレーン番号を返す("LC") && chip.nレーン番号0to <= nレーン名に対応するレーン番号を返す("CY");
+		}
+
+		public bool IsGuitarChip(Cチップ chip)
+		{
+			return chip.nレーン番号0to >= nレーン名に対応するレーン番号を返す("GtV") && chip.nレーン番号0to <= nレーン名に対応するレーン番号を返す("GtB");
+		}
+
+		public bool IsBassChip(Cチップ chip)
+		{
+			return chip.nレーン番号0to >= nレーン名に対応するレーン番号を返す("BsV") && chip.nレーン番号0to <= nレーン名に対応するレーン番号を返す("BsB");
+		}
+
+		public bool IsPlayableChip(Cチップ chip)
+		{
+			return IsDrumsChip(chip) || IsBassChip(chip) || IsGuitarChip(chip);
+		}
 
 		#region [ private ]
 		//-----------------
@@ -1060,5 +1080,7 @@ namespace DTXCreator.譜面
 		}
 		//-----------------
 		#endregion
+
+		
 	}
 }

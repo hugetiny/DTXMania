@@ -302,6 +302,9 @@
   <data name="label曲名.Text" xml:space="preserve">
     <value>曲名</value>
   </data>
+  <data name="toolStripMenuItem難易度自動計算.Text" xml:space="preserve">
+    <value>難易度自動計算マンによる査定</value>
+  </data>
   <data name="label曲名.ToolTip" xml:space="preserve">
     <value>演奏データのタイトルを設定します。</value>
   </data>

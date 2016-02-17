@@ -171,6 +171,9 @@
   <data name="str個のチップが選択されましたMSG" xml:space="preserve">
     <value> 個のチップが選択されました。</value>
   </data>
+  <data name="str難易度計算マン計算中" xml:space="preserve">
+    <value>難易度計算マンが計算中です。</value>
+  </data>
   <data name="str個のチップを置換しましたMSG" xml:space="preserve">
     <value> 個のチップを置換しました。</value>
   </data>
