@@ -9,7 +9,7 @@ using FDK;
 
 namespace DTXMania
 {
-	internal class CConfigIni
+	public class CConfigIni
 	{
 		// クラス
 

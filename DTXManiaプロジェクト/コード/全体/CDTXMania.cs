@@ -737,7 +737,7 @@ namespace DTXMania
 							foreach( STPlugin pg in this.listプラグイン )
 							{
 								Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-								pg.plugin.Onステージ変更();
+								pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 								Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 							}
 
@@ -810,7 +810,7 @@ namespace DTXMania
 						foreach( STPlugin pg in this.listプラグイン )
 						{
 							Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-							pg.plugin.Onステージ変更();
+              pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 							Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 						}
 
@@ -895,7 +895,7 @@ namespace DTXMania
 									foreach( STPlugin pg in this.listプラグイン )
 									{
 										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-										pg.plugin.Onステージ変更();
+                    pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 										Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 									}
 
@@ -917,7 +917,7 @@ namespace DTXMania
 									foreach( STPlugin pg in this.listプラグイン )
 									{
 										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-										pg.plugin.Onステージ変更();
+                    pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 										Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 									}
 
@@ -949,7 +949,7 @@ namespace DTXMania
 								foreach( STPlugin pg in this.listプラグイン )
 								{
 									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-									pg.plugin.Onステージ変更();
+                  pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 								}
 
@@ -971,7 +971,7 @@ namespace DTXMania
 								foreach( STPlugin pg in this.listプラグイン )
 								{
 									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-									pg.plugin.Onステージ変更();
+                  pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 								}
 
@@ -1015,7 +1015,7 @@ namespace DTXMania
 								foreach( STPlugin pg in this.listプラグイン )
 								{
 									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-									pg.plugin.Onステージ変更();
+                  pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 								}
 
@@ -1065,7 +1065,7 @@ namespace DTXMania
 								foreach ( STPlugin pg in this.listプラグイン )
 								{
 									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-									pg.plugin.Onステージ変更();
+                  pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 								}
 								break;
@@ -1114,7 +1114,7 @@ for (int i = 0; i < 3; i++) {
 							foreach( STPlugin pg in this.listプラグイン )
 							{
 								Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-								pg.plugin.Onステージ変更();
+                pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 								Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 							}
 
@@ -1319,7 +1319,7 @@ for (int i = 0; i < 3; i++) {
 									foreach( STPlugin pg in this.listプラグイン )
 									{
 										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-										pg.plugin.Onステージ変更();
+                    pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 										Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 									}
 									//---------------------
@@ -1367,7 +1367,7 @@ for (int i = 0; i < 3; i++) {
 									foreach( STPlugin pg in this.listプラグイン )
 									{
 										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-										pg.plugin.Onステージ変更();
+                    pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 										Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 									}
 									//---------------------
@@ -1489,7 +1489,7 @@ for (int i = 0; i < 3; i++) {
 								foreach( STPlugin pg in this.listプラグイン )
 								{
 									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-									pg.plugin.Onステージ変更();
+                  pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 								}
 								//---------------------
@@ -1529,7 +1529,7 @@ for (int i = 0; i < 3; i++) {
 								foreach( STPlugin pg in this.listプラグイン )
 								{
 									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
-									pg.plugin.Onステージ変更();
+                  pg.plugin.Onステージ変更(CDTXMania.ConfigIni);
 									Directory.SetCurrentDirectory( CDTXMania.strEXEのあるフォルダ );
 								}
 

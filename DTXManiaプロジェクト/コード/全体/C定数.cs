@@ -411,7 +411,7 @@ namespace DTXMania
 		ChipがPadより優先,
 		PadがChipより優先
 	}
-	internal enum E入力デバイス
+	public enum E入力デバイス
 	{
 		キーボード		= 0,
 		MIDI入力		= 1,
@@ -429,36 +429,36 @@ namespace DTXMania
 		Bad		= 5,
 		Auto
 	}
-	internal enum E判定文字表示位置
+	public enum E判定文字表示位置
 	{
 		表示OFF,
 		レーン上,
 		判定ライン上,
 		コンボ下
 	}
-	internal enum E判定位置
+	public enum E判定位置
 	{
 		標準	= 0,
 		Lower,
 		MAX
 	}
-	internal enum E判定表示優先度
+	public enum E判定表示優先度
 	{
 		Chipより下,
 		Chipより上
 	}
-	internal enum Eドラムレーン表示位置
+	public enum Eドラムレーン表示位置
 	{
 		Left = 0,
 		Center = 1
 	}
-	internal enum EAVI種別
+	public enum EAVI種別
 	{
 		Unknown,
 		AVI,
 		AVIPAN
 	}
-	internal enum EBGA種別
+	public enum EBGA種別
 	{
 		Unknown,
 		BMP,
@@ -466,19 +466,19 @@ namespace DTXMania
 		BGA,
 		BGAPAN
 	}
-	internal enum EFIFOモード
+	public enum EFIFOモード
 	{
 		フェードイン,
 		フェードアウト
 	}
-	internal enum Eドラムコンボ文字の表示位置
+	public enum Eドラムコンボ文字の表示位置
 	{
 		LEFT,
 		CENTER,
 		RIGHT,
 		OFF
 	}
-	internal enum Eレーン
+	public enum Eレーン
 	{
 		LC = 0,
 		HH,
@@ -504,18 +504,18 @@ namespace DTXMania
 		MAX,	// 要素数取得のための定義 ("BGM"は使わない前提で)
 		BGM
 	}
-	internal enum Eレーン数
+	public enum Eレーン数
 	{
 		物理 = 8,	// LC, HH,     SD, BD, HT, LT, FT, CY
 		論理 = 10	// LC, HO, HC, SD, BD, HT, LT, FT, RC, RD
 	}
-	internal enum Eログ出力
+	public enum Eログ出力
 	{
 		OFF,
 		ON通常,
 		ON詳細あり
 	}
-	internal enum E演奏画面の戻り値
+	public enum E演奏画面の戻り値
 	{
 		継続,
 		演奏中断,
@@ -524,7 +524,7 @@ namespace DTXMania
 		再読込_再演奏,
 		再演奏
 	}
-	internal enum E曲読込画面の戻り値
+	public enum E曲読込画面の戻り値
 	{
 		継続 = 0,
 		読込完了,
@@ -533,7 +533,7 @@ namespace DTXMania
 	/// <summary>
 	/// 入力ラグ表示タイプ
 	/// </summary>
-	internal enum EShowLagType
+	public enum EShowLagType
 	{
 		OFF,			// 全く表示しない
 		ON,				// 判定に依らず全て表示する
