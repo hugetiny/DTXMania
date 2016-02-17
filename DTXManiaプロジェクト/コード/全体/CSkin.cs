@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using System.Drawing;
 using FDK;
 
 namespace DTXMania
@@ -451,7 +452,7 @@ namespace DTXMania
 		// 　後者はbox.defで指定する、曲データ制作者が提示するスキン。
 		//
 		// ・Config画面で、2種のスキンを区別無く常時使用するよう設定することができる。
-		// ・box.defの#SKINPATH 設定により、boxdefスキンを一時的に使用するよう設定する。
+		// ・box.defの#SKINPATH100 設定により、boxdefスキンを一時的に使用するよう設定する。
 		// 　(box.defの効果の及ばない他のmuxic boxでは、当該boxdefスキンの有効性が無くなる)
 		//
 		// これを実現するために・・・
@@ -756,7 +757,7 @@ namespace DTXMania
 
 		/// <summary>
 		/// スキンパス名が妥当かどうか
-		/// (タイトル画像にアクセスできるかどうかで判定する)
+		/// (FHDのタイトル画像にアクセスできるかどうかで判定する)
 		/// </summary>
 		/// <param name="skinPathFullName">妥当性を確認するスキンパス(フルパス)</param>
 		/// <returns>妥当ならtrue</returns>
@@ -764,7 +765,17 @@ namespace DTXMania
 		{
 			string filePathTitle;
 			filePathTitle = System.IO.Path.Combine( skinPathFullName, @"Graphics\ScreenTitle background.jpg" );
-			return ( File.Exists( filePathTitle ) );
+			if ( File.Exists( filePathTitle ) )
+			{
+				Bitmap bmp = Bitmap.FromFile( filePathTitle ) as Bitmap;
+				int width = bmp.Width;
+				bmp.Dispose();
+				if ( width >= 1920 )
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 
