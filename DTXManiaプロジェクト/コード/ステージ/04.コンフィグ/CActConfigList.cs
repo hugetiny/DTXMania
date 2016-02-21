@@ -334,6 +334,15 @@ namespace DTXMania
 				"To take it effective, you need to re-open DTXMania." );
 			this.list項目リスト.Add( this.iLogOutputLog );
 
+			this.iSystemLoadsoundspeed = new CItemToggle( "LoadSoundSpeed", CDTXMania.ConfigIni.b曲読み込みを高速化する,
+				"曲読み込みを高速化する：\n" +
+				"ON にすると、曲読み込み画面での1フレームあたりの\nチップ音読み込み数を増やします。\n高速になりますが、応答停止の時間が増加しやすくなります。\n" +
+				"OFF にすると、低速ですが応答停止の時間が\n減少しやすくなります。\n\n",
+				"Load sounds speed.\n" +
+				"ON to High.\n" +
+				"OFF to Low." );
+			this.list項目リスト.Add( this.iSystemLoadsoundspeed );
+
 			#region [ WASAPI / ASIO ]
 			// #24820 2013.1.3 yyagi
 			this.iSystemSoundType = new CItemList( "SoundType", CItemList.Eパネル種別.通常, CDTXMania.ConfigIni.nSoundDeviceType,
@@ -2607,6 +2616,7 @@ namespace DTXMania
 		private CItemList iBassSudHid;						// #32072 2013.9.20 yyagi
 		private CItemBase iSystemReloadDTX;					// #32081 2013.10.21 yyagi
 		private CItemInteger iSystemMasterVolume;			// #33700 2014.4.26 yyagi
+		private CItemToggle iSystemLoadsoundspeed;			// #36046 2016.2.21 ikanick
 
 		private int t前の項目( int nItem )
 		{
@@ -2730,6 +2740,8 @@ namespace DTXMania
 //Trace.TraceInformation( "Skin現在BoxDef  : " + CSkin.strBoxDefSkinSubfolderFullName );
 			CDTXMania.ConfigIni.nMasterVolume = this.iSystemMasterVolume.n現在の値;							// #33700 2014.4.26 yyagi
 			CDTXMania.ConfigIni.e判定表示優先度 = (E判定表示優先度) this.iSystemJudgeDispPriority.n現在選択されている項目番号;
+			
+			CDTXMania.ConfigIni.b曲読み込みを高速化する = this.iSystemLoadsoundspeed.bON;// #36046 2016.2.21 ikanick
 		}
 		private void tConfigIniへ記録する_Bass()
 		{

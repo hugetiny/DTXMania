@@ -387,7 +387,8 @@ namespace DTXMania
 						{
 							ShowProgressByFilename( CDTXMania.DTX.listWAV[ nWAVcount ].strファイル名 );
 						}
-						int looptime = (CDTXMania.ConfigIni.b垂直帰線待ちを行う)? 3 : 1;	// VSyncWait=ON時は1frame(1/60s)あたり3つ読むようにする
+						int looptime = ( CDTXMania.ConfigIni.b垂直帰線待ちを行う ) ? 3 : 1; 
+						if ( CDTXMania.ConfigIni.b曲読み込みを高速化する ) looptime = CDTXMania.DTX.listWAV.Count / 20 + 1; // #xxxxx ikanick 2016.2.21 ロード高速化 垂直同期の有無に関わらず、1フレームに5%ぐらいずつロードする
 						for ( int i = 0; i < looptime && nWAVcount <= CDTXMania.DTX.listWAV.Count; i++ )
 						{
 							if ( CDTXMania.DTX.listWAV[ nWAVcount ].listこのWAVを使用するチャンネル番号の集合.Count > 0 )	// #28674 2012.5.8 yyagi
@@ -398,7 +399,8 @@ namespace DTXMania
 						}
 						if ( nWAVcount <= CDTXMania.DTX.listWAV.Count )
 						{
-							ShowProgressByFilename( CDTXMania.DTX.listWAV[ nWAVcount ].strファイル名 );
+							double f進捗率 = nWAVcount * 100.0f / CDTXMania.DTX.listWAV.Count;
+							ShowProgressByFilename( "" + f進捗率.ToString("0.0") + "% " + nWAVcount + "/" + CDTXMania.DTX.listWAV.Count + " " + CDTXMania.DTX.listWAV[ nWAVcount ].strファイル名 );
 						}
 						if ( nWAVcount > CDTXMania.DTX.listWAV.Count )
 						{
@@ -511,12 +513,12 @@ namespace DTXMania
 		}
 
 
-		private void ShowProgressByFilename(string strファイル名 )
+		private void ShowProgressByFilename(string strファイル名と進捗 )
 		{
 			if ( graphicsFilename != null && ftFilename != null )
 			{
 				graphicsFilename.Clear( Color.Transparent );
-				graphicsFilename.DrawString( strファイル名, ftFilename, Brushes.White, new RectangleF( 0, 0, SampleFramework.GameWindowSize.Width, fFontSizeFilename * Scale.X ) );
+				graphicsFilename.DrawString( strファイル名と進捗, ftFilename, Brushes.White, new RectangleF( 0, 0, SampleFramework.GameWindowSize.Width, fFontSizeFilename * Scale.X ) );
 				if ( txFilename != null )
 				{
 					txFilename.Dispose();

@@ -506,6 +506,7 @@ namespace DTXMania
 		public bool bUseBoxDefSkin;						// #28195 2012.5.6 yyagi Skin切替用 box.defによるスキン変更機能を使用するか否か
         public STDGBVALUE<EAutoGhostData> eAutoGhost;               // #35411 2015.8.18 chnmr0 プレー時使用ゴーストデータ種別
         public STDGBVALUE<ETargetGhostData> eTargetGhost;               // #35411 2015.8.18 chnmr0 ゴーストデータ再生方法
+		public bool b曲読み込みを高速化する;		// #36046 2016.2.21 ikanick
 
 		public bool bConfigIniがないかDTXManiaのバージョンが異なる
 		{
@@ -697,6 +698,8 @@ namespace DTXMania
 		public int  nViewerウインドウheight;
 		//public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
 		public int nMasterVolume;
+
+
 #if false
 		[StructLayout( LayoutKind.Sequential )]
 		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
@@ -1239,6 +1242,7 @@ namespace DTXMania
 
 			//this.bNoMP3Streaming = false;
 			this.nMasterVolume = 100;					// #33700 2014.4.26 yyagi マスターボリュームの設定(WASAPI/ASIO用)
+			this.b曲読み込みを高速化する = true;
 		}
 		public CConfigIni( string iniファイル名 )
 			: this()
@@ -1603,7 +1607,8 @@ namespace DTXMania
 			sw.WriteLine( "; judgement/combo display priority (0:under chips, 1:over chips)" );
 			sw.WriteLine( "JudgeDispPriority={0}" , (int) this.e判定表示優先度 );
 			sw.WriteLine();
-			sw.WriteLine( "; ドラムのレーン表示位置(0:左側, 1:中央)" );
+
+			sw.WriteLine( "; ドラムのレーン表示位置(0:左側, 1:中央)" ); // #2
 			sw.WriteLine( "; drums lane position (0:LEFT, 1:CENTER)" );
 			sw.WriteLine( "DrumsLanePosition={0}", (int) this.eドラムレーン表示位置 );
 			sw.WriteLine();
@@ -1668,6 +1673,12 @@ namespace DTXMania
 			sw.WriteLine( "RDVelocityMin={0}", this.nVelocityMin.RD );						//
 			sw.WriteLine();																	//
 			#endregion
+			
+			sw.WriteLine( "; 曲の読み込み速度を変更(0:低速, 1:高速)" ); // #36046 2016.2.21 add ikanick
+			sw.WriteLine( "; Load sounds speed (0:Low, 1:High)" );
+			sw.WriteLine( "Loadsoundspeed={0}", this.b曲読み込みを高速化する ? 1 : 0 );
+			sw.WriteLine();
+
 			sw.WriteLine( ";-------------------" );
 			#endregion
 			#region [ Log ]
@@ -2620,6 +2631,10 @@ namespace DTXMania
 												this.nVelocityMin.RD = C変換.n値を文字列から取得して範囲内に丸めて返す( str4, 0, 127, this.nVelocityMin.RD );
 											}
 											#endregion
+											else if ( str3.Equals( "Loadsoundspeed" ) )
+											{
+												this.b曲読み込みを高速化する = C変換.bONorOFF( str4[ 0 ] );
+											}
 											//else if ( str3.Equals( "NoMP3Streaming" ) )
 											//{
 											//    this.bNoMP3Streaming = C変換.bONorOFF( str4[ 0 ] );
