@@ -43,7 +43,7 @@ namespace DTXMania
 		/// <param name="txチップ"></param>
 		/// <param name="演奏判定ライン座標"></param>
 		/// <param name="ctWailingチップ模様アニメ"></param>
-		internal void t進行描画_チップ_ギターベース_ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip,
+		internal void t進行描画_チップ_ギターベース_ウェイリング( CConfigIni configIni, ref CDTX dTX, ref CChip pChip,
 			ref CTexture txチップ, ref C演奏判定ライン座標共通 演奏判定ライン座標, ref CCounter ctWailingチップ模様アニメ )
 		{
 			int indexInst = (int) eInst;

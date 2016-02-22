@@ -1383,7 +1383,7 @@ for (int i = 0; i < 3; i++) {
 								#region [ 演奏クリア ]
 								//-----------------------------
 								CScoreIni.C演奏記録 c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass;
-								CDTX.CChip[] chipArray = new CDTX.CChip[ 10 ];
+								CChip[] chipArray = new CChip[ 10 ];
 								if( ConfigIni.bギタレボモード )
 								{
 									stage演奏ギター画面.t演奏結果を格納する( out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass );

@@ -108,7 +108,10 @@
     <Compile Include="コード\アイテム\CItemThreeState.cs" />
     <Compile Include="コード\アイテム\CItemToggle.cs" />
     <Compile Include="コード\スコア、曲\CBoxDef.cs" />
+    <Compile Include="コード\スコア、曲\CChip.cs" />
     <Compile Include="コード\スコア、曲\CDTX.cs" />
+    <Compile Include="コード\スコア、曲\CDTXInput.cs" />
+    <Compile Include="コード\スコア、曲\CDTXNestedTypes.cs" />
     <Compile Include="コード\スコア、曲\CScoreIni.cs" />
     <Compile Include="コード\スコア、曲\CSetDef.cs" />
     <Compile Include="コード\ステージ\02.タイトル\CEnumSongs.cs" />

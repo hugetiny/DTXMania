@@ -5,25 +5,31 @@ using System.Runtime.InteropServices;
 
 namespace DTXMania
 {
-	#region [ Ech定義 ]
-	public enum Ech定義
+	public enum Ech定義 : int
 	{
+		Invalid             = -1,
+		/// <summary>
+		/// 0x01 BGM 割当チャンネル
+		/// </summary>
 		BGM					= 0x01,
 		BarLength			= 0x02,
 		BPM					= 0x03,
 		BGALayer1			= 0x04,
-		//ExObj_nouse			= 0x05,
-		//MissAnimation_nouse	= 0x06,
+		ExObj_nouse			= 0x05,
+		MissAnimation_nouse	= 0x06,
 		BGALayer2			= 0x07,
 		BPMEx				= 0x08,
-		//BMS_reserved_09		= 0x09,
-		//BMS_reserved_0A		= 0x0A,
+		BMS_reserved_09		= 0x09,
+		BMS_reserved_0A		= 0x0A,
 		//BMS_reserved_0B		= 0x0B,
 		//BMS_reserved_0C		= 0x0C,
 		//BMS_reserved_0D		= 0x0D,
 		//BMS_reserved_0E		= 0x0E,
 		//BMS_reserved_0F		= 0x0F,
 		//BMS_reserved_10		= 0x10,
+		/// <summary>
+		/// HHC 0x11
+		/// </summary>
 		HiHatClose			= 0x11,
 		Snare				= 0x12,
 		BassDrum			= 0x13,
@@ -35,10 +41,16 @@ namespace DTXMania
 		RideCymbal			= 0x19,
 		LeftCymbal			= 0x1A,
 		LeftPedal			= 0x1B,
+		/// <summary>
+		/// 0x1C Visible LBD
+		/// </summary>
 		LeftBassDrum		= 0x1C,
 		//nouse_1d			= 0x1D,
 		//nouse_1e			= 0x1E,
-		//nouse_1f			= 0x1F,
+		/// <summary>
+		/// 0x1F Dr. Fillin
+		/// </summary>
+		DrumsFillin			= 0x1F,
 		Guitar_Open			= 0x20,
 		Guitar_xxB			= 0x21,
 		Guitar_xGx			= 0x22,
@@ -47,15 +59,24 @@ namespace DTXMania
 		Guitar_RxB			= 0x25,
 		Guitar_RGx			= 0x26,
 		Guitar_RGB			= 0x27,
+		/// <summary>
+		/// 0x28 Gt. Wailing
+		/// </summary>
 		Guitar_Wailing		= 0x28,
-		//flowspeed_gt_nouse	= 0x29,
+		flowspeed_gt_nouse	= 0x29,
 		//nouse_2a			= 0x2A,
 		//nouse_2b			= 0x2B,
 		//nouse_2c			= 0x2C,
 		//nouse_2d			= 0x2D,
 		//nouse_2e			= 0x2E,
+		/// <summary>
+		/// 0x2F Gt. Wailing Sound
+		/// </summary>
 		Guitar_WailingSound	= 0x2F,
-		//flowspeed_dr_nouse	= 0x30,
+		flowspeed_dr_nouse	= 0x30,
+		/// <summary>
+		/// 0x31 HHC Hidden
+		/// </summary>
 		HiHatClose_Hidden	= 0x31,
 		Snare_Hidden		= 0x32,
 		BassDrum_Hidden		= 0x33,
@@ -67,6 +88,9 @@ namespace DTXMania
 		RideCymbal_Hidden	= 0x39,
 		LeftCymbal_Hidden	= 0x3A,
 		LeftPedal_Hidden	= 0x3B,
+		/// <summary>
+		/// 0x3C LBD Hidden
+		/// </summary>
 		LeftBassDrum_Hidden	= 0x3C,
 		//nouse_3d			= 0x3D,
 		//nouse_3e			= 0x3E,
@@ -87,7 +111,13 @@ namespace DTXMania
 		//nouse_4d			= 0x4D,
 		//nouse_4e			= 0x4E,
 		//nouse_4f			= 0x4F,
+		/// <summary>
+		/// 0x50 BarLine
+		/// </summary>
 		BarLine				= 0x50,
+		/// <summary>
+		/// 0x51 BeatLine
+		/// </summary>
 		BeatLine			= 0x51,
 		MIDIChorus			= 0x52,
 		FillIn				= 0x53,
@@ -98,11 +128,11 @@ namespace DTXMania
 		BGALayer6			= 0x58,
 		BGALayer7			= 0x59,
 		MovieFull			= 0x5A,
-		//nouse_5b			= 0x5B,
-		//nouse_5c			= 0x5C,
-		//nouse_5d			= 0x5D,
-		//nouse_5e			= 0x5E,
-		//nouse_5f			= 0x5F,
+		nouse_5b			= 0x5B,
+		nouse_5c			= 0x5C,
+		nouse_5d			= 0x5D,
+		nouse_5e			= 0x5E,
+		nouse_5f			= 0x5F,
 		BGALayer8			= 0x60,
 		SE01				= 0x61,
 		SE02				= 0x62,
@@ -170,6 +200,10 @@ namespace DTXMania
 		//nouse_9d			= 0x9D,
 		//nouse_9e			= 0x9E,
 		//nouse_9f			= 0x9F,
+		/// <summary>
+		/// 
+		/// 0xA0 Bs. Open
+		/// </summary>
 		Bass_Open			= 0xA0,
 		Bass_xxB			= 0xA1,
 		Bass_xGx			= 0xA2,
@@ -177,7 +211,13 @@ namespace DTXMania
 		Bass_Rxx			= 0xA4,
 		Bass_RxB			= 0xA5,
 		Bass_RGx			= 0xA6,
+		/// <summary>
+		/// 0xA7 Bs. RGB
+		/// </summary>
 		Bass_RGB			= 0xA7,
+		/// <summary>
+		/// 0xA8 Bs. Wailing
+		/// </summary>
 		Bass_Wailing		= 0xA8,
 		//nouse_a9			= 0xA9,
 		//nouse_aa			= 0xAA,
@@ -185,6 +225,9 @@ namespace DTXMania
 		//nouse_ac			= 0xAC,
 		//nouse_ad			= 0xAD,
 		//nouse_ae			= 0xAE,
+		/// <summary>
+		/// 0xAF Bs. Wailing Sound
+		/// </summary>
 		Bass_WailingSound	= 0xAF,
 		//nouse_b0			= 0xB0,
 		HiHatClose_NoChip	= 0xB1,
@@ -267,8 +310,7 @@ namespace DTXMania
 		//nouse_fe			= 0xFE,
 		//nouse_ff			= 0xFF,
 	}
-	#endregion
-
+	
 	public enum ECYGroup
 	{
 		打ち分ける,
@@ -947,6 +989,26 @@ namespace DTXMania
 		}
 	}
 
+	public enum EDTX種別
+	{
+		DTX,
+		GDA,
+		G2D,
+		BMS,
+		BME,
+		SMF
+	}
+	public enum Eレーンビットパターン
+	{
+		OPEN = 0,
+		xxB = 1,
+		xGx = 2,
+		xGB = 3,
+		Rxx = 4,
+		RxB = 5,
+		RGx = 6,
+		RGB = 7
+	};
 
 	internal class C定数
 	{

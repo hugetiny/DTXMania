@@ -25,7 +25,7 @@ namespace DTXMania
 		public STDGBVALUE<int> nランク値;
 		public STDGBVALUE<int> n演奏回数;
 		public int n総合ランク値;
-		public CDTX.CChip[] r空うちドラムチップ;
+		public CChip[] r空うちドラムチップ;
 		public STDGBVALUE<CScoreIni.C演奏記録> st演奏記録;
 
 
@@ -36,7 +36,7 @@ namespace DTXMania
 			this.st演奏記録.Drums = new CScoreIni.C演奏記録();
 			this.st演奏記録.Guitar = new CScoreIni.C演奏記録();
 			this.st演奏記録.Bass = new CScoreIni.C演奏記録();
-			this.r空うちドラムチップ = new CDTX.CChip[ 10 ];
+			this.r空うちドラムチップ = new CChip[ 10 ];
 			this.n総合ランク値 = -1;
 			this.nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
 			base.eステージID = CStage.Eステージ.結果;
@@ -69,7 +69,7 @@ namespace DTXMania
 				this.bアニメが完了 = false;
 				this.bIsCheckedWhetherResultScreenShouldSaveOrNot = false;				// #24609 2011.3.14 yyagi
 				this.n最後に再生したHHのWAV番号 = -1;
-				this.n最後に再生したHHのチャンネル番号 = 0;
+				this.e最後に再生したHHのチャンネル番号 = Ech定義.Invalid;
 				for( int i = 0; i < 3; i++ )
 				{
 					this.b新記録スキル[ i ] = false;
@@ -282,11 +282,11 @@ namespace DTXMania
             saveCond.Guitar = true;
             saveCond.Bass = true;
             
-            foreach( CDTX.CChip chip in CDTXMania.DTX.listChip )
+            foreach( CChip chip in CDTXMania.DTX.listChip )
             {
                 if( chip.bIsAutoPlayed )
                 {
-					if (chip.nチャンネル番号 != 0x28 && chip.nチャンネル番号 != 0xA8) // Guitar/Bass Wailing は OK
+					if (chip.eチャンネル番号 != Ech定義.Guitar_Wailing && chip.eチャンネル番号 != Ech定義.Bass_Wailing) // Guitar/Bass Wailing は OK
 					{
 						saveCond[(int)(chip.e楽器パート)] = false;
 					}
@@ -353,7 +353,7 @@ namespace DTXMania
             }
 
             int cnt = 0;
-            foreach (DTXMania.CDTX.CChip chip in CDTXMania.DTX.listChip)
+            foreach (DTXMania.CChip chip in CDTXMania.DTX.listChip)
             {
                 if (chip.e楽器パート == inst)
                 {
@@ -368,7 +368,7 @@ namespace DTXMania
                     using (BinaryWriter bw = new BinaryWriter(fs))
                     {
                         bw.Write((Int32)cnt);
-                        foreach (DTXMania.CDTX.CChip chip in CDTXMania.DTX.listChip)
+                        foreach (DTXMania.CChip chip in CDTXMania.DTX.listChip)
                         {
                             if (chip.e楽器パート == inst)
                             {
@@ -538,7 +538,7 @@ namespace DTXMania
 									{
 										continue;
 									}
-									CDTX.CChip rChip = this.r空うちドラムチップ[ i ];
+									CChip rChip = this.r空うちドラムチップ[ i ];
 									if( rChip == null )
 									{
 										switch( ( (Eパッド) i ) )
@@ -580,14 +580,18 @@ namespace DTXMania
 												break;
 										}
 									}
-									if( ( ( rChip != null ) && ( rChip.nチャンネル番号 >= 0x11 ) ) && ( rChip.nチャンネル番号 <= 0x1a ) )
+									if( (
+										( rChip != null ) &&
+										( rChip.eチャンネル番号 >= Ech定義.HiHatClose ) ) && ( rChip.eチャンネル番号 <= Ech定義.LeftCymbal ) )
 									{
-										int nLane = this.nチャンネル0Atoレーン07[ rChip.nチャンネル番号 - 0x11 ];
-										if( ( nLane == 1 ) && ( ( rChip.nチャンネル番号 == 0x11 ) || ( ( rChip.nチャンネル番号 == 0x18 ) && ( this.n最後に再生したHHのチャンネル番号 != 0x18 ) ) ) )
+										int nLane = this.nチャンネル0Atoレーン07[ rChip.eチャンネル番号 - Ech定義.HiHatClose ];
+										if( ( nLane == 1 ) && (
+											( rChip.eチャンネル番号 == Ech定義.HiHatClose ) ||
+											( ( rChip.eチャンネル番号 == Ech定義.HiHatOpen ) && ( this.e最後に再生したHHのチャンネル番号 != Ech定義.HiHatOpen ) ) ) )
 										{
 											CDTXMania.DTX.tWavの再生停止( this.n最後に再生したHHのWAV番号 );
 											this.n最後に再生したHHのWAV番号 = rChip.n整数値_内部番号;
-											this.n最後に再生したHHのチャンネル番号 = rChip.nチャンネル番号;
+											this.e最後に再生したHHのチャンネル番号 = rChip.eチャンネル番号;
 										}
 										CDTXMania.DTX.tチップの再生( rChip, CDTXMania.Timer.nシステム時刻, nLane, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );
 									}
@@ -659,7 +663,7 @@ namespace DTXMania
 		private bool bIsCheckedWhetherResultScreenShouldSaveOrNot;				// #24509 2011.3.14 yyagi
 		private readonly int[] nチャンネル0Atoレーン07;
 		private int n最後に再生したHHのWAV番号;
-		private int n最後に再生したHHのチャンネル番号;
+		private Ech定義 e最後に再生したHHのチャンネル番号;
 		private CSound rResultSound;
 		private CTexture txオプションパネル;
 		private CTextureAf tx下部パネル;

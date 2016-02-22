@@ -311,7 +311,7 @@ namespace DTXMania
 			    {
 					this.rAVI = new CDTX.CAVI(00, this.str現在のファイル名, "", CDTXMania.ConfigIni.n演奏速度);
 					this.rAVI.OnDeviceCreated();
-					this.actAVI.Start(0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
+					this.actAVI.Start( Ech定義.Movie, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
 				}
 				catch (Exception e)
 				{

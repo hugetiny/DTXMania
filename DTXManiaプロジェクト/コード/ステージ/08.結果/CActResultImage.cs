@@ -347,7 +347,7 @@ namespace DTXMania
 			{
 				this.rAVI = new CDTX.CAVI(00, this.strAVIファイル名, "", CDTXMania.ConfigIni.n演奏速度);
 				this.rAVI.OnDeviceCreated();
-				this.actAVI.Start( 0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
+				this.actAVI.Start( Ech定義.Movie, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
 
 				//this.avi = new CAvi( this.strAVIファイル名 );
 				//this.nAVI再生開始時刻 = CDTXMania.Timer.n現在時刻;
@@ -418,7 +418,7 @@ namespace DTXMania
 			{
 				this.rAVI = new CDTX.CAVI(00, this.strAVIファイル名, "", CDTXMania.ConfigIni.n演奏速度);
 				this.rAVI.OnDeviceCreated();
-				this.actAVI.Start( 0x54, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
+				this.actAVI.Start( Ech定義.Movie, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 ); 
 
 				//this.avi = new CAvi( this.strAVIファイル名 );
 				//this.nAVI再生開始時刻 = CDTXMania.Timer.n現在時刻;

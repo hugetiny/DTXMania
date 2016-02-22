@@ -95,7 +95,7 @@ namespace DTXMania
 			INVISIBLE		// 完全非表示
 		}
 
-		internal EChipInvisibleState SetInvisibleStatus( ref CDTX.CChip cc )
+		internal EChipInvisibleState SetInvisibleStatus( ref CChip cc )
 		{
 			if ( cc.e楽器パート == E楽器パート.UNKNOWN )
 			{
