@@ -43,7 +43,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txRGB = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay RGB buttons.png" ) );
+				this.txRGB = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay RGB buttons.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -51,7 +51,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txRGB );
+				TextureFactory.tテクスチャの解放( ref this.txRGB );
 				base.OnManagedリソースの解放();
 			}
 		}

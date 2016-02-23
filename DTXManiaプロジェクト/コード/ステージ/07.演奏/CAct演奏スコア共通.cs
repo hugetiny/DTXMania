@@ -60,7 +60,7 @@ namespace DTXMania
 				#endregion
 				#region [ Drums ]
 				case E楽器パート.DRUMS:
-					if ( !CDTXMania.ConfigIni.bドラムが全部オートプレイである )
+					if ( !CDTXMania.app.ConfigIni.bドラムが全部オートプレイである )
 					{
 						#region [ Auto BD ]
 						if ( bAutoPlay.BD == true )
@@ -73,7 +73,7 @@ namespace DTXMania
 				#endregion
 				#region [ Gutiar ]
 				case E楽器パート.GUITAR:
-					if ( !CDTXMania.ConfigIni.bギターが全部オートプレイである )
+					if ( !CDTXMania.app.ConfigIni.bギターが全部オートプレイである )
 					{
 						#region [ Auto Wailing ]
 						if ( bAutoPlay.GtW )
@@ -98,7 +98,7 @@ namespace DTXMania
 				#endregion
 				#region [ Bass ]
 				case E楽器パート.BASS:
-					if ( !CDTXMania.ConfigIni.bベースが全部オートプレイである )
+					if ( !CDTXMania.app.ConfigIni.bベースが全部オートプレイである )
 					{
 						#region [ Auto Wailing ]
 						if ( bAutoPlay.BsW )
@@ -143,7 +143,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txScore = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay score numbers.png" ) );
+				this.txScore = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay score numbers.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -151,7 +151,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txScore );
+				TextureFactory.tテクスチャの解放( ref this.txScore );
 				base.OnManagedリソースの解放();
 			}
 		}

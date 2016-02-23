@@ -383,7 +383,7 @@ namespace DTXMania
 		public void tUpdateConfigIni()
 		{
 			CConfigIni cc = new CConfigIni();
-			string path = CDTXMania.strEXEのあるフォルダ + "Config.ini";
+			string path = CDTXMania.app.strEXEのあるフォルダ + "Config.ini";
 			if ( File.Exists( path ) )
 			{
 				FileInfo fi = new FileInfo( path );
@@ -401,17 +401,17 @@ namespace DTXMania
 				fi = null;
 			}
 
-			cc.nViewerScrollSpeed     = CDTXMania.ConfigIni.n譜面スクロール速度;
-			cc.bViewerShowDebugStatus = CDTXMania.ConfigIni.b演奏情報を表示する;
-			cc.bViewerVSyncWait       = CDTXMania.ConfigIni.b垂直帰線待ちを行う;
-			cc.bViewerTimeStretch     = CDTXMania.ConfigIni.bTimeStretch;
-			cc.bViewerDrums有効       = CDTXMania.ConfigIni.bDrums有効;
-			cc.bViewerGuitar有効      = CDTXMania.ConfigIni.bGuitar有効;
+			cc.nViewerScrollSpeed     = CDTXMania.app.ConfigIni.n譜面スクロール速度;
+			cc.bViewerShowDebugStatus = CDTXMania.app.ConfigIni.b演奏情報を表示する;
+			cc.bViewerVSyncWait       = CDTXMania.app.ConfigIni.b垂直帰線待ちを行う;
+			cc.bViewerTimeStretch     = CDTXMania.app.ConfigIni.bTimeStretch;
+			cc.bViewerDrums有効       = CDTXMania.app.ConfigIni.bDrums有効;
+			cc.bViewerGuitar有効      = CDTXMania.app.ConfigIni.bGuitar有効;
 
-			cc.nViewerウインドウwidth = CDTXMania.ConfigIni.nウインドウwidth;
-			cc.nViewerウインドウheight = CDTXMania.ConfigIni.nウインドウheight;
-			cc.nViewer初期ウィンドウ開始位置X = CDTXMania.ConfigIni.n初期ウィンドウ開始位置X;
-			cc.nViewer初期ウィンドウ開始位置Y = CDTXMania.ConfigIni.n初期ウィンドウ開始位置Y;
+			cc.nViewerウインドウwidth = CDTXMania.app.ConfigIni.nウインドウwidth;
+			cc.nViewerウインドウheight = CDTXMania.app.ConfigIni.nウインドウheight;
+			cc.nViewer初期ウィンドウ開始位置X = CDTXMania.app.ConfigIni.n初期ウィンドウ開始位置X;
+			cc.nViewer初期ウィンドウ開始位置Y = CDTXMania.app.ConfigIni.n初期ウィンドウ開始位置Y;
 
 			cc.t書き出し( path );
 		}

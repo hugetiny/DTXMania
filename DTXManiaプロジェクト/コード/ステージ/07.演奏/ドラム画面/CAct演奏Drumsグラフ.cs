@@ -81,7 +81,7 @@ namespace DTXMania
 				string pathグラフ = CSkin.Path( @"Graphics\ScreenPlay graph.png" );
 				if ( File.Exists( pathグラフ ) )
 				{
-					this.txグラフ = CDTXMania.tテクスチャの生成( pathグラフ );
+					this.txグラフ = TextureFactory.tテクスチャの生成( pathグラフ );
 				}
 				base.OnManagedリソースの作成();
 			}
@@ -90,7 +90,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txグラフ );
+				TextureFactory.tテクスチャの解放( ref this.txグラフ );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -103,18 +103,18 @@ namespace DTXMania
 					/* #35804 エフェクトを変更しました。
 					for( int k = 0; k < 64; k++ )
 					{
-						this.stキラキラ[ k ].x = CDTXMania.Random.Next( 30 );
-						this.stキラキラ[ k ].fScale = 1f + ( CDTXMania.Random.Next( 9 ) * 0.2f );
-						this.stキラキラ[ k ].Trans = 0 + CDTXMania.Random.Next( 32 ) ;
+						this.stキラキラ[ k ].x = CDTXMania.app.Random.Next( 30 );
+						this.stキラキラ[ k ].fScale = 1f + ( CDTXMania.app.Random.Next( 9 ) * 0.2f );
+						this.stキラキラ[ k ].Trans = 0 + CDTXMania.app.Random.Next( 32 ) ;
                         if (k < 32)
                         {
-                            this.stキラキラ[ k ].ct進行 = new CCounter(0, DispHeight, 10 + CDTXMania.Random.Next(20), CDTXMania.Timer);
+                            this.stキラキラ[ k ].ct進行 = new CCounter(0, DispHeight, 10 + CDTXMania.app.Random.Next(20), CDTXMania.app.Timer);
                         }
                         else if (k < 64)
                         {
-                            this.stキラキラ[ k ].ct進行 = new CCounter(0, DispHeight, 20 + CDTXMania.Random.Next(50), CDTXMania.Timer);
+                            this.stキラキラ[ k ].ct進行 = new CCounter(0, DispHeight, 20 + CDTXMania.app.Random.Next(50), CDTXMania.app.Timer);
                         }
-                        this.stキラキラ[ k ].ct進行.n現在の値 = CDTXMania.Random.Next(DispHeight);
+                        this.stキラキラ[ k ].ct進行.n現在の値 = CDTXMania.app.Random.Next(DispHeight);
 					}
 					for( int k = 0; k < 16; k++ )
 					{
@@ -123,14 +123,14 @@ namespace DTXMania
 					}
 					*/
 					base.b初めての進行描画 = false;
-					counterYposInImg = new CCounter(0, 35, 16, CDTXMania.Timer);
+					counterYposInImg = new CCounter(0, 35, 16, CDTXMania.app.Timer);
                 }
 
 				counterYposInImg.t進行Loop();
 				int stYposInImg = counterYposInImg.n現在の値;
 
 				// レーン表示位置によって変更
-				if( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center )
+				if( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center )
 				{
 					XPos = 1350;
 				}

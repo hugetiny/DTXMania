@@ -212,7 +212,7 @@ namespace DTXMania
 		{
 			#region [ 事前チェック。]
 			//-----------------
-			if( CDTXMania.ConfigIni.ドラムコンボ文字の表示位置 == Eドラムコンボ文字の表示位置.OFF )
+			if( CDTXMania.app.ConfigIni.ドラムコンボ文字の表示位置 == Eドラムコンボ文字の表示位置.OFF )
 				return;		// 表示OFF。
 
 			if( nCombo値 == 0 )
@@ -235,13 +235,13 @@ namespace DTXMania
 			//-----------------
 			#endregion
 
-			bool guitar = CDTXMania.DTX.bチップがある.Guitar;
-			bool bass = CDTXMania.DTX.bチップがある.Bass;
-			var e表示位置 = CDTXMania.ConfigIni.ドラムコンボ文字の表示位置;
+			bool guitar = CDTXMania.app.DTX.bチップがある.Guitar;
+			bool bass = CDTXMania.app.DTX.bチップがある.Bass;
+			var e表示位置 = CDTXMania.app.ConfigIni.ドラムコンボ文字の表示位置;
 
 			#region [ e表示位置 の調整 ]
 			//-----------------
-			if( CDTXMania.ConfigIni.bGuitar有効 )
+			if( CDTXMania.app.ConfigIni.bGuitar有効 )
 			{
 				if( bass )
 				{
@@ -265,18 +265,18 @@ namespace DTXMania
 			switch( e表示位置 )
 			{
 				case Eドラムコンボ文字の表示位置.LEFT:
-					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 187 * Scale.X ) : 360;
+					nX中央位置px = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 187 * Scale.X ) : 360;
 					break;
 
 				case Eドラムコンボ文字の表示位置.CENTER:
-					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (int) ( 320 * Scale.X ) : 960;
+					nX中央位置px = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (int) ( 320 * Scale.X ) : 960;
 					break;
 
 				case Eドラムコンボ文字の表示位置.RIGHT:
-					nX中央位置px = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 485 * Scale.X ) : 1920 - 340;
+					nX中央位置px = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ?(int) ( 485 * Scale.X ) : 1920 - 340;
 					break;
 			}
-			int nY上辺位置px = CDTXMania.ConfigIni.bReverse.Drums ? (int) ( 350 * Scale.Y ) : (int) ( 60 * Scale.Y );
+			int nY上辺位置px = CDTXMania.app.ConfigIni.bReverse.Drums ? (int) ( 350 * Scale.Y ) : (int) ( 60 * Scale.Y );
 			int n数字の全長px = ((nドラムコンボの幅 + nドラムコンボの文字間隔) * n桁数);// +nドラムコンボのCOMBO文字の幅;
 			int x = (nX中央位置px + (n数字の全長px / 2));// -nドラムコンボのCOMBO文字の幅;
 			int y = (nY上辺位置px + nドラムコンボの高さ);// -nドラムコンボのCOMBO文字の高さ;
@@ -333,7 +333,7 @@ namespace DTXMania
 		{
 			#region [ 事前チェック。]
 			//-----------------
-			if ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
+			if ( ( (E判定文字表示位置) CDTXMania.app.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
 				return;		// 表示OFF。
 
 			if ( nCombo値 == 0 )
@@ -346,7 +346,7 @@ namespace DTXMania
 		{
 			#region [ 事前チェック。]
 			//-----------------
-			if ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
+			if ( ( (E判定文字表示位置) CDTXMania.app.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
 				return;		// 表示OFF。
 
 			if ( nCombo値 == 0 )
@@ -475,8 +475,8 @@ namespace DTXMania
 			if( this.b活性化してない )
 				return;
 
-			this.txCOMBOドラム = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums-combo-drums2.png" ) );
-			this.txCOMBOギター = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums-combo-guitar2.png" ) );
+			this.txCOMBOドラム = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums-combo-drums2.png" ) );
+			this.txCOMBOギター = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums-combo-guitar2.png" ) );
 
 			base.OnManagedリソースの作成();
 		}
@@ -485,8 +485,8 @@ namespace DTXMania
 			if( this.b活性化してない )
 				return;
 
-			CDTXMania.tテクスチャの解放( ref this.txCOMBOドラム );
-			CDTXMania.tテクスチャの解放( ref this.txCOMBOギター );
+			TextureFactory.tテクスチャの解放( ref this.txCOMBOドラム );
+			TextureFactory.tテクスチャの解放( ref this.txCOMBOギター );
 
 			base.OnManagedリソースの解放();
 		}
@@ -509,7 +509,7 @@ namespace DTXMania
 				{
 					e今回の状態遷移イベント = EEvent.ミス通知;
 				}
-				else if( ( this.status[ i ].n現在表示中のCOMBO値 < CDTXMania.ConfigIni.n表示可能な最小コンボ数[ i ] ) && ( this.status[ i ].nCOMBO値 < CDTXMania.ConfigIni.n表示可能な最小コンボ数[ i ] ) )
+				else if( ( this.status[ i ].n現在表示中のCOMBO値 < CDTXMania.app.ConfigIni.n表示可能な最小コンボ数[ i ] ) && ( this.status[ i ].nCOMBO値 < CDTXMania.app.ConfigIni.n表示可能な最小コンボ数[ i ] ) )
 				{
 					e今回の状態遷移イベント = EEvent.非表示;
 				}
@@ -524,11 +524,11 @@ namespace DTXMania
 				//-----------------
 				if( this.status[ i ].nジャンプインデックス値 < 360 )
 				{
-					if( ( this.status[ i ].n前回の時刻_ジャンプ用 == -1 ) || ( CDTXMania.Timer.n現在時刻 < this.status[ i ].n前回の時刻_ジャンプ用) )
-						this.status[ i ].n前回の時刻_ジャンプ用 = CDTXMania.Timer.n現在時刻;
+					if( ( this.status[ i ].n前回の時刻_ジャンプ用 == -1 ) || ( CDTXMania.app.Timer.n現在時刻 < this.status[ i ].n前回の時刻_ジャンプ用) )
+						this.status[ i ].n前回の時刻_ジャンプ用 = CDTXMania.app.Timer.n現在時刻;
 
 					const long INTERVAL = 2;
-					while( ( CDTXMania.Timer.n現在時刻 - this.status[ i ].n前回の時刻_ジャンプ用) >= INTERVAL )
+					while( ( CDTXMania.app.Timer.n現在時刻 - this.status[ i ].n前回の時刻_ジャンプ用) >= INTERVAL )
 					{
 						if( this.status[ i ].nジャンプインデックス値 < 2000 )
 							this.status[ i ].nジャンプインデックス値 += 3;
@@ -553,7 +553,7 @@ namespace DTXMania
 							// モード変更
 							this.status[ i ].e現在のモード = EMode.進行表示中;
 							this.status[ i ].nジャンプインデックス値 = 0;
-							this.status[ i ].n前回の時刻_ジャンプ用 = CDTXMania.Timer.n現在時刻;
+							this.status[ i ].n前回の時刻_ジャンプ用 = CDTXMania.app.Timer.n現在時刻;
 							goto Retry;
 						}
 
@@ -571,14 +571,14 @@ namespace DTXMania
 							// モード変更
 							this.status[ i ].e現在のモード = EMode.残像表示中;
 							this.status[ i ].n残像表示中のCOMBO値 = this.status[ i ].n現在表示中のCOMBO値;
-							this.status[ i ].nコンボが切れた時刻 = CDTXMania.Timer.n現在時刻;
+							this.status[ i ].nコンボが切れた時刻 = CDTXMania.app.Timer.n現在時刻;
 							goto Retry;
 						}
 
 						if( e今回の状態遷移イベント == EEvent.数値更新 )
 						{
 							this.status[ i ].nジャンプインデックス値 = 0;
-							this.status[ i ].n前回の時刻_ジャンプ用 = CDTXMania.Timer.n現在時刻;
+							this.status[ i ].n前回の時刻_ジャンプ用 = CDTXMania.app.Timer.n現在時刻;
 						}
 
 						this.status[ i ].n現在表示中のCOMBO値 = this.status[ i ].nCOMBO値;
@@ -609,7 +609,7 @@ namespace DTXMania
 							this.status[ i ].e現在のモード = EMode.進行表示中;
 							goto Retry;
 						}
-						if( ( CDTXMania.Timer.n現在時刻 - this.status[ i ].nコンボが切れた時刻 ) > 1000 )
+						if( ( CDTXMania.app.Timer.n現在時刻 - this.status[ i ].nコンボが切れた時刻 ) > 1000 )
 						{
 							// モード変更２
 							this.status[ i ].e現在のモード = EMode.非表示中;

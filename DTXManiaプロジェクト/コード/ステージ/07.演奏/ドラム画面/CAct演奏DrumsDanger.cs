@@ -36,7 +36,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txDANGER = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlayDrums danger.png" ), false );
+				this.txDANGER = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlayDrums danger.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -44,7 +44,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txDANGER );
+				TextureFactory.tテクスチャの解放( ref this.txDANGER );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -70,8 +70,8 @@ namespace DTXMania
 				}
 				if( !this.bDanger中[(int)E楽器パート.DRUMS] )
 				{
-					this.ct移動用 = new CCounter( 0, 0x7f, 7, CDTXMania.Timer );
-					this.ct透明度用 = new CCounter( 0, 0x167, 4, CDTXMania.Timer );
+					this.ct移動用 = new CCounter( 0, 0x7f, 7, CDTXMania.app.Timer );
+					this.ct透明度用 = new CCounter( 0, 0x167, 4, CDTXMania.app.Timer );
 				}
 				this.bDanger中[(int)E楽器パート.DRUMS] = bIsDangerDrums;
 				this.ct移動用.t進行Loop();
@@ -86,17 +86,17 @@ namespace DTXMania
 					this.txDANGER.n透明度 = 60 + ( ( num < 180 ) ? num : ( 360 - num ) );
 				}
 				num = this.ct移動用.n現在の値;
-				int num2 = CDTXMania.ConfigIni.bReverse.Drums ? ( 0x7f - num ) : num;
+				int num2 = CDTXMania.app.ConfigIni.bReverse.Drums ? ( 0x7f - num ) : num;
                 float[,] n基準X座標 = new float[,] { { 38, 298 }, { 211f, 405.5f } };
 				for( int i = -1; i < 4; i++ )
 				{
 					if( this.txDANGER != null )
 					{
-                        float d = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
+                        float d = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
                         this.txDANGER.vc拡大縮小倍率 = new Vector3( d, d, d );
-						this.txDANGER.t2D描画( CDTXMania.app.Device, n基準X座標[( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 0 : 1 ), 0] * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
+						this.txDANGER.t2D描画( CDTXMania.app.Device, n基準X座標[( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 0 : 1 ), 0] * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
 						//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x26 * Scale.X, ( ( ( i * 0x80 ) + num2 ) + 0x40 ) * Scale.Y, this.rc領域[ 1 ] );
-						this.txDANGER.t2D描画( CDTXMania.app.Device, n基準X座標[( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 0 : 1 ), 1] * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
+						this.txDANGER.t2D描画( CDTXMania.app.Device, n基準X座標[( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 0 : 1 ), 1] * Scale.X, ( ( i * 0x80 ) + num2 ) * Scale.Y );
 						//this.txDANGER.t2D描画( CDTXMania.app.Device, 0x12a * Scale.X, ( ( ( i * 0x80 ) + num2 ) + 0x40 ) * Scale.Y, this.rc領域[ 1 ] );
 					}
 				}

@@ -13,7 +13,6 @@ namespace DTXMania
 	internal class CStage起動 : CStage
 	{
 		// コンストラクタ
-
 		public CStage起動()
 		{
 			base.eステージID = CStage.Eステージ.起動;
@@ -68,7 +67,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSetup background.jpg" ), false );
+				this.tx背景 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSetup background.jpg" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -76,7 +75,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.tx背景 );
+				TextureFactory.tテクスチャの解放( ref this.tx背景 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -95,7 +94,7 @@ namespace DTXMania
 					return 0;
 				}
 
-				// CSongs管理 s管理 = CDTXMania.Songs管理;
+				// CSongs管理 s管理 = CDTXMania.app.Songs管理;
 
 				if( this.tx背景 != null )
 					this.tx背景.t2D描画( CDTXMania.app.Device, 0, 0 );
@@ -150,17 +149,17 @@ namespace DTXMania
 					int y = 0;
 					foreach( string str in this.list進行文字列 )
 					{
-						CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.灰細, str );
+						CDTXMania.app.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.灰細, str );
 						y += 14 * 2;
 					}
-					CDTXMania.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.灰細, this.str現在進行中 );
+					CDTXMania.app.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.灰細, this.str現在進行中 );
 				}
 				//-----------------
 				#endregion
 
 				if( es != null && es.IsSongListEnumCompletelyDone )							// 曲リスト作成が終わったら
 				{
-					CDTXMania.Songs管理 = ( es != null ) ? es.Songs管理 : null;		// 最後に、曲リストを拾い上げる
+					CDTXMania.app.Songs管理 = ( es != null ) ? es.Songs管理 : null;		// 最後に、曲リストを拾い上げる
 					return 1;
 				}
 			}
@@ -184,8 +183,8 @@ namespace DTXMania
 			// すべてのファイルアクセスは「絶対パス」で行うこと。(2010.9.16)
 
 			DateTime now = DateTime.Now;
-			string strPathSongsDB = CDTXMania.strEXEのあるフォルダ + "songs.db";
-			string strPathSongList = CDTXMania.strEXEのあるフォルダ + "songlist.db";
+			string strPathSongsDB = CDTXMania.app.strEXEのあるフォルダ + "songs.db";
+			string strPathSongList = CDTXMania.app.strEXEのあるフォルダ + "songlist.db";
 
 			try
 			{
@@ -198,16 +197,16 @@ namespace DTXMania
 
 				try
 				{
-					for( int i = 0; i < CDTXMania.Skin.nシステムサウンド数; i++ )
+					for( int i = 0; i < CDTXMania.app.Skin.nシステムサウンド数; i++ )
 					{
-						CSkin.Cシステムサウンド cシステムサウンド = CDTXMania.Skin[ i ];
-						if( !CDTXMania.bコンパクトモード || cシステムサウンド.bCompact対象 )
+						CSkin.Cシステムサウンド cシステムサウンド = CDTXMania.app.Skin[ i ];
+						if( !CDTXMania.app.bコンパクトモード || cシステムサウンド.bCompact対象 )
 						{
 							try
 							{
 								cシステムサウンド.t読み込み();
 								Trace.TraceInformation( "システムサウンドを読み込みました。({0})", new object[] { cシステムサウンド.strファイル名 } );
-								if( ( cシステムサウンド == CDTXMania.Skin.bgm起動画面 ) && cシステムサウンド.b読み込み成功 )
+								if( ( cシステムサウンド == CDTXMania.app.Skin.bgm起動画面 ) && cシステムサウンド.b読み込み成功 )
 								{
 									cシステムサウンド.t再生する();
 								}
@@ -235,7 +234,7 @@ namespace DTXMania
 				//-----------------------------
 				#endregion
 
-				if( CDTXMania.bコンパクトモード )
+				if( CDTXMania.app.bコンパクトモード )
 				{
 					Trace.TraceInformation( "コンパクトモードなので残りの起動処理は省略します。" );
 					return;
@@ -250,18 +249,18 @@ namespace DTXMania
 
 				try
 				{
-					if ( !CDTXMania.ConfigIni.bConfigIniがないかDTXManiaのバージョンが異なる )
+					if ( !CDTXMania.app.ConfigIni.bConfigIniがないかDTXManiaのバージョンが異なる )
 					{
 						try
 						{
-							CDTXMania.Songs管理.tSongListDBを読み込む( strPathSongList );
+							CDTXMania.app.Songs管理.tSongListDBを読み込む( strPathSongList );
 						}
 						catch
 						{
 							Trace.TraceError( "songlist.db の読み込みに失敗しました。" );
 						}
 
-						int scores = ( CDTXMania.Songs管理 == null ) ? 0 : CDTXMania.Songs管理.n検索されたスコア数;		// 読み込み途中でアプリ終了した場合など、CDTXMania.Songs管理 がnullの場合があるので注意
+						int scores = ( CDTXMania.app.Songs管理 == null ) ? 0 : CDTXMania.app.Songs管理.n検索されたスコア数;		// 読み込み途中でアプリ終了した場合など、CDTXMania.app.Songs管理 がnullの場合があるので注意
 						Trace.TraceInformation( "songlist.db の読み込みを完了しました。[{0}スコア]", scores );
 						lock ( this.list進行文字列 )
 						{
@@ -293,18 +292,18 @@ namespace DTXMania
 
 				try
 				{
-					if ( !CDTXMania.ConfigIni.bConfigIniがないかDTXManiaのバージョンが異なる )
+					if ( !CDTXMania.app.ConfigIni.bConfigIniがないかDTXManiaのバージョンが異なる )
 					{
 						try
 						{
-							CDTXMania.Songs管理.tSongsDBを読み込む( strPathSongsDB );
+							CDTXMania.app.Songs管理.tSongsDBを読み込む( strPathSongsDB );
 						}
 						catch
 						{
 							Trace.TraceError( "songs.db の読み込みに失敗しました。" );
 						}
 
-						int scores = ( CDTXMania.Songs管理 == null ) ? 0 : CDTXMania.Songs管理.nSongsDBから取得できたスコア数;	// 読み込み途中でアプリ終了した場合など、CDTXMania.Songs管理 がnullの場合があるので注意
+						int scores = ( CDTXMania.app.Songs管理 == null ) ? 0 : CDTXMania.app.Songs管理.nSongsDBから取得できたスコア数;	// 読み込み途中でアプリ終了した場合など、CDTXMania.app.Songs管理 がnullの場合があるので注意
 						Trace.TraceInformation( "songs.db の読み込みを完了しました。[{0}スコア]", scores );
 						lock ( this.list進行文字列 )
 						{

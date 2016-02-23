@@ -101,9 +101,9 @@ namespace DTXMania
 			{
 				throw new IndexOutOfRangeException( "有効範囲は 0～11 です。" );
 			}
-			if( ( ( nLane >= 8 ) || ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Drums ) != E判定文字表示位置.表示OFF ) ) && ( ( ( nLane != 10 ) || ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) != E判定文字表示位置.表示OFF ) ) && ( ( nLane != 11 ) || ( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) != E判定文字表示位置.表示OFF ) ) ) )
+			if( ( ( nLane >= 8 ) || ( ( (E判定文字表示位置) CDTXMania.app.ConfigIni.判定文字表示位置.Drums ) != E判定文字表示位置.表示OFF ) ) && ( ( ( nLane != 10 ) || ( ( (E判定文字表示位置) CDTXMania.app.ConfigIni.判定文字表示位置.Guitar ) != E判定文字表示位置.表示OFF ) ) && ( ( nLane != 11 ) || ( ( (E判定文字表示位置) CDTXMania.app.ConfigIni.判定文字表示位置.Bass ) != E判定文字表示位置.表示OFF ) ) ) )
 			{
-				this.st状態[ nLane ].ct進行 = new CCounter( 0, 300, 1, CDTXMania.Timer );
+				this.st状態[ nLane ].ct進行 = new CCounter( 0, 300, 1, CDTXMania.app.Timer );
 				this.st状態[ nLane ].judge = judge;
 				this.st状態[ nLane ].fX方向拡大率 = 1f;
 				this.st状態[ nLane ].fY方向拡大率 = 1f;
@@ -124,7 +124,7 @@ namespace DTXMania
 				this.st状態[ i ].ct進行 = new CCounter();
 			}
 			base.On活性化();
-			this.nShowLagType = CDTXMania.ConfigIni.nShowLagType;
+			this.nShowLagType = CDTXMania.app.ConfigIni.nShowLagType;
 		}
 		public override void On非活性化()
 		{
@@ -138,10 +138,10 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx判定文字列[ 0 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 1.png" ) );
-				this.tx判定文字列[ 1 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 2.png" ) );
-				this.tx判定文字列[ 2 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 3.png" ) );
-				this.txlag数値 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect level numbers.png" ) );
+				this.tx判定文字列[ 0 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 1.png" ) );
+				this.tx判定文字列[ 1 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 2.png" ) );
+				this.tx判定文字列[ 2 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay judge strings 3.png" ) );
+				this.txlag数値 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect level numbers.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -149,10 +149,10 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.tx判定文字列[ 0 ] );
-				CDTXMania.tテクスチャの解放( ref this.tx判定文字列[ 1 ] );
-				CDTXMania.tテクスチャの解放( ref this.tx判定文字列[ 2 ] );
-				CDTXMania.tテクスチャの解放( ref this.txlag数値 );
+				TextureFactory.tテクスチャの解放( ref this.tx判定文字列[ 0 ] );
+				TextureFactory.tテクスチャの解放( ref this.tx判定文字列[ 1 ] );
+				TextureFactory.tテクスチャの解放( ref this.tx判定文字列[ 2 ] );
+				TextureFactory.tテクスチャの解放( ref this.txlag数値 );
 				base.OnManagedリソースの解放();
 			}
 		}

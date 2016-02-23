@@ -28,7 +28,7 @@ namespace DTXMania
 			this.strパネル文字列 = str;
 			if( base.b活性化してる )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txPanel );
+				TextureFactory.tテクスチャの解放( ref this.txPanel );
 				if( ( this.strパネル文字列 != null ) && ( this.strパネル文字列.Length > 0 ) )
 				{
 					Bitmap image = new Bitmap( 1, 1 );
@@ -42,7 +42,7 @@ namespace DTXMania
 						graphics = Graphics.FromImage( bitmap2 );
 						graphics.DrawString( this.strパネル文字列, this.ft表示用フォント, Brushes.Red, (float) 0f, (float) 0f );
 						graphics.Dispose();
-						this.txPanel = new CTexture( CDTXMania.app.Device, bitmap2, CDTXMania.TextureFormat );
+						this.txPanel = new CTexture( CDTXMania.app.Device, bitmap2, CDTXMania.app.TextureFormat );
 						this.txPanel.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 						bitmap2.Dispose();
 					}
@@ -51,7 +51,7 @@ namespace DTXMania
 						Trace.TraceError( "パネル文字列テクスチャの生成に失敗しました。" );
 						this.txPanel = null;
 					}
-					this.ct進行用 = new CCounter( (int) ( -278 * Scale.X ), this.n文字列の長さdot / 2, unchecked( (int) ( 12.0f / Scale.X ) ), CDTXMania.Timer );
+					this.ct進行用 = new CCounter( (int) ( -278 * Scale.X ), this.n文字列の長さdot / 2, unchecked( (int) ( 12.0f / Scale.X ) ), CDTXMania.app.Timer );
 				}
 				this.Start();
 			}
@@ -85,7 +85,7 @@ namespace DTXMania
 				this.ft表示用フォント.Dispose();
 				this.ft表示用フォント = null;
 			}
-			CDTXMania.tテクスチャの解放( ref this.txPanel );
+			TextureFactory.tテクスチャの解放( ref this.txPanel );
 			this.ct進行用 = null;
 			base.On非活性化();
 		}
@@ -101,7 +101,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txPanel );
+				TextureFactory.tテクスチャの解放( ref this.txPanel );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -122,7 +122,7 @@ namespace DTXMania
 				Rectangle rectangle = new Rectangle(
 					(int) ( ( (float) this.ct進行用.n現在の値 ) / magX ),
 					0,
-					(CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)?
+					(CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)?
 						(int) ( 278f / magX * Scale.X ) :
 						(int) ( 180f / magX * Scale.X ),
 					(int) this.ft表示用フォント.Size

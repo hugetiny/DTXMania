@@ -14,7 +14,7 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				this.txDANGER = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayGuitar danger.png" ) );
+				this.txDANGER = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayGuitar danger.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -22,7 +22,7 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txDANGER );
+				TextureFactory.tテクスチャの解放( ref this.txDANGER );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -45,8 +45,8 @@ namespace DTXMania
 			{
 				if ( this.ct透明度用 == null )
 				{
-					//this.ct移動用 = new CCounter( 0, 0x7f, 7, CDTXMania.Timer );
-					this.ct透明度用 = new CCounter( 0, n波長, 8, CDTXMania.Timer );
+					//this.ct移動用 = new CCounter( 0, 0x7f, 7, CDTXMania.app.Timer );
+					this.ct透明度用 = new CCounter( 0, n波長, 8, CDTXMania.app.Timer );
 				}
 				if ( this.ct透明度用 != null )
 				{
@@ -64,7 +64,7 @@ namespace DTXMania
 							this.txDANGER.n透明度 = n透明度MIN + ( ( d < n波長 / 2 ) ? ( n透明度MAX - n透明度MIN ) * d / ( n波長 / 2 ) : ( n透明度MAX - n透明度MIN ) * ( n波長 - d ) / ( n波長 / 2 ) );		// 60-200
 							//		}
 							//num = this.ct移動用.n現在の値;
-							//int num2 = CDTXMania.ConfigIni.bReverse.Drums ? ( 0x7f - num ) : num;
+							//int num2 = CDTXMania.app.ConfigIni.bReverse.Drums ? ( 0x7f - num ) : num;
 							//				for ( int i = -1; i < 4; i++ )
 							//				{
 							//		if ( this.txDANGER != null )

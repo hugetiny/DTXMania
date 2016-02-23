@@ -52,14 +52,14 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txバー = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult song bar.png" ), false );
+				this.txバー = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult song bar.png" ), false );
 				try
 				{
 					Bitmap image = new Bitmap( (int)(0x3a8 * Scale.X), (int)(0x36 * Scale.Y) );
 					Graphics graphics = Graphics.FromImage( image );
 					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					graphics.DrawString( CDTXMania.DTX.TITLE, this.ft曲名用フォント, Brushes.White, ( float ) 8f * Scale.X, ( float ) 0f );
-					this.tx曲名 = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+					graphics.DrawString( CDTXMania.app.DTX.TITLE, this.ft曲名用フォント, Brushes.White, ( float ) 8f * Scale.X, ( float ) 0f );
+					this.tx曲名 = new CTexture( CDTXMania.app.Device, image, CDTXMania.app.TextureFormat );
 					this.tx曲名.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 					graphics.Dispose();
 					image.Dispose();
@@ -76,8 +76,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txバー );
-				CDTXMania.tテクスチャの解放( ref this.tx曲名 );
+				TextureFactory.tテクスチャの解放( ref this.txバー );
+				TextureFactory.tテクスチャの解放( ref this.tx曲名 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -89,7 +89,7 @@ namespace DTXMania
 			}
 			if( base.b初めての進行描画 )
 			{
-				this.ct登場用 = new CCounter( 0, 270, 4, CDTXMania.Timer );
+				this.ct登場用 = new CCounter( 0, 270, 4, CDTXMania.app.Timer );
 				base.b初めての進行描画 = false;
 			}
 			this.ct登場用.t進行();

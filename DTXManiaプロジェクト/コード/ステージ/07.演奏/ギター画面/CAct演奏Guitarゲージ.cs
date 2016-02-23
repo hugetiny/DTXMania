@@ -26,8 +26,8 @@ namespace DTXMania
 		public override void On活性化()
 		{
 			// CAct演奏ゲージ共通.Init()に移動
-//			this.db現在のゲージ値.Guitar = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
-//			this.db現在のゲージ値.Bass   = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
+//			this.db現在のゲージ値.Guitar = ( CDTXMania.app.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
+//			this.db現在のゲージ値.Bass   = ( CDTXMania.app.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -40,7 +40,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txゲージ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayGuitar gauge.png" ) );
+				this.txゲージ = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayGuitar gauge.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -48,7 +48,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txゲージ );
+				TextureFactory.tテクスチャの解放( ref this.txゲージ );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -60,8 +60,8 @@ namespace DTXMania
 				int num9;
 				if( base.b初めての進行描画 )
 				{
-					this.ct本体移動 = new CCounter( 0, 0x1a, 20, CDTXMania.Timer );
-					this.ct本体振動 = new CCounter( 0, 360, 4, CDTXMania.Timer );
+					this.ct本体移動 = new CCounter( 0, 0x1a, 20, CDTXMania.app.Timer );
+					this.ct本体振動 = new CCounter( 0, 360, 4, CDTXMania.app.Timer );
 					base.b初めての進行描画 = false;
 				}
 				this.ct本体移動.t進行Loop();

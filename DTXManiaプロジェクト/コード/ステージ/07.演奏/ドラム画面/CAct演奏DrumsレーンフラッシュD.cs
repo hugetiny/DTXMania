@@ -51,7 +51,7 @@ namespace DTXMania
 		public void Start( Eレーン lane, float f強弱度合い )
 		{
 			int num = (int) ( ( 1f - f強弱度合い ) * 55f );
-			this.ct進行[ (int) lane ] = new CCounter( num, 100, 4, CDTXMania.Timer );
+			this.ct進行[ (int) lane ] = new CCounter( num, 100, 4, CDTXMania.app.Timer );
 		}
 
 
@@ -79,7 +79,7 @@ namespace DTXMania
 			{
 				for ( int i = 0; i < 0x10; i++ )
 				{
-					this.txFlush[ i ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( this.strファイル名[ i ] ) );
+					this.txFlush[ i ] = TextureFactory.tテクスチャの生成Af( CSkin.Path( this.strファイル名[ i ] ) );
 				}
 				base.OnManagedリソースの作成();
 			}
@@ -90,7 +90,7 @@ namespace DTXMania
 			{
 				for ( int i = 0; i < 0x10; i++ )
 				{
-					CDTXMania.tテクスチャの解放( ref this.txFlush[ i ] );
+					TextureFactory.tテクスチャの解放( ref this.txFlush[ i ] );
 				}
 				base.OnManagedリソースの解放();
 			}
@@ -117,14 +117,14 @@ namespace DTXMania
 						int x = this.stレーンサイズ[ j ].x;
 						int w = this.stレーンサイズ[ j ].w;
 
-						x = (int) ( x * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) );
-						x += ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 36 * 3 : 619 - 24 + 36;
-						w = (int) ( w * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) );
+						x = (int) ( x * ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) );
+						x += ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 36 * 3 : 619 - 24 + 36;
+						w = (int) ( w * ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) );
 
 						//for ( int k = 0; k < 3; k++ )
 						int k = 0;
 						{
-							if ( CDTXMania.ConfigIni.bReverse.Drums )
+							if ( CDTXMania.app.ConfigIni.bReverse.Drums )
 							{
 								int y = ( k * 0x80 ) - ( ( this.ct進行[ j ].n現在の値 * 0x180 ) / 100 );
 								for ( int m = 0; m < w; m += 42 )

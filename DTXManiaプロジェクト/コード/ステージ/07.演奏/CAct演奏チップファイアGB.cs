@@ -25,10 +25,10 @@ namespace DTXMania
 			{
 				this.pt中央位置[ nLane ].X = n中央X;
 				this.pt中央位置[ nLane ].Y = n中央Y;
-				this.ct進行[ nLane ].t開始( 28, 56, 8, CDTXMania.Timer );		// #24736 2011.2.17 yyagi: (0, 0x38, 4,..) -> (24, 0x38, 8) に変更 ギターチップの光り始めを早くするため
+				this.ct進行[ nLane ].t開始( 28, 56, 8, CDTXMania.app.Timer );		// #24736 2011.2.17 yyagi: (0, 0x38, 4,..) -> (24, 0x38, 8) に変更 ギターチップの光り始めを早くするため
 				//this.nJudgeLinePosY_delta = _nJudgeLinePosY_delta;				// #31602 2013.6.24 yyagi
 				this._演奏判定ライン座標 = 演奏判定ライン座標;
-				this.bReverse = CDTXMania.ConfigIni.bReverse;					//
+				this.bReverse = CDTXMania.app.ConfigIni.bReverse;					//
 			}
 		}
 
@@ -58,17 +58,17 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx火花[ 0 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay chip fire red.png" ) );
+				this.tx火花[ 0 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay chip fire red.png" ) );
 				if( this.tx火花[ 0 ] != null )
 				{
 					this.tx火花[ 0 ].b加算合成 = true;
 				}
-				this.tx火花[ 1 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay chip fire green.png" ) );
+				this.tx火花[ 1 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay chip fire green.png" ) );
 				if( this.tx火花[ 1 ] != null )
 				{
 					this.tx火花[ 1 ].b加算合成 = true;
 				}
-				this.tx火花[ 2 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay chip fire blue.png" ) );
+				this.tx火花[ 2 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay chip fire blue.png" ) );
 				if( this.tx火花[ 2 ] != null )
 				{
 					this.tx火花[ 2 ].b加算合成 = true;
@@ -80,9 +80,9 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.tx火花[ 0 ] );
-				CDTXMania.tテクスチャの解放( ref this.tx火花[ 1 ] );
-				CDTXMania.tテクスチャの解放( ref this.tx火花[ 2 ] );
+				TextureFactory.tテクスチャの解放( ref this.tx火花[ 0 ] );
+				TextureFactory.tテクスチャの解放( ref this.tx火花[ 1 ] );
+				TextureFactory.tテクスチャの解放( ref this.tx火花[ 2 ] );
 				base.OnManagedリソースの解放();
 			}
 		}

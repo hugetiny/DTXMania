@@ -8,34 +8,35 @@ namespace DTXMania
 {
 	public class CChip : IComparable<CChip>, ICloneable
 	{
-		public bool bHit;
-		public bool b可視;
-		public double dbチップサイズ倍率;
-		public double db実数値;
-		public EAVI種別 eAVI種別;
-		public EBGA種別 eBGA種別;
-		public E楽器パート e楽器パート;
-		public Ech定義 eチャンネル番号;
-		public STDGBVALUE<int> nバーからの距離dot;
-		public int n整数値;
-		public int n整数値_内部番号;
-		public int n総移動時間;
-		public int n透明度;
-		public int n発声位置;
-		public int n発声時刻ms;
-		public int nLag;				// 2011.2.1 yyagi
-		public int nCurrentComboForGhost; // 2015.9.29 chnmr0
-		public CDTX.CAVI rAVI;
-		public CDTX.CAVIPAN rAVIPan;
-		public CDTX.CBGA rBGA;
-		public CDTX.CBGAPAN rBGAPan;
-		public CDTX.CBMP rBMP;
-		public CDTX.CBMPTEX rBMPTEX;
-		public bool bIsAutoPlayed;							// 2011.6.10 yyagi
-		public bool b演奏終了後も再生が続くチップである;	// #32248 2013.10.14 yyagi
-		public bool b空打ちチップである;					// #34029 2014.7.15 yyagi
-		public int n楽器パートでの出現順;                // #35411 2015.08.20 chnmr0
-		public bool bTargetGhost判定済み;               // #35411 2015.08.22 chnmr0
+		public bool bHit { get; set; }
+		public bool b可視 { get; set; }
+		public int n透明度 { get; set; }
+		public int nLag { get; set; }				// 2011.2.1 yyagi
+		public int n楽器パートでの出現順 { get; set; }               // #35411 2015.08.20 chnmr0
+		public bool bTargetGhost判定済み { get; set; }               // #35411 2015.08.22 chnmr0
+		public bool extendInfoForGhost { get; set; } // 2015.9.29 chnmr0
+
+		public bool bIsAutoPlayed { get; private set; }							// 2011.6.10 yyagi		
+		public double dbチップサイズ倍率 { get; private set; }
+		public double db実数値 { get; private set; }
+		public EAVI種別 eAVI種別 { get; private set; }
+		public EBGA種別 eBGA種別 { get; private set; }
+		public E楽器パート e楽器パート { get; private set; }
+		public Ech定義 eチャンネル番号 { get; private set; }
+		public STDGBVALUE<int> nバーからの距離dot { get; private set; }
+		public int n整数値 { get; private set; }
+		public int n整数値_内部番号 { get; private set; }
+		public int n総移動時間 { get; private set; }
+		public int n発声位置 { get; private set; }
+		public int n発声時刻ms { get; private set; }
+		public CDTX.CAVI rAVI { get; private set; }
+		public CDTX.CAVIPAN rAVIPan { get; private set; }
+		public CDTX.CBGA rBGA { get; private set; }
+		public CDTX.CBGAPAN rBGAPan { get; private set; }
+		public CDTX.CBMP rBMP { get; private set; }
+		public CDTX.CBMPTEX rBMPTEX { get; private set; }
+		public bool b演奏終了後も再生が続くチップである { get; private set; }	// #32248 2013.10.14 yyagi
+		public bool b空打ちチップである { get; private set; }					// #34029 2014.7.15 yyagi
 
 		/// <summary>
 		/// このチップがベースBPM、拡張BPM指示チップであることを示す。
@@ -45,8 +46,8 @@ namespace DTXMania
 			get
 			{
 				return (
-				  this.eチャンネル番号 == Ech定義.BPM ||
-				  this.eチャンネル番号 == Ech定義.BPMEx
+					this.eチャンネル番号 == Ech定義.BPM ||
+					this.eチャンネル番号 == Ech定義.BPMEx
 				);
 			}
 		}
@@ -54,7 +55,7 @@ namespace DTXMania
 		/// <summary>
 		/// 可視 HHC~LBD
 		/// </summary>
-		public bool bDrums可視チップである
+		public bool bDrums可視チップ
 		{
 			get
 			{
@@ -66,7 +67,7 @@ namespace DTXMania
 		/// <summary>
 		/// 可視 HHC~LC
 		/// </summary>
-		public bool bDrums可視チップであるLP_LBD含まない
+		public bool bDrums可視チップ_LP_LBD含まない
 		{
 			get
 			{
@@ -78,7 +79,7 @@ namespace DTXMania
 		/// <summary>
 		/// 不可視 HHC~LBD
 		/// </summary>
-		public bool bDrums不可視チップである
+		public bool bDrums不可視チップ
 		{
 			get
 			{
@@ -90,7 +91,7 @@ namespace DTXMania
 		/// <summary>
 		/// 空打ち HHC~LBD
 		/// </summary>
-		public bool bDrums空打ちチップである
+		public bool bDrums空打ちチップ
 		{
 			get
 			{
@@ -131,15 +132,15 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.Guitar_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Guitar_Wailing;
+				return Ech定義.Guitar_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Guitar_RGB;
 			}
 		}
 
-		public bool bGuitar可視チップ_Wailing含まない
+		public bool bGuitar可視チップ_Wailing含む
 		{
 			get
 			{
-				return Ech定義.Guitar_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Guitar_RGB;
+				return Ech定義.Guitar_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Guitar_Wailing;
 			}
 		}
 
@@ -151,15 +152,15 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Bass_Wailing;
+				return Ech定義.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Bass_RGB;
 			}
 		}
 
-		public bool bBass可視チップ_Wailing含まない
+		public bool bBass可視チップ_Wailing含む
 		{
 			get
 			{
-				return Ech定義.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Bass_RGB;
+				return Ech定義.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Bass_Wailing;
 			}
 		}
 
@@ -171,6 +172,14 @@ namespace DTXMania
 			get
 			{
 				return bGuitar可視チップ || bBass可視チップ;
+			}
+		}
+
+		public bool bGuitarBass可視チップ_Wailing含む
+		{
+			get
+			{
+				return bGuitar可視チップ_Wailing含む || bBass可視チップ_Wailing含む;
 			}
 		}
 
@@ -205,7 +214,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return bGuitar可視チップ && (((int)eチャンネル番号 & 0x0F) == 0x08);
+				return bGuitarBass可視チップ_Wailing含む && (((int)eチャンネル番号 & 0x0F) == 0x08);
 			}
 		}
 
@@ -213,7 +222,91 @@ namespace DTXMania
 		{
 			get
 			{
-				return bGuitar可視チップ && (((int)eチャンネル番号 & 0x0F) == 0x00);
+				return bGuitarBass可視チップ && (((int)eチャンネル番号 & 0x0F) == 0x00);
+			}
+		}
+
+		public bool this[Ech定義 x]
+		{
+			get
+			{
+				return eチャンネル番号 == x;
+			}
+		}
+
+		public bool bBGALayer
+		{
+			get
+			{
+				return
+					((eチャンネル番号 == Ech定義.BGALayer1) ||
+					(eチャンネル番号 == Ech定義.BGALayer2) ||
+					((Ech定義.BGALayer3 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.BGALayer7)) ||
+					(eチャンネル番号 == Ech定義.BGALayer8));
+			}
+		}
+
+		public bool bBGALayerSwap
+		{
+			get
+			{
+				return
+					((eチャンネル番号 == Ech定義.BGALayer1_Swap) ||
+					(eチャンネル番号 == Ech定義.BGALayer2_Swap) ||
+					((Ech定義.BGALayer3_Swap <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.BGALayer7_Swap)) ||
+					(eチャンネル番号 == Ech定義.BGALayer8_Swap));
+			}
+		}
+
+		public void DecideInstrumentPart()
+		{
+			if (bDrums可視チップ)
+			{
+				e楽器パート = E楽器パート.DRUMS;
+			}
+			else if (bGuitar可視チップ)
+			{
+				e楽器パート = E楽器パート.GUITAR;
+			}
+			else if (bBass可視チップ)
+			{
+				e楽器パート = E楽器パート.BASS;
+			}
+			else
+			{
+				e楽器パート = E楽器パート.UNKNOWN;
+			}
+		}
+
+		/// <summary>
+		/// #34029 2014.7.15 yyagi
+		/// ドラムの空打ち音だったら、フラグを立てたうえで、通常チップのチャンネル番号に変更。ギターベースの空打ち音はとりあえずフラグを立てるだけ。
+		/// </summary>
+		public void ConvertNoChip()
+		{
+			if (Ech定義.HiHatClose_NoChip <= eチャンネル番号 && eチャンネル番号 <= Ech定義.RideCymbal_NoChip)
+			{
+				b空打ちチップである = true;
+				eチャンネル番号 = eチャンネル番号 - 0xB0 + 0x10;
+			}
+			else if (this[Ech定義.Guitar_NoChip] || this[Ech定義.Bass_NoChip])
+			{
+				b空打ちチップである = true;
+			}
+			else if (this[Ech定義.LeftCymbal_NoChip])
+			{
+				b空打ちチップである = true;
+				eチャンネル番号 = Ech定義.LeftCymbal;
+			}
+			else if (this[Ech定義.LeftPedal_NoChip])
+			{
+				b空打ちチップである = true;
+				eチャンネル番号 = Ech定義.LeftPedal;
+			}
+			else if (this[Ech定義.LeftBassDrum_NoChip])
+			{
+				b空打ちチップである = true;
+				eチャンネル番号 = Ech定義.LeftBassDrum;
 			}
 		}
 
@@ -244,6 +337,32 @@ namespace DTXMania
 					ret = true;
 				}
 				return ret;
+			}
+		}
+
+		public bool bMovie
+		{
+			get
+			{
+				return eチャンネル番号 == Ech定義.MovieFull || eチャンネル番号 == Ech定義.Movie;
+			}
+		}
+
+		public bool bSE
+		{
+			get
+			{
+				if (((Ech定義.SE01 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE09)) ||
+						((Ech定義.SE10 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE19)) ||
+						((Ech定義.SE20 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE29)) ||
+						((Ech定義.SE30 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE32)))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
 		}
 
@@ -423,6 +542,460 @@ namespace DTXMania
 		}
 
 
+		/// <summary>
+		/// これが本当に一意なWAV番号となる。（無限定義の場合、chip.n整数値 は一意である保証がない。）
+		/// </summary>
+		/// <param name="index"></param>
+		public void AssignInfiniteManageWAV(int index)
+		{
+			if (bWAVを使うチャンネルである)
+			{
+				n整数値_内部番号 = index;// 
+			}
+		}
+
+		/// <summary>
+		/// // これが本当に一意なBPM番号となる。(無限WAVも参照)
+		/// </summary>
+		/// <param name="index"></param>
+		public void AssignInfiniteManageBPM(int index)
+		{
+			if (bBPMチップである)
+			{
+				n整数値_内部番号 = index;
+			}
+		}
+
+		public void AdjustPlayPositionForFillin(int index)
+		{
+			if (this[Ech定義.FillIn])
+			{
+				// ずらすのは、フィルインONチップと同じ位置にいるチップでも確実にフィルインが発動し、
+				// 同様に、フィルインOFFチップと同じ位置にいるチップでも確実にフィルインが終了するようにするため。
+
+				if ((index > 0) && (index != 2))
+				{
+					n発声位置 -= 32;	// 384÷32＝12 ということで、フィルインONチップは12分音符ほど前へ移動。
+				}
+				else if (index == 2)
+				{
+					n発声位置 += 32;	// 同じく、フィルインOFFチップは12分音符ほど後ろへ移動。
+				}
+			}
+		}
+
+		/// <summary>
+		/// #BPMzz 行より前の行に出現した #BPMzz では、整数値・内部番号は -zz に初期化されている。
+		/// </summary>
+		/// <param name="zz"></param>
+		/// <param name="newIndex"></param>
+		public void AdjustInfiniteManageIntInternalIndex(bool chipCond, int zz, int newIndex)
+		{
+			if (chipCond && n整数値_内部番号 == -zz)
+			{
+				n整数値_内部番号 = newIndex;
+			}
+		}
+
+		public void AddPlayPositionMsForSE(int increment)
+		{
+			if (this[Ech定義.BGM] || bSE)
+			{
+				n発声時刻ms += increment;
+			}
+		}
+
+		public void ApplyAVI(
+			Dictionary<int, CDTX.CAVI> listAVI,
+			Dictionary<int, CDTX.CAVIPAN> listAVIPAN
+			)
+		{
+			if (bMovie)
+			{
+				eAVI種別 = EAVI種別.Unknown;
+				rAVI = null;
+				rAVIPan = null;
+				if (listAVIPAN.ContainsKey(n整数値))
+				{
+					CDTX.CAVIPAN cavipan = listAVIPAN[n整数値];
+					if (listAVI.ContainsKey(cavipan.nAVI番号) && (listAVI[cavipan.nAVI番号].avi != null))
+					{
+						eAVI種別 = EAVI種別.AVIPAN;
+						rAVI = listAVI[cavipan.nAVI番号];
+						rAVIPan = cavipan;
+						return;
+					}
+				}
+				if (listAVI.ContainsKey(n整数値) && (listAVI[n整数値].avi != null))
+				{
+					eAVI種別 = EAVI種別.AVI;
+					rAVI = listAVI[n整数値];
+				}
+			}
+		}
+
+
+		public void ApplyBMP_BMPTEX(
+			Dictionary<int, CDTX.CBGA> listBGA,
+			Dictionary<int, CDTX.CBGAPAN> listBGAPAN,
+			Dictionary<int, CDTX.CBMP> listBMP,
+			Dictionary<int, CDTX.CBMPTEX> listBMPTEX)
+		{
+			if (bBGALayer)
+			{
+				eBGA種別 = EBGA種別.Unknown;
+				rBMP = null;
+				rBMPTEX = null;
+				rBGA = null;
+				rBGAPan = null;
+
+				#region [ BGAPAN ]
+				if (listBGAPAN.ContainsKey(n整数値))
+				{
+					CDTX.CBGAPAN cbgapan = listBGAPAN[n整数値];
+					if (listBMPTEX.ContainsKey(cbgapan.nBMP番号) && listBMPTEX[cbgapan.nBMP番号].bUse)
+					{
+						eBGA種別 = EBGA種別.BGAPAN;
+						rBMPTEX = listBMPTEX[cbgapan.nBMP番号];
+						rBGAPan = cbgapan;
+						return;
+					}
+					if (listBMP.ContainsKey(cbgapan.nBMP番号) && listBMP[cbgapan.nBMP番号].bUse)
+					{
+						eBGA種別 = EBGA種別.BGAPAN;
+						rBMP = listBMP[cbgapan.nBMP番号];
+						rBGAPan = cbgapan;
+						return;
+					}
+				}
+				#endregion
+
+				#region [ BGA ]
+				if (listBGA.ContainsKey(n整数値))
+				{
+					CDTX.CBGA cbga = listBGA[n整数値];
+					if (listBMPTEX.ContainsKey(cbga.nBMP番号) && listBMPTEX[cbga.nBMP番号].bUse)
+					{
+						eBGA種別 = EBGA種別.BGA;
+						rBMPTEX = listBMPTEX[cbga.nBMP番号];
+						rBGA = cbga;
+						return;
+					}
+					if (listBMP.ContainsKey(cbga.nBMP番号) && listBMP[cbga.nBMP番号].bUse)
+					{
+						eBGA種別 = EBGA種別.BGA;
+						rBMP = listBMP[cbga.nBMP番号];
+						rBGA = cbga;
+						return;
+					}
+				}
+				#endregion
+
+				#region [ BMPTEX ]
+				if (listBMPTEX.ContainsKey(n整数値) && listBMPTEX[n整数値].bUse)
+				{
+					eBGA種別 = EBGA種別.BMPTEX;
+					rBMPTEX = listBMPTEX[n整数値];
+					return;
+				}
+				#endregion
+
+				#region [ BMP ]
+				if (listBMP.ContainsKey(n整数値) && listBMP[n整数値].bUse)
+				{
+					eBGA種別 = EBGA種別.BMP;
+					rBMP = listBMP[n整数値];
+					return;
+				}
+				#endregion
+			}
+			#region [ BGA入れ替え ]
+			if (bBGALayerSwap)
+			{
+				eBGA種別 = EBGA種別.Unknown;
+				rBMP = null;
+				rBMPTEX = null;
+				rBGA = null;
+				rBGAPan = null;
+				if (listBMPTEX.ContainsKey(n整数値) && listBMPTEX[n整数値].bUse)
+				{
+					eBGA種別 = EBGA種別.BMPTEX;
+					rBMPTEX = listBMPTEX[n整数値];
+				}
+				else if (listBMP.ContainsKey(n整数値) && listBMP[n整数値].bUse)
+				{
+					eBGA種別 = EBGA種別.BMP;
+					rBMP = listBMP[n整数値];
+				}
+			}
+			#endregion
+		}
+
+		public void SetDBChipSizeFactor(double newFactor)
+		{
+			dbチップサイズ倍率 = newFactor;
+		}
+
+
+		public void SetSoundAfterPlayEnd(bool newBSound)
+		{
+			b演奏終了後も再生が続くチップである = newBSound;
+		}
+
+		public void CalculatePlayPositionMs(
+			EDTX種別 type,
+			double basebpm,
+			Dictionary<int, CDTX.CBPM> listBPM,
+			Dictionary<int, CDTX.CAVIPAN> listAVIPAN,
+			Dictionary<int, CDTX.CBGAPAN> listBGAPAN,
+			ref double bpm,
+			ref double dbBarLength,
+			ref int basePlayPosition,
+			ref int ms,
+			ref int nBar)
+		{
+			n発声時刻ms = ms + ((int)(((0x271 * (n発声位置 - basePlayPosition)) * dbBarLength) / bpm));
+			if (((type == EDTX種別.BMS) || (type == EDTX種別.BME)) &&
+				((dbBarLength != 1.0) && ((n発声位置 / 384) != nBar)))
+			{
+				basePlayPosition = n発声位置;
+				ms = n発声時刻ms;
+				dbBarLength = 1.0;
+			}
+			nBar = n発声位置 / 384;
+
+			if (this[Ech定義.BarLength])
+			{
+				basePlayPosition = n発声位置;
+				ms = n発声時刻ms;
+				dbBarLength = db実数値;
+				return;
+			}
+			else if (this[Ech定義.BPM])
+			{
+				basePlayPosition = n発声位置;
+				ms = n発声時刻ms;
+				bpm = basebpm + n整数値;
+				return;
+			}
+			else if (this[Ech定義.BPMEx])
+			{
+				basePlayPosition = n発声位置;
+				ms = n発声時刻ms;
+				if (listBPM.ContainsKey(n整数値_内部番号))
+				{
+					bpm = ((listBPM[n整数値_内部番号].n表記上の番号 == 0) ? 0.0 : basebpm) + listBPM[n整数値_内部番号].dbBPM値;
+				}
+				return;
+			}
+			else if (bMovie)
+			{
+				if (listAVIPAN.ContainsKey(n整数値))
+				{
+					int num21 = ms + ((int)(((0x271 * (n発声位置 - basePlayPosition)) * dbBarLength) / bpm));
+					int num22 = ms + ((int)(((0x271 * ((n発声位置 + listAVIPAN[n整数値].n移動時間ct) - basePlayPosition)) * dbBarLength) / bpm));
+					n総移動時間 = num22 - num21;
+				}
+				return;
+			}
+			else if (bBGALayer)
+			{
+				if (listBGAPAN.ContainsKey(n整数値))
+				{
+					int num19 = ms + ((int)(((0x271 * (n発声位置 - basePlayPosition)) * dbBarLength) / bpm));
+					int num20 = ms + ((int)(((0x271 * ((n発声位置 + listBGAPAN[n整数値].n移動時間ct) - basePlayPosition)) * dbBarLength) / bpm));
+					n総移動時間 = num20 - num19;
+				}
+			}
+		}
+
+		/// <summary>
+		/// 演奏速度を適用。2回以上呼ぶとさらに短くなる。
+		/// </summary>
+		/// <param name="factor"></param>
+		public void ApplyPlaySpeed(double factor)
+		{
+			if (factor > 0)
+			{
+				n発声時刻ms = (int)((double)n発声時刻ms / factor);
+			}
+		}
+
+		public void CalcDistanceFromBar(long currentTime, STDGBVALUE<double> ScrollSpeedInSetting)
+		{
+			//double speed = 264.0;	// BPM150の時の1小節の長さ[dot]
+			const double speed = 234.0 * Scale.Y;	// BPM150の時の1小節の長さ[dot]
+			double ScrollSpeedDrums = (ScrollSpeedInSetting.Drums + 1.0) * 0.5 * 37.5 * speed / 60000.0;
+			double ScrollSpeedGuitar = (ScrollSpeedInSetting.Guitar + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
+			double ScrollSpeedBass = (ScrollSpeedInSetting.Bass + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
+
+			STDGBVALUE<int> newDot = new STDGBVALUE<int>();
+
+			newDot.Drums = (int)((n発声時刻ms - currentTime) * ScrollSpeedDrums);
+			newDot.Guitar = (int)((n発声時刻ms - currentTime) * ScrollSpeedGuitar);
+			newDot.Bass = (int)((n発声時刻ms - currentTime) * ScrollSpeedBass);
+
+			nバーからの距離dot = newDot;
+		}
+
+		public void RandomizeRGB(Eランダムモード eRandom, int seed, bool existOpen)
+		{
+			int[,] nランダムレーン候補 = new int[,]
+			{
+					{ 0, 1, 2, 3, 4, 5, 6, 7 },
+					{ 0, 2, 1, 3, 4, 6, 5, 7 },
+					{ 0, 1, 4, 5, 2, 3, 6, 7 },
+					{ 0, 2, 4, 6, 1, 3, 5, 7 },
+					{ 0, 4, 1, 5, 2, 6, 3, 7 },
+					{ 0, 4, 2, 6, 1, 5, 3, 7 }
+				};
+			Eレーンビットパターン nRGBレーンビットパターン;
+			Eレーンビットパターン n新RGBレーンビットパターン = Eレーンビットパターン.OPEN;// 「未割り当てのローカル変数」ビルドエラー回避のために0を初期値に設定
+			int nランダム化前BassFlag = nGuitarBassUpper4Bit;
+			bool bAdjustRandomLane = true;
+
+			if (bGuitarBass可視チップ)
+			{
+				switch (eRandom)
+				{
+					case Eランダムモード.RANDOM:		// 1小節単位でレーンのR/G/Bがランダムに入れ替わる
+						eチャンネル番号 = (Ech定義)((nGuitarBassUpper4Bit) | nランダムレーン候補[seed, (int)eRGBビットパターン]);
+						return;
+
+					case Eランダムモード.SUPERRANDOM:	// チップごとにR/G/Bがランダムで入れ替わる(レーンの本数までは変わらない)。
+						eチャンネル番号 = (Ech定義)((nGuitarBassUpper4Bit) | nランダムレーン候補[CDTXMania.app.Random.Next(6), (int)eRGBビットパターン]);
+						return;
+
+					case Eランダムモード.HYPERRANDOM:	// レーンの本数も変わる
+						nRGBレーンビットパターン = eRGBビットパターン;
+						// n新RGBレーンビットパターン = (int)Eレーンビットパターン.OPEN;	// この値は結局未使用なので削除
+						if (
+							(nRGBレーンビットパターン != Eレーンビットパターン.xxB) &&
+							(nRGBレーンビットパターン != Eレーンビットパターン.xGx) &&
+							(nRGBレーンビットパターン != Eレーンビットパターン.Rxx))		// xxB, xGx, Rxx レーン1本相当
+						{
+						}
+						else
+						{
+							n新RGBレーンビットパターン = (Eレーンビットパターン)CDTXMania.app.Random.Next(6) + 1;		// レーン1本相当なら、レーン1本か2本(1～6)に変化して終了
+							bAdjustRandomLane = false;
+						}
+						break;
+
+					default:
+						return;
+				}
+				if (bAdjustRandomLane)
+				{
+					switch (nRGBレーンビットパターン)
+					{
+						case Eレーンビットパターン.xGB:	// xGB	レーン2本相当
+						case Eレーンビットパターン.RxB:	// RxB
+						case Eレーンビットパターン.RGx:	// RGx
+							n新RGBレーンビットパターン = existOpen ? (Eレーンビットパターン)(CDTXMania.app.Random.Next(8)) : (Eレーンビットパターン)(CDTXMania.app.Random.Next(7) + 1);	// OPENあり譜面ならOPENを含むランダム, OPENなし譜面ならOPENを含まないランダム
+							break;
+
+						default:
+							if (nRGBレーンビットパターン == Eレーンビットパターン.RGB)	// RGB レーン3本相当
+							{
+								if (existOpen)	// OPENあり譜面の場合
+								{
+									int n乱数パーセント = CDTXMania.app.Random.Next(100);
+									if (n乱数パーセント < 30)
+									{
+										n新RGBレーンビットパターン = Eレーンビットパターン.OPEN;
+									}
+									else if (n乱数パーセント < 60)
+									{
+										n新RGBレーンビットパターン = Eレーンビットパターン.RGB;
+									}
+									else if (n乱数パーセント < 85)
+									{
+										switch (CDTXMania.app.Random.Next(3))
+										{
+											case 0:
+												n新RGBレーンビットパターン = Eレーンビットパターン.xGB;
+												break;
+
+											case 1:
+												n新RGBレーンビットパターン = Eレーンビットパターン.RxB;
+												break;
+										}
+										n新RGBレーンビットパターン = Eレーンビットパターン.RGx;
+									}
+									else	// OPENでない場合
+									{
+										switch (CDTXMania.app.Random.Next(3))
+										{
+											case 0:
+												n新RGBレーンビットパターン = Eレーンビットパターン.xxB;
+												break;
+
+											case 1:
+												n新RGBレーンビットパターン = Eレーンビットパターン.xGx;
+												break;
+										}
+										n新RGBレーンビットパターン = Eレーンビットパターン.Rxx;
+									}
+								}
+								else	// OPENなし譜面の場合
+								{
+									int n乱数パーセント = CDTXMania.app.Random.Next(100);
+									if (n乱数パーセント < 60)
+									{
+										n新RGBレーンビットパターン = Eレーンビットパターン.RGB;
+									}
+									else if (n乱数パーセント < 85)
+									{
+										switch (CDTXMania.app.Random.Next(3))
+										{
+											case 0:
+												n新RGBレーンビットパターン = Eレーンビットパターン.xGB;
+												break;
+
+											case 1:
+												n新RGBレーンビットパターン = Eレーンビットパターン.RxB;
+												break;
+										}
+										n新RGBレーンビットパターン = Eレーンビットパターン.RGx;
+									}
+									else
+									{
+										switch (CDTXMania.app.Random.Next(3))
+										{
+											case 0:
+												n新RGBレーンビットパターン = Eレーンビットパターン.xxB;
+												break;
+
+											case 1:
+												n新RGBレーンビットパターン = Eレーンビットパターン.xGx;
+												break;
+										}
+										n新RGBレーンビットパターン = Eレーンビットパターン.Rxx;
+									}
+								}
+							}
+							break;
+					}
+				}
+				eチャンネル番号 = (Ech定義)((nランダム化前BassFlag) | (int)n新RGBレーンビットパターン);
+			}
+		}
+
+		public void SwapGB()
+		{
+			int offset = 0xA0 - 0x20;
+			if (bBass可視チップ)
+			{
+				eチャンネル番号 -= offset;
+			}
+			else if (bGuitar可視チップ)
+			{
+				eチャンネル番号 += offset;
+			}
+			DecideInstrumentPart();
+		}
+
 		public CChip()
 		{
 			this.nバーからの距離dot = new STDGBVALUE<int>()
@@ -435,6 +1008,34 @@ namespace DTXMania
 			dbチップサイズ倍率 = 1.0;
 			e楽器パート = E楽器パート.UNKNOWN;
 			n透明度 = 0xff;
+		}
+
+		public CChip(int playPosition, int intData, int intDataInternalIndex, Ech定義 channel)
+			: this(playPosition, intData, channel)
+		{
+			n整数値_内部番号 = intDataInternalIndex;
+		}
+
+		public CChip(int playPosition, int intData, Ech定義 channel)
+			: this()
+		{
+			n発声位置 = playPosition;
+			n整数値 = intData;
+			eチャンネル番号 = channel;
+		}
+
+		public CChip(int playPosition, double phraseLengthFactor, Ech定義 channel)
+			: this()
+		{
+
+		}
+
+		public CChip(int playPosition, int intData, int intDataInternalIndex, Ech定義 channel,
+			int playPositionMs, bool bSoundAfterPlayEnd)
+			: this(playPosition, intData, intDataInternalIndex, channel)
+		{
+			n発声時刻ms = playPositionMs;
+			b演奏終了後も再生が続くチップである = bSoundAfterPlayEnd;
 		}
 
 		public override string ToString()
@@ -474,17 +1075,17 @@ namespace DTXMania
 			};
 			*/
 			return string.Format("CChip: 位置:{0:D4}.{1:D3}, 時刻{2:D6}, Ch:{3:X2}({4}), Pn:{5}({11})(内部{6}), Pd:{7}, Sz:{8}, UseWav:{9}",
-			  this.n発声位置 / 384,
-			  this.n発声位置 % 384,
-			  this.n発声時刻ms,
-			  this.eチャンネル番号,
-			  this.eチャンネル番号,
-			  this.n整数値, this.n整数値_内部番号,
-			  this.db実数値,
-			  this.dbチップサイズ倍率,
-			  this.bWAVを使うチャンネルである,
+				this.n発声位置 / 384,
+				this.n発声位置 % 384,
+				this.n発声時刻ms,
+				this.eチャンネル番号,
+				this.eチャンネル番号,
+				this.n整数値, this.n整数値_内部番号,
+				this.db実数値,
+				this.dbチップサイズ倍率,
+				this.bWAVを使うチャンネルである,
 				// this.b自動再生音チャンネルである,
-			  CDTX.tZZ(this.n整数値));
+				CDTX.tZZ(this.n整数値));
 		}
 		/// <summary>
 		/// チップの再生長を取得する。現状、WAVチップとBGAチップでのみ使用可能。
@@ -497,7 +1098,7 @@ namespace DTXMania
 			if (this.bWAVを使うチャンネルである)		// WAV
 			{
 				CDTX.CWAV wc;
-				CDTXMania.DTX.listWAV.TryGetValue(this.n整数値_内部番号, out wc);
+				CDTXMania.app.DTX.listWAV.TryGetValue(this.n整数値_内部番号, out wc);
 				if (wc == null)
 				{
 					nDuration = 0;
@@ -518,7 +1119,7 @@ namespace DTXMania
 				}
 			}
 
-			double _db再生速度 = (CDTXMania.DTXVmode.Enabled) ? CDTXMania.DTX.dbDTXVPlaySpeed : CDTXMania.DTX.db再生速度;
+			double _db再生速度 = (CDTXMania.app.DTXVmode.Enabled) ? CDTXMania.app.DTX.dbDTXVPlaySpeed : CDTXMania.app.DTX.db再生速度;
 			return (int)(nDuration / _db再生速度);
 		}
 
@@ -574,6 +1175,69 @@ namespace DTXMania
 		#endregion
 
 
+
+		public bool bAssignAutoPlayState(STAUTOPLAY bIsAutoPlay)
+		{
+			bool ret = false;
+			bool bGtBsR = bGuitarBass_R;
+			bool bGtBsG = bGuitarBass_G;
+			bool bGtBsB = bGuitarBass_B;
+			bool bGtBsW = bGuitarBass_Wailing;
+			bool bGtBsO = bGuitarBass_Open;
+			//if ( (
+			//        ( ( pChip.e楽器パート == E楽器パート.DRUMS ) && bIsAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ) ||
+			//        ( ( pChip.e楽器パート == E楽器パート.GUITAR ) && bIsAutoPlay.Guitar ) ) ||
+			//        ( ( pChip.e楽器パート == E楽器パート.BASS ) && bIsAutoPlay.Bass )
+			//  )
+			////				if ((pChip.e楽器パート == E楽器パート.DRUMS) && bIsAutoPlay[this.nチャンネル0Atoレーン07[pChip.nチャンネル番号 - 0x11]])
+			//{
+			//    bPChipIsAutoPlay = true;
+			//}
+			if (bDrums可視チップ)
+			{
+				if (bIsAutoPlay[CStage演奏画面共通.nチャンネル0Atoレーン07[eチャンネル番号 - Ech定義.HiHatClose]])
+				{
+					ret = true;
+				}
+			}
+			else if (bGuitar可視チップ)
+			{
+				//Trace.TraceInformation( "chip:{0}{1}{2} ", bGtBsR, bGtBsG, bGtBsB );
+				//Trace.TraceInformation( "auto:{0}{1}{2} ", bIsAutoPlay[ (int) Eレーン.GtR ], bIsAutoPlay[ (int) Eレーン.GtG ], bIsAutoPlay[ (int) Eレーン.GtB ]);
+				ret = true;
+				if (bIsAutoPlay[(int)Eレーン.GtPick] == false) ret = false;
+				else
+				{
+					if (bGtBsR == true && bIsAutoPlay[(int)Eレーン.GtR] == false) ret = false;
+					else if (bGtBsG == true && bIsAutoPlay[(int)Eレーン.GtG] == false) ret = false;
+					else if (bGtBsB == true && bIsAutoPlay[(int)Eレーン.GtB] == false) ret = false;
+					else if (bGtBsW == true && bIsAutoPlay[(int)Eレーン.GtW] == false) ret = false;
+					else if (bGtBsO == true &&
+						(bIsAutoPlay[(int)Eレーン.GtR] == false || bIsAutoPlay[(int)Eレーン.GtG] == false || bIsAutoPlay[(int)Eレーン.GtB] == false))
+						ret = false;
+				}
+				//Trace.TraceInformation( "{0:x2}: {1}", pChip.nチャンネル番号, bPChipIsAutoPlay.ToString() );
+			}
+			else if (bBass可視チップ)
+			{
+				ret = true;
+				if (bIsAutoPlay[(int)Eレーン.BsPick] == false) ret = false;
+				else
+				{
+					if (bGtBsR == true && bIsAutoPlay[(int)Eレーン.BsR] == false) ret = false;
+					else if (bGtBsG == true && bIsAutoPlay[(int)Eレーン.BsG] == false) ret = false;
+					else if (bGtBsB == true && bIsAutoPlay[(int)Eレーン.BsB] == false) ret = false;
+					else if (bGtBsW == true && bIsAutoPlay[(int)Eレーン.BsW] == false) ret = false;
+					else if (bGtBsO == true &&
+						(bIsAutoPlay[(int)Eレーン.BsR] == false || bIsAutoPlay[(int)Eレーン.BsG] == false || bIsAutoPlay[(int)Eレーン.BsB] == false))
+						ret = false;
+				}
+			}
+			this.bIsAutoPlayed = ret;
+			return ret;
+		}
+
+
 		/// <summary>
 		/// shallow copyです。
 		/// </summary>
@@ -581,6 +1245,25 @@ namespace DTXMania
 		public object Clone()
 		{
 			return MemberwiseClone();
+		}
+
+		internal void ConvertSE25_26_27ToCY_RCY_LCY()
+		{
+			if ((Ech定義.SE25 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE27))
+			{
+				Ech定義[] ch = { Ech定義.Cymbal, Ech定義.RideCymbal, Ech定義.LeftCymbal };
+				eチャンネル番号 = ch[eチャンネル番号 - Ech定義.SE25];
+			}
+		}
+
+		internal void SetNoChipGuitarToOpen()
+		{
+			eチャンネル番号 = Ech定義.Guitar_Open;
+		}
+
+		internal void SetNoChipBassToOpen()
+		{
+			eチャンネル番号 = Ech定義.Bass_Open;
 		}
 	}
 

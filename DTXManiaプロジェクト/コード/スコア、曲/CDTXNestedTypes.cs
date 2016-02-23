@@ -38,12 +38,12 @@ namespace DTXMania
 				//-----------------
 				string strAVIファイル名;
 
-				if (CDTXMania.DTX != null && !Path.IsPathRooted(this.strファイル名))	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
+				if (CDTXMania.app.DTX != null && !Path.IsPathRooted(this.strファイル名))	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
 				{																			// 演奏終了直後はCDTXオブジェクトが残っているので、ファイル名がフルパスかどうかでプレビュー判定する
-					if (!string.IsNullOrEmpty(CDTXMania.DTX.PATH_WAV))
-						strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					if (!string.IsNullOrEmpty(CDTXMania.app.DTX.PATH_WAV))
+						strAVIファイル名 = CDTXMania.app.DTX.PATH_WAV + this.strファイル名;
 					else
-						strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+						strAVIファイル名 = CDTXMania.app.DTX.strフォルダ名 + this.strファイル名;
 				}
 				else
 				{
@@ -90,12 +90,12 @@ namespace DTXMania
 					#region [ strAVIファイル名 の作成。なぜDispose時にファイル名の生成をしているのかと思ったら、デバッグログ用でした。 ]
 					//-----------------
 					string strAVIファイル名;
-					if (CDTXMania.DTX != null && !Path.IsPathRooted(this.strファイル名))	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
+					if (CDTXMania.app.DTX != null && !Path.IsPathRooted(this.strファイル名))	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
 					{																			// 演奏終了直後はCDTXオブジェクトが残っているので、ファイル名がフルパスかどうかでプレビュー判定する
-						if (!string.IsNullOrEmpty(CDTXMania.DTX.PATH_WAV))
-							strAVIファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+						if (!string.IsNullOrEmpty(CDTXMania.app.DTX.PATH_WAV))
+							strAVIファイル名 = CDTXMania.app.DTX.PATH_WAV + this.strファイル名;
 						else
-							strAVIファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+							strAVIファイル名 = CDTXMania.app.DTX.strフォルダ名 + this.strファイル名;
 					}
 					else
 					{
@@ -243,10 +243,10 @@ namespace DTXMania
 			{
 				get
 				{
-					if (!string.IsNullOrEmpty(CDTXMania.DTX.PATH_WAV))
-						return CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					if (!string.IsNullOrEmpty(CDTXMania.app.DTX.PATH_WAV))
+						return CDTXMania.app.DTX.PATH_WAV + this.strファイル名;
 					else
-						return CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+						return CDTXMania.app.DTX.strフォルダ名 + this.strファイル名;
 				}
 			}
 
@@ -265,12 +265,12 @@ namespace DTXMania
 
 				// テクスチャを作成。
 				byte[] txData = File.ReadAllBytes(strテクスチャファイル名);
-				this.tx画像 = CDTXMania.tテクスチャの生成(txData, b黒を透過する);
+				this.tx画像 = TextureFactory.tテクスチャの生成(txData, b黒を透過する);
 
 				if (this.tx画像 != null)
 				{
 					// 作成成功。
-					if (CDTXMania.ConfigIni.bLog作成解放ログ出力)
+					if (CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
 						PutLog(strテクスチャファイル名);
 					txData = null;
 					this.bUse = true;
@@ -293,12 +293,12 @@ namespace DTXMania
 				{
 					bitmap.MakeTransparent(Color.Black);		// 黒を透過色にする
 				}
-				this.tx画像 = CDTXMania.tテクスチャの生成(bitmap, b黒を透過する);
+				this.tx画像 = TextureFactory.tテクスチャの生成(bitmap, b黒を透過する);
 
 				if (this.tx画像 != null)
 				{
 					// 作成成功。
-					if (CDTXMania.ConfigIni.bLog作成解放ログ出力)
+					if (CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
 						PutLog(strテクスチャファイル名);
 					this.bUse = true;
 				}
@@ -330,16 +330,16 @@ namespace DTXMania
 					#region [ strテクスチャファイル名 を作成。]
 					//-----------------
 					string strテクスチャファイル名 = this.GetFullPathname;
-					//if( !string.IsNullOrEmpty( CDTXMania.DTX.PATH_WAV ) )
-					//    strテクスチャファイル名 = CDTXMania.DTX.PATH_WAV + this.strファイル名;
+					//if( !string.IsNullOrEmpty( CDTXMania.app.DTX.PATH_WAV ) )
+					//    strテクスチャファイル名 = CDTXMania.app.DTX.PATH_WAV + this.strファイル名;
 					//else
-					//    strテクスチャファイル名 = CDTXMania.DTX.strフォルダ名 + this.strファイル名;
+					//    strテクスチャファイル名 = CDTXMania.app.DTX.strフォルダ名 + this.strファイル名;
 					//-----------------
 					#endregion
 
-					CDTXMania.tテクスチャの解放(ref this.tx画像);
+					TextureFactory.tテクスチャの解放(ref this.tx画像);
 
-					if (CDTXMania.ConfigIni.bLog作成解放ログ出力)
+					if (CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
 						Trace.TraceInformation("テクスチャを解放しました。({0})({1})", this.strコメント文, strテクスチャファイル名);
 				}
 				this.bUse = false;
@@ -380,13 +380,13 @@ namespace DTXMania
 			public List<Ech定義> listこのWAVを使用するチャンネル番号の集合 = new List<Ech定義>(16);
 			public int nチップサイズ = 100;
 			public int n位置;
-			public long[] n一時停止時刻 = new long[CDTXMania.ConfigIni.nPoliphonicSounds];	// 4
+			public long[] n一時停止時刻 = new long[CDTXMania.app.ConfigIni.nPoliphonicSounds];	// 4
 			public int n音量 = 100;
 			public int n現在再生中のサウンド番号;
-			public long[] n再生開始時刻 = new long[CDTXMania.ConfigIni.nPoliphonicSounds];	// 4
+			public long[] n再生開始時刻 = new long[CDTXMania.app.ConfigIni.nPoliphonicSounds];	// 4
 			public int n内部番号;
 			public int n表記上の番号;
-			public CSound[] rSound = new CSound[CDTXMania.ConfigIni.nPoliphonicSounds];		// 4
+			public CSound[] rSound = new CSound[CDTXMania.app.ConfigIni.nPoliphonicSounds];		// 4
 			public string strコメント文 = "";
 			public string strファイル名 = "";
 			public bool bBGMとして使わない
@@ -437,13 +437,13 @@ namespace DTXMania
 
 				if (bManagedリソースの解放も行う)
 				{
-					for (int i = 0; i < CDTXMania.ConfigIni.nPoliphonicSounds; i++)	// 4
+					for (int i = 0; i < CDTXMania.app.ConfigIni.nPoliphonicSounds; i++)	// 4
 					{
 						if (this.rSound[i] != null)
-							CDTXMania.Sound管理.tサウンドを破棄する(this.rSound[i]);
+							CDTXMania.app.Sound管理.tサウンドを破棄する(this.rSound[i]);
 						this.rSound[i] = null;
 
-						if ((i == 0) && CDTXMania.ConfigIni.bLog作成解放ログ出力)
+						if ((i == 0) && CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
 							Trace.TraceInformation("サウンドを解放しました。({0})({1})", this.strコメント文, this.strファイル名);
 					}
 				}

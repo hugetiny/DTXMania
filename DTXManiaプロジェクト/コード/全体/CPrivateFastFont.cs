@@ -128,7 +128,7 @@ namespace DTXMania
 		public CTexture DrawPrivateFont( string drawstr, Color fontColor )
 		{
 			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White );
-			return CDTXMania.tテクスチャの生成( bmp, false );
+			return TextureFactory.tテクスチャの生成( bmp, false );
 		}
 
 		/// <summary>
@@ -141,7 +141,7 @@ namespace DTXMania
 		public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor )
 		{
 			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White );
-			return CDTXMania.tテクスチャの生成( bmp, false );
+			return TextureFactory.tテクスチャの生成( bmp, false );
 		}
 
 		/// <summary>
@@ -155,7 +155,7 @@ namespace DTXMania
 		//public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color gradationTopColor, Color gradataionBottomColor )
 		//{
 		//    Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Gradation, fontColor, Color.White, gradationTopColor, gradataionBottomColor );
-		//	  return CDTXMania.tテクスチャの生成( bmp, false );
+		//	  return TextureFactory.tテクスチャの生成( bmp, false );
 		//}
 
 		/// <summary>
@@ -170,7 +170,7 @@ namespace DTXMania
 		public CTexture DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor,  Color gradationTopColor, Color gradataionBottomColor )
 		{
 			Bitmap bmp = DrawPrivateFont( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor );
-			return CDTXMania.tテクスチャの生成( bmp, false );
+			return TextureFactory.tテクスチャの生成( bmp, false );
 		}
 #endif
 		#endregion

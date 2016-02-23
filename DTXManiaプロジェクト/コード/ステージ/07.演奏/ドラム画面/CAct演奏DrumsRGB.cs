@@ -17,16 +17,16 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				if( !CDTXMania.ConfigIni.bGuitar有効 )
+				if( !CDTXMania.app.ConfigIni.bGuitar有効 )
 				{
 					return 0;
 				}
-				if( CDTXMania.DTX.bチップがある.Guitar )
+				if( CDTXMania.app.DTX.bチップがある.Guitar )
 				{
-					int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1527 : 1456;
+					int x = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1527 : 1456;
 					for( int i = 0; i < 3; i++ )
 					{
-						int index = CDTXMania.ConfigIni.bLeft.Guitar ? ( 2 - i ) : i;
+						int index = CDTXMania.app.ConfigIni.bLeft.Guitar ? ( 2 - i ) : i;
 						Rectangle rc = new Rectangle(
 							index * 72,
 							0,
@@ -39,9 +39,9 @@ namespace DTXMania
 						}
 						if( base.txRGB != null )
 						{
-							//	int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar, false, false );
+							//	int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.app.ConfigIni.bReverse.Guitar, false, false );
 							//base.txRGB.t2D描画( CDTXMania.app.Device, 0x1fd + ( j * 0x1a ), 0x39, rectangle );
-							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.GUITAR, false, CDTXMania.ConfigIni.bReverse.Guitar );
+							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.GUITAR, false, CDTXMania.app.ConfigIni.bReverse.Guitar );
 							base.txRGB.t2D描画(
 								CDTXMania.app.Device,
 								x + ( i * 26 * 3 ),
@@ -51,12 +51,12 @@ namespace DTXMania
 						}
 					}
 				}
-				if( CDTXMania.DTX.bチップがある.Bass )
+				if( CDTXMania.app.DTX.bチップがある.Bass )
 				{
 					for( int i = 0; i < 3; i++ )
 					{
-						int x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1200 : 206;
-						int index = CDTXMania.ConfigIni.bLeft.Bass ? ( 2 - i ) : i;
+						int x = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1200 : 206;
+						int index = CDTXMania.app.ConfigIni.bLeft.Bass ? ( 2 - i ) : i;
 						Rectangle rc = new Rectangle(
 							index * 72,
 							0,
@@ -69,7 +69,7 @@ namespace DTXMania
 						}
 						if( base.txRGB != null )
 						{
-							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.BASS, false, CDTXMania.ConfigIni.bReverse.Bass );
+							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.BASS, false, CDTXMania.app.ConfigIni.bReverse.Bass );
 							base.txRGB.t2D描画(
 								CDTXMania.app.Device,
 								x + ( i * 26 * 3 ),

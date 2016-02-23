@@ -194,7 +194,7 @@ namespace DTXMania
 ////				{
 //                    try
 //                    {
-//                        this.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
+//                        this.rSound[ 0 ] = CDTXMania.app.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
 //                    }
 //                    catch
 //                    {
@@ -208,7 +208,7 @@ namespace DTXMania
 //                    else
 //                    {
 //                        this.rSound[ 1 ] = ( CSound ) this.rSound[ 0 ].Clone();	// #27790 2012.3.10 yyagi add: to accelerate loading chip sounds
-//                        CDTXMania.Sound管理.tサウンドを登録する( this.rSound[ 1 ] );	// #28243 2012.5.3 yyagi add (登録漏れによりストリーム再生処理が発生していなかった)
+//                        CDTXMania.app.Sound管理.tサウンドを登録する( this.rSound[ 1 ] );	// #28243 2012.5.3 yyagi add (登録漏れによりストリーム再生処理が発生していなかった)
 //                    }
 
 ////				}
@@ -217,7 +217,7 @@ namespace DTXMania
 				{
 					try
 					{
-						this.rSound[ i ] = CDTXMania.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
+						this.rSound[ i ] = CDTXMania.app.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
 					}
 					catch
 					{
@@ -267,13 +267,13 @@ namespace DTXMania
 
 			public void tRemoveMixer()
 			{
-				if ( CDTXMania.Sound管理.GetCurrentSoundDeviceType() != "DirectShow" )
+				if ( CDTXMania.app.Sound管理.GetCurrentSoundDeviceType() != "DirectShow" )
 				{
 					for ( int i = 0; i < 2; i++ )
 					{
 						if ( this.rSound[ i ] != null )
 						{
-							CDTXMania.Sound管理.RemoveMixer( this.rSound[ i ] );
+							CDTXMania.app.Sound管理.RemoveMixer( this.rSound[ i ] );
 						}
 					}
 				}
@@ -289,7 +289,7 @@ namespace DTXMania
 					{
 						if( this.rSound[ i ] != null )
 						{
-							CDTXMania.Sound管理.tサウンドを破棄する( this.rSound[ i ] );
+							CDTXMania.app.Sound管理.tサウンドを破棄する( this.rSound[ i ] );
 							this.rSound[ i ] = null;
 						}
 					}
@@ -544,7 +544,7 @@ namespace DTXMania
 		}
 		private string InitializeSkinPathRoot()
 		{
-			strSystemSkinRoot = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar );
+			strSystemSkinRoot = System.IO.Path.Combine( CDTXMania.app.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar );
 			return strSystemSkinRoot;
 		}
 
@@ -596,7 +596,7 @@ namespace DTXMania
 				if ( !this[ i ].b排他 )	// BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
 				{
 					Cシステムサウンド cシステムサウンド = this[ i ];
-					if ( !CDTXMania.bコンパクトモード || cシステムサウンド.bCompact対象 )
+					if ( !CDTXMania.app.bコンパクトモード || cシステムサウンド.bCompact対象 )
 					{
 						try
 						{

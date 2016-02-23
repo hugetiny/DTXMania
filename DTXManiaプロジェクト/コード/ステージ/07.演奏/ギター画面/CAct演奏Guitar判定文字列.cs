@@ -72,7 +72,7 @@ namespace DTXMania
 								base.st状態[ i ].fX方向拡大率 = 1f;
 								base.st状態[ i ].fY方向拡大率 = 1f;
 								base.st状態[ i ].n相対X座標 = 0;
-								base.st状態[ i ].n相対Y座標 = ( ( num2 % 6 ) == 0 ) ? ( CDTXMania.Random.Next( 6 ) - 3 ) : base.st状態[ i ].n相対Y座標;
+								base.st状態[ i ].n相対Y座標 = ( ( num2 % 6 ) == 0 ) ? ( CDTXMania.app.Random.Next( 6 ) - 3 ) : base.st状態[ i ].n相対Y座標;
 								base.st状態[ i ].n透明度 = 0xff;
 							}
 							else if( num2 >= 240 )
@@ -129,53 +129,53 @@ namespace DTXMania
 						{
 							if( j == 11 )		// Bass
 							{
-								if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
+								if( ( (E判定文字表示位置) CDTXMania.app.ConfigIni.判定文字表示位置.Bass ) == E判定文字表示位置.表示OFF )
 								{
 									continue;
 								}
 								int yB;
-								switch ( CDTXMania.ConfigIni.判定文字表示位置.Bass )
+								switch ( CDTXMania.app.ConfigIni.判定文字表示位置.Bass )
 								{
 									case E判定文字表示位置.コンボ下:
 										baseX = 0x163;
-										baseY = CDTXMania.ConfigIni.bReverse.Bass ? 0x12b : 190;
+										baseY = CDTXMania.app.ConfigIni.bReverse.Bass ? 0x12b : 190;
 										break;
 									case E判定文字表示位置.レーン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass );
-										baseY = CDTXMania.ConfigIni.bReverse.Bass ? yB - 95 - 52 + 10 : yB + 95 + 52;
-										//baseY = CDTXMania.ConfigIni.bReverse.Bass ? 0x12b : 190;
+										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.app.ConfigIni.bReverse.Bass );
+										baseY = CDTXMania.app.ConfigIni.bReverse.Bass ? yB - 95 - 52 + 10 : yB + 95 + 52;
+										//baseY = CDTXMania.app.ConfigIni.bReverse.Bass ? 0x12b : 190;
 										break;
 									case E判定文字表示位置.判定ライン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.ConfigIni.bReverse.Bass );
-										baseY = CDTXMania.ConfigIni.bReverse.Bass ? yB + 30 : yB - 20;
+										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.app.ConfigIni.bReverse.Bass );
+										baseY = CDTXMania.app.ConfigIni.bReverse.Bass ? yB + 30 : yB - 20;
 										break;
 								}
 							}
 							else if( j == 10 )	// Guitar
 							{
-								if( ( (E判定文字表示位置) CDTXMania.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
+								if( ( (E判定文字表示位置) CDTXMania.app.ConfigIni.判定文字表示位置.Guitar ) == E判定文字表示位置.表示OFF )
 								{
 									continue;
 								}
 								int yG;
-								switch ( CDTXMania.ConfigIni.判定文字表示位置.Guitar )
+								switch ( CDTXMania.app.ConfigIni.判定文字表示位置.Guitar )
 								{
 									case E判定文字表示位置.コンボ下:
 										baseX = 0xaf;
-										baseY = CDTXMania.ConfigIni.bReverse.Guitar ? 0x12b : 190;
+										baseY = CDTXMania.app.ConfigIni.bReverse.Guitar ? 0x12b : 190;
 										break;
 									case E判定文字表示位置.レーン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar );
-										baseY = CDTXMania.ConfigIni.bReverse.Guitar ? yG - 95 - 52 + 10 : yG + 95 + 52;
-										//baseY = CDTXMania.ConfigIni.bReverse.Guitar ? 0x12b : 190;
+										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.app.ConfigIni.bReverse.Guitar );
+										baseY = CDTXMania.app.ConfigIni.bReverse.Guitar ? yG - 95 - 52 + 10 : yG + 95 + 52;
+										//baseY = CDTXMania.app.ConfigIni.bReverse.Guitar ? 0x12b : 190;
 										break;
 									case E判定文字表示位置.判定ライン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.ConfigIni.bReverse.Guitar );
-										baseY = CDTXMania.ConfigIni.bReverse.Guitar ? yG + 30 : yG - 20;
+										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.app.ConfigIni.bReverse.Guitar );
+										baseY = CDTXMania.app.ConfigIni.bReverse.Guitar ? yG + 30 : yG - 20;
 										break;
 								}
 							}

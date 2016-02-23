@@ -53,8 +53,8 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				this.txパッド = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums pads.png" ) );
-				this.tx光るパッド = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums pads flush.png" ) );
+				this.txパッド = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums pads.png" ) );
+				this.tx光るパッド = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums pads flush.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -62,8 +62,8 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txパッド );
-				CDTXMania.tテクスチャの解放( ref this.tx光るパッド );
+				TextureFactory.tテクスチャの解放( ref this.txパッド );
+				TextureFactory.tテクスチャの解放( ref this.tx光るパッド );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -121,13 +121,13 @@ namespace DTXMania
 				{
 					int index = this.n描画順[ i ];
 					int x = this.st基本位置[ index ].x;
-					int xDist = (int) (x * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ));
-					x = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left )? 66 : 619-24;
+					int xDist = (int) (x * ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ));
+					x = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left )? 66 : 619-24;
 					x += xDist;
-					int y = ( this.st基本位置[ index ].y + ( CDTXMania.ConfigIni.bReverse.Drums ? -10 : 0x19e ) ) + this.stパッド状態[ index ].nY座標オフセットdot;
+					int y = ( this.st基本位置[ index ].y + ( CDTXMania.app.ConfigIni.bReverse.Drums ? -10 : 0x19e ) ) + this.stパッド状態[ index ].nY座標オフセットdot;
 					if ( this.txパッド != null )
 					{
-						// this.txパッド.vc拡大縮小倍率.X = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
+						// this.txパッド.vc拡大縮小倍率.X = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
 						this.txパッド.t2D描画(
 							CDTXMania.app.Device,
 							x,
@@ -137,7 +137,7 @@ namespace DTXMania
 					}
 					if ( this.tx光るパッド != null )
 					{
-						// this.tx光るパッド.vc拡大縮小倍率.X = ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
+						// this.tx光るパッド.vc拡大縮小倍率.X = ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1.0f : 0.75f;
 						this.tx光るパッド.n透明度 = ( this.stパッド状態[ index ].n明るさ * 40 ) + 15;
 						this.tx光るパッド.t2D描画(
 							CDTXMania.app.Device,

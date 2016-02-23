@@ -12,7 +12,6 @@ namespace DTXMania
 	internal class CStageタイトル : CStage
 	{
 		// コンストラクタ
-
 		public CStageタイトル()
 		{
 			base.eステージID = CStage.Eステージ.タイトル;
@@ -33,7 +32,7 @@ namespace DTXMania
 			{
 				for ( int i = 0; i < 4; i++ )
 				{
-					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.Timer );
+					this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.app.Timer );
 				}
 				this.ct上移動用 = new CCounter();
 				this.ct下移動用 = new CCounter();
@@ -71,8 +70,8 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle background.jpg" ), false );
-				this.txメニュー = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle menu.png" ), false );
+				this.tx背景 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle background.jpg" ), false );
+				this.txメニュー = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenTitle menu.png" ), false );
 
 				prvFont = new CPrivateFastFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), 36 );
 				//prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );
@@ -84,7 +83,7 @@ namespace DTXMania
 				int maxX = 0;
 				for ( int i = 0; i < menuStr.Length; i++ )
 				{
-					txMenuItem[ i ] = CDTXMania.tテクスチャの生成( prvFont.DrawPrivateFont( menuStr[ i ], Color.White, Color.Black ), false );
+					txMenuItem[ i ] = TextureFactory.tテクスチャの生成( prvFont.DrawPrivateFont( menuStr[ i ], Color.White, Color.Black ), false );
 					//					txMenuItem[ i ] = prvFont.DrawPrivateFont( menuStr[ i ], Color.White, Color.Black, Color.Yellow, Color.OrangeRed );	// グラデーションもなかなかいける。
 					//					txMenuItem[ i ] = prvFont.DrawPrivateFont( menuStr[ i ], Color.White );
 					if ( maxX < txMenuItem[ i ].szテクスチャサイズ.Width )
@@ -117,11 +116,11 @@ namespace DTXMania
 				{
 					if ( txMenuItem[ i ] != null )
 					{
-						CDTXMania.tテクスチャの解放( ref txMenuItem[ i ] );
+						TextureFactory.tテクスチャの解放( ref txMenuItem[ i ] );
 					}
 				}
-				CDTXMania.tテクスチャの解放( ref this.tx背景 );
-				CDTXMania.tテクスチャの解放( ref this.txメニュー );
+				TextureFactory.tテクスチャの解放( ref this.tx背景 );
+				TextureFactory.tテクスチャの解放( ref this.txメニュー );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -133,7 +132,7 @@ namespace DTXMania
 				//---------------------
 				if ( base.b初めての進行描画 )
 				{
-					if ( CDTXMania.r直前のステージ == CDTXMania.stage起動 )
+					if ( CDTXMania.app.r直前のステージ == CDTXMania.app.stage起動 )
 					{
 						this.actFIfromSetup.tフェードイン開始();
 						base.eフェーズID = CStage.Eフェーズ.タイトル_起動画面からのフェードイン;
@@ -143,7 +142,7 @@ namespace DTXMania
 						this.actFI.tフェードイン開始();
 						base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					}
-					this.ctカーソルフラッシュ用.t開始( 0, 700, 5, CDTXMania.Timer );
+					this.ctカーソルフラッシュ用.t開始( 0, 700, 5, CDTXMania.app.Timer );
 					this.ctカーソルフラッシュ用.n現在の値 = 100;
 					base.b初めての進行描画 = false;
 				}
@@ -184,30 +183,30 @@ namespace DTXMania
 
 				#region [ キー入力 ]
 				if ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態		// 通常状態、かつ
-					&& CDTXMania.act現在入力を占有中のプラグイン == null )	// プラグインの入力占有がない
+					&& CDTXMania.app.act現在入力を占有中のプラグイン == null )	// プラグインの入力占有がない
 				{
-					if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) Key.Escape ) )
+					if ( CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) Key.Escape ) )
 						return (int) E戻り値.EXIT;
 
-					this.ctキー反復用.Up.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
-					this.ctキー反復用.R.tキー反復( CDTXMania.Pad.b押されているGB( Eパッド.HH ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
-					if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
+					this.ctキー反復用.Up.tキー反復( CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
+					this.ctキー反復用.R.tキー反復( CDTXMania.app.Pad.b押されているGB( Eパッド.HH ), new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
+					if ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
 						this.tカーソルを上へ移動する();
 
-					this.ctキー反復用.Down.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.DownArrow ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
-					this.ctキー反復用.B.tキー反復( CDTXMania.Pad.b押されているGB( Eパッド.BD ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
-					if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LT ) )
+					this.ctキー反復用.Down.tキー反復( CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.DownArrow ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
+					this.ctキー反復用.B.tキー反復( CDTXMania.app.Pad.b押されているGB( Eパッド.BD ), new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
+					if ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.LT ) )
 						this.tカーソルを下へ移動する();
 
-					if ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) )
+					if ( ( CDTXMania.app.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || ( CDTXMania.app.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) )
 					{
-						if ( ( this.n現在のカーソル行 == (int) E戻り値.GAMESTART - 1 ) && CDTXMania.Skin.soundゲーム開始音.b読み込み成功 )
+						if ( ( this.n現在のカーソル行 == (int) E戻り値.GAMESTART - 1 ) && CDTXMania.app.Skin.soundゲーム開始音.b読み込み成功 )
 						{
-							CDTXMania.Skin.soundゲーム開始音.t再生する();
+							CDTXMania.app.Skin.soundゲーム開始音.t再生する();
 						}
 						else
 						{
-							CDTXMania.Skin.sound決定音.t再生する();
+							CDTXMania.app.Skin.sound決定音.t再生する();
 						}
 						if ( this.n現在のカーソル行 == (int) E戻り値.EXIT - 1 )
 						{
@@ -216,8 +215,8 @@ namespace DTXMania
 						this.actFO.tフェードアウト開始();
 						base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 					}
-					//					if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) Key.Space ) )
-					//						Trace.TraceInformation( "DTXMania Title: SPACE key registered. " + CDTXMania.ct.nシステム時刻 );
+					//					if ( CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) Key.Space ) )
+					//						Trace.TraceInformation( "DTXMania Title: SPACE key registered. " + CDTXMania.app.ct.nシステム時刻 );
 				}
 				#endregion
 
@@ -276,7 +275,7 @@ namespace DTXMania
 					case CStage.Eフェーズ.共通_フェードイン:
 						if ( this.actFI.On進行描画() != 0 )
 						{
-							CDTXMania.Skin.soundタイトル音.t再生する();
+							CDTXMania.app.Skin.soundタイトル音.t再生する();
 							base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 						}
 						break;
@@ -304,7 +303,7 @@ namespace DTXMania
 					case CStage.Eフェーズ.タイトル_起動画面からのフェードイン:
 						if ( this.actFIfromSetup.On進行描画() != 0 )
 						{
-							CDTXMania.Skin.soundタイトル音.t再生する();
+							CDTXMania.app.Skin.soundタイトル音.t再生する();
 							base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
 						}
 						break;
@@ -407,9 +406,9 @@ namespace DTXMania
 		{
 			if ( this.n現在のカーソル行 != (int) E戻り値.EXIT - 1 )
 			{
-				CDTXMania.Skin.soundカーソル移動音.t再生する();
+				CDTXMania.app.Skin.soundカーソル移動音.t再生する();
 				this.n現在のカーソル行++;
-				this.ct下移動用.t開始( 0, 100, 1, CDTXMania.Timer );
+				this.ct下移動用.t開始( 0, 100, 1, CDTXMania.app.Timer );
 				if ( this.ct上移動用.b進行中 )
 				{
 					this.ct下移動用.n現在の値 = 100 - this.ct上移動用.n現在の値;
@@ -421,9 +420,9 @@ namespace DTXMania
 		{
 			if ( this.n現在のカーソル行 != (int) E戻り値.GAMESTART - 1 )
 			{
-				CDTXMania.Skin.soundカーソル移動音.t再生する();
+				CDTXMania.app.Skin.soundカーソル移動音.t再生する();
 				this.n現在のカーソル行--;
-				this.ct上移動用.t開始( 0, 100, 1, CDTXMania.Timer );
+				this.ct上移動用.t開始( 0, 100, 1, CDTXMania.app.Timer );
 				if ( this.ct下移動用.b進行中 )
 				{
 					this.ct上移動用.n現在の値 = 100 - this.ct下移動用.n現在の値;

@@ -10,7 +10,6 @@ namespace DTXMania
 	internal class CActResultRank : CActivity
 	{
 		// コンストラクタ
-
 		public CActResultRank()
 		{
 			base.b活性化してない = true;
@@ -49,37 +48,37 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txランクパネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rank panel.png" ) );
-				this.tx白波 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rank wave.png" ) );
-				switch ( CDTXMania.stage結果.n総合ランク値 )
+				this.txランクパネル = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rank panel.png" ) );
+				this.tx白波 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rank wave.png" ) );
+				switch (CDTXMania.app.stage結果.n総合ランク値)
 				{
 					case 0:
-						this.txランク文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankSS.png" ) );
+						this.txランク文字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankSS.png" ) );
 						break;
 
 					case 1:
-						this.txランク文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankS.png" ) );
+						this.txランク文字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankS.png" ) );
 						break;
 
 					case 2:
-						this.txランク文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankA.png" ) );
+						this.txランク文字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankA.png" ) );
 						break;
 
 					case 3:
-						this.txランク文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankB.png" ) );
+						this.txランク文字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankB.png" ) );
 						break;
 
 					case 4:
-						this.txランク文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankC.png" ) );
+						this.txランク文字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankC.png" ) );
 						break;
 
 					case 5:
-						this.txランク文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankD.png" ) );
+						this.txランク文字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult rankD.png" ) );
 						break;
 
 					case 6:
 					case 99:	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
-						this.txランク文字 = CDTXMania.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankE.png"));
+						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankE.png"));
 						break;
 
 					default:
@@ -93,9 +92,9 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txランクパネル );
-				CDTXMania.tテクスチャの解放( ref this.tx白波 );
-				CDTXMania.tテクスチャの解放( ref this.txランク文字 );
+				TextureFactory.tテクスチャの解放( ref this.txランクパネル );
+				TextureFactory.tテクスチャの解放( ref this.tx白波 );
+				TextureFactory.tテクスチャの解放( ref this.txランク文字 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -107,8 +106,8 @@ namespace DTXMania
 			}
 			if( base.b初めての進行描画 )
 			{
-				this.ct白波移動 = new CCounter( -132, 0x170, 10, CDTXMania.Timer );
-				this.ctランク表示 = new CCounter( 0, 0x514, 2, CDTXMania.Timer );
+				this.ct白波移動 = new CCounter( -132, 0x170, 10, CDTXMania.app.Timer );
+				this.ctランク表示 = new CCounter( 0, 0x514, 2, CDTXMania.app.Timer );
 				base.b初めての進行描画 = false;
 			}
 			this.ct白波移動.t進行Loop();

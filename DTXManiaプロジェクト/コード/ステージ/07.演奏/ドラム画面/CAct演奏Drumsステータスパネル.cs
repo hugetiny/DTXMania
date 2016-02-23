@@ -50,7 +50,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txStatusPanels = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay status panels right.png" ) );
+				this.txStatusPanels = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay status panels right.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -58,7 +58,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txStatusPanels );
+				TextureFactory.tテクスチャの解放( ref this.txStatusPanels );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -77,7 +77,7 @@ namespace DTXMania
 						(int) ( 0x49 * Scale.Y )
 					)
 				);
-				int drums = CDTXMania.ConfigIni.n譜面スクロール速度.Drums;
+				int drums = CDTXMania.app.ConfigIni.n譜面スクロール速度.Drums;
 				if ( drums < 0 )
 				{
 					drums = 0;

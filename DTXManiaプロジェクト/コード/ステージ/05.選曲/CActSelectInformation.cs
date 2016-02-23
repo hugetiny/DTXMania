@@ -41,8 +41,8 @@ namespace DTXMania
 				   { @"Graphics\ScreenSelect information 1e.png", @"Graphics\ScreenSelect information 2e.png" }
 				};
 				int c = ( CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ) ? 0 : 1; 
-				this.txInfo[ 0 ] = CDTXMania.tテクスチャの生成( CSkin.Path( infofiles[ c, 0 ] ), false );
-				this.txInfo[ 1 ] = CDTXMania.tテクスチャの生成( CSkin.Path( infofiles[ c, 1 ] ), false );
+				this.txInfo[ 0 ] = TextureFactory.tテクスチャの生成( CSkin.Path( infofiles[ c, 0 ] ), false );
+				this.txInfo[ 1 ] = TextureFactory.tテクスチャの生成( CSkin.Path( infofiles[ c, 1 ] ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -50,8 +50,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txInfo[ 0 ] );
-				CDTXMania.tテクスチャの解放( ref this.txInfo[ 1 ] );
+				TextureFactory.tテクスチャの解放( ref this.txInfo[ 0 ] );
+				TextureFactory.tテクスチャの解放( ref this.txInfo[ 1 ] );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -61,7 +61,7 @@ namespace DTXMania
 			{
 				if( base.b初めての進行描画 )
 				{
-					this.ctスクロール用 = new CCounter( 0, 6000, 1, CDTXMania.Timer );
+					this.ctスクロール用 = new CCounter( 0, 6000, 1, CDTXMania.app.Timer );
 					base.b初めての進行描画 = false;
 				}
 				this.ctスクロール用.t進行();

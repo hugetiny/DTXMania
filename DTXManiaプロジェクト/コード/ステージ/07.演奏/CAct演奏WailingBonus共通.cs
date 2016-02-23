@@ -38,7 +38,7 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				this.txWailingBonus = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay wailing bonus.png" ), false );
+				this.txWailingBonus = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay wailing bonus.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -46,7 +46,7 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txWailingBonus );
+				TextureFactory.tテクスチャの解放( ref this.txWailingBonus );
 				base.OnManagedリソースの解放();
 			}
 		}

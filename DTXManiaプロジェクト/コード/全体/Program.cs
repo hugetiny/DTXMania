@@ -182,7 +182,7 @@ namespace DTXMania
 					Process current = Process.GetCurrentProcess();
 					Process[] running = Process.GetProcessesByName( current.ProcessName );
 					Process target = null;
-					//IntPtr hWnd = FindWindow( null, "DTXMania .NET style release " + CDTXMania.VERSION );
+					//IntPtr hWnd = FindWindow( null, "DTXMania .NET style release " + CDTXMania.app.VERSION );
 
 					foreach ( Process p in running )
 					{

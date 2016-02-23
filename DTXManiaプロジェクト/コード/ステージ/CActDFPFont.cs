@@ -557,8 +557,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx通常文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen font dfp.png" ), false );
-				this.tx強調文字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen font dfp em.png" ), false );
+				this.tx通常文字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Screen font dfp.png" ), false );
+				this.tx強調文字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Screen font dfp em.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}

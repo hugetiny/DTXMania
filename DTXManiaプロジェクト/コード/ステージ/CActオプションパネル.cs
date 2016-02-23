@@ -15,7 +15,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txオプションパネル );
+				TextureFactory.tテクスチャの解放( ref this.txオプションパネル );
 				base.On非活性化();
 			}
 		}
@@ -23,7 +23,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txオプションパネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ), false );
+				this.txオプションパネル = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -32,7 +32,7 @@ namespace DTXMania
 			if( !base.b活性化してない )
 			{
 				Device device = CDTXMania.app.Device;
-				CConfigIni configIni = CDTXMania.ConfigIni;
+				CConfigIni configIni = CDTXMania.app.ConfigIni;
 				if( this.txオプションパネル != null )
 				{
 					#region [ スクロール速度表示 ]

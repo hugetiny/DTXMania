@@ -26,7 +26,7 @@ namespace DTXMania
 		public override void On活性化()
 		{
 			// CAct演奏ゲージ共通.Init()に移動
-			// this.dbゲージ値 = ( CDTXMania.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
+			// this.dbゲージ値 = ( CDTXMania.app.ConfigIni.nRisky > 0 ) ? 1.0 : 0.66666666666666663;
 			base.On活性化();
 		}
 		public override void On非活性化()
@@ -43,8 +43,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txゲージ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums gauge.png" ) );
-				this.txゲージ白 = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlayDrums_gauge_white.png " ) );
+				this.txゲージ = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums gauge.png" ) );
+				this.txゲージ白 = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlayDrums_gauge_white.png " ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -52,8 +52,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txゲージ白 );
-				CDTXMania.tテクスチャの解放( ref this.txゲージ );
+				TextureFactory.tテクスチャの解放( ref this.txゲージ白 );
+				TextureFactory.tテクスチャの解放( ref this.txゲージ );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -66,13 +66,13 @@ namespace DTXMania
 				{
 					for ( int k = 0; k < 0x18; k++ )
 					{
-						this.st白い星[ k ].x = 2 + CDTXMania.Random.Next( 4 );
-						this.st白い星[ k ].fScale = 0.2f + ( CDTXMania.Random.Next( 2 ) * 0.05f );
-						this.st白い星[ k ].ct進行 = new CCounter( 0, 0x160, 8 + CDTXMania.Random.Next( 4 ), CDTXMania.Timer );
-						this.st白い星[ k ].ct進行.n現在の値 = CDTXMania.Random.Next( 0x160 );
+						this.st白い星[ k ].x = 2 + CDTXMania.app.Random.Next( 4 );
+						this.st白い星[ k ].fScale = 0.2f + ( CDTXMania.app.Random.Next( 2 ) * 0.05f );
+						this.st白い星[ k ].ct進行 = new CCounter( 0, 0x160, 8 + CDTXMania.app.Random.Next( 4 ), CDTXMania.app.Timer );
+						this.st白い星[ k ].ct進行.n現在の値 = CDTXMania.app.Random.Next( 0x160 );
 					}
-					this.ct本体移動 = new CCounter( 0, 0x1a, 20, CDTXMania.Timer );
-					this.ct本体振動 = new CCounter( 0, 360, 4, CDTXMania.Timer );
+					this.ct本体移動 = new CCounter( 0, 0x1a, 20, CDTXMania.app.Timer );
+					this.ct本体振動 = new CCounter( 0, 360, 4, CDTXMania.app.Timer );
 					base.b初めての進行描画 = false;
 				}
 				#endregion

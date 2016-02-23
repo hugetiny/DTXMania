@@ -66,14 +66,14 @@ namespace DTXMania
 			stqMenuTitle = new stQuickMenuItem();
 			stqMenuTitle.cItem = new CItemBase();
 			stqMenuTitle.cItem.str項目名 = title;
-			stqMenuTitle.txName = CDTXMania.tテクスチャの生成( prvFont.DrawPrivateFont( title, Color.White, Color.Black ), false );
+			stqMenuTitle.txName = TextureFactory.tテクスチャの生成( prvFont.DrawPrivateFont( title, Color.White, Color.Black ), false );
 			stqMenuTitle.rectName = prvFont.RectStrings;
 			lciMenuItems = new stQuickMenuItem[ menulist.Count ];
 			for (int i = 0; i < menulist.Count; i++ )
 			{
 				stQuickMenuItem stqm = new stQuickMenuItem();
 				stqm.cItem = menulist[ i ];
-				stqm.txName = CDTXMania.tテクスチャの生成( prvFont.DrawPrivateFont( menulist[ i ].str項目名, Color.White, Color.Black ), false );
+				stqm.txName = TextureFactory.tテクスチャの生成( prvFont.DrawPrivateFont( menulist[ i ].str項目名, Color.White, Color.Black ), false );
 				stqm.rectName = prvFont.RectStrings;
 				lciMenuItems[ i ] = stqm;
 			}
@@ -87,7 +87,7 @@ namespace DTXMania
 		{
 			if ( this.bキー入力待ち )
 			{
-				CDTXMania.Skin.sound決定音.t再生する();
+				CDTXMania.app.Skin.sound決定音.t再生する();
 
 				if ( this.n現在の選択行 != lciMenuItems.Length - 1 )
 				{
@@ -142,7 +142,7 @@ namespace DTXMania
 		{
 			if ( this.bキー入力待ち )
 			{
-				CDTXMania.Skin.soundカーソル移動音.t再生する();
+				CDTXMania.app.Skin.soundカーソル移動音.t再生する();
 				if ( bIsSelectingIntItem )
 				{
 					 lciMenuItems[ n現在の選択行 ].cItem.t項目値を前へ移動();		// 項目移動と数値上下は方向が逆になるので注意
@@ -160,7 +160,7 @@ namespace DTXMania
 		{
 			if ( this.bキー入力待ち )
 			{
-				CDTXMania.Skin.soundカーソル移動音.t再生する();
+				CDTXMania.app.Skin.soundカーソル移動音.t再生する();
 				if ( bIsSelectingIntItem )
 				{
 					lciMenuItems[ n現在の選択行 ].cItem.t項目値を次へ移動();		// 項目移動と数値上下は方向が逆になるので注意
@@ -183,7 +183,7 @@ namespace DTXMania
 			this.bキー入力待ち = true;
 			for ( int i = 0; i < 4; i++ )
 			{
-				this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.Timer );
+				this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.app.Timer );
 			}
 			base.b活性化してない = true;
 
@@ -203,8 +203,8 @@ namespace DTXMania
 //				this.font.On非活性化();
 //				this.font = null;
 
-				CDTXMania.tテクスチャの解放( ref this.txCursor );
-				CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
+				TextureFactory.tテクスチャの解放( ref this.txCursor );
+				TextureFactory.tテクスチャの解放( ref this.txPopupMenuBackground );
 				for ( int i = 0; i < 4; i++ )
 				{
 					this.ctキー反復用[ i ] = null;
@@ -216,12 +216,12 @@ namespace DTXMania
 				//    for ( int i = 0; i < lciMenuItems.Length; i++ )
 				//    {
 				//        lciMenuItems[ i ].cItem = null;
-				//        CDTXMania.tテクスチャの解放( ref lciMenuItems[ i ].txName );
+				//        TextureFactory.tテクスチャの解放( ref lciMenuItems[ i ].txName );
 				//        lciMenuItems[ i ].txName = null;
 				//    }
 				//    lciMenuItems = null;
 				//}
-				//CDTXMania.tテクスチャの解放( ref txMenuTitle );
+				//TextureFactory.tテクスチャの解放( ref txMenuTitle );
 
 				base.On非活性化();
 			}
@@ -234,11 +234,11 @@ namespace DTXMania
 				string pathPopupMenuBackground = CSkin.Path( @"Graphics\ScreenSelect sort menu background.png" );
 				if ( File.Exists ( pathCursor ) )
 				{
-					this.txCursor = CDTXMania.tテクスチャの生成( pathCursor, false );
+					this.txCursor = TextureFactory.tテクスチャの生成( pathCursor, false );
 				}
 				if ( File.Exists( pathPopupMenuBackground ) )
 				{
-					this.txPopupMenuBackground = CDTXMania.tテクスチャの生成( pathPopupMenuBackground, false );
+					this.txPopupMenuBackground = TextureFactory.tテクスチャの生成( pathPopupMenuBackground, false );
 				}
 				base.OnManagedリソースの作成();
 			}
@@ -247,8 +247,8 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txPopupMenuBackground );
-				CDTXMania.tテクスチャの解放( ref this.txCursor );
+				TextureFactory.tテクスチャの解放( ref this.txPopupMenuBackground );
+				TextureFactory.tテクスチャの解放( ref this.txCursor );
 			}
 			base.OnManagedリソースの解放();
 		}
@@ -265,20 +265,20 @@ namespace DTXMania
 				if ( this.bキー入力待ち )
 				{
 					#region [ Shift-F1: CONFIG画面 ]
-					if ( ( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightShift ) || CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftShift ) ) &&
-						CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F1 ) )
+					if ( ( CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightShift ) || CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftShift ) ) &&
+						CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F1 ) )
 					{	// [SHIFT] + [F1] CONFIG
-						CDTXMania.Skin.sound取消音.t再生する();
+						CDTXMania.app.Skin.sound取消音.t再生する();
 						tCancel();
 						this.bGotoDetailConfig = true;
 					}
 					#endregion
 					#region [ キー入力: キャンセル ]
-					else if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape )
-						|| CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT )
-						|| CDTXMania.Pad.b押されたGB( Eパッド.Cancel ) )
+					else if ( CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape )
+						|| CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT )
+						|| CDTXMania.app.Pad.b押されたGB( Eパッド.Cancel ) )
 					{	// キャンセル
-						CDTXMania.Skin.sound取消音.t再生する();
+						CDTXMania.app.Skin.sound取消音.t再生する();
 						tCancel();
 						this.bIsActivePopupMenu = false;
 					}
@@ -287,21 +287,21 @@ namespace DTXMania
 					#region [ キー入力: 決定 ]
 					// E楽器パート eInst = E楽器パート.UNKNOWN;
 					ESortAction eAction = ESortAction.END;
-					if ( CDTXMania.Pad.b押された( E楽器パート.GUITAR, Eパッド.Decide ) )
+					if ( CDTXMania.app.Pad.b押された( E楽器パート.GUITAR, Eパッド.Decide ) )
 					{
 						eInst = E楽器パート.GUITAR;
 						eAction = ESortAction.Decide;
 					}
-					else if ( CDTXMania.Pad.b押された( E楽器パート.BASS, Eパッド.Decide ) )
+					else if ( CDTXMania.app.Pad.b押された( E楽器パート.BASS, Eパッド.Decide ) )
 					{
 						eInst = E楽器パート.BASS;
 						eAction = ESortAction.Decide;
 					}
 					else if (
-						CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.Decide )	// #24756 2011.4.1 yyagi: Add condition "Drum-Decide" to enable CY in Sort Menu.
-						|| CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD )
-						|| CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC )
-						|| ( CDTXMania.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) )
+						CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.Decide )	// #24756 2011.4.1 yyagi: Add condition "Drum-Decide" to enable CY in Sort Menu.
+						|| CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD )
+						|| CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC )
+						|| ( CDTXMania.app.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) )
 					{
 						eInst = E楽器パート.DRUMS;
 						eAction = ESortAction.Decide;
@@ -312,17 +312,17 @@ namespace DTXMania
 					}
 					#endregion
 					#region [ キー入力: 前に移動 ]
-					this.ctキー反復用.Up.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.t前に移動 ) );
-					this.ctキー反復用.R.tキー反復( CDTXMania.Pad.b押されているGB( Eパッド.R ), new CCounter.DGキー処理( this.t前に移動 ) );
-					if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
+					this.ctキー反復用.Up.tキー反復( CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.t前に移動 ) );
+					this.ctキー反復用.R.tキー反復( CDTXMania.app.Pad.b押されているGB( Eパッド.R ), new CCounter.DGキー処理( this.t前に移動 ) );
+					if ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
 					{
 						this.t前に移動();
 					}
 					#endregion
 					#region [ キー入力: 次に移動 ]
-					this.ctキー反復用.Down.tキー反復( CDTXMania.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.DownArrow ), new CCounter.DGキー処理( this.t次に移動 ) );
-					this.ctキー反復用.B.tキー反復( CDTXMania.Pad.b押されているGB( Eパッド.B ), new CCounter.DGキー処理( this.t次に移動 ) );
-					if ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LT ) )
+					this.ctキー反復用.Down.tキー反復( CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.DownArrow ), new CCounter.DGキー処理( this.t次に移動 ) );
+					this.ctキー反復用.B.tキー反復( CDTXMania.app.Pad.b押されているGB( Eパッド.B ), new CCounter.DGキー処理( this.t次に移動 ) );
+					if ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.LT ) )
 					{
 						this.t次に移動();
 					}
@@ -393,9 +393,9 @@ namespace DTXMania
 						Bitmap bmpStr = bValueBold?
 							prvFont.DrawPrivateFont( s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) : 
 							prvFont.DrawPrivateFont( s, Color.White, Color.Black );
-						CTexture ctStr = CDTXMania.tテクスチャの生成( bmpStr, false );
+						CTexture ctStr = TextureFactory.tテクスチャの生成( bmpStr, false );
 						ctStr.t2D描画( CDTXMania.app.Device, 340 * Scale.X, ( 50 * Scale.Y ) + i * prvFont.RectStrings.Height );
-						CDTXMania.tテクスチャの解放( ref ctStr );
+						TextureFactory.tテクスチャの解放( ref ctStr );
 					}
 				}
 				#endregion

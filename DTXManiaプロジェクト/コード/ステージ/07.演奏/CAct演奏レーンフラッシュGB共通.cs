@@ -29,7 +29,7 @@ namespace DTXMania
 			{
 				throw new IndexOutOfRangeException( "有効範囲は 0～6 です。" );
 			}
-			this.ct進行[ nLane ] = new CCounter( 0, 100, 1, CDTXMania.Timer );
+			this.ct進行[ nLane ] = new CCounter( 0, 100, 1, CDTXMania.app.Timer );
 		}
 
 
@@ -55,12 +55,12 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txFlush[ 0 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush red.png" ) );
-				this.txFlush[ 1 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush green.png" ) );
-				this.txFlush[ 2 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush blue.png" ) );
-				this.txFlush[ 3 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush red reverse.png" ) );
-				this.txFlush[ 4 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush green reverse.png" ) );
-				this.txFlush[ 5 ] = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush blue reverse.png" ) );
+				this.txFlush[ 0 ] = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush red.png" ) );
+				this.txFlush[ 1 ] = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush green.png" ) );
+				this.txFlush[ 2 ] = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush blue.png" ) );
+				this.txFlush[ 3 ] = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush red reverse.png" ) );
+				this.txFlush[ 4 ] = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush green reverse.png" ) );
+				this.txFlush[ 5 ] = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay lane flush blue reverse.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -70,7 +70,7 @@ namespace DTXMania
 			{
 				for( int i = 0; i < 6; i++ )
 				{
-					CDTXMania.tテクスチャの解放( ref this.txFlush[ i ] );
+					TextureFactory.tテクスチャの解放( ref this.txFlush[ i ] );
 				}
 				base.OnManagedリソースの解放();
 			}

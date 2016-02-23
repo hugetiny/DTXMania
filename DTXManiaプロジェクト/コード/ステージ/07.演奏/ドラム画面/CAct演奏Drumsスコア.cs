@@ -74,7 +74,7 @@ namespace DTXMania
 				{
 					base.txScore.t2D描画(
 						CDTXMania.app.Device,
-						(CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 1068 + ( i * 36 ) : 1490 + i * 36,
+						(CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 1068 + ( i * 36 ) : 1490 + i * 36,
 						30,
 						rectangle
 					);

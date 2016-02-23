@@ -1026,19 +1026,19 @@ namespace DTXMania
 
 		public void SwapGuitarBassInfos_AutoFlags()
 		{
-			//bool ts = CDTXMania.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
-			//CDTXMania.ConfigIni.bAutoPlay.Bass = CDTXMania.ConfigIni.bAutoPlay.Guitar;
-			//CDTXMania.ConfigIni.bAutoPlay.Guitar = ts;
+			//bool ts = CDTXMania.app.ConfigIni.bAutoPlay.Bass;			// #24415 2011.2.21 yyagi: FLIP時のリザルトにAUTOの記録が混ざらないよう、AUTOのフラグもswapする
+			//CDTXMania.app.ConfigIni.bAutoPlay.Bass = CDTXMania.app.ConfigIni.bAutoPlay.Guitar;
+			//CDTXMania.app.ConfigIni.bAutoPlay.Guitar = ts;
 
 			int looptime = (int) Eレーン.GtW - (int) Eレーン.GtR + 1;		// #29390 2013.1.25 yyagi ギターのAutoLane/AutoPick対応に伴い、FLIPもこれに対応
 			for ( int i = 0; i < looptime; i++ )							// こんなに離れたところを独立して修正しなければならない設計ではいけませんね・・・
 			{
-				bool b = CDTXMania.ConfigIni.bAutoPlay[ i + (int) Eレーン.BsR ];
-				CDTXMania.ConfigIni.bAutoPlay[ i + (int) Eレーン.BsR ] = CDTXMania.ConfigIni.bAutoPlay[ i + (int) Eレーン.GtR ];
-				CDTXMania.ConfigIni.bAutoPlay[ i + (int) Eレーン.GtR ] = b;
+				bool b = CDTXMania.app.ConfigIni.bAutoPlay[ i + (int) Eレーン.BsR ];
+				CDTXMania.app.ConfigIni.bAutoPlay[ i + (int) Eレーン.BsR ] = CDTXMania.app.ConfigIni.bAutoPlay[ i + (int) Eレーン.GtR ];
+				CDTXMania.app.ConfigIni.bAutoPlay[ i + (int) Eレーン.GtR ] = b;
 			}
 
-			CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
+			CDTXMania.app.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped = !CDTXMania.app.ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped;
 		}
 		public void SwapGuitarBassInfos_PlaySettings()			// #35417 2015.8.18 yyagi: 演奏設定のFLIP機能を追加
 		{
@@ -1062,7 +1062,7 @@ namespace DTXMania
 			// 譜面スクロール速度の変更だけは、On活性化()で行うこと。そうしないと、演奏開始直後にスクロール速度が変化して見苦しい。
 			n = n譜面スクロール速度.Bass; n譜面スクロール速度.Bass = n譜面スクロール速度.Guitar; n譜面スクロール速度.Guitar = n;
 
-			CDTXMania.ConfigIni.bIsSwappedGuitarBass_PlaySettingsAreSwapped = !CDTXMania.ConfigIni.bIsSwappedGuitarBass_PlaySettingsAreSwapped;
+			CDTXMania.app.ConfigIni.bIsSwappedGuitarBass_PlaySettingsAreSwapped = !CDTXMania.app.ConfigIni.bIsSwappedGuitarBass_PlaySettingsAreSwapped;
 
 		}
 		// コンストラクタ
@@ -1093,7 +1093,7 @@ namespace DTXMania
 			this.b垂直帰線待ちを行う = true;
 			this.n初期ウィンドウ開始位置X = 0; // #30675 2013.02.04 ikanick add
 			this.n初期ウィンドウ開始位置Y = 0;
-			this.nウインドウwidth = 0;			// #34069 2014.7.23 yyagi 初回起動時のwindow sizeは、CDTXMania側で設定する(-> 1280x720にする)
+			this.nウインドウwidth = 0;			// #34069 2014.7.23 yyagi 初回起動時のwindow sizeは、CDTXMania.app.で設定する(-> 1280x720にする)
 			this.nウインドウheight = 0;			//
 			this.nフレーム毎スリープms = -1;			// #xxxxx 2011.11.27 yyagi add
 			this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
@@ -1313,12 +1313,12 @@ namespace DTXMania
 			#endregion
 			#region [ スキン関連 ]
 			#region [ Skinパスの絶対パス→相対パス変換 ]
-			Uri uriRoot = new Uri( System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
+			Uri uriRoot = new Uri( System.IO.Path.Combine( CDTXMania.app.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
 			if ( strSystemSkinSubfolderFullName != null && strSystemSkinSubfolderFullName.Length == 0 )
 			{
 				// Config.iniが空の状態でDTXManiaをViewerとして起動・終了すると、strSystemSkinSubfolderFullName が空の状態でここに来る。
 				// → 初期値として Default/ を設定する。
-				strSystemSkinSubfolderFullName = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar + "Default" + System.IO.Path.DirectorySeparatorChar );
+				strSystemSkinSubfolderFullName = System.IO.Path.Combine( CDTXMania.app.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar + "Default" + System.IO.Path.DirectorySeparatorChar );
 			}
 			Uri uriPath = new Uri( System.IO.Path.Combine( this.strSystemSkinSubfolderFullName, "." + System.IO.Path.DirectorySeparatorChar ) );
 			string relPath = uriRoot.MakeRelativeUri( uriPath ).ToString();				// 相対パスを取得
@@ -2256,7 +2256,7 @@ namespace DTXMania
 												string absSkinPath = str4;
 												if ( !System.IO.Path.IsPathRooted( str4 ) )
 												{
-													absSkinPath = System.IO.Path.Combine( CDTXMania.strEXEのあるフォルダ, "System" );
+													absSkinPath = System.IO.Path.Combine( CDTXMania.app.strEXEのあるフォルダ, "System" );
 													absSkinPath = System.IO.Path.Combine( absSkinPath, str4 );
 													Uri u = new Uri( absSkinPath );
 													absSkinPath = u.AbsolutePath.ToString();	// str4内に相対パスがある場合に備える

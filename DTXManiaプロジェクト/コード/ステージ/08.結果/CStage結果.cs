@@ -85,24 +85,24 @@ namespace DTXMania
 				{
 					this.nランク値[ i ] = -1;
 					this.fPerfect率[ i ] = this.fGreat率[ i ] = this.fGood率[ i ] = this.fPoor率[ i ] = this.fMiss率[ i ] = 0.0f;	// #28500 2011.5.24 yyagi
-					if ( ( ( ( i != 0 ) || ( CDTXMania.DTX.bチップがある.Drums && !CDTXMania.ConfigIni.bギタレボモード ) ) &&
-						( ( i != 1 ) || CDTXMania.DTX.bチップがある.Guitar ) ) &&
-						( ( i != 2 ) || CDTXMania.DTX.bチップがある.Bass ) )
+					if ( ( ( ( i != 0 ) || ( CDTXMania.app.DTX.bチップがある.Drums && !CDTXMania.app.ConfigIni.bギタレボモード ) ) &&
+						( ( i != 1 ) || CDTXMania.app.DTX.bチップがある.Guitar ) ) &&
+						( ( i != 2 ) || CDTXMania.app.DTX.bチップがある.Bass ) )
 					{
 						CScoreIni.C演奏記録 part = this.st演奏記録[ i ];
 						bool bIsAutoPlay = true;
 						switch( i )
 						{
 							case 0:
-                                bIsAutoPlay = CDTXMania.ConfigIni.bドラムが全部オートプレイである || !CDTXMania.ConfigIni.bDrums有効; // #35411 chnmr0 add Drums が有効でない場合 AUTO 扱いとして LastPlay 更新しない
+                                bIsAutoPlay = CDTXMania.app.ConfigIni.bドラムが全部オートプレイである || !CDTXMania.app.ConfigIni.bDrums有効; // #35411 chnmr0 add Drums が有効でない場合 AUTO 扱いとして LastPlay 更新しない
 								break;
 
 							case 1:
-								bIsAutoPlay = CDTXMania.ConfigIni.bギターが全部オートプレイである || !CDTXMania.ConfigIni.bGuitar有効; // #35411 chnmr0 add
+								bIsAutoPlay = CDTXMania.app.ConfigIni.bギターが全部オートプレイである || !CDTXMania.app.ConfigIni.bGuitar有効; // #35411 chnmr0 add
 								break;
 
 							case 2:
-								bIsAutoPlay = CDTXMania.ConfigIni.bベースが全部オートプレイである || !CDTXMania.ConfigIni.bGuitar有効;
+								bIsAutoPlay = CDTXMania.app.ConfigIni.bベースが全部オートプレイである || !CDTXMania.app.ConfigIni.bGuitar有効;
 								break;
 						}
 						this.fPerfect率[ i ] = bIsAutoPlay ? 0f : ( ( 100f * part.nPerfect数 ) / ( (float) part.n全チップ数 ) );
@@ -121,7 +121,7 @@ namespace DTXMania
 
                 				#region [ .score.ini の作成と出力 ]
 				//---------------------
-				string str = CDTXMania.DTX.strファイル名の絶対パス + ".score.ini";
+				string str = CDTXMania.app.DTX.strファイル名の絶対パス + ".score.ini";
 				CScoreIni ini = new CScoreIni( str );
 
 				bool[] b今までにフルコンボしたことがある = new bool[] { false, false, false };
@@ -192,13 +192,13 @@ namespace DTXMania
                     }
                     //---------------------------------------------------------------------/
 				}
-                if( CDTXMania.ConfigIni.bScoreIniを出力する )
+                if( CDTXMania.app.ConfigIni.bScoreIniを出力する )
 				    ini.t書き出し( str );
 				//---------------------
 				#endregion
 
 				#region [ リザルト画面への演奏回数の更新 #24281 2011.1.30 yyagi]
-                if( CDTXMania.ConfigIni.bScoreIniを出力する )
+                if( CDTXMania.app.ConfigIni.bScoreIniを出力する )
                 {
                     this.n演奏回数.Drums = ini.stファイル.PlayCountDrums;
                     this.n演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
@@ -207,9 +207,9 @@ namespace DTXMania
 				#endregion
 				#region [ 選曲画面の譜面情報の更新 ]
 				//---------------------
-				if( !CDTXMania.bコンパクトモード )
+				if( !CDTXMania.app.bコンパクトモード )
 				{
-					Cスコア cスコア = CDTXMania.stage選曲.r確定されたスコア;
+					Cスコア cスコア = CDTXMania.app.stage選曲.r確定されたスコア;
 					bool[] b更新が必要か否か = new bool[ 3 ];
 					CScoreIni.t更新条件を取得する( out b更新が必要か否か[ 0 ], out b更新が必要か否か[ 1 ], out b更新が必要か否か[ 2 ] );
 					for( int m = 0; m < 3; m++ )
@@ -244,17 +244,17 @@ namespace DTXMania
 					rank = 6;
 				}
 	
-				if( string.IsNullOrEmpty( CDTXMania.DTX.RESULTSOUND[ rank ] ) )
+				if( string.IsNullOrEmpty( CDTXMania.app.DTX.RESULTSOUND[ rank ] ) )
 				{
-					CDTXMania.Skin.soundステージクリア音.t再生する();
+					CDTXMania.app.Skin.soundステージクリア音.t再生する();
 					this.rResultSound = null;
 				}
 				else
 				{
-					string str2 = CDTXMania.DTX.strフォルダ名 + CDTXMania.DTX.RESULTSOUND[ rank ];
+					string str2 = CDTXMania.app.DTX.strフォルダ名 + CDTXMania.app.DTX.RESULTSOUND[ rank ];
 					try
 					{
-						this.rResultSound = CDTXMania.Sound管理.tサウンドを生成する( str2 );
+						this.rResultSound = CDTXMania.app.Sound管理.tサウンドを生成する( str2 );
 					}
 					catch
 					{
@@ -282,7 +282,7 @@ namespace DTXMania
             saveCond.Guitar = true;
             saveCond.Bass = true;
             
-            foreach( CChip chip in CDTXMania.DTX.listChip )
+            foreach( CChip chip in CDTXMania.app.DTX.listChip )
             {
                 if( chip.bIsAutoPlayed )
                 {
@@ -294,11 +294,11 @@ namespace DTXMania
             }
             for(int instIndex = 0; instIndex < 3; ++instIndex)
             {
-                saveCond[instIndex] &= CDTXMania.listAutoGhostLag.Drums == null;
+                saveCond[instIndex] &= CDTXMania.app.DTX.listAutoGhostLag.Drums == null;
             }
 
-            string directory = CDTXMania.DTX.strフォルダ名;
-            string filename = CDTXMania.DTX.strファイル名 + ".";
+            string directory = CDTXMania.app.DTX.strフォルダ名;
+            string filename = CDTXMania.app.DTX.strファイル名 + ".";
             E楽器パート inst = E楽器パート.UNKNOWN;
 
             if ( sectionIndex == 0 )
@@ -353,7 +353,7 @@ namespace DTXMania
             }
 
             int cnt = 0;
-            foreach (DTXMania.CChip chip in CDTXMania.DTX.listChip)
+            foreach (DTXMania.CChip chip in CDTXMania.app.DTX.listChip)
             {
                 if (chip.e楽器パート == inst)
                 {
@@ -368,7 +368,7 @@ namespace DTXMania
                     using (BinaryWriter bw = new BinaryWriter(fs))
                     {
                         bw.Write((Int32)cnt);
-                        foreach (DTXMania.CChip chip in CDTXMania.DTX.listChip)
+                        foreach (DTXMania.CChip chip in CDTXMania.app.DTX.listChip)
                         {
                             if (chip.e楽器パート == inst)
                             {
@@ -385,7 +385,7 @@ namespace DTXMania
 									lag = 127;
 								}
 								byte lower = (byte)(lag + 128);
-								int upper = chip.nCurrentComboForGhost == 0 ? 1 : 0;
+								int upper = chip.extendInfoForGhost ? 0 : 1;
 								bw.Write((short)( (upper<<8) | lower));
                             }
                         }
@@ -398,7 +398,7 @@ namespace DTXMania
 		{
 			if( this.rResultSound != null )
 			{
-				CDTXMania.Sound管理.tサウンドを破棄する( this.rResultSound );
+				CDTXMania.app.Sound管理.tサウンドを破棄する( this.rResultSound );
 				this.rResultSound = null;
 			}
 			base.On非活性化();
@@ -407,10 +407,10 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx背景 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult background.jpg" ) );
-				this.tx上部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult header panel.png" ), true );
-				this.tx下部パネル = CDTXMania.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult footer panel.png" ), true );
-				this.txオプションパネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ) );
+				this.tx背景 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult background.jpg" ) );
+				this.tx上部パネル = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult header panel.png" ), true );
+				this.tx下部パネル = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenResult footer panel.png" ), true );
+				this.txオプションパネル = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -422,10 +422,10 @@ namespace DTXMania
 				{
 					this.ct登場用 = null;
 				}
-				CDTXMania.tテクスチャの解放( ref this.tx背景 );
-				CDTXMania.tテクスチャの解放( ref this.tx上部パネル );
-				CDTXMania.tテクスチャの解放( ref this.tx下部パネル );
-				CDTXMania.tテクスチャの解放( ref this.txオプションパネル );
+				TextureFactory.tテクスチャの解放( ref this.tx背景 );
+				TextureFactory.tテクスチャの解放( ref this.tx上部パネル );
+				TextureFactory.tテクスチャの解放( ref this.tx下部パネル );
+				TextureFactory.tテクスチャの解放( ref this.txオプションパネル );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -436,7 +436,7 @@ namespace DTXMania
 				int num;
 				if( base.b初めての進行描画 )
 				{
-					this.ct登場用 = new CCounter( 0, 100, 5, CDTXMania.Timer );
+					this.ct登場用 = new CCounter( 0, 100, 5, CDTXMania.app.Timer );
 					this.actFI.tフェードイン開始();
 					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
 					if( this.rResultSound != null )
@@ -513,8 +513,8 @@ namespace DTXMania
 				}
 				#region [ #24609 2011.3.14 yyagi ランク更新or演奏型スキル更新時、リザルト画像をpngで保存する ]
 				if ( this.bアニメが完了 == true && this.bIsCheckedWhetherResultScreenShouldSaveOrNot == false	// #24609 2011.3.14 yyagi; to save result screen in case BestRank or HiSkill.
-					&& CDTXMania.ConfigIni.bScoreIniを出力する
-					&& CDTXMania.ConfigIni.bIsAutoResultCapture)												// #25399 2011.6.9 yyagi
+					&& CDTXMania.app.ConfigIni.bScoreIniを出力する
+					&& CDTXMania.app.ConfigIni.bIsAutoResultCapture)												// #25399 2011.6.9 yyagi
 				{
 					CheckAndSaveResultScreen(true);
 					this.bIsCheckedWhetherResultScreenShouldSaveOrNot = true;
@@ -523,13 +523,13 @@ namespace DTXMania
 
 				// キー入力
 
-				if( CDTXMania.act現在入力を占有中のプラグイン == null )
+				if( CDTXMania.app.act現在入力を占有中のプラグイン == null )
 				{
-					if( CDTXMania.ConfigIni.bドラム打音を発声する && CDTXMania.ConfigIni.bDrums有効 )
+					if( CDTXMania.app.ConfigIni.bドラム打音を発声する && CDTXMania.app.ConfigIni.bDrums有効 )
 					{
 						for( int i = 0; i < 10; i++ )
 						{
-							List<STInputEvent> events = CDTXMania.Pad.GetEvents( E楽器パート.DRUMS, (Eパッド) i );
+							List<STInputEvent> events = CDTXMania.app.Pad.GetEvents( E楽器パート.DRUMS, (Eパッド) i );
 							if( ( events != null ) && ( events.Count > 0 ) )
 							{
 								foreach( STInputEvent event2 in events )
@@ -589,17 +589,17 @@ namespace DTXMania
 											( rChip.eチャンネル番号 == Ech定義.HiHatClose ) ||
 											( ( rChip.eチャンネル番号 == Ech定義.HiHatOpen ) && ( this.e最後に再生したHHのチャンネル番号 != Ech定義.HiHatOpen ) ) ) )
 										{
-											CDTXMania.DTX.tWavの再生停止( this.n最後に再生したHHのWAV番号 );
+											CDTXMania.app.DTX.tWavの再生停止( this.n最後に再生したHHのWAV番号 );
 											this.n最後に再生したHHのWAV番号 = rChip.n整数値_内部番号;
 											this.e最後に再生したHHのチャンネル番号 = rChip.eチャンネル番号;
 										}
-										CDTXMania.DTX.tチップの再生( rChip, CDTXMania.Timer.nシステム時刻, nLane, CDTXMania.ConfigIni.n手動再生音量, CDTXMania.ConfigIni.b演奏音を強調する.Drums );
+										CDTXMania.app.DTX.tチップの再生( rChip, CDTXMania.app.Timer.nシステム時刻, nLane, CDTXMania.app.ConfigIni.n手動再生音量, CDTXMania.app.ConfigIni.b演奏音を強調する.Drums );
 									}
 								}
 							}
 						}
 					}
-					if( ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Return ) ) ) && !this.bアニメが完了 )
+					if( ( ( CDTXMania.app.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.app.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Return ) ) ) && !this.bアニメが完了 )
 					{
 						this.actFI.tフェードイン完了();					// #25406 2011.6.9 yyagi
 						this.actResultImage.tアニメを完了させる();
@@ -608,9 +608,9 @@ namespace DTXMania
 						this.actSongBar.tアニメを完了させる();
 						this.ct登場用.t停止();
 					}
-					#region [ #24609 2011.4.7 yyagi リザルト画面で[F12]を押下すると、リザルト画像をpngで保存する機能は、CDTXManiaに移管。 ]
-//					if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F12 ) &&
-//						CDTXMania.ConfigIni.bScoreIniを出力する )
+					#region [ #24609 2011.4.7 yyagi リザルト画面で[F12]を押下すると、リザルト画像をpngで保存する機能は、CDTXMania.app.移管。 ]
+//					if ( CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F12 ) &&
+//						CDTXMania.app.ConfigIni.bScoreIniを出力する )
 //					{
 //						CheckAndSaveResultScreen(false);
 //						this.bIsCheckedWhetherResultScreenShouldSaveOrNot = true;
@@ -618,16 +618,16 @@ namespace DTXMania
 					#endregion
 					if ( base.eフェーズID == CStage.Eフェーズ.共通_通常状態 )
 					{
-						if ( CDTXMania.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Escape ) )
+						if ( CDTXMania.app.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.Escape ) )
 						{
-							CDTXMania.Skin.sound取消音.t再生する();
+							CDTXMania.app.Skin.sound取消音.t再生する();
 							this.actFO.tフェードアウト開始();
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 							this.eフェードアウト完了時の戻り値 = E戻り値.完了;
 						}
-						if ( ( ( CDTXMania.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) && this.bアニメが完了 )
+						if ( ( ( CDTXMania.app.Pad.b押されたDGB( Eパッド.CY ) || CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD ) ) || ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC ) || CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) ) && this.bアニメが完了 )
 						{
-							CDTXMania.Skin.sound取消音.t再生する();
+							CDTXMania.app.Skin.sound取消音.t再生する();
 //							this.actFO.tフェードアウト開始();
 							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
 							this.eフェードアウト完了時の戻り値 = E戻り値.完了;
@@ -679,7 +679,7 @@ namespace DTXMania
 		/// <param name="bIsAutoSave">true=自動保存モード, false=手動保存モード</param>
 		private void CheckAndSaveResultScreen(bool bIsAutoSave)
 		{
-			string path = Path.GetDirectoryName( CDTXMania.DTX.strファイル名の絶対パス );
+			string path = Path.GetDirectoryName( CDTXMania.app.DTX.strファイル名の絶対パス );
 			string datetime = DateTime.Now.ToString( "yyyyMMddHHmmss" );
 			if ( bIsAutoSave )
 			{
@@ -690,18 +690,18 @@ namespace DTXMania
 					{
 						string strPart = ( (E楽器パート) ( i ) ).ToString();
 						string strRank = ( (CScoreIni.ERANK) ( this.nランク値[ i ] ) ).ToString();
-						string strFullPath = CDTXMania.DTX.strファイル名の絶対パス + "." + datetime + "_" + strPart + "_" + strRank + ".png";
+						string strFullPath = CDTXMania.app.DTX.strファイル名の絶対パス + "." + datetime + "_" + strPart + "_" + strRank + ".png";
 						//Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
 						CDTXMania.app.SaveResultScreen( strFullPath );
 					}
 				}
 			}
-			#region [ #24609 2011.4.11 yyagi; リザルトの手動保存ロジックは、CDTXManiaに移管した。]
+			#region [ #24609 2011.4.11 yyagi; リザルトの手動保存ロジックは、CDTXMania.app.移管した。]
 //			else
 //			{
 //				// リザルト画像を手動保存するときは、dtxファイル名.yyMMddHHmmss_SS.png という形式で保存。(楽器名無し)
-//				string strRank = ( (CScoreIni.ERANK) ( CDTXMania.stage結果.n総合ランク値 ) ).ToString();
-//				string strSavePath = CDTXMania.strEXEのあるフォルダ + "\\" + "Capture_img";
+//				string strRank = ( (CScoreIni.ERANK) ( CDTXMania.app.stage結果.n総合ランク値 ) ).ToString();
+//				string strSavePath = CDTXMania.app.strEXEのあるフォルダ + "\\" + "Capture_img";
 //				if ( !Directory.Exists( strSavePath ) )
 //				{
 //					try
@@ -712,12 +712,12 @@ namespace DTXMania
 //					{
 //					}
 //				}
-//				string strSetDefDifficulty = CDTXMania.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.stage選曲.n確定された曲の難易度 ];
+//				string strSetDefDifficulty = CDTXMania.app.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.app.stage選曲.n確定された曲の難易度 ];
 //				if ( strSetDefDifficulty != null )
 //				{
 //					strSetDefDifficulty = "(" + strSetDefDifficulty + ")";
 //				}
-//				string strFullPath = strSavePath + "\\" + CDTXMania.DTX.TITLE + strSetDefDifficulty +
+//				string strFullPath = strSavePath + "\\" + CDTXMania.app.DTX.TITLE + strSetDefDifficulty +
 //					"." + datetime + "_" + strRank + ".png";
 //				// Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
 //				CDTXMania.app.SaveResultScreen( strFullPath );

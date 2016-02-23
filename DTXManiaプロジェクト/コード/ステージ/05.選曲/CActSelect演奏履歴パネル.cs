@@ -11,15 +11,14 @@ namespace DTXMania
 	internal class CActSelect演奏履歴パネル : CActivity
 	{
 		// メソッド
-
 		public CActSelect演奏履歴パネル()
 		{
 			base.b活性化してない = true;
 		}
 		public void t選択曲が変更された()
 		{
-			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
-			if( ( cスコア != null ) && !CDTXMania.stage選曲.bスクロール中 )
+			Cスコア cスコア = CDTXMania.app.stage選曲.r現在選択中のスコア;
+			if ((cスコア != null) && !CDTXMania.app.stage選曲.bスクロール中)
 			{
 				try
 				{
@@ -38,7 +37,7 @@ namespace DTXMania
 					{
 						this.tx文字列パネル.Dispose();
 					}
-					this.tx文字列パネル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+					this.tx文字列パネル = new CTexture( CDTXMania.app.Device, image, CDTXMania.app.TextureFormat );
 					this.tx文字列パネル.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 					image.Dispose();
 				}
@@ -74,7 +73,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txパネル本体 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect play history panel.png" ), true );
+				this.txパネル本体 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect play history panel.png" ), true );
 				this.t選択曲が変更された();
 				base.OnManagedリソースの作成();
 			}
@@ -83,8 +82,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
-				CDTXMania.tテクスチャの解放( ref this.tx文字列パネル );
+				TextureFactory.tテクスチャの解放( ref this.txパネル本体 );
+				TextureFactory.tテクスチャの解放( ref this.tx文字列パネル );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -94,7 +93,7 @@ namespace DTXMania
 			{
 				if( base.b初めての進行描画 )
 				{
-					this.ct登場アニメ用 = new CCounter( 0, 100, 5, CDTXMania.Timer );
+					this.ct登場アニメ用 = new CCounter( 0, 100, 5, CDTXMania.app.Timer );
 					base.b初めての進行描画 = false;
 				}
 				this.ct登場アニメ用.t進行();

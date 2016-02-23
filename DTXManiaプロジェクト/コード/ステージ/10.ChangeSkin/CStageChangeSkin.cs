@@ -86,14 +86,14 @@ namespace DTXMania
 		}
 		public void tChangeSkinMain()
 		{
-			Trace.TraceInformation( "スキン変更:" + CDTXMania.Skin.GetCurrentSkinSubfolderFullName( false ) );
+			Trace.TraceInformation( "スキン変更:" + CDTXMania.app.Skin.GetCurrentSkinSubfolderFullName( false ) );
 
-			CDTXMania.act文字コンソール.On非活性化();
+			CDTXMania.app.act文字コンソール.On非活性化();
 
-			CDTXMania.Skin.PrepareReloadSkin();
-			CDTXMania.Skin.ReloadSkin();
+			CDTXMania.app.Skin.PrepareReloadSkin();
+			CDTXMania.app.Skin.ReloadSkin();
 
-			CDTXMania.act文字コンソール.On活性化();
+			CDTXMania.app.act文字コンソール.On活性化();
 		}
 	}
 }

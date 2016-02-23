@@ -59,15 +59,15 @@ namespace DTXMania
 					this.stLayer[ i ].pt表示側終了位置.X = n表示側終了位置X * 2;
 					this.stLayer[ i ].pt表示側終了位置.Y = n表示側終了位置Y * 2;
 					this.stLayer[ i ].n総移動時間ms = n総移動時間ms;
-					this.stLayer[ i ].n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CDTXMania.Timer.n現在時刻;
+					this.stLayer[ i ].n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CDTXMania.app.Timer.n現在時刻;
 				}
 			}
 		}
 		public void SkipStart( int n移動開始時刻ms )
 		{
-			for( int i = 0; i < CDTXMania.DTX.listChip.Count; i++ )
+			for( int i = 0; i < CDTXMania.app.DTX.listChip.Count; i++ )
 			{
-				CChip chip = CDTXMania.DTX.listChip[ i ];
+				CChip chip = CDTXMania.app.DTX.listChip[ i ];
 				if( chip.n発声時刻ms > n移動開始時刻ms )
 				{
 					return;
@@ -179,9 +179,9 @@ namespace DTXMania
 						long timeTotal = this.stLayer[ i ].n総移動時間ms;
 						long timeMoveStart = this.stLayer[ i ].n移動開始時刻ms;
 						
-						if( CDTXMania.Timer.n現在時刻 < timeMoveStart )
+						if( CDTXMania.app.Timer.n現在時刻 < timeMoveStart )
 						{
-							timeMoveStart = CDTXMania.Timer.n現在時刻;
+							timeMoveStart = CDTXMania.app.Timer.n現在時刻;
 						}
 						// Size size3 = new Size( 0x116, 0x163 );
 						Size size表示域 = new Size( 278 * 2, 355 * 2 );
@@ -194,7 +194,7 @@ namespace DTXMania
 							( this.stLayer[ i ].rBMP != null ) ? this.stLayer[ i ].rBMP.n幅 : this.stLayer[ i ].rBMPTEX.tx画像.sz画像サイズ.Width,
 							( this.stLayer[ i ].rBMP != null ) ? this.stLayer[ i ].rBMP.n高さ : this.stLayer[ i ].rBMPTEX.tx画像.sz画像サイズ.Height );
 
-						int n再生位置 = (int) ( ( CDTXMania.Timer.n現在時刻 - timeMoveStart ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+						int n再生位置 = (int) ( ( CDTXMania.app.Timer.n現在時刻 - timeMoveStart ) * ( ( (double) CDTXMania.app.ConfigIni.n演奏速度 ) / 20.0 ) );
 						
 						if( ( timeTotal != 0 ) && ( timeTotal < n再生位置 ) )
 						{
@@ -312,7 +312,7 @@ namespace DTXMania
 							{
 								if ( ( this.stLayer[ i ].rBMP != null ) && ( this.stLayer[ i ].rBMP.tx画像 != null ) )
 								{
-									if ( CDTXMania.DTX != null && !CDTXMania.DTX.bUse556x710BGAAVI )
+									if ( CDTXMania.app.DTX != null && !CDTXMania.app.DTX.bUse556x710BGAAVI )
 									{
 										this.stLayer[i].rBMP.tx画像.vc拡大縮小倍率.X = 2.0f;
 										this.stLayer[i].rBMP.tx画像.vc拡大縮小倍率.Y = 2.0f;
@@ -326,7 +326,7 @@ namespace DTXMania
 								}
 								else if( ( this.stLayer[ i ].rBMPTEX != null ) && ( this.stLayer[ i ].rBMPTEX.tx画像 != null ) )
 								{
-									if ( CDTXMania.DTX != null && !CDTXMania.DTX.bUse556x710BGAAVI )
+									if ( CDTXMania.app.DTX != null && !CDTXMania.app.DTX.bUse556x710BGAAVI )
 									{
 										this.stLayer[i].rBMPTEX.tx画像.vc拡大縮小倍率.X = 2.0f;
 										this.stLayer[i].rBMPTEX.tx画像.vc拡大縮小倍率.Y = 2.0f;

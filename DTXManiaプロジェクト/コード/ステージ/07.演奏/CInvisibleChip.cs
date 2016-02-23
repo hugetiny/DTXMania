@@ -82,7 +82,7 @@ namespace DTXMania
 		/// <param name="eInst">楽器パート</param>
 		public void ShowChipTemporally( E楽器パート eInst )
 		{
-			ccounter[ (int) eInst ].t開始( 0, nDisplayTimeMs + nFadeoutTimeMs + 1, 1, CDTXMania.Timer );
+			ccounter[ (int) eInst ].t開始( 0, nDisplayTimeMs + nFadeoutTimeMs + 1, 1, CDTXMania.app.Timer );
 		}
 
 		/// <summary>

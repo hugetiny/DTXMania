@@ -90,7 +90,7 @@ namespace DTXMania
 		}
 		public void SkipStart( int n移動開始時刻ms )
 		{
-			foreach( CChip chip in CDTXMania.DTX.listChip )
+			foreach( CChip chip in CDTXMania.app.DTX.listChip )
 			{
 				if( chip.n発声時刻ms > n移動開始時刻ms )
 				{
@@ -106,7 +106,7 @@ namespace DTXMania
 								{
 									this.rAVI = chip.rAVI;		// DTXVモードで、最初に途中再生で起動したときに、ここに来る
 								}
-								this.bFullScreenMovie = ( chip.eチャンネル番号 == Ech定義.MovieFull || CDTXMania.ConfigIni.bForceAVIFullscreen );		// DTXVモードで、最初に途中再生で起動したときのために必要
+								this.bFullScreenMovie = ( chip.eチャンネル番号 == Ech定義.MovieFull || CDTXMania.app.ConfigIni.bForceAVIFullscreen );		// DTXVモードで、最初に途中再生で起動したときのために必要
 								this.rAVI.avi.Seek( n移動開始時刻ms - chip.n発声時刻ms );
 								this.Start( chip.eチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 							}
@@ -120,7 +120,7 @@ namespace DTXMania
 								{
 									this.rAVI = chip.rAVI;		// DTXVモードで、最初に途中再生で起動したときに、ここに来る
 								}
-								this.bFullScreenMovie = ( chip.eチャンネル番号 == Ech定義.MovieFull || CDTXMania.ConfigIni.bForceAVIFullscreen );		// DTXVモードで、最初に途中再生で起動したときのために必要
+								this.bFullScreenMovie = ( chip.eチャンネル番号 == Ech定義.MovieFull || CDTXMania.app.ConfigIni.bForceAVIFullscreen );		// DTXVモードで、最初に途中再生で起動したときのために必要
 								this.rAVI.avi.Seek( n移動開始時刻ms - chip.n発声時刻ms );
 								this.Start( chip.eチャンネル番号, chip.rAVI, chip.rAVIPan.sz開始サイズ.Width, chip.rAVIPan.sz開始サイズ.Height, chip.rAVIPan.sz終了サイズ.Width, chip.rAVIPan.sz終了サイズ.Height, chip.rAVIPan.pt動画側開始位置.X, chip.rAVIPan.pt動画側開始位置.Y, chip.rAVIPan.pt動画側終了位置.X, chip.rAVIPan.pt動画側終了位置.Y, chip.rAVIPan.pt表示側開始位置.X, chip.rAVIPan.pt表示側開始位置.Y, chip.rAVIPan.pt表示側終了位置.X, chip.rAVIPan.pt表示側終了位置.Y, chip.n総移動時間, chip.n発声時刻ms );
 							}
@@ -158,7 +158,7 @@ namespace DTXMania
 				{
 					return 0;
 				}
-				int time = (int)((CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms) * (((double)CDTXMania.ConfigIni.n演奏速度) / 20.0));
+				int time = (int)((CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms) * (((double)CDTXMania.app.ConfigIni.n演奏速度) / 20.0));
 				if( ( this.n総移動時間ms != 0 ) && ( this.n総移動時間ms < time ) )
 				{
 					this.n総移動時間ms = 0;
@@ -174,7 +174,7 @@ namespace DTXMania
 					}
 					// PREVIEW時はループ再生する。移動開始時刻msを現時刻にして(=AVIを最初に巻き戻して)、ここまでに行った計算をやり直す。
 					this.n移動開始時刻ms = CSound管理.rc演奏用タイマ.n現在時刻;
-					time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+					time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms ) * ( ( (double) CDTXMania.app.ConfigIni.n演奏速度 ) / 20.0 ) );
 					this.rAVI.avi.Seek(0);
 				}
 				/*
@@ -199,7 +199,7 @@ namespace DTXMania
 				{
 					num4 = CSound管理.rc演奏用タイマ.n現在時刻;
 				}
-				time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - num4 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+				time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - num4 ) * ( ( (double) CDTXMania.app.ConfigIni.n演奏速度 ) / 20.0 ) );
 				if( num3 == 0 )
 				{
 					rectangle = new Rectangle( 画像側開始位置, 開始サイズ );
@@ -307,7 +307,7 @@ namespace DTXMania
 					float magX = 2, magY = 2;
 					int xx = x, yy = y;
 
-					if( CDTXMania.DTX != null && CDTXMania.DTX.bUse556x710BGAAVI )
+					if( CDTXMania.app.DTX != null && CDTXMania.app.DTX.bUse556x710BGAAVI )
 					{
 						magX = magY = 1;
 					}

@@ -67,7 +67,7 @@ namespace DTXMania
 			}
 			#endregion
 			#region [ 個別 ScrollSpeed ]
-			l.Add( new CItemInteger( "ScrollSpeed", 0, 1999, CDTXMania.ConfigIni.n譜面スクロール速度[ nInst ],
+			l.Add( new CItemInteger( "ScrollSpeed", 0, 1999, CDTXMania.app.ConfigIni.n譜面スクロール速度[ nInst ],
 				"演奏時のドラム譜面のスクロールの\n" +
 				"速度を指定します。\n" +
 				"x0.5 ～ x1000.0 を指定可能です。",
@@ -77,7 +77,7 @@ namespace DTXMania
 				"(ScrollSpeed=x0.5 means half speed)" ) );
 			#endregion
 			#region [ 共通 Dark/Risky/PlaySpeed ]
-			l.Add( new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.ConfigIni.eDark,
+			l.Add( new CItemList( "Dark", CItemBase.Eパネル種別.通常, (int) CDTXMania.app.ConfigIni.eDark,
 				"HALF: 背景、レーン、ゲージが表示\n" +
 				"されなくなります。\n" +
 				"FULL: さらに小節線、拍線、判定ラ\n" +
@@ -88,7 +88,7 @@ namespace DTXMania
 				"FULL: additionaly to HALF, bar/beat\n" +
 				" lines, hit bar, pads are disappeared.",
 				new string[] { "OFF", "HALF", "FULL" } ) );
-			l.Add( new CItemInteger( "Risky", 0, 10, CDTXMania.ConfigIni.nRisky,
+			l.Add( new CItemInteger( "Risky", 0, 10, CDTXMania.app.ConfigIni.nRisky,
 				"Riskyモードの設定:\n" +
 				"1以上の値にすると、その回数分の\n" +
 				"Poor/MissでFAILEDとなります。\n" +
@@ -101,7 +101,7 @@ namespace DTXMania
 				" the number of Poor/Miss times to be\n" +
 				" FAILED.\n" +
 				"Set 0 to disable Risky mode." ) );
-			l.Add( new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.ConfigIni.n演奏速度,
+			l.Add( new CItemInteger( "PlaySpeed", 5, 40, CDTXMania.app.ConfigIni.n演奏速度,
 				"曲の演奏速度を、速くしたり遅くした\n" +
 				"りすることができます。\n" +
 				"（※一部のサウンドカードでは正しく\n" +
@@ -114,24 +114,24 @@ namespace DTXMania
 			#endregion
 			#region [ 個別 Sud/Hid ]
 			int nSuddenHidden;
-			if ( CDTXMania.ConfigIni.eInvisible[ nInst ] != EInvisible.OFF )
+			if ( CDTXMania.app.ConfigIni.eInvisible[ nInst ] != EInvisible.OFF )
 			{
-				nSuddenHidden = (int) CDTXMania.ConfigIni.eInvisible[ nInst ] + 3;
+				nSuddenHidden = (int) CDTXMania.app.ConfigIni.eInvisible[ nInst ] + 3;
 			}
 			else
 			{
-				nSuddenHidden = ( ( CDTXMania.ConfigIni.bHidden[ nInst ] ) ? 2 : 0 ) + ( ( CDTXMania.ConfigIni.bSudden[ nInst ] ) ? 1 : 0 );
+				nSuddenHidden = ( ( CDTXMania.app.ConfigIni.bHidden[ nInst ] ) ? 2 : 0 ) + ( ( CDTXMania.app.ConfigIni.bSudden[ nInst ] ) ? 1 : 0 );
 			}
 			l.Add( new CItemList( "Sud/Hid", CItemBase.Eパネル種別.通常, nSuddenHidden, "", "",
 				new string[] { "None", "Sudden", "Hidden", "Sud+Hid", "S-Invisible", "F-Invisible" } ) );
 			#endregion
             #region [ 個別 Ghost ]
-            l.Add( new CItemList("AUTO Ghost", CItemBase.Eパネル種別.通常, (int)CDTXMania.ConfigIni.eAutoGhost[ nInst ],
+            l.Add( new CItemList("AUTO Ghost", CItemBase.Eパネル種別.通常, (int)CDTXMania.app.ConfigIni.eAutoGhost[ nInst ],
                 "AUTOプレーのゴーストを指定します。\n",
                 "Specify Play Ghost data.\n",
                 new string[] {"Perfect", "Last Play", "Hi Skill", "Hi Score", "Online" }
                 ));
-            l.Add(new CItemList("Target Ghost", CItemBase.Eパネル種別.通常, (int)CDTXMania.ConfigIni.eTargetGhost[ nInst ],
+            l.Add(new CItemList("Target Ghost", CItemBase.Eパネル種別.通常, (int)CDTXMania.app.ConfigIni.eTargetGhost[ nInst ],
                 "ターゲットゴーストを指定します。\n",
                 "Specify Target Ghost data.\n",
                 new string[] {"None", "Perfect", "Last Play", "Hi Skill", "Hi Score", "Online" }
@@ -156,28 +156,28 @@ namespace DTXMania
 			int automode;
 			#region [ Drums ]
 			// "All Auto", "Auto HH", "Auto BD", "Custom", "OFF"
-			if ( CDTXMania.ConfigIni.bドラムが全部オートプレイである )
+			if ( CDTXMania.app.ConfigIni.bドラムが全部オートプレイである )
 			{
 				automode = 0;	// All Auto
 			}
-			else if (	CDTXMania.ConfigIni.bAutoPlay.LC == false && CDTXMania.ConfigIni.bAutoPlay.HH == true &&
-						CDTXMania.ConfigIni.bAutoPlay.BD == false && CDTXMania.ConfigIni.bAutoPlay.SD == false &&
-						CDTXMania.ConfigIni.bAutoPlay.HT == false && CDTXMania.ConfigIni.bAutoPlay.LT == false &&
-						CDTXMania.ConfigIni.bAutoPlay.FT == false && CDTXMania.ConfigIni.bAutoPlay.CY == false )
+			else if (	CDTXMania.app.ConfigIni.bAutoPlay.LC == false && CDTXMania.app.ConfigIni.bAutoPlay.HH == true &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BD == false && CDTXMania.app.ConfigIni.bAutoPlay.SD == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.HT == false && CDTXMania.app.ConfigIni.bAutoPlay.LT == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.FT == false && CDTXMania.app.ConfigIni.bAutoPlay.CY == false )
 			{
 				automode = 1;	// Auto HH
 			}
-			else if (	CDTXMania.ConfigIni.bAutoPlay.LC == false && CDTXMania.ConfigIni.bAutoPlay.HH == false &&
-						CDTXMania.ConfigIni.bAutoPlay.BD == true  && CDTXMania.ConfigIni.bAutoPlay.SD == false &&
-						CDTXMania.ConfigIni.bAutoPlay.HT == false && CDTXMania.ConfigIni.bAutoPlay.LT == false &&
-						CDTXMania.ConfigIni.bAutoPlay.FT == false && CDTXMania.ConfigIni.bAutoPlay.CY == false )
+			else if (	CDTXMania.app.ConfigIni.bAutoPlay.LC == false && CDTXMania.app.ConfigIni.bAutoPlay.HH == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BD == true  && CDTXMania.app.ConfigIni.bAutoPlay.SD == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.HT == false && CDTXMania.app.ConfigIni.bAutoPlay.LT == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.FT == false && CDTXMania.app.ConfigIni.bAutoPlay.CY == false )
 			{
 				automode = 2;	// Auto BD
 			}
-			else if (	CDTXMania.ConfigIni.bAutoPlay.LC == false && CDTXMania.ConfigIni.bAutoPlay.HH == false &&
-						CDTXMania.ConfigIni.bAutoPlay.BD == false && CDTXMania.ConfigIni.bAutoPlay.SD == false &&
-						CDTXMania.ConfigIni.bAutoPlay.HT == false && CDTXMania.ConfigIni.bAutoPlay.LT == false &&
-						CDTXMania.ConfigIni.bAutoPlay.FT == false && CDTXMania.ConfigIni.bAutoPlay.CY == false )
+			else if (	CDTXMania.app.ConfigIni.bAutoPlay.LC == false && CDTXMania.app.ConfigIni.bAutoPlay.HH == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BD == false && CDTXMania.app.ConfigIni.bAutoPlay.SD == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.HT == false && CDTXMania.app.ConfigIni.bAutoPlay.LT == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.FT == false && CDTXMania.app.ConfigIni.bAutoPlay.CY == false )
 			{
 				automode = 4;	// OFF
 			}
@@ -189,27 +189,27 @@ namespace DTXMania
 			#endregion
 			#region [ Guitar ]
 // "OFF", "ON" 
-//			l.Add( ( CDTXMania.ConfigIni.bAutoPlay.Guitar == true ) ? 1 : 0 );
-//			l.Add( ( CDTXMania.ConfigIni.bAutoPlay.Bass   == true ) ? 1 : 0 );
-			if ( CDTXMania.ConfigIni.bギターが全部オートプレイである)
+//			l.Add( ( CDTXMania.app.ConfigIni.bAutoPlay.Guitar == true ) ? 1 : 0 );
+//			l.Add( ( CDTXMania.app.ConfigIni.bAutoPlay.Bass   == true ) ? 1 : 0 );
+			if ( CDTXMania.app.ConfigIni.bギターが全部オートプレイである)
 			{
 				automode = 0;	// All Auto
 			}
-			else if (	CDTXMania.ConfigIni.bAutoPlay.GtR == true && CDTXMania.ConfigIni.bAutoPlay.GtG == true &&
-						CDTXMania.ConfigIni.bAutoPlay.GtB == true && CDTXMania.ConfigIni.bAutoPlay.GtPick == false &&
-						CDTXMania.ConfigIni.bAutoPlay.GtW == false )
+			else if (	CDTXMania.app.ConfigIni.bAutoPlay.GtR == true && CDTXMania.app.ConfigIni.bAutoPlay.GtG == true &&
+						CDTXMania.app.ConfigIni.bAutoPlay.GtB == true && CDTXMania.app.ConfigIni.bAutoPlay.GtPick == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.GtW == false )
 			{
 				automode = 1;	// Auto Neck
 			}
-			else if (	CDTXMania.ConfigIni.bAutoPlay.GtR == false && CDTXMania.ConfigIni.bAutoPlay.GtG == false &&
-						CDTXMania.ConfigIni.bAutoPlay.GtB == false && CDTXMania.ConfigIni.bAutoPlay.GtPick == true &&
-						CDTXMania.ConfigIni.bAutoPlay.GtW == false )
+			else if (	CDTXMania.app.ConfigIni.bAutoPlay.GtR == false && CDTXMania.app.ConfigIni.bAutoPlay.GtG == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.GtB == false && CDTXMania.app.ConfigIni.bAutoPlay.GtPick == true &&
+						CDTXMania.app.ConfigIni.bAutoPlay.GtW == false )
 			{
 				automode = 2;	// Auto Pick
 			}
-			else if	(	CDTXMania.ConfigIni.bAutoPlay.GtR == false && CDTXMania.ConfigIni.bAutoPlay.GtG == false &&
-						CDTXMania.ConfigIni.bAutoPlay.GtB == false && CDTXMania.ConfigIni.bAutoPlay.GtPick == false &&
-						CDTXMania.ConfigIni.bAutoPlay.GtW == false )
+			else if	(	CDTXMania.app.ConfigIni.bAutoPlay.GtR == false && CDTXMania.app.ConfigIni.bAutoPlay.GtG == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.GtB == false && CDTXMania.app.ConfigIni.bAutoPlay.GtPick == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.GtW == false )
 			{
 				automode = 4;	// OFF
 			}
@@ -220,25 +220,25 @@ namespace DTXMania
 			l.Add( automode );
 			#endregion
 			#region [ Bass ]
-			if ( CDTXMania.ConfigIni.bベースが全部オートプレイである )
+			if ( CDTXMania.app.ConfigIni.bベースが全部オートプレイである )
 			{
 				automode = 0;	// All Auto
 			}
-			else if (	CDTXMania.ConfigIni.bAutoPlay.BsR == true && CDTXMania.ConfigIni.bAutoPlay.BsG == true &&
-						CDTXMania.ConfigIni.bAutoPlay.BsB == true && CDTXMania.ConfigIni.bAutoPlay.BsPick == false &&
-						CDTXMania.ConfigIni.bAutoPlay.BsW == false )
+			else if (	CDTXMania.app.ConfigIni.bAutoPlay.BsR == true && CDTXMania.app.ConfigIni.bAutoPlay.BsG == true &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BsB == true && CDTXMania.app.ConfigIni.bAutoPlay.BsPick == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BsW == false )
 			{
 				automode = 1;	// Auto Neck
 			}
-			else if (	CDTXMania.ConfigIni.bAutoPlay.BsR == false && CDTXMania.ConfigIni.bAutoPlay.BsG == false &&
-						CDTXMania.ConfigIni.bAutoPlay.BsB == false && CDTXMania.ConfigIni.bAutoPlay.BsPick == true &&
-						CDTXMania.ConfigIni.bAutoPlay.BsW == false )
+			else if (	CDTXMania.app.ConfigIni.bAutoPlay.BsR == false && CDTXMania.app.ConfigIni.bAutoPlay.BsG == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BsB == false && CDTXMania.app.ConfigIni.bAutoPlay.BsPick == true &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BsW == false )
 			{
 				automode = 2;	// Auto Pick
 			}
-			else if (	CDTXMania.ConfigIni.bAutoPlay.BsR == false && CDTXMania.ConfigIni.bAutoPlay.BsG == false &&
-						CDTXMania.ConfigIni.bAutoPlay.BsB == false && CDTXMania.ConfigIni.bAutoPlay.BsPick == false &&
-						CDTXMania.ConfigIni.bAutoPlay.BsW == false )
+			else if (	CDTXMania.app.ConfigIni.bAutoPlay.BsR == false && CDTXMania.app.ConfigIni.bAutoPlay.BsG == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BsB == false && CDTXMania.app.ConfigIni.bAutoPlay.BsPick == false &&
+						CDTXMania.app.ConfigIni.bAutoPlay.BsW == false )
 			{
 				automode = 4;	// OFF
 			}
@@ -323,7 +323,7 @@ namespace DTXMania
 				{
 					this.tx文字列パネル.Dispose();
 				}
-				this.tx文字列パネル = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+				this.tx文字列パネル = new CTexture( CDTXMania.app.Device, image, CDTXMania.app.TextureFormat );
 				this.tx文字列パネル.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
 				image.Dispose();
 			}
@@ -350,48 +350,48 @@ namespace DTXMania
 					break;
 
 				case (int) EOrder.ScrollSpeed:
-					CDTXMania.ConfigIni.n譜面スクロール速度[ nCurrentTarget ] = (int) GetObj現在値( (int) EOrder.ScrollSpeed );
+					CDTXMania.app.ConfigIni.n譜面スクロール速度[ nCurrentTarget ] = (int) GetObj現在値( (int) EOrder.ScrollSpeed );
 					break;
 
 				case (int) EOrder.Dark:
 					{
 						Eダークモード d = (Eダークモード) GetIndex( (int) EOrder.Dark );
-						CDTXMania.ConfigIni.eDark = d;
+						CDTXMania.app.ConfigIni.eDark = d;
 						SetValueToAllTarget( (int) EOrder.Dark, (int) d );		// 全楽器で共有する値のため、全targetに値を展開する
 					}
 					break;
 				case (int) EOrder.Risky:
 					{
 						int r = (int) GetObj現在値( (int) EOrder.Risky );
-						CDTXMania.ConfigIni.nRisky = r;
+						CDTXMania.app.ConfigIni.nRisky = r;
 						SetValueToAllTarget( (int) EOrder.Risky, r );			// 全楽器で共有する値のため、全targetに値を展開する
 					}
 					break;
 				case (int) EOrder.PlaySpeed:
-					CDTXMania.ConfigIni.n演奏速度 = (int) GetObj現在値( (int) EOrder.PlaySpeed );
+					CDTXMania.app.ConfigIni.n演奏速度 = (int) GetObj現在値( (int) EOrder.PlaySpeed );
 					break;
 				case (int) EOrder.SuddenHidden:
 					int sh = (int) GetIndex( (int) EOrder.SuddenHidden );
 					if ( sh <= 3 )
 					{
-						CDTXMania.ConfigIni.bSudden[ nCurrentTarget ] = ( ( sh & 1 ) > 0 ) ? true : false;
-						CDTXMania.ConfigIni.bHidden[ nCurrentTarget ] = ( ( sh & 2 ) > 0 ) ? true : false;
-						CDTXMania.ConfigIni.eInvisible[ nCurrentTarget ] = EInvisible.OFF;
+						CDTXMania.app.ConfigIni.bSudden[ nCurrentTarget ] = ( ( sh & 1 ) > 0 ) ? true : false;
+						CDTXMania.app.ConfigIni.bHidden[ nCurrentTarget ] = ( ( sh & 2 ) > 0 ) ? true : false;
+						CDTXMania.app.ConfigIni.eInvisible[ nCurrentTarget ] = EInvisible.OFF;
 					}
 					else
 					{
-						CDTXMania.ConfigIni.bSudden[ nCurrentTarget ] = CDTXMania.ConfigIni.bHidden[ nCurrentTarget ] = false;
-						CDTXMania.ConfigIni.eInvisible[ nCurrentTarget ] = ( EInvisible ) ( sh - 3 );
+						CDTXMania.app.ConfigIni.bSudden[ nCurrentTarget ] = CDTXMania.app.ConfigIni.bHidden[ nCurrentTarget ] = false;
+						CDTXMania.app.ConfigIni.eInvisible[ nCurrentTarget ] = ( EInvisible ) ( sh - 3 );
 					}
 					break;
                 case (int) EOrder.AutoGhost: // #35411 chnmr0 AUTOゴーストデータ
                     EAutoGhostData gd = (EAutoGhostData)GetIndex((int)EOrder.AutoGhost);
-                    CDTXMania.ConfigIni.eAutoGhost[ nCurrentTarget ] = gd;
+                    CDTXMania.app.ConfigIni.eAutoGhost[ nCurrentTarget ] = gd;
                     break;
 
                 case (int)EOrder.TargetGhost: // #35411 chnmr0 ターゲットゴーストデータ
                     ETargetGhostData gtd = (ETargetGhostData)GetIndex((int)EOrder.TargetGhost);
-                    CDTXMania.ConfigIni.eTargetGhost[ nCurrentTarget ] = gtd;
+                    CDTXMania.app.ConfigIni.eTargetGhost[ nCurrentTarget ] = gtd;
                     break;
 
 				case (int) EOrder.ConfSet:			// CONF-SET切り替え
@@ -448,7 +448,7 @@ namespace DTXMania
 
 				for ( int i = 0; i < str.Length; i++ )
 				{
-					CDTXMania.ConfigIni.bAutoPlay[ i + start ] = ( str[ i ] == 'A' ) ? true : false;
+					CDTXMania.app.ConfigIni.bAutoPlay[ i + start ] = ( str[ i ] == 'A' ) ? true : false;
 				}
 			}
 		}
@@ -479,7 +479,7 @@ namespace DTXMania
 						case 3:	// Custom
 							for ( int i = 0; i < 8; i++ )
 							{
-								s += ( CDTXMania.ConfigIni.bAutoPlay[ i ] ) ? "A" : "_";
+								s += ( CDTXMania.app.ConfigIni.bAutoPlay[ i ] ) ? "A" : "_";
 							}
 							break;
 						case 4:	// OFF
@@ -510,7 +510,7 @@ namespace DTXMania
 							int len = (int) Eレーン.GtW - (int) Eレーン.GtR + 1;
 							for ( int i = p; i < p + len; i++ )
 							{
-								s += ( CDTXMania.ConfigIni.bAutoPlay[ i ] ) ? "A" : "_";
+								s += ( CDTXMania.app.ConfigIni.bAutoPlay[ i ] ) ? "A" : "_";
 							}
 							break;
 						case 4:	// OFF
@@ -552,7 +552,7 @@ namespace DTXMania
 				string pathパネル本体 = CSkin.Path( @"Graphics\ScreenSelect popup auto settings.png" );
 				if ( File.Exists( pathパネル本体 ) )
 				{
-					this.txパネル本体 = CDTXMania.tテクスチャの生成( pathパネル本体, true );
+					this.txパネル本体 = TextureFactory.tテクスチャの生成( pathパネル本体, true );
 				}
 				base.OnManagedリソースの作成();
 			}
@@ -561,8 +561,8 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
-				CDTXMania.tテクスチャの解放( ref this.tx文字列パネル );
+				TextureFactory.tテクスチャの解放( ref this.txパネル本体 );
+				TextureFactory.tテクスチャの解放( ref this.tx文字列パネル );
 				base.OnManagedリソースの解放();
 			}
 		}

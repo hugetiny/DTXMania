@@ -168,7 +168,6 @@ namespace DTXMania
 					if (!this.bヘッダのみ)
 					{
 						#region [ BPM/BMP初期化 ]
-						Ech定義 ch;
 						CBPM cbpm = null;
 						foreach (CBPM cbpm2 in this.listBPM.Values)
 						{
@@ -185,29 +184,17 @@ namespace DTXMania
 							cbpm.n表記上の番号 = 0;
 							cbpm.dbBPM値 = 120.0;
 							this.listBPM.Add(cbpm.n内部番号, cbpm);
-							CChip chip = new CChip();
-							chip.n発声位置 = 0;
-							chip.eチャンネル番号 = Ech定義.BPMEx;		// 拡張BPM
-							chip.n整数値 = 0;
-							chip.n整数値_内部番号 = cbpm.n内部番号;
+							CChip chip = new CChip(0, 0, cbpm.n内部番号, Ech定義.BPMEx);
 							this.listChip.Insert(0, chip);
 						}
 						else
 						{
-							CChip chip = new CChip();
-							chip.n発声位置 = 0;
-							chip.eチャンネル番号 = Ech定義.BPMEx;		// 拡張BPM
-							chip.n整数値 = 0;
-							chip.n整数値_内部番号 = cbpm.n内部番号;
+							CChip chip = new CChip(0, 0, cbpm.n内部番号, Ech定義.BPMEx);
 							this.listChip.Insert(0, chip);
 						}
 						if (this.listBMP.ContainsKey(0))
 						{
-							CChip chip = new CChip();
-							chip.n発声位置 = 0;
-							chip.eチャンネル番号 = Ech定義.BGALayer1;		// BGA (レイヤBGA1)
-							chip.n整数値 = 0;
-							chip.n整数値_内部番号 = 0;
+							CChip chip = new CChip(0, 0, 0, Ech定義.BGALayer1);
 							this.listChip.Insert(0, chip);
 						}
 						#endregion
@@ -257,7 +244,7 @@ namespace DTXMania
 								CWAV cwav = this.listWAV[chip.n整数値_内部番号];
 								//	if ( chip.n整数値・内部番号 == cwav.n内部番号 )
 								//	{
-								chip.dbチップサイズ倍率 = ((double)cwav.nチップサイズ) / 100.0;
+								chip.SetDBChipSizeFactor(((double)cwav.nチップサイズ) / 100.0);
 								//if ( chip.nチャンネル番号 == 0x01 )	// BGMだったら
 								//{
 								//	cwav.bIsOnBGMLane = true;
@@ -302,10 +289,7 @@ namespace DTXMania
 							int nEndOfSong = (this.listChip[this.listChip.Count - 1].n発声位置 + 384) - (this.listChip[this.listChip.Count - 1].n発声位置 % 384);
 							for (int tick384 = 0; tick384 <= nEndOfSong; tick384 += 384)	// 小節線の挿入　(後に出てくる拍子線とループをまとめようとするなら、forループの終了条件の微妙な違いに注意が必要)
 							{
-								CChip chip = new CChip();
-								chip.n発声位置 = tick384;
-								chip.eチャンネル番号 = Ech定義.BarLine;	// 小節線
-								chip.n整数値 = 36 * 36 - 1;
+								CChip chip = new CChip(tick384, 36 * 36 - 1, Ech定義.BarLine);
 								this.listChip.Add(chip);
 							}
 							//this.listChip.Sort();				// ここでのソートは不要。ただし最後にソートすること
@@ -343,10 +327,7 @@ namespace DTXMania
 									}
 									if (((tickBeat + n発声位置_C1_同一小節内) % 384) != 0)
 									{
-										CChip chip = new CChip();
-										chip.n発声位置 = tick384 + (tickBeat + n発声位置_C1_同一小節内);
-										chip.eチャンネル番号 = Ech定義.BeatLine;						// beat line 拍線
-										chip.n整数値 = 36 * 36 - 1;
+										CChip chip = new CChip(tick384 + (tickBeat + n発声位置_C1_同一小節内), 36*36-1, Ech定義.BeatLine);
 										this.listChip.Add(chip);
 									}
 								}
@@ -400,96 +381,20 @@ namespace DTXMania
 						#region [ 発声時刻の計算 ]
 						double bpm = 120.0;
 						double dbBarLength = 1.0;
-						int n発声位置 = 0;
+						int nPlayPosition = 0;
 						int ms = 0;
 						int nBar = 0;
 						foreach (CChip chip in this.listChip)
 						{
-							chip.n発声時刻ms = ms + ((int)(((0x271 * (chip.n発声位置 - n発声位置)) * dbBarLength) / bpm));
-							if (((this.e種別 == EDTX種別.BMS) || (this.e種別 == EDTX種別.BME)) && ((dbBarLength != 1.0) && ((chip.n発声位置 / 384) != nBar)))
-							{
-								n発声位置 = chip.n発声位置;
-								ms = chip.n発声時刻ms;
-								dbBarLength = 1.0;
-							}
-							nBar = chip.n発声位置 / 384;
-							ch = chip.eチャンネル番号;
-							switch (ch)
-							{
-								case Ech定義.BarLength:	// BarLength
-									{
-										n発声位置 = chip.n発声位置;
-										ms = chip.n発声時刻ms;
-										dbBarLength = chip.db実数値;
-										continue;
-									}
-								case Ech定義.BPM:	// BPM
-									{
-										n発声位置 = chip.n発声位置;
-										ms = chip.n発声時刻ms;
-										bpm = this.BASEBPM + chip.n整数値;
-										continue;
-									}
-								case Ech定義.BGALayer1:	// BGA (レイヤBGA1)
-								case Ech定義.BGALayer2:	// レイヤBGA2
-								case Ech定義.BGALayer3:	// レイヤBGA3
-								case Ech定義.BGALayer4:	// レイヤBGA4
-								case Ech定義.BGALayer5:	// レイヤBGA5
-								case Ech定義.BGALayer6:	// レイヤBGA6
-								case Ech定義.BGALayer7:	// レイヤBGA7
-								case Ech定義.BGALayer8:	// レイヤBGA8
-									break;
-
-								case Ech定義.ExObj_nouse:	// Extended Object (非対応)
-								case Ech定義.MissAnimation_nouse:	// Missアニメ (非対応)
-								//case 0x5A:	// 未定義
-								case Ech定義.nouse_5b:	// 未定義
-								case Ech定義.nouse_5c:	// 未定義
-								case Ech定義.nouse_5d:	// 未定義
-								case Ech定義.nouse_5e:	// 未定義
-								case Ech定義.nouse_5f:	// 未定義
-									{
-										continue;
-									}
-								case Ech定義.BPMEx:	// 拡張BPM
-									{
-										n発声位置 = chip.n発声位置;
-										ms = chip.n発声時刻ms;
-										if (this.listBPM.ContainsKey(chip.n整数値_内部番号))
-										{
-											bpm = ((this.listBPM[chip.n整数値_内部番号].n表記上の番号 == 0) ? 0.0 : this.BASEBPM) + this.listBPM[chip.n整数値_内部番号].dbBPM値;
-										}
-										continue;
-									}
-								case Ech定義.Movie:	// 動画再生
-								case Ech定義.MovieFull:
-									{
-										if (this.listAVIPAN.ContainsKey(chip.n整数値))
-										{
-											int num21 = ms + ((int)(((0x271 * (chip.n発声位置 - n発声位置)) * dbBarLength) / bpm));
-											int num22 = ms + ((int)(((0x271 * ((chip.n発声位置 + this.listAVIPAN[chip.n整数値].n移動時間ct) - n発声位置)) * dbBarLength) / bpm));
-											chip.n総移動時間 = num22 - num21;
-										}
-										continue;
-									}
-								default:
-									{
-										continue;
-									}
-							}
-							if (this.listBGAPAN.ContainsKey(chip.n整数値))
-							{
-								int num19 = ms + ((int)(((0x271 * (chip.n発声位置 - n発声位置)) * dbBarLength) / bpm));
-								int num20 = ms + ((int)(((0x271 * ((chip.n発声位置 + this.listBGAPAN[chip.n整数値].n移動時間ct) - n発声位置)) * dbBarLength) / bpm));
-								chip.n総移動時間 = num20 - num19;
-							}
+							chip.CalculatePlayPositionMs(e種別, BASEBPM, listBPM, listAVIPAN, listBGAPAN,
+								ref bpm, ref dbBarLength, ref nPlayPosition, ref ms, ref nBar);
 						}
 						if (this.db再生速度 > 0.0)
 						{
-							double _db再生速度 = (CDTXMania.DTXVmode.Enabled) ? this.dbDTXVPlaySpeed : this.db再生速度;
+							double _db再生速度 = (CDTXMania.app.DTXVmode.Enabled) ? this.dbDTXVPlaySpeed : this.db再生速度;
 							foreach (CChip chip in this.listChip)
 							{
-								chip.n発声時刻ms = (int)(((double)chip.n発声時刻ms) / _db再生速度);
+								chip.ApplyPlaySpeed(_db再生速度);
 							}
 						}
 						#endregion
@@ -509,15 +414,15 @@ namespace DTXMania
 						foreach (CChip chip in this.listChip)
 						{
 							Ech定義 c = chip.eチャンネル番号;
-							if (chip.bDrums可視チップである && !chip.b空打ちチップである)
+							if (chip.bDrums可視チップ && !chip.b空打ちチップである)
 							{
 								this.n可視チップ数[c - Ech定義.HiHatClose]++;
 							}
-							if (chip.bGuitar可視チップ_Wailing含まない)
+							if (chip.bGuitar可視チップ)
 							{
 								this.n可視チップ数.Guitar++;
 							}
-							if (chip.bBass可視チップ_Wailing含まない)
+							if (chip.bBass可視チップ)
 							{
 								this.n可視チップ数.Bass++;
 							}
@@ -592,7 +497,7 @@ namespace DTXMania
 						//Trace.TraceInformation( "hash計算:                 {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
 						#region [ bLogDTX詳細ログ出力 ]
-						if (CDTXMania.ConfigIni.bLogDTX詳細ログ出力)
+						if (CDTXMania.app.ConfigIni.bLogDTX詳細ログ出力)
 						{
 							foreach (CWAV cwav in this.listWAV.Values)
 							{
@@ -1000,7 +905,7 @@ namespace DTXMania
 					if (!int.TryParse(strパラメータ, out n数値))
 						n数値 = 1;
 
-					this.n現在の乱数 = CDTXMania.Random.Next(n数値) + 1;		// 1～数値 までの乱数を生成。
+					this.n現在の乱数 = CDTXMania.app.Random.Next(n数値) + 1;		// 1～数値 までの乱数を生成。
 				}
 				//-----------------
 				#endregion
@@ -1187,7 +1092,7 @@ namespace DTXMania
 
 			#region [ AVIリストに {zz, avi} の組を登録する。 ]
 			//-----------------
-			var avi = new CAVI(zz, strパラメータ, strコメント, CDTXMania.ConfigIni.n演奏速度);
+			var avi = new CAVI(zz, strパラメータ, strコメント, CDTXMania.app.ConfigIni.n演奏速度);
 
 			if (this.listAVI.ContainsKey(zz))	// 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listAVI.Remove(zz);
@@ -2028,12 +1933,9 @@ namespace DTXMania
 			//-----------------
 			if (this.n無限管理BPM[zz] == -zz)	// 初期状態では n無限管理BPM[zz] = -zz である。この場合、#BPMzz がまだ出現していないことを意味する。
 			{
-				for (int i = 0; i < this.listChip.Count; i++)	// これまでに出てきたチップのうち、該当する（BPM値が未設定の）BPMチップの値を変更する（仕組み上、必ず後方参照となる）。
+				foreach(CChip chip in listChip)	// これまでに出てきたチップのうち、該当する（BPM値が未設定の）BPMチップの値を変更する（仕組み上、必ず後方参照となる）。
 				{
-					var chip = this.listChip[i];
-
-					if (chip.bBPMチップである && chip.n整数値_内部番号 == -zz)	// #BPMzz 行より前の行に出現した #BPMzz では、整数値・内部番号は -zz に初期化されている。
-						chip.n整数値_内部番号 = this.n内部番号BPM1to;
+					chip.AdjustInfiniteManageIntInternalIndex(chip.bBPMチップである, zz, this.n内部番号BPM1to);
 				}
 			}
 			this.n無限管理BPM[zz] = this.n内部番号BPM1to;			// 次にこの BPM番号 zz を使うBPMチップが現れたら、このBPM値が格納されることになる。
@@ -2418,12 +2320,9 @@ namespace DTXMania
 			//-----------------
 			if (this.n無限管理WAV[zz] == -zz)	// 初期状態では n無限管理WAV[zz] = -zz である。この場合、#WAVzz がまだ出現していないことを意味する。
 			{
-				for (int i = 0; i < this.listChip.Count; i++)	// これまでに出てきたチップのうち、該当する（内部番号が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
+				foreach(CChip chip in listChip)	// これまでに出てきたチップのうち、該当する（内部番号が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
 				{
-					var chip = this.listChip[i];
-
-					if (chip.bWAVを使うチャンネルである && (chip.n整数値_内部番号 == -zz))	// この #WAVzz 行より前の行に出現した #WAVzz では、整数値・内部番号は -zz に初期化されている。
-						chip.n整数値_内部番号 = this.n内部番号WAV1to;
+					chip.AdjustInfiniteManageIntInternalIndex(chip.bWAVを使うチャンネルである, zz, n内部番号WAV1to);
 				}
 			}
 			this.n無限管理WAV[zz] = this.n内部番号WAV1to;			// 次にこの WAV番号 zz を使うWAVチップが現れたら、この内部番号が格納されることになる。
@@ -2598,88 +2497,14 @@ namespace DTXMania
 			}
 			//-----------------
 			#endregion
-			#region [ 取得したチャンネル番号で、this.bチップがある に該当したり、this.bMovieをFullscreen再生する の条件を満足するなら、設定する。]
-			//-----------------
-			if ((tmpチャンネル番号 >= Ech定義.HiHatClose) && (tmpチャンネル番号 <= Ech定義.LeftBassDrum))
-			{
-				this.bチップがある.Drums = true;
-
-				switch (tmpチャンネル番号)
-				{
-					case Ech定義.HiHatOpen:
-						this.bチップがある.HHOpen = true;
-						break;
-
-					case Ech定義.RideCymbal:
-						this.bチップがある.Ride = true;
-						break;
-
-					case Ech定義.LeftCymbal:
-						this.bチップがある.LeftCymbal = true;
-						break;
-
-					case Ech定義.LeftPedal:
-						this.bチップがある.LeftPedal = true;
-						break;
-
-					case Ech定義.LeftBassDrum:
-						this.bチップがある.LeftBassDrum = true;
-						break;
-				}
-			}
-			else if ((tmpチャンネル番号 >= Ech定義.Guitar_Open) && (tmpチャンネル番号 <= Ech定義.Guitar_RGB))
-			{
-				this.bチップがある.Guitar = true;
-
-				switch (tmpチャンネル番号)
-				{
-					case Ech定義.Guitar_Open:
-						this.bチップがある.OpenGuitar = true;
-						break;
-				}
-			}
-			else if ((tmpチャンネル番号 >= Ech定義.Bass_Open) && (tmpチャンネル番号 <= Ech定義.Bass_RGB))
-			{
-				this.bチップがある.Bass = true;
-
-				switch (tmpチャンネル番号)
-				{
-					case Ech定義.Bass_Open:
-						this.bチップがある.OpenBass = true;
-						break;
-				}
-			}
-			else if ((tmpチャンネル番号 == Ech定義.BGALayer1) || (tmpチャンネル番号 == Ech定義.BGALayer2) ||
-				((Ech定義.BGALayer3 <= tmpチャンネル番号) && (tmpチャンネル番号 <= Ech定義.BGALayer7)) || (tmpチャンネル番号 == Ech定義.BGALayer8))
-			{
-				this.bチップがある.BGA = true;
-			}
-			else if (tmpチャンネル番号 == Ech定義.Movie)
-			{
-				this.bチップがある.Movie = true;
-				if (CDTXMania.ConfigIni.bForceAVIFullscreen)
-				{
-					this.bMovieをFullscreen再生する = true;
-				}
-			}
-			else if (tmpチャンネル番号 == Ech定義.MovieFull)
-			{
-				this.bチップがある.Movie = true;
-				this.bMovieをFullscreen再生する = true;
-			}
-
-			//-----------------
-			#endregion
 
 
 			// (2) Ch.02を処理。
-
 			#region [ 小節長変更(Ch.02)は他のチャンネルとはパラメータが特殊なので、先にとっとと終わらせる。 ]
 			//-----------------
 			if (tmpチャンネル番号 == Ech定義.BarLength)
 			{
 				// 小節長倍率を取得する。
-
 				double db小節長倍率 = 1.0;
 				//if( !double.TryParse( strパラメータ, out result ) )
 				if (!this.TryParse(strパラメータ, out db小節長倍率))			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
@@ -2688,25 +2513,15 @@ namespace DTXMania
 					return false;
 				}
 
-				// 小節長倍率チップを配置する。
-
-				this.listChip.Insert(
-					0,
-					new CChip()
-					{
-						eチャンネル番号 = tmpチャンネル番号,
-						db実数値 = db小節長倍率,
-						n発声位置 = n小節番号 * 384,
-					});
+				// 小節長倍率チップを一番先頭に配置する。
+				this.listChip.Insert(0, new CChip(n小節番号 * 384, db小節長倍率, tmpチャンネル番号));
 
 				return true;	// 配置終了。
 			}
 			//-----------------
 			#endregion
 
-
 			// (3) パラメータを処理。
-
 			if (string.IsNullOrEmpty(strパラメータ))		// パラメータはnullまたは空文字列ではないこと。
 				return false;
 
@@ -2767,94 +2582,38 @@ namespace DTXMania
 				#endregion
 
 				// オブジェクト数値に対応するチップを生成。
+				var chip = new CChip((n小節番号 * 384) + ((384 * i) / (n文字数 / 2)), nオブジェクト数値, nオブジェクト数値, tmpチャンネル番号);
 
-				var chip = new CChip();
+				// 楽器パートの決定
+				chip.DecideInstrumentPart();
 
-				chip.n発声位置 = (n小節番号 * 384) + ((384 * i) / (n文字数 / 2));
-				chip.n整数値 = nオブジェクト数値;
-				chip.n整数値_内部番号 = nオブジェクト数値;
+				// チップがある更新
+				this.bチップがある.Drums |= chip.bDrums可視チップ;
+				this.bチップがある.HHOpen |= chip[Ech定義.HiHatOpen];
+				this.bチップがある.Ride |= chip[Ech定義.RideCymbal];
+				this.bチップがある.LeftCymbal |= chip[Ech定義.LeftCymbal];
+				this.bチップがある.LeftPedal |= chip[Ech定義.LeftPedal];
+				this.bチップがある.LeftBassDrum |= chip[Ech定義.LeftBassDrum];
+				this.bチップがある.Guitar |= chip.bGuitar可視チップ;
+				this.bチップがある.OpenGuitar |= chip[Ech定義.Guitar_Open];
+				this.bチップがある.Bass |= chip.bBass可視チップ;
+				this.bチップがある.OpenBass |= chip[Ech定義.Bass_Open];
+				this.bチップがある.BGA |= chip.bBGALayer;
+				this.bチップがある.Movie |= chip[Ech定義.Movie] | chip[Ech定義.MovieFull];
+				if (CDTXMania.app.ConfigIni.bForceAVIFullscreen || chip[Ech定義.MovieFull])
+				{
+					this.bMovieをFullscreen再生する = true;
+				}
 
-				#region [ chip.e楽器パート = ... ]
-				//-----------------
-				if ((tmpチャンネル番号 >= Ech定義.HiHatClose) && (tmpチャンネル番号 <= Ech定義.LeftBassDrum))
-				{
-					chip.e楽器パート = E楽器パート.DRUMS;
-				}
-				if ((tmpチャンネル番号 >= Ech定義.Guitar_Open) && (tmpチャンネル番号 <= Ech定義.Guitar_RGB))
-				{
-					chip.e楽器パート = E楽器パート.GUITAR;
-				}
-				if ((tmpチャンネル番号 >= Ech定義.Bass_Open) && (tmpチャンネル番号 <= Ech定義.Bass_RGB))
-				{
-					chip.e楽器パート = E楽器パート.BASS;
-				}
-				//-----------------
-				#endregion
+				// 空打ちチップを変換する。
+				chip.ConvertNoChip();
 
-				// #34029 2014.7.15 yyagi
-				#region [ ドラムの空打ち音だったら、フラグを立てたうえで、通常チップのチャンネル番号に変更。ギターベースの空打ち音はとりあえずフラグを立てるだけ。 ]
-				if (Ech定義.HiHatClose_NoChip <= tmpチャンネル番号 && tmpチャンネル番号 <= Ech定義.RideCymbal_NoChip)
-				{
-					chip.b空打ちチップである = true;
-					tmpチャンネル番号 = tmpチャンネル番号 - 0xB0 + 0x10;
-				}
-				else if (tmpチャンネル番号 == Ech定義.Guitar_NoChip || tmpチャンネル番号 == Ech定義.Bass_NoChip)
-				{
-					chip.b空打ちチップである = true;
-				}
-				else if (tmpチャンネル番号 == Ech定義.LeftCymbal_NoChip)
-				{
-					chip.b空打ちチップである = true;
-					tmpチャンネル番号 = Ech定義.LeftCymbal;
-				}
-				else if (tmpチャンネル番号 == Ech定義.LeftPedal_NoChip)
-				{
-					chip.b空打ちチップである = true;
-					tmpチャンネル番号 = Ech定義.LeftPedal;
-				}
-				else if (tmpチャンネル番号 == Ech定義.LeftBassDrum_NoChip)
-				{
-					chip.b空打ちチップである = true;
-					tmpチャンネル番号 = Ech定義.LeftBassDrum;
-				}
-				#endregion
-
-				chip.eチャンネル番号 = tmpチャンネル番号;
-
-				#region [ 無限定義への対応 → 内部番号の取得。]
-				//-----------------
-				if (chip.bWAVを使うチャンネルである)
-				{
-					chip.n整数値_内部番号 = this.n無限管理WAV[nオブジェクト数値];	// これが本当に一意なWAV番号となる。（無限定義の場合、chip.n整数値 は一意である保証がない。）
-				}
-				else if (chip.bBPMチップである)
-				{
-					chip.n整数値_内部番号 = this.n無限管理BPM[nオブジェクト数値];	// これが本当に一意なBPM番号となる。（同上。）
-				}
-				//-----------------
-				#endregion
-
-				#region [ フィルインON/OFFチャンネル(Ch.53)の場合、発声位置を少し前後にずらす。]
-				//-----------------
-				if (tmpチャンネル番号 == Ech定義.FillIn)
-				{
-					// ずらすのは、フィルインONチップと同じ位置にいるチップでも確実にフィルインが発動し、
-					// 同様に、フィルインOFFチップと同じ位置にいるチップでも確実にフィルインが終了するようにするため。
-
-					if ((nオブジェクト数値 > 0) && (nオブジェクト数値 != 2))
-					{
-						chip.n発声位置 -= 32;	// 384÷32＝12 ということで、フィルインONチップは12分音符ほど前へ移動。
-					}
-					else if (nオブジェクト数値 == 2)
-					{
-						chip.n発声位置 += 32;	// 同じく、フィルインOFFチップは12分音符ほど後ろへ移動。
-					}
-				}
-				//-----------------
-				#endregion
+				// 無限管理オブジェクトインデックスの割当。（もしそのチップが対象であれば）
+				chip.AssignInfiniteManageWAV(this.n無限管理WAV[nオブジェクト数値]);
+				chip.AssignInfiniteManageBPM(this.n無限管理BPM[nオブジェクト数値]);
+				chip.AdjustPlayPositionForFillin(nオブジェクト数値);
 
 				// チップを配置。
-
 				this.listChip.Add(chip);
 			}
 			return true;

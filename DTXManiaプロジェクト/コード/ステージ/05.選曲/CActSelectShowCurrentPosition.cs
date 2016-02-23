@@ -12,7 +12,6 @@ namespace DTXMania
 	internal class CActSelectShowCurrentPosition : CActivity
 	{
 		// メソッド
-
 		public CActSelectShowCurrentPosition()
 		{
 			base.b活性化してない = true;
@@ -39,11 +38,11 @@ namespace DTXMania
 				string pathScrollPosition = CSkin.Path( @"Graphics\ScreenSelect scrollbar.png" );
 				if ( File.Exists( pathScrollBar ) )
 				{
-					this.txScrollBar = CDTXMania.tテクスチャの生成( pathScrollBar, false );
+					this.txScrollBar = TextureFactory.tテクスチャの生成( pathScrollBar, false );
 				}
 				if ( File.Exists( pathScrollPosition ) )
 				{
-					this.txScrollPosition = CDTXMania.tテクスチャの生成( pathScrollPosition, false );
+					this.txScrollPosition = TextureFactory.tテクスチャの生成( pathScrollPosition, false );
 				}
 				base.OnManagedリソースの作成();
 			}
@@ -52,8 +51,8 @@ namespace DTXMania
 		{
 			if ( !base.b活性化してない )
 			{
-				CDTXMania.t安全にDisposeする( ref this.txScrollBar );
-				CDTXMania.t安全にDisposeする( ref this.txScrollPosition );
+				TextureFactory.t安全にDisposeする( ref this.txScrollBar );
+				TextureFactory.t安全にDisposeする( ref this.txScrollPosition );
 
 				base.OnManagedリソースの解放();
 			}
@@ -84,7 +83,7 @@ namespace DTXMania
 			#region [ スクロール地点の描画 (計算はCActSelect曲リストで行う。スクロール位置と選曲項目の同期のため。)#27648 ]
 			if ( this.txScrollPosition != null )
 			{
-				int py = CDTXMania.stage選曲.nスクロールバー相対y座標;
+				int py = CDTXMania.app.stage選曲.nスクロールバー相対y座標;
 				if ( py <= 336 * Scale.Y - 6 - 8 && py >= 0 )
 				{
 					this.txScrollPosition.t2D描画(

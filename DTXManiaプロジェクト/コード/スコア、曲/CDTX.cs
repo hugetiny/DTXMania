@@ -73,6 +73,8 @@ namespace DTXMania
 		public double dbDTXVPlaySpeed;
 		public bool bMovieをFullscreen再生する;
 		public bool bUse556x710BGAAVI;
+		public STDGBVALUE<List<int>> listAutoGhostLag;
+		public STDGBVALUE<List<int>> listTargetGhsotLag;
 
 #if TEST_NOTEOFFMODE
 		public STLANEVALUE<bool> b演奏で直前の音を消音する;
@@ -82,7 +84,7 @@ namespace DTXMania
 #endif
 		#region [ コンストラクタ ]
 
-		public CDTX()
+		private CDTX()
 		{
 			this.TITLE = "";
 			this.ARTIST = "";
@@ -141,6 +143,8 @@ namespace DTXMania
 			this.nRESULTIMAGE用優先順位 = new int[7];
 			this.nRESULTMOVIE用優先順位 = new int[7];
 			this.nRESULTSOUND用優先順位 = new int[7];
+			this.listAutoGhostLag = new STDGBVALUE<List<int>>();
+			this.listTargetGhsotLag = new STDGBVALUE<List<int>>();
 
 			#region [ 2011.1.1 yyagi GDA->DTX変換テーブル リファクタ後 ]
 			STGDAPARAM[] stgdaparamArray = new STGDAPARAM[] {		// GDA->DTX conversion table
@@ -209,7 +213,7 @@ namespace DTXMania
 			this.stGDAParam = stgdaparamArray;
 			#endregion
 			this.nBGMAdjust = 0;
-			this.nPolyphonicSounds = CDTXMania.ConfigIni.nPoliphonicSounds;
+			this.nPolyphonicSounds = CDTXMania.app.ConfigIni.nPoliphonicSounds;
 			this.dbDTXVPlaySpeed = 1.0f;
 			this.bUse556x710BGAAVI = false;
 
@@ -220,7 +224,7 @@ namespace DTXMania
 #endif
 
 		}
-		public CDTX(string str全入力文字列)
+		private CDTX(string str全入力文字列)
 			: this()
 		{
 			this.On活性化();
@@ -232,7 +236,7 @@ namespace DTXMania
 			this.On活性化();
 			this.t入力(strファイル名, bヘッダのみ);
 		}
-		public CDTX(string str全入力文字列, double db再生速度, int nBGMAdjust)
+		private CDTX(string str全入力文字列, double db再生速度, int nBGMAdjust)
 			: this()
 		{
 			this.On活性化();
@@ -251,7 +255,7 @@ namespace DTXMania
 
 		public int nモニタを考慮した音量(E楽器パート part)
 		{
-			CConfigIni configIni = CDTXMania.ConfigIni;
+			CConfigIni configIni = CDTXMania.app.ConfigIni;
 			switch (part)
 			{
 				case E楽器パート.DRUMS:
@@ -294,28 +298,7 @@ namespace DTXMania
 			{
 				foreach (CChip chip in this.listChip)
 				{
-					if (chip.eチャンネル番号 == Ech定義.Movie || chip.eチャンネル番号 == Ech定義.MovieFull)
-					{
-						chip.eAVI種別 = EAVI種別.Unknown;
-						chip.rAVI = null;
-						chip.rAVIPan = null;
-						if (this.listAVIPAN.ContainsKey(chip.n整数値))
-						{
-							CAVIPAN cavipan = this.listAVIPAN[chip.n整数値];
-							if (this.listAVI.ContainsKey(cavipan.nAVI番号) && (this.listAVI[cavipan.nAVI番号].avi != null))
-							{
-								chip.eAVI種別 = EAVI種別.AVIPAN;
-								chip.rAVI = this.listAVI[cavipan.nAVI番号];
-								chip.rAVIPan = cavipan;
-								continue;
-							}
-						}
-						if (this.listAVI.ContainsKey(chip.n整数値) && (this.listAVI[chip.n整数値].avi != null))
-						{
-							chip.eAVI種別 = EAVI種別.AVI;
-							chip.rAVI = this.listAVI[chip.n整数値];
-						}
-					}
+					chip.ApplyAVI(listAVI, listAVIPAN);
 				}
 			}
 		}
@@ -504,96 +487,7 @@ namespace DTXMania
 			{
 				foreach (CChip chip in this.listChip)
 				{
-					#region [ BGAPAN/BGA/BMPTEX/BMP ]
-					if ((chip.eチャンネル番号 == Ech定義.BGALayer1) || (chip.eチャンネル番号 == Ech定義.BGALayer2) ||
-						((chip.eチャンネル番号 >= Ech定義.BGALayer3) && (chip.eチャンネル番号 <= Ech定義.BGALayer7)) ||
-						(chip.eチャンネル番号 == Ech定義.BGALayer8))
-					{
-						chip.eBGA種別 = EBGA種別.Unknown;
-						chip.rBMP = null;
-						chip.rBMPTEX = null;
-						chip.rBGA = null;
-						chip.rBGAPan = null;
-						#region [ BGAPAN ]
-						if (this.listBGAPAN.ContainsKey(chip.n整数値))
-						{
-							CBGAPAN cbgapan = this.listBGAPAN[chip.n整数値];
-							if (this.listBMPTEX.ContainsKey(cbgapan.nBMP番号) && this.listBMPTEX[cbgapan.nBMP番号].bUse)
-							{
-								chip.eBGA種別 = EBGA種別.BGAPAN;
-								chip.rBMPTEX = this.listBMPTEX[cbgapan.nBMP番号];
-								chip.rBGAPan = cbgapan;
-								continue;
-							}
-							if (this.listBMP.ContainsKey(cbgapan.nBMP番号) && this.listBMP[cbgapan.nBMP番号].bUse)
-							{
-								chip.eBGA種別 = EBGA種別.BGAPAN;
-								chip.rBMP = this.listBMP[cbgapan.nBMP番号];
-								chip.rBGAPan = cbgapan;
-								continue;
-							}
-						}
-						#endregion
-						#region [ BGA ]
-						if (this.listBGA.ContainsKey(chip.n整数値))
-						{
-							CBGA cbga = this.listBGA[chip.n整数値];
-							if (this.listBMPTEX.ContainsKey(cbga.nBMP番号) && this.listBMPTEX[cbga.nBMP番号].bUse)
-							{
-								chip.eBGA種別 = EBGA種別.BGA;
-								chip.rBMPTEX = this.listBMPTEX[cbga.nBMP番号];
-								chip.rBGA = cbga;
-								continue;
-							}
-							if (this.listBMP.ContainsKey(cbga.nBMP番号) && this.listBMP[cbga.nBMP番号].bUse)
-							{
-								chip.eBGA種別 = EBGA種別.BGA;
-								chip.rBMP = this.listBMP[cbga.nBMP番号];
-								chip.rBGA = cbga;
-								continue;
-							}
-						}
-						#endregion
-						#region [ BMPTEX ]
-						if (this.listBMPTEX.ContainsKey(chip.n整数値) && this.listBMPTEX[chip.n整数値].bUse)
-						{
-							chip.eBGA種別 = EBGA種別.BMPTEX;
-							chip.rBMPTEX = this.listBMPTEX[chip.n整数値];
-							continue;
-						}
-						#endregion
-						#region [ BMP ]
-						if (this.listBMP.ContainsKey(chip.n整数値) && this.listBMP[chip.n整数値].bUse)
-						{
-							chip.eBGA種別 = EBGA種別.BMP;
-							chip.rBMP = this.listBMP[chip.n整数値];
-							continue;
-						}
-						#endregion
-					}
-					#endregion
-					#region [ BGA入れ替え ]
-					if ((chip.eチャンネル番号 == Ech定義.BGALayer1_Swap) || (chip.eチャンネル番号 == Ech定義.BGALayer2_Swap) ||
-						((chip.eチャンネル番号 >= Ech定義.BGALayer3_Swap) && (chip.eチャンネル番号 <= Ech定義.BGALayer7_Swap)) ||
-						(chip.eチャンネル番号 == Ech定義.BGALayer8_Swap))
-					{
-						chip.eBGA種別 = EBGA種別.Unknown;
-						chip.rBMP = null;
-						chip.rBMPTEX = null;
-						chip.rBGA = null;
-						chip.rBGAPan = null;
-						if (this.listBMPTEX.ContainsKey(chip.n整数値) && this.listBMPTEX[chip.n整数値].bUse)
-						{
-							chip.eBGA種別 = EBGA種別.BMPTEX;
-							chip.rBMPTEX = this.listBMPTEX[chip.n整数値];
-						}
-						else if (this.listBMP.ContainsKey(chip.n整数値) && this.listBMP[chip.n整数値].bUse)
-						{
-							chip.eBGA種別 = EBGA種別.BMP;
-							chip.rBMP = this.listBMP[chip.n整数値];
-						}
-					}
-					#endregion
+					chip.ApplyBMP_BMPTEX(listBGA, listBGAPAN, listBMP, listBMPTEX);
 				}
 			}
 		}
@@ -690,19 +584,19 @@ namespace DTXMania
 			{
 				//				string strCount = count.ToString() + " / " + this.listWAV.Count.ToString();
 				//				Debug.WriteLine(strCount);
-				//				CDTXMania.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, strCount);
+				//				CDTXMania.app.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, strCount);
 				//				count++;
 
 				string str = string.IsNullOrEmpty(this.PATH_WAV) ? this.strフォルダ名 : this.PATH_WAV;
 				str = str + cwav.strファイル名;
-				bool bIsDirectSound = (CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound");
+				bool bIsDirectSound = (CDTXMania.app.Sound管理.GetCurrentSoundDeviceType() == "DirectSound");
 				try
 				{
 					//try
 					//{
-					//    cwav.rSound[ 0 ] = CDTXMania.Sound管理.tサウンドを生成する( str );
+					//    cwav.rSound[ 0 ] = CDTXMania.app.Sound管理.tサウンドを生成する( str );
 					//    cwav.rSound[ 0 ].n音量 = 100;
-					//    if ( CDTXMania.ConfigIni.bLog作成解放ログ出力 )
+					//    if ( CDTXMania.app.ConfigIni.bLog作成解放ログ出力 )
 					//    {
 					//        Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
 					//    }
@@ -724,20 +618,20 @@ namespace DTXMania
 					//    for ( int j = 1; j < nPolyphonicSounds; j++ )
 					//    {
 					//        cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
-					//        CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
+					//        CDTXMania.app.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
 					//    }
 					//}
 
 					// まず1つめを登録する
 					try
 					{
-						cwav.rSound[0] = CDTXMania.Sound管理.tサウンドを生成する(str);
+						cwav.rSound[0] = CDTXMania.app.Sound管理.tサウンドを生成する(str);
 						cwav.rSound[0].n音量 = 100;
-						if (!CDTXMania.ConfigIni.bDynamicBassMixerManagement)
+						if (!CDTXMania.app.ConfigIni.bDynamicBassMixerManagement)
 						{
 							cwav.rSound[0].tBASSサウンドをミキサーに追加する();
 						}
-						if (CDTXMania.ConfigIni.bLog作成解放ログ出力)
+						if (CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
 						{
 							Trace.TraceInformation("サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[0].nサウンドバッファサイズ, cwav.rSound[0].bストリーム再生する ? "Stream" : "OnMemory");
 						}
@@ -751,7 +645,7 @@ namespace DTXMania
 
 					#region [ 同時発音数を、チャンネルによって変える ]
 					int nPoly = nPolyphonicSounds;
-					if (CDTXMania.Sound管理.GetCurrentSoundDeviceType() != "DirectSound")	// DShowでの再生の場合はミキシング負荷が高くないため、
+					if (CDTXMania.app.Sound管理.GetCurrentSoundDeviceType() != "DirectSound")	// DShowでの再生の場合はミキシング負荷が高くないため、
 					{																		// チップのライフタイム管理を行わない
 						if (cwav.bIsBassSound) nPoly = (nPolyphonicSounds >= 2) ? 2 : 1;
 						else if (cwav.bIsGuitarSound) nPoly = (nPolyphonicSounds >= 2) ? 2 : 1;
@@ -767,7 +661,7 @@ namespace DTXMania
 					//    for ( int i = 1; i < nPoly; i++ )
 					//    {
 					//        cwav.rSound[ i ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
-					//        // CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
+					//        // CDTXMania.app.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
 					//    }
 					//    for ( int i = nPoly; i < nPolyphonicSounds; i++ )
 					//    {
@@ -780,13 +674,13 @@ namespace DTXMania
 						{
 							try
 							{
-								cwav.rSound[i] = CDTXMania.Sound管理.tサウンドを生成する(str);
+								cwav.rSound[i] = CDTXMania.app.Sound管理.tサウンドを生成する(str);
 								cwav.rSound[i].n音量 = 100;
-								if (!CDTXMania.ConfigIni.bDynamicBassMixerManagement)
+								if (!CDTXMania.app.ConfigIni.bDynamicBassMixerManagement)
 								{
 									cwav.rSound[i].tBASSサウンドをミキサーに追加する();
 								}
-								if (CDTXMania.ConfigIni.bLog作成解放ログ出力)
+								if (CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
 								{
 									Trace.TraceInformation("サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[0].nサウンドバッファサイズ, cwav.rSound[0].bストリーム再生する ? "Stream" : "OnMemory");
 								}
@@ -825,161 +719,20 @@ namespace DTXMania
 		{
 			if (((part == E楽器パート.GUITAR) || (part == E楽器パート.BASS)) && (eRandom != Eランダムモード.OFF))
 			{
-				int[,] nランダムレーン候補 = new int[,]
-				{
-					{ 0, 1, 2, 3, 4, 5, 6, 7 },
-					{ 0, 2, 1, 3, 4, 6, 5, 7 },
-					{ 0, 1, 4, 5, 2, 3, 6, 7 },
-					{ 0, 2, 4, 6, 1, 3, 5, 7 },
-					{ 0, 4, 1, 5, 2, 6, 3, 7 },
-					{ 0, 4, 2, 6, 1, 5, 3, 7 }
-				};
-
 				int n小節番号 = -10000;
-				int n小節内乱数6通り = 0;
+				int seed = 0;
 				// int GOTO_END = 0;	// gotoの飛び先のダミーコードで使うダミー変数
 				foreach (CChip chip in this.listChip)
 				{
-					Eレーンビットパターン nRGBレーンビットパターン;
-					Eレーンビットパターン n新RGBレーンビットパターン = Eレーンビットパターン.OPEN;// 「未割り当てのローカル変数」ビルドエラー回避のために0を初期値に設定
-					bool bOpenChip;
-					bool bAdjustRandomLane = true;
+					bool bOpenChip = (chip.bGuitar可視チップ && this.bチップがある.OpenGuitar) || ((chip.bBass可視チップ) && this.bチップがある.OpenBass);
 					if ((chip.n発声位置 / 384) != n小節番号)		// 小節が変化したら
 					{
 						n小節番号 = chip.n発声位置 / 384;
-						n小節内乱数6通り = CDTXMania.Random.Next(6);
+						seed = CDTXMania.app.Random.Next(6);
 					}
-					int nランダム化前BassFlag = chip.nGuitarBassUpper4Bit;
-					if ((((part != E楽器パート.GUITAR) || (Ech定義.Guitar_Open > chip.eチャンネル番号)) || (chip.eチャンネル番号 > Ech定義.Guitar_RGB))
-						&& (((part != E楽器パート.BASS) || (Ech定義.Bass_Open > chip.eチャンネル番号)) || (chip.eチャンネル番号 > Ech定義.Bass_RGB))
-					)
-					{
-						continue;
-					}
-					switch (eRandom)
-					{
-						case Eランダムモード.RANDOM:		// 1小節単位でレーンのR/G/Bがランダムに入れ替わる
-							chip.eチャンネル番号 = (Ech定義)((chip.nGuitarBassUpper4Bit) | nランダムレーン候補[n小節内乱数6通り, (int)chip.eRGBビットパターン]);
-							continue;
-
-						case Eランダムモード.SUPERRANDOM:	// チップごとにR/G/Bがランダムで入れ替わる(レーンの本数までは変わらない)。
-							chip.eチャンネル番号 = (Ech定義)((chip.nGuitarBassUpper4Bit) | nランダムレーン候補[CDTXMania.Random.Next(6), (int)chip.eRGBビットパターン]);
-							continue;
-
-						case Eランダムモード.HYPERRANDOM:	// レーンの本数も変わる
-							nRGBレーンビットパターン = chip.eRGBビットパターン;
-							// n新RGBレーンビットパターン = (int)Eレーンビットパターン.OPEN;	// この値は結局未使用なので削除
-							bOpenChip = ((part == E楽器パート.GUITAR) && this.bチップがある.OpenGuitar) || ((part == E楽器パート.BASS) && this.bチップがある.OpenBass);	// #23546 2010.10.28 yyagi fixed (bチップがある.Bass→bチップがある.OpenBass)
-							if (
-								(nRGBレーンビットパターン != Eレーンビットパターン.xxB) &&
-								(nRGBレーンビットパターン != Eレーンビットパターン.xGx) &&
-								(nRGBレーンビットパターン != Eレーンビットパターン.Rxx))		// xxB, xGx, Rxx レーン1本相当
-							{
-							}
-							else
-							{
-								n新RGBレーンビットパターン = (Eレーンビットパターン)CDTXMania.Random.Next(6) + 1;		// レーン1本相当なら、レーン1本か2本(1～6)に変化して終了
-								bAdjustRandomLane = false;
-							}
-							break;
-
-						default:
-							continue;	// goto Label_02C4;
-					}
-					if (bAdjustRandomLane)
-					{
-						switch (nRGBレーンビットパターン)
-						{
-							case Eレーンビットパターン.xGB:	// xGB	レーン2本相当
-							case Eレーンビットパターン.RxB:	// RxB
-							case Eレーンビットパターン.RGx:	// RGx
-								n新RGBレーンビットパターン = bOpenChip ? (Eレーンビットパターン)(CDTXMania.Random.Next(8)) : (Eレーンビットパターン)(CDTXMania.Random.Next(7) + 1);	// OPENあり譜面ならOPENを含むランダム, OPENなし譜面ならOPENを含まないランダム
-								break;
-
-							default:
-								if (nRGBレーンビットパターン == Eレーンビットパターン.RGB)	// RGB レーン3本相当
-								{
-									if (bOpenChip)	// OPENあり譜面の場合
-									{
-										int n乱数パーセント = CDTXMania.Random.Next(100);
-										if (n乱数パーセント < 30)
-										{
-											n新RGBレーンビットパターン = Eレーンビットパターン.OPEN;
-										}
-										else if (n乱数パーセント < 60)
-										{
-											n新RGBレーンビットパターン = Eレーンビットパターン.RGB;
-										}
-										else if (n乱数パーセント < 85)
-										{
-											switch (CDTXMania.Random.Next(3))
-											{
-												case 0:
-													n新RGBレーンビットパターン = Eレーンビットパターン.xGB;
-													break;
-
-												case 1:
-													n新RGBレーンビットパターン = Eレーンビットパターン.RxB;
-													break;
-											}
-											n新RGBレーンビットパターン = Eレーンビットパターン.RGx;
-										}
-										else	// OPENでない場合
-										{
-											switch (CDTXMania.Random.Next(3))
-											{
-												case 0:
-													n新RGBレーンビットパターン = Eレーンビットパターン.xxB;
-													break;
-
-												case 1:
-													n新RGBレーンビットパターン = Eレーンビットパターン.xGx;
-													break;
-											}
-											n新RGBレーンビットパターン = Eレーンビットパターン.Rxx;
-										}
-									}
-									else	// OPENなし譜面の場合
-									{
-										int n乱数パーセント = CDTXMania.Random.Next(100);
-										if (n乱数パーセント < 60)
-										{
-											n新RGBレーンビットパターン = Eレーンビットパターン.RGB;
-										}
-										else if (n乱数パーセント < 85)
-										{
-											switch (CDTXMania.Random.Next(3))
-											{
-												case 0:
-													n新RGBレーンビットパターン = Eレーンビットパターン.xGB;
-													break;
-
-												case 1:
-													n新RGBレーンビットパターン = Eレーンビットパターン.RxB;
-													break;
-											}
-											n新RGBレーンビットパターン = Eレーンビットパターン.RGx;
-										}
-										else
-										{
-											switch (CDTXMania.Random.Next(3))
-											{
-												case 0:
-													n新RGBレーンビットパターン = Eレーンビットパターン.xxB;
-													break;
-
-												case 1:
-													n新RGBレーンビットパターン = Eレーンビットパターン.xGx;
-													break;
-											}
-											n新RGBレーンビットパターン = Eレーンビットパターン.Rxx;
-										}
-									}
-								}
-								break;
-						}
-					}
-					chip.eチャンネル番号 = (Ech定義)((nランダム化前BassFlag) | (int)n新RGBレーンビットパターン);
+					
+					chip.RandomizeRGB(eRandom, seed, bOpenChip);
+					// #23546 2010.10.28 yyagi fixed (bチップがある.Bass→bチップがある.OpenBass)
 					//				Label_02C4:
 					//					GOTO_END++;		// goto用のダミーコード
 				}
@@ -989,7 +742,7 @@ namespace DTXMania
 		#region [ チップの再生と停止 ]
 		public void tチップの再生(CChip rChip, long n再生開始システム時刻ms, int nLane)
 		{
-			this.tチップの再生(rChip, n再生開始システム時刻ms, nLane, CDTXMania.ConfigIni.n自動再生音量, false, false);
+			this.tチップの再生(rChip, n再生開始システム時刻ms, nLane, CDTXMania.app.ConfigIni.n自動再生音量, false, false);
 		}
 		public void tチップの再生(CChip rChip, long n再生開始システム時刻ms, int nLane, int nVol)
 		{
@@ -1021,13 +774,13 @@ namespace DTXMania
 					{
 						if (bBad)
 						{
-							sound.db周波数倍率 = ((float)(100 + (((CDTXMania.Random.Next(3) + 1) * 7) * (1 - (CDTXMania.Random.Next(2) * 2))))) / 100f;
+							sound.db周波数倍率 = ((float)(100 + (((CDTXMania.app.Random.Next(3) + 1) * 7) * (1 - (CDTXMania.app.Random.Next(2) * 2))))) / 100f;
 						}
 						else
 						{
 							sound.db周波数倍率 = 1.0;
 						}
-						sound.db再生速度 = ((double)CDTXMania.ConfigIni.n演奏速度) / 20.0;
+						sound.db再生速度 = ((double)CDTXMania.app.ConfigIni.n演奏速度) / 20.0;
 						// 再生速度によって、WASAPI/ASIOで使う使用mixerが決まるため、付随情報の設定(音量/PAN)は、再生速度の設定後に行う
 						sound.n音量 = (int)(((double)(nVol * wc.n音量)) / 100.0);
 						sound.n位置 = wc.n位置;
@@ -1041,21 +794,9 @@ namespace DTXMania
 		public void t各自動再生音チップの再生時刻を変更する(int nBGMAdjustの増減値)
 		{
 			this.nBGMAdjust += nBGMAdjustの増減値;
-			for (int i = 0; i < this.listChip.Count; i++)
+			foreach (CChip chip in listChip)
 			{
-				Ech定義 nChannelNumber = this.listChip[i].eチャンネル番号;
-				if (((
-						(nChannelNumber == Ech定義.BGM) ||
-						((Ech定義.SE01 <= nChannelNumber) && (nChannelNumber <= Ech定義.SE09))
-					  ) ||
-						((Ech定義.SE10 <= nChannelNumber) && (nChannelNumber <= Ech定義.SE19))
-					) ||
-					(((Ech定義.SE20 <= nChannelNumber) && (nChannelNumber <= Ech定義.SE29)) ||
-					((Ech定義.SE30 <= nChannelNumber) && (nChannelNumber <= Ech定義.SE32)))
-				  )
-				{
-					this.listChip[i].n発声時刻ms += nBGMAdjustの増減値;
-				}
+				chip.AddPlayPositionMsForSE(nBGMAdjustの増減値);
 			}
 			foreach (CWAV cwav in this.listWAV.Values)
 			{
@@ -1122,7 +863,7 @@ namespace DTXMania
 		/// </summary>
 		public void PlanToAddMixerChannel()
 		{
-			if (CDTXMania.Sound管理.GetCurrentSoundDeviceType() == "DirectSound")	// DShowでの再生の場合はミキシング負荷が高くないため、
+			if (CDTXMania.app.Sound管理.GetCurrentSoundDeviceType() == "DirectSound")	// DShowでの再生の場合はミキシング負荷が高くないため、
 			{																		// チップのライフタイム管理を行わない
 				return;
 			}
@@ -1160,10 +901,10 @@ namespace DTXMania
 					//{
 					//    if ( listWAV.ContainsKey( pChip.n整数値・内部番号 ) )
 					//    {
-					//        CDTX.CWAV wc = CDTXMania.DTX.listWAV[ pChip.n整数値・内部番号 ];
+					//        CDTX.CWAV wc = CDTXMania.app.DTX.listWAV[ pChip.n整数値・内部番号 ];
 					//        if ( wc.rSound[ 0 ] != null )
 					//        {
-					//            CDTXMania.Sound管理.AddMixer( wc.rSound[ 0 ] );	// BGMは多重再生しない仕様としているので、1個目だけミキサーに登録すればよい
+					//            CDTXMania.app.Sound管理.AddMixer( wc.rSound[ 0 ] );	// BGMは多重再生しない仕様としているので、1個目だけミキサーに登録すればよい
 					//        }
 					//    }
 					//}
@@ -1175,15 +916,7 @@ namespace DTXMania
 					t発声時刻msと発声位置を取得する(pChip.n発声時刻ms - n発音前余裕ms, out nAddMixer時刻ms, out nAddMixer位置);
 					//Debug.WriteLine( "nAddMixer時刻ms=" + nAddMixer時刻ms + ",nAddMixer位置=" + nAddMixer位置 );
 
-					CChip c_AddMixer = new CChip()
-					{
-						eチャンネル番号 = Ech定義.MixerAdd,
-						n整数値 = pChip.n整数値,
-						n整数値_内部番号 = pChip.n整数値_内部番号,
-						n発声時刻ms = nAddMixer時刻ms,
-						n発声位置 = nAddMixer位置,
-						b演奏終了後も再生が続くチップである = false
-					};
+					CChip c_AddMixer = new CChip(nAddMixer位置, pChip.n整数値, pChip.n整数値_内部番号, Ech定義.MixerAdd, nAddMixer時刻ms, false);
 					listAddMixerChannel.Add(c_AddMixer);
 					//Debug.WriteLine("listAddMixerChannel:" );
 					//DebugOut_CChipList( listAddMixerChannel );
@@ -1193,8 +926,8 @@ namespace DTXMania
 					int fullduration = 0;
 					if (listWAV.ContainsKey(pChip.n整数値_内部番号))
 					{
-						CDTX.CWAV wc = CDTXMania.DTX.listWAV[pChip.n整数値_内部番号];
-						double _db再生速度 = (CDTXMania.DTXVmode.Enabled) ? this.dbDTXVPlaySpeed : this.db再生速度;
+						CDTX.CWAV wc = CDTXMania.app.DTX.listWAV[pChip.n整数値_内部番号];
+						double _db再生速度 = (CDTXMania.app.DTXVmode.Enabled) ? this.dbDTXVPlaySpeed : this.db再生速度;
 						fullduration = (wc.rSound[0] == null) ? 0 : (int)(wc.rSound[0].n総演奏時間ms / _db再生速度);	// #23664 durationに再生速度が加味されておらず、低速再生でBGMが途切れる問題を修正 (発声時刻msは、DTX読み込み時に再生速度加味済)
 					}
 					//Debug.WriteLine("fullduration=" + fullduration );
@@ -1238,7 +971,7 @@ namespace DTXMania
 					if (n新RemoveMixer時刻ms < pChip.n発声時刻ms + duration)	// 曲の最後でサウンドが切れるような場合は
 					{
 						CChip c_AddMixer_noremove = c_AddMixer;
-						c_AddMixer_noremove.b演奏終了後も再生が続くチップである = true;
+						c_AddMixer_noremove.SetSoundAfterPlayEnd(true);
 						listAddMixerChannel[listAddMixerChannel.Count - 1] = c_AddMixer_noremove;
 						//continue;												// 発声位置の計算ができないので、Mixer削除をあきらめる・・・のではなく
 						// #32248 2013.10.15 yyagi 演奏終了後も再生を続けるチップであるというフラグをpChip内に立てる
@@ -1281,14 +1014,7 @@ namespace DTXMania
 							//DebugOut_CChipList( listRemoveMixerChannel );
 							//listRemoveTiming.RemoveAt( index );
 						}
-						CChip c = new CChip()											// mixer削除時刻を更新(遅延)する
-						{
-							eチャンネル番号 = Ech定義.MixerRemove,
-							n整数値 = listRemoveTiming[index].n整数値,
-							n整数値_内部番号 = listRemoveTiming[index].n整数値_内部番号,
-							n発声時刻ms = n新RemoveMixer時刻ms,
-							n発声位置 = n新RemoveMixer位置
-						};
+						CChip c = new CChip(n新RemoveMixer位置,listRemoveTiming[index].n整数値, listRemoveTiming[index].n整数値_内部番号, Ech定義.MixerRemove,n新RemoveMixer時刻ms,false);// mixer削除時刻を更新(遅延)する
 						listRemoveTiming[index] = c;
 						//listRemoveTiming[ index ].n発声時刻ms = n新RemoveMixer時刻ms;	// mixer削除時刻を更新(遅延)する
 						//listRemoveTiming[ index ].n発声位置 = n新RemoveMixer位置;
@@ -1297,14 +1023,7 @@ namespace DTXMania
 					}
 					else																// 過去に同じチップを発音していないor
 					{																	// 発音していたが既にmixer削除確定していたなら
-						CChip c = new CChip()											// 新しくmixer削除候補として追加する
-						{
-							eチャンネル番号 = Ech定義.MixerRemove,
-							n整数値 = pChip.n整数値,
-							n整数値_内部番号 = pChip.n整数値_内部番号,
-							n発声時刻ms = n新RemoveMixer時刻ms,
-							n発声位置 = n新RemoveMixer位置
-						};
+						CChip c = new CChip(n新RemoveMixer位置,pChip.n整数値,pChip.n整数値_内部番号,Ech定義.MixerRemove,n新RemoveMixer時刻ms,false);// 新しくmixer削除候補として追加する
 						//Debug.WriteLine( "Add new chip to listRemoveMixerTiming: " );
 						//Debug.WriteLine( "ch=" + c.nチャンネル番号.ToString( "x2" ) + ", nWAV番号=" + c.n整数値 + ", time=" + c.n発声時刻ms + ", lasttime=" + listChip[ listChip.Count - 1 ].n発声時刻ms );
 						listRemoveTiming.Add(c);
@@ -1398,26 +1117,9 @@ namespace DTXMania
 		/// </summary>
 		public void SwapGuitarBassInfos()						// #24063 2011.1.24 yyagi ギターとベースの譜面情報入替
 		{
-			for (int i = this.listChip.Count - 1; i >= 0; i--)
+			foreach(CChip chip in listChip)
 			{
-				if (listChip[i].e楽器パート == E楽器パート.BASS)
-				{
-					listChip[i].e楽器パート = E楽器パート.GUITAR;
-					listChip[i].eチャンネル番号 -= (0xA0 - 0x20);
-				}
-				else if (listChip[i].e楽器パート == E楽器パート.GUITAR)
-				{
-					listChip[i].e楽器パート = E楽器パート.BASS;
-					listChip[i].eチャンネル番号 += (0xA0 - 0x20);
-				}
-				else if (listChip[i].eチャンネル番号 == Ech定義.Guitar_Wailing)		// #25215 2011.5.21 yyagi wailingはE楽器パート.UNKNOWNが割り当てられているので個別に対応
-				{
-					listChip[i].eチャンネル番号 += (0xA0 - 0x20);
-				}
-				else if (listChip[i].eチャンネル番号 == Ech定義.Bass_Wailing)		// #25215 2011.5.21 yyagi wailingはE楽器パート.UNKNOWNが割り当てられているので個別に対応
-				{
-					listChip[i].eチャンネル番号 -= (0xA0 - 0x20);
-				}
+				chip.SwapGB();
 			}
 			int t = this.LEVEL.Bass;
 			this.LEVEL.Bass = this.LEVEL.Guitar;

@@ -11,18 +11,17 @@ namespace DTXMania
 	internal class CActSelectArtistComment : CActivity
 	{
 		// メソッド
-
 		public CActSelectArtistComment()
 		{
 			base.b活性化してない = true;
 		}
 		public void t選択曲が変更された()
 		{
-			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
+			Cスコア cスコア = CDTXMania.app.stage選曲.r現在選択中のスコア;
 			if( cスコア != null )
 			{
 				Bitmap image = new Bitmap( 1, 1 );
-				CDTXMania.tテクスチャの解放( ref this.txArtist );
+				TextureFactory.tテクスチャの解放( ref this.txArtist );
 				this.strArtist = cスコア.譜面情報.アーティスト名;
 				if( ( this.strArtist != null ) && ( this.strArtist.Length > 0 ) )
 				{
@@ -41,7 +40,7 @@ namespace DTXMania
 						graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 						graphics.DrawString( this.strArtist, this.ft描画用フォント, Brushes.White, ( float ) 0f, ( float ) 0f );
 						graphics.Dispose();
-						this.txArtist = new CTexture( CDTXMania.app.Device, bitmap2, CDTXMania.TextureFormat );
+						this.txArtist = new CTexture( CDTXMania.app.Device, bitmap2, CDTXMania.app.TextureFormat );
 						this.txArtist.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 						bitmap2.Dispose();
 					}
@@ -51,7 +50,7 @@ namespace DTXMania
 						this.txArtist = null;
 					}
 				}
-				CDTXMania.tテクスチャの解放( ref this.txComment );
+				TextureFactory.tテクスチャの解放( ref this.txComment );
 				this.strComment = cスコア.譜面情報.コメント;
 				if( ( this.strComment != null ) && ( this.strComment.Length > 0 ) )
 				{
@@ -98,7 +97,7 @@ namespace DTXMania
 					graphics2.Dispose();
 					try
 					{
-						this.txComment = new CTexture( CDTXMania.app.Device, bitmap4, CDTXMania.TextureFormat );
+						this.txComment = new CTexture( CDTXMania.app.Device, bitmap4, CDTXMania.app.TextureFormat );
 						this.txComment.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 					}
 					catch( CTextureCreateFailedException )
@@ -116,7 +115,7 @@ namespace DTXMania
 						-nComment表示幅,
 						(int) ( ( ( ( this.nComment行数 - 1 ) * this.nテクスチャの最大幅 ) + this.nComment最終行の幅 ) * this.txComment.vc拡大縮小倍率.X ),
 						unchecked((int)(10 * 2 / Scale.X)),
-						CDTXMania.Timer
+						CDTXMania.app.Timer
 					);
 				}
 			}
@@ -140,8 +139,8 @@ namespace DTXMania
 		}
 		public override void On非活性化()
 		{
-			CDTXMania.tテクスチャの解放( ref this.txArtist );
-			CDTXMania.tテクスチャの解放( ref this.txComment );
+			TextureFactory.tテクスチャの解放( ref this.txArtist );
+			TextureFactory.tテクスチャの解放( ref this.txComment );
 			if( this.ft描画用フォント != null )
 			{
 				this.ft描画用フォント.Dispose();
@@ -162,8 +161,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txArtist );
-				CDTXMania.tテクスチャの解放( ref this.txComment );
+				TextureFactory.tテクスチャの解放( ref this.txArtist );
+				TextureFactory.tテクスチャの解放( ref this.txComment );
 				base.OnManagedリソースの解放();
 			}
 		}

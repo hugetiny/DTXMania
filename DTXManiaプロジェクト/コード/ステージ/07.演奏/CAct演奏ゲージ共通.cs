@@ -172,7 +172,7 @@ namespace DTXMania
 					}
 					if ( e今回の判定 == E判定.Miss && !bRisky )
 					{
-						fDamage *= fDamageLevelFactor[ (int) CDTXMania.ConfigIni.eダメージレベル ];
+						fDamage *= fDamageLevelFactor[ (int) CDTXMania.app.ConfigIni.eダメージレベル ];
 					}
 					break;
 
@@ -201,7 +201,7 @@ namespace DTXMania
 
 				case E判定.Miss:
 					fDamage = ( part == E楽器パート.DRUMS ) ? -0.035 : -0.035;
-					switch( CDTXMania.ConfigIni.eダメージレベル )
+					switch( CDTXMania.app.ConfigIni.eダメージレベル )
 					{
 						case Eダメージレベル.少ない:
 							fDamage *= 0.6;

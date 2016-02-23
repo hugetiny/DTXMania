@@ -21,7 +21,7 @@ namespace DTXMania
 
 		public void Start()
 		{
-			this.ct進行 = new CCounter( 0, 0x3e8, 2, CDTXMania.Timer );
+			this.ct進行 = new CCounter( 0, 0x3e8, 2, CDTXMania.app.Timer );
 		}
 
 
@@ -39,7 +39,7 @@ namespace DTXMania
 			this.ct進行 = null;
 			if( this.sd効果音 != null )
 			{
-				CDTXMania.Sound管理.tサウンドを破棄する( this.sd効果音 );
+				CDTXMania.app.Sound管理.tサウンドを破棄する( this.sd効果音 );
 				this.sd効果音 = null;
 			}
 			base.On非活性化();
@@ -48,7 +48,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txStageFailed = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay stage failed.jpg" ) );
+				this.txStageFailed = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay stage failed.jpg" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -56,7 +56,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txStageFailed );
+				TextureFactory.tテクスチャの解放( ref this.txStageFailed );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -92,8 +92,8 @@ namespace DTXMania
 				}
 				if( this.ct進行.n現在の値 <= 250 )
 				{
-					int num2 = CDTXMania.Random.Next( 5 ) - 2;
-					int y = CDTXMania.Random.Next( 5 ) - 2;
+					int num2 = CDTXMania.app.Random.Next( 5 ) - 2;
+					int y = CDTXMania.app.Random.Next( 5 ) - 2;
 					if( this.txStageFailed != null )
 					{
 						this.txStageFailed.t2D描画( CDTXMania.app.Device, num2 * Scale.X, y * Scale.Y );
@@ -101,16 +101,16 @@ namespace DTXMania
 				}
 				if( !this.b効果音再生済み )
 				{
-					if( ( ( CDTXMania.DTX.SOUND_STAGEFAILED != null ) && ( CDTXMania.DTX.SOUND_STAGEFAILED.Length > 0 ) ) && File.Exists( CDTXMania.DTX.strフォルダ名 + CDTXMania.DTX.SOUND_STAGEFAILED ) )
+					if( ( ( CDTXMania.app.DTX.SOUND_STAGEFAILED != null ) && ( CDTXMania.app.DTX.SOUND_STAGEFAILED.Length > 0 ) ) && File.Exists( CDTXMania.app.DTX.strフォルダ名 + CDTXMania.app.DTX.SOUND_STAGEFAILED ) )
 					{
 						try
 						{
 							if( this.sd効果音 != null )
 							{
-								CDTXMania.Sound管理.tサウンドを破棄する( this.sd効果音 );
+								CDTXMania.app.Sound管理.tサウンドを破棄する( this.sd効果音 );
 								this.sd効果音 = null;
 							}
-							this.sd効果音 = CDTXMania.Sound管理.tサウンドを生成する( CDTXMania.DTX.strフォルダ名 + CDTXMania.DTX.SOUND_STAGEFAILED );
+							this.sd効果音 = CDTXMania.app.Sound管理.tサウンドを生成する( CDTXMania.app.DTX.strフォルダ名 + CDTXMania.app.DTX.SOUND_STAGEFAILED );
 							this.sd効果音.t再生を開始する();
 						}
 						catch
@@ -119,7 +119,7 @@ namespace DTXMania
 					}
 					else
 					{
-						CDTXMania.Skin.soundSTAGEFAILED音.t再生する();
+						CDTXMania.app.Skin.soundSTAGEFAILED音.t再生する();
 					}
 					this.b効果音再生済み = true;
 				}

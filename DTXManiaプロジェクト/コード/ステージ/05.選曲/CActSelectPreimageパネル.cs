@@ -13,14 +13,13 @@ namespace DTXMania
 	internal class CActSelectPreimageパネル : CActivity
 	{
 		// メソッド
-
 		public CActSelectPreimageパネル()
 		{
 			base.b活性化してない = true;
 		}
 		public void t選択曲が変更された()
 		{
-			this.ct遅延表示 = new CCounter( -CDTXMania.ConfigIni.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms, 100, 1, CDTXMania.Timer );
+			this.ct遅延表示 = new CCounter( -CDTXMania.app.ConfigIni.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms, 100, 1, CDTXMania.app.Timer );
 			this.b新しいプレビューファイルを読み込んだ = false;
 		}
 
@@ -67,11 +66,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txパネル本体 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect preimage panel.png" ), false );
-				this.txセンサ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sensor.png" ), false );
-				this.txセンサ光 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sensor light.png" ), false );
+				this.txパネル本体 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect preimage panel.png" ), false );
+				this.txセンサ = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sensor.png" ), false );
+				this.txセンサ光 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect sensor light.png" ), false );
 				this.txプレビュー画像 = null;
-				this.txプレビュー画像がないときの画像 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect preimage default.png" ), false );
+				this.txプレビュー画像がないときの画像 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect preimage default.png" ), false );
 				//this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 0xcc, 0x10d, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.SystemMemory );
 				//this.sfAVI画像 = Surface.CreateOffscreenPlain( CDTXMania.app.Device, 192, 269, CDTXMania.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default );
 				//this.nAVI再生開始時刻 = -1;
@@ -88,11 +87,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
-				CDTXMania.tテクスチャの解放( ref this.txセンサ );
-				CDTXMania.tテクスチャの解放( ref this.txセンサ光 );
-				CDTXMania.tテクスチャの解放( ref this.txプレビュー画像 );
-				CDTXMania.tテクスチャの解放( ref this.txプレビュー画像がないときの画像 );
+				TextureFactory.tテクスチャの解放( ref this.txパネル本体 );
+				TextureFactory.tテクスチャの解放( ref this.txセンサ );
+				TextureFactory.tテクスチャの解放( ref this.txセンサ光 );
+				TextureFactory.tテクスチャの解放( ref this.txプレビュー画像 );
+				TextureFactory.tテクスチャの解放( ref this.txプレビュー画像がないときの画像 );
 				//if( this.sfAVI画像 != null )
 				//{
 				//    this.sfAVI画像.Dispose();
@@ -108,21 +107,21 @@ namespace DTXMania
 			{
 				if( base.b初めての進行描画 )
 				{
-					this.ct登場アニメ用 = new CCounter( 0, 100, 5, CDTXMania.Timer );
-					this.ctセンサ光 = new CCounter( 0, 100, 30, CDTXMania.Timer );
+					this.ct登場アニメ用 = new CCounter( 0, 100, 5, CDTXMania.app.Timer );
+					this.ctセンサ光 = new CCounter( 0, 100, 30, CDTXMania.app.Timer );
 					this.ctセンサ光.n現在の値 = 70;
 					base.b初めての進行描画 = false;
 				}
 				this.ct登場アニメ用.t進行();
 				this.ctセンサ光.t進行Loop();
-				if( ( !CDTXMania.stage選曲.bスクロール中 && ( this.ct遅延表示 != null ) ) && this.ct遅延表示.b進行中 )
+				if( ( !CDTXMania.app.stage選曲.bスクロール中 && ( this.ct遅延表示 != null ) ) && this.ct遅延表示.b進行中 )
 				{
 					this.ct遅延表示.t進行();
 					if ( ( this.ct遅延表示.n現在の値 >= 0 ) && this.b新しいプレビューファイルをまだ読み込んでいない )
 					{
 						this.tプレビュー画像_動画の変更();
-						CDTXMania.Timer.t更新();
-						this.ct遅延表示.n現在の経過時間ms = CDTXMania.Timer.n現在時刻;
+						CDTXMania.app.Timer.t更新();
+						this.ct遅延表示.n現在の経過時間ms = CDTXMania.app.Timer.n現在時刻;
 						this.b新しいプレビューファイルを読み込んだ = true;
 					}
 					else if ( this.ct遅延表示.b終了値に達した && this.ct遅延表示.b進行中 )
@@ -132,11 +131,11 @@ namespace DTXMania
 				}
 				//else if( ( ( this.avi != null ) && ( this.sfAVI画像 != null ) ) && ( this.nAVI再生開始時刻 != -1 ) )
 				//{
-				//    int time = (int) ( ( CDTXMania.Timer.n現在時刻 - this.nAVI再生開始時刻 ) * ( ( (double) CDTXMania.ConfigIni.n演奏速度 ) / 20.0 ) );
+				//    int time = (int) ( ( CDTXMania.app.Timer.n現在時刻 - this.nAVI再生開始時刻 ) * ( ( (double) CDTXMania.app.ConfigIni.n演奏速度 ) / 20.0 ) );
 				//    int frameNoFromTime = this.avi.GetFrameNoFromTime( time );
 				//    if( frameNoFromTime >= this.avi.GetMaxFrameCount() )
 				//    {
-				//        this.nAVI再生開始時刻 = CDTXMania.Timer.n現在時刻;
+				//        this.nAVI再生開始時刻 = CDTXMania.app.Timer.n現在時刻;
 				//    }
 				//    else if( ( this.n前回描画したフレーム番号 != frameNoFromTime ) && !this.b動画フレームを作成した )
 				//    {
@@ -239,7 +238,7 @@ namespace DTXMania
 			}
 			//this.pAVIBmp = IntPtr.Zero;
 			//this.nAVI再生開始時刻 = -1;
-			if( !CDTXMania.ConfigIni.bストイックモード )
+			if( !CDTXMania.app.ConfigIni.bストイックモード )
 			{
 				if( this.tプレビュー動画の指定があれば構築する() )
 				{
@@ -259,7 +258,7 @@ namespace DTXMania
 		}
 		private bool tプレビュー画像の指定があれば構築する()
 		{
-			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
+			Cスコア cスコア = CDTXMania.app.stage選曲.r現在選択中のスコア;
 			if( ( cスコア == null ) || string.IsNullOrEmpty( cスコア.譜面情報.Preimage ) )
 			{
 				return false;
@@ -267,14 +266,14 @@ namespace DTXMania
 			string str = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.Preimage;
 			if( !str.Equals( this.str現在のファイル名 ) )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txプレビュー画像 );
+				TextureFactory.tテクスチャの解放( ref this.txプレビュー画像 );
 				this.str現在のファイル名 = str;
 				if( !File.Exists( this.str現在のファイル名 ) )
 				{
 					Trace.TraceWarning( "ファイルが存在しません。({0})", new object[] { this.str現在のファイル名 } );
 					return false;
 				}
-				this.txプレビュー画像 = CDTXMania.tテクスチャの生成( this.str現在のファイル名, false );
+				this.txプレビュー画像 = TextureFactory.tテクスチャの生成( this.str現在のファイル名, false );
 				if( this.txプレビュー画像 != null )
 				{
 					this.r表示するプレビュー画像 = this.txプレビュー画像;
@@ -288,8 +287,8 @@ namespace DTXMania
 		}
 		private bool tプレビュー動画の指定があれば構築する()
 		{
-			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
-			if( ( CDTXMania.ConfigIni.bAVI有効 && ( cスコア != null ) ) && !string.IsNullOrEmpty( cスコア.譜面情報.Premovie ) )
+			Cスコア cスコア = CDTXMania.app.stage選曲.r現在選択中のスコア;
+			if( ( CDTXMania.app.ConfigIni.bAVI有効 && ( cスコア != null ) ) && !string.IsNullOrEmpty( cスコア.譜面情報.Premovie ) )
 			{
 			    string filename = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.Premovie;
 			    if( filename.Equals( this.str現在のファイル名 ) )
@@ -309,7 +308,7 @@ namespace DTXMania
 			    }
 			    try
 			    {
-					this.rAVI = new CDTX.CAVI(00, this.str現在のファイル名, "", CDTXMania.ConfigIni.n演奏速度);
+					this.rAVI = new CDTX.CAVI(00, this.str現在のファイル名, "", CDTXMania.app.ConfigIni.n演奏速度);
 					this.rAVI.OnDeviceCreated();
 					this.actAVI.Start( Ech定義.Movie, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
 				}
@@ -325,7 +324,7 @@ namespace DTXMania
 		}
 		private bool t背景画像があればその一部からプレビュー画像を構築する()
 		{
-			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
+			Cスコア cスコア = CDTXMania.app.stage選曲.r現在選択中のスコア;
 			if( ( cスコア == null ) || string.IsNullOrEmpty( cスコア.譜面情報.Backgound ) )
 			{
 				return false;
@@ -338,7 +337,7 @@ namespace DTXMania
 					Trace.TraceWarning( "ファイルが存在しません。({0})", new object[] { path } );
 					return false;
 				}
-				CDTXMania.tテクスチャの解放( ref this.txプレビュー画像 );
+				TextureFactory.tテクスチャの解放( ref this.txプレビュー画像 );
 				this.str現在のファイル名 = path;
 				Bitmap image = null;
 				Bitmap bitmap2 = null;
@@ -361,7 +360,7 @@ namespace DTXMania
 					graphics = Graphics.FromImage( bitmap3 );
 					graphics.DrawImage( bitmap2, 5, 5, new Rectangle( 0x157, 0x6d, 0xcc, 0x10d ), GraphicsUnit.Pixel );
 					graphics.Dispose();
-					this.txプレビュー画像 = new CTexture( CDTXMania.app.Device, bitmap3, CDTXMania.TextureFormat );
+					this.txプレビュー画像 = new CTexture( CDTXMania.app.Device, bitmap3, CDTXMania.app.TextureFormat );
 					this.r表示するプレビュー画像 = this.txプレビュー画像;
 				}
 				catch
@@ -390,8 +389,8 @@ namespace DTXMania
 		}
 		private void t描画処理_ジャンル文字列()
 		{
-			C曲リストノード c曲リストノード = CDTXMania.stage選曲.r現在選択中の曲;
-			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
+			C曲リストノード c曲リストノード = CDTXMania.app.stage選曲.r現在選択中の曲;
+			Cスコア cスコア = CDTXMania.app.stage選曲.r現在選択中のスコア;
 			if( ( c曲リストノード != null ) && ( cスコア != null ) )
 			{
 				string str = "";
@@ -457,7 +456,7 @@ namespace DTXMania
 						str = "Unknown";
 						break;
 				}
-				CDTXMania.act文字コンソール.tPrint(
+				CDTXMania.app.act文字コンソール.tPrint(
 					this.n本体X + (int)(0x12 * Scale.X),
 					this.n本体Y - (int)(1 * Scale.Y),
 					C文字コンソール.Eフォント種別.赤細,
@@ -543,7 +542,7 @@ namespace DTXMania
 		}
 		private unsafe void t描画処理_プレビュー画像()
 		{
-			if( !CDTXMania.stage選曲.bスクロール中 && ( ( ( this.ct遅延表示 != null ) && ( this.ct遅延表示.n現在の値 > 0 ) ) && !this.b新しいプレビューファイルをまだ読み込んでいない ) )
+			if (!CDTXMania.app.stage選曲.bスクロール中 && (((this.ct遅延表示 != null) && (this.ct遅延表示.n現在の値 > 0)) && !this.b新しいプレビューファイルをまだ読み込んでいない))
 			{
 				int x = this.n本体X + (int)(0x12 * Scale.X);
 				int y = this.n本体Y + (int)(0x10 * Scale.Y);

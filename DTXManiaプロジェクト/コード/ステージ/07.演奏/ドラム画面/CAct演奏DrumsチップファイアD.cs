@@ -48,7 +48,7 @@ namespace DTXMania
 						this.st火花[ j ].b使用中 = false;
 					}
 				}
-				float n回転初期値 = CDTXMania.Random.Next( 360 );
+				float n回転初期値 = CDTXMania.app.Random.Next( 360 );
 				for ( int i = 0; i < 8; i++ )
 				{
 					for( int j = 0; j < FIRE_MAX; j++ )
@@ -57,8 +57,8 @@ namespace DTXMania
 						{
 							this.st火花[ j ].b使用中 = true;
 							this.st火花[ j ].nLane = (int) lane;
-//							this.st火花[ j ].ct進行 = new CCounter( 0, 35, 6, CDTXMania.Timer );
-							this.st火花[ j ].ct進行 = new CCounter( 0, 70, 3, CDTXMania.Timer );
+//							this.st火花[ j ].ct進行 = new CCounter( 0, 35, 6, CDTXMania.app.Timer );
+							this.st火花[ j ].ct進行 = new CCounter( 0, 70, 3, CDTXMania.app.Timer );
 							this.st火花[ j ].f回転単位 = C変換.DegreeToRadian( (float) ( n回転初期値 + ( i * 90f ) ) );
 							this.st火花[ j ].f回転方向 = ( i < 4 ) ? 1f : -2f;
 							this.st火花[ j ].fサイズ = ( i < 4 ) ? 1f : 0.5f;
@@ -76,21 +76,21 @@ namespace DTXMania
 						if ( !this.st青い星[ j ].b使用中 )
 						{
 							this.st青い星[ j ].b使用中 = true;
-							int n回転初期値 = CDTXMania.Random.Next( 360 );
-							double num7 = 0.9 + ( ( (double) CDTXMania.Random.Next( 40 ) ) / 100.0 );
+							int n回転初期値 = CDTXMania.app.Random.Next( 360 );
+							double num7 = 0.9 + ( ( (double) CDTXMania.app.Random.Next( 40 ) ) / 100.0 );
 							this.st青い星[ j ].nLane = (int) lane;
-							this.st青い星[ j ].ct進行 = new CCounter( 0, 100, 7, CDTXMania.Timer );
+							this.st青い星[ j ].ct進行 = new CCounter( 0, 100, 7, CDTXMania.app.Timer );
 							this.st青い星[ j ].fX =
-								(int) ( this.nレーンの中央X座標[ (int) lane ] * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) ) +
-											( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) );
-							this.st青い星[ j ].fY = CDTXMania.ConfigIni.bReverse.Drums ?
+								(int) ( this.nレーンの中央X座標[ (int) lane ] * ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75 ) ) +
+											( ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) );
+							this.st青い星[ j ].fY = CDTXMania.app.ConfigIni.bReverse.Drums ?
 								(float) (119 + 4) - nJudgeLinePosY_delta_Drums : (float) (942 + 14) + nJudgeLinePosY_delta_Drums;
 							this.st青い星[ j ].f加速度X = (float) ( num7 * Math.Cos( ( Math.PI * 2 * n回転初期値 ) / 360.0 ) );
 							this.st青い星[ j ].f加速度Y = (float) ( num7 * ( Math.Sin( ( Math.PI * 2 * n回転初期値 ) / 360.0 ) - 0.2 ) );
 							this.st青い星[ j ].f加速度の加速度X = 0.995f;
 							this.st青い星[ j ].f加速度の加速度Y = 0.995f;
 							this.st青い星[ j ].f重力加速度 = 0.00355f;
-							this.st青い星[ j ].f半径 = (float) ( 0.5 + ( ( (double) CDTXMania.Random.Next( 30 ) ) / 100.0 ) );
+							this.st青い星[ j ].f半径 = (float) ( 0.5 + ( ( (double) CDTXMania.app.Random.Next( 30 ) ) / 100.0 ) );
 							break;
 						}
 					}
@@ -106,12 +106,12 @@ namespace DTXMania
 						{
 							this.st大波[ j ].b使用中 = true;
 							this.st大波[ j ].nLane = (int) lane;
-							this.st大波[ j ].f半径 = ( (float) ( ( 20 - CDTXMania.Random.Next( 40 ) ) + 100 ) ) / 100f;
+							this.st大波[ j ].f半径 = ( (float) ( ( 20 - CDTXMania.app.Random.Next( 40 ) ) + 100 ) ) / 100f;
 							this.st大波[ j ].n進行速度ms = 10;
-							this.st大波[ j ].ct進行 = new CCounter( 0, 100, this.st大波[ j ].n進行速度ms, CDTXMania.Timer );
+							this.st大波[ j ].ct進行 = new CCounter( 0, 100, this.st大波[ j ].n進行速度ms, CDTXMania.app.Timer );
 							this.st大波[ j ].ct進行.n現在の値 = i * 10;
-							this.st大波[ j ].f角度X = C変換.DegreeToRadian( (float) ( ( ( (double) ( CDTXMania.Random.Next( 100 ) * 50 ) ) / 100.0 ) + 30.0 ) );
-							this.st大波[ j ].f角度Y = C変換.DegreeToRadian( this.b大波Balance ? ( this.fY波の最小仰角[ (int) lane ] + CDTXMania.Random.Next( 30 ) ) : ( this.fY波の最大仰角[ (int) lane ] - CDTXMania.Random.Next( 30 ) ) );
+							this.st大波[ j ].f角度X = C変換.DegreeToRadian( (float) ( ( ( (double) ( CDTXMania.app.Random.Next( 100 ) * 50 ) ) / 100.0 ) + 30.0 ) );
+							this.st大波[ j ].f角度Y = C変換.DegreeToRadian( this.b大波Balance ? ( this.fY波の最小仰角[ (int) lane ] + CDTXMania.app.Random.Next( 30 ) ) : ( this.fY波の最大仰角[ (int) lane ] - CDTXMania.app.Random.Next( 30 ) ) );
 							this.st大波[ j ].f回転単位 = C変換.DegreeToRadian( (float) 0f );
 							this.st大波[ j ].f回転方向 = 1f;
 							this.b大波Balance = !this.b大波Balance;
@@ -130,12 +130,12 @@ namespace DTXMania
 						{
 							this.st細波[ j ].b使用中 = true;
 							this.st細波[ j ].nLane = (int) lane;
-							this.st細波[ j ].f半径 = ( (float) ( ( 20 - CDTXMania.Random.Next( 40 ) ) + 100 ) ) / 100f;
+							this.st細波[ j ].f半径 = ( (float) ( ( 20 - CDTXMania.app.Random.Next( 40 ) ) + 100 ) ) / 100f;
 							this.st細波[ j ].n進行速度ms = 8;
-							this.st細波[ j ].ct進行 = new CCounter( 0, 100, this.st細波[ j ].n進行速度ms, CDTXMania.Timer );
+							this.st細波[ j ].ct進行 = new CCounter( 0, 100, this.st細波[ j ].n進行速度ms, CDTXMania.app.Timer );
 							this.st細波[ j ].ct進行.n現在の値 = 0;
-							this.st細波[ j ].f角度X = C変換.DegreeToRadian( (float) ( ( ( (double) ( CDTXMania.Random.Next( 100 ) * 50 ) ) / 100.0 ) + 30.0 ) );
-							this.st細波[ j ].f角度Y = C変換.DegreeToRadian( this.b細波Balance ? ( this.fY波の最小仰角[ (int) lane ] + CDTXMania.Random.Next( 30 ) ) : ( this.fY波の最大仰角[ (int) lane ] - CDTXMania.Random.Next( 30 ) ) );
+							this.st細波[ j ].f角度X = C変換.DegreeToRadian( (float) ( ( ( (double) ( CDTXMania.app.Random.Next( 100 ) * 50 ) ) / 100.0 ) + 30.0 ) );
+							this.st細波[ j ].f角度Y = C変換.DegreeToRadian( this.b細波Balance ? ( this.fY波の最小仰角[ (int) lane ] + CDTXMania.app.Random.Next( 30 ) ) : ( this.fY波の最大仰角[ (int) lane ] - CDTXMania.app.Random.Next( 30 ) ) );
 							this.b細波Balance = !this.b細波Balance;
 							break;
 						}
@@ -193,22 +193,22 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx火花 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip fire.png" ) );
+				this.tx火花 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip fire.png" ) );
 				if( this.tx火花 != null )
 				{
 					this.tx火花.b加算合成 = true;
 				}
-				this.tx青い星 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip star.png" ) );
+				this.tx青い星 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip star.png" ) );
 				if( this.tx青い星 != null )
 				{
 					this.tx青い星.b加算合成 = true;
 				}
-				this.tx大波 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip wave.png" ) );
+				this.tx大波 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip wave.png" ) );
 				if( this.tx大波 != null )
 				{
 					this.tx大波.b加算合成 = true;
 				}
-				this.tx細波 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip wave2.png" ) );
+				this.tx細波 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums chip wave2.png" ) );
 				if( this.tx細波 != null )
 				{
 					this.tx細波.b加算合成 = true;
@@ -220,10 +220,10 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.tx火花 );
-				CDTXMania.tテクスチャの解放( ref this.tx青い星 );
-				CDTXMania.tテクスチャの解放( ref this.tx大波 );
-				CDTXMania.tテクスチャの解放( ref this.tx細波 );
+				TextureFactory.tテクスチャの解放( ref this.tx火花 );
+				TextureFactory.tテクスチャの解放( ref this.tx青い星 );
+				TextureFactory.tテクスチャの解放( ref this.tx大波 );
+				TextureFactory.tテクスチャの解放( ref this.tx細波 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -251,11 +251,11 @@ namespace DTXMania
 						identity *= Matrix.RotationZ( num3 + ( (float) Math.PI / 2 ) );
 						float num5 = ( (float) ( 0.8 * Math.Sin( num2 * Math.PI / 2 ) ) ) * this.st火花[ i ].fサイズ;
 						identity *= Matrix.Translation(
-							( (int)(this.nレーンの中央X座標[ this.st火花[ i ].nLane ] * ((CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 1.0 : 0.75))
+							( (int)(this.nレーンの中央X座標[ this.st火花[ i ].nLane ] * ((CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 1.0 : 0.75))
 							+
-								( (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? (float)(54 * 3) : (float)(619 + 12 + 40) ) +
+								( (CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? (float)(54 * 3) : (float)(619 + 12 + 40) ) +
 								( ( (float) Math.Cos( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Width / 2,
-							-( ( ( CDTXMania.ConfigIni.bReverse.Drums ?
+							-( ( ( CDTXMania.app.ConfigIni.bReverse.Drums ?
 								( 119 + 4 ) - nJudgeLinePosY_delta_Drums : ( 942 + 14 ) + nJudgeLinePosY_delta_Drums )
 							+ ( ( (float) Math.Sin( (double) num3 ) ) * num5 ) ) - SampleFramework.GameWindowSize.Height / 2 ),
 							0f
@@ -341,10 +341,10 @@ namespace DTXMania
 							matrix3 *= Matrix.RotationX( this.st大波[ i ].f角度X );
 							matrix3 *= Matrix.RotationY( this.st大波[ i ].f角度Y );
 							matrix3 *= Matrix.Translation(
-								(int)(this.nレーンの中央X座標[ this.st大波[ i ].nLane ] * ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75)) +
-									( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) )
+								(int)(this.nレーンの中央X座標[ this.st大波[ i ].nLane ] * ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75)) +
+									( ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) )
 									- SampleFramework.GameWindowSize.Width / 2,
-								-( ( CDTXMania.ConfigIni.bReverse.Drums ?
+								-( ( CDTXMania.app.ConfigIni.bReverse.Drums ?
 								(119 + 4) - nJudgeLinePosY_delta_Drums : (942 + 14) + nJudgeLinePosY_delta_Drums )
 								- SampleFramework.GameWindowSize.Height / 2 ),
 								0f );
@@ -380,10 +380,10 @@ namespace DTXMania
 							matrix4 *= Matrix.RotationX( this.st細波[ i ].f角度X );
 							matrix4 *= Matrix.RotationY( this.st細波[ i ].f角度Y );
 							matrix4 *= Matrix.Translation(
-								(int)( this.nレーンの中央X座標[ this.st細波[ i ].nLane ] * (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75 ) ) +
-								( ( CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) )
+								(int)( this.nレーンの中央X座標[ this.st細波[ i ].nLane ] * (CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left? 1.0 : 0.75 ) ) +
+								( ( CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? (float) ( 54 * 3 ) : (float) ( 619 + 12 + 40 ) )
 									-SampleFramework.GameWindowSize.Width / 2,
-								-( ( CDTXMania.ConfigIni.bReverse.Drums ?
+								-( ( CDTXMania.app.ConfigIni.bReverse.Drums ?
 								(119 + 4) - nJudgeLinePosY_delta_Drums : (942 + 14) + nJudgeLinePosY_delta_Drums )
 								- SampleFramework.GameWindowSize.Height / 2 ),
 								0f

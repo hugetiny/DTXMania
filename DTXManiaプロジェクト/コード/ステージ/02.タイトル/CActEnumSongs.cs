@@ -48,8 +48,8 @@ namespace DTXMania
 
 			try
 			{
-				this.ctNowEnumeratingSongs = new CCounter();	// 0, 1000, 17, CDTXMania.Timer );
-				this.ctNowEnumeratingSongs.t開始( 0, 100, 17, CDTXMania.Timer );
+				this.ctNowEnumeratingSongs = new CCounter();	// 0, 1000, 17, CDTXMania.app.Timer );
+				this.ctNowEnumeratingSongs.t開始( 0, 100, 17, CDTXMania.app.Timer );
 			}
 			finally
 			{
@@ -69,7 +69,7 @@ namespace DTXMania
 			string pathNowEnumeratingSongs = CSkin.Path( @"Graphics\ScreenTitle NowEnumeratingSongs.png" );
 			if ( File.Exists( pathNowEnumeratingSongs ) )
 			{
-				this.txNowEnumeratingSongs = CDTXMania.tテクスチャの生成( pathNowEnumeratingSongs, false );
+				this.txNowEnumeratingSongs = TextureFactory.tテクスチャの生成( pathNowEnumeratingSongs, false );
 			}
 			else
 			{
@@ -78,7 +78,7 @@ namespace DTXMania
 			string pathDialogNowEnumeratingSongs = CSkin.Path( @"Graphics\ScreenConfig NowEnumeratingSongs.png" );
 			if ( File.Exists( pathDialogNowEnumeratingSongs ) )
 			{
-				this.txDialogNowEnumeratingSongs = CDTXMania.tテクスチャの生成( pathDialogNowEnumeratingSongs, false );
+				this.txDialogNowEnumeratingSongs = TextureFactory.tテクスチャの生成( pathDialogNowEnumeratingSongs, false );
 			}
 			else
 			{
@@ -107,10 +107,10 @@ namespace DTXMania
 					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 					graphics.DrawString( strMessage[ ci ], ftMessage, Brushes.White, (float) 0f, (float) 0f );
 					graphics.Dispose();
-					this.txMessage = new CTexture( CDTXMania.app.Device, image, CDTXMania.TextureFormat );
+					this.txMessage = new CTexture( CDTXMania.app.Device, image, CDTXMania.app.TextureFormat );
 					this.txMessage.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 					image.Dispose();
-					CDTXMania.t安全にDisposeする( ref ftMessage );
+					TextureFactory.t安全にDisposeする( ref ftMessage );
 				}
 				else
 				{
@@ -130,9 +130,9 @@ namespace DTXMania
 			if ( this.b活性化してない )
 				return;
 
-			CDTXMania.t安全にDisposeする( ref this.txDialogNowEnumeratingSongs );
-			CDTXMania.t安全にDisposeする( ref this.txNowEnumeratingSongs );
-			CDTXMania.t安全にDisposeする( ref this.txMessage );
+			TextureFactory.t安全にDisposeする( ref this.txDialogNowEnumeratingSongs );
+			TextureFactory.t安全にDisposeする( ref this.txNowEnumeratingSongs );
+			TextureFactory.t安全にDisposeする( ref this.txMessage );
 			base.OnManagedリソースの解放();
 		}
 

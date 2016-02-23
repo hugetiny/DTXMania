@@ -50,8 +50,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx左パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay status panels left.png" ) );
-				this.tx右パネル = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay status panels right.png" ) );
+				this.tx左パネル = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay status panels left.png" ) );
+				this.tx右パネル = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay status panels right.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -59,8 +59,8 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.tx左パネル );
-				CDTXMania.tテクスチャの解放( ref this.tx右パネル );
+				TextureFactory.tテクスチャの解放( ref this.tx左パネル );
+				TextureFactory.tテクスチャの解放( ref this.tx右パネル );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -81,7 +81,7 @@ namespace DTXMania
 							(int) ( 0x49 * Scale.Y )
 						)
 					);
-					int guitar = CDTXMania.ConfigIni.n譜面スクロール速度.Guitar;
+					int guitar = CDTXMania.app.ConfigIni.n譜面スクロール速度.Guitar;
 					if( guitar < 0 )
 					{
 						guitar = 0;
@@ -115,7 +115,7 @@ namespace DTXMania
 							(int) ( 0x49 * Scale.Y )
 						)
 					);
-					int bass = CDTXMania.ConfigIni.n譜面スクロール速度.Bass;
+					int bass = CDTXMania.app.ConfigIni.n譜面スクロール速度.Bass;
 					if( bass < 0 )
 					{
 						bass = 0;

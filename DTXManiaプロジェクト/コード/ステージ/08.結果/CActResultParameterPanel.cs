@@ -12,7 +12,6 @@ namespace DTXMania
 	internal class CActResultParameterPanel : CActivity
 	{
 		// コンストラクタ
-
 		public CActResultParameterPanel()
 		{
 			ST文字位置[] st文字位置Array = new ST文字位置[ 11 ];
@@ -138,7 +137,7 @@ namespace DTXMania
 			}
 			if( this.sdDTXで指定されたフルコンボ音 != null )
 			{
-				CDTXMania.Sound管理.tサウンドを破棄する( this.sdDTXで指定されたフルコンボ音 );
+				CDTXMania.app.Sound管理.tサウンドを破棄する( this.sdDTXで指定されたフルコンボ音 );
 				this.sdDTXで指定されたフルコンボ音 = null;
 			}
 			base.On非活性化();
@@ -147,11 +146,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txパネル本体 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult parameter panel.png" ), true );
-				this.tx文字[ 0 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult parameter numbers.png" ) );
-				this.tx文字[ 1 ] = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult parameter numbers em.png" ) );
-				this.txFullCombo = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult fullcombo.png" ) );
-				this.txWhite = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile white 64x64.png" ) );
+				this.txパネル本体 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult parameter panel.png" ), true );
+				this.tx文字[ 0 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult parameter numbers.png" ) );
+				this.tx文字[ 1 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult parameter numbers em.png" ) );
+				this.txFullCombo = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenResult fullcombo.png" ) );
+				this.txWhite = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Tile white 64x64.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -159,11 +158,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
-				CDTXMania.tテクスチャの解放( ref this.tx文字[ 0 ] );
-				CDTXMania.tテクスチャの解放( ref this.tx文字[ 1 ] );
-				CDTXMania.tテクスチャの解放( ref this.txFullCombo );
-				CDTXMania.tテクスチャの解放( ref this.txWhite );
+				TextureFactory.tテクスチャの解放( ref this.txパネル本体 );
+				TextureFactory.tテクスチャの解放( ref this.tx文字[ 0 ] );
+				TextureFactory.tテクスチャの解放( ref this.tx文字[ 1 ] );
+				TextureFactory.tテクスチャの解放( ref this.txFullCombo );
+				TextureFactory.tテクスチャの解放( ref this.txWhite );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -175,7 +174,7 @@ namespace DTXMania
 			}
 			if( base.b初めての進行描画 )
 			{
-				this.ct表示用 = new CCounter( 0, 0x3e7, 2, CDTXMania.Timer );
+				this.ct表示用 = new CCounter( 0, 0x3e7, 2, CDTXMania.app.Timer );
 				base.b初めての進行描画 = false;
 			}
 			this.ct表示用.t進行();
@@ -195,55 +194,55 @@ namespace DTXMania
 				int y = this.n本体Y + pointArray[ i ].Y;
 				if( num >= 0 )
 				{
-					this.t大文字表示( x, y, CDTXMania.stage結果.st演奏記録[ i ].nPerfect数.ToString( "00000" ) );
+					this.t大文字表示( x, y, CDTXMania.app.stage結果.st演奏記録[ i ].nPerfect数.ToString( "00000" ) );
 				}
 				if( num >= 100 )
 				{
-					this.t大文字表示( x, y + (int)(0x16 * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nGreat数.ToString( "00000" ) );
+					this.t大文字表示(x, y + (int)(0x16 * Scale.Y), CDTXMania.app.stage結果.st演奏記録[i].nGreat数.ToString("00000"));
 				}
 				if( num >= 200 )
 				{
-					this.t大文字表示( x, y + (int)(0x2c * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nGood数.ToString( "00000" ) );
+					this.t大文字表示(x, y + (int)(0x2c * Scale.Y), CDTXMania.app.stage結果.st演奏記録[i].nGood数.ToString("00000"));
 				}
 				if( num >= 300 )
 				{
-					this.t大文字表示( x, y + (int)(0x42 * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nPoor数.ToString( "00000" ) );
+					this.t大文字表示(x, y + (int)(0x42 * Scale.Y), CDTXMania.app.stage結果.st演奏記録[i].nPoor数.ToString("00000"));
 				}
 				if( num >= 400 )
 				{
-					this.t大文字表示( x, y + (int)(0x58 * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nMiss数.ToString( "00000" ) );
+					this.t大文字表示(x, y + (int)(0x58 * Scale.Y), CDTXMania.app.stage結果.st演奏記録[i].nMiss数.ToString("00000"));
 				}
 				if( num >= 0 )
 				{
-					this.t小文字表示( x + (int) ( 0x30 * Scale.X ), y, string.Format( "{0,3:##0}%", CDTXMania.stage結果.fPerfect率[ i ] ) );
+					this.t小文字表示(x + (int)(0x30 * Scale.X), y, string.Format("{0,3:##0}%", CDTXMania.app.stage結果.fPerfect率[i]));
 				}
 				if( num >= 100 )
 				{
-					this.t小文字表示( x + (int)(0x30 * Scale.X), y + (int)(0x16 * Scale.Y), string.Format( "{0,3:##0}%", CDTXMania.stage結果.fGreat率[ i ] ) );
+					this.t小文字表示(x + (int)(0x30 * Scale.X), y + (int)(0x16 * Scale.Y), string.Format("{0,3:##0}%", CDTXMania.app.stage結果.fGreat率[i]));
 				}
 				if( num >= 200 )
 				{
-					this.t小文字表示( x + (int)(0x30 * Scale.X), y + (int)(0x2c * Scale.Y), string.Format( "{0,3:##0}%", CDTXMania.stage結果.fGood率[ i ] ) );
+					this.t小文字表示(x + (int)(0x30 * Scale.X), y + (int)(0x2c * Scale.Y), string.Format("{0,3:##0}%", CDTXMania.app.stage結果.fGood率[i]));
 				}
 				if( num >= 300 )
 				{
-					this.t小文字表示( x + (int)(0x30 * Scale.X), y + (int)(0x42 * Scale.Y), string.Format( "{0,3:##0}%", CDTXMania.stage結果.fPoor率[ i ] ) );
+					this.t小文字表示(x + (int)(0x30 * Scale.X), y + (int)(0x42 * Scale.Y), string.Format("{0,3:##0}%", CDTXMania.app.stage結果.fPoor率[i]));
 				}
 				if( num >= 400 )
 				{
-					this.t小文字表示( x + (int)(0x30 * Scale.X), y + (int)(0x58 * Scale.Y), string.Format( "{0,3:##0}%", CDTXMania.stage結果.fMiss率[ i ] ) );
+					this.t小文字表示(x + (int)(0x30 * Scale.X), y + (int)(0x58 * Scale.Y), string.Format("{0,3:##0}%", CDTXMania.app.stage結果.fMiss率[i]));
 				}
 				if( num >= 500 )
 				{
-					this.t大文字表示( x, y + (int)(110 * Scale.Y), string.Format( "{0,9:########0}", CDTXMania.stage結果.st演奏記録[ i ].n最大コンボ数 ) );
+					this.t大文字表示(x, y + (int)(110 * Scale.Y), string.Format("{0,9:########0}", CDTXMania.app.stage結果.st演奏記録[i].n最大コンボ数));
 				}
 				if( num >= 600 )
 				{
-					this.t大文字表示( x, y + (int)(0x84 * Scale.Y), CDTXMania.stage結果.st演奏記録[ i ].nスコア.ToString( "000000000" ), CDTXMania.stage結果.b新記録スコア[ i ] );
+					this.t大文字表示(x, y + (int)(0x84 * Scale.Y), CDTXMania.app.stage結果.st演奏記録[i].nスコア.ToString("000000000"), CDTXMania.app.stage結果.b新記録スコア[i]);
 				}
 				if( num >= 700 )
 				{
-					this.t大文字表示( x - (int)(11 * Scale.X), y + (int)(0x9a * Scale.Y), string.Format( "{0,9:#####0.00}", CDTXMania.stage結果.st演奏記録[ i ].db演奏型スキル値 ), CDTXMania.stage結果.b新記録スキル[ i ] );
+					this.t大文字表示(x - (int)(11 * Scale.X), y + (int)(0x9a * Scale.Y), string.Format("{0,9:#####0.00}", CDTXMania.app.stage結果.st演奏記録[i].db演奏型スキル値), CDTXMania.app.stage結果.b新記録スキル[i]);
 				}
 				if( num >= 700 )
 				{
@@ -251,7 +250,7 @@ namespace DTXMania
 				}
 				if( num >= 800 )
 				{
-					this.t大文字表示( x, y + (int)(0xb0 * Scale.Y), string.Format( "{0,9:########0}", CDTXMania.stage結果.n演奏回数[ i ] ) );
+					this.t大文字表示(x, y + (int)(0xb0 * Scale.Y), string.Format("{0,9:########0}", CDTXMania.app.stage結果.n演奏回数[i]));
 				}
 			}
 			if( this.ct表示用.n現在の値 < 900 )
@@ -293,7 +292,7 @@ namespace DTXMania
 			{
 				for( int j = 0; j < 3; j++ )
 				{
-					if( CDTXMania.stage結果.st演奏記録[ j ].bフルコンボである )
+					if (CDTXMania.app.stage結果.st演奏記録[j].bフルコンボである)
 					{
 						if( this.ct表示用.b終了値に達した )
 						{
@@ -307,16 +306,16 @@ namespace DTXMania
 							}
 							if( !this.bフルコンボ音再生済み )
 							{
-								if( ( ( CDTXMania.DTX.SOUND_FULLCOMBO != null ) && ( CDTXMania.DTX.SOUND_FULLCOMBO.Length > 0 ) ) && File.Exists( CDTXMania.DTX.strフォルダ名 + CDTXMania.DTX.SOUND_FULLCOMBO ) )
+								if( ( ( CDTXMania.app.DTX.SOUND_FULLCOMBO != null ) && ( CDTXMania.app.DTX.SOUND_FULLCOMBO.Length > 0 ) ) && File.Exists( CDTXMania.app.DTX.strフォルダ名 + CDTXMania.app.DTX.SOUND_FULLCOMBO ) )
 								{
 									try
 									{
 										if( this.sdDTXで指定されたフルコンボ音 != null )
 										{
-											CDTXMania.Sound管理.tサウンドを破棄する( this.sdDTXで指定されたフルコンボ音 );
+											CDTXMania.app.Sound管理.tサウンドを破棄する( this.sdDTXで指定されたフルコンボ音 );
 											this.sdDTXで指定されたフルコンボ音 = null;
 										}
-										this.sdDTXで指定されたフルコンボ音 = CDTXMania.Sound管理.tサウンドを生成する( CDTXMania.DTX.strフォルダ名 + CDTXMania.DTX.SOUND_FULLCOMBO );
+										this.sdDTXで指定されたフルコンボ音 = CDTXMania.app.Sound管理.tサウンドを生成する( CDTXMania.app.DTX.strフォルダ名 + CDTXMania.app.DTX.SOUND_FULLCOMBO );
 										if( this.sdDTXで指定されたフルコンボ音 != null )
 										{
 											this.sdDTXで指定されたフルコンボ音.t再生を開始する();
@@ -328,7 +327,7 @@ namespace DTXMania
 								}
 								else
 								{
-									CDTXMania.Skin.soundフルコンボ音.t再生する();
+									CDTXMania.app.Skin.soundフルコンボ音.t再生する();
 								}
 								this.bフルコンボ音再生済み = true;
 							}

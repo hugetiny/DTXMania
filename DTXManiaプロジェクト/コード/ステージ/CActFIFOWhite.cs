@@ -13,12 +13,12 @@ namespace DTXMania
 		public void tフェードアウト開始()
 		{
 			this.mode = EFIFOモード.フェードアウト;
-			this.counter = new CCounter( 0, 100, 5, CDTXMania.Timer );
+			this.counter = new CCounter( 0, 100, 5, CDTXMania.app.Timer );
 		}
 		public void tフェードイン開始()
 		{
 			this.mode = EFIFOモード.フェードイン;
-			this.counter = new CCounter( 0, 100, 5, CDTXMania.Timer );
+			this.counter = new CCounter( 0, 100, 5, CDTXMania.app.Timer );
 		}
 		public void tフェードイン完了()		// #25406 2011.6.9 yyagi
 		{
@@ -31,7 +31,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.tx白タイル64x64 );
+				TextureFactory.tテクスチャの解放( ref this.tx白タイル64x64 );
 				base.On非活性化();
 			}
 		}
@@ -39,7 +39,7 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.tx白タイル64x64 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\Tile white 64x64.png" ), false );
+				this.tx白タイル64x64 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Tile white 64x64.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}

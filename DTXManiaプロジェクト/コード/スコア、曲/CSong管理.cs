@@ -143,7 +143,7 @@ namespace DTXMania
 
 			DirectoryInfo info = new DirectoryInfo( str基点フォルダ );
 
-			if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+			if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 				Trace.TraceInformation( "基点フォルダ: " + str基点フォルダ );
 
 			#region [ a.フォルダ内に set.def が存在する場合 → set.def からノード作成]
@@ -153,7 +153,7 @@ namespace DTXMania
 			{
 				CSetDef def = new CSetDef( path );
 				new FileInfo( path );
-				if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+				if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 				{
 					Trace.TraceInformation( "set.def検出 : {0}", path );
 					Trace.Indent();
@@ -211,7 +211,7 @@ namespace DTXMania
 						{
 							listノードリスト.Add( item );
 							this.n検索された曲ノード数++;
-							if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+							if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 							{
 								StringBuilder builder = new StringBuilder( 0x200 );
 								builder.Append( string.Format( "nID#{0:D3}", item.nID ) );
@@ -264,7 +264,7 @@ namespace DTXMania
 				}
 				finally
 				{
-					if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+					if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 					{
 						Trace.Unindent();
 					}
@@ -306,7 +306,7 @@ namespace DTXMania
 						this.n検索されたスコア数++;
 						listノードリスト.Add( c曲リストノード );
 						this.n検索された曲ノード数++;
-						if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+						if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 						{
 							Trace.Indent();
 							try
@@ -424,7 +424,7 @@ namespace DTXMania
 								{
 									s += System.IO.Path.DirectorySeparatorChar;
 								}
-								if ( CDTXMania.Skin.bIsValid( s ) )
+								if ( CDTXMania.app.Skin.bIsValid( s ) )
 								{
 									c曲リストノード.strSkinPath = s;
 								}
@@ -452,7 +452,7 @@ namespace DTXMania
 							c曲リストノード.nPoor範囲ms = boxdef.PoorRange;
 						}
 					}
-					if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+					if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 					{
 						Trace.Indent();
 						try
@@ -523,7 +523,7 @@ namespace DTXMania
 						{
 							s += System.IO.Path.DirectorySeparatorChar;
 						}
-						if ( CDTXMania.Skin.bIsValid( s ) )
+						if ( CDTXMania.app.Skin.bIsValid( s ) )
 						{
 							c曲リストノード.strSkinPath = s;
 						}
@@ -543,7 +543,7 @@ namespace DTXMania
 					c曲リストノード.nGood範囲ms = boxdef.GoodRange;
 					c曲リストノード.nPoor範囲ms = boxdef.PoorRange;
 					listノードリスト.Add( c曲リストノード );
-					if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+					if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 					{
 						Trace.TraceInformation( "box.def検出 : {0}", infoDir.FullName + @"\box.def" );
 						Trace.Indent();
@@ -679,7 +679,7 @@ namespace DTXMania
 								if( nMatched == -1 )
 								{
 //Trace.TraceInformation( "songs.db に存在しません。({0})", node.arスコア[ lv ].ファイル情報.ファイルの絶対パス );
-									if ( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+									if ( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 									{
 										Trace.TraceInformation( "songs.db に存在しません。({0})", node.arスコア[ lv ].ファイル情報.ファイルの絶対パス );
 									}
@@ -688,7 +688,7 @@ namespace DTXMania
 								{
 									node.arスコア[ lv ].譜面情報 = this.listSongsDB[ nMatched ].譜面情報;
 									node.arスコア[ lv ].bSongDBにキャッシュがあった = true;
-									if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+									if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 									{
 										Trace.TraceInformation( "songs.db から転記しました。({0})", node.arスコア[ lv ].ファイル情報.ファイルの絶対パス );
 									}
@@ -726,7 +726,7 @@ namespace DTXMania
 											{
 												node.arスコア[ lv ].譜面情報.演奏履歴[ j ] = scoreIni.stファイル.History[ j ];
 											}
-											if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+											if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 											{
 												Trace.TraceInformation( "演奏記録ファイルから HiSkill 情報と演奏履歴を取得しました。({0})", strFileNameScoreIni );
 											}
@@ -842,7 +842,7 @@ namespace DTXMania
 //Debug.WriteLine( "★" + this.nファイルから反映できたスコア数 + " " + c曲リストノード.arスコア[ i ].譜面情報.タイトル );
 									#region [ 曲検索ログ出力 ]
 									//-----------------
-									if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+									if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 									{
 										StringBuilder sb = new StringBuilder( 0x400 );
 										sb.Append( string.Format( "曲データファイルから譜面情報を転記しました。({0})", path ) );
@@ -895,9 +895,9 @@ namespace DTXMania
 		public void t曲リストへ後処理を適用する()
 		{
 			listStrBoxDefSkinSubfolderFullName = new List<string>();
-			if ( CDTXMania.Skin.strBoxDefSkinSubfolders != null )
+			if ( CDTXMania.app.Skin.strBoxDefSkinSubfolders != null )
 			{
-				foreach ( string b in CDTXMania.Skin.strBoxDefSkinSubfolders )
+				foreach ( string b in CDTXMania.app.Skin.strBoxDefSkinSubfolders )
 				{
 					listStrBoxDefSkinSubfolderFullName.Add( b );
 				}
@@ -906,7 +906,7 @@ namespace DTXMania
 			this.t曲リストへ後処理を適用する( this.list曲ルート );
 
 			#region [ skin名で比較して、systemスキンとboxdefスキンに重複があれば、boxdefスキン側を削除する ]
-			string[] systemSkinNames = CSkin.GetSkinName( CDTXMania.Skin.strSystemSkinSubfolders );
+			string[] systemSkinNames = CSkin.GetSkinName( CDTXMania.app.Skin.strSystemSkinSubfolders );
 			List<string> l = new List<string>( listStrBoxDefSkinSubfolderFullName );
 			foreach ( string boxdefSkinSubfolderFullName in l )
 			{
@@ -920,7 +920,7 @@ namespace DTXMania
 			#endregion
 			string[] ba = listStrBoxDefSkinSubfolderFullName.ToArray();
 			Array.Sort( ba );
-			CDTXMania.Skin.strBoxDefSkinSubfolders = ba;
+			CDTXMania.app.Skin.strBoxDefSkinSubfolders = ba;
 		}
 		private void t曲リストへ後処理を適用する( List<C曲リストノード> ノードリスト )
 		{
@@ -951,7 +951,7 @@ namespace DTXMania
 
 				#region [ ログ出力 ]
 				//-----------------------------
-				if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+				if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 				{
 					StringBuilder sb = new StringBuilder( 0x100 );
 					sb.Append( string.Format( "nID#{0:D3}", itemRandom.nID ) );
@@ -1009,7 +1009,7 @@ namespace DTXMania
 
 					#region [ ログ出力 ]
 					//-----------------------------
-					if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+					if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 					{
 						StringBuilder sb = new StringBuilder( 0x100 );
 						sb.Append( string.Format( "nID#{0:D3}", itemBack.nID ) );
@@ -1043,7 +1043,7 @@ namespace DTXMania
 						{
 							c曲リストノード.strタイトル = c曲リストノード.arスコア[ j ].譜面情報.タイトル;
 
-							if( CDTXMania.ConfigIni.bLog曲検索ログ出力 )
+							if( CDTXMania.app.ConfigIni.bLog曲検索ログ出力 )
 								Trace.TraceInformation( "タイトルを設定しました。(nID#{0:D3}, title={1})", c曲リストノード.nID, c曲リストノード.strタイトル );
 
 							break;

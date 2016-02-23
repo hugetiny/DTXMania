@@ -10,18 +10,17 @@ namespace DTXMania
 	internal class CActSelectステータスパネル : CActivity
 	{
 		// メソッド
-
 		public CActSelectステータスパネル()
 		{
 			base.b活性化してない = true;
 		}
 		public void t選択曲が変更された()
 		{
-			C曲リストノード c曲リストノード = CDTXMania.stage選曲.r現在選択中の曲;
-			Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
+			C曲リストノード c曲リストノード = CDTXMania.app.stage選曲.r現在選択中の曲;
+			Cスコア cスコア = CDTXMania.app.stage選曲.r現在選択中のスコア;
 			if( ( c曲リストノード != null ) && ( cスコア != null ) )
 			{
-				this.n現在選択中の曲の難易度 = CDTXMania.stage選曲.n現在選択中の曲の難易度;
+				this.n現在選択中の曲の難易度 = CDTXMania.app.stage選曲.n現在選択中の曲の難易度;
 				for( int i = 0; i < 3; i++ )
 				{
 					int nLevel = cスコア.譜面情報.レベル[ i ];
@@ -84,11 +83,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				this.txパネル本体 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect status panel.png" ), true );
-				this.txレベル数字 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect level numbers.png" ), false );
-				this.txスキルゲージ = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill gauge.png" ), false );
-				this.txゲージ用数字他 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill number on gauge etc.png" ), false );
-				this.tx難易度用矢印 = CDTXMania.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect triangle arrow.png" ), false );
+				this.txパネル本体 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect status panel.png" ), true );
+				this.txレベル数字 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect level numbers.png" ), false );
+				this.txスキルゲージ = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill gauge.png" ), false );
+				this.txゲージ用数字他 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect skill number on gauge etc.png" ), false );
+				this.tx難易度用矢印 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect triangle arrow.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -96,11 +95,11 @@ namespace DTXMania
 		{
 			if( !base.b活性化してない )
 			{
-				CDTXMania.tテクスチャの解放( ref this.txパネル本体 );
-				CDTXMania.tテクスチャの解放( ref this.txレベル数字 );
-				CDTXMania.tテクスチャの解放( ref this.txスキルゲージ );
-				CDTXMania.tテクスチャの解放( ref this.txゲージ用数字他 );
-				CDTXMania.tテクスチャの解放( ref this.tx難易度用矢印 );
+				TextureFactory.tテクスチャの解放( ref this.txパネル本体 );
+				TextureFactory.tテクスチャの解放( ref this.txレベル数字 );
+				TextureFactory.tテクスチャの解放( ref this.txスキルゲージ );
+				TextureFactory.tテクスチャの解放( ref this.txゲージ用数字他 );
+				TextureFactory.tテクスチャの解放( ref this.tx難易度用矢印 );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -112,9 +111,9 @@ namespace DTXMania
 				//-----------------
 				if( base.b初めての進行描画 )
 				{
-					this.ct登場アニメ用 = new CCounter( 0, 100, 5, CDTXMania.Timer );
-					this.ct難易度スクロール用 = new CCounter( 0, 20, 1, CDTXMania.Timer );
-					this.ct難易度矢印用 = new CCounter( 0, 5, 80, CDTXMania.Timer );
+					this.ct登場アニメ用 = new CCounter( 0, 100, 5, CDTXMania.app.Timer );
+					this.ct難易度スクロール用 = new CCounter( 0, 20, 1, CDTXMania.app.Timer );
+					this.ct難易度矢印用 = new CCounter( 0, 5, 80, CDTXMania.app.Timer );
 					base.b初めての進行描画 = false;
 				}
 				//-----------------
@@ -224,7 +223,7 @@ namespace DTXMania
 					flag = true;
 					while( index < ( this.n難易度開始文字位置 + 55 ) )	 // 0x24 -> 55
 					{
-						CDTXMania.act文字コンソール.tPrint(
+						CDTXMania.app.act文字コンソール.tPrint(
 							x,
 							y + 5,
 							eフォント種別Array[ index ],
@@ -260,7 +259,7 @@ namespace DTXMania
 				//-----------------
 				#endregion
 
-				Cスコア cスコア = CDTXMania.stage選曲.r現在選択中のスコア;
+				Cスコア cスコア = CDTXMania.app.stage選曲.r現在選択中のスコア;
 
 				#region [ 選択曲の Lv の描画 ]
 				//-----------------
@@ -272,7 +271,7 @@ namespace DTXMania
 						Rectangle rect十の位;
 						Rectangle rect一の位;
 						int nDispPosX = this.n本体X + (int) ( 66 * Scale.X );
-						int nDispPosY = this.n本体Y + (int) ( 50 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+						int nDispPosY = this.n本体Y + (int) ( 50 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.app.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						int nLevel = this.n現在選択中の曲のレベル[ i ];
 						if( nLevel < 0 )
 						{
@@ -322,7 +321,7 @@ namespace DTXMania
 						if( dMaxSkill != 0.0 )
 						{
 							int nDispPosX = this.n本体X + (int)(100 * Scale.X);
-							int nDispPosY = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+							int nDispPosY = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[ ( CDTXMania.app.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 							this.txスキルゲージ.t2D描画( CDTXMania.app.Device, nDispPosX, nDispPosY,
 														new Rectangle( 0, 0, (int) ( 170.0 * Scale.X * dMaxSkill / 100.0 ), (int) ( 10 * Scale.Y ) ) );
 						}
@@ -340,7 +339,7 @@ namespace DTXMania
 							}
 						}
 						int x = this.n本体X + (int) ( 182 * Scale.X ) - nMaxSkillStringWidth / 2;
-						int y = this.n本体Y + (int) ( 53 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+						int y = this.n本体Y + (int) ( 53 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.app.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						foreach( char ch in sMaxSkillString )
 						{
 							for( int j = 0; j < 12; j++ )
@@ -360,7 +359,7 @@ namespace DTXMania
 					else
 					{
 						int x = this.n本体X + (int) ( ( 182 - 20 ) * Scale.X );
-						int y = this.n本体Y + (int) ( 53 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+						int y = this.n本体Y + (int) ( 53 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.app.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						if( this.txゲージ用数字他 != null )
 						{
 							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, new Rectangle( 0, (int) ( 22 * Scale.Y ), (int) ( 42 * Scale.X ), (int) ( 10 * Scale.Y ) ) );
@@ -386,7 +385,7 @@ namespace DTXMania
 						}
 						int[ , ] nDispPosYOffset = { { 0, (int) ( 21 * Scale.Y ), (int) ( 42 * Scale.Y ) }, { 0, (int) ( 42 * Scale.Y ), (int) ( 21 * Scale.Y ) } };	// #24063 2011.1.27 yyagi
 						int x = this.n本体X + (int) ( 278 * Scale.X );
-						int y = this.n本体Y + (int) ( 55 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
+						int y = this.n本体Y + (int) ( 55 * Scale.Y ) + nDispPosYOffset[ ( CDTXMania.app.ConfigIni.bIsSwappedGuitarBass ? 1 : 0 ), i ];
 						if( this.txゲージ用数字他 != null )
 						{
 							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, this.rcランク[ nMaxRank ] );
@@ -404,7 +403,7 @@ namespace DTXMania
 					{
 						int[ , ] nDispPosYOffset = { { 0, (int) ( 21 * Scale.Y ), (int) ( 42 * Scale.Y ) }, { 0, (int) ( 42 * Scale.Y ), (int) ( 21 * Scale.Y ) } };	// #24063 2011.1.27 yyagi
 						int x = this.n本体X + (int)(290 * Scale.X);
-						int y = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[ (CDTXMania.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i ];
+						int y = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[ (CDTXMania.app.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i ];
 						if( this.txゲージ用数字他 != null )
 						{
 							this.txゲージ用数字他.t2D描画( CDTXMania.app.Device, x, y, rectFullCombo );

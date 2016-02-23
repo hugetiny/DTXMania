@@ -18,17 +18,17 @@ namespace DTXMania
 			}
 			E楽器パート e楽器パート = ( nLane < 3 ) ? E楽器パート.GUITAR : E楽器パート.BASS;
 			int index = nLane;
-			if( CDTXMania.ConfigIni.bLeft[ (int) e楽器パート ] )
+			if( CDTXMania.app.ConfigIni.bLeft[ (int) e楽器パート ] )
 			{
 				index = ( ( index / 3 ) * 3 ) + ( 2 - ( index % 3 ) );
 			}
 			int x = this.pt中央[ index ].X;
-			if (CDTXMania.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+			if (CDTXMania.app.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
 			{
 				x -= ( e楽器パート == E楽器パート.GUITAR ) ? 71 : 994;
 			}
 			//int y = this.pt中央[ index ].Y;
-			int y = 演奏判定ライン座標.n判定ラインY座標( e楽器パート, false, CDTXMania.ConfigIni.bReverse[ (int) e楽器パート ] );
+			int y = 演奏判定ライン座標.n判定ラインY座標( e楽器パート, false, CDTXMania.app.ConfigIni.bReverse[ (int) e楽器パート ] );
 
 			base.Start( nLane, x, y, 演奏判定ライン座標 );
 		}

@@ -26,16 +26,16 @@ namespace DTXMania
 				{
 					if( ( this.ct進行用[ (int) part, i ] == null ) || this.ct進行用[ (int) part, i ].b停止中 )
 					{
-						this.ct進行用[ (int) part, i ] = new CCounter( 0, 300, 2, CDTXMania.Timer );
-						if( CDTXMania.ConfigIni.b歓声を発声する )
+						this.ct進行用[ (int) part, i ] = new CCounter( 0, 300, 2, CDTXMania.app.Timer );
+						if( CDTXMania.app.ConfigIni.b歓声を発声する )
 						{
 							if( r歓声Chip != null )
 							{
-								CDTXMania.DTX.tチップの再生( r歓声Chip, CSound管理.rc演奏用タイマ.nシステム時刻, (int) Eレーン.BGM, CDTXMania.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
+								CDTXMania.app.DTX.tチップの再生( r歓声Chip, CSound管理.rc演奏用タイマ.nシステム時刻, (int) Eレーン.BGM, CDTXMania.app.DTX.nモニタを考慮した音量( E楽器パート.UNKNOWN ) );
 								return;
 							}
-							CDTXMania.Skin.sound歓声音.n位置_次に鳴るサウンド = ( part == E楽器パート.GUITAR ) ? -50 : 50;
-							CDTXMania.Skin.sound歓声音.t再生する();
+							CDTXMania.app.Skin.sound歓声音.n位置_次に鳴るサウンド = ( part == E楽器パート.GUITAR ) ? -50 : 50;
+							CDTXMania.app.Skin.sound歓声音.t再生する();
 							return;
 						}
 						break;
@@ -107,7 +107,7 @@ namespace DTXMania
 							{
 								num6 = (int) ( 64.0 - ( ( (double) ( 290 * ( num8 - 200 ) ) ) / 100.0 ) );
 							}
-							if( CDTXMania.ConfigIni.bReverse[ (int) e楽器パート2 ] )
+							if( CDTXMania.app.ConfigIni.bReverse[ (int) e楽器パート2 ] )
 							{
 								num6 = ( 0x199 - num6 ) - 0xf4;
 							}
