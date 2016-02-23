@@ -12,7 +12,7 @@ namespace DTXMania
 	internal class CAct演奏Drumsゲージ : CAct演奏ゲージ共通
 	{
 		// プロパティ
-		
+
 		// コンストラクタ
 
 		public CAct演奏Drumsゲージ()
@@ -33,46 +33,46 @@ namespace DTXMania
 		{
 			this.ct本体振動 = null;
 			this.ct本体移動 = null;
-			for( int i = 0; i < 24; i++ )
+			for (int i = 0; i < 24; i++)
 			{
-				this.st白い星[ i ].ct進行 = null;
+				this.st白い星[i].ct進行 = null;
 			}
 			base.On非活性化();
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				this.txゲージ = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayDrums gauge.png" ) );
-				this.txゲージ白 = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlayDrums_gauge_white.png " ) );
+				this.txゲージ = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlayDrums gauge.png"));
+				this.txゲージ白 = TextureFactory.tテクスチャの生成Af(CSkin.Path(@"Graphics\ScreenPlayDrums_gauge_white.png "));
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				TextureFactory.tテクスチャの解放( ref this.txゲージ白 );
-				TextureFactory.tテクスチャの解放( ref this.txゲージ );
+				TextureFactory.tテクスチャの解放(ref this.txゲージ白);
+				TextureFactory.tテクスチャの解放(ref this.txゲージ);
 				base.OnManagedリソースの解放();
 			}
 		}
 		public override int On進行描画()
 		{
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
 				#region [ 初めての進行描画 ]
-				if ( base.b初めての進行描画 )
+				if (base.b初めての進行描画)
 				{
-					for ( int k = 0; k < 0x18; k++ )
+					for (int k = 0; k < 0x18; k++)
 					{
-						this.st白い星[ k ].x = 2 + CDTXMania.app.Random.Next( 4 );
-						this.st白い星[ k ].fScale = 0.2f + ( CDTXMania.app.Random.Next( 2 ) * 0.05f );
-						this.st白い星[ k ].ct進行 = new CCounter( 0, 0x160, 8 + CDTXMania.app.Random.Next( 4 ), CDTXMania.app.Timer );
-						this.st白い星[ k ].ct進行.n現在の値 = CDTXMania.app.Random.Next( 0x160 );
+						this.st白い星[k].x = 2 + CDTXMania.app.Random.Next(4);
+						this.st白い星[k].fScale = 0.2f + (CDTXMania.app.Random.Next(2) * 0.05f);
+						this.st白い星[k].ct進行 = new CCounter(0, 0x160, 8 + CDTXMania.app.Random.Next(4), CDTXMania.app.Timer);
+						this.st白い星[k].ct進行.n現在の値 = CDTXMania.app.Random.Next(0x160);
 					}
-					this.ct本体移動 = new CCounter( 0, 0x1a, 20, CDTXMania.app.Timer );
-					this.ct本体振動 = new CCounter( 0, 360, 4, CDTXMania.app.Timer );
+					this.ct本体移動 = new CCounter(0, 0x1a, 20, CDTXMania.app.Timer);
+					this.ct本体振動 = new CCounter(0, 360, 4, CDTXMania.app.Timer);
 					base.b初めての進行描画 = false;
 				}
 				#endregion
@@ -80,58 +80,58 @@ namespace DTXMania
 				this.ct本体振動.t進行Loop();
 
 				#region [ Risky残りMiss回数表示 ]
-				if ( this.bRisky && this.actLVLNFont != null )		// #23599 2011.7.30 yyagi Risky残りMiss回数表示
+				if (this.bRisky && this.actLVLNFont != null)		// #23599 2011.7.30 yyagi Risky残りMiss回数表示
 				{
-					CActLVLNFont.EFontColor efc = this.IsDanger( E楽器パート.DRUMS ) ?
+					CActLVLNFont.EFontColor efc = this.IsDanger(E楽器パート.DRUMS) ?
 						CActLVLNFont.EFontColor.Red : CActLVLNFont.EFontColor.Yellow;
-					actLVLNFont.t文字列描画( (int) ( 12 * Scale.X ), (int) ( 408 * Scale.Y ), nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Right );
+					actLVLNFont.t文字列描画((int)(12 * Scale.X), (int)(408 * Scale.Y), nRiskyTimes.ToString(), efc, CActLVLNFont.EFontAlign.Right);
 				}
 				#endregion
 
 				#region [ 緑orオレンジのゲージ表示 ]
 				const double dbゲージ最大値 = 352.0 * Scale.Y;
-				int n表示するゲージの高さ = ( this.dbゲージ値 == 1.0 ) ?
-					( (int) ( dbゲージ最大値 * this.dbゲージ値 ) ) :
-					( (int) ( ( dbゲージ最大値 * this.dbゲージ値 ) + ( 2.0 * Math.Sin( Math.PI * 2 * ( ( (double) this.ct本体振動.n現在の値 ) / 360.0 ) ) ) ) );
+				int n表示するゲージの高さ = (this.dbゲージ値 == 1.0) ?
+					((int)(dbゲージ最大値 * this.dbゲージ値)) :
+					((int)((dbゲージ最大値 * this.dbゲージ値) + (2.0 * Math.Sin(Math.PI * 2 * (((double)this.ct本体振動.n現在の値) / 360.0)))));
 
-				if ( n表示するゲージの高さ <= 0 )
+				if (n表示するゲージの高さ <= 0)
 				{
 					return 0;
 				}
-				if ( this.txゲージ != null )
+				if (this.txゲージ != null)
 				{
-					this.txゲージ.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
+					this.txゲージ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
 					this.txゲージ.n透明度 = 0xff;
 					this.txゲージ.b加算合成 = false;
 				}
-				int nCtゲージ内部上昇スクロール現在値 = (int) ( this.ct本体移動.n現在の値 * Scale.Y );
-				int n表示ゲージ最大値 = (int) ( 0x195 * Scale.Y );
-				int ybar = ( n表示ゲージ最大値 - n表示するゲージの高さ ) - nCtゲージ内部上昇スクロール現在値;
+				int nCtゲージ内部上昇スクロール現在値 = (int)(this.ct本体移動.n現在の値 * Scale.Y);
+				int n表示ゲージ最大値 = (int)(0x195 * Scale.Y);
+				int ybar = (n表示ゲージ最大値 - n表示するゲージの高さ) - nCtゲージ内部上昇スクロール現在値;
 				int height = n表示するゲージの高さ + nCtゲージ内部上昇スクロール現在値;
-				while ( height > 0 )
+				while (height > 0)
 				{
-					Rectangle rect = ( this.dbゲージ値 == 1.0 ) ?
-						new Rectangle( 48, 0, 48, 61 ) :
-						new Rectangle( 0, 0, 48, 61 );
+					Rectangle rect = (this.dbゲージ値 == 1.0) ?
+						new Rectangle(48, 0, 48, 61) :
+						new Rectangle(0, 0, 48, 61);
 					#region [ clipping ]
-					if ( ybar < ( n表示ゲージ最大値 - n表示するゲージの高さ ) )
+					if (ybar < (n表示ゲージ最大値 - n表示するゲージの高さ))
 					{
-						int d = ( n表示ゲージ最大値 - n表示するゲージの高さ ) - ybar;
+						int d = (n表示ゲージ最大値 - n表示するゲージの高さ) - ybar;
 						rect.Y += d;
 						rect.Height -= d;
 						ybar += d;
 					}
-					if ( ( ybar + rect.Height ) > n表示ゲージ最大値 )
+					if ((ybar + rect.Height) > n表示ゲージ最大値)
 					{
-						int num7 = ( ybar + rect.Height ) - n表示ゲージ最大値;
+						int num7 = (ybar + rect.Height) - n表示ゲージ最大値;
 						rect.Height -= num7;
 					}
-					if ( rect.Top >= rect.Bottom )
+					if (rect.Top >= rect.Bottom)
 					{
 						break;
 					}
 					#endregion
-					if ( this.txゲージ != null )
+					if (this.txゲージ != null)
 					{
 						this.txゲージ.t2D描画(
 							CDTXMania.app.Device,
@@ -145,9 +145,9 @@ namespace DTXMania
 				}
 				#endregion
 				#region [ 光彩 ]
-				if ( this.txゲージ白 != null )
+				if (this.txゲージ白 != null)
 				{
-					this.txゲージ白.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
+					this.txゲージ白.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
 					this.txゲージ白.n透明度 = 180;
 					this.txゲージ白.b加算合成 = true;
 				}
@@ -155,12 +155,12 @@ namespace DTXMania
 					Rectangle rect = new Rectangle(
 						0,
 						0,
-						(int) ( 0x10 *     Scale.X ),
-						(int) ( 0x40 * 4 * Scale.Y )
+						(int)(0x10 * Scale.X),
+						(int)(0x40 * 4 * Scale.Y)
 					);
 					#region [ clipping1 ]
-					int ylight = ( n表示ゲージ最大値 - n表示するゲージの高さ ) + (int) ( 0 * 0x40 * Scale.Y );
-					if ( ylight >= n表示ゲージ最大値 )
+					int ylight = (n表示ゲージ最大値 - n表示するゲージの高さ) + (int)(0 * 0x40 * Scale.Y);
+					if (ylight >= n表示ゲージ最大値)
 					{
 						//break;
 					}
@@ -168,18 +168,18 @@ namespace DTXMania
 					else
 					{
 						#region [ Clipping2 ]
-						if ( ( ylight + rect.Height ) > n表示ゲージ最大値 )
+						if ((ylight + rect.Height) > n表示ゲージ最大値)
 						{
-							int d = ( ylight + rect.Height ) - n表示ゲージ最大値;
+							int d = (ylight + rect.Height) - n表示ゲージ最大値;
 							rect.Height -= d;
 						}
 						#endregion
-						if ( ( rect.Top < rect.Bottom ) && ( this.txゲージ白 != null ) )
+						if ((rect.Top < rect.Bottom) && (this.txゲージ白 != null))
 						{
 							this.txゲージ白.t2D描画(
 								CDTXMania.app.Device,
-								(int) ( 6 * Scale.X ),
-								(int) ( ylight + 0.5f ),
+								(int)(6 * Scale.X),
+								(int)(ylight + 0.5f),
 								rect
 							);
 						}
@@ -187,7 +187,7 @@ namespace DTXMania
 				}
 				#endregion
 				#region [ ゲージ頂上の光源 ]
-				if ( this.txゲージ != null )
+				if (this.txゲージ != null)
 				{
 					//this.txゲージ.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
 					this.txゲージ.n透明度 = 0xff;
@@ -195,27 +195,27 @@ namespace DTXMania
 				}
 				{
 					Rectangle rect = new Rectangle(
-						(int) ( 0x30 * Scale.X ),
+						(int)(0x30 * Scale.X),
 						0,
-						(int) ( 0x10 * Scale.X ),
-						(int) ( 0x10 * Scale.Y )
+						(int)(0x10 * Scale.X),
+						(int)(0x10 * Scale.Y)
 					);
 					int yゲージ頂上 = n表示ゲージ最大値 - n表示するゲージの高さ;
-					if ( yゲージ頂上 < n表示ゲージ最大値 )
+					if (yゲージ頂上 < n表示ゲージ最大値)
 					{
 						#region [ clipping ]
-						if ( ( yゲージ頂上 + rect.Height ) > n表示ゲージ最大値 )
+						if ((yゲージ頂上 + rect.Height) > n表示ゲージ最大値)
 						{
-							int d = ( yゲージ頂上 + rect.Height ) - n表示ゲージ最大値;
+							int d = (yゲージ頂上 + rect.Height) - n表示ゲージ最大値;
 							rect.Height -= d;
 						}
 						#endregion
-						if ( ( rect.Top < rect.Bottom ) && ( this.txゲージ != null ) )
+						if ((rect.Top < rect.Bottom) && (this.txゲージ != null))
 						{
 							this.txゲージ.t2D描画(
 								CDTXMania.app.Device,
-								(int) ( 6 * Scale.X ),
-								(int) ( yゲージ頂上 + 0.5f ),
+								(int)(6 * Scale.X),
+								(int)(yゲージ頂上 + 0.5f),
 								rect
 							);
 						}
@@ -223,32 +223,32 @@ namespace DTXMania
 				}
 				#endregion
 				#region [ 泡 ]
-				if ( this.txゲージ != null )
+				if (this.txゲージ != null)
 				{
 					this.txゲージ.b加算合成 = true;
 				}
-				for ( int j = 0; j < 24; j++ )
+				for (int j = 0; j < 24; j++)
 				{
-					this.st白い星[ j ].ct進行.t進行Loop();
-					int x = 6 + this.st白い星[ j ].x;
-					int y泡 = ( n表示ゲージ最大値 - n表示するゲージの高さ ) + (int) ( ( 0x160 - this.st白い星[ j ].ct進行.n現在の値 ) * Scale.Y );
-					int n透明度 = ( this.st白い星[ j ].ct進行.n現在の値 < 0xb0 ) ? 0 : ( (int) ( 255.0 * ( ( (double) ( this.st白い星[ j ].ct進行.n現在の値 - 0xb0 ) ) / 176.0 ) ) );
-					if ( ( n透明度 != 0 ) && ( y泡 < (int) ( 0x191 * Scale.Y ) ) )
+					this.st白い星[j].ct進行.t進行Loop();
+					int x = 6 + this.st白い星[j].x;
+					int y泡 = (n表示ゲージ最大値 - n表示するゲージの高さ) + (int)((0x160 - this.st白い星[j].ct進行.n現在の値) * Scale.Y);
+					int n透明度 = (this.st白い星[j].ct進行.n現在の値 < 0xb0) ? 0 : ((int)(255.0 * (((double)(this.st白い星[j].ct進行.n現在の値 - 0xb0)) / 176.0)));
+					if ((n透明度 != 0) && (y泡 < (int)(0x191 * Scale.Y)))
 					{
 						Rectangle rect = new Rectangle(
-							(int) ( 0 * Scale.X ),
-							(int) ( 0x20 * Scale.Y ),
-							(int) ( 0x20 * Scale.X ),
-							(int) ( 0x20 * Scale.Y )
+							(int)(0 * Scale.X),
+							(int)(0x20 * Scale.Y),
+							(int)(0x20 * Scale.X),
+							(int)(0x20 * Scale.Y)
 						);
-						if ( this.txゲージ != null )
+						if (this.txゲージ != null)
 						{
-							this.txゲージ.vc拡大縮小倍率 = new Vector3( this.st白い星[ j ].fScale, this.st白い星[ j ].fScale, 1f );
+							this.txゲージ.vc拡大縮小倍率 = new Vector3(this.st白い星[j].fScale, this.st白い星[j].fScale, 1f);
 							this.txゲージ.n透明度 = n透明度;
 							this.txゲージ.t2D描画(
 								CDTXMania.app.Device,
-								(int) ( x * Scale.X ),
-								(int) ( y泡 + 0.5f ),
+								(int)(x * Scale.X),
+								(int)(y泡 + 0.5f),
 								rect
 							);
 						}
@@ -264,7 +264,7 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		[StructLayout( LayoutKind.Sequential )]
+		[StructLayout(LayoutKind.Sequential)]
 		private struct ST白い星
 		{
 			public int x;
@@ -274,7 +274,7 @@ namespace DTXMania
 
 		private CTextureAf txゲージ白;
 		private const int STAR_MAX = 0x18;
-		private ST白い星[] st白い星 = new ST白い星[ 0x18 ];
+		private ST白い星[] st白い星 = new ST白い星[0x18];
 		//-----------------
 		#endregion
 	}

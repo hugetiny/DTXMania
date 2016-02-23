@@ -19,20 +19,20 @@ namespace DTXMania
 
 		public override void OnManagedリソースの作成()
 		{
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
 				try			// #xxxxx 2012.12.31 yyagi: to prepare flush, first of all, I create q queue to the GPU.
 				{
-					IDirect3DQuery9 = new SlimDX.Direct3D9.Query( CDTXMania.app.Device, QueryType.Occlusion );
+					IDirect3DQuery9 = new SlimDX.Direct3D9.Query(CDTXMania.app.Device, QueryType.Occlusion);
 				}
-				catch ( Exception e )
+				catch (Exception e)
 				{
-					Trace.TraceError( e.Message );
+					Trace.TraceError(e.Message);
 				}
 				base.OnManagedリソースの作成();
 			}
 		}
-		public override void  OnManagedリソースの解放()
+		public override void OnManagedリソースの解放()
 		{
 			IDirect3DQuery9.Dispose();
 			IDirect3DQuery9 = null;
@@ -40,11 +40,11 @@ namespace DTXMania
 		}
 		public override int On進行描画()
 		{
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				IDirect3DQuery9.Issue( Issue.End );
+				IDirect3DQuery9.Issue(Issue.End);
 				DWM.Flush();
-				IDirect3DQuery9.GetData<int>( true );	// flush GPU queue
+				IDirect3DQuery9.GetData<int>(true);	// flush GPU queue
 			}
 			return 0;
 		}

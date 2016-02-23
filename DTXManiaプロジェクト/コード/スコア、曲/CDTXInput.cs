@@ -327,7 +327,7 @@ namespace DTXMania
 									}
 									if (((tickBeat + n発声位置_C1_同一小節内) % 384) != 0)
 									{
-										CChip chip = new CChip(tick384 + (tickBeat + n発声位置_C1_同一小節内), 36*36-1, Ech定義.BeatLine);
+										CChip chip = new CChip(tick384 + (tickBeat + n発声位置_C1_同一小節内), 36 * 36 - 1, Ech定義.BeatLine);
 										this.listChip.Add(chip);
 									}
 								}
@@ -1933,7 +1933,7 @@ namespace DTXMania
 			//-----------------
 			if (this.n無限管理BPM[zz] == -zz)	// 初期状態では n無限管理BPM[zz] = -zz である。この場合、#BPMzz がまだ出現していないことを意味する。
 			{
-				foreach(CChip chip in listChip)	// これまでに出てきたチップのうち、該当する（BPM値が未設定の）BPMチップの値を変更する（仕組み上、必ず後方参照となる）。
+				foreach (CChip chip in listChip)	// これまでに出てきたチップのうち、該当する（BPM値が未設定の）BPMチップの値を変更する（仕組み上、必ず後方参照となる）。
 				{
 					chip.AdjustInfiniteManageIntInternalIndex(chip.bBPMチップである, zz, this.n内部番号BPM1to);
 				}
@@ -2320,7 +2320,7 @@ namespace DTXMania
 			//-----------------
 			if (this.n無限管理WAV[zz] == -zz)	// 初期状態では n無限管理WAV[zz] = -zz である。この場合、#WAVzz がまだ出現していないことを意味する。
 			{
-				foreach(CChip chip in listChip)	// これまでに出てきたチップのうち、該当する（内部番号が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
+				foreach (CChip chip in listChip)	// これまでに出てきたチップのうち、該当する（内部番号が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
 				{
 					chip.AdjustInfiniteManageIntInternalIndex(chip.bWAVを使うチャンネルである, zz, n内部番号WAV1to);
 				}

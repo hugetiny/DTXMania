@@ -43,13 +43,13 @@ namespace DTXMania
 		{
 			try
 			{
-				if ( this.tx描画用 != null && ( this.tx描画用.szテクスチャサイズ.Width != width || this.tx描画用.szテクスチャサイズ.Height != height ) )
+				if (this.tx描画用 != null && (this.tx描画用.szテクスチャサイズ.Width != width || this.tx描画用.szテクスチャサイズ.Height != height))
 				{
-//Debug.WriteLine( "orgW=" + this.tx描画用.szテクスチャサイズ.Width + ", W=" + width + ", orgH=" + this.tx描画用.szテクスチャサイズ.Height + ", H=" + height );
+					//Debug.WriteLine( "orgW=" + this.tx描画用.szテクスチャサイズ.Width + ", W=" + width + ", orgH=" + this.tx描画用.szテクスチャサイズ.Height + ", H=" + height );
 					this.tx描画用.Dispose();
 					this.tx描画用 = null;
 				}
-				if ( this.tx描画用 == null )
+				if (this.tx描画用 == null)
 				{
 					this.tx描画用 = new CTexture(
 						CDTXMania.app.Device, width, height,
@@ -67,7 +67,7 @@ namespace DTXMania
 		// メソッド
 		public void Start(Ech定義 nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n移動開始時刻ms)
 		{
-			if( nチャンネル番号 == Ech定義.Movie || nチャンネル番号 == Ech定義.MovieFull )
+			if (nチャンネル番号 == Ech定義.Movie || nチャンネル番号 == Ech定義.MovieFull)
 			{
 				this.rAVI = rAVI;
 				this.n開始サイズW = n開始サイズW;
@@ -84,45 +84,45 @@ namespace DTXMania
 				this.n表示側終了位置Y = n表示側終了位置Y * 2;
 				this.n総移動時間ms = n総移動時間ms;
 				this.PrepareProperSizeTexture((int)this.rAVI.avi.nフレーム幅, (int)this.rAVI.avi.nフレーム高さ);
-				this.n移動開始時刻ms = ( n移動開始時刻ms != -1 ) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
+				this.n移動開始時刻ms = (n移動開始時刻ms != -1) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
 				this.rAVI.avi.Run();
 			}
 		}
-		public void SkipStart( int n移動開始時刻ms )
+		public void SkipStart(int n移動開始時刻ms)
 		{
-			foreach( CChip chip in CDTXMania.app.DTX.listChip )
+			foreach (CChip chip in CDTXMania.app.DTX.listChip)
 			{
-				if( chip.n発声時刻ms > n移動開始時刻ms )
+				if (chip.n発声時刻ms > n移動開始時刻ms)
 				{
 					break;
 				}
-				switch( chip.eAVI種別 )
+				switch (chip.eAVI種別)
 				{
 					case EAVI種別.AVI:
 						{
-							if( chip.rAVI != null )
+							if (chip.rAVI != null)
 							{
-								if (this.rAVI == null )
+								if (this.rAVI == null)
 								{
 									this.rAVI = chip.rAVI;		// DTXVモードで、最初に途中再生で起動したときに、ここに来る
 								}
-								this.bFullScreenMovie = ( chip.eチャンネル番号 == Ech定義.MovieFull || CDTXMania.app.ConfigIni.bForceAVIFullscreen );		// DTXVモードで、最初に途中再生で起動したときのために必要
-								this.rAVI.avi.Seek( n移動開始時刻ms - chip.n発声時刻ms );
-								this.Start( chip.eチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
+								this.bFullScreenMovie = (chip.eチャンネル番号 == Ech定義.MovieFull || CDTXMania.app.ConfigIni.bForceAVIFullscreen);		// DTXVモードで、最初に途中再生で起動したときのために必要
+								this.rAVI.avi.Seek(n移動開始時刻ms - chip.n発声時刻ms);
+								this.Start(chip.eチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms);
 							}
 							continue;
 						}
 					case EAVI種別.AVIPAN:
 						{
-							if( chip.rAVIPan != null )
+							if (chip.rAVIPan != null)
 							{
-								if ( this.rAVI == null )
+								if (this.rAVI == null)
 								{
 									this.rAVI = chip.rAVI;		// DTXVモードで、最初に途中再生で起動したときに、ここに来る
 								}
-								this.bFullScreenMovie = ( chip.eチャンネル番号 == Ech定義.MovieFull || CDTXMania.app.ConfigIni.bForceAVIFullscreen );		// DTXVモードで、最初に途中再生で起動したときのために必要
-								this.rAVI.avi.Seek( n移動開始時刻ms - chip.n発声時刻ms );
-								this.Start( chip.eチャンネル番号, chip.rAVI, chip.rAVIPan.sz開始サイズ.Width, chip.rAVIPan.sz開始サイズ.Height, chip.rAVIPan.sz終了サイズ.Width, chip.rAVIPan.sz終了サイズ.Height, chip.rAVIPan.pt動画側開始位置.X, chip.rAVIPan.pt動画側開始位置.Y, chip.rAVIPan.pt動画側終了位置.X, chip.rAVIPan.pt動画側終了位置.Y, chip.rAVIPan.pt表示側開始位置.X, chip.rAVIPan.pt表示側開始位置.Y, chip.rAVIPan.pt表示側終了位置.X, chip.rAVIPan.pt表示側終了位置.Y, chip.n総移動時間, chip.n発声時刻ms );
+								this.bFullScreenMovie = (chip.eチャンネル番号 == Ech定義.MovieFull || CDTXMania.app.ConfigIni.bForceAVIFullscreen);		// DTXVモードで、最初に途中再生で起動したときのために必要
+								this.rAVI.avi.Seek(n移動開始時刻ms - chip.n発声時刻ms);
+								this.Start(chip.eチャンネル番号, chip.rAVI, chip.rAVIPan.sz開始サイズ.Width, chip.rAVIPan.sz開始サイズ.Height, chip.rAVIPan.sz終了サイズ.Width, chip.rAVIPan.sz終了サイズ.Height, chip.rAVIPan.pt動画側開始位置.X, chip.rAVIPan.pt動画側開始位置.Y, chip.rAVIPan.pt動画側終了位置.X, chip.rAVIPan.pt動画側終了位置.Y, chip.rAVIPan.pt表示側開始位置.X, chip.rAVIPan.pt表示側開始位置.Y, chip.rAVIPan.pt表示側終了位置.X, chip.rAVIPan.pt表示側終了位置.Y, chip.n総移動時間, chip.n発声時刻ms);
 							}
 							continue;
 						}
@@ -131,50 +131,50 @@ namespace DTXMania
 		}
 		public void Stop()
 		{
-			if( ( this.rAVI != null ) && ( this.rAVI.avi != null ) )
+			if ((this.rAVI != null) && (this.rAVI.avi != null))
 			{
 				this.n移動開始時刻ms = -1;
 			}
 		}
-		public void Cont( int n再開時刻ms )
+		public void Cont(int n再開時刻ms)
 		{
-			if( ( this.rAVI != null ) && ( this.rAVI.avi != null ) )
+			if ((this.rAVI != null) && (this.rAVI.avi != null))
 			{
 				this.n移動開始時刻ms = n再開時刻ms;
 			}
 		}
 		public unsafe int t進行描画(int x, int y, int areaDrawingWidth, int areaDrawingHeight)
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
 				// Rectangle rectangle;
 				// Rectangle rectangle2;
 
-				if ( ( ( this.n移動開始時刻ms == -1 ) || ( this.rAVI == null ) ) || ( this.rAVI.avi == null ) )
+				if (((this.n移動開始時刻ms == -1) || (this.rAVI == null)) || (this.rAVI.avi == null))
 				{
 					return 0;
 				}
-				if ( this.tx描画用 == null )
+				if (this.tx描画用 == null)
 				{
 					return 0;
 				}
 				int time = (int)((CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms) * (((double)CDTXMania.app.ConfigIni.n演奏速度) / 20.0));
-				if( ( this.n総移動時間ms != 0 ) && ( this.n総移動時間ms < time ) )
+				if ((this.n総移動時間ms != 0) && (this.n総移動時間ms < time))
 				{
 					this.n総移動時間ms = 0;
 					this.n移動開始時刻ms = -1;
 					return 0;
 				}
-				if( ( this.n総移動時間ms == 0 ) && time >= this.rAVI.avi.GetDuration() )
+				if ((this.n総移動時間ms == 0) && time >= this.rAVI.avi.GetDuration())
 				{
-					if ( !bIsPreviewMovie )
+					if (!bIsPreviewMovie)
 					{
 						this.n移動開始時刻ms = -1;
 						return 0;
 					}
 					// PREVIEW時はループ再生する。移動開始時刻msを現時刻にして(=AVIを最初に巻き戻して)、ここまでに行った計算をやり直す。
 					this.n移動開始時刻ms = CSound管理.rc演奏用タイマ.n現在時刻;
-					time = (int) ( ( CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms ) * ( ( (double) CDTXMania.app.ConfigIni.n演奏速度 ) / 20.0 ) );
+					time = (int)((CSound管理.rc演奏用タイマ.n現在時刻 - this.n移動開始時刻ms) * (((double)CDTXMania.app.ConfigIni.n演奏速度) / 20.0));
 					this.rAVI.avi.Seek(0);
 				}
 				/*
@@ -295,7 +295,7 @@ namespace DTXMania
 				*/
 				if ((this.tx描画用 != null) && (this.n総移動時間ms != -1))
 				{
-					this.rAVI.avi.tGetBitmap( CDTXMania.app.Device, this.tx描画用, time);
+					this.rAVI.avi.tGetBitmap(CDTXMania.app.Device, this.tx描画用, time);
 					// 旧動画 (278x355以下)の場合と、それ以上の場合とで、拡大/表示位置補正ロジックを変えること。
 					// 旧動画の場合は、「278x355の領域に表示される」ことを踏まえて扱う必要あり。
 					// 例: 上半分だけ動画表示するような場合は・・・「上半分だけ」という表示意図を維持すべきか？それとも無視して全画面拡大すべきか？？
@@ -307,12 +307,12 @@ namespace DTXMania
 					float magX = 2, magY = 2;
 					int xx = x, yy = y;
 
-					if( CDTXMania.app.DTX != null && CDTXMania.app.DTX.bUse556x710BGAAVI )
+					if (CDTXMania.app.DTX != null && CDTXMania.app.DTX.bUse556x710BGAAVI)
 					{
 						magX = magY = 1;
 					}
 
-					if ( bFullScreenMovie || bIsPreviewMovie )
+					if (bFullScreenMovie || bIsPreviewMovie)
 					{
 						#region [ アスペクト比を維持した拡大縮小 ]
 						if (bFullScreenMovie)
@@ -322,7 +322,7 @@ namespace DTXMania
 							areaDrawingWidth = SampleFramework.GameWindowSize.Width;
 							areaDrawingHeight = SampleFramework.GameWindowSize.Height;
 						}
-						
+
 						magX = (float)areaDrawingWidth / this.rAVI.avi.nフレーム幅;
 						magY = (float)areaDrawingHeight / this.rAVI.avi.nフレーム高さ;
 						if (magX > magY)
@@ -342,13 +342,13 @@ namespace DTXMania
 					this.tx描画用.vc拡大縮小倍率.Y = magY;
 					this.tx描画用.vc拡大縮小倍率.Z = 1.0f;
 					this.tx描画用.bFlipY = true;
-					this.tx描画用.t2D描画( CDTXMania.app.Device, xx, yy );
+					this.tx描画用.t2D描画(CDTXMania.app.Device, xx, yy);
 				}
 			}
 			return 0;
 		}
 
-		
+
 		// CActivity 実装
 
 		public override void On活性化()
@@ -361,7 +361,7 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
 #if TEST_Direct3D9Ex
 				this.tx描画用 = new CTexture( CDTXMania.app.Device,
@@ -374,15 +374,15 @@ namespace DTXMania
 						(bIsPreviewMovie) ? 269 : SampleFramework.GameWindowSize.Height
 						);
 #endif
-				this.tx描画用.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f );
+				this.tx描画用.vc拡大縮小倍率 = new Vector3(Scale.X, Scale.Y, 1f);
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				if( this.tx描画用 != null )
+				if (this.tx描画用 != null)
 				{
 					this.tx描画用.Dispose();
 					this.tx描画用 = null;
@@ -392,7 +392,7 @@ namespace DTXMania
 		}
 		public override int On進行描画()
 		{
-			throw new InvalidOperationException( "t進行描画(int,int)のほうを使用してください。" );
+			throw new InvalidOperationException("t進行描画(int,int)のほうを使用してください。");
 		}
 
 

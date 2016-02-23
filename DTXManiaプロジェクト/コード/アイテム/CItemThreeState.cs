@@ -27,31 +27,35 @@ namespace DTXMania
 			base.e種別 = CItemBase.E種別.ONorOFFor不定スリーステート;
 			this.e現在の状態 = E状態.不定;
 		}
-		public CItemThreeState( string str項目名, E状態 e初期状態 )
+		public CItemThreeState(string str項目名, E状態 e初期状態)
 			: this()
 		{
-			this.t初期化( str項目名, e初期状態 );
+			this.t初期化(str項目名, e初期状態);
 		}
 		public CItemThreeState(string str項目名, E状態 e初期状態, string str説明文jp)
-			: this() {
+			: this()
+		{
 			this.t初期化(str項目名, e初期状態, str説明文jp, str説明文jp);
 		}
 		public CItemThreeState(string str項目名, E状態 e初期状態, string str説明文jp, string str説明文en)
-			: this() {
+			: this()
+		{
 			this.t初期化(str項目名, e初期状態, str説明文jp, str説明文en);
 		}
 
-		public CItemThreeState( string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別 )
+		public CItemThreeState(string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別)
 			: this()
 		{
-			this.t初期化( str項目名, e初期状態, eパネル種別 );
+			this.t初期化(str項目名, e初期状態, eパネル種別);
 		}
 		public CItemThreeState(string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別, string str説明文jp)
-			: this() {
+			: this()
+		{
 			this.t初期化(str項目名, e初期状態, eパネル種別, str説明文jp, str説明文jp);
 		}
 		public CItemThreeState(string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別, string str説明文jp, string str説明文en)
-			: this() {
+			: this()
+		{
 			this.t初期化(str項目名, e初期状態, eパネル種別, str説明文jp, str説明文en);
 		}
 
@@ -64,7 +68,7 @@ namespace DTXMania
 		}
 		public override void t項目値を次へ移動()
 		{
-			switch( this.e現在の状態 )
+			switch (this.e現在の状態)
 			{
 				case E状態.ON:
 					this.e現在の状態 = E状態.OFF;
@@ -81,7 +85,7 @@ namespace DTXMania
 		}
 		public override void t項目値を前へ移動()
 		{
-			switch( this.e現在の状態 )
+			switch (this.e現在の状態)
 			{
 				case E状態.ON:
 					this.e現在の状態 = E状態.OFF;
@@ -96,31 +100,35 @@ namespace DTXMania
 					return;
 			}
 		}
-		public void t初期化( string str項目名, E状態 e初期状態 )
+		public void t初期化(string str項目名, E状態 e初期状態)
 		{
-			this.t初期化( str項目名, e初期状態, CItemBase.Eパネル種別.通常 );
+			this.t初期化(str項目名, e初期状態, CItemBase.Eパネル種別.通常);
 		}
-		public void t初期化(string str項目名, E状態 e初期状態, string str説明文jp) {
+		public void t初期化(string str項目名, E状態 e初期状態, string str説明文jp)
+		{
 			this.t初期化(str項目名, e初期状態, CItemBase.Eパネル種別.通常, str説明文jp, str説明文jp);
 		}
-		public void t初期化(string str項目名, E状態 e初期状態, string str説明文jp, string str説明文en) {
+		public void t初期化(string str項目名, E状態 e初期状態, string str説明文jp, string str説明文en)
+		{
 			this.t初期化(str項目名, e初期状態, CItemBase.Eパネル種別.通常, str説明文jp, str説明文en);
 		}
 
-		public void t初期化( string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別 )
+		public void t初期化(string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別)
 		{
 			this.t初期化(str項目名, e初期状態, CItemBase.Eパネル種別.通常, "", "");
 		}
-		public void t初期化(string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別, string str説明文jp) {
+		public void t初期化(string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別, string str説明文jp)
+		{
 			this.t初期化(str項目名, e初期状態, CItemBase.Eパネル種別.通常, str説明文jp, str説明文jp);
 		}
-		public void t初期化(string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別, string str説明文jp, string str説明文en) {
+		public void t初期化(string str項目名, E状態 e初期状態, CItemBase.Eパネル種別 eパネル種別, string str説明文jp, string str説明文en)
+		{
 			base.t初期化(str項目名, eパネル種別, str説明文jp, str説明文en);
 			this.e現在の状態 = e初期状態;
 		}
 		public override object obj現在値()
 		{
-			if ( this.e現在の状態 == E状態.不定 )
+			if (this.e現在の状態 == E状態.不定)
 			{
 				return "- -";
 			}
@@ -133,22 +141,22 @@ namespace DTXMania
 		{
 			return (int)this.e現在の状態;
 		}
-		public override void SetIndex( int index )
+		public override void SetIndex(int index)
 		{
-		    switch (index )
-		    {
-		        case 0:
-		            this.e現在の状態 = E状態.ON;
-		            break;
-		        case 1:
-		            this.e現在の状態 = E状態.OFF;
-		            break;
-		        case 2:
-		            this.e現在の状態 = E状態.不定;
-		            break;
-		        default:
-		            throw new ArgumentOutOfRangeException();
-		    }
+			switch (index)
+			{
+				case 0:
+					this.e現在の状態 = E状態.ON;
+					break;
+				case 1:
+					this.e現在の状態 = E状態.OFF;
+					break;
+				case 2:
+					this.e現在の状態 = E状態.不定;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 	}
 }

@@ -16,14 +16,14 @@ namespace DTXMania
 
 		// プロパティ
 
-	
+
 		public int GetIndex(int pos)
 		{
-			return lciMenuItems[ pos ].cItem.GetIndex();
+			return lciMenuItems[pos].cItem.GetIndex();
 		}
-		public object GetObj現在値( int pos )
+		public object GetObj現在値(int pos)
 		{
-			return lciMenuItems[ pos ].cItem.obj現在値();
+			return lciMenuItems[pos].cItem.obj現在値();
 		}
 		public bool bGotoDetailConfig
 		{
@@ -39,7 +39,7 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		public virtual void tActivatePopupMenu( E楽器パート einst )
+		public virtual void tActivatePopupMenu(E楽器パート einst)
 		{
 			nItemSelecting = -1;		// #24757 2011.4.1 yyagi: Clear sorting status in each stating menu.
 			this.eInst = einst;
@@ -53,29 +53,29 @@ namespace DTXMania
 		}
 
 
-		public void Initialize( List<CItemBase> menulist, bool showAllItems, string title )
+		public void Initialize(List<CItemBase> menulist, bool showAllItems, string title)
 		{
-			Initialize( menulist, showAllItems, title, 0 );
+			Initialize(menulist, showAllItems, title, 0);
 		}
 
-		public void Initialize( List<CItemBase> menulist, bool showAllItems, string title, int defaultPos )
+		public void Initialize(List<CItemBase> menulist, bool showAllItems, string title, int defaultPos)
 		{
 
-			prvFont = new CPrivateFastFont( CSkin.Path( @"Graphics\fonts\mplus-1p-heavy.ttf" ), (int) ( 18 * Scale.Y ) );
+			prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y));
 
 			stqMenuTitle = new stQuickMenuItem();
 			stqMenuTitle.cItem = new CItemBase();
 			stqMenuTitle.cItem.str項目名 = title;
-			stqMenuTitle.txName = TextureFactory.tテクスチャの生成( prvFont.DrawPrivateFont( title, Color.White, Color.Black ), false );
+			stqMenuTitle.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(title, Color.White, Color.Black), false);
 			stqMenuTitle.rectName = prvFont.RectStrings;
-			lciMenuItems = new stQuickMenuItem[ menulist.Count ];
-			for (int i = 0; i < menulist.Count; i++ )
+			lciMenuItems = new stQuickMenuItem[menulist.Count];
+			for (int i = 0; i < menulist.Count; i++)
 			{
 				stQuickMenuItem stqm = new stQuickMenuItem();
-				stqm.cItem = menulist[ i ];
-				stqm.txName = TextureFactory.tテクスチャの生成( prvFont.DrawPrivateFont( menulist[ i ].str項目名, Color.White, Color.Black ), false );
+				stqm.cItem = menulist[i];
+				stqm.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(menulist[i].str項目名, Color.White, Color.Black), false);
 				stqm.rectName = prvFont.RectStrings;
-				lciMenuItems[ i ] = stqm;
+				lciMenuItems[i] = stqm;
 			}
 
 			bShowAllItems = showAllItems;
@@ -85,23 +85,23 @@ namespace DTXMania
 
 		public void tEnter押下()
 		{
-			if ( this.bキー入力待ち )
+			if (this.bキー入力待ち)
 			{
 				CDTXMania.app.Skin.sound決定音.t再生する();
 
-				if ( this.n現在の選択行 != lciMenuItems.Length - 1 )
+				if (this.n現在の選択行 != lciMenuItems.Length - 1)
 				{
-					if ( lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.リスト ||
-						 lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.ONorOFFトグル ||
-						 lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.ONorOFFor不定スリーステート	)
+					if (lciMenuItems[n現在の選択行].cItem.e種別 == CItemBase.E種別.リスト ||
+						 lciMenuItems[n現在の選択行].cItem.e種別 == CItemBase.E種別.ONorOFFトグル ||
+						 lciMenuItems[n現在の選択行].cItem.e種別 == CItemBase.E種別.ONorOFFor不定スリーステート)
 					{
-						lciMenuItems[ n現在の選択行 ].cItem.t項目値を次へ移動();
+						lciMenuItems[n現在の選択行].cItem.t項目値を次へ移動();
 					}
-					else if ( lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.整数 )
+					else if (lciMenuItems[n現在の選択行].cItem.e種別 == CItemBase.E種別.整数)
 					{
 						bIsSelectingIntItem = !bIsSelectingIntItem;		// 選択状態/選択解除状態を反転する
 					}
-					else if ( lciMenuItems[ n現在の選択行 ].cItem.e種別 == CItemBase.E種別.切替リスト )
+					else if (lciMenuItems[n現在の選択行].cItem.e種別 == CItemBase.E種別.切替リスト)
 					{
 						// 特に何もしない
 					}
@@ -111,7 +111,7 @@ namespace DTXMania
 					}
 					nItemSelecting = n現在の選択行;
 				}
-				tEnter押下Main( (int) lciMenuItems[ n現在の選択行 ].cItem.GetIndex() );
+				tEnter押下Main((int)lciMenuItems[n現在の選択行].cItem.GetIndex());
 
 				this.bキー入力待ち = true;
 			}
@@ -121,7 +121,7 @@ namespace DTXMania
 		/// Decide押下時の処理を、継承先で記述する。
 		/// </summary>
 		/// <param name="val">CItemBaseの現在の設定値のindex</param>
-		public virtual void tEnter押下Main( int val )
+		public virtual void tEnter押下Main(int val)
 		{
 		}
 		/// <summary>
@@ -140,16 +140,16 @@ namespace DTXMania
 
 		public void t次に移動()
 		{
-			if ( this.bキー入力待ち )
+			if (this.bキー入力待ち)
 			{
 				CDTXMania.app.Skin.soundカーソル移動音.t再生する();
-				if ( bIsSelectingIntItem )
+				if (bIsSelectingIntItem)
 				{
-					 lciMenuItems[ n現在の選択行 ].cItem.t項目値を前へ移動();		// 項目移動と数値上下は方向が逆になるので注意
+					lciMenuItems[n現在の選択行].cItem.t項目値を前へ移動();		// 項目移動と数値上下は方向が逆になるので注意
 				}
 				else
 				{
-					if ( ++this.n現在の選択行 >= this.lciMenuItems.Length )
+					if (++this.n現在の選択行 >= this.lciMenuItems.Length)
 					{
 						this.n現在の選択行 = 0;
 					}
@@ -158,16 +158,16 @@ namespace DTXMania
 		}
 		public void t前に移動()
 		{
-			if ( this.bキー入力待ち )
+			if (this.bキー入力待ち)
 			{
 				CDTXMania.app.Skin.soundカーソル移動音.t再生する();
-				if ( bIsSelectingIntItem )
+				if (bIsSelectingIntItem)
 				{
-					lciMenuItems[ n現在の選択行 ].cItem.t項目値を次へ移動();		// 項目移動と数値上下は方向が逆になるので注意
+					lciMenuItems[n現在の選択行].cItem.t項目値を次へ移動();		// 項目移動と数値上下は方向が逆になるので注意
 				}
 				else
 				{
-					if ( --this.n現在の選択行 < 0 )
+					if (--this.n現在の選択行 < 0)
 					{
 						this.n現在の選択行 = this.lciMenuItems.Length - 1;
 					}
@@ -179,35 +179,35 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-	//		this.n現在の選択行 = 0;
+			//		this.n現在の選択行 = 0;
 			this.bキー入力待ち = true;
-			for ( int i = 0; i < 4; i++ )
+			for (int i = 0; i < 4; i++)
 			{
-				this.ctキー反復用[ i ] = new CCounter( 0, 0, 0, CDTXMania.app.Timer );
+				this.ctキー反復用[i] = new CCounter(0, 0, 0, CDTXMania.app.Timer);
 			}
 			base.b活性化してない = true;
 
 			this.bIsActivePopupMenu = false;
-//			this.font = new CActDFPFont();
-//			base.list子Activities.Add( this.font );
+			//			this.font = new CActDFPFont();
+			//			base.list子Activities.Add( this.font );
 			nItemSelecting = -1;
 
-			
+
 			base.On活性化();
 		}
 		public override void On非活性化()
 		{
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-//				base.list子Activities.Remove( this.font );
-//				this.font.On非活性化();
-//				this.font = null;
+				//				base.list子Activities.Remove( this.font );
+				//				this.font.On非活性化();
+				//				this.font = null;
 
-				TextureFactory.tテクスチャの解放( ref this.txCursor );
-				TextureFactory.tテクスチャの解放( ref this.txPopupMenuBackground );
-				for ( int i = 0; i < 4; i++ )
+				TextureFactory.tテクスチャの解放(ref this.txCursor);
+				TextureFactory.tテクスチャの解放(ref this.txPopupMenuBackground);
+				for (int i = 0; i < 4; i++)
 				{
-					this.ctキー反復用[ i ] = null;
+					this.ctキー反復用[i] = null;
 				}
 
 				// 解放はGCに任せてみる
@@ -228,45 +228,45 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				string pathCursor = CSkin.Path( @"Graphics\ScreenConfig menu cursor.png" );;
-				string pathPopupMenuBackground = CSkin.Path( @"Graphics\ScreenSelect sort menu background.png" );
-				if ( File.Exists ( pathCursor ) )
+				string pathCursor = CSkin.Path(@"Graphics\ScreenConfig menu cursor.png"); ;
+				string pathPopupMenuBackground = CSkin.Path(@"Graphics\ScreenSelect sort menu background.png");
+				if (File.Exists(pathCursor))
 				{
-					this.txCursor = TextureFactory.tテクスチャの生成( pathCursor, false );
+					this.txCursor = TextureFactory.tテクスチャの生成(pathCursor, false);
 				}
-				if ( File.Exists( pathPopupMenuBackground ) )
+				if (File.Exists(pathPopupMenuBackground))
 				{
-					this.txPopupMenuBackground = TextureFactory.tテクスチャの生成( pathPopupMenuBackground, false );
+					this.txPopupMenuBackground = TextureFactory.tテクスチャの生成(pathPopupMenuBackground, false);
 				}
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				TextureFactory.tテクスチャの解放( ref this.txPopupMenuBackground );
-				TextureFactory.tテクスチャの解放( ref this.txCursor );
+				TextureFactory.tテクスチャの解放(ref this.txPopupMenuBackground);
+				TextureFactory.tテクスチャの解放(ref this.txCursor);
 			}
 			base.OnManagedリソースの解放();
 		}
 
 		public override int On進行描画()
 		{
-			throw new InvalidOperationException( "t進行描画(bool)のほうを使用してください。" );
+			throw new InvalidOperationException("t進行描画(bool)のほうを使用してください。");
 		}
 
 		public int t進行描画()
 		{
-			if ( !base.b活性化してない && this.bIsActivePopupMenu )
+			if (!base.b活性化してない && this.bIsActivePopupMenu)
 			{
-				if ( this.bキー入力待ち )
+				if (this.bキー入力待ち)
 				{
 					#region [ Shift-F1: CONFIG画面 ]
-					if ( ( CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightShift ) || CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftShift ) ) &&
-						CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.F1 ) )
+					if ((CDTXMania.app.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightShift) || CDTXMania.app.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftShift)) &&
+						CDTXMania.app.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.F1))
 					{	// [SHIFT] + [F1] CONFIG
 						CDTXMania.app.Skin.sound取消音.t再生する();
 						tCancel();
@@ -274,9 +274,9 @@ namespace DTXMania
 					}
 					#endregion
 					#region [ キー入力: キャンセル ]
-					else if ( CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Escape )
-						|| CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.FT )
-						|| CDTXMania.app.Pad.b押されたGB( Eパッド.Cancel ) )
+					else if (CDTXMania.app.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Escape)
+						|| CDTXMania.app.Pad.b押された(E楽器パート.DRUMS, Eパッド.FT)
+						|| CDTXMania.app.Pad.b押されたGB(Eパッド.Cancel))
 					{	// キャンセル
 						CDTXMania.app.Skin.sound取消音.t再生する();
 						tCancel();
@@ -287,115 +287,115 @@ namespace DTXMania
 					#region [ キー入力: 決定 ]
 					// E楽器パート eInst = E楽器パート.UNKNOWN;
 					ESortAction eAction = ESortAction.END;
-					if ( CDTXMania.app.Pad.b押された( E楽器パート.GUITAR, Eパッド.Decide ) )
+					if (CDTXMania.app.Pad.b押された(E楽器パート.GUITAR, Eパッド.Decide))
 					{
 						eInst = E楽器パート.GUITAR;
 						eAction = ESortAction.Decide;
 					}
-					else if ( CDTXMania.app.Pad.b押された( E楽器パート.BASS, Eパッド.Decide ) )
+					else if (CDTXMania.app.Pad.b押された(E楽器パート.BASS, Eパッド.Decide))
 					{
 						eInst = E楽器パート.BASS;
 						eAction = ESortAction.Decide;
 					}
 					else if (
-						CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.Decide )	// #24756 2011.4.1 yyagi: Add condition "Drum-Decide" to enable CY in Sort Menu.
-						|| CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.RD )
-						|| CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.LC )
-						|| ( CDTXMania.app.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.app.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return ) ) )
+						CDTXMania.app.Pad.b押された(E楽器パート.DRUMS, Eパッド.Decide)	// #24756 2011.4.1 yyagi: Add condition "Drum-Decide" to enable CY in Sort Menu.
+						|| CDTXMania.app.Pad.b押された(E楽器パート.DRUMS, Eパッド.RD)
+						|| CDTXMania.app.Pad.b押された(E楽器パート.DRUMS, Eパッド.LC)
+						|| (CDTXMania.app.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.app.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Return)))
 					{
 						eInst = E楽器パート.DRUMS;
 						eAction = ESortAction.Decide;
 					}
-					if ( eAction == ESortAction.Decide )	// 決定
+					if (eAction == ESortAction.Decide)	// 決定
 					{
 						this.tEnter押下();
 					}
 					#endregion
 					#region [ キー入力: 前に移動 ]
-					this.ctキー反復用.Up.tキー反復( CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.UpArrow ), new CCounter.DGキー処理( this.t前に移動 ) );
-					this.ctキー反復用.R.tキー反復( CDTXMania.app.Pad.b押されているGB( Eパッド.R ), new CCounter.DGキー処理( this.t前に移動 ) );
-					if ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.SD ) )
+					this.ctキー反復用.Up.tキー反復(CDTXMania.app.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.UpArrow), new CCounter.DGキー処理(this.t前に移動));
+					this.ctキー反復用.R.tキー反復(CDTXMania.app.Pad.b押されているGB(Eパッド.R), new CCounter.DGキー処理(this.t前に移動));
+					if (CDTXMania.app.Pad.b押された(E楽器パート.DRUMS, Eパッド.SD))
 					{
 						this.t前に移動();
 					}
 					#endregion
 					#region [ キー入力: 次に移動 ]
-					this.ctキー反復用.Down.tキー反復( CDTXMania.app.Input管理.Keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.DownArrow ), new CCounter.DGキー処理( this.t次に移動 ) );
-					this.ctキー反復用.B.tキー反復( CDTXMania.app.Pad.b押されているGB( Eパッド.B ), new CCounter.DGキー処理( this.t次に移動 ) );
-					if ( CDTXMania.app.Pad.b押された( E楽器パート.DRUMS, Eパッド.LT ) )
+					this.ctキー反復用.Down.tキー反復(CDTXMania.app.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.DownArrow), new CCounter.DGキー処理(this.t次に移動));
+					this.ctキー反復用.B.tキー反復(CDTXMania.app.Pad.b押されているGB(Eパッド.B), new CCounter.DGキー処理(this.t次に移動));
+					if (CDTXMania.app.Pad.b押された(E楽器パート.DRUMS, Eパッド.LT))
 					{
 						this.t次に移動();
 					}
 					#endregion
 				}
 				#region [ ポップアップメニュー 背景描画 ]
-				if ( this.txPopupMenuBackground != null )
+				if (this.txPopupMenuBackground != null)
 				{
-					this.txPopupMenuBackground.t2D描画( CDTXMania.app.Device, 160 * Scale.X, 10 * Scale.Y );
+					this.txPopupMenuBackground.t2D描画(CDTXMania.app.Device, 160 * Scale.X, 10 * Scale.Y);
 				}
 				#endregion
 				#region [ ソートメニュータイトル描画 ]
-				int x = (int) ( 240 * Scale.X ), y = (int) ( 16 * Scale.Y );
-				stqMenuTitle.txName.t2D描画( CDTXMania.app.Device, x, y );						//font.t文字列描画( x, y, strMenuTitle, false, 1.0f );
+				int x = (int)(240 * Scale.X), y = (int)(16 * Scale.Y);
+				stqMenuTitle.txName.t2D描画(CDTXMania.app.Device, x, y);						//font.t文字列描画( x, y, strMenuTitle, false, 1.0f );
 				#endregion
 				#region [ カーソル描画 ]
-				if ( this.txCursor != null )
+				if (this.txCursor != null)
 				{
 					int height = stqMenuTitle.rectName.Height;
 					int curX = (int)(180 * Scale.X);
-					int curY = (int)(16 * Scale.Y) + ( height / 4 - 6) +  ( height * ( this.n現在の選択行 + 1 ) );
-					this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, new Rectangle( 0, 0, (int)(16 * Scale.X), (int)(32 * Scale.Y) ) );
+					int curY = (int)(16 * Scale.Y) + (height / 4 - 6) + (height * (this.n現在の選択行 + 1));
+					this.txCursor.t2D描画(CDTXMania.app.Device, curX, curY, new Rectangle(0, 0, (int)(16 * Scale.X), (int)(32 * Scale.Y)));
 					curX += (int)(0x10 * Scale.X);
-					Rectangle rectangle = new Rectangle( (int)(8 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y) );
-					for ( int j = 0; j < 16 + 3; j++ )
+					Rectangle rectangle = new Rectangle((int)(8 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y));
+					for (int j = 0; j < 16 + 3; j++)
 					{
-						this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, rectangle );
+						this.txCursor.t2D描画(CDTXMania.app.Device, curX, curY, rectangle);
 						curX += (int)(16 * Scale.Y);
 					}
-					this.txCursor.t2D描画( CDTXMania.app.Device, curX, curY, new Rectangle( (int)(0x10 * Scale.X), 0, (int)(16 * Scale.X), (int)(32 * Scale.Y) ) );
+					this.txCursor.t2D描画(CDTXMania.app.Device, curX, curY, new Rectangle((int)(0x10 * Scale.X), 0, (int)(16 * Scale.X), (int)(32 * Scale.Y)));
 				}
 				#endregion
 				#region [ ソート候補文字列描画 ]
-				for ( int i = 0; i < lciMenuItems.Length; i++ )
+				for (int i = 0; i < lciMenuItems.Length; i++)
 				{
-					bool bItemBold = ( i == nItemSelecting && !bShowAllItems ) ? true : false;
+					bool bItemBold = (i == nItemSelecting && !bShowAllItems) ? true : false;
 					//font.t文字列描画( 190, 80 + i * 32, lciMenuItems[i].cItem.str項目名, bItemBold, 1.0f );
-					if ( lciMenuItems[ i ].txName != null )
+					if (lciMenuItems[i].txName != null)
 					{
-						int height = lciMenuItems[ i ].rectName.Height;
-						lciMenuItems[ i ].txName.t2D描画( CDTXMania.app.Device, 190 * Scale.X, ( 50 * Scale.Y ) + i * height );
+						int height = lciMenuItems[i].rectName.Height;
+						lciMenuItems[i].txName.t2D描画(CDTXMania.app.Device, 190 * Scale.X, (50 * Scale.Y) + i * height);
 					}
 
 					bool bValueBold = (bItemBold || (i == nItemSelecting && bIsSelectingIntItem)) ? true : false;
-					if ( bItemBold || bShowAllItems )
+					if (bItemBold || bShowAllItems)
 					{
 						string s;
-						switch ( lciMenuItems[i].cItem.str項目名 )
+						switch (lciMenuItems[i].cItem.str項目名)
 						{
 							case "PlaySpeed":
 								{
-									double d = (double) ((int)lciMenuItems[ i ].cItem.obj現在値() / 20.0);
-									s = "x" + d.ToString( "0.000" );
+									double d = (double)((int)lciMenuItems[i].cItem.obj現在値() / 20.0);
+									s = "x" + d.ToString("0.000");
 								}
 								break;
 							case "ScrollSpeed":
 								{
-									double d = (double) ( ( ( (int) lciMenuItems[ i ].cItem.obj現在値() ) + 1 ) / 2.0 );
-									s = "x" + d.ToString( "0.0" );
+									double d = (double)((((int)lciMenuItems[i].cItem.obj現在値()) + 1) / 2.0);
+									s = "x" + d.ToString("0.0");
 								}
 								break;
 
 							default:
-								s = lciMenuItems[ i ].cItem.obj現在値().ToString();
+								s = lciMenuItems[i].cItem.obj現在値().ToString();
 								break;
 						}
 						//font.t文字列描画( (int)(340 * Scale.X), (int)(80 + i * 32), s, bValueBold, 1.0f * Scale.Y);
-						Bitmap bmpStr = bValueBold?
-							prvFont.DrawPrivateFont( s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed ) : 
-							prvFont.DrawPrivateFont( s, Color.White, Color.Black );
-						CTexture ctStr = TextureFactory.tテクスチャの生成( bmpStr, false );
-						ctStr.t2D描画( CDTXMania.app.Device, 340 * Scale.X, ( 50 * Scale.Y ) + i * prvFont.RectStrings.Height );
-						TextureFactory.tテクスチャの解放( ref ctStr );
+						Bitmap bmpStr = bValueBold ?
+							prvFont.DrawPrivateFont(s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
+							prvFont.DrawPrivateFont(s, Color.White, Color.Black);
+						CTexture ctStr = TextureFactory.tテクスチャの生成(bmpStr, false);
+						ctStr.t2D描画(CDTXMania.app.Device, 340 * Scale.X, (50 * Scale.Y) + i * prvFont.RectStrings.Height);
+						TextureFactory.tテクスチャの解放(ref ctStr);
 					}
 				}
 				#endregion
@@ -431,19 +431,19 @@ namespace DTXMania
 		private stQuickMenuItem stqMenuTitle;
 		private bool bShowAllItems;
 		private bool bIsSelectingIntItem;
-	
-		[StructLayout( LayoutKind.Sequential )]
+
+		[StructLayout(LayoutKind.Sequential)]
 		private struct STキー反復用カウンタ
 		{
 			public CCounter Up;
 			public CCounter Down;
 			public CCounter R;
 			public CCounter B;
-			public CCounter this[ int index ]
+			public CCounter this[int index]
 			{
 				get
 				{
-					switch ( index )
+					switch (index)
 					{
 						case 0:
 							return this.Up;
@@ -461,7 +461,7 @@ namespace DTXMania
 				}
 				set
 				{
-					switch ( index )
+					switch (index)
 					{
 						case 0:
 							this.Up = value;

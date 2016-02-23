@@ -45,7 +45,7 @@ namespace DTXMania
 			base.list子Activities.Add(this.actFO = new CActFIFOBlack());
 			base.list子Activities.Add(this.actFOClear = new CActFIFOWhite());
 		}
-		
+
 		// メソッド
 		public void t演奏結果を格納する(out CScoreIni.C演奏記録 Drums, out CScoreIni.C演奏記録 Guitar, out CScoreIni.C演奏記録 Bass, out CChip[] r空打ちドラムチップ)
 		{

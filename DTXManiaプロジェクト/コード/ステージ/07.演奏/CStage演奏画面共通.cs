@@ -1955,7 +1955,7 @@ namespace DTXMania
 
 
 				bool bPChipIsAutoPlay = pChip.bAssignAutoPlayState(bIsAutoPlay);
-				
+
 				int nInputAdjustTime = (bPChipIsAutoPlay || (pChip.e楽器パート == E楽器パート.UNKNOWN)) ? 0 : this.nInputAdjustTimeMs[(int)pChip.e楽器パート];
 
 				int instIndex = (int)pChip.e楽器パート;

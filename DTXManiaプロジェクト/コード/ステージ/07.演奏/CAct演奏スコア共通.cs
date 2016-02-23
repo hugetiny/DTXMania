@@ -15,7 +15,7 @@ namespace DTXMania
 		protected long n進行用タイマ;
 		protected CTexture txScore;
 
-		
+
 		// コンストラクタ
 
 		public CAct演奏スコア共通()
@@ -26,20 +26,20 @@ namespace DTXMania
 
 		// メソッド
 
-		public double Get( E楽器パート part )
+		public double Get(E楽器パート part)
 		{
-			return this.n現在の本当のスコア[ (int) part ];
+			return this.n現在の本当のスコア[(int)part];
 		}
-		public void Set( E楽器パート part, double nScore )
+		public void Set(E楽器パート part, double nScore)
 		{
-			int nPart = (int) part;
-			if( this.n現在の本当のスコア[ nPart ] != nScore )
+			int nPart = (int)part;
+			if (this.n現在の本当のスコア[nPart] != nScore)
 			{
-				this.n現在の本当のスコア[ nPart ] = nScore;
-				this.nスコアの増分[ nPart ] = (long) ( ( (double) ( this.n現在の本当のスコア[ nPart ] - this.n現在表示中のスコア[ nPart ] ) ) / 20.0 );
-				if( this.nスコアの増分[ nPart ] < 1L )
+				this.n現在の本当のスコア[nPart] = nScore;
+				this.nスコアの増分[nPart] = (long)(((double)(this.n現在の本当のスコア[nPart] - this.n現在表示中のスコア[nPart])) / 20.0);
+				if (this.nスコアの増分[nPart] < 1L)
 				{
-					this.nスコアの増分[ nPart ] = 1L;
+					this.nスコアの増分[nPart] = 1L;
 				}
 			}
 		}
@@ -49,10 +49,10 @@ namespace DTXMania
 		/// <param name="part"></param>
 		/// <param name="bAutoPlay"></param>
 		/// <param name="delta"></param>
-		public void Add( E楽器パート part, STAUTOPLAY bAutoPlay, long delta )
+		public void Add(E楽器パート part, STAUTOPLAY bAutoPlay, long delta)
 		{
 			double rev = 1.0;
-			switch ( part )
+			switch (part)
 			{
 				#region [ Unknown ]
 				case E楽器パート.UNKNOWN:
@@ -60,10 +60,10 @@ namespace DTXMania
 				#endregion
 				#region [ Drums ]
 				case E楽器パート.DRUMS:
-					if ( !CDTXMania.app.ConfigIni.bドラムが全部オートプレイである )
+					if (!CDTXMania.app.ConfigIni.bドラムが全部オートプレイである)
 					{
 						#region [ Auto BD ]
-						if ( bAutoPlay.BD == true )
+						if (bAutoPlay.BD == true)
 						{
 							rev /= 2;
 						}
@@ -73,22 +73,22 @@ namespace DTXMania
 				#endregion
 				#region [ Gutiar ]
 				case E楽器パート.GUITAR:
-					if ( !CDTXMania.app.ConfigIni.bギターが全部オートプレイである )
+					if (!CDTXMania.app.ConfigIni.bギターが全部オートプレイである)
 					{
 						#region [ Auto Wailing ]
-						if ( bAutoPlay.GtW )
+						if (bAutoPlay.GtW)
 						{
 							rev /= 2;
 						}
 						#endregion
 						#region [ Auto Pick ]
-						if ( bAutoPlay.GtPick )
+						if (bAutoPlay.GtPick)
 						{
 							rev /= 3;
 						}
 						#endregion
 						#region [ Auto Neck ]
-						if ( bAutoPlay.GtR || bAutoPlay.GtG || bAutoPlay.GtB )
+						if (bAutoPlay.GtR || bAutoPlay.GtG || bAutoPlay.GtB)
 						{
 							rev /= 4;
 						}
@@ -98,22 +98,22 @@ namespace DTXMania
 				#endregion
 				#region [ Bass ]
 				case E楽器パート.BASS:
-					if ( !CDTXMania.app.ConfigIni.bベースが全部オートプレイである )
+					if (!CDTXMania.app.ConfigIni.bベースが全部オートプレイである)
 					{
 						#region [ Auto Wailing ]
-						if ( bAutoPlay.BsW )
+						if (bAutoPlay.BsW)
 						{
 							rev /= 2;
 						}
 						#endregion
 						#region [ Auto Pick ]
-						if ( bAutoPlay.BsPick )
+						if (bAutoPlay.BsPick)
 						{
 							rev /= 3;
 						}
 						#endregion
 						#region [ Auto Neck ]
-						if ( bAutoPlay.BsR || bAutoPlay.BsG || bAutoPlay.BsB )
+						if (bAutoPlay.BsR || bAutoPlay.BsG || bAutoPlay.BsB)
 						{
 							rev /= 4;
 						}
@@ -122,7 +122,7 @@ namespace DTXMania
 					break;
 				#endregion
 			}
-			this.Set( part, this.Get( part ) + delta * rev );
+			this.Set(part, this.Get(part) + delta * rev);
 		}
 
 
@@ -131,27 +131,27 @@ namespace DTXMania
 		public override void On活性化()
 		{
 			this.n進行用タイマ = -1;
-			for( int i = 0; i < 3; i++ )
+			for (int i = 0; i < 3; i++)
 			{
-				this.n現在表示中のスコア[ i ] = 0L;
-				this.n現在の本当のスコア[ i ] = 0L;
-				this.nスコアの増分[ i ] = 0L;
+				this.n現在表示中のスコア[i] = 0L;
+				this.n現在の本当のスコア[i] = 0L;
+				this.nスコアの増分[i] = 0L;
 			}
 			base.On活性化();
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				this.txScore = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay score numbers.png" ) );
+				this.txScore = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlay score numbers.png"));
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				TextureFactory.tテクスチャの解放( ref this.txScore );
+				TextureFactory.tテクスチャの解放(ref this.txScore);
 				base.OnManagedリソースの解放();
 			}
 		}

@@ -730,7 +730,7 @@ namespace DTXMania
 						n小節番号 = chip.n発声位置 / 384;
 						seed = CDTXMania.app.Random.Next(6);
 					}
-					
+
 					chip.RandomizeRGB(eRandom, seed, bOpenChip);
 					// #23546 2010.10.28 yyagi fixed (bチップがある.Bass→bチップがある.OpenBass)
 					//				Label_02C4:
@@ -1014,7 +1014,7 @@ namespace DTXMania
 							//DebugOut_CChipList( listRemoveMixerChannel );
 							//listRemoveTiming.RemoveAt( index );
 						}
-						CChip c = new CChip(n新RemoveMixer位置,listRemoveTiming[index].n整数値, listRemoveTiming[index].n整数値_内部番号, Ech定義.MixerRemove,n新RemoveMixer時刻ms,false);// mixer削除時刻を更新(遅延)する
+						CChip c = new CChip(n新RemoveMixer位置, listRemoveTiming[index].n整数値, listRemoveTiming[index].n整数値_内部番号, Ech定義.MixerRemove, n新RemoveMixer時刻ms, false);// mixer削除時刻を更新(遅延)する
 						listRemoveTiming[index] = c;
 						//listRemoveTiming[ index ].n発声時刻ms = n新RemoveMixer時刻ms;	// mixer削除時刻を更新(遅延)する
 						//listRemoveTiming[ index ].n発声位置 = n新RemoveMixer位置;
@@ -1023,7 +1023,7 @@ namespace DTXMania
 					}
 					else																// 過去に同じチップを発音していないor
 					{																	// 発音していたが既にmixer削除確定していたなら
-						CChip c = new CChip(n新RemoveMixer位置,pChip.n整数値,pChip.n整数値_内部番号,Ech定義.MixerRemove,n新RemoveMixer時刻ms,false);// 新しくmixer削除候補として追加する
+						CChip c = new CChip(n新RemoveMixer位置, pChip.n整数値, pChip.n整数値_内部番号, Ech定義.MixerRemove, n新RemoveMixer時刻ms, false);// 新しくmixer削除候補として追加する
 						//Debug.WriteLine( "Add new chip to listRemoveMixerTiming: " );
 						//Debug.WriteLine( "ch=" + c.nチャンネル番号.ToString( "x2" ) + ", nWAV番号=" + c.n整数値 + ", time=" + c.n発声時刻ms + ", lasttime=" + listChip[ listChip.Count - 1 ].n発声時刻ms );
 						listRemoveTiming.Add(c);
@@ -1117,7 +1117,7 @@ namespace DTXMania
 		/// </summary>
 		public void SwapGuitarBassInfos()						// #24063 2011.1.24 yyagi ギターとベースの譜面情報入替
 		{
-			foreach(CChip chip in listChip)
+			foreach (CChip chip in listChip)
 			{
 				chip.SwapGB();
 			}

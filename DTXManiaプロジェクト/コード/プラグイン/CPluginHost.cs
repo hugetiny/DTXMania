@@ -14,7 +14,7 @@ namespace DTXMania
 		// コンストラクタ
 		public CPluginHost()
 		{
-			this._DTXManiaVersion = new CDTXVersion( CDTXMania.VERSION );
+			this._DTXManiaVersion = new CDTXVersion(CDTXMania.VERSION);
 		}
 
 
@@ -26,7 +26,7 @@ namespace DTXMania
 		}
 		public Device D3D9Device
 		{
-			get { return (CDTXMania.app != null ) ? CDTXMania.app.Device : null; }
+			get { return (CDTXMania.app != null) ? CDTXMania.app.Device : null; }
 		}
 		public Format TextureFormat
 		{
@@ -46,11 +46,11 @@ namespace DTXMania
 		}
 		public CStage.Eステージ e現在のステージ
 		{
-			get { return ( CDTXMania.app.r現在のステージ != null ) ? CDTXMania.app.r現在のステージ.eステージID : CStage.Eステージ.何もしない; }
+			get { return (CDTXMania.app.r現在のステージ != null) ? CDTXMania.app.r現在のステージ.eステージID : CStage.Eステージ.何もしない; }
 		}
 		public CStage.Eフェーズ e現在のフェーズ
 		{
-			get { return ( CDTXMania.app.r現在のステージ != null ) ? CDTXMania.app.r現在のステージ.eフェーズID : CStage.Eフェーズ.共通_通常状態; }
+			get { return (CDTXMania.app.r現在のステージ != null) ? CDTXMania.app.r現在のステージ.eフェーズID : CStage.Eフェーズ.共通_通常状態; }
 		}
 		public bool t入力を占有する(IPluginActivity act)
 		{
@@ -68,13 +68,13 @@ namespace DTXMania
 			CDTXMania.app.act現在入力を占有中のプラグイン = null;
 			return true;
 		}
-		public void tシステムサウンドを再生する( Eシステムサウンド sound )
+		public void tシステムサウンドを再生する(Eシステムサウンド sound)
 		{
-			if( CDTXMania.app.Skin != null )
-				CDTXMania.app.Skin[ sound ].t再生する();
+			if (CDTXMania.app.Skin != null)
+				CDTXMania.app.Skin[sound].t再生する();
 		}
-		
-		
+
+
 		// その他
 
 		#region [ private ]

@@ -29,31 +29,31 @@ namespace DTXMania
 
 		// メソッド
 
-		public void tPrint( int x, int y, Eフォント種別 font, string str英数字文字列 )
+		public void tPrint(int x, int y, Eフォント種別 font, string str英数字文字列)
 		{
-			if( !base.b活性化してない && !string.IsNullOrEmpty( str英数字文字列 ) )
+			if (!base.b活性化してない && !string.IsNullOrEmpty(str英数字文字列))
 			{
 				int BOL = x;
-				for( int i = 0; i < str英数字文字列.Length; i++ )
+				for (int i = 0; i < str英数字文字列.Length; i++)
 				{
-					char ch = str英数字文字列[ i ];
-					if( ch == '\n' )
+					char ch = str英数字文字列[i];
+					if (ch == '\n')
 					{
 						x = BOL;
 						y += nFontHeight;
 					}
 					else
 					{
-						int index = str表記可能文字.IndexOf( ch );
-						if( index < 0 )
+						int index = str表記可能文字.IndexOf(ch);
+						if (index < 0)
 						{
 							x += nFontWidth;
 						}
 						else
 						{
-							if( this.txフォント8x16[ (int) ( (int) font / (int) Eフォント種別.白細 ) ] != null )
+							if (this.txフォント8x16[(int)((int)font / (int)Eフォント種別.白細)] != null)
 							{
-								this.txフォント8x16[ (int) ( (int) font / (int) Eフォント種別.白細 ) ].t2D描画( CDTXMania.app.Device, x, y, this.rc文字の矩形領域[ (int) ( (int) font % (int) Eフォント種別.白細 ), index ] );
+								this.txフォント8x16[(int)((int)font / (int)Eフォント種別.白細)].t2D描画(CDTXMania.app.Device, x, y, this.rc文字の矩形領域[(int)((int)font % (int)Eフォント種別.白細), index]);
 							}
 							x += nFontWidth;
 						}
@@ -67,46 +67,46 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.rc文字の矩形領域 = new Rectangle[3, str表記可能文字.Length ];
-			for( int i = 0; i < 3; i++ )
+			this.rc文字の矩形領域 = new Rectangle[3, str表記可能文字.Length];
+			for (int i = 0; i < 3; i++)
 			{
 				for (int j = 0; j < str表記可能文字.Length; j++)
 				{
 					const int regionX = 128 * 2, regionY = 16;
-					this.rc文字の矩形領域[ i, j ].X = ( ( i / 2 ) * regionX ) + ( ( j % regionY ) * nFontWidth );
-					this.rc文字の矩形領域[ i, j ].Y = ( ( i % 2 ) * regionX ) + ( ( j / regionY ) * nFontHeight );
-					this.rc文字の矩形領域[ i, j ].Width = nFontWidth;
-					this.rc文字の矩形領域[ i, j ].Height = nFontHeight;
+					this.rc文字の矩形領域[i, j].X = ((i / 2) * regionX) + ((j % regionY) * nFontWidth);
+					this.rc文字の矩形領域[i, j].Y = ((i % 2) * regionX) + ((j / regionY) * nFontHeight);
+					this.rc文字の矩形領域[i, j].Width = nFontWidth;
+					this.rc文字の矩形領域[i, j].Height = nFontHeight;
 				}
 			}
 			base.On活性化();
 		}
 		public override void On非活性化()
 		{
-			if( this.rc文字の矩形領域 != null )
+			if (this.rc文字の矩形領域 != null)
 				this.rc文字の矩形領域 = null;
 
 			base.On非活性化();
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				this.txフォント8x16[ 0 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Console font 8x16.png" ) );
-				this.txフォント8x16[ 1 ] = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Console font 2 8x16.png" ) );
+				this.txフォント8x16[0] = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\Console font 8x16.png"));
+				this.txフォント8x16[1] = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\Console font 2 8x16.png"));
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				for( int i = 0; i < 2; i++ )
+				for (int i = 0; i < 2; i++)
 				{
-					if( this.txフォント8x16[ i ] != null )
+					if (this.txフォント8x16[i] != null)
 					{
-						this.txフォント8x16[ i ].Dispose();
-						this.txフォント8x16[ i ] = null;
+						this.txフォント8x16[i].Dispose();
+						this.txフォント8x16[i] = null;
 					}
 				}
 				base.OnManagedリソースの解放();
@@ -121,7 +121,7 @@ namespace DTXMania
 		private Rectangle[,] rc文字の矩形領域;
 		private const string str表記可能文字 = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ";
 		private const int nFontWidth = 8 * 2, nFontHeight = 16 * 2;
-		private CTexture[] txフォント8x16 = new CTexture[ 2 ];
+		private CTexture[] txフォント8x16 = new CTexture[2];
 		//-----------------
 		#endregion
 	}

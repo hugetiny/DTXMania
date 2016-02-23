@@ -22,28 +22,28 @@ namespace DTXMania
 			{
 				try
 				{
-					Bitmap image = new Bitmap( (int)(400 * Scale.X), (int)(130 * Scale.Y) );
-					Graphics graphics = Graphics.FromImage( image );
+					Bitmap image = new Bitmap((int)(400 * Scale.X), (int)(130 * Scale.Y));
+					Graphics graphics = Graphics.FromImage(image);
 					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					for ( int i = 0; i < 5; i++ )
+					for (int i = 0; i < 5; i++)
 					{
-						if( ( cスコア.譜面情報.演奏履歴[ i ] != null ) && ( cスコア.譜面情報.演奏履歴[ i ].Length > 0 ) )
+						if ((cスコア.譜面情報.演奏履歴[i] != null) && (cスコア.譜面情報.演奏履歴[i].Length > 0))
 						{
-							graphics.DrawString( cスコア.譜面情報.演奏履歴[ i ], this.ft表示用フォント, Brushes.Yellow, (float) 0f, (float) ( i * 24f * Scale.Y ) );
+							graphics.DrawString(cスコア.譜面情報.演奏履歴[i], this.ft表示用フォント, Brushes.Yellow, (float)0f, (float)(i * 24f * Scale.Y));
 						}
 					}
 					graphics.Dispose();
-					if( this.tx文字列パネル != null )
+					if (this.tx文字列パネル != null)
 					{
 						this.tx文字列パネル.Dispose();
 					}
-					this.tx文字列パネル = new CTexture( CDTXMania.app.Device, image, CDTXMania.app.TextureFormat );
-					this.tx文字列パネル.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
+					this.tx文字列パネル = new CTexture(CDTXMania.app.Device, image, CDTXMania.app.TextureFormat);
+					this.tx文字列パネル.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f);
 					image.Dispose();
 				}
-				catch( CTextureCreateFailedException )
+				catch (CTextureCreateFailedException)
 				{
-					Trace.TraceError( "演奏履歴文字列テクスチャの作成に失敗しました。" );
+					Trace.TraceError("演奏履歴文字列テクスチャの作成に失敗しました。");
 					this.tx文字列パネル = null;
 				}
 			}
@@ -56,12 +56,12 @@ namespace DTXMania
 		{
 			this.n本体X = (int)(0x195 * Scale.X);
 			this.n本体Y = (int)(0x174 * Scale.Y);
-			this.ft表示用フォント = new Font( "Arial", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel );
+			this.ft表示用フォント = new Font("Arial", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel);
 			base.On活性化();
 		}
 		public override void On非活性化()
 		{
-			if( this.ft表示用フォント != null )
+			if (this.ft表示用フォント != null)
 			{
 				this.ft表示用フォント.Dispose();
 				this.ft表示用フォント = null;
@@ -71,56 +71,56 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				this.txパネル本体 = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenSelect play history panel.png" ), true );
+				this.txパネル本体 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect play history panel.png"), true);
 				this.t選択曲が変更された();
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				TextureFactory.tテクスチャの解放( ref this.txパネル本体 );
-				TextureFactory.tテクスチャの解放( ref this.tx文字列パネル );
+				TextureFactory.tテクスチャの解放(ref this.txパネル本体);
+				TextureFactory.tテクスチャの解放(ref this.tx文字列パネル);
 				base.OnManagedリソースの解放();
 			}
 		}
 		public override int On進行描画()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				if( base.b初めての進行描画 )
+				if (base.b初めての進行描画)
 				{
-					this.ct登場アニメ用 = new CCounter( 0, 100, 5, CDTXMania.app.Timer );
+					this.ct登場アニメ用 = new CCounter(0, 100, 5, CDTXMania.app.Timer);
 					base.b初めての進行描画 = false;
 				}
 				this.ct登場アニメ用.t進行();
-				if( this.ct登場アニメ用.b終了値に達した || ( this.txパネル本体 == null ) )
+				if (this.ct登場アニメ用.b終了値に達した || (this.txパネル本体 == null))
 				{
 					this.n本体X = (int)(0x195 * Scale.X);
 					this.n本体Y = (int)(0x174 * Scale.Y);
 				}
 				else
 				{
-					double num = ( (double) this.ct登場アニメ用.n現在の値 ) / 100.0;
-					double num2 = Math.Cos( ( 1.5 + ( 0.5 * num ) ) * Math.PI );
+					double num = ((double)this.ct登場アニメ用.n現在の値) / 100.0;
+					double num2 = Math.Cos((1.5 + (0.5 * num)) * Math.PI);
 					this.n本体X = (int)(0x195 * Scale.X);
-					this.n本体Y = (int)(0x174 * Scale.Y) + ( (int) ( this.txパネル本体.sz画像サイズ.Height * ( 1.0 - ( num2 * num2 ) ) ) );
+					this.n本体Y = (int)(0x174 * Scale.Y) + ((int)(this.txパネル本体.sz画像サイズ.Height * (1.0 - (num2 * num2))));
 				}
-				if( this.txパネル本体 != null )
+				if (this.txパネル本体 != null)
 				{
-					this.txパネル本体.t2D描画( CDTXMania.app.Device, this.n本体X, this.n本体Y );
+					this.txパネル本体.t2D描画(CDTXMania.app.Device, this.n本体X, this.n本体Y);
 				}
-				if( this.tx文字列パネル != null )
+				if (this.tx文字列パネル != null)
 				{
-					this.tx文字列パネル.t2D描画( CDTXMania.app.Device, this.n本体X + (int)(12 * Scale.X), this.n本体Y + (int)(0x13 * Scale.Y) );
+					this.tx文字列パネル.t2D描画(CDTXMania.app.Device, this.n本体X + (int)(12 * Scale.X), this.n本体Y + (int)(0x13 * Scale.Y));
 				}
 			}
 			return 0;
 		}
-		
+
 
 		// その他
 

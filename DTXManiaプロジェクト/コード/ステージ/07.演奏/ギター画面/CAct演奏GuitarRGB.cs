@@ -19,75 +19,75 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			throw new InvalidOperationException( "t進行描画(C演奏判定ライン座標共通 演奏判定ライン共通 ) のほうを使用してください。" );
+			throw new InvalidOperationException("t進行描画(C演奏判定ライン座標共通 演奏判定ライン共通 ) のほうを使用してください。");
 		}
-		public override int t進行描画( C演奏判定ライン座標共通 演奏判定ライン座標 )
+		public override int t進行描画(C演奏判定ライン座標共通 演奏判定ライン座標)
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				if( !CDTXMania.app.ConfigIni.bGuitar有効 )
+				if (!CDTXMania.app.ConfigIni.bGuitar有効)
 				{
 					return 0;
 				}
-				if( CDTXMania.app.DTX.bチップがある.Guitar )
+				if (CDTXMania.app.DTX.bチップがある.Guitar)
 				{
-					for( int j = 0; j < 3; j++ )
+					for (int j = 0; j < 3; j++)
 					{
-						int index = CDTXMania.app.ConfigIni.bLeft.Guitar ? ( 2 - j ) : j;
+						int index = CDTXMania.app.ConfigIni.bLeft.Guitar ? (2 - j) : j;
 						Rectangle rectangle = new Rectangle(
-							(int) ( index * 0x18 * Scale.X ),
+							(int)(index * 0x18 * Scale.X),
 							0,
-							(int) ( 0x18 * Scale.X ),
-							(int) ( 0x20 * Scale.Y )
+							(int)(0x18 * Scale.X),
+							(int)(0x20 * Scale.Y)
 						);
-						if( base.b押下状態[ index ] )
+						if (base.b押下状態[index])
 						{
-							rectangle.Y += (int) ( 0x20 * Scale.Y );
+							rectangle.Y += (int)(0x20 * Scale.Y);
 						}
-						if( base.txRGB != null )
+						if (base.txRGB != null)
 						{
-							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.GUITAR, true, CDTXMania.app.ConfigIni.bReverse.Guitar );
-						//	int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.app.ConfigIni.bReverse.Guitar, false, false );
+							int y = 演奏判定ライン座標.n演奏RGBボタンY座標(E楽器パート.GUITAR, true, CDTXMania.app.ConfigIni.bReverse.Guitar);
+							//	int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.app.ConfigIni.bReverse.Guitar, false, false );
 							base.txRGB.t2D描画(
 								CDTXMania.app.Device,
-								( 0x1f + ( j * 0x24 ) ) * Scale.X,
+								(0x1f + (j * 0x24)) * Scale.X,
 								y,
 								rectangle
 							);
 						}
 					}
 				}
-				if( CDTXMania.app.DTX.bチップがある.Bass )
+				if (CDTXMania.app.DTX.bチップがある.Bass)
 				{
-					for( int k = 0; k < 3; k++ )
+					for (int k = 0; k < 3; k++)
 					{
-						int index = CDTXMania.app.ConfigIni.bLeft.Bass ? ( 2 - k ) : k;
+						int index = CDTXMania.app.ConfigIni.bLeft.Bass ? (2 - k) : k;
 						Rectangle rectangle2 = new Rectangle(
-							(int) ( index * 0x18 * Scale.X ),
+							(int)(index * 0x18 * Scale.X),
 							0,
-							(int) ( 0x18 * Scale.X ),
-							(int) ( 0x20 * Scale.Y )
+							(int)(0x18 * Scale.X),
+							(int)(0x20 * Scale.Y)
 						);
-						if( base.b押下状態[ index + 3 ] )
+						if (base.b押下状態[index + 3])
 						{
-							rectangle2.Y += (int) ( 0x20 * Scale.Y );
+							rectangle2.Y += (int)(0x20 * Scale.Y);
 						}
-						if( base.txRGB != null )
+						if (base.txRGB != null)
 						{
-							int y = 演奏判定ライン座標.n演奏RGBボタンY座標( E楽器パート.BASS, true, CDTXMania.app.ConfigIni.bReverse.Bass );
+							int y = 演奏判定ライン座標.n演奏RGBボタンY座標(E楽器パート.BASS, true, CDTXMania.app.ConfigIni.bReverse.Bass);
 							//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.app.ConfigIni.bReverse.Bass, false, false );
 							base.txRGB.t2D描画(
 								CDTXMania.app.Device,
-								( 0x1e5 + ( k * 0x24 ) ) * Scale.X,
+								(0x1e5 + (k * 0x24)) * Scale.X,
 								y,
 								rectangle2
 							);
 						}
 					}
 				}
-				for( int i = 0; i < 6; i++ )
+				for (int i = 0; i < 6; i++)
 				{
-					base.b押下状態[ i ] = false;
+					base.b押下状態[i] = false;
 				}
 			}
 			return 0;

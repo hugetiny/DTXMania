@@ -302,7 +302,7 @@ namespace DTXMania
 						Trace.TraceInformation("FILE: {0}", CDTXMania.app.DTX.strファイル名の絶対パス);
 						Trace.TraceInformation("---------------------------");
 
-						string [] inst = new string [3] {"dr", "gt", "bs"};
+						string[] inst = new string[3] { "dr", "gt", "bs" };
 						for (int instIndex = 0; instIndex < 3; ++instIndex)
 						{
 							bool readAutoGhostCond = false;
