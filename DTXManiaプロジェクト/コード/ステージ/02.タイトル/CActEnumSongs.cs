@@ -15,7 +15,7 @@ using SampleFramework;
 
 namespace DTXMania
 {
-	internal class CActEnumSongs : CActivity
+	internal class CActEnumSongs :  CActivity
 	{
 		public bool bコマンドでの曲データ取得;
 
@@ -25,14 +25,14 @@ namespace DTXMania
 		/// </summary>
 		public CActEnumSongs()
 		{
-			Init(false);
+			Init( false );
 		}
 
-		public CActEnumSongs(bool _bコマンドでの曲データ取得)
+		public CActEnumSongs( bool _bコマンドでの曲データ取得 )
 		{
-			Init(_bコマンドでの曲データ取得);
+			Init( _bコマンドでの曲データ取得 );
 		}
-		private void Init(bool _bコマンドでの曲データ取得)
+		private void Init( bool _bコマンドでの曲データ取得 )
 		{
 			base.b活性化してない = true;
 			bコマンドでの曲データ取得 = _bコマンドでの曲データ取得;
@@ -42,14 +42,14 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			if (this.b活性化してる)
+			if ( this.b活性化してる )
 				return;
 			base.On活性化();
 
 			try
 			{
-				this.ctNowEnumeratingSongs = new CCounter();	// 0, 1000, 17, CDTXMania.app.Timer );
-				this.ctNowEnumeratingSongs.t開始(0, 100, 17, CDTXMania.app.Timer);
+				this.ctNowEnumeratingSongs = new CCounter();	// 0, 1000, 17, CDTXMania.Instance.Timer );
+				this.ctNowEnumeratingSongs.t開始( 0, 100, 17, CDTXMania.Instance.Timer );
 			}
 			finally
 			{
@@ -57,28 +57,28 @@ namespace DTXMania
 		}
 		public override void On非活性化()
 		{
-			if (this.b活性化してない)
+			if ( this.b活性化してない )
 				return;
 			base.On非活性化();
 			this.ctNowEnumeratingSongs = null;
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if (this.b活性化してない)
+			if ( this.b活性化してない )
 				return;
-			string pathNowEnumeratingSongs = CSkin.Path(@"Graphics\ScreenTitle NowEnumeratingSongs.png");
-			if (File.Exists(pathNowEnumeratingSongs))
+			string pathNowEnumeratingSongs = CSkin.Path( @"Graphics\ScreenTitle NowEnumeratingSongs.png" );
+			if ( File.Exists( pathNowEnumeratingSongs ) )
 			{
-				this.txNowEnumeratingSongs = TextureFactory.tテクスチャの生成(pathNowEnumeratingSongs, false);
+				this.txNowEnumeratingSongs = TextureFactory.tテクスチャの生成( pathNowEnumeratingSongs, false );
 			}
 			else
 			{
 				this.txNowEnumeratingSongs = null;
 			}
-			string pathDialogNowEnumeratingSongs = CSkin.Path(@"Graphics\ScreenConfig NowEnumeratingSongs.png");
-			if (File.Exists(pathDialogNowEnumeratingSongs))
+			string pathDialogNowEnumeratingSongs = CSkin.Path( @"Graphics\ScreenConfig NowEnumeratingSongs.png" );
+			if ( File.Exists( pathDialogNowEnumeratingSongs ) )
 			{
-				this.txDialogNowEnumeratingSongs = TextureFactory.tテクスチャの生成(pathDialogNowEnumeratingSongs, false);
+				this.txDialogNowEnumeratingSongs = TextureFactory.tテクスチャの生成( pathDialogNowEnumeratingSongs, false );
 			}
 			else
 			{
@@ -87,71 +87,71 @@ namespace DTXMania
 
 			try
 			{
-				System.Drawing.Font ftMessage = new System.Drawing.Font("MS PGothic", 40 * 3f, FontStyle.Bold, GraphicsUnit.Pixel);
+				System.Drawing.Font ftMessage = new System.Drawing.Font( "MS PGothic", 40 * 3f, FontStyle.Bold, GraphicsUnit.Pixel );
 				string[] strMessage = 
 				{
 					"     曲データの一覧を\n       取得しています。\n   しばらくお待ちください。",
 					" Now enumerating songs.\n         Please wait..."
 				};
-				int ci = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
-				if ((strMessage != null) && (strMessage.Length > 0))
+				int ci = ( CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja" ) ? 0 : 1;
+				if ( ( strMessage != null ) && ( strMessage.Length > 0 ) )
 				{
-					Bitmap image = new Bitmap(1, 1);
-					Graphics graphics = Graphics.FromImage(image);
-					SizeF ef = graphics.MeasureString(strMessage[ci], ftMessage);
-					Size size = new Size((int)Math.Ceiling((double)ef.Width), (int)Math.Ceiling((double)ef.Height));
+					Bitmap image = new Bitmap( 1, 1 );
+					Graphics graphics = Graphics.FromImage( image );
+					SizeF ef = graphics.MeasureString( strMessage[ ci ], ftMessage );
+					Size size = new Size( (int) Math.Ceiling( (double) ef.Width ), (int) Math.Ceiling( (double) ef.Height ) );
 					graphics.Dispose();
 					image.Dispose();
-					image = new Bitmap(size.Width, size.Height);
-					graphics = Graphics.FromImage(image);
+					image = new Bitmap( size.Width, size.Height );
+					graphics = Graphics.FromImage( image );
 					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					graphics.DrawString(strMessage[ci], ftMessage, Brushes.White, (float)0f, (float)0f);
+					graphics.DrawString( strMessage[ ci ], ftMessage, Brushes.White, (float) 0f, (float) 0f );
 					graphics.Dispose();
-					this.txMessage = new CTexture(CDTXMania.app.Device, image, CDTXMania.app.TextureFormat);
-					this.txMessage.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f);
+					this.txMessage = new CTexture( CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat );
+					this.txMessage.vc拡大縮小倍率 = new Vector3( 0.5f, 0.5f, 1f );
 					image.Dispose();
-					TextureFactory.t安全にDisposeする(ref ftMessage);
+					TextureFactory.t安全にDisposeする( ref ftMessage );
 				}
 				else
 				{
 					this.txMessage = null;
 				}
 			}
-			catch (CTextureCreateFailedException)
+			catch ( CTextureCreateFailedException )
 			{
-				Trace.TraceError("テクスチャの生成に失敗しました。(txMessage)");
+				Trace.TraceError( "テクスチャの生成に失敗しました。(txMessage)" );
 				this.txMessage = null;
 			}
-
+	
 			base.OnManagedリソースの作成();
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if (this.b活性化してない)
+			if ( this.b活性化してない )
 				return;
 
-			TextureFactory.t安全にDisposeする(ref this.txDialogNowEnumeratingSongs);
-			TextureFactory.t安全にDisposeする(ref this.txNowEnumeratingSongs);
-			TextureFactory.t安全にDisposeする(ref this.txMessage);
+			TextureFactory.t安全にDisposeする( ref this.txDialogNowEnumeratingSongs );
+			TextureFactory.t安全にDisposeする( ref this.txNowEnumeratingSongs );
+			TextureFactory.t安全にDisposeする( ref this.txMessage );
 			base.OnManagedリソースの解放();
 		}
 
 		public override int On進行描画()
 		{
-			if (this.b活性化してない)
+			if ( this.b活性化してない )
 			{
 				return 0;
 			}
 			this.ctNowEnumeratingSongs.t進行Loop();
-			if (this.txNowEnumeratingSongs != null)
+			if ( this.txNowEnumeratingSongs != null )
 			{
-				this.txNowEnumeratingSongs.n透明度 = (int)(176.0 + 80.0 * Math.Sin((double)(2 * Math.PI * this.ctNowEnumeratingSongs.n現在の値 * 2 / 100.0)));
-				this.txNowEnumeratingSongs.t2D描画(CDTXMania.app.Device, 18, 7);
+				this.txNowEnumeratingSongs.n透明度 = (int) ( 176.0 + 80.0 * Math.Sin( (double) (2 * Math.PI * this.ctNowEnumeratingSongs.n現在の値 * 2 / 100.0 ) ) );
+				this.txNowEnumeratingSongs.t2D描画( CDTXMania.Instance.Device, 18, 7 );
 			}
-			if (bコマンドでの曲データ取得 && this.txDialogNowEnumeratingSongs != null)
+			if ( bコマンドでの曲データ取得 && this.txDialogNowEnumeratingSongs != null )
 			{
-				this.txDialogNowEnumeratingSongs.t2D描画(CDTXMania.app.Device, 500, 300);
-				this.txMessage.t2D描画(CDTXMania.app.Device, 540, 320);
+				this.txDialogNowEnumeratingSongs.t2D描画( CDTXMania.Instance.Device, 500, 300 );
+				this.txMessage.t2D描画( CDTXMania.Instance.Device, 540, 320 );
 			}
 
 			return 0;

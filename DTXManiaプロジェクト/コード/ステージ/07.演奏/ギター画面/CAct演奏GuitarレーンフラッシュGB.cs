@@ -20,50 +20,50 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
-				for (int i = 0; i < 6; i++)
+				for( int i = 0; i < 6; i++ )
 				{
-					if (!base.ct進行[i].b停止中)
+					if( !base.ct進行[ i ].b停止中 )
 					{
-						E楽器パート e楽器パート = (i < 3) ? E楽器パート.GUITAR : E楽器パート.BASS;
-						CTextureAf texture = CDTXMania.app.ConfigIni.bReverse[(int)e楽器パート] ? base.txFlush[(i % 3) + 3] : base.txFlush[i % 3];
-						int num2 = CDTXMania.app.ConfigIni.bLeft[(int)e楽器パート] ? 1 : 0;
+						E楽器パート e楽器パート = ( i < 3 ) ? E楽器パート.GUITAR : E楽器パート.BASS;
+						CTextureAf texture = CDTXMania.Instance.ConfigIni.bReverse[ (int) e楽器パート ] ? base.txFlush[ ( i % 3 ) + 3 ] : base.txFlush[ i % 3 ];
+						int num2 = CDTXMania.Instance.ConfigIni.bLeft[ (int) e楽器パート ] ? 1 : 0;
 						{
-							int x = (((i < 3) ? 0x1a : 480) + this.nRGBのX座標[num2, i]) + ((0x10 * base.ct進行[i].n現在の値) / 100);
-							int y = CDTXMania.app.ConfigIni.bReverse[(int)e楽器パート] ? 0x37 : 0;
-							if (texture != null)
+							int x = ( ( ( i < 3 ) ? 0x1a : 480 ) + this.nRGBのX座標[ num2, i ] ) + ( ( 0x10 * base.ct進行[ i ].n現在の値 ) / 100 );
+							int y = CDTXMania.Instance.ConfigIni.bReverse[ (int) e楽器パート ] ? 0x37 : 0;
+							if( texture != null )
 							{
 								texture.t2D描画(
-									CDTXMania.app.Device,
+									CDTXMania.Instance.Device,
 									x * Scale.X,
 									y * Scale.Y,
 									new Rectangle(
 										0,
 										0,
-										(int)(((0x20 * (100 - base.ct進行[i].n現在の値)) / 100) * Scale.X),
-										(int)(0x76 * 3 * Scale.Y)
+										(int) ( ( ( 0x20 * ( 100 - base.ct進行[ i ].n現在の値 ) ) / 100 ) * Scale.X ),
+										(int) ( 0x76 * 3 * Scale.Y )
 									)
 								);
 							}
 						}
-						base.ct進行[i].t進行();
-						if (base.ct進行[i].b終了値に達した)
+						base.ct進行[ i ].t進行();
+						if( base.ct進行[ i ].b終了値に達した )
 						{
-							base.ct進行[i].t停止();
+							base.ct進行[ i ].t停止();
 						}
 					}
 				}
 			}
 			return 0;
 		}
-
+		
 
 		// その他
 
 		#region [ private ]
 		//-----------------
-		private readonly int[,] nRGBのX座標 = new int[,] { { 0, 0x24, 0x48, 0, 0x24, 0x48 }, { 0x48, 0x24, 0, 0x48, 0x24, 0 } };
+		private readonly int[,] nRGBのX座標 = new int[ , ] { { 0, 0x24, 0x48, 0, 0x24, 0x48 }, { 0x48, 0x24, 0, 0x48, 0x24, 0 } };
 		//-----------------
 		#endregion
 	}

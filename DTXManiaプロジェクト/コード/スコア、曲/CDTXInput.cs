@@ -391,7 +391,7 @@ namespace DTXMania
 						}
 						if (this.db再生速度 > 0.0)
 						{
-							double _db再生速度 = (CDTXMania.app.DTXVmode.Enabled) ? this.dbDTXVPlaySpeed : this.db再生速度;
+							double _db再生速度 = (CDTXMania.Instance.DTXVmode.Enabled) ? this.dbDTXVPlaySpeed : this.db再生速度;
 							foreach (CChip chip in this.listChip)
 							{
 								chip.ApplyPlaySpeed(_db再生速度);
@@ -497,7 +497,7 @@ namespace DTXMania
 						//Trace.TraceInformation( "hash計算:                 {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
 						#region [ bLogDTX詳細ログ出力 ]
-						if (CDTXMania.app.ConfigIni.bLogDTX詳細ログ出力)
+						if (CDTXMania.Instance.ConfigIni.bLogDTX詳細ログ出力)
 						{
 							foreach (CWAV cwav in this.listWAV.Values)
 							{
@@ -905,7 +905,7 @@ namespace DTXMania
 					if (!int.TryParse(strパラメータ, out n数値))
 						n数値 = 1;
 
-					this.n現在の乱数 = CDTXMania.app.Random.Next(n数値) + 1;		// 1～数値 までの乱数を生成。
+					this.n現在の乱数 = CDTXMania.Instance.Random.Next(n数値) + 1;		// 1～数値 までの乱数を生成。
 				}
 				//-----------------
 				#endregion
@@ -1092,7 +1092,7 @@ namespace DTXMania
 
 			#region [ AVIリストに {zz, avi} の組を登録する。 ]
 			//-----------------
-			var avi = new CAVI(zz, strパラメータ, strコメント, CDTXMania.app.ConfigIni.n演奏速度);
+			var avi = new CAVI(zz, strパラメータ, strコメント, CDTXMania.Instance.ConfigIni.n演奏速度);
 
 			if (this.listAVI.ContainsKey(zz))	// 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listAVI.Remove(zz);
@@ -2600,7 +2600,7 @@ namespace DTXMania
 				this.bチップがある.OpenBass |= chip[Ech定義.Bass_Open];
 				this.bチップがある.BGA |= chip.bBGALayer;
 				this.bチップがある.Movie |= chip[Ech定義.Movie] | chip[Ech定義.MovieFull];
-				if (CDTXMania.app.ConfigIni.bForceAVIFullscreen || chip[Ech定義.MovieFull])
+				if (CDTXMania.Instance.ConfigIni.bForceAVIFullscreen || chip[Ech定義.MovieFull])
 				{
 					this.bMovieをFullscreen再生する = true;
 				}

@@ -33,14 +33,14 @@ namespace DTXMania
 
 		#region [ 定数定義 ]
 		// 配列の0,1要素はそれぞれ, Preview用, 演奏画面用
-		private int[] WIDTH_VGA_SET = { 204, 278 };											// VGA版DTXManiaのプレビュー画像width値
-		private int[] HEIGHT_VGA_SET = { 269, 355 };											// VGA版DTXManiaのプレビュー画像height値
-		private int[] WIDTH_HD_SET = { 400, 400 };											// HD版DTXManiaのプレビュー画像width値
-		private int[] HEIGHT_HD_SET = { 400, 600 }; // 600は仮								// HD版DTXManiaのプレビュー画像height値
-		private int[] WIDTH_FHD_LIMIT = { 320, 320 };											// VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
-		private int[] HEIGHT_FHD_LIMIT = { 416, 416 };											// VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
-		private int[] WIDTH_FHD_SET = { (int)(204 * Scale.X), (int)(278 * Scale.X) };	// FHD版DTXManiaのプレビュー画像height値
-		private int[] HEIGHT_FHD_SET = { (int)(269 * Scale.Y), (int)(355 * Scale.Y) };	// FHD版DTXManiaのプレビュー画像height値
+		private	int[] WIDTH_VGA_SET		= { 204, 278 };											// VGA版DTXManiaのプレビュー画像width値
+		private	int[] HEIGHT_VGA_SET	= { 269, 355 };											// VGA版DTXManiaのプレビュー画像height値
+		private	int[] WIDTH_HD_SET		= { 400, 400 };											// HD版DTXManiaのプレビュー画像width値
+		private	int[] HEIGHT_HD_SET		= { 400, 600 }; // 600は仮								// HD版DTXManiaのプレビュー画像height値
+		private	int[] WIDTH_FHD_LIMIT	= { 320, 320 };											// VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
+		private	int[] HEIGHT_FHD_LIMIT	= { 416, 416 };											// VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
+		private	int[] WIDTH_FHD_SET		= { (int) ( 204 * Scale.X ), (int) ( 278 * Scale.X ) };	// FHD版DTXManiaのプレビュー画像height値
+		private	int[] HEIGHT_FHD_SET	= { (int) ( 269 * Scale.Y ), (int) ( 355 * Scale.Y ) };	// FHD版DTXManiaのプレビュー画像height値
 		#endregion
 
 		#region [ コンストラクタ ]
@@ -61,16 +61,16 @@ namespace DTXMania
 		/// <param name="magY_org">元の拡大率(高さ)</param>
 		/// <param name="bIsPreview">選曲画面(preview)用か、演奏画面用か</param>
 		/// <remarks>出力はプロパティで得てください。</remarks>
-		public void GetMagnifier(int width_org, int height_org, float magX_org, float magY_org, bool bIsPreview)
+		public void GetMagnifier( int width_org, int height_org, float magX_org, float magY_org, bool bIsPreview)
 		{
 			this.bIsPreview = bIsPreview;
 
-			// #35820 画像サイズに関係なく、プレビュー領域に合わせる add ikanick 15.12.08
-			this.width = width_fhd_set;
-			this.height = height_fhd_set;
-			this.magX = magX_org * width_vga_set / width_org * Scale.X;
-			this.magY = magY_org * height_vga_set / height_org * Scale.Y;
-			return;
+            // #35820 画像サイズに関係なく、プレビュー領域に合わせる add ikanick 15.12.08
+            this.width = width_fhd_set;
+            this.height = height_fhd_set;
+            this.magX = magX_org * width_vga_set / width_org * Scale.X;
+            this.magY = magY_org * height_vga_set / height_org * Scale.Y;
+            return;
 
 #if false	// FHD対応の名残
 			#region [ HD版DTXManiaのプレビュー画像は特別扱いする ]
@@ -137,56 +137,56 @@ namespace DTXMania
 		{
 			get
 			{
-				return bIsPreview ? WIDTH_VGA_SET[0] : WIDTH_VGA_SET[1];
+				return bIsPreview? WIDTH_VGA_SET[ 0 ] : WIDTH_VGA_SET[ 1 ];
 			}
 		}
 		private int height_vga_set
 		{
 			get
 			{
-				return bIsPreview ? HEIGHT_VGA_SET[0] : HEIGHT_VGA_SET[1];
+				return bIsPreview? HEIGHT_VGA_SET[ 0 ] : HEIGHT_VGA_SET[ 1 ];
 			}
 		}
 		private int width_hd_set
 		{
 			get
 			{
-				return bIsPreview ? WIDTH_HD_SET[0] : WIDTH_HD_SET[1];
+				return bIsPreview? WIDTH_HD_SET[ 0 ] : WIDTH_HD_SET[1];
 			}
 		}
 		private int height_hd_set
 		{
 			get
 			{
-				return bIsPreview ? HEIGHT_HD_SET[0] : HEIGHT_HD_SET[1];
+				return bIsPreview? HEIGHT_HD_SET[ 0 ] : HEIGHT_HD_SET[ 1 ];
 			}
 		}
 		private int width_fhd_limit
 		{
 			get
 			{
-				return bIsPreview ? WIDTH_FHD_LIMIT[0] : WIDTH_FHD_LIMIT[1];
+				return  bIsPreview? WIDTH_FHD_LIMIT[ 0 ] : WIDTH_FHD_LIMIT[ 1 ];
 			}
 		}
 		private int height_fhd_limit
 		{
 			get
 			{
-				return bIsPreview ? HEIGHT_FHD_LIMIT[0] : HEIGHT_FHD_LIMIT[1];
+				return bIsPreview? HEIGHT_FHD_LIMIT[ 0 ] : HEIGHT_FHD_LIMIT[ 1 ];
 			}
 		}
 		private int width_fhd_set
 		{
 			get
 			{
-				return bIsPreview ? WIDTH_FHD_SET[0] : WIDTH_FHD_SET[1];
+				return bIsPreview ? WIDTH_FHD_SET[ 0 ] : WIDTH_FHD_SET[ 1 ];
 			}
 		}
 		private int height_fhd_set
 		{
 			get
 			{
-				return bIsPreview ? HEIGHT_FHD_SET[0] : HEIGHT_FHD_SET[1];
+				return bIsPreview ? HEIGHT_FHD_SET[ 0 ] : HEIGHT_FHD_SET[ 1 ];
 			}
 		}
 		#endregion

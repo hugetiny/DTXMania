@@ -63,7 +63,7 @@ namespace DTXMania
 						ST数字 s = st数字[p, (int)efc];
 						int sw = s.rc.Width;
 						int delta = bRightAlign ? 0 : -sw;
-						this.tx数値.t2D描画(CDTXMania.app.Device, x + delta, y, s.rc);
+						this.tx数値.t2D描画(CDTXMania.Instance.Device, x + delta, y, s.rc);
 						x += bRightAlign ? -sw : sw;
 					}
 				}
@@ -85,7 +85,7 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
-				if (this.tx数値 != null)
+				if ( this.tx数値 != null )
 				{
 					this.tx数値.Dispose();
 					this.tx数値 = null;

@@ -15,11 +15,11 @@ namespace DTXMania
 			base.b活性化してない = true;
 		}
 
-		public void Start(E楽器パート part)
+		public void Start( E楽器パート part )
 		{
-			this.Start(part, null);
+			this.Start( part, null );
 		}
-		public abstract void Start(E楽器パート part, CChip r歓声Chip);
+		public abstract void Start( E楽器パート part, CChip r歓声Chip );
 
 
 
@@ -36,17 +36,17 @@ namespace DTXMania
 
 		public override void OnManagedリソースの作成()
 		{
-			if (!base.b活性化してない)
+			if ( !base.b活性化してない )
 			{
-				this.txWailingBonus = TextureFactory.tテクスチャの生成Af(CSkin.Path(@"Graphics\ScreenPlay wailing bonus.png"), false);
+				this.txWailingBonus = TextureFactory.tテクスチャの生成Af( CSkin.Path( @"Graphics\ScreenPlay wailing bonus.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if (!base.b活性化してない)
+			if ( !base.b活性化してない )
 			{
-				TextureFactory.tテクスチャの解放(ref this.txWailingBonus);
+				TextureFactory.tテクスチャの解放( ref this.txWailingBonus );
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -56,7 +56,7 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		protected CCounter[,] ct進行用 = new CCounter[3, 4];
+		protected CCounter[,] ct進行用 = new CCounter[ 3, 4 ];
 		protected CTextureAf txWailingBonus;
 		//-----------------
 		#endregion

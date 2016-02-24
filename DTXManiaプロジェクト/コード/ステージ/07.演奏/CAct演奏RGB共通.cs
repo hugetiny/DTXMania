@@ -9,7 +9,7 @@ namespace DTXMania
 	{
 		// プロパティ
 
-		protected bool[] b押下状態 = new bool[6];
+		protected bool[] b押下状態 = new bool[ 6 ];
 		protected CTexture txRGB;
 
 
@@ -19,13 +19,13 @@ namespace DTXMania
 		{
 			base.b活性化してない = true;
 		}
-
-
+		
+		
 		// メソッド
 
-		public void Push(int nLane)
+		public void Push( int nLane )
 		{
-			this.b押下状態[nLane] = true;
+			this.b押下状態[ nLane ] = true;
 		}
 
 
@@ -33,30 +33,30 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			for (int i = 0; i < 6; i++)
+			for( int i = 0; i < 6; i++ )
 			{
-				this.b押下状態[i] = false;
+				this.b押下状態[ i ] = false;
 			}
 			base.On活性化();
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
-				this.txRGB = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlay RGB buttons.png"));
+				this.txRGB = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlay RGB buttons.png" ) );
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
-				TextureFactory.tテクスチャの解放(ref this.txRGB);
+				TextureFactory.tテクスチャの解放( ref this.txRGB );
 				base.OnManagedリソースの解放();
 			}
 		}
 
-		public virtual int t進行描画(C演奏判定ライン座標共通 演奏判定ライン座標共通)
+		public virtual int t進行描画( C演奏判定ライン座標共通 演奏判定ライン座標共通 )
 		{
 			return 0;
 		}

@@ -28,12 +28,12 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			Trace.TraceInformation("スキン変更ステージを活性化します。");
+			Trace.TraceInformation( "スキン変更ステージを活性化します。" );
 			Trace.Indent();
 			try
 			{
 				base.On活性化();
-				Trace.TraceInformation("スキン変更ステージの活性化を完了しました。");
+				Trace.TraceInformation( "スキン変更ステージの活性化を完了しました。" );
 			}
 			finally
 			{
@@ -42,12 +42,12 @@ namespace DTXMania
 		}
 		public override void On非活性化()
 		{
-			Trace.TraceInformation("スキン変更ステージを非活性化します。");
+			Trace.TraceInformation( "スキン変更ステージを非活性化します。" );
 			Trace.Indent();
 			try
 			{
 				base.On非活性化();
-				Trace.TraceInformation("スキン変更ステージの非活性化を完了しました。");
+				Trace.TraceInformation( "スキン変更ステージの非活性化を完了しました。" );
 			}
 			finally
 			{
@@ -56,23 +56,23 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
 				base.OnManagedリソースの解放();
 			}
 		}
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
-				if (base.b初めての進行描画)
+				if ( base.b初めての進行描画 )
 				{
 					base.b初めての進行描画 = false;
 					return 0;
@@ -86,14 +86,14 @@ namespace DTXMania
 		}
 		public void tChangeSkinMain()
 		{
-			Trace.TraceInformation("スキン変更:" + CDTXMania.app.Skin.GetCurrentSkinSubfolderFullName(false));
+			Trace.TraceInformation( "スキン変更:" + CDTXMania.Instance.Skin.GetCurrentSkinSubfolderFullName( false ) );
 
-			CDTXMania.app.act文字コンソール.On非活性化();
+			CDTXMania.Instance.act文字コンソール.On非活性化();
 
-			CDTXMania.app.Skin.PrepareReloadSkin();
-			CDTXMania.app.Skin.ReloadSkin();
+			CDTXMania.Instance.Skin.PrepareReloadSkin();
+			CDTXMania.Instance.Skin.ReloadSkin();
 
-			CDTXMania.app.act文字コンソール.On活性化();
+			CDTXMania.Instance.act文字コンソール.On活性化();
 		}
 	}
 }

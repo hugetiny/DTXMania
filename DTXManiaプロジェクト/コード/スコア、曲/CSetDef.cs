@@ -101,10 +101,10 @@ namespace DTXMania
 
 			#region [ private ]
 			//-----------------
-			private string[] _file = new string[5];
+			private string[] _file = new string[ 5 ];
 			private Color _fontcolor = Color.White;
 			private string _genre = "";
-			private string[] _label = new string[5];
+			private string[] _label = new string[ 5 ];
 			private string _title = "";
 			//-----------------
 			#endregion
@@ -117,96 +117,96 @@ namespace DTXMania
 		{
 			this.blocks = new List<CBlock>();
 		}
-		public CSetDef(string setdefファイル名)
+		public CSetDef( string setdefファイル名 )
 			: this()
 		{
-			this.t読み込み(setdefファイル名);
+			this.t読み込み( setdefファイル名 );
 		}
 
 
 		// メソッド
 
-		public void t読み込み(string setdefファイル名)
+		public void t読み込み( string setdefファイル名 )
 		{
-			var reader = new StreamReader(setdefファイル名, Encoding.GetEncoding("Shift_JIS"));
+			var reader = new StreamReader( setdefファイル名, Encoding.GetEncoding( "Shift_JIS" ) );
 			CBlock block = new CBlock();
 			string str = null;
-			while ((str = reader.ReadLine()) != null)
+			while( ( str = reader.ReadLine() ) != null )
 			{
-				if (str.Length != 0)
+				if( str.Length != 0 )
 				{
 					try
 					{
-						str = str.TrimStart(new char[] { ' ', '\t' });
-						if ((str.Length > 0) && (str[0] == '#') && (str[0] != ';'))
+						str = str.TrimStart( new char[] { ' ', '\t' } );
+						if( ( str.Length > 0 ) && ( str[ 0 ] == '#' ) && ( str[ 0 ] != ';' ) )
 						{
-							if (str.IndexOf(';') != -1)
+							if( str.IndexOf( ';' ) != -1 )
 							{
-								str = str.Substring(0, str.IndexOf(';'));
+								str = str.Substring( 0, str.IndexOf( ';' ) );
 							}
-							if (str.StartsWith("#TITLE", StringComparison.OrdinalIgnoreCase))
+							if( str.StartsWith( "#TITLE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								if (block.b使用中)
+								if( block.b使用中 )
 								{
-									this.tFILEの指定があるのにLxLABELが省略されているときはデフォルトの名前をセットする(block);
-									this.tLxLABELの指定があるのにFILEが省略されているときはなかったものとする(block);
-									this.blocks.Add(block);
+									this.tFILEの指定があるのにLxLABELが省略されているときはデフォルトの名前をセットする( block );
+									this.tLxLABELの指定があるのにFILEが省略されているときはなかったものとする( block );
+									this.blocks.Add( block );
 									block = new CBlock();
 								}
-								block.Title = str.Substring(6).TrimStart(new char[] { ':', ' ', '\t' });
+								block.Title = str.Substring( 6 ).TrimStart( new char[] { ':', ' ', '\t' } );
 							}
-							else if (str.StartsWith("#FONTCOLOR", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#FONTCOLOR", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.FontColor = ColorTranslator.FromHtml("#" + str.Substring(10).Trim(new char[] { ':', '#', ' ', '\t' }));
+								block.FontColor = ColorTranslator.FromHtml( "#" + str.Substring( 10 ).Trim( new char[] { ':', '#', ' ', '\t' } ) );
 							}
-							else if (str.StartsWith("#L1FILE", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L1FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.File[0] = str.Substring(7).Trim(new char[] { ':', ' ', '\t' });
+								block.File[ 0 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L2FILE", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L2FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.File[1] = str.Substring(7).Trim(new char[] { ':', ' ', '\t' });
+								block.File[ 1 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L3FILE", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L3FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.File[2] = str.Substring(7).Trim(new char[] { ':', ' ', '\t' });
+								block.File[ 2 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L4FILE", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L4FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.File[3] = str.Substring(7).Trim(new char[] { ':', ' ', '\t' });
+								block.File[ 3 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L5FILE", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L5FILE", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.File[4] = str.Substring(7).Trim(new char[] { ':', ' ', '\t' });
+								block.File[ 4 ] = str.Substring( 7 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L1LABEL", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L1LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.Label[0] = str.Substring(8).Trim(new char[] { ':', ' ', '\t' });
+								block.Label[ 0 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L2LABEL", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L2LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.Label[1] = str.Substring(8).Trim(new char[] { ':', ' ', '\t' });
+								block.Label[ 1 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L3LABEL", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L3LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.Label[2] = str.Substring(8).Trim(new char[] { ':', ' ', '\t' });
+								block.Label[ 2 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L4LABEL", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L4LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.Label[3] = str.Substring(8).Trim(new char[] { ':', ' ', '\t' });
+								block.Label[ 3 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
-							else if (str.StartsWith("#L5LABEL", StringComparison.OrdinalIgnoreCase))
+							else if( str.StartsWith( "#L5LABEL", StringComparison.OrdinalIgnoreCase ) )
 							{
-								block.Label[4] = str.Substring(8).Trim(new char[] { ':', ' ', '\t' });
+								block.Label[ 4 ] = str.Substring( 8 ).Trim( new char[] { ':', ' ', '\t' } );
 								block.b使用中 = true;		// #28937 2012.7.7 yyagi; "get" accessor is called for T[] property. So b使用中 is not modified to set the property. I need to update it myself.
 							}
 						}
@@ -219,11 +219,11 @@ namespace DTXMania
 				}
 			}
 			reader.Close();
-			if (block.b使用中)
+			if( block.b使用中 )
 			{
-				this.tFILEの指定があるのにLxLABELが省略されているときはデフォルトの名前をセットする(block);
-				this.tLxLABELの指定があるのにFILEが省略されているときはなかったものとする(block);
-				this.blocks.Add(block);
+				this.tFILEの指定があるのにLxLABELが省略されているときはデフォルトの名前をセットする( block );
+				this.tLxLABELの指定があるのにFILEが省略されているときはなかったものとする( block );
+				this.blocks.Add( block );
 			}
 		}
 
@@ -232,24 +232,24 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private void tFILEの指定があるのにLxLABELが省略されているときはデフォルトの名前をセットする(CBlock block)
+		private void tFILEの指定があるのにLxLABELが省略されているときはデフォルトの名前をセットする( CBlock block )
 		{
 			string[] strArray = new string[] { "BASIC", "ADVANCED", "EXTREME", "HYPER", "ULTIMATE" };
-			for (int i = 0; i < 5; i++)
+			for( int i = 0; i < 5; i++ )
 			{
-				if (((block.File[i] != null) && (block.File[i].Length > 0)) && string.IsNullOrEmpty(block.Label[i]))
+				if( ( ( block.File[ i ] != null ) && ( block.File[ i ].Length > 0 ) ) && string.IsNullOrEmpty( block.Label[ i ] ) )
 				{
-					block.Label[i] = strArray[i];
+					block.Label[ i ] = strArray[ i ];
 				}
 			}
 		}
-		private void tLxLABELの指定があるのにFILEが省略されているときはなかったものとする(CBlock block)
+		private void tLxLABELの指定があるのにFILEが省略されているときはなかったものとする( CBlock block )
 		{
-			for (int i = 0; i < 5; i++)
+			for( int i = 0; i < 5; i++ )
 			{
-				if (((block.Label[i] != null) && (block.Label[i].Length > 0)) && string.IsNullOrEmpty(block.File[i]))
+				if( ( ( block.Label[ i ] != null ) && ( block.Label[ i ].Length > 0 ) ) && string.IsNullOrEmpty( block.File[ i ] ) )
 				{
-					block.Label[i] = "";
+					block.Label[ i ] = "";
 				}
 			}
 		}

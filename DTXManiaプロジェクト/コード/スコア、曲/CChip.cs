@@ -65,7 +65,7 @@ namespace DTXMania
 
 
 		/// <summary>
-		/// 可視 HHC~LC
+		/// 可視 HHC~LCY
 		/// </summary>
 		public bool bDrums可視チップ_LP_LBD含まない
 		{
@@ -87,6 +87,16 @@ namespace DTXMania
 			}
 		}
 
+		/// <summary>
+		/// 不可視 HHC~LCY
+		/// </summary>
+		public bool bDrums不可視チップ_LP_LBD含まない
+		{
+			get
+			{
+				return Ech定義.HiHatClose_Hidden <= eチャンネル番号 && eチャンネル番号 <= Ech定義.LeftCymbal_Hidden;
+			}
+		}
 
 		/// <summary>
 		/// 空打ち HHC~LBD
@@ -310,6 +320,14 @@ namespace DTXMania
 			}
 		}
 
+		public void ConvertGBNoChip()
+		{
+			if (this[Ech定義.Guitar_NoChip] || this[Ech定義.Bass_NoChip])
+			{
+				eチャンネル番号 = this[Ech定義.Guitar_NoChip] ? Ech定義.Guitar_Open : Ech定義.Bass_Open;
+			}
+		}
+
 
 		/// <summary>
 		/// このチップが音声と関連付けられたチップであることを示す。
@@ -363,6 +381,54 @@ namespace DTXMania
 				{
 					return false;
 				}
+			}
+		}
+
+		public bool bOverrideSE
+		{
+			get
+			{
+				return Ech定義.SE24 <= eチャンネル番号 && eチャンネル番号 <= Ech定義.SE29;
+			}
+		}
+
+		public int nBGALayerIndex
+		{
+			get
+			{
+				int ret = -1;
+				switch (eチャンネル番号)
+				{
+					case Ech定義.BGALayer1: ret = 0; break;
+					case Ech定義.BGALayer2: ret = 1; break;
+					case Ech定義.BGALayer3: ret = 2; break;
+					case Ech定義.BGALayer4: ret = 3; break;
+					case Ech定義.BGALayer5: ret = 4; break;
+					case Ech定義.BGALayer6: ret = 5; break;
+					case Ech定義.BGALayer7: ret = 6; break;
+					case Ech定義.BGALayer8: ret = 7; break;
+				}
+				return ret;
+			}
+		}
+
+		public int nBGALayerSwapIndex
+		{
+			get
+			{
+				int ret = -1;
+				switch (eチャンネル番号)
+				{
+					case Ech定義.BGALayer1_Swap: ret = 0; break;
+					case Ech定義.BGALayer2_Swap: ret = 1; break;
+					case Ech定義.BGALayer3_Swap: ret = 2; break;
+					case Ech定義.BGALayer4_Swap: ret = 3; break;
+					case Ech定義.BGALayer5_Swap: ret = 4; break;
+					case Ech定義.BGALayer6_Swap: ret = 5; break;
+					case Ech定義.BGALayer7_Swap: ret = 6; break;
+					case Ech定義.BGALayer8_Swap: ret = 7; break;
+				}
+				return ret;
 			}
 		}
 
@@ -809,6 +875,18 @@ namespace DTXMania
 			}
 		}
 
+		public void ConvertSE25_26_27toCY_RCY_LCY()
+		{
+			Ech定義 to = eチャンネル番号;
+			switch (eチャンネル番号)
+			{
+				case Ech定義.SE25: to = Ech定義.Cymbal; break;
+				case Ech定義.SE26: to = Ech定義.RideCymbal; break;
+				case Ech定義.SE27: to = Ech定義.LeftCymbal; break;
+			}
+			eチャンネル番号 = to;
+		}
+
 		/// <summary>
 		/// 演奏速度を適用。2回以上呼ぶとさらに短くなる。
 		/// </summary>
@@ -863,7 +941,7 @@ namespace DTXMania
 						return;
 
 					case Eランダムモード.SUPERRANDOM:	// チップごとにR/G/Bがランダムで入れ替わる(レーンの本数までは変わらない)。
-						eチャンネル番号 = (Ech定義)((nGuitarBassUpper4Bit) | nランダムレーン候補[CDTXMania.app.Random.Next(6), (int)eRGBビットパターン]);
+						eチャンネル番号 = (Ech定義)((nGuitarBassUpper4Bit) | nランダムレーン候補[CDTXMania.Instance.Random.Next(6), (int)eRGBビットパターン]);
 						return;
 
 					case Eランダムモード.HYPERRANDOM:	// レーンの本数も変わる
@@ -877,7 +955,7 @@ namespace DTXMania
 						}
 						else
 						{
-							n新RGBレーンビットパターン = (Eレーンビットパターン)CDTXMania.app.Random.Next(6) + 1;		// レーン1本相当なら、レーン1本か2本(1～6)に変化して終了
+							n新RGBレーンビットパターン = (Eレーンビットパターン)CDTXMania.Instance.Random.Next(6) + 1;		// レーン1本相当なら、レーン1本か2本(1～6)に変化して終了
 							bAdjustRandomLane = false;
 						}
 						break;
@@ -892,7 +970,7 @@ namespace DTXMania
 						case Eレーンビットパターン.xGB:	// xGB	レーン2本相当
 						case Eレーンビットパターン.RxB:	// RxB
 						case Eレーンビットパターン.RGx:	// RGx
-							n新RGBレーンビットパターン = existOpen ? (Eレーンビットパターン)(CDTXMania.app.Random.Next(8)) : (Eレーンビットパターン)(CDTXMania.app.Random.Next(7) + 1);	// OPENあり譜面ならOPENを含むランダム, OPENなし譜面ならOPENを含まないランダム
+							n新RGBレーンビットパターン = existOpen ? (Eレーンビットパターン)(CDTXMania.Instance.Random.Next(8)) : (Eレーンビットパターン)(CDTXMania.Instance.Random.Next(7) + 1);	// OPENあり譜面ならOPENを含むランダム, OPENなし譜面ならOPENを含まないランダム
 							break;
 
 						default:
@@ -900,7 +978,7 @@ namespace DTXMania
 							{
 								if (existOpen)	// OPENあり譜面の場合
 								{
-									int n乱数パーセント = CDTXMania.app.Random.Next(100);
+									int n乱数パーセント = CDTXMania.Instance.Random.Next(100);
 									if (n乱数パーセント < 30)
 									{
 										n新RGBレーンビットパターン = Eレーンビットパターン.OPEN;
@@ -911,7 +989,7 @@ namespace DTXMania
 									}
 									else if (n乱数パーセント < 85)
 									{
-										switch (CDTXMania.app.Random.Next(3))
+										switch (CDTXMania.Instance.Random.Next(3))
 										{
 											case 0:
 												n新RGBレーンビットパターン = Eレーンビットパターン.xGB;
@@ -925,7 +1003,7 @@ namespace DTXMania
 									}
 									else	// OPENでない場合
 									{
-										switch (CDTXMania.app.Random.Next(3))
+										switch (CDTXMania.Instance.Random.Next(3))
 										{
 											case 0:
 												n新RGBレーンビットパターン = Eレーンビットパターン.xxB;
@@ -940,14 +1018,14 @@ namespace DTXMania
 								}
 								else	// OPENなし譜面の場合
 								{
-									int n乱数パーセント = CDTXMania.app.Random.Next(100);
+									int n乱数パーセント = CDTXMania.Instance.Random.Next(100);
 									if (n乱数パーセント < 60)
 									{
 										n新RGBレーンビットパターン = Eレーンビットパターン.RGB;
 									}
 									else if (n乱数パーセント < 85)
 									{
-										switch (CDTXMania.app.Random.Next(3))
+										switch (CDTXMania.Instance.Random.Next(3))
 										{
 											case 0:
 												n新RGBレーンビットパターン = Eレーンビットパターン.xGB;
@@ -961,7 +1039,7 @@ namespace DTXMania
 									}
 									else
 									{
-										switch (CDTXMania.app.Random.Next(3))
+										switch (CDTXMania.Instance.Random.Next(3))
 										{
 											case 0:
 												n新RGBレーンビットパターン = Eレーンビットパターン.xxB;
@@ -1098,7 +1176,7 @@ namespace DTXMania
 			if (this.bWAVを使うチャンネルである)		// WAV
 			{
 				CDTX.CWAV wc;
-				CDTXMania.app.DTX.listWAV.TryGetValue(this.n整数値_内部番号, out wc);
+				CDTXMania.Instance.DTX.listWAV.TryGetValue(this.n整数値_内部番号, out wc);
 				if (wc == null)
 				{
 					nDuration = 0;
@@ -1119,7 +1197,7 @@ namespace DTXMania
 				}
 			}
 
-			double _db再生速度 = (CDTXMania.app.DTXVmode.Enabled) ? CDTXMania.app.DTX.dbDTXVPlaySpeed : CDTXMania.app.DTX.db再生速度;
+			double _db再生速度 = (CDTXMania.Instance.DTXVmode.Enabled) ? CDTXMania.Instance.DTX.dbDTXVPlaySpeed : CDTXMania.Instance.DTX.db再生速度;
 			return (int)(nDuration / _db再生速度);
 		}
 

@@ -13,14 +13,14 @@ namespace DTXMania
 	/// <para>(4) Direct3D デバイスのリセット時には、デバイスのリセット前に OnUnmanagedリソースの解放() を1回呼び出し、デバイスをリセットしたのち、OnUnmanagedリソースの作成() を1回呼び出します。</para>
 	/// <para>(5) Direct3D デバイスのロスト時には、デバイスの再生成前に OnUnmanagedリソースの解放()・OnManagedリソースの解放() を1回ずつ呼び出し、デバイスを再生成したのち、OnManagedリソースの作成()・OnUnmanagedリソースの作成() を1回ずつ呼び出します。</para>
 	/// </summary>
-	public interface IPluginActivity
+    public interface IPluginActivity
 	{
 		/// <summary>
 		/// <para>プラグインの初期化を行います。</para>
 		/// <para>DTXMania の起動処理の最後（セットアップ画面が表示される直前）に、DTXMania から一度だけ呼び出されます。</para>
 		/// <param name="PluginHost">プラグインが、ホスト（DTXMania）の情報にアクセスするためのオブジェクト。</param>
 		/// </summary>
-		void On初期化(DTXMania.IPluginHost PluginHost);
+		void On初期化( DTXMania.IPluginHost PluginHost );
 
 		/// <summary>
 		/// <para>プラグインの終了処理を行います。</para>
@@ -32,7 +32,7 @@ namespace DTXMania
 		/// Managed リソースを作成します。
 		/// </summary>
 		void OnManagedリソースの作成();
-
+		
 		/// <summary>
 		/// Unmanaged リソースを作成します。
 		/// </summary>
@@ -56,13 +56,13 @@ namespace DTXMania
 		/// <param name="pad">パッド入力。他のプラグインが入力占有中である場合は null が渡されます。</param>
 		/// <param name="keyboard">キーボード入力。他のプラグインが入力占有中である場合は null が渡されます。</param>
 		/// </summary>
-		void On進行描画(DTXMania.CPad pad, FDK.IInputDevice keyboard);
+		void On進行描画( DTXMania.CPad pad, FDK.IInputDevice keyboard );
 
 		/// <summary>
 		/// <para>ステージが変わる度に呼び出されます。</para>
 		/// <para>呼び出しタイミングは、新しいステージの活性化直後かつ描画開始前です。</para>
 		/// </summary>
-		void Onステージ変更(CConfigIni config);
+    void Onステージ変更(CConfigIni config);
 
 		/// <summary>
 		/// <para>選曲画面で選択曲が変更された場合に呼び出されます。</para>
@@ -74,10 +74,10 @@ namespace DTXMania
 		/// <param name="nブロック番号inSetDef">選択されている曲のset.defブロック番号(0～)。setDef.blocks[]の引数です。set.def が存在しなければ負数を渡します。</param>
 		/// <param name="n曲番号inブロック">選択されている曲のブロック内の曲番号(0～4)。setDef.blocks[nブロック番号inSetDef].File[]/Label[]の引数です。set.def が存在しなければ負数を渡します。
 		/// この番号は、選曲画面でプレイヤーが目にしているレベル（L1～L5）に常に対応するとは限りません。</param>
-		void On選択曲変更(string str選択曲ファイル名, DTXMania.CSetDef setDef, int nブロック番号inSetDef, int n曲番号inブロック);
+		void On選択曲変更( string str選択曲ファイル名, DTXMania.CSetDef setDef, int nブロック番号inSetDef, int n曲番号inブロック );
 
-		void On演奏クリア(DTXMania.CScoreIni scoreIni);
-		void On演奏失敗(DTXMania.CScoreIni scoreIni);
-		void On演奏キャンセル(DTXMania.CScoreIni scoreIni);
+		void On演奏クリア( DTXMania.CScoreIni scoreIni );
+		void On演奏失敗( DTXMania.CScoreIni scoreIni );
+		void On演奏キャンセル( DTXMania.CScoreIni scoreIni );
 	}
 }

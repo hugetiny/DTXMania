@@ -35,7 +35,7 @@ namespace DTXMania
 			ChangeSkin,						// #28195 2011.5.4 yyagi
 			終了
 		}
-
+		
 		internal Eフェーズ eフェーズID;
 		public enum Eフェーズ
 		{

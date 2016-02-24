@@ -13,31 +13,31 @@ namespace DTXMania
 
 		public override void On非活性化()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
-				TextureFactory.tテクスチャの解放(ref this.txオプションパネル);
+				TextureFactory.tテクスチャの解放( ref this.txオプションパネル );
 				base.On非活性化();
 			}
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
-				this.txオプションパネル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\Screen option panels.png"), false);
+				this.txオプションパネル = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\Screen option panels.png" ), false );
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない)
+			if( !base.b活性化してない )
 			{
-				Device device = CDTXMania.app.Device;
-				CConfigIni configIni = CDTXMania.app.ConfigIni;
-				if (this.txオプションパネル != null)
+				Device device = CDTXMania.Instance.Device;
+				CConfigIni configIni = CDTXMania.Instance.ConfigIni;
+				if( this.txオプションパネル != null )
 				{
 					#region [ スクロール速度表示 ]
 					int drums = configIni.n譜面スクロール速度.Drums;
-					if (drums > 15)
+					if( drums > 15 )
 					{
 						drums = 15;
 					}
@@ -45,10 +45,10 @@ namespace DTXMania
 						device,
 						0x171 * Scale.X,
 						12 * Scale.Y - 4,
-						this.rc譜面スピード[drums]
+						this.rc譜面スピード[ drums ]
 					);
 					int guitar = configIni.n譜面スクロール速度.Guitar;
-					if (guitar > 15)
+					if( guitar > 15 )
 					{
 						guitar = 15;
 					}
@@ -56,10 +56,10 @@ namespace DTXMania
 						device,
 						0x171 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rc譜面スピード[guitar]
+						this.rc譜面スピード[ guitar ]
 					);
 					int bass = configIni.n譜面スクロール速度.Bass;
-					if (bass > 15)
+					if( bass > 15 )
 					{
 						bass = 15;
 					}
@@ -67,7 +67,7 @@ namespace DTXMania
 						device,
 						0x171 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rc譜面スピード[bass]
+						this.rc譜面スピード[ bass ]
 					);
 					#endregion
 					#region [ Sudden/Hidden/Invisible ]
@@ -75,42 +75,42 @@ namespace DTXMania
 						device,
 						0x189 * Scale.X,
 						12 * Scale.Y - 4,
-						this.rcHS[(configIni.bHidden.Drums ? 1 : 0) + (configIni.bSudden.Drums ? 2 : 0) +
-									(configIni.eInvisible.Drums == EInvisible.SEMI ? 4 : 0) +
-									(configIni.eInvisible.Drums == EInvisible.FULL ? 5 : 0)]);
+						this.rcHS[ ( configIni.bHidden.Drums ? 1 : 0 ) + ( configIni.bSudden.Drums ? 2 : 0 ) +
+									( configIni.eInvisible.Drums == EInvisible.SEMI ? 4 : 0 ) +
+									( configIni.eInvisible.Drums == EInvisible.FULL ? 5 : 0 ) ] );
 					this.txオプションパネル.t2D描画(
 						device,
 						0x189 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rcHS[(configIni.bHidden.Guitar ? 1 : 0) + (configIni.bSudden.Guitar ? 2 : 0) +
-									(configIni.eInvisible.Guitar == EInvisible.SEMI ? 4 : 0) +
-									(configIni.eInvisible.Guitar == EInvisible.FULL ? 5 : 0)]);
+						this.rcHS[ ( configIni.bHidden.Guitar ? 1 : 0 ) + ( configIni.bSudden.Guitar ? 2 : 0 ) +
+									( configIni.eInvisible.Guitar == EInvisible.SEMI ? 4 : 0 ) +
+									( configIni.eInvisible.Guitar == EInvisible.FULL ? 5 : 0 ) ] );
 					this.txオプションパネル.t2D描画(
 						device,
 						0x189 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rcHS[(configIni.bHidden.Bass ? 1 : 0) + (configIni.bSudden.Bass ? 2 : 0) +
-									(configIni.eInvisible.Bass == EInvisible.SEMI ? 4 : 0) +
-									(configIni.eInvisible.Bass == EInvisible.FULL ? 5 : 0)]);
+						this.rcHS[ ( configIni.bHidden.Bass ? 1 : 0 ) + ( configIni.bSudden.Bass ? 2 : 0 ) +
+									( configIni.eInvisible.Bass == EInvisible.SEMI ? 4 : 0 ) +
+									( configIni.eInvisible.Bass == EInvisible.FULL ? 5 : 0 ) ] );
 					#endregion
 					#region [ Dark ]
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1a1 * Scale.X,
 						12 * Scale.Y - 4,
-						this.rcDark[(int)configIni.eDark]
+						this.rcDark[ (int) configIni.eDark ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1a1 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rcDark[(int)configIni.eDark]
+						this.rcDark[ (int) configIni.eDark ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1a1 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rcDark[(int)configIni.eDark]
+						this.rcDark[ (int) configIni.eDark ]
 					);
 					#endregion
 					#region [ Reverse ]
@@ -118,19 +118,19 @@ namespace DTXMania
 						device,
 						0x1b9 * Scale.X,
 						12 * Scale.Y - 4,
-						this.rcReverse[configIni.bReverse.Drums ? 1 : 0]
+						this.rcReverse[ configIni.bReverse.Drums ? 1 : 0 ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1b9 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rcReverse[configIni.bReverse.Guitar ? 1 : 0]
+						this.rcReverse[ configIni.bReverse.Guitar ? 1 : 0 ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1b9 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rcReverse[configIni.bReverse.Bass ? 1 : 0]
+						this.rcReverse[ configIni.bReverse.Bass ? 1 : 0 ]
 					);
 					#endregion
 					#region [ 判定文字表示位置 ]
@@ -138,19 +138,19 @@ namespace DTXMania
 						device,
 						0x1d1 * Scale.X,
 						12 * Scale.Y - 4,
-						this.rcPosition[(int)configIni.判定文字表示位置.Drums]
+						this.rcPosition[ (int) configIni.判定文字表示位置.Drums ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1d1 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rcPosition[(int)configIni.判定文字表示位置.Guitar]
+						this.rcPosition[ (int) configIni.判定文字表示位置.Guitar ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1d1 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rcPosition[(int)configIni.判定文字表示位置.Bass]
+						this.rcPosition[ (int) configIni.判定文字表示位置.Bass ]
 					);
 					#endregion
 					#region [ Tight ]
@@ -158,7 +158,7 @@ namespace DTXMania
 						device,
 						0x1e9 * Scale.X,
 						12 * Scale.Y - 4,
-						this.rcTight[configIni.bTight ? 1 : 0]
+						this.rcTight[ configIni.bTight ? 1 : 0 ]
 					);
 					#endregion
 					#region [ Random ]
@@ -166,13 +166,13 @@ namespace DTXMania
 						device,
 						0x1e9 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rcRandom[(int)configIni.eRandom.Guitar]
+						this.rcRandom[ (int) configIni.eRandom.Guitar ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x1e9 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rcRandom[(int)configIni.eRandom.Bass]
+						this.rcRandom[ (int) configIni.eRandom.Bass ]
 					);
 					#endregion
 					#region [ ComboPosigion ]
@@ -180,7 +180,7 @@ namespace DTXMania
 						device,
 						0x201 * Scale.X,
 						12 * Scale.Y - 4,
-						this.rcComboPos[(int)configIni.ドラムコンボ文字の表示位置]
+						this.rcComboPos[ (int) configIni.ドラムコンボ文字の表示位置 ]
 					);
 					#endregion
 					#region [ Light ]
@@ -188,13 +188,13 @@ namespace DTXMania
 						device,
 						0x201 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rcLight[configIni.bLight.Guitar ? 1 : 0]
+						this.rcLight[ configIni.bLight.Guitar ? 1 : 0 ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x201 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rcLight[configIni.bLight.Bass ? 1 : 0]
+						this.rcLight[ configIni.bLight.Bass ? 1 : 0 ] 
 					);
 					#endregion
 					#region [ Left ]
@@ -202,13 +202,13 @@ namespace DTXMania
 						device,
 						0x219 * Scale.X,
 						0x18 * Scale.Y - 4,
-						this.rcLeft[configIni.bLeft.Guitar ? 1 : 0]
+						this.rcLeft[ configIni.bLeft.Guitar ? 1 : 0 ]
 					);
 					this.txオプションパネル.t2D描画(
 						device,
 						0x219 * Scale.X,
 						0x24 * Scale.Y - 4,
-						this.rcLeft[configIni.bLeft.Bass ? 1 : 0]
+						this.rcLeft[ configIni.bLeft.Bass ? 1 : 0 ]
 					);
 					#endregion
 				}
@@ -216,7 +216,7 @@ namespace DTXMania
 			return 0;
 		}
 
-
+		
 		// その他
 
 		#region [ private ]

@@ -18,14 +18,6 @@ namespace DTXMania
 {
 	internal class CDTXMania : Game
 	{
-		public struct STPlugin
-		{
-			public IPluginActivity plugin;
-			public string strプラグインフォルダ;
-			public string strアセンブリ簡易名;
-			public Version Version;
-		}
-
 		// プロパティ
 		#region [ properties ]
 		public static readonly string VERSION = "105(160214)";
@@ -34,10 +26,17 @@ namespace DTXMania
 		//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
 		//public static readonly string D3DXDLL = "d3dx9_41.dll";	// March 2009
 
-		public static CDTXMania app { get; private set; }
-		public C文字コンソール act文字コンソール { get; private set; }
-		public bool bコンパクトモード { get; private set; }
-		public CConfigIni ConfigIni { get; private set; }
+		private static CDTXMania instance = new CDTXMania();
+		public static CDTXMania Instance
+		{
+			get
+			{
+				return instance;
+			}
+		}
+		public C文字コンソール act文字コンソール		{			get;private set;}
+		public bool bコンパクトモード		{			get;	private set;}
+		public CConfigIni ConfigIni		{			get;			private set;}
 		public CDTX DTX
 		{
 			get
@@ -46,20 +45,20 @@ namespace DTXMania
 			}
 			set
 			{
-				if ((dtx != null) && (app != null))
+				if ((dtx != null) && (Instance != null))
 				{
 					dtx.On非活性化();
-					app.listトップレベルActivities.Remove(dtx);
+					Instance.listトップレベルActivities.Remove(dtx);
 				}
 				dtx = value;
-				if ((dtx != null) && (app != null))
+				if ((dtx != null) && (Instance != null))
 				{
-					app.listトップレベルActivities.Add(dtx);
+					Instance.listトップレベルActivities.Add(dtx);
 				}
 			}
 		}
-		public CFPS FPS { get; private set; }
-		public CInput管理 Input管理 { get; private set; }
+		public CFPS FPS		{			get;private set;}
+		public CInput管理 Input管理		{			get;private set;}
 		#region [ 入力範囲ms ]
 		public int nPerfect範囲ms
 		{
@@ -122,7 +121,7 @@ namespace DTXMania
 			}
 		}
 		#endregion
-		public CPad Pad { get; private set; }
+		public CPad Pad		{			get;private set;}
 		public Random Random { get; private set; }
 		public CSkin Skin { get; private set; }
 		public CSongs管理 Songs管理 { get; set; }// 2012.1.26 yyagi private解除 CStage起動でのdesirialize読み込みのため
@@ -133,7 +132,7 @@ namespace DTXMania
 		public CSound管理 Sound管理 { get; private set; }
 		public CStage起動 stage起動 { get; private set; }
 		public CStageタイトル stageタイトル { get; private set; }
-		//		public static CStageオプション stageオプション
+		//		public  CStageオプション stageオプション
 		//		{ 
 		//			get;
 		//			private set;
@@ -141,29 +140,22 @@ namespace DTXMania
 		public CStageコンフィグ stageコンフィグ { get; private set; }
 		public CStage選曲 stage選曲 { get; private set; }
 		public CStage曲読み込み stage曲読み込み { get; private set; }
-		public CStage演奏ギター画面 stage演奏ギター画面 { get; private set; }
+		public CStage演奏ギター画面 stage演奏ギター画面
+		{ get; private set; }
 		public CStage演奏ドラム画面 stage演奏ドラム画面 { get; private set; }
 		public CStage結果 stage結果 { get; private set; }
 		public CStageChangeSkin stageChangeSkin { get; private set; }
 		public CStage終了 stage終了 { get; private set; }
-		public CStage r現在のステージ { get; private set; }
-		public CStage r直前のステージ { get; private set; }
-
+		public CStage r現在のステージ = null;
+		public CStage r直前のステージ = null;
 		public string strEXEのあるフォルダ { get; private set; }
-
 		public string strコンパクトモードファイル { get; private set; }
-
 		public CTimer Timer { get; private set; }
-
 		public Format TextureFormat = Format.A8R8G8B8;
 		internal IPluginActivity act現在入力を占有中のプラグイン = null;
-
 		public bool bApplicationActive { get; private set; }
-
 		public bool b次のタイミングで垂直帰線同期切り替えを行う { get; set; }
-
 		public bool b次のタイミングで全画面_ウィンドウ切り替えを行う { get; set; }
-
 		public Device Device
 		{
 			get
@@ -171,10 +163,10 @@ namespace DTXMania
 				return base.GraphicsDeviceManager.Direct3D9.Device;
 			}
 		}
-
 		public CPluginHost PluginHost { get; private set; }
+		public List<STPlugin> listプラグイン = new List<STPlugin>();
 
-		private Size currentClientSize { get; set; }// #23510 2010.10.27 add yyagi to keep current window size
+		private Size currentClientSize { get; set; }	// #23510 2010.10.27 add yyagi to keep current window size
 		//		public static CTimer ct;
 		public IntPtr WindowHandle					// 2012.10.24 yyagi; to add ASIO support
 		{
@@ -184,17 +176,16 @@ namespace DTXMania
 			}
 		}
 		public CDTXVmode DTXVmode { get; set; }// #28821 2014.1.23 yyagi
-
-		public List<STPlugin> listプラグイン { get; private set; }
-
 		#endregion
 
 		// コンストラクタ
 
-		public CDTXMania()
+		private CDTXMania()
 		{
-			CDTXMania.app = this;
-			listプラグイン = new List<STPlugin>();
+		}
+
+		public void InitializeInstance()
+		{
 			#region [ strEXEのあるフォルダを決定する ]
 			//-----------------
 			// BEGIN #23629 2010.11.13 from: デバッグ時は Application.ExecutablePath が ($SolutionDir)/bin/x86/Debug/ などになり System/ の読み込みに失敗するので、カレントディレクトリを採用する。（プロジェクトのプロパティ→デバッグ→作業ディレクトリが有効になる）
@@ -223,7 +214,7 @@ namespace DTXMania
 					//ConfigIni = new CConfigIni();	// 存在してなければ新規生成
 				}
 			}
-			this.Window.EnableSystemMenu = CDTXMania.app.ConfigIni.bIsEnabledSystemMenu;	// #28200 2011.5.1 yyagi
+			this.Window.EnableSystemMenu = CDTXMania.Instance.ConfigIni.bIsEnabledSystemMenu;	// #28200 2011.5.1 yyagi
 			// 2012.8.22 Config.iniが無いときに初期値が適用されるよう、この設定行をifブロック外に移動
 
 			//---------------------
@@ -315,16 +306,16 @@ namespace DTXMania
 							break;
 					}
 
-					CDTXMania.app.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
-					CDTXMania.app.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
-					CDTXMania.app.ConfigIni.bDrums有効 = !DTXVmode.GRmode;
-					CDTXMania.app.ConfigIni.bGuitar有効 = true;
+					CDTXMania.Instance.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
+					CDTXMania.Instance.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
+					CDTXMania.Instance.ConfigIni.bDrums有効 = !DTXVmode.GRmode;
+					CDTXMania.Instance.ConfigIni.bGuitar有効 = true;
 
-					CDTXMania.app.ConfigIni.b全画面モード = false;
-					CDTXMania.app.ConfigIni.nウインドウwidth = CDTXMania.app.ConfigIni.nViewerウインドウwidth;
-					CDTXMania.app.ConfigIni.nウインドウheight = CDTXMania.app.ConfigIni.nViewerウインドウheight;
-					CDTXMania.app.ConfigIni.n初期ウィンドウ開始位置X = CDTXMania.app.ConfigIni.nViewer初期ウィンドウ開始位置X;
-					CDTXMania.app.ConfigIni.n初期ウィンドウ開始位置Y = CDTXMania.app.ConfigIni.nViewer初期ウィンドウ開始位置Y;
+					CDTXMania.Instance.ConfigIni.b全画面モード = false;
+					CDTXMania.Instance.ConfigIni.nウインドウwidth = CDTXMania.Instance.ConfigIni.nViewerウインドウwidth;
+					CDTXMania.Instance.ConfigIni.nウインドウheight = CDTXMania.Instance.ConfigIni.nViewerウインドウheight;
+					CDTXMania.Instance.ConfigIni.n初期ウィンドウ開始位置X = CDTXMania.Instance.ConfigIni.nViewer初期ウィンドウ開始位置X;
+					CDTXMania.Instance.ConfigIni.n初期ウィンドウ開始位置Y = CDTXMania.Instance.ConfigIni.nViewer初期ウィンドウ開始位置Y;
 				}
 				else														// 通常のコンパクトモード
 				{
@@ -513,8 +504,8 @@ namespace DTXMania
 			Trace.Indent();
 			try
 			{
-				Skin = new CSkin(CDTXMania.app.ConfigIni.strSystemSkinSubfolderFullName, CDTXMania.app.ConfigIni.bUseBoxDefSkin);
-				CDTXMania.app.ConfigIni.strSystemSkinSubfolderFullName = CDTXMania.app.Skin.GetCurrentSkinSubfolderFullName(true);	// 旧指定のSkinフォルダが消滅していた場合に備える
+				Skin = new CSkin(CDTXMania.Instance.ConfigIni.strSystemSkinSubfolderFullName, CDTXMania.Instance.ConfigIni.bUseBoxDefSkin);
+				CDTXMania.Instance.ConfigIni.strSystemSkinSubfolderFullName = CDTXMania.Instance.Skin.GetCurrentSkinSubfolderFullName(true);	// 旧指定のSkinフォルダが消滅していた場合に備える
 				Trace.TraceInformation("スキンの初期化を完了しました。");
 			}
 			catch
@@ -614,7 +605,7 @@ namespace DTXMania
 			try
 			{
 				ESoundDeviceType soundDeviceType;
-				switch (CDTXMania.app.ConfigIni.nSoundDeviceType)
+				switch (CDTXMania.Instance.ConfigIni.nSoundDeviceType)
 				{
 					case 0:
 						soundDeviceType = ESoundDeviceType.DirectSound;
@@ -631,19 +622,19 @@ namespace DTXMania
 				}
 				Sound管理 = new CSound管理(base.Window.Handle,
 											soundDeviceType,
-											CDTXMania.app.ConfigIni.nWASAPIBufferSizeMs,
-					// CDTXMania.app.ConfigIni.nASIOBufferSizeMs,
+											CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs,
+					// CDTXMania.Instance.ConfigIni.nASIOBufferSizeMs,
 											0,
-											CDTXMania.app.ConfigIni.nASIODevice,
-											CDTXMania.app.ConfigIni.bUseOSTimer
+											CDTXMania.Instance.ConfigIni.nASIODevice,
+											CDTXMania.Instance.ConfigIni.bUseOSTimer
 				);
 				//Sound管理 = FDK.CSound管理.Instance;
-				//Sound管理.t初期化( soundDeviceType, 0, 0, CDTXMania.app.ConfigIni.nASIODevice, base.Window.Handle );
+				//Sound管理.t初期化( soundDeviceType, 0, 0, CDTXMania.Instance.ConfigIni.nASIODevice, base.Window.Handle );
 
 				ShowWindowTitleWithSoundType();
-				FDK.CSound管理.bIsTimeStretch = CDTXMania.app.ConfigIni.bTimeStretch;
-				Sound管理.nMasterVolume = CDTXMania.app.ConfigIni.nMasterVolume;
-				//FDK.CSound管理.bIsMP3DecodeByWindowsCodec = CDTXMania.app.ConfigIni.bNoMP3Streaming;
+				FDK.CSound管理.bIsTimeStretch = CDTXMania.Instance.ConfigIni.bTimeStretch;
+				Sound管理.nMasterVolume = CDTXMania.Instance.ConfigIni.nMasterVolume;
+				//FDK.CSound管理.bIsMP3DecodeByWindowsCodec = CDTXMania.Instance.ConfigIni.bNoMP3Streaming;
 				Trace.TraceInformation("サウンドデバイスの初期化を完了しました。");
 			}
 			catch (Exception e)
@@ -697,13 +688,13 @@ namespace DTXMania
 			stage起動 = new CStage起動();
 			stageタイトル = new CStageタイトル();
 			//			stageオプション = new CStageオプション();
-			stageChangeSkin = new CStageChangeSkin();
-			stage曲読み込み = new CStage曲読み込み();
 			stageコンフィグ = new CStageコンフィグ();
-			stage結果 = new CStage結果();
 			stage選曲 = new CStage選曲();
+			stage曲読み込み = new CStage曲読み込み();
 			stage演奏ドラム画面 = new CStage演奏ドラム画面();
 			stage演奏ギター画面 = new CStage演奏ギター画面();
+			stage結果 = new CStage結果();
+			stageChangeSkin = new CStageChangeSkin();
 			stage終了 = new CStage終了();
 			this.listトップレベルActivities = new List<CActivity>();
 			this.listトップレベルActivities.Add(actEnumSongs);
@@ -753,7 +744,7 @@ namespace DTXMania
 						st.plugin.On初期化(this.PluginHost);
 						st.plugin.OnManagedリソースの作成();
 						st.plugin.OnUnmanagedリソースの作成();
-						Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+						Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 					}
 					Trace.TraceInformation("すべてのプラグインの初期化を完了しました。");
 				}
@@ -778,7 +769,7 @@ namespace DTXMania
 			Trace.TraceInformation("----------------------");
 			Trace.TraceInformation("■ 起動");
 
-			if (CDTXMania.app.bコンパクトモード)
+			if (CDTXMania.Instance.bコンパクトモード)
 			{
 				r現在のステージ = stage曲読み込み;
 			}
@@ -822,9 +813,9 @@ namespace DTXMania
 					// #30666 2013.2.2 yyagi Don't use Fullscreen mode becasue NVIDIA GeForce is
 					// tend to delay drawing on Fullscreen mode. So DTXMania uses Maximized window
 					// in spite of using fullscreen mode.
-					app.Window.WindowState = FormWindowState.Normal;
-					app.Window.FormBorderStyle = FormBorderStyle.Sizable;
-					app.Window.WindowState = FormWindowState.Normal;
+					Instance.Window.WindowState = FormWindowState.Normal;
+					Instance.Window.FormBorderStyle = FormBorderStyle.Sizable;
+					Instance.Window.WindowState = FormWindowState.Normal;
 #endif
 					base.Window.ClientSize =
 						new Size(currentClientSize.Width, currentClientSize.Height);
@@ -833,9 +824,9 @@ namespace DTXMania
 #if WindowedFullscreen
 				else
 				{
-					app.Window.WindowState = FormWindowState.Normal;
-					app.Window.FormBorderStyle = FormBorderStyle.None;
-					app.Window.WindowState = FormWindowState.Maximized;
+					Instance.Window.WindowState = FormWindowState.Normal;
+					Instance.Window.FormBorderStyle = FormBorderStyle.None;
+					Instance.Window.WindowState = FormWindowState.Maximized;
 				}
 				if (ConfigIni.bウィンドウモード)
 				{
@@ -875,7 +866,7 @@ namespace DTXMania
 			}
 
 			// http://www.gamedev.net/topic/594369-dx9slimdxati-incorrect-saving-surface-to-file/
-			using (Surface pSurface = CDTXMania.app.Device.GetRenderTarget(0))
+			using (Surface pSurface = CDTXMania.Instance.Device.GetRenderTarget(0))
 			{
 				Surface.ToFile(pSurface, strFullPath, ImageFileFormat.Png);
 			}
@@ -904,7 +895,7 @@ namespace DTXMania
 			{
 				Directory.SetCurrentDirectory(st.strプラグインフォルダ);
 				st.plugin.OnManagedリソースの作成();
-				Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+				Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 			}
 #if GPUFlushAfterPresent
 			FrameEnd += dtxmania_FrameEnd;
@@ -962,7 +953,7 @@ namespace DTXMania
 			{
 				Directory.SetCurrentDirectory(st.strプラグインフォルダ);
 				st.plugin.OnUnmanagedリソースの作成();
-				Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+				Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 			}
 		}
 		protected override void UnloadContent()
@@ -977,7 +968,7 @@ namespace DTXMania
 			{
 				Directory.SetCurrentDirectory(st.strプラグインフォルダ);
 				st.plugin.OnUnmanagedリソースの解放();
-				Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+				Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 			}
 		}
 		protected override void OnExiting(EventArgs e)
@@ -999,7 +990,7 @@ namespace DTXMania
 				CSound管理.rc演奏用タイマ.t更新();
 
 			if (Input管理 != null)
-				Input管理.tポーリング(this.bApplicationActive, CDTXMania.app.ConfigIni.bバッファ入力を行う);
+				Input管理.tポーリング(this.bApplicationActive, CDTXMania.Instance.ConfigIni.bバッファ入力を行う);
 
 			if (FPS != null)
 				FPS.tカウンタ更新();
@@ -1048,7 +1039,7 @@ namespace DTXMania
 									this.previewSound.Dispose();
 									this.previewSound = null;
 								}
-								this.previewSound = CDTXMania.app.Sound管理.tサウンドを生成する(strPreviewFilename);
+								this.previewSound = CDTXMania.Instance.Sound管理.tサウンドを生成する(strPreviewFilename);
 								this.previewSound.n音量 = DTXVmode.previewVolume;
 								this.previewSound.n位置 = DTXVmode.previewPan;
 								this.previewSound.t再生を開始する();
@@ -1082,12 +1073,12 @@ namespace DTXMania
 				{
 					Directory.SetCurrentDirectory(sp.strプラグインフォルダ);
 
-					if (CDTXMania.app.act現在入力を占有中のプラグイン == null || CDTXMania.app.act現在入力を占有中のプラグイン == sp.plugin)
-						sp.plugin.On進行描画(CDTXMania.app.Pad, CDTXMania.app.Input管理.Keyboard);
+					if (CDTXMania.Instance.act現在入力を占有中のプラグイン == null || CDTXMania.Instance.act現在入力を占有中のプラグイン == sp.plugin)
+						sp.plugin.On進行描画(CDTXMania.Instance.Pad, CDTXMania.Instance.Input管理.Keyboard);
 					else
 						sp.plugin.On進行描画(null, null);
 
-					Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+					Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 				}
 				//---------------------
 				#endregion
@@ -1099,10 +1090,10 @@ namespace DTXMania
 				{														// → songs.db等の書き込み時だと音切れするっぽい
 					actEnumSongs.On非活性化();
 					EnumSongs.SongListEnumCompletelyDone();
-					stage選曲.bIsEnumeratingSongs = false;
+					CDTXMania.Instance.stage選曲.bIsEnumeratingSongs = false;
 				}
 				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
-				if (!CDTXMania.app.bコンパクトモード)
+				if (!CDTXMania.Instance.bコンパクトモード)
 				{
 					actEnumSongs.On進行描画();							// "Enumerating Songs..."アイコンの描画
 				}
@@ -1121,10 +1112,10 @@ namespace DTXMania
 								 !EnumSongs.IsSongListEnumStarted)
 							{
 								actEnumSongs.On活性化();
-								stage選曲.bIsEnumeratingSongs = true;
-								EnumSongs.Init(CDTXMania.app.Songs管理.listSongsDB, CDTXMania.app.Songs管理.nSongsDBから取得できたスコア数);	// songs.db情報と、取得した曲数を、新インスタンスにも与える
+								CDTXMania.Instance.stage選曲.bIsEnumeratingSongs = true;
+								EnumSongs.Init(CDTXMania.Instance.Songs管理.listSongsDB, CDTXMania.Instance.Songs管理.nSongsDBから取得できたスコア数);	// songs.db情報と、取得した曲数を、新インスタンスにも与える
 								EnumSongs.StartEnumFromDisk();		// 曲検索スレッドの起動・開始
-								if (CDTXMania.app.Songs管理.nSongsDBから取得できたスコア数 == 0)	// もし初回起動なら、検索スレッドのプライオリティをLowestでなくNormalにする
+								if (CDTXMania.Instance.Songs管理.nSongsDBから取得できたスコア数 == 0)	// もし初回起動なら、検索スレッドのプライオリティをLowestでなくNormalにする
 								{
 									EnumSongs.ChangeEnumeratePriority(ThreadPriority.Normal);
 								}
@@ -1137,8 +1128,8 @@ namespace DTXMania
 								switch (this.n進行描画の戻り値)
 								{
 									case 0:		// 何もない
-										//if ( CDTXMania.app.stage選曲.bIsEnumeratingSongs )
-										if (!stage選曲.bIsPlayingPremovie)
+										//if ( CDTXMania.Instance.stage選曲.bIsEnumeratingSongs )
+										if (!CDTXMania.Instance.stage選曲.bIsPlayingPremovie)
 										{
 											EnumSongs.Resume();						// #27060 2012.2.6 yyagi 中止していたバックグランド曲検索を再開
 											EnumSongs.IsSlowdown = false;
@@ -1172,10 +1163,10 @@ namespace DTXMania
 							if (EnumSongs.IsSongListEnumerated)
 							{
 								actEnumSongs.On非活性化();
-								stage選曲.bIsEnumeratingSongs = false;
+								CDTXMania.Instance.stage選曲.bIsEnumeratingSongs = false;
 
 								bool bRemakeSongTitleBar = (r現在のステージ.eステージID == CStage.Eステージ.選曲) ? true : false;
-								stage選曲.Refresh(EnumSongs.Songs管理, bRemakeSongTitleBar);
+								CDTXMania.Instance.stage選曲.Refresh(EnumSongs.Songs管理, bRemakeSongTitleBar);
 								EnumSongs.SongListEnumCompletelyDone();
 							}
 							#endregion
@@ -1216,8 +1207,8 @@ namespace DTXMania
 							foreach (STPlugin pg in this.listプラグイン)
 							{
 								Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-								pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-								Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+								pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+								Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 							}
 
 							this.tガベージコレクションを実行する();
@@ -1289,8 +1280,8 @@ namespace DTXMania
 						foreach (STPlugin pg in this.listプラグイン)
 						{
 							Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-							pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-							Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+							pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+							Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 						}
 
 						//this.tガベージコレクションを実行する();		// #31980 2013.9.3 yyagi タイトル画面でだけ、毎フレームGCを実行して重くなっていた問題の修正
@@ -1319,7 +1310,7 @@ namespace DTXMania
 					//									{
 					//										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
 					//										pg.plugin.Onステージ変更();
-					//										Directory.SetCurrentDirectory( CDTXMania.app.strEXEのあるフォルダ );
+					//										Directory.SetCurrentDirectory( CDTXMania.Instance.strEXEのあるフォルダ );
 					//									}
 					//						
 					//									this.tガベージコレクションを実行する();
@@ -1341,7 +1332,7 @@ namespace DTXMania
 					//									{
 					//										Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
 					//										pg.plugin.Onステージ変更();
-					//										Directory.SetCurrentDirectory( CDTXMania.app.strEXEのあるフォルダ );
+					//										Directory.SetCurrentDirectory( CDTXMania.Instance.strEXEのあるフォルダ );
 					//									}
 					//
 					//									this.tガベージコレクションを実行する();
@@ -1374,8 +1365,8 @@ namespace DTXMania
 									foreach (STPlugin pg in this.listプラグイン)
 									{
 										Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-										pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-										Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+										pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+										Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 									}
 
 									this.tガベージコレクションを実行する();
@@ -1396,8 +1387,8 @@ namespace DTXMania
 									foreach (STPlugin pg in this.listプラグイン)
 									{
 										Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-										pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-										Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+										pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+										Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 									}
 
 									this.tガベージコレクションを実行する();
@@ -1428,8 +1419,8 @@ namespace DTXMania
 								foreach (STPlugin pg in this.listプラグイン)
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-									pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 
 								this.tガベージコレクションを実行する();
@@ -1450,8 +1441,8 @@ namespace DTXMania
 								foreach (STPlugin pg in this.listプラグイン)
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-									pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 
 								this.tガベージコレクションを実行する();
@@ -1473,7 +1464,7 @@ namespace DTXMania
 							//								{
 							//									Directory.SetCurrentDirectory( pg.strプラグインフォルダ );
 							//									pg.plugin.Onステージ変更();
-							//									Directory.SetCurrentDirectory( CDTXMania.app.strEXEのあるフォルダ );
+							//									Directory.SetCurrentDirectory( CDTXMania.Instance.strEXEのあるフォルダ );
 							//								}
 							//
 							//								this.tガベージコレクションを実行する();
@@ -1494,8 +1485,8 @@ namespace DTXMania
 								foreach (STPlugin pg in this.listプラグイン)
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-									pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 
 								this.tガベージコレクションを実行する();
@@ -1527,7 +1518,7 @@ namespace DTXMania
 						DTXVmode.Refreshed = false;		// 曲のリロード中に発生した再リロードは、無視する。
 						if (this.n進行描画の戻り値 != 0)
 						{
-							CDTXMania.app.Pad.st検知したデバイス.Clear();	// 入力デバイスフラグクリア(2010.9.11)
+							CDTXMania.Instance.Pad.st検知したデバイス.Clear();	// 入力デバイスフラグクリア(2010.9.11)
 							r現在のステージ.On非活性化();
 							#region [ ESC押下時は、曲の読み込みを中止して選曲画面に戻る ]
 							if (this.n進行描画の戻り値 == (int)E曲読込画面の戻り値.読込中止)
@@ -1544,8 +1535,8 @@ namespace DTXMania
 								foreach (STPlugin pg in this.listプラグイン)
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-									pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 								break;
 							}
@@ -1593,8 +1584,8 @@ for (int i = 0; i < 3; i++) {
 							foreach (STPlugin pg in this.listプラグイン)
 							{
 								Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-								pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-								Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+								pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+								Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 							}
 
 							this.tガベージコレクションを実行する();
@@ -1627,11 +1618,11 @@ for (int i = 0; i < 3; i++) {
 							{
 								if (!ConfigIni.bギタレボモード)
 								{
-									stage演奏ドラム画面.t停止();
+									CDTXMania.Instance.stage演奏ドラム画面.t停止();
 								}
 								else
 								{
-									stage演奏ギター画面.t停止();
+									CDTXMania.Instance.stage演奏ギター画面.t停止();
 								}
 								if (previewSound != null)
 								{
@@ -1677,32 +1668,32 @@ for (int i = 0; i < 3; i++) {
 								{
 									if (!ConfigIni.bギタレボモード)
 									{
-										stage演奏ドラム画面.t再読込();
+										CDTXMania.Instance.stage演奏ドラム画面.t再読込();
 									}
 									else
 									{
-										stage演奏ギター画面.t再読込();
+										CDTXMania.Instance.stage演奏ギター画面.t再読込();
 									}
 
-									CDTXMania.app.ConfigIni.bDrums有効 = !DTXVmode.GRmode;
-									CDTXMania.app.ConfigIni.bGuitar有効 = true;
-									CDTXMania.app.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
+									CDTXMania.Instance.ConfigIni.bDrums有効 = !DTXVmode.GRmode;
+									CDTXMania.Instance.ConfigIni.bGuitar有効 = true;
+									CDTXMania.Instance.ConfigIni.bTimeStretch = DTXVmode.TimeStretch;
 									CSound管理.bIsTimeStretch = DTXVmode.TimeStretch;
-									if (CDTXMania.app.ConfigIni.b垂直帰線待ちを行う != DTXVmode.VSyncWait)
+									if (CDTXMania.Instance.ConfigIni.b垂直帰線待ちを行う != DTXVmode.VSyncWait)
 									{
-										CDTXMania.app.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
-										CDTXMania.app.b次のタイミングで垂直帰線同期切り替えを行う = true;
+										CDTXMania.Instance.ConfigIni.b垂直帰線待ちを行う = DTXVmode.VSyncWait;
+										CDTXMania.Instance.b次のタイミングで垂直帰線同期切り替えを行う = true;
 									}
 								}
 								else
 								{
 									if (!ConfigIni.bギタレボモード)
 									{
-										stage演奏ドラム画面.t演奏位置の変更(CDTXMania.app.DTXVmode.nStartBar);
+										CDTXMania.Instance.stage演奏ドラム画面.t演奏位置の変更(CDTXMania.Instance.DTXVmode.nStartBar);
 									}
 									else
 									{
-										stage演奏ギター画面.t演奏位置の変更(CDTXMania.app.DTXVmode.nStartBar);
+										CDTXMania.Instance.stage演奏ギター画面.t演奏位置の変更(CDTXMania.Instance.DTXVmode.nStartBar);
 									}
 								}
 							}
@@ -1735,9 +1726,9 @@ for (int i = 0; i < 3; i++) {
 								#region [ 演奏キャンセル ]
 								//-----------------------------
 								scoreIni = this.tScoreIniへBGMAdjustとHistoryとPlayCountを更新("Play canceled");
-								if (CDTXMania.app.ConfigIni.bIsSwappedGuitarBass)		// #35417 2015.8.18 yyagi Gt/Bsを入れ替えていたなら、演奏設定を元に戻す
+								if (CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass)		// #35417 2015.8.18 yyagi Gt/Bsを入れ替えていたなら、演奏設定を元に戻す
 								{
-									//CDTXMania.app.DTX.SwapGuitarBassInfos();						// 譜面情報も元に戻す (現在は再演奏機能なしのため、元に戻す必要はない)
+									//CDTXMania.Instance.DTX.SwapGuitarBassInfos();						// 譜面情報も元に戻す (現在は再演奏機能なしのため、元に戻す必要はない)
 								}
 
 								//int lastd = 0;
@@ -1773,7 +1764,7 @@ for (int i = 0; i < 3; i++) {
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
 									pg.plugin.On演奏キャンセル(scoreIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 								//---------------------
 								#endregion
@@ -1798,8 +1789,8 @@ for (int i = 0; i < 3; i++) {
 									foreach (STPlugin pg in this.listプラグイン)
 									{
 										Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-										pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-										Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+										pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+										Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 									}
 									//---------------------
 									#endregion
@@ -1821,7 +1812,7 @@ for (int i = 0; i < 3; i++) {
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
 									pg.plugin.On演奏失敗(scoreIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 								//---------------------
 								#endregion
@@ -1846,8 +1837,8 @@ for (int i = 0; i < 3; i++) {
 									foreach (STPlugin pg in this.listプラグイン)
 									{
 										Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-										pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-										Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+										pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+										Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 									}
 									//---------------------
 									#endregion
@@ -1872,18 +1863,18 @@ for (int i = 0; i < 3; i++) {
 									stage演奏ドラム画面.t演奏結果を格納する(out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass, out chipArray);
 								}
 
-								if (CDTXMania.app.ConfigIni.bIsSwappedGuitarBass)		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
+								if (CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass)		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
 								{
 									CScoreIni.C演奏記録 t;
 									t = c演奏記録_Guitar;
 									c演奏記録_Guitar = c演奏記録_Bass;
 									c演奏記録_Bass = t;
 
-									CDTXMania.app.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
+									CDTXMania.Instance.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
 									// #35417 2015.08.30 changed フラグにアクセスしている箇所が見つかったため有効化
 									// #35417 2015.8.18 yyagi: AUTO系のフラグ入れ替えは削除可能!?。以後AUTOフラグに全くアクセスしておらず、意味がないため。
 									// (直下でb全AUTOである にアクセスしているが、既に計算済みのクラスへのアクセスであり、ここでの交換対象ではない)
-									CDTXMania.app.ConfigIni.SwapGuitarBassInfos_AutoFlags();
+									CDTXMania.Instance.ConfigIni.SwapGuitarBassInfos_AutoFlags();
 									// #24415 2011.2.27 yyagi
 									// リザルト集計時のみ、Auto系のフラグも元に戻す。
 									// これを戻すのは、リザルト集計後。
@@ -1949,7 +1940,7 @@ for (int i = 0; i < 3; i++) {
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
 									pg.plugin.On演奏クリア(scoreIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 								//---------------------
 								#endregion
@@ -1970,8 +1961,8 @@ for (int i = 0; i < 3; i++) {
 								foreach (STPlugin pg in this.listプラグイン)
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-									pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 								//---------------------
 								#endregion
@@ -1991,9 +1982,9 @@ for (int i = 0; i < 3; i++) {
 						{
 							// #35417 2015.08.30 chnmr0 changed : ステージクリア処理で入れ替えるため元に戻した
 							// #35417 2015.8.18 yyagi: AUTO系のフラグ入れ替えは削除可能!?。以後AUTOフラグに全くアクセスしておらず、意味がないため。
-							if (CDTXMania.app.ConfigIni.bIsSwappedGuitarBass)		// #24415 2011.2.27 yyagi Gt/Bsを入れ替えていたなら、Auto状態をリザルト画面終了後に元に戻す
+							if (CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass)		// #24415 2011.2.27 yyagi Gt/Bsを入れ替えていたなら、Auto状態をリザルト画面終了後に元に戻す
 							{
-								CDTXMania.app.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
+								CDTXMania.Instance.ConfigIni.SwapGuitarBassInfos_AutoFlags();	// Auto入れ替え
 							}
 
 							DTX.t全チップの再生一時停止();
@@ -2010,8 +2001,8 @@ for (int i = 0; i < 3; i++) {
 								foreach (STPlugin pg in this.listプラグイン)
 								{
 									Directory.SetCurrentDirectory(pg.strプラグインフォルダ);
-									pg.plugin.Onステージ変更(CDTXMania.app.ConfigIni);
-									Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+									pg.plugin.Onステージ変更(CDTXMania.Instance.ConfigIni);
+									Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 								}
 
 								this.tガベージコレクションを実行する();
@@ -2076,7 +2067,7 @@ for (int i = 0; i < 3; i++) {
 			if (this.b次のタイミングで全画面_ウィンドウ切り替えを行う)
 			{
 				ConfigIni.b全画面モード = !ConfigIni.b全画面モード;
-				app.t全画面_ウィンドウモード切り替え();
+				Instance.t全画面_ウィンドウモード切り替え();
 				this.b次のタイミングで全画面_ウィンドウ切り替えを行う = false;
 			}
 			#endregion
@@ -2085,9 +2076,9 @@ for (int i = 0; i < 3; i++) {
 			{
 				bool bIsMaximized = this.Window.IsMaximized;											// #23510 2010.11.3 yyagi: to backup current window mode before changing VSyncWait
 				currentClientSize = this.Window.ClientSize;												// #23510 2010.11.3 yyagi: to backup current window size before changing VSyncWait
-				DeviceSettings currentSettings = app.GraphicsDeviceManager.CurrentSettings;
+				DeviceSettings currentSettings = Instance.GraphicsDeviceManager.CurrentSettings;
 				currentSettings.EnableVSync = ConfigIni.b垂直帰線待ちを行う;
-				app.GraphicsDeviceManager.ChangeDevice(currentSettings);
+				Instance.GraphicsDeviceManager.ChangeDevice(currentSettings);
 				this.b次のタイミングで垂直帰線同期切り替えを行う = false;
 				base.Window.ClientSize = new Size(currentClientSize.Width, currentClientSize.Height);	// #23510 2010.11.3 yyagi: to resume window size after changing VSyncWait
 				if (bIsMaximized)
@@ -2124,6 +2115,7 @@ for (int i = 0; i < 3; i++) {
 		}
 		private CSound previewSound;
 		private CCounter ccMouseShow;
+
 
 		public void ShowWindowTitleWithSoundType()
 		{
@@ -2167,7 +2159,7 @@ for (int i = 0; i < 3; i++) {
 				#endregion
 				#region [ 現在のステージの終了処理 ]
 				//---------------------
-				if (r現在のステージ != null && r現在のステージ.b活性化してる)		// #25398 2011.06.07 MODIFY FROM
+				if (CDTXMania.Instance.r現在のステージ != null && CDTXMania.Instance.r現在のステージ.b活性化してる)		// #25398 2011.06.07 MODIFY FROM
 				{
 					Trace.TraceInformation("現在のステージを終了します。");
 					Trace.Indent();
@@ -2197,7 +2189,7 @@ for (int i = 0; i < 3; i++) {
 							st.plugin.OnUnmanagedリソースの解放();
 							st.plugin.OnManagedリソースの解放();
 							st.plugin.On終了();
-							Directory.SetCurrentDirectory(CDTXMania.app.strEXEのあるフォルダ);
+							Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 						}
 						PluginHost = null;
 						Trace.TraceInformation("すべてのプラグインの終了処理を完了しました。");
@@ -2666,7 +2658,7 @@ for (int i = 0; i < 3; i++) {
 					{
 						// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
 						string strFullPath =
-							 Path.Combine(CDTXMania.app.strEXEのあるフォルダ, "Capture_img");
+							 Path.Combine(CDTXMania.Instance.strEXEのあるフォルダ, "Capture_img");
 						strFullPath = Path.Combine(strFullPath, DateTime.Now.ToString("yyyyMMddHHmmss") + ".png");
 						SaveResultScreen(strFullPath);
 					}

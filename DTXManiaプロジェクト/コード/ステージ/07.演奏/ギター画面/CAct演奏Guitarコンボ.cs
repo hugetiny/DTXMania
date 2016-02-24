@@ -8,34 +8,34 @@ namespace DTXMania
 	{
 		// CAct演奏Combo共通 実装
 
-		protected override void tコンボ表示_ギター(int nCombo値, int nジャンプインデックス)
+		protected override void tコンボ表示_ギター( int nCombo値, int nジャンプインデックス )
 		{
-			int x = (int)(230 * Scale.X);
-			int y = CDTXMania.app.ConfigIni.bReverse.Guitar ? 0x103 : 150;
-			y = (int)(y * Scale.Y);
-			//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.app.ConfigIni.bReverse.Guitar );
-			//y += CDTXMania.app.ConfigIni.bReverse.Guitar ? -134 : +174;
-			if (base.txCOMBOギター != null)
+			int x = (int) ( 230 * Scale.X );
+			int y = CDTXMania.Instance.ConfigIni.bReverse.Guitar ? 0x103 : 150;
+			y = (int) ( y * Scale.Y );
+			//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
+			//y += CDTXMania.Instance.ConfigIni.bReverse.Guitar ? -134 : +174;
+			if ( base.txCOMBOギター != null )
 			{
 				base.txCOMBOギター.n透明度 = 0xff;
 			}
-			base.tコンボ表示_ギター(nCombo値, x, y, nジャンプインデックス);
+			base.tコンボ表示_ギター( nCombo値, x, y, nジャンプインデックス );
 		}
-		protected override void tコンボ表示_ドラム(int nCombo値, int nジャンプインデックス)
+		protected override void tコンボ表示_ドラム( int nCombo値, int nジャンプインデックス )
 		{
 		}
-		protected override void tコンボ表示_ベース(int nCombo値, int nジャンプインデックス)
+		protected override void tコンボ表示_ベース( int nCombo値, int nジャンプインデックス )
 		{
-			int x = (int)(410 * Scale.X);
-			int y = CDTXMania.app.ConfigIni.bReverse.Bass ? 0x103 : 150;
-			y = (int)(y * Scale.Y);
-			//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.app.ConfigIni.bReverse.Bass );
-			//y += CDTXMania.app.ConfigIni.bReverse.Bass ? -134 : +174;
-			if (base.txCOMBOギター != null)
+			int x = (int) ( 410 * Scale.X );
+			int y = CDTXMania.Instance.ConfigIni.bReverse.Bass ? 0x103 : 150;
+			y = (int) ( y * Scale.Y );
+			//int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.Instance.ConfigIni.bReverse.Bass );
+			//y += CDTXMania.Instance.ConfigIni.bReverse.Bass ? -134 : +174;
+			if ( base.txCOMBOギター != null )
 			{
 				base.txCOMBOギター.n透明度 = 0xff;
 			}
-			base.tコンボ表示_ベース(nCombo値, x, y, nジャンプインデックス);
+			base.tコンボ表示_ベース( nCombo値, x, y, nジャンプインデックス );
 		}
 	}
 }

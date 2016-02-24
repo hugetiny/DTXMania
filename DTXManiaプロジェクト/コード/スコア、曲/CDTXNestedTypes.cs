@@ -38,12 +38,12 @@ namespace DTXMania
 				//-----------------
 				string strAVIファイル名;
 
-				if (CDTXMania.app.DTX != null && !Path.IsPathRooted(this.strファイル名))	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
+				if (CDTXMania.Instance.DTX != null && !Path.IsPathRooted(this.strファイル名))	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
 				{																			// 演奏終了直後はCDTXオブジェクトが残っているので、ファイル名がフルパスかどうかでプレビュー判定する
-					if (!string.IsNullOrEmpty(CDTXMania.app.DTX.PATH_WAV))
-						strAVIファイル名 = CDTXMania.app.DTX.PATH_WAV + this.strファイル名;
+					if (!string.IsNullOrEmpty(CDTXMania.Instance.DTX.PATH_WAV))
+						strAVIファイル名 = CDTXMania.Instance.DTX.PATH_WAV + this.strファイル名;
 					else
-						strAVIファイル名 = CDTXMania.app.DTX.strフォルダ名 + this.strファイル名;
+						strAVIファイル名 = CDTXMania.Instance.DTX.strフォルダ名 + this.strファイル名;
 				}
 				else
 				{
@@ -90,12 +90,12 @@ namespace DTXMania
 					#region [ strAVIファイル名 の作成。なぜDispose時にファイル名の生成をしているのかと思ったら、デバッグログ用でした。 ]
 					//-----------------
 					string strAVIファイル名;
-					if (CDTXMania.app.DTX != null && !Path.IsPathRooted(this.strファイル名))	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
+					if (CDTXMania.Instance.DTX != null && !Path.IsPathRooted(this.strファイル名))	// CDTX抜きでCAVI単体で使うことを考慮(選曲画面, リザルト画面)
 					{																			// 演奏終了直後はCDTXオブジェクトが残っているので、ファイル名がフルパスかどうかでプレビュー判定する
-						if (!string.IsNullOrEmpty(CDTXMania.app.DTX.PATH_WAV))
-							strAVIファイル名 = CDTXMania.app.DTX.PATH_WAV + this.strファイル名;
+						if (!string.IsNullOrEmpty(CDTXMania.Instance.DTX.PATH_WAV))
+							strAVIファイル名 = CDTXMania.Instance.DTX.PATH_WAV + this.strファイル名;
 						else
-							strAVIファイル名 = CDTXMania.app.DTX.strフォルダ名 + this.strファイル名;
+							strAVIファイル名 = CDTXMania.Instance.DTX.strフォルダ名 + this.strファイル名;
 					}
 					else
 					{
@@ -129,15 +129,15 @@ namespace DTXMania
 			public override string ToString()
 			{
 				return string.Format("CAVIPAN{0}: AVI:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 動画側開始位置:{5}x{6}, 動画側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct",
-					CDTX.tZZ(this.n番号),
-					this.sz開始サイズ.Width, this.sz開始サイズ.Height,
-					this.sz終了サイズ.Width, this.sz終了サイズ.Height,
-					this.pt動画側開始位置.X, this.pt動画側開始位置.Y,
-					this.pt動画側終了位置.X, this.pt動画側終了位置.Y,
-					this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
-					this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
-					this.n移動時間ct,
-					CDTX.tZZ(this.nAVI番号));
+				  CDTX.tZZ(this.n番号),
+				  this.sz開始サイズ.Width, this.sz開始サイズ.Height,
+				  this.sz終了サイズ.Width, this.sz終了サイズ.Height,
+				  this.pt動画側開始位置.X, this.pt動画側開始位置.Y,
+				  this.pt動画側終了位置.X, this.pt動画側終了位置.Y,
+				  this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
+				  this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
+				  this.n移動時間ct,
+				  CDTX.tZZ(this.nAVI番号));
 			}
 		}
 		public class CBGA
@@ -151,11 +151,11 @@ namespace DTXMania
 			public override string ToString()
 			{
 				return string.Format("CBGA{0}, BMP:{1}, 画像側左上座標:{2}x{3}, 画像側右下座標:{4}x{5}, 表示座標:{6}x{7}",
-					CDTX.tZZ(this.n番号),
-					CDTX.tZZ(this.nBMP番号),
-					this.pt画像側左上座標.X, this.pt画像側左上座標.Y,
-					this.pt画像側右下座標.X, this.pt画像側右下座標.Y,
-					this.pt表示座標.X, this.pt表示座標.Y);
+				  CDTX.tZZ(this.n番号),
+				  CDTX.tZZ(this.nBMP番号),
+				  this.pt画像側左上座標.X, this.pt画像側左上座標.Y,
+				  this.pt画像側右下座標.X, this.pt画像側右下座標.Y,
+				  this.pt表示座標.X, this.pt表示座標.Y);
 			}
 		}
 		public class CBGAPAN
@@ -173,15 +173,15 @@ namespace DTXMania
 			public override string ToString()
 			{
 				return string.Format("CBGAPAN{0}: BMP:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 画像側開始位置:{5}x{6}, 画像側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct",
-					CDTX.tZZ(this.nBMP番号),
-					this.sz開始サイズ.Width, this.sz開始サイズ.Height,
-					this.sz終了サイズ.Width, this.sz終了サイズ.Height,
-					this.pt画像側開始位置.X, this.pt画像側開始位置.Y,
-					this.pt画像側終了位置.X, this.pt画像側終了位置.Y,
-					this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
-					this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
-					this.n移動時間ct,
-					CDTX.tZZ(this.nBMP番号));
+				  CDTX.tZZ(this.nBMP番号),
+				  this.sz開始サイズ.Width, this.sz開始サイズ.Height,
+				  this.sz終了サイズ.Width, this.sz終了サイズ.Height,
+				  this.pt画像側開始位置.X, this.pt画像側開始位置.Y,
+				  this.pt画像側終了位置.X, this.pt画像側終了位置.Y,
+				  this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
+				  this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
+				  this.n移動時間ct,
+				  CDTX.tZZ(this.nBMP番号));
 			}
 		}
 		public class CBMP : CBMPbase, IDisposable
@@ -243,10 +243,10 @@ namespace DTXMania
 			{
 				get
 				{
-					if (!string.IsNullOrEmpty(CDTXMania.app.DTX.PATH_WAV))
-						return CDTXMania.app.DTX.PATH_WAV + this.strファイル名;
+					if (!string.IsNullOrEmpty(CDTXMania.Instance.DTX.PATH_WAV))
+						return CDTXMania.Instance.DTX.PATH_WAV + this.strファイル名;
 					else
-						return CDTXMania.app.DTX.strフォルダ名 + this.strファイル名;
+						return CDTXMania.Instance.DTX.strフォルダ名 + this.strファイル名;
 				}
 			}
 
@@ -270,7 +270,7 @@ namespace DTXMania
 				if (this.tx画像 != null)
 				{
 					// 作成成功。
-					if (CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
+					if (CDTXMania.Instance.ConfigIni.bLog作成解放ログ出力)
 						PutLog(strテクスチャファイル名);
 					txData = null;
 					this.bUse = true;
@@ -298,7 +298,7 @@ namespace DTXMania
 				if (this.tx画像 != null)
 				{
 					// 作成成功。
-					if (CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
+					if (CDTXMania.Instance.ConfigIni.bLog作成解放ログ出力)
 						PutLog(strテクスチャファイル名);
 					this.bUse = true;
 				}
@@ -330,16 +330,16 @@ namespace DTXMania
 					#region [ strテクスチャファイル名 を作成。]
 					//-----------------
 					string strテクスチャファイル名 = this.GetFullPathname;
-					//if( !string.IsNullOrEmpty( CDTXMania.app.DTX.PATH_WAV ) )
-					//    strテクスチャファイル名 = CDTXMania.app.DTX.PATH_WAV + this.strファイル名;
+					//if( !string.IsNullOrEmpty( CDTXMania.Instance.DTX.PATH_WAV ) )
+					//    strテクスチャファイル名 = CDTXMania.Instance.DTX.PATH_WAV + this.strファイル名;
 					//else
-					//    strテクスチャファイル名 = CDTXMania.app.DTX.strフォルダ名 + this.strファイル名;
+					//    strテクスチャファイル名 = CDTXMania.Instance.DTX.strフォルダ名 + this.strファイル名;
 					//-----------------
 					#endregion
 
 					TextureFactory.tテクスチャの解放(ref this.tx画像);
 
-					if (CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
+					if (CDTXMania.Instance.ConfigIni.bLog作成解放ログ出力)
 						Trace.TraceInformation("テクスチャを解放しました。({0})({1})", this.strコメント文, strテクスチャファイル名);
 				}
 				this.bUse = false;
@@ -380,13 +380,13 @@ namespace DTXMania
 			public List<Ech定義> listこのWAVを使用するチャンネル番号の集合 = new List<Ech定義>(16);
 			public int nチップサイズ = 100;
 			public int n位置;
-			public long[] n一時停止時刻 = new long[CDTXMania.app.ConfigIni.nPoliphonicSounds];	// 4
+			public long[] n一時停止時刻 = new long[CDTXMania.Instance.ConfigIni.nPoliphonicSounds];	// 4
 			public int n音量 = 100;
 			public int n現在再生中のサウンド番号;
-			public long[] n再生開始時刻 = new long[CDTXMania.app.ConfigIni.nPoliphonicSounds];	// 4
+			public long[] n再生開始時刻 = new long[CDTXMania.Instance.ConfigIni.nPoliphonicSounds];	// 4
 			public int n内部番号;
 			public int n表記上の番号;
-			public CSound[] rSound = new CSound[CDTXMania.app.ConfigIni.nPoliphonicSounds];		// 4
+			public CSound[] rSound = new CSound[CDTXMania.Instance.ConfigIni.nPoliphonicSounds];		// 4
 			public string strコメント文 = "";
 			public string strファイル名 = "";
 			public bool bBGMとして使わない
@@ -437,13 +437,13 @@ namespace DTXMania
 
 				if (bManagedリソースの解放も行う)
 				{
-					for (int i = 0; i < CDTXMania.app.ConfigIni.nPoliphonicSounds; i++)	// 4
+					for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPoliphonicSounds; i++)	// 4
 					{
 						if (this.rSound[i] != null)
-							CDTXMania.app.Sound管理.tサウンドを破棄する(this.rSound[i]);
+							CDTXMania.Instance.Sound管理.tサウンドを破棄する(this.rSound[i]);
 						this.rSound[i] = null;
 
-						if ((i == 0) && CDTXMania.app.ConfigIni.bLog作成解放ログ出力)
+						if ((i == 0) && CDTXMania.Instance.ConfigIni.bLog作成解放ログ出力)
 							Trace.TraceInformation("サウンドを解放しました。({0})({1})", this.strコメント文, this.strファイル名);
 					}
 				}

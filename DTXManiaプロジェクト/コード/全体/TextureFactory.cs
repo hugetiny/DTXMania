@@ -18,13 +18,13 @@ namespace DTXMania
 		}
 		public static CTexture tテクスチャの生成(string fileName, bool b黒を透過する)
 		{
-			if (CDTXMania.app == null)
+			if (CDTXMania.Instance == null)
 			{
 				return null;
 			}
 			try
 			{
-				return new CTexture(CDTXMania.app.Device, fileName, CDTXMania.app.TextureFormat, b黒を透過する);
+				return new CTexture(CDTXMania.Instance.Device, fileName, CDTXMania.Instance.TextureFormat, b黒を透過する);
 			}
 			catch (CTextureCreateFailedException)
 			{
@@ -43,13 +43,13 @@ namespace DTXMania
 		}
 		public static CTextureAf tテクスチャの生成Af(string fileName, bool b黒を透過する)
 		{
-			if (CDTXMania.app == null)
+			if (CDTXMania.Instance == null)
 			{
 				return null;
 			}
 			try
 			{
-				return new CTextureAf(CDTXMania.app.Device, fileName, CDTXMania.app.TextureFormat, b黒を透過する);
+				return new CTextureAf(CDTXMania.Instance.Device, fileName, CDTXMania.Instance.TextureFormat, b黒を透過する);
 			}
 			catch (CTextureCreateFailedException)
 			{
@@ -76,7 +76,7 @@ namespace DTXMania
 		}
 		public static CTexture tテクスチャの生成(byte[] txData, bool b黒を透過する)
 		{
-			if (CDTXMania.app == null)
+			if (CDTXMania.Instance == null)
 			{
 				return null;
 			}
@@ -87,7 +87,7 @@ namespace DTXMania
 			}
 			try
 			{
-				return new CTexture(CDTXMania.app.Device, txData, CDTXMania.app.TextureFormat, b黒を透過する);
+				return new CTexture(CDTXMania.Instance.Device, txData, CDTXMania.Instance.TextureFormat, b黒を透過する);
 			}
 			catch (CTextureCreateFailedException)
 			{
@@ -102,7 +102,7 @@ namespace DTXMania
 		}
 		public static CTexture tテクスチャの生成(Bitmap bitmap, bool b黒を透過する)
 		{
-			if (CDTXMania.app == null)
+			if (CDTXMania.Instance == null)
 			{
 				return null;
 			}
@@ -113,7 +113,7 @@ namespace DTXMania
 			}
 			try
 			{
-				return new CTexture(CDTXMania.app.Device, bitmap, CDTXMania.app.TextureFormat, b黒を透過する);
+				return new CTexture(CDTXMania.Instance.Device, bitmap, CDTXMania.Instance.TextureFormat, b黒を透過する);
 			}
 			catch (CTextureCreateFailedException)
 			{
