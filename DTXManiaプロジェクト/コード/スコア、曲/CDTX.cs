@@ -719,22 +719,16 @@ namespace DTXMania
 		{
 			if (((part == E楽器パート.GUITAR) || (part == E楽器パート.BASS)) && (eRandom != Eランダムモード.OFF))
 			{
-				int n小節番号 = -10000;
-				int seed = 0;
-				// int GOTO_END = 0;	// gotoの飛び先のダミーコードで使うダミー変数
+				int rndVal = 0;
 				foreach (CChip chip in this.listChip)
 				{
 					bool bOpenChip = (chip.bGuitar可視チップ && this.bチップがある.OpenGuitar) || ((chip.bBass可視チップ) && this.bチップがある.OpenBass);
-					if ((chip.n発声位置 / 384) != n小節番号)		// 小節が変化したら
+					if ( chip[Ech定義.BarLine] )		// 小節が変化したら
 					{
-						n小節番号 = chip.n発声位置 / 384;
-						seed = CDTXMania.Instance.Random.Next(6);
+						rndVal = CDTXMania.Instance.Random.Next(6);
 					}
 
-					chip.RandomizeRGB(eRandom, seed, bOpenChip);
-					// #23546 2010.10.28 yyagi fixed (bチップがある.Bass→bチップがある.OpenBass)
-					//				Label_02C4:
-					//					GOTO_END++;		// goto用のダミーコード
+					chip.RandomizeRGB(eRandom, rndVal, bOpenChip);// #23546 2010.10.28 yyagi fixed (bチップがある.Bass→bチップがある.OpenBass)
 				}
 			}
 		}

@@ -75,7 +75,6 @@ namespace DTXMania
 			}
 		}
 
-
 		/// <summary>
 		/// 不可視 HHC~LBD
 		/// </summary>
@@ -154,7 +153,6 @@ namespace DTXMania
 			}
 		}
 
-
 		/// <summary>
 		/// Bass Open ~ Bass RGB
 		/// </summary>
@@ -172,6 +170,11 @@ namespace DTXMania
 			{
 				return Ech定義.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Bass_Wailing;
 			}
+		}
+
+		public static bool bBass可視チップ_Wailing含む_st(Ech定義 e)
+		{
+			return Ech定義.Bass_Open <= e && e <= Ech定義.Bass_Wailing;
 		}
 
 		/// <summary>
@@ -427,6 +430,54 @@ namespace DTXMania
 					case Ech定義.BGALayer6_Swap: ret = 5; break;
 					case Ech定義.BGALayer7_Swap: ret = 6; break;
 					case Ech定義.BGALayer8_Swap: ret = 7; break;
+				}
+				return ret;
+			}
+		}
+
+		public int nDrumsIndex
+		{
+			get
+			{
+				int ret = -1;
+				switch (eチャンネル番号)
+				{
+					case Ech定義.HiHatClose: ret = 0; break;
+					case Ech定義.Snare: ret = 1; break;
+					case Ech定義.BassDrum: ret = 2; break;
+					case Ech定義.HighTom: ret = 3; break;
+					case Ech定義.LowTom: ret = 4; break;
+					case Ech定義.Cymbal: ret = 5; break;
+					case Ech定義.FloorTom: ret = 6; break;
+					case Ech定義.HiHatOpen: ret = 7; break;
+					case Ech定義.RideCymbal: ret = 8; break;
+					case Ech定義.LeftCymbal: ret = 9; break;
+					case Ech定義.LeftPedal: ret = 10; break;
+					case Ech定義.LeftBassDrum: ret = 11; break;
+				}
+				return ret;
+			}
+		}
+
+		public int nDrumsIndexHidden
+		{
+			get
+			{
+				int ret = -1;
+				switch (eチャンネル番号)
+				{
+					case Ech定義.HiHatClose_Hidden: ret = 0; break;
+					case Ech定義.Snare_Hidden: ret = 1; break;
+					case Ech定義.BassDrum_Hidden: ret = 2; break;
+					case Ech定義.HighTom_Hidden: ret = 3; break;
+					case Ech定義.LowTom_Hidden: ret = 4; break;
+					case Ech定義.Cymbal_Hidden: ret = 5; break;
+					case Ech定義.FloorTom_Hidden: ret = 6; break;
+					case Ech定義.HiHatOpen_Hidden: ret = 7; break;
+					case Ech定義.RideCymbal_Hidden: ret = 8; break;
+					case Ech定義.LeftCymbal_Hidden: ret = 9; break;
+					case Ech定義.LeftPedal_Hidden: ret = 10; break;
+					case Ech定義.LeftBassDrum_Hidden: ret = 11; break;
 				}
 				return ret;
 			}
@@ -1106,6 +1157,12 @@ namespace DTXMania
 			: this()
 		{
 
+		}
+
+		public CChip(Ech定義 channel)
+			: this()
+		{
+			eチャンネル番号 = channel;
 		}
 
 		public CChip(int playPosition, int intData, int intDataInternalIndex, Ech定義 channel,

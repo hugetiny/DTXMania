@@ -413,10 +413,9 @@ namespace DTXMania
 						}
 						foreach (CChip chip in this.listChip)
 						{
-							Ech定義 c = chip.eチャンネル番号;
 							if (chip.bDrums可視チップ && !chip.b空打ちチップである)
 							{
-								this.n可視チップ数[c - Ech定義.HiHatClose]++;
+								this.n可視チップ数[chip.nDrumsIndex]++;
 							}
 							if (chip.bGuitar可視チップ)
 							{
