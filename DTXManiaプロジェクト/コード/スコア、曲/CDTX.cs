@@ -723,7 +723,7 @@ namespace DTXMania
 				foreach (CChip chip in this.listChip)
 				{
 					bool bOpenChip = (chip.bGuitar可視チップ && this.bチップがある.OpenGuitar) || ((chip.bBass可視チップ) && this.bチップがある.OpenBass);
-					if ( chip[Ech定義.BarLine] )		// 小節が変化したら
+					if (chip[Ech定義.BarLine])		// 小節が変化したら
 					{
 						rndVal = CDTXMania.Instance.Random.Next(6);
 					}

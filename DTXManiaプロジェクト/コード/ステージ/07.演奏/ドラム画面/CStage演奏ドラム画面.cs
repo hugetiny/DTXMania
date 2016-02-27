@@ -643,7 +643,7 @@ namespace DTXMania
 				}
 			}
 		}
-		
+
 		protected override void t進行描画_チップ_空打ち音設定_ドラム(ref CChip pChip)
 		{
 			if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))

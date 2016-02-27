@@ -85,7 +85,7 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
-				if ( this.tx数値 != null )
+				if (this.tx数値 != null)
 				{
 					this.tx数値.Dispose();
 					this.tx数値 = null;

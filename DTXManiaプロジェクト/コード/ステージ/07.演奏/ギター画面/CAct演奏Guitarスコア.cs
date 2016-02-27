@@ -20,73 +20,73 @@ namespace DTXMania
 
 		public override unsafe int On進行描画()
 		{
-			if( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				if( base.b初めての進行描画 )
+				if (base.b初めての進行描画)
 				{
 					base.n進行用タイマ = CDTXMania.Instance.Timer.n現在時刻;
 					base.b初めての進行描画 = false;
 				}
 				long num = CDTXMania.Instance.Timer.n現在時刻;
-				if( num < base.n進行用タイマ )
+				if (num < base.n進行用タイマ)
 				{
 					base.n進行用タイマ = num;
 				}
-				while( ( num - base.n進行用タイマ ) >= 10 )
+				while ((num - base.n進行用タイマ) >= 10)
 				{
-					for( int j = 0; j < 3; j++ )
+					for (int j = 0; j < 3; j++)
 					{
-						this.n現在表示中のスコア[ j ] += this.nスコアの増分[ j ];
+						this.n現在表示中のスコア[j] += this.nスコアの増分[j];
 
-						if( this.n現在表示中のスコア[ j ] > (long) this.n現在の本当のスコア[ j ] )
-							this.n現在表示中のスコア[ j ] = (long) this.n現在の本当のスコア[ j ];
+						if (this.n現在表示中のスコア[j] > (long)this.n現在の本当のスコア[j])
+							this.n現在表示中のスコア[j] = (long)this.n現在の本当のスコア[j];
 					}
 					base.n進行用タイマ += 10;
 				}
-				for( int i = 1; i < 3; i++ )
+				for (int i = 1; i < 3; i++)
 				{
-					string str = this.n現在表示中のスコア[ i ].ToString( "0000000000" );
-					for( int k = 0; k < 10; k++ )
+					string str = this.n現在表示中のスコア[i].ToString("0000000000");
+					for (int k = 0; k < 10; k++)
 					{
 						Rectangle rectangle;
-						char ch = str[ k ];
-						if( ch.Equals( ' ' ) )
+						char ch = str[k];
+						if (ch.Equals(' '))
 						{
 							rectangle = new Rectangle(
 								0,
 								0,
-								(int) ( 12 * Scale.X ),
-								(int) ( 0x18 * Scale.Y )
+								(int)(12 * Scale.X),
+								(int)(0x18 * Scale.Y)
 								);
 						}
 						else
 						{
-							int num5 = int.Parse( str.Substring( k, 1 ) );
-							if( num5 < 5 )
+							int num5 = int.Parse(str.Substring(k, 1));
+							if (num5 < 5)
 							{
 								rectangle = new Rectangle(
-									(int) ( num5 * 12 * Scale.X ),
+									(int)(num5 * 12 * Scale.X),
 									0,
-									(int) ( 12 * Scale.X ),
-									(int) ( 0x18 * Scale.Y )
+									(int)(12 * Scale.X),
+									(int)(0x18 * Scale.Y)
 								);
 							}
 							else
 							{
 								rectangle = new Rectangle(
-									(int) ( ( num5 - 5 ) * 12 * Scale.X ),
-									(int) ( 0x18 * Scale.Y ),
-									(int) ( 12 * Scale.X ),
-									(int) ( 0x18 * Scale.Y )
+									(int)((num5 - 5) * 12 * Scale.X),
+									(int)(0x18 * Scale.Y),
+									(int)(12 * Scale.X),
+									(int)(0x18 * Scale.Y)
 								);
 							}
 						}
-						if( base.txScore != null )
+						if (base.txScore != null)
 						{
 							base.txScore.t2D描画(
 								CDTXMania.Instance.Device,
-								( this.ptSCORE[ i - 1 ].X + ( k * 12 ) ) * Scale.X,
-								this.ptSCORE[ i - 1 ].Y * Scale.Y,
+								(this.ptSCORE[i - 1].X + (k * 12)) * Scale.X,
+								this.ptSCORE[i - 1].Y * Scale.Y,
 								rectangle
 							);
 						}
@@ -101,7 +101,7 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private readonly Point[] ptSCORE = new Point[] { new Point( 0x1f, 0x1a9 ), new Point( 0x1e9, 0x1a9 ) };
+		private readonly Point[] ptSCORE = new Point[] { new Point(0x1f, 0x1a9), new Point(0x1e9, 0x1a9) };
 		//-----------------
 		#endregion
 	}

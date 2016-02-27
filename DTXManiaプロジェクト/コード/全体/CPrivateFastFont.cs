@@ -36,21 +36,21 @@ namespace DTXMania
 
 
 		#region [ コンストラクタ ]
-		public CPrivateFastFont( FontFamily fontfamily, int pt, FontStyle style )
+		public CPrivateFastFont(FontFamily fontfamily, int pt, FontStyle style)
 		{
-			Initialize( null, fontfamily, pt, style );
+			Initialize(null, fontfamily, pt, style);
 		}
-		public CPrivateFastFont( FontFamily fontfamily, int pt )
+		public CPrivateFastFont(FontFamily fontfamily, int pt)
 		{
-			Initialize( null, fontfamily, pt, FontStyle.Regular );
+			Initialize(null, fontfamily, pt, FontStyle.Regular);
 		}
-		public CPrivateFastFont( string fontpath, int pt, FontStyle style )
+		public CPrivateFastFont(string fontpath, int pt, FontStyle style)
 		{
-			Initialize( fontpath, null, pt, style );
+			Initialize(fontpath, null, pt, style);
 		}
-		public CPrivateFastFont( string fontpath, int pt )
+		public CPrivateFastFont(string fontpath, int pt)
 		{
-			Initialize( fontpath, null, pt, FontStyle.Regular );
+			Initialize(fontpath, null, pt, FontStyle.Regular);
 		}
 		public CPrivateFastFont()
 		{
@@ -58,11 +58,11 @@ namespace DTXMania
 		}
 		#endregion
 		#region [ コンストラクタから呼ばれる初期化処理 ]
-		protected new void Initialize( string fontpath, FontFamily fontfamily, int pt, FontStyle style )
+		protected new void Initialize(string fontpath, FontFamily fontfamily, int pt, FontStyle style)
 		{
 			this.bDispose完了済み_CPrivateFastFont = false;
 			this.listFontCache = new List<FontCache>();
-			base.Initialize( fontpath, fontfamily, pt, style );
+			base.Initialize(fontpath, fontfamily, pt, style);
 		}
 		#endregion
 
@@ -74,9 +74,9 @@ namespace DTXMania
 		/// <param name="drawstr">描画文字列</param>
 		/// <param name="fontColor">描画色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new Bitmap DrawPrivateFont( string drawstr, Color fontColor )
+		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor)
 		{
-			return DrawPrivateFont( drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White );
+			return DrawPrivateFont(drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White);
 		}
 
 		/// <summary>
@@ -86,9 +86,9 @@ namespace DTXMania
 		/// <param name="fontColor">描画色</param>
 		/// <param name="edgeColor">縁取色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new Bitmap DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor )
+		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor)
 		{
-			return DrawPrivateFont( drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White );
+			return DrawPrivateFont(drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White);
 		}
 
 		/// <summary>
@@ -113,9 +113,9 @@ namespace DTXMania
 		/// <param name="gradationTopColor">グラデーション 上側の色</param>
 		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new Bitmap DrawPrivateFont( string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor )
+		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor)
 		{
-			return DrawPrivateFont( drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor );
+			return DrawPrivateFont(drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor);
 		}
 
 #if こちらは使わない // (Bitmapではなく、CTextureを返す版)
@@ -175,11 +175,11 @@ namespace DTXMania
 #endif
 		#endregion
 
-		protected new Bitmap DrawPrivateFont( string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor )
+		protected new Bitmap DrawPrivateFont(string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor)
 		{
 			#region [ 以前レンダリングしたことのある文字列/フォントか? (キャッシュにヒットするか?) ]
 			int index = listFontCache.FindIndex(
-				delegate( FontCache fontcache )
+				delegate(FontCache fontcache)
 				{
 					return (
 						drawstr == fontcache.drawstr &&
@@ -193,12 +193,12 @@ namespace DTXMania
 				}
 			);
 			#endregion
-			if ( index < 0 )
+			if (index < 0)
 			{
 				// キャッシュにヒットせず。
 				#region [ レンダリングして、キャッシュに登録 ]
 				FontCache fc = new FontCache();
-				fc.bmp = base.DrawPrivateFont( drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor );
+				fc.bmp = base.DrawPrivateFont(drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor);
 				fc.drawstr = drawstr;
 				fc.drawmode = drawmode;
 				fc.fontColor = fontColor;
@@ -207,32 +207,32 @@ namespace DTXMania
 				fc.gradationBottomColor = gradationBottomColor;
 				fc.rectStrings = RectStrings;
 				fc.ptOrigin = PtOrigin;
-				listFontCache.Add( fc );
+				listFontCache.Add(fc);
 				// Debug.WriteLine( drawstr + ": Cacheにヒットせず。(cachesize=" + listFontCache.Count + ")" );
 				#endregion
 				#region [ もしキャッシュがあふれたら、最も古いキャッシュを破棄する ]
-				if ( listFontCache.Count > MAXCACHESIZE )
+				if (listFontCache.Count > MAXCACHESIZE)
 				{
 					// Debug.WriteLine( "Cache溢れ。" + listFontCache[ 0 ].drawstr + " を解放します。" );
-					if ( listFontCache[ 0 ].bmp != null )
+					if (listFontCache[0].bmp != null)
 					{
-						listFontCache[ 0 ].bmp.Dispose();
+						listFontCache[0].bmp.Dispose();
 					}
-					listFontCache.RemoveAt( 0 );
+					listFontCache.RemoveAt(0);
 				}
 				#endregion
 
 				// 呼び出し元のDispose()でキャッシュもDispose()されないように、Clone()で返す。
-				return (Bitmap)listFontCache[ listFontCache.Count - 1 ].bmp.Clone();
+				return (Bitmap)listFontCache[listFontCache.Count - 1].bmp.Clone();
 			}
 			else
 			{
 				// Debug.WriteLine( drawstr + ": Cacheにヒット!! index=" + index );
 				#region [ キャッシュにヒット。レンダリングは行わず、キャッシュ内のデータを返して終了。]
-				RectStrings = listFontCache[ index ].rectStrings;
-				PtOrigin = listFontCache[ index ].ptOrigin;
+				RectStrings = listFontCache[index].rectStrings;
+				PtOrigin = listFontCache[index].ptOrigin;
 				// 呼び出し元のDispose()でキャッシュもDispose()されないように、Clone()で返す。
-				return (Bitmap) listFontCache[ index ].bmp.Clone();
+				return (Bitmap)listFontCache[index].bmp.Clone();
 				#endregion
 			}
 		}
@@ -241,18 +241,17 @@ namespace DTXMania
 		//-----------------
 		public new void Dispose()
 		{
-			if ( !this.bDispose完了済み_CPrivateFastFont )
+			if (!this.bDispose完了済み_CPrivateFastFont)
 			{
-				if ( listFontCache != null )
+				if (listFontCache != null)
 				{
 					//Debug.WriteLine( "Disposing CPrivateFastFont()" );
 					#region [ キャッシュしている画像を破棄する ]
-					foreach ( FontCache bc in listFontCache )
-
+					foreach (FontCache bc in listFontCache)
 					{
-						if ( bc.bmp != null )
+						if (bc.bmp != null)
 						{
-						    bc.bmp.Dispose();
+							bc.bmp.Dispose();
 						}
 					}
 					#endregion

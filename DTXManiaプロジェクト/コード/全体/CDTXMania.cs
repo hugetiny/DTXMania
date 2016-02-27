@@ -1849,8 +1849,8 @@ for (int i = 0; i < 3; i++) {
 								//-----------------------------
 								STDGBVALUE<CScoreIni.C演奏記録> record;
 								CChip[] chipArray = new CChip[10];
-								
-								if( !ConfigIni.bギタレボモード )
+
+								if (!ConfigIni.bギタレボモード)
 								{
 									chipArray = stage演奏ギター画面.GetNoChipDrums();
 									record = stage演奏ドラム画面.Record;
@@ -1862,10 +1862,10 @@ for (int i = 0; i < 3; i++) {
 								}
 
 								double playskill = 0.0;
-							
-								for(E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
+
+								for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
 								{
-									if( !record[(int)inst].b全AUTOである && record[(int)inst].n全チップ数 > 0 )
+									if (!record[(int)inst].b全AUTOである && record[(int)inst].n全チップ数 > 0)
 									{
 										playskill = record[(int)inst].db演奏型スキル値;
 									}

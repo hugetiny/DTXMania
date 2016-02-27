@@ -12,23 +12,23 @@ namespace DTXMania
 
 		public override void OnManagedリソースの作成()
 		{
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				this.txDANGER = TextureFactory.tテクスチャの生成( CSkin.Path( @"Graphics\ScreenPlayGuitar danger.png" ) );
+				this.txDANGER = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlayGuitar danger.png"));
 				base.OnManagedリソースの作成();
 			}
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				TextureFactory.tテクスチャの解放( ref this.txDANGER );
+				TextureFactory.tテクスチャの解放(ref this.txDANGER);
 				base.OnManagedリソースの解放();
 			}
 		}
 		public override int On進行描画()
 		{
-			throw new InvalidOperationException( "t進行描画(bool)のほうを使用してください。" );
+			throw new InvalidOperationException("t進行描画(bool)のほうを使用してください。");
 		}
 		/// <summary>
 		/// DANGER表示(Guitar/Bass)
@@ -37,31 +37,31 @@ namespace DTXMania
 		/// <param name="bIsDangerGuitar">GuitarがDangerか否か</param>
 		/// <param name="bIsDangerBass">BassがDangerか否か</param>
 		/// <returns></returns>
-		public override int t進行描画( bool bIsDangerDrums, bool bIsDangerGuitar, bool bIsDangerBass )
+		public override int t進行描画(bool bIsDangerDrums, bool bIsDangerGuitar, bool bIsDangerBass)
 		{
 			bool[] bIsDanger = { bIsDangerDrums, bIsDangerGuitar, bIsDangerBass };
 
-			if ( !base.b活性化してない )
+			if (!base.b活性化してない)
 			{
-				if ( this.ct透明度用 == null )
+				if (this.ct透明度用 == null)
 				{
 					//this.ct移動用 = new CCounter( 0, 0x7f, 7, CDTXMania.Instance.Timer );
-					this.ct透明度用 = new CCounter( 0, n波長, 8, CDTXMania.Instance.Timer );
+					this.ct透明度用 = new CCounter(0, n波長, 8, CDTXMania.Instance.Timer);
 				}
-				if ( this.ct透明度用 != null )
+				if (this.ct透明度用 != null)
 				{
 					//this.ct移動用.t進行Loop();
 					this.ct透明度用.t進行Loop();
 				}
-				for ( int nPart = (int) E楽器パート.GUITAR; nPart <= (int) E楽器パート.BASS; nPart++ )
+				for (int nPart = (int)E楽器パート.GUITAR; nPart <= (int)E楽器パート.BASS; nPart++)
 				{
-				//	this.bDanger中[nPart] = bIsDanger[nPart];
-					if ( bIsDanger[ nPart ] )
+					//	this.bDanger中[nPart] = bIsDanger[nPart];
+					if (bIsDanger[nPart])
 					{
-						if ( this.txDANGER != null )
+						if (this.txDANGER != null)
 						{
 							int d = this.ct透明度用.n現在の値;
-							this.txDANGER.n透明度 = n透明度MIN + ( ( d < n波長 / 2 ) ? ( n透明度MAX - n透明度MIN ) * d / ( n波長 / 2 ) : ( n透明度MAX - n透明度MIN ) * ( n波長 - d ) / ( n波長 / 2 ) );		// 60-200
+							this.txDANGER.n透明度 = n透明度MIN + ((d < n波長 / 2) ? (n透明度MAX - n透明度MIN) * d / (n波長 / 2) : (n透明度MAX - n透明度MIN) * (n波長 - d) / (n波長 / 2));		// 60-200
 							//		}
 							//num = this.ct移動用.n現在の値;
 							//int num2 = CDTXMania.Instance.ConfigIni.bReverse.Drums ? ( 0x7f - num ) : num;
@@ -71,7 +71,7 @@ namespace DTXMania
 							//		{
 							this.txDANGER.t2D描画(
 								CDTXMania.Instance.Device,
-								nGaugeX[ nPart ] * Scale.X,
+								nGaugeX[nPart] * Scale.X,
 								0
 							);
 							//this.txDANGER.t2D描画( CDTXMania.Instance.app.Device, 0x26, ( ( i * 0x80 ) + num2 ) + 0x40, this.rc領域[ 1 ] );
@@ -94,7 +94,7 @@ namespace DTXMania
 		private const int n透明度MAX = 180;
 		private const int n透明度MIN = 20;
 		private readonly int[] nGaugeX = { 0, 168, 328 };
-//		private readonly Rectangle[] rc領域 = new Rectangle[] { new Rectangle( 0, 0, 0x20, 0x40 ), new Rectangle( 0x20, 0, 0x20, 0x40 ) };
+		//		private readonly Rectangle[] rc領域 = new Rectangle[] { new Rectangle( 0, 0, 0x20, 0x40 ), new Rectangle( 0x20, 0, 0x20, 0x40 ) };
 		private CTexture txDANGER;
 		//-----------------
 		#endregion

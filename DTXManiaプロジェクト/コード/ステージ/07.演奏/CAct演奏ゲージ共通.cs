@@ -38,13 +38,13 @@ namespace DTXMania
 			actLVLNFont = null;
 			base.On非活性化();
 		}
-		
+
 		const double GAUGE_MAX = 1.0;
-		const double GAUGE_INITIAL =  2.0 / 3;
+		const double GAUGE_INITIAL = 2.0 / 3;
 		const double GAUGE_MIN = -0.1;
 		const double GAUGE_ZERO = 0.0;
 		const double GAUGE_DANGER = 0.3;
-	
+
 		public bool bRisky							// Riskyモードか否か
 		{
 			get;
@@ -60,28 +60,30 @@ namespace DTXMania
 			get;
 			private set;
 		}
-		public bool IsFailed( E楽器パート part )	// 閉店状態になったかどうか
+		public bool IsFailed(E楽器パート part)	// 閉店状態になったかどうか
 		{
-			if ( bRisky ) {
-				return ( nRiskyTimes <= 0 );
-			}
-			return this.db現在のゲージ値[ (int) part ] <= GAUGE_MIN;
-		}
-		public bool IsDanger( E楽器パート part )	// DANGERかどうか
-		{
-			if ( bRisky )
+			if (bRisky)
 			{
-				switch ( nRiskyTimes_Initial ) {
+				return (nRiskyTimes <= 0);
+			}
+			return this.db現在のゲージ値[(int)part] <= GAUGE_MIN;
+		}
+		public bool IsDanger(E楽器パート part)	// DANGERかどうか
+		{
+			if (bRisky)
+			{
+				switch (nRiskyTimes_Initial)
+				{
 					case 1:
 						return false;
 					case 2:
 					case 3:
-						return ( nRiskyTimes <= 1 );
-					default: 
-						return ( nRiskyTimes <= 2 );
+						return (nRiskyTimes <= 1);
+					default:
+						return (nRiskyTimes <= 2);
 				}
 			}
-			return ( this.db現在のゲージ値[ (int) part ] <= GAUGE_DANGER );
+			return (this.db現在のゲージ値[(int)part] <= GAUGE_DANGER);
 		}
 
 		public double dbゲージ値	// Drums専用
@@ -93,7 +95,7 @@ namespace DTXMania
 			set
 			{
 				this.db現在のゲージ値.Drums = value;
-				if ( this.db現在のゲージ値.Drums > GAUGE_MAX )
+				if (this.db現在のゲージ値.Drums > GAUGE_MAX)
 				{
 					this.db現在のゲージ値.Drums = GAUGE_MAX;
 				}
@@ -105,25 +107,25 @@ namespace DTXMania
 		/// ゲージの初期化
 		/// </summary>
 		/// <param name="nRiskyTimes_Initial_">Riskyの初期値(0でRisky未使用)</param>
-		public void Init(int nRiskyTimes_InitialVal )		// ゲージ初期化
+		public void Init(int nRiskyTimes_InitialVal)		// ゲージ初期化
 		{
 			nRiskyTimes_Initial = nRiskyTimes_InitialVal;
 			nRiskyTimes = nRiskyTimes_InitialVal;
-			bRisky = ( this.nRiskyTimes > 0 );
+			bRisky = (this.nRiskyTimes > 0);
 
-			for ( int i = 0; i < 3; i++ )
+			for (int i = 0; i < 3; i++)
 			{
-				if ( !bRisky )
+				if (!bRisky)
 				{
-					this.db現在のゲージ値[ i ] = GAUGE_INITIAL;
+					this.db現在のゲージ値[i] = GAUGE_INITIAL;
 				}
-				else if ( nRiskyTimes_InitialVal == 1 )
+				else if (nRiskyTimes_InitialVal == 1)
 				{
-					this.db現在のゲージ値[ i ] = GAUGE_ZERO;
+					this.db現在のゲージ値[i] = GAUGE_ZERO;
 				}
 				else
 				{
-					this.db現在のゲージ値[ i ] = GAUGE_MAX;
+					this.db現在のゲージ値[i] = GAUGE_MAX;
 				}
 			}
 		}
@@ -132,7 +134,7 @@ namespace DTXMania
 #if true		// DAMAGELEVELTUNING
 		#region [ DAMAGELEVELTUNING ]
 		// ----------------------------------
-		public float[ , ] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damage/recover factors
+		public float[,] fDamageGaugeDelta = {			// #23625 2011.1.10 ickw_284: tuned damage/recover factors
 			// drums,   guitar,  bass
 			{  0.004f,  0.006f,  0.006f  },
 			{  0.002f,  0.003f,  0.003f  },
@@ -144,35 +146,35 @@ namespace DTXMania
 			0.5f, 1.0f, 1.5f
 		};
 		// ----------------------------------
-#endregion
+		#endregion
 #endif
 
-		public void Damage( E楽器パート screenmode, E楽器パート part, E判定 e今回の判定 )
+		public void Damage(E楽器パート screenmode, E楽器パート part, E判定 e今回の判定)
 		{
 			double fDamage;
 
 #if true	// DAMAGELEVELTUNING
-			switch ( e今回の判定 )
+			switch (e今回の判定)
 			{
 				case E判定.Perfect:
 				case E判定.Great:
 				case E判定.Good:
-					fDamage  = bRisky ? 0 : fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
+					fDamage = bRisky ? 0 : fDamageGaugeDelta[(int)e今回の判定, (int)part];
 					break;
 				case E判定.Poor:
 				case E判定.Miss:
-					if ( bRisky )
+					if (bRisky)
 					{
-						fDamage = (nRiskyTimes == 1)? 0 : -GAUGE_MAX / ( nRiskyTimes_Initial - 1);	// Risky=1のときは1Miss即閉店なのでダメージ計算しない
+						fDamage = (nRiskyTimes == 1) ? 0 : -GAUGE_MAX / (nRiskyTimes_Initial - 1);	// Risky=1のときは1Miss即閉店なのでダメージ計算しない
 						if (nRiskyTimes >= 0) nRiskyTimes--;		// 念のため-1未満には減らないようにしておく
 					}
 					else
 					{
-						fDamage = fDamageGaugeDelta[ (int) e今回の判定, (int) part ];
+						fDamage = fDamageGaugeDelta[(int)e今回の判定, (int)part];
 					}
-					if ( e今回の判定 == E判定.Miss && !bRisky )
+					if (e今回の判定 == E判定.Miss && !bRisky)
 					{
-						fDamage *= fDamageLevelFactor[ (int) CDTXMania.Instance.ConfigIni.eダメージレベル ];
+						fDamage *= fDamageLevelFactor[(int)CDTXMania.Instance.ConfigIni.eダメージレベル];
 					}
 					break;
 
@@ -222,26 +224,26 @@ namespace DTXMania
 					break;
 			}
 #endif
-			if ( screenmode == E楽器パート.DRUMS )		// ドラム演奏画面なら、ギター/ベースのダメージも全部ドラムのゲージに集約する
+			if (screenmode == E楽器パート.DRUMS)		// ドラム演奏画面なら、ギター/ベースのダメージも全部ドラムのゲージに集約する
 			{
 				part = E楽器パート.DRUMS;
-				this.db現在のゲージ値[ (int) part ] += fDamage;
+				this.db現在のゲージ値[(int)part] += fDamage;
 			}
 			else
 			{
-				if ( this.bRisky )						// ギター画面且つRISKYなら、ギターとベースのゲージをセットで減少
+				if (this.bRisky)						// ギター画面且つRISKYなら、ギターとベースのゲージをセットで減少
 				{
-					this.db現在のゲージ値[ (int) E楽器パート.GUITAR ] += fDamage;
-					this.db現在のゲージ値[ (int) E楽器パート.BASS   ] += fDamage;
+					this.db現在のゲージ値[(int)E楽器パート.GUITAR] += fDamage;
+					this.db現在のゲージ値[(int)E楽器パート.BASS] += fDamage;
 				}
 				else
 				{
-					this.db現在のゲージ値[ (int) part ] += fDamage;
+					this.db現在のゲージ値[(int)part] += fDamage;
 				}
 			}
 
-			if ( this.db現在のゲージ値[ (int) part ] > GAUGE_MAX )		// RISKY時は決してゲージが増加しないので、ギタレボモード時のギター/ベース両チェック(上限チェック)はしなくて良い
-				this.db現在のゲージ値[ (int) part ] = GAUGE_MAX;
+			if (this.db現在のゲージ値[(int)part] > GAUGE_MAX)		// RISKY時は決してゲージが増加しないので、ギタレボモード時のギター/ベース両チェック(上限チェック)はしなくて良い
+				this.db現在のゲージ値[(int)part] = GAUGE_MAX;
 		}
 		//-----------------
 		#endregion

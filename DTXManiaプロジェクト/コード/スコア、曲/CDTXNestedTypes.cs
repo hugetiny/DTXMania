@@ -129,15 +129,15 @@ namespace DTXMania
 			public override string ToString()
 			{
 				return string.Format("CAVIPAN{0}: AVI:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 動画側開始位置:{5}x{6}, 動画側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct",
-				  CDTX.tZZ(this.n番号),
-				  this.sz開始サイズ.Width, this.sz開始サイズ.Height,
-				  this.sz終了サイズ.Width, this.sz終了サイズ.Height,
-				  this.pt動画側開始位置.X, this.pt動画側開始位置.Y,
-				  this.pt動画側終了位置.X, this.pt動画側終了位置.Y,
-				  this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
-				  this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
-				  this.n移動時間ct,
-				  CDTX.tZZ(this.nAVI番号));
+					CDTX.tZZ(this.n番号),
+					this.sz開始サイズ.Width, this.sz開始サイズ.Height,
+					this.sz終了サイズ.Width, this.sz終了サイズ.Height,
+					this.pt動画側開始位置.X, this.pt動画側開始位置.Y,
+					this.pt動画側終了位置.X, this.pt動画側終了位置.Y,
+					this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
+					this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
+					this.n移動時間ct,
+					CDTX.tZZ(this.nAVI番号));
 			}
 		}
 		public class CBGA
@@ -151,11 +151,11 @@ namespace DTXMania
 			public override string ToString()
 			{
 				return string.Format("CBGA{0}, BMP:{1}, 画像側左上座標:{2}x{3}, 画像側右下座標:{4}x{5}, 表示座標:{6}x{7}",
-				  CDTX.tZZ(this.n番号),
-				  CDTX.tZZ(this.nBMP番号),
-				  this.pt画像側左上座標.X, this.pt画像側左上座標.Y,
-				  this.pt画像側右下座標.X, this.pt画像側右下座標.Y,
-				  this.pt表示座標.X, this.pt表示座標.Y);
+					CDTX.tZZ(this.n番号),
+					CDTX.tZZ(this.nBMP番号),
+					this.pt画像側左上座標.X, this.pt画像側左上座標.Y,
+					this.pt画像側右下座標.X, this.pt画像側右下座標.Y,
+					this.pt表示座標.X, this.pt表示座標.Y);
 			}
 		}
 		public class CBGAPAN
@@ -173,15 +173,15 @@ namespace DTXMania
 			public override string ToString()
 			{
 				return string.Format("CBGAPAN{0}: BMP:{14}, 開始サイズ:{1}x{2}, 終了サイズ:{3}x{4}, 画像側開始位置:{5}x{6}, 画像側終了位置:{7}x{8}, 表示側開始位置:{9}x{10}, 表示側終了位置:{11}x{12}, 移動時間:{13}ct",
-				  CDTX.tZZ(this.nBMP番号),
-				  this.sz開始サイズ.Width, this.sz開始サイズ.Height,
-				  this.sz終了サイズ.Width, this.sz終了サイズ.Height,
-				  this.pt画像側開始位置.X, this.pt画像側開始位置.Y,
-				  this.pt画像側終了位置.X, this.pt画像側終了位置.Y,
-				  this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
-				  this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
-				  this.n移動時間ct,
-				  CDTX.tZZ(this.nBMP番号));
+					CDTX.tZZ(this.nBMP番号),
+					this.sz開始サイズ.Width, this.sz開始サイズ.Height,
+					this.sz終了サイズ.Width, this.sz終了サイズ.Height,
+					this.pt画像側開始位置.X, this.pt画像側開始位置.Y,
+					this.pt画像側終了位置.X, this.pt画像側終了位置.Y,
+					this.pt表示側開始位置.X, this.pt表示側開始位置.Y,
+					this.pt表示側終了位置.X, this.pt表示側終了位置.Y,
+					this.n移動時間ct,
+					CDTX.tZZ(this.nBMP番号));
 			}
 		}
 		public class CBMP : CBMPbase, IDisposable

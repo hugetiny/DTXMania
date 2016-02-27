@@ -13,13 +13,13 @@ namespace DTXMania
 
 		public STScoreIni情報 ScoreIni情報;
 		[Serializable]
-		[StructLayout( LayoutKind.Sequential )]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct STScoreIni情報
 		{
 			public DateTime 最終更新日時;
 			public long ファイルサイズ;
 
-			public STScoreIni情報( DateTime 最終更新日時, long ファイルサイズ )
+			public STScoreIni情報(DateTime 最終更新日時, long ファイルサイズ)
 			{
 				this.最終更新日時 = 最終更新日時;
 				this.ファイルサイズ = ファイルサイズ;
@@ -28,7 +28,7 @@ namespace DTXMania
 
 		public STファイル情報 ファイル情報;
 		[Serializable]
-		[StructLayout( LayoutKind.Sequential )]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct STファイル情報
 		{
 			public string ファイルの絶対パス;
@@ -36,7 +36,7 @@ namespace DTXMania
 			public DateTime 最終更新日時;
 			public long ファイルサイズ;
 
-			public STファイル情報( string ファイルの絶対パス, string フォルダの絶対パス, DateTime 最終更新日時, long ファイルサイズ )
+			public STファイル情報(string ファイルの絶対パス, string フォルダの絶対パス, DateTime 最終更新日時, long ファイルサイズ)
 			{
 				this.ファイルの絶対パス = ファイルの絶対パス;
 				this.フォルダの絶対パス = フォルダの絶対パス;
@@ -47,7 +47,7 @@ namespace DTXMania
 
 		public ST譜面情報 譜面情報;
 		[Serializable]
-		[StructLayout( LayoutKind.Sequential )]
+		[StructLayout(LayoutKind.Sequential)]
 		public struct ST譜面情報
 		{
 			public string タイトル;
@@ -70,7 +70,7 @@ namespace DTXMania
 			public int Duration;
 
 			[Serializable]
-			[StructLayout( LayoutKind.Sequential )]
+			[StructLayout(LayoutKind.Sequential)]
 			public struct STHISTORY
 			{
 				public string 行1;
@@ -78,11 +78,11 @@ namespace DTXMania
 				public string 行3;
 				public string 行4;
 				public string 行5;
-				public string this[ int index ]
+				public string this[int index]
 				{
 					get
 					{
-						switch( index )
+						switch (index)
 						{
 							case 0:
 								return this.行1;
@@ -103,7 +103,7 @@ namespace DTXMania
 					}
 					set
 					{
-						switch( index )
+						switch (index)
 						{
 							case 0:
 								this.行1 = value;
@@ -131,17 +131,17 @@ namespace DTXMania
 			}
 
 			[Serializable]
-			[StructLayout( LayoutKind.Sequential )]
+			[StructLayout(LayoutKind.Sequential)]
 			public struct STRANK
 			{
 				public int Drums;
 				public int Guitar;
 				public int Bass;
-				public int this[ int index ]
+				public int this[int index]
 				{
 					get
 					{
-						switch( index )
+						switch (index)
 						{
 							case 0:
 								return this.Drums;
@@ -156,11 +156,11 @@ namespace DTXMania
 					}
 					set
 					{
-						if ( ( value < (int)CScoreIni.ERANK.SS ) || ( ( value != (int)CScoreIni.ERANK.UNKNOWN ) && ( value > (int)CScoreIni.ERANK.E ) ) )
+						if ((value < (int)CScoreIni.ERANK.SS) || ((value != (int)CScoreIni.ERANK.UNKNOWN) && (value > (int)CScoreIni.ERANK.E)))
 						{
 							throw new ArgumentOutOfRangeException();
 						}
-						switch( index )
+						switch (index)
 						{
 							case 0:
 								this.Drums = value;
@@ -180,17 +180,17 @@ namespace DTXMania
 			}
 
 			[Serializable]
-			[StructLayout( LayoutKind.Sequential )]
+			[StructLayout(LayoutKind.Sequential)]
 			public struct STSKILL
 			{
 				public double Drums;
 				public double Guitar;
 				public double Bass;
-				public double this[ int index ]
+				public double this[int index]
 				{
 					get
 					{
-						switch( index )
+						switch (index)
 						{
 							case 0:
 								return this.Drums;
@@ -205,11 +205,11 @@ namespace DTXMania
 					}
 					set
 					{
-						if( ( value < 0.0 ) || ( value > 100.0 ) )
+						if ((value < 0.0) || (value > 100.0))
 						{
 							throw new ArgumentOutOfRangeException();
 						}
-						switch( index )
+						switch (index)
 						{
 							case 0:
 								this.Drums = value;
@@ -234,7 +234,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return ( ( ( this.譜面情報.レベル[ 0 ] + this.譜面情報.レベル[ 1 ] ) + this.譜面情報.レベル[ 2 ] ) != 0 );
+				return (((this.譜面情報.レベル[0] + this.譜面情報.レベル[1]) + this.譜面情報.レベル[2]) != 0);
 			}
 		}
 
@@ -243,9 +243,9 @@ namespace DTXMania
 
 		public Cスコア()
 		{
-			this.ScoreIni情報 = new STScoreIni情報( DateTime.MinValue, 0L );
+			this.ScoreIni情報 = new STScoreIni情報(DateTime.MinValue, 0L);
 			this.bSongDBにキャッシュがあった = false;
-			this.ファイル情報 = new STファイル情報( "", "", DateTime.MinValue, 0L );
+			this.ファイル情報 = new STファイル情報("", "", DateTime.MinValue, 0L);
 			this.譜面情報 = new ST譜面情報();
 			this.譜面情報.タイトル = "";
 			this.譜面情報.アーティスト名 = "";
@@ -257,9 +257,9 @@ namespace DTXMania
 			this.譜面情報.Backgound = "";
 			this.譜面情報.レベル = new STDGBVALUE<int>();
 			this.譜面情報.最大ランク = new ST譜面情報.STRANK();
-			this.譜面情報.最大ランク.Drums =  (int)CScoreIni.ERANK.UNKNOWN;
+			this.譜面情報.最大ランク.Drums = (int)CScoreIni.ERANK.UNKNOWN;
 			this.譜面情報.最大ランク.Guitar = (int)CScoreIni.ERANK.UNKNOWN;
-			this.譜面情報.最大ランク.Bass =   (int)CScoreIni.ERANK.UNKNOWN;
+			this.譜面情報.最大ランク.Bass = (int)CScoreIni.ERANK.UNKNOWN;
 			this.譜面情報.フルコンボ = new STDGBVALUE<bool>();
 			this.譜面情報.演奏回数 = new STDGBVALUE<int>();
 			this.譜面情報.演奏履歴 = new ST譜面情報.STHISTORY();

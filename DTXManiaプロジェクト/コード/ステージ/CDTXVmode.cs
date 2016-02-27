@@ -61,7 +61,7 @@ namespace DTXMania
 		{
 			get;
 			private set;
-//			private set;	// 本来はprivate setにすべきだが、デバッグが簡単になるので、しばらくはprivateなしのままにする。
+			//			private set;	// 本来はprivate setにすべきだが、デバッグが簡単になるので、しばらくはprivateなしのままにする。
 		}
 
 		/// <summary>
@@ -175,11 +175,11 @@ namespace DTXMania
 		/// <remarks>プロパティNeedReloadにも結果が入る</remarks>
 		/// <remarks>これを呼び出すたびに、Refreshedをtrueにする</remarks>
 		/// <exception cref="FileNotFoundException"></exception>
-		public bool bIsNeedReloadDTX( string filename )
+		public bool bIsNeedReloadDTX(string filename)
 		{
-			if ( !File.Exists( filename ) )			// 指定したファイルが存在しないなら例外終了
+			if (!File.Exists(filename))			// 指定したファイルが存在しないなら例外終了
 			{
-				Trace.TraceError( "ファイルが見つかりません。({0})", filename );
+				Trace.TraceError("ファイルが見つかりません。({0})", filename);
 				throw new FileNotFoundException();
 				//return false;
 			}
@@ -188,9 +188,9 @@ namespace DTXMania
 
 			// 前回とファイル名が異なるか、タイムスタンプが更新されているか、
 			// GRmode等の設定を変更したなら、DTX要更新
-			DateTime current_timestamp = File.GetLastWriteTime( filename );
-			if ( last_path != filename || current_timestamp > last_timestamp ||
-				this.lastGRmode != this.GRmode || this.lastTimeStretch != this.TimeStretch || this.lastVSyncWait != this.VSyncWait )
+			DateTime current_timestamp = File.GetLastWriteTime(filename);
+			if (last_path != filename || current_timestamp > last_timestamp ||
+				this.lastGRmode != this.GRmode || this.lastTimeStretch != this.TimeStretch || this.lastVSyncWait != this.VSyncWait)
 			{
 				this.last_path = filename;
 				this.last_timestamp = current_timestamp;
@@ -213,58 +213,58 @@ namespace DTXMania
 		/// <param name="command"></param>
 		/// <returns>DTXV用の引数であればtrue</returns>
 		/// <remarks>内部でEnabled, nStartBar, Command, NeedReload, filename, last_path, last_timestampを設定する</remarks>
-		public bool ParseArguments( string arg )
+		public bool ParseArguments(string arg)
 		{
 			bool ret = false, analyzing = true;
 			this.nStartBar = 0;
 
-			if ( arg != null ) 
+			if (arg != null)
 			{
-				while ( analyzing )
+				while (analyzing)
 				{
-					if ( arg == "" )
+					if (arg == "")
 					{
 						analyzing = false;
 					}
-					else if ( arg.StartsWith( "-V", StringComparison.OrdinalIgnoreCase ) )		// サウンド再生
+					else if (arg.StartsWith("-V", StringComparison.OrdinalIgnoreCase))		// サウンド再生
 					{
 						// -Vvvv,ppp,"filename"の形式。 vvv=volume, ppp=pan.
 						this.Enabled = true;
 						this.Command = ECommand.Preview;
 						this.Refreshed = true;
 						ret = true;
-						arg = arg.Substring( 2 );
+						arg = arg.Substring(2);
 
-						int pVol = arg.IndexOf( ',' );									//Trace.TraceInformation( "pVol=" + pVol );
-						string strVol = arg.Substring( 0, pVol );						//Trace.TraceInformation( "strVol=" + strVol );
-						this.previewVolume = Convert.ToInt32( strVol );					//Trace.TraceInformation( "previewVolume=" + previewVolume );
-						int pPan = arg.IndexOf( ',', pVol + 1 );						//Trace.TraceInformation( "pPan=" + pPan );
-						string strPan = arg.Substring( pVol + 1, pPan - pVol - 1 );		//Trace.TraceInformation( "strPan=" + strPan );
-						this.previewPan = Convert.ToInt32( strPan );					//Trace.TraceInformation( "previewPan=" + previewPan );
+						int pVol = arg.IndexOf(',');									//Trace.TraceInformation( "pVol=" + pVol );
+						string strVol = arg.Substring(0, pVol);						//Trace.TraceInformation( "strVol=" + strVol );
+						this.previewVolume = Convert.ToInt32(strVol);					//Trace.TraceInformation( "previewVolume=" + previewVolume );
+						int pPan = arg.IndexOf(',', pVol + 1);						//Trace.TraceInformation( "pPan=" + pPan );
+						string strPan = arg.Substring(pVol + 1, pPan - pVol - 1);		//Trace.TraceInformation( "strPan=" + strPan );
+						this.previewPan = Convert.ToInt32(strPan);					//Trace.TraceInformation( "previewPan=" + previewPan );
 
-						arg = arg.Substring( pPan + 1 );
-						arg = arg.Trim( new char[] { '\"' } );
+						arg = arg.Substring(pPan + 1);
+						arg = arg.Trim(new char[] { '\"' });
 						this.previewFilename = arg;
 						analyzing = false;
 					}
 					// -S  -Nxxx  filename
-					else if ( arg.StartsWith( "-S", StringComparison.OrdinalIgnoreCase ) )		// DTXV再生停止
+					else if (arg.StartsWith("-S", StringComparison.OrdinalIgnoreCase))		// DTXV再生停止
 					{
 						this.Enabled = true;
 						this.Command = ECommand.Stop;
 						this.Refreshed = true;
 						ret = true;
-						arg = arg.Substring( 2 );
+						arg = arg.Substring(2);
 					}
-					else if ( arg.StartsWith( "-D", StringComparison.OrdinalIgnoreCase ) )
+					else if (arg.StartsWith("-D", StringComparison.OrdinalIgnoreCase))
 					{
 						// -DW, -DA1など
-						arg = arg.Substring( 2 );	// -D を削除
-						switch ( arg[ 0 ] )
+						arg = arg.Substring(2);	// -D を削除
+						switch (arg[0])
 						{
 							#region [ DirectSound ]
 							case 'D':
-								if ( this.soundDeviceType != ESoundDeviceType.DirectSound )
+								if (this.soundDeviceType != ESoundDeviceType.DirectSound)
 								{
 									this.ChangedSoundDevice = true;
 									this.soundDeviceType = ESoundDeviceType.DirectSound;
@@ -273,12 +273,12 @@ namespace DTXMania
 								{
 									this.ChangedSoundDevice = false;
 								}
-								arg = arg.Substring( 1 );
+								arg = arg.Substring(1);
 								break;
 							#endregion
 							#region [ WASAPI ]
 							case 'W':
-								if ( this.soundDeviceType != ESoundDeviceType.ExclusiveWASAPI )
+								if (this.soundDeviceType != ESoundDeviceType.ExclusiveWASAPI)
 								{
 									this.ChangedSoundDevice = true;
 									this.soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
@@ -287,12 +287,12 @@ namespace DTXMania
 								{
 									this.ChangedSoundDevice = false;
 								}
-								arg = arg.Substring( 1 );
+								arg = arg.Substring(1);
 								break;
 							#endregion
 							#region [ ASIO ]
 							case 'A':
-								if ( this.soundDeviceType != ESoundDeviceType.ASIO )
+								if (this.soundDeviceType != ESoundDeviceType.ASIO)
 								{
 									this.ChangedSoundDevice = true;
 									this.soundDeviceType = ESoundDeviceType.ASIO;
@@ -301,18 +301,18 @@ namespace DTXMania
 								{
 									this.ChangedSoundDevice = false;
 								}
-								arg = arg.Substring( 1 );
+								arg = arg.Substring(1);
 
 								int nAsioDev = 0, p = 0;
-								while ( true )
+								while (true)
 								{
-									char c = arg[ 0 ];
-									if ( '0' <= c && c <= '9' )
+									char c = arg[0];
+									if ('0' <= c && c <= '9')
 									{
 										nAsioDev *= 10;
 										nAsioDev += c - '0';
 										p++;
-										arg = arg.Substring( 1 );
+										arg = arg.Substring(1);
 										continue;
 									}
 									else
@@ -320,7 +320,7 @@ namespace DTXMania
 										break;
 									}
 								}
-								if ( this.nASIOdevice != nAsioDev )
+								if (this.nASIOdevice != nAsioDev)
 								{
 									this.ChangedSoundDevice = true;
 									this.nASIOdevice = nAsioDev;
@@ -331,34 +331,34 @@ namespace DTXMania
 						#region [ GRmode, TimeStretch, VSyncWait ]
 						{
 							// Reload判定は、-Nのところで行う
-							this.GRmode =      ( arg[ 0 ] == 'Y' );
-							this.TimeStretch = ( arg[ 1 ] == 'Y' );
-							this.VSyncWait =   ( arg[ 2 ] == 'Y' );
+							this.GRmode = (arg[0] == 'Y');
+							this.TimeStretch = (arg[1] == 'Y');
+							this.VSyncWait = (arg[2] == 'Y');
 
-							arg = arg.Substring( 3 );
+							arg = arg.Substring(3);
 						}
 						#endregion
 					}
-					else if ( arg.StartsWith( "-N", StringComparison.OrdinalIgnoreCase ) )
+					else if (arg.StartsWith("-N", StringComparison.OrdinalIgnoreCase))
 					{
 						this.Enabled = true;
 						this.Command = ECommand.Play;
 						ret = true;
 
-						arg = arg.Substring( 2 );					// "-N"を除去
-						string[] p = arg.Split( new char[] { ' ' } );
-						this.nStartBar = int.Parse( p[ 0 ] );			// 再生開始小節
-						if ( this.nStartBar < 0 )
+						arg = arg.Substring(2);					// "-N"を除去
+						string[] p = arg.Split(new char[] { ' ' });
+						this.nStartBar = int.Parse(p[0]);			// 再生開始小節
+						if (this.nStartBar < 0)
 						{
 							this.nStartBar = -1;
 						}
 
-						int startIndex = arg.IndexOf( ' ' );
-						string filename = arg.Substring( startIndex + 1 );	// 再生ファイル名(フルパス) これで引数が終わっていることを想定
+						int startIndex = arg.IndexOf(' ');
+						string filename = arg.Substring(startIndex + 1);	// 再生ファイル名(フルパス) これで引数が終わっていることを想定
 						try
 						{
-							filename = filename.Trim( new char[] { '\"' } );
-							bIsNeedReloadDTX( filename );
+							filename = filename.Trim(new char[] { '\"' });
+							bIsNeedReloadDTX(filename);
 						}
 						catch	// 指定ファイルが存在しない
 						{
@@ -372,8 +372,8 @@ namespace DTXMania
 					}
 				}
 			}
-//string[] s = { "Stop", "Play", "Preview" };
-//Trace.TraceInformation( "Command: " + s[ (int) this.Command ] );
+			//string[] s = { "Stop", "Play", "Preview" };
+			//Trace.TraceInformation( "Command: " + s[ (int) this.Command ] );
 			return ret;
 		}
 
@@ -384,14 +384,14 @@ namespace DTXMania
 		{
 			CConfigIni cc = new CConfigIni();
 			string path = CDTXMania.Instance.strEXEのあるフォルダ + "Config.ini";
-			if ( File.Exists( path ) )
+			if (File.Exists(path))
 			{
-				FileInfo fi = new FileInfo( path );
-				if ( fi.Length > 0 )	// Config.iniが0byteだったなら、読み込まない
+				FileInfo fi = new FileInfo(path);
+				if (fi.Length > 0)	// Config.iniが0byteだったなら、読み込まない
 				{
 					try
 					{
-						cc.tファイルから読み込み( path );
+						cc.tファイルから読み込み(path);
 					}
 					catch
 					{
@@ -401,19 +401,19 @@ namespace DTXMania
 				fi = null;
 			}
 
-			cc.nViewerScrollSpeed     = CDTXMania.Instance.ConfigIni.n譜面スクロール速度;
+			cc.nViewerScrollSpeed = CDTXMania.Instance.ConfigIni.n譜面スクロール速度;
 			cc.bViewerShowDebugStatus = CDTXMania.Instance.ConfigIni.b演奏情報を表示する;
-			cc.bViewerVSyncWait       = CDTXMania.Instance.ConfigIni.b垂直帰線待ちを行う;
-			cc.bViewerTimeStretch     = CDTXMania.Instance.ConfigIni.bTimeStretch;
-			cc.bViewerDrums有効       = CDTXMania.Instance.ConfigIni.bDrums有効;
-			cc.bViewerGuitar有効      = CDTXMania.Instance.ConfigIni.bGuitar有効;
+			cc.bViewerVSyncWait = CDTXMania.Instance.ConfigIni.b垂直帰線待ちを行う;
+			cc.bViewerTimeStretch = CDTXMania.Instance.ConfigIni.bTimeStretch;
+			cc.bViewerDrums有効 = CDTXMania.Instance.ConfigIni.bDrums有効;
+			cc.bViewerGuitar有効 = CDTXMania.Instance.ConfigIni.bGuitar有効;
 
 			cc.nViewerウインドウwidth = CDTXMania.Instance.ConfigIni.nウインドウwidth;
 			cc.nViewerウインドウheight = CDTXMania.Instance.ConfigIni.nウインドウheight;
 			cc.nViewer初期ウィンドウ開始位置X = CDTXMania.Instance.ConfigIni.n初期ウィンドウ開始位置X;
 			cc.nViewer初期ウィンドウ開始位置Y = CDTXMania.Instance.ConfigIni.n初期ウィンドウ開始位置Y;
 
-			cc.t書き出し( path );
+			cc.t書き出し(path);
 		}
 
 		private string last_path;
