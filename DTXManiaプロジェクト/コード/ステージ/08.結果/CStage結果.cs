@@ -115,7 +115,7 @@ namespace DTXMania
 						this.nランク値[ i ] = CScoreIni.tランク値を計算して返す( part );
 					}
 				}
-				this.n総合ランク値 = CScoreIni.t総合ランク値を計算して返す( this.st演奏記録.Drums, this.st演奏記録.Guitar, this.st演奏記録.Bass );
+				this.n総合ランク値 = CScoreIni.t総合ランク値を計算して返す( this.st演奏記録 );
 				//---------------------
 				#endregion
 
@@ -237,7 +237,7 @@ namespace DTXMania
 
 				#region [ #RESULTSOUND_xx の再生（あれば）]
 				//---------------------
-				int rank = CScoreIni.t総合ランク値を計算して返す( this.st演奏記録.Drums, this.st演奏記録.Guitar, this.st演奏記録.Bass );
+				int rank = CScoreIni.t総合ランク値を計算して返す( this.st演奏記録 );
 
 				if (rank == 99)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
 				{

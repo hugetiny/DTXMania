@@ -31,7 +31,7 @@ namespace DTXMania
 			}
 			int x = (int) ( this.pt中央[ index ].X * Scale.X );
 			//int y = this.pt中央[ index ].Y;
-			int y = 演奏判定ライン座標.n判定ラインY座標( e楽器パート, true, CDTXMania.Instance.ConfigIni.bReverse[ (int) e楽器パート ] );
+			int y = 演奏判定ライン座標.n判定ラインY座標( e楽器パート, CDTXMania.Instance.ConfigIni.bReverse[ (int) e楽器パート ] );
 			//if ( CDTXMania.Instance.ConfigIni.bReverse[ (int)e楽器パート ] )
 			//{
 			//    y = 369;

@@ -28,7 +28,7 @@ namespace DTXMania
 				x -= ( e楽器パート == E楽器パート.GUITAR ) ? 71 : 994;
 			}
 			//int y = this.pt中央[ index ].Y;
-			int y = 演奏判定ライン座標.n判定ラインY座標( e楽器パート, false, CDTXMania.Instance.ConfigIni.bReverse[ (int) e楽器パート ] );
+			int y = 演奏判定ライン座標.n判定ラインY座標( e楽器パート, CDTXMania.Instance.ConfigIni.bReverse[ (int) e楽器パート ] );
 
 			base.Start( nLane, x, y, 演奏判定ライン座標 );
 		}

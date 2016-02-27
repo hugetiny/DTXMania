@@ -15,7 +15,7 @@ namespace DTXMania
 			{
 				x = (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)? 1638 : 1567+5;
 				//y = CDTXMania.Instance.ConfigIni.bReverse.Guitar ? 0xaf : 270;
-				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
+				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
 				y += CDTXMania.Instance.ConfigIni.bReverse.Guitar ? (int) ( -134 * Scale.Y ) : (int) ( +174 * Scale.Y );
 				if ( base.txCOMBOギター != null )
 				{
@@ -26,7 +26,7 @@ namespace DTXMania
 			{
 				x = 1344;
 				//y = CDTXMania.Instance.ConfigIni.bReverse.Guitar ? 0xee : 0xcf;
-				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, false, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
+				y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
 				y += CDTXMania.Instance.ConfigIni.bReverse.Guitar ? (int) ( -134 * Scale.Y ) : (int) ( +174 * Scale.Y );
 				if ( base.txCOMBOギター != null )
 				{
@@ -43,7 +43,7 @@ namespace DTXMania
 		{
 			int x = ( CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ) ? 1311 : 1311-994+5;
 			//int y = CDTXMania.Instance.ConfigIni.bReverse.Bass ? 0xaf : 270;
-			int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, false, CDTXMania.Instance.ConfigIni.bReverse.Bass );
+			int y = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, CDTXMania.Instance.ConfigIni.bReverse.Bass );
 			y += CDTXMania.Instance.ConfigIni.bReverse.Bass ? (int) ( -134 * Scale.Y ) : (int) ( +174 * Scale.Y );
 			if ( base.txCOMBOギター != null )
 			{

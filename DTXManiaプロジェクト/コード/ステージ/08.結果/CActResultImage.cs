@@ -366,7 +366,7 @@ namespace DTXMania
 		}
 		private bool tリザルト画像の指定があれば構築する()
 		{
-			int rank = CScoreIni.t総合ランク値を計算して返す( CDTXMania.Instance.stage結果.st演奏記録.Drums, CDTXMania.Instance.stage結果.st演奏記録.Guitar, CDTXMania.Instance.stage結果.st演奏記録.Bass );
+			int rank = CScoreIni.t総合ランク値を計算して返す( CDTXMania.Instance.stage結果.st演奏記録 );
 			if (rank == 99)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
 			{
 				rank = 6;
@@ -393,7 +393,7 @@ namespace DTXMania
 			{
 				return false;
 			}
-			int rank = CScoreIni.t総合ランク値を計算して返す( CDTXMania.Instance.stage結果.st演奏記録.Drums, CDTXMania.Instance.stage結果.st演奏記録.Guitar, CDTXMania.Instance.stage結果.st演奏記録.Bass );
+			int rank = CScoreIni.t総合ランク値を計算して返す( CDTXMania.Instance.stage結果.st演奏記録 );
 			if (rank == 99)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
 			{
 				rank = 6;

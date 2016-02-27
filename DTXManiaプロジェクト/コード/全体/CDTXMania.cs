@@ -34,9 +34,9 @@ namespace DTXMania
 				return instance;
 			}
 		}
-		public C文字コンソール act文字コンソール		{			get;private set;}
-		public bool bコンパクトモード		{			get;	private set;}
-		public CConfigIni ConfigIni		{			get;			private set;}
+		public C文字コンソール act文字コンソール { get; private set; }
+		public bool bコンパクトモード { get; private set; }
+		public CConfigIni ConfigIni { get; private set; }
 		public CDTX DTX
 		{
 			get
@@ -57,8 +57,8 @@ namespace DTXMania
 				}
 			}
 		}
-		public CFPS FPS		{			get;private set;}
-		public CInput管理 Input管理		{			get;private set;}
+		public CFPS FPS { get; private set; }
+		public CInput管理 Input管理 { get; private set; }
 		#region [ 入力範囲ms ]
 		public int nPerfect範囲ms
 		{
@@ -121,7 +121,7 @@ namespace DTXMania
 			}
 		}
 		#endregion
-		public CPad Pad		{			get;private set;}
+		public CPad Pad { get; private set; }
 		public Random Random { get; private set; }
 		public CSkin Skin { get; private set; }
 		public CSongs管理 Songs管理 { get; set; }// 2012.1.26 yyagi private解除 CStage起動でのdesirialize読み込みのため
@@ -132,16 +132,10 @@ namespace DTXMania
 		public CSound管理 Sound管理 { get; private set; }
 		public CStage起動 stage起動 { get; private set; }
 		public CStageタイトル stageタイトル { get; private set; }
-		//		public  CStageオプション stageオプション
-		//		{ 
-		//			get;
-		//			private set;
-		//		}
 		public CStageコンフィグ stageコンフィグ { get; private set; }
 		public CStage選曲 stage選曲 { get; private set; }
 		public CStage曲読み込み stage曲読み込み { get; private set; }
-		public CStage演奏ギター画面 stage演奏ギター画面
-		{ get; private set; }
+		public CStage演奏ギター画面 stage演奏ギター画面 { get; private set; }
 		public CStage演奏ドラム画面 stage演奏ドラム画面 { get; private set; }
 		public CStage結果 stage結果 { get; private set; }
 		public CStageChangeSkin stageChangeSkin { get; private set; }
@@ -193,7 +187,7 @@ namespace DTXMania
 			strEXEのあるフォルダ = Environment.CurrentDirectory + @"\";
 			//strEXEのあるフォルダ = Path.GetDirectoryName( Environment.GetCommandLineArgs()[ 0 ] ) + @"\";
 #else
-			strEXEのあるフォルダ = Path.GetDirectoryName( Application.ExecutablePath ) + @"\";	// #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
+			strEXEのあるフォルダ = Path.GetDirectoryName(Application.ExecutablePath) + @"\";	// #23629 2010.11.9 yyagi: set correct pathname where DTXManiaGR.exe is.
 #endif
 			// END #23629 2010.11.13 from
 			//-----------------
@@ -328,13 +322,13 @@ namespace DTXMania
 #if DEBUG
 					Environment.Exit(-1);
 #else
-					if ( strコンパクトモードファイル == "" )	// DTXMania未起動状態で、DTXCで再生停止ボタンを押した場合は、何もせず終了
+					if (strコンパクトモードファイル == "")	// DTXMania未起動状態で、DTXCで再生停止ボタンを押した場合は、何もせず終了
 					{
-						Environment.Exit( -1 );
+						Environment.Exit(-1);
 					}
 					else
 					{
-						throw new FileNotFoundException( "コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。", strコンパクトモードファイル );
+						throw new FileNotFoundException("コンパクトモードで指定されたファイルが見つかりません。DTXManiaを終了します。", strコンパクトモードファイル);
 					}
 #endif
 				}
@@ -1087,12 +1081,13 @@ namespace DTXMania
 				CScoreIni scoreIni = null;
 
 				if (Control.IsKeyLocked(Keys.CapsLock))				// #30925 2013.3.11 yyagi; capslock=ON時は、EnumSongsしないようにして、起動負荷とASIOの音切れの関係を確認する
-				{														// → songs.db等の書き込み時だと音切れするっぽい
+				{
+					// → songs.db等の書き込み時だと音切れするっぽい
 					actEnumSongs.On非活性化();
 					EnumSongs.SongListEnumCompletelyDone();
 					CDTXMania.Instance.stage選曲.bIsEnumeratingSongs = false;
 				}
-				#region [ 曲検索スレッドの起動/終了 ]					// ここに"Enumerating Songs..."表示を集約
+				#region [ 曲検索スレッドの起動/終了 ここに"Enumerating Songs..."表示を集約 ]
 				if (!CDTXMania.Instance.bコンパクトモード)
 				{
 					actEnumSongs.On進行描画();							// "Enumerating Songs..."アイコンの描画
@@ -1852,79 +1847,59 @@ for (int i = 0; i < 3; i++) {
 							case (int)E演奏画面の戻り値.ステージクリア:
 								#region [ 演奏クリア ]
 								//-----------------------------
-								CScoreIni.C演奏記録 c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass;
+								STDGBVALUE<CScoreIni.C演奏記録> record;
 								CChip[] chipArray = new CChip[10];
-								if (ConfigIni.bギタレボモード)
+								
+								if( !ConfigIni.bギタレボモード )
 								{
-									stage演奏ギター画面.t演奏結果を格納する(out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass);
+									chipArray = stage演奏ギター画面.GetNoChipDrums();
+									record = stage演奏ドラム画面.Record;
 								}
 								else
 								{
-									stage演奏ドラム画面.t演奏結果を格納する(out c演奏記録_Drums, out c演奏記録_Guitar, out c演奏記録_Bass, out chipArray);
+									record = stage演奏ギター画面.Record;
+									record.Drums = new CScoreIni.C演奏記録();
 								}
 
-								if (CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass)		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
+								double playskill = 0.0;
+							
+								for(E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
 								{
-									CScoreIni.C演奏記録 t;
-									t = c演奏記録_Guitar;
-									c演奏記録_Guitar = c演奏記録_Bass;
-									c演奏記録_Bass = t;
+									if( !record[(int)inst].b全AUTOである && record[(int)inst].n全チップ数 > 0 )
+									{
+										playskill = record[(int)inst].db演奏型スキル値;
+									}
+								}
 
-									CDTXMania.Instance.DTX.SwapGuitarBassInfos();			// 譜面情報も元に戻す
-									// #35417 2015.08.30 changed フラグにアクセスしている箇所が見つかったため有効化
-									// #35417 2015.8.18 yyagi: AUTO系のフラグ入れ替えは削除可能!?。以後AUTOフラグに全くアクセスしておらず、意味がないため。
-									// (直下でb全AUTOである にアクセスしているが、既に計算済みのクラスへのアクセスであり、ここでの交換対象ではない)
-									CDTXMania.Instance.ConfigIni.SwapGuitarBassInfos_AutoFlags();
-									// #24415 2011.2.27 yyagi
-									// リザルト集計時のみ、Auto系のフラグも元に戻す。
-									// これを戻すのは、リザルト集計後。
-								}													// "case CStage.Eステージ.結果:"のところ。
-
-								double ps = 0.0, gs = 0.0;
-								if (!c演奏記録_Drums.b全AUTOである && c演奏記録_Drums.n全チップ数 > 0)
-								{
-									ps = c演奏記録_Drums.db演奏型スキル値;
-									gs = c演奏記録_Drums.dbゲーム型スキル値;
-								}
-								else if (!c演奏記録_Guitar.b全AUTOである && c演奏記録_Guitar.n全チップ数 > 0)
-								{
-									ps = c演奏記録_Guitar.db演奏型スキル値;
-									gs = c演奏記録_Guitar.dbゲーム型スキル値;
-								}
-								else
-								{
-									ps = c演奏記録_Bass.db演奏型スキル値;
-									gs = c演奏記録_Bass.dbゲーム型スキル値;
-								}
 								string str = "Cleared";
-								switch (CScoreIni.t総合ランク値を計算して返す(c演奏記録_Drums, c演奏記録_Guitar, c演奏記録_Bass))
+								switch (CScoreIni.t総合ランク値を計算して返す(record))
 								{
 									case (int)CScoreIni.ERANK.SS:
-										str = string.Format("Cleared (SS: {0:F2})", ps);
+										str = string.Format("Cleared (SS: {0:F2})", playskill);
 										break;
 
 									case (int)CScoreIni.ERANK.S:
-										str = string.Format("Cleared (S: {0:F2})", ps);
+										str = string.Format("Cleared (S: {0:F2})", playskill);
 										break;
 
 									case (int)CScoreIni.ERANK.A:
-										str = string.Format("Cleared (A: {0:F2})", ps);
+										str = string.Format("Cleared (A: {0:F2})", playskill);
 										break;
 
 									case (int)CScoreIni.ERANK.B:
-										str = string.Format("Cleared (B: {0:F2})", ps);
+										str = string.Format("Cleared (B: {0:F2})", playskill);
 										break;
 
 									case (int)CScoreIni.ERANK.C:
-										str = string.Format("Cleared (C: {0:F2})", ps);
+										str = string.Format("Cleared (C: {0:F2})", playskill);
 										break;
 
 									case (int)CScoreIni.ERANK.D:
-										str = string.Format("Cleared (D: {0:F2})", ps);
+										str = string.Format("Cleared (D: {0:F2})", playskill);
 										break;
 
 									case (int)CScoreIni.ERANK.E:
-										str = string.Format("Cleared (E: {0:F2})", ps);
+										str = string.Format("Cleared (E: {0:F2})", playskill);
 										break;
 
 									case (int)CScoreIni.ERANK.UNKNOWN:	// #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
@@ -1948,9 +1923,7 @@ for (int i = 0; i < 3; i++) {
 								r現在のステージ.On非活性化();
 								Trace.TraceInformation("----------------------");
 								Trace.TraceInformation("■ 結果");
-								stage結果.st演奏記録.Drums = c演奏記録_Drums;
-								stage結果.st演奏記録.Guitar = c演奏記録_Guitar;
-								stage結果.st演奏記録.Bass = c演奏記録_Bass;
+								stage結果.st演奏記録 = record;
 								stage結果.r空うちドラムチップ = chipArray;
 								stage結果.On活性化();
 								r直前のステージ = r現在のステージ;

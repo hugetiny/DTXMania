@@ -1592,14 +1592,14 @@ namespace DTXMania
 			bGuitarを更新する = CDTXMania.Instance.ConfigIni.bGuitar有効 && CDTXMania.Instance.DTX.bチップがある.Guitar && !CDTXMania.Instance.ConfigIni.bギターが全部オートプレイである;
 			bBassを更新する =   CDTXMania.Instance.ConfigIni.bGuitar有効 && CDTXMania.Instance.DTX.bチップがある.Bass   && !CDTXMania.Instance.ConfigIni.bベースが全部オートプレイである;
 		}
-		internal static int t総合ランク値を計算して返す( C演奏記録 Drums, C演奏記録 Guitar, C演奏記録 Bass )
+		internal static int t総合ランク値を計算して返す( STDGBVALUE<C演奏記録> record )
 		{
-			int nTotal   = Drums.n全チップ数              + Guitar.n全チップ数              + Bass.n全チップ数;
-			int nPerfect = Drums.nPerfect数_Auto含まない + Guitar.nPerfect数_Auto含まない + Bass.nPerfect数_Auto含まない;	// #24569 2011.3.1 yyagi: to calculate result rank without AUTO chips
-			int nGreat =   Drums.nGreat数_Auto含まない + Guitar.nGreat数_Auto含まない + Bass.nGreat数_Auto含まない;		//
-			int nGood =    Drums.nGood数_Auto含まない + Guitar.nGood数_Auto含まない + Bass.nGood数_Auto含まない;		//
-			int nPoor =    Drums.nPoor数_Auto含まない + Guitar.nPoor数_Auto含まない + Bass.nPoor数_Auto含まない;		//
-			int nMiss =    Drums.nMiss数_Auto含まない + Guitar.nMiss数_Auto含まない + Bass.nMiss数_Auto含まない;		//
+			int nTotal   = record.Drums.n全チップ数              + record.Guitar.n全チップ数              + record.Bass.n全チップ数;
+			int nPerfect = record.Drums.nPerfect数_Auto含まない + record.Guitar.nPerfect数_Auto含まない + record.Bass.nPerfect数_Auto含まない;	// #24569 2011.3.1 yyagi: to calculate result rank without AUTO chips
+			int nGreat =   record.Drums.nGreat数_Auto含まない + record.Guitar.nGreat数_Auto含まない + record.Bass.nGreat数_Auto含まない;		//
+			int nGood =    record.Drums.nGood数_Auto含まない + record.Guitar.nGood数_Auto含まない + record.Bass.nGood数_Auto含まない;		//
+			int nPoor =    record.Drums.nPoor数_Auto含まない + record.Guitar.nPoor数_Auto含まない + record.Bass.nPoor数_Auto含まない;		//
+			int nMiss =    record.Drums.nMiss数_Auto含まない + record.Guitar.nMiss数_Auto含まない + record.Bass.nMiss数_Auto含まない;		//
 			return tランク値を計算して返す( nTotal, nPerfect, nGreat, nGood, nPoor, nMiss );
 		}
 

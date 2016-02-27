@@ -829,8 +829,6 @@ namespace DTXMania
 				{
 					if ((cwav.rSound[i] != null) && cwav.rSound[i].b一時停止中)
 					{
-						//long num1 = cwav.n一時停止時刻[ i ];
-						//long num2 = cwav.n再生開始時刻[ i ];
 						cwav.n再生開始時刻[i] += CSound管理.rc演奏用タイマ.nシステム時刻ms - cwav.n一時停止時刻[i];
 					}
 				}

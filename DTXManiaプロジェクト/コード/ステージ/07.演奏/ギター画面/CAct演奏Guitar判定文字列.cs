@@ -142,13 +142,13 @@ namespace DTXMania
 										break;
 									case E判定文字表示位置.レーン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.Instance.ConfigIni.bReverse.Bass );
+										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, CDTXMania.Instance.ConfigIni.bReverse.Bass );
 										baseY = CDTXMania.Instance.ConfigIni.bReverse.Bass ? yB - 95 - 52 + 10 : yB + 95 + 52;
 										//baseY = CDTXMania.Instance.ConfigIni.bReverse.Bass ? 0x12b : 190;
 										break;
 									case E判定文字表示位置.判定ライン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, true, CDTXMania.Instance.ConfigIni.bReverse.Bass );
+										yB = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.BASS, CDTXMania.Instance.ConfigIni.bReverse.Bass );
 										baseY = CDTXMania.Instance.ConfigIni.bReverse.Bass ? yB + 30 : yB - 20;
 										break;
 								}
@@ -168,13 +168,13 @@ namespace DTXMania
 										break;
 									case E判定文字表示位置.レーン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
+										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
 										baseY = CDTXMania.Instance.ConfigIni.bReverse.Guitar ? yG - 95 - 52 + 10 : yG + 95 + 52;
 										//baseY = CDTXMania.Instance.ConfigIni.bReverse.Guitar ? 0x12b : 190;
 										break;
 									case E判定文字表示位置.判定ライン上:
 										baseX = this.stレーンサイズ[ j ].x;
-										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, true, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
+										yG = 演奏判定ライン座標.n判定ラインY座標( E楽器パート.GUITAR, CDTXMania.Instance.ConfigIni.bReverse.Guitar );
 										baseY = CDTXMania.Instance.ConfigIni.bReverse.Guitar ? yG + 30 : yG - 20;
 										break;
 								}

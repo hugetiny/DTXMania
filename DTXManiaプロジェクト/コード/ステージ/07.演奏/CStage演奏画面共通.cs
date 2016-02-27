@@ -19,13 +19,115 @@ namespace DTXMania
 	/// </summary>
 	internal abstract partial class CStage演奏画面共通 : CStage
 	{
-		// メソッド
+		// members
 
-		#region [ t演奏結果を格納する_ドラム() ]
-		public void t演奏結果を格納する_ドラム(out CScoreIni.C演奏記録 Drums)
+		#region [Member_Activities]
+		protected CAct演奏AVI actAVI;
+		protected CAct演奏BGA actBGA;
+		protected CAct演奏チップファイアGB actChipFireGB;
+		protected CAct演奏Combo共通 actCombo;
+		protected CAct演奏Danger共通 actDANGER;
+		protected CActFIFOBlack actFI;
+		protected CActFIFOBlack actFO;
+		protected CActFIFOWhite actFOClear;
+		protected CAct演奏ゲージ共通 actGauge;
+		protected CAct演奏判定文字列共通 actJudgeString;
+		protected CAct演奏DrumsレーンフラッシュD actLaneFlushD;
+		protected CAct演奏レーンフラッシュGB共通 actLaneFlushGB;
+		protected CAct演奏パネル文字列 actPanel;
+		protected CAct演奏演奏情報 actPlayInfo;
+		protected CAct演奏RGB共通 actRGB;
+		protected CAct演奏スコア共通 actScore;
+		protected CAct演奏ステージ失敗 actStageFailed;
+		protected CAct演奏ステータスパネル共通 actStatusPanels;
+		protected CAct演奏WailingBonus共通 actWailingBonus;
+		protected CAct演奏スクロール速度 act譜面スクロール速度;
+		protected CAct演奏DrumsチップファイアD actChipFireD; // drums only
+		protected CAct演奏Drumsグラフ actGraph;   // drums only #24074 2011.01.23 add ikanick
+		protected CAct演奏Drumsパッド actPad; // drums only
+
+		#endregion
+
+		public C演奏判定ライン座標共通 演奏判定ライン座標;// #31602 2013.6.23 yyagi 表示遅延対策として、判定ラインの表示位置をずらす機能を追加する
+
+		protected bool bPAUSE;
+		protected STDGBVALUE<bool> b演奏にMIDI入力を使った;
+		protected STDGBVALUE<bool> b演奏にキーボードを使った;
+		protected STDGBVALUE<bool> b演奏にジョイパッドを使った;
+		protected STDGBVALUE<bool> b演奏にマウスを使った;
+		protected CCounter ctWailingチップ模様アニメ;
+		protected STDGBVALUE<CCounter> ctチップ模様アニメ;
+
+		protected E演奏画面の戻り値 eフェードアウト完了時の戻り値;
+
+		protected readonly int[] nチャンネル0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 8, 0 };
+		public static readonly int[] nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
+		protected readonly Ech定義[] nパッド0Atoチャンネル0A = new Ech定義[]
 		{
-			Drums = new CScoreIni.C演奏記録();
+			Ech定義.HiHatClose,
+			Ech定義.Snare,
+			Ech定義.BassDrum,
+			Ech定義.HighTom,
+			Ech定義.LowTom,
+			Ech定義.FloorTom,
+			Ech定義.Cymbal,
+			Ech定義.HiHatOpen,
+			Ech定義.RideCymbal,
+			Ech定義.LeftCymbal
+		};
 
+		protected readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };	// パッド画像のヒット処理用
+		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };
+		protected STDGBVALUE<CHitCountOfRank> nヒット数_Auto含まない;
+		protected STDGBVALUE<CHitCountOfRank> nヒット数_Auto含む;
+		protected STDGBVALUE<CHitCountOfRank> nヒット数_TargetGhost; // #35411 2015.08.21 chnmr0 add
+		protected STDGBVALUE<int> nコンボ数_TargetGhost;
+		protected STDGBVALUE<int> n最大コンボ数_TargetGhost;
+		protected int n現在のトップChip = -1;
+		protected int[] n最後に再生したBGMの実WAV番号 = new int[50];
+		protected Ech定義 e最後に再生したHHのチャンネル番号;
+		protected List<int> L最後に再生したHHの実WAV番号;		// #23921 2011.1.4 yyagi: change "int" to "List<int>", for recording multiple wav No.
+		protected STLANEVALUE<int> n最後に再生した実WAV番号;	// #26388 2011.11.8 yyagi: change "n最後に再生した実WAV番号.GUITAR" and "n最後に再生した実WAV番号.BASS"
+
+		protected volatile Queue<STMixer> queueMixerSound;		// #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
+		protected DateTime dtLastQueueOperation;
+		protected bool bIsDirectSound;
+		protected double db再生速度;
+		protected bool bValidScore;
+		protected STDGBVALUE<bool> bReverse;
+
+		protected STDGBVALUE<Queue<CChip>> queWailing;
+		protected STDGBVALUE<CChip> r現在の歓声Chip;
+		protected CChip[] r空打ちドラムチップ = new CChip[10];
+		protected CChip r現在の空うちギターChip;
+		protected ST空打ち r現在の空うちドラムChip;
+		protected CChip r現在の空うちベースChip;
+		protected CChip r次にくるギターChip;
+		protected CChip r次にくるベースChip;
+		protected CTexture txWailing枠;
+		protected CTexture txチップ;
+		protected CTexture txヒットバー;
+
+		protected CTexture tx背景;
+
+		protected STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
+		protected STAUTOPLAY bIsAutoPlay;		// #24239 2011.1.23 yyagi
+		protected CInvisibleChip cInvisibleChip;
+		protected bool bUseOSTimer;
+		protected E判定表示優先度 e判定表示優先度;
+		protected CWailingChip共通[] cWailingChip;
+
+		private STDGBVALUE<CScoreIni.C演奏記録> record;
+
+		protected CTexture txレーンフレームGB; // drums only
+		protected bool bフィルイン中; // drums only
+
+		// メソッド
+		#region [ PlayRecordSave ]
+		private void t演奏結果を格納する_ドラム()
+		{
+			record.Drums = new CScoreIni.C演奏記録();
+			CScoreIni.C演奏記録 Drums = Record.Drums;
 			if (CDTXMania.Instance.DTX.bチップがある.Drums && !CDTXMania.Instance.ConfigIni.bギタレボモード)
 			{
 				Drums.nスコア = (long)this.actScore.Get(E楽器パート.DRUMS);
@@ -87,12 +189,10 @@ namespace DTXMania
 				Drums.bギターとベースを入れ替えた = CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass; // #35417 chnmr0 add
 			}
 		}
-		#endregion
-		#region [ t演奏結果を格納する_ギター() ]
-		public void t演奏結果を格納する_ギター(out CScoreIni.C演奏記録 Guitar)
+		private void t演奏結果を格納する_ギター()
 		{
-			Guitar = new CScoreIni.C演奏記録();
-
+			record.Guitar = new CScoreIni.C演奏記録();
+			CScoreIni.C演奏記録 Guitar = Record.Guitar;
 			if (CDTXMania.Instance.DTX.bチップがある.Guitar)
 			{
 				Guitar.nスコア = (long)this.actScore.Get(E楽器パート.GUITAR);
@@ -153,12 +253,10 @@ namespace DTXMania
 				Guitar.bギターとベースを入れ替えた = CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass; // #35417 chnmr0 add
 			}
 		}
-		#endregion
-		#region [ t演奏結果を格納する_ベース() ]
-		public void t演奏結果を格納する_ベース(out CScoreIni.C演奏記録 Bass)
+		private void t演奏結果を格納する_ベース()
 		{
-			Bass = new CScoreIni.C演奏記録();
-
+			record.Bass = new CScoreIni.C演奏記録();
+			CScoreIni.C演奏記録 Bass = Record.Bass;
 			if (CDTXMania.Instance.DTX.bチップがある.Bass)
 			{
 				Bass.nスコア = (long)this.actScore.Get(E楽器パート.BASS);
@@ -222,14 +320,10 @@ namespace DTXMania
 		#endregion
 
 		// CStage 実装
-
 		public override void On活性化()
 		{
-			listChip = CDTXMania.Instance.DTX.listChip;
-			listWAV = CDTXMania.Instance.DTX.listWAV;
-
 			this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.継続;
-			this.n現在のトップChip = (listChip.Count > 0) ? 0 : -1;
+			this.n現在のトップChip = (CDTXMania.Instance.DTX.listChip.Count > 0) ? 0 : -1;
 			this.L最後に再生したHHの実WAV番号 = new List<int>(16);
 			this.e最後に再生したHHのチャンネル番号 = 0;
 			this.n最後に再生した実WAV番号.Guitar = -1;
@@ -267,11 +361,9 @@ namespace DTXMania
 
 				this.nInputAdjustTimeMs[k] = CDTXMania.Instance.ConfigIni.nInputAdjustTimeMs[k];			// #23580 2011.1.3 yyagi
 				//        2011.1.7 ikanick 修正
-				//this.nJudgeLinePosY_delta[ k ] = CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset[ k ];		// #31602 2013.6.23 yyagi
-
-				this.演奏判定ライン座標.n判定位置[k] = CDTXMania.Instance.ConfigIni.e判定位置[k];
+				this.演奏判定ライン座標.n判定位置[k] = CDTXMania.Instance.ConfigIni.e判定位置[k];//#31602 2013.6.23 yyagi
 				this.演奏判定ライン座標.nJudgeLinePosY_delta[k] = CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset[k];
-				this.bReverse[k] = CDTXMania.Instance.ConfigIni.bReverse[k];					//
+				this.bReverse[k] = CDTXMania.Instance.ConfigIni.bReverse[k];
 
 			}
 			actCombo.演奏判定ライン座標 = 演奏判定ライン座標;
@@ -286,16 +378,9 @@ namespace DTXMania
 			base.On活性化();
 			this.tステータスパネルの選択();
 			this.tパネル文字列の設定();
-			//this.演奏判定ライン座標();
 
 			this.bIsAutoPlay = CDTXMania.Instance.ConfigIni.bAutoPlay;									// #24239 2011.1.23 yyagi
-
-
-			//this.bIsAutoPlay.Guitar = CDTXMania.Instance.ConfigIni.bギターが全部オートプレイである;
-			//this.bIsAutoPlay.Bass = CDTXMania.Instance.ConfigIni.bベースが全部オートプレイである;
-			//			this.nRisky = CDTXMania.Instance.ConfigIni.nRisky;											// #23559 2011.7.28 yyagi
 			actGauge.Init(CDTXMania.Instance.ConfigIni.nRisky);									// #23559 2011.7.28 yyagi
-			this.nPolyphonicSounds = CDTXMania.Instance.ConfigIni.nPoliphonicSounds;
 			e判定表示優先度 = CDTXMania.Instance.ConfigIni.e判定表示優先度;
 
 			CDTXMania.Instance.Skin.tRemoveMixerAll();	// 効果音のストリームをミキサーから解除しておく
@@ -328,7 +413,7 @@ namespace DTXMania
 			}
 
 			#region [ 演奏開始前にmixer登録しておくべきサウンド(開幕してすぐに鳴らすことになるチップ音)を登録しておく ]
-			foreach (CChip pChip in listChip)
+			foreach (CChip pChip in CDTXMania.Instance.DTX.listChip)
 			{
 				//				Debug.WriteLine( "CH=" + pChip.nチャンネル番号.ToString( "x2" ) + ", 整数値=" + pChip.n整数値 +  ", time=" + pChip.n発声時刻ms );
 				if (pChip.n発声時刻ms <= 0)
@@ -337,10 +422,10 @@ namespace DTXMania
 					{
 						pChip.bHit = true;
 						//						Trace.TraceInformation( "first [DA] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値 + ", time=" + pChip.n発声時刻ms );
-						if (listWAV.ContainsKey(pChip.n整数値_内部番号))
+						if (CDTXMania.Instance.DTX.listWAV.ContainsKey(pChip.n整数値_内部番号))
 						{
-							CDTX.CWAV wc = listWAV[pChip.n整数値_内部番号];
-							for (int i = 0; i < nPolyphonicSounds; i++)
+							CDTX.CWAV wc = CDTXMania.Instance.DTX.listWAV[pChip.n整数値_内部番号];
+							for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPoliphonicSounds; i++)
 							{
 								if (wc.rSound[i] != null)
 								{
@@ -362,10 +447,6 @@ namespace DTXMania
 			{
 				CDTXMania.Instance.DTX.SwapGuitarBassInfos();
 			}
-			//this.sw = new Stopwatch();
-			//this.sw2 = new Stopwatch();
-			//			this.gclatencymode = GCSettings.LatencyMode;
-			//			GCSettings.LatencyMode = GCLatencyMode.Batch;	// 演奏画面中はGCを抑止する
 		}
 		public override void On非活性化()
 		{
@@ -380,9 +461,6 @@ namespace DTXMania
 			this.ctチップ模様アニメ.Drums = null;
 			this.ctチップ模様アニメ.Guitar = null;
 			this.ctチップ模様アニメ.Bass = null;
-			//listWAV.Clear();
-			listWAV = null;
-			listChip = null;
 			queueMixerSound.Clear();
 			queueMixerSound = null;
 			cInvisibleChip.Dispose();
@@ -411,112 +489,211 @@ namespace DTXMania
 				base.OnManagedリソースの解放();
 			}
 		}
+		public override int On進行描画()
+		{
+			if (!base.b活性化してない)
+			{
+				bool bIsFinishedPlaying = false;
+				bool bIsFinishedFadeout = false;
+
+				if (base.b初めての進行描画)
+				{
+					this.PrepareAVITexture();
+
+					CSound管理.rc演奏用タイマ.tリセット();
+					CDTXMania.Instance.Timer.tリセット();
+					if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
+					{
+						this.ctチップ模様アニメ.Drums = new CCounter(0, 0x30, 10, CDTXMania.Instance.Timer);
+					}
+					this.ctチップ模様アニメ.Guitar = new CCounter(0, 0x17, 20, CDTXMania.Instance.Timer);
+					this.ctチップ模様アニメ.Bass = new CCounter(0, 0x17, 20, CDTXMania.Instance.Timer);
+					this.ctWailingチップ模様アニメ = new CCounter(0, 4, 50, CDTXMania.Instance.Timer);
+
+					// this.actChipFireD.Start( Eレーン.HH );	// #31554 2013.6.12 yyagi
+					// 初チップヒット時のもたつき回避。最初にactChipFireD.Start()するときにJITが掛かって？
+					// ものすごく待たされる(2回目以降と比べると2,3桁tick違う)。そこで最初の画面フェードインの間に
+					// 一発Start()を掛けてJITの結果を生成させておく。
+
+					base.eフェーズID = CStage.Eフェーズ.共通_フェードイン;
+					this.actFI.tフェードイン開始();
+
+					if (CDTXMania.Instance.DTXVmode.Enabled)			// DTXVモードなら
+					{
+						#region [ DTXV用の再生設定にする(全AUTOなど) ]
+						tDTXV用の設定();
+						#endregion
+						t演奏位置の変更(CDTXMania.Instance.DTXVmode.nStartBar);
+					}
+
+					CDTXMania.Instance.Sound管理.tDisableUpdateBufferAutomatically();
+					base.b初めての進行描画 = false;
+				}
+
+				#region [ stage failed ]
+				if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					if (CDTXMania.Instance.ConfigIni.bSTAGEFAILED有効 && (base.eフェーズID == CStage.Eフェーズ.共通_通常状態))
+					{
+						bool failedCondition = false;
+
+						if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+						{
+							bool bFailedGuitar = this.actGauge.IsFailed(E楽器パート.GUITAR); // #23630 2011.11.12 yyagi: deleted AutoPlay condition: not to be failed at once
+							bool bFailedBass = this.actGauge.IsFailed(E楽器パート.BASS); // #23630
+							bool bFailedNoChips = (!CDTXMania.Instance.DTX.bチップがある.Guitar && !CDTXMania.Instance.DTX.bチップがある.Bass); // #25216 2011.5.21 yyagi add condition
+							failedCondition = bFailedGuitar || bFailedBass || bFailedNoChips; // #25216 2011.5.21 yyagi: changed codition: && -> ||
+						}
+						else
+						{
+							failedCondition = this.actGauge.IsFailed(E楽器パート.DRUMS);
+						}
+
+						if (failedCondition)
+						{
+							this.actStageFailed.Start();
+							CDTXMania.Instance.DTX.t全チップの再生停止();
+							base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_FAILED;
+						}
+					}
+				}
+				#endregion
+
+				this.t進行描画_AVI();
+				this.t進行描画_背景();
+				this.t進行描画_MIDIBGM();
+				this.t進行描画_パネル文字列();
+				this.t進行描画_スコア();
+				this.t進行描画_BGA();
+				this.t進行描画_ステータスパネル();
+
+				this.t進行描画_ギターベース判定ライン();
+				this.t進行描画_レーンフラッシュGB();
+				this.t進行描画_ゲージ();
+
+				this.t進行描画_DANGER();
+				this.t進行描画_WailingBonus();
+				this.t進行描画_譜面スクロール速度();
+				this.t進行描画_チップアニメ();
+				bIsFinishedPlaying = this.t進行描画_チップ(CDTXMania.Instance.ConfigIni.bギタレボモード ? E楽器パート.GUITAR : E楽器パート.DRUMS);
+				this.t進行描画_演奏情報();
+				this.t進行描画_RGBボタン();
+				if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					this.t進行描画_判定文字列();
+				}
+				else
+				{
+					this.t進行描画_判定文字列1_通常位置指定の場合();
+				}
+				this.t進行描画_コンボ();
+				this.t進行描画_Wailing枠();
+				this.t進行描画_チップファイアGB();
+				this.t進行描画_STAGEFAILED();
+
+				if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					this.t進行描画_ギターベースフレーム();
+					this.t進行描画_判定文字列2_判定ライン上指定の場合();
+					this.t進行描画_チップファイアD();
+					this.t進行描画_ドラムパッド();
+					this.t進行描画_ギターベース判定ライン();
+					this.t進行描画_判定ライン();
+					this.t進行描画_レーンフラッシュD();
+					this.t進行描画_グラフ();   // #24074 2011.01.23 add ikanick
+				}
+
+				bIsFinishedFadeout = this.t進行描画_フェードイン_アウト();
+				if (bIsFinishedPlaying && (base.eフェーズID == CStage.Eフェーズ.共通_通常状態))
+				{
+					if (CDTXMania.Instance.DTXVmode.Enabled)
+					{
+						if (CDTXMania.Instance.Timer.b停止していない)
+						{
+							this.actPanel.Stop();				// PANEL表示停止
+							CDTXMania.Instance.Timer.t一時停止();		// 再生時刻カウンタ停止
+						}
+						Thread.Sleep(5);
+						// DTXCからの次のメッセージを待ち続ける
+					}
+					else
+					{
+						this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.ステージクリア;
+						base.eフェーズID = CStage.Eフェーズ.演奏_STAGE_CLEAR_フェードアウト;
+						this.actFOClear.tフェードアウト開始();
+						t演奏結果を格納する_ドラム();
+						t演奏結果を格納する_ギター();
+						t演奏結果を格納する_ベース();
+
+						if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
+						{
+							r空打ちドラムチップ = new CChip[10];
+							for (int i = 0; i < 10; i++)
+							{
+								r空打ちドラムチップ[i] = this.r空うちChip(E楽器パート.DRUMS, (Eパッド)i);
+								if (r空打ちドラムチップ[i] == null)
+								{
+									r空打ちドラムチップ[i] = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(
+										CSound管理.rc演奏用タイマ.n現在時刻,
+										this.nパッド0Atoチャンネル0A[i],
+										this.nInputAdjustTimeMs.Drums);
+								}
+							}
+						}
+
+						if (CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass)		// #24063 2011.1.24 yyagi Gt/Bsを入れ替えていたなら、演奏結果も入れ替える
+						{
+							CScoreIni.C演奏記録 t;
+							t = record.Guitar;
+							record.Guitar = record.Bass;
+							record.Bass = t;
+
+							// 譜面情報も元に戻す
+							// #35417 2015.08.30 changed フラグにアクセスしている箇所が見つかったため有効化
+							// #35417 2015.8.18 yyagi: AUTO系のフラグ入れ替えは削除可能!?。以後AUTOフラグに全くアクセスしておらず、意味がないため。
+							// (直下でb全AUTOである にアクセスしているが、既に計算済みのクラスへのアクセスであり、ここでの交換対象ではない)
+							CDTXMania.Instance.DTX.SwapGuitarBassInfos();
+							// #24415 2011.2.27 yyagi
+							// リザルト集計時のみ、Auto系のフラグも元に戻す。
+							// これを戻すのは、リザルト集計後。
+							// "case CStage.Eステージ.結果:"のところ。
+							CDTXMania.Instance.ConfigIni.SwapGuitarBassInfos_AutoFlags();
+						}
+					}
+				}
+				if (this.eフェードアウト完了時の戻り値 == E演奏画面の戻り値.再読込_再演奏)
+				{
+					bIsFinishedFadeout = true;
+				}
+				if (bIsFinishedFadeout)
+				{
+					return (int)this.eフェードアウト完了時の戻り値;
+				}
+
+				ManageMixerQueue();
+
+				// キー入力
+
+				if (CDTXMania.Instance.act現在入力を占有中のプラグイン == null)
+				{
+					this.tキー入力();
+				}
+			}
+			return 0;
+		}
 
 		// その他
-
-		#region [ protected ]
-		//-----------------
-		protected CAct演奏AVI actAVI;
-		protected CAct演奏BGA actBGA;
-
-		protected CAct演奏チップファイアGB actChipFireGB;
-		protected CAct演奏Combo共通 actCombo;
-		protected CAct演奏Danger共通 actDANGER;
-		protected CActFIFOBlack actFI;
-		protected CActFIFOBlack actFO;
-		protected CActFIFOWhite actFOClear;
-		protected CAct演奏ゲージ共通 actGauge;
-
-		protected CAct演奏判定文字列共通 actJudgeString;
-		protected CAct演奏DrumsレーンフラッシュD actLaneFlushD;
-		protected CAct演奏レーンフラッシュGB共通 actLaneFlushGB;
-		protected CAct演奏パネル文字列 actPanel;
-		protected CAct演奏演奏情報 actPlayInfo;
-		protected CAct演奏RGB共通 actRGB;
-		protected CAct演奏スコア共通 actScore;
-		protected CAct演奏ステージ失敗 actStageFailed;
-		protected CAct演奏ステータスパネル共通 actStatusPanels;
-		protected CAct演奏WailingBonus共通 actWailingBonus;
-		protected CAct演奏スクロール速度 act譜面スクロール速度;
-		public C演奏判定ライン座標共通 演奏判定ライン座標;
-		protected bool bPAUSE;
-		protected STDGBVALUE<bool> b演奏にMIDI入力を使った;
-		protected STDGBVALUE<bool> b演奏にキーボードを使った;
-		protected STDGBVALUE<bool> b演奏にジョイパッドを使った;
-		protected STDGBVALUE<bool> b演奏にマウスを使った;
-		protected CCounter ctWailingチップ模様アニメ;
-		protected STDGBVALUE<CCounter> ctチップ模様アニメ;
-
-		protected E演奏画面の戻り値 eフェードアウト完了時の戻り値;
-
-		protected readonly int[] nチャンネル0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 8, 0 };
-		public static readonly int[] nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
-		protected readonly Ech定義[] nパッド0Atoチャンネル0A = new Ech定義[]
+		public CChip[] GetNoChipDrums()
 		{
-			Ech定義.HiHatClose,
-			Ech定義.Snare,
-			Ech定義.BassDrum,
-			Ech定義.HighTom,
-			Ech定義.LowTom,
-			Ech定義.FloorTom,
-			Ech定義.Cymbal,
-			Ech定義.HiHatOpen,
-			Ech定義.RideCymbal,
-			Ech定義.LeftCymbal
-		};
-		protected readonly int[] nパッド0Atoパッド08 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 8, 0 };	// パッド画像のヒット処理用
-		protected readonly int[] nパッド0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 6, 7, 1, 7, 0 };
-		protected STDGBVALUE<CHitCountOfRank> nヒット数_Auto含まない;
-		protected STDGBVALUE<CHitCountOfRank> nヒット数_Auto含む;
-		protected STDGBVALUE<CHitCountOfRank> nヒット数_TargetGhost; // #35411 2015.08.21 chnmr0 add
-		protected STDGBVALUE<int> nコンボ数_TargetGhost;
-		protected STDGBVALUE<int> n最大コンボ数_TargetGhost;
-		protected int n現在のトップChip = -1;
-		protected int[] n最後に再生したBGMの実WAV番号 = new int[50];
-		protected Ech定義 e最後に再生したHHのチャンネル番号;
-		protected List<int> L最後に再生したHHの実WAV番号;		// #23921 2011.1.4 yyagi: change "int" to "List<int>", for recording multiple wav No.
-		protected STLANEVALUE<int> n最後に再生した実WAV番号;	// #26388 2011.11.8 yyagi: change "n最後に再生した実WAV番号.GUITAR" and "n最後に再生した実WAV番号.BASS"
-		//							into "n最後に再生した実WAV番号";
-		//		protected int n最後に再生した実WAV番号.GUITAR;
-		//		protected int n最後に再生した実WAV番号.BASS;
-
-		protected volatile Queue<STMixer> queueMixerSound;		// #24820 2013.1.21 yyagi まずは単純にAdd/Removeを1個のキューでまとめて管理するやり方で設計する
-		protected DateTime dtLastQueueOperation;				//
-		protected bool bIsDirectSound;							//
-		protected double db再生速度;
-		protected bool bValidScore;
-		//		protected bool bDTXVmode;
-		//		protected STDGBVALUE<int> nJudgeLinePosY_delta;			// #31602 2013.6.23 yyagi 表示遅延対策として、判定ラインの表示位置をずらす機能を追加する
-		protected STDGBVALUE<bool> bReverse;
-
-		protected STDGBVALUE<Queue<CChip>> queWailing;
-		protected STDGBVALUE<CChip> r現在の歓声Chip;
-		protected CChip r現在の空うちギターChip;
-		protected ST空打ち r現在の空うちドラムChip;
-		protected CChip r現在の空うちベースChip;
-		protected CChip r次にくるギターChip;
-		protected CChip r次にくるベースChip;
-		protected CTexture txWailing枠;
-		protected CTexture txチップ;
-		protected CTexture txヒットバー;
-
-		protected CTexture tx背景;
-
-		protected STDGBVALUE<int> nInputAdjustTimeMs;		// #23580 2011.1.3 yyagi
-		protected STAUTOPLAY bIsAutoPlay;		// #24239 2011.1.23 yyagi
-		//		protected int nRisky_InitialVar, nRiskyTime;		// #23559 2011.7.28 yyagi → CAct演奏ゲージ共通クラスに隠蔽
-		protected int nPolyphonicSounds;
-		protected List<CChip> listChip;
-		protected Dictionary<int, CDTX.CWAV> listWAV;
-		protected CInvisibleChip cInvisibleChip;
-		protected bool bUseOSTimer;
-		protected E判定表示優先度 e判定表示優先度;
-		protected CWailingChip共通[] cWailingChip;
-
-		//protected Stopwatch sw;		// 2011.6.13 最適化検討用のストップウォッチ
-		//protected Stopwatch sw2;
-		//		protected GCLatencyMode gclatencymode;
-
+			return r空打ちドラムチップ;
+		}
+		public STDGBVALUE<CScoreIni.C演奏記録> Record
+		{
+			get
+			{
+				return record;
+			}
+		}
 		public void AddMixer(CSound cs, bool _b演奏終了後も再生が続くチップである)
 		{
 			STMixer stm = new STMixer()
@@ -573,7 +750,7 @@ namespace DTXMania
 		{
 			if (CDTXMania.Instance.ConfigIni.bAVI有効)
 			{
-				foreach (CChip pChip in listChip)
+				foreach (CChip pChip in CDTXMania.Instance.DTX.listChip)
 				{
 					if (pChip.eチャンネル番号 == Ech定義.Movie || pChip.eチャンネル番号 == Ech定義.MovieFull)
 					{
@@ -913,17 +1090,19 @@ namespace DTXMania
 				this.actStatusPanels.tラベル名からステータスパネルを決定する(CDTXMania.Instance.stage選曲.r確定された曲.ar難易度ラベル[CDTXMania.Instance.stage選曲.n確定された曲の難易度]);
 			}
 		}
-		protected E判定 tチップのヒット処理(long nHitTime, CChip pChip)
+
+		protected E判定 tチップのヒット処理(long nHitTime, CChip pChip, bool bCorrectLane = true)
 		{
-			return tチップのヒット処理(nHitTime, pChip, true);
-		}
-		protected abstract E判定 tチップのヒット処理(long nHitTime, CChip pChip, bool bCorrectLane);
-		protected E判定 tチップのヒット処理(long nHitTime, CChip pChip, E楽器パート screenmode)		// E楽器パート screenmode
-		{
-			return tチップのヒット処理(nHitTime, pChip, screenmode, true);
-		}
-		protected E判定 tチップのヒット処理(long nHitTime, CChip pChip, E楽器パート screenmode, bool bCorrectLane)
-		{
+			E楽器パート screenmode;
+			if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+			{
+				screenmode = E楽器パート.GUITAR;
+			}
+			else
+			{
+				screenmode = E楽器パート.DRUMS;
+			}
+
 			pChip.bHit = true;
 			if (pChip.e楽器パート != E楽器パート.UNKNOWN)
 			{
@@ -959,91 +1138,55 @@ namespace DTXMania
 
 			if (!bPChipIsAutoPlay && (pChip.e楽器パート != E楽器パート.UNKNOWN))
 			{
-				// this.t判定にあわせてゲージを増減する( screenmode, pChip.e楽器パート, eJudgeResult );
 				actGauge.Damage(screenmode, pChip.e楽器パート, eJudgeResult);
 			}
 			if (eJudgeResult == E判定.Poor || eJudgeResult == E判定.Miss || eJudgeResult == E判定.Bad)
 			{
 				cInvisibleChip.ShowChipTemporally(pChip.e楽器パート);
 			}
-			switch (pChip.e楽器パート)
+
+			if (pChip.e楽器パート != E楽器パート.UNKNOWN)
 			{
-				case E楽器パート.DRUMS:
-					switch (eJudgeResult)
-					{
-						case E判定.Miss:
-						case E判定.Bad:
-							this.nヒット数_Auto含む.Drums.Miss++;
-							if (!bPChipIsAutoPlay)
-							{
-								this.nヒット数_Auto含まない.Drums.Miss++;
-							}
-							break;
-						default:
-							this.nヒット数_Auto含む.Drums[(int)eJudgeResult]++;
-							if (!bPChipIsAutoPlay)
-							{
-								this.nヒット数_Auto含まない.Drums[(int)eJudgeResult]++;
-							}
-							break;
-					}
-
-					if (CDTXMania.Instance.ConfigIni.bドラムが全部オートプレイである || !bPChipIsAutoPlay)
-					{
-						switch (eJudgeResult)
+				switch (eJudgeResult)
+				{
+					case E判定.Miss:
+					case E判定.Bad:
+						this.nヒット数_Auto含む[(int)pChip.e楽器パート].Miss++;
+						if (!bPChipIsAutoPlay)
 						{
-							case E判定.Perfect:
-							case E判定.Great:
-							case E判定.Good:
-								this.actCombo.n現在のコンボ数.Drums++;
-								break;
-
-							default:
-								this.actCombo.n現在のコンボ数.Drums = 0;
-								break;
+							this.nヒット数_Auto含まない[(int)pChip.e楽器パート].Miss++;
 						}
-					}
-					break;
-
-				case E楽器パート.GUITAR:
-				case E楽器パート.BASS:
-					int indexInst = (int)pChip.e楽器パート;
-					switch (eJudgeResult)
-					{
-						case E判定.Miss:
-						case E判定.Bad:
-							this.nヒット数_Auto含む[indexInst].Miss++;
-							if (!bPChipIsAutoPlay)
-							{
-								this.nヒット数_Auto含まない[indexInst].Miss++;
-							}
-							break;
-						default:	// #24068 2011.1.10 ikanick changed
-							// #24167 2011.1.16 yyagi changed
-							this.nヒット数_Auto含む[indexInst][(int)eJudgeResult]++;
-							if (!bPChipIsAutoPlay)
-							{
-								this.nヒット数_Auto含まない[indexInst][(int)eJudgeResult]++;
-							}
-							break;
-					}
-					switch (eJudgeResult)
-					{
-						case E判定.Perfect:
-						case E判定.Great:
-						case E判定.Good:
-							this.actCombo.n現在のコンボ数[indexInst]++;
-							break;
-
-						default:
-							this.actCombo.n現在のコンボ数[indexInst] = 0;
-							break;
-					}
-					break;
-
-				default:
-					break;
+						break;
+					default:
+						// #24068 2011.1.10 ikanick changed (for Gt./Bs.)
+						// #24167 2011.1.16 yyagi changed  (for Gt./Bs.)
+						this.nヒット数_Auto含む[(int)pChip.e楽器パート][(int)eJudgeResult]++;
+						if (!bPChipIsAutoPlay)
+						{
+							this.nヒット数_Auto含まない[(int)pChip.e楽器パート][(int)eJudgeResult]++;
+						}
+						break;
+				}
 			}
+
+			if ((pChip.e楽器パート == E楽器パート.DRUMS && CDTXMania.Instance.ConfigIni.bドラムが全部オートプレイである || !bPChipIsAutoPlay) ||
+				pChip.e楽器パート == E楽器パート.GUITAR || pChip.e楽器パート == E楽器パート.BASS)
+			{
+				// Dr. : 演奏したレーンだけコンボを増やす
+				switch (eJudgeResult)
+				{
+					case E判定.Perfect:
+					case E判定.Great:
+					case E判定.Good:
+						this.actCombo.n現在のコンボ数.Drums++;
+						break;
+
+					default:
+						this.actCombo.n現在のコンボ数.Drums = 0;
+						break;
+				}
+			}
+
 			if ((!bPChipIsAutoPlay && (pChip.e楽器パート != E楽器パート.UNKNOWN)) && (eJudgeResult != E判定.Miss) && (eJudgeResult != E判定.Bad))
 			{
 				int nCombos = this.actCombo.n現在のコンボ数[(int)pChip.e楽器パート];
@@ -1059,19 +1202,41 @@ namespace DTXMania
 				}
 				this.actScore.Add(pChip.e楽器パート, bIsAutoPlay, nScoreDelta);
 			}
+
+			if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
+			{
+				// #24074 2011.01.23 add ikanick
+				this.actGraph.dbグラフ値現在_渡 = CScoreIni.t演奏型スキルを計算して返す(CDTXMania.Instance.DTX.n可視チップ数.Drums, this.nヒット数_Auto含まない.Drums.Perfect, this.nヒット数_Auto含まない.Drums.Great, this.nヒット数_Auto含まない.Drums.Good, this.nヒット数_Auto含まない.Drums.Poor, this.nヒット数_Auto含まない.Drums.Miss, E楽器パート.DRUMS, bIsAutoPlay);
+				// #35411 2015.09.07 add chnmr0
+				if (CDTXMania.Instance.DTX.listTargetGhsotLag.Drums != null &&
+									CDTXMania.Instance.ConfigIni.eTargetGhost.Drums == ETargetGhostData.ONLINE &&
+					CDTXMania.Instance.DTX.n可視チップ数.Drums > 0)
+				{
+					// Online Stats の計算式
+					this.actGraph.dbグラフ値現在_渡 = 100 *
+									(this.nヒット数_Auto含まない.Drums.Perfect * 17 +
+									 this.nヒット数_Auto含まない.Drums.Great * 7 +
+									 this.actCombo.n現在のコンボ数.Drums最高値 * 3) / (20.0 * CDTXMania.Instance.DTX.n可視チップ数.Drums);
+				}
+			}
 			return eJudgeResult;
 		}
-		protected abstract void tチップのヒット処理_BadならびにTight時のMiss(E楽器パート part);
-		protected abstract void tチップのヒット処理_BadならびにTight時のMiss(E楽器パート part, int nLane);
-		protected void tチップのヒット処理_BadならびにTight時のMiss(E楽器パート part, E楽器パート screenmode)
+
+		private void tチップのヒット処理_BadならびにTight時のMiss(E楽器パート part, int nLane = 0)
 		{
-			this.tチップのヒット処理_BadならびにTight時のMiss(part, 0, screenmode);
-		}
-		protected void tチップのヒット処理_BadならびにTight時のMiss(E楽器パート part, int nLane, E楽器パート screenmode)
-		{
+			E楽器パート screenmode;
+
+			if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+			{
+				screenmode = E楽器パート.GUITAR;
+			}
+			else
+			{
+				screenmode = E楽器パート.DRUMS;
+			}
+
 			cInvisibleChip.StartSemiInvisible(part);
 			cInvisibleChip.ShowChipTemporally(part);
-			//this.t判定にあわせてゲージを増減する( screenmode, part, E判定.Miss );
 			actGauge.Damage(screenmode, part, E判定.Miss);
 			switch (part)
 			{
@@ -1111,11 +1276,11 @@ namespace DTXMania
 			CChip ret = null;
 
 			nTime += nInputAdjustTime;
-			if (this.n現在のトップChip >= 0 && this.n現在のトップChip < listChip.Count)
+			if (this.n現在のトップChip >= 0 && this.n現在のトップChip < CDTXMania.Instance.DTX.listChip.Count)
 			{
 				int idxFuture = -1;
 				int idxPast = -1;
-				int idxPastStart = listChip.Count - 1;
+				int idxPastStart = CDTXMania.Instance.DTX.listChip.Count - 1;
 				Func<CChip, Func<CChip, bool>, bool> Found = (chip, futureOrPast) =>
 				{
 					return futureOrPast(chip) &&
@@ -1134,9 +1299,9 @@ namespace DTXMania
 				Func<CChip, bool> OutOfRange = (chip) => { return n検索範囲時間ms > 0 && Math.Abs(nTime - chip.n発声時刻ms) > n検索範囲時間ms; };
 
 				// // 未来方向への検索
-				for (int i = this.n現在のトップChip; i < listChip.Count; ++i)
+				for (int i = this.n現在のトップChip; i < CDTXMania.Instance.DTX.listChip.Count; ++i)
 				{
-					CChip chip = listChip[i];
+					CChip chip = CDTXMania.Instance.DTX.listChip[i];
 					if (Future(chip) && OutOfRange(chip))
 					{
 						//break;
@@ -1152,7 +1317,7 @@ namespace DTXMania
 				// 過去方向への検索
 				for (int i = idxPastStart; i >= 0; i--)
 				{
-					CChip chip = listChip[i];
+					CChip chip = CDTXMania.Instance.DTX.listChip[i];
 					if (Past(chip) && OutOfRange(chip))
 					{
 						//break;
@@ -1171,25 +1336,25 @@ namespace DTXMania
 				else if (idxPast >= 0)
 				{
 					// 過去方向には見つかった
-					ret = listChip[idxPast];
+					ret = CDTXMania.Instance.DTX.listChip[idxPast];
 				}
 				else if (idxFuture >= 0)
 				{
 					// 未来方向には見つかった
-					ret = listChip[idxFuture];
+					ret = CDTXMania.Instance.DTX.listChip[idxFuture];
 				}
 				else
 				{
 					// どちらにも見つかった
-					long nTimeDiff_Future = Math.Abs(nTime - listChip[idxFuture].n発声時刻ms);
-					long nTimeDiff_Past = Math.Abs(nTime - listChip[idxPast].n発声時刻ms);
+					long nTimeDiff_Future = Math.Abs(nTime - CDTXMania.Instance.DTX.listChip[idxFuture].n発声時刻ms);
+					long nTimeDiff_Past = Math.Abs(nTime - CDTXMania.Instance.DTX.listChip[idxPast].n発声時刻ms);
 					if (nTimeDiff_Future < nTimeDiff_Past)
 					{
-						ret = listChip[idxFuture];
+						ret = CDTXMania.Instance.DTX.listChip[idxFuture];
 					}
 					else
 					{
-						ret = listChip[idxPast];
+						ret = CDTXMania.Instance.DTX.listChip[idxPast];
 					}
 				}
 
@@ -1256,9 +1421,1183 @@ namespace DTXMania
 			CDTXMania.Instance.ConfigIni.nInputAdjustTimeMs[part] = this.nInputAdjustTimeMs[part];
 		}
 
-		protected abstract void t入力処理_ドラム();
-		protected abstract void ドラムスクロール速度アップ();
-		protected abstract void ドラムスクロール速度ダウン();
+		private void t入力処理_ドラム()
+		{
+			for (int nPad = 0; nPad < (int)Eパッド.MAX; nPad++)		// #27029 2012.1.4 from: <10 to <=10; Eパッドの要素が１つ（HP）増えたため。
+			//		  2012.1.5 yyagi: (int)Eパッド.MAX に変更。Eパッドの要素数への依存を無くすため。
+			{
+				List<STInputEvent> listInputEvent = CDTXMania.Instance.Pad.GetEvents(E楽器パート.DRUMS, (Eパッド)nPad);
+
+				if ((listInputEvent == null) || (listInputEvent.Count == 0))
+					continue;
+
+				this.t入力メソッド記憶(E楽器パート.DRUMS);
+
+				#region [ 打ち分けグループ調整 ]
+				//-----------------------------
+				EHHGroup eHHGroup = CDTXMania.Instance.ConfigIni.eHHGroup;
+				EFTGroup eFTGroup = CDTXMania.Instance.ConfigIni.eFTGroup;
+				ECYGroup eCYGroup = CDTXMania.Instance.ConfigIni.eCYGroup;
+
+				if (!CDTXMania.Instance.DTX.bチップがある.Ride && (eCYGroup == ECYGroup.打ち分ける))
+				{
+					eCYGroup = ECYGroup.共通;
+				}
+				if (!CDTXMania.Instance.DTX.bチップがある.HHOpen && (eHHGroup == EHHGroup.全部打ち分ける))
+				{
+					eHHGroup = EHHGroup.左シンバルのみ打ち分ける;
+				}
+				if (!CDTXMania.Instance.DTX.bチップがある.HHOpen && (eHHGroup == EHHGroup.ハイハットのみ打ち分ける))
+				{
+					eHHGroup = EHHGroup.全部共通;
+				}
+				if (!CDTXMania.Instance.DTX.bチップがある.LeftCymbal && (eHHGroup == EHHGroup.全部打ち分ける))
+				{
+					eHHGroup = EHHGroup.ハイハットのみ打ち分ける;
+				}
+				if (!CDTXMania.Instance.DTX.bチップがある.LeftCymbal && (eHHGroup == EHHGroup.左シンバルのみ打ち分ける))
+				{
+					eHHGroup = EHHGroup.全部共通;
+				}
+				//-----------------------------
+				#endregion
+
+				foreach (STInputEvent inputEvent in listInputEvent)
+				{
+					if (!inputEvent.b押された)
+						continue;
+
+					long nTime = inputEvent.nTimeStamp - CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻;
+					int nPad09 = (nPad == (int)Eパッド.HP) ? (int)Eパッド.BD : nPad;		// #27029 2012.1.5 yyagi
+					int nInputAdjustTime = bIsAutoPlay[CStage演奏画面共通.nチャンネル0Atoレーン07[(int)nPad09]] ? 0 : nInputAdjustTimeMs.Drums;
+
+					bool bHitted = false;
+
+					#region [ (A) ヒットしていればヒット処理して次の inputEvent へ ]
+					//-----------------------------
+					switch (((Eパッド)nPad))
+					{
+						case Eパッド.HH:
+							#region [ HHとLC(groupingしている場合) のヒット処理 ]
+							//-----------------------------
+							{
+								if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.HH)
+									continue;	// 電子ドラムによる意図的なクロストークを無効にする
+
+								CChip chipHC = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.HiHatClose, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);	// HiHat Close
+								CChip chipHO = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.HiHatOpen, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);	// HiHat Open
+								CChip chipLC = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.LeftCymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);	// LC
+								E判定 e判定HC = (chipHC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHC, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定HO = (chipHO != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHO, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定LC = (chipLC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLC, nInputAdjustTime) : E判定.Miss;
+								switch (eHHGroup)
+								{
+									case EHHGroup.ハイハットのみ打ち分ける:
+										#region [ HCとLCのヒット処理 ]
+										//-----------------------------
+										if ((e判定HC != E判定.Miss) && (e判定LC != E判定.Miss))
+										{
+											if (chipHC.n発声位置 < chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+											}
+											else if (chipHC.n発声位置 > chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipLC, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipLC, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if (e判定HC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定LC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipLC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+									//-----------------------------
+										#endregion
+
+									case EHHGroup.左シンバルのみ打ち分ける:
+										#region [ HCとHOのヒット処理 ]
+										//-----------------------------
+										if ((e判定HC != E判定.Miss) && (e判定HO != E判定.Miss))
+										{
+											if (chipHC.n発声位置 < chipHO.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+											}
+											else if (chipHC.n発声位置 > chipHO.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHO, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHO, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if (e判定HC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定HO != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipHO, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+									//-----------------------------
+										#endregion
+
+									case EHHGroup.全部共通:
+										#region [ HC,HO,LCのヒット処理 ]
+										//-----------------------------
+										if (((e判定HC != E判定.Miss) && (e判定HO != E判定.Miss)) && (e判定LC != E判定.Miss))
+										{
+											CChip chip;
+											CChip[] chipArray = new CChip[] { chipHC, chipHO, chipLC };
+											// ここから、chipArrayをn発生位置の小さい順に並び替える
+											if (chipArray[1].n発声位置 > chipArray[2].n発声位置)
+											{
+												chip = chipArray[1];
+												chipArray[1] = chipArray[2];
+												chipArray[2] = chip;
+											}
+											if (chipArray[0].n発声位置 > chipArray[1].n発声位置)
+											{
+												chip = chipArray[0];
+												chipArray[0] = chipArray[1];
+												chipArray[1] = chip;
+											}
+											if (chipArray[1].n発声位置 > chipArray[2].n発声位置)
+											{
+												chip = chipArray[1];
+												chipArray[1] = chipArray[2];
+												chipArray[2] = chip;
+											}
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipArray[0], inputEvent.nVelocity);
+											if (chipArray[0].n発声位置 == chipArray[1].n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipArray[1], inputEvent.nVelocity);
+											}
+											if (chipArray[0].n発声位置 == chipArray[2].n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipArray[2], inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if ((e判定HC != E判定.Miss) && (e判定HO != E判定.Miss))
+										{
+											if (chipHC.n発声位置 < chipHO.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+											}
+											else if (chipHC.n発声位置 > chipHO.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHO, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHO, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if ((e判定HC != E判定.Miss) && (e判定LC != E判定.Miss))
+										{
+											if (chipHC.n発声位置 < chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+											}
+											else if (chipHC.n発声位置 > chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipLC, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipLC, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if ((e判定HO != E判定.Miss) && (e判定LC != E判定.Miss))
+										{
+											if (chipHO.n発声位置 < chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHO, inputEvent.nVelocity);
+											}
+											else if (chipHO.n発声位置 > chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipLC, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipHO, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HH, chipLC, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if (e判定HC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定HO != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipHO, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定LC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipLC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+									//-----------------------------
+										#endregion
+
+									default:
+										#region [ 全部打ち分け時のヒット処理 ]
+										//-----------------------------
+										if (e判定HC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HH, chipHC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+									//-----------------------------
+										#endregion
+								}
+								if (!bHitted)
+									break;
+								continue;
+							}
+						//-----------------------------
+							#endregion
+
+						case Eパッド.SD:
+							#region [ SDのヒット処理 ]
+							//-----------------------------
+							if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.SD)	// #23857 2010.12.12 yyagi: to support VelocityMin
+								continue;	// 電子ドラムによる意図的なクロストークを無効にする
+							if (!this.tドラムヒット処理(nTime, Eパッド.SD, this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.Snare, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1), inputEvent.nVelocity))
+								break;
+							continue;
+						//-----------------------------
+							#endregion
+
+						case Eパッド.BD:
+							#region [ BDのヒット処理 ]
+							//-----------------------------
+							if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.BD)	// #23857 2010.12.12 yyagi: to support VelocityMin
+								continue;	// 電子ドラムによる意図的なクロストークを無効にする
+							if (!this.tドラムヒット処理(nTime, Eパッド.BD, this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.BassDrum, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1), inputEvent.nVelocity))
+								break;
+							continue;
+						//-----------------------------
+							#endregion
+
+						case Eパッド.HT:
+							#region [ HTのヒット処理 ]
+							//-----------------------------
+							if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.HT)	// #23857 2010.12.12 yyagi: to support VelocityMin
+								continue;	// 電子ドラムによる意図的なクロストークを無効にする
+							if (this.tドラムヒット処理(nTime, Eパッド.HT, this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.HighTom, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1), inputEvent.nVelocity))
+								continue;
+							break;
+						//-----------------------------
+							#endregion
+
+						case Eパッド.LT:
+							#region [ LTとFT(groupingしている場合)のヒット処理 ]
+							//-----------------------------
+							{
+								if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.LT)	// #23857 2010.12.12 yyagi: to support VelocityMin
+									continue;	// 電子ドラムによる意図的なクロストークを無効にする
+								CChip chipLT = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.LowTom, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								CChip chipFT = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.FloorTom, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								E判定 e判定LT = (chipLT != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLT, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定FT = (chipFT != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipFT, nInputAdjustTime) : E判定.Miss;
+								switch (eFTGroup)
+								{
+									case EFTGroup.打ち分ける:
+										#region [ LTのヒット処理 ]
+										//-----------------------------
+										if (e判定LT != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.LT, chipLT, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										break;
+									//-----------------------------
+										#endregion
+
+									case EFTGroup.共通:
+										#region [ LTとFTのヒット処理 ]
+										//-----------------------------
+										if ((e判定LT != E判定.Miss) && (e判定FT != E判定.Miss))
+										{
+											if (chipLT.n発声位置 < chipFT.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.LT, chipLT, inputEvent.nVelocity);
+											}
+											else if (chipLT.n発声位置 > chipFT.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.LT, chipFT, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.LT, chipLT, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.LT, chipFT, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if (e判定LT != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.LT, chipLT, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定FT != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.LT, chipFT, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										break;
+									//-----------------------------
+										#endregion
+								}
+								if (!bHitted)
+									break;
+								continue;
+							}
+						//-----------------------------
+							#endregion
+
+						case Eパッド.FT:
+							#region [ FTとLT(groupingしている場合)のヒット処理 ]
+							//-----------------------------
+							{
+								if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.FT)	// #23857 2010.12.12 yyagi: to support VelocityMin
+									continue;	// 電子ドラムによる意図的なクロストークを無効にする
+								CChip chipLT = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.LowTom, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								CChip chipFT = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.FloorTom, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								E判定 e判定LT = (chipLT != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLT, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定FT = (chipFT != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipFT, nInputAdjustTime) : E判定.Miss;
+								switch (eFTGroup)
+								{
+									case EFTGroup.打ち分ける:
+										#region [ FTのヒット処理 ]
+										//-----------------------------
+										if (e判定FT != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.FT, chipFT, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										//-----------------------------
+										#endregion
+										break;
+
+									case EFTGroup.共通:
+										#region [ FTとLTのヒット処理 ]
+										//-----------------------------
+										if ((e判定LT != E判定.Miss) && (e判定FT != E判定.Miss))
+										{
+											if (chipLT.n発声位置 < chipFT.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.FT, chipLT, inputEvent.nVelocity);
+											}
+											else if (chipLT.n発声位置 > chipFT.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.FT, chipFT, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.FT, chipLT, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.FT, chipFT, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if (e判定LT != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.FT, chipLT, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定FT != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.FT, chipFT, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										//-----------------------------
+										#endregion
+										break;
+								}
+								if (!bHitted)
+									break;
+								continue;
+							}
+						//-----------------------------
+							#endregion
+
+						case Eパッド.CY:
+							#region [ CY(とLCとRD:groupingしている場合)のヒット処理 ]
+							//-----------------------------
+							{
+								if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.CY)	// #23857 2010.12.12 yyagi: to support VelocityMin
+									continue;	// 電子ドラムによる意図的なクロストークを無効にする
+								CChip chipCY = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.Cymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								CChip chipRD = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.RideCymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								CChip chipLC = CDTXMania.Instance.ConfigIni.bシンバルフリー ? this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.LeftCymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1) : null;
+								E判定 e判定CY = (chipCY != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipCY, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定RD = (chipRD != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipRD, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定LC = (chipLC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLC, nInputAdjustTime) : E判定.Miss;
+								CChip[] chipArray = new CChip[] { chipCY, chipRD, chipLC };
+								E判定[] e判定Array = new E判定[] { e判定CY, e判定RD, e判定LC };
+								const int NumOfChips = 3;	// chipArray.GetLength(0)
+
+								// CY/RD/LC群を, n発生位置の小さい順に並べる + nullを大きい方に退かす
+								SortChipsByNTime(chipArray, e判定Array, NumOfChips);
+								switch (eCYGroup)
+								{
+									case ECYGroup.打ち分ける:
+										if (!CDTXMania.Instance.ConfigIni.bシンバルフリー)
+										{
+											if (e判定CY != E判定.Miss)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.CY, chipCY, inputEvent.nVelocity);
+												bHitted = true;
+											}
+											if (!bHitted)
+												break;
+											continue;
+										}
+										for (int i = 0; i < NumOfChips; i++)
+										{
+											if ((e判定Array[i] != E判定.Miss) && ((chipArray[i] == chipCY) || (chipArray[i] == chipLC)))
+											{
+												this.tドラムヒット処理(nTime, Eパッド.CY, chipArray[i], inputEvent.nVelocity);
+												bHitted = true;
+												break;
+											}
+											//num10++;
+										}
+										if (e判定CY != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.CY, chipCY, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+
+									case ECYGroup.共通:
+										if (!CDTXMania.Instance.ConfigIni.bシンバルフリー)
+										{
+											for (int i = 0; i < NumOfChips; i++)
+											{
+												if ((e判定Array[i] != E判定.Miss) && ((chipArray[i] == chipCY) || (chipArray[i] == chipRD)))
+												{
+													this.tドラムヒット処理(nTime, Eパッド.CY, chipArray[i], inputEvent.nVelocity);
+													bHitted = true;
+													break;
+												}
+											}
+											if (!bHitted)
+												break;
+											continue;
+										}
+										for (int i = 0; i < NumOfChips; i++)
+										{
+											if (e判定Array[i] != E判定.Miss)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.CY, chipArray[i], inputEvent.nVelocity);
+												bHitted = true;
+												break;
+											}
+										}
+										if (!bHitted)
+											break;
+										continue;
+								}
+								if (!bHitted)
+									break;
+								continue;
+							}
+						//-----------------------------
+							#endregion
+
+						case Eパッド.HHO:
+							#region [ HO(とHCとLC:groupingしている場合)のヒット処理 ]
+							//-----------------------------
+							{
+								if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.HH)
+									continue;	// 電子ドラムによる意図的なクロストークを無効にする
+
+								CChip chipHC = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.HiHatClose, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								CChip chipHO = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.HiHatOpen, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								CChip chipLC = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.LeftCymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								E判定 e判定HC = (chipHC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHC, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定HO = (chipHO != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHO, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定LC = (chipLC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLC, nInputAdjustTime) : E判定.Miss;
+								switch (eHHGroup)
+								{
+									case EHHGroup.全部打ち分ける:
+										if (e判定HO != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+
+									case EHHGroup.ハイハットのみ打ち分ける:
+										if ((e判定HO != E判定.Miss) && (e判定LC != E判定.Miss))
+										{
+											if (chipHO.n発声位置 < chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											}
+											else if (chipHO.n発声位置 > chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipLC, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipLC, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if (e判定HO != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定LC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipLC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+
+									case EHHGroup.左シンバルのみ打ち分ける:
+										if ((e判定HC != E判定.Miss) && (e判定HO != E判定.Miss))
+										{
+											if (chipHC.n発声位置 < chipHO.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHC, inputEvent.nVelocity);
+											}
+											else if (chipHC.n発声位置 > chipHO.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHC, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if (e判定HC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipHC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定HO != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+
+									case EHHGroup.全部共通:
+										if (((e判定HC != E判定.Miss) && (e判定HO != E判定.Miss)) && (e判定LC != E判定.Miss))
+										{
+											CChip chip;
+											CChip[] chipArray = new CChip[] { chipHC, chipHO, chipLC };
+											// ここから、chipArrayをn発生位置の小さい順に並び替える
+											if (chipArray[1].n発声位置 > chipArray[2].n発声位置)
+											{
+												chip = chipArray[1];
+												chipArray[1] = chipArray[2];
+												chipArray[2] = chip;
+											}
+											if (chipArray[0].n発声位置 > chipArray[1].n発声位置)
+											{
+												chip = chipArray[0];
+												chipArray[0] = chipArray[1];
+												chipArray[1] = chip;
+											}
+											if (chipArray[1].n発声位置 > chipArray[2].n発声位置)
+											{
+												chip = chipArray[1];
+												chipArray[1] = chipArray[2];
+												chipArray[2] = chip;
+											}
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipArray[0], inputEvent.nVelocity);
+											if (chipArray[0].n発声位置 == chipArray[1].n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipArray[1], inputEvent.nVelocity);
+											}
+											if (chipArray[0].n発声位置 == chipArray[2].n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipArray[2], inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if ((e判定HC != E判定.Miss) && (e判定HO != E判定.Miss))
+										{
+											if (chipHC.n発声位置 < chipHO.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHC, inputEvent.nVelocity);
+											}
+											else if (chipHC.n発声位置 > chipHO.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHC, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if ((e判定HC != E判定.Miss) && (e判定LC != E判定.Miss))
+										{
+											if (chipHC.n発声位置 < chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHC, inputEvent.nVelocity);
+											}
+											else if (chipHC.n発声位置 > chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipLC, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHC, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipLC, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if ((e判定HO != E判定.Miss) && (e判定LC != E判定.Miss))
+										{
+											if (chipHO.n発声位置 < chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											}
+											else if (chipHO.n発声位置 > chipLC.n発声位置)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipLC, inputEvent.nVelocity);
+											}
+											else
+											{
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+												this.tドラムヒット処理(nTime, Eパッド.HHO, chipLC, inputEvent.nVelocity);
+											}
+											bHitted = true;
+										}
+										else if (e判定HC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipHC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定HO != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipHO, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										else if (e判定LC != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.HHO, chipLC, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										if (!bHitted)
+											break;
+										continue;
+								}
+								if (!bHitted)
+									break;
+								continue;
+							}
+						//-----------------------------
+							#endregion
+
+						case Eパッド.RD:
+							#region [ RD(とCYとLC:groupingしている場合)のヒット処理 ]
+							//-----------------------------
+							{
+								if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.RD)	// #23857 2010.12.12 yyagi: to support VelocityMin
+									continue;	// 電子ドラムによる意図的なクロストークを無効にする
+								CChip chipCY = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.Cymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								CChip chipRD = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.RideCymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);
+								CChip chipLC = CDTXMania.Instance.ConfigIni.bシンバルフリー ? this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.LeftCymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1) : null;
+								E判定 e判定CY = (chipCY != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipCY, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定RD = (chipRD != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipRD, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定LC = (chipLC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLC, nInputAdjustTime) : E判定.Miss;
+								CChip[] chipArray = new CChip[] { chipCY, chipRD, chipLC };
+								E判定[] e判定Array = new E判定[] { e判定CY, e判定RD, e判定LC };
+								const int NumOfChips = 3;	// chipArray.GetLength(0)
+
+								// HH/CY群を, n発生位置の小さい順に並べる + nullを大きい方に退かす
+								SortChipsByNTime(chipArray, e判定Array, NumOfChips);
+								switch (eCYGroup)
+								{
+									case ECYGroup.打ち分ける:
+										if (e判定RD != E判定.Miss)
+										{
+											this.tドラムヒット処理(nTime, Eパッド.RD, chipRD, inputEvent.nVelocity);
+											bHitted = true;
+										}
+										break;
+
+									case ECYGroup.共通:
+										if (!CDTXMania.Instance.ConfigIni.bシンバルフリー)
+										{
+											for (int i = 0; i < NumOfChips; i++)
+											{
+												if ((e判定Array[i] != E判定.Miss) && ((chipArray[i] == chipCY) || (chipArray[i] == chipRD)))
+												{
+													this.tドラムヒット処理(nTime, Eパッド.CY, chipArray[i], inputEvent.nVelocity);
+													bHitted = true;
+													break;
+												}
+											}
+											break;
+										}
+										for (int i = 0; i < NumOfChips; i++)
+										{
+											if (e判定Array[i] != E判定.Miss)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.CY, chipArray[i], inputEvent.nVelocity);
+												bHitted = true;
+												break;
+											}
+										}
+										break;
+								}
+								if (bHitted)
+								{
+									continue;
+								}
+								break;
+							}
+						//-----------------------------
+							#endregion
+
+						case Eパッド.LC:
+							#region [ LC(とHC/HOとCYと:groupingしている場合)のヒット処理 ]
+							//-----------------------------
+							{
+								if (inputEvent.nVelocity <= CDTXMania.Instance.ConfigIni.nVelocityMin.LC)	// #23857 2010.12.12 yyagi: to support VelocityMin
+									continue;	// 電子ドラムによる意図的なクロストークを無効にする
+								CChip chipHC = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.HiHatClose, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);	// HC
+								CChip chipHO = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.HiHatOpen, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);	// HO
+								CChip chipLC = this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.LeftCymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1);	// LC
+								CChip chipCY = CDTXMania.Instance.ConfigIni.bシンバルフリー ? this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.Cymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1) : null;
+								CChip chipRD = CDTXMania.Instance.ConfigIni.bシンバルフリー ? this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.RideCymbal, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1) : null;
+								E判定 e判定HC = (chipHC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHC, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定HO = (chipHO != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipHO, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定LC = (chipLC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLC, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定CY = (chipCY != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipCY, nInputAdjustTime) : E判定.Miss;
+								E判定 e判定RD = (chipRD != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipRD, nInputAdjustTime) : E判定.Miss;
+								CChip[] chipArray = new CChip[] { chipHC, chipHO, chipLC, chipCY, chipRD };
+								E判定[] e判定Array = new E判定[] { e判定HC, e判定HO, e判定LC, e判定CY, e判定RD };
+								const int NumOfChips = 5;	// chipArray.GetLength(0)
+
+								// HH/CY群を, n発生位置の小さい順に並べる + nullを大きい方に退かす
+								SortChipsByNTime(chipArray, e判定Array, NumOfChips);
+								switch (eHHGroup)
+								{
+									case EHHGroup.全部打ち分ける:
+									case EHHGroup.左シンバルのみ打ち分ける:
+										if (!CDTXMania.Instance.ConfigIni.bシンバルフリー)
+										{
+											if (e判定LC != E判定.Miss)
+											{
+												this.tドラムヒット処理(nTime, Eパッド.LC, chipLC, inputEvent.nVelocity);
+												bHitted = true;
+											}
+											if (!bHitted)
+												break;
+											continue;
+										}
+										for (int i = 0; i < NumOfChips; i++)
+										{
+											if ((e判定Array[i] != E判定.Miss) && (((chipArray[i] == chipLC) || (chipArray[i] == chipCY)) || ((chipArray[i] == chipRD) && (CDTXMania.Instance.ConfigIni.eCYGroup == ECYGroup.共通))))
+											{
+												this.tドラムヒット処理(nTime, Eパッド.LC, chipArray[i], inputEvent.nVelocity);
+												bHitted = true;
+												break;
+											}
+										}
+										if (!bHitted)
+											break;
+										continue;
+
+									case EHHGroup.ハイハットのみ打ち分ける:
+									case EHHGroup.全部共通:
+										if (!CDTXMania.Instance.ConfigIni.bシンバルフリー)
+										{
+											for (int i = 0; i < NumOfChips; i++)
+											{
+												if ((e判定Array[i] != E判定.Miss) && (((chipArray[i] == chipLC) || (chipArray[i] == chipHC)) || (chipArray[i] == chipHO)))
+												{
+													this.tドラムヒット処理(nTime, Eパッド.LC, chipArray[i], inputEvent.nVelocity);
+													bHitted = true;
+													break;
+												}
+											}
+											if (!bHitted)
+												break;
+											continue;
+										}
+										for (int i = 0; i < NumOfChips; i++)
+										{
+											if ((e判定Array[i] != E判定.Miss) && ((chipArray[i] != chipRD) || (CDTXMania.Instance.ConfigIni.eCYGroup == ECYGroup.共通)))
+											{
+												this.tドラムヒット処理(nTime, Eパッド.LC, chipArray[i], inputEvent.nVelocity);
+												bHitted = true;
+												break;
+											}
+										}
+										if (!bHitted)
+											break;
+										continue;
+								}
+								if (!bHitted)
+									break;
+
+								break;
+							}
+						//-----------------------------
+							#endregion
+
+						case Eパッド.HP:		// #27029 2012.1.4 from
+							#region [ HPのヒット処理 ]
+							//-----------------
+							if (CDTXMania.Instance.ConfigIni.eBDGroup == EBDGroup.どっちもBD)
+							{
+								#region [ BDとみなしてヒット処理 ]
+								//-----------------
+								if (!this.tドラムヒット処理(nTime, Eパッド.BD, this.r指定時刻に一番近い未ヒットChip(nTime, Ech定義.BassDrum, nInputAdjustTime, CDTXMania.Instance.nPoor範囲ms + 1), inputEvent.nVelocity))
+									break;
+								continue;
+								//-----------------
+								#endregion
+							}
+							else
+							{
+								#region [ HPのヒット処理 ]
+								//-----------------
+								continue;	// 何もしない。この入力を完全に無視するので、break しないこと。
+								//-----------------
+								#endregion
+							}
+						//-----------------
+							#endregion
+					}
+					//-----------------------------
+					#endregion
+					#region [ (B) ヒットしてなかった場合は、レーンフラッシュ、パッドアニメ、空打ち音再生を実行 ]
+					//-----------------------------
+					int pad = nPad;	// 以下、nPad の代わりに pad を用いる。（成りすまし用）
+
+					if (nPad == (int)Eパッド.HP)	// #27029 2012.1.4 from: HP&BD 時の HiHatPedal の場合は BD に成りすます。
+						pad = (int)Eパッド.BD;		//（ HP|BD 時のHP入力はここまでこないので無視。）
+
+					// レーンフラッシュ
+					this.actLaneFlushD.Start((Eレーン)this.nパッド0Atoレーン07[pad], ((float)inputEvent.nVelocity) / 127f);
+
+					// パッドアニメ
+					this.actPad.Hit(this.nパッド0Atoパッド08[pad]);
+
+					// 空打ち音
+					if (CDTXMania.Instance.ConfigIni.bドラム打音を発声する)
+					{
+						CChip rChip = this.r空うちChip(E楽器パート.DRUMS, (Eパッド)pad);
+						if (rChip != null)
+						{
+							#region [ (B1) 空打ち音が譜面で指定されているのでそれを再生する。]
+							//-----------------
+							this.tサウンド再生(rChip, CSound管理.rc演奏用タイマ.nシステム時刻, E楽器パート.DRUMS, CDTXMania.Instance.ConfigIni.n手動再生音量, CDTXMania.Instance.ConfigIni.b演奏音を強調する.Drums);
+							//-----------------
+							#endregion
+						}
+						else
+						{
+							#region [ (B2) 空打ち音が指定されていないので一番近いチップを探して再生する。]
+							//-----------------
+							switch (((Eパッド)pad))
+							{
+								case Eパッド.HH:
+									#region [ *** ]
+									//-----------------------------
+									{
+										CChip chipHC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[0], nInputAdjustTime);
+										CChip chipHO = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[7], nInputAdjustTime);
+										CChip chipLC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[9], nInputAdjustTime);
+										switch (CDTXMania.Instance.ConfigIni.eHHGroup)
+										{
+											case EHHGroup.ハイハットのみ打ち分ける:
+												rChip = (chipHC != null) ? chipHC : chipLC;
+												break;
+
+											case EHHGroup.左シンバルのみ打ち分ける:
+												rChip = (chipHC != null) ? chipHC : chipHO;
+												break;
+
+											case EHHGroup.全部共通:
+												if (chipHC != null)
+												{
+													rChip = chipHC;
+												}
+												else if (chipHO == null)
+												{
+													rChip = chipLC;
+												}
+												else if (chipLC == null)
+												{
+													rChip = chipHO;
+												}
+												else if (chipHO.n発声位置 < chipLC.n発声位置)
+												{
+													rChip = chipHO;
+												}
+												else
+												{
+													rChip = chipLC;
+												}
+												break;
+
+											default:
+												rChip = chipHC;
+												break;
+										}
+									}
+									//-----------------------------
+									#endregion
+									break;
+
+								case Eパッド.LT:
+									#region [ *** ]
+									//-----------------------------
+									{
+										CChip chipLT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[4], nInputAdjustTime);
+										CChip chipFT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[5], nInputAdjustTime);
+										if (CDTXMania.Instance.ConfigIni.eFTGroup != EFTGroup.打ち分ける)
+											rChip = (chipLT != null) ? chipLT : chipFT;
+										else
+											rChip = chipLT;
+									}
+									//-----------------------------
+									#endregion
+									break;
+
+								case Eパッド.FT:
+									#region [ *** ]
+									//-----------------------------
+									{
+										CChip chipLT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[4], nInputAdjustTime);
+										CChip chipFT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[5], nInputAdjustTime);
+										if (CDTXMania.Instance.ConfigIni.eFTGroup != EFTGroup.打ち分ける)
+											rChip = (chipFT != null) ? chipFT : chipLT;
+										else
+											rChip = chipFT;
+									}
+									//-----------------------------
+									#endregion
+									break;
+
+								case Eパッド.CY:
+									#region [ *** ]
+									//-----------------------------
+									{
+										CChip chipCY = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[6], nInputAdjustTime);
+										CChip chipRD = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[8], nInputAdjustTime);
+										if (CDTXMania.Instance.ConfigIni.eCYGroup != ECYGroup.打ち分ける)
+											rChip = (chipCY != null) ? chipCY : chipRD;
+										else
+											rChip = chipCY;
+									}
+									//-----------------------------
+									#endregion
+									break;
+
+								case Eパッド.HHO:
+									#region [ *** ]
+									//-----------------------------
+									{
+										CChip chipHC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[0], nInputAdjustTime);
+										CChip chipHO = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[7], nInputAdjustTime);
+										CChip chipLC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[9], nInputAdjustTime);
+										switch (CDTXMania.Instance.ConfigIni.eHHGroup)
+										{
+											case EHHGroup.全部打ち分ける:
+												rChip = chipHO;
+												break;
+
+											case EHHGroup.ハイハットのみ打ち分ける:
+												rChip = (chipHO != null) ? chipHO : chipLC;
+												break;
+
+											case EHHGroup.左シンバルのみ打ち分ける:
+												rChip = (chipHO != null) ? chipHO : chipHC;
+												break;
+
+											case EHHGroup.全部共通:
+												if (chipHO != null)
+												{
+													rChip = chipHO;
+												}
+												else if (chipHC == null)
+												{
+													rChip = chipLC;
+												}
+												else if (chipLC == null)
+												{
+													rChip = chipHC;
+												}
+												else if (chipHC.n発声位置 < chipLC.n発声位置)
+												{
+													rChip = chipHC;
+												}
+												else
+												{
+													rChip = chipLC;
+												}
+												break;
+										}
+									}
+									//-----------------------------
+									#endregion
+									break;
+
+								case Eパッド.RD:
+									#region [ *** ]
+									//-----------------------------
+									{
+										CChip chipCY = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[6], nInputAdjustTime);
+										CChip chipRD = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[8], nInputAdjustTime);
+										if (CDTXMania.Instance.ConfigIni.eCYGroup != ECYGroup.打ち分ける)
+											rChip = (chipRD != null) ? chipRD : chipCY;
+										else
+											rChip = chipRD;
+									}
+									//-----------------------------
+									#endregion
+									break;
+
+								case Eパッド.LC:
+									#region [ *** ]
+									//-----------------------------
+									{
+										CChip chipHC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[0], nInputAdjustTime);
+										CChip chipHO = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[7], nInputAdjustTime);
+										CChip chipLC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[9], nInputAdjustTime);
+										switch (CDTXMania.Instance.ConfigIni.eHHGroup)
+										{
+											case EHHGroup.全部打ち分ける:
+											case EHHGroup.左シンバルのみ打ち分ける:
+												rChip = chipLC;
+												break;
+
+											case EHHGroup.ハイハットのみ打ち分ける:
+											case EHHGroup.全部共通:
+												if (chipLC != null)
+												{
+													rChip = chipLC;
+												}
+												else if (chipHC == null)
+												{
+													rChip = chipHO;
+												}
+												else if (chipHO == null)
+												{
+													rChip = chipHC;
+												}
+												else if (chipHC.n発声位置 < chipHO.n発声位置)
+												{
+													rChip = chipHC;
+												}
+												else
+												{
+													rChip = chipHO;
+												}
+												break;
+										}
+									}
+									//-----------------------------
+									#endregion
+									break;
+
+								default:
+									#region [ *** ]
+									//-----------------------------
+									rChip = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, this.nパッド0Atoチャンネル0A[pad], nInputAdjustTime);
+									//-----------------------------
+									#endregion
+									break;
+							}
+							if (rChip != null)
+							{
+								// 空打ち音が見つかったので再生する。
+								this.tサウンド再生(rChip, CSound管理.rc演奏用タイマ.nシステム時刻, E楽器パート.DRUMS, CDTXMania.Instance.ConfigIni.n手動再生音量, CDTXMania.Instance.ConfigIni.b演奏音を強調する.Drums);
+							}
+							//-----------------
+							#endregion
+						}
+					}
+
+					// BAD or TIGHT 時の処理。
+					if (CDTXMania.Instance.ConfigIni.bTight)
+						this.tチップのヒット処理_BadならびにTight時のMiss(E楽器パート.DRUMS, this.nパッド0Atoレーン07[pad]);
+					//-----------------------------
+					#endregion
+				}
+			}
+		}
+		private void ドラムスクロール速度アップ()
+		{
+			float f = (float)this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums / (CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums + 1);
+			Debug.WriteLine("scr=" + CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums + ", f1=" + f);
+			CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums = Math.Min(CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums + 1, 1999);
+			f *= (CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums + 1);
+			Debug.WriteLine("scr=" + CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums + ", f2=" + f);
+			this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums = (int)(f + 0.5);
+			CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums = (int)(f + 0.5);
+		}
+		private void ドラムスクロール速度ダウン()
+		{
+			float f = (float)this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums / (CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums + 1);
+			CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums = Math.Max(CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums - 1, 0);
+			f *= (CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums + 1);
+			this.演奏判定ライン座標.nJudgeLinePosY_delta.Drums = (int)(f + 0.5);
+			CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums = (int)(f + 0.5);
+		}
+
 		private int nStartTime_ = 0;
 		protected void tキー入力()
 		{
@@ -1278,8 +2617,9 @@ namespace DTXMania
 				else
 				{
 					CDTXMania.Instance.DTX.t全AVIの再生再開();
-					//CDTXMania.Instance.DTX.t全チップの再生再開();
+					// CDTXMania.Instance.DTX.t全チップの再生再開();
 					#region [ PAUSE連打でのBGMずれ対策 (AVIはずれたままになるが無視・・・) ]
+
 					List<CSound> pausedCSound = new List<CSound>();
 					for (int i = this.n現在のトップChip; i >= 0; i--)
 					{
@@ -1314,6 +2654,7 @@ namespace DTXMania
 					{
 						cs.tサウンドを再生する();
 					}
+
 					#endregion
 					CDTXMania.Instance.Timer.t再開();
 					CSound管理.rc演奏用タイマ.t再開();
@@ -1321,7 +2662,10 @@ namespace DTXMania
 			}
 			if ((!this.bPAUSE && (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED)) && (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト))
 			{
-				this.t入力処理_ドラム();
+				if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					this.t入力処理_ドラム();
+				}
 				this.t入力処理_ギターベース(E楽器パート.GUITAR);
 				this.t入力処理_ギターベース(E楽器パート.BASS);
 				if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.UpArrow) && (keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightShift) || keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftShift)))
@@ -1404,23 +2748,69 @@ namespace DTXMania
 				this.b演奏にマウスを使った[(int)part] = true;
 			}
 		}
-		protected abstract void t進行描画_AVI();
-		protected void t進行描画_AVI(int x, int y)
+
+		protected void t進行描画_AVI()
 		{
-			if (((base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED) && (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト)) && (!CDTXMania.Instance.ConfigIni.bストイックモード && CDTXMania.Instance.ConfigIni.bAVI有効))
+			if ((
+				(base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED) &&
+				(base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト)) &&
+				(!CDTXMania.Instance.ConfigIni.bストイックモード && CDTXMania.Instance.ConfigIni.bAVI有効))
 			{
-				this.actAVI.t進行描画(x, y, 556, 710);
+				if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					this.actAVI.t進行描画(682, 112, 556, 710);
+				}
+				else
+				{
+					if (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)
+					{
+						this.actAVI.t進行描画(1153, 128, 556, 710);
+					}
+					else
+					{
+						this.actAVI.t進行描画(619 + 682, 128, 556, 710);
+					}
+				}
 			}
 		}
-		protected abstract void t進行描画_BGA();
-		protected void t進行描画_BGA(int x, int y)
+
+		private void t進行描画_BGA()
 		{
-			if (((base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED) && (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト)) && (!CDTXMania.Instance.ConfigIni.bストイックモード && CDTXMania.Instance.ConfigIni.bBGA有効))
+			if ((
+				(base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED) &&
+				(base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト)) &&
+				(!CDTXMania.Instance.ConfigIni.bストイックモード && CDTXMania.Instance.ConfigIni.bBGA有効))
 			{
-				this.actBGA.t進行描画(x, y);
+				// DR
+				if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					this.actBGA.t進行描画(682, 112);
+				}
+				else
+				{
+					if (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)
+					{
+						this.actBGA.t進行描画(1153, 128);
+					}
+					else
+					{
+						this.actBGA.t進行描画(619 + 682, 128);
+					}
+				}
 			}
 		}
-		protected abstract void t進行描画_DANGER();
+
+		private void t進行描画_DANGER()
+		{
+			if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+			{
+				this.actDANGER.t進行描画(false, this.actGauge.IsDanger(E楽器パート.GUITAR), this.actGauge.IsDanger(E楽器パート.BASS));// #23631 2011.4.19 yyagi
+			}
+			else
+			{
+				this.actDANGER.t進行描画(this.actGauge.IsDanger(E楽器パート.DRUMS), false, false);
+			}
+		}
 		protected void t進行描画_MIDIBGM()
 		{
 			if (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED)
@@ -1451,9 +2841,25 @@ namespace DTXMania
 				this.actWailingBonus.On進行描画();
 			}
 		}
-		protected abstract void t進行描画_Wailing枠();
-		protected void t進行描画_Wailing枠(int GtWailingFrameX, int BsWailingFrameX, int GtWailingFrameY, int BsWailingFrameY)
+
+		private void t進行描画_Wailing枠()
 		{
+			int GtWailingFrameX;
+			int BsWailingFrameX;
+			int GtWailingFrameY = this.演奏判定ライン座標.n判定ラインY座標(E楽器パート.GUITAR, bReverse[(int)E楽器パート.GUITAR], true, true);
+			int BsWailingFrameY = this.演奏判定ライン座標.n判定ラインY座標(E楽器パート.BASS, bReverse[(int)E楽器パート.BASS], true, true);
+
+			if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+			{
+				GtWailingFrameX = (int)(139 * Scale.X);
+				BsWailingFrameX = (int)(593 * Scale.X);
+			}
+			else
+			{
+				GtWailingFrameX = (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 1761 : 1690;
+				BsWailingFrameX = (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 1434 : 440;
+			}
+
 			if ((CDTXMania.Instance.ConfigIni.eDark != Eダークモード.FULL) && CDTXMania.Instance.ConfigIni.bGuitar有効)
 			{
 				if (this.txWailing枠 != null)
@@ -1470,16 +2876,25 @@ namespace DTXMania
 			}
 		}
 
-
 		protected void t進行描画_チップファイアGB()
 		{
 			this.actChipFireGB.On進行描画();
 		}
-		protected abstract void t進行描画_パネル文字列();
-		protected void t進行描画_パネル文字列(int x, int y)
+		protected void t進行描画_パネル文字列()
 		{
 			if ((base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED) && (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト))
 			{
+				int x, y;
+				if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					x = 0xb5;
+					y = 430;
+				}
+				else
+				{
+					x = CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 336 : 427;
+					y = 428;
+				}
 				this.actPanel.t進行描画(x, y);
 			}
 		}
@@ -1519,7 +2934,7 @@ namespace DTXMania
 			{
 				return true;
 			}
-			if ((this.n現在のトップChip == -1) || (this.n現在のトップChip >= listChip.Count))
+			if ((this.n現在のトップChip == -1) || (this.n現在のトップChip >= CDTXMania.Instance.DTX.listChip.Count))
 			{
 				return true;
 			}
@@ -1675,11 +3090,11 @@ namespace DTXMania
 				}
 				else if (pChip.bDrums可視チップ && pChip.b空打ちチップである)
 				{
-					this.t進行描画_チップ_空打ち音設定_ドラム(configIni, ref dTX, ref pChip);
+					this.t進行描画_チップ_空打ち音設定_ドラム(ref pChip);
 				}
 				else if (pChip.bDrums可視チップ_LP_LBD含まない)
 				{
-					this.t進行描画_チップ_ドラムス(configIni, ref dTX, ref pChip);
+					this.t進行描画_チップ_ドラムス(ref pChip);
 				}
 				else if (pChip[Ech定義.DrumsFillin] && !pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
 				{
@@ -1688,11 +3103,11 @@ namespace DTXMania
 				}
 				else if (pChip.bGuitar可視チップ)
 				{
-					this.t進行描画_チップ_ギターベース(configIni, ref dTX, ref pChip, E楽器パート.GUITAR);
+					this.t進行描画_チップ_ギターベース(ref pChip, E楽器パート.GUITAR);
 				}
 				else if (pChip[Ech定義.Guitar_Wailing])
 				{
-					this.t進行描画_チップ_ギター_ウェイリング(configIni, ref dTX, ref pChip, !CDTXMania.Instance.ConfigIni.bDrums有効);
+					this.t進行描画_チップ_ウェイリング(ref pChip);
 				}
 				else if (pChip[Ech定義.Guitar_WailingSound] && !pChip.bHit && (pChip.nバーからの距離dot.Guitar < 0))
 				{
@@ -1705,7 +3120,7 @@ namespace DTXMania
 				}
 				else if (pChip[Ech定義.BarLine])// 小節線
 				{
-					this.t進行描画_チップ_小節線(configIni, ref dTX, ref pChip);
+					this.t進行描画_チップ_小節線(ref pChip);
 				}
 				else if (pChip[Ech定義.BeatLine] && !pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))// 拍線
 				{
@@ -1735,7 +3150,7 @@ namespace DTXMania
 				}
 				else if (pChip[Ech定義.FillIn])
 				{
-					this.t進行描画_チップ_フィルイン(configIni, ref dTX, ref pChip);
+					this.t進行描画_チップ_フィルイン(ref pChip);
 				}
 				else if (pChip.bMovie && !pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
 				{
@@ -1753,10 +3168,7 @@ namespace DTXMania
 						switch (pChip.eAVI種別)
 						{
 							case EAVI種別.AVI:
-								//if ( pChip.rAVI != null )
 								{
-									//int startWidth = ( CDTXMania.Instance.DTX.bチップがある.BGA ) ? 278 : SampleFramework.GameWindowSize.Width;
-									//int startHeight = ( CDTXMania.Instance.DTX.bチップがある.BGA ) ? 355 : SampleFramework.GameWindowSize.Height;
 									int startWidth = !this.actAVI.bFullScreenMovie ? 278 : SampleFramework.GameWindowSize.Width;
 									int startHeight = !this.actAVI.bFullScreenMovie ? 355 : SampleFramework.GameWindowSize.Height;
 									this.actAVI.Start(pChip.eチャンネル番号, pChip.rAVI, startWidth, startHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms);
@@ -1813,11 +3225,11 @@ namespace DTXMania
 
 				else if (pChip.bBass可視チップ)
 				{
-					this.t進行描画_チップ_ギターベース(configIni, ref dTX, ref pChip, E楽器パート.BASS);
+					this.t進行描画_チップ_ギターベース(ref pChip, E楽器パート.BASS);
 				}
 				else if (pChip[Ech定義.Bass_Wailing])
 				{
-					this.t進行描画_チップ_ベース_ウェイリング(configIni, ref dTX, ref pChip, !CDTXMania.Instance.ConfigIni.bDrums有効);
+					this.t進行描画_チップ_ウェイリング(ref pChip);
 				}
 				else if (pChip[Ech定義.Bass_WailingSound] && !pChip.bHit && (pChip.nバーからの距離dot.Bass < 0))
 				{
@@ -1848,12 +3260,12 @@ namespace DTXMania
 				{
 					//Debug.WriteLine( "[DA(AddMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
 					pChip.bHit = true;
-					if (listWAV.ContainsKey(pChip.n整数値_内部番号))	// 参照が遠いので後日最適化する
+					if (CDTXMania.Instance.DTX.listWAV.ContainsKey(pChip.n整数値_内部番号))	// 参照が遠いので後日最適化する
 					{
-						CDTX.CWAV wc = listWAV[pChip.n整数値_内部番号];
+						CDTX.CWAV wc = CDTXMania.Instance.DTX.listWAV[pChip.n整数値_内部番号];
 						//Debug.Write( "[AddMixer] BAR=" + pChip.n発声位置 / 384 + ", wav=" + Path.GetFileName( wc.strファイル名 ) + ", time=" + pChip.n発声時刻ms );
 
-						for (int i = 0; i < nPolyphonicSounds; i++)
+						for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPoliphonicSounds; i++)
 						{
 							if (wc.rSound[i] != null)
 							{
@@ -1876,11 +3288,11 @@ namespace DTXMania
 				{
 					//Debug.WriteLine( "[DB(RemoveMixer)] BAR=" + pChip.n発声位置 / 384 + " ch=" + pChip.nチャンネル番号.ToString( "x2" ) + ", wav=" + pChip.n整数値.ToString( "x2" ) + ", time=" + pChip.n発声時刻ms );
 					pChip.bHit = true;
-					if (listWAV.ContainsKey(pChip.n整数値_内部番号))	// 参照が遠いので後日最適化する
+					if (CDTXMania.Instance.DTX.listWAV.ContainsKey(pChip.n整数値_内部番号))	// 参照が遠いので後日最適化する
 					{
-						CDTX.CWAV wc = listWAV[pChip.n整数値_内部番号];
+						CDTX.CWAV wc = CDTXMania.Instance.DTX.listWAV[pChip.n整数値_内部番号];
 						//Debug.Write( "[DelMixer] BAR=" + pChip.n発声位置 / 384 +  ", wav=" + Path.GetFileName( wc.strファイル名 ) + ", time=" + pChip.n発声時刻ms );
-						for (int i = 0; i < nPolyphonicSounds; i++)
+						for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPoliphonicSounds; i++)
 						{
 							if (wc.rSound[i] != null)
 							{
@@ -2124,9 +3536,8 @@ namespace DTXMania
 			CDTXMania.Instance.ConfigIni.ドラムコンボ文字の表示位置 = Eドラムコンボ文字の表示位置.OFF;
 		}
 
-		protected abstract void t進行描画_チップ_ドラムス(CConfigIni configIni, ref CDTX dTX, ref CChip pChip);
-		//protected abstract void t進行描画_チップ_ギター( CConfigIni configIni, ref CDTX dTX, ref CDTX.CChip pChip );
-		protected abstract void t進行描画_チップ_ギターベース(CConfigIni configIni, ref CDTX dTX, ref CChip pChip, E楽器パート inst);
+		protected abstract void t進行描画_チップ_ドラムス(ref CChip pChip);
+		protected abstract void t進行描画_チップ_ギターベース(ref CChip pChip, E楽器パート inst);
 		/// <summary>
 		/// ギター・ベースのチップ表示
 		/// </summary>
@@ -2151,17 +3562,17 @@ namespace DTXMania
 		/// <param name="bassLeftyX">ベースチップ描画のx座標(Lefty)</param>
 		/// <param name="drawDeltaX">描画のX座標間隔(R,G,B...)</param>
 		/// <param name="chipTexDeltaX">テクスチャののX座標間隔(R,G,B...)</param>
-		protected void t進行描画_チップ_ギターベース(CConfigIni configIni, ref CDTX dTX, ref CChip pChip, E楽器パート inst,
+		protected void t進行描画_チップ_ギターベース(ref CChip pChip, E楽器パート inst,
 			int barYNormal, int barYReverse,
 			int showRangeY0, int showRangeY1, int openXg, int openXb,
 			int rectOpenOffsetX, int rectOpenOffsetY, int openChipWidth, int chipHeight, int chipWidth,
 			int guitarNormalX, int guitarLeftyX, int bassNormalX, int bassLeftyX, int drawDeltaX, int chipTexDeltaX)
 		{
 			int instIndex = (int)inst;
-			if (configIni.bGuitar有効)
+			if (CDTXMania.Instance.ConfigIni.bGuitar有効)
 			{
 				#region [ Invisible処理 ]
-				if (configIni.eInvisible[instIndex] != EInvisible.OFF)
+				if (CDTXMania.Instance.ConfigIni.eInvisible[instIndex] != EInvisible.OFF)
 				{
 					cInvisibleChip.SetInvisibleStatus(ref pChip);
 				}
@@ -2169,11 +3580,11 @@ namespace DTXMania
 				else
 				{
 					#region [ Hidden/Sudden処理 ]
-					if (configIni.bSudden[instIndex])
+					if (CDTXMania.Instance.ConfigIni.bSudden[instIndex])
 					{
 						pChip.b可視 = (pChip.nバーからの距離dot[instIndex] < 200 * Scale.Y);
 					}
-					if (configIni.bHidden[instIndex] && (pChip.nバーからの距離dot[instIndex] < 100 * Scale.Y))
+					if (CDTXMania.Instance.ConfigIni.bHidden[instIndex] && (pChip.nバーからの距離dot[instIndex] < 100 * Scale.Y))
 					{
 						pChip.b可視 = false;
 					}
@@ -2194,13 +3605,13 @@ namespace DTXMania
 					{
 						this.txチップ.n透明度 = pChip.n透明度;
 					}
-					int y = configIni.bReverse[instIndex] ?
+					int y = CDTXMania.Instance.ConfigIni.bReverse[instIndex] ?
 						(int)(barYReverse - pChip.nバーからの距離dot[instIndex]) :
 						(int)(barYNormal + pChip.nバーからの距離dot[instIndex]);
-					int n小節線消失距離dot = configIni.bReverse[instIndex] ?
+					int n小節線消失距離dot = CDTXMania.Instance.ConfigIni.bReverse[instIndex] ?
 						(int)(-100 * Scale.Y) :
-						(configIni.e判定位置[instIndex] == E判定位置.標準) ? (int)(-36 * Scale.Y) : (int)(-25 * Scale.Y);
-					if (configIni.bReverse[instIndex])
+						(CDTXMania.Instance.ConfigIni.e判定位置[instIndex] == E判定位置.標準) ? (int)(-36 * Scale.Y) : (int)(-25 * Scale.Y);
+					if (CDTXMania.Instance.ConfigIni.bReverse[instIndex])
 					{
 						//showRangeY1 = barYReverse - n小節線消失距離dot;
 					}
@@ -2239,13 +3650,13 @@ namespace DTXMania
 							int x;
 							if (inst == E楽器パート.GUITAR)
 							{
-								x = (configIni.bLeft.Guitar) ? guitarLeftyX : guitarNormalX;
+								x = (CDTXMania.Instance.ConfigIni.bLeft.Guitar) ? guitarLeftyX : guitarNormalX;
 							}
 							else
 							{
-								x = (configIni.bLeft.Bass) ? bassLeftyX : bassNormalX;
+								x = (CDTXMania.Instance.ConfigIni.bLeft.Bass) ? bassLeftyX : bassNormalX;
 							}
-							int deltaX = (configIni.bLeft[instIndex]) ? -drawDeltaX : +drawDeltaX;
+							int deltaX = (CDTXMania.Instance.ConfigIni.bLeft[instIndex]) ? -drawDeltaX : +drawDeltaX;
 							#endregion
 							//Trace.TraceInformation( "chip={0:x2}, E楽器パート={1}, x={2}", pChip.nチャンネル番号, inst, x );
 							#region [ Rチップ描画 ]
@@ -2373,7 +3784,7 @@ namespace DTXMania
 							bMiss = false;
 						}
 						pChip.bHit = true;
-						this.tサウンド再生(pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms + ghostLag, inst, dTX.nモニタを考慮した音量(inst), false, bMiss);
+						this.tサウンド再生(pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms + ghostLag, inst, CDTXMania.Instance.DTX.nモニタを考慮した音量(inst), false, bMiss);
 						this.r次にくるギターChip = null;
 						if (!bMiss)
 						{
@@ -2399,47 +3810,43 @@ namespace DTXMania
 			if (!pChip.bHit && (pChip.nバーからの距離dot[instIndex] < 0))	// Guitar/Bass無効の場合は、自動演奏する
 			{
 				pChip.bHit = true;
-				this.tサウンド再生(pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, inst, dTX.nモニタを考慮した音量(inst));
+				this.tサウンド再生(pChip, CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻 + pChip.n発声時刻ms, inst, CDTXMania.Instance.DTX.nモニタを考慮した音量(inst));
 			}
 		}
 
 
-		protected virtual void t進行描画_チップ_ギターベース_ウェイリング(
-			CConfigIni configIni, ref CDTX dTX, ref CChip pChip, E楽器パート inst, bool bGRmode)
+		private void t進行描画_チップ_ウェイリング(ref CChip pChip)
 		{
-			int indexInst = (int)inst;
-			if (configIni.bGuitar有効)
+			E楽器パート indexInst = pChip.bGuitar可視チップ_Wailing含む ? E楽器パート.GUITAR : E楽器パート.BASS;
+			if (CDTXMania.Instance.ConfigIni.bGuitar有効)
 			{
 				#region [ Invisible処理 ]
-				if (configIni.eInvisible[indexInst] != EInvisible.OFF)
+				if (CDTXMania.Instance.ConfigIni.eInvisible[(int)indexInst] != EInvisible.OFF)
 				{
 					cInvisibleChip.SetInvisibleStatus(ref pChip);
 				}
 				#endregion
 				#region [ Sudden/Hidden処理 ]
-				if (configIni.bSudden[indexInst])
+				if (CDTXMania.Instance.ConfigIni.bSudden[(int)indexInst])
 				{
-					pChip.b可視 = (pChip.nバーからの距離dot[indexInst] < 200 * Scale.Y);
+					pChip.b可視 = (pChip.nバーからの距離dot[(int)indexInst] < 200 * Scale.Y);
 				}
-				if (configIni.bHidden[indexInst] && (pChip.nバーからの距離dot[indexInst] < 100 * Scale.Y))
+				if (CDTXMania.Instance.ConfigIni.bHidden[(int)indexInst] && (pChip.nバーからの距離dot[(int)indexInst] < 100 * Scale.Y))
 				{
 					pChip.b可視 = false;
 				}
 				#endregion
 
-				cWailingChip[indexInst].t進行描画_チップ_ギターベース_ウェイリング(
-					configIni, ref dTX, ref pChip,
-					ref txチップ, ref 演奏判定ライン座標, ref ctWailingチップ模様アニメ
+				cWailingChip[(int)indexInst].t進行描画_チップ_ウェイリング(ref pChip, ref txチップ, ref 演奏判定ライン座標, ref ctWailingチップ模様アニメ
 				);
 
-				if (!pChip.bHit && (pChip.nバーからの距離dot[indexInst] < 0))
+				if (!pChip.bHit && (pChip.nバーからの距離dot[(int)indexInst] < 0))
 				{
-					if (pChip.nバーからの距離dot[indexInst] < -234 * Scale.Y)	// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec). 
+					if (pChip.nバーからの距離dot[(int)indexInst] < -234 * Scale.Y)	// #25253 2011.5.29 yyagi: Don't set pChip.bHit=true for wailing at once. It need to 1sec-delay (234pix per 1sec). 
 					{
 						pChip.bHit = true;
 					}
-					bool autoW = (inst == E楽器パート.GUITAR) ? configIni.bAutoPlay.GtW : configIni.bAutoPlay.BsW;
-					//if ( configIni.bAutoPlay[ ((int) Eレーン.Guitar - 1) + indexInst ] )	// このような、バグの入りやすい書き方(GT/BSのindex値が他と異なる)はいずれ見直したい
+					bool autoW = (indexInst == E楽器パート.GUITAR) ? CDTXMania.Instance.ConfigIni.bAutoPlay.GtW : CDTXMania.Instance.ConfigIni.bAutoPlay.BsW;
 					if (autoW)
 					{
 						//    pChip.bHit = true;								// #25253 2011.5.29 yyagi: Set pChip.bHit=true if autoplay.
@@ -2447,29 +3854,115 @@ namespace DTXMania
 						// #23886 2012.5.22 yyagi; To support auto Wailing; Don't do wailing for ALL wailing chips. Do wailing for queued wailing chip.
 						// wailing chips are queued when 1) manually wailing and not missed at that time 2) AutoWailing=ON and not missed at that time
 						long nTimeStamp_Wailed = pChip.n発声時刻ms + CSound管理.rc演奏用タイマ.n前回リセットした時のシステム時刻;
-						DoWailingFromQueue(inst, nTimeStamp_Wailed, autoW);
+						DoWailingFromQueue(indexInst, nTimeStamp_Wailed, autoW);
 					}
-					cInvisibleChip.StartSemiInvisible(inst);
+					cInvisibleChip.StartSemiInvisible(indexInst);
 				}
 				return;
 			}
 			pChip.bHit = true;
 		}
-		protected virtual void t進行描画_チップ_ギター_ウェイリング(CConfigIni configIni, ref CDTX dTX, ref CChip pChip, bool bGRmode)
+
+		protected abstract void t進行描画_チップ_フィルイン(ref CChip pChip);
+		protected void t進行描画_チップ_小節線(ref CChip pChip)
 		{
-			t進行描画_チップ_ギターベース_ウェイリング(configIni, ref dTX, ref pChip, E楽器パート.GUITAR, bGRmode);
+			CConfigIni configIni = CDTXMania.Instance.ConfigIni;
+			int n小節番号plus1 = pChip.n発声位置 / 384;
+			if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
+			{
+				pChip.bHit = true;
+				this.actPlayInfo.n小節番号 = n小節番号plus1 - 1;
+				if (configIni.bWave再生位置自動調整機能有効 && (bIsDirectSound || bUseOSTimer))
+				{
+					CDTXMania.Instance.DTX.tWave再生位置自動補正();
+				}
+				// dTX.tWaveBGM再生位置表示();		//デバッグ用
+			}
+			#region [ Drumsの小節線と、小節番号 ]
+			if (configIni.bDrums有効)
+			{
+				if (configIni.b演奏情報を表示する && (configIni.eDark == Eダークモード.OFF))
+				{
+					int n小節番号 = n小節番号plus1 - 1;
+					CDTXMania.Instance.act文字コンソール.tPrint(
+						configIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ?
+							999 : 619 + 682,
+						configIni.bReverse.Drums ?
+							126 + pChip.nバーからの距離dot.Drums :
+							911 - pChip.nバーからの距離dot.Drums,
+						C文字コンソール.Eフォント種別.白,
+						n小節番号.ToString()
+					);
+				}
+				if (((configIni.eDark != Eダークモード.FULL) && pChip.b可視) && (this.txチップ != null))
+				{
+					this.txチップ.n透明度 = 255;
+					this.txチップ.t2D描画(CDTXMania.Instance.Device,
+						//3, 2.25
+						configIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ?
+							105 : 619,
+						configIni.bReverse.Drums ?
+							124 + pChip.nバーからの距離dot.Drums : 947 - pChip.nバーからの距離dot.Drums,
+						new Rectangle(
+							0,
+							999,
+							(configIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 888 : 682,
+							4
+						)
+					);
+				}
+			}
+			#endregion
+			if ((pChip.b可視 && configIni.bGuitar有効) && (configIni.eDark != Eダークモード.FULL) && (this.txチップ != null))
+			{
+				this.txチップ.n透明度 = 255;
+
+				int[] barlineXGtBs = new int[3] { 0, 78, 480 * 3 }; // first element is padding 
+				int[,] barlineXDrCL = new int[3, 2] { { 0, 0 }, { 1521, 1450 }, { 1194, 200 } }; // first dimension is padding. [inst, left or center]
+
+
+				for (E楽器パート gt = E楽器パート.GUITAR; gt <= E楽器パート.BASS; ++gt)
+				{
+					int y = 演奏判定ライン座標.n判定ラインY座標(gt, CDTXMania.Instance.ConfigIni.bReverse[(int)gt]);
+					if (CDTXMania.Instance.ConfigIni.bReverse[(int)gt])
+					{
+						y = y - (int)(pChip.nバーからの距離dot[(int)gt]) - 1;
+					}
+					else
+					{
+						y = y + (int)(pChip.nバーからの距離dot[(int)gt]) - 1;
+					}
+					// Reverse時の小節線消失位置を、RGBボタンの真ん中程度に。
+					// 非Reverse時の消失処理は、従来通りt進行描画・チップ()にお任せ。
+					int n小節線消失距離dot = configIni.bReverse[(int)gt] ?
+						(int)(-100 * Scale.Y) :
+						(configIni.e判定位置[(int)gt] == E判定位置.標準) ?
+						(int)(CDTXMania.Instance.ConfigIni.bギタレボモード ? -36 : -50 * Scale.Y) : (int)(-25 * Scale.Y);
+
+					if ((CDTXMania.Instance.DTX.bチップがある[(int)gt]) &&
+						((CDTXMania.Instance.ConfigIni.bギタレボモード ? 0 : 0x39) * Scale.Y < y) &&
+						((y < (CDTXMania.Instance.ConfigIni.bギタレボモード ? 0x199 : 0x19c) * Scale.Y)) &&
+						(pChip.nバーからの距離dot.Guitar >= n小節線消失距離dot)
+						)
+					{
+						this.txチップ.t2D描画(
+							CDTXMania.Instance.Device,
+							CDTXMania.Instance.ConfigIni.bギタレボモード ? barlineXGtBs[(int)gt] :
+							((CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? barlineXDrCL[(int)gt, 0] : barlineXDrCL[(int)gt, 1]),
+							y,
+							new Rectangle(
+								0,
+								(int)((CDTXMania.Instance.ConfigIni.bギタレボモード ? 0xeb : 450) * Scale.Y),
+								(int)((CDTXMania.Instance.ConfigIni.bギタレボモード ? 0x68 : 0x4e) * Scale.X),
+								(int)(1 * Scale.Y)
+							)
+						);
+					}
+				}
+			}
 		}
-		protected abstract void t進行描画_チップ_フィルイン(CConfigIni configIni, ref CDTX dTX, ref CChip pChip);
-		protected abstract void t進行描画_チップ_小節線(CConfigIni configIni, ref CDTX dTX, ref CChip pChip);
-		//protected abstract void t進行描画_チップ_ベース( CConfigIni configIni, ref CDTX dTX, ref CChip pChip );
-		protected virtual void t進行描画_チップ_ベース_ウェイリング(CConfigIni configIni, ref CDTX dTX, ref CChip pChip, bool bGRmode)
-		{
-			t進行描画_チップ_ギターベース_ウェイリング(configIni, ref dTX, ref pChip, E楽器パート.BASS, bGRmode);
-		}
 
-
-
-		protected abstract void t進行描画_チップ_空打ち音設定_ドラム(CConfigIni configIni, ref CDTX dTX, ref CChip pChip);
+		protected abstract void t進行描画_チップ_空打ち音設定_ドラム(ref CChip pChip);
 		protected void t進行描画_チップアニメ()
 		{
 			for (int i = 0; i < 3; i++)			// 0=drums, 1=guitar, 2=bass
@@ -2528,11 +4021,28 @@ namespace DTXMania
 				this.actLaneFlushGB.On進行描画();
 			}
 		}
-		protected abstract void t進行描画_演奏情報();
-		protected void t進行描画_演奏情報(int x, int y)
+		protected void t進行描画_演奏情報()
 		{
 			if (!CDTXMania.Instance.ConfigIni.b演奏情報を表示しない)
 			{
+				int x, y;
+				if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					x = 0xb5;
+					y = 50;
+				}
+				else
+				{
+					y = 57;
+					if (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left)
+					{
+						x = 338;
+					}
+					else
+					{
+						x = 450;
+					}
+				}
 				this.actPlayInfo.t進行描画(x, y);
 			}
 		}
@@ -2545,19 +4055,13 @@ namespace DTXMania
 					this.tx背景.t2D描画(CDTXMania.Instance.Device, 0, 0);
 				}
 			}
-			else
-			{
-				// FullHD版では、背景描画のさらに奥でAVI描画をするため、
-				// Dark!=OFF時下記の画面クリアをすると、AVI描画がクリアされてしまう
-				// CDTXMania.Instance.app.Device.Clear( ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 0f, 0 );
-			}
 		}
 
 		protected void t進行描画_判定ライン()
 		{
 			if (CDTXMania.Instance.ConfigIni.eDark != Eダークモード.FULL)
 			{
-				int y = this.演奏判定ライン座標.n判定ラインY座標(E楽器パート.DRUMS, false, bReverse[(int)E楽器パート.DRUMS], false, true);	// -(int) ( 3 * Scale.Y );
+				int y = this.演奏判定ライン座標.n判定ラインY座標(E楽器パート.DRUMS, bReverse[(int)E楽器パート.DRUMS], false, true);	// -(int) ( 3 * Scale.Y );
 				// #31602 2016.2.11 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 				// #31602 2013.6.23 yyagi 描画遅延対策として、判定ラインの表示位置をオフセット調整できるようにする
 				if (this.txヒットバー != null)
@@ -2606,7 +4110,8 @@ namespace DTXMania
 
 		protected abstract void t背景テクスチャの生成();
 		protected void t背景テクスチャの生成(string DefaultBgFilename, string DefaultLaneFilename, Rectangle bgrect, string bgfilename)
-		{									// Default...: レーン等があるレイヤー		bgfilename: DTXファイルで指定する背景
+		{
+			// Default...: レーン等があるレイヤー		bgfilename: DTXファイルで指定する背景
 			Bitmap image = null;
 			bool bSuccessLoadDTXbgfile = false;
 
@@ -2665,15 +4170,6 @@ namespace DTXMania
 					#region [ レーン外・レーンそのもののフレームを合成 ]
 					image = new Bitmap(CSkin.Path(DefaultBgFilename));	// レーン外のフレーム
 					graphics3 = Graphics.FromImage(image);
-
-					//#region [ レーンのフレームがあれば、それを合成 ]
-					//if ( DefaultLaneFilename != "" )
-					//{
-					//	Bitmap bmLane = new Bitmap( CSkin.Path( DefaultLaneFilename ) );
-					//	graphics3.DrawImage( bmLane, offsetX[ nLanePosition ], 0 );
-					//	bmLane.Dispose();
-					//}
-					//#endregion
 
 					ColorMatrix matrix2 = new ColorMatrix();
 					matrix2.Matrix00 = 1f;
@@ -2802,8 +4298,6 @@ namespace DTXMania
 			int nAutoB = (autoB) ? 1 : 0;
 			int nAutoMask = nAutoW | nAutoR | nAutoG | nAutoB;
 
-			//			if ( bIsAutoPlay[ (int) Eレーン.Guitar - 1 + indexInst ] )	// このような、バグの入りやすい書き方(GT/BSのindex値が他と異なる)はいずれ見直したい
-			//			{
 			CChip chip = this.r次に来る指定楽器Chipを更新して返す(inst);
 			if (chip != null)
 			{
@@ -2822,10 +4316,7 @@ namespace DTXMania
 					this.actLaneFlushGB.Start(B);
 					this.actRGB.Push(B);
 				}
-				//			}
-
 			}
-			//			else
 			{
 				int pressingR = CDTXMania.Instance.Pad.b押されている(inst, Eパッド.R) ? 4 : 0;
 				this.t入力メソッド記憶(inst);
@@ -2945,6 +4436,202 @@ namespace DTXMania
 				}
 			}
 		}
-		#endregion
+		protected abstract void t進行描画_ギターベース判定ライン();
+		private void t進行描画_ギターベースフレーム()
+		{
+			if (((CDTXMania.Instance.ConfigIni.eDark != Eダークモード.HALF) && (CDTXMania.Instance.ConfigIni.eDark != Eダークモード.FULL)) && CDTXMania.Instance.ConfigIni.bGuitar有効)
+			{
+				if (CDTXMania.Instance.DTX.bチップがある.Guitar)
+				{
+					int x = (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 1521 : 1450;
+					for (int i = 0; i < 355; i += 0x80)
+					{
+						Rectangle rc = new Rectangle(0, 0, 327, 288);
+						if ((i + 0x80) > 355)
+						{
+							rc.Height -= (int)((i + 0x80 - 355) * Scale.Y);
+						}
+						if (this.txレーンフレームGB != null)
+						{
+							this.txレーンフレームGB.t2D描画(
+								CDTXMania.Instance.Device,
+								x,
+								(57 + i) * Scale.Y,
+								rc
+							);
+						}
+					}
+				}
+				if (CDTXMania.Instance.DTX.bチップがある.Bass)
+				{
+					int x = (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 1194 : 200;
+					for (int i = 0; i < 355; i += 0x80)
+					{
+						Rectangle rc = new Rectangle(0, 0, 327, 288);
+						if ((i + 0x80) > 355)
+						{
+							rc.Height -= (int)((i + 0x80 - 355) * Scale.Y);
+						}
+						if (this.txレーンフレームGB != null)
+						{
+							this.txレーンフレームGB.t2D描画(CDTXMania.Instance.Device,
+								x,
+								(57 + i) * Scale.Y,
+								rc
+							);
+						}
+					}
+				}
+			}
+		}
+		private void t進行描画_グラフ()
+		{
+			if (!CDTXMania.Instance.ConfigIni.bストイックモード && !CDTXMania.Instance.ConfigIni.bドラムが全部オートプレイである && CDTXMania.Instance.ConfigIni.bGraph.Drums)
+			{
+				this.actGraph.On進行描画();
+			}
+		}
+
+		private void t進行描画_チップファイアD()
+		{
+			this.actChipFireD.On進行描画();
+		}
+
+		private void t進行描画_ドラムパッド()
+		{
+			if (CDTXMania.Instance.ConfigIni.eDark != Eダークモード.FULL)
+			{
+				this.actPad.On進行描画();
+			}
+		}
+
+		// t入力処理・ドラム()からメソッドを抽出したもの。
+		/// <summary>
+		/// chipArrayの中を, n発生位置の小さい順に並べる + nullを大きい方に退かす。セットでe判定Arrayも並べ直す。
+		/// </summary>
+		/// <param name="chipArray">ソート対象chip群</param>
+		/// <param name="e判定Array">ソート対象e判定群</param>
+		/// <param name="NumOfChips">チップ数</param>
+		private static void SortChipsByNTime(CChip[] chipArray, E判定[] e判定Array, int NumOfChips)
+		{
+			for (int i = 0; i < NumOfChips - 1; i++)
+			{
+				for (int j = NumOfChips - 1; j > i; j--)
+				{
+					if ((chipArray[j - 1] == null) || ((chipArray[j] != null) && (chipArray[j - 1].n発声位置 > chipArray[j].n発声位置)))
+					{
+						// swap
+						CChip chipTemp = chipArray[j - 1];
+						chipArray[j - 1] = chipArray[j];
+						chipArray[j] = chipTemp;
+						E判定 e判定Temp = e判定Array[j - 1];
+						e判定Array[j - 1] = e判定Array[j];
+						e判定Array[j] = e判定Temp;
+					}
+				}
+			}
+		}
+		private bool tドラムヒット処理(long nHitTime, Eパッド type, CChip pChip, int n強弱度合い0to127)
+		{
+			if (pChip == null)
+			{
+				return false;
+			}
+			// Ech定義 channel = pChip.eチャンネル番号;
+			int index = -1;
+			if (pChip.bDrums可視チップ_LP_LBD含まない)
+			{
+				index = pChip.nDrumsIndex;
+			}
+			else if (pChip.bDrums不可視チップ_LP_LBD含まない)
+			{
+				index = pChip.nDrumsIndexHidden;
+			}
+			int nLane = CStage演奏画面共通.nチャンネル0Atoレーン07[index];
+			int nPad = this.nチャンネル0Atoパッド08[index];
+			bool bPChipIsAutoPlay = bIsAutoPlay[nLane];
+			int nInputAdjustTime = bPChipIsAutoPlay ? 0 : this.nInputAdjustTimeMs.Drums;
+			E判定 e判定 = this.e指定時刻からChipのJUDGEを返す(nHitTime, pChip, nInputAdjustTime);
+			if (e判定 == E判定.Miss)
+			{
+				return false;
+			}
+			this.tチップのヒット処理(nHitTime, pChip);
+			this.actLaneFlushD.Start((Eレーン)nLane, ((float)n強弱度合い0to127) / 127f);
+			this.actPad.Hit(nPad);
+			if ((e判定 != E判定.Poor) && (e判定 != E判定.Miss))
+			{
+				bool flag = this.bフィルイン中;
+				bool flag2 = this.bフィルイン中 && this.bフィルイン区間の最後のChipである(pChip);
+				// bool flag3 = flag2;
+				// #31602 2013.6.24 yyagi 判定ラインの表示位置をずらしたら、チップのヒットエフェクトの表示もずらすために、nJudgeLine..を追加
+				this.actChipFireD.Start((Eレーン)nLane, flag, flag2, flag2, 演奏判定ライン座標.nJudgeLinePosY_delta.Drums);
+			}
+			if (CDTXMania.Instance.ConfigIni.bドラム打音を発声する)
+			{
+				CChip rChip = null;
+				bool bIsChipsoundPriorToPad = true;
+				if (((type == Eパッド.HH) || (type == Eパッド.HHO)) || (type == Eパッド.LC))
+				{
+					bIsChipsoundPriorToPad = CDTXMania.Instance.ConfigIni.eHitSoundPriorityHH == E打ち分け時の再生の優先順位.ChipがPadより優先;
+				}
+				else if ((type == Eパッド.LT) || (type == Eパッド.FT))
+				{
+					bIsChipsoundPriorToPad = CDTXMania.Instance.ConfigIni.eHitSoundPriorityFT == E打ち分け時の再生の優先順位.ChipがPadより優先;
+				}
+				else if ((type == Eパッド.CY) || (type == Eパッド.RD))
+				{
+					bIsChipsoundPriorToPad = CDTXMania.Instance.ConfigIni.eHitSoundPriorityCY == E打ち分け時の再生の優先順位.ChipがPadより優先;
+				}
+				if (bIsChipsoundPriorToPad)
+				{
+					rChip = pChip;
+				}
+				else
+				{
+					Eパッド hH = type;
+					if (!CDTXMania.Instance.DTX.bチップがある.HHOpen && (type == Eパッド.HHO))
+					{
+						hH = Eパッド.HH;
+					}
+					if (!CDTXMania.Instance.DTX.bチップがある.Ride && (type == Eパッド.RD))
+					{
+						hH = Eパッド.CY;
+					}
+					if (!CDTXMania.Instance.DTX.bチップがある.LeftCymbal && (type == Eパッド.LC))
+					{
+						hH = Eパッド.HH;
+					}
+					rChip = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nHitTime, this.nパッド0Atoチャンネル0A[(int)hH], nInputAdjustTime);
+					if (rChip == null)
+					{
+						rChip = pChip;
+					}
+				}
+				this.tサウンド再生(rChip, CSound管理.rc演奏用タイマ.nシステム時刻, E楽器パート.DRUMS, CDTXMania.Instance.ConfigIni.n手動再生音量, CDTXMania.Instance.ConfigIni.b演奏音を強調する.Drums);
+			}
+			return true;
+		}
+		protected bool bフィルイン区間の最後のChipである(CChip pChip)
+		{
+			if (pChip == null)
+			{
+				return false;
+			}
+			int num = pChip.n発声位置;
+			for (int i = CDTXMania.Instance.DTX.listChip.IndexOf(pChip) + 1; i < CDTXMania.Instance.DTX.listChip.Count; i++)
+			{
+				pChip = CDTXMania.Instance.DTX.listChip[i];
+				if ((pChip[Ech定義.FillIn]) && (pChip.n整数値 == 2))
+				{
+					return true;
+				}
+				if ((pChip.bDrums可視チップ_LP_LBD含まない) && (pChip.n発声位置 - num) > 0x18)
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 }
