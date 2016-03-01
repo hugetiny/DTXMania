@@ -112,6 +112,7 @@ namespace DTXMania
 			private int guitar;
 			private int bass;
 		}
+
 		public C演奏判定ライン座標共通 演奏判定ライン座標
 		{
 			get;
@@ -136,7 +137,6 @@ namespace DTXMania
 		protected CTexture txCOMBOドラム;
 
 		// 内部クラス
-
 		protected class CSTATUS
 		{
 			public CSTAT Bass = new CSTAT();
@@ -192,9 +192,7 @@ namespace DTXMania
 			}
 		}
 
-
 		// コンストラクタ
-
 		public CAct演奏Combo共通()
 		{
 			this.b活性化してない = true;
@@ -205,10 +203,8 @@ namespace DTXMania
 			演奏判定ライン座標 = new C演奏判定ライン座標共通();
 		}
 
-
 		// メソッド
-
-		protected virtual void tコンボ表示_ドラム(int nCombo値, int nジャンプインデックス)
+		private void tコンボ表示_ドラム(int nCombo値, int nジャンプインデックス)
 		{
 			#region [ 事前チェック。]
 			//-----------------
@@ -323,14 +319,45 @@ namespace DTXMania
 			//-----------------
 			#endregion
 		}
-		protected virtual void tコンボ表示_ギター(int nCombo値, int nジャンプインデックス)
+		protected void tコンボ表示_ギター(int nCombo値, int nジャンプインデックス)
 		{
-		}
-		protected virtual void tコンボ表示_ベース(int nCombo値, int nジャンプインデックス)
-		{
-		}
-		protected void tコンボ表示_ギター(int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス)
-		{
+			int x, y;
+			if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+			{
+				x = (int)(230 * Scale.X);
+				y = CDTXMania.Instance.ConfigIni.bReverse.Guitar ? 0x103 : 150;
+				y = (int)(y * Scale.Y);
+				if (txCOMBOギター != null)
+				{
+					txCOMBOギター.n透明度 = 0xff;
+				}
+			}
+			else
+			{
+				if (CDTXMania.Instance.DTX.bチップがある.Bass || CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Center)
+				{
+					x = (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 1638 : 1567 + 5;
+					y = 演奏判定ライン座標.n判定ラインY座標(E楽器パート.GUITAR, CDTXMania.Instance.ConfigIni.bReverse.Guitar);
+					y += CDTXMania.Instance.ConfigIni.bReverse.Guitar ? (int)(-134 * Scale.Y) : (int)(+174 * Scale.Y);
+					if (txCOMBOギター != null)
+					{
+						txCOMBOギター.n透明度 = 120;
+					}
+				}
+				else
+				{
+					x = 1344;
+					y = 演奏判定ライン座標.n判定ラインY座標(E楽器パート.GUITAR, CDTXMania.Instance.ConfigIni.bReverse.Guitar);
+					y += CDTXMania.Instance.ConfigIni.bReverse.Guitar ? (int)(-134 * Scale.Y) : (int)(+174 * Scale.Y);
+					if (txCOMBOギター != null)
+					{
+						txCOMBOギター.n透明度 = 0xff;
+					}
+				}
+			}
+			int n表示中央X = x;
+			int n表示中央Y = y;
+
 			#region [ 事前チェック。]
 			//-----------------
 			if (((E判定文字表示位置)CDTXMania.Instance.ConfigIni.判定文字表示位置.Guitar) == E判定文字表示位置.表示OFF)
@@ -342,8 +369,33 @@ namespace DTXMania
 			#endregion
 			tコンボ表示_ギターベース(nCombo値, n表示中央X, n表示中央Y, nジャンプインデックス);
 		}
-		protected void tコンボ表示_ベース(int nCombo値, int n表示中央X, int n表示中央Y, int nジャンプインデックス)
+		protected void tコンボ表示_ベース(int nCombo値, int nジャンプインデックス)
 		{
+			int x, y;
+
+			if (CDTXMania.Instance.ConfigIni.bギタレボモード)
+			{
+				x = (int)(410 * Scale.X);
+				y = CDTXMania.Instance.ConfigIni.bReverse.Bass ? 0x103 : 150;
+				y = (int)(y * Scale.Y);
+				if (txCOMBOギター != null)
+				{
+					txCOMBOギター.n透明度 = 0xff;
+				}
+			}
+			else
+			{
+				x = (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 1311 : 1311 - 994 + 5;
+				y = 演奏判定ライン座標.n判定ラインY座標(E楽器パート.BASS, CDTXMania.Instance.ConfigIni.bReverse.Bass);
+				y += CDTXMania.Instance.ConfigIni.bReverse.Bass ? (int)(-134 * Scale.Y) : (int)(+174 * Scale.Y);
+				if (txCOMBOギター != null)
+				{
+					txCOMBOギター.n透明度 = 120;
+				}
+			}
+			int n表示中央X = x;
+			int n表示中央Y = y;
+
 			#region [ 事前チェック。]
 			//-----------------
 			if (((E判定文字表示位置)CDTXMania.Instance.ConfigIni.判定文字表示位置.Bass) == E判定文字表示位置.表示OFF)
@@ -445,7 +497,6 @@ namespace DTXMania
 
 
 		// CActivity 実装
-
 		public override void On活性化()
 		{
 			this.n現在のコンボ数 = new STCOMBO() { act = this };

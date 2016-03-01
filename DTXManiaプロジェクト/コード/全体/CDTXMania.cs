@@ -135,8 +135,7 @@ namespace DTXMania
 		public CStageコンフィグ stageコンフィグ { get; private set; }
 		public CStage選曲 stage選曲 { get; private set; }
 		public CStage曲読み込み stage曲読み込み { get; private set; }
-		public CStage演奏ギター画面 stage演奏ギター画面 { get; private set; }
-		public CStage演奏ドラム画面 stage演奏ドラム画面 { get; private set; }
+		public CStage演奏画面共通 stage演奏画面 { get; private set; }
 		public CStage結果 stage結果 { get; private set; }
 		public CStageChangeSkin stageChangeSkin { get; private set; }
 		public CStage終了 stage終了 { get; private set; }
@@ -685,8 +684,7 @@ namespace DTXMania
 			stageコンフィグ = new CStageコンフィグ();
 			stage選曲 = new CStage選曲();
 			stage曲読み込み = new CStage曲読み込み();
-			stage演奏ドラム画面 = new CStage演奏ドラム画面();
-			stage演奏ギター画面 = new CStage演奏ギター画面();
+			stage演奏画面 = new CStage演奏画面共通();
 			stage結果 = new CStage結果();
 			stageChangeSkin = new CStageChangeSkin();
 			stage終了 = new CStage終了();
@@ -699,8 +697,7 @@ namespace DTXMania
 			this.listトップレベルActivities.Add(stageコンフィグ);
 			this.listトップレベルActivities.Add(stage選曲);
 			this.listトップレベルActivities.Add(stage曲読み込み);
-			this.listトップレベルActivities.Add(stage演奏ドラム画面);
-			this.listトップレベルActivities.Add(stage演奏ギター画面);
+			this.listトップレベルActivities.Add(stage演奏画面);
 			this.listトップレベルActivities.Add(stage結果);
 			this.listトップレベルActivities.Add(stageChangeSkin);
 			this.listトップレベルActivities.Add(stage終了);
@@ -1537,44 +1534,10 @@ namespace DTXMania
 							}
 							#endregion
 
-							if (!ConfigIni.bギタレボモード)
-							{
-								Trace.TraceInformation("----------------------");
-								Trace.TraceInformation("■ 演奏（ドラム画面）");
-#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
-for (int i = 0; i < 5; i++)
-{
-	for (int j = 0; j < 2; j++)
-	{
-		stage演奏ドラム画面.fDamageGaugeDelta[i, j] = ConfigIni.fGaugeFactor[i, j];
-	}
-}
-for (int i = 0; i < 3; i++) {
-	stage演奏ドラム画面.fDamageLevelFactor[i] = ConfigIni.fDamageLevelFactor[i];
-}		
-#endif
-								r直前のステージ = r現在のステージ;
-								r現在のステージ = stage演奏ドラム画面;
-							}
-							else
-							{
-								Trace.TraceInformation("----------------------");
-								Trace.TraceInformation("■ 演奏（ギター画面）");
-#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
-for (int i = 0; i < 5; i++)
-{
-	for (int j = 0; j < 2; j++)
-	{
-		stage演奏ギター画面.fDamageGaugeDelta[i, j] = ConfigIni.fGaugeFactor[i, j];
-	}
-}
-for (int i = 0; i < 3; i++) {
-	stage演奏ギター画面.fDamageLevelFactor[i] = ConfigIni.fDamageLevelFactor[i];
-}		
-#endif
-								r直前のステージ = r現在のステージ;
-								r現在のステージ = stage演奏ギター画面;
-							}
+							Trace.TraceInformation("----------------------");
+							Trace.TraceInformation("■ 演奏（ドラム画面）");
+							r直前のステージ = r現在のステージ;
+							r現在のステージ = stage演奏画面;
 
 							foreach (STPlugin pg in this.listプラグイン)
 							{
@@ -1611,14 +1574,8 @@ for (int i = 0; i < 3; i++) {
 
 							if (DTXVmode.Command == CDTXVmode.ECommand.Stop)
 							{
-								if (!ConfigIni.bギタレボモード)
-								{
-									CDTXMania.Instance.stage演奏ドラム画面.t停止();
-								}
-								else
-								{
-									CDTXMania.Instance.stage演奏ギター画面.t停止();
-								}
+								CDTXMania.Instance.stage演奏画面.t停止();
+
 								if (previewSound != null)
 								{
 									this.previewSound.tサウンドを停止する();
@@ -1661,14 +1618,7 @@ for (int i = 0; i < 3; i++) {
 							{
 								if (DTXVmode.NeedReload)
 								{
-									if (!ConfigIni.bギタレボモード)
-									{
-										CDTXMania.Instance.stage演奏ドラム画面.t再読込();
-									}
-									else
-									{
-										CDTXMania.Instance.stage演奏ギター画面.t再読込();
-									}
+									CDTXMania.Instance.stage演奏画面.t再読込();
 
 									CDTXMania.Instance.ConfigIni.bDrums有効 = !DTXVmode.GRmode;
 									CDTXMania.Instance.ConfigIni.bGuitar有効 = true;
@@ -1682,14 +1632,7 @@ for (int i = 0; i < 3; i++) {
 								}
 								else
 								{
-									if (!ConfigIni.bギタレボモード)
-									{
-										CDTXMania.Instance.stage演奏ドラム画面.t演奏位置の変更(CDTXMania.Instance.DTXVmode.nStartBar);
-									}
-									else
-									{
-										CDTXMania.Instance.stage演奏ギター画面.t演奏位置の変更(CDTXMania.Instance.DTXVmode.nStartBar);
-									}
+									CDTXMania.Instance.stage演奏画面.t演奏位置の変更(CDTXMania.Instance.DTXVmode.nStartBar);
 								}
 							}
 						}
@@ -1850,16 +1793,8 @@ for (int i = 0; i < 3; i++) {
 								STDGBVALUE<CScoreIni.C演奏記録> record;
 								CChip[] chipArray = new CChip[10];
 
-								if (!ConfigIni.bギタレボモード)
-								{
-									chipArray = stage演奏ギター画面.GetNoChipDrums();
-									record = stage演奏ドラム画面.Record;
-								}
-								else
-								{
-									record = stage演奏ギター画面.Record;
-									record.Drums = new CScoreIni.C演奏記録();
-								}
+								chipArray = stage演奏画面.GetNoChipDrums();
+								record = stage演奏画面.Record;
 
 								double playskill = 0.0;
 

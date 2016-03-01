@@ -45,7 +45,6 @@ namespace DTXMania
 			{
 				if (this.tx描画用 != null && (this.tx描画用.szテクスチャサイズ.Width != width || this.tx描画用.szテクスチャサイズ.Height != height))
 				{
-					//Debug.WriteLine( "orgW=" + this.tx描画用.szテクスチャサイズ.Width + ", W=" + width + ", orgH=" + this.tx描画用.szテクスチャサイズ.Height + ", H=" + height );
 					this.tx描画用.Dispose();
 					this.tx描画用 = null;
 				}

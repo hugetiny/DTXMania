@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace DTXMania
 {
-	internal abstract partial class CStage演奏画面共通
+	internal partial class CStage演奏画面共通
 	{
 		protected enum HitState
 		{

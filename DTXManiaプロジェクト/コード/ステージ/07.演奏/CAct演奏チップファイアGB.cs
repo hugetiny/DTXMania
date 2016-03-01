@@ -18,7 +18,6 @@ namespace DTXMania
 
 
 		// メソッド
-
 		public virtual void Start(int nLane, int n中央X, int n中央Y, C演奏判定ライン座標共通 演奏判定ライン座標)
 		{
 			if ((nLane >= 0) || (nLane <= 5))

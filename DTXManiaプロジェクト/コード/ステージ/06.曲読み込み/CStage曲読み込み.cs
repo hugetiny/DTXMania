@@ -414,10 +414,7 @@ namespace DTXMania
 							CDTXMania.Instance.DTX.tギターとベースのランダム化(E楽器パート.GUITAR, CDTXMania.Instance.ConfigIni.eRandom.Guitar);
 							CDTXMania.Instance.DTX.tギターとベースのランダム化(E楽器パート.BASS, CDTXMania.Instance.ConfigIni.eRandom.Bass);
 
-							if (CDTXMania.Instance.ConfigIni.bギタレボモード)
-								CDTXMania.Instance.stage演奏ギター画面.On活性化();
-							else
-								CDTXMania.Instance.stage演奏ドラム画面.On活性化();
+							CDTXMania.Instance.stage演奏画面.On活性化();
 
 							span = (TimeSpan)(DateTime.Now - timeBeginLoadWAV);
 							Trace.TraceInformation("WAV/譜面後処理時間({0,4}):  {1}", (CDTXMania.Instance.DTX.listBMP.Count + CDTXMania.Instance.DTX.listBMPTEX.Count + CDTXMania.Instance.DTX.listAVI.Count), span.ToString());

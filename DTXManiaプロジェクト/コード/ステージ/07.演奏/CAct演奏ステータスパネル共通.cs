@@ -15,11 +15,13 @@ namespace DTXMania
 		{
 			this.stパネルマップ = new STATUSPANEL[12];		// yyagi: 以下、手抜きの初期化でスマン
 			// { "DTXMANIA", 0 }, { "EXTREME", 1 }, ... みたいに書きたいが・・・
-			string[] labels = new string[12] {
+			string[] labels = new string[12]
+			{
 			    "DTXMANIA", "EXTREME", "ADVANCED", "ADVANCE", "BASIC", "RAW",
 			    "REAL", "EASY", "EX-REAL", "ExREAL", "ExpertReal", "NORMAL"
 			};
-			int[] status = new int[12] {
+			int[] status = new int[12] 
+			{
 			    0, 1, 2, 2, 3, 4, 5, 6, 7, 7, 7, 8
 			};
 
@@ -30,64 +32,11 @@ namespace DTXMania
 				this.stパネルマップ[i].label = labels[i];
 			}
 
-			#region [ 旧初期化処理(注釈化) ]
-			//STATUSPANEL[] statuspanelArray = new STATUSPANEL[ 12 ];
-			//STATUSPANEL statuspanel = new STATUSPANEL();
-			//statuspanel.status = 0;
-			//statuspanel.label = "DTXMANIA";
-			//statuspanelArray[ 0 ] = statuspanel;
-			//STATUSPANEL statuspanel2 = new STATUSPANEL();
-			//statuspanel2.status = 1;
-			//statuspanel2.label = "EXTREME";
-			//statuspanelArray[ 1 ] = statuspanel2;
-			//STATUSPANEL statuspanel3 = new STATUSPANEL();
-			//statuspanel3.status = 2;
-			//statuspanel3.label = "ADVANCED";
-			//statuspanelArray[ 2 ] = statuspanel3;
-			//STATUSPANEL statuspanel4 = new STATUSPANEL();
-			//statuspanel4.status = 2;
-			//statuspanel4.label = "ADVANCE";
-			//statuspanelArray[ 3 ] = statuspanel4;
-			//STATUSPANEL statuspanel5 = new STATUSPANEL();
-			//statuspanel5.status = 3;
-			//statuspanel5.label = "BASIC";
-			//statuspanelArray[ 4 ] = statuspanel5;
-			//STATUSPANEL statuspanel6 = new STATUSPANEL();
-			//statuspanel6.status = 4;
-			//statuspanel6.label = "RAW";
-			//statuspanelArray[ 5 ] = statuspanel6;
-			//STATUSPANEL statuspanel7 = new STATUSPANEL();
-			//statuspanel7.status = 5;
-			//statuspanel7.label = "REAL";
-			//statuspanelArray[ 6 ] = statuspanel7;
-			//STATUSPANEL statuspanel8 = new STATUSPANEL();
-			//statuspanel8.status = 6;
-			//statuspanel8.label = "EASY";
-			//statuspanelArray[ 7 ] = statuspanel8;
-			//STATUSPANEL statuspanel9 = new STATUSPANEL();
-			//statuspanel9.status = 7;
-			//statuspanel9.label = "EX-REAL";
-			//statuspanelArray[ 8 ] = statuspanel9;
-			//STATUSPANEL statuspanel10 = new STATUSPANEL();
-			//statuspanel10.status = 7;
-			//statuspanel10.label = "ExREAL";
-			//statuspanelArray[ 9 ] = statuspanel10;
-			//STATUSPANEL statuspanel11 = new STATUSPANEL();
-			//statuspanel11.status = 7;
-			//statuspanel11.label = "ExpertReal";
-			//statuspanelArray[ 10 ] = statuspanel11;
-			//STATUSPANEL statuspanel12 = new STATUSPANEL();
-			//statuspanel12.status = 8;
-			//statuspanel12.label = "NORMAL";
-			//statuspanelArray[ 11 ] = statuspanel12;
-			//this.stパネルマップ = statuspanelArray;
-			#endregion
 			base.b活性化してない = true;
 		}
 
 
 		// メソッド
-
 		public void tラベル名からステータスパネルを決定する(string strラベル名)
 		{
 			if (string.IsNullOrEmpty(strラベル名))
@@ -116,9 +65,154 @@ namespace DTXMania
 			base.On活性化();
 		}
 
+		public override void OnManagedリソースの作成()
+		{
+			if (!base.b活性化してない)
+			{
+				if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					this.txStatusPanels = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlay status panels right.png"));
+				}
+				else
+				{
+					this.tx左パネル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlay status panels left.png"));
+					this.tx右パネル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlay status panels right.png"));
+				}
+				base.OnManagedリソースの作成();
+			}
+		}
+		public override void OnManagedリソースの解放()
+		{
+			if (!base.b活性化してない)
+			{
+				if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					TextureFactory.tテクスチャの解放(ref this.txStatusPanels);
+				}
+				else
+				{
+					TextureFactory.tテクスチャの解放(ref this.tx左パネル);
+					TextureFactory.tテクスチャの解放(ref this.tx右パネル);
+				}
+				base.OnManagedリソースの解放();
+			}
+		}
 
-		#region [ protected ]
-		//-----------------
+		public override int On進行描画()
+		{
+			if (!base.b活性化してない)
+			{
+				if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
+				{
+					if ((this.txStatusPanels != null))
+					{
+						this.txStatusPanels.t2D描画(
+							CDTXMania.Instance.Device,
+							0x26f * Scale.X,
+							0x14f * Scale.Y,
+							new Rectangle(
+								(int)(this.nStatus * 15 * Scale.X),
+								(int)(0xb7 * Scale.Y),
+								(int)(15 * Scale.X),
+								(int)(0x49 * Scale.Y)
+							)
+						);
+						int drums = CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Drums;
+						if (drums < 0)
+						{
+							drums = 0;
+						}
+						if (drums > 15)
+						{
+							drums = 15;
+						}
+						this.txStatusPanels.t2D描画(CDTXMania.Instance.Device,
+							0x26f * Scale.X,
+							0x3b * Scale.Y,
+							new Rectangle(
+								(int)(drums * 15 * Scale.X),
+								0,
+								(int)(15 * Scale.X),
+								(int)(0xac * Scale.Y)
+							)
+						);
+					}
+				}
+				else
+				{
+					if (this.tx左パネル != null)
+					{
+						this.tx左パネル.t2D描画(
+							CDTXMania.Instance.Device,
+							3 * Scale.X,
+							0x143 * Scale.Y,
+							new Rectangle(
+								(int)(this.nStatus * 15 * Scale.X),
+								(int)(0xb7 * Scale.Y),
+								(int)(15 * Scale.X),
+								(int)(0x49 * Scale.Y)
+							)
+						);
+						int guitar = CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Guitar;
+						if (guitar < 0)
+						{
+							guitar = 0;
+						}
+						if (guitar > 15)
+						{
+							guitar = 15;
+						}
+						this.tx左パネル.t2D描画(
+							CDTXMania.Instance.Device,
+							3 * Scale.X,
+							0x35 * Scale.Y,
+							new Rectangle(
+								(int)(guitar * 15 * Scale.X),
+								0,
+								(int)(15 * Scale.X),
+								(int)(0xac * Scale.Y)
+							)
+						);
+					}
+					if (this.tx右パネル != null)
+					{
+						this.tx右パネル.t2D描画(
+							CDTXMania.Instance.Device,
+							0x26e * Scale.X,
+							0x143 * Scale.Y,
+							new Rectangle(
+								(int)(this.nStatus * 15 * Scale.X),
+								(int)(0xb7 * Scale.Y),
+								(int)(15 * Scale.X),
+								(int)(0x49 * Scale.Y)
+							)
+						);
+						int bass = CDTXMania.Instance.ConfigIni.n譜面スクロール速度.Bass;
+						if (bass < 0)
+						{
+							bass = 0;
+						}
+						if (bass > 15)
+						{
+							bass = 15;
+						}
+						this.tx右パネル.t2D描画(
+							CDTXMania.Instance.Device,
+							0x26e * Scale.X,
+							0x35 * Scale.Y,
+							new Rectangle(
+								(int)(bass * 15 * Scale.X),
+								0,
+								(int)(15 * Scale.X),
+								(int)(0xac * Scale.Y)
+							)
+						);
+					}
+				}
+			}
+			return 0;
+		}
+
 		[StructLayout(LayoutKind.Sequential)]
 		protected struct STATUSPANEL
 		{
@@ -126,9 +220,10 @@ namespace DTXMania
 			public int status;
 		}
 
+		private CTexture tx右パネル;
+		private CTexture tx左パネル;
+		private CTexture txStatusPanels;
 		protected int nStatus;
 		protected STATUSPANEL[] stパネルマップ = null;
-		//-----------------
-		#endregion
 	}
 }

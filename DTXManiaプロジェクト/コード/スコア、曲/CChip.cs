@@ -886,14 +886,12 @@ namespace DTXMania
 				basePlayPosition = n発声位置;
 				ms = n発声時刻ms;
 				dbBarLength = db実数値;
-				return;
 			}
 			else if (this[Ech定義.BPM])
 			{
 				basePlayPosition = n発声位置;
 				ms = n発声時刻ms;
 				bpm = basebpm + n整数値;
-				return;
 			}
 			else if (this[Ech定義.BPMEx])
 			{
@@ -903,7 +901,6 @@ namespace DTXMania
 				{
 					bpm = ((listBPM[n整数値_内部番号].n表記上の番号 == 0) ? 0.0 : basebpm) + listBPM[n整数値_内部番号].dbBPM値;
 				}
-				return;
 			}
 			else if (bMovie)
 			{
@@ -913,7 +910,6 @@ namespace DTXMania
 					int num22 = ms + ((int)(((0x271 * ((n発声位置 + listAVIPAN[n整数値].n移動時間ct) - basePlayPosition)) * dbBarLength) / bpm));
 					n総移動時間 = num22 - num21;
 				}
-				return;
 			}
 			else if (bBGALayer)
 			{
@@ -1156,7 +1152,9 @@ namespace DTXMania
 		public CChip(int playPosition, double phraseLengthFactor, Ech定義 channel)
 			: this()
 		{
-
+			n発声位置 = playPosition;
+			db実数値 = phraseLengthFactor;
+			eチャンネル番号 = channel;
 		}
 
 		public CChip(Ech定義 channel)
@@ -1247,9 +1245,6 @@ namespace DTXMania
 			{
 				if (this.rAVI != null && this.rAVI.avi != null)
 				{
-					// int dwRate = (int) this.rAVI.avi.dwレート;
-					// int dwScale = (int) this.rAVI.avi.dwスケール;
-					// (int) ( 1000.0f * dwScale / dwRate * this.rAVI.avi.GetMaxFrameCount() );
 					nDuration = this.rAVI.avi.GetDuration();
 				}
 			}
@@ -1319,15 +1314,6 @@ namespace DTXMania
 			bool bGtBsB = bGuitarBass_B;
 			bool bGtBsW = bGuitarBass_Wailing;
 			bool bGtBsO = bGuitarBass_Open;
-			//if ( (
-			//        ( ( pChip.e楽器パート == E楽器パート.DRUMS ) && bIsAutoPlay[ this.nチャンネル0Atoレーン07[ pChip.nチャンネル番号 - 0x11 ] ] ) ||
-			//        ( ( pChip.e楽器パート == E楽器パート.GUITAR ) && bIsAutoPlay.Guitar ) ) ||
-			//        ( ( pChip.e楽器パート == E楽器パート.BASS ) && bIsAutoPlay.Bass )
-			//  )
-			////				if ((pChip.e楽器パート == E楽器パート.DRUMS) && bIsAutoPlay[this.nチャンネル0Atoレーン07[pChip.nチャンネル番号 - 0x11]])
-			//{
-			//    bPChipIsAutoPlay = true;
-			//}
 			if (bDrums可視チップ)
 			{
 				if (bIsAutoPlay[CStage演奏画面共通.nチャンネル0Atoレーン07[eチャンネル番号 - Ech定義.HiHatClose]])

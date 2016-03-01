@@ -8,37 +8,31 @@ namespace DTXMania
 	internal class CAct演奏Guitarチップファイア : CAct演奏チップファイアGB
 	{
 		// コンストラクタ
-
 		public CAct演奏Guitarチップファイア()
 		{
 			base.b活性化してない = true;
 		}
 
-
 		// メソッド
-
 		public override void Start(int nLane, C演奏判定ライン座標共通 演奏判定ライン座標)
 		{
-			if ((nLane < 0) && (nLane > 5))
+			if (CDTXMania.Instance.ConfigIni.bギタレボモード)
 			{
-				throw new IndexOutOfRangeException();
+				if ((nLane < 0) && (nLane > 5))
+				{
+					throw new IndexOutOfRangeException();
+				}
+				E楽器パート e楽器パート = (nLane < 3) ? E楽器パート.GUITAR : E楽器パート.BASS;
+				int index = nLane;
+				if (CDTXMania.Instance.ConfigIni.bLeft[(int)e楽器パート])
+				{
+					index = ((index / 3) * 3) + (2 - (index % 3));
+				}
+				int x = (int)(this.pt中央[index].X * Scale.X);
+				int y = 演奏判定ライン座標.n判定ラインY座標(e楽器パート, CDTXMania.Instance.ConfigIni.bReverse[(int)e楽器パート]);
+				base.Start(nLane, x, y, 演奏判定ライン座標);
 			}
-			E楽器パート e楽器パート = (nLane < 3) ? E楽器パート.GUITAR : E楽器パート.BASS;
-			int index = nLane;
-			if (CDTXMania.Instance.ConfigIni.bLeft[(int)e楽器パート])
-			{
-				index = ((index / 3) * 3) + (2 - (index % 3));
-			}
-			int x = (int)(this.pt中央[index].X * Scale.X);
-			//int y = this.pt中央[ index ].Y;
-			int y = 演奏判定ライン座標.n判定ラインY座標(e楽器パート, CDTXMania.Instance.ConfigIni.bReverse[(int)e楽器パート]);
-			//if ( CDTXMania.Instance.ConfigIni.bReverse[ (int)e楽器パート ] )
-			//{
-			//    y = 369;
-			//}
-			base.Start(nLane, x, y, 演奏判定ライン座標);
 		}
-
 
 		// その他
 

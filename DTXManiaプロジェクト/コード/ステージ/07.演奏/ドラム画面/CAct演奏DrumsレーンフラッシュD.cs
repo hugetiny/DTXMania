@@ -9,8 +9,24 @@ namespace DTXMania
 {
 	internal class CAct演奏DrumsレーンフラッシュD : CActivity
 	{
-		// コンストラクタ
+		[StructLayout(LayoutKind.Sequential)]
+		private struct STレーンサイズ
+		{
+			public int x;
+			public int w;
+			public STレーンサイズ(int x_, int w_)
+			{
+				x = x_;
+				w = w_;
+			}
+		}
 
+		private CCounter[] ct進行 = new CCounter[8];
+		private readonly string[] strファイル名;
+		private readonly STレーンサイズ[] stレーンサイズ;
+		private CTextureAf[] txFlush = new CTextureAf[0x10];
+
+		// コンストラクタ
 		public CAct演奏DrumsレーンフラッシュD()
 		{
 			this.stレーンサイズ = new STレーンサイズ[8]
@@ -99,72 +115,75 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
-				for (int i = 0; i < 8; i++)
+				if (!CDTXMania.Instance.ConfigIni.bギタレボモード)
 				{
-					if (!this.ct進行[i].b停止中)
+					for (int i = 0; i < 8; i++)
 					{
-						this.ct進行[i].t進行();
-						if (this.ct進行[i].b終了値に達した)
+						if (!this.ct進行[i].b停止中)
 						{
-							this.ct進行[i].t停止();
+							this.ct進行[i].t進行();
+							if (this.ct進行[i].b終了値に達した)
+							{
+								this.ct進行[i].t停止();
+							}
 						}
 					}
-				}
-				for (int j = 0; j < 8; j++)
-				{
-					if (!this.ct進行[j].b停止中)
+					for (int j = 0; j < 8; j++)
 					{
-						int x = this.stレーンサイズ[j].x;
-						int w = this.stレーンサイズ[j].w;
-
-						x = (int)(x * (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75));
-						x += (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 36 * 3 : 619 - 24 + 36;
-						w = (int)(w * (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75));
-
-						//for ( int k = 0; k < 3; k++ )
-						int k = 0;
+						if (!this.ct進行[j].b停止中)
 						{
-							if (CDTXMania.Instance.ConfigIni.bReverse.Drums)
+							int x = this.stレーンサイズ[j].x;
+							int w = this.stレーンサイズ[j].w;
+
+							x = (int)(x * (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75));
+							x += (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left) ? 36 * 3 : 619 - 24 + 36;
+							w = (int)(w * (CDTXMania.Instance.ConfigIni.eドラムレーン表示位置 == Eドラムレーン表示位置.Left ? 1.0 : 0.75));
+
+							//for ( int k = 0; k < 3; k++ )
+							int k = 0;
 							{
-								int y = (k * 0x80) - ((this.ct進行[j].n現在の値 * 0x180) / 100);
-								for (int m = 0; m < w; m += 42)
+								if (CDTXMania.Instance.ConfigIni.bReverse.Drums)
 								{
-									if (this.txFlush[j + 8] != null)
+									int y = (k * 0x80) - ((this.ct進行[j].n現在の値 * 0x180) / 100);
+									for (int m = 0; m < w; m += 42)
 									{
-										this.txFlush[j + 8].t2D描画(
-											CDTXMania.Instance.Device,
-											(x + m),
-											y * Scale.Y,
-											new Rectangle(
-												(int)((k * 0x2a) * Scale.X),
-												0,
-												((w - m) < 0x2a) ? (int)((w - m) * Scale.X) : (int)(0x2a * Scale.X),
-												(int)(0x80 * 3 * Scale.Y)
-											)
-										);
-									}
-								}
-							}
-							else
-							{
-								int y = (0x60 + (k * 0x80)) + ((this.ct進行[j].n現在の値 * 0x180) / 100);
-								if (y < 480)
-								{
-									for (int n = 0; n < w; n += 42)
-									{
-										if (this.txFlush[j] != null)
+										if (this.txFlush[j + 8] != null)
 										{
-											this.txFlush[j].t2D描画(
+											this.txFlush[j + 8].t2D描画(
 												CDTXMania.Instance.Device,
-												(x + n),
-												(int)(y * Scale.Y),
+												(x + m),
+												y * Scale.Y,
 												new Rectangle(
-													(int)(k * 0x2a * Scale.X),
+													(int)((k * 0x2a) * Scale.X),
 													0,
-													((w - n) < 0x2a) ? (int)((w - n) * Scale.X) : (int)(0x2a * Scale.X),
+													((w - m) < 0x2a) ? (int)((w - m) * Scale.X) : (int)(0x2a * Scale.X),
 													(int)(0x80 * 3 * Scale.Y)
 												)
 											);
+										}
+									}
+								}
+								else
+								{
+									int y = (0x60 + (k * 0x80)) + ((this.ct進行[j].n現在の値 * 0x180) / 100);
+									if (y < 480)
+									{
+										for (int n = 0; n < w; n += 42)
+										{
+											if (this.txFlush[j] != null)
+											{
+												this.txFlush[j].t2D描画(
+													CDTXMania.Instance.Device,
+													(x + n),
+													(int)(y * Scale.Y),
+													new Rectangle(
+														(int)(k * 0x2a * Scale.X),
+														0,
+														((w - n) < 0x2a) ? (int)((w - n) * Scale.X) : (int)(0x2a * Scale.X),
+														(int)(0x80 * 3 * Scale.Y)
+													)
+												);
+											}
 										}
 									}
 								}
@@ -175,29 +194,5 @@ namespace DTXMania
 			}
 			return 0;
 		}
-
-
-		// その他
-
-		#region [ private ]
-		//-----------------
-		[StructLayout(LayoutKind.Sequential)]
-		private struct STレーンサイズ
-		{
-			public int x;
-			public int w;
-			public STレーンサイズ(int x_, int w_)
-			{
-				x = x_;
-				w = w_;
-			}
-		}
-
-		private CCounter[] ct進行 = new CCounter[8];
-		private readonly string[] strファイル名;
-		private readonly STレーンサイズ[] stレーンサイズ;
-		private CTextureAf[] txFlush = new CTextureAf[0x10];
-		//-----------------
-		#endregion
 	}
 }

@@ -2598,10 +2598,13 @@ namespace DTXMania
 				this.bチップがある.Bass |= chip.bBass可視チップ;
 				this.bチップがある.OpenBass |= chip[Ech定義.Bass_Open];
 				this.bチップがある.BGA |= chip.bBGALayer;
-				this.bチップがある.Movie |= chip[Ech定義.Movie] | chip[Ech定義.MovieFull];
-				if (CDTXMania.Instance.ConfigIni.bForceAVIFullscreen || chip[Ech定義.MovieFull])
+				this.bチップがある.Movie |= chip.bMovie;
+				if (chip.bMovie)
 				{
-					this.bMovieをFullscreen再生する = true;
+					if (chip[Ech定義.MovieFull] || CDTXMania.Instance.ConfigIni.bForceAVIFullscreen)
+					{
+						this.bMovieをFullscreen再生する = true;
+					}
 				}
 
 				// 空打ちチップを変換する。
