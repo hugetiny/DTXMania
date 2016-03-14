@@ -343,7 +343,6 @@ namespace DTXMania
 			//---------------------
 			#endregion
 
-
 			#region [ Input管理 の初期化 ]
 			//---------------------
 			Trace.TraceInformation("DirectInput, MIDI入力の初期化を行います。");
@@ -888,6 +887,14 @@ namespace DTXMania
 				st.plugin.OnManagedリソースの作成();
 				Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 			}
+
+			#region [ 現在の電源プランをバックアップし、HighPerformanceに変更 ]
+			cPowerPlan = new CPowerPlan();
+			cPowerPlan.BackupCurrentPowerPlan();
+			cPowerPlan.ChangeHighPerformance();
+			#endregion
+
+
 #if GPUFlushAfterPresent
 			FrameEnd += dtxmania_FrameEnd;
 #endif
@@ -964,6 +971,7 @@ namespace DTXMania
 		}
 		protected override void OnExiting(EventArgs e)
 		{
+			cPowerPlan.RestoreCurrentPowerPlan();			// 電源プランを元のものに戻す
 			CPowerManagement.tEnableMonitorSuspend();		// スリープ抑止状態を解除
 			this.t終了処理();
 			base.OnExiting(e);
@@ -2023,6 +2031,7 @@ namespace DTXMania
 		}
 		private CSound previewSound;
 		private CCounter ccMouseShow;
+		private CPowerPlan cPowerPlan;
 
 
 		public void ShowWindowTitleWithSoundType()
