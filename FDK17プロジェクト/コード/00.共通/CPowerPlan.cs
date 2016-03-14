@@ -18,7 +18,7 @@ namespace FDK
 		//                             http://stackoverflow.com/questions/20407094/c-sharp-how-to-use-callntpowerinformation-with-interop-to-get-system-power-infor
 
 		readonly private Guid GuidHighPerformance = new Guid( "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c" );		// Vista以降は全部これのはず
-		private Guid GuidCurrent;
+		private Guid GuidBackup;
 		private bool bConnectedStandbySupported = false;
 
 
@@ -26,7 +26,7 @@ namespace FDK
 
 		public CPowerPlan()
 		{
-			GuidCurrent = System.Guid.Empty;
+			GuidBackup = System.Guid.Empty;
 		}
 
 
@@ -40,8 +40,8 @@ namespace FDK
 			}
 			else
 			{
-				GuidCurrent = GetActivePowerPlan();
-				Trace.TraceInformation( "現在の電源プラン「{0}」をバックアップしました。", GetFriendlyName( GuidCurrent ) );
+				GuidBackup = GetActivePowerPlan();
+				Trace.TraceInformation( "現在の電源プラン「{0}」をバックアップしました。", GetFriendlyName( GuidBackup ) );
 			}
 		}
 
@@ -56,36 +56,34 @@ namespace FDK
 				// Win8以前であれば、ConnectedStandby非サポートが確定
 				return false;
 			}
-			else
+
+			CWin32.SYSTEM_POWER_CAPABILITIES cap;
+			uint retval = CWin32.CallNtPowerInformation(
+				(int) CWin32.POWER_INFORMATION_LEVEL.SystemPowerCapabilities,
+				IntPtr.Zero,
+				0,
+				out cap,
+				Marshal.SizeOf( typeof( CWin32.SYSTEM_POWER_CAPABILITIES ) )
+			);
+			if ( retval == 0 )
 			{
-				CWin32.SYSTEM_POWER_CAPABILITIES cap;
-				uint retval = CWin32.CallNtPowerInformation(
-					(int) CWin32.POWER_INFORMATION_LEVEL.SystemPowerCapabilities,
-					IntPtr.Zero,
-					0,
-					out cap,
-					Marshal.SizeOf( typeof( CWin32.SYSTEM_POWER_CAPABILITIES ) )
-				);
-				if ( retval == 0 )
+				Debug.WriteLine( "SYSTEM_POWER_CAPABILITIES.AOAC: " + cap.AoAc );
+				if ( cap.AoAc )
 				{
-					Debug.WriteLine( "SYSTEM_POWER_CAPABILITIES.AOAC: " + cap.AoAc );
-					if ( cap.AoAc )
-					{
-						Debug.WriteLine( "Connected Standby is enabled." );
-						return true;
-					}
-					else
-					{
-						Debug.WriteLine( "Connected Standby is NOT enabled." );
-						return false;
-					}
+					Debug.WriteLine( "Connected Standby is enabled." );
+					return true;
 				}
 				else
 				{
-					Debug.WriteLine( "CallNtPowerInformation returned: " + retval );
-					//Debug.WriteLine( "Call to CallNTPowerInformation failed. GetLastError: %d\n", GetLastError() );
+					Debug.WriteLine( "Connected Standby is NOT enabled." );
 					return false;
 				}
+			}
+			else
+			{
+				Debug.WriteLine( "CallNtPowerInformation returned: " + retval );
+				//Debug.WriteLine( "Call to CallNTPowerInformation failed. GetLastError: %d\n", GetLastError() );
+				return false;
 			}
 		}
 
@@ -97,11 +95,11 @@ namespace FDK
 			}
 			else
 			{
-				if ( GuidCurrent != System.Guid.Empty )
+				if ( GuidBackup != System.Guid.Empty )
 				{
-					SetActivePowerPlan( GuidCurrent );
-					Trace.TraceInformation( "電源プランを、「{0}」に戻しました。", GetFriendlyName( GuidCurrent ) );
-					GuidCurrent = System.Guid.Empty;
+					SetActivePowerPlan( GuidBackup );
+					Trace.TraceInformation( "電源プランを、「{0}」に戻しました。", GetFriendlyName( GuidBackup ) );
+					GuidBackup = System.Guid.Empty;
 				}
 			}
 		}
@@ -135,7 +133,7 @@ namespace FDK
 		}
 
 
-		public IEnumerable<Guid> FindAll()
+		private IEnumerable<Guid> FindAll()
 		{
 			var schemeGuid = Guid.Empty;
 			uint sizeSchemeGuid = (uint) Marshal.SizeOf( typeof( Guid ) );

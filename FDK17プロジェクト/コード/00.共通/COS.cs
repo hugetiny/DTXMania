@@ -32,7 +32,7 @@ namespace FDK
 			}
 		}
 		/// <summary>
-		/// OSがXP以前ならfalse, Vista以降ならtrueを返す
+		/// OSがWin7以前ならfalse, Win8以降ならtrueを返す
 		/// </summary>
 		/// <returns></returns>
 		public static bool bIsWin8OrLater
@@ -41,7 +41,7 @@ namespace FDK
 			{
 				//プラットフォームの取得
 				System.OperatingSystem os = System.Environment.OSVersion;
-				if ( os.Platform != PlatformID.Win32NT )		// NT系でなければ、XP以前か、PC Windows系以外のOSのため、Vista以降ではない。よってfalseを返す。
+				if ( os.Platform != PlatformID.Win32NT )		// NT系でなければ、XP以前か、PC Windows系以外のOSのため、Win8以降ではない。よってfalseを返す。
 				{
 					return false;
 				}
