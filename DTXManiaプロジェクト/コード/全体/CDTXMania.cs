@@ -13,6 +13,8 @@ using SlimDX;
 using SlimDX.Direct3D9;
 using FDK;
 using SampleFramework;
+using System.Runtime.Serialization;
+using System.Xml;
 
 namespace DTXMania
 {
@@ -149,6 +151,7 @@ namespace DTXMania
 		public bool bApplicationActive { get; private set; }
 		public bool b次のタイミングで垂直帰線同期切り替えを行う { get; set; }
 		public bool b次のタイミングで全画面_ウィンドウ切り替えを行う { get; set; }
+		public Coordinates Coordinates { get; set; }
 		public Device Device
 		{
 			get
@@ -212,6 +215,12 @@ namespace DTXMania
 
 			//---------------------
 			#endregion
+
+			#region[座標値読み込み]
+			Coordinates = new Coordinates();
+			UpdateCoordinates();
+			#endregion
+
 			#region [ ログ出力開始 ]
 			//---------------------
 			Trace.AutoFlush = true;
@@ -1808,44 +1817,44 @@ namespace DTXMania
 
 								for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
 								{
-									if (!record[(int)inst].b全AUTOである && record[(int)inst].n全チップ数 > 0)
+									if (!record[inst].b全AUTOである && record[inst].n全チップ数 > 0)
 									{
-										playskill = record[(int)inst].db演奏型スキル値;
+										playskill = record[inst].db演奏型スキル値;
 									}
 								}
 
 								string str = "Cleared";
 								switch (CScoreIni.t総合ランク値を計算して返す(record))
 								{
-									case (int)CScoreIni.ERANK.SS:
+									case CScoreIni.ERANK.SS:
 										str = string.Format("Cleared (SS: {0:F2})", playskill);
 										break;
 
-									case (int)CScoreIni.ERANK.S:
+									case CScoreIni.ERANK.S:
 										str = string.Format("Cleared (S: {0:F2})", playskill);
 										break;
 
-									case (int)CScoreIni.ERANK.A:
+									case CScoreIni.ERANK.A:
 										str = string.Format("Cleared (A: {0:F2})", playskill);
 										break;
 
-									case (int)CScoreIni.ERANK.B:
+									case CScoreIni.ERANK.B:
 										str = string.Format("Cleared (B: {0:F2})", playskill);
 										break;
 
-									case (int)CScoreIni.ERANK.C:
+									case CScoreIni.ERANK.C:
 										str = string.Format("Cleared (C: {0:F2})", playskill);
 										break;
 
-									case (int)CScoreIni.ERANK.D:
+									case CScoreIni.ERANK.D:
 										str = string.Format("Cleared (D: {0:F2})", playskill);
 										break;
 
-									case (int)CScoreIni.ERANK.E:
+									case CScoreIni.ERANK.E:
 										str = string.Format("Cleared (E: {0:F2})", playskill);
 										break;
 
-									case (int)CScoreIni.ERANK.UNKNOWN:	// #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
+									case CScoreIni.ERANK.UNKNOWN:	// #23534 2010.10.28 yyagi add: 演奏チップが0個のとき
 										str = "Cleared (No chips)";
 										break;
 								}
@@ -1961,7 +1970,8 @@ namespace DTXMania
 						break;
 				}
 			}
-			this.Device.EndScene();			// Present()は game.csのOnFrameEnd()に登録された、GraphicsDeviceManager.game_FrameEnd() 内で実行されるので不要
+			this.Device.EndScene();
+			// Present()は game.csのOnFrameEnd()に登録された、GraphicsDeviceManager.game_FrameEnd() 内で実行されるので不要
 			// (つまり、Present()は、Draw()完了後に実行される)
 #if !GPUFlushAfterPresent
 			actFlushGPU.On進行描画();		// Flush GPU	// EndScene()～Present()間 (つまりVSync前) でFlush実行
@@ -2007,6 +2017,54 @@ namespace DTXMania
 
 		// その他
 
+		/// <summary>
+		/// 座標値を読み込む。Coordinates メンバ初期化後いつ呼び出しても構わない。
+		/// </summary>
+		public void UpdateCoordinates()
+		{
+			string coordXml = strEXEのあるフォルダ + "Coordinates.xml";
+
+			// デシリアライズ
+			if (File.Exists(coordXml))
+			{
+				using (XmlReader xr = XmlReader.Create(coordXml))
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Coordinates));
+					//Coordinates = (DisplayXML)serializer.ReadObject(xr);
+				}
+			}
+			// シリアライズ
+			XmlWriterSettings settings = new XmlWriterSettings();
+			settings.IndentChars = "  ";
+			settings.Indent = true;
+			settings.NewLineChars = Environment.NewLine;
+			settings.Encoding = new System.Text.UTF8Encoding(false);
+			using (XmlWriter xw = XmlWriter.Create(coordXml, settings))
+			{
+				DataContractSerializer serializer = new DataContractSerializer(typeof(Coordinates));
+				serializer.WriteObject(xw, Coordinates);
+			}
+			// もう一度デシリアライズ
+			if (File.Exists(coordXml))
+			{
+				using (XmlReader xr = XmlReader.Create(coordXml))
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Coordinates));
+					Coordinates = (Coordinates)serializer.ReadObject(xr);
+				}
+			}
+		}
+
+		public void ShowWindowTitleWithSoundType()
+		{
+			string delay = "";
+			if (Sound管理.GetCurrentSoundDeviceType() != "DirectSound")
+			{
+				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
+			}
+			base.Window.Text = strWindowTitle + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
+		}
+
 		#region [ private ]
 		//-----------------
 		private bool bマウスカーソル表示中 = true;
@@ -2032,17 +2090,6 @@ namespace DTXMania
 		private CSound previewSound;
 		private CCounter ccMouseShow;
 		private CPowerPlan cPowerPlan;
-
-
-		public void ShowWindowTitleWithSoundType()
-		{
-			string delay = "";
-			if (Sound管理.GetCurrentSoundDeviceType() != "DirectSound")
-			{
-				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
-			}
-			base.Window.Text = strWindowTitle + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
-		}
 
 		private void t終了処理()
 		{
@@ -2370,7 +2417,7 @@ namespace DTXMania
 		}
 		private CScoreIni tScoreIniへBGMAdjustとHistoryとPlayCountを更新(string str新ヒストリ行)
 		{
-			bool bIsUpdatedDrums, bIsUpdatedGuitar, bIsUpdatedBass;
+			STDGBVALUE<bool> isUpdated = new STDGBVALUE<bool>();
 			string strFilename = DTX.strファイル名の絶対パス + ".score.ini";
 			CScoreIni ini = new CScoreIni(strFilename);
 			if (!File.Exists(strFilename))
@@ -2378,27 +2425,37 @@ namespace DTXMania
 				ini.stファイル.Title = DTX.TITLE;
 				ini.stファイル.Name = DTX.strファイル名;
 				ini.stファイル.Hash = CScoreIni.tファイルのMD5を求めて返す(DTX.strファイル名の絶対パス);
-				for (int i = 0; i < 6; i++)
+				for ( E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; ++i)
 				{
-					ini.stセクション[i].nPerfectになる範囲ms = nPerfect範囲ms;
-					ini.stセクション[i].nGreatになる範囲ms = nGreat範囲ms;
-					ini.stセクション[i].nGoodになる範囲ms = nGood範囲ms;
-					ini.stセクション[i].nPoorになる範囲ms = nPoor範囲ms;
+					ini.stセクション.HiScore[i].nPerfectになる範囲ms = nPerfect範囲ms;
+					ini.stセクション.HiScore[i].nGreatになる範囲ms = nGreat範囲ms;
+					ini.stセクション.HiScore[i].nGoodになる範囲ms = nGood範囲ms;
+					ini.stセクション.HiScore[i].nPoorになる範囲ms = nPoor範囲ms;
+					
+					ini.stセクション.HiSkill[i].nPerfectになる範囲ms = nPerfect範囲ms;
+					ini.stセクション.HiSkill[i].nGreatになる範囲ms = nGreat範囲ms;
+					ini.stセクション.HiSkill[i].nGoodになる範囲ms = nGood範囲ms;
+					ini.stセクション.HiSkill[i].nPoorになる範囲ms = nPoor範囲ms;
+					
+					ini.stセクション.LastPlay[i].nPerfectになる範囲ms = nPerfect範囲ms;
+					ini.stセクション.LastPlay[i].nGreatになる範囲ms = nGreat範囲ms;
+					ini.stセクション.LastPlay[i].nGoodになる範囲ms = nGood範囲ms;
+					ini.stセクション.LastPlay[i].nPoorになる範囲ms = nPoor範囲ms;
 				}
 			}
 			ini.stファイル.BGMAdjust = DTX.nBGMAdjust;
-			CScoreIni.t更新条件を取得する(out bIsUpdatedDrums, out bIsUpdatedGuitar, out bIsUpdatedBass);
-			if (bIsUpdatedDrums || bIsUpdatedGuitar || bIsUpdatedBass)
+			isUpdated = CScoreIni.t更新条件を取得する();
+			if ( isUpdated.Drums || isUpdated.Guitar || isUpdated.Bass )
 			{
-				if (bIsUpdatedDrums)
+				if (isUpdated.Drums)
 				{
 					ini.stファイル.PlayCountDrums++;
 				}
-				if (bIsUpdatedGuitar)
+				if (isUpdated.Guitar)
 				{
 					ini.stファイル.PlayCountGuitar++;
 				}
-				if (bIsUpdatedBass)
+				if (isUpdated.Bass)
 				{
 					ini.stファイル.PlayCountBass++;
 				}
@@ -2446,18 +2503,12 @@ namespace DTXMania
 		{
 			var domain = (AppDomain)sender;
 
-
 			foreach (var assembly in domain.GetAssemblies())
 			{
 				if (assembly.FullName == args.Name)
 					return assembly;
 			}
-
-
 			return null;
-
-
-
 		}
 		private void t指定フォルダ内でのプラグイン検索と生成(string strプラグインフォルダパス, string strプラグイン型名)
 		{
@@ -2617,21 +2668,6 @@ namespace DTXMania
 			ConfigIni.nウインドウheight = (ConfigIni.bウィンドウモード) ? base.Window.ClientSize.Height : currentClientSize.Height;
 		}
 		#endregion
-
-		//internal sealed class GCBeep	// GC発生の度にbeep
-		//{
-		//    ~GCBeep()
-		//    {
-		//        Console.Beep();
-		//        if ( !AppDomain.CurrentDomain.IsFinalizingForUnload()
-		//            && !Environment.HasShutdownStarted )
-		//        {
-		//            new GCBeep();
-		//        }
-		//    }
-		//}
-
-		//-----------------
 
 		//Stopwatch sw = new Stopwatch();
 		//List<int> swlist1, swlist2, swlist3, swlist4, swlist5;

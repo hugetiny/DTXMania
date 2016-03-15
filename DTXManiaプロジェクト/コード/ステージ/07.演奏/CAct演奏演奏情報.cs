@@ -36,8 +36,6 @@ namespace DTXMania
 		}
 		public void t進行描画(int x, int y)
 		{
-			x = (int)(x * Scale.X);
-			y = (int)(y * Scale.Y);
 			if (!base.b活性化してない)
 			{
 				y += (int)(0x153 * Scale.Y);
@@ -60,10 +58,10 @@ namespace DTXMania
 				CDTXMania.Instance.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.白, string.Format("Frame:         {0} fps", CDTXMania.Instance.FPS.n現在のFPS));
 				y -= 0x10 * 2;
 				//CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound CPU :    {0:####0.00}%", CDTXMania.Instance.Sound管理.GetCPUusage() ) );
-				//y -= 0x10 * 2;
-				//CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Mixing:  {0:####0}", CDTXMania.Instance.Sound管理.GetMixingStreams() ) );
-				//y -= 0x10 * 2;
-				//CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Streams: {0:####0}", CDTXMania.Instance.Sound管理.GetStreams() ) );
+				y -= 0x10 * 2;
+				CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Mixing:  {0:####0}", CDTXMania.Instance.Sound管理.GetMixingStreams() ) );
+				y -= 0x10 * 2;
+				CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Streams: {0:####0}", CDTXMania.Instance.Sound管理.GetStreams() ) );
 				//y -= 0x10 * 2;
 			}
 		}

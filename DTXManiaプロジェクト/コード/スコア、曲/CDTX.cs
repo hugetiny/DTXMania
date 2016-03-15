@@ -49,7 +49,7 @@ namespace DTXMania
 		public string MIDIFILE;
 		public bool MIDINOTE;
 		public int MIDIレベル;
-		public STLANEINT n可視チップ数;
+		public STDGBVALUE<int> n可視チップ数;
 		public const int n最大音数 = 4;
 		public const int n小節の解像度 = 384;
 		public string PANEL;

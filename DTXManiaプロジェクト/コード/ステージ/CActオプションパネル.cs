@@ -249,10 +249,10 @@ namespace DTXMania
 			new Rectangle( (int)(120 * Scale.X), (int)(60 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
 		};
 		private readonly Rectangle[] rcPosition = new Rectangle[] {
+			new Rectangle( (int)(24 * Scale.X), (int)( 72 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) ),		// OFF
 			new Rectangle( (int)( 0 * Scale.X), (int)( 48 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) ),		// P-A
 			new Rectangle( (int)( 0 * Scale.X), (int)( 60 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) ),		// P-B
 			new Rectangle( (int)( 0 * Scale.X), (int)( 72 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) ),		// P-C
-			new Rectangle( (int)(24 * Scale.X), (int)( 72 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) )		// OFF
 		};
 		private readonly Rectangle[] rcRandom = new Rectangle[] {
 			new Rectangle( (int)(0x48 * Scale.X), (int)(0x30 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),

@@ -24,7 +24,7 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			for (int i = 0; i < 3; i++)
+			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 			{
 				this.db現在の譜面スクロール速度[i] = (double)CDTXMania.Instance.ConfigIni.n譜面スクロール速度[i];
 				this.n速度変更制御タイマ[i] = -1;
@@ -41,7 +41,7 @@ namespace DTXMania
 					base.b初めての進行描画 = false;
 				}
 				long n現在時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
 					double db譜面スクロールスピード = (double)CDTXMania.Instance.ConfigIni.n譜面スクロール速度[i];
 					if (n現在時刻 < this.n速度変更制御タイマ[i])

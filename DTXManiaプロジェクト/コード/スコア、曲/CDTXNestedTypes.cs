@@ -466,150 +466,6 @@ namespace DTXMania
 
 
 		// 構造体
-		public struct STLANEINT
-		{
-			public int HH;
-			public int SD;
-			public int BD;
-			public int HT;
-			public int LT;
-			public int CY;
-			public int FT;
-			public int HHO;
-			public int RD;
-			public int LC;
-
-			public int LP;
-			public int LBD;
-
-			public int Drums
-			{
-				get
-				{
-					return this.HH + this.SD + this.BD + this.HT + this.LT + this.CY + this.FT + this.HHO + this.RD + this.LC + this.LP + this.LBD;
-				}
-			}
-			public int Guitar;
-			public int Bass;
-
-			public int this[int index]
-			{
-				get
-				{
-					switch (index)
-					{
-						case 0:
-							return this.HH;
-
-						case 1:
-							return this.SD;
-
-						case 2:
-							return this.BD;
-
-						case 3:
-							return this.HT;
-
-						case 4:
-							return this.LT;
-
-						case 5:
-							return this.CY;
-
-						case 6:
-							return this.FT;
-
-						case 7:
-							return this.HHO;
-
-						case 8:
-							return this.RD;
-
-						case 9:
-							return this.LC;
-
-						case 10:
-							return this.Guitar;
-
-						case 11:
-							return this.Bass;
-
-						case 12:
-							return this.LP;
-
-						case 13:
-							return this.LBD;
-					}
-					throw new IndexOutOfRangeException();
-				}
-				set
-				{
-					if (value < 0)
-					{
-						throw new ArgumentOutOfRangeException();
-					}
-					switch (index)
-					{
-						case 0:
-							this.HH = value;
-							return;
-
-						case 1:
-							this.SD = value;
-							return;
-
-						case 2:
-							this.BD = value;
-							return;
-
-						case 3:
-							this.HT = value;
-							return;
-
-						case 4:
-							this.LT = value;
-							return;
-
-						case 5:
-							this.CY = value;
-							return;
-
-						case 6:
-							this.FT = value;
-							return;
-
-						case 7:
-							this.HHO = value;
-							return;
-
-						case 8:
-							this.RD = value;
-							return;
-
-						case 9:
-							this.LC = value;
-							return;
-
-						case 10:
-							this.Guitar = value;
-							return;
-
-						case 11:
-							this.Bass = value;
-							return;
-
-						case 12:
-							this.LP = value;
-							return;
-
-						case 13:
-							this.LBD = value;
-							return;
-					}
-					throw new IndexOutOfRangeException();
-				}
-			}
-		}
 		public struct STRESULT
 		{
 			public string SS;
@@ -702,6 +558,27 @@ namespace DTXMania
 
 			public bool LeftPedal;
 			public bool LeftBassDrum;
+
+			public bool this[E楽器パート inst]
+			{
+				get
+				{
+					bool ret = false;
+					if (inst == E楽器パート.DRUMS)
+					{
+						ret = this.Drums;
+					}
+					else if (inst == E楽器パート.GUITAR)
+					{
+						ret = this.Guitar;
+					}
+					else if (inst == E楽器パート.BASS)
+					{
+						ret = this.Bass;
+					}
+					return ret;
+				}
+			}
 
 			public bool this[int index]
 			{

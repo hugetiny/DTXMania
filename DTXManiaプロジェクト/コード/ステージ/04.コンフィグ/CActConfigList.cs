@@ -480,6 +480,13 @@ namespace DTXMania
 			"Settings for the system key/pad inputs.");
 			this.list項目リスト.Add(this.iSystemGoToKeyAssign);
 
+			// #24074 2011.01.23 add ikanick
+			this.iGraph = new CItemToggle("Graph", CDTXMania.Instance.ConfigIni.bGraph,
+				"最高スキルと比較できるグラフを表示します。\n" +
+				"オートプレイだと表示されません。",
+				"To draw Graph or not.");
+			this.list項目リスト.Add(this.iGraph);
+
 			OnListMenuの初期化();
 			this.n現在の選択項目 = 0;
 			this.eメニュー種別 = Eメニュー種別.System;
@@ -881,13 +888,6 @@ namespace DTXMania
 				"You can set from -99 to 99ms.\n" +
 				"To decrease input lag, set minus value.");
 			this.list項目リスト.Add(this.iDrumsInputAdjustTimeMs);
-
-			// #24074 2011.01.23 add ikanick
-			this.iDrumsGraph = new CItemToggle("Graph", CDTXMania.Instance.ConfigIni.bGraph.Drums,
-				"最高スキルと比較できるグラフを表示します。\n" +
-				"オートプレイだと表示されません。",
-				"To draw Graph or not.");
-			this.list項目リスト.Add(this.iDrumsGraph);
 
 			this.iDrumsGoToKeyAssign = new CItemBase("Drums Keys", CItemBase.Eパネル種別.通常,
 				"ドラムのキー入力に関する項目を設定します。",
@@ -1311,15 +1311,14 @@ namespace DTXMania
 		private int getDefaultSudHidValue(E楽器パート eInst)
 		{
 			int defvar;
-			int nInst = (int)eInst;
-			if (CDTXMania.Instance.ConfigIni.eInvisible[nInst] != EInvisible.OFF)
+			if (CDTXMania.Instance.ConfigIni.eInvisible[eInst] != EInvisible.OFF)
 			{
-				defvar = (int)CDTXMania.Instance.ConfigIni.eInvisible[nInst] + 3;
+				defvar = (int)CDTXMania.Instance.ConfigIni.eInvisible[eInst] + 3;
 			}
 			else
 			{
-				defvar = (CDTXMania.Instance.ConfigIni.bSudden[nInst] ? 1 : 0) +
-						 (CDTXMania.Instance.ConfigIni.bHidden[nInst] ? 2 : 0);
+				defvar = (CDTXMania.Instance.ConfigIni.bSudden[eInst] ? 1 : 0) +
+						 (CDTXMania.Instance.ConfigIni.bHidden[eInst] ? 2 : 0);
 			}
 			return defvar;
 		}
@@ -2587,7 +2586,7 @@ namespace DTXMania
 		private CItemToggle iDrumsSnare;
 		//private CItemToggle iDrumsSudden;
 		private CItemToggle iDrumsTight;
-		private CItemToggle iDrumsGraph;        // #24074 2011.01.23 add ikanick
+		private CItemToggle iGraph;        // #24074 2011.01.23 add ikanick
 		private CItemList iDrumsLanePosition;
 
 		//private CItemToggle iGuitarAutoPlay;
@@ -2743,6 +2742,8 @@ namespace DTXMania
 			CDTXMania.Instance.ConfigIni.e判定表示優先度 = (E判定表示優先度)this.iSystemJudgeDispPriority.n現在選択されている項目番号;
 
 			CDTXMania.Instance.ConfigIni.b曲読み込みを高速化する = this.iSystemLoadsoundspeed.bON;// #36046 2016.2.21 ikanick
+			CDTXMania.Instance.ConfigIni.bGraph = this.iGraph.bON;// #24074 2011.01.23 add ikanick
+
 		}
 		private void tConfigIniへ記録する_Bass()
 		{
@@ -2795,8 +2796,7 @@ namespace DTXMania
 			CDTXMania.Instance.ConfigIni.判定文字表示位置.Drums = (E判定文字表示位置)this.iDrumsPosition.n現在選択されている項目番号;
 			CDTXMania.Instance.ConfigIni.bTight = this.iDrumsTight.bON;
 			CDTXMania.Instance.ConfigIni.nInputAdjustTimeMs.Drums = this.iDrumsInputAdjustTimeMs.n現在の値;		// #23580 2011.1.3 yyagi
-			CDTXMania.Instance.ConfigIni.bGraph.Drums = this.iDrumsGraph.bON;// #24074 2011.01.23 add ikanick
-
+			
 			CDTXMania.Instance.ConfigIni.eHHGroup = (EHHGroup)this.iSystemHHGroup.n現在選択されている項目番号;
 			CDTXMania.Instance.ConfigIni.eFTGroup = (EFTGroup)this.iSystemFTGroup.n現在選択されている項目番号;
 			CDTXMania.Instance.ConfigIni.eCYGroup = (ECYGroup)this.iSystemCYGroup.n現在選択されている項目番号;

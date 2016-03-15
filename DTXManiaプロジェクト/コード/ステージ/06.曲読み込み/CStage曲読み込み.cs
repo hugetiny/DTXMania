@@ -292,7 +292,6 @@ namespace DTXMania
 							str = CDTXMania.Instance.strコンパクトモードファイル;
 
 						CScoreIni ini = new CScoreIni(str + ".score.ini");
-						ini.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
 
 						if ((CDTXMania.Instance.DTX != null) && CDTXMania.Instance.DTX.b活性化してる)
 							CDTXMania.Instance.DTX.On非活性化();
@@ -306,64 +305,63 @@ namespace DTXMania
 						// #35411 2015.08.19 chnmr0 add
 						// Read ghost data by config
 						// It does not exist a ghost file for 'perfect' actually
-						string[] inst = { "dr", "gt", "bs" };
+						STDGBVALUE<string> inst = new STDGBVALUE<string>();
+						inst.Drums = "dr";
+						inst.Guitar = "gt";
+						inst.Bass = "bs";
 						if (CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass)
 						{
-							inst[1] = "bs";
-							inst[2] = "gt";
+							inst.Guitar = "bs";
+							inst.Bass = "gt";
 						}
 
-						for (int instIndex = 0; instIndex < inst.Length; ++instIndex)
+						for (E楽器パート einst = E楽器パート.DRUMS; einst <= E楽器パート.BASS; ++einst)
 						{
 							bool readAutoGhostCond = false;
-							readAutoGhostCond |= instIndex == 0 ? CDTXMania.Instance.ConfigIni.bドラムが全部オートプレイである : false;
-							readAutoGhostCond |= instIndex == 1 ? CDTXMania.Instance.ConfigIni.bギターが全部オートプレイである : false;
-							readAutoGhostCond |= instIndex == 2 ? CDTXMania.Instance.ConfigIni.bベースが全部オートプレイである : false;
+							readAutoGhostCond |= einst == E楽器パート.DRUMS ? CDTXMania.Instance.ConfigIni.bドラムが全部オートプレイである : false;
+							readAutoGhostCond |= einst == E楽器パート.GUITAR ? CDTXMania.Instance.ConfigIni.bギターが全部オートプレイである : false;
+							readAutoGhostCond |= einst == E楽器パート.BASS ? CDTXMania.Instance.ConfigIni.bベースが全部オートプレイである : false;
 
-							CDTXMania.Instance.DTX.listTargetGhsotLag[instIndex] = null;
-							CDTXMania.Instance.DTX.listAutoGhostLag[instIndex] = null;
+							CDTXMania.Instance.DTX.listTargetGhsotLag[einst] = null;
+							CDTXMania.Instance.DTX.listAutoGhostLag[einst] = null;
 
 							if (readAutoGhostCond)
 							{
 								string[] prefix = { "perfect", "lastplay", "hiskill", "hiscore", "online" };
-								int indPrefix = (int)CDTXMania.Instance.ConfigIni.eAutoGhost[instIndex];
-								string filename = CDTXMania.Instance.DTX.strフォルダ名 + "\\" + CDTXMania.Instance.DTX.strファイル名 + "." + prefix[indPrefix] + "." + inst[instIndex] + ".ghost";
+								int indPrefix = (int)CDTXMania.Instance.ConfigIni.eAutoGhost[einst];
+								string filename = CDTXMania.Instance.DTX.strフォルダ名 + "\\" + CDTXMania.Instance.DTX.strファイル名 + "." + prefix[indPrefix] + "." + inst[einst] + ".ghost";
 								if (File.Exists(filename))
 								{
-									CDTXMania.Instance.DTX.listAutoGhostLag[instIndex] = new List<int>();
-									ReadGhost(filename, CDTXMania.Instance.DTX.listAutoGhostLag[instIndex]);
+									CDTXMania.Instance.DTX.listAutoGhostLag[einst] = new List<int>();
+									ReadGhost(filename, CDTXMania.Instance.DTX.listAutoGhostLag[einst]);
 								}
 							}
 
-							if (CDTXMania.Instance.ConfigIni.eTargetGhost[instIndex] != ETargetGhostData.NONE)
+							if (CDTXMania.Instance.ConfigIni.eTargetGhost[einst] != ETargetGhostData.NONE)
 							{
 								string[] prefix = { "none", "perfect", "lastplay", "hiskill", "hiscore", "online" };
-								int indPrefix = (int)CDTXMania.Instance.ConfigIni.eTargetGhost[instIndex];
-								string filename = CDTXMania.Instance.DTX.strフォルダ名 + "\\" + CDTXMania.Instance.DTX.strファイル名 + "." + prefix[indPrefix] + "." + inst[instIndex] + ".ghost";
+								int indPrefix = (int)CDTXMania.Instance.ConfigIni.eTargetGhost[einst];
+								string filename = CDTXMania.Instance.DTX.strフォルダ名 + "\\" + CDTXMania.Instance.DTX.strファイル名 + "." + prefix[indPrefix] + "." + inst[einst] + ".ghost";
 								if (File.Exists(filename))
 								{
-									CDTXMania.Instance.DTX.listTargetGhsotLag[instIndex] = new List<int>();
-									ReadGhost(filename, CDTXMania.Instance.DTX.listTargetGhsotLag[instIndex]);
+									CDTXMania.Instance.DTX.listTargetGhsotLag[einst] = new List<int>();
+									ReadGhost(filename, CDTXMania.Instance.DTX.listTargetGhsotLag[einst]);
 								}
-								else if (CDTXMania.Instance.ConfigIni.eTargetGhost[instIndex] == ETargetGhostData.PERFECT)
+								else if (CDTXMania.Instance.ConfigIni.eTargetGhost[einst] == ETargetGhostData.PERFECT)
 								{
 									// All perfect
-									CDTXMania.Instance.DTX.listTargetGhsotLag[instIndex] = new List<int>();
+									CDTXMania.Instance.DTX.listTargetGhsotLag[einst] = new List<int>();
 								}
 							}
 						}
 
 						// #35411 2015.08.19 chnmr0 add ゴースト機能のためList chip 読み込み後楽器パート出現順インデックスを割り振る
-						int[] curCount = new int[(int)E楽器パート.UNKNOWN];
-						for (int i = 0; i < curCount.Length; ++i)
-						{
-							curCount[i] = 0;
-						}
+						STDGBVALUE<int> curCount = new STDGBVALUE<int>();
 						foreach (CChip chip in CDTXMania.Instance.DTX.listChip)
 						{
 							if (chip.e楽器パート != E楽器パート.UNKNOWN)
 							{
-								chip.n楽器パートでの出現順 = curCount[(int)chip.e楽器パート]++;
+								chip.n楽器パートでの出現順 = curCount[chip.e楽器パート]++;
 							}
 						}
 

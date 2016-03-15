@@ -13,9 +13,6 @@ namespace DTXMania
 	{
 		private readonly string QuickCfgTitle = "Quick Config";
 
-
-		// コンストラクタ
-
 		public CActSelectQuickConfig()
 		{
 			CActSelectQuickConfigMain();
@@ -37,27 +34,30 @@ namespace DTXMania
 			•More... 
 			•EXIT 
 			*/
-			lci = new List<List<List<CItemBase>>>();									// この画面に来る度に、メニューを作り直す。
+			lci = new STDGBVALUE<List<CItemBase>> [3];
+			// この画面に来る度に、メニューを作り直す。
 			for (int nConfSet = 0; nConfSet < 3; nConfSet++)
 			{
-				lci.Add(new List<List<CItemBase>>());									// ConfSet用の3つ分の枠。
-				for (int nInst = 0; nInst < 3; nInst++)
+				lci[nConfSet] = new STDGBVALUE<List<CItemBase>>();
+				// ConfSet用の3つ分の枠。
+				for (E楽器パート nInst = E楽器パート.DRUMS; nInst <= E楽器パート.BASS; nInst++)
 				{
-					lci[nConfSet].Add(null);										// Drum/Guitar/Bassで3つ分、枠を作っておく
-					lci[nConfSet][nInst] = MakeListCItemBase(nConfSet, nInst);
+					// Drum/Guitar/Bassで3つ分、枠を作っておく
+					lci[nConfSet].Drums = MakeListCItemBase(nConfSet, nInst);
 				}
 			}
-			base.Initialize(lci[nCurrentConfigSet][nCurrentTarget], true, QuickCfgTitle, 2);	// ConfSet=0, nInst=Drums
+			// ConfSet=0, nInst=Drums
+			base.Initialize(lci[nCurrentConfigSet][nCurrentTarget], true, QuickCfgTitle, 2);
 		}
 
-		private List<CItemBase> MakeListCItemBase(int nConfigSet, int nInst)
+		private List<CItemBase> MakeListCItemBase(int nConfigSet, E楽器パート nInst)
 		{
 			List<CItemBase> l = new List<CItemBase>();
 
 			#region [ 共通 Target/AutoMode/AutoLane ]
-			l.Add(new CSwitchItemList("Target", CItemBase.Eパネル種別.通常, nInst, "", "", new string[] { "Drums", "Guitar", "Bass" }));
-			List<int> automode = tConfigureAuto_DefaultSettings();
-			if (nInst == (int)E楽器パート.DRUMS)
+			l.Add(new CSwitchItemList("Target", CItemBase.Eパネル種別.通常, (int)nInst, "", "", new string[] { "Drums", "Guitar", "Bass" }));
+			STDGBVALUE<int> automode = tConfigureAuto_DefaultSettings();
+			if (nInst == E楽器パート.DRUMS)
 			{
 				l.Add(new CItemList("Auto Mode", CItemBase.Eパネル種別.通常, automode[nInst], "", "", new string[] { "All Auto", "Auto HH", "Auto BD", "Custom", "OFF" }));
 			}
@@ -150,9 +150,9 @@ namespace DTXMania
 		/// 簡易CONFIGのAUTO設定値の初期値を、ConfigIniクラスから取得・推測する
 		/// </summary>
 		/// <returns>Drums,Guitar,BassのAutoMode値のリスト</returns>
-		private List<int> tConfigureAuto_DefaultSettings()
+		private STDGBVALUE<int> tConfigureAuto_DefaultSettings()
 		{
-			List<int> l = new List<int>();
+			STDGBVALUE<int> ret = new STDGBVALUE<int>();
 			int automode;
 			#region [ Drums ]
 			// "All Auto", "Auto HH", "Auto BD", "Custom", "OFF"
@@ -185,7 +185,7 @@ namespace DTXMania
 			{
 				automode = 3;	// Custom
 			}
-			l.Add(automode);
+			ret.Drums = automode;
 			#endregion
 			#region [ Guitar ]
 			// "OFF", "ON" 
@@ -217,7 +217,7 @@ namespace DTXMania
 			{
 				automode = 3;	// Custom
 			}
-			l.Add(automode);
+			ret.Guitar = automode;
 			#endregion
 			#region [ Bass ]
 			if (CDTXMania.Instance.ConfigIni.bベースが全部オートプレイである)
@@ -246,9 +246,9 @@ namespace DTXMania
 			{
 				automode = 3;	// Custom
 			}
-			l.Add(automode);
+			ret.Bass = automode;
 			#endregion
-			return l;
+			return ret;
 		}
 
 		// メソッド
@@ -299,11 +299,11 @@ namespace DTXMania
 			string header = "", s = "";
 			switch (nCurrentTarget)
 			{
-				case (int)E楽器パート.DRUMS:
+				case E楽器パート.DRUMS:
 					header = "LHSBHLFC";
 					break;
-				case (int)E楽器パート.GUITAR:
-				case (int)E楽器パート.BASS:
+				case E楽器パート.GUITAR:
+				case E楽器パート.BASS:
 					header = "RGBPW";
 					break;
 				default:
@@ -339,7 +339,14 @@ namespace DTXMania
 			switch (n現在の選択行)
 			{
 				case (int)EOrder.Target:
-					nCurrentTarget = (nCurrentTarget + 1) % 3;
+					if(nCurrentTarget==E楽器パート.BASS)
+					{
+						nCurrentTarget=E楽器パート.DRUMS;
+					}
+					else
+					{
+						nCurrentTarget++;
+					}
 					// eInst = (E楽器パート) nCurrentTarget;	// ここではeInstは変えない。メニューを開いたタイミングでのみeInstを使う
 					Initialize(lci[nCurrentConfigSet][nCurrentTarget], true, QuickCfgTitle, n現在の選択行);
 					MakeAutoPanel();
@@ -428,7 +435,7 @@ namespace DTXMania
 		/// <param name="index">設定値(index)</param>
 		private void SetValueToAllTarget(int order, int index)
 		{
-			for (int i = 0; i < 3; i++)
+			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 			{
 				lci[nCurrentConfigSet][i][order].SetIndex(index);
 			}
@@ -440,10 +447,13 @@ namespace DTXMania
 		/// </summary>
 		private void SetAutoParameters()
 		{
-			for (int target = 0; target < 3; target++)
+			for (E楽器パート target = E楽器パート.DRUMS; target <= E楽器パート.BASS; target++)
 			{
 				string str = GetAutoParameters(target);
-				int[] pa = { (int)Eレーン.LC, (int)Eレーン.GtR, (int)Eレーン.BsR };
+				STDGBVALUE<int> pa = new STDGBVALUE<int>();
+				pa.Drums =  (int)Eレーン.LC;
+				pa.Guitar = (int)Eレーン.GtR;
+				pa.Bass = (int)Eレーン.BsR;
 				int start = pa[target];
 
 				for (int i = 0; i < str.Length; i++)
@@ -458,13 +468,13 @@ namespace DTXMania
 		/// </summary>
 		/// <param name="target">対象楽器</param>
 		/// <returns>AutoならA,さもなくば_。この文字が複数並んだ文字列。</returns>
-		private string GetAutoParameters(int target)
+		private string GetAutoParameters(E楽器パート target)
 		{
 			string s = "";
 			switch (target)
 			{
 				#region [ DRUMS ]
-				case (int)E楽器パート.DRUMS:
+				case E楽器パート.DRUMS:
 					switch (lci[nCurrentConfigSet][target][(int)EOrder.AutoMode].GetIndex())
 					{
 						case 0:	// All Auto
@@ -491,8 +501,8 @@ namespace DTXMania
 					break;
 				#endregion
 				#region [ Guitar / Bass ]
-				case (int)E楽器パート.GUITAR:
-				case (int)E楽器パート.BASS:
+				case E楽器パート.GUITAR:
+				case E楽器パート.BASS:
 					//					s = ( lci[ nCurrentConfigSet ][ target ][ (int) EOrder.AutoMode ].GetIndex() ) == 1 ? "A" : "_";
 					switch (lci[nCurrentConfigSet][target][(int)EOrder.AutoMode].GetIndex())
 					{
@@ -506,7 +516,7 @@ namespace DTXMania
 							s = "___A_";
 							break;
 						case 3:	// Custom
-							int p = (target == (int)E楽器パート.GUITAR) ? (int)Eレーン.GtR : (int)Eレーン.BsR;
+							int p = (target == E楽器パート.GUITAR) ? (int)Eレーン.GtR : (int)Eレーン.BsR;
 							int len = (int)Eレーン.GtW - (int)Eレーン.GtR + 1;
 							for (int i = p; i < p + len; i++)
 							{
@@ -569,9 +579,9 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private int nCurrentTarget = 0;
+		private E楽器パート nCurrentTarget = 0;
 		private int nCurrentConfigSet = 0;
-		private List<List<List<CItemBase>>> lci;		// DrGtBs, ConfSet, 選択肢一覧。都合、3次のListとなる。
+		private STDGBVALUE<List<CItemBase>> [] lci;
 		private enum EOrder : int
 		{
 			Target = 0,

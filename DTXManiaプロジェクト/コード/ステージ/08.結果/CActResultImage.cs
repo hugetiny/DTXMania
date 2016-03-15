@@ -207,28 +207,24 @@ namespace DTXMania
 
 		private bool t背景画像があればその一部からリザルト画像を構築する()
 		{
-			string bACKGROUND;
-			if ((CDTXMania.Instance.ConfigIni.bギタレボモード && (CDTXMania.Instance.DTX.BACKGROUND_GR != null)) && (CDTXMania.Instance.DTX.BACKGROUND_GR.Length > 0))
+			string strBackground = CDTXMania.Instance.DTX.BACKGROUND;
+			if ( string.IsNullOrEmpty(strBackground) )
 			{
-				bACKGROUND = CDTXMania.Instance.DTX.BACKGROUND_GR;
+				strBackground = CDTXMania.Instance.DTX.BACKGROUND_GR;
 			}
-			else
-			{
-				bACKGROUND = CDTXMania.Instance.DTX.BACKGROUND;
-			}
-			if (string.IsNullOrEmpty(bACKGROUND))
+			if (string.IsNullOrEmpty(strBackground))
 			{
 				return false;
 			}
 			TextureFactory.tテクスチャの解放(ref this.txリザルト画像);
 			this.r表示するリザルト画像 = null;
-			bACKGROUND = CDTXMania.Instance.DTX.strフォルダ名 + bACKGROUND;
+			strBackground = CDTXMania.Instance.DTX.strフォルダ名 + strBackground;
 			Bitmap image = null;
 			Bitmap bitmap2 = null;
 			Bitmap bitmap3 = null;
 			try
 			{
-				image = new Bitmap(bACKGROUND);
+				image = new Bitmap(strBackground);
 				bitmap2 = new Bitmap(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height);
 				Graphics graphics = Graphics.FromImage(bitmap2);
 				int x = 0;
@@ -249,7 +245,7 @@ namespace DTXMania
 			}
 			catch
 			{
-				Trace.TraceError("背景画像の読み込みに失敗しました。({0})", new object[] { bACKGROUND });
+				Trace.TraceError("背景画像の読み込みに失敗しました。({0})", new object[] { strBackground });
 				this.txリザルト画像 = null;
 				return false;
 			}
@@ -366,18 +362,18 @@ namespace DTXMania
 		}
 		private bool tリザルト画像の指定があれば構築する()
 		{
-			int rank = CScoreIni.t総合ランク値を計算して返す(CDTXMania.Instance.stage結果.st演奏記録);
-			if (rank == 99)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
+			CScoreIni.ERANK rank = CScoreIni.t総合ランク値を計算して返す(CDTXMania.Instance.stage結果.st演奏記録);
+			if (rank == CScoreIni.ERANK.UNKNOWN)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
 			{
-				rank = 6;
+				rank = CScoreIni.ERANK.E;
 			}
-			if (string.IsNullOrEmpty(CDTXMania.Instance.DTX.RESULTIMAGE[rank]))
+			if (string.IsNullOrEmpty(CDTXMania.Instance.DTX.RESULTIMAGE[(int)rank]))
 			{
 				return false;
 			}
 			TextureFactory.tテクスチャの解放(ref this.txリザルト画像);
 			this.r表示するリザルト画像 = null;
-			string path = CDTXMania.Instance.DTX.strフォルダ名 + CDTXMania.Instance.DTX.RESULTIMAGE[rank];
+			string path = CDTXMania.Instance.DTX.strフォルダ名 + CDTXMania.Instance.DTX.RESULTIMAGE[(int)rank];
 			if (!File.Exists(path))
 			{
 				Trace.TraceWarning("ファイルが存在しません。({0})", new object[] { path });
@@ -393,17 +389,17 @@ namespace DTXMania
 			{
 				return false;
 			}
-			int rank = CScoreIni.t総合ランク値を計算して返す(CDTXMania.Instance.stage結果.st演奏記録);
-			if (rank == 99)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
+			CScoreIni.ERANK rank = CScoreIni.t総合ランク値を計算して返す(CDTXMania.Instance.stage結果.st演奏記録);
+			if (rank == CScoreIni.ERANK.UNKNOWN)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
 			{
-				rank = 6;
+				rank = CScoreIni.ERANK.E;
 			}
 
-			if (string.IsNullOrEmpty(CDTXMania.Instance.DTX.RESULTMOVIE[rank]))
+			if (string.IsNullOrEmpty(CDTXMania.Instance.DTX.RESULTMOVIE[(int)rank]))
 			{
 				return false;
 			}
-			this.strAVIファイル名 = CDTXMania.Instance.DTX.strフォルダ名 + CDTXMania.Instance.DTX.RESULTMOVIE[rank];
+			this.strAVIファイル名 = CDTXMania.Instance.DTX.strフォルダ名 + CDTXMania.Instance.DTX.RESULTMOVIE[(int)rank];
 			if (!File.Exists(this.strAVIファイル名))
 			{
 				Trace.TraceWarning("リザルト動画のファイルが存在しません。({0})", this.strAVIファイル名);

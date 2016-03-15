@@ -301,7 +301,7 @@ namespace DTXMania
 			for (int i = this.n現在の選択行 - 5; i < ((this.n現在の選択行 - 5) + 13); i++)
 			{
 				int index = (i + 13) % 13;
-				for (int m = 0; m < 3; m++)
+				for (E楽器パート m = E楽器パート.DRUMS; m <= E楽器パート.BASS; m++)
 				{
 					this.stバー情報[index].nスキル値[m] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[m];
 				}
@@ -706,9 +706,10 @@ namespace DTXMania
 
 						// 新しく最下部に表示されるパネル用のスキル値を取得。
 
-						for (int i = 0; i < 3; i++)
+						for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
-
+						}
 
 						// 1行(100カウント)移動完了。
 
@@ -762,8 +763,10 @@ namespace DTXMania
 
 						// 新しく最上部に表示されるパネル用のスキル値を取得。
 
-						for (int i = 0; i < 3; i++)
+						for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
+						}
 
 
 						// 1行(100カウント)移動完了。
@@ -858,7 +861,7 @@ namespace DTXMania
 							#region [ スキル値を描画。]
 							//-----------------
 							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
-								this.tスキル値の描画(x + (int)(28 * Scale.X), y + (int)(59), this.stバー情報[nパネル番号].nスキル値[(int)this.e楽器パート]);
+								this.tスキル値の描画(x + (int)(28 * Scale.X), y + (int)(59), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
 							//-----------------
 							#endregion
 						}
@@ -887,7 +890,7 @@ namespace DTXMania
 							#region [ スキル値を描画。]
 							//-----------------
 							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
-								this.tスキル値の描画(x + (int)(14 * Scale.X), y + (int)(14 * Scale.Y), this.stバー情報[nパネル番号].nスキル値[(int)this.e楽器パート]);
+								this.tスキル値の描画(x + (int)(14 * Scale.X), y + (int)(14 * Scale.Y), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
 							//-----------------
 							#endregion
 						}
@@ -939,7 +942,7 @@ namespace DTXMania
 							this.tスキル値の描画(
 								(int)(0xf4 * Scale.X),
 								(int)(0xd3 * Scale.Y),
-								this.stバー情報[nパネル番号].nスキル値[(int)this.e楽器パート]
+								this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]
 							);
 						//-----------------
 						#endregion
@@ -966,7 +969,7 @@ namespace DTXMania
 						#region [ スキル値を描画。]
 						//-----------------
 						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
-							this.tスキル値の描画(x + (int)(14 * Scale.X), y + (int)(14 * Scale.Y), this.stバー情報[nパネル番号].nスキル値[(int)this.e楽器パート]);
+							this.tスキル値の描画(x + (int)(14 * Scale.X), y + (int)(14 * Scale.Y), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
 						//-----------------
 						#endregion
 					}
@@ -1260,8 +1263,10 @@ namespace DTXMania
 				this.stバー情報[i].col文字色 = song.col文字色;
 				this.stバー情報[i].eバー種別 = this.e曲のバー種別を返す(song);
 
-				for (int j = 0; j < 3; j++)
+				for (E楽器パート j = E楽器パート.DRUMS; j <= E楽器パート.BASS; j++)
+				{
 					this.stバー情報[i].nスキル値[j] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[j];
+				}
 
 				song = this.r次の曲(song);
 			}

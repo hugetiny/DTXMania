@@ -23,7 +23,12 @@ namespace DTXMania
 		public EBGA種別 eBGA種別 { get; private set; }
 		public E楽器パート e楽器パート { get; private set; }
 		public Ech定義 eチャンネル番号 { get; private set; }
-		public STDGBVALUE<int> nバーからの距離dot { get; private set; }
+
+		/// <summary>
+		/// バーからの距離（スクロールスピードを反映したチップの発声時刻）
+		/// プロパティに対してインデクサsetできないためまずフィールドとして持ち、プロパティでアクセスできるようにします。
+		/// </summary>
+		private STDGBVALUE<int> nバーからの距離dotInternal;
 		public int n整数値 { get; private set; }
 		public int n整数値_内部番号 { get; private set; }
 		public int n総移動時間 { get; private set; }
@@ -37,6 +42,14 @@ namespace DTXMania
 		public CDTX.CBMPTEX rBMPTEX { get; private set; }
 		public bool b演奏終了後も再生が続くチップである { get; private set; }	// #32248 2013.10.14 yyagi
 		public bool b空打ちチップである { get; private set; }					// #34029 2014.7.15 yyagi
+
+		public STDGBVALUE<int> nバーからの距離dot
+		{
+			get
+			{
+				return nバーからの距離dotInternal;
+			}
+		}
 
 		/// <summary>
 		/// このチップがベースBPM、拡張BPM指示チップであることを示す。
@@ -948,19 +961,18 @@ namespace DTXMania
 
 		public void CalcDistanceFromBar(long currentTime, STDGBVALUE<double> ScrollSpeedInSetting)
 		{
-			//double speed = 264.0;	// BPM150の時の1小節の長さ[dot]
-			const double speed = 234.0 * Scale.Y;	// BPM150の時の1小節の長さ[dot]
+			const double speed = 526.5;// BPM150の時の1小節の長さ[dot]
 			double ScrollSpeedDrums = (ScrollSpeedInSetting.Drums + 1.0) * 0.5 * 37.5 * speed / 60000.0;
 			double ScrollSpeedGuitar = (ScrollSpeedInSetting.Guitar + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
 			double ScrollSpeedBass = (ScrollSpeedInSetting.Bass + 1.0) * 0.5 * 0.5 * 37.5 * speed / 60000.0;
 
-			STDGBVALUE<int> newDot = new STDGBVALUE<int>();
+			//STDGBVALUE<int> newDot = new STDGBVALUE<int>();
 
-			newDot.Drums = (int)((n発声時刻ms - currentTime) * ScrollSpeedDrums);
-			newDot.Guitar = (int)((n発声時刻ms - currentTime) * ScrollSpeedGuitar);
-			newDot.Bass = (int)((n発声時刻ms - currentTime) * ScrollSpeedBass);
+			nバーからの距離dotInternal.Drums = (int)((n発声時刻ms - currentTime) * ScrollSpeedDrums);
+			nバーからの距離dotInternal.Guitar = (int)((n発声時刻ms - currentTime) * ScrollSpeedGuitar);
+			nバーからの距離dotInternal.Bass = (int)((n発声時刻ms - currentTime) * ScrollSpeedBass);
 
-			nバーからの距離dot = newDot;
+			//nバーからの距離dot = newDot;
 		}
 
 		public void RandomizeRGB(Eランダムモード eRandom, int seed, bool existOpen)
@@ -1123,7 +1135,7 @@ namespace DTXMania
 
 		public CChip()
 		{
-			this.nバーからの距離dot = new STDGBVALUE<int>()
+			this.nバーからの距離dotInternal = new STDGBVALUE<int>()
 			{
 				Drums = 0,
 				Guitar = 0,

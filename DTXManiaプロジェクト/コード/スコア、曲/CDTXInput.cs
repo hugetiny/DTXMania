@@ -407,15 +407,15 @@ namespace DTXMania
 						//Trace.TraceInformation( "再生時刻変更:             {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
 						#region [ 可視チップ数カウント ]
-						for (int n = 0; n < 12; n++)
+						for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
 						{
-							this.n可視チップ数[n] = 0;
+							this.n可視チップ数[inst] = 0;
 						}
 						foreach (CChip chip in this.listChip)
 						{
 							if (chip.bDrums可視チップ && !chip.b空打ちチップである)
 							{
-								this.n可視チップ数[chip.nDrumsIndex]++;
+								this.n可視チップ数.Drums++;
 							}
 							if (chip.bGuitar可視チップ)
 							{

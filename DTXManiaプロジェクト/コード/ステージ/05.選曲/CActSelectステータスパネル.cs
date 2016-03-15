@@ -22,7 +22,7 @@ namespace DTXMania
 			if ((c曲リストノード != null) && (cスコア != null))
 			{
 				this.n現在選択中の曲の難易度 = CDTXMania.Instance.stage選曲.n現在選択中の曲の難易度;
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
 					int nLevel = cスコア.譜面情報.レベル[i];
 					if (nLevel < 0)
@@ -58,10 +58,10 @@ namespace DTXMania
 			this.n本体X = (int)(3 * Scale.X);
 			this.n本体Y = (int)(0x15d * Scale.Y);
 			this.n現在選択中の曲の難易度 = 0;
-			for (int i = 0; i < 3; i++)
+			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 			{
 				this.n現在選択中の曲のレベル[i] = 0;
-				this.n現在選択中の曲の最高ランク[i] = (int)CScoreIni.ERANK.UNKNOWN;
+				this.n現在選択中の曲の最高ランク[i] = CScoreIni.ERANK.UNKNOWN;
 				this.b現在選択中の曲がフルコンボ[i] = false;
 				this.db現在選択中の曲の最高スキル値[i] = 0.0;
 			}
@@ -266,13 +266,12 @@ namespace DTXMania
 				//-----------------
 				if ((cスコア != null) && (this.txレベル数字 != null))
 				{
-					for (int i = 0; i < 3; i++)
+					for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 					{
-						int[,] nDispPosYOffset = { { 0, (int)(21 * Scale.Y), (int)(42 * Scale.Y) }, { 0, (int)(42 * Scale.Y), (int)(21 * Scale.Y) } };	// #24063 2011.1.27 yyagi
 						Rectangle rect十の位;
 						Rectangle rect一の位;
 						int nDispPosX = this.n本体X + (int)(66 * Scale.X);
-						int nDispPosY = this.n本体Y + (int)(50 * Scale.Y) + nDispPosYOffset[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i];
+						int nDispPosY = this.n本体Y + (int)(50 * Scale.Y) + CDTXMania.Instance.Coordinates.OffsetGuitarBassSwap[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0)][i].Y;
 						int nLevel = this.n現在選択中の曲のレベル[i];
 						if (nLevel < 0)
 						{
@@ -313,16 +312,15 @@ namespace DTXMania
 				#endregion
 				#region [ 選択曲の 最高スキル値ゲージ＋数値の描画 ]
 				//-----------------
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
-					int[,] nDispPosYOffset = { { 0, (int)(21 * Scale.Y), (int)(42 * Scale.Y) }, { 0, (int)(42 * Scale.Y), (int)(21 * Scale.Y) } };	// #24063 2011.1.27 yyagi
 					if (this.n現在選択中の曲のレベル[i] != 0)
 					{
 						double dMaxSkill = this.db現在選択中の曲の最高スキル値[i];
 						if (dMaxSkill != 0.0)
 						{
 							int nDispPosX = this.n本体X + (int)(100 * Scale.X);
-							int nDispPosY = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i];
+							int nDispPosY = this.n本体Y + (int)(53 * Scale.Y) + +CDTXMania.Instance.Coordinates.OffsetGuitarBassSwap[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0)][i].Y;
 							this.txスキルゲージ.t2D描画(CDTXMania.Instance.Device, nDispPosX, nDispPosY,
 														new Rectangle(0, 0, (int)(170.0 * Scale.X * dMaxSkill / 100.0), (int)(10 * Scale.Y)));
 						}
@@ -340,7 +338,7 @@ namespace DTXMania
 							}
 						}
 						int x = this.n本体X + (int)(182 * Scale.X) - nMaxSkillStringWidth / 2;
-						int y = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i];
+						int y = this.n本体Y + (int)(53 * Scale.Y) + +CDTXMania.Instance.Coordinates.OffsetGuitarBassSwap[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0)][i].Y;
 						foreach (char ch in sMaxSkillString)
 						{
 							for (int j = 0; j < 12; j++)
@@ -360,7 +358,7 @@ namespace DTXMania
 					else
 					{
 						int x = this.n本体X + (int)((182 - 20) * Scale.X);
-						int y = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i];
+						int y = this.n本体Y + (int)(53 * Scale.Y) + +CDTXMania.Instance.Coordinates.OffsetGuitarBassSwap[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0)][i].Y;
 						if (this.txゲージ用数字他 != null)
 						{
 							this.txゲージ用数字他.t2D描画(CDTXMania.Instance.Device, x, y, new Rectangle(0, (int)(22 * Scale.Y), (int)(42 * Scale.X), (int)(10 * Scale.Y)));
@@ -371,25 +369,16 @@ namespace DTXMania
 				#endregion
 				#region [ 選択曲の 最高ランクの描画 ]
 				//-----------------
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
-					int nMaxRank = this.n現在選択中の曲の最高ランク[i];
-					if (nMaxRank != 99)
+					CScoreIni.ERANK nMaxRank = this.n現在選択中の曲の最高ランク[i];
+					if (nMaxRank != CScoreIni.ERANK.UNKNOWN)
 					{
-						if (nMaxRank < 0)
-						{
-							nMaxRank = 0;
-						}
-						if (nMaxRank > 6)
-						{
-							nMaxRank = 6;
-						}
-						int[,] nDispPosYOffset = { { 0, (int)(21 * Scale.Y), (int)(42 * Scale.Y) }, { 0, (int)(42 * Scale.Y), (int)(21 * Scale.Y) } };	// #24063 2011.1.27 yyagi
 						int x = this.n本体X + (int)(278 * Scale.X);
-						int y = this.n本体Y + (int)(55 * Scale.Y) + nDispPosYOffset[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i];
+						int y = this.n本体Y + (int)(55 * Scale.Y) + +CDTXMania.Instance.Coordinates.OffsetGuitarBassSwap[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0)][i].Y;
 						if (this.txゲージ用数字他 != null)
 						{
-							this.txゲージ用数字他.t2D描画(CDTXMania.Instance.Device, x, y, this.rcランク[nMaxRank]);
+							this.txゲージ用数字他.t2D描画(CDTXMania.Instance.Device, x, y, this.rcランク[(int)nMaxRank]);
 						}
 					}
 				}
@@ -398,13 +387,12 @@ namespace DTXMania
 				#region [ 選択曲の FullCombo の 描画 ]
 				//-----------------
 				Rectangle rectFullCombo = new Rectangle((int)(30 * Scale.X), (int)(32 * Scale.Y), (int)(30 * Scale.X), (int)(16 * Scale.Y));
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
 					if (this.b現在選択中の曲がフルコンボ[i])
 					{
-						int[,] nDispPosYOffset = { { 0, (int)(21 * Scale.Y), (int)(42 * Scale.Y) }, { 0, (int)(42 * Scale.Y), (int)(21 * Scale.Y) } };	// #24063 2011.1.27 yyagi
 						int x = this.n本体X + (int)(290 * Scale.X);
-						int y = this.n本体Y + (int)(53 * Scale.Y) + nDispPosYOffset[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0), i];
+						int y = this.n本体Y + (int)(53 * Scale.Y) + +CDTXMania.Instance.Coordinates.OffsetGuitarBassSwap[(CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass ? 1 : 0)][i].Y;
 						if (this.txゲージ用数字他 != null)
 						{
 							this.txゲージ用数字他.t2D描画(CDTXMania.Instance.Device, x, y, rectFullCombo);
@@ -440,7 +428,7 @@ namespace DTXMania
 		private CCounter ct難易度矢印用;
 		private STDGBVALUE<double> db現在選択中の曲の最高スキル値;
 		private STDGBVALUE<int> n現在選択中の曲のレベル;
-		private STDGBVALUE<int> n現在選択中の曲の最高ランク;
+		private STDGBVALUE<CScoreIni.ERANK> n現在選択中の曲の最高ランク;
 		private int n現在選択中の曲の難易度;
 		private int n難易度開始文字位置;
 		private const int n難易度表示可能文字数 = 0x24;

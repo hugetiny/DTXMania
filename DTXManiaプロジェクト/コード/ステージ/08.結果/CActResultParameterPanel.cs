@@ -107,7 +107,6 @@ namespace DTXMania
 			st文字位置22.pt = new Point((int)(0x37 * Scale.X), (int)(0x30 * Scale.Y));
 			st文字位置Array2[10] = st文字位置22;
 			this.st小文字位置 = st文字位置Array2;
-			this.ptFullCombo位置 = new Point[] { new Point((int)(0x80 * Scale.X), (int)(0xed * Scale.Y)), new Point((int)(0xdf * Scale.X), (int)(0xed * Scale.Y)), new Point((int)(0x141 * Scale.X), (int)(0xed * Scale.Y)) };
 			base.b活性化してない = true;
 		}
 
@@ -188,8 +187,12 @@ namespace DTXMania
 				);
 			}
 			int num = this.ct表示用.n現在の値;
-			Point[] pointArray = new Point[] { new Point((int)(0x68 * Scale.X), (int)(0x29 * Scale.Y)), new Point((int)(0xc7 * Scale.X), (int)(0x29 * Scale.Y)), new Point((int)(0x129 * Scale.X), (int)(0x29 * Scale.Y)) };
-			for (int i = 0; i < 3; i++)
+			STDGBVALUE<Point> pointArray = new STDGBVALUE<Point>();
+			pointArray.Drums = new Point((int)(0x68 * Scale.X), (int)(0x29 * Scale.Y));
+			pointArray.Guitar = new Point((int)(0xc7 * Scale.X), (int)(0x29 * Scale.Y));
+			pointArray.Bass = new Point((int)(0x129 * Scale.X), (int)(0x29 * Scale.Y));
+			
+			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 			{
 				int x = this.n本体X + pointArray[i].X;
 				int y = this.n本体Y + pointArray[i].Y;
@@ -291,7 +294,7 @@ namespace DTXMania
 			}
 			if (this.ct表示用.n現在の値 >= 900)
 			{
-				for (int j = 0; j < 3; j++)
+				for (E楽器パート j = E楽器パート.DRUMS; j <= E楽器パート.BASS; j++)
 				{
 					if (CDTXMania.Instance.stage結果.st演奏記録[j].bフルコンボである)
 					{
@@ -301,8 +304,8 @@ namespace DTXMania
 							{
 								this.txFullCombo.t2D描画(
 									CDTXMania.Instance.Device,
-									this.n本体X + this.ptFullCombo位置[j].X,
-									this.n本体Y + this.ptFullCombo位置[j].Y
+									this.n本体X + CDTXMania.Instance.Coordinates.PointFullCombo[j].X,
+									this.n本体Y + CDTXMania.Instance.Coordinates.PointFullCombo[j].Y
 								);
 							}
 							if (!this.bフルコンボ音再生済み)
@@ -341,8 +344,8 @@ namespace DTXMania
 							{
 								this.txFullCombo.vc拡大縮小倍率 = new Vector3(num13, num13, 1f);
 								this.txFullCombo.n透明度 = (int)(255.0 * num12);
-								int num14 = (this.n本体X + this.ptFullCombo位置[j].X) + ((int)((this.txFullCombo.sz画像サイズ.Width * (1f - num13)) / 2f));
-								int num15 = (this.n本体Y + this.ptFullCombo位置[j].Y) + ((int)((this.txFullCombo.sz画像サイズ.Height * (1f - num13)) / 2f));
+								int num14 = (this.n本体X + CDTXMania.Instance.Coordinates.PointFullCombo[j].X) + ((int)((this.txFullCombo.sz画像サイズ.Width * (1f - num13)) / 2f));
+								int num15 = (this.n本体Y + CDTXMania.Instance.Coordinates.PointFullCombo[j].Y) + ((int)((this.txFullCombo.sz画像サイズ.Height * (1f - num13)) / 2f));
 								this.txFullCombo.t2D描画(CDTXMania.Instance.Device, num14, num15);
 							}
 						}
@@ -372,7 +375,6 @@ namespace DTXMania
 		private CCounter ct表示用;
 		private int n本体X;
 		private int n本体Y;
-		private readonly Point[] ptFullCombo位置;
 		private CSound sdDTXで指定されたフルコンボ音;
 		private readonly ST文字位置[] st小文字位置;
 		private readonly ST文字位置[] st大文字位置;

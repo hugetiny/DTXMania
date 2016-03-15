@@ -52,7 +52,7 @@ namespace DTXMania
 		/// </summary>
 		public void Reset()
 		{
-			for (int i = 0; i < 3; i++)
+			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 			{
 				ccounter[i] = new CCounter();
 				b演奏チップが１つでもバーを通過した[i] = false;
@@ -65,14 +65,13 @@ namespace DTXMania
 		/// <param name="eInst"></param>
 		public void StartSemiInvisible(E楽器パート eInst)
 		{
-			int nInst = (int)eInst;
-			if (!b演奏チップが１つでもバーを通過した[nInst])
+			if (!b演奏チップが１つでもバーを通過した[eInst])
 			{
-				b演奏チップが１つでもバーを通過した[nInst] = true;
-				if (this.eInvisibleMode[nInst] == EInvisible.SEMI)
+				b演奏チップが１つでもバーを通過した[eInst] = true;
+				if (this.eInvisibleMode[eInst] == EInvisible.SEMI)
 				{
 					ShowChipTemporally(eInst);
-					ccounter[nInst].n現在の値 = nDisplayTimeMs;
+					ccounter[eInst].n現在の値 = nDisplayTimeMs;
 				}
 			}
 		}
@@ -82,7 +81,7 @@ namespace DTXMania
 		/// <param name="eInst">楽器パート</param>
 		public void ShowChipTemporally(E楽器パート eInst)
 		{
-			ccounter[(int)eInst].t開始(0, nDisplayTimeMs + nFadeoutTimeMs + 1, 1, CDTXMania.Instance.Timer);
+			ccounter[eInst].t開始(0, nDisplayTimeMs + nFadeoutTimeMs + 1, 1, CDTXMania.Instance.Timer);
 		}
 
 		/// <summary>
@@ -101,12 +100,11 @@ namespace DTXMania
 			{
 				return EChipInvisibleState.SHOW;
 			}
-			int nInst = (int)cc.e楽器パート;
 			EChipInvisibleState retcode = EChipInvisibleState.SHOW;
 
-			ccounter[nInst].t進行();
+			ccounter[cc.e楽器パート].t進行();
 
-			switch (eInvisibleMode[nInst])
+			switch (eInvisibleMode[cc.e楽器パート])
 			{
 				case EInvisible.OFF:
 					cc.b可視 = true;
@@ -119,30 +117,30 @@ namespace DTXMania
 					break;
 
 				case EInvisible.SEMI:
-					if (!b演奏チップが１つでもバーを通過した[nInst])	// まだ1つもチップがバーを通過していない時は、チップを表示する
+					if (!b演奏チップが１つでもバーを通過した[cc.e楽器パート])	// まだ1つもチップがバーを通過していない時は、チップを表示する
 					{
 						cc.b可視 = true;
 						cc.n透明度 = 255;
 						return EChipInvisibleState.SHOW;
 					}
 
-					if (ccounter[nInst].n現在の値 <= 0 || ccounter[nInst].n現在の値 > nDisplayTimeMs + nFadeoutTimeMs)
+					if (ccounter[cc.e楽器パート].n現在の値 <= 0 || ccounter[cc.e楽器パート].n現在の値 > nDisplayTimeMs + nFadeoutTimeMs)
 					// まだ一度もMissっていない or フェードアウトしきった後
 					{
 						cc.b可視 = false;
 						cc.n透明度 = 255;
 						retcode = EChipInvisibleState.INVISIBLE;
 					}
-					else if (ccounter[nInst].n現在の値 < nDisplayTimeMs)								// 表示期間
+					else if (ccounter[cc.e楽器パート].n現在の値 < nDisplayTimeMs)								// 表示期間
 					{
 						cc.b可視 = true;
 						cc.n透明度 = 255;
 						retcode = EChipInvisibleState.SHOW;
 					}
-					else if (ccounter[nInst].n現在の値 < nDisplayTimeMs + nFadeoutTimeMs)		// フェードアウト期間
+					else if (ccounter[cc.e楽器パート].n現在の値 < nDisplayTimeMs + nFadeoutTimeMs)		// フェードアウト期間
 					{
 						cc.b可視 = true;
-						cc.n透明度 = 255 - (int)(Convert.ToDouble(ccounter[nInst].n現在の値 - nDisplayTimeMs) / nFadeoutTimeMs * 255.0);
+						cc.n透明度 = 255 - (int)(Convert.ToDouble(ccounter[cc.e楽器パート].n現在の値 - nDisplayTimeMs) / nFadeoutTimeMs * 255.0);
 						retcode = EChipInvisibleState.FADEOUT;
 					}
 					break;
@@ -170,7 +168,7 @@ namespace DTXMania
 			if (disposeManagedObjects)
 			{
 				// (A) Managed リソースの解放
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
 					// ctInvisibleTimer[ i ].Dispose();
 					ccounter[i].t停止();

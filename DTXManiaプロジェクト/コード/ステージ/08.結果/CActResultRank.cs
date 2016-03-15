@@ -53,32 +53,32 @@ namespace DTXMania
 				this.tx白波 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rank wave.png"));
 				switch (CDTXMania.Instance.stage結果.n総合ランク値)
 				{
-					case 0:
+					case CScoreIni.ERANK.SS:
 						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankSS.png"));
 						break;
 
-					case 1:
+					case CScoreIni.ERANK.S:
 						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankS.png"));
 						break;
 
-					case 2:
+					case CScoreIni.ERANK.A:
 						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankA.png"));
 						break;
 
-					case 3:
+					case CScoreIni.ERANK.B:
 						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankB.png"));
 						break;
 
-					case 4:
+					case CScoreIni.ERANK.C:
 						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankC.png"));
 						break;
 
-					case 5:
+					case CScoreIni.ERANK.D:
 						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankD.png"));
 						break;
 
-					case 6:
-					case 99:	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
+					case CScoreIni.ERANK.E:
+					case CScoreIni.ERANK.UNKNOWN:	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
 						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankE.png"));
 						break;
 

@@ -272,7 +272,6 @@ namespace DTXMania
 #endif
 		#endregion
 
-
 		/// <summary>
 		/// 文字列を描画したテクスチャを返す(メイン処理)
 		/// </summary>
@@ -315,63 +314,65 @@ namespace DTXMania
 			//取得した描画サイズを基に、描画先のbitmapを作成する
 			Bitmap bmp = new Bitmap(stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
 			bmp.MakeTransparent();
-			Graphics g = Graphics.FromImage(bmp);
-			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-			StringFormat sf = new StringFormat();
-			sf.LineAlignment = StringAlignment.Far;	// 画面下部（垂直方向位置）
-			sf.Alignment = StringAlignment.Center;	// 画面中央（水平方向位置）
-
-			// レイアウト枠
-			Rectangle r = new Rectangle(0, 0, stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
-
-			if (bEdge)	// 縁取り有りの描画
+			using (Graphics g = Graphics.FromImage(bmp))
 			{
-				// DrawPathで、ポイントサイズを使って描画するために、DPIを使って単位変換する
-				// (これをしないと、単位が違うために、小さめに描画されてしまう)
-				float sizeInPixels = _font.SizeInPoints * g.DpiY / 72;  // 1 inch = 72 points
+				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-				System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath();
-				gp.AddString(drawstr, this._fontfamily, (int)this._font.Style, sizeInPixels, r, sf);
-
-				// 縁取りを描画する
-				Pen p = new Pen(edgeColor, nEdgePt);
-				p.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
-				g.DrawPath(p, gp);
-
-				// 塗りつぶす
-				Brush br;
-				if (bGradation)
+				using (StringFormat sf = new StringFormat())
 				{
-					br = new LinearGradientBrush(r, gradationTopColor, gradationBottomColor, LinearGradientMode.Vertical);
-				}
-				else
-				{
-					br = new SolidBrush(fontColor);
-				}
-				g.FillPath(br, gp);
+					// 画面下部（垂直方向位置）
+					sf.LineAlignment = StringAlignment.Far;
+					// 画面中央（水平方向位置）
+					sf.Alignment = StringAlignment.Center;
 
-				if (br != null) br.Dispose(); br = null;
-				if (p != null) p.Dispose(); p = null;
-				if (gp != null) gp.Dispose(); gp = null;
-			}
-			else
-			{
-				// 縁取りなしの描画
-				System.Windows.Forms.TextRenderer.DrawText(g, drawstr, _font, new Point(0, 0), fontColor);
-			}
+					// レイアウト枠
+					Rectangle r = new Rectangle(0, 0, stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
+
+					// 縁取り有りの描画
+					if (bEdge)
+					{
+						// DrawPathで、ポイントサイズを使って描画するために、DPIを使って単位変換する
+						// (これをしないと、単位が違うために、小さめに描画されてしまう)
+						float sizeInPixels = _font.SizeInPoints * g.DpiY / 72;  // 1 inch = 72 points
+
+						using (System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath())
+						{
+							gp.AddString(drawstr, this._fontfamily, (int)this._font.Style, sizeInPixels, r, sf);
+
+							// 縁取りを描画する
+							using (Pen p = new Pen(edgeColor, nEdgePt))
+							{
+								p.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+								g.DrawPath(p, gp);
+
+								// 塗りつぶす
+								using (Brush br = bGradation ?
+									new LinearGradientBrush(r, gradationTopColor, gradationBottomColor, LinearGradientMode.Vertical) as Brush :
+									new SolidBrush(fontColor) as Brush)
+								{
+									g.FillPath(br, gp);
+								}
+							}
+						}
+					}
+					else
+					{
+						// 縁取りなしの描画
+						using (Brush br = new SolidBrush(fontColor))
+						{
+							g.DrawString(drawstr, _font, br, 0f, 0f);
+						}
+						// System.Windows.Forms.TextRenderer.DrawText(g, drawstr, _font, new Point(0, 0), fontColor);
+					}
 #if debug表示
 			g.DrawRectangle( new Pen( Color.White, 1 ), new Rectangle( 1, 1, stringSize.Width-1, stringSize.Height-1 ) );
 			g.DrawRectangle( new Pen( Color.Green, 1 ), new Rectangle( 0, 0, bmp.Width - 1, bmp.Height - 1 ) );
 #endif
-			_rectStrings = new Rectangle(0, 0, stringSize.Width, stringSize.Height);
-			_ptOrigin = new Point(nEdgePt * 2, nEdgePt * 2);
-
-
-			#region [ リソースを解放する ]
-			if (sf != null) sf.Dispose(); sf = null;
-			if (g != null) g.Dispose(); g = null;
-			#endregion
+					_rectStrings = new Rectangle(0, 0, stringSize.Width, stringSize.Height);
+					_ptOrigin = new Point(nEdgePt * 2, nEdgePt * 2);
+				}
+			}
 
 			return bmp;
 		}

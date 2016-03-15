@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace DTXMania
 {
@@ -625,28 +626,32 @@ namespace DTXMania
 	/// <typeparam name="T">値の型。</typeparam>
 	[Serializable]
 	[StructLayout(LayoutKind.Sequential)]
+	[DataContract]
 	public struct STDGBVALUE<T>			// indexはE楽器パートと一致させること
 	{
+		[DataMember]
 		public T Drums;
+		[DataMember]
 		public T Guitar;
+		[DataMember]
 		public T Bass;
 		public T Unknown;
-		public T this[int index]
+		public T this[E楽器パート index]
 		{
 			get
 			{
 				switch (index)
 				{
-					case (int)E楽器パート.DRUMS:
+					case E楽器パート.DRUMS:
 						return this.Drums;
 
-					case (int)E楽器パート.GUITAR:
+					case E楽器パート.GUITAR:
 						return this.Guitar;
 
-					case (int)E楽器パート.BASS:
+					case E楽器パート.BASS:
 						return this.Bass;
 
-					case (int)E楽器パート.UNKNOWN:
+					case E楽器パート.UNKNOWN:
 						return this.Unknown;
 				}
 				throw new IndexOutOfRangeException();
@@ -655,19 +660,19 @@ namespace DTXMania
 			{
 				switch (index)
 				{
-					case (int)E楽器パート.DRUMS:
+					case E楽器パート.DRUMS:
 						this.Drums = value;
 						return;
 
-					case (int)E楽器パート.GUITAR:
+					case E楽器パート.GUITAR:
 						this.Guitar = value;
 						return;
 
-					case (int)E楽器パート.BASS:
+					case E楽器パート.BASS:
 						this.Bass = value;
 						return;
 
-					case (int)E楽器パート.UNKNOWN:
+					case E楽器パート.UNKNOWN:
 						this.Unknown = value;
 						return;
 				}

@@ -10,8 +10,6 @@ namespace DTXMania
 {
 	internal class CStage結果 : CStage
 	{
-		// プロパティ
-
 		public STDGBVALUE<bool> b新記録スキル;
 		public STDGBVALUE<bool> b新記録スコア;
 		public STDGBVALUE<bool> b新記録ランク;
@@ -22,14 +20,11 @@ namespace DTXMania
 		public STDGBVALUE<float> fMiss率;
 		public STDGBVALUE<bool> bオート;        // #23596 10.11.16 add ikanick
 		//        10.11.17 change (int to bool) ikanick
-		public STDGBVALUE<int> nランク値;
+		public STDGBVALUE<CScoreIni.ERANK> nランク値;
 		public STDGBVALUE<int> n演奏回数;
-		public int n総合ランク値;
+		public CScoreIni.ERANK n総合ランク値;
 		public CChip[] r空うちドラムチップ;
 		public STDGBVALUE<CScoreIni.C演奏記録> st演奏記録;
-
-
-		// コンストラクタ
 
 		public CStage結果()
 		{
@@ -37,7 +32,7 @@ namespace DTXMania
 			this.st演奏記録.Guitar = new CScoreIni.C演奏記録();
 			this.st演奏記録.Bass = new CScoreIni.C演奏記録();
 			this.r空うちドラムチップ = new CChip[10];
-			this.n総合ランク値 = -1;
+			this.n総合ランク値 = CScoreIni.ERANK.UNKNOWN;
 			this.nチャンネル0Atoレーン07 = new int[] { 1, 2, 3, 4, 5, 7, 6, 1, 7, 0 };
 			base.eステージID = CStage.Eステージ.結果;
 			base.eフェーズID = CStage.Eフェーズ.共通_通常状態;
@@ -54,9 +49,6 @@ namespace DTXMania
 			this.actResultImage.actAVI = this.actAVI;
 		}
 
-
-		// CStage 実装
-
 		public override void On活性化()
 		{
 			Trace.TraceInformation("結果ステージを活性化します。");
@@ -70,7 +62,7 @@ namespace DTXMania
 				this.bIsCheckedWhetherResultScreenShouldSaveOrNot = false;				// #24609 2011.3.14 yyagi
 				this.n最後に再生したHHのWAV番号 = -1;
 				this.e最後に再生したHHのチャンネル番号 = Ech定義.Invalid;
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
 					this.b新記録スキル[i] = false;
 					this.b新記録スコア[i] = false;
@@ -81,27 +73,28 @@ namespace DTXMania
 
 				#region [ 結果の計算 ]
 				//---------------------
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
-					this.nランク値[i] = -1;
+					this.nランク値[i] = CScoreIni.ERANK.UNKNOWN;
 					this.fPerfect率[i] = this.fGreat率[i] = this.fGood率[i] = this.fPoor率[i] = this.fMiss率[i] = 0.0f;	// #28500 2011.5.24 yyagi
-					if ((((i != 0) || (CDTXMania.Instance.DTX.bチップがある.Drums && !CDTXMania.Instance.ConfigIni.bギタレボモード)) &&
-						((i != 1) || CDTXMania.Instance.DTX.bチップがある.Guitar)) &&
-						((i != 2) || CDTXMania.Instance.DTX.bチップがある.Bass))
+					if ((
+						((i != E楽器パート.DRUMS) || (CDTXMania.Instance.DTX.bチップがある.Drums )) &&
+						((i != E楽器パート.GUITAR) || CDTXMania.Instance.DTX.bチップがある.Guitar)) &&
+						((i != E楽器パート.BASS) || CDTXMania.Instance.DTX.bチップがある.Bass))
 					{
 						CScoreIni.C演奏記録 part = this.st演奏記録[i];
 						bool bIsAutoPlay = true;
 						switch (i)
 						{
-							case 0:
+							case E楽器パート.DRUMS:
 								bIsAutoPlay = CDTXMania.Instance.ConfigIni.bドラムが全部オートプレイである || !CDTXMania.Instance.ConfigIni.bDrums有効; // #35411 chnmr0 add Drums が有効でない場合 AUTO 扱いとして LastPlay 更新しない
 								break;
 
-							case 1:
+							case E楽器パート.GUITAR:
 								bIsAutoPlay = CDTXMania.Instance.ConfigIni.bギターが全部オートプレイである || !CDTXMania.Instance.ConfigIni.bGuitar有効; // #35411 chnmr0 add
 								break;
 
-							case 2:
+							case E楽器パート.BASS:
 								bIsAutoPlay = CDTXMania.Instance.ConfigIni.bベースが全部オートプレイである || !CDTXMania.Instance.ConfigIni.bGuitar有効;
 								break;
 						}
@@ -124,67 +117,90 @@ namespace DTXMania
 				string str = CDTXMania.Instance.DTX.strファイル名の絶対パス + ".score.ini";
 				CScoreIni ini = new CScoreIni(str);
 
-				bool[] b今までにフルコンボしたことがある = new bool[] { false, false, false };
+				STDGBVALUE<bool> b今までにフルコンボしたことがある =
+					new STDGBVALUE<bool>();
 
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
 					// フルコンボチェックならびに新記録ランクチェックは、ini.Record[] が、スコアチェックや演奏型スキルチェックの IF 内で書き直されてしまうよりも前に行う。(2010.9.10)
 
-					b今までにフルコンボしたことがある[i] = ini.stセクション[i * 2].bフルコンボである | ini.stセクション[i * 2 + 1].bフルコンボである;
+					b今までにフルコンボしたことがある[i] =
+						ini.stセクション.HiScore[i].bフルコンボである ||
+						ini.stセクション.HiSkill[i].bフルコンボである;
 
-					#region [deleted by #24459]
-					//		if( this.nランク値[ i ] <= CScoreIni.tランク値を計算して返す( ini.stセクション[ ( i * 2 ) + 1 ] ) )
-					//		{
-					//			this.b新記録ランク[ i ] = true;
-					//		}
-					#endregion
-					// #24459 上記の条件だと[HiSkill.***]でのランクしかチェックしていないので、BestRankと比較するよう変更。
-					if (this.nランク値[i] >= 0 && ini.stファイル.BestRank[i] > this.nランク値[i])		// #24459 2011.3.1 yyagi update BestRank
+					if (this.nランク値[i] >= 0 && ini.stファイル.BestRank[i] > this.nランク値[i])
 					{
+						// #24459 2011.3.1 yyagi update BestRank
 						this.b新記録ランク[i] = true;
 						ini.stファイル.BestRank[i] = this.nランク値[i];
 					}
 
 					// 新記録スコアチェック
-					if (this.st演奏記録[i].nスコア > ini.stセクション[i * 2].nスコア)
+					if (this.st演奏記録[i].nスコア > ini.stセクション.HiScore[i].nスコア)
 					{
 						this.b新記録スコア[i] = true;
-						ini.stセクション[i * 2] = this.st演奏記録[i];
-						this.SaveGhost(i * 2); // #35411 chnmr0 add
+						ini.stセクション.HiScore[i] = this.st演奏記録[i];
+						CScoreIni.Eセクション種別 esect = CScoreIni.Eセクション種別.HiScoreDrums;
+						if (i == E楽器パート.GUITAR)
+						{
+							esect = CScoreIni.Eセクション種別.HiScoreGuitar;
+						}
+						else if (i == E楽器パート.BASS)
+						{
+							esect = CScoreIni.Eセクション種別.HiScoreBass;
+						}
+						this.SaveGhost(esect); // #35411 chnmr0 add
 					}
 
 					// 新記録スキルチェック
-					if (this.st演奏記録[i].db演奏型スキル値 > ini.stセクション[(i * 2) + 1].db演奏型スキル値)
+					if (this.st演奏記録[i].db演奏型スキル値 > ini.stセクション.HiSkill[i].db演奏型スキル値)
 					{
 						this.b新記録スキル[i] = true;
-						ini.stセクション[(i * 2) + 1] = this.st演奏記録[i];
-						this.SaveGhost((i * 2) + 1); // #35411 chnmr0 add
+						ini.stセクション.HiSkill[i] = this.st演奏記録[i];
+						CScoreIni.Eセクション種別 esect = CScoreIni.Eセクション種別.HiSkillDrums;
+						if (i == E楽器パート.GUITAR)
+						{
+							esect = CScoreIni.Eセクション種別.HiSkillGuitar;
+						}
+						else if (i == E楽器パート.BASS)
+						{
+							esect = CScoreIni.Eセクション種別.HiSkillBass;
+						}
+						this.SaveGhost(esect); // #35411 chnmr0 add
 					}
 
 					// ラストプレイ #23595 2011.1.9 ikanick
 					// オートじゃなければプレイ結果を書き込む
 					if (this.bオート[i] == false)
 					{
-						ini.stセクション[i + 6] = this.st演奏記録[i];
-						this.SaveGhost(i + 6); // #35411 chnmr0 add
+						ini.stセクション.LastPlay[i] = this.st演奏記録[i];
+						CScoreIni.Eセクション種別 esect = CScoreIni.Eセクション種別.LastPlayDrums;
+						if (i == E楽器パート.GUITAR)
+						{
+							esect = CScoreIni.Eセクション種別.LastPlayGuitar;
+						}
+						else if (i == E楽器パート.BASS)
+						{
+							esect = CScoreIni.Eセクション種別.LastPlayBass;
+						}
+						this.SaveGhost(esect); // #35411 chnmr0 add
 					}
 
 					// #23596 10.11.16 add ikanick オートじゃないならクリア回数を1増やす
 					//        11.02.05 bオート to t更新条件を取得する use      ikanick
-					bool[] b更新が必要か否か = new bool[3];
-					CScoreIni.t更新条件を取得する(out b更新が必要か否か[0], out b更新が必要か否か[1], out b更新が必要か否か[2]);
-
+					STDGBVALUE<bool> b更新が必要か否か;
+					b更新が必要か否か = CScoreIni.t更新条件を取得する();
 					if (b更新が必要か否か[i])
 					{
 						switch (i)
 						{
-							case 0:
+							case E楽器パート.DRUMS:
 								ini.stファイル.ClearCountDrums++;
 								break;
-							case 1:
+							case E楽器パート.GUITAR:
 								ini.stファイル.ClearCountGuitar++;
 								break;
-							case 2:
+							case E楽器パート.BASS:
 								ini.stファイル.ClearCountBass++;
 								break;
 							default:
@@ -211,9 +227,9 @@ namespace DTXMania
 				if (!CDTXMania.Instance.bコンパクトモード)
 				{
 					Cスコア cスコア = CDTXMania.Instance.stage選曲.r確定されたスコア;
-					bool[] b更新が必要か否か = new bool[3];
-					CScoreIni.t更新条件を取得する(out b更新が必要か否か[0], out b更新が必要か否か[1], out b更新が必要か否か[2]);
-					for (int m = 0; m < 3; m++)
+					STDGBVALUE<bool> b更新が必要か否か;
+					b更新が必要か否か = CScoreIni.t更新条件を取得する();
+					for (E楽器パート m = E楽器パート.DRUMS; m <= E楽器パート.BASS; m++)
 					{
 						if (b更新が必要か否か[m])
 						{
@@ -238,21 +254,21 @@ namespace DTXMania
 
 				#region [ #RESULTSOUND_xx の再生（あれば）]
 				//---------------------
-				int rank = CScoreIni.t総合ランク値を計算して返す(this.st演奏記録);
+				CScoreIni.ERANK rank = CScoreIni.t総合ランク値を計算して返す(this.st演奏記録);
 
-				if (rank == 99)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
+				if (rank == CScoreIni.ERANK.UNKNOWN)	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
 				{
-					rank = 6;
+					rank = CScoreIni.ERANK.E;
 				}
 
-				if (string.IsNullOrEmpty(CDTXMania.Instance.DTX.RESULTSOUND[rank]))
+				if (string.IsNullOrEmpty(CDTXMania.Instance.DTX.RESULTSOUND[(int)rank]))
 				{
 					CDTXMania.Instance.Skin.soundステージクリア音.t再生する();
 					this.rResultSound = null;
 				}
 				else
 				{
-					string str2 = CDTXMania.Instance.DTX.strフォルダ名 + CDTXMania.Instance.DTX.RESULTSOUND[rank];
+					string str2 = CDTXMania.Instance.DTX.strフォルダ名 + CDTXMania.Instance.DTX.RESULTSOUND[(int)rank];
 					try
 					{
 						this.rResultSound = CDTXMania.Instance.Sound管理.tサウンドを生成する(str2);
@@ -276,7 +292,7 @@ namespace DTXMania
 		}
 
 		// #35411 chnmr0 add
-		private void SaveGhost(int sectionIndex)
+		private void SaveGhost(CScoreIni.Eセクション種別 sect)
 		{
 			STDGBVALUE<bool> saveCond = new STDGBVALUE<bool>();
 			saveCond.Drums = true;
@@ -289,11 +305,11 @@ namespace DTXMania
 				{
 					if (chip.eチャンネル番号 != Ech定義.Guitar_Wailing && chip.eチャンネル番号 != Ech定義.Bass_Wailing) // Guitar/Bass Wailing は OK
 					{
-						saveCond[(int)(chip.e楽器パート)] = false;
+						saveCond[chip.e楽器パート] = false;
 					}
 				}
 			}
-			for (int instIndex = 0; instIndex < 3; ++instIndex)
+			for (E楽器パート instIndex = E楽器パート.DRUMS; instIndex <= E楽器パート.BASS; ++instIndex)
 			{
 				saveCond[instIndex] &= CDTXMania.Instance.DTX.listAutoGhostLag.Drums == null;
 			}
@@ -302,47 +318,47 @@ namespace DTXMania
 			string filename = CDTXMania.Instance.DTX.strファイル名 + ".";
 			E楽器パート inst = E楽器パート.UNKNOWN;
 
-			if (sectionIndex == 0)
+			if (sect == CScoreIni.Eセクション種別.HiScoreDrums)
 			{
 				filename += "hiscore.dr.ghost";
 				inst = E楽器パート.DRUMS;
 			}
-			else if (sectionIndex == 1)
+			else if (sect == CScoreIni.Eセクション種別.HiSkillDrums)
 			{
 				filename += "hiskill.dr.ghost";
 				inst = E楽器パート.DRUMS;
 			}
-			if (sectionIndex == 2)
+			if (sect == CScoreIni.Eセクション種別.HiScoreGuitar)
 			{
 				filename += "hiscore.gt.ghost";
 				inst = E楽器パート.GUITAR;
 			}
-			else if (sectionIndex == 3)
+			else if (sect == CScoreIni.Eセクション種別.HiSkillGuitar)
 			{
 				filename += "hiskill.gt.ghost";
 				inst = E楽器パート.GUITAR;
 			}
-			if (sectionIndex == 4)
+			if (sect == CScoreIni.Eセクション種別.HiScoreBass)
 			{
 				filename += "hiscore.bs.ghost";
 				inst = E楽器パート.BASS;
 			}
-			else if (sectionIndex == 5)
+			else if (sect == CScoreIni.Eセクション種別.HiSkillBass)
 			{
 				filename += "hiskill.bs.ghost";
 				inst = E楽器パート.BASS;
 			}
-			else if (sectionIndex == 6)
+			else if (sect == CScoreIni.Eセクション種別.LastPlayDrums)
 			{
 				filename += "lastplay.dr.ghost";
 				inst = E楽器パート.DRUMS;
 			}
-			else if (sectionIndex == 7)
+			else if (sect == CScoreIni.Eセクション種別.LastPlayGuitar)
 			{
 				filename += "lastplay.gt.ghost";
 				inst = E楽器パート.GUITAR;
 			}
-			else if (sectionIndex == 8)
+			else if (sect == CScoreIni.Eセクション種別.LastPlayBass)
 			{
 				filename += "lastplay.bs.ghost";
 				inst = E楽器パート.BASS;
@@ -362,7 +378,7 @@ namespace DTXMania
 				}
 			}
 
-			if (saveCond[(int)inst])
+			if (saveCond[inst])
 			{
 				using (FileStream fs = new FileStream(directory + "\\" + filename, FileMode.Create, FileAccess.Write))
 				{
@@ -411,7 +427,7 @@ namespace DTXMania
 				this.tx背景 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult background.jpg"));
 				this.tx上部パネル = TextureFactory.tテクスチャの生成Af(CSkin.Path(@"Graphics\ScreenResult header panel.png"), true);
 				this.tx下部パネル = TextureFactory.tテクスチャの生成Af(CSkin.Path(@"Graphics\ScreenResult footer panel.png"), true);
-				this.txオプションパネル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\Screen option panels.png"));
+				//this.txオプションパネル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\Screen option panels.png"));
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -426,7 +442,7 @@ namespace DTXMania
 				TextureFactory.tテクスチャの解放(ref this.tx背景);
 				TextureFactory.tテクスチャの解放(ref this.tx上部パネル);
 				TextureFactory.tテクスチャの解放(ref this.tx下部パネル);
-				TextureFactory.tテクスチャの解放(ref this.txオプションパネル);
+				//TextureFactory.tテクスチャの解放(ref this.txオプションパネル);
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -666,7 +682,7 @@ namespace DTXMania
 		private int n最後に再生したHHのWAV番号;
 		private Ech定義 e最後に再生したHHのチャンネル番号;
 		private CSound rResultSound;
-		private CTexture txオプションパネル;
+		//private CTexture txオプションパネル;
 		private CTextureAf tx下部パネル;
 		private CTextureAf tx上部パネル;
 		private CTexture tx背景;
@@ -685,7 +701,7 @@ namespace DTXMania
 			if (bIsAutoSave)
 			{
 				// リザルト画像を自動保存するときは、dtxファイル名.yyMMddHHmmss_DRUMS_SS.png という形式で保存。
-				for (int i = 0; i < 3; i++)
+				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 				{
 					if (this.b新記録ランク[i] == true || this.b新記録スキル[i] == true)
 					{
@@ -697,33 +713,6 @@ namespace DTXMania
 					}
 				}
 			}
-			#region [ #24609 2011.4.11 yyagi; リザルトの手動保存ロジックは、CDTXManiaに移管した。]
-			//			else
-			//			{
-			//				// リザルト画像を手動保存するときは、dtxファイル名.yyMMddHHmmss_SS.png という形式で保存。(楽器名無し)
-			//				string strRank = ( (CScoreIni.ERANK) ( CDTXMania.Instance.stage結果.n総合ランク値 ) ).ToString();
-			//				string strSavePath = CDTXMania.Instance.strEXEのあるフォルダ + "\\" + "Capture_img";
-			//				if ( !Directory.Exists( strSavePath ) )
-			//				{
-			//					try
-			//					{
-			//						Directory.CreateDirectory( strSavePath );
-			//					}
-			//					catch
-			//					{
-			//					}
-			//				}
-			//				string strSetDefDifficulty = CDTXMania.Instance.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.Instance.stage選曲.n確定された曲の難易度 ];
-			//				if ( strSetDefDifficulty != null )
-			//				{
-			//					strSetDefDifficulty = "(" + strSetDefDifficulty + ")";
-			//				}
-			//				string strFullPath = strSavePath + "\\" + CDTXMania.Instance.DTX.TITLE + strSetDefDifficulty +
-			//					"." + datetime + "_" + strRank + ".png";
-			//				// Surface.ToFile( pSurface, strFullPath, ImageFileFormat.Png );
-			//				CDTXMania.Instance.app.SaveResultScreen( strFullPath );
-			//			}
-			#endregion
 		}
 		#endregion
 		//-----------------

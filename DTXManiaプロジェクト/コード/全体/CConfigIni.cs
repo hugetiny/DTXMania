@@ -446,7 +446,7 @@ namespace DTXMania
 		public bool bSTAGEFAILED有効;
 		public STDGBVALUE<bool> bSudden;
 		public bool bTight;
-		public STDGBVALUE<bool> bGraph;     // #24074 2011.01.23 add ikanick
+		public bool bGraph;     // #24074 2011.01.23 add ikanick
 		public bool bWave再生位置自動調整機能有効;
 		public bool bシンバルフリー;
 		public bool bストイックモード;
@@ -524,12 +524,14 @@ namespace DTXMania
 			set
 			{
 				this._bDrums有効 = value;
-				if (!this._bGuitar有効 && !this._bDrums有効)
+				if(!this.bGuitar有効 && !this.bDrums有効)
 				{
 					this._bGuitar有効 = true;
 				}
+				_b楽器有効.Drums = value;
 			}
 		}
+
 		public bool bEnterがキー割り当てのどこにも使用されていない
 		{
 			get
@@ -550,6 +552,7 @@ namespace DTXMania
 				return true;
 			}
 		}
+
 		public bool bGuitar有効
 		{
 			get
@@ -559,12 +562,23 @@ namespace DTXMania
 			set
 			{
 				this._bGuitar有効 = value;
-				if (!this._bGuitar有効 && !this._bDrums有効)
+				if (!this.bGuitar有効 && !this.bDrums有効)
 				{
 					this._bDrums有効 = true;
 				}
+				_b楽器有効.Bass = value;
+				_b楽器有効.Guitar = value;
 			}
 		}
+
+		public STDGBVALUE<bool> b楽器有効
+		{
+			get
+			{
+				return _b楽器有効;
+			}
+		}
+
 		public bool bウィンドウモード
 		{
 			get
@@ -576,13 +590,7 @@ namespace DTXMania
 				this.b全画面モード = !value;
 			}
 		}
-		public bool bギタレボモード
-		{
-			get
-			{
-				return (!this.bDrums有効 && this.bGuitar有効);
-			}
-		}
+
 		public bool bドラムが全部オートプレイである
 		{
 			get
@@ -597,6 +605,7 @@ namespace DTXMania
 				return true;
 			}
 		}
+
 		public bool bギターが全部オートプレイである
 		{
 			get
@@ -699,156 +708,6 @@ namespace DTXMania
 		//public bool bNoMP3Streaming;				// 2014.4.14 yyagi; mp3のシーク位置がおかしくなる場合は、これをtrueにすることで、wavにデコードしてからオンメモリ再生する
 		public int nMasterVolume;
 
-
-#if false
-		[StructLayout( LayoutKind.Sequential )]
-		public struct STAUTOPLAY								// C定数のEレーンとindexを一致させること
-		{
-			public bool LC;			// 0
-			public bool HH;			// 1
-			public bool SD;			// 2
-			public bool BD;			// 3
-			public bool HT;			// 4
-			public bool LT;			// 5
-			public bool FT;			// 6
-			public bool CY;			// 7
-			public bool RD;			// 8
-			public bool Guitar;		// 9	(not used)
-			public bool Bass;		// 10	(not used)
-			public bool GtR;		// 11
-			public bool GtG;		// 12
-			public bool GtB;		// 13
-			public bool GtPick;		// 14
-			public bool GtW;		// 15
-			public bool BsR;		// 16
-			public bool BsG;		// 17
-			public bool BsB;		// 18
-			public bool BsPick;		// 19
-			public bool BsW;		// 20
-			public bool this[ int index ]
-			{
-				get
-				{
-					switch ( index )
-					{
-						case (int) Eレーン.LC:
-							return this.LC;
-						case (int) Eレーン.HH:
-							return this.HH;
-						case (int) Eレーン.SD:
-							return this.SD;
-						case (int) Eレーン.BD:
-							return this.BD;
-						case (int) Eレーン.HT:
-							return this.HT;
-						case (int) Eレーン.LT:
-							return this.LT;
-						case (int) Eレーン.FT:
-							return this.FT;
-						case (int) Eレーン.CY:
-							return this.CY;
-						case (int) Eレーン.RD:
-							return this.RD;
-						case (int) Eレーン.Guitar:
-							return this.Guitar;
-						case (int) Eレーン.Bass:
-							return this.Bass;
-						case (int) Eレーン.GtR:
-							return this.GtR;
-						case (int) Eレーン.GtG:
-							return this.GtG;
-						case (int) Eレーン.GtB:
-							return this.GtB;
-						case (int) Eレーン.GtPick:
-							return this.GtPick;
-						case (int) Eレーン.GtW:
-							return this.GtW;
-						case (int) Eレーン.BsR:
-							return this.BsR;
-						case (int) Eレーン.BsG:
-							return this.BsG;
-						case (int) Eレーン.BsB:
-							return this.BsB;
-						case (int) Eレーン.BsPick:
-							return this.BsPick;
-						case (int) Eレーン.BsW:
-							return this.BsW;
-					}
-					throw new IndexOutOfRangeException();
-				}
-				set
-				{
-					switch ( index )
-					{
-						case (int) Eレーン.LC:
-							this.LC = value;
-							return;
-						case (int) Eレーン.HH:
-							this.HH = value;
-							return;
-						case (int) Eレーン.SD:
-							this.SD = value;
-							return;
-						case (int) Eレーン.BD:
-							this.BD = value;
-							return;
-						case (int) Eレーン.HT:
-							this.HT = value;
-							return;
-						case (int) Eレーン.LT:
-							this.LT = value;
-							return;
-						case (int) Eレーン.FT:
-							this.FT = value;
-							return;
-						case (int) Eレーン.CY:
-							this.CY = value;
-							return;
-						case (int) Eレーン.RD:
-							this.RD = value;
-							return;
-						case (int) Eレーン.Guitar:
-							this.Guitar = value;
-							return;
-						case (int) Eレーン.Bass:
-							this.Bass = value;
-							return;
-						case (int) Eレーン.GtR:
-							this.GtR = value;
-							return;
-						case (int) Eレーン.GtG:
-							this.GtG = value;
-							return;
-						case (int) Eレーン.GtB:
-							this.GtB = value;
-							return;
-						case (int) Eレーン.GtPick:
-							this.GtPick = value;
-							return;
-						case (int) Eレーン.GtW:
-							this.GtW = value;
-							return;
-						case (int) Eレーン.BsR:
-							this.BsR = value;
-							return;
-						case (int) Eレーン.BsG:
-							this.BsG = value;
-							return;
-						case (int) Eレーン.BsB:
-							this.BsB = value;
-							return;
-						case (int) Eレーン.BsPick:
-							this.BsPick = value;
-							return;
-						case (int) Eレーン.BsW:
-							this.BsW = value;
-							return;
-					}
-					throw new IndexOutOfRangeException();
-				}
-			}
-		}
-#endif
 		#region [ STRANGE ]
 		public STRANGE nヒット範囲ms;
 		[StructLayout(LayoutKind.Sequential)]
@@ -1043,7 +902,6 @@ namespace DTXMania
 		public void SwapGuitarBassInfos_PlaySettings()			// #35417 2015.8.18 yyagi: 演奏設定のFLIP機能を追加
 		{
 			bool b;
-			b = bGraph.Bass; bGraph.Bass = bGraph.Guitar; bGraph.Guitar = b;
 			b = bHidden.Bass; bHidden.Bass = bHidden.Guitar; bHidden.Guitar = b;
 			b = bLeft.Bass; bLeft.Bass = bLeft.Guitar; bLeft.Guitar = b;
 			b = bLight.Bass; bLight.Bass = bLight.Guitar; bLight.Guitar = b;
@@ -1069,24 +927,6 @@ namespace DTXMania
 
 		public CConfigIni()
 		{
-#if false		// #23625 2011.1.11 Config.iniからダメージ/回復値の定数変更を行う場合はここを有効にする 087リリースに合わせ機能無効化
-			//----------------------------------------
-			this.fGaugeFactor[0,0] =  0.004f;
-			this.fGaugeFactor[0,1] =  0.006f;
-			this.fGaugeFactor[1,0] =  0.002f;
-			this.fGaugeFactor[1,1] =  0.003f;
-			this.fGaugeFactor[2,0] =  0.000f;
-			this.fGaugeFactor[2,1] =  0.000f;
-			this.fGaugeFactor[3,0] = -0.020f;
-			this.fGaugeFactor[3,1] = -0.030f;
-			this.fGaugeFactor[4,0] = -0.050f;
-			this.fGaugeFactor[4,1] = -0.050f;
-
-			this.fDamageLevelFactor[0] = 0.5f;
-			this.fDamageLevelFactor[1] = 1.0f;
-			this.fDamageLevelFactor[2] = 1.5f;
-			//----------------------------------------
-#endif
 			this.strDTXManiaのバージョン = "Unknown";
 			this.str曲データ検索パス = @".\";
 			this.b全画面モード = false;
@@ -1099,6 +939,7 @@ namespace DTXMania
 			this.n非フォーカス時スリープms = 1;			// #23568 2010.11.04 ikanick add
 			this._bGuitar有効 = true;
 			this._bDrums有効 = true;
+			this._b楽器有効 = new STDGBVALUE<bool>();
 			this.nBGAlpha = 200;
 			this.eダメージレベル = Eダメージレベル.普通;
 			this.bSTAGEFAILED有効 = true;
@@ -1138,7 +979,7 @@ namespace DTXMania
 			this.nInputAdjustTimeMs = new STDGBVALUE<int>();	// #23580 2011.1.3 yyagi
 			this.nJudgeLinePosOffset = new STDGBVALUE<int>();	// #31602 2013.6.23 yyagi
 			this.e判定表示優先度 = E判定表示優先度.Chipより下;
-			for (int i = 0; i < 3; i++)
+			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 			{
 				this.b演奏音を強調する[i] = true;
 				this.bSudden[i] = false;
@@ -1817,7 +1658,7 @@ namespace DTXMania
 
 			// #24074 2011.01.23 add ikanick
 			sw.WriteLine("; ドラムグラフ表示(0:OFF, 1:ON)");
-			sw.WriteLine("DrumsGraph={0}", this.bGraph.Drums ? 1 : 0);
+			sw.WriteLine("Graph={0}", this.bGraph ? 1 : 0);
 			sw.WriteLine();
 
 			// #35411 2015.8.18 chnmr0 add
@@ -2677,9 +2518,9 @@ namespace DTXMania
 											{
 												this.eDark = (Eダークモード)C変換.n値を文字列から取得して範囲内に丸めて返す(str4, 0, 2, (int)this.eDark);
 											}
-											else if (str3.Equals("DrumsGraph"))  // #24074 2011.01.23 addikanick
+											else if (str3.Equals("Graph"))  // #24074 2011.01.23 addikanick
 											{
-												this.bGraph.Drums = C変換.bONorOFF(str4[0]);
+												this.bGraph = C変換.bONorOFF(str4[0]);
 											}
 											else if (str3.Equals("DrumAutoGhost")) // #35411 2015.08.18 chnmr0 add
 											{
@@ -3193,30 +3034,11 @@ namespace DTXMania
 				}
 			}
 
-			for (int i = 0; i < 3; i++)
+			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 			{
 				nJudgeLinePosOffset[i] = (int)(fJudgeLinePosOffsetBase[i] * (this.n譜面スクロール速度[i] + 1));
 			}
 		}
-
-		/// <summary>
-		/// ギターとベースのキーアサイン入れ替え
-		/// </summary>
-		//public void SwapGuitarBassKeyAssign()		// #24063 2011.1.16 yyagi
-		//{
-		//    for ( int j = 0; j <= (int)EKeyConfigPad.Capture; j++ )
-		//    {
-		//        CKeyAssign.STKEYASSIGN t; //= new CConfigIni.CKeyAssign.STKEYASSIGN();
-		//        for ( int k = 0; k < 16; k++ )
-		//        {
-		//            t = this.KeyAssign[ (int)EKeyConfigPart.GUITAR ][ j ][ k ];
-		//            this.KeyAssign[ (int)EKeyConfigPart.GUITAR ][ j ][ k ] = this.KeyAssign[ (int)EKeyConfigPart.BASS ][ j ][ k ];
-		//            this.KeyAssign[ (int)EKeyConfigPart.BASS ][ j ][ k ] = t;
-		//        }
-		//    }
-		//    this.bIsSwappedGuitarBass = !bIsSwappedGuitarBass;
-		//}
-
 
 		// その他
 
@@ -3241,6 +3063,7 @@ namespace DTXMania
 
 		private bool _bDrums有効;
 		private bool _bGuitar有効;
+		STDGBVALUE<bool> _b楽器有効;
 		private bool bConfigIniが存在している;
 		private string ConfigIniファイル名;
 

@@ -394,11 +394,6 @@ namespace DTXMania
 			throw new InvalidOperationException("t進行描画(int,int)のほうを使用してください。");
 		}
 
-
-		// その他
-
-		#region [ private ]
-		//-----------------
 		private long n移動開始時刻ms;
 		private int n画像側開始位置X;
 		private int n画像側開始位置Y;
@@ -415,7 +410,5 @@ namespace DTXMania
 		private int n表示側終了位置Y;
 		private CDTX.CAVI rAVI;
 		private CTexture tx描画用;
-		//-----------------
-		#endregion
 	}
 }

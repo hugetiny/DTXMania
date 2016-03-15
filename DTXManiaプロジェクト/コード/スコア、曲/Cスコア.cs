@@ -59,8 +59,8 @@ namespace DTXMania
 			public string Presound;
 			public string Backgound;
 			public STDGBVALUE<int> レベル;
-			public STRANK 最大ランク;
-			public STSKILL 最大スキル;
+			public STDGBVALUE<CScoreIni.ERANK> 最大ランク;
+			public STDGBVALUE<double> 最大スキル;
 			public STDGBVALUE<bool> フルコンボ;
 			public STDGBVALUE<int> 演奏回数;
 			public STHISTORY 演奏履歴;
@@ -129,104 +129,6 @@ namespace DTXMania
 					}
 				}
 			}
-
-			[Serializable]
-			[StructLayout(LayoutKind.Sequential)]
-			public struct STRANK
-			{
-				public int Drums;
-				public int Guitar;
-				public int Bass;
-				public int this[int index]
-				{
-					get
-					{
-						switch (index)
-						{
-							case 0:
-								return this.Drums;
-
-							case 1:
-								return this.Guitar;
-
-							case 2:
-								return this.Bass;
-						}
-						throw new IndexOutOfRangeException();
-					}
-					set
-					{
-						if ((value < (int)CScoreIni.ERANK.SS) || ((value != (int)CScoreIni.ERANK.UNKNOWN) && (value > (int)CScoreIni.ERANK.E)))
-						{
-							throw new ArgumentOutOfRangeException();
-						}
-						switch (index)
-						{
-							case 0:
-								this.Drums = value;
-								return;
-
-							case 1:
-								this.Guitar = value;
-								return;
-
-							case 2:
-								this.Bass = value;
-								return;
-						}
-						throw new IndexOutOfRangeException();
-					}
-				}
-			}
-
-			[Serializable]
-			[StructLayout(LayoutKind.Sequential)]
-			public struct STSKILL
-			{
-				public double Drums;
-				public double Guitar;
-				public double Bass;
-				public double this[int index]
-				{
-					get
-					{
-						switch (index)
-						{
-							case 0:
-								return this.Drums;
-
-							case 1:
-								return this.Guitar;
-
-							case 2:
-								return this.Bass;
-						}
-						throw new IndexOutOfRangeException();
-					}
-					set
-					{
-						if ((value < 0.0) || (value > 100.0))
-						{
-							throw new ArgumentOutOfRangeException();
-						}
-						switch (index)
-						{
-							case 0:
-								this.Drums = value;
-								return;
-
-							case 1:
-								this.Guitar = value;
-								return;
-
-							case 2:
-								this.Bass = value;
-								return;
-						}
-						throw new IndexOutOfRangeException();
-					}
-				}
-			}
 		}
 
 		public bool bSongDBにキャッシュがあった;
@@ -234,7 +136,10 @@ namespace DTXMania
 		{
 			get
 			{
-				return (((this.譜面情報.レベル[0] + this.譜面情報.レベル[1]) + this.譜面情報.レベル[2]) != 0);
+				return
+					this.譜面情報.レベル.Drums +
+					this.譜面情報.レベル.Guitar +
+					this.譜面情報.レベル.Bass != 0;
 			}
 		}
 
@@ -256,10 +161,10 @@ namespace DTXMania
 			this.譜面情報.Presound = "";
 			this.譜面情報.Backgound = "";
 			this.譜面情報.レベル = new STDGBVALUE<int>();
-			this.譜面情報.最大ランク = new ST譜面情報.STRANK();
-			this.譜面情報.最大ランク.Drums = (int)CScoreIni.ERANK.UNKNOWN;
-			this.譜面情報.最大ランク.Guitar = (int)CScoreIni.ERANK.UNKNOWN;
-			this.譜面情報.最大ランク.Bass = (int)CScoreIni.ERANK.UNKNOWN;
+			this.譜面情報.最大ランク = new STDGBVALUE<CScoreIni.ERANK>();
+			this.譜面情報.最大ランク.Drums = CScoreIni.ERANK.UNKNOWN;
+			this.譜面情報.最大ランク.Guitar = CScoreIni.ERANK.UNKNOWN;
+			this.譜面情報.最大ランク.Bass = CScoreIni.ERANK.UNKNOWN;
 			this.譜面情報.フルコンボ = new STDGBVALUE<bool>();
 			this.譜面情報.演奏回数 = new STDGBVALUE<int>();
 			this.譜面情報.演奏履歴 = new ST譜面情報.STHISTORY();
@@ -269,7 +174,7 @@ namespace DTXMania
 			this.譜面情報.演奏履歴.行4 = "";
 			this.譜面情報.演奏履歴.行5 = "";
 			this.譜面情報.レベルを非表示にする = false;
-			this.譜面情報.最大スキル = new ST譜面情報.STSKILL();
+			this.譜面情報.最大スキル = new STDGBVALUE<double>();
 			this.譜面情報.曲種別 = EDTX種別.DTX;
 			this.譜面情報.Bpm = 120.0;
 			this.譜面情報.Duration = 0;

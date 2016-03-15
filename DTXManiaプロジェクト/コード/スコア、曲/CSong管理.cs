@@ -699,25 +699,23 @@ namespace DTXMania
 										try
 										{
 											CScoreIni scoreIni = new CScoreIni(strFileNameScoreIni);
-											scoreIni.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
-											for (int i = 0; i < 3; i++)
+											for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 											{
-												int nSectionHiSkill = (i * 2) + 1;
-												if (scoreIni.stセクション[nSectionHiSkill].b演奏にMIDI入力を使用した
-													|| scoreIni.stセクション[nSectionHiSkill].b演奏にキーボードを使用した
-													|| scoreIni.stセクション[nSectionHiSkill].b演奏にジョイパッドを使用した
-													|| scoreIni.stセクション[nSectionHiSkill].b演奏にマウスを使用した)
+												if (scoreIni.stセクション.HiSkill[i].b演奏にMIDI入力を使用した
+													|| scoreIni.stセクション.HiSkill[i].b演奏にキーボードを使用した
+													|| scoreIni.stセクション.HiSkill[i].b演奏にジョイパッドを使用した
+													|| scoreIni.stセクション.HiSkill[i].b演奏にマウスを使用した)
 												{
 													node.arスコア[lv].譜面情報.最大ランク[i] =
-														(scoreIni.stファイル.BestRank[i] != (int)CScoreIni.ERANK.UNKNOWN) ?
-														(int)scoreIni.stファイル.BestRank[i] : CScoreIni.tランク値を計算して返す(scoreIni.stセクション[nSectionHiSkill]);
+														(scoreIni.stファイル.BestRank[i] != CScoreIni.ERANK.UNKNOWN) ?
+														scoreIni.stファイル.BestRank[i] : CScoreIni.tランク値を計算して返す(scoreIni.stセクション.HiSkill[i]);
 												}
 												else
 												{
-													node.arスコア[lv].譜面情報.最大ランク[i] = (int)CScoreIni.ERANK.UNKNOWN;
+													node.arスコア[lv].譜面情報.最大ランク[i] = CScoreIni.ERANK.UNKNOWN;
 												}
-												node.arスコア[lv].譜面情報.最大スキル[i] = scoreIni.stセクション[nSectionHiSkill].db演奏型スキル値;
-												node.arスコア[lv].譜面情報.フルコンボ[i] = scoreIni.stセクション[nSectionHiSkill].bフルコンボである;
+												node.arスコア[lv].譜面情報.最大スキル[i] = scoreIni.stセクション.HiSkill[i].db演奏型スキル値;
+												node.arスコア[lv].譜面情報.フルコンボ[i] = scoreIni.stセクション.HiSkill[i].bフルコンボである;
 											}
 											node.arスコア[lv].譜面情報.演奏回数.Drums = scoreIni.stファイル.PlayCountDrums;
 											node.arスコア[lv].譜面情報.演奏回数.Guitar = scoreIni.stファイル.PlayCountGuitar;
@@ -763,9 +761,9 @@ namespace DTXMania
 			cスコア.譜面情報.レベル.Drums = br.ReadInt32();
 			cスコア.譜面情報.レベル.Guitar = br.ReadInt32();
 			cスコア.譜面情報.レベル.Bass = br.ReadInt32();
-			cスコア.譜面情報.最大ランク.Drums = br.ReadInt32();
-			cスコア.譜面情報.最大ランク.Guitar = br.ReadInt32();
-			cスコア.譜面情報.最大ランク.Bass = br.ReadInt32();
+			cスコア.譜面情報.最大ランク.Drums = (CScoreIni.ERANK)br.ReadInt32();
+			cスコア.譜面情報.最大ランク.Guitar = (CScoreIni.ERANK)br.ReadInt32();
+			cスコア.譜面情報.最大ランク.Bass = (CScoreIni.ERANK)br.ReadInt32();
 			cスコア.譜面情報.最大スキル.Drums = br.ReadDouble();
 			cスコア.譜面情報.最大スキル.Guitar = br.ReadDouble();
 			cスコア.譜面情報.最大スキル.Bass = br.ReadDouble();
@@ -1108,9 +1106,9 @@ namespace DTXMania
 					bw.Write(node.arスコア[i].譜面情報.レベル.Drums);
 					bw.Write(node.arスコア[i].譜面情報.レベル.Guitar);
 					bw.Write(node.arスコア[i].譜面情報.レベル.Bass);
-					bw.Write(node.arスコア[i].譜面情報.最大ランク.Drums);
-					bw.Write(node.arスコア[i].譜面情報.最大ランク.Guitar);
-					bw.Write(node.arスコア[i].譜面情報.最大ランク.Bass);
+					bw.Write((int)node.arスコア[i].譜面情報.最大ランク.Drums);
+					bw.Write((int)node.arスコア[i].譜面情報.最大ランク.Guitar);
+					bw.Write((int)node.arスコア[i].譜面情報.最大ランク.Bass);
 					bw.Write(node.arスコア[i].譜面情報.最大スキル.Drums);
 					bw.Write(node.arスコア[i].譜面情報.最大スキル.Guitar);
 					bw.Write(node.arスコア[i].譜面情報.最大スキル.Bass);
@@ -1279,11 +1277,11 @@ namespace DTXMania
 					//					{
 					if (n1.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN1 += n1.arスコア[nL12345].譜面情報.演奏回数[(int)part];
+						nSumPlayCountN1 += n1.arスコア[nL12345].譜面情報.演奏回数[part];
 					}
 					if (n2.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN2 += n2.arスコア[nL12345].譜面情報.演奏回数[(int)part];
+						nSumPlayCountN2 += n2.arスコア[nL12345].譜面情報.演奏回数[part];
 					}
 					//					}
 					num = nSumPlayCountN2 - nSumPlayCountN1;
@@ -1300,7 +1298,7 @@ namespace DTXMania
 					//					{
 					if (c曲リストノード.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN1 += c曲リストノード.arスコア[nL12345].譜面情報.演奏回数[(int)part];
+						nSumPlayCountN1 += c曲リストノード.arスコア[nL12345].譜面情報.演奏回数[part];
 					}
 					//					}
 					// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
@@ -1341,11 +1339,11 @@ namespace DTXMania
 					int nSumPlayCountN1 = 0, nSumPlayCountN2 = 0;
 					if (n1.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN1 = n1.arスコア[nL12345].譜面情報.レベル[(int)part];
+						nSumPlayCountN1 = n1.arスコア[nL12345].譜面情報.レベル[part];
 					}
 					if (n2.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN2 = n2.arスコア[nL12345].譜面情報.レベル[(int)part];
+						nSumPlayCountN2 = n2.arスコア[nL12345].譜面情報.レベル[part];
 					}
 					num = nSumPlayCountN2 - nSumPlayCountN1;
 					if (num != 0)
@@ -1359,7 +1357,7 @@ namespace DTXMania
 					int nSumPlayCountN1 = 0;
 					if (c曲リストノード.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN1 = c曲リストノード.arスコア[nL12345].譜面情報.レベル[(int)part];
+						nSumPlayCountN1 = c曲リストノード.arスコア[nL12345].譜面情報.レベル[part];
 					}
 					// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
 				}
@@ -1392,13 +1390,13 @@ namespace DTXMania
 					bool isFullCombo1 = false, isFullCombo2 = false;
 					if (n1.arスコア[nL12345] != null)
 					{
-						isFullCombo1 = n1.arスコア[nL12345].譜面情報.フルコンボ[(int)part];
-						nSumPlayCountN1 = n1.arスコア[nL12345].譜面情報.最大ランク[(int)part];
+						isFullCombo1 = n1.arスコア[nL12345].譜面情報.フルコンボ[part];
+						nSumPlayCountN1 = (int)n1.arスコア[nL12345].譜面情報.最大ランク[part];
 					}
 					if (n2.arスコア[nL12345] != null)
 					{
-						isFullCombo2 = n2.arスコア[nL12345].譜面情報.フルコンボ[(int)part];
-						nSumPlayCountN2 = n2.arスコア[nL12345].譜面情報.最大ランク[(int)part];
+						isFullCombo2 = n2.arスコア[nL12345].譜面情報.フルコンボ[part];
+						nSumPlayCountN2 = (int)n2.arスコア[nL12345].譜面情報.最大ランク[part];
 					}
 					if (isFullCombo1 ^ isFullCombo2)
 					{
@@ -1416,7 +1414,7 @@ namespace DTXMania
 					int nSumPlayCountN1 = 0;
 					if (c曲リストノード.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN1 = c曲リストノード.arスコア[nL12345].譜面情報.最大ランク[(int)part];
+						nSumPlayCountN1 = (int)c曲リストノード.arスコア[nL12345].譜面情報.最大ランク[part];
 					}
 					// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
 				}
@@ -1448,11 +1446,11 @@ namespace DTXMania
 					double nSumPlayCountN1 = 0, nSumPlayCountN2 = 0;
 					if (n1.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN1 = n1.arスコア[nL12345].譜面情報.最大スキル[(int)part];
+						nSumPlayCountN1 = n1.arスコア[nL12345].譜面情報.最大スキル[part];
 					}
 					if (n2.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN2 = n2.arスコア[nL12345].譜面情報.最大スキル[(int)part];
+						nSumPlayCountN2 = n2.arスコア[nL12345].譜面情報.最大スキル[part];
 					}
 					double d = nSumPlayCountN2 - nSumPlayCountN1;
 					if (d != 0)
@@ -1466,7 +1464,7 @@ namespace DTXMania
 					double nSumPlayCountN1 = 0;
 					if (c曲リストノード.arスコア[nL12345] != null)
 					{
-						nSumPlayCountN1 = c曲リストノード.arスコア[nL12345].譜面情報.最大スキル[(int)part];
+						nSumPlayCountN1 = c曲リストノード.arスコア[nL12345].譜面情報.最大スキル[part];
 					}
 					// Debug.WriteLine( nSumPlayCountN1 + ":" + c曲リストノード.strタイトル );
 				}
@@ -1690,46 +1688,44 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 			try
 			{
 				var ini = new CScoreIni(strScoreIniファイルパス);
-				ini.t全演奏記録セクションの整合性をチェックし不整合があればリセットする();
-
-				for (int n楽器番号 = 0; n楽器番号 < 3; n楽器番号++)
+				
+				for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; inst++)
 				{
-					int n = (n楽器番号 * 2) + 1;	// n = 0～5
-
-					#region socre.譜面情報.最大ランク[ n楽器番号 ] = ...
 					//-----------------
-					if (ini.stセクション[n].b演奏にMIDI入力を使用した ||
-						ini.stセクション[n].b演奏にキーボードを使用した ||
-						ini.stセクション[n].b演奏にジョイパッドを使用した ||
-						ini.stセクション[n].b演奏にマウスを使用した)
+					if (
+						ini.stセクション.HiSkill[inst].b演奏にMIDI入力を使用した ||
+						ini.stセクション.HiSkill[inst].b演奏にキーボードを使用した ||
+						ini.stセクション.HiSkill[inst].b演奏にジョイパッドを使用した ||
+						ini.stセクション.HiSkill[inst].b演奏にマウスを使用した)
 					{
 						// (A) 全オートじゃないようなので、演奏結果情報を有効としてランクを算出する。
 
-						score.譜面情報.最大ランク[n楽器番号] =
+						score.譜面情報.最大ランク[inst] =
 							CScoreIni.tランク値を計算して返す(
-								ini.stセクション[n].n全チップ数,
-								ini.stセクション[n].nPerfect数,
-								ini.stセクション[n].nGreat数,
-								ini.stセクション[n].nGood数,
-								ini.stセクション[n].nPoor数,
-								ini.stセクション[n].nMiss数);
+								ini.stセクション.HiSkill[inst].n全チップ数,
+								ini.stセクション.HiSkill[inst].nPerfect数,
+								ini.stセクション.HiSkill[inst].nGreat数,
+								ini.stセクション.HiSkill[inst].nGood数,
+								ini.stセクション.HiSkill[inst].nPoor数,
+								ini.stセクション.HiSkill[inst].nMiss数);
 					}
 					else
 					{
 						// (B) 全オートらしいので、ランクは無効とする。
 
-						score.譜面情報.最大ランク[n楽器番号] = (int)CScoreIni.ERANK.UNKNOWN;
+						score.譜面情報.最大ランク[inst] = CScoreIni.ERANK.UNKNOWN;
 					}
 					//-----------------
-					#endregion
-					score.譜面情報.最大スキル[n楽器番号] = ini.stセクション[n].db演奏型スキル値;
-					score.譜面情報.フルコンボ[n楽器番号] = ini.stセクション[n].bフルコンボである;
+					score.譜面情報.最大スキル[inst] = ini.stセクション.HiSkill[inst].db演奏型スキル値;
+					score.譜面情報.フルコンボ[inst] = ini.stセクション.HiSkill[inst].bフルコンボである;
 				}
 				score.譜面情報.演奏回数.Drums = ini.stファイル.PlayCountDrums;
 				score.譜面情報.演奏回数.Guitar = ini.stファイル.PlayCountGuitar;
 				score.譜面情報.演奏回数.Bass = ini.stファイル.PlayCountBass;
 				for (int i = 0; i < 5; i++)
+				{
 					score.譜面情報.演奏履歴[i] = ini.stファイル.History[i];
+				}
 			}
 			catch
 			{

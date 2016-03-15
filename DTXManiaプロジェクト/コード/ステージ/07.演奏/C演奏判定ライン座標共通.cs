@@ -11,111 +11,24 @@ namespace DTXMania
 	internal class C演奏判定ライン座標共通
 	{
 		/// <summary>
-		/// 判定ラインのy座標
-		/// </summary>
-		private STDGBVALUE<int>[, ,] n判定ラインY座標元データ = null;			// 補正無しの時の座標データ
-		private STDGBVALUE<int>[, ,] n演奏RGBボタンY座標元データ = null;
-
-		/// <summary>
 		/// 表示位置の補正データ
 		/// 初期化は外部から行うこと。
 		/// </summary>
-		public STDGBVALUE<int> nJudgeLinePosY_delta;
+		//public STDGBVALUE<int> nJudgeLinePosYDelta;
 
-		/// <summary>
-		/// 判定ライン表示位置を、Vシリーズ互換にするかどうか。
-		/// 設定は外部から行うこと。
-		/// </summary>
-		public STDGBVALUE<E判定位置> n判定位置;
-
-		/// <summary>
-		/// コンストラクタ(座標値の初期化)
-		/// </summary>
 		public C演奏判定ライン座標共通()
 		{
-			n判定ラインY座標元データ = new STDGBVALUE<int>[2, 2, 2];
-			#region [ 判定ライン座標の初期化]
-			// Normal, Drums画面, 判定ライン
-			n判定ラインY座標元データ[0, 0, 0].Drums = 942;
-			n判定ラインY座標元データ[0, 0, 0].Guitar = (int)(95 * Scale.Y);
-			n判定ラインY座標元データ[0, 0, 0].Bass = (int)(95 * Scale.Y);
-			// Reverse, Drums画面, 判定ライン
-			n判定ラインY座標元データ[1, 0, 0].Drums = 119;
-			n判定ラインY座標元データ[1, 0, 0].Guitar = (int)(374 * Scale.Y);
-			n判定ラインY座標元データ[1, 0, 0].Bass = (int)(374 * Scale.Y);
-			// Normal, Drums画面, Wailing枠
-			n判定ラインY座標元データ[0, 0, 1].Drums = 0;		//未使用
-			n判定ラインY座標元データ[0, 0, 1].Guitar = (int)(69 * Scale.Y);
-			n判定ラインY座標元データ[0, 0, 1].Bass = (int)(69 * Scale.Y);
-			// Reverse, Drums画面, Wailing枠
-			n判定ラインY座標元データ[1, 0, 1].Drums = 0;		//未使用
-			n判定ラインY座標元データ[1, 0, 1].Guitar = (int)(350 * Scale.Y);
-			n判定ラインY座標元データ[1, 0, 1].Bass = (int)(350 * Scale.Y);
-
-			// Normal, GR画面, 判定ライン
-			n判定ラインY座標元データ[0, 1, 0].Drums = 0;		//未使用
-			n判定ラインY座標元データ[0, 1, 0].Guitar = (int)(40 * Scale.Y);
-			n判定ラインY座標元データ[0, 1, 0].Bass = (int)(40 * Scale.Y);
-			// Reverse, GR画面, 判定ライン
-			n判定ラインY座標元データ[1, 1, 0].Drums = 0;		//未使用
-			n判定ラインY座標元データ[1, 1, 0].Guitar = (int)(369 * Scale.Y);
-			n判定ラインY座標元データ[1, 1, 0].Bass = (int)(369 * Scale.Y);
-			// Normal, GR画面, Wailing枠
-			n判定ラインY座標元データ[0, 1, 1].Drums = 0;		//未使用
-			n判定ラインY座標元データ[0, 1, 1].Guitar = (int)(11 * Scale.Y);
-			n判定ラインY座標元データ[0, 1, 1].Bass = (int)(11 * Scale.Y);
-			// Reverse, GR画面, Wailing枠
-			n判定ラインY座標元データ[1, 1, 1].Drums = 0;		//未使用
-			n判定ラインY座標元データ[1, 1, 1].Guitar = (int)(340 * Scale.Y);
-			n判定ラインY座標元データ[1, 1, 1].Bass = (int)(340 * Scale.Y);
-			#endregion
-
-			n演奏RGBボタンY座標元データ = new STDGBVALUE<int>[2, 2, 2];
-			#region [ RGBボタン座標の初期化]
-			// Normal, Drums画面, RGBボタン
-			n演奏RGBボタンY座標元データ[0, 0, 0].Drums = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[0, 0, 0].Guitar = (int)(57 * Scale.Y);
-			n演奏RGBボタンY座標元データ[0, 0, 0].Bass = (int)(57 * Scale.Y);
-			// Reverse, Drums画面, RGBボタン
-			n演奏RGBボタンY座標元データ[1, 0, 0].Drums = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[1, 0, 0].Guitar = (int)(57 * Scale.Y);
-			n演奏RGBボタンY座標元データ[1, 0, 0].Bass = (int)(57 * Scale.Y);
-			// Normal, Drums画面, RGBボタン(Vシリーズ)
-			n演奏RGBボタンY座標元データ[0, 0, 1].Drums = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[0, 0, 1].Guitar = (int)(107 * Scale.Y);
-			n演奏RGBボタンY座標元データ[0, 0, 1].Bass = (int)(107 * Scale.Y);
-			// Reverse, Drums画面, RGBボタン(Vシリーズ)
-			n演奏RGBボタンY座標元データ[1, 0, 1].Drums = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[1, 0, 1].Guitar = (int)(107 * Scale.Y);
-			n演奏RGBボタンY座標元データ[1, 0, 1].Bass = (int)(107 * Scale.Y);
-
-			// Normal, GR画面, RGBボタン
-			n演奏RGBボタンY座標元データ[0, 1, 0].Drums = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[0, 1, 0].Guitar = (int)(3 * Scale.Y);
-			n演奏RGBボタンY座標元データ[0, 1, 0].Bass = (int)(3 * Scale.Y);
-			// Reverse, GR画面, RGBボタン
-			n演奏RGBボタンY座標元データ[1, 1, 0].Drums = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[1, 1, 0].Guitar = (int)(3 * Scale.Y);
-			n演奏RGBボタンY座標元データ[1, 1, 0].Bass = (int)(3 * Scale.Y);
-			// Normal, GR画面, RGBボタン(Vシリーズ)
-			n演奏RGBボタンY座標元データ[0, 1, 1].Drums = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[0, 1, 1].Guitar = (int)(44 * Scale.Y);
-			n演奏RGBボタンY座標元データ[0, 1, 1].Bass = (int)(44 * Scale.Y);
-			// Reverse, GR画面, RGBボタン(Vシリーズ)
-			n演奏RGBボタンY座標元データ[1, 1, 1].Drums = 0;		// 未使用
-			n演奏RGBボタンY座標元データ[1, 1, 1].Guitar = (int)(44 * Scale.Y);
-			n演奏RGBボタンY座標元データ[1, 1, 1].Bass = (int)(44 * Scale.Y);
-			#endregion
-
-			n判定位置 = new STDGBVALUE<E判定位置>();
-			n判定位置.Drums = E判定位置.標準;
-			n判定位置.Guitar = E判定位置.標準;
-			n判定位置.Bass = E判定位置.標準;
-
 			// 補正値は、Normal/Reverse, Drums/GR画面共通
-			nJudgeLinePosY_delta.Drums = 0;
-			nJudgeLinePosY_delta.Guitar = 0;
-			nJudgeLinePosY_delta.Bass = 0;
+			//nJudgeLinePosYDelta.Drums = 0;
+			//nJudgeLinePosYDelta.Guitar = 0;
+			//nJudgeLinePosYDelta.Bass = 0;
+		}
+
+		public enum Reverse
+		{
+			UseConfig,
+			Reverse,
+			NotReverse
 		}
 
 		/// <summary>
@@ -127,7 +40,7 @@ namespace DTXMania
 		/// <param name="bWailingFrame">Wailing枠の座標か、判定ラインの座標か</param>
 		/// <param name="b補正あり">プレーヤーのライン表示位置補正情報を加えるかどうか</param>
 		/// <returns></returns>
-		public int n判定ラインY座標(E楽器パート eInst, bool bReverse, bool bWailingFrame = false, bool b補正あり = false)
+		public static int n判定ラインY座標(E楽器パート eInst, bool bWailingFrame = false, bool b補正あり = false, Reverse rt = Reverse.UseConfig)
 		{
 			if (eInst == E楽器パート.UNKNOWN)
 			{
@@ -135,51 +48,52 @@ namespace DTXMania
 			}
 			else
 			{
-				int nReverse = bReverse ? 1 : 0;
-				int nGRmode = CDTXMania.Instance.ConfigIni.bギタレボモード ? 1 : 0;
-				int nWailing = bWailingFrame ? 1 : 0;
-				int nInst = (int)eInst;
-				int ret = this.n判定ラインY座標元データ[nReverse, nGRmode, nWailing][nInst];		// 補正無しの値
-				if (bReverse)
+				int ret = CDTXMania.Instance.Coordinates.JudgeLine[eInst].Y;
+
+				int delta = CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset[eInst];
+
+				bool rev = false;
+				if (rt == Reverse.Reverse)
 				{
-					if (eInst != E楽器パート.DRUMS && n判定位置[nInst] == E判定位置.Lower)
-						ret += (int)(13 * Scale.Y);
-					if (b補正あり)
+					rev = true;
+				}
+				else if (rt == Reverse.UseConfig)
+				{
+					rev = CDTXMania.Instance.ConfigIni.bReverse[eInst];
+				}
+
+				if (rev)
+				{
+					ret = SampleFramework.GameWindowSize.Height - ret;
+					if (bWailingFrame)
 					{
-						if (eInst == E楽器パート.DRUMS)
-						{
-							ret += nJudgeLinePosY_delta[nInst];
-
-						}
-						else
-						{
-							ret -= nJudgeLinePosY_delta[nInst];
-						}
+						ret -= CDTXMania.Instance.Coordinates.ImgGtWailingFrame.H / 2;
 					}
-
+					if (eInst == E楽器パート.DRUMS)
+					{
+						delta = -delta;
+					}
 				}
 				else
 				{
-					if (eInst != E楽器パート.DRUMS && n判定位置[nInst] == E判定位置.Lower)
-						ret += (int)(52 * Scale.Y);
-					if (b補正あり)
+					if (bWailingFrame)
 					{
-						if (eInst == E楽器パート.DRUMS)
-						{
-							ret += nJudgeLinePosY_delta[nInst];
-
-						}
-						else
-						{
-							ret -= nJudgeLinePosY_delta[nInst];
-						}
+						ret -= CDTXMania.Instance.Coordinates.ImgGtWailingFrame.H / 2;
+					}
+					if (eInst != E楽器パート.DRUMS)
+					{
+						delta = -delta;
 					}
 				}
-				return ret;
+				if (!b補正あり)
+				{
+					delta = 0;
+				}
+				return ret + delta;
 			}
 		}
 
-		public int n演奏RGBボタンY座標(E楽器パート eInst, bool bGRmode, bool bReverse)
+		public static int n演奏RGBボタンY座標(E楽器パート eInst)
 		{
 			if (eInst == E楽器パート.DRUMS)
 			{
@@ -191,12 +105,17 @@ namespace DTXMania
 			}
 			else
 			{
-				int nInst = (int)eInst;
-				int nGRmode = bGRmode ? 1 : 0;
-				int nReverse = bReverse ? 1 : 0;
-				int nVseries = (int)n判定位置[nInst];
-				int ret = n演奏RGBボタンY座標元データ[nReverse, nGRmode, nVseries][nInst];		// 補正無しの値
-
+				int maxButtonH = Math.Max(CDTXMania.Instance.Coordinates.ImgGtButtonR.H, CDTXMania.Instance.Coordinates.ImgGtButtonG.H);
+				maxButtonH = Math.Max(maxButtonH, CDTXMania.Instance.Coordinates.ImgGtButtonB.H);
+				int ret = n判定ラインY座標(eInst, false, true);
+				if (CDTXMania.Instance.ConfigIni.bReverse[eInst])
+				{
+					ret += CDTXMania.Instance.Coordinates.ImgJudgeLine.H;
+				}
+				else
+				{
+					ret -= maxButtonH;
+				}
 				return ret;
 			}
 		}
