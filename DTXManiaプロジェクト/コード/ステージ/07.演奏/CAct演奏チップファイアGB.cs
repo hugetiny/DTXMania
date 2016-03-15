@@ -7,7 +7,7 @@ using FDK;
 
 namespace DTXMania
 {
-	internal abstract class CAct演奏チップファイアGB : CActivity
+	internal class CAct演奏チップファイアGB : CActivity
 	{
 		public CAct演奏チップファイアGB()
 		{

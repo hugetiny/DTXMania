@@ -43,7 +43,7 @@ namespace DTXMania
 				for (E楽器パート nInst = E楽器パート.DRUMS; nInst <= E楽器パート.BASS; nInst++)
 				{
 					// Drum/Guitar/Bassで3つ分、枠を作っておく
-					lci[nConfSet].Drums = MakeListCItemBase(nConfSet, nInst);
+					lci[nConfSet][nInst] = MakeListCItemBase(nConfSet, nInst);
 				}
 			}
 			// ConfSet=0, nInst=Drums

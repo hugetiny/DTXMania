@@ -137,6 +137,7 @@ namespace DTXMania
 			base.b活性化してない = true;
 			base.list子Activities.Add(this.actPad = new CAct演奏Drumsパッド());
 			base.list子Activities.Add(this.actChipFireD = new CAct演奏DrumsチップファイアD());
+			base.list子Activities.Add(this.actChipFireGB = new CAct演奏チップファイアGB());
 			base.list子Activities.Add(this.actStageFailed = new CAct演奏ステージ失敗());
 			base.list子Activities.Add(this.actDANGER = new CAct演奏Danger共通());
 			base.list子Activities.Add(this.actAVI = new CAct演奏AVI());
@@ -153,7 +154,6 @@ namespace DTXMania
 			base.list子Activities.Add(this.actGauge = new CAct演奏ゲージ共通());
 			base.list子Activities.Add(this.actGraph = new CAct演奏グラフ()); // #24074 2011.01.23 add ikanick
 			base.list子Activities.Add(this.actCombo = new CAct演奏Combo共通());
-			base.list子Activities.Add(this.actChipFireGB = new CAct演奏Guitarチップファイア());
 			base.list子Activities.Add(this.actPlayInfo = new CAct演奏演奏情報());
 			base.list子Activities.Add(this.actFI = new CActFIFOBlack());
 			base.list子Activities.Add(this.actFO = new CActFIFOBlack());
@@ -664,7 +664,7 @@ namespace DTXMania
 				{
 					this.t進行描画_チップファイアD();
 				}
-				if (CDTXMania.Instance.ConfigIni.bGuitar有効)
+				if(CDTXMania.Instance.ConfigIni.bGuitar有効)
 				{
 					this.t進行描画_チップファイアGB();
 				}
@@ -2843,7 +2843,7 @@ namespace DTXMania
 			}
 		}
 
-		protected void t進行描画_チップファイアGB()
+		private void t進行描画_チップファイアGB()
 		{
 			this.actChipFireGB.On進行描画();
 		}
