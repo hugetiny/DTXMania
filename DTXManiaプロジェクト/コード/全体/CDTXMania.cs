@@ -898,9 +898,8 @@ namespace DTXMania
 			}
 
 			#region [ 現在の電源プランをバックアップし、HighPerformanceに変更 ]
-			cPowerPlan = new CPowerPlan();
-			cPowerPlan.BackupCurrentPowerPlan();
-			cPowerPlan.ChangeHighPerformance();
+			CPowerPlan.BackupCurrentPowerPlan();
+			CPowerPlan.ChangeHighPerformance();
 			#endregion
 
 
@@ -980,7 +979,7 @@ namespace DTXMania
 		}
 		protected override void OnExiting(EventArgs e)
 		{
-			cPowerPlan.RestoreCurrentPowerPlan();			// 電源プランを元のものに戻す
+			CPowerPlan.RestoreCurrentPowerPlan();			// 電源プランを元のものに戻す
 			CPowerManagement.tEnableMonitorSuspend();		// スリープ抑止状態を解除
 			this.t終了処理();
 			base.OnExiting(e);
@@ -2089,7 +2088,6 @@ namespace DTXMania
 		}
 		private CSound previewSound;
 		private CCounter ccMouseShow;
-		private CPowerPlan cPowerPlan;
 
 		private void t終了処理()
 		{

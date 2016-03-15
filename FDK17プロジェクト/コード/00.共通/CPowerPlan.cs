@@ -11,26 +11,18 @@ namespace FDK
 	/// <summary>
 	/// 電源プランの制御を行う
 	/// </summary>
-	public class CPowerPlan
+	public static class CPowerPlan
 	{
 		// 参考: 電源プラン制御: http://www.fsmpi.uni-bayreuth.de/~dun3/archives/programmatically-change-power-options-using-cshar/519.html
 		// 参考: ConnectedStandby判別: https://social.msdn.microsoft.com/Forums/en-US/eeb164a3-8ceb-4eb2-8768-4faaa7218c59/how-to-experimentally-confirm-that-connected-standby-mode-is-enabled-on-a-computer-system?forum=tailoringappsfordevices
 		//                             http://stackoverflow.com/questions/20407094/c-sharp-how-to-use-callntpowerinformation-with-interop-to-get-system-power-infor
 
-		readonly private Guid GuidHighPerformance = new Guid( "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c" );		// Vista以降は全部これのはず
-		private Guid GuidBackup;
-		private bool bConnectedStandbySupported = false;
+		readonly private static Guid GuidHighPerformance = new Guid( "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c" );		// Vista以降は全部これのはず
+		private static Guid GuidBackup = Guid.Empty;
+		private static bool bConnectedStandbySupported = false;
 
 
-
-
-		public CPowerPlan()
-		{
-			GuidBackup = System.Guid.Empty;
-		}
-
-
-		public void BackupCurrentPowerPlan()
+		public static void BackupCurrentPowerPlan()
 		{
 			bConnectedStandbySupported = IsConnetedStandbySupported();
 			
@@ -87,7 +79,7 @@ namespace FDK
 			}
 		}
 
-		public void RestoreCurrentPowerPlan()
+		public static void RestoreCurrentPowerPlan()
 		{
 			if ( bConnectedStandbySupported )
 			{
@@ -103,7 +95,7 @@ namespace FDK
 				}
 			}
 		}
-		public void ChangeHighPerformance()
+		public static void ChangeHighPerformance()
 		{
 			if ( bConnectedStandbySupported )
 			{
@@ -118,13 +110,13 @@ namespace FDK
 
 
 
-		private void SetActivePowerPlan( Guid powerSchemeId )
+		private static void SetActivePowerPlan( Guid powerSchemeId )
 		{
 			var schemeGuid = powerSchemeId;
 			CWin32.PowerSetActiveScheme( IntPtr.Zero, ref schemeGuid );
 		}
 
-		private Guid GetActivePowerPlan()
+		private static Guid GetActivePowerPlan()
 		{
 			IntPtr pCurrentSchemeGuid = IntPtr.Zero;
 			CWin32.PowerGetActiveScheme( IntPtr.Zero, ref pCurrentSchemeGuid );
@@ -133,7 +125,7 @@ namespace FDK
 		}
 
 
-		private IEnumerable<Guid> FindAll()
+		private static IEnumerable<Guid> FindAll()
 		{
 			var schemeGuid = Guid.Empty;
 			uint sizeSchemeGuid = (uint) Marshal.SizeOf( typeof( Guid ) );
@@ -146,7 +138,7 @@ namespace FDK
 			}
 		}
 
-		private string GetFriendlyName( Guid schemeGuid )
+		private static string GetFriendlyName( Guid schemeGuid )
 		{
 			uint sizeName = 1024;
 			IntPtr pSizeName = Marshal.AllocHGlobal( (int) sizeName );
