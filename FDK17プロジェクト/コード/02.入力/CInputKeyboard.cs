@@ -85,19 +85,25 @@ namespace FDK
 						{
 							foreach ( Key key in data.PressedKeys )
 							{
-								STInputEvent item = new STInputEvent()
+								// #23708 2016.3.19 yyagi; Even if we remove ALT+ENTER key input by SuppressKeyPress = true in Form,
+								// it doesn't affect to DirectInput (ALT+ENTER does not remove)
+								// So we ignore ENTER input in ALT+ENTER combination here.
+								// Note: ENTER will be alived if you keyup ALT after ALT+ENTER.
+								if ( key != Key.Return || ( bKeyState[ (int)Key.LeftAlt ] == false && bKeyState[ (int)Key.RightAlt ] == false ) )
 								{
-									nKey = (int) key,
-									b押された = true,
-									b離された = false,
-									nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
-									nVelocity = CInput管理.n通常音量
-								};
-								this.list入力イベント.Add( item );
+									STInputEvent item = new STInputEvent()
+									{
+										nKey = (int) key,
+										b押された = true,
+										b離された = false,
+										nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
+										nVelocity = CInput管理.n通常音量
+									};
+									this.list入力イベント.Add( item );
 
-								this.bKeyState[ (int) key ] = true;
-								this.bKeyPushDown[ (int) key ] = true;
-
+									this.bKeyState[ (int) key ] = true;
+									this.bKeyPushDown[ (int) key ] = true;
+								}
 								//if ( item.nKey == (int) SlimDX.DirectInput.Key.Space )
 								//{
 								//    Trace.TraceInformation( "FDK(buffered): SPACE key registered. " + ct.nシステム時刻 );
@@ -134,18 +140,21 @@ namespace FDK
 						{
 							if ( this.bKeyState[ (int) key ] == false )
 							{
-								var ev = new STInputEvent()
+								if ( key != Key.Return || ( bKeyState[ (int) Key.LeftAlt ] == false && bKeyState[ (int) Key.RightAlt ] == false ) )	// #23708 2016.3.19 yyagi
 								{
-									nKey = (int) key,
-									b押された = true,
-									b離された = false,
-									nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻,	// 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
-									nVelocity = CInput管理.n通常音量,
-								};
-								this.list入力イベント.Add( ev );
+									var ev = new STInputEvent()
+									{
+										nKey = (int) key,
+										b押された = true,
+										b離された = false,
+										nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻,	// 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
+										nVelocity = CInput管理.n通常音量,
+									};
+									this.list入力イベント.Add( ev );
 
-								this.bKeyState[ (int) key ] = true;
-								this.bKeyPushDown[ (int) key ] = true;
+									this.bKeyState[ (int) key ] = true;
+									this.bKeyPushDown[ (int) key ] = true;
+								}
 
 								//if ( (int) key == (int) SlimDX.DirectInput.Key.Space )
 								//{
