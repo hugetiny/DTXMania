@@ -119,7 +119,7 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 		private Rectangle[,] rc文字の矩形領域;
-		private const string str表記可能文字 = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ";
+		public const string str表記可能文字 = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ ";
 		private const int nFontWidth = 8, nFontHeight = 16;
 		private CTexture[] txフォント8x16 = new CTexture[ 2 ];
 		//-----------------

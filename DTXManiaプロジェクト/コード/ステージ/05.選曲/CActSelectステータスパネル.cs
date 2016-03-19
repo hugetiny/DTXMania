@@ -178,10 +178,24 @@ namespace DTXMania
 				{
 					if( ( this.str難易度ラベル[ i ] != null ) && ( this.str難易度ラベル[ i ].Length > 0 ) )
 					{
-						string str = this.str難易度ラベル[ i ];
+						#region [#36175 2016.3.20 yyagi; 難易度ラベルの文字すべて表示不可だった場合は、L1, L2等のデフォルト文字列を代わりに使う]
+						bool b表示可能 = false;
+						for ( int j = 0; j < this.str難易度ラベル[ i ].Length; j++ )
+						{
+							//if ( CDTXMania.act文字コンソール.str表記可能文字.IndexOf( ch ) >= 0 )
+							if ( C文字コンソール.str表記可能文字.IndexOf( this.str難易度ラベル[ i ][ j ] ) >= 0 )
+							{
+								b表示可能 = true;
+							}
+						}
+						
+						string[] LxLABEL_default = { "L1", "L2", "L3", "L4", "L5" };
+						string str = (b表示可能)? this.str難易度ラベル[ i ] : LxLABEL_default[ i ];
+						#endregion
+
 						char[] chArray2 = new char[ 0x100 ];
 						int num6 = 0;
-						while( ( num6 < 0xff ) && ( num6 < this.str難易度ラベル[ i ].Length ) )
+						while( ( num6 < 0xff ) && ( num6 < str.Length ) )
 						{
 							chArray2[ num6 ] = str[ num6 ];
 							num6++;
