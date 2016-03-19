@@ -873,15 +873,14 @@ namespace DTXMania
 					#region [ 発音1秒前のタイミングを記録 ]
 					int n発音前余裕ms = 1000, n発音後余裕ms = 800;						// Drums
 					{
-						int ch = (int)(pChip.eチャンネル番号) >> 4;
 						// Guitar / Bass
-						if (ch == 2 || ch == 0x0a)
+						if ( pChip.e楽器パート == E楽器パート.GUITAR || pChip.e楽器パート == E楽器パート.BASS )
 						{
 							n発音前余裕ms = 800;
 							//n発音後余裕ms = 500;
 						}
 						// SE
-						if (ch == 0x06 || ch == 0x07 || ch == 0x08 || ch == 0x09)
+						if ( pChip.ESoundChipTypeを得る == ESoundChipType.SE )
 						{
 							n発音前余裕ms = 200;
 							//n発音後余裕ms = 500;
@@ -965,9 +964,8 @@ namespace DTXMania
 						CChip c_AddMixer_noremove = c_AddMixer;
 						c_AddMixer_noremove.SetSoundAfterPlayEnd(true);
 						listAddMixerChannel[listAddMixerChannel.Count - 1] = c_AddMixer_noremove;
-						//continue;												// 発声位置の計算ができないので、Mixer削除をあきらめる・・・のではなく
-						// #32248 2013.10.15 yyagi 演奏終了後も再生を続けるチップであるというフラグをpChip内に立てる
-						break;
+						continue;												// 発声位置の計算ができないので、Mixer削除をあきらめる・・・のではなく
+																				// #32248 2013.10.15 yyagi 演奏終了後も再生を続けるチップであるというフラグをpChip内に立てる
 					}
 					#region [ 未使用コード ]
 					//if ( n新RemoveMixer時刻ms < pChip.n発声時刻ms + duration )	// 曲の最後でサウンドが切れるような場合
@@ -1023,7 +1021,6 @@ namespace DTXMania
 						//DebugOut_CChipList( listRemoveTiming );
 					}
 					#endregion
-					break;
 				}
 			}
 			//Debug.WriteLine("==================================================================");
