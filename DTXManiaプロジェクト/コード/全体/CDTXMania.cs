@@ -2646,7 +2646,7 @@ namespace DTXMania
 		}
 		private void Window_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (this.bマウスカーソル表示中 == false)
+			if ( ConfigIni.bウィンドウモード == true && this.bマウスカーソル表示中 == false )	// #36168 2016.3.19 yyagi: do not to show mouse cursor in full screen mode
 			{
 				Cursor.Show();
 				this.bマウスカーソル表示中 = true;
