@@ -122,10 +122,10 @@ namespace DTXMania
 		private readonly Rectangle[] rcLeft = new Rectangle[] { new Rectangle( 0x60, 0x48, 0x18, 12 ), new Rectangle( 120, 0x48, 0x18, 12 ) };
 		private readonly Rectangle[] rcLight = new Rectangle[] { new Rectangle( 120, 0x30, 0x18, 12 ), new Rectangle( 120, 60, 0x18, 12 ) };
 		private readonly Rectangle[] rcPosition = new Rectangle[] {
+			new Rectangle( 24, 72, 24, 12 ),		// OFF
 			new Rectangle(  0, 48, 24, 12 ),		// P-A
 			new Rectangle(  0, 60, 24, 12 ),		// P-B
-			new Rectangle(  0, 72, 24, 12 ),		// P-B
-			new Rectangle( 24, 72, 24, 12 )			// OFF
+			new Rectangle(  0, 72, 24, 12 )			// P-B
 		};
 		private readonly Rectangle[] rcRandom = new Rectangle[] { new Rectangle( 0x48, 0x30, 0x18, 12 ), new Rectangle( 0x48, 60, 0x18, 12 ), new Rectangle( 0x48, 0x48, 0x18, 12 ), new Rectangle( 0x48, 0x54, 0x18, 12 ) };
 		private readonly Rectangle[] rcReverse = new Rectangle[] { new Rectangle( 0x18, 0x18, 0x18, 12 ), new Rectangle( 0x18, 0x24, 0x18, 12 ) };
