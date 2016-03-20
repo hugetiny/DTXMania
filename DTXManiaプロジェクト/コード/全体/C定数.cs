@@ -173,13 +173,13 @@ namespace DTXMania
 		Chipより下,
 		Chipより上
 	}
-	internal enum EAVI種別
+	public enum EAVI種別
 	{
 		Unknown,
 		AVI,
 		AVIPAN
 	}
-	internal enum EBGA種別
+	public enum EBGA種別
 	{
 		Unknown,
 		BMP,
