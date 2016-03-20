@@ -604,7 +604,7 @@ namespace FDK
 		private bool bDispose完了済み;
 		protected PositionColoredTexturedVertex[] cvPositionColoredVertexies;
 		protected TransformedColoredTexturedVertex[] cvTransformedColoredVertexies;
-		private const Pool poolvar =												// 2011.4.25 yyagi
+		protected const Pool poolvar =												// 2011.4.25 yyagi
 #if TEST_Direct3D9Ex
 			Pool.Default;
 #else
