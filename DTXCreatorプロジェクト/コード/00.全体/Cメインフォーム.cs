@@ -14,6 +14,7 @@ using DTXCreator.譜面;
 using DTXCreator.WAV_BMP_AVI;
 using DTXCreator.UndoRedo;
 using DTXCreator.オプション関連;
+using DTXCreator.MIDIインポート;
 using DTXCreator.汎用;
 using DTXCreator.Properties;
 using FDK;
@@ -50,6 +51,7 @@ namespace DTXCreator
 		internal CAVIリスト管理 mgrAVIリスト管理者 = null;
 		internal CUndoRedo管理 mgrUndoRedo管理者 = null;
 		internal Cクリップボード cbクリップボード = null;
+		private CMIDIインポート管理 mgrMIDIインポート管理者 = null;
 
 		internal MakeTempDTX makeTempDTX = null;
 
@@ -184,6 +186,7 @@ namespace DTXCreator
 			#region [ 全体を通して必要な管理者オブジェクトを生成する。]
 			//-----------------
 			this.mgrオプション管理者 = new Cオプション管理( this );
+			this.mgrMIDIインポート管理者 = new CMIDIインポート管理(this);
 			//-----------------
 			#endregion
 
@@ -484,7 +487,7 @@ namespace DTXCreator
 		#endregion
 		#region [ 新規作成 ]
 		//-----------------
-		private void tシナリオ_新規作成()
+		public void tシナリオ_新規作成()
 		{
 			// 作成前の保存確認。
 
@@ -2330,7 +2333,7 @@ namespace DTXCreator
 
 			return str相対ファイル名;
 		}
-		private DialogResult t未保存なら保存する()
+		public DialogResult t未保存なら保存する()
 		{
 			var result = DialogResult.OK;
 
@@ -5077,6 +5080,11 @@ namespace DTXCreator
 			this.mgrオプション管理者.tオプションダイアログを開いて編集し結果をアプリ設定に格納する();
 			this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
 		}
+		private void toolStripMenuItemMIDIImport_Click( object sender, EventArgs e)
+        {
+            this.mgrMIDIインポート管理者.tMIDIインポート管理を開く();
+            this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
+        }
 		//-----------------
 		#endregion
 		#region [ GUIイベント：メニューバー [ヘルプ] ]
