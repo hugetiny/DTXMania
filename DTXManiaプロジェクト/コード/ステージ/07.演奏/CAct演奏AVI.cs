@@ -50,10 +50,23 @@ namespace DTXMania
 				}
 				if (this.tx描画用 == null)
 				{
+#if TEST_Direct3D9Ex
+					if ( width % 32 != 0 )
+					{
+						width /= 32;
+						width++;
+						width *= 32;
+					}
+					this.tx描画用 = new CTexture(
+						CDTXMania.Instance.Device, width, height,
+						CDTXMania.Instance.GraphicsDeviceManager.CurrentSettings.BackBufferFormat,
+						Pool.Default, Usage.Dynamic );
+#else
 					this.tx描画用 = new CTexture(
 						CDTXMania.Instance.Device, width, height,
 						CDTXMania.Instance.GraphicsDeviceManager.CurrentSettings.BackBufferFormat,
 						Pool.Managed);
+#endif
 				}
 			}
 			catch (CTextureCreateFailedException e)
@@ -363,10 +376,10 @@ namespace DTXMania
 			if (!base.b活性化してない)
 			{
 #if TEST_Direct3D9Ex
-				this.tx描画用 = new CTexture( CDTXMania.Instance.Device,
-					320,
-					355,
-					CDTXMania.Instance.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
+				this.PrepareProperSizeTexture(
+						( bIsPreviewMovie ) ? 204 : SampleFramework.GameWindowSize.Width,
+						( bIsPreviewMovie ) ? 269 : SampleFramework.GameWindowSize.Height
+						);
 #else
 				this.PrepareProperSizeTexture(
 						(bIsPreviewMovie) ? 204 : SampleFramework.GameWindowSize.Width,
