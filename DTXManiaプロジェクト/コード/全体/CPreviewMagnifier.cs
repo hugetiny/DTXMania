@@ -72,9 +72,9 @@ namespace DTXMania
 			this.height = height_org;
 			this.magX = magX_org * width_fhd_set / width_org;
 			this.magY = magY_org * height_fhd_set / height_org;
-			if (bIsPreview && width_org == 204 && height_org == 269)
+			if (bIsPreview && width_org <= width_vga_set && height_org <= height_vga_set )
 			{
-				this.magX = magX_org * width_fhd_set / width_org * ( 204f / 269 );
+				this.magX = magX_org * width_fhd_set / width_org * ( Convert.ToSingle( width_vga_set ) / height_vga_set );
 			}
 			return;
 
