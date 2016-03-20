@@ -75,6 +75,7 @@ namespace DTXMania
 		public bool bUse556x710BGAAVI;
 		public STDGBVALUE<List<int>> listAutoGhostLag;
 		public STDGBVALUE<List<int>> listTargetGhsotLag;
+		public STDGBVALUE<int> n使用レーン数;
 
 #if TEST_NOTEOFFMODE
 		public STLANEVALUE<bool> b演奏で直前の音を消音する;
@@ -216,6 +217,7 @@ namespace DTXMania
 			this.nPolyphonicSounds = CDTXMania.Instance.ConfigIni.nPoliphonicSounds;
 			this.dbDTXVPlaySpeed = 1.0f;
 			this.bUse556x710BGAAVI = false;
+			this.n使用レーン数 = new STDGBVALUE<int>();
 
 #if TEST_NOTEOFFMODE
 			this.bHH演奏で直前のHHを消音する = true;

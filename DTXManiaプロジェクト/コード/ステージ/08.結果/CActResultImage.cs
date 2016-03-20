@@ -147,8 +147,8 @@ namespace DTXMania
 					this.n本体Y * Scale.Y
 				);
 			}
-			int x = this.n本体X + 0x11;
-			int y = this.n本体Y + 0x10;
+			int x = (int)(( this.n本体X + 17 ) * Scale.X);
+			int y = (int)(( this.n本体Y + 16 ) * Scale.Y);
 			//if ( ( ( this.nAVI再生開始時刻 != -1 ) && ( this.avi != null ) ) && ( this.sfリザルトAVI画像 != null ) )
 			if (this.rAVI != null)
 			{
@@ -160,12 +160,14 @@ namespace DTXMania
 				CPreviewMagnifier cmg = new CPreviewMagnifier();
 				cmg.GetMagnifier(this.r表示するリザルト画像.sz画像サイズ.Width, this.r表示するリザルト画像.sz画像サイズ.Height, 1.0f, 1.0f, true);
 
-				if (cmg.width < 0xcc) x += (204 - cmg.width) / 2;
-				if (cmg.height < 269) y += (269 - cmg.height) / 2;
 				this.r表示するリザルト画像.vc拡大縮小倍率.X = cmg.magX;
 				this.r表示するリザルト画像.vc拡大縮小倍率.Y = cmg.magY;
 				this.r表示するリザルト画像.vc拡大縮小倍率.Z = 1f;
-				this.r表示するリザルト画像.t2D描画(CDTXMania.Instance.Device, x * Scale.X, y * Scale.Y);
+				x += (int)((612 - cmg.width * cmg.magX ) / 2 );
+				y += (int)((605 - cmg.height * cmg.magY ) / 2 );
+				this.r表示するリザルト画像.t2D描画(CDTXMania.Instance.Device, x, y);
+
+
 			}
 			#endregion
 			if ((CDTXMania.Instance.DTX.GENRE != null) && (CDTXMania.Instance.DTX.GENRE.Length > 0))

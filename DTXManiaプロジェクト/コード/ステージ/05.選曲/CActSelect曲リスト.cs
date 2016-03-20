@@ -304,6 +304,7 @@ namespace DTXMania
 				for (E楽器パート m = E楽器パート.DRUMS; m <= E楽器パート.BASS; m++)
 				{
 					this.stバー情報[index].nスキル値[m] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[m];
+					this.stバー情報[index].n使用レーン数[m] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[m];
 				}
 				song = this.r次の曲(song);
 			}
@@ -468,8 +469,9 @@ namespace DTXMania
 			this.tx選曲バー.Score = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect bar score selected.png"), false);
 			this.tx選曲バー.Box = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect bar box selected.png"), false);
 			this.tx選曲バー.Other = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect bar other selected.png"), false);
-
+			
 			this.txスキル数字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect skill number on list.png"), false);
+			this.tx使用レーン数数字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect skill number on gauge etc.png"), false);
 			for (int i = 0; i < 13; i++)
 				this.t曲名バーの生成(i, this.stバー情報[i].strタイトル文字列, this.stバー情報[i].col文字色);
 
@@ -539,8 +541,9 @@ namespace DTXMania
 
 			for (int i = 0; i < 13; i++)
 				TextureFactory.t安全にDisposeする(ref this.stバー情報[i].txタイトル名);
-
+			
 			TextureFactory.t安全にDisposeする(ref this.txスキル数字);
+			TextureFactory.t安全にDisposeする(ref this.tx使用レーン数数字);
 			TextureFactory.t安全にDisposeする(ref this.txEnumeratingSongs);
 			TextureFactory.t安全にDisposeする(ref this.txSongNotFound);
 			TextureFactory.t安全にDisposeする(ref this.tx曲名バー.Score);
@@ -709,6 +712,7 @@ namespace DTXMania
 						for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
+							this.stバー情報[index].n使用レーン数[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
 						}
 
 						// 1行(100カウント)移動完了。
@@ -766,6 +770,7 @@ namespace DTXMania
 						for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
 						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
+							this.stバー情報[index].n使用レーン数[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
 						}
 
 
@@ -864,6 +869,12 @@ namespace DTXMania
 								this.tスキル値の描画(x + (int)(28 * Scale.X), y + (int)(59), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
 							//-----------------
 							#endregion
+							#region [ 使用レーン数を描画。]
+							//-----------------
+							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+								this.t使用レーン数の描画(x + (int)(0 * Scale.X), y + (int)53, this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
+							//-----------------
+							#endregion
 						}
 						else
 						{
@@ -891,6 +902,12 @@ namespace DTXMania
 							//-----------------
 							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
 								this.tスキル値の描画(x + (int)(14 * Scale.X), y + (int)(14 * Scale.Y), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
+							//-----------------
+							#endregion
+							#region [ 使用レーン数を描画。]
+							//-----------------
+							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+								this.t使用レーン数の描画(x + (int)(-14 * Scale.X), y + (int)(11 * Scale.Y), this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
 							//-----------------
 							#endregion
 						}
@@ -946,6 +963,16 @@ namespace DTXMania
 							);
 						//-----------------
 						#endregion
+						#region [ 使用レーン数を描画。]
+						//-----------------
+						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+							this.t使用レーン数の描画(
+								(int)(216 * Scale.X),
+								(int)(208 * Scale.Y),
+								this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]
+							);
+						//-----------------
+						#endregion
 					}
 					else
 					{
@@ -970,6 +997,12 @@ namespace DTXMania
 						//-----------------
 						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
 							this.tスキル値の描画(x + (int)(14 * Scale.X), y + (int)(14 * Scale.Y), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
+						//-----------------
+						#endregion
+						#region [ 使用レーン数を描画。]
+						//-----------------
+						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+							this.t使用レーン数の描画(x + (int)(-14 * Scale.X), y + (int)(11 * Scale.Y), this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
 						//-----------------
 						#endregion
 					}
@@ -1059,6 +1092,7 @@ namespace DTXMania
 			public string strタイトル文字列;
 			public CTexture txタイトル名;
 			public STDGBVALUE<int> nスキル値;
+			public STDGBVALUE<int> n使用レーン数;
 			public Color col文字色;
 		}
 
@@ -1132,6 +1166,7 @@ namespace DTXMania
 		private STバー情報[] stバー情報 = new STバー情報[13];
 		private CTexture txSongNotFound, txEnumeratingSongs;
 		private CTexture txスキル数字;
+		private CTexture tx使用レーン数数字;
 		private CTexture txアイテム数数字;
 		private STバー tx曲名バー;
 		private ST選曲バー tx選曲バー;
@@ -1266,6 +1301,7 @@ namespace DTXMania
 				for (E楽器パート j = E楽器パート.DRUMS; j <= E楽器パート.BASS; j++)
 				{
 					this.stバー情報[i].nスキル値[j] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[j];
+					this.stバー情報[i].n使用レーン数[j] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[j];
 				}
 
 				song = this.r次の曲(song);
@@ -1442,7 +1478,35 @@ namespace DTXMania
 			}
 			if (this.txアイテム数数字 != null)
 			{
-				this.txアイテム数数字.t2D描画(CDTXMania.Instance.Device, x, y, new Rectangle(dx, dy, (int)(8 * Scale.X), (int)(12 * Scale.Y)));
+				this.txアイテム数数字.t2D描画(CDTXMania.Instance.Device, x, y, new Rectangle(dx, dy, (int)(8 * Scale.X), (int)(10 * Scale.Y)));
+			}
+		}
+		
+		private void t使用レーン数の描画(int x, int y, int n使用レーン数)
+		{
+			// #36177 使用レーン数の表示 add ikanick 16.03.20
+			if ( n使用レーン数 == 0 )
+				return;
+
+			int n十の位 = n使用レーン数 / 10;
+			int n一の位 = n使用レーン数 % 10;
+			
+			// 十の位の描画。
+			if ( n十の位 != 0 )
+				this.t使用レーン数の描画_１桁描画(x + (int)(8 * Scale.X), y, n十の位);
+
+			// 一の位の描画。
+			this.t使用レーン数の描画_１桁描画(x + (int)(13 * Scale.X), y, n一の位);
+		}
+		private void t使用レーン数の描画_１桁描画(int x, int y, int n数値)
+		{
+			int dx, dy;
+			dx = (n数値 % 6) * (int)(8 * Scale.X);
+			dy = (n数値 / 6) * (int)(11 * Scale.Y);
+
+			if (this.tx使用レーン数数字 != null)
+			{
+				this.tx使用レーン数数字.t2D描画(CDTXMania.Instance.Device, x, y, new Rectangle(dx, dy, (int)(8 * Scale.X), (int)(10 * Scale.Y)));
 			}
 		}
 		//-----------------

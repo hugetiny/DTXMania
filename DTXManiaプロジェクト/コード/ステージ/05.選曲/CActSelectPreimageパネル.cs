@@ -545,8 +545,8 @@ namespace DTXMania
 		{
 			if (!CDTXMania.Instance.stage選曲.bスクロール中 && (((this.ct遅延表示 != null) && (this.ct遅延表示.n現在の値 > 0)) && !this.b新しいプレビューファイルをまだ読み込んでいない))
 			{
-				int x = this.n本体X + (int)(0x12 * Scale.X);
-				int y = this.n本体Y + (int)(0x10 * Scale.Y);
+				int x = this.n本体X + (int)(18 * Scale.X);
+				int y = this.n本体Y + (int)(16 * Scale.Y);
 
 				if (this.rAVI != null)
 				{
@@ -565,11 +565,11 @@ namespace DTXMania
 
 					int width = cmg.width;
 					int height = cmg.height;
-					this.r表示するプレビュー画像.vc拡大縮小倍率.X = cmg.magX;		// ( num4 * Scale.X ) / WIDTH_HD_SET;
-					this.r表示するプレビュー画像.vc拡大縮小倍率.Y = cmg.magY;		// ( num4 * Scale.X ) / WIDTH_HD_SET;
+					this.r表示するプレビュー画像.vc拡大縮小倍率.X = cmg.magX;
+					this.r表示するプレビュー画像.vc拡大縮小倍率.Y = cmg.magY;
 
-					x += (width - ((int)(width * mag))) / 2;
-					y += (height - ((int)(height * mag))) / 2;
+					x += (int)((612 - width * cmg.magX ) / 2 );
+					y += (int)((605 - height * cmg.magY ) / 2 );
 					this.r表示するプレビュー画像.n透明度 = (int)(255f * num3);
 					this.r表示するプレビュー画像.t2D描画(CDTXMania.Instance.Device, x, y);
 				}

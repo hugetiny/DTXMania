@@ -782,6 +782,9 @@ namespace DTXMania
 			cスコア.譜面情報.曲種別 = (EDTX種別)br.ReadInt32();
 			cスコア.譜面情報.Bpm = br.ReadDouble();
 			cスコア.譜面情報.Duration = br.ReadInt32();
+			cスコア.譜面情報.使用レーン数.Drums = br.ReadInt32();
+			cスコア.譜面情報.使用レーン数.Guitar = br.ReadInt32();
+			cスコア.譜面情報.使用レーン数.Bass = br.ReadInt32();
 
 			//Debug.WriteLine( "songs.db: " + cスコア.ファイル情報.ファイルの絶対パス );
 			return cスコア;
@@ -812,14 +815,14 @@ namespace DTXMania
 					{
 						if ((c曲リストノード.arスコア[i] != null) && !c曲リストノード.arスコア[i].bSongDBにキャッシュがあった)
 						{
-							#region [ DTX ファイルのヘッダだけ読み込み、Cスコア.譜面情報 を設定する ]
+							#region [ Cスコア.譜面情報 を設定する ]
 							//-----------------
 							string path = c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス;
 							if (File.Exists(path))
 							{
 								try
 								{
-									CDTX cdtx = new CDTX(c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス, true);
+									CDTX cdtx = new CDTX(c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス,false);//DTX ファイルのヘッダだけ読み込んでいたが、使用レーン数の集計の為全て読み込みに変更
 									c曲リストノード.arスコア[i].譜面情報.タイトル = cdtx.TITLE;
 									c曲リストノード.arスコア[i].譜面情報.アーティスト名 = cdtx.ARTIST;
 									c曲リストノード.arスコア[i].譜面情報.コメント = cdtx.COMMENT;
@@ -835,6 +838,9 @@ namespace DTXMania
 									c曲リストノード.arスコア[i].譜面情報.曲種別 = cdtx.e種別;
 									c曲リストノード.arスコア[i].譜面情報.Bpm = cdtx.BPM;
 									c曲リストノード.arスコア[i].譜面情報.Duration = 0;	//  (cdtx.listChip == null)? 0 : cdtx.listChip[ cdtx.listChip.Count - 1 ].n発声時刻ms;
+									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Drums = cdtx.n使用レーン数.Drums;
+									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Guitar = cdtx.n使用レーン数.Guitar;
+									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Bass = cdtx.n使用レーン数.Bass;
 									this.nファイルから反映できたスコア数++;
 									cdtx.On非活性化();
 									//Debug.WriteLine( "★" + this.nファイルから反映できたスコア数 + " " + c曲リストノード.arスコア[ i ].譜面情報.タイトル );
@@ -859,6 +865,9 @@ namespace DTXMania
 										sb.Append(", type=" + c曲リストノード.arスコア[i].譜面情報.曲種別);
 										sb.Append(", bpm=" + c曲リストノード.arスコア[i].譜面情報.Bpm);
 										//	sb.Append( ", duration=" + c曲リストノード.arスコア[ i ].譜面情報.Duration );
+										sb.Append(", lnDr=" + c曲リストノード.arスコア[i].譜面情報.使用レーン数.Drums);
+										sb.Append(", lnGt=" + c曲リストノード.arスコア[i].譜面情報.使用レーン数.Guitar);
+										sb.Append(", lnBs=" + c曲リストノード.arスコア[i].譜面情報.使用レーン数.Bass);
 										Trace.TraceInformation(sb.ToString());
 									}
 									//-----------------
@@ -1127,6 +1136,9 @@ namespace DTXMania
 					bw.Write((int)node.arスコア[i].譜面情報.曲種別);
 					bw.Write(node.arスコア[i].譜面情報.Bpm);
 					bw.Write(node.arスコア[i].譜面情報.Duration);
+					bw.Write(node.arスコア[i].譜面情報.使用レーン数.Drums);
+					bw.Write(node.arスコア[i].譜面情報.使用レーン数.Guitar);
+					bw.Write(node.arスコア[i].譜面情報.使用レーン数.Bass);
 					this.nSongsDBへ出力できたスコア数++;
 				}
 			}

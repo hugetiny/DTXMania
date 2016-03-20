@@ -66,10 +66,16 @@ namespace DTXMania
 			this.bIsPreview = bIsPreview;
 
 			// #35820 画像サイズに関係なく、プレビュー領域に合わせる add ikanick 15.12.08
-			this.width = width_fhd_set;
-			this.height = height_fhd_set;
-			this.magX = magX_org * width_vga_set / width_org * Scale.X;
-			this.magY = magY_org * height_vga_set / height_org * Scale.Y;
+			// #36176 プレビュー画像については、前仕様(204x269)画像はアスペクト比を維持する change ikanick 16.03.20
+			
+			this.width = width_org;
+			this.height = height_org;
+			this.magX = magX_org * width_fhd_set / width_org;
+			this.magY = magY_org * height_fhd_set / height_org;
+			if (bIsPreview && width_org == 204 && height_org == 269)
+			{
+				this.magX = magX_org * width_fhd_set / width_org * ( 204f / 269 );
+			}
 			return;
 
 #if false	// FHD対応の名残
