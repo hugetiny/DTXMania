@@ -117,7 +117,7 @@ namespace DTXMania
 			}
 			catch (CTextureCreateFailedException)
 			{
-				Trace.TraceError("テクスチャの生成に失敗しました。(bitmap)");
+				Trace.TraceError("テクスチャの生成に失敗しました。(bitmap:{0}x{1} )", bitmap.Width, bitmap.Height );
 				return null;
 			}
 		}

@@ -310,7 +310,14 @@ namespace FDK
 				{
 					int tw =
 #if TEST_Direct3D9Ex
-					288;		// 32の倍数にする(グラフによっては2のべき乗にしないとダメかも)
+					this.sz画像サイズ.Width;
+					if ( tw % 32 != 0 )			// 32の倍数にする
+					{
+						//tw = tw & ( ~31 ) + 32;
+						tw /= 32;
+						tw++;
+						tw *= 32;
+					}
 #else
 					this.sz画像サイズ.Width;
 #endif

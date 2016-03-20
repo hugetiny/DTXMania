@@ -492,12 +492,6 @@ namespace DTXMania
 			Trace.TraceInformation( "MaxTextureHeight = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.MaxTextureHeight );
 			Trace.TraceInformation( "TextureCaps      = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.TextureCaps.ToString() );
 			
-//bool b条件付きでサイズは２の累乗でなくてもOK = ( device.Capabilities.TextureCaps & TextureCaps.NonPow2Conditional ) != 0;
-//bool bサイズは２の累乗でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.Pow2 ) != 0;
-//bool b正方形でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.SquareOnly ) != 0;
-//int n最大幅 = device.Capabilities.MaxTextureWidth;
-//int n最大高 = device.Capabilities.MaxTextureHeight;
-
 			base.IsFixedTimeStep = false;
 			//			base.TargetElapsedTime = TimeSpan.FromTicks( 10000000 / 75 );
 			base.Window.ClientSize = new Size(ConfigIni.nウインドウwidth, ConfigIni.nウインドウheight);	// #23510 2010.10.31 yyagi: to recover window size. width and height are able to get from Config.ini.
