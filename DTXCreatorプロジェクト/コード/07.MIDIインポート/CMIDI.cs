@@ -73,11 +73,20 @@ namespace DTXCreator.MIDIインポート
 			{
 				foreach (DataGridViewRow dgvr in dgv.Rows)
 				{
-					if (vMIDIチップ.nキー == (int)dgvr.Cells[0].Value && (string)dgvr.Cells[2].Value != "* Disuse *")
+					if (vMIDIチップ.nキー == (int)dgvr.Cells[0].Value )
 					{
-						vMIDIチップ.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgvr.Cells[2].Value );
-						vMIDIチップ.strコメント = (string)dgvr.Cells[4].Value;
-						vMIDIチップ.b入力 = true;
+						if ((string)dgvr.Cells[2].Value != "* Disuse *")
+						{
+							vMIDIチップ.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgvr.Cells[2].Value );
+							vMIDIチップ.strコメント = (string)dgvr.Cells[4].Value;
+							vMIDIチップ.b入力 = true;
+						}
+						else
+						{
+							vMIDIチップ.nレーン番号 = 0;
+							vMIDIチップ.strコメント = "";
+							vMIDIチップ.b入力 = false;
+						}
 					}
 				}
 			}

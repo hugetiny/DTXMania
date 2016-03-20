@@ -262,13 +262,19 @@ namespace DTXCreator.MIDIインポート
 
         private void tMIDI割り当て一覧のレーン名の背景色を変更する( int RowIndex )
         {
-            int nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)this.dataGridView1.Rows[RowIndex].Cells[2].Value );
+			string strレーン名 = (string)this.dataGridView1.Rows[RowIndex].Cells[2].Value;
+            int nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( strレーン名 );
             if ( nレーン番号 > 1 )
             {
                 Color color = this.formメインフォーム.mgr譜面管理者.listレーン[nレーン番号].col背景色;
                 color = Color.FromArgb( color.R/2+128, color.G/2+128, color.B/2+128 );
                 this.dataGridView1.Rows[RowIndex].Cells[2].Style.BackColor = color;
             }
+			else if ( strレーン名 == "* Disuse *" )
+			{
+                Color color = Color.FromArgb( 128, 128, 128 );
+                this.dataGridView1.Rows[RowIndex].Cells[2].Style.BackColor = color;
+			}
         }
 
         public void tMIDIインポート結果を反映する()
