@@ -77,6 +77,17 @@ namespace FDK
 			int orgWidth = information.Width, orgHeight = information.Height;
 			int w = orgWidth, h = orgHeight, foldtimes;
 
+			int nサポート可能な最大幅 = device.Capabilities.MaxTextureWidth;
+			int nサポート可能な最大高 = device.Capabilities.MaxTextureHeight;
+			if ( orgWidth * orgHeight > nサポート可能な最大幅 * nサポート可能な最大高 )
+			{
+				throw new CTextureCreateFailedException( string.Format("テクスチャの画素数が大きすぎるため、お使いのPCでは指定の画像をテクスチャとして使用できません。[{0}]", strファイル名 ) );
+			}
+
+#if TEST_Direct3D9Ex
+				pool = poolvar;
+#endif
+
 			#region [ 折りたたみありで最適なテクスチャサイズがどうなるかを確認する(正方形にするかは考慮せず) ]
 			if ( orgWidth >= orgHeight )		// 横長画像なら
 			{

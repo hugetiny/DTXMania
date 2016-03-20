@@ -473,6 +473,8 @@ namespace DTXMania
 			//			settings.MultisampleQuality = 4;
 			//			settings.MultisampleType = MultisampleType.None;
 			//			settings.MultisampleQuality = 0;
+			settings.Multithreaded = true;
+			
 
 			try
 			{
@@ -484,6 +486,17 @@ namespace DTXMania
 				MessageBox.Show(e.Message + e.ToString(), "DTXMania failed to boot: DirectX9 Initialize Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(-1);
 			}
+			Trace.TraceInformation( "DeviceCaps       = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.DeviceCaps.ToString() );
+			Trace.TraceInformation( "DeviceCaps2      = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.DeviceCaps2.ToString() );
+			Trace.TraceInformation( "MaxTextureWidth  = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.MaxTextureWidth );
+			Trace.TraceInformation( "MaxTextureHeight = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.MaxTextureHeight );
+			Trace.TraceInformation( "TextureCaps      = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.TextureCaps.ToString() );
+			
+//bool b条件付きでサイズは２の累乗でなくてもOK = ( device.Capabilities.TextureCaps & TextureCaps.NonPow2Conditional ) != 0;
+//bool bサイズは２の累乗でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.Pow2 ) != 0;
+//bool b正方形でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.SquareOnly ) != 0;
+//int n最大幅 = device.Capabilities.MaxTextureWidth;
+//int n最大高 = device.Capabilities.MaxTextureHeight;
 
 			base.IsFixedTimeStep = false;
 			//			base.TargetElapsedTime = TimeSpan.FromTicks( 10000000 / 75 );

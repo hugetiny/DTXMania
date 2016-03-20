@@ -363,10 +363,10 @@ namespace DTXMania
 			if (!base.b活性化してない)
 			{
 #if TEST_Direct3D9Ex
-				this.tx描画用 = new CTexture( CDTXMania.Instance.app.Device,
+				this.tx描画用 = new CTexture( CDTXMania.Instance.Device,
 					320,
 					355,
-					CDTXMania.Instance.app.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
+					CDTXMania.Instance.GraphicsDeviceManager.CurrentSettings.BackBufferFormat, Pool.Default, Usage.Dynamic );
 #else
 				this.PrepareProperSizeTexture(
 						(bIsPreviewMovie) ? 204 : SampleFramework.GameWindowSize.Width,
