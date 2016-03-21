@@ -27,7 +27,21 @@ namespace DTXCreator.MIDIインポート
                 cMIDIインポートダイアログ.tMIDIインポート結果を反映する();
             }
 		}
+		public void tMIDIインポート管理を開く(string strファイル名 )
+		{
+			if ( this.formメインフォーム.t未保存なら保存する() == DialogResult.Cancel ) return;
+			this.formメインフォーム.b未保存 = false;
+			this.formメインフォーム.tシナリオ_新規作成();
 
+			CMIDIインポートダイアログ cMIDIインポートダイアログ = new CMIDIインポートダイアログ();
+			cMIDIインポートダイアログ.formメインフォーム = this.formメインフォーム;
+			cMIDIインポートダイアログ.tMIDI割り当て一覧を作成する();
+			cMIDIインポートダイアログ.tMIDIファイルを開く( strファイル名 );
+			if ( cMIDIインポートダイアログ.ShowDialog() == DialogResult.OK )
+			{
+				cMIDIインポートダイアログ.tMIDIインポート結果を反映する();
+			}
+		}
 		#region [ private ]
         //-----------------
         private Cメインフォーム formメインフォーム;

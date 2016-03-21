@@ -741,7 +741,27 @@ namespace DTXCreator
 
 			#region [ ファイルを読み込む。]
 			//-----------------
-			this.t演奏ファイルを開いて読み込む( strファイル名 );
+			string strExt = Path.GetExtension( strファイル名 ).ToLower();
+			Debug.WriteLine( "ext=" + strExt );
+
+			if ( strExt.Equals(".dtx") )
+			{
+				this.t演奏ファイルを開いて読み込む( strファイル名 );
+			}
+			else if (strExt.Equals(".smf") || strExt.Equals(".mid"))
+			{
+				this.mgrMIDIインポート管理者.tMIDIインポート管理を開く( strファイル名 );
+				this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
+			}
+			else
+			{
+				MessageBox.Show(
+					Resources.strDTXファイルではありませんMSG,
+					Resources.str確認ダイアログのタイトル,
+					MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1 );
+
+				return;	// 中断
+			}
 			//-----------------
 			#endregion
 		}

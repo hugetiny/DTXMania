@@ -34,34 +34,24 @@ namespace DTXCreator.MIDIインポート
         public void tトラックチャンクを走査する()
         {
             int p = 8;
-            int nデルタタイム合計 = 0;
+            UInt32 nデルタタイム合計 = 0;
 			int nイベントbefore = 0;
 
             while( true )
             {
 				// デルタタイム計算
-                int nデルタタイムLen = 1;
-                int[] nデルタタイム = new int[4];
-                string str2進デルタタイム = "";
-                nデルタタイム[0] = this.byMIDIトラックバイナリ[p];
-                str2進デルタタイム += Convert.ToString( nデルタタイム[0], 2 ).PadLeft( 8, '0' );
-                for (int i = 0; i < 3; i++)
-                {
-                    if ( nデルタタイム[i] >= 128 )
-                    {
-                        nデルタタイム[i+1] = this.byMIDIトラックバイナリ[p+i+1];
-                        str2進デルタタイム += Convert.ToString( nデルタタイム[i+1], 2 ).PadLeft( 8, '0' );
-                        nデルタタイムLen = i+2;
-                    }
-                }
-                string str2進デルタタイム計算用 = "";
-                for ( int i=0 ; i < nデルタタイムLen; i++ )
-                {
-                    str2進デルタタイム計算用 += str2進デルタタイム.Substring(1+i*8,7);
-                }
-                nデルタタイム[0] = Convert.ToInt32(str2進デルタタイム計算用,2);
-                nデルタタイム合計 += nデルタタイム[0];
-				
+                int nデルタタイムLen = 0;
+				UInt32 deltatime = 0;
+				for ( int i = 0; i < 3; i++ )		// デルタタイムは最大4byte
+				{
+					++nデルタタイムLen;
+					UInt32 b = this.byMIDIトラックバイナリ[ p + i ];
+					deltatime <<= 7;
+					deltatime += ( b & 0x7F );		// 下位7bitのみ使用
+					if ( b < 0x80 ) break;			// MSBが0になったらデルタタイム終了
+				}
+				nデルタタイム合計 += deltatime;
+
 				// イベント
                 int nイベント = this.byMIDIトラックバイナリ[p+nデルタタイムLen];
                 int nイベントLen = 3;
@@ -84,7 +74,7 @@ namespace DTXCreator.MIDIインポート
                         this.nチャンネル = nイベント - 144 + 1;
                         if ( this.nチャンネル == cMIDI.n読み込みCh )
                         {
-                            cMIDI.lチップ.Add( new CMIDIチップ( cMIDI, nデルタタイム合計/2, nData1, nData2 ) );
+                            cMIDI.lチップ.Add( new CMIDIチップ( cMIDI, (int)nデルタタイム合計, nData1, nData2 ) );
                             cMIDI.nドラム各ノート数[nData1] ++;
                             //this.str解析内容 += "Drum  / Tick: "+nデルタタイム合計.ToString().PadLeft(6)+" Note: "+nData1.ToString("X2")+"\r\n";
                         }

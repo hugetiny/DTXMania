@@ -144,7 +144,7 @@ namespace DTXCreator.MIDIインポート
             this.tMIDIファイルを開く( dialog.FileName );
         }
 
-        private void tMIDIファイルを開く( string strファイル名 )
+        public void tMIDIファイルを開く( string strファイル名 )
         {
             #region [ ファイル確認 ]
             //-----------------
@@ -352,7 +352,7 @@ namespace DTXCreator.MIDIインポート
                 {
 					if ( vMIDIチップ.b入力 )
 					{
-						this.formメインフォーム.mgr譜面管理者.tチップを配置または置換する( vMIDIチップ.nレーン番号, vMIDIチップ.n時間 / (cMIDI.n分解能 / 96 ), vMIDIチップ.nWAV, 0f, false );
+						this.formメインフォーム.mgr譜面管理者.tチップを配置または置換する( vMIDIチップ.nレーン番号, vMIDIチップ.n時間 * (192 / 4) / cMIDI.n分解能, vMIDIチップ.nWAV, 0f, false );
 					}
                 }
 				this.formメインフォーム.mgr譜面管理者.tチップを配置または置換する( this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BGM" ), 0, 2, 0f, false );
