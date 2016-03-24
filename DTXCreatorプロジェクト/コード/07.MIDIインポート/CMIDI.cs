@@ -16,13 +16,13 @@ namespace DTXCreator.MIDIインポート
         public byte[] byMIDIバイナリ;
         public bool bMIDIファイル;
         public List<CMIDIトラック> lMIDIトラック;
-        public List<CMIDIチップ> lチップ;
+        public List<CMIDIイベント> lチップ;
         public double dBPM;
         public string strTimeSignature;
         public int[] nドラム各ノート数;
         public int n分解能;
         public Cメインフォーム formメインフォーム;
-		public List<CMIDIチップ> lMIDIWAV;
+		public List<CMIDIイベント> lMIDIWAV;
 		public int n読み込みCh;
 
         public int dトラック数
@@ -39,9 +39,9 @@ namespace DTXCreator.MIDIインポート
             this.byMIDIバイナリ = File.ReadAllBytes( this.strファイル名 );
             this.bMIDIファイル = ( strBin2BinStr(this.byMIDIバイナリ, 0, 4) == "4D 54 68 64" );
             this.lMIDIトラック = new List<CMIDIトラック>();
-            this.lチップ = new List<CMIDIチップ>();
-            this.nドラム各ノート数 = new int[128];
-			this.lMIDIWAV = new List<CMIDIチップ>();
+            this.lチップ = new List<CMIDIイベント>();
+            this.nドラム各ノート数 = new int[256];
+			this.lMIDIWAV = new List<CMIDIイベント>();
         }
 
         // 解析処理 全バイナリを見てMTrkだけ抜き取る
@@ -49,7 +49,7 @@ namespace DTXCreator.MIDIインポート
         {
             // MThdが存在しなければ解析処理を行わない
             if ( !bMIDIファイル ) return;
-			this.lMIDIWAV = new List<CMIDIチップ>();
+			this.lMIDIWAV = new List<CMIDIイベント>();
 
 			this.n分解能 = nBin2Int( this.byMIDIバイナリ, 12, 2 );
 
@@ -58,7 +58,8 @@ namespace DTXCreator.MIDIインポート
                 // MTrkがあればトラックを追加する
                 if ( strBin2BinStr(this.byMIDIバイナリ, i, 4) == "4D 54 72 6B" )
                 {
-                    byte[] data_track = new byte[65536];
+					int track_size = nBin2Int( this.byMIDIバイナリ, i + 4, 4 );
+                    byte[] data_track = new byte[track_size + 8 + 8];	// 大きめに取りました
                     Array.Copy( this.byMIDIバイナリ, i, data_track, 0, nBin2Int( this.byMIDIバイナリ, i+4, 4 ) + 8 );
                     this.lMIDIトラック.Add( new CMIDIトラック( this, this.dトラック数, data_track ) );
                     this.lMIDIトラック[this.lMIDIトラック.Count-1].tトラックチャンクを走査する();
@@ -69,7 +70,7 @@ namespace DTXCreator.MIDIインポート
 		// DataGridViewに設定した値に応じて各レーンに振り分ける
         public void tMIDIチップをレーンに割り当てる( DataGridView dgv )
         {
-			foreach ( CMIDIチップ vMIDIチップ in this.lチップ )
+			foreach ( CMIDIイベント vMIDIチップ in this.lチップ )
 			{
 				foreach (DataGridViewRow dgvr in dgv.Rows)
 				{
@@ -87,6 +88,10 @@ namespace DTXCreator.MIDIインポート
 							vMIDIチップ.strコメント = "";
 							vMIDIチップ.b入力 = false;
 						}
+						if ( vMIDIチップ.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BPM )
+						{
+							vMIDIチップ.b入力 = true;
+						}
 					}
 				}
 			}
@@ -95,13 +100,13 @@ namespace DTXCreator.MIDIインポート
 
         public void tMIDIチップをMIDIWAVリスト化する()
         {
-			this.lMIDIWAV = new List<CMIDIチップ>();
+			this.lMIDIWAV = new List<CMIDIイベント>();
 
-			foreach ( CMIDIチップ vMIDIチップ in this.lチップ )
+			foreach ( CMIDIイベント vMIDIチップ in this.lチップ )
 			{
 				// WAVリストで、同じ内容(キーとベロシティ)が無ければ挿入する
 				bool bMIDIWAV_AddFlag = true;
-				foreach ( CMIDIチップ vMIDIWAV in this.lMIDIWAV )
+				foreach ( CMIDIイベント vMIDIWAV in this.lMIDIWAV )
 				{
 					if ( vMIDIWAV.strWAV重複チェック == vMIDIチップ.strWAV重複チェック )
 					{
@@ -122,9 +127,9 @@ namespace DTXCreator.MIDIインポート
 			if (this.lチップ.Count == 0) return 0;
 
 			int nMIDIチップ同時刻同レーン重複 = 0;
-			foreach ( CMIDIチップ vMIDIチップ1 in this.lチップ )
+			foreach ( CMIDIイベント vMIDIチップ1 in this.lチップ )
 			{
-				foreach ( CMIDIチップ vMIDIチップ2 in this.lチップ )
+				foreach ( CMIDIイベント vMIDIチップ2 in this.lチップ )
 				{
 					if ( vMIDIチップ1.nキー != vMIDIチップ2.nキー && vMIDIチップ1.nレーン番号 == vMIDIチップ2.nレーン番号 && vMIDIチップ1.n時間 == vMIDIチップ2.n時間 )
 					{
@@ -135,12 +140,12 @@ namespace DTXCreator.MIDIインポート
 			return nMIDIチップ同時刻同レーン重複/2;
 		}
 
-		public CMIDIチップ pMIDIチップで一番遅い時間のチップを返す()
+		public CMIDIイベント pMIDIチップで一番遅い時間のチップを返す()
 		{
 			if (this.lチップ.Count == 0) return null;
 
-			CMIDIチップ cMIDIチップ = null;
-			foreach ( CMIDIチップ vMIDIチップ in this.lチップ )
+			CMIDIイベント cMIDIチップ = null;
+			foreach ( CMIDIイベント vMIDIチップ in this.lチップ )
 			{
 				if ( cMIDIチップ == null || cMIDIチップ.n時間 <= vMIDIチップ.n時間 )
 				{

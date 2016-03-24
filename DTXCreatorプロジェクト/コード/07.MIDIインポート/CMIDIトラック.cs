@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace DTXCreator.MIDIインポート
 {
@@ -40,9 +41,9 @@ namespace DTXCreator.MIDIインポート
             while( true )
             {
 				// デルタタイム計算
-                int nデルタタイムLen = 0;
+				int nデルタタイムLen = 0;
 				UInt32 deltatime = 0;
-				for ( int i = 0; i < 3; i++ )		// デルタタイムは最大4byte
+				for ( int i = 0; i < 4; i++ )		// デルタタイムは最大4byte
 				{
 					++nデルタタイムLen;
 					UInt32 b = this.byMIDIトラックバイナリ[ p + i ];
@@ -57,26 +58,26 @@ namespace DTXCreator.MIDIインポート
                 int nイベントLen = 3;
 
 				// デルタタイムの直後がイベントじゃなかったら、前のイベントを継ぐ
-				if ( nイベント < 128 && nイベントbefore >= 128 && nイベントbefore < 160 )
+				if ( nイベント < 0x80 )
 				{
 					nイベント = nイベントbefore;
 					p -= 1;
 				}
                 
                 // 8n - 9n ノートオフ・オン
-                if ( nイベント >= 128 && nイベント < 160 )
+                if ( 0x80 <= nイベント && nイベント <= 0x9F )
                 {
                     int nData1 = this.byMIDIトラックバイナリ[p+nデルタタイムLen+1];
                     int nData2 = this.byMIDIトラックバイナリ[p+nデルタタイムLen+2];
-                    // ノートオン(9n)の時の値を取得
-                    if ( nイベント >= 144 )
+                    // ノートオン(9n)の時の値を取得 (ノートオンでも、ベロシティ0の場合はノートオフの意味なので、無視する)
+                    if ( nイベント >= 0x90 && nData2 > 0 )
                     {
-                        this.nチャンネル = nイベント - 144 + 1;
+                        this.nチャンネル = nイベント - 0x90 + 1;
                         if ( this.nチャンネル == cMIDI.n読み込みCh )
                         {
-                            cMIDI.lチップ.Add( new CMIDIチップ( cMIDI, (int)nデルタタイム合計, nData1, nData2 ) );
-                            cMIDI.nドラム各ノート数[nData1] ++;
-                            //this.str解析内容 += "Drum  / Tick: "+nデルタタイム合計.ToString().PadLeft(6)+" Note: "+nData1.ToString("X2")+"\r\n";
+                            cMIDI.lチップ.Add( new CMIDINote( nデルタタイム合計, nData1, nData2 ) );
+                            cMIDI.nドラム各ノート数[nData1]++;
+							//this.str解析内容 += "Drum  / Tick: " + nデルタタイム合計.ToString().PadLeft( 6 ) + " Note: " + nData1.ToString( "X2" ) + "\r\n";
                         }
                     }
 					//this.str解析内容 += ((nイベント>=144)?"N-ON ":"N-OFF")+" "+p.ToString().PadLeft(6)+" "+nデルタタイム[0]+","+nData1.ToString("X2")+","+nData2.ToString("X2")+"\r\n";
@@ -84,15 +85,17 @@ namespace DTXCreator.MIDIインポート
                     nイベントLen = 3;
                 }
                 // A0 - EF コントロールチェンジ等
-                else if ( nイベント >= 160 && nイベント < 240 )
+                else if ( 0xA0 <= nイベント && nイベント <= 0xEF )
                 {
                     int nData1 = this.byMIDIトラックバイナリ[p+nデルタタイムLen+1];
                     int nData2 = this.byMIDIトラックバイナリ[p+nデルタタイムLen+2];
                     
                     nイベントLen = 3;
-                    if ( nイベント >= 192 && nイベント < 224 ) nイベントLen = 2;
+                    if ( 0xC0 <= nイベント && nイベント < 0xDF ) nイベントLen = 2;
 
                     //this.str解析内容 += "CC    / Tick: "+nデルタタイム合計.ToString().PadLeft(6)+" Type: "+nData1.ToString("X2")+"\r\n";
+
+					// 面倒なので、コントロールチェンジが3byteになる場合はとりあえず想定しない。相当レアだし。
                 }
                 // F0 システム？
                 else if ( nイベント.ToString("X2") == "F0" )
@@ -148,7 +151,9 @@ namespace DTXCreator.MIDIインポート
                         case "51" :
                             cMIDI.dBPM = Math.Round( (double) 60.0 * Math.Pow(10,6) / CMIDI.nBin2Int( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 3 ), 2 );
                             nイベントLen = 6;
-                            break;
+							cMIDI.lチップ.Add( new CMIDIBPM( nデルタタイム合計, (float) cMIDI.dBPM) );
+                            cMIDI.nドラム各ノート数[128] ++;
+							break;
 
                         // FF 54
                         case "54" :
@@ -158,8 +163,16 @@ namespace DTXCreator.MIDIインポート
                         // FF 58
                         case "58" :
                             // 拍設定 格納だけして何もしてない
+							int n分子 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 3 ];
+							int n分母 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 4 ];
+							int nメトロノームクリックtick = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 5 ];
+							int nメトロノームクリック数内32分音符数 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 6 ];
+
                             cMIDI.strTimeSignature = CMIDI.strBin2BinStr( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 4 );
                             nイベントLen = 7;
+
+							cMIDI.lチップ.Add( new CMIDIBARLen( nデルタタイム合計, n分子, n分母 ) );
+                            cMIDI.nドラム各ノート数[128] ++;
                             break;
 
                         // FF 59

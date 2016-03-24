@@ -44,7 +44,7 @@ namespace DTXCreator
 		public Cチップパレット dlgチップパレット;
 		private Cオプション管理 mgrオプション管理者 = null;
 		private C選択モード管理 mgr選択モード管理者 = null;
-		private C編集モード管理 mgr編集モード管理者 = null;
+		internal C編集モード管理 mgr編集モード管理者 = null;
 		internal C譜面管理 mgr譜面管理者 = null;
 		internal CWAVリスト管理 mgrWAVリスト管理者 = null;
 		internal CBMPリスト管理 mgrBMPリスト管理者 = null;
@@ -742,7 +742,6 @@ namespace DTXCreator
 			#region [ ファイルを読み込む。]
 			//-----------------
 			string strExt = Path.GetExtension( strファイル名 ).ToLower();
-			Debug.WriteLine( "ext=" + strExt );
 
 			if ( strExt.Equals(".dtx") )
 			{

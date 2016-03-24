@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.IO;
 using System.Drawing;
+using System.Diagnostics;
 using DTXCreator.譜面;
 using DTXCreator.WAV_BMP_AVI;
 using DTXCreator.Properties;
@@ -282,14 +283,14 @@ namespace DTXCreator.MIDIインポート
             if ( cMIDI != null && cMIDI.lチップ.Count > 0 )
             {
 				// チップリストで、ベロシティをDTX向けに調整する
-				foreach ( CMIDIチップ vMIDIチップ in cMIDI.lチップ )
+				foreach ( CMIDIイベント vMIDIチップ in cMIDI.lチップ )
 				{
-					int num3 = vMIDIチップ.nベロシティ;
-					if ( this.checkBox2.Checked ) num3 = (int)(num3 / 1.27);
-					if ( this.checkBox1.Checked ) num3 = (int)( Math.Pow( num3, 1.5 ) / Math.Pow( 100, 0.5 ) );
-					num3 = ( num3 / (int)this.numericUpDown1.Value ) * (int)this.numericUpDown1.Value;
-					num3 = ( num3 > 100 ) ? 100 : ( ( num3 == 0 ) ? 1 : num3 );
-					vMIDIチップ.nベロシティ_DTX変換後 = num3;
+					int velo = vMIDIチップ.nベロシティ;
+					if ( this.checkBox2.Checked ) velo = (int)(velo / 1.27);
+					if ( this.checkBox1.Checked ) velo = (int)( Math.Pow( velo, 1.5 ) / Math.Pow( 100, 0.5 ) );
+					velo = ( velo / (int)this.numericUpDown1.Value ) * (int)this.numericUpDown1.Value;
+					velo = ( velo > 100 ) ? 100 : ( ( velo == 0 ) ? 1 : velo );
+					vMIDIチップ.nベロシティ_DTX変換後 = velo;
 				}
 
 				// 配置予定チップをレーン指定に沿って割り当てる
@@ -308,7 +309,7 @@ namespace DTXCreator.MIDIインポート
 				int nWAVCount = 4;
 				int nレーン番号before = 0;
 				
-				foreach ( CMIDIチップ vチップWAV in cMIDI.lMIDIWAV )
+				foreach ( CMIDIイベント vチップWAV in cMIDI.lMIDIWAV )
 				{
 					if ( nWAVCount > 4 && nレーン番号before != vチップWAV.nレーン番号 ) nWAVCount++;
 					nレーン番号before = vチップWAV.nレーン番号;
@@ -323,7 +324,7 @@ namespace DTXCreator.MIDIインポート
 					cwav.col背景色 = Color.FromArgb( color.R/2 + 128, color.G/2 + 128, color.B/2 + 128 );
 
 					// 配置予定全チップのWAVを指定する
-					foreach ( CMIDIチップ vMIDIチップ in cMIDI.lチップ )
+					foreach ( CMIDIイベント vMIDIチップ in cMIDI.lチップ )
 					{
 						if ( vチップWAV.strWAV重複チェック == vMIDIチップ.strWAV重複チェック ) vMIDIチップ.nWAV = nWAVCount;
 					}
@@ -340,29 +341,27 @@ namespace DTXCreator.MIDIインポート
                 if ( cMIDI.nMIDI重複チップ数を返す() > 0 ) this.formメインフォーム.textBoxコメント.Text = "重複チップ : "+cMIDI.nMIDI重複チップ数を返す();
 				
 				// 小節付加
-				int num = this.formメインフォーム.mgr譜面管理者.n現在の最大の小節番号を返す();
-				int num2 = cMIDI.pMIDIチップで一番遅い時間のチップを返す().n時間 / ( cMIDI.n分解能 / 96 ) / 384;
-				for( int i = num + 1; i <= num2 ; i++ )
+				int nCurrentMaxBar = this.formメインフォーム.mgr譜面管理者.n現在の最大の小節番号を返す();					// ★★拍子変更対応の場合、ここも修正しないとダメよ****************
+				UInt32 nMaxBar = cMIDI.pMIDIチップで一番遅い時間のチップを返す().n時間 * (192 / 4) / (UInt32) cMIDI.n分解能 / 384;
+				for ( int i = nCurrentMaxBar + 1; i <= nMaxBar; i++ )
 				{
 					this.formメインフォーム.mgr譜面管理者.dic小節.Add( i, new C小節( i ) );
 				}
 				
 				// チップ配置
-                foreach ( CMIDIチップ vMIDIチップ in cMIDI.lチップ )
+                foreach ( CMIDIイベント vMIDIチップ in cMIDI.lチップ )
                 {
 					if ( vMIDIチップ.b入力 )
 					{
-						this.formメインフォーム.mgr譜面管理者.tチップを配置または置換する( vMIDIチップ.nレーン番号, vMIDIチップ.n時間 * (192 / 4) / cMIDI.n分解能, vMIDIチップ.nWAV, 0f, false );
+						vMIDIチップ.挿入( this.formメインフォーム, cMIDI.n分解能 );
 					}
                 }
 				this.formメインフォーム.mgr譜面管理者.tチップを配置または置換する( this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BGM" ), 0, 2, 0f, false );
-				
-
             }
-        }
+		}
 		
 		// lMIDIWAVソート用
-		static int nMIDIWAVSort( CMIDIチップ a, CMIDIチップ b )
+		static int nMIDIWAVSort( CMIDIイベント a, CMIDIイベント b )
 		{
 			if ( a.nレーン番号 > b.nレーン番号 ) return 1;
 			else if ( a.nレーン番号 < b.nレーン番号 ) return -1;
