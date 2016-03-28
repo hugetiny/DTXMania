@@ -88,7 +88,8 @@ namespace DTXCreator.MIDIインポート
 							vMIDIチップ.strコメント = "";
 							vMIDIチップ.b入力 = false;
 						}
-						if ( vMIDIチップ.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BPM )
+						if ( vMIDIチップ.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BPM  ||
+							 vMIDIチップ.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BarLen )
 						{
 							vMIDIチップ.b入力 = true;
 						}
@@ -140,20 +141,20 @@ namespace DTXCreator.MIDIインポート
 			return nMIDIチップ同時刻同レーン重複/2;
 		}
 
-		public CMIDIイベント pMIDIチップで一番遅い時間のチップを返す()
-		{
-			if (this.lチップ.Count == 0) return null;
+		//public CMIDIイベント pMIDIチップで一番遅い時間のチップを返す()
+		//{
+		//	if (this.lチップ.Count == 0) return null;
 
-			CMIDIイベント cMIDIチップ = null;
-			foreach ( CMIDIイベント vMIDIチップ in this.lチップ )
-			{
-				if ( cMIDIチップ == null || cMIDIチップ.n時間 <= vMIDIチップ.n時間 )
-				{
-					cMIDIチップ = vMIDIチップ;
-				}
-			}
-			return cMIDIチップ;
-		}
+		//	CMIDIイベント cMIDIチップ = null;
+		//	foreach ( CMIDIイベント vMIDIチップ in this.lチップ )
+		//	{
+		//		if ( cMIDIチップ == null || cMIDIチップ.n時間 <= vMIDIチップ.n時間 )
+		//		{
+		//			cMIDIチップ = vMIDIチップ;
+		//		}
+		//	}
+		//	return cMIDIチップ;
+		//}
 
         // バイナリの指定のバイト数分を、"FF FF FF..."の形で出力する
         static public string strBin2BinStr( byte[] byバイナリ, int d開始バイト, int dバイト数 )

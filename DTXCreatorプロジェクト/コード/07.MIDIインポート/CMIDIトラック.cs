@@ -152,7 +152,7 @@ namespace DTXCreator.MIDIインポート
                             cMIDI.dBPM = Math.Round( (double) 60.0 * Math.Pow(10,6) / CMIDI.nBin2Int( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 3 ), 2 );
                             nイベントLen = 6;
 							cMIDI.lチップ.Add( new CMIDIBPM( nデルタタイム合計, (float) cMIDI.dBPM) );
-                            cMIDI.nドラム各ノート数[128] ++;
+                            cMIDI.nドラム各ノート数[128]++;
 							break;
 
                         // FF 54
@@ -162,9 +162,11 @@ namespace DTXCreator.MIDIインポート
 
                         // FF 58
                         case "58" :
-                            // 拍設定 格納だけして何もしてない
+                            // 拍設定
 							int n分子 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 3 ];
 							int n分母 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 4 ];
+							n分母 = (int) Math.Pow( 2, n分母 );
+			
 							int nメトロノームクリックtick = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 5 ];
 							int nメトロノームクリック数内32分音符数 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 6 ];
 
@@ -172,13 +174,16 @@ namespace DTXCreator.MIDIインポート
                             nイベントLen = 7;
 
 							cMIDI.lチップ.Add( new CMIDIBARLen( nデルタタイム合計, n分子, n分母 ) );
-                            cMIDI.nドラム各ノート数[128] ++;
+                            cMIDI.nドラム各ノート数[128]++;
                             break;
 
                         // FF 59
                         case "59" :
                             nイベントLen = 5;
                             break;
+						default:
+							nイベントLen = 3 + this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 3 ];
+							break;
 
                     }
                     

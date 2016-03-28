@@ -334,6 +334,8 @@ namespace DTXCreator.MIDIインポート
 				// WAVリスト強制更新
 				this.formメインフォーム.listViewWAVリスト.Refresh();
 
+				cMIDI.lチップ.Sort( ( ( a, b ) => (int) a.n時間 - (int) b.n時間 ) );	// 複数トラックへの対応のため
+
 				// BPM他情報
                 this.formメインフォーム.numericUpDownBPM.Value = (decimal)cMIDI.dBPM;
                 this.formメインフォーム.textBox曲名.Text = Path.GetFileName( cMIDI.strファイル名 );
@@ -341,13 +343,24 @@ namespace DTXCreator.MIDIインポート
                 if ( cMIDI.nMIDI重複チップ数を返す() > 0 ) this.formメインフォーム.textBoxコメント.Text = "重複チップ : "+cMIDI.nMIDI重複チップ数を返す();
 				
 				// 小節付加
-				int nCurrentMaxBar = this.formメインフォーム.mgr譜面管理者.n現在の最大の小節番号を返す();					// ★★拍子変更対応の場合、ここも修正しないとダメよ****************
-				UInt32 nMaxBar = cMIDI.pMIDIチップで一番遅い時間のチップを返す().n時間 * (192 / 4) / (UInt32) cMIDI.n分解能 / 384;
-				for ( int i = nCurrentMaxBar + 1; i <= nMaxBar; i++ )
-				{
-					this.formメインフォーム.mgr譜面管理者.dic小節.Add( i, new C小節( i ) );
-				}
+				tMIDIイベントリストから小節リストを構成する( cMIDI.lチップ, cMIDI.n分解能 );
 				
+
+
+
+				//int nCurrentMaxBar = this.formメインフォーム.mgr譜面管理者.n現在の最大の小節番号を返す();					// ★★拍子変更対応の場合、ここも修正しないとダメよ****************
+				////UInt32 nMaxBar = cMIDI.pMIDIチップで一番遅い時間のチップを返す().n時間 * (192 / 4) / (UInt32) cMIDI.n分解能 / 384;
+				//UInt32 nMaxBar = 0;
+				//if ( cMIDI.lチップ.Count > 0 )
+				//{
+				//	nMaxBar = cMIDI.lチップ[ cMIDI.lチップ.Count - 1 ].n時間 * ( 192 / 4 ) / (UInt32) cMIDI.n分解能 / 384;
+				//}
+				//for ( int i = nCurrentMaxBar + 1; i <= nMaxBar; i++ )
+				//{
+				//	this.formメインフォーム.mgr譜面管理者.dic小節.Add( i, new C小節( i ) );
+				//}
+
+
 				// チップ配置
                 foreach ( CMIDIイベント vMIDIチップ in cMIDI.lチップ )
                 {
@@ -377,6 +390,102 @@ namespace DTXCreator.MIDIインポート
 				}
 			}
 		}
+
+		private struct barlen
+		{
+			public int n時間;
+			public int n分子;
+			public int n分母;
+
+			public barlen( int _n時間, int _n分子, int _n分母 )
+			{
+				n時間 = _n時間;
+				n分子 = _n分子;
+				n分母 = _n分母;
+			}
+		}
         
-    }
+		private void tMIDIイベントリストから小節リストを構成する( List<CMIDIイベント> cml, int n四分音符の分解能 )
+		{
+			if ( cml.Count <= 0 ) return;
+
+			// 最終拍子イベント以降、曲最後までの小節について、この先のロジックで小節長を変更するために、ダミーで最後に拍子変更のイベントを入れる。
+
+			int n最終分子 = 1;
+			int n最終分母 = 1;
+			int n最終時間 = (int)cml[ cml.Count - 1 ].n時間;
+
+			cml.Reverse();
+			foreach ( CMIDIイベント cm in cml )
+			{
+				if ( cm.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BarLen )
+				{
+					n最終分子 = cm.n拍子分子;
+					n最終分母 = cm.n拍子分母;
+					break;
+				}
+			}
+			cml.Reverse();
+
+			if ( n最終時間 >= 0 )
+			{
+				cml.Add( new CMIDIBARLen( (UInt32)n最終時間, n最終分子, n最終分母 ) );
+			}
+
+			
+			this.formメインフォーム.mgr譜面管理者.dic小節.Clear();
+			foreach ( CMIDIイベント cm in cml )
+			{
+				if ( cm.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BarLen )
+				{
+					// もし拍子変更イベントの絶対時間が、小節外にあれば、必要なだけ小節を追加する
+					while ( true )
+					{
+						bool bExistBar = true;
+						// 現在保持している小節リストの、nGridの最大値を取得する
+						int nCurrentMaxBar = this.formメインフォーム.mgr譜面管理者.n現在の最大の小節番号を返す();
+						int nCurremtMaxBar_FirstGrid = this.formメインフォーム.mgr譜面管理者.n譜面先頭からみた小節先頭の位置gridを返す( nCurrentMaxBar );
+						if ( nCurremtMaxBar_FirstGrid < 0 ) nCurremtMaxBar_FirstGrid = 0;
+
+						C小節 c最終小節 = this.formメインフォーム.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( nCurremtMaxBar_FirstGrid );
+						float fCurrent小節倍率 = (c最終小節 == null) ? 1.0f : c最終小節.f小節長倍率;
+						int nCurrentMaxGrid = nCurremtMaxBar_FirstGrid + (int) ( 192 * fCurrent小節倍率 ) - 1;
+						if ( nCurrentMaxBar < 0 ) nCurrentMaxGrid = -1;
+
+						// 拍子変更イベントの絶対時間が、小節外にあれば、新規に小節を一つ追加する。
+						// 小節長は前の小節長を継承するか、MIDIイベント指定による新しい値にするか。
+						// 小節を1つ追加しただけでは足りないのであれば、whileループで繰り返し追加し続ける。
+						int nEvent時間 = (int)cm.n時間 * ( 192 / 4 ) / n四分音符の分解能;
+						if ( nCurrentMaxGrid < (int) nEvent時間 )
+						{
+							++nCurrentMaxBar;
+
+							C小節 c小節 = new C小節( nCurrentMaxBar );
+							if ( c小節 != null )
+							{
+								c小節.f小節長倍率 = fCurrent小節倍率;
+								this.formメインフォーム.mgr譜面管理者.dic小節.Add( nCurrentMaxBar, c小節 );
+							}
+							else
+							{
+								throw new Exception("C小節の作成に失敗しました。");
+							}
+						}
+						else
+						{
+							// 小節追加whileループの最後か、または小節が既に存在する場合でも、拍子の変更があれば反映する。
+							if (cm.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BarLen)
+							{
+								C小節 c小節 = this.formメインフォーム.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( nEvent時間 );
+								this.formメインフォーム.t小節長を変更する_小節単位( c小節.n小節番号0to3599, (float)cm.n拍子分子 / cm.n拍子分母 );
+							}
+							break;
+						}
+					}
+				}
+			}
+
+		}
+
+	}
 }

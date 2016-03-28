@@ -31,6 +31,8 @@ namespace DTXCreator.MIDIインポート
         public string strコメント;
 		public int nベロシティ;
 		public int nベロシティ_DTX変換後;
+		public int n拍子分子;
+		public int n拍子分母;
 
 		public string strWAV重複チェック
 		{
@@ -71,14 +73,8 @@ namespace DTXCreator.MIDIインポート
 
 		public override void 挿入( Cメインフォーム mf, int n四分音符の分解能 )
 		{
-			//Debug.WriteLine( "NoteOn: " +  (n時間 * ( 192 / 4 ) / n四分音符の分解能).ToString() + "key=" + nキー.ToString("d2") );
-
 			mf.mgr譜面管理者.tチップを配置または置換する
-				( nレーン番号, (int) n時間 * ( 192 / 4 ) / n四分音符の分解能, nWAV, 0f, false ); 
-
-			// ★★時間について、要変拍子対応
-
-			//Debug.WriteLine( " Done." );
+				( nレーン番号, (int) n時間 * ( 192 / 4 ) / n四分音符の分解能, nWAV, 0f, false );
 		}
 	}
 
@@ -101,12 +97,8 @@ namespace DTXCreator.MIDIインポート
 
 		public override void 挿入( Cメインフォーム mf, int n四分音符の分解能 )
 		{
-			//Debug.Write( "BPM   : " + ( n時間 * ( 192 / 4 ) / n四分音符の分解能 ).ToString() + ": " + fBPM );
-			
-			int nGrid = (int) n時間 * ( 192 / 4 ) / n四分音符の分解能;				// 全音符192tick相当で、曲先頭からのtick数(変拍子がない場合)
+			int nGrid = (int) n時間 * ( 192 / 4 ) / n四分音符の分解能;
 			mf.mgr編集モード管理者.tBPMチップを配置する( nGrid, fBPM );
-
-			//Debug.WriteLine( " Done." );
 		}
 	}
 
@@ -118,11 +110,14 @@ namespace DTXCreator.MIDIインポート
 	{
 		public CMIDIBARLen( UInt32 _n時間, int _分子, int _分母 )
 		{
+			this.n時間 = _n時間;
+			this.n拍子分子 = _分子;
+			this.n拍子分母 = _分母;
+			this.eイベントタイプ = Eイベントタイプ.BarLen;
 		}
 		public override void 挿入( Cメインフォーム mf, int n四分音符の分解能 )
 		{
-			//	mf.mgr譜面管理者. 	public C小節 p譜面先頭からの位置gridを含む小節を返す( int n譜面先頭からの位置grid )
-			throw new NotImplementedException();
+			//	事前の小節構築過程で拍子変更処理は完了しているため、ここでは何もしない
 		}
 	}
 }

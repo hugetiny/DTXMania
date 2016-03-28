@@ -1228,7 +1228,7 @@ namespace DTXCreator
 			this.tUndoRedo用GUIの有効無効を設定する();
 
 		}
-		private void t小節長を変更する_小節単位( int n小節番号, float f倍率 )
+		public void t小節長を変更する_小節単位( int n小節番号, float f倍率 )
 		{
 			// 対象の小節を取得。
 
