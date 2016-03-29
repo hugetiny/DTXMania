@@ -149,9 +149,10 @@ namespace DTXCreator.MIDIインポート
 
                         // FF 51 BPM
                         case "51" :
-                            cMIDI.dBPM = Math.Round( (double) 60.0 * Math.Pow(10,6) / CMIDI.nBin2Int( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 3 ), 2 );
+							float fBPM = ( float ) ( Math.Round( (float) 60.0 * Math.Pow(10,6) / CMIDI.nBin2Int( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 3 ), 2 ) );
+                            if ( cMIDI.f先頭BPM == 0.0f ) cMIDI.f先頭BPM = fBPM;
                             nイベントLen = 6;
-							cMIDI.lチップ.Add( new CMIDIBPM( nデルタタイム合計, (float) cMIDI.dBPM) );
+							cMIDI.lチップ.Add( new CMIDIBPM( nデルタタイム合計, fBPM ) );
                             cMIDI.nドラム各ノート数[128]++;
 							break;
 

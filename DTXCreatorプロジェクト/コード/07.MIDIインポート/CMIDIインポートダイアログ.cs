@@ -214,7 +214,7 @@ namespace DTXCreator.MIDIインポート
             // MIDI解析内容をテキストボックスに出力する
             string str文字列 = "";
             str文字列 += "File:" + strファイル名 + "\r\n";
-            str文字列 += "BPM:" + cMIDI.dBPM + "\r\n";
+            str文字列 += "BPM:" + cMIDI.f先頭BPM + "\r\n";
             str文字列 += "TimeBase:" + cMIDI.n分解能 + "\r\n";
             str文字列 += "\r\n";
             
@@ -286,8 +286,8 @@ namespace DTXCreator.MIDIインポート
 				foreach ( CMIDIイベント vMIDIチップ in cMIDI.lチップ )
 				{
 					int velo = vMIDIチップ.nベロシティ;
-					if ( this.checkBox2.Checked ) velo = (int)(velo / 1.27);
-					if ( this.checkBox1.Checked ) velo = (int)( Math.Pow( velo, 1.5 ) / Math.Pow( 100, 0.5 ) );
+					if ( this.checkBox2.Checked ) velo = (int)(velo / 1.27);//127を最大値
+					if ( this.checkBox1.Checked ) velo = (int)( Math.Pow( velo, 1.5 ) / Math.Pow( 100, 0.5 ) );//ベロシティカーブ
 					velo = ( velo / (int)this.numericUpDown1.Value ) * (int)this.numericUpDown1.Value;
 					velo = ( velo > 100 ) ? 100 : ( ( velo == 0 ) ? 1 : velo );
 					vMIDIチップ.nベロシティ_DTX変換後 = velo;
@@ -312,6 +312,8 @@ namespace DTXCreator.MIDIインポート
 				foreach ( CMIDIイベント vチップWAV in cMIDI.lMIDIWAV )
 				{
 					if ( nWAVCount > 4 && nレーン番号before != vチップWAV.nレーン番号 ) nWAVCount++;
+					if ( vチップWAV.eイベントタイプ != CMIDIイベント.Eイベントタイプ.NoteOnOff ) continue; // BPMチップをWAVリストに表示させない
+
 					nレーン番号before = vチップWAV.nレーン番号;
 
 					cwav = this.formメインフォーム.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す_なければ新規生成する( nWAVCount );
@@ -337,7 +339,7 @@ namespace DTXCreator.MIDIインポート
 				cMIDI.lチップ.Sort( ( ( a, b ) => (int) a.n時間 - (int) b.n時間 ) );	// 複数トラックへの対応のため
 
 				// BPM他情報
-                this.formメインフォーム.numericUpDownBPM.Value = (decimal)cMIDI.dBPM;
+                if ( cMIDI.f先頭BPM > 0.0 ) this.formメインフォーム.numericUpDownBPM.Value = (decimal)cMIDI.f先頭BPM;
                 this.formメインフォーム.textBox曲名.Text = Path.GetFileName( cMIDI.strファイル名 );
                 //this.formメインフォーム.textBox自由入力欄.Text = "; DTXC MI "+Resources.DTXC_VERSION;
                 if ( cMIDI.nMIDI重複チップ数を返す() > 0 ) this.formメインフォーム.textBoxコメント.Text = "重複チップ : "+cMIDI.nMIDI重複チップ数を返す();

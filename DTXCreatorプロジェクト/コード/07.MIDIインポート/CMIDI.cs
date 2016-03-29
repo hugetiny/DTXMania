@@ -17,7 +17,7 @@ namespace DTXCreator.MIDIインポート
         public bool bMIDIファイル;
         public List<CMIDIトラック> lMIDIトラック;
         public List<CMIDIイベント> lチップ;
-        public double dBPM;
+        public float f先頭BPM;
         public string strTimeSignature;
         public int[] nドラム各ノート数;
         public int n分解能;
@@ -42,6 +42,7 @@ namespace DTXCreator.MIDIインポート
             this.lチップ = new List<CMIDIイベント>();
             this.nドラム各ノート数 = new int[256];
 			this.lMIDIWAV = new List<CMIDIイベント>();
+			this.f先頭BPM = 0.0f;
         }
 
         // 解析処理 全バイナリを見てMTrkだけ抜き取る
