@@ -127,17 +127,11 @@
   <data name="buttonOK.Location" type="System.Drawing.Point, System.Drawing">
     <value>589, 393</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>MIDI Import</value>
-  </data>
   <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
     <value>543, 233</value>
   </data>
   <data name="buttonOpen.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
-  </data>
-  <data name="checkBox1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9pt</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
@@ -149,23 +143,26 @@
   <data name="&gt;&gt;buttonOK.Name" xml:space="preserve">
     <value>buttonOK</value>
   </data>
+  <data name="&gt;&gt;DTX_Lane.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;dataGridView1.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="groupBox3.Text" xml:space="preserve">
     <value>Import Setting</value>
   </data>
-  <data name="groupBox3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9pt</value>
+  <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
+    <value>groupBox2</value>
   </data>
   <data name="groupBox3.Size" type="System.Drawing.Size, System.Drawing">
     <value>202, 154</value>
   </data>
+  <data name="buttonOpen.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;dataGridView1.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="Comment.HeaderText" xml:space="preserve">
-    <value>Comment</value>
   </data>
   <data name="buttonOK.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9pt</value>
@@ -179,8 +176,14 @@
   <data name="&gt;&gt;label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="buttonCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
+  </data>
+  <data name="BackChannel.Width" type="System.Int32, mscorlib">
+    <value>40</value>
   </data>
   <data name="&gt;&gt;label3.Parent" xml:space="preserve">
     <value>groupBox1</value>
@@ -194,8 +197,9 @@
   <data name="&gt;&gt;DTX_Lane.Name" xml:space="preserve">
     <value>DTX_Lane</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>757, 428</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
   <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
     <value>$this</value>
@@ -212,14 +216,11 @@
   <data name="&gt;&gt;buttonOpen.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Target Channel(Normally 10, for Drums)</value>
+  <data name="BackCH.Width" type="System.Int32, mscorlib">
+    <value>50</value>
   </data>
-  <data name="textBox1.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="textBox1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>ＭＳ ゴシック, 9pt</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>MIDI Import</value>
   </data>
   <data name="buttonOpen.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 393</value>
@@ -240,7 +241,6 @@
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="textBox1.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Both</value>
   </data>
@@ -256,6 +256,9 @@
   <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
     <value>groupBox1</value>
   </data>
+  <data name="numericUpDown1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
   <data name="&gt;&gt;Comment.Type" xml:space="preserve">
     <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -268,17 +271,14 @@
   <data name="label3.Text" xml:space="preserve">
     <value>Redundant Chips : 0</value>
   </data>
-  <data name="&gt;&gt;numericUpDownCh.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;Notes.Name" xml:space="preserve">
+    <value>Notes</value>
   </data>
-  <data name="&gt;&gt;DTX_Lane.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewComboBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="DTX_Lane.HeaderText" xml:space="preserve">
-    <value>DTX_Lane</value>
+  <data name="&gt;&gt;Notes.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="numericUpDown1.Size" type="System.Drawing.Size, System.Drawing">
     <value>71, 21</value>
@@ -298,14 +298,14 @@
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;Notes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridViewTextBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;buttonCancel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;checkBox1.Name" xml:space="preserve">
     <value>checkBox1</value>
+  </data>
+  <data name="numericUpDownCh.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
   </data>
   <data name="buttonCancel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -319,14 +319,8 @@
   <data name="&gt;&gt;groupBox3.Name" xml:space="preserve">
     <value>groupBox3</value>
   </data>
-  <data name="buttonOpen.Text" xml:space="preserve">
-    <value>&amp;Open</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;checkBox1.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="buttonOK.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
     <value>1, 127</value>
@@ -334,17 +328,14 @@
   <data name="textBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 18</value>
   </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 335</value>
+  <data name="&gt;&gt;checkBox1.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="&gt;&gt;checkBox1.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="buttonOK.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="checkBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 34</value>
+  <data name="&gt;&gt;numericUpDownCh.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="groupBox1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9pt</value>
@@ -367,11 +358,11 @@
   <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;numericUpDown1.Parent" xml:space="preserve">
-    <value>groupBox3</value>
-  </data>
   <data name="&gt;&gt;groupBox3.Parent" xml:space="preserve">
     <value>$this</value>
+  </data>
+  <data name="&gt;&gt;textBox1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -394,8 +385,8 @@
   <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;checkBox2.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterParent</value>
   </data>
   <data name="MIDI_Key.HeaderText" xml:space="preserve">
     <value>MIDI_Key</value>
@@ -406,14 +397,17 @@
   <data name="&gt;&gt;checkBox2.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterParent</value>
-  </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
   <data name="&gt;&gt;label2.Parent" xml:space="preserve">
     <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="label3.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="textBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>189, 191</value>
   </data>
   <data name="&gt;&gt;numericUpDown1.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -428,9 +422,6 @@
   <data name="label3.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9pt</value>
   </data>
-  <data name="&gt;&gt;buttonOpen.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <data name="&gt;&gt;buttonOpen.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
@@ -438,29 +429,44 @@
     <value>Assign each MIDI notes to DTX lanes.
 * Disuse * = no assign</value>
   </data>
+  <data name="&gt;&gt;BackChannel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
   </data>
   <data name="checkBox2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;numericUpDown1.Name" xml:space="preserve">
-    <value>numericUpDown1</value>
+  <data name="&gt;&gt;BackCH.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridViewCheckBoxColumn, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDownCh.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="groupBox2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Arial, 9pt</value>
+  <data name="BackChannel.HeaderText" xml:space="preserve">
+    <value>BackCH</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
     <value>398, 352</value>
   </data>
-  <data name="textBox1.WordWrap" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
   </data>
   <data name="&gt;&gt;buttonOK.ZOrder" xml:space="preserve">
     <value>5</value>
+  </data>
+  <data name="DTX_Lane.HeaderText" xml:space="preserve">
+    <value>DTX_Lane</value>
+  </data>
+  <data name="BackCH.HeaderText" xml:space="preserve">
+    <value>BackCH</value>
+  </data>
+  <data name="&gt;&gt;BackChannel.Name" xml:space="preserve">
+    <value>BackChannel</value>
   </data>
   <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -480,11 +486,11 @@
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
   <data name="&gt;&gt;buttonCancel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>MIDI Analyzed</value>
   </data>
   <data name="&gt;&gt;buttonOK.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -492,11 +498,11 @@
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
   </data>
-  <data name="&gt;&gt;checkBox1.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Target Channel(Normally 10, for Drums)</value>
   </data>
   <data name="checkBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 22</value>
@@ -504,8 +510,11 @@
   <data name="&gt;&gt;buttonOK.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="label3.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
+  </data>
+  <data name="textBox1.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="checkBox2.Size" type="System.Drawing.Size, System.Drawing">
     <value>155, 34</value>
@@ -522,17 +531,20 @@
   <data name="&gt;&gt;buttonOpen.Name" xml:space="preserve">
     <value>buttonOpen</value>
   </data>
+  <data name="textBox1.WordWrap" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>
   </data>
   <data name="buttonCancel.Text" xml:space="preserve">
     <value>&amp;Cancel</value>
   </data>
+  <data name="&gt;&gt;checkBox1.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
   <data name="numericUpDownCh.Size" type="System.Drawing.Size, System.Drawing">
     <value>42, 23</value>
-  </data>
-  <data name="&gt;&gt;Notes.Name" xml:space="preserve">
-    <value>Notes</value>
   </data>
   <data name="Notes.Width" type="System.Int32, mscorlib">
     <value>40</value>
@@ -540,14 +552,23 @@
   <data name="checkBox1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="&gt;&gt;BackCH.Name" xml:space="preserve">
+    <value>BackCH</value>
+  </data>
   <data name="&gt;&gt;MIDI_Key.Name" xml:space="preserve">
     <value>MIDI_Key</value>
   </data>
   <data name="&gt;&gt;label3.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="buttonOpen.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="textBox1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>ＭＳ ゴシック, 9pt</value>
+  </data>
+  <data name="&gt;&gt;checkBox2.Parent" xml:space="preserve">
+    <value>groupBox3</value>
+  </data>
+  <data name="checkBox1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 9pt</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -561,11 +582,11 @@
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
     <value>93, 396</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>MIDI Assign</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>757, 428</value>
   </data>
-  <data name="numericUpDown1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="groupBox2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 9pt</value>
   </data>
   <data name="&gt;&gt;numericUpDown1.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -579,8 +600,8 @@
   <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9pt</value>
   </data>
-  <data name="numericUpDownCh.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+  <data name="&gt;&gt;buttonOpen.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="buttonOpen.Font" type="System.Drawing.Font, System.Drawing">
     <value>Arial, 9pt</value>
@@ -588,23 +609,20 @@
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;Comment.Name" xml:space="preserve">
-    <value>Comment</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;numericUpDown1.Name" xml:space="preserve">
+    <value>numericUpDown1</value>
   </data>
   <data name="&gt;&gt;Key.Name" xml:space="preserve">
     <value>Key</value>
   </data>
-  <data name="groupBox2.Text" xml:space="preserve">
-    <value>MIDI Analyzed</value>
+  <data name="&gt;&gt;numericUpDown1.Parent" xml:space="preserve">
+    <value>groupBox3</value>
   </data>
-  <data name="label3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
+  <data name="buttonOpen.Text" xml:space="preserve">
+    <value>&amp;Open</value>
   </data>
-  <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+  <data name="groupBox3.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 9pt</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 15</value>
@@ -615,16 +633,22 @@
   <data name="buttonOK.Text" xml:space="preserve">
     <value>O&amp;K</value>
   </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>groupBox3</value>
+  <data name="Comment.HeaderText" xml:space="preserve">
+    <value>Comment</value>
   </data>
-  <data name="&gt;&gt;numericUpDownCh.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>MIDI Assign</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 335</value>
+  </data>
+  <data name="checkBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>173, 34</value>
   </data>
   <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
@@ -633,8 +657,8 @@
   <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="textBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 191</value>
+  <data name="&gt;&gt;Comment.Name" xml:space="preserve">
+    <value>Comment</value>
   </data>
   <metadata name="MIDI_Key.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -652,6 +676,12 @@
     <value>True</value>
   </metadata>
   <metadata name="Notes.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="BackChannel.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="BackCH.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

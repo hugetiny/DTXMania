@@ -19,6 +19,16 @@ namespace DTXCreator.MIDIインポート
         private CMIDI cMIDI;
         public Cメインフォーム formメインフォーム;
 
+		public enum EMIDIインポート列名 : int
+		{
+			MIDI_Key,
+			Key,
+			DTX_Lane,
+			BackCH,
+			Notes,
+			Comment
+		}
+
         public CMIDIインポートダイアログ()
         {
             InitializeComponent();
@@ -61,6 +71,7 @@ namespace DTXCreator.MIDIインポート
                 string str楽器名 = "";
                 string[] strキー名 = new string[] { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", };
                 string strレーン名 = "* Disuse *";
+				bool b裏チャンネル = false;
                 switch ( i )
                 {
                     case 35 : str楽器名 = "Bass Drum 2"; strレーン名 = "BD"; break;
@@ -74,20 +85,20 @@ namespace DTXCreator.MIDIインポート
                     case 43 : str楽器名 = "Low Tom 1"; strレーン名 = "FT"; break;
                     case 44 : str楽器名 = "Pedal Hi-hat"; strレーン名 = "SE2"; break;
                     case 45 : str楽器名 = "Mid Tom 2"; strレーン名 = "LT"; break;
-                    case 46 : str楽器名 = "Open Hi-hat"; strレーン名 = "HH"; break;
+                    case 46 : str楽器名 = "Open Hi-hat"; strレーン名 = "HH"; b裏チャンネル = true; break;
                     case 47 : str楽器名 = "Mid Tom 1"; strレーン名 = "LT"; break;
                     case 48 : str楽器名 = "High Tom 2"; strレーン名 = "HT"; break;
                     case 49 : str楽器名 = "Crash Cymbal 1"; strレーン名 = "CY"; break;
                     case 50 : str楽器名 = "High Tom 1"; strレーン名 = "HT"; break;
-                    case 51 : str楽器名 = "Ride Cymbal 1"; strレーン名 = "CY"; break;
+                    case 51 : str楽器名 = "Ride Cymbal 1"; strレーン名 = "CY"; b裏チャンネル = true; break;
                     case 52 : str楽器名 = "Chinese Cymbal"; strレーン名 = "CY"; break;
-                    case 53 : str楽器名 = "Ride Bell"; strレーン名 = "CY"; break;
+                    case 53 : str楽器名 = "Ride Bell"; strレーン名 = "CY"; b裏チャンネル = true; break;
                     case 54 : str楽器名 = "Tambourine"; strレーン名 = "SE1"; break;
                     case 55 : str楽器名 = "Splash Cymbal"; strレーン名 = "LC"; break;
                     case 56 : str楽器名 = "Cowbell"; strレーン名 = "SE1"; break;
                     case 57 : str楽器名 = "Crash Cymbal 2"; strレーン名 = "LC"; break;
                     case 58 : str楽器名 = "Vibra Slap"; strレーン名 = "SE1"; break;
-                    case 59 : str楽器名 = "Ride Cymbal 2"; strレーン名 = "CY"; break;
+                    case 59 : str楽器名 = "Ride Cymbal 2"; strレーン名 = "CY"; b裏チャンネル = true; break;
                     case 60 : str楽器名 = "High Bongo"; break;
                     case 61 : str楽器名 = "Low Bongo"; break;
                     case 62 : str楽器名 = "Mute High Conga"; break;
@@ -111,15 +122,15 @@ namespace DTXCreator.MIDIインポート
                     case 80 : str楽器名 = "Mute Triangle"; break;
                     case 81 : str楽器名 = "Open Triangle"; break;
                 }
-                this.dataGridView1.Rows.Add( i, strキー名[i%12], strレーン名, 0, str楽器名 );
+                this.dataGridView1.Rows.Add( i, strキー名[i%12], strレーン名, b裏チャンネル, 0, str楽器名 );
                 if ( i%12 == 1 || i%12 == 3 || i%12 == 6 || i%12 == 8 || i%12 == 10 ) this.dataGridView1.Rows[127-i].DefaultCellStyle.BackColor = Color.FromArgb( 240, 248, 255 );
                 if ( i%12 == 0 ) this.dataGridView1.Rows[127-i].DefaultCellStyle.BackColor = Color.FromArgb( 255, 224, 224 );
                 tMIDI割り当て一覧のレーン名の背景色を変更する( this.dataGridView1.RowCount-1 );
 
             }
-            this.dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView1.Columns[2].DefaultCellStyle.Font = new Font( "meiryo", 8f, FontStyle.Bold );
+            this.dataGridView1.Columns[(int)EMIDIインポート列名.MIDI_Key].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView1.Columns[(int)EMIDIインポート列名.DTX_Lane].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView1.Columns[(int)EMIDIインポート列名.DTX_Lane].DefaultCellStyle.Font = new Font( "meiryo", 8f, FontStyle.Bold );
             this.dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             this.dataGridView1.FirstDisplayedScrollingRowIndex = 80;
@@ -208,7 +219,7 @@ namespace DTXCreator.MIDIインポート
             // 各キーのノート数を表に出力する
             for ( int i = 0 ; i < 128 ; i++ )
             {
-                this.dataGridView1.Rows[127-i].Cells[3].Value = cMIDI.nドラム各ノート数[i];
+                this.dataGridView1.Rows[127-i].Cells[(int)EMIDIインポート列名.Notes].Value = cMIDI.nドラム各ノート数[i];
             }
 			
             // MIDI解析内容をテキストボックスに出力する
@@ -263,18 +274,18 @@ namespace DTXCreator.MIDIインポート
 
         private void tMIDI割り当て一覧のレーン名の背景色を変更する( int RowIndex )
         {
-			string strレーン名 = (string)this.dataGridView1.Rows[RowIndex].Cells[2].Value;
+			string strレーン名 = (string)this.dataGridView1.Rows[RowIndex].Cells[(int)EMIDIインポート列名.DTX_Lane].Value;
             int nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( strレーン名 );
             if ( nレーン番号 > 1 )
             {
                 Color color = this.formメインフォーム.mgr譜面管理者.listレーン[nレーン番号].col背景色;
                 color = Color.FromArgb( color.R/2+128, color.G/2+128, color.B/2+128 );
-                this.dataGridView1.Rows[RowIndex].Cells[2].Style.BackColor = color;
+                this.dataGridView1.Rows[RowIndex].Cells[(int)EMIDIインポート列名.DTX_Lane].Style.BackColor = color;
             }
 			else if ( strレーン名 == "* Disuse *" )
 			{
                 Color color = Color.FromArgb( 128, 128, 128 );
-                this.dataGridView1.Rows[RowIndex].Cells[2].Style.BackColor = color;
+                this.dataGridView1.Rows[RowIndex].Cells[(int)EMIDIインポート列名.DTX_Lane].Style.BackColor = color;
 			}
         }
 
@@ -312,7 +323,7 @@ namespace DTXCreator.MIDIインポート
 				foreach ( CMIDIイベント vチップWAV in cMIDI.lMIDIWAV )
 				{
 					if ( nWAVCount > 4 && nレーン番号before != vチップWAV.nレーン番号 ) nWAVCount++;
-					if ( vチップWAV.eイベントタイプ != CMIDIイベント.Eイベントタイプ.NoteOnOff ) continue; // BPMチップをWAVリストに表示させない
+					if ( vチップWAV.eイベントタイプ != CMIDIイベント.Eイベントタイプ.NoteOnOff ) continue; // ノートチップ以外をWAVリストに表示させない
 
 					nレーン番号before = vチップWAV.nレーン番号;
 
@@ -341,7 +352,6 @@ namespace DTXCreator.MIDIインポート
 				// BPM他情報
                 if ( cMIDI.f先頭BPM > 0.0 ) this.formメインフォーム.numericUpDownBPM.Value = (decimal)cMIDI.f先頭BPM;
                 this.formメインフォーム.textBox曲名.Text = Path.GetFileName( cMIDI.strファイル名 );
-                //this.formメインフォーム.textBox自由入力欄.Text = "; DTXC MI "+Resources.DTXC_VERSION;
                 if ( cMIDI.nMIDI重複チップ数を返す() > 0 ) this.formメインフォーム.textBoxコメント.Text = "重複チップ : "+cMIDI.nMIDI重複チップ数を返す();
 				
 				// 小節付加＋変拍子設定
@@ -355,6 +365,7 @@ namespace DTXCreator.MIDIインポート
 						vMIDIチップ.挿入( this.formメインフォーム, cMIDI.n分解能 );
 					}
                 }
+				// BGMチップを仮置きする
 				this.formメインフォーム.mgr譜面管理者.tチップを配置または置換する( this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BGM" ), 0, 2, 0f, false );
             }
 		}

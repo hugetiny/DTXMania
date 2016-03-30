@@ -127,6 +127,13 @@
   <data name="buttonOK.Font" type="System.Drawing.Font, System.Drawing">
     <value>メイリオ, 8pt</value>
   </data>
+  <data name="BackCH.HeaderText" xml:space="preserve">
+    <value>BackCH</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="BackCH.Width" type="System.Int32, mscorlib">
+    <value>50</value>
+  </data>
   <data name="label3.Font" type="System.Drawing.Font, System.Drawing">
     <value>メイリオ, 8pt</value>
   </data>
@@ -150,6 +157,9 @@
     <value>メイリオ, 8pt</value>
   </data>
   <data name="groupBox2.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 8pt</value>
+  </data>
+  <data name="groupBox3.Font" type="System.Drawing.Font, System.Drawing">
     <value>メイリオ, 8pt</value>
   </data>
   <data name="label4.Font" type="System.Drawing.Font, System.Drawing">
@@ -183,9 +193,6 @@
   <data name="checkBox1.Text" xml:space="preserve">
     <value>ベロシティカーブを急にする
 (小さい音がDTXだと大きい場合)</value>
-  </data>
-  <data name="groupBox3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
   </data>
   <data name="numericUpDownCh.Location" type="System.Drawing.Point, System.Drawing">
     <value>268, 394</value>

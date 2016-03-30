@@ -28,6 +28,7 @@ namespace DTXCreator.MIDIインポート
         public int nWAV;
         public int nキー;
         public bool b入力;
+        public bool b裏チャンネル;
         public string strコメント;
 		public int nベロシティ;
 		public int nベロシティ_DTX変換後;
@@ -64,6 +65,7 @@ namespace DTXCreator.MIDIインポート
             this.n時間 = _n時間;
             this.nWAV = 1;
             this.nキー = _nキー;
+            this.b裏チャンネル = false;
 			
             this.nベロシティ = _nベロシティ;
             this.nベロシティ_DTX変換後 = _nベロシティ;
@@ -74,7 +76,7 @@ namespace DTXCreator.MIDIインポート
 		public override void 挿入( Cメインフォーム mf, int n四分音符の分解能 )
 		{
 			mf.mgr譜面管理者.tチップを配置または置換する
-				( nレーン番号, (int) n時間 * ( 192 / 4 ) / n四分音符の分解能, nWAV, 0f, false );
+				( nレーン番号, (int) n時間 * ( 192 / 4 ) / n四分音符の分解能, nWAV, 0f, b裏チャンネル );
 		}
 	}
 

@@ -34,11 +34,6 @@
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.MIDI_Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.DTX_Lane = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
@@ -50,6 +45,12 @@
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.numericUpDownCh = new System.Windows.Forms.NumericUpDown();
 			this.label2 = new System.Windows.Forms.Label();
+			this.MIDI_Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.DTX_Lane = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.BackCH = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -96,6 +97,7 @@
             this.MIDI_Key,
             this.Key,
             this.DTX_Lane,
+            this.BackCH,
             this.Notes,
             this.Comment});
 			this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
@@ -106,46 +108,6 @@
 			this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
 			this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
 			this.dataGridView1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEnter);
-			// 
-			// MIDI_Key
-			// 
-			resources.ApplyResources(this.MIDI_Key, "MIDI_Key");
-			this.MIDI_Key.MaxInputLength = 4;
-			this.MIDI_Key.Name = "MIDI_Key";
-			this.MIDI_Key.ReadOnly = true;
-			this.MIDI_Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			// 
-			// Key
-			// 
-			resources.ApplyResources(this.Key, "Key");
-			this.Key.MaxInputLength = 64;
-			this.Key.Name = "Key";
-			this.Key.ReadOnly = true;
-			this.Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			// 
-			// DTX_Lane
-			// 
-			this.DTX_Lane.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-			this.DTX_Lane.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			resources.ApplyResources(this.DTX_Lane, "DTX_Lane");
-			this.DTX_Lane.Name = "DTX_Lane";
-			this.DTX_Lane.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.DTX_Lane.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-			// 
-			// Notes
-			// 
-			resources.ApplyResources(this.Notes, "Notes");
-			this.Notes.MaxInputLength = 4;
-			this.Notes.Name = "Notes";
-			this.Notes.ReadOnly = true;
-			// 
-			// Comment
-			// 
-			this.Comment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			resources.ApplyResources(this.Comment, "Comment");
-			this.Comment.MaxInputLength = 128;
-			this.Comment.Name = "Comment";
-			this.Comment.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			// 
 			// groupBox1
 			// 
@@ -247,6 +209,52 @@
 			resources.ApplyResources(this.label2, "label2");
 			this.label2.Name = "label2";
 			// 
+			// MIDI_Key
+			// 
+			resources.ApplyResources(this.MIDI_Key, "MIDI_Key");
+			this.MIDI_Key.MaxInputLength = 4;
+			this.MIDI_Key.Name = "MIDI_Key";
+			this.MIDI_Key.ReadOnly = true;
+			this.MIDI_Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			// 
+			// Key
+			// 
+			resources.ApplyResources(this.Key, "Key");
+			this.Key.MaxInputLength = 64;
+			this.Key.Name = "Key";
+			this.Key.ReadOnly = true;
+			this.Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			// 
+			// DTX_Lane
+			// 
+			this.DTX_Lane.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+			this.DTX_Lane.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			resources.ApplyResources(this.DTX_Lane, "DTX_Lane");
+			this.DTX_Lane.Name = "DTX_Lane";
+			this.DTX_Lane.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.DTX_Lane.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+			// 
+			// BackCH
+			// 
+			resources.ApplyResources(this.BackCH, "BackCH");
+			this.BackCH.Name = "BackCH";
+			this.BackCH.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			// 
+			// Notes
+			// 
+			resources.ApplyResources(this.Notes, "Notes");
+			this.Notes.MaxInputLength = 4;
+			this.Notes.Name = "Notes";
+			this.Notes.ReadOnly = true;
+			// 
+			// Comment
+			// 
+			this.Comment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			resources.ApplyResources(this.Comment, "Comment");
+			this.Comment.MaxInputLength = 128;
+			this.Comment.Name = "Comment";
+			this.Comment.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			// 
 			// CMIDIインポートダイアログ
 			// 
 			resources.ApplyResources(this, "$this");
@@ -286,11 +294,6 @@
         private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.GroupBox groupBox2;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.DataGridViewTextBoxColumn MIDI_Key;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Key;
-		private System.Windows.Forms.DataGridViewComboBoxColumn DTX_Lane;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Notes;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Comment;
 		private System.Windows.Forms.GroupBox groupBox3;
 		private System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.CheckBox checkBox2;
@@ -298,5 +301,11 @@
 		private System.Windows.Forms.NumericUpDown numericUpDown1;
 		private System.Windows.Forms.NumericUpDown numericUpDownCh;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.DataGridViewTextBoxColumn MIDI_Key;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Key;
+		private System.Windows.Forms.DataGridViewComboBoxColumn DTX_Lane;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn BackCH;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Notes;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Comment;
     }
 }
