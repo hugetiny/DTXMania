@@ -344,25 +344,9 @@ namespace DTXCreator.MIDIインポート
                 //this.formメインフォーム.textBox自由入力欄.Text = "; DTXC MI "+Resources.DTXC_VERSION;
                 if ( cMIDI.nMIDI重複チップ数を返す() > 0 ) this.formメインフォーム.textBoxコメント.Text = "重複チップ : "+cMIDI.nMIDI重複チップ数を返す();
 				
-				// 小節付加
+				// 小節付加＋変拍子設定
 				tMIDIイベントリストから小節リストを構成する( cMIDI.lチップ, cMIDI.n分解能 );
 				
-
-
-
-				//int nCurrentMaxBar = this.formメインフォーム.mgr譜面管理者.n現在の最大の小節番号を返す();					// ★★拍子変更対応の場合、ここも修正しないとダメよ****************
-				////UInt32 nMaxBar = cMIDI.pMIDIチップで一番遅い時間のチップを返す().n時間 * (192 / 4) / (UInt32) cMIDI.n分解能 / 384;
-				//UInt32 nMaxBar = 0;
-				//if ( cMIDI.lチップ.Count > 0 )
-				//{
-				//	nMaxBar = cMIDI.lチップ[ cMIDI.lチップ.Count - 1 ].n時間 * ( 192 / 4 ) / (UInt32) cMIDI.n分解能 / 384;
-				//}
-				//for ( int i = nCurrentMaxBar + 1; i <= nMaxBar; i++ )
-				//{
-				//	this.formメインフォーム.mgr譜面管理者.dic小節.Add( i, new C小節( i ) );
-				//}
-
-
 				// チップ配置
                 foreach ( CMIDIイベント vMIDIチップ in cMIDI.lチップ )
                 {

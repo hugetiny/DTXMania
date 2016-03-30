@@ -201,6 +201,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="コード\07.MIDIインポート\CMIDIインポートダイアログ.ja-JP.resx">
+      <DependentUpon>CMIDIインポートダイアログ.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="コード\07.MIDIインポート\CMIDIインポートダイアログ.resx">
       <DependentUpon>CMIDIインポートダイアログ.cs</DependentUpon>
     </EmbeddedResource>
