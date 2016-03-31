@@ -18,17 +18,7 @@ namespace DTXCreator.MIDIインポート
 
         private CMIDI cMIDI;
         public Cメインフォーム formメインフォーム;
-
-		public enum EMIDIインポート列名 : int
-		{
-			MIDI_Key,
-			Key,
-			DTX_Lane,
-			BackCH,
-			Notes,
-			Comment
-		}
-
+		
         public CMIDIインポートダイアログ()
         {
             InitializeComponent();
@@ -128,9 +118,9 @@ namespace DTXCreator.MIDIインポート
                 tMIDI割り当て一覧のレーン名の背景色を変更する( this.dataGridView1.RowCount-1 );
 
             }
-            this.dataGridView1.Columns[(int)EMIDIインポート列名.MIDI_Key].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView1.Columns[(int)EMIDIインポート列名.DTX_Lane].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView1.Columns[(int)EMIDIインポート列名.DTX_Lane].DefaultCellStyle.Font = new Font( "meiryo", 8f, FontStyle.Bold );
+            this.dataGridView1.Columns["MIDI_Key"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView1.Columns["DTX_Lane"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView1.Columns["DTX_Lane"].DefaultCellStyle.Font = new Font( "meiryo", 8f, FontStyle.Bold );
             this.dataGridView1.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             this.dataGridView1.FirstDisplayedScrollingRowIndex = 80;
@@ -219,7 +209,7 @@ namespace DTXCreator.MIDIインポート
             // 各キーのノート数を表に出力する
             for ( int i = 0 ; i < 128 ; i++ )
             {
-                this.dataGridView1.Rows[127-i].Cells[(int)EMIDIインポート列名.Notes].Value = cMIDI.nドラム各ノート数[i];
+                this.dataGridView1.Rows[127-i].Cells["Notes"].Value = cMIDI.nドラム各ノート数[i];
             }
 			
             // MIDI解析内容をテキストボックスに出力する
@@ -274,18 +264,18 @@ namespace DTXCreator.MIDIインポート
 
         private void tMIDI割り当て一覧のレーン名の背景色を変更する( int RowIndex )
         {
-			string strレーン名 = (string)this.dataGridView1.Rows[RowIndex].Cells[(int)EMIDIインポート列名.DTX_Lane].Value;
+			string strレーン名 = (string)this.dataGridView1.Rows[RowIndex].Cells["DTX_Lane"].Value;
             int nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( strレーン名 );
             if ( nレーン番号 > 1 )
             {
                 Color color = this.formメインフォーム.mgr譜面管理者.listレーン[nレーン番号].col背景色;
                 color = Color.FromArgb( color.R/2+128, color.G/2+128, color.B/2+128 );
-                this.dataGridView1.Rows[RowIndex].Cells[(int)EMIDIインポート列名.DTX_Lane].Style.BackColor = color;
+                this.dataGridView1.Rows[RowIndex].Cells["DTX_Lane"].Style.BackColor = color;
             }
 			else if ( strレーン名 == "* Disuse *" )
 			{
                 Color color = Color.FromArgb( 128, 128, 128 );
-                this.dataGridView1.Rows[RowIndex].Cells[(int)EMIDIインポート列名.DTX_Lane].Style.BackColor = color;
+                this.dataGridView1.Rows[RowIndex].Cells["DTX_Lane"].Style.BackColor = color;
 			}
         }
 

@@ -75,14 +75,14 @@ namespace DTXCreator.MIDIインポート
 			{
 				foreach (DataGridViewRow dgvr in dgv.Rows)
 				{
-					if (vMIDIチップ.nキー == (int)dgvr.Cells[(int)CMIDIインポートダイアログ.EMIDIインポート列名.MIDI_Key].Value )
+					if (vMIDIチップ.nキー == (int)dgvr.Cells["MIDI_Key"].Value )
 					{
-						if ( (string)dgvr.Cells[(int)CMIDIインポートダイアログ.EMIDIインポート列名.DTX_Lane].Value != "* Disuse *" )
+						if ( (string)dgvr.Cells["DTX_Lane"].Value != "* Disuse *" )
 						{
-							vMIDIチップ.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgvr.Cells[(int)CMIDIインポートダイアログ.EMIDIインポート列名.DTX_Lane].Value );
-							vMIDIチップ.strコメント = (string)dgvr.Cells[(int)CMIDIインポートダイアログ.EMIDIインポート列名.Comment].Value;
+							vMIDIチップ.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgvr.Cells["DTX_Lane"].Value );
+							vMIDIチップ.strコメント = (string)dgvr.Cells["Comment"].Value;
 							vMIDIチップ.b入力 = true;
-							vMIDIチップ.b裏チャンネル = (bool)dgvr.Cells[(int)CMIDIインポートダイアログ.EMIDIインポート列名.BackCH].Value;
+							vMIDIチップ.b裏チャンネル = (bool)dgvr.Cells["BackCH"].Value;
 						}
 						else
 						{
