@@ -32,6 +32,7 @@ namespace DTXCreator.譜面
 		{
 			BPM,
 			Beat,
+			LP,
 			Drums,
 			BGM,
 			SE1_5,
