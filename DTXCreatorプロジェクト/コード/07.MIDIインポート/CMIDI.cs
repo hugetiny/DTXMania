@@ -16,7 +16,7 @@ namespace DTXCreator.MIDIインポート
         public byte[] byMIDIバイナリ;
         public bool bMIDIファイル;
         public List<CMIDIトラック> lMIDIトラック;
-        public List<CMIDIイベント> lチップ;
+        public List<CMIDIイベント> lMIDIイベント;
         public float f先頭BPM;
         public string strTimeSignature;
         public int[] nドラム各ノート数;
@@ -24,6 +24,9 @@ namespace DTXCreator.MIDIインポート
         public Cメインフォーム formメインフォーム;
 		public List<CMIDIイベント> lMIDIWAV;
 		public int n読み込みCh;
+		public int n重複チップ数;
+		public int [] lチャンネル毎のノート数1to16;
+		public DataGridView dgvチャンネル一覧;
 
         public int dトラック数
         {
@@ -39,10 +42,13 @@ namespace DTXCreator.MIDIインポート
             this.byMIDIバイナリ = File.ReadAllBytes( this.strファイル名 );
             this.bMIDIファイル = ( strBin2BinStr(this.byMIDIバイナリ, 0, 4) == "4D 54 68 64" );
             this.lMIDIトラック = new List<CMIDIトラック>();
-            this.lチップ = new List<CMIDIイベント>();
+            this.lMIDIイベント = new List<CMIDIイベント>();
             this.nドラム各ノート数 = new int[256];
 			this.lMIDIWAV = new List<CMIDIイベント>();
 			this.f先頭BPM = 0.0f;
+			this.n重複チップ数 = 0;
+			this.lチャンネル毎のノート数1to16 = new int[17];
+			this.dgvチャンネル一覧 = null;
         }
 
         // 解析処理 全バイナリを見てMTrkだけ抜き取る
@@ -67,52 +73,56 @@ namespace DTXCreator.MIDIインポート
                 }
             }
         }
-
-		// DataGridViewに設定した値に応じて各レーンに振り分ける
-        public void tMIDIチップをレーンに割り当てる( DataGridView dgv )
+		
+		/// <summary>
+		/// dgv割り当て一覧で設定した値に応じて、各レーンへ振り分ける
+		/// </summary>
+        public void tMIDIチップをレーンに割り当てる( DataGridView dgv割り当て一覧 )
         {
-			foreach ( CMIDIイベント vMIDIチップ in this.lチップ )
+			// MIDIイベントがひとつでもあるなら処理する
+			if ( this.lMIDIイベント.Count == 0 ) return;
+
+			#region [ 振り分け ]
+			foreach ( CMIDIイベント vMIDIイベント in this.lMIDIイベント )
 			{
-				foreach (DataGridViewRow dgvr in dgv.Rows)
+				foreach (DataGridViewRow dgvr in dgv割り当て一覧.Rows)
 				{
-					if (vMIDIチップ.nキー == (int)dgvr.Cells["MIDI_Key"].Value )
+					if (vMIDIイベント.nキー == (int)dgvr.Cells["MIDI_Key"].Value )
 					{
 						if ( (string)dgvr.Cells["DTX_Lane"].Value != "* Disuse *" )
 						{
-							vMIDIチップ.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgvr.Cells["DTX_Lane"].Value );
-							vMIDIチップ.strコメント = (string)dgvr.Cells["Comment"].Value;
-							vMIDIチップ.b入力 = true;
-							vMIDIチップ.b裏チャンネル = (bool)dgvr.Cells["BackCH"].Value;
+							vMIDIイベント.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgvr.Cells["DTX_Lane"].Value );
+							vMIDIイベント.strコメント = (string)dgvr.Cells["Comment"].Value;
+							vMIDIイベント.b裏チャンネル = (bool)dgvr.Cells["BackCH"].Value;
+							vMIDIイベント.b入力 = true;
 						}
 						else
 						{
-							vMIDIチップ.nレーン番号 = 0;
-							vMIDIチップ.strコメント = "";
-							vMIDIチップ.b入力 = false;
-							vMIDIチップ.b裏チャンネル = false;
+							vMIDIイベント.nレーン番号 = 0;
+							vMIDIイベント.strコメント = "";
+							vMIDIイベント.b裏チャンネル = false;
+							vMIDIイベント.b入力 = false;
 						}
-						if ( vMIDIチップ.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BPM  ||
-							 vMIDIチップ.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BarLen )
+						if ( vMIDIイベント.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BPM  ||
+							 vMIDIイベント.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BarLen )
 						{
-							vMIDIチップ.b入力 = true;
+							vMIDIイベント.b入力 = true;
 						}
 					}
 				}
 			}
-			tMIDIチップをMIDIWAVリスト化する();
-        }
+			#endregion
 
-        public void tMIDIチップをMIDIWAVリスト化する()
-        {
+			#region [ WAVリスト化する ]
 			this.lMIDIWAV = new List<CMIDIイベント>();
 
-			foreach ( CMIDIイベント vMIDIチップ in this.lチップ )
+			foreach ( CMIDIイベント vMIDIイベント in this.lMIDIイベント )
 			{
 				// WAVリストで、同じ内容(キーとベロシティ)が無ければ挿入する
 				bool bMIDIWAV_AddFlag = true;
 				foreach ( CMIDIイベント vMIDIWAV in this.lMIDIWAV )
 				{
-					if ( vMIDIWAV.strWAV重複チェック == vMIDIチップ.strWAV重複チェック )
+					if ( vMIDIWAV.strWAV重複チェック == vMIDIイベント.strWAV重複チェック )
 					{
 						bMIDIWAV_AddFlag = false;
 						break;
@@ -120,40 +130,37 @@ namespace DTXCreator.MIDIインポート
 				}
 				if (bMIDIWAV_AddFlag)
 				{
-					this.lMIDIWAV.Add( vMIDIチップ );
+					this.lMIDIWAV.Add( vMIDIイベント );
 				}
 			}
-        }
-
-		// レーン割り当て後に呼ぶこと
-		public int nMIDI重複チップ数を返す()
-		{
-			if (this.lチップ.Count == 0) return 0;
-
-			int nMIDIチップ同時刻同レーン重複 = 0;
-			foreach ( CMIDIイベント vMIDIチップ1 in this.lチップ )
+			#endregion
+			
+			#region [ キーが違うが同時刻で同じレーンに配置予定のチップを数える ]
+			this.n重複チップ数 = 0;
+			foreach ( CMIDIイベント v1 in this.lMIDIイベント )
 			{
-				foreach ( CMIDIイベント vMIDIチップ2 in this.lチップ )
+				foreach ( CMIDIイベント v2 in this.lMIDIイベント )
 				{
-					if ( vMIDIチップ1.nキー != vMIDIチップ2.nキー && vMIDIチップ1.nレーン番号 == vMIDIチップ2.nレーン番号 && vMIDIチップ1.n時間 == vMIDIチップ2.n時間 )
+					if ( v1.nキー != v2.nキー && v1.nレーン番号 == v2.nレーン番号 && v1.n時間 == v2.n時間 )
 					{
-						nMIDIチップ同時刻同レーン重複 ++;
+						this.n重複チップ数 ++;
 					}
 				}
 			}
-			return nMIDIチップ同時刻同レーン重複/2;
-		}
+			this.n重複チップ数 /= 2;
+			#endregion
+        }
 
 		//public CMIDIイベント pMIDIチップで一番遅い時間のチップを返す()
 		//{
-		//	if (this.lチップ.Count == 0) return null;
+		//	if (this.lMIDIイベント.Count == 0) return null;
 
 		//	CMIDIイベント cMIDIチップ = null;
-		//	foreach ( CMIDIイベント vMIDIチップ in this.lチップ )
+		//	foreach ( CMIDIイベント vMIDIイベント in this.lMIDIイベント )
 		//	{
-		//		if ( cMIDIチップ == null || cMIDIチップ.n時間 <= vMIDIチップ.n時間 )
+		//		if ( cMIDIチップ == null || cMIDIチップ.n時間 <= vMIDIイベント.n時間 )
 		//		{
-		//			cMIDIチップ = vMIDIチップ;
+		//			cMIDIチップ = vMIDIイベント;
 		//		}
 		//	}
 		//	return cMIDIチップ;

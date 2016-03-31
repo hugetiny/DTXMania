@@ -16,6 +16,7 @@ namespace DTXCreator.MIDIインポート
 			CMIDIインポートダイアログ cMIDIインポートダイアログ = new CMIDIインポートダイアログ();
             cMIDIインポートダイアログ.formメインフォーム = this.formメインフォーム;
             cMIDIインポートダイアログ.tMIDI割り当て一覧を作成する();
+			cMIDIインポートダイアログ.tMIDIチャンネル一覧を作成する();
 			cMIDIインポートダイアログ.tMIDIファイルを選択する();
 
             if (cMIDIインポートダイアログ.ShowDialog() == DialogResult.OK)
@@ -32,6 +33,7 @@ namespace DTXCreator.MIDIインポート
 			CMIDIインポートダイアログ cMIDIインポートダイアログ = new CMIDIインポートダイアログ();
 			cMIDIインポートダイアログ.formメインフォーム = this.formメインフォーム;
 			cMIDIインポートダイアログ.tMIDI割り当て一覧を作成する();
+			cMIDIインポートダイアログ.tMIDIチャンネル一覧を作成する();
 			cMIDIインポートダイアログ.tMIDIファイルを開く( strファイル名 );
 			if ( cMIDIインポートダイアログ.ShowDialog() == DialogResult.OK )
 			{

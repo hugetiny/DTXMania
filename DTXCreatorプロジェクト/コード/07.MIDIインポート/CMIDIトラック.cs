@@ -73,9 +73,18 @@ namespace DTXCreator.MIDIインポート
                     if ( nイベント >= 0x90 && nData2 > 0 )
                     {
                         this.nチャンネル = nイベント - 0x90 + 1;
-                        if ( this.nチャンネル == cMIDI.n読み込みCh )
+						cMIDI.lチャンネル毎のノート数1to16[this.nチャンネル] ++;
+						bool bAdd = false;
+
+						for (int i = 1; i <= 16; i++)
+						{
+							if ( (bool)cMIDI.dgvチャンネル一覧.Rows[i-1].Cells["ChLoad"].Value && this.nチャンネル == i )
+								bAdd = true;
+						}
+
+						if ( bAdd )
                         {
-                            cMIDI.lチップ.Add( new CMIDINote( nデルタタイム合計, nData1, nData2 ) );
+                            cMIDI.lMIDIイベント.Add( new CMIDINote( nデルタタイム合計, nData1, nData2 ) );
                             cMIDI.nドラム各ノート数[nData1]++;
 							//this.str解析内容 += "Drum  / Tick: " + nデルタタイム合計.ToString().PadLeft( 6 ) + " Note: " + nData1.ToString( "X2" ) + "\r\n";
                         }
@@ -152,7 +161,7 @@ namespace DTXCreator.MIDIインポート
 							float fBPM = ( float ) ( Math.Round( (float) 60.0 * Math.Pow(10,6) / CMIDI.nBin2Int( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 3 ), 2 ) );
                             if ( cMIDI.f先頭BPM == 0.0f ) cMIDI.f先頭BPM = fBPM;
                             nイベントLen = 6;
-							cMIDI.lチップ.Add( new CMIDIBPM( nデルタタイム合計, fBPM ) );
+							cMIDI.lMIDIイベント.Add( new CMIDIBPM( nデルタタイム合計, fBPM ) );
                             cMIDI.nドラム各ノート数[128]++;
 							break;
 
@@ -174,7 +183,7 @@ namespace DTXCreator.MIDIインポート
                             cMIDI.strTimeSignature = CMIDI.strBin2BinStr( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 4 );
                             nイベントLen = 7;
 
-							cMIDI.lチップ.Add( new CMIDIBARLen( nデルタタイム合計, n分子, n分母 ) );
+							cMIDI.lMIDIイベント.Add( new CMIDIBARLen( nデルタタイム合計, n分子, n分母 ) );
                             cMIDI.nドラム各ノート数[128]++;
                             break;
 

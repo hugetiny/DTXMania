@@ -148,6 +148,11 @@ namespace DTXCreator
 			}
 		}
 
+		/// <summary>
+		/// 最後にMIDIを読み込んだフォルダ
+		/// </summary>
+		public string strMIDIインポートフォルダ;
+
 		//-----------------
 		#endregion
 
@@ -397,6 +402,15 @@ namespace DTXCreator
 				this.t編集モードにする();
 			}
 			#endregion
+			#region [ MIDIインポートフォルダ ]
+			//-----------------
+			this.strMIDIインポートフォルダ = this.appアプリ設定.LastMIDIImportFolder;
+			
+			if( ! Directory.Exists( this.strMIDIインポートフォルダ ) )
+				this.strMIDIインポートフォルダ = Directory.GetCurrentDirectory();
+			//-----------------
+			#endregion
+
 		}
 		private void tアプリ設定の保存()
 		{
@@ -469,7 +483,12 @@ namespace DTXCreator
 				this.appアプリ設定.AddLanesInfo( c.strレーン名, c.bIsVisible );
 			}
 			#endregion
-
+			#region [ MIDIインポートフォルダ ]
+			//-----------------
+			this.appアプリ設定.LastMIDIImportFolder =
+				this.strMIDIインポートフォルダ;
+			//-----------------
+			#endregion
 
 			// 保存する。
 
