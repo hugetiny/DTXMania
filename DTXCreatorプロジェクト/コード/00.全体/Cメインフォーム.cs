@@ -5302,22 +5302,10 @@ namespace DTXCreator
 		{
 			string filename = "";
 
-			#region [ マウスカーソルを待機中に変更 (アプリウインドウ外で右クリックメニュー選択していると、効果がない・・・) ]
-			this.Cursor = Cursors.WaitCursor;
-			#endregion
-
-
 			#region [ BGM, BPM, BEATレーンのレーン番号を取得 ]
 			int laneBGM = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BGM" );
 			int laneBPM = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BPM" );
 			int laneBEAT = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BEAT" );
-			#endregion
-
-			#region [ BPM,BEATレーンの情報を消去 ]
-			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBPM );
-			this.tシナリオ_削除();
-			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBEAT );
-			this.tシナリオ_削除();
 			#endregion
 
 			#region [ BGMレーンにあるチップを抽出して、beat検出する対象のサウンドファイルを決める ]
@@ -5352,9 +5340,24 @@ namespace DTXCreator
 				//}
 				//}
 			}
+			if ( filename == "" )
+			{
+				MessageBox.Show( "BGMチップが配置されていません。BGMチップを1つ配置してください。", "BGMチップ検出エラー", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				return;
+			}
 			#endregion
 			#endregion
 
+			#region [ マウスカーソルを待機中に変更 (アプリウインドウ外で右クリックメニュー選択していると、効果がない・・・) ]
+			this.Cursor = Cursors.WaitCursor;
+			#endregion
+
+			#region [ BPM,BEATレーンの情報を消去 ]
+			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBPM );
+			this.tシナリオ_削除();
+			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBEAT );
+			this.tシナリオ_削除();
+			#endregion
 
 
 			#region [ BASSFXのBeat detectionを実行する ]
@@ -5570,10 +5573,6 @@ namespace DTXCreator
 
 			BPMchipsGeneneration_Main();
 
-			#region [ マウスカーソルの形を元に戻す ]
-			this.Cursor = Cursors.Default;
-			#endregion
-
 			cbd.Dispose();
 			cbd = null;
 
@@ -5585,9 +5584,14 @@ namespace DTXCreator
 			this.pictureBox譜面パネル.Invalidate();
 			#endregion
 
+
 			#region [ listBeatPositionsの開放 ]
 			listBeatPositions.Clear();
 			listBeatPositions = null;
+			#endregion
+
+			#region [ マウスカーソルの形を元に戻す ]
+			this.Cursor = Cursors.Default;
 			#endregion
 		}
 
