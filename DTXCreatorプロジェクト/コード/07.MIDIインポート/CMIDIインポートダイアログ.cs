@@ -25,10 +25,27 @@ namespace DTXCreator.MIDIインポート
         {
             InitializeComponent();
 			this.b一覧準備完了 = false;
+			dgvチャンネル一覧変更イベント抑止();
 			resource = new System.Resources.ResourceManager( this.GetType() );
         }
 
-        private void CMIDIインポートダイアログ_KeyDown(object sender, KeyEventArgs e)
+		public void dgvチャンネル一覧変更イベント抑止()
+		{
+			try
+			{
+				dgvチャンネル一覧.CellValueChanged -= dgvチャンネル一覧_CellValueChanged;
+			}
+			catch ( Exception e )
+			{
+				Debug.WriteLine( "dgvチャンネル一覧.CellValueChangedのイベントエントリ削除に失敗しましたが、続行します。{0}", e.Message );
+			}
+		}
+		public void dgvチャンネル一覧変更イベント復旧()
+		{
+			dgvチャンネル一覧.CellValueChanged += dgvチャンネル一覧_CellValueChanged;
+		}
+
+		private void CMIDIインポートダイアログ_KeyDown(object sender, KeyEventArgs e)
         {
             if ( e.KeyCode == Keys.Return )
             {
@@ -146,6 +163,9 @@ namespace DTXCreator.MIDIインポート
 				this.dgvチャンネル一覧.Rows[i-1].DefaultCellStyle.BackColor = (i==10) ? Color.FromArgb( 255, 224, 224 ) : Color.FromArgb( 255, 255, 255 );
 			}
 			this.b一覧準備完了 = true;
+			//	dgvチャンネル一覧変更イベント復旧();	//ここでイベントを復旧してはいけない
+														//(直後にファイルを開く動作＋解析動作が発生するのでそこで)
+														//ChangValueイベントが発生しファイルを開き直す動作が何度も発生してしまう
 		}
 
         public void tMIDIファイルを選択する()
@@ -198,7 +218,7 @@ namespace DTXCreator.MIDIインポート
             //-----------------
             #endregion
 
-            #region [ 各設定 ]
+			#region [ 各設定 ]
             //-----------------
 			this.formメインフォーム.str作業フォルダ名 = Path.GetDirectoryName( strファイル名 ) + @"\";
 			this.formメインフォーム.strMIDIインポートフォルダ = Path.GetDirectoryName( strファイル名 ) + @"\";
