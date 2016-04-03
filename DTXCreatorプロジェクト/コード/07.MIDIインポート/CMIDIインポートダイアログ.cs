@@ -225,7 +225,9 @@ namespace DTXCreator.MIDIインポート
             //-----------------
             #endregion
 
-            #region [ MIDIファイル解析 ]
+			dgvチャンネル一覧変更イベント抑止();
+
+			#region [ MIDIファイル解析 ]
             //-----------------
             cMIDI = new CMIDI( strファイル名 );
             cMIDI.formメインフォーム = this.formメインフォーム;
@@ -275,7 +277,9 @@ namespace DTXCreator.MIDIインポート
 				this.dgvチャンネル一覧.Rows[i-1].Cells["ChNotes"].Value = this.cMIDI.lチャンネル毎のノート数1to16[i];
 				this.dgvチャンネル一覧.Rows[i-1].Cells["ChLoad"].Value  = this.cMIDI.bドラムチャンネルと思われる[i-1];
 			}
-            //-----------------
+
+			dgvチャンネル一覧変更イベント復旧();
+			//-----------------
             #endregion
 
         }
