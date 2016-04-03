@@ -69,11 +69,13 @@ namespace DTXCreator.MIDIインポート
 						cMIDI.lチャンネル毎のノート数1to16[this.nチャンネル] ++;
 						bool bAdd = false;
 
-						for (int i = 1; i <= 16; i++)
-						{
-							if ( (bool)cMIDI.dgvチャンネル一覧.Rows[i-1].Cells["ChLoad"].Value && this.nチャンネル == i )
-								bAdd = true;
-						}
+						//for (int i = 1; i <= 16; i++)
+						//{
+						//	if ( (bool)cMIDI.dgvチャンネル一覧.Rows[i-1].Cells["ChLoad"].Value && this.nチャンネル == i )
+						//		bAdd = true;
+						//}
+						if ( (bool)cMIDI.dgvチャンネル一覧.Rows[this.nチャンネル-1].Cells["ChLoad"].Value )
+							bAdd = true;
 
 						if ( bAdd )
                         {
