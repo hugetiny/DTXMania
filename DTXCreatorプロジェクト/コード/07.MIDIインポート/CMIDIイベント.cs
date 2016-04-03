@@ -59,7 +59,6 @@ namespace DTXCreator.MIDIインポート
 	class CMIDINote: CMIDIイベント
 	{
 		public CMIDINote( UInt32 _n時間, int _nキー, int _nベロシティ )
-			: base()
         {
             this.nレーン番号 = 2;
             this.n時間 = _n時間;
@@ -87,7 +86,6 @@ namespace DTXCreator.MIDIインポート
 	{
 		float fBPM;
 		public CMIDIBPM( UInt32 _n時間, float _fBPM )
-			: base()
 		{
 			this.nレーン番号 = 2;
 			this.n時間 = _n時間;

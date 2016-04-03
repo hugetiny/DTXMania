@@ -75,7 +75,7 @@ namespace DTXCreator.MIDIインポート
 				bool b裏チャンネル = false;
                 switch ( i )
                 {
-                    case 35 : str楽器名 = "Bass Drum 2"; strレーン名 = "LP"; b裏チャンネル = true; break;
+                    case 35 : str楽器名 = "Bass Drum 2"; strレーン名 = "BD"; break;
                     case 36 : str楽器名 = "Bass Drum 1"; strレーン名 = "BD"; break;
                     case 37 : str楽器名 = "Side Stick"; strレーン名 = "SE1"; break;
                     case 38 : str楽器名 = "Snare Drum 1"; strレーン名 = "SD"; break;
@@ -250,8 +250,11 @@ namespace DTXCreator.MIDIインポート
             
             this.textBox1.Text = str文字列;
 
-			for ( int i = 1 ; i <= 16 ; i++ )
-                this.dgvチャンネル一覧.Rows[i-1].Cells["ChNotes"].Value = this.cMIDI.lチャンネル毎のノート数1to16[i];
+			for ( int i = 1; i <= 16; i++ )
+			{
+				this.dgvチャンネル一覧.Rows[i-1].Cells["ChNotes"].Value = this.cMIDI.lチャンネル毎のノート数1to16[i];
+				this.dgvチャンネル一覧.Rows[i-1].Cells["ChLoad"].Value  = this.cMIDI.bドラムチャンネルと思われる[i-1];
+			}
             //-----------------
             #endregion
 
@@ -401,11 +404,27 @@ namespace DTXCreator.MIDIインポート
 
 				#region [ 情報を入力 ]
                 if ( cMIDI.f先頭BPM > 0.0 ) this.formメインフォーム.numericUpDownBPM.Value = (decimal)cMIDI.f先頭BPM;
-                this.formメインフォーム.textBox曲名.Text = Path.GetFileName( cMIDI.strファイル名 );
-                if ( cMIDI.n重複チップ数 > 0 ) this.formメインフォーム.textBoxコメント.Text = resource.GetString("label重複チップ数.Text") + " : "+cMIDI.n重複チップ数;
+				string str曲タイトル = cMIDI.lMIDIトラック[0].strトラック名;
+				if ( str曲タイトル == "" )
+				{
+					str曲タイトル = Path.GetFileName( cMIDI.strファイル名 );
+				}
+                this.formメインフォーム.textBox曲名.Text = str曲タイトル;
+
+				if ( cMIDI.n重複チップ数 > 0 ) this.formメインフォーム.textBoxコメント.Text = resource.GetString("label重複チップ数.Text") + " : "+cMIDI.n重複チップ数;
 				#endregion
 
-            }
+				#region [ LP発生なら、LPレーンを表示する。 ]
+				for ( int i = 0; i < this.dgv割り当て一覧.Rows.Count; i++ )
+				{
+					if ( (string)this.dgv割り当て一覧.Rows[ i ].Cells[ "DTX_Lane" ].Value == "LP" &&
+						(int)this.dgv割り当て一覧.Rows[ i ].Cells[ "Notes" ].Value > 0 )
+					{
+						this.formメインフォーム.mgr譜面管理者.tExpandLanes( Cレーン.ELaneType.LP );
+					}
+				}
+				#endregion
+			}
 		}
 		
 		/// <summary>
@@ -534,8 +553,6 @@ namespace DTXCreator.MIDIインポート
 					}
 				}
 			}
-
 		}
-
 	}
 }

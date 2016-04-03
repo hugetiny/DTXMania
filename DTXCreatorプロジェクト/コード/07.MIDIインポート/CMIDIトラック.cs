@@ -41,16 +41,9 @@ namespace DTXCreator.MIDIインポート
             while( true )
             {
 				// デルタタイム計算
-				int nデルタタイムLen = 0;
-				UInt32 deltatime = 0;
-				for ( int i = 0; i < 4; i++ )		// デルタタイムは最大4byte
-				{
-					++nデルタタイムLen;
-					UInt32 b = this.byMIDIトラックバイナリ[ p + i ];
-					deltatime <<= 7;
-					deltatime += ( b & 0x7F );		// 下位7bitのみ使用
-					if ( b < 0x80 ) break;			// MSBが0になったらデルタタイム終了
-				}
+				int nデルタタイムLen;
+				UInt32 deltatime;
+				GetVarLen( p, out nデルタタイムLen, out deltatime );
 				nデルタタイム合計 += deltatime;
 
 				// イベント
@@ -88,7 +81,7 @@ namespace DTXCreator.MIDIインポート
                             cMIDI.nドラム各ノート数[nData1]++;
 							//this.str解析内容 += "Drum  / Tick: " + nデルタタイム合計.ToString().PadLeft( 6 ) + " Note: " + nData1.ToString( "X2" ) + "\r\n";
                         }
-                    }
+					}
 					//this.str解析内容 += ((nイベント>=144)?"N-ON ":"N-OFF")+" "+p.ToString().PadLeft(6)+" "+nデルタタイム[0]+","+nData1.ToString("X2")+","+nData2.ToString("X2")+"\r\n";
                     
                     nイベントLen = 3;
@@ -106,99 +99,104 @@ namespace DTXCreator.MIDIインポート
 
 					// 面倒なので、コントロールチェンジが3byteになる場合はとりあえず想定しない。相当レアだし。
                 }
-                // F0 システム？
-                else if ( nイベント.ToString("X2") == "F0" )
+                // F0/F7 System Exclusive Message
+                else if ( nイベント == 0xF0 || nイベント == 0xF7)
                 {
-                    nイベントLen = 1;
-                    string str = "";
-                    for ( int si = 1; si < 128; si++ )
-                    {
-                        if (this.byMIDIトラックバイナリ[p + nデルタタイムLen + si].ToString("X2") == "F7")
-                        {
-                            nイベントLen = 1 + si;
-                            str = CMIDI.strBin2BinStr( this.byMIDIトラックバイナリ, p + nデルタタイムLen, nイベントLen );
-                            break;
-                        }
-                    }
+					UInt32 nF0F7データLen;
+					int nデータLenのLen;
+					int pt = p + nデルタタイムLen + 1;	// F0/F7 の次のバイト(データ長が記載)
+					GetVarLen( p + nデルタタイムLen + 1, out nデータLenのLen, out nF0F7データLen );
 
-                    //this.str解析内容 += "Sys   / Tick: "+nデルタタイム合計.ToString().PadLeft(6)+" Val : "+str+"\r\n";
-                }
-                // FF メタイベント
-                else if ( nイベント.ToString("X2") == "FF" )
-                {
-                    int nType = this.byMIDIトラックバイナリ[p+nデルタタイムLen+1];
-                    int nLen = 0;
+					pt += nデータLenのLen;
+					
+					tドラムチャンネルかどうか推測する( pt, nデルタタイムLen );
+					
+					nイベントLen = 1 + nデータLenのLen + (int)nF0F7データLen;		// "F0orF7"(1byte) + 可変長のデータバイト数 + nF0F7データ長(F0の場合はF7込み)
+					string str = CMIDI.strBin2BinStr( this.byMIDIトラックバイナリ, p + nデルタタイムLen, nイベントLen );
+	
+					//this.str解析内容 += "Sys   / Tick: "+nデルタタイム合計.ToString().PadLeft(6)+" Val : "+str+"\r\n";
+					//Debug.WriteLine( this.str解析内容 += "Sys   / Tick: " + nデルタタイム合計.ToString().PadLeft( 6 ) + " Val : " + str );
+				
+				}
+				// FF メタイベント
+				else if ( nイベント == 0xFF )
+				{
+					int nType = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 1 ];
+					UInt32 nLen = 0;
 
-                    switch( nType.ToString("X2") )
-                    {
-                        // FF 01 - FF 07
-                        case "01" :
-                        case "02" :
-                        case "03" :
-                        case "04" :
-                        case "05" :
-                        case "06" :
-                        case "07" :
-                            nLen = this.byMIDIトラックバイナリ[p+nデルタタイムLen+2];
-                            string str1 = CMIDI.strBin2Str( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, nLen );
-                            if ( nType.ToString("X2") == "03" ) this.strトラック名 = str1;
-                            nイベントLen = 3 + nLen;
-                            break;
-                        
-                        // FF 20 - FF 21
-                        case "20" :
-                        case "21" :
-                            nイベントLen = 4;
-                            break;
-
-                        // FF 2F EOT
-                        case "2F" :
-                            nイベントLen = 0;
-                            break;
-
-                        // FF 51 BPM
-                        case "51" :
-							float fBPM = ( float ) ( Math.Round( (float) 60.0 * Math.Pow(10,6) / CMIDI.nBin2Int( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 3 ), 2 ) );
-                            if ( cMIDI.f先頭BPM == 0.0f ) cMIDI.f先頭BPM = fBPM;
-                            nイベントLen = 6;
-							cMIDI.lMIDIイベント.Add( new CMIDIBPM( nデルタタイム合計, fBPM ) );
-                            cMIDI.nドラム各ノート数[128]++;
+					switch ( nType )
+					{
+						// FF 01 - FF 07
+						case 0x01:
+						case 0x02:
+						case 0x03:
+						case 0x04:
+						case 0x05:
+						case 0x06:
+						case 0x07:
+							{
+								int nLenのLen;
+								GetVarLen( p + nデルタタイムLen + 2 , out nLenのLen, out nLen );
+								//nLen = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 2 ];
+								string str1 = CMIDI.strBin2Str( this.byMIDIトラックバイナリ, p + nデルタタイムLen + 2 + nLenのLen, (int)nLen );
+								if ( nType == 0x03 && this.strトラック名 == "" ) this.strトラック名 = str1;		// 最初のトラック名以外は捨てる
+								nイベントLen = 2 + nLenのLen + (int)nLen;
+							}
 							break;
 
-                        // FF 54
-                        case "54" :
-                            nイベントLen = 8;
-                            break;
+						// FF 20 - FF 21
+						case 0x20:
+						case 0x21:
+							nイベントLen = 4;
+							break;
 
-                        // FF 58
-                        case "58" :
-                            // 拍設定
+						// FF 2F EOT
+						case 0x2F:
+							nイベントLen = 0;
+							break;
+
+						// FF 51 BPM
+						case 0x51:
+							float fBPM = (float) ( Math.Round( (float) 60.0 * Math.Pow( 10, 6 ) / CMIDI.nBin2Int( this.byMIDIトラックバイナリ, p + nデルタタイムLen + 3, 3 ), 2 ) );
+							if ( cMIDI.f先頭BPM == 0.0f ) cMIDI.f先頭BPM = fBPM;
+							nイベントLen = 6;
+							cMIDI.lMIDIイベント.Add( new CMIDIBPM( nデルタタイム合計, fBPM ) );
+							cMIDI.nドラム各ノート数[ 128 ]++;
+							break;
+
+						// FF 54 SMPTEオフセット
+						//case 0x54:
+						//	nイベントLen = 8;
+						//	break;
+
+						// FF 58 拍設定
+						case 0x58:
 							int n分子 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 3 ];
 							int n分母 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 4 ];
 							n分母 = (int) Math.Pow( 2, n分母 );
-			
+
 							int nメトロノームクリックtick = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 5 ];
 							int nメトロノームクリック数内32分音符数 = this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 6 ];
 
-                            cMIDI.strTimeSignature = CMIDI.strBin2BinStr( this.byMIDIトラックバイナリ, p+nデルタタイムLen+3, 4 );
-                            nイベントLen = 7;
+							cMIDI.strTimeSignature = CMIDI.strBin2BinStr( this.byMIDIトラックバイナリ, p + nデルタタイムLen + 3, 4 );
+							nイベントLen = 7;
 
 							cMIDI.lMIDIイベント.Add( new CMIDIBARLen( nデルタタイム合計, n分子, n分母 ) );
-                            cMIDI.nドラム各ノート数[128]++;
-                            break;
+							cMIDI.nドラム各ノート数[ 128 ]++;
+							break;
 
-                        // FF 59
-                        case "59" :
-                            nイベントLen = 5;
-                            break;
+						// FF 59
+						case 0x59:
+							nイベントLen = 5;
+							break;
 						default:
 							nイベントLen = 3 + this.byMIDIトラックバイナリ[ p + nデルタタイムLen + 3 ];
 							break;
 
-                    }
-                    
-                    //this.str解析内容 += "Event / Tick: "+nデルタタイム合計.ToString().PadLeft(6)+" Type: "+nType.ToString("X2")+"\r\n";
-                }
+					}
+
+					//this.str解析内容 += "Event / Tick: "+nデルタタイム合計.ToString().PadLeft(6)+" Type: "+nType.ToString("X2")+"\r\n";
+				}
 				nイベントbefore = nイベント;
                 
                 p += nデルタタイムLen + nイベントLen;
@@ -216,6 +214,67 @@ namespace DTXCreator.MIDIインポート
             }
         }
 
+		private void GetVarLen( int p, out int nデルタタイムLen, out UInt32 deltatime )
+		{
+			nデルタタイムLen = 0;
+			deltatime = 0;
+			for ( int i = 0; i < 4; i++ )		// デルタタイムは最大4byte
+			{
+				++nデルタタイムLen;
+				UInt32 b = this.byMIDIトラックバイナリ[ p + i ];
+				deltatime <<= 7;
+				deltatime += ( b & 0x7F );		// 下位7bitのみ使用
+				if ( b < 0x80 ) break;			// MSBが0になったらデルタタイム終了
+			}
+		}
+
+		/// <summary>
+		/// ドラムチャンネルを複数使用していると思わるデータについて、ドラムチャンネルと思われるチャンネルを識別する。
+		/// Roland GS音源を使用した曲データで典型的なパターンのみ対応。
+		/// </summary>
+		/// <param name="p"></param>
+		/// <param name="nデルタタイムLen"></param>
+		private void tドラムチャンネルかどうか推測する( int p, int nデルタタイムLen )
+		{
+			int pt = p;
+			if ( this.byMIDIトラックバイナリ[ pt + 0 ] == 0x41 &&				// Manufacturer ID == Roland
+			//   this.byMIDIトラックバイナリ[ pt + 1 ] == 0xxx &&				// Dev ID == 通常0x10だが0x7F(broadcast)とかもあるかも
+				 this.byMIDIトラックバイナリ[ pt + 2 ] == 0x42 &&				// Model ID == 0x42 (GS Format)
+				 this.byMIDIトラックバイナリ[ pt + 3 ] == 0x12 )				// Command ID == 0x12 (Data Set 1)
+			{
+				if ( this.byMIDIトラックバイナリ[ pt + 4 ] == 0x40 &&				// USE FOR RHYTHM PART
+					( this.byMIDIトラックバイナリ[ pt + 5 ] & 0xF0 ) == 0x10 &&		//
+					 this.byMIDIトラックバイナリ[ pt + 6 ] == 0x15 )				//
+				{
+					if ( this.byMIDIトラックバイナリ[ pt + 7 ] == 0x01 ||				// 01=MAP1(Drum Part),
+						 this.byMIDIトラックバイナリ[ pt + 7 ] == 0x02 )				// 02=MAP2(Drum Part)
+					{
+						int ch = this.byMIDIトラックバイナリ[ pt + 5 ] & 0x0F;
+						cMIDI.bドラムチャンネルと思われる[ ch ] = true;
+//Debug.WriteLine( "USE FOR RHYTHM PART: ch" + ch + "="+this.byMIDIトラックバイナリ[pt+7] );
+					}
+					else
+					if ( this.byMIDIトラックバイナリ[ pt + 7 ] == 0x00 )				// 00:OFF(Normal Part)
+					{
+						int ch = this.byMIDIトラックバイナリ[ pt + 5 ] & 0x0F;
+						cMIDI.bドラムチャンネルと思われる[ ch ] = false;
+//Debug.WriteLine( "USE FOR RHYTHM PART: ch" + ch + "="+this.byMIDIトラックバイナリ[pt+7] );
+					}
+				}
+				if ( this.byMIDIトラックバイナリ[ pt + 4 ] == 0x40 &&				// Rx CHANNEL
+					( this.byMIDIトラックバイナリ[ pt + 5 ] & 0xF0 ) == 0x10 &&		//
+					 this.byMIDIトラックバイナリ[ pt + 6 ] == 0x02 )				//
+				{
+					int org    = this.byMIDIトラックバイナリ[ pt + 5 ] & 0x0F;			//
+					int target = this.byMIDIトラックバイナリ[ pt + 7 ];					//
+					if (cMIDI.bドラムチャンネルと思われる[org] == true )
+					{
+						cMIDI.bドラムチャンネルと思われる[ target ] = true;
+Debug.WriteLine( "Rx CHANNEL: chorg" + org + ", chTarget=" + target );
+					}
+				}
+			}
+		}
     }
     
 }
