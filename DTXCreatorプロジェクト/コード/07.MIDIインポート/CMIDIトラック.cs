@@ -14,7 +14,6 @@ namespace DTXCreator.MIDIインポート
         public string strトラック名;
         public int nトラック数;
         public int nデータ長;
-        public int nチャンネル;
         public byte[] byMIDIトラックバイナリ;
         public string str解析内容;
         public CMIDI cMIDI;
@@ -24,7 +23,6 @@ namespace DTXCreator.MIDIインポート
             this.strトラック名 = "";
             this.nトラック数 = _dトラック数;
             this.nデータ長 = 0;
-            this.nチャンネル = -1;
             this.byMIDIトラックバイナリ = _byMIDIトラックバイナリ;
             this.cMIDI = _cMIDI;
 			this.str解析内容 = "";
@@ -65,24 +63,13 @@ namespace DTXCreator.MIDIインポート
                     // ノートオン(9n)の時の値を取得 (ノートオンでも、ベロシティ0の場合はノートオフの意味なので、無視する)
                     if ( nイベント >= 0x90 && nData2 > 0 )
                     {
-                        this.nチャンネル = nイベント - 0x90 + 1;
-						cMIDI.lチャンネル毎のノート数1to16[this.nチャンネル] ++;
-						bool bAdd = false;
+                        int nチャンネル0to15 = nイベント - 0x90;
+						cMIDI.nチャンネル0to15毎のノート数[nチャンネル0to15] ++;
+                        cMIDI.lMIDIイベント.Add( new CMIDINote( nデルタタイム合計, nData1, nData2, nチャンネル0to15 ) );
 
-						//for (int i = 1; i <= 16; i++)
-						//{
-						//	if ( (bool)cMIDI.dgvチャンネル一覧.Rows[i-1].Cells["ChLoad"].Value && this.nチャンネル == i )
-						//		bAdd = true;
-						//}
-						if ( (bool)cMIDI.dgvチャンネル一覧.Rows[this.nチャンネル-1].Cells["ChLoad"].Value )
-							bAdd = true;
+						if ( (bool)cMIDI.dgvチャンネル一覧.Rows[nチャンネル0to15].Cells["ChLoad"].Value )
+							cMIDI.nドラムチャンネルのキー毎のノート数[nData1]++;
 
-						if ( bAdd )
-                        {
-                            cMIDI.lMIDIイベント.Add( new CMIDINote( nデルタタイム合計, nData1, nData2 ) );
-                            cMIDI.nドラム各ノート数[nData1]++;
-							//this.str解析内容 += "Drum  / Tick: " + nデルタタイム合計.ToString().PadLeft( 6 ) + " Note: " + nData1.ToString( "X2" ) + "\r\n";
-                        }
 					}
 					//this.str解析内容 += ((nイベント>=144)?"N-ON ":"N-OFF")+" "+p.ToString().PadLeft(6)+" "+nデルタタイム[0]+","+nData1.ToString("X2")+","+nData2.ToString("X2")+"\r\n";
                     
@@ -163,7 +150,7 @@ namespace DTXCreator.MIDIインポート
 							if ( cMIDI.f先頭BPM == 0.0f ) cMIDI.f先頭BPM = fBPM;
 							nイベントLen = 6;
 							cMIDI.lMIDIイベント.Add( new CMIDIBPM( nデルタタイム合計, fBPM ) );
-							cMIDI.nドラム各ノート数[ 128 ]++;
+							cMIDI.nドラムチャンネルのキー毎のノート数[ 128 ]++;
 							break;
 
 						// FF 54 SMPTEオフセット
@@ -184,7 +171,7 @@ namespace DTXCreator.MIDIインポート
 							nイベントLen = 7;
 
 							cMIDI.lMIDIイベント.Add( new CMIDIBARLen( nデルタタイム合計, n分子, n分母 ) );
-							cMIDI.nドラム各ノート数[ 128 ]++;
+							cMIDI.nドラムチャンネルのキー毎のノート数[ 128 ]++;
 							break;
 
 						// FF 59

@@ -789,7 +789,7 @@ namespace DTXCreator.譜面
 			this.listレーン.Add( new Cレーン( Cレーン.E種別.BPM, "BPM", 0x08, 0x03, true, Color.FromArgb( alpha, 160, 160, 160 ), 0, width, Cレーン.ELaneType.BPM, true ) );
 			this.listレーン.Add( new Cレーン( Cレーン.E種別.BEAT, "BEAT", 0xF8, 0xF3, true, Color.FromArgb( alpha, 160, 160, 160 ), 0, 0, Cレーン.ELaneType.Beat, false ) );
 
-			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "LC",  0x1a, 0x1a, true,  Color.FromArgb( alpha, 0, 0xff, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
+			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "LC",  0x1a, 0x1a, true,  Color.FromArgb( alpha, 0, 0xaf, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
 			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "HH",	0x11, 0x18, false, Color.FromArgb( alpha, 0, 0xff, 0xff ), 0, width, Cレーン.ELaneType.Drums, true ) );
 			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "LP",	0x1B, 0x1C, false, Color.FromArgb( alpha, 0xff, 0x7f, 0xaf ), 0, width, Cレーン.ELaneType.LP, false ) );
 			this.listレーン.Add( new Cレーン( Cレーン.E種別.WAV, "SD",	0x12, 0x12, false, Color.FromArgb( alpha, 0xff, 0xff, 0 ), 0, width, Cレーン.ELaneType.Drums, true ) );

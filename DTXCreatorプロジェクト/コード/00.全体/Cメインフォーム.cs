@@ -5120,7 +5120,7 @@ namespace DTXCreator
 		}
 		private void toolStripMenuItemMIDIImport_Click( object sender, EventArgs e)
         {
-            this.mgrMIDIインポート管理者.tMIDIインポート管理を開く();
+            this.mgrMIDIインポート管理者.tMIDIインポート管理をインポートメニューから開く();
             this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
         }
 		//-----------------

@@ -32,6 +32,7 @@ namespace DTXCreator.MIDIインポート
         public string strコメント;
 		public int nベロシティ;
 		public int nベロシティ_DTX変換後;
+		public int nチャンネル0to15;
 		public int n拍子分子;
 		public int n拍子分母;
 
@@ -58,7 +59,7 @@ namespace DTXCreator.MIDIインポート
 	/// </summary>
 	class CMIDINote: CMIDIイベント
 	{
-		public CMIDINote( UInt32 _n時間, int _nキー, int _nベロシティ )
+		public CMIDINote( UInt32 _n時間, int _nキー, int _nベロシティ, int _nチャンネル0to15 )
         {
             this.nレーン番号 = 2;
             this.n時間 = _n時間;
@@ -68,6 +69,8 @@ namespace DTXCreator.MIDIインポート
 			
             this.nベロシティ = _nベロシティ;
             this.nベロシティ_DTX変換後 = _nベロシティ;
+
+			this.nチャンネル0to15 = _nチャンネル0to15;
 
 			this.eイベントタイプ = Eイベントタイプ.NoteOnOff;
 		}

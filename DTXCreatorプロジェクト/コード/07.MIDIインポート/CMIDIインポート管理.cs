@@ -11,7 +11,7 @@ namespace DTXCreator.MIDIインポート
 		{
 			this.formメインフォーム = pメインフォーム;
 		}
-		public void tMIDIインポート管理を開く()
+		public void tMIDIインポート管理をインポートメニューから開く()
 		{
 			CMIDIインポートダイアログ cMIDIインポートダイアログ = new CMIDIインポートダイアログ();
             cMIDIインポートダイアログ.formメインフォーム = this.formメインフォーム;

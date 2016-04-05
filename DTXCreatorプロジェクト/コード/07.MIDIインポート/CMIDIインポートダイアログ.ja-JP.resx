@@ -117,60 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="buttonOpen.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="buttonCancel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="buttonOK.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="textBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>511, 62</value>
-  </data>
-  <data name="dgv割り当て一覧.Size" type="System.Drawing.Size, System.Drawing">
-    <value>512, 290</value>
-  </data>
-  <data name="groupBox1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>524, 348</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label重複チップ数.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="label重複チップ数.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="label重複チップ数.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="label重複チップ数.Location" type="System.Drawing.Point, System.Drawing">
-    <value>397, 328</value>
-  </data>
-  <data name="label重複チップ数.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 17</value>
-  </data>
   <data name="label重複チップ数.Text" xml:space="preserve">
     <value>重複チップ</value>
   </data>
-  <data name="label重複チップ数.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label説明文.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label説明文.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="label説明文.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 311</value>
-  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label説明文.Size" type="System.Drawing.Size, System.Drawing">
     <value>385, 34</value>
   </data>
@@ -178,38 +128,11 @@
     <value>MIDIのノートの各キーが、DTXでどのレーンに割り当てられるか設定します
 * Disuse *を設定すると割り当てません</value>
   </data>
-  <data name="groupBox2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 366</value>
-  </data>
-  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>524, 88</value>
-  </data>
-  <data name="groupBox3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="groupBox3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>543, 300</value>
-  </data>
-  <data name="label4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 127</value>
-  </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 17</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>DTX VOLUMEの間隔</value>
-  </data>
-  <data name="numericUpDownVOLUME間隔.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 23</value>
-  </data>
-  <data name="checkBoxベロシティ最大値127.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="checkBoxベロシティ最大値127.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 38</value>
@@ -218,23 +141,11 @@
     <value>ベロシティの最大値を127にする
 (デフォルトで100が最大)</value>
   </data>
-  <data name="checkBoxベロシティカーブ調整.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBoxベロシティカーブ調整.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 8pt</value>
-  </data>
   <data name="checkBoxベロシティカーブ調整.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 38</value>
   </data>
   <data name="checkBoxベロシティカーブ調整.Text" xml:space="preserve">
     <value>ベロシティカーブを急にする
 (小さい音がDTXだと大きい場合)</value>
-  </data>
-  <data name="groupbox4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>200, 281</value>
-  </data>
-  <data name="dgvチャンネル一覧.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 256</value>
   </data>
 </root>

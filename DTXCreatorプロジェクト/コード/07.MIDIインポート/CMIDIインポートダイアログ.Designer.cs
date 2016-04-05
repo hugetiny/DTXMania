@@ -134,6 +134,7 @@
 			this.DTX_Lane.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
 			this.DTX_Lane.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			resources.ApplyResources(this.DTX_Lane, "DTX_Lane");
+			this.DTX_Lane.MaxDropDownItems = 4;
 			this.DTX_Lane.Name = "DTX_Lane";
 			this.DTX_Lane.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.DTX_Lane.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
@@ -324,16 +325,16 @@
 		private System.Windows.Forms.CheckBox checkBoxベロシティ最大値127;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.NumericUpDown numericUpDownVOLUME間隔;
+		private System.Windows.Forms.GroupBox groupbox4;
+		private System.Windows.Forms.DataGridView dgvチャンネル一覧;
+		private System.Windows.Forms.DataGridViewTextBoxColumn Ch;
+		private System.Windows.Forms.DataGridViewTextBoxColumn ChNotes;
+		private System.Windows.Forms.DataGridViewCheckBoxColumn ChLoad;
 		private System.Windows.Forms.DataGridViewTextBoxColumn MIDI_Key;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Key;
 		private System.Windows.Forms.DataGridViewComboBoxColumn DTX_Lane;
 		private System.Windows.Forms.DataGridViewCheckBoxColumn BackCH;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Notes;
 		private System.Windows.Forms.DataGridViewTextBoxColumn Comment;
-		private System.Windows.Forms.GroupBox groupbox4;
-		private System.Windows.Forms.DataGridView dgvチャンネル一覧;
-		private System.Windows.Forms.DataGridViewTextBoxColumn Ch;
-		private System.Windows.Forms.DataGridViewTextBoxColumn ChNotes;
-		private System.Windows.Forms.DataGridViewCheckBoxColumn ChLoad;
     }
 }
