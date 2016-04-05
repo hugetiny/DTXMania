@@ -564,11 +564,12 @@ namespace DTXCreator.MIDIインポート
 			
 			// 読み込むチャンネルだけチェックする
 			foreach ( CMIDIイベント vMIDIイベント in cMIDI.lMIDIイベント ){
-				if ( (bool)dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells["ChLoad"].Value ){
-					string str = "" + vMIDIイベント.nレーン番号 + ":" + vMIDIイベント.n時間;
-					if ( lMIDIイベント_重複.Contains( str ) ) cMIDI.n重複チップ数 ++;
-					else lMIDIイベント_重複.Add( str );
-				}
+				// チャンネル一覧で選択されているものと、ノートのみ数える
+				if ( !vMIDIイベント.b入力 || vMIDIイベント.eイベントタイプ != CMIDIイベント.Eイベントタイプ.NoteOnOff ) continue;
+
+				string str = "" + vMIDIイベント.nレーン番号 + ":" + vMIDIイベント.n時間;
+				if ( lMIDIイベント_重複.Contains( str ) ) cMIDI.n重複チップ数 ++;
+				else lMIDIイベント_重複.Add( str );
 			}
 
 			this.label重複チップ数.Text = resource.GetString("label重複チップ数.Text") + " : " + cMIDI.n重複チップ数;
