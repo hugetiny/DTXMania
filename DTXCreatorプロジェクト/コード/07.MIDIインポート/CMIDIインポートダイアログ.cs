@@ -235,8 +235,8 @@ namespace DTXCreator.MIDIインポート
             //-----------------
 
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "MIDIファイルを選択";
-            dialog.Filter = "MIDIファイル (*.mid,*.midi)|*.mid;*.midi|すべてのファイル (*.*)|*.*";
+			dialog.Title = Resources.strMIDIファイル選択ダイアログのタイトル;
+            dialog.Filter = Resources.strMIDIファイル選択ダイアログのフィルタ;
             dialog.FilterIndex = 1;
             dialog.InitialDirectory = this.formメインフォーム.strMIDIインポートフォルダ;
             DialogResult result = dialog.ShowDialog();
@@ -256,8 +256,8 @@ namespace DTXCreator.MIDIインポート
             if ( !File.Exists( strファイル名 ) )
             {
                 MessageBox.Show(
-                    "ファイルが見つかりません。",
-                    "MIDIインポート",
+                    Resources.strファイルが存在しませんMSG,
+                    Resources.strMIDIインポートエラーのタイトル,
                     MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1);
                 return;
             }
@@ -271,9 +271,9 @@ namespace DTXCreator.MIDIインポート
             if ( !str拡張子.Equals(".mid", StringComparison.OrdinalIgnoreCase ) && !str拡張子.Equals( ".midi", StringComparison.OrdinalIgnoreCase) )
             {
                 MessageBox.Show(
-                    "MIDIファイルではありません。",
-                    "MIDIインポート",
-                    MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1);
+					Resources.strMIDIファイルではないMSG,
+					Resources.strMIDIインポートエラーのタイトル,
+					MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1 );
                 return;
             }
             //-----------------
@@ -296,9 +296,9 @@ namespace DTXCreator.MIDIインポート
             if ( !cMIDI.bMIDIファイル )
             {
                 MessageBox.Show(
-                    "MIDIファイルではありません。",
-                    "MIDIインポート",
-                    MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1);
+                    Resources.strMIDIファイルではないMSG,
+					Resources.strMIDIインポートエラーのタイトル,
+					MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1 );
 				cMIDI = null;
                 return;
             }

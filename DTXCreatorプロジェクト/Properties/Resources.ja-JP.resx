@@ -154,7 +154,7 @@
     <value>新規</value>
   </data>
   <data name="strファイルが存在しませんMSG" xml:space="preserve">
-    <value>ファイルが存在しません。</value>
+    <value>ファイルが見つかりません。</value>
   </data>
   <data name="strプレビュー画像ファイル選択ダイアログのタイトル" xml:space="preserve">
     <value>選曲画像ファイルの選択</value>
@@ -224,5 +224,17 @@
   </data>
   <data name="str読み込み中ですMSG" xml:space="preserve">
     <value>読み込み中です。</value>
+  </data>
+  <data name="strMIDIインポートエラーのタイトル" xml:space="preserve">
+    <value>MIDIインポート</value>
+  </data>
+  <data name="strMIDIファイルではないMSG" xml:space="preserve">
+    <value>MIDIファイルではありません。</value>
+  </data>
+  <data name="strMIDIファイル選択ダイアログのタイトル" xml:space="preserve">
+    <value>MIDIファイルを選択</value>
+  </data>
+  <data name="strMIDIファイル選択ダイアログのフィルタ" xml:space="preserve">
+    <value>MIDIファイル (*.mid,*.midi,*.smf)|*.mid;*.midi;*.smf|すべてのファイル (*.*)|*.*</value>
   </data>
 </root>

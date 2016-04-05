@@ -314,4 +314,16 @@ Do you want to save the changes?</value>
   <data name="str難易度計算マン計算中" xml:space="preserve">
     <value>Calculating DGB levels</value>
   </data>
+  <data name="strMIDIインポートエラーのタイトル" xml:space="preserve">
+    <value>MIDI Import</value>
+  </data>
+  <data name="strMIDIファイルではないMSG" xml:space="preserve">
+    <value>This is not MIDI file.</value>
+  </data>
+  <data name="strMIDIファイル選択ダイアログのタイトル" xml:space="preserve">
+    <value>Select MIDI File</value>
+  </data>
+  <data name="strMIDIファイル選択ダイアログのフィルタ" xml:space="preserve">
+    <value>MIDI files (*.mid,*.midi,*.smf)|*.mid;*.midi;*.smf|All files (*.*)|*.*</value>
+  </data>
 </root>

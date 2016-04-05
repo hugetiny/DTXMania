@@ -136,6 +136,42 @@ namespace DTXCreator.Properties {
         }
         
         /// <summary>
+        ///   MIDI Import に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string strMIDIインポートエラーのタイトル {
+            get {
+                return ResourceManager.GetString("strMIDIインポートエラーのタイトル", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   This is not MIDI file. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string strMIDIファイルではないMSG {
+            get {
+                return ResourceManager.GetString("strMIDIファイルではないMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select MIDI File に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string strMIDIファイル選択ダイアログのタイトル {
+            get {
+                return ResourceManager.GetString("strMIDIファイル選択ダイアログのタイトル", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   MIDI files (*.mid,*.midi,*.smf)|*.mid;*.midi;*.smf|All files (*.*)|*.* に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string strMIDIファイル選択ダイアログのフィルタ {
+            get {
+                return ResourceManager.GetString("strMIDIファイル選択ダイアログのフィルタ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Error に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string strエラーダイアログのタイトル {
