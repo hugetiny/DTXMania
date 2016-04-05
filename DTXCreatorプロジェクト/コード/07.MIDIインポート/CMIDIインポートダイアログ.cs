@@ -103,14 +103,14 @@ namespace DTXCreator.MIDIインポート
 		private void dgvチャンネル一覧_CellValueChanged( object sender, DataGridViewCellEventArgs e )
 		{
 			if ( cMIDI != null ) {
-				t読み込むチャンネルを取得して割り当て一覧のノート数に反映する();
+				t読み込むチャンネルを取得してキー毎のノート数を計算する();
 			}
 		}
 
 		/// <summary>
 		/// ファイルを開いた時か、チャンネル一覧のチェック変更時に呼び出す
 		/// </summary>
-		private void t読み込むチャンネルを取得して割り当て一覧のノート数に反映する()
+		private void t読み込むチャンネルを取得してキー毎のノート数を計算する()
 		{
 			// キー毎のノート数初期化
 			for ( int i = 0 ; i < 128 ; i++ ) cMIDI.nドラムチャンネルのキー毎のノート数[i] = 0;
@@ -120,9 +120,10 @@ namespace DTXCreator.MIDIインポート
 			{
 				if (vMIDIイベント.eイベントタイプ == CMIDIイベント.Eイベントタイプ.NoteOnOff)
 				{
-					if ( (bool)cMIDI.dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells["ChLoad"].Value )
+					if ((bool)cMIDI.dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells["ChLoad"].Value)
+					{
 						cMIDI.nドラムチャンネルのキー毎のノート数[vMIDIイベント.nキー] ++;
-					
+					}
 				}
 			}
             for ( int i = 0 ; i < 128 ; i++ )
@@ -335,7 +336,7 @@ namespace DTXCreator.MIDIインポート
 			dgvチャンネル一覧変更イベント復旧();
 
             // 各キーのノート数を割り当て一覧に出力する
-			t読み込むチャンネルを取得して割り当て一覧のノート数に反映する();
+			t読み込むチャンネルを取得してキー毎のノート数を計算する();
 
 			// 設定に応じて処理する
 			tMIDIチップをレーンに割り当てる();
@@ -381,6 +382,10 @@ namespace DTXCreator.MIDIインポート
 					vMIDIイベント.nベロシティ_DTX変換後 = velo;
 				}
 				#endregion
+				
+				#region [ 読み込むチャンネルを取得してキー毎のノート数を計算する ]
+				t読み込むチャンネルを取得してキー毎のノート数を計算する();
+				#endregion
 
 				#region [ 配置予定チップを割り当て一覧に沿ってレーンを割り当てる ]
 				tMIDIチップをレーンに割り当てる();
@@ -404,8 +409,8 @@ namespace DTXCreator.MIDIインポート
 				
 				foreach ( CMIDIイベント vMIDIWAV in cMIDI.lMIDIWAV )
 				{
-					// ノートチップ以外をWAVリストに表示させない
-					if ( vMIDIWAV.eイベントタイプ != CMIDIイベント.Eイベントタイプ.NoteOnOff ) continue;
+					// ノートチップ以外をWAVリストに表示させない→WAVリスト化する部分で処理する
+					//if ( vMIDIWAV.eイベントタイプ != CMIDIイベント.Eイベントタイプ.NoteOnOff ) continue;
 
 					// レーン毎に1行空ける
 					if ( nWAVCount > 4 && nレーン番号before != vMIDIWAV.nレーン番号 ) nWAVCount++;
@@ -450,7 +455,7 @@ namespace DTXCreator.MIDIインポート
 				// 配置予定チップで、選択されているチャンネルのノーツを実際に配置する
                 foreach ( CMIDIイベント vMIDIイベント in cMIDI.lMIDIイベント )
                 {
-					if ( vMIDIイベント.b入力 && (bool)dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells["ChLoad"].Value )
+					if ( vMIDIイベント.b入力 )
 					{
 						vMIDIイベント.挿入( this.formメインフォーム, cMIDI.n分解能 );
 					}
@@ -505,7 +510,7 @@ namespace DTXCreator.MIDIインポート
 						vMIDIイベント.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells["DTX_Lane"].Value );
 						vMIDIイベント.strコメント = (string)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells["Comment"].Value;
 						vMIDIイベント.b裏チャンネル = (bool)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells["BackCH"].Value;
-						vMIDIイベント.b入力 = true;
+						vMIDIイベント.b入力 = (bool)cMIDI.dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells["ChLoad"].Value;
 					}
 					else
 					{
@@ -528,6 +533,9 @@ namespace DTXCreator.MIDIインポート
 
 			foreach ( CMIDIイベント vMIDIイベント in cMIDI.lMIDIイベント )
 			{
+				// チャンネル一覧で選択されているものと、ノートのみリスト化
+				if ( !vMIDIイベント.b入力 || vMIDIイベント.eイベントタイプ != CMIDIイベント.Eイベントタイプ.NoteOnOff ) continue;
+
 				// WAVリストで、同じ内容(キーとベロシティ)が無ければ挿入する
 				bool bMIDIWAV_AddFlag = true;
 				foreach ( CMIDIイベント vMIDIWAV in cMIDI.lMIDIWAV )
