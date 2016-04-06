@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Drawing;
 using System.Diagnostics;
+using System.Xml;
+using System.Runtime.Serialization;
 using DTXCreator.譜面;
 using DTXCreator.WAV_BMP_AVI;
 using DTXCreator.Properties;
@@ -123,8 +125,8 @@ namespace DTXCreator.MIDIインポート
 					if ((bool)cMIDI.dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells["ChLoad"].Value)
 					{
 						cMIDI.nドラムチャンネルのキー毎のノート数[vMIDIイベント.nキー] ++;
-					}
 				}
+			}
 			}
             for ( int i = 0 ; i < 128 ; i++ )
                 this.dgv割り当て一覧.Rows[127-i].Cells["Notes"].Value = cMIDI.nドラムチャンネルのキー毎のノート数[i];
@@ -197,8 +199,7 @@ namespace DTXCreator.MIDIインポート
                     case 78 : str楽器名 = "Mute Cuica"; break;
                     case 79 : str楽器名 = "Open Cuica"; break;
                     case 80 : str楽器名 = "Mute Triangle"; break;
-                    case 81 : str楽器名 = "Open Triangle"; break;
-                }
+                    case 81 : str楽器名 = "Open Triangle"; break;                }
                 this.dgv割り当て一覧.Rows.Add( i, strキー名[i%12], strレーン名, b裏チャンネル, 0, str楽器名 );
 
 				// 黒鍵に色付け
@@ -216,6 +217,15 @@ namespace DTXCreator.MIDIインポート
 
             this.dgv割り当て一覧.FirstDisplayedScrollingRowIndex = 81;//key35=LBDが表示される位置
 
+			if (Control.IsKeyLocked(Keys.CapsLock))
+			{
+				tMIDIインポート設定をファイルから読み込む();
+
+			}
+			else
+			{
+				tMIDIインポート設定をファイルに保存する();
+			}
         }
 
         public void tMIDIチャンネル一覧を作成する()
@@ -567,10 +577,10 @@ namespace DTXCreator.MIDIインポート
 				// チャンネル一覧で選択されているものと、ノートのみ数える
 				if ( !vMIDIイベント.b入力 || vMIDIイベント.eイベントタイプ != CMIDIイベント.Eイベントタイプ.NoteOnOff ) continue;
 
-				string str = "" + vMIDIイベント.nレーン番号 + ":" + vMIDIイベント.n時間;
-				if ( lMIDIイベント_重複.Contains( str ) ) cMIDI.n重複チップ数 ++;
-				else lMIDIイベント_重複.Add( str );
-			}
+					string str = "" + vMIDIイベント.nレーン番号 + ":" + vMIDIイベント.n時間;
+					if ( lMIDIイベント_重複.Contains( str ) ) cMIDI.n重複チップ数 ++;
+					else lMIDIイベント_重複.Add( str );
+				}
 
 			this.label重複チップ数.Text = resource.GetString("label重複チップ数.Text") + " : " + cMIDI.n重複チップ数;
 		}
@@ -595,8 +605,8 @@ namespace DTXCreator.MIDIインポート
 
 			// 最終拍子イベント以降、曲最後までの小節について、この先のロジックで小節長を変更するために、ダミーで最後に拍子変更のイベントを入れる。
 
-			int n最終分子 = 1;
-			int n最終分母 = 1;
+			int n最終分子 = 4;
+			int n最終分母 = 4;
 			int n最終時間 = (int)cml[ cml.Count - 1 ].n時間;
 
 			cml.Reverse();
@@ -611,11 +621,11 @@ namespace DTXCreator.MIDIインポート
 			}
 			cml.Reverse();
 
-			if ( n最終時間 >= 0 )
+			//if ( n最終時間 >= 0 )
 			{
 				cml.Add( new CMIDIBARLen( (UInt32)n最終時間, n最終分子, n最終分母 ) );
 			}
-
+			/*
 			// 拍子変更以外のイベントが小節外にある時チップが配置されなかったので最初のcm.eイベントタイプ条件式をなくした
 			this.formメインフォーム.mgr譜面管理者.dic小節.Clear();
 			foreach ( CMIDIイベント cm in cml )
@@ -665,9 +675,9 @@ namespace DTXCreator.MIDIインポート
 					}
 				}
 			}
-
+			*/
 			// 最初のcm.eイベントタイプ条件式をなくす変更前
-			/*
+		
 			foreach ( CMIDIイベント cm in cml )
 			{
 				if ( cm.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BarLen )
@@ -717,8 +727,8 @@ namespace DTXCreator.MIDIインポート
 						}
 					}
 				}
-			}*/
-		}
+			}
+			}
 
 		/// <summary>
 		/// WAVリストを順番にソートする
@@ -750,6 +760,62 @@ namespace DTXCreator.MIDIインポート
 						else return 0;
 					}
 				}
+			}
+		}
+
+//		[Serializable]
+		[DataContract]
+		[KnownType( typeof( DTXC_MIDIConvSetting ) )]
+		public struct DTXC_MIDIConvSetting
+		{
+			[DataMember]
+			public int MIDI_Key;
+			[DataMember]
+			public string DTX_Lane;
+			[DataMember]
+			public bool BackCH;
+
+			public DTXC_MIDIConvSetting(int _MIDI_Key, string _DTX_Lane, bool _BackCH)
+			{
+				MIDI_Key = _MIDI_Key;
+				DTX_Lane = _DTX_Lane;
+				BackCH   = _BackCH;
+			}
+		}
+	
+		private void tMIDIインポート設定をファイルに保存する()
+		{
+			DTXC_MIDIConvSetting[] mcs = new DTXC_MIDIConvSetting[ 128 ];
+
+			for (int i = 0; i < 127; i++)
+			{
+				mcs[ i ].MIDI_Key = (int)    this.dgv割り当て一覧.Rows[ i ].Cells[ "MIDI_Key" ].Value;
+				mcs[ i ].DTX_Lane = (string) this.dgv割り当て一覧.Rows[ i ].Cells[ "DTX_Lane" ].Value;
+				mcs[ i ].BackCH   = (bool)   this.dgv割り当て一覧.Rows[ i ].Cells[ "BackCH" ].Value;
+			}
+
+			using ( var stream = new FileStream( "DTXCreatorSMFSettings.xml", FileMode.Create ) )
+			{
+				var serializer = new System.Xml.Serialization.XmlSerializer( typeof( DTXC_MIDIConvSetting[] ) );
+				serializer.Serialize( stream, mcs );
+			}
+		}
+		private void tMIDIインポート設定をファイルから読み込む()
+		{
+			DTXC_MIDIConvSetting[] mcs;	 //= new DTXC_MIDIConvSetting[ 128 ];
+
+			using ( var stream = new FileStream( "DTXCreatorSMFSettings.xml", FileMode.Open ) )
+			{
+				var serializer = new System.Xml.Serialization.XmlSerializer( typeof( DTXC_MIDIConvSetting[] ) );
+				mcs = (DTXC_MIDIConvSetting[]) serializer.Deserialize( stream );
+			}
+
+			for ( int i = 0; i < 127; i++ )
+			{
+				this.dgv割り当て一覧.Rows[ i ].Cells[ "MIDI_Key" ].Value = mcs[ i ].MIDI_Key;
+				this.dgv割り当て一覧.Rows[ i ].Cells[ "DTX_Lane" ].Value = mcs[ i ].DTX_Lane;
+				this.dgv割り当て一覧.Rows[ i ].Cells[ "BackCH" ].Value = mcs[ i ].BackCH;
+				this.dgv割り当て一覧.Rows[ i ].Cells[ "Key" ].Value = i%12;
 			}
 		}
 
