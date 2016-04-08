@@ -61,7 +61,7 @@ namespace DTXCreator.MIDIインポート
         {
             DataGridView dgv割り当て一覧 = (DataGridView) sender;
 
-            if ( dgv割り当て一覧.Columns[e.ColumnIndex].Name == "DTX_Lane" && dgv割り当て一覧.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn )
+            if ( dgv割り当て一覧.Columns[e.ColumnIndex].Name == "Assign_DTX_Lane" && dgv割り当て一覧.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn )
                 SendKeys.Send("{F4}");
         }
 
