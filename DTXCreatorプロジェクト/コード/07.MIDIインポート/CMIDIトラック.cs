@@ -67,7 +67,7 @@ namespace DTXCreator.MIDIインポート
 						cMIDI.nチャンネル0to15毎のノート数[nチャンネル0to15] ++;
                         cMIDI.lMIDIイベント.Add( new CMIDINote( nデルタタイム合計, nData1, nData2, nチャンネル0to15 ) );
 
-						if ( (bool)cMIDI.dgvチャンネル一覧.Rows[nチャンネル0to15].Cells["ChLoad"].Value )
+						if ( (bool)cMIDI.dgvチャンネル一覧.Rows[nチャンネル0to15].Cells[ "Channel_Load" ].Value )
 							cMIDI.nドラムチャンネルのキー毎のノート数[nData1]++;
 
 					}

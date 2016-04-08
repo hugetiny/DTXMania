@@ -147,11 +147,16 @@ namespace DTXCreator
 				}
 			}
 		}
-
+		
 		/// <summary>
 		/// 最後にMIDIを読み込んだフォルダ
 		/// </summary>
 		public string strMIDIインポートフォルダ;
+
+		/// <summary>
+		/// 最後に読み込まれたMIDIインポート設定ファイル
+		/// </summary>
+		public string strMIDIインポート設定ファイル;
 
 		//-----------------
 		#endregion
@@ -402,12 +407,17 @@ namespace DTXCreator
 				this.t編集モードにする();
 			}
 			#endregion
-			#region [ MIDIインポートフォルダ ]
+			#region [ MIDIインポートフォルダ関連 ]
 			//-----------------
 			this.strMIDIインポートフォルダ = this.appアプリ設定.LastMIDIImportFolder;
 			
 			if( ! Directory.Exists( this.strMIDIインポートフォルダ ) )
 				this.strMIDIインポートフォルダ = Directory.GetCurrentDirectory();
+
+			// 設定ファイル
+			this.strMIDIインポート設定ファイル = this.appアプリ設定.LastMIDIImportSettingsFile;
+			
+			if( ! File.Exists( this.strMIDIインポート設定ファイル ) ) this.strMIDIインポート設定ファイル = Directory.GetCurrentDirectory() + @"\" + "DTXCreatorSMFSettings.xml";
 			//-----------------
 			#endregion
 
@@ -483,10 +493,10 @@ namespace DTXCreator
 				this.appアプリ設定.AddLanesInfo( c.strレーン名, c.bIsVisible );
 			}
 			#endregion
-			#region [ MIDIインポートフォルダ ]
+			#region [ MIDIインポートフォルダ関連 ]
 			//-----------------
-			this.appアプリ設定.LastMIDIImportFolder =
-				this.strMIDIインポートフォルダ;
+			this.appアプリ設定.LastMIDIImportFolder = this.strMIDIインポートフォルダ;
+			this.appアプリ設定.LastMIDIImportSettingsFile = this.strMIDIインポート設定ファイル;
 			//-----------------
 			#endregion
 

@@ -131,7 +131,7 @@
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 17</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
+  <data name="labelVOLUME間隔.Text" xml:space="preserve">
     <value>DTX VOLUMEの間隔</value>
   </data>
   <data name="checkBoxベロシティ最大値127.Size" type="System.Drawing.Size, System.Drawing">
@@ -147,5 +147,53 @@
   <data name="checkBoxベロシティカーブ調整.Text" xml:space="preserve">
     <value>ベロシティカーブを急にする
 (小さい音がDTXだと大きい場合)</value>
+  </data>
+  <data name="Assign_BackCh.HeaderText" xml:space="preserve">
+    <value>裏Ch</value>
+  </data>
+  <data name="Assign_Comment.HeaderText" xml:space="preserve">
+    <value>コメント</value>
+  </data>
+  <data name="Assign_DTX_Lane.HeaderText" xml:space="preserve">
+    <value>DTXレーン</value>
+  </data>
+  <data name="Assign_Key.HeaderText" xml:space="preserve">
+    <value>ｷｰ</value>
+  </data>
+  <data name="Assign_MIDI_Key.HeaderText" xml:space="preserve">
+    <value>MIDIｷｰ</value>
+  </data>
+  <data name="Assign_Notes.HeaderText" xml:space="preserve">
+    <value>ﾉｰﾄ</value>
+  </data>
+  <data name="buttonCancel.Text" xml:space="preserve">
+    <value>キャンセル(&amp;C)</value>
+  </data>
+  <data name="buttonOpenMIDI.Text" xml:space="preserve">
+    <value>MIDIを開く(&amp;O)</value>
+  </data>
+  <data name="buttonOpenSettings.Text" xml:space="preserve">
+    <value>設定を開く(&amp;P)</value>
+  </data>
+  <data name="buttonSaveSettings.Text" xml:space="preserve">
+    <value>設定を保存(&amp;S)</value>
+  </data>
+  <data name="Channel_Load.HeaderText" xml:space="preserve">
+    <value>読込</value>
+  </data>
+  <data name="Channel_Notes.HeaderText" xml:space="preserve">
+    <value>ﾉｰﾄ</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>割り当て一覧</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>MIDI解析内容</value>
+  </data>
+  <data name="groupBox3.Text" xml:space="preserve">
+    <value>インポート設定</value>
+  </data>
+  <data name="groupbox4.Text" xml:space="preserve">
+    <value>MIDIチャンネル一覧</value>
   </data>
 </root>

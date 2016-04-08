@@ -237,4 +237,16 @@
   <data name="strMIDIファイル選択ダイアログのフィルタ" xml:space="preserve">
     <value>MIDIファイル (*.mid,*.midi,*.smf)|*.mid;*.midi;*.smf|すべてのファイル (*.*)|*.*</value>
   </data>
+  <data name="strMIDIインポート設定ファイルではないMSG" xml:space="preserve">
+    <value>MIDIインポート設定ファイルではありません。</value>
+  </data>
+  <data name="strMIDIインポート設定ファイル保存ダイアログのタイトル" xml:space="preserve">
+    <value>MIDIインポート設定ファイルの保存</value>
+  </data>
+  <data name="strMIDIインポート設定ファイル選択ダイアログのタイトル" xml:space="preserve">
+    <value>MIDIインポート設定ファイルの選択</value>
+  </data>
+  <data name="strMIDIインポート設定ファイル選択ダイアログのフィルタ" xml:space="preserve">
+    <value>MIDIインポート設定ファイル (*.xml)|*.xml|すべてのファイル (*.*)|*.*</value>
+  </data>
 </root>

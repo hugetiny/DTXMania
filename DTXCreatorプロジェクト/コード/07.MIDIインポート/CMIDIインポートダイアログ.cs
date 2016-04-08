@@ -43,8 +43,18 @@ namespace DTXCreator.MIDIインポート
 
         private void buttonOpen_Click(object sender, EventArgs e)
         {
-            this.tMIDIファイルを選択する();
+            tMIDIファイルを選択する();
         }
+
+		private void buttonOpenSettings_Click(object sender, EventArgs e)
+		{
+			tMIDIインポート設定ファイル選択ダイアログを開く();
+		}
+
+		private void buttonSaveSettings_Click(object sender, EventArgs e)
+		{
+			tMIDIインポート設定ファイル保存ダイアログを開く();
+		}
         
         // レーン名をワンクリックで開く用
         private void dgv割り当て一覧_CellEnter( object sender, DataGridViewCellEventArgs e )
@@ -55,15 +65,15 @@ namespace DTXCreator.MIDIインポート
                 SendKeys.Send("{F4}");
         }
 
-		// レーン名を変更したら
+		// 割り当て一覧が更新された時の処理
         private void dgv割り当て一覧_CellEndEdit( object sender, DataGridViewCellEventArgs e )
         {
             DataGridView dgv割り当て一覧 = (DataGridView) sender;
 
-            if ( dgv割り当て一覧.Columns[e.ColumnIndex].Name == "DTX_Lane" )
+            if ( dgv割り当て一覧.Columns[e.ColumnIndex].Name == "Assign_DTX_Lane" )
                 tMIDI割り当て一覧のレーン名の背景色を変更する( e.RowIndex );
 			
-            if ( cMIDI != null ) tMIDIチップをレーンに割り当てる();
+            tMIDIチップをレーンに割り当てる();
 
         }
 
@@ -122,14 +132,14 @@ namespace DTXCreator.MIDIインポート
 			{
 				if (vMIDIイベント.eイベントタイプ == CMIDIイベント.Eイベントタイプ.NoteOnOff)
 				{
-					if ((bool)cMIDI.dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells["ChLoad"].Value)
+					if ((bool)cMIDI.dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells[ "Channel_Load" ].Value)
 					{
 						cMIDI.nドラムチャンネルのキー毎のノート数[vMIDIイベント.nキー] ++;
 				}
 			}
 			}
             for ( int i = 0 ; i < 128 ; i++ )
-                this.dgv割り当て一覧.Rows[127-i].Cells["Notes"].Value = cMIDI.nドラムチャンネルのキー毎のノート数[i];
+                this.dgv割り当て一覧.Rows[127-i].Cells[ "Assign_Notes" ].Value = cMIDI.nドラムチャンネルのキー毎のノート数[i];
 
 			t同時刻で同じレーンに配置予定のチップを数えて反映する();
 
@@ -138,10 +148,10 @@ namespace DTXCreator.MIDIインポート
         public void tMIDI割り当て一覧を作成する()
         {
             // レーン一覧を作成
-            this.DTX_Lane.Items.AddRange( "* Disuse *" );
+            this.Assign_DTX_Lane.Items.AddRange( "* Disuse *" );
             foreach ( Cレーン cレーン in this.formメインフォーム.mgr譜面管理者.listレーン )
             {
-				if ( cレーン.eレーン種別 == Cレーン.E種別.WAV ) this.DTX_Lane.Items.AddRange( cレーン.strレーン名 );
+				if ( cレーン.eレーン種別 == Cレーン.E種別.WAV ) this.Assign_DTX_Lane.Items.AddRange( cレーン.strレーン名 );
             }
             
             // MIDIキー一覧を作成
@@ -203,37 +213,28 @@ namespace DTXCreator.MIDIインポート
                 this.dgv割り当て一覧.Rows.Add( i, strキー名[i%12], strレーン名, b裏チャンネル, 0, str楽器名 );
 
 				// 黒鍵に色付け
-                if ( i%12 == 1 || i%12 == 3 || i%12 == 6 || i%12 == 8 || i%12 == 10 ) this.dgv割り当て一覧.Rows[127-i].DefaultCellStyle.BackColor = Color.FromArgb( 240, 248, 255 );
+                if ( i%12 == 1 || i%12 == 3 || i%12 == 6 || i%12 == 8 || i%12 == 10 )
+					this.dgv割り当て一覧.Rows[127-i].DefaultCellStyle.BackColor = Color.FromArgb( 240, 248, 255 );
 				// C(ド)に色付け
                 if ( i%12 == 0 ) this.dgv割り当て一覧.Rows[127-i].DefaultCellStyle.BackColor = Color.FromArgb( 255, 224, 224 );
 
                 tMIDI割り当て一覧のレーン名の背景色を変更する( 127-i );
 
             }
-            this.dgv割り当て一覧.Columns["MIDI_Key"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            this.dgv割り当て一覧.Columns["DTX_Lane"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            this.dgv割り当て一覧.Columns["DTX_Lane"].DefaultCellStyle.Font = new Font( "meiryo", 8f, FontStyle.Bold );
+            this.dgv割り当て一覧.Columns[ "Assign_MIDI_Key" ].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            this.dgv割り当て一覧.Columns[ "Assign_DTX_Lane" ].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            this.dgv割り当て一覧.Columns[ "Assign_DTX_Lane" ].DefaultCellStyle.Font = new Font( "meiryo", 8f, FontStyle.Bold );
             this.dgv割り当て一覧.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            this.dgv割り当て一覧.FirstDisplayedScrollingRowIndex = 81;//key35=LBDが表示される位置
-
-			if (Control.IsKeyLocked(Keys.CapsLock))
-			{
-				tMIDIインポート設定をファイルから読み込む();
-
-			}
-			else
-			{
-				tMIDIインポート設定をファイルに保存する();
-			}
+            this.dgv割り当て一覧.FirstDisplayedScrollingRowIndex = 82;//key35=LBDが表示される位置
         }
 
         public void tMIDIチャンネル一覧を作成する()
         {
-			for (int i = 1; i <= 16; i++)
+			for (int i = 0; i < 16; i++)
 			{
-				this.dgvチャンネル一覧.Rows.Add( i, 0, (i==10) );
-				this.dgvチャンネル一覧.Rows[i-1].DefaultCellStyle.BackColor = (i==10) ? Color.FromArgb( 255, 224, 224 ) : Color.FromArgb( 255, 255, 255 );
+				this.dgvチャンネル一覧.Rows.Add( i+1, 0, (i+1==10) );
+				this.dgvチャンネル一覧.Rows[i].DefaultCellStyle.BackColor = (i+1==10) ? Color.FromArgb( 255, 224, 224 ) : Color.FromArgb( 255, 255, 255 );
 			}
 			//	dgvチャンネル一覧変更イベント復旧();	//ここでイベントを復旧してはいけない
 														//(直後にファイルを開く動作＋解析動作が発生するのでそこで)
@@ -335,24 +336,24 @@ namespace DTXCreator.MIDIインポート
             }
             
             this.textBox1.Text = str文字列;
+
+			//-----------------
+            #endregion
 			
             // 各チャンネルのノート数をチャンネル一覧に出力する
 			dgvチャンネル一覧変更イベント抑止();
 			for ( int i = 0; i < 16; i++ )
 			{
-				this.dgvチャンネル一覧.Rows[i].Cells["ChNotes"].Value = cMIDI.nチャンネル0to15毎のノート数[i];
-				this.dgvチャンネル一覧.Rows[i].Cells["ChLoad"].Value  = cMIDI.bドラムチャンネルと思われる[i];
+				this.dgvチャンネル一覧.Rows[i].Cells[ "Channel_Notes" ].Value = cMIDI.nチャンネル0to15毎のノート数[i];
+				this.dgvチャンネル一覧.Rows[i].Cells[ "Channel_Load" ].Value  = cMIDI.bドラムチャンネルと思われる[i];
 			}
 			dgvチャンネル一覧変更イベント復旧();
 
             // 各キーのノート数を割り当て一覧に出力する
 			t読み込むチャンネルを取得してキー毎のノート数を計算する();
 
-			// 設定に応じて処理する
+			// 読み込むチャンネルが確定したら、割り当て一覧が更新された時の処理
 			tMIDIチップをレーンに割り当てる();
-
-			//-----------------
-            #endregion
         }
 		
 		/// <summary>
@@ -360,19 +361,19 @@ namespace DTXCreator.MIDIインポート
 		/// </summary>
         private void tMIDI割り当て一覧のレーン名の背景色を変更する( int RowIndex )
         {
-			string strレーン名 = (string)this.dgv割り当て一覧.Rows[RowIndex].Cells["DTX_Lane"].Value;
+			string strレーン名 = (string)this.dgv割り当て一覧.Rows[RowIndex].Cells[ "Assign_DTX_Lane" ].Value;
             int nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( strレーン名 );
 
             if ( nレーン番号 >= this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "LC" ) )
             {
                 Color color = this.formメインフォーム.mgr譜面管理者.listレーン[nレーン番号].col背景色;
                 color = Color.FromArgb( color.R/2+128, color.G/2+128, color.B/2+128 );
-                this.dgv割り当て一覧.Rows[RowIndex].Cells["DTX_Lane"].Style.BackColor = color;
+                this.dgv割り当て一覧.Rows[RowIndex].Cells[ "Assign_DTX_Lane" ].Style.BackColor = color;
             }
 			else if ( strレーン名 == "* Disuse *" )
 			{
                 Color color = Color.FromArgb( 128, 128, 128 );
-                this.dgv割り当て一覧.Rows[RowIndex].Cells["DTX_Lane"].Style.BackColor = color;
+                this.dgv割り当て一覧.Rows[RowIndex].Cells[ "Assign_DTX_Lane" ].Style.BackColor = color;
 			}
         }
 
@@ -380,7 +381,6 @@ namespace DTXCreator.MIDIインポート
         {
             if ( cMIDI != null && cMIDI.lMIDIイベント.Count > 0 )
             {
-				
 				#region [ チップリストで、ベロシティをDTX向けに調整する ]
 				foreach ( CMIDIイベント vMIDIイベント in cMIDI.lMIDIイベント )
 				{
@@ -492,13 +492,15 @@ namespace DTXCreator.MIDIインポート
 				#region [ LP発生なら、LPレーンを表示する。 ]
 				for ( int i = 0; i < this.dgv割り当て一覧.Rows.Count; i++ )
 				{
-					if ( (string)this.dgv割り当て一覧.Rows[ i ].Cells[ "DTX_Lane" ].Value == "LP" &&
-						(int)this.dgv割り当て一覧.Rows[ i ].Cells[ "Notes" ].Value > 0 )
+					if ( (string)this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_DTX_Lane" ].Value == "LP" &&
+						(int)this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_Notes" ].Value > 0 )
 					{
 						this.formメインフォーム.mgr譜面管理者.tExpandLanes( Cレーン.ELaneType.LP );
 					}
 				}
 				#endregion
+
+				tMIDIインポート設定をファイルに保存する();
 			}
 		}
 		
@@ -507,20 +509,22 @@ namespace DTXCreator.MIDIインポート
 		/// </summary>
         private void tMIDIチップをレーンに割り当てる()
         {
+			if ( cMIDI == null ) return;
+
 			// MIDIイベントがひとつでもあるなら処理する
 			if ( cMIDI.lMIDIイベント.Count == 0 ) return;
 
 			#region [ 振り分け ]
 			foreach ( CMIDIイベント vMIDIイベント in cMIDI.lMIDIイベント )
 			{
-				if (vMIDIイベント.nキー == (int)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells["MIDI_Key"].Value )
+				if (vMIDIイベント.nキー == (int)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells[ "Assign_MIDI_Key" ].Value )
 				{
-					if ( (string)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells["DTX_Lane"].Value != "* Disuse *" )
+					if ( (string)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells[ "Assign_DTX_Lane" ].Value != "* Disuse *" )
 					{
-						vMIDIイベント.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells["DTX_Lane"].Value );
-						vMIDIイベント.strコメント = (string)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells["Comment"].Value;
-						vMIDIイベント.b裏チャンネル = (bool)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells["BackCH"].Value;
-						vMIDIイベント.b入力 = (bool)cMIDI.dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells["ChLoad"].Value;
+						vMIDIイベント.nレーン番号 = this.formメインフォーム.mgr譜面管理者.nレーン名に対応するレーン番号を返す( (string)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells[ "Assign_DTX_Lane" ].Value );
+						vMIDIイベント.strコメント = (string)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells[ "Assign_Comment" ].Value;
+						vMIDIイベント.b裏チャンネル = (bool)dgv割り当て一覧.Rows[127-vMIDIイベント.nキー].Cells[ "Assign_BackCH" ].Value;
+						vMIDIイベント.b入力 = (bool)cMIDI.dgvチャンネル一覧.Rows[vMIDIイベント.nチャンネル0to15].Cells[ "Channel_Load" ].Value;
 					}
 					else
 					{
@@ -564,7 +568,6 @@ namespace DTXCreator.MIDIインポート
 			#endregion
 
 			t同時刻で同じレーンに配置予定のチップを数えて反映する();
-			
         }
 
 		private void t同時刻で同じレーンに配置予定のチップを数えて反映する()
@@ -625,58 +628,6 @@ namespace DTXCreator.MIDIインポート
 			{
 				cml.Add( new CMIDIBARLen( (UInt32)n最終時間, n最終分子, n最終分母 ) );
 			}
-			/*
-			// 拍子変更以外のイベントが小節外にある時チップが配置されなかったので最初のcm.eイベントタイプ条件式をなくした
-			this.formメインフォーム.mgr譜面管理者.dic小節.Clear();
-			foreach ( CMIDIイベント cm in cml )
-			{
-				// もしイベントの絶対時間が、小節外にあれば、必要なだけ小節を追加する
-				while ( true )
-				{
-					bool bExistBar = true;
-					// 現在保持している小節リストの、nGridの最大値を取得する
-					int nCurrentMaxBar = this.formメインフォーム.mgr譜面管理者.n現在の最大の小節番号を返す();
-					int nCurremtMaxBar_FirstGrid = this.formメインフォーム.mgr譜面管理者.n譜面先頭からみた小節先頭の位置gridを返す( nCurrentMaxBar );
-					if ( nCurremtMaxBar_FirstGrid < 0 ) nCurremtMaxBar_FirstGrid = 0;
-
-					C小節 c最終小節 = this.formメインフォーム.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( nCurremtMaxBar_FirstGrid );
-					float fCurrent小節倍率 = (c最終小節 == null) ? 1.0f : c最終小節.f小節長倍率;
-					int nCurrentMaxGrid = nCurremtMaxBar_FirstGrid + (int) ( 192 * fCurrent小節倍率 ) - 1;
-					if ( nCurrentMaxBar < 0 ) nCurrentMaxGrid = -1;
-
-					// イベントの絶対時間が、小節外にあれば、新規に小節を一つ追加する。
-					// 小節長は前の小節長を継承するか、MIDIイベント指定による新しい値にするか。
-					// 小節を1つ追加しただけでは足りないのであれば、whileループで繰り返し追加し続ける。
-					int nEvent時間 = (int)cm.n時間 * ( 192 / 4 ) / n四分音符の分解能;
-					if ( nCurrentMaxGrid < (int) nEvent時間 )
-					{
-						++nCurrentMaxBar;
-
-						C小節 c小節 = new C小節( nCurrentMaxBar );
-						if ( c小節 != null )
-						{
-							c小節.f小節長倍率 = fCurrent小節倍率;
-							this.formメインフォーム.mgr譜面管理者.dic小節.Add( nCurrentMaxBar, c小節 );
-						}
-						else
-						{
-							throw new Exception("C小節の作成に失敗しました。");
-						}
-					}
-					else
-					{
-						// 小節追加whileループの最後か、または小節が既に存在する場合でも、拍子の変更があれば反映する。
-						if (cm.eイベントタイプ == CMIDIイベント.Eイベントタイプ.BarLen)
-						{
-							C小節 c小節 = this.formメインフォーム.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( nEvent時間 );
-							this.formメインフォーム.t小節長を変更する_小節単位( c小節.n小節番号0to3599, (float)cm.n拍子分子 / cm.n拍子分母 );
-						}
-						break;
-					}
-				}
-			}
-			*/
-			// 最初のcm.eイベントタイプ条件式をなくす変更前
 		
 			foreach ( CMIDIイベント cm in cml )
 			{
@@ -763,10 +714,30 @@ namespace DTXCreator.MIDIインポート
 			}
 		}
 
+		#region [ 設定ファイル関連 ]
+		//-----------------
+
 //		[Serializable]
 		[DataContract]
 		[KnownType( typeof( DTXC_MIDIConvSetting ) )]
 		public struct DTXC_MIDIConvSetting
+		{
+			[DataMember]
+			public DTXC_MIDIConvSetting_Assign[] Assign;
+			[DataMember]
+			public DTXC_MIDIConvSetting_Other Other;
+
+			public DTXC_MIDIConvSetting(DTXC_MIDIConvSetting_Assign[] _Assign, DTXC_MIDIConvSetting_Other _Other)
+			{
+				Assign = _Assign;
+				Other = _Other;
+			}
+
+		}
+
+		[DataContract]
+		[KnownType( typeof( DTXC_MIDIConvSetting_Assign ) )]
+		public struct DTXC_MIDIConvSetting_Assign
 		{
 			[DataMember]
 			public int MIDI_Key;
@@ -774,50 +745,212 @@ namespace DTXCreator.MIDIインポート
 			public string DTX_Lane;
 			[DataMember]
 			public bool BackCH;
+			[DataMember]
+			public string Comment;
 
-			public DTXC_MIDIConvSetting(int _MIDI_Key, string _DTX_Lane, bool _BackCH)
+			public DTXC_MIDIConvSetting_Assign(int _MIDI_Key, string _DTX_Lane, bool _BackCH, string _Comment)
 			{
 				MIDI_Key = _MIDI_Key;
 				DTX_Lane = _DTX_Lane;
 				BackCH   = _BackCH;
+				Comment   = _Comment;
 			}
+		}
+		
+		[DataContract]
+		[KnownType( typeof( DTXC_MIDIConvSetting_Other ) )]
+		public struct DTXC_MIDIConvSetting_Other
+		{
+			[DataMember]
+			public bool VelocityMax127;
+			[DataMember]
+			public bool VelocityCurveFix;
+			[DataMember]
+			public int DTXVOLUME;
+
+			public DTXC_MIDIConvSetting_Other( bool _VelocityCurveFix, bool _VelocityMax127, int _DTXVOLUME )
+			{
+				VelocityCurveFix = _VelocityCurveFix;
+				VelocityMax127   = _VelocityMax127;
+				DTXVOLUME        = _DTXVOLUME;
+			}
+		}
+
+		public void tMIDIインポート設定をファイルから読み込む()
+		{
+			#region [ ファイル確認 ]
+			// ファイルが無かったら新規で保存して読み込まない
+			if ( !File.Exists( this.formメインフォーム.strMIDIインポート設定ファイル ) ) {
+				this.formメインフォーム.strMIDIインポート設定ファイル = Directory.GetCurrentDirectory() + @"\" + "DTXCreatorSMFSettings.xml";
+				tMIDIインポート設定をファイルに保存する();
+				return;
+			}
+			#endregion
+			
+			#region [ xmlファイルから読込 ]
+			DTXC_MIDIConvSetting mcs;
+
+			using ( var stream = new FileStream( this.formメインフォーム.strMIDIインポート設定ファイル, FileMode.Open ) )
+			{
+				var serializer = new System.Xml.Serialization.XmlSerializer( typeof( DTXC_MIDIConvSetting ) );
+				mcs = (DTXC_MIDIConvSetting) serializer.Deserialize( stream );
+			}
+			#endregion
+			
+			#region [ 割り当て一覧の反映 ]
+			for ( int i = 0; i < 128; i++ )
+			{
+				this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_MIDI_Key" ].Value = mcs.Assign[ i ].MIDI_Key;
+				this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_DTX_Lane" ].Value = mcs.Assign[ i ].DTX_Lane;
+				this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_BackCH" ].Value   = mcs.Assign[ i ].BackCH;
+				this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_Comment" ].Value  = mcs.Assign[ i ].Comment;
+			}
+			#endregion
+
+			#region [ その他インポート設定の反映 ]
+			checkBoxベロシティカーブ調整.Checked = mcs.Other.VelocityCurveFix;
+			checkBoxベロシティ最大値127.Checked  = mcs.Other.VelocityMax127;
+			numericUpDownVOLUME間隔.Value        = mcs.Other.DTXVOLUME;
+			#endregion
+			
+			labelMIDIImportSettingsFile.Text = Path.GetFileName( this.formメインフォーム.strMIDIインポート設定ファイル );
+
+			#region [ 割り当て一覧が更新された時の処理 ]
+            //-----------------
+			for ( int i = 0 ; i < 128 ; i++ ) tMIDI割り当て一覧のレーン名の背景色を変更する( i );
+			tMIDIチップをレーンに割り当てる();
+            //-----------------
+            #endregion
 		}
 	
-		private void tMIDIインポート設定をファイルに保存する()
+		public void tMIDIインポート設定をファイルに保存する()
 		{
-			DTXC_MIDIConvSetting[] mcs = new DTXC_MIDIConvSetting[ 128 ];
+			DTXC_MIDIConvSetting mcs = new DTXC_MIDIConvSetting();
+			mcs.Assign = new DTXC_MIDIConvSetting_Assign[ 128 ];
+			mcs.Other = new DTXC_MIDIConvSetting_Other();
 
-			for (int i = 0; i < 127; i++)
+			#region [ 割り当て一覧の格納 ]
+			for (int i = 0; i < 128; i++)
 			{
-				mcs[ i ].MIDI_Key = (int)    this.dgv割り当て一覧.Rows[ i ].Cells[ "MIDI_Key" ].Value;
-				mcs[ i ].DTX_Lane = (string) this.dgv割り当て一覧.Rows[ i ].Cells[ "DTX_Lane" ].Value;
-				mcs[ i ].BackCH   = (bool)   this.dgv割り当て一覧.Rows[ i ].Cells[ "BackCH" ].Value;
+				mcs.Assign[ i ].MIDI_Key = (int)    this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_MIDI_Key" ].Value;
+				mcs.Assign[ i ].DTX_Lane = (string) this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_DTX_Lane" ].Value;
+				mcs.Assign[ i ].BackCH   = (bool)   this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_BackCH" ].Value;
+				mcs.Assign[ i ].Comment  = (string) this.dgv割り当て一覧.Rows[ i ].Cells[ "Assign_Comment" ].Value;
 			}
+			#endregion
 
-			using ( var stream = new FileStream( "DTXCreatorSMFSettings.xml", FileMode.Create ) )
+			#region [ その他インポート設定の格納 ]
+			mcs.Other.VelocityCurveFix = checkBoxベロシティカーブ調整.Checked;
+			mcs.Other.VelocityMax127   = checkBoxベロシティ最大値127.Checked;
+			mcs.Other.DTXVOLUME        = (int)numericUpDownVOLUME間隔.Value;
+			#endregion
+			
+			#region [ xmlファイルに保存 ]
+			using ( var stream = new FileStream( this.formメインフォーム.strMIDIインポート設定ファイル, FileMode.Create ) )
 			{
-				var serializer = new System.Xml.Serialization.XmlSerializer( typeof( DTXC_MIDIConvSetting[] ) );
+				var serializer = new System.Xml.Serialization.XmlSerializer( typeof( DTXC_MIDIConvSetting ) );
 				serializer.Serialize( stream, mcs );
 			}
+			#endregion
+			
+			labelMIDIImportSettingsFile.Text = Path.GetFileName( this.formメインフォーム.strMIDIインポート設定ファイル );
 		}
-		private void tMIDIインポート設定をファイルから読み込む()
+
+		private void tMIDIインポート設定ファイル選択ダイアログを開く()
 		{
-			DTXC_MIDIConvSetting[] mcs;	 //= new DTXC_MIDIConvSetting[ 128 ];
+			#region [ ファイル選択 ]
+            //-----------------
+            OpenFileDialog dialog = new OpenFileDialog();
+			dialog.Title = Resources.strMIDIインポート設定ファイル選択ダイアログのタイトル;
+            dialog.Filter = Resources.strMIDIインポート設定ファイル選択ダイアログのフィルタ;
+            dialog.FilterIndex = 1;
+            dialog.InitialDirectory =
+				( this.formメインフォーム.strMIDIインポート設定ファイル != "" )
+				? Path.GetDirectoryName( this.formメインフォーム.strMIDIインポート設定ファイル ) + @"\"
+				: Directory.GetCurrentDirectory();
+            DialogResult result = dialog.ShowDialog();
 
-			using ( var stream = new FileStream( "DTXCreatorSMFSettings.xml", FileMode.Open ) )
-			{
-				var serializer = new System.Xml.Serialization.XmlSerializer( typeof( DTXC_MIDIConvSetting[] ) );
-				mcs = (DTXC_MIDIConvSetting[]) serializer.Deserialize( stream );
-			}
+            if (result != DialogResult.OK) return;
 
-			for ( int i = 0; i < 127; i++ )
-			{
-				this.dgv割り当て一覧.Rows[ i ].Cells[ "MIDI_Key" ].Value = mcs[ i ].MIDI_Key;
-				this.dgv割り当て一覧.Rows[ i ].Cells[ "DTX_Lane" ].Value = mcs[ i ].DTX_Lane;
-				this.dgv割り当て一覧.Rows[ i ].Cells[ "BackCH" ].Value = mcs[ i ].BackCH;
-				this.dgv割り当て一覧.Rows[ i ].Cells[ "Key" ].Value = i%12;
-			}
+			string strファイル名 = dialog.FileName;
+            //-----------------
+            #endregion
+
+			#region [ ファイル確認 ]
+            //-----------------
+            if ( !File.Exists( strファイル名 ) )
+            {
+                MessageBox.Show(
+                    Resources.strMIDIインポート設定ファイルではないMSG,
+                    Resources.strMIDIインポートエラーのタイトル,
+                    MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1);
+                return;
+            }
+            //-----------------
+            #endregion
+
+            #region [ 拡張子確認 ]
+            //-----------------
+            string str拡張子 = Path.GetExtension(strファイル名);
+
+            if ( !str拡張子.Equals(".xml", StringComparison.OrdinalIgnoreCase ) )
+            {
+                MessageBox.Show(
+					Resources.strMIDIインポート設定ファイルではないMSG,
+					Resources.strMIDIインポートエラーのタイトル,
+					MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1 );
+                return;
+            }
+            //-----------------
+            #endregion
+
+			#region [ 各設定 ]
+            //-----------------
+			this.formメインフォーム.strMIDIインポート設定ファイル = strファイル名;
+            //-----------------
+            #endregion
+
+			tMIDIインポート設定をファイルから読み込む();
 		}
+
+		private void tMIDIインポート設定ファイル保存ダイアログを開く()
+		{
+			#region [ ファイル選択 ]
+            //-----------------
+			SaveFileDialog dialog = new SaveFileDialog();
+			dialog.Title = Resources.strMIDIインポート設定ファイル保存ダイアログのタイトル;
+			dialog.Filter = Resources.strMIDIインポート設定ファイル選択ダイアログのフィルタ;
+			dialog.FilterIndex = 1;
+			dialog.InitialDirectory = 
+				( this.formメインフォーム.strMIDIインポート設定ファイル != "" )
+				? Path.GetDirectoryName( this.formメインフォーム.strMIDIインポート設定ファイル ) + @"\"
+				: Directory.GetCurrentDirectory();
+			DialogResult result = dialog.ShowDialog();
+
+            if (result != DialogResult.OK) return;
+
+			string strファイル名 = dialog.FileName;
+            //-----------------
+            #endregion
+
+			#region [ 拡張子変更 ]
+            //-----------------
+			if ( Path.GetExtension( strファイル名 ).Length == 0 )
+				strファイル名 = Path.ChangeExtension( strファイル名, ".xml" );
+            //-----------------
+            #endregion
+			
+			#region [ 各設定 ]
+            //-----------------
+			this.formメインフォーム.strMIDIインポート設定ファイル = strファイル名;
+            //-----------------
+            #endregion
+
+			tMIDIインポート設定をファイルに保存する();
+		}
+
+		//-----------------
+		#endregion
 
 	}
 }
