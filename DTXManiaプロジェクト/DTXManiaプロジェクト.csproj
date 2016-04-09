@@ -118,11 +118,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="コード\アイテム\CItemBase.cs" />
-    <Compile Include="コード\アイテム\CItemInteger.cs" />
-    <Compile Include="コード\アイテム\CItemList.cs" />
-    <Compile Include="コード\アイテム\CItemThreeState.cs" />
-    <Compile Include="コード\アイテム\CItemToggle.cs" />
     <Compile Include="コード\スコア、曲\CBoxDef.cs" />
     <Compile Include="コード\スコア、曲\CChip.cs" />
     <Compile Include="コード\スコア、曲\CDTX.cs" />
@@ -187,7 +182,6 @@
     <Compile Include="コード\ステージ\CActDFPFont.cs" />
     <Compile Include="コード\ステージ\CActFIFOBlack.cs" />
     <Compile Include="コード\ステージ\CActFIFOWhite.cs" />
-    <Compile Include="コード\ステージ\CActLVLNFont.cs" />
     <Compile Include="コード\ステージ\CActオプションパネル.cs" />
     <Compile Include="コード\ステージ\CDTXVmode.cs" />
     <Compile Include="コード\ステージ\CStage.cs" />
@@ -195,7 +189,6 @@
     <Compile Include="コード\プラグイン\IPluginActivity.cs" />
     <Compile Include="コード\プラグイン\IPluginHost.cs" />
     <Compile Include="コード\全体\CActFlushGPU.cs" />
-    <Compile Include="コード\全体\CConfigIni.cs" />
     <Compile Include="コード\全体\CDTXMania.cs" />
     <Compile Include="コード\全体\CDTXVersion.cs" />
     <Compile Include="コード\全体\CPad.cs" />
