@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 
 namespace DTXMania
 {
-	public enum Ech定義 : int
+	public enum EChannel : int
 	{
 		Invalid = -1,
 		/// <summary>
@@ -312,88 +312,68 @@ namespace DTXMania
 		//nouse_ff			= 0xFF,
 	}
 
-	public enum ECYGroup
+	public enum EDTX種別
 	{
-		打ち分ける,
-		共通
+		DTX,
+		GDA,
+		G2D,
+		BMS,
+		BME,
+		SMF
 	}
-	public enum EFTGroup
+
+	public enum Eレーンビットパターン
 	{
-		打ち分ける,
-		共通
-	}
-	public enum EHHGroup
+		OPEN,
+		xxB,
+		xGx,
+		xGB,
+		Rxx,
+		RxB,
+		RGx,
+		RGB
+	};
+
+	public enum Eシステムサウンド
 	{
-		全部打ち分ける,
-		ハイハットのみ打ち分ける,
-		左シンバルのみ打ち分ける,
-		全部共通
+		BGMオプション画面,
+		BGMコンフィグ画面,
+		BGM起動画面,
+		BGM選曲画面,
+		SOUNDステージ失敗音,
+		SOUNDカーソル移動音,
+		SOUNDゲーム開始音,
+		SOUNDゲーム終了音,
+		SOUNDステージクリア音,
+		SOUNDタイトル音,
+		SOUNDフルコンボ音,
+		SOUND歓声音,
+		SOUND曲読込開始音,
+		SOUND決定音,
+		SOUND取消音,
+		SOUND変更音,
+		Count               // システムサウンド総数の計算用
 	}
-	public enum EBDGroup		// #27029 2012.1.4 from add
+
+	public enum E演奏画面の戻り値
 	{
-		打ち分ける,
-		どっちもBD
+		継続,
+		演奏中断,
+		ステージ失敗,
+		ステージクリア,
+		再読込_再演奏,
+		再演奏
 	}
-	public enum Eダークモード
+
+	public enum E曲読込画面の戻り値
 	{
-		OFF,
-		HALF,
-		FULL
+		継続,
+		読込完了,
+		読込中止
 	}
-	public enum Eダメージレベル
-	{
-		少ない = 0,
-		普通 = 1,
-		大きい = 2
-	}
-	public enum Eパッド			// 演奏用のenum。ここを修正するときは、次に出てくる EKeyConfigPad と EパッドFlag もセットで修正すること。
-	{
-		HH = 0,
-		R = 0,
-		SD = 1,
-		G = 1,
-		BD = 2,
-		B = 2,
-		HT = 3,
-		Pick = 3,
-		LT = 4,
-		Wail = 4,
-		FT = 5,
-		Cancel = 5,
-		CY = 6,
-		Decide = 6,
-		HHO = 7,
-		RD = 8,
-		LC = 9,
-		HP = 10,	// #27029 2012.1.4 from
-		MAX,			// 門番用として定義
-		UNKNOWN = 99
-	}
-	public enum EKeyConfigPad		// #24609 キーコンフィグで使うenum。capture要素あり。
-	{
-		HH = Eパッド.HH,
-		R = Eパッド.R,
-		SD = Eパッド.SD,
-		G = Eパッド.G,
-		BD = Eパッド.BD,
-		B = Eパッド.B,
-		HT = Eパッド.HT,
-		Pick = Eパッド.Pick,
-		LT = Eパッド.LT,
-		Wail = Eパッド.Wail,
-		FT = Eパッド.FT,
-		Cancel = Eパッド.Cancel,
-		CY = Eパッド.CY,
-		Decide = Eパッド.Decide,
-		HHO = Eパッド.HHO,
-		RD = Eパッド.RD,
-		LC = Eパッド.LC,
-		HP = Eパッド.HP,		// #27029 2012.1.4 from
-		Capture,
-		UNKNOWN = Eパッド.UNKNOWN
-	}
+
 	[Flags]
-	public enum EパッドFlag		// #24063 2011.1.16 yyagi コマンド入力用 パッド入力のフラグ化
+	public enum EPadFlag        // #24063 2011.1.16 yyagi コマンド入力用 パッド入力のフラグ化
 	{
 		None = 0,
 		HH = 1,
@@ -413,16 +393,10 @@ namespace DTXMania
 		HHO = 128,
 		RD = 256,
 		LC = 512,
-		HP = 1024,				// #27029
-		UNKNOWN = 2048
+		HP = 1024,              // #27029
+		Unknown = 2048
 	}
-	public enum Eランダムモード
-	{
-		OFF,
-		RANDOM,
-		SUPERRANDOM,
-		HYPERRANDOM
-	}
+
 	public enum ESoundChipType
 	{
 		Drums,
@@ -430,78 +404,17 @@ namespace DTXMania
 		Bass,
 		SE,
 		BGM,
-		UNKNOWN = 99
+		Unknown
 	}
 
-	public enum E楽器パート		// ここを修正するときは、セットで次の EKeyConfigPart も修正すること。
-	{
-		DRUMS = 0,
-		GUITAR = 1,
-		BASS = 2,
-		UNKNOWN = 99
-	}
-	public enum EKeyConfigPart	// : E楽器パート
-	{
-		DRUMS = E楽器パート.DRUMS,
-		GUITAR = E楽器パート.GUITAR,
-		BASS = E楽器パート.BASS,
-		SYSTEM,
-		UNKNOWN = E楽器パート.UNKNOWN
-	}
-
-	public enum E打ち分け時の再生の優先順位
-	{
-		ChipがPadより優先,
-		PadがChipより優先
-	}
-	public enum E入力デバイス
-	{
-		キーボード = 0,
-		MIDI入力 = 1,
-		ジョイパッド = 2,
-		マウス = 3,
-		不明 = -1
-	}
-	public enum E判定
-	{
-		Perfect = 0,
-		Great = 1,
-		Good = 2,
-		Poor = 3,
-		Miss = 4,
-		Bad = 5,
-		Auto
-	}
-	public enum E判定文字表示位置
-	{
-		表示OFF,
-		レーン上,
-		判定ライン上,
-		コンボ下
-	}
-	public enum E判定位置
-	{
-		標準 = 0,
-		Lower,
-		MAX
-	}
-	public enum E判定表示優先度
-	{
-		Chipより下,
-		Chipより上
-	}
-	public enum Eドラムレーン表示位置
-	{
-		Left = 0,
-		Center = 1
-	}
-	public enum EAVI種別
+	public enum EAVIType
 	{
 		Unknown,
 		AVI,
 		AVIPAN
 	}
-	public enum EBGA種別
+
+	public enum EBGAType
 	{
 		Unknown,
 		BMP,
@@ -509,100 +422,363 @@ namespace DTXMania
 		BGA,
 		BGAPAN
 	}
-	public enum EFIFOモード
+
+	public enum EFIFOMode
 	{
 		フェードイン,
 		フェードアウト
 	}
-	public enum Eドラムコンボ文字の表示位置
+
+	public enum EJudge
 	{
-		LEFT,
-		CENTER,
-		RIGHT,
-		OFF
+		Perfect,
+		Great,
+		Good,
+		Poor,
+		Miss,
+		Bad,
+		Auto
 	}
-	public enum Eレーン
+
+	[DataContract]
+	public enum EActiveInstrument
 	{
-		LC = 0,
-		HH,
-		SD,
-		BD,
-		HT,
-		LT,
-		FT,
-		CY,
-		RD,		// 将来の独立レーン化/独立AUTO設定を見越して追加
-		Guitar,	// AUTOレーン判定を容易にするため、便宜上定義しておく(未使用)
-		Bass,	// (未使用)
-		GtR,
-		GtG,
-		GtB,
-		GtPick,
-		GtW,
-		BsR,
-		BsG,
-		BsB,
-		BsPick,
-		BsW,
-		MAX,	// 要素数取得のための定義 ("BGM"は使わない前提で)
-		BGM
+		[EnumMember]
+		Both,
+		[EnumMember]
+		DrOnly,
+		[EnumMember]
+		GBOnly,
 	}
-	public enum Eレーン数
+
+	[DataContract]
+	public enum ECYGroup
 	{
-		物理 = 8,	// LC, HH,     SD, BD, HT, LT, FT, CY
-		論理 = 10	// LC, HO, HC, SD, BD, HT, LT, FT, RC, RD
+		[EnumMember]
+		None,
+		[EnumMember]
+		Group
 	}
-	public enum Eログ出力
+
+	[DataContract]
+	public enum EFTGroup
 	{
-		OFF,
-		ON通常,
-		ON詳細あり
+		[EnumMember]
+		None,
+		[EnumMember]
+		Group
 	}
-	public enum E演奏画面の戻り値
+
+	[DataContract]
+	public enum EHHGroup
 	{
-		継続,
-		演奏中断,
-		ステージ失敗,
-		ステージクリア,
-		再読込_再演奏,
-		再演奏
+		[EnumMember]
+		None,
+		[EnumMember]
+		HO_HC,
+		[EnumMember]
+		LC_HH,
+		[EnumMember]
+		Group
 	}
-	public enum E曲読込画面の戻り値
+
+	[DataContract]
+	// #27029 2012.1.4 from add
+	// Group はどちらも BD として扱われる
+	public enum EBDGroup
 	{
-		継続 = 0,
-		読込完了,
-		読込中止
+		[EnumMember]
+		None,
+		[EnumMember]
+		Group
 	}
-	/// <summary>
-	/// 入力ラグ表示タイプ
-	/// </summary>
-	public enum EShowLagType
+
+	[DataContract]
+	public enum EDark
 	{
-		OFF,			// 全く表示しない
-		ON,				// 判定に依らず全て表示する
-		GREAT_POOR		// GREAT-MISSの時のみ表示する(PERFECT時は表示しない)
+		[EnumMember]
+		Off,
+		[EnumMember]
+		Half,
+		[EnumMember]
+		Full
 	}
 
 	/// <summary>
-	/// 透明チップの種類
+	/// 演奏用のenum。ここを修正するときは、次に出てくる EパッドFlag もセットで修正すること。
 	/// </summary>
-	public enum EInvisible
+	[DataContract]
+	public enum EPad
 	{
-		OFF,		// チップを透明化しない
-		SEMI,		// Poor/Miss時だけ、一時的に透明解除する
-		FULL		// チップを常に透明化する
+		[EnumMember]
+		Min = 0,
+		[EnumMember]
+		DrumsPadMin = 0,
+		[EnumMember]
+		HH = 0,
+		[EnumMember]
+		SD = 1,
+		[EnumMember]
+		BD = 2,
+		[EnumMember]
+		HT = 3,
+		[EnumMember]
+		LT = 4,
+		[EnumMember]
+		CY = 5,
+		[EnumMember]
+		FT = 6,
+		[EnumMember]
+		HHO = 7,
+		[EnumMember]
+		RD = 8,
+		[EnumMember]
+		LC = 9,
+		// #27029 2012.1.4 from
+		[EnumMember]
+		HP = 10,
+		[EnumMember]
+		DrumsPadMax = 11,
+
+		[EnumMember]
+		GuitarPadMin = 11,
+		[EnumMember]
+		GtR = 11,
+		[EnumMember]
+		GtG = 12,
+		[EnumMember]
+		GtB = 13,
+		[EnumMember]
+		GtPick = 14,
+		[EnumMember]
+		GtWail = 15,
+		[EnumMember]
+		GtCancel = 16,
+		[EnumMember]
+		GtDecide = 17,
+		[EnumMember]
+		GuitarPadMax = 18,
+
+		[EnumMember]
+		BassPadMin = 18,
+		[EnumMember]
+		BsR = 18,
+		[EnumMember]
+		BsG = 19,
+		[EnumMember]
+		BsB = 20,
+		[EnumMember]
+		BsPick = 21,
+		[EnumMember]
+		BsWail = 22,
+		[EnumMember]
+		BsCancel = 23,
+		[EnumMember]
+		BsDecide = 24,
+		[EnumMember]
+		BassPadMax = 25,
+
+		[EnumMember]
+		Capture = 25,
+		[EnumMember]
+		Max = 26,
+		[EnumMember]
+		Unknown,
+	}
+
+
+	[DataContract]
+	public enum EDamage
+	{
+		[EnumMember]
+		Easy,
+		[EnumMember]
+		Normal,
+		[EnumMember]
+		Hard
+	}
+
+	[DataContract]
+	public enum ERandom
+	{
+		[EnumMember]
+		Off,
+		[EnumMember]
+		Random,
+		[EnumMember]
+		Super,
+		[EnumMember]
+		Hyper
+	}
+
+	[DataContract]
+	public enum EPart      // ここを修正するときは、セットで次の EKeyConfigPart も修正すること。
+	{
+		[EnumMember]
+		Drums,
+		[EnumMember]
+		Guitar,
+		[EnumMember]
+		Bass,
+		[EnumMember]
+		System,
+		[EnumMember]
+		Unknown,
+	}
+
+	[DataContract]
+	public enum ESoundDeviceTypeForConfig
+	{
+		[EnumMember]
+		DSound,
+		[EnumMember]
+		WASAPI,
+		[EnumMember]
+		ASIO,
+	}
+
+	[DataContract]
+	public enum EHitSoundPriority
+	{
+		[EnumMember]
+		Chip,
+		[EnumMember]
+		Pad
+	}
+
+	[DataContract]
+	public enum EInputDevice
+	{
+		[EnumMember]
+		Keyboard,
+		[EnumMember]
+		MIDIIn,
+		[EnumMember]
+		JoyPad,
+		[EnumMember]
+		Mouse,
+		[EnumMember]
+		Unknown
+	}
+
+	[DataContract]
+	public enum EJudgeDisplayPriority
+	{
+		[EnumMember]
+		Under,
+		[EnumMember]
+		Over
+	}
+
+	[DataContract]
+	public enum ELane
+	{
+		[EnumMember]
+		Min = 0,
+		[EnumMember]
+		DrumsLaneMin = 0,
+		[EnumMember]
+		LC = 0,
+		[EnumMember]
+		HH = 1,
+		[EnumMember]
+		SD = 2,
+		[EnumMember]
+		BD = 3,
+		[EnumMember]
+		HT = 4,
+		[EnumMember]
+		LT = 5,
+		[EnumMember]
+		FT = 6,
+		[EnumMember]
+		CY = 7,
+		[EnumMember]
+		DrumsLaneMax = 8,
+		[EnumMember]
+		GuitarLaneMin = 8,
+		[EnumMember]
+		GtR = 8,
+		[EnumMember]
+		GtG = 9,
+		[EnumMember]
+		GtB = 10,
+		[EnumMember]
+		GtW = 11,
+		[EnumMember]
+		GuitarLaneMax = 12,
+		[EnumMember]
+		BassLaneMin = 12,
+		[EnumMember]
+		BsR = 12,
+		[EnumMember]
+		BsG = 13,
+		[EnumMember]
+		BsB = 14,
+		[EnumMember]
+		BsW = 15,
+		[EnumMember]
+		BassLaneMax = 16,
+
+		// 要素数取得のための定義 ("BGM"は含めない)
+		[EnumMember]
+		Max = 16,
+		[EnumMember]
+		BGM = 17,
+	}
+
+	/// <summary>
+	/// 入力ラグ表示タイプ
+	/// </summary>
+	[DataContract]
+	public enum EShowLagType
+	{
+		[EnumMember]
+		Off,            // 全く表示しない
+		[EnumMember]
+		On,             // 判定に依らず全て表示する
+		[EnumMember]
+		UGreat      // GREAT-MISSの時のみ表示する(PERFECT時は表示しない)
+	}
+
+	[DataContract]
+	public enum ESudHidInv
+	{
+		[EnumMember]
+		Off,
+		[EnumMember]
+		Sudden,
+		[EnumMember]
+		Hidden,
+		[EnumMember]
+		SudHid,
+		[EnumMember]
+		SemiInv,
+		[EnumMember]
+		FullInv
 	}
 
 	/// <summary>
 	/// 使用するAUTOゴーストデータの種類 (#35411 chnmr0)
 	/// </summary>
+	[DataContract]
 	public enum EAutoGhostData
 	{
-		PERFECT = 0, // 従来のAUTO
-		LAST_PLAY = 1, // (.score.ini) の LastPlay ゴースト
-		HI_SKILL = 2, // (.score.ini) の HiSkill ゴースト
-		HI_SCORE = 3, // (.score.ini) の HiScore ゴースト
-		ONLINE = 4 // オンラインゴースト (DTXMOS からプラグインが取得、本体のみでは指定しても無効)
+		// 従来のAUTO
+		[EnumMember]
+		Perfect,
+		// (.score.ini) の LastPlay ゴースト
+		[EnumMember]
+		LastPlay,
+		// (.score.ini) の HiSkill ゴースト
+		[EnumMember]
+		HiSkill,
+		// (.score.ini) の HiScore ゴースト
+		[EnumMember]
+		HiScore,
+		// オンラインゴースト (DTXMOS からプラグインが取得、本体のみでは指定しても無効)
+		[EnumMember]
+		Online
 	}
 
 	/// <summary>
@@ -610,24 +786,228 @@ namespace DTXMania
 	/// ここでNONE以外を指定してかつ、ゴーストが利用可能な場合グラフの目標値に描画される
 	/// NONE の場合従来の動作
 	/// </summary>
+	[DataContract]
 	public enum ETargetGhostData
 	{
-		NONE = 0,
-		PERFECT = 1,
-		LAST_PLAY = 2, // (.score.ini) の LastPlay ゴースト
-		HI_SKILL = 3, // (.score.ini) の HiSkill ゴースト
-		HI_SCORE = 4, // (.score.ini) の HiScore ゴースト
-		ONLINE = 5 // オンラインゴースト (DTXMOS からプラグインが取得、本体のみでは指定しても無効)
+		[EnumMember]
+		None,
+		[EnumMember]
+		Perfect,
+		// (.score.ini) の LastPlay ゴースト
+		[EnumMember]
+		LastPlay,
+		// (.score.ini) の HiSkill ゴースト
+		[EnumMember]
+		HiSkill,
+		// (.score.ini) の HiScore ゴースト
+		[EnumMember]
+		HiScore,
+		// オンラインゴースト (DTXMOS からプラグインが取得、本体のみでは指定しても無効)
+		[EnumMember]
+		Online
+	}
+
+	[DataContract]
+	public enum EThreeState
+	{
+		[EnumMember]
+		Off,
+		[EnumMember]
+		On,
+		[EnumMember]
+		X
+	}
+
+
+	[DataContract]
+	public enum EOptionType
+	{
+		[EnumMember]
+		Normal,
+		[EnumMember]
+		Other
+	}
+
+	[DataContract]
+	public class STPadValue<T>
+	{
+		[DataMember]
+		public T HH;
+		[DataMember]
+		public T SD;
+		[DataMember]
+		public T BD;
+		[DataMember]
+		public T HT;
+		[DataMember]
+		public T LT;
+		[DataMember]
+		public T CY;
+		[DataMember]
+		public T FT;
+		[DataMember]
+		public T HHO;
+		[DataMember]
+		public T RD;
+		[DataMember]
+		public T LC;
+		[DataMember]
+		public T HP;
+
+		[DataMember]
+		public T GtR;
+		[DataMember]
+		public T GtG;
+		[DataMember]
+		public T GtB;
+		[DataMember]
+		public T GtPick;
+		[DataMember]
+		public T GtWail;
+		[DataMember]
+		public T GtCancel;
+		[DataMember]
+		public T GtDecide;
+
+		[DataMember]
+		public T BsR;
+		[DataMember]
+		public T BsG;
+		[DataMember]
+		public T BsB;
+		[DataMember]
+		public T BsPick;
+		[DataMember]
+		public T BsWail;
+		[DataMember]
+		public T BsCancel;
+		[DataMember]
+		public T BsDecide;
+
+		[DataMember]
+		public T Capture;
+
+		public T this[EPad e]
+		{
+			get
+			{
+				switch (e)
+				{
+					case EPad.HH: return HH;
+					case EPad.SD: return SD;
+					case EPad.BD: return BD;
+					case EPad.HT: return HT;
+					case EPad.LT: return LT;
+					case EPad.CY: return CY;
+					case EPad.FT: return FT;
+					case EPad.HHO: return HHO;
+					case EPad.RD: return RD;
+					case EPad.LC: return LC;
+					case EPad.HP: return HP;
+					case EPad.GtR: return GtR;
+					case EPad.GtG: return GtG;
+					case EPad.GtB: return GtB;
+					case EPad.GtPick: return GtPick;
+					case EPad.GtWail: return GtWail;
+					case EPad.GtCancel: return GtCancel;
+					case EPad.GtDecide: return GtDecide;
+					case EPad.BsR: return BsR;
+					case EPad.BsG: return BsG;
+					case EPad.BsB: return BsB;
+					case EPad.BsPick: return BsPick;
+					case EPad.BsWail: return BsWail;
+					case EPad.BsCancel: return BsCancel;
+					case EPad.BsDecide: return BsDecide;
+					case EPad.Capture: return Capture;
+				}
+				throw new IndexOutOfRangeException();
+			}
+
+			set
+			{
+				switch (e)
+				{
+					case EPad.HH: HH = value; return;
+					case EPad.SD: SD = value; return;
+					case EPad.BD: BD = value; return;
+					case EPad.HT: HT = value; return;
+					case EPad.LT: LT = value; return;
+					case EPad.CY: CY = value; return;
+					case EPad.FT: FT = value; return;
+					case EPad.HHO: HHO = value; return;
+					case EPad.RD: RD = value; return;
+					case EPad.LC: LC = value; return;
+					case EPad.HP: HP = value; return;
+					case EPad.GtR: GtR = value; return;
+					case EPad.GtG: GtG = value; return;
+					case EPad.GtB: GtB = value; return;
+					case EPad.GtPick: GtPick = value; return;
+					case EPad.GtWail: GtWail = value; return;
+					case EPad.GtCancel: GtCancel = value; return;
+					case EPad.GtDecide: GtDecide = value; return;
+					case EPad.BsR: BsR = value; return;
+					case EPad.BsG: BsG = value; return;
+					case EPad.BsB: BsB = value; return;
+					case EPad.BsPick: BsPick = value; return;
+					case EPad.BsWail: BsWail = value; return;
+					case EPad.BsCancel: BsCancel = value; return;
+					case EPad.BsDecide: BsDecide = value; return;
+					case EPad.Capture: Capture = value; return;
+				}
+				throw new IndexOutOfRangeException();
+			}
+		}
+	}
+
+
+	[DataContract]
+	public class STJudgeValue<T>
+	{
+		[DataMember]
+		public T Perfect;
+		[DataMember]
+		public T Great;
+		[DataMember]
+		public T Good;
+		[DataMember]
+		public T Poor;
+
+		public T this[EJudge index]
+		{
+			get
+			{
+				switch (index)
+				{
+					case EJudge.Perfect: return this.Perfect;
+					case EJudge.Great: return this.Great;
+					case EJudge.Good: return this.Good;
+					case EJudge.Poor: return this.Poor;
+				}
+				throw new IndexOutOfRangeException();
+			}
+			set
+			{
+				switch (index)
+				{
+					case EJudge.Perfect: this.Perfect = value; return;
+					case EJudge.Great: this.Great = value; return;
+					case EJudge.Good: this.Good = value; return;
+					case EJudge.Poor: this.Poor = value; return;
+				}
+				throw new IndexOutOfRangeException();
+			}
+		}
 	}
 
 	/// <summary>
 	/// Drum/Guitar/Bass の値を扱う汎用の構造体。
+	/// indexはE楽器パートと一致させること
 	/// </summary>
 	/// <typeparam name="T">値の型。</typeparam>
 	[Serializable]
 	[StructLayout(LayoutKind.Sequential)]
 	[DataContract]
-	public struct STDGBVALUE<T>			// indexはE楽器パートと一致させること
+	public struct STDGBSValue<T>
 	{
 		[DataMember]
 		public T Drums;
@@ -635,24 +1015,22 @@ namespace DTXMania
 		public T Guitar;
 		[DataMember]
 		public T Bass;
+		[DataMember]
+		public T System;
+		[DataMember]
 		public T Unknown;
-		public T this[E楽器パート index]
+
+		public T this[EPart index]
 		{
 			get
 			{
 				switch (index)
 				{
-					case E楽器パート.DRUMS:
-						return this.Drums;
-
-					case E楽器パート.GUITAR:
-						return this.Guitar;
-
-					case E楽器パート.BASS:
-						return this.Bass;
-
-					case E楽器パート.UNKNOWN:
-						return this.Unknown;
+					case EPart.Drums: return Drums;
+					case EPart.Guitar: return Guitar;
+					case EPart.Bass: return Bass;
+					case EPart.System: return System;
+					case EPart.Unknown: return Unknown;
 				}
 				throw new IndexOutOfRangeException();
 			}
@@ -660,105 +1038,93 @@ namespace DTXMania
 			{
 				switch (index)
 				{
-					case E楽器パート.DRUMS:
-						this.Drums = value;
-						return;
-
-					case E楽器パート.GUITAR:
-						this.Guitar = value;
-						return;
-
-					case E楽器パート.BASS:
-						this.Bass = value;
-						return;
-
-					case E楽器パート.UNKNOWN:
-						this.Unknown = value;
-						return;
+					case EPart.Drums: Drums = value; return;
+					case EPart.Guitar: Guitar = value; return;
+					case EPart.Bass: Bass = value; return;
+					case EPart.System: System = value; return;
+					case EPart.Unknown: Unknown = value; return;
 				}
 				throw new IndexOutOfRangeException();
 			}
 		}
 	}
 
-	/// <summary>
-	/// レーンの値を扱う汎用の構造体。列挙型"Eドラムレーン"に準拠。
-	/// </summary>
-	/// <typeparam name="T">値の型。</typeparam>
-	[StructLayout(LayoutKind.Sequential)]
-	public struct STLANEVALUE<T>
+	[DataContract]
+	public class STLaneValue<T>
 	{
+		public static ELane DrumsLane(EChannel x)
+		{
+			switch (x)
+			{
+				case EChannel.HiHatClose: return ELane.HH;
+				case EChannel.HiHatOpen: return ELane.HH;
+				case EChannel.Snare: return ELane.SD;
+				case EChannel.BassDrum: return ELane.BD;
+				case EChannel.HighTom: return ELane.HT;
+				case EChannel.LowTom: return ELane.LT;
+				case EChannel.FloorTom: return ELane.FT;
+				case EChannel.Cymbal: return ELane.CY;
+				case EChannel.LeftCymbal: return ELane.LC;
+				case EChannel.RideCymbal: return ELane.CY;
+			}
+			throw new IndexOutOfRangeException("Drums Index is out of range");
+		}
+
+		[DataMember]
 		public T LC;
+		[DataMember]
 		public T HH;
+		[DataMember]
 		public T SD;
+		[DataMember]
 		public T BD;
+		[DataMember]
 		public T HT;
+		[DataMember]
 		public T LT;
+		[DataMember]
 		public T FT;
+		[DataMember]
 		public T CY;
-		public T RD;
-		public T Guitar;
-		public T Bass;
+		[DataMember]
 		public T GtR;
+		[DataMember]
 		public T GtG;
+		[DataMember]
 		public T GtB;
-		public T GtPick;
+		[DataMember]
 		public T GtW;
+		[DataMember]
 		public T BsR;
+		[DataMember]
 		public T BsG;
+		[DataMember]
 		public T BsB;
-		public T BsPick;
+		[DataMember]
 		public T BsW;
-		public T BGM;
 
-		public T this[int index]
+		public T this[ELane index]
 		{
 			get
 			{
 				switch (index)
 				{
-					case (int)Eレーン.LC:
-						return this.LC;
-					case (int)Eレーン.HH:
-						return this.HH;
-					case (int)Eレーン.SD:
-						return this.SD;
-					case (int)Eレーン.BD:
-						return this.BD;
-					case (int)Eレーン.HT:
-						return this.HT;
-					case (int)Eレーン.LT:
-						return this.LT;
-					case (int)Eレーン.FT:
-						return this.FT;
-					case (int)Eレーン.CY:
-						return this.CY;
-					case (int)Eレーン.RD:
-						return this.RD;
-					case (int)Eレーン.Guitar:
-						return this.Guitar;
-					case (int)Eレーン.Bass:
-						return this.Bass;
-					case (int)Eレーン.GtR:
-						return this.GtR;
-					case (int)Eレーン.GtG:
-						return this.GtG;
-					case (int)Eレーン.GtB:
-						return this.GtB;
-					case (int)Eレーン.GtPick:
-						return this.GtPick;
-					case (int)Eレーン.GtW:
-						return this.GtW;
-					case (int)Eレーン.BsR:
-						return this.BsR;
-					case (int)Eレーン.BsG:
-						return this.BsG;
-					case (int)Eレーン.BsB:
-						return this.BsB;
-					case (int)Eレーン.BsPick:
-						return this.BsPick;
-					case (int)Eレーン.BsW:
-						return this.BsW;
+					case ELane.LC: return LC;
+					case ELane.HH: return HH;
+					case ELane.SD: return SD;
+					case ELane.BD: return BD;
+					case ELane.HT: return HT;
+					case ELane.LT: return LT;
+					case ELane.FT: return FT;
+					case ELane.CY: return CY;
+					case ELane.GtR: return GtR;
+					case ELane.GtG: return GtG;
+					case ELane.GtB: return GtB;
+					case ELane.GtW: return GtW;
+					case ELane.BsR: return BsR;
+					case ELane.BsG: return BsG;
+					case ELane.BsB: return BsB;
+					case ELane.BsW: return BsW;
 				}
 				throw new IndexOutOfRangeException();
 			}
@@ -766,319 +1132,211 @@ namespace DTXMania
 			{
 				switch (index)
 				{
-					case (int)Eレーン.LC:
-						this.LC = value;
-						return;
-					case (int)Eレーン.HH:
-						this.HH = value;
-						return;
-					case (int)Eレーン.SD:
-						this.SD = value;
-						return;
-					case (int)Eレーン.BD:
-						this.BD = value;
-						return;
-					case (int)Eレーン.HT:
-						this.HT = value;
-						return;
-					case (int)Eレーン.LT:
-						this.LT = value;
-						return;
-					case (int)Eレーン.FT:
-						this.FT = value;
-						return;
-					case (int)Eレーン.CY:
-						this.CY = value;
-						return;
-					case (int)Eレーン.RD:
-						this.RD = value;
-						return;
-					case (int)Eレーン.Guitar:
-						this.Guitar = value;
-						return;
-					case (int)Eレーン.Bass:
-						this.Bass = value;
-						return;
-					case (int)Eレーン.GtR:
-						this.GtR = value;
-						return;
-					case (int)Eレーン.GtG:
-						this.GtG = value;
-						return;
-					case (int)Eレーン.GtB:
-						this.GtB = value;
-						return;
-					case (int)Eレーン.GtPick:
-						this.GtPick = value;
-						return;
-					case (int)Eレーン.GtW:
-						this.GtW = value;
-						return;
-					case (int)Eレーン.BsR:
-						this.BsR = value;
-						return;
-					case (int)Eレーン.BsG:
-						this.BsG = value;
-						return;
-					case (int)Eレーン.BsB:
-						this.BsB = value;
-						return;
-					case (int)Eレーン.BsPick:
-						this.BsPick = value;
-						return;
-					case (int)Eレーン.BsW:
-						this.BsW = value;
-						return;
+					case ELane.LC: LC = value; return;
+					case ELane.HH: HH = value; return;
+					case ELane.SD: SD = value; return;
+					case ELane.BD: BD = value; return;
+					case ELane.HT: HT = value; return;
+					case ELane.LT: LT = value; return;
+					case ELane.FT: FT = value; return;
+					case ELane.CY: CY = value; return;
+					case ELane.GtR: GtR = value; return;
+					case ELane.GtG: GtG = value; return;
+					case ELane.GtB: GtB = value; return;
+					case ELane.GtW: GtW = value; return;
+					case ELane.BsR: BsR = value; return;
+					case ELane.BsG: BsG = value; return;
+					case ELane.BsB: BsB = value; return;
+					case ELane.BsW: BsW = value; return;
 				}
 				throw new IndexOutOfRangeException();
 			}
 		}
 	}
 
-
-	[StructLayout(LayoutKind.Sequential)]
-	public struct STAUTOPLAY								// Eレーンとindexを一致させること
+	[DataContract]
+	public struct STInstValue<T>
 	{
-		public bool LC;			// 0
-		public bool HH;			// 1
-		public bool SD;			// 2
-		public bool BD;			// 3
-		public bool HT;			// 4
-		public bool LT;			// 5
-		public bool FT;			// 6
-		public bool CY;			// 7
-		public bool RD;			// 8
-		public bool Guitar;		// 9	(not used)
-		public bool Bass;		// 10	(not used)
-		public bool GtR;		// 11
-		public bool GtG;		// 12
-		public bool GtB;		// 13
-		public bool GtPick;		// 14
-		public bool GtW;		// 15
-		public bool BsR;		// 16
-		public bool BsG;		// 17
-		public bool BsB;		// 18
-		public bool BsPick;		// 19
-		public bool BsW;		// 20
-		public bool this[int index]
+		[DataMember]
+		public T Both;
+		[DataMember]
+		public T DrOnly;
+		[DataMember]
+		public T GBOnly;
+
+		public T this[EActiveInstrument inst]
 		{
 			get
 			{
-				switch (index)
+				switch (inst)
 				{
-					case (int)Eレーン.LC:
-						return this.LC;
-					case (int)Eレーン.HH:
-						return this.HH;
-					case (int)Eレーン.SD:
-						return this.SD;
-					case (int)Eレーン.BD:
-						return this.BD;
-					case (int)Eレーン.HT:
-						return this.HT;
-					case (int)Eレーン.LT:
-						return this.LT;
-					case (int)Eレーン.FT:
-						return this.FT;
-					case (int)Eレーン.CY:
-						return this.CY;
-					case (int)Eレーン.RD:
-						return this.RD;
-					case (int)Eレーン.Guitar:
-						if (!this.GtR) return false;
-						if (!this.GtG) return false;
-						if (!this.GtB) return false;
-						if (!this.GtPick) return false;
-						if (!this.GtW) return false;
-						return true;
-					case (int)Eレーン.Bass:
-						if (!this.BsR) return false;
-						if (!this.BsG) return false;
-						if (!this.BsB) return false;
-						if (!this.BsPick) return false;
-						if (!this.BsW) return false;
-						return true;
-					case (int)Eレーン.GtR:
-						return this.GtR;
-					case (int)Eレーン.GtG:
-						return this.GtG;
-					case (int)Eレーン.GtB:
-						return this.GtB;
-					case (int)Eレーン.GtPick:
-						return this.GtPick;
-					case (int)Eレーン.GtW:
-						return this.GtW;
-					case (int)Eレーン.BsR:
-						return this.BsR;
-					case (int)Eレーン.BsG:
-						return this.BsG;
-					case (int)Eレーン.BsB:
-						return this.BsB;
-					case (int)Eレーン.BsPick:
-						return this.BsPick;
-					case (int)Eレーン.BsW:
-						return this.BsW;
+					case EActiveInstrument.Both: return Both;
+					case EActiveInstrument.DrOnly: return DrOnly;
+					case EActiveInstrument.GBOnly: return GBOnly;
 				}
 				throw new IndexOutOfRangeException();
 			}
 			set
 			{
-				switch (index)
+				switch (inst)
 				{
-					case (int)Eレーン.LC:
-						this.LC = value;
-						return;
-					case (int)Eレーン.HH:
-						this.HH = value;
-						return;
-					case (int)Eレーン.SD:
-						this.SD = value;
-						return;
-					case (int)Eレーン.BD:
-						this.BD = value;
-						return;
-					case (int)Eレーン.HT:
-						this.HT = value;
-						return;
-					case (int)Eレーン.LT:
-						this.LT = value;
-						return;
-					case (int)Eレーン.FT:
-						this.FT = value;
-						return;
-					case (int)Eレーン.CY:
-						this.CY = value;
-						return;
-					case (int)Eレーン.RD:
-						this.RD = value;
-						return;
-					case (int)Eレーン.Guitar:
-						this.GtR = this.GtG = this.GtB = this.GtPick = this.GtW = value;
-						return;
-					case (int)Eレーン.Bass:
-						this.BsR = this.BsG = this.BsB = this.BsPick = this.BsW = value;
-						return;
-					case (int)Eレーン.GtR:
-						this.GtR = value;
-						return;
-					case (int)Eレーン.GtG:
-						this.GtG = value;
-						return;
-					case (int)Eレーン.GtB:
-						this.GtB = value;
-						return;
-					case (int)Eレーン.GtPick:
-						this.GtPick = value;
-						return;
-					case (int)Eレーン.GtW:
-						this.GtW = value;
-						return;
-					case (int)Eレーン.BsR:
-						this.BsR = value;
-						return;
-					case (int)Eレーン.BsG:
-						this.BsG = value;
-						return;
-					case (int)Eレーン.BsB:
-						this.BsB = value;
-						return;
-					case (int)Eレーン.BsPick:
-						this.BsPick = value;
-						return;
-					case (int)Eレーン.BsW:
-						this.BsW = value;
-						return;
+					case EActiveInstrument.Both: Both = value; return;
+					case EActiveInstrument.DrOnly: DrOnly = value; return;
+					case EActiveInstrument.GBOnly: GBOnly = value; return;
 				}
 				throw new IndexOutOfRangeException();
 			}
 		}
 	}
 
-	public enum EDTX種別
-	{
-		DTX,
-		GDA,
-		G2D,
-		BMS,
-		BME,
-		SMF
-	}
-	public enum Eレーンビットパターン
-	{
-		OPEN = 0,
-		xxB = 1,
-		xGx = 2,
-		xGB = 3,
-		Rxx = 4,
-		RxB = 5,
-		RGx = 6,
-		RGB = 7
-	};
 
-	internal class C定数
+	[DataContract]
+	public class CKeyAssign
 	{
-		public const int BGA_H = 0x163;
-		public const int BGA_W = 0x116;
-		public const int HIDDEN_POS = 100;
-		public const int MAX_AVI_LAYER = 1;
-		public const int MAX_WAILING = 4;
-		public const int PANEL_H = 0x1a;
-		public const int PANEL_W = 0x116;
-		public const int PREVIEW_H = 0x10d;
-		public const int PREVIEW_W = 0xcc;
-		public const int SCORE_H = 0x18;
-		public const int SCORE_W = 12;
-		public const int SUDDEN_POS = 200;
-
-		public class Drums
+		[DataMember]
+		public EInputDevice InputDevice;
+		[DataMember]
+		public int ID;
+		[DataMember]
+		public int Code;
+		public CKeyAssign(EInputDevice DeviceType, int nID, int nCode)
 		{
-			public const int BAR_Y = 0x1a6;
-			public const int BAR_Y_REV = 0x38;
-			public const int BASS_BAR_Y = 0x5f;
-			public const int BASS_BAR_Y_REV = 0x176;
-			public const int BASS_H = 0x163;
-			public const int BASS_W = 0x6d;
-			public const int BASS_X = 0x18e;
-			public const int BASS_Y = 0x39;
-			public const int BGA_X = 0x152;
-			public const int BGA_Y = 0x39;
-			public const int GAUGE_H = 0x160;
-			public const int GAUGE_W = 0x10;
-			public const int GAUGE_X = 6;
-			public const int GAUGE_Y = 0x35;
-			public const int GUITAR_BAR_Y = 0x5f;
-			public const int GUITAR_BAR_Y_REV = 0x176;
-			public const int GUITAR_H = 0x163;
-			public const int GUITAR_W = 0x6d;
-			public const int GUITAR_X = 0x1fb;
-			public const int GUITAR_Y = 0x39;
-			public const int PANEL_X = 0x150;
-			public const int PANEL_Y = 0x1ab;
-			public const int SCORE_X = 0x164;
-			public const int SCORE_Y = 14;
+			this.InputDevice = DeviceType;
+			this.ID = nID;
+			this.Code = nCode;
 		}
-		public class Guitar
+	}
+
+	public enum EOptionPanelDirection
+	{
+		Horizontal,
+		Vertical
+	}
+
+	public static class EnumConverter
+	{
+		public static ELane LaneFromPad(EPad t)
 		{
-			public const int BAR_Y = 40;
-			public const int BAR_Y_REV = 0x171;
-			public const int BASS_H = 0x199;
-			public const int BASS_W = 140;
-			public const int BASS_X = 480;
-			public const int BASS_Y = 0;
-			public const int BGA_X = 0xb5;
-			public const int BGA_Y = 50;
-			public const int GAUGE_H = 0x10;
-			public const int GAUGE_W = 0x80;
-			public const int GAUGE_X_BASS = 0x14f;
-			public const int GAUGE_X_GUITAR = 0xb2;
-			public const int GAUGE_Y_BASS = 8;
-			public const int GAUGE_Y_GUITAR = 8;
-			public const int GUITAR_H = 0x199;
-			public const int GUITAR_W = 140;
-			public const int GUITAR_X = 0x1a;
-			public const int GUITAR_Y = 0;
-			public const int PANEL_X = 0xb5;
-			public const int PANEL_Y = 430;
+			switch (t)
+			{
+				case EPad.HH: return ELane.HH;
+				case EPad.SD: return ELane.SD;
+				case EPad.BD: return ELane.BD;
+				case EPad.HT: return ELane.HT;
+				case EPad.LT: return ELane.LT;
+				case EPad.CY: return ELane.CY;
+				case EPad.FT: return ELane.FT;
+				case EPad.HHO: return ELane.HH;
+				case EPad.RD: return ELane.CY;
+				case EPad.LC: return ELane.LC;
+				case EPad.GtR: return ELane.GtR;
+				case EPad.GtG: return ELane.GtG;
+				case EPad.GtB: return ELane.GtB;
+				case EPad.GtWail: return ELane.GtW;
+				case EPad.BsR: return ELane.BsR;
+				case EPad.BsG: return ELane.BsG;
+				case EPad.BsB: return ELane.BsB;
+				case EPad.BsWail: return ELane.BsW;
+			}
+			throw new IndexOutOfRangeException();
+		}
+
+		public static EPad PadFromLane(ELane t)
+		{
+			switch (t)
+			{
+				case ELane.LC: return EPad.LC;
+				case ELane.HH: return EPad.HH;
+				case ELane.SD: return EPad.SD;
+				case ELane.BD: return EPad.BD;
+				case ELane.HT: return EPad.HT;
+				case ELane.LT: return EPad.LT;
+				case ELane.FT: return EPad.FT;
+				case ELane.CY: return EPad.CY;
+				case ELane.GtR: return EPad.GtR;
+				case ELane.GtG: return EPad.GtG;
+				case ELane.GtB: return EPad.GtB;
+				case ELane.GtW: return EPad.GtWail;
+				case ELane.BsR: return EPad.BsR;
+				case ELane.BsG: return EPad.BsG;
+				case ELane.BsB: return EPad.BsB;
+				case ELane.BsW: return EPad.BsWail;
+			}
+			throw new IndexOutOfRangeException();
+		}
+
+		/// <summary>
+		/// EChannel -> EPad
+		/// </summary>
+		/// <param name="e">変換する EChannel列挙子。</param>
+		/// <param name="NotDistinguishHH">HHOをパッドHHとして扱いたい場合 true。</param>
+		/// <returns></returns>
+		public static EPad PadFromChannel(EChannel e)
+		{
+			switch (e)
+			{
+				case EChannel.HiHatClose: return EPad.HH;
+				case EChannel.Snare: return EPad.SD;
+				case EChannel.BassDrum: return EPad.BD;
+				case EChannel.HighTom: return EPad.HT;
+				case EChannel.LowTom: return EPad.LT;
+				case EChannel.Cymbal: return EPad.CY;
+				case EChannel.FloorTom: return EPad.FT;
+				case EChannel.HiHatOpen: return EPad.HHO;
+				case EChannel.RideCymbal: return EPad.RD;
+				case EChannel.LeftCymbal: return EPad.LC;
+				case EChannel.LeftPedal: return EPad.HP;
+			}
+			throw new IndexOutOfRangeException();
+		}
+
+		public static ELane LaneFromChannel(EChannel e)
+		{
+			switch (e)
+			{
+				case EChannel.HiHatClose: return ELane.HH;
+				case EChannel.Snare: return ELane.SD;
+				case EChannel.BassDrum: return ELane.BD;
+				case EChannel.HighTom: return ELane.HT;
+				case EChannel.LowTom: return ELane.LT;
+				case EChannel.Cymbal: return ELane.CY;
+				case EChannel.FloorTom: return ELane.FT;
+				case EChannel.HiHatOpen: return ELane.HH;
+				case EChannel.RideCymbal: return ELane.CY;
+				case EChannel.LeftCymbal: return ELane.LC;
+			}
+			throw new IndexOutOfRangeException();
+		}
+
+		public static EChannel ChannelFromPad(EPad pad)
+		{
+			/*
+			EChannel.HiHatClose, 0
+						EChannel.Snare, 1 
+						EChannel.BassDrum, 2
+						EChannel.HighTom, 3 
+						EChannel.LowTom,4 
+						EChannel.FloorTom,5
+						EChannel.Cymbal,6
+						EChannel.HiHatOpen,7
+						EChannel.RideCymbal,8
+						EChannel.LeftCymbal, 9
+						*/
+			switch (pad)
+			{
+				case EPad.HH: return EChannel.HiHatClose;
+				case EPad.HHO: return EChannel.HiHatOpen;
+				case EPad.BD: return EChannel.BassDrum;
+				case EPad.SD: return EChannel.Snare;
+				case EPad.HT: return EChannel.HighTom;
+				case EPad.LT: return EChannel.LowTom;
+				case EPad.FT: return EChannel.FloorTom;
+				case EPad.CY: return EChannel.Cymbal;
+				case EPad.LC: return EChannel.LeftCymbal;
+				case EPad.RD: return EChannel.RideCymbal;
+				case EPad.HP: return EChannel.LeftPedal;
+			}
+			throw new NotImplementedException();
 		}
 	}
 }

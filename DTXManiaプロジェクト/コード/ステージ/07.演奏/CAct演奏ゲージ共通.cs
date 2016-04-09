@@ -26,7 +26,7 @@ namespace DTXMania
 			{  0.004f,  0.006f,  0.006f  },
 			{  0.002f,  0.003f,  0.003f  },
 			{  0.000f,  0.000f,  0.000f  },
-			{ -0.020f, -0.030f,	-0.030f  },
+			{ -0.020f, -0.030f, -0.030f  },
 			{ -0.050f, -0.050f, -0.050f  }
 		};
 		private float[] fDamageLevelFactor = {
@@ -139,7 +139,7 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる && CDTXMania.Instance.ConfigIni.eDark == EDark.Off)
 			{
 				#region [ 初めての進行描画 ]
 				if (base.b初めての進行描画)
@@ -308,7 +308,7 @@ namespace DTXMania
 				#endregion
 
 				#region [ Risky残りMiss回数表示 ]
-				if (this.bRisky)		// #23599 2011.7.30 yyagi Risky残りMiss回数表示
+				if (this.bRisky)    // #23599 2011.7.30 yyagi Risky残りMiss回数表示
 				{
 					int w = actDigit.Measure(nRiskyTimes);
 					actDigit.Draw(nRiskyTimes,
@@ -341,7 +341,7 @@ namespace DTXMania
 			}
 		}
 
-		public void Damage(E楽器パート part, E判定 e今回の判定)
+		public void Damage(EPart part, EJudge e今回の判定)
 		{
 			double fDamage;
 
@@ -349,13 +349,13 @@ namespace DTXMania
 			// before applying #23625 modifications
 			switch (e今回の判定)
 			{
-				case E判定.Perfect:
-				case E判定.Great:
-				case E判定.Good:
+				case EJudge.Perfect:
+				case EJudge.Great:
+				case EJudge.Good:
 					fDamage = bRisky ? 0 : fDamageGaugeDelta[(int)e今回の判定, (int)part];
 					break;
-				case E判定.Poor:
-				case E判定.Miss:
+				case EJudge.Poor:
+				case EJudge.Miss:
 					if (bRisky)
 					{
 						// Risky=1のときは1Miss即閉店なのでダメージ計算しない
@@ -371,9 +371,9 @@ namespace DTXMania
 					{
 						fDamage = fDamageGaugeDelta[(int)e今回の判定, (int)part];
 					}
-					if (e今回の判定 == E判定.Miss && !bRisky)
+					if (e今回の判定 == EJudge.Miss && !bRisky)
 					{
-						fDamage *= fDamageLevelFactor[(int)CDTXMania.Instance.ConfigIni.eダメージレベル];
+						fDamage *= fDamageLevelFactor[(int)CDTXMania.Instance.ConfigIni.eDamageLevel.Value];
 					}
 					break;
 

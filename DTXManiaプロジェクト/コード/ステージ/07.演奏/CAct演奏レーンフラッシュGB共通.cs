@@ -9,42 +9,41 @@ namespace DTXMania
 	internal class CAct演奏レーンフラッシュGB共通 : CActivity
 	{
 		protected CCounter[] ct進行 = new CCounter[6];
-		private CTexture tx = new CTexture();
+		CTexture tx = new CTexture();
+		static ELane[] lanes = new ELane[] { ELane.GtR, ELane.GtG, ELane.GtB, ELane.BsR, ELane.BsG, ELane.BsB };
 
-		// コンストラクタ
-		public CAct演奏レーンフラッシュGB共通()
-		{
-			base.b活性化してない = true;
-		}
-
-		// メソッド
 		public void Start(int nLane)
 		{
 			this.ct進行[nLane] = new CCounter(0, 100, 1, CDTXMania.Instance.Timer);
 		}
 
-		// CActivity 実装
 		public override void On活性化()
 		{
-			for (int i = 0; i < 6; i++)
+			if (b活性化してない)
 			{
-				this.ct進行[i] = new CCounter();
+				for (int i = 0; i < 6; i++)
+				{
+					this.ct進行[i] = new CCounter();
+				}
+				base.On活性化();
 			}
-			base.On活性化();
 		}
 
 		public override void On非活性化()
 		{
-			for (int i = 0; i < 6; i++)
+			if (b活性化してる)
 			{
-				this.ct進行[i] = null;
+				for (int i = 0; i < 6; i++)
+				{
+					this.ct進行[i] = null;
+				}
+				base.On非活性化();
 			}
-			base.On非活性化();
 		}
 
 		public override void OnManagedリソースの作成()
 		{
-			if (!base.b活性化してない)
+			if (b活性化してる)
 			{
 				tx = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenPlay guitar lane flush.png"));
 				base.OnManagedリソースの作成();
@@ -53,7 +52,7 @@ namespace DTXMania
 
 		public override void OnManagedリソースの解放()
 		{
-			if (!base.b活性化してない)
+			if (b活性化してる)
 			{
 				TextureFactory.tテクスチャの解放(ref tx);
 				base.OnManagedリソースの解放();
@@ -62,7 +61,9 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない)
+			if (b活性化してる &&
+				CDTXMania.Instance.ConfigIni.bGuitar有効 &&
+				CDTXMania.Instance.ConfigIni.eDark == EDark.Off)
 			{
 				int imgX = CDTXMania.Instance.Coordinates.ImgGtLaneFlash.X;
 				for (int i = 0; i < 6; i++)
@@ -71,47 +72,17 @@ namespace DTXMania
 					{
 						imgX = CDTXMania.Instance.Coordinates.ImgGtLaneFlash.X;
 					}
-					E楽器パート e楽器パート = (i < 3) ? E楽器パート.GUITAR : E楽器パート.BASS;
+					EPart inst = (i < 3) ? EPart.Guitar : EPart.Bass;
 
-					int x = 0;
-					int w = 0;
-					if (i == 0)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.GtR.X;
-						w = CDTXMania.Instance.Coordinates.Lane.GtR.W;
-					}
-					else if (i == 1)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.GtG.X;
-						w = CDTXMania.Instance.Coordinates.Lane.GtG.W;
-					}
-					else if (i == 2)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.GtB.X;
-						w = CDTXMania.Instance.Coordinates.Lane.GtB.W;
-					}
-					else if (i == 3)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.BsR.X;
-						w = CDTXMania.Instance.Coordinates.Lane.BsR.W;
-					}
-					else if (i == 4)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.BsG.X;
-						w = CDTXMania.Instance.Coordinates.Lane.BsG.W;
-					}
-					else if (i == 5)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.BsB.X;
-						w = CDTXMania.Instance.Coordinates.Lane.BsB.W;
-					}
+					int x = CDTXMania.Instance.ConfigIni.GetLaneX(lanes[i]);
+					int w = CDTXMania.Instance.ConfigIni.GetLaneW(lanes[i]);
 
-					if (!ct進行[i].b停止中)
+					if (!ct進行[i].b停止中 && CDTXMania.Instance.DTX.bチップがある[inst])
 					{
 
 						if (tx != null)
 						{
-							if (CDTXMania.Instance.ConfigIni.bReverse[e楽器パート])
+							if (CDTXMania.Instance.ConfigIni.bReverse[inst])
 							{
 								tx.vc拡大縮小倍率.Y = -1;
 							}
@@ -119,11 +90,11 @@ namespace DTXMania
 							{
 								tx.vc拡大縮小倍率.Y = 1;
 							}
-							int y = CDTXMania.Instance.Coordinates.LaneFlash[e楽器パート].Y;
+							int y = CDTXMania.Instance.Coordinates.LaneFlash[inst].Y;
 							tx.t2D描画(
 								CDTXMania.Instance.Device,
 								x,
-								CDTXMania.Instance.ConfigIni.bReverse[e楽器パート] ? SampleFramework.GameWindowSize.Height - y - CDTXMania.Instance.Coordinates.ImgGtLaneFlash.H : y,
+								CDTXMania.Instance.ConfigIni.bReverse[inst] ? SampleFramework.GameWindowSize.Height - y - CDTXMania.Instance.Coordinates.ImgGtLaneFlash.H : y,
 								new Rectangle(
 									imgX,
 									CDTXMania.Instance.Coordinates.ImgGtLaneFlash.Y,

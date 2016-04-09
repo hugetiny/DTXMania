@@ -45,14 +45,14 @@ namespace DTXMania
 			set;
 		}
 		[NonSerialized]
-		public List<Cスコア> listSongsDB;					// songs.dbから構築されるlist
-		public List<C曲リストノード> list曲ルート;			// 起動時にフォルダ検索して構築されるlist
-		public bool bIsSuspending							// 外部スレッドから、内部スレッドのsuspendを指示する時にtrueにする
-		{													// 再開時は、これをfalseにしてから、次のautoReset.Set()を実行する
+		public List<Cスコア> listSongsDB;          // songs.dbから構築されるlist
+		public List<C曲リストノード> list曲ルート;     // 起動時にフォルダ検索して構築されるlist
+		public bool bIsSuspending             // 外部スレッドから、内部スレッドのsuspendを指示する時にtrueにする
+		{                         // 再開時は、これをfalseにしてから、次のautoReset.Set()を実行する
 			get;
 			set;
 		}
-		public bool bIsSlowdown								// #PREMOVIE再生時に曲検索を遅くする
+		public bool bIsSlowdown               // #PREMOVIE再生時に曲検索を遅くする
 		{
 			get;
 			set;
@@ -71,7 +71,7 @@ namespace DTXMania
 			}
 		}
 
-		private int searchCount;							// #PREMOVIE中は検索n回実行したら少しスリープする
+		private int searchCount;              // #PREMOVIE中は検索n回実行したら少しスリープする
 
 		// コンストラクタ
 
@@ -81,8 +81,8 @@ namespace DTXMania
 			this.list曲ルート = new List<C曲リストノード>();
 			this.n検索された曲ノード数 = 0;
 			this.n検索されたスコア数 = 0;
-			this.bIsSuspending = false;						// #27060
-			this.autoReset = new AutoResetEvent(true);	// #27060
+			this.bIsSuspending = false;           // #27060
+			this.autoReset = new AutoResetEvent(true);  // #27060
 			this.searchCount = 0;
 		}
 
@@ -143,7 +143,7 @@ namespace DTXMania
 
 			DirectoryInfo info = new DirectoryInfo(str基点フォルダ);
 
-			if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+			if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 				Trace.TraceInformation("基点フォルダ: " + str基点フォルダ);
 
 			#region [ a.フォルダ内に set.def が存在する場合 → set.def からノード作成]
@@ -153,14 +153,14 @@ namespace DTXMania
 			{
 				CSetDef def = new CSetDef(path);
 				new FileInfo(path);
-				if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+				if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 				{
 					Trace.TraceInformation("set.def検出 : {0}", path);
 					Trace.Indent();
 				}
 				try
 				{
-					SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
+					SlowOrSuspendSearchTask();    // #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 					for (int i = 0; i < def.blocks.Count; i++)
 					{
 						CSetDef.CBlock block = def.blocks[i];
@@ -211,7 +211,7 @@ namespace DTXMania
 						{
 							listノードリスト.Add(item);
 							this.n検索された曲ノード数++;
-							if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+							if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 							{
 								StringBuilder builder = new StringBuilder(0x200);
 								builder.Append(string.Format("nID#{0:D3}", item.nID));
@@ -264,7 +264,7 @@ namespace DTXMania
 				}
 				finally
 				{
-					if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+					if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 					{
 						Trace.Unindent();
 					}
@@ -279,7 +279,7 @@ namespace DTXMania
 			{
 				foreach (FileInfo fileinfo in info.GetFiles())
 				{
-					SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
+					SlowOrSuspendSearchTask();    // #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 					string strExt = fileinfo.Extension.ToLower();
 					if ((strExt.Equals(".dtx") || strExt.Equals(".gda")) || ((strExt.Equals(".g2d") || strExt.Equals(".bms")) || strExt.Equals(".bme")))
 					{
@@ -306,7 +306,7 @@ namespace DTXMania
 						this.n検索されたスコア数++;
 						listノードリスト.Add(c曲リストノード);
 						this.n検索された曲ノード数++;
-						if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+						if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 						{
 							Trace.Indent();
 							try
@@ -343,7 +343,7 @@ namespace DTXMania
 
 			foreach (DirectoryInfo infoDir in info.GetDirectories())
 			{
-				SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
+				SlowOrSuspendSearchTask();    // #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 
 				#region [ a. "dtxfiles." で始まるフォルダの場合 ]
 				//-----------------------------
@@ -420,7 +420,7 @@ namespace DTXMania
 							{
 								// box.defに記載されているスキン情報をコピー。末尾に必ず\をつけておくこと。
 								string s = System.IO.Path.Combine(infoDir.FullName, boxdef.SkinPath);
-								if (s[s.Length - 1] != System.IO.Path.DirectorySeparatorChar)	// フォルダ名末尾に\を必ずつけて、CSkin側と表記を統一する
+								if (s[s.Length - 1] != System.IO.Path.DirectorySeparatorChar) // フォルダ名末尾に\を必ずつけて、CSkin側と表記を統一する
 								{
 									s += System.IO.Path.DirectorySeparatorChar;
 								}
@@ -452,7 +452,7 @@ namespace DTXMania
 							c曲リストノード.nPoor範囲ms = boxdef.PoorRange;
 						}
 					}
-					if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+					if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 					{
 						Trace.Indent();
 						try
@@ -519,7 +519,7 @@ namespace DTXMania
 					{
 						// box.defに記載されているスキン情報をコピー。末尾に必ず\をつけておくこと。
 						string s = System.IO.Path.Combine(infoDir.FullName, boxdef.SkinPath);
-						if (s[s.Length - 1] != System.IO.Path.DirectorySeparatorChar)	// フォルダ名末尾に\を必ずつけて、CSkin側と表記を統一する
+						if (s[s.Length - 1] != System.IO.Path.DirectorySeparatorChar) // フォルダ名末尾に\を必ずつけて、CSkin側と表記を統一する
 						{
 							s += System.IO.Path.DirectorySeparatorChar;
 						}
@@ -543,7 +543,7 @@ namespace DTXMania
 					c曲リストノード.nGood範囲ms = boxdef.GoodRange;
 					c曲リストノード.nPoor範囲ms = boxdef.PoorRange;
 					listノードリスト.Add(c曲リストノード);
-					if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+					if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 					{
 						Trace.TraceInformation("box.def検出 : {0}", infoDir.FullName + @"\box.def");
 						Trace.Indent();
@@ -648,7 +648,7 @@ namespace DTXMania
 			{
 				while (enumerator.MoveNext())
 				{
-					SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
+					SlowOrSuspendSearchTask();    // #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 
 					C曲リストノード node = enumerator.Current;
 					if (node.eノード種別 == C曲リストノード.Eノード種別.BOX)
@@ -664,7 +664,7 @@ namespace DTXMania
 							{
 								if (match == null)
 								{
-									match = delegate(Cスコア sc)
+									match = delegate (Cスコア sc)
 									{
 										return
 											(
@@ -679,7 +679,7 @@ namespace DTXMania
 								if (nMatched == -1)
 								{
 									//Trace.TraceInformation( "songs.db に存在しません。({0})", node.arスコア[ lv ].ファイル情報.ファイルの絶対パス );
-									if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+									if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 									{
 										Trace.TraceInformation("songs.db に存在しません。({0})", node.arスコア[lv].ファイル情報.ファイルの絶対パス);
 									}
@@ -688,7 +688,7 @@ namespace DTXMania
 								{
 									node.arスコア[lv].譜面情報 = this.listSongsDB[nMatched].譜面情報;
 									node.arスコア[lv].bSongDBにキャッシュがあった = true;
-									if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+									if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 									{
 										Trace.TraceInformation("songs.db から転記しました。({0})", node.arスコア[lv].ファイル情報.ファイルの絶対パス);
 									}
@@ -699,7 +699,7 @@ namespace DTXMania
 										try
 										{
 											CScoreIni scoreIni = new CScoreIni(strFileNameScoreIni);
-											for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+											for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 											{
 												if (scoreIni.stセクション.HiSkill[i].b演奏にMIDI入力を使用した
 													|| scoreIni.stセクション.HiSkill[i].b演奏にキーボードを使用した
@@ -724,7 +724,7 @@ namespace DTXMania
 											{
 												node.arスコア[lv].譜面情報.演奏履歴[j] = scoreIni.stファイル.History[j];
 											}
-											if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+											if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 											{
 												Trace.TraceInformation("演奏記録ファイルから HiSkill 情報と演奏履歴を取得しました。({0})", strFileNameScoreIni);
 											}
@@ -802,7 +802,7 @@ namespace DTXMania
 		{
 			foreach (C曲リストノード c曲リストノード in ノードリスト)
 			{
-				SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
+				SlowOrSuspendSearchTask();    // #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 
 				if (c曲リストノード.eノード種別 == C曲リストノード.Eノード種別.BOX)
 				{
@@ -822,7 +822,7 @@ namespace DTXMania
 							{
 								try
 								{
-									CDTX cdtx = new CDTX(c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス,false);//DTX ファイルのヘッダだけ読み込んでいたが、使用レーン数の集計の為全て読み込みに変更
+									CDTX cdtx = new CDTX(c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス, false);//DTX ファイルのヘッダだけ読み込んでいたが、使用レーン数の集計の為全て読み込みに変更
 									c曲リストノード.arスコア[i].譜面情報.タイトル = cdtx.TITLE;
 									c曲リストノード.arスコア[i].譜面情報.アーティスト名 = cdtx.ARTIST;
 									c曲リストノード.arスコア[i].譜面情報.コメント = cdtx.COMMENT;
@@ -837,7 +837,7 @@ namespace DTXMania
 									c曲リストノード.arスコア[i].譜面情報.レベルを非表示にする = cdtx.HIDDENLEVEL;
 									c曲リストノード.arスコア[i].譜面情報.曲種別 = cdtx.e種別;
 									c曲リストノード.arスコア[i].譜面情報.Bpm = cdtx.BPM;
-									c曲リストノード.arスコア[i].譜面情報.Duration = 0;	//  (cdtx.listChip == null)? 0 : cdtx.listChip[ cdtx.listChip.Count - 1 ].n発声時刻ms;
+									c曲リストノード.arスコア[i].譜面情報.Duration = 0;  //  (cdtx.listChip == null)? 0 : cdtx.listChip[ cdtx.listChip.Count - 1 ].n発声時刻ms;
 									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Drums = cdtx.n使用レーン数.Drums;
 									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Guitar = cdtx.n使用レーン数.Guitar;
 									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Bass = cdtx.n使用レーン数.Bass;
@@ -846,7 +846,7 @@ namespace DTXMania
 									//Debug.WriteLine( "★" + this.nファイルから反映できたスコア数 + " " + c曲リストノード.arスコア[ i ].譜面情報.タイトル );
 									#region [ 曲検索ログ出力 ]
 									//-----------------
-									if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+									if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 									{
 										StringBuilder sb = new StringBuilder(0x400);
 										sb.Append(string.Format("曲データファイルから譜面情報を転記しました。({0})", path));
@@ -958,7 +958,7 @@ namespace DTXMania
 
 				#region [ ログ出力 ]
 				//-----------------------------
-				if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+				if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 				{
 					StringBuilder sb = new StringBuilder(0x100);
 					sb.Append(string.Format("nID#{0:D3}", itemRandom.nID));
@@ -982,7 +982,7 @@ namespace DTXMania
 			// すべてのノードについて…
 			foreach (C曲リストノード c曲リストノード in ノードリスト)
 			{
-				SlowOrSuspendSearchTask();		// #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
+				SlowOrSuspendSearchTask();    // #27060 中断要求があったら、解除要求が来るまで待機, #PREMOVIE再生中は検索負荷を落とす
 
 				#region [ BOXノードなら子リストに <<BACK を入れ、子リストに後処理を適用する ]
 				//-----------------------------
@@ -1016,7 +1016,7 @@ namespace DTXMania
 
 					#region [ ログ出力 ]
 					//-----------------------------
-					if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+					if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 					{
 						StringBuilder sb = new StringBuilder(0x100);
 						sb.Append(string.Format("nID#{0:D3}", itemBack.nID));
@@ -1050,7 +1050,7 @@ namespace DTXMania
 						{
 							c曲リストノード.strタイトル = c曲リストノード.arスコア[j].譜面情報.タイトル;
 
-							if (CDTXMania.Instance.ConfigIni.bLog曲検索ログ出力)
+							if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 								Trace.TraceInformation("タイトルを設定しました。(nID#{0:D3}, title={1})", c曲リストノード.nID, c曲リストノード.strタイトル);
 
 							break;
@@ -1165,7 +1165,7 @@ namespace DTXMania
 		//-----------------
 		public void t曲リストのソート1_絶対パス順(List<C曲リストノード> ノードリスト)
 		{
-			ノードリスト.Sort(delegate(C曲リストノード n1, C曲リストノード n2)
+			ノードリスト.Sort(delegate (C曲リストノード n1, C曲リストノード n2)
 			{
 				#region [ 共通処理 ]
 				if (n1 == n2)
@@ -1232,9 +1232,9 @@ namespace DTXMania
 				}
 			}
 		}
-		public void t曲リストのソート2_タイトル順(List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p)
+		public void t曲リストのソート2_タイトル順(List<C曲リストノード> ノードリスト, EPart part, int order, params object[] p)
 		{
-			ノードリスト.Sort(delegate(C曲リストノード n1, C曲リストノード n2)
+			ノードリスト.Sort(delegate (C曲リストノード n1, C曲リストノード n2)
 			{
 				if (n1 == n2)
 				{
@@ -1261,13 +1261,13 @@ namespace DTXMania
 		/// <param name="ノードリスト"></param>
 		/// <param name="part"></param>
 		/// <param name="order">1=Ascend -1=Descend</param>
-		public void t曲リストのソート3_演奏回数の多い順(List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p)
+		public void t曲リストのソート3_演奏回数の多い順(List<C曲リストノード> ノードリスト, EPart part, int order, params object[] p)
 		{
 			order = -order;
 			int nL12345 = (int)p[0];
-			if (part != E楽器パート.UNKNOWN)
+			if (part != EPart.Unknown)
 			{
-				ノードリスト.Sort(delegate(C曲リストノード n1, C曲リストノード n2)
+				ノードリスト.Sort(delegate (C曲リストノード n1, C曲リストノード n2)
 				{
 					#region [ 共通処理 ]
 					if (n1 == n2)
@@ -1325,13 +1325,13 @@ namespace DTXMania
 				//				}
 			}
 		}
-		public void t曲リストのソート4_LEVEL順(List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p)
+		public void t曲リストのソート4_LEVEL順(List<C曲リストノード> ノードリスト, EPart part, int order, params object[] p)
 		{
 			order = -order;
 			int nL12345 = (int)p[0];
-			if (part != E楽器パート.UNKNOWN)
+			if (part != EPart.Unknown)
 			{
-				ノードリスト.Sort(delegate(C曲リストノード n1, C曲リストノード n2)
+				ノードリスト.Sort(delegate (C曲リストノード n1, C曲リストノード n2)
 				{
 					#region [ 共通処理 ]
 					if (n1 == n2)
@@ -1375,13 +1375,13 @@ namespace DTXMania
 				}
 			}
 		}
-		public void t曲リストのソート5_BestRank順(List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p)
+		public void t曲リストのソート5_BestRank順(List<C曲リストノード> ノードリスト, EPart part, int order, params object[] p)
 		{
 			order = -order;
 			int nL12345 = (int)p[0];
-			if (part != E楽器パート.UNKNOWN)
+			if (part != EPart.Unknown)
 			{
-				ノードリスト.Sort(delegate(C曲リストノード n1, C曲リストノード n2)
+				ノードリスト.Sort(delegate (C曲リストノード n1, C曲リストノード n2)
 				{
 					#region [ 共通処理 ]
 					if (n1 == n2)
@@ -1432,13 +1432,13 @@ namespace DTXMania
 				}
 			}
 		}
-		public void t曲リストのソート6_SkillPoint順(List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p)
+		public void t曲リストのソート6_SkillPoint順(List<C曲リストノード> ノードリスト, EPart part, int order, params object[] p)
 		{
 			order = -order;
 			int nL12345 = (int)p[0];
-			if (part != E楽器パート.UNKNOWN)
+			if (part != EPart.Unknown)
 			{
-				ノードリスト.Sort(delegate(C曲リストノード n1, C曲リストノード n2)
+				ノードリスト.Sort(delegate (C曲リストノード n1, C曲リストノード n2)
 				{
 					#region [ 共通処理 ]
 					if (n1 == n2)
@@ -1482,12 +1482,12 @@ namespace DTXMania
 				}
 			}
 		}
-		public void t曲リストのソート7_更新日時順(List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p)
+		public void t曲リストのソート7_更新日時順(List<C曲リストノード> ノードリスト, EPart part, int order, params object[] p)
 		{
 			int nL12345 = (int)p[0];
-			if (part != E楽器パート.UNKNOWN)
+			if (part != EPart.Unknown)
 			{
-				ノードリスト.Sort(delegate(C曲リストノード n1, C曲リストノード n2)
+				ノードリスト.Sort(delegate (C曲リストノード n1, C曲リストノード n2)
 				{
 					#region [ 共通処理 ]
 					if (n1 == n2)
@@ -1532,10 +1532,10 @@ namespace DTXMania
 				}
 			}
 		}
-		public void t曲リストのソート8_アーティスト名順(List<C曲リストノード> ノードリスト, E楽器パート part, int order, params object[] p)
+		public void t曲リストのソート8_アーティスト名順(List<C曲リストノード> ノードリスト, EPart part, int order, params object[] p)
 		{
 			int nL12345 = (int)p[0];
-			ノードリスト.Sort(delegate(C曲リストノード n1, C曲リストノード n2)
+			ノードリスト.Sort(delegate (C曲リストノード n1, C曲リストノード n2)
 			{
 				#region [ 共通処理 ]
 				if (n1 == n2)
@@ -1594,13 +1594,13 @@ namespace DTXMania
 			// 事前チェック。
 
 			if (song == null)
-				return n現在のアンカ難易度レベル;	// 曲がまったくないよ
+				return n現在のアンカ難易度レベル; // 曲がまったくないよ
 
 			if (song.arスコア[n現在のアンカ難易度レベル] != null)
-				return n現在のアンカ難易度レベル;	// 難易度ぴったりの曲があったよ
+				return n現在のアンカ難易度レベル; // 難易度ぴったりの曲があったよ
 
 			if ((song.eノード種別 == C曲リストノード.Eノード種別.BOX) || (song.eノード種別 == C曲リストノード.Eノード種別.BACKBOX))
-				return 0;								// BOX と BACKBOX は関係無いよ
+				return 0;               // BOX と BACKBOX は関係無いよ
 
 
 			// 現在のアンカレベルから、難易度上向きに検索開始。
@@ -1610,9 +1610,9 @@ namespace DTXMania
 			for (int i = 0; i < 5; i++)
 			{
 				if (song.arスコア[n最も近いレベル] != null)
-					break;	// 曲があった。
+					break;  // 曲があった。
 
-				n最も近いレベル = (n最も近いレベル + 1) % 5;	// 曲がなかったので次の難易度レベルへGo。（5以上になったら0に戻る。）
+				n最も近いレベル = (n最も近いレベル + 1) % 5;  // 曲がなかったので次の難易度レベルへGo。（5以上になったら0に戻る。）
 			}
 
 
@@ -1628,9 +1628,9 @@ namespace DTXMania
 				for (int i = 0; i < 5; i++)
 				{
 					if (song.arスコア[n最も近いレベル] != null)
-						break;	// 曲があった。
+						break;  // 曲があった。
 
-					n最も近いレベル = ((n最も近いレベル - 1) + 5) % 5;	// 曲がなかったので次の難易度レベルへGo。（0未満になったら4に戻る。）
+					n最も近いレベル = ((n最も近いレベル - 1) + 5) % 5;  // 曲がなかったので次の難易度レベルへGo。（0未満になったら4に戻る。）
 				}
 			}
 
@@ -1659,7 +1659,7 @@ namespace DTXMania
 					{
 						return order * n1.arスコア[ 0 ].ファイル情報.フォルダの絶対パス.CompareTo( n2.arスコア[ 0 ].ファイル情報.フォルダの絶対パス );
 					}
-					#endregion
+		#endregion
 					double dBPMn1 = 0.0, dBPMn2 = 0.0;
 					if ( n1.arスコア[ nL12345 ] != null )
 					{
@@ -1700,8 +1700,8 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 			try
 			{
 				var ini = new CScoreIni(strScoreIniファイルパス);
-				
-				for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; inst++)
+
+				for (EPart inst = EPart.Drums; inst <= EPart.Bass; inst++)
 				{
 					//-----------------
 					if (
@@ -1789,11 +1789,11 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 		/// </summary>
 		private void SlowOrSuspendSearchTask()
 		{
-			if (this.bIsSuspending)		// #27060 中断要求があったら、解除要求が来るまで待機
+			if (this.bIsSuspending)   // #27060 中断要求があったら、解除要求が来るまで待機
 			{
 				autoReset.WaitOne();
 			}
-			if (this.bIsSlowdown && ++this.searchCount > 10)			// #27060 #PREMOVIE再生中は検索負荷を下げる
+			if (this.bIsSlowdown && ++this.searchCount > 10)      // #27060 #PREMOVIE再生中は検索負荷を下げる
 			{
 				Thread.Sleep(100);
 				this.searchCount = 0;

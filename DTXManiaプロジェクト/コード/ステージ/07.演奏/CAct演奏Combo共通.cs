@@ -10,7 +10,7 @@ namespace DTXMania
 {
 	internal class CAct演奏Combo共通 : CActivity
 	{
-		public STDGBVALUE<CComboStatus> dgbコンボ数;
+		public STDGBSValue<CComboStatus> dgbコンボ数;
 		public class CComboStatus
 		{
 			//public CAct演奏Combo共通 act;
@@ -61,7 +61,7 @@ namespace DTXMania
 		public CAct演奏Combo共通()
 		{
 			this.b活性化してない = true;
-			
+
 			// 180度分のジャンプY座標差分を取得。(0度: 0 → 90度:-15 → 180度: 0)
 			for (int i = 0; i < 180; i++)
 			{
@@ -69,11 +69,11 @@ namespace DTXMania
 			}
 		}
 
-		private void tコンボ表示(E楽器パート inst, int nCombo値, int nジャンプインデックス)
+		private void tコンボ表示(EPart inst, int nCombo値, int nジャンプインデックス)
 		{
 			int x, y;
-			x = CDTXMania.Instance.Coordinates.Combo[inst].X;
-			y = CDTXMania.Instance.Coordinates.Combo[inst].Y;
+			x = CDTXMania.Instance.ConfigIni.cdComboX[inst][CDTXMania.Instance.ConfigIni.eActiveInst];
+			y = CDTXMania.Instance.ConfigIni.cdComboY[inst][CDTXMania.Instance.ConfigIni.eActiveInst];
 			if (CDTXMania.Instance.ConfigIni.bReverse[inst])
 			{
 				y = SampleFramework.GameWindowSize.Height - y
@@ -88,7 +88,7 @@ namespace DTXMania
 			int[] n位の数 = new int[10];
 			// 表示は10桁もあれば足りるだろう
 			//-----------------
-			if (((E判定文字表示位置)CDTXMania.Instance.ConfigIni.判定文字表示位置[inst]) != E判定文字表示位置.表示OFF && nCombo値 > 0)
+			if (CDTXMania.Instance.ConfigIni.bDisplayCombo[inst] && nCombo値 > 0)
 			{
 				// n位の数[] の格納。(例：nCombo値=125 のとき n位の数 = { 5,2,1,0,0,0,0,0,0,0 })
 				int n = nCombo値;
@@ -96,8 +96,8 @@ namespace DTXMania
 				int n全桁の合計幅 = 0;
 				while ((n > 0) && (n桁数 < 10))
 				{
-					n位の数[n桁数] = n % 10;		// 1の位を格納
-					n = (n - (n % 10)) / 10;	// 右へシフト（例: 12345 → 1234 ）
+					n位の数[n桁数] = n % 10;   // 1の位を格納
+					n = (n - (n % 10)) / 10;  // 右へシフト（例: 12345 → 1234 ）
 					n全桁の合計幅 += CDTXMania.Instance.Coordinates.ImgComboOneDigit.W;
 					n桁数++;
 				}
@@ -105,7 +105,7 @@ namespace DTXMania
 				// "COMBO" の拡大率を設定
 				float f拡大率 = 1.0f;
 				if (nジャンプインデックス >= 0 && nジャンプインデックス < 180)
-					f拡大率 = 1.0f - (((float)this.nジャンプ差分値[nジャンプインデックス]) / 45.0f);		// f拡大率 = 1.0 → 1.3333... → 1.0
+					f拡大率 = 1.0f - (((float)this.nジャンプ差分値[nジャンプインデックス]) / 45.0f);    // f拡大率 = 1.0 → 1.3333... → 1.0
 
 				if (this.tex != null)
 				{
@@ -126,7 +126,7 @@ namespace DTXMania
 				{
 					f拡大率 = 1.0f;
 					if (nジャンプインデックス >= 0 && nジャンプインデックス < 180)
-						f拡大率 = 1.0f - (((float)this.nジャンプ差分値[nジャンプインデックス]) / 45f);		// f拡大率 = 1.0 → 1.3333... → 1.0
+						f拡大率 = 1.0f - (((float)this.nジャンプ差分値[nジャンプインデックス]) / 45f);    // f拡大率 = 1.0 → 1.3333... → 1.0
 
 					if (this.tex != null)
 						this.tex.vc拡大縮小倍率 = new Vector3(f拡大率, f拡大率, 1.0f);
@@ -149,8 +149,8 @@ namespace DTXMania
 		// CActivity 実装
 		public override void On活性化()
 		{
-			this.dgbコンボ数 = new STDGBVALUE<CComboStatus>();
-			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+			this.dgbコンボ数 = new STDGBSValue<CComboStatus>();
+			for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 			{
 				this.dgbコンボ数[i] = new CComboStatus();
 			}
@@ -188,9 +188,9 @@ namespace DTXMania
 		{
 			if (!this.b活性化してない)
 			{
-				for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
+				for (EPart inst = EPart.Drums; inst <= EPart.Bass; ++inst)
 				{
-					if (CDTXMania.Instance.ConfigIni.b楽器有効[inst])
+					if (CDTXMania.Instance.ConfigIni.b楽器有効(inst) && CDTXMania.Instance.DTX.bチップがある[inst])
 					{
 						EEvent e今回の状態遷移イベント;
 						CComboStatus st = this.dgbコンボ数[inst];
@@ -204,8 +204,8 @@ namespace DTXMania
 						{
 							e今回の状態遷移イベント = EEvent.ミス通知;
 						}
-						else if ((st.n現在表示中のCOMBO値 < CDTXMania.Instance.ConfigIni.n表示可能な最小コンボ数[inst]) &&
-							(st.nCOMBO値 < CDTXMania.Instance.ConfigIni.n表示可能な最小コンボ数[inst]))
+						else if ((st.n現在表示中のCOMBO値 < CDTXMania.Instance.ConfigIni.nMinComboDisp[inst]) &&
+							(st.nCOMBO値 < CDTXMania.Instance.ConfigIni.nMinComboDisp[inst]))
 						{
 							e今回の状態遷移イベント = EEvent.非表示;
 						}
@@ -234,7 +234,7 @@ namespace DTXMania
 						}
 
 
-					Retry:	// モードが変化した場合はここからリトライする。
+						Retry:  // モードが変化した場合はここからリトライする。
 
 						switch (st.e現在のモード)
 						{

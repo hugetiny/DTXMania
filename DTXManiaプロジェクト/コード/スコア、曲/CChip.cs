@@ -11,24 +11,24 @@ namespace DTXMania
 		public bool bHit { get; set; }
 		public bool b可視 { get; set; }
 		public int n透明度 { get; set; }
-		public int nLag { get; set; }				// 2011.2.1 yyagi
+		public int nLag { get; set; }       // 2011.2.1 yyagi
 		public int n楽器パートでの出現順 { get; set; }               // #35411 2015.08.20 chnmr0
 		public bool bTargetGhost判定済み { get; set; }               // #35411 2015.08.22 chnmr0
 		public bool extendInfoForGhost { get; set; } // 2015.9.29 chnmr0
 
-		public bool bIsAutoPlayed { get; private set; }							// 2011.6.10 yyagi		
+		public bool bIsAutoPlayed { get; private set; }             // 2011.6.10 yyagi		
 		public double dbチップサイズ倍率 { get; private set; }
 		public double db実数値 { get; private set; }
-		public EAVI種別 eAVI種別 { get; private set; }
-		public EBGA種別 eBGA種別 { get; private set; }
-		public E楽器パート e楽器パート { get; private set; }
-		public Ech定義 eチャンネル番号 { get; private set; }
+		public EAVIType eAVI種別 { get; private set; }
+		public EBGAType eBGA種別 { get; private set; }
+		public EPart e楽器パート { get; private set; }
+		public EChannel eチャンネル番号 { get; private set; }
 
 		/// <summary>
 		/// バーからの距離（スクロールスピードを反映したチップの発声時刻）
 		/// プロパティに対してインデクサsetできないためまずフィールドとして持ち、プロパティでアクセスできるようにします。
 		/// </summary>
-		private STDGBVALUE<int> nバーからの距離dotInternal;
+		private STDGBSValue<int> nバーからの距離dotInternal;
 		public int n整数値 { get; private set; }
 		public int n整数値_内部番号 { get; private set; }
 		public int n総移動時間 { get; private set; }
@@ -40,10 +40,10 @@ namespace DTXMania
 		public CDTX.CBGAPAN rBGAPan { get; private set; }
 		public CDTX.CBMP rBMP { get; private set; }
 		public CDTX.CBMPTEX rBMPTEX { get; private set; }
-		public bool b演奏終了後も再生が続くチップである { get; private set; }	// #32248 2013.10.14 yyagi
-		public bool b空打ちチップである { get; private set; }					// #34029 2014.7.15 yyagi
+		public bool b演奏終了後も再生が続くチップである { get; private set; }  // #32248 2013.10.14 yyagi
+		public bool b空打ちチップである { get; private set; }          // #34029 2014.7.15 yyagi
 
-		public STDGBVALUE<int> nバーからの距離dot
+		public STDGBSValue<int> nバーからの距離dot
 		{
 			get
 			{
@@ -59,8 +59,8 @@ namespace DTXMania
 			get
 			{
 				return (
-					this.eチャンネル番号 == Ech定義.BPM ||
-					this.eチャンネル番号 == Ech定義.BPMEx
+					this.eチャンネル番号 == EChannel.BPM ||
+					this.eチャンネル番号 == EChannel.BPMEx
 				);
 			}
 		}
@@ -72,7 +72,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.HiHatClose <= eチャンネル番号 && eチャンネル番号 <= Ech定義.LeftBassDrum;
+				return EChannel.HiHatClose <= eチャンネル番号 && eチャンネル番号 <= EChannel.LeftBassDrum;
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.HiHatClose <= eチャンネル番号 && eチャンネル番号 <= Ech定義.LeftCymbal;
+				return EChannel.HiHatClose <= eチャンネル番号 && eチャンネル番号 <= EChannel.LeftCymbal;
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.HiHatClose_Hidden <= eチャンネル番号 && eチャンネル番号 <= Ech定義.LeftBassDrum_Hidden;
+				return EChannel.HiHatClose_Hidden <= eチャンネル番号 && eチャンネル番号 <= EChannel.LeftBassDrum_Hidden;
 			}
 		}
 
@@ -106,7 +106,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.HiHatClose_Hidden <= eチャンネル番号 && eチャンネル番号 <= Ech定義.LeftCymbal_Hidden;
+				return EChannel.HiHatClose_Hidden <= eチャンネル番号 && eチャンネル番号 <= EChannel.LeftCymbal_Hidden;
 			}
 		}
 
@@ -118,8 +118,8 @@ namespace DTXMania
 			get
 			{
 				return
-					(Ech定義.HiHatClose_NoChip <= eチャンネル番号 && eチャンネル番号 <= Ech定義.RideCymbal_NoChip) ||
-					(Ech定義.LeftCymbal_NoChip <= eチャンネル番号 && eチャンネル番号 <= Ech定義.LeftBassDrum_NoChip);
+					(EChannel.HiHatClose_NoChip <= eチャンネル番号 && eチャンネル番号 <= EChannel.RideCymbal_NoChip) ||
+					(EChannel.LeftCymbal_NoChip <= eチャンネル番号 && eチャンネル番号 <= EChannel.LeftBassDrum_NoChip);
 			}
 		}
 
@@ -154,7 +154,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.Guitar_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Guitar_RGB;
+				return EChannel.Guitar_Open <= eチャンネル番号 && eチャンネル番号 <= EChannel.Guitar_RGB;
 			}
 		}
 
@@ -162,7 +162,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.Guitar_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Guitar_Wailing;
+				return EChannel.Guitar_Open <= eチャンネル番号 && eチャンネル番号 <= EChannel.Guitar_Wailing;
 			}
 		}
 
@@ -173,7 +173,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Bass_RGB;
+				return EChannel.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= EChannel.Bass_RGB;
 			}
 		}
 
@@ -181,13 +181,13 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= Ech定義.Bass_Wailing;
+				return EChannel.Bass_Open <= eチャンネル番号 && eチャンネル番号 <= EChannel.Bass_Wailing;
 			}
 		}
 
-		public static bool bBass可視チップ_Wailing含む_st(Ech定義 e)
+		public static bool bBass可視チップ_Wailing含む_st(EChannel e)
 		{
-			return Ech定義.Bass_Open <= e && e <= Ech定義.Bass_Wailing;
+			return EChannel.Bass_Open <= e && e <= EChannel.Bass_Wailing;
 		}
 
 		/// <summary>
@@ -252,7 +252,7 @@ namespace DTXMania
 			}
 		}
 
-		public bool this[Ech定義 x]
+		public bool this[EChannel x]
 		{
 			get
 			{
@@ -265,10 +265,10 @@ namespace DTXMania
 			get
 			{
 				return
-					((eチャンネル番号 == Ech定義.BGALayer1) ||
-					(eチャンネル番号 == Ech定義.BGALayer2) ||
-					((Ech定義.BGALayer3 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.BGALayer7)) ||
-					(eチャンネル番号 == Ech定義.BGALayer8));
+					((eチャンネル番号 == EChannel.BGALayer1) ||
+					(eチャンネル番号 == EChannel.BGALayer2) ||
+					((EChannel.BGALayer3 <= eチャンネル番号) && (eチャンネル番号 <= EChannel.BGALayer7)) ||
+					(eチャンネル番号 == EChannel.BGALayer8));
 			}
 		}
 
@@ -277,10 +277,10 @@ namespace DTXMania
 			get
 			{
 				return
-					((eチャンネル番号 == Ech定義.BGALayer1_Swap) ||
-					(eチャンネル番号 == Ech定義.BGALayer2_Swap) ||
-					((Ech定義.BGALayer3_Swap <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.BGALayer7_Swap)) ||
-					(eチャンネル番号 == Ech定義.BGALayer8_Swap));
+					((eチャンネル番号 == EChannel.BGALayer1_Swap) ||
+					(eチャンネル番号 == EChannel.BGALayer2_Swap) ||
+					((EChannel.BGALayer3_Swap <= eチャンネル番号) && (eチャンネル番号 <= EChannel.BGALayer7_Swap)) ||
+					(eチャンネル番号 == EChannel.BGALayer8_Swap));
 			}
 		}
 
@@ -288,19 +288,19 @@ namespace DTXMania
 		{
 			if (bDrums可視チップ)
 			{
-				e楽器パート = E楽器パート.DRUMS;
+				e楽器パート = EPart.Drums;
 			}
 			else if (bGuitar可視チップ)
 			{
-				e楽器パート = E楽器パート.GUITAR;
+				e楽器パート = EPart.Guitar;
 			}
 			else if (bBass可視チップ)
 			{
-				e楽器パート = E楽器パート.BASS;
+				e楽器パート = EPart.Bass;
 			}
 			else
 			{
-				e楽器パート = E楽器パート.UNKNOWN;
+				e楽器パート = EPart.Unknown;
 			}
 		}
 
@@ -310,37 +310,37 @@ namespace DTXMania
 		/// </summary>
 		public void ConvertNoChip()
 		{
-			if (Ech定義.HiHatClose_NoChip <= eチャンネル番号 && eチャンネル番号 <= Ech定義.RideCymbal_NoChip)
+			if (EChannel.HiHatClose_NoChip <= eチャンネル番号 && eチャンネル番号 <= EChannel.RideCymbal_NoChip)
 			{
 				b空打ちチップである = true;
 				eチャンネル番号 = eチャンネル番号 - 0xB0 + 0x10;
 			}
-			else if (this[Ech定義.Guitar_NoChip] || this[Ech定義.Bass_NoChip])
+			else if (this[EChannel.Guitar_NoChip] || this[EChannel.Bass_NoChip])
 			{
 				b空打ちチップである = true;
 			}
-			else if (this[Ech定義.LeftCymbal_NoChip])
+			else if (this[EChannel.LeftCymbal_NoChip])
 			{
 				b空打ちチップである = true;
-				eチャンネル番号 = Ech定義.LeftCymbal;
+				eチャンネル番号 = EChannel.LeftCymbal;
 			}
-			else if (this[Ech定義.LeftPedal_NoChip])
+			else if (this[EChannel.LeftPedal_NoChip])
 			{
 				b空打ちチップである = true;
-				eチャンネル番号 = Ech定義.LeftPedal;
+				eチャンネル番号 = EChannel.LeftPedal;
 			}
-			else if (this[Ech定義.LeftBassDrum_NoChip])
+			else if (this[EChannel.LeftBassDrum_NoChip])
 			{
 				b空打ちチップである = true;
-				eチャンネル番号 = Ech定義.LeftBassDrum;
+				eチャンネル番号 = EChannel.LeftBassDrum;
 			}
 		}
 
 		public void ConvertGBNoChip()
 		{
-			if (this[Ech定義.Guitar_NoChip] || this[Ech定義.Bass_NoChip])
+			if (this[EChannel.Guitar_NoChip] || this[EChannel.Bass_NoChip])
 			{
-				eチャンネル番号 = this[Ech定義.Guitar_NoChip] ? Ech定義.Guitar_Open : Ech定義.Bass_Open;
+				eチャンネル番号 = this[EChannel.Guitar_NoChip] ? EChannel.Guitar_Open : EChannel.Bass_Open;
 			}
 		}
 
@@ -353,19 +353,19 @@ namespace DTXMania
 			get
 			{
 				bool ret = false;
-				Ech定義 x = eチャンネル番号;
+				EChannel x = eチャンネル番号;
 
-				if (x == Ech定義.BGM ||
-					(Ech定義.HiHatClose <= x && x <= Ech定義.LeftBassDrum) ||
-					(Ech定義.DrumsFillin == x) ||
-					(Ech定義.Guitar_Open <= x && x <= Ech定義.Guitar_Wailing) || x == Ech定義.Guitar_WailingSound ||
-					(Ech定義.HiHatClose_Hidden <= x && x <= Ech定義.LeftBassDrum_Hidden) ||
-					(Ech定義.SE01 <= x && x <= Ech定義.SE09) ||
-					(Ech定義.SE10 <= x && x <= Ech定義.SE19) ||
-					(Ech定義.SE20 <= x && x <= Ech定義.SE29) ||
-					(Ech定義.SE30 <= x && x <= Ech定義.SE32) ||
-					(Ech定義.Bass_Open <= x && x <= Ech定義.Bass_Wailing) || x == Ech定義.Bass_WailingSound ||
-					(Ech定義.HiHatClose_NoChip <= x && x <= Ech定義.LeftBassDrum_NoChip)
+				if (x == EChannel.BGM ||
+					(EChannel.HiHatClose <= x && x <= EChannel.LeftBassDrum) ||
+					(EChannel.DrumsFillin == x) ||
+					(EChannel.Guitar_Open <= x && x <= EChannel.Guitar_Wailing) || x == EChannel.Guitar_WailingSound ||
+					(EChannel.HiHatClose_Hidden <= x && x <= EChannel.LeftBassDrum_Hidden) ||
+					(EChannel.SE01 <= x && x <= EChannel.SE09) ||
+					(EChannel.SE10 <= x && x <= EChannel.SE19) ||
+					(EChannel.SE20 <= x && x <= EChannel.SE29) ||
+					(EChannel.SE30 <= x && x <= EChannel.SE32) ||
+					(EChannel.Bass_Open <= x && x <= EChannel.Bass_Wailing) || x == EChannel.Bass_WailingSound ||
+					(EChannel.HiHatClose_NoChip <= x && x <= EChannel.LeftBassDrum_NoChip)
 					)
 				{
 					ret = true;
@@ -378,7 +378,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return eチャンネル番号 == Ech定義.MovieFull || eチャンネル番号 == Ech定義.Movie;
+				return eチャンネル番号 == EChannel.MovieFull || eチャンネル番号 == EChannel.Movie;
 			}
 		}
 
@@ -386,10 +386,10 @@ namespace DTXMania
 		{
 			get
 			{
-				if (((Ech定義.SE01 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE09)) ||
-						((Ech定義.SE10 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE19)) ||
-						((Ech定義.SE20 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE29)) ||
-						((Ech定義.SE30 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE32)))
+				if (((EChannel.SE01 <= eチャンネル番号) && (eチャンネル番号 <= EChannel.SE09)) ||
+						((EChannel.SE10 <= eチャンネル番号) && (eチャンネル番号 <= EChannel.SE19)) ||
+						((EChannel.SE20 <= eチャンネル番号) && (eチャンネル番号 <= EChannel.SE29)) ||
+						((EChannel.SE30 <= eチャンネル番号) && (eチャンネル番号 <= EChannel.SE32)))
 				{
 					return true;
 				}
@@ -404,7 +404,7 @@ namespace DTXMania
 		{
 			get
 			{
-				return Ech定義.SE24 <= eチャンネル番号 && eチャンネル番号 <= Ech定義.SE29;
+				return EChannel.SE24 <= eチャンネル番号 && eチャンネル番号 <= EChannel.SE29;
 			}
 		}
 
@@ -415,14 +415,14 @@ namespace DTXMania
 				int ret = -1;
 				switch (eチャンネル番号)
 				{
-					case Ech定義.BGALayer1: ret = 0; break;
-					case Ech定義.BGALayer2: ret = 1; break;
-					case Ech定義.BGALayer3: ret = 2; break;
-					case Ech定義.BGALayer4: ret = 3; break;
-					case Ech定義.BGALayer5: ret = 4; break;
-					case Ech定義.BGALayer6: ret = 5; break;
-					case Ech定義.BGALayer7: ret = 6; break;
-					case Ech定義.BGALayer8: ret = 7; break;
+					case EChannel.BGALayer1: ret = 0; break;
+					case EChannel.BGALayer2: ret = 1; break;
+					case EChannel.BGALayer3: ret = 2; break;
+					case EChannel.BGALayer4: ret = 3; break;
+					case EChannel.BGALayer5: ret = 4; break;
+					case EChannel.BGALayer6: ret = 5; break;
+					case EChannel.BGALayer7: ret = 6; break;
+					case EChannel.BGALayer8: ret = 7; break;
 				}
 				return ret;
 			}
@@ -435,14 +435,14 @@ namespace DTXMania
 				int ret = -1;
 				switch (eチャンネル番号)
 				{
-					case Ech定義.BGALayer1_Swap: ret = 0; break;
-					case Ech定義.BGALayer2_Swap: ret = 1; break;
-					case Ech定義.BGALayer3_Swap: ret = 2; break;
-					case Ech定義.BGALayer4_Swap: ret = 3; break;
-					case Ech定義.BGALayer5_Swap: ret = 4; break;
-					case Ech定義.BGALayer6_Swap: ret = 5; break;
-					case Ech定義.BGALayer7_Swap: ret = 6; break;
-					case Ech定義.BGALayer8_Swap: ret = 7; break;
+					case EChannel.BGALayer1_Swap: ret = 0; break;
+					case EChannel.BGALayer2_Swap: ret = 1; break;
+					case EChannel.BGALayer3_Swap: ret = 2; break;
+					case EChannel.BGALayer4_Swap: ret = 3; break;
+					case EChannel.BGALayer5_Swap: ret = 4; break;
+					case EChannel.BGALayer6_Swap: ret = 5; break;
+					case EChannel.BGALayer7_Swap: ret = 6; break;
+					case EChannel.BGALayer8_Swap: ret = 7; break;
 				}
 				return ret;
 			}
@@ -455,18 +455,18 @@ namespace DTXMania
 				int ret = -1;
 				switch (eチャンネル番号)
 				{
-					case Ech定義.HiHatClose: ret = 0; break;
-					case Ech定義.Snare: ret = 1; break;
-					case Ech定義.BassDrum: ret = 2; break;
-					case Ech定義.HighTom: ret = 3; break;
-					case Ech定義.LowTom: ret = 4; break;
-					case Ech定義.Cymbal: ret = 5; break;
-					case Ech定義.FloorTom: ret = 6; break;
-					case Ech定義.HiHatOpen: ret = 7; break;
-					case Ech定義.RideCymbal: ret = 8; break;
-					case Ech定義.LeftCymbal: ret = 9; break;
-					case Ech定義.LeftPedal: ret = 10; break;
-					case Ech定義.LeftBassDrum: ret = 11; break;
+					case EChannel.HiHatClose: ret = 0; break;
+					case EChannel.Snare: ret = 1; break;
+					case EChannel.BassDrum: ret = 2; break;
+					case EChannel.HighTom: ret = 3; break;
+					case EChannel.LowTom: ret = 4; break;
+					case EChannel.Cymbal: ret = 5; break;
+					case EChannel.FloorTom: ret = 6; break;
+					case EChannel.HiHatOpen: ret = 7; break;
+					case EChannel.RideCymbal: ret = 8; break;
+					case EChannel.LeftCymbal: ret = 9; break;
+					case EChannel.LeftPedal: ret = 10; break;
+					case EChannel.LeftBassDrum: ret = 11; break;
 				}
 				return ret;
 			}
@@ -479,18 +479,18 @@ namespace DTXMania
 				int ret = -1;
 				switch (eチャンネル番号)
 				{
-					case Ech定義.HiHatClose_Hidden: ret = 0; break;
-					case Ech定義.Snare_Hidden: ret = 1; break;
-					case Ech定義.BassDrum_Hidden: ret = 2; break;
-					case Ech定義.HighTom_Hidden: ret = 3; break;
-					case Ech定義.LowTom_Hidden: ret = 4; break;
-					case Ech定義.Cymbal_Hidden: ret = 5; break;
-					case Ech定義.FloorTom_Hidden: ret = 6; break;
-					case Ech定義.HiHatOpen_Hidden: ret = 7; break;
-					case Ech定義.RideCymbal_Hidden: ret = 8; break;
-					case Ech定義.LeftCymbal_Hidden: ret = 9; break;
-					case Ech定義.LeftPedal_Hidden: ret = 10; break;
-					case Ech定義.LeftBassDrum_Hidden: ret = 11; break;
+					case EChannel.HiHatClose_Hidden: ret = 0; break;
+					case EChannel.Snare_Hidden: ret = 1; break;
+					case EChannel.BassDrum_Hidden: ret = 2; break;
+					case EChannel.HighTom_Hidden: ret = 3; break;
+					case EChannel.LowTom_Hidden: ret = 4; break;
+					case EChannel.Cymbal_Hidden: ret = 5; break;
+					case EChannel.FloorTom_Hidden: ret = 6; break;
+					case EChannel.HiHatOpen_Hidden: ret = 7; break;
+					case EChannel.RideCymbal_Hidden: ret = 8; break;
+					case EChannel.LeftCymbal_Hidden: ret = 9; break;
+					case EChannel.LeftPedal_Hidden: ret = 10; break;
+					case EChannel.LeftBassDrum_Hidden: ret = 11; break;
 				}
 				return ret;
 			}
@@ -507,123 +507,123 @@ namespace DTXMania
 				switch (this.eチャンネル番号)
 				{
 					#region [ Drums ]
-					case Ech定義.HiHatClose:
-					case Ech定義.Snare:
-					case Ech定義.BassDrum:
-					case Ech定義.HighTom:
-					case Ech定義.LowTom:
-					case Ech定義.Cymbal:
-					case Ech定義.FloorTom:
-					case Ech定義.HiHatOpen:
-					case Ech定義.RideCymbal:
-					case Ech定義.LeftCymbal:
-					case Ech定義.LeftPedal:
-					case Ech定義.LeftBassDrum:
+					case EChannel.HiHatClose:
+					case EChannel.Snare:
+					case EChannel.BassDrum:
+					case EChannel.HighTom:
+					case EChannel.LowTom:
+					case EChannel.Cymbal:
+					case EChannel.FloorTom:
+					case EChannel.HiHatOpen:
+					case EChannel.RideCymbal:
+					case EChannel.LeftCymbal:
+					case EChannel.LeftPedal:
+					case EChannel.LeftBassDrum:
 
-					case Ech定義.HiHatClose_Hidden:
-					case Ech定義.Snare_Hidden:
-					case Ech定義.BassDrum_Hidden:
-					case Ech定義.HighTom_Hidden:
-					case Ech定義.LowTom_Hidden:
-					case Ech定義.Cymbal_Hidden:
-					case Ech定義.FloorTom_Hidden:
-					case Ech定義.HiHatOpen_Hidden:
-					case Ech定義.RideCymbal_Hidden:
-					case Ech定義.LeftCymbal_Hidden:
-					case Ech定義.LeftPedal_Hidden:
-					case Ech定義.LeftBassDrum_Hidden:
+					case EChannel.HiHatClose_Hidden:
+					case EChannel.Snare_Hidden:
+					case EChannel.BassDrum_Hidden:
+					case EChannel.HighTom_Hidden:
+					case EChannel.LowTom_Hidden:
+					case EChannel.Cymbal_Hidden:
+					case EChannel.FloorTom_Hidden:
+					case EChannel.HiHatOpen_Hidden:
+					case EChannel.RideCymbal_Hidden:
+					case EChannel.LeftCymbal_Hidden:
+					case EChannel.LeftPedal_Hidden:
+					case EChannel.LeftBassDrum_Hidden:
 
-					case Ech定義.HiHatClose_NoChip:
-					case Ech定義.Snare_NoChip:
-					case Ech定義.BassDrum_NoChip:
-					case Ech定義.HighTom_NoChip:
-					case Ech定義.LowTom_NoChip:
-					case Ech定義.Cymbal_NoChip:
-					case Ech定義.FloorTom_NoChip:
-					case Ech定義.HiHatOpen_NoChip:
-					case Ech定義.RideCymbal_NoChip:
-					case Ech定義.LeftCymbal_NoChip:
-					case Ech定義.LeftPedal_NoChip:
-					case Ech定義.LeftBassDrum_NoChip:
+					case EChannel.HiHatClose_NoChip:
+					case EChannel.Snare_NoChip:
+					case EChannel.BassDrum_NoChip:
+					case EChannel.HighTom_NoChip:
+					case EChannel.LowTom_NoChip:
+					case EChannel.Cymbal_NoChip:
+					case EChannel.FloorTom_NoChip:
+					case EChannel.HiHatOpen_NoChip:
+					case EChannel.RideCymbal_NoChip:
+					case EChannel.LeftCymbal_NoChip:
+					case EChannel.LeftPedal_NoChip:
+					case EChannel.LeftBassDrum_NoChip:
 
 						return ESoundChipType.Drums;
 					#endregion
 
 					#region [ Guitar ]
-					case Ech定義.Guitar_Open:
-					case Ech定義.Guitar_xxB:
-					case Ech定義.Guitar_xGx:
-					case Ech定義.Guitar_xGB:
-					case Ech定義.Guitar_Rxx:
-					case Ech定義.Guitar_RxB:
-					case Ech定義.Guitar_RGx:
-					case Ech定義.Guitar_RGB:
-					case Ech定義.Guitar_Wailing:
-					case Ech定義.Guitar_WailingSound:
-					case Ech定義.Guitar_NoChip:
+					case EChannel.Guitar_Open:
+					case EChannel.Guitar_xxB:
+					case EChannel.Guitar_xGx:
+					case EChannel.Guitar_xGB:
+					case EChannel.Guitar_Rxx:
+					case EChannel.Guitar_RxB:
+					case EChannel.Guitar_RGx:
+					case EChannel.Guitar_RGB:
+					case EChannel.Guitar_Wailing:
+					case EChannel.Guitar_WailingSound:
+					case EChannel.Guitar_NoChip:
 						return ESoundChipType.Guitar;
 					#endregion
 
 					#region [ Bass ]
-					case Ech定義.Bass_Open:
-					case Ech定義.Bass_xxB:
-					case Ech定義.Bass_xGx:
-					case Ech定義.Bass_xGB:
-					case Ech定義.Bass_Rxx:
-					case Ech定義.Bass_RxB:
-					case Ech定義.Bass_RGx:
-					case Ech定義.Bass_RGB:
-					case Ech定義.Bass_Wailing:
-					case Ech定義.Bass_WailingSound:
-					case Ech定義.Bass_NoChip:
+					case EChannel.Bass_Open:
+					case EChannel.Bass_xxB:
+					case EChannel.Bass_xGx:
+					case EChannel.Bass_xGB:
+					case EChannel.Bass_Rxx:
+					case EChannel.Bass_RxB:
+					case EChannel.Bass_RGx:
+					case EChannel.Bass_RGB:
+					case EChannel.Bass_Wailing:
+					case EChannel.Bass_WailingSound:
+					case EChannel.Bass_NoChip:
 						return ESoundChipType.Bass;
 					#endregion
 
 					#region [ SE ]
-					case Ech定義.SE01:
-					case Ech定義.SE02:
-					case Ech定義.SE03:
-					case Ech定義.SE04:
-					case Ech定義.SE05:
-					case Ech定義.SE06:
-					case Ech定義.SE07:
-					case Ech定義.SE08:
-					case Ech定義.SE09:
-					case Ech定義.SE10:
-					case Ech定義.SE11:
-					case Ech定義.SE12:
-					case Ech定義.SE13:
-					case Ech定義.SE14:
-					case Ech定義.SE15:
-					case Ech定義.SE16:
-					case Ech定義.SE17:
-					case Ech定義.SE18:
-					case Ech定義.SE19:
-					case Ech定義.SE20:
-					case Ech定義.SE21:
-					case Ech定義.SE22:
-					case Ech定義.SE23:
-					case Ech定義.SE24:
-					case Ech定義.SE25:
-					case Ech定義.SE26:
-					case Ech定義.SE27:
-					case Ech定義.SE28:
-					case Ech定義.SE29:
-					case Ech定義.SE30:
-					case Ech定義.SE31:
-					case Ech定義.SE32:
+					case EChannel.SE01:
+					case EChannel.SE02:
+					case EChannel.SE03:
+					case EChannel.SE04:
+					case EChannel.SE05:
+					case EChannel.SE06:
+					case EChannel.SE07:
+					case EChannel.SE08:
+					case EChannel.SE09:
+					case EChannel.SE10:
+					case EChannel.SE11:
+					case EChannel.SE12:
+					case EChannel.SE13:
+					case EChannel.SE14:
+					case EChannel.SE15:
+					case EChannel.SE16:
+					case EChannel.SE17:
+					case EChannel.SE18:
+					case EChannel.SE19:
+					case EChannel.SE20:
+					case EChannel.SE21:
+					case EChannel.SE22:
+					case EChannel.SE23:
+					case EChannel.SE24:
+					case EChannel.SE25:
+					case EChannel.SE26:
+					case EChannel.SE27:
+					case EChannel.SE28:
+					case EChannel.SE29:
+					case EChannel.SE30:
+					case EChannel.SE31:
+					case EChannel.SE32:
 						return ESoundChipType.SE;
 					#endregion
 
 					#region [ BGM ]
-					case Ech定義.BGM:
+					case EChannel.BGM:
 						return ESoundChipType.BGM;
 					#endregion
 
 					#region [ その他 ]
 					default:
-						return ESoundChipType.UNKNOWN;
-					#endregion
+						return ESoundChipType.Unknown;
+						#endregion
 				}
 			}
 		}
@@ -633,36 +633,36 @@ namespace DTXMania
 			{
 				switch (this.eチャンネル番号)
 				{
-					case Ech定義.HiHatClose:
-					case Ech定義.Snare:
-					case Ech定義.BassDrum:
-					case Ech定義.HighTom:
-					case Ech定義.LowTom:
-					case Ech定義.Cymbal:
-					case Ech定義.FloorTom:
-					case Ech定義.HiHatOpen:
-					case Ech定義.RideCymbal:
-					case Ech定義.LeftCymbal:
-					case Ech定義.LeftPedal:
-					case Ech定義.LeftBassDrum:
+					case EChannel.HiHatClose:
+					case EChannel.Snare:
+					case EChannel.BassDrum:
+					case EChannel.HighTom:
+					case EChannel.LowTom:
+					case EChannel.Cymbal:
+					case EChannel.FloorTom:
+					case EChannel.HiHatOpen:
+					case EChannel.RideCymbal:
+					case EChannel.LeftCymbal:
+					case EChannel.LeftPedal:
+					case EChannel.LeftBassDrum:
 
-					case Ech定義.Guitar_Open:
-					case Ech定義.Guitar_xxB:
-					case Ech定義.Guitar_xGx:
-					case Ech定義.Guitar_xGB:
-					case Ech定義.Guitar_Rxx:
-					case Ech定義.Guitar_RxB:
-					case Ech定義.Guitar_RGx:
-					case Ech定義.Guitar_RGB:
+					case EChannel.Guitar_Open:
+					case EChannel.Guitar_xxB:
+					case EChannel.Guitar_xGx:
+					case EChannel.Guitar_xGB:
+					case EChannel.Guitar_Rxx:
+					case EChannel.Guitar_RxB:
+					case EChannel.Guitar_RGx:
+					case EChannel.Guitar_RGB:
 
-					case Ech定義.Bass_Open:
-					case Ech定義.Bass_xxB:
-					case Ech定義.Bass_xGx:
-					case Ech定義.Bass_xGB:
-					case Ech定義.Bass_Rxx:
-					case Ech定義.Bass_RxB:
-					case Ech定義.Bass_RGx:
-					case Ech定義.Bass_RGB:
+					case EChannel.Bass_Open:
+					case EChannel.Bass_xxB:
+					case EChannel.Bass_xGx:
+					case EChannel.Bass_xGB:
+					case EChannel.Bass_Rxx:
+					case EChannel.Bass_RxB:
+					case EChannel.Bass_RGx:
+					case EChannel.Bass_RGB:
 						return true;
 
 					default:
@@ -698,18 +698,18 @@ namespace DTXMania
 
 		public void AdjustPlayPositionForFillin(int index)
 		{
-			if (this[Ech定義.FillIn])
+			if (this[EChannel.FillIn])
 			{
 				// ずらすのは、フィルインONチップと同じ位置にいるチップでも確実にフィルインが発動し、
 				// 同様に、フィルインOFFチップと同じ位置にいるチップでも確実にフィルインが終了するようにするため。
 
 				if ((index > 0) && (index != 2))
 				{
-					n発声位置 -= 32;	// 384÷32＝12 ということで、フィルインONチップは12分音符ほど前へ移動。
+					n発声位置 -= 32;  // 384÷32＝12 ということで、フィルインONチップは12分音符ほど前へ移動。
 				}
 				else if (index == 2)
 				{
-					n発声位置 += 32;	// 同じく、フィルインOFFチップは12分音符ほど後ろへ移動。
+					n発声位置 += 32;  // 同じく、フィルインOFFチップは12分音符ほど後ろへ移動。
 				}
 			}
 		}
@@ -729,7 +729,7 @@ namespace DTXMania
 
 		public void AddPlayPositionMsForSE(int increment)
 		{
-			if (this[Ech定義.BGM] || bSE)
+			if (this[EChannel.BGM] || bSE)
 			{
 				n発声時刻ms += increment;
 			}
@@ -742,7 +742,7 @@ namespace DTXMania
 		{
 			if (bMovie)
 			{
-				eAVI種別 = EAVI種別.Unknown;
+				eAVI種別 = EAVIType.Unknown;
 				rAVI = null;
 				rAVIPan = null;
 				if (listAVIPAN.ContainsKey(n整数値))
@@ -750,7 +750,7 @@ namespace DTXMania
 					CDTX.CAVIPAN cavipan = listAVIPAN[n整数値];
 					if (listAVI.ContainsKey(cavipan.nAVI番号) && (listAVI[cavipan.nAVI番号].avi != null))
 					{
-						eAVI種別 = EAVI種別.AVIPAN;
+						eAVI種別 = EAVIType.AVIPAN;
 						rAVI = listAVI[cavipan.nAVI番号];
 						rAVIPan = cavipan;
 						return;
@@ -758,7 +758,7 @@ namespace DTXMania
 				}
 				if (listAVI.ContainsKey(n整数値) && (listAVI[n整数値].avi != null))
 				{
-					eAVI種別 = EAVI種別.AVI;
+					eAVI種別 = EAVIType.AVI;
 					rAVI = listAVI[n整数値];
 				}
 			}
@@ -773,7 +773,7 @@ namespace DTXMania
 		{
 			if (bBGALayer)
 			{
-				eBGA種別 = EBGA種別.Unknown;
+				eBGA種別 = EBGAType.Unknown;
 				rBMP = null;
 				rBMPTEX = null;
 				rBGA = null;
@@ -785,14 +785,14 @@ namespace DTXMania
 					CDTX.CBGAPAN cbgapan = listBGAPAN[n整数値];
 					if (listBMPTEX.ContainsKey(cbgapan.nBMP番号) && listBMPTEX[cbgapan.nBMP番号].bUse)
 					{
-						eBGA種別 = EBGA種別.BGAPAN;
+						eBGA種別 = EBGAType.BGAPAN;
 						rBMPTEX = listBMPTEX[cbgapan.nBMP番号];
 						rBGAPan = cbgapan;
 						return;
 					}
 					if (listBMP.ContainsKey(cbgapan.nBMP番号) && listBMP[cbgapan.nBMP番号].bUse)
 					{
-						eBGA種別 = EBGA種別.BGAPAN;
+						eBGA種別 = EBGAType.BGAPAN;
 						rBMP = listBMP[cbgapan.nBMP番号];
 						rBGAPan = cbgapan;
 						return;
@@ -806,14 +806,14 @@ namespace DTXMania
 					CDTX.CBGA cbga = listBGA[n整数値];
 					if (listBMPTEX.ContainsKey(cbga.nBMP番号) && listBMPTEX[cbga.nBMP番号].bUse)
 					{
-						eBGA種別 = EBGA種別.BGA;
+						eBGA種別 = EBGAType.BGA;
 						rBMPTEX = listBMPTEX[cbga.nBMP番号];
 						rBGA = cbga;
 						return;
 					}
 					if (listBMP.ContainsKey(cbga.nBMP番号) && listBMP[cbga.nBMP番号].bUse)
 					{
-						eBGA種別 = EBGA種別.BGA;
+						eBGA種別 = EBGAType.BGA;
 						rBMP = listBMP[cbga.nBMP番号];
 						rBGA = cbga;
 						return;
@@ -824,7 +824,7 @@ namespace DTXMania
 				#region [ BMPTEX ]
 				if (listBMPTEX.ContainsKey(n整数値) && listBMPTEX[n整数値].bUse)
 				{
-					eBGA種別 = EBGA種別.BMPTEX;
+					eBGA種別 = EBGAType.BMPTEX;
 					rBMPTEX = listBMPTEX[n整数値];
 					return;
 				}
@@ -833,7 +833,7 @@ namespace DTXMania
 				#region [ BMP ]
 				if (listBMP.ContainsKey(n整数値) && listBMP[n整数値].bUse)
 				{
-					eBGA種別 = EBGA種別.BMP;
+					eBGA種別 = EBGAType.BMP;
 					rBMP = listBMP[n整数値];
 					return;
 				}
@@ -842,19 +842,19 @@ namespace DTXMania
 			#region [ BGA入れ替え ]
 			if (bBGALayerSwap)
 			{
-				eBGA種別 = EBGA種別.Unknown;
+				eBGA種別 = EBGAType.Unknown;
 				rBMP = null;
 				rBMPTEX = null;
 				rBGA = null;
 				rBGAPan = null;
 				if (listBMPTEX.ContainsKey(n整数値) && listBMPTEX[n整数値].bUse)
 				{
-					eBGA種別 = EBGA種別.BMPTEX;
+					eBGA種別 = EBGAType.BMPTEX;
 					rBMPTEX = listBMPTEX[n整数値];
 				}
 				else if (listBMP.ContainsKey(n整数値) && listBMP[n整数値].bUse)
 				{
-					eBGA種別 = EBGA種別.BMP;
+					eBGA種別 = EBGAType.BMP;
 					rBMP = listBMP[n整数値];
 				}
 			}
@@ -894,19 +894,19 @@ namespace DTXMania
 			}
 			nBar = n発声位置 / 384;
 
-			if (this[Ech定義.BarLength])
+			if (this[EChannel.BarLength])
 			{
 				basePlayPosition = n発声位置;
 				ms = n発声時刻ms;
 				dbBarLength = db実数値;
 			}
-			else if (this[Ech定義.BPM])
+			else if (this[EChannel.BPM])
 			{
 				basePlayPosition = n発声位置;
 				ms = n発声時刻ms;
 				bpm = basebpm + n整数値;
 			}
-			else if (this[Ech定義.BPMEx])
+			else if (this[EChannel.BPMEx])
 			{
 				basePlayPosition = n発声位置;
 				ms = n発声時刻ms;
@@ -937,12 +937,12 @@ namespace DTXMania
 
 		public void ConvertSE25_26_27toCY_RCY_LCY()
 		{
-			Ech定義 to = eチャンネル番号;
+			EChannel to = eチャンネル番号;
 			switch (eチャンネル番号)
 			{
-				case Ech定義.SE25: to = Ech定義.Cymbal; break;
-				case Ech定義.SE26: to = Ech定義.RideCymbal; break;
-				case Ech定義.SE27: to = Ech定義.LeftCymbal; break;
+				case EChannel.SE25: to = EChannel.Cymbal; break;
+				case EChannel.SE26: to = EChannel.RideCymbal; break;
+				case EChannel.SE27: to = EChannel.LeftCymbal; break;
 			}
 			eチャンネル番号 = to;
 		}
@@ -959,7 +959,7 @@ namespace DTXMania
 			}
 		}
 
-		public void CalcDistanceFromBar(long currentTime, STDGBVALUE<double> ScrollSpeedInSetting)
+		public void CalcDistanceFromBar(long currentTime, STDGBSValue<double> ScrollSpeedInSetting)
 		{
 			const double speed = 526.5;// BPM150の時の1小節の長さ[dot]
 			double ScrollSpeedDrums = (ScrollSpeedInSetting.Drums + 1.0) * 0.5 * 37.5 * speed / 60000.0;
@@ -975,7 +975,7 @@ namespace DTXMania
 			//nバーからの距離dot = newDot;
 		}
 
-		public void RandomizeRGB(Eランダムモード eRandom, int seed, bool existOpen)
+		public void RandomizeRGB(ERandom eRandom, int seed, bool existOpen)
 		{
 			int[,] nランダムレーン候補 = new int[,]
 			{
@@ -995,26 +995,26 @@ namespace DTXMania
 			{
 				switch (eRandom)
 				{
-					case Eランダムモード.RANDOM:		// 1小節単位でレーンのR/G/Bがランダムに入れ替わる
-						eチャンネル番号 = (Ech定義)((nGuitarBassUpper4Bit) | nランダムレーン候補[seed, (int)eRGBビットパターン]);
+					case ERandom.Random:    // 1小節単位でレーンのR/G/Bがランダムに入れ替わる
+						eチャンネル番号 = (EChannel)((nGuitarBassUpper4Bit) | nランダムレーン候補[seed, (int)eRGBビットパターン]);
 						return;
 
-					case Eランダムモード.SUPERRANDOM:	// チップごとにR/G/Bがランダムで入れ替わる(レーンの本数までは変わらない)。
-						eチャンネル番号 = (Ech定義)((nGuitarBassUpper4Bit) | nランダムレーン候補[CDTXMania.Instance.Random.Next(6), (int)eRGBビットパターン]);
+					case ERandom.Super: // チップごとにR/G/Bがランダムで入れ替わる(レーンの本数までは変わらない)。
+						eチャンネル番号 = (EChannel)((nGuitarBassUpper4Bit) | nランダムレーン候補[CDTXMania.Instance.Random.Next(6), (int)eRGBビットパターン]);
 						return;
 
-					case Eランダムモード.HYPERRANDOM:	// レーンの本数も変わる
+					case ERandom.Hyper: // レーンの本数も変わる
 						nRGBレーンビットパターン = eRGBビットパターン;
 						// n新RGBレーンビットパターン = (int)Eレーンビットパターン.OPEN;	// この値は結局未使用なので削除
 						if (
 							(nRGBレーンビットパターン != Eレーンビットパターン.xxB) &&
 							(nRGBレーンビットパターン != Eレーンビットパターン.xGx) &&
-							(nRGBレーンビットパターン != Eレーンビットパターン.Rxx))		// xxB, xGx, Rxx レーン1本相当
+							(nRGBレーンビットパターン != Eレーンビットパターン.Rxx))    // xxB, xGx, Rxx レーン1本相当
 						{
 						}
 						else
 						{
-							n新RGBレーンビットパターン = (Eレーンビットパターン)CDTXMania.Instance.Random.Next(6) + 1;		// レーン1本相当なら、レーン1本か2本(1～6)に変化して終了
+							n新RGBレーンビットパターン = (Eレーンビットパターン)CDTXMania.Instance.Random.Next(6) + 1;   // レーン1本相当なら、レーン1本か2本(1～6)に変化して終了
 							bAdjustRandomLane = false;
 						}
 						break;
@@ -1026,16 +1026,16 @@ namespace DTXMania
 				{
 					switch (nRGBレーンビットパターン)
 					{
-						case Eレーンビットパターン.xGB:	// xGB	レーン2本相当
-						case Eレーンビットパターン.RxB:	// RxB
-						case Eレーンビットパターン.RGx:	// RGx
-							n新RGBレーンビットパターン = existOpen ? (Eレーンビットパターン)(CDTXMania.Instance.Random.Next(8)) : (Eレーンビットパターン)(CDTXMania.Instance.Random.Next(7) + 1);	// OPENあり譜面ならOPENを含むランダム, OPENなし譜面ならOPENを含まないランダム
+						case Eレーンビットパターン.xGB: // xGB	レーン2本相当
+						case Eレーンビットパターン.RxB: // RxB
+						case Eレーンビットパターン.RGx: // RGx
+							n新RGBレーンビットパターン = existOpen ? (Eレーンビットパターン)(CDTXMania.Instance.Random.Next(8)) : (Eレーンビットパターン)(CDTXMania.Instance.Random.Next(7) + 1);  // OPENあり譜面ならOPENを含むランダム, OPENなし譜面ならOPENを含まないランダム
 							break;
 
 						default:
-							if (nRGBレーンビットパターン == Eレーンビットパターン.RGB)	// RGB レーン3本相当
+							if (nRGBレーンビットパターン == Eレーンビットパターン.RGB)  // RGB レーン3本相当
 							{
-								if (existOpen)	// OPENあり譜面の場合
+								if (existOpen)  // OPENあり譜面の場合
 								{
 									int n乱数パーセント = CDTXMania.Instance.Random.Next(100);
 									if (n乱数パーセント < 30)
@@ -1060,7 +1060,7 @@ namespace DTXMania
 										}
 										n新RGBレーンビットパターン = Eレーンビットパターン.RGx;
 									}
-									else	// OPENでない場合
+									else  // OPENでない場合
 									{
 										switch (CDTXMania.Instance.Random.Next(3))
 										{
@@ -1075,7 +1075,7 @@ namespace DTXMania
 										n新RGBレーンビットパターン = Eレーンビットパターン.Rxx;
 									}
 								}
-								else	// OPENなし譜面の場合
+								else  // OPENなし譜面の場合
 								{
 									int n乱数パーセント = CDTXMania.Instance.Random.Next(100);
 									if (n乱数パーセント < 60)
@@ -1115,7 +1115,7 @@ namespace DTXMania
 							break;
 					}
 				}
-				eチャンネル番号 = (Ech定義)((nランダム化前BassFlag) | (int)n新RGBレーンビットパターン);
+				eチャンネル番号 = (EChannel)((nランダム化前BassFlag) | (int)n新RGBレーンビットパターン);
 			}
 		}
 
@@ -1135,7 +1135,7 @@ namespace DTXMania
 
 		public CChip()
 		{
-			this.nバーからの距離dotInternal = new STDGBVALUE<int>()
+			this.nバーからの距離dotInternal = new STDGBSValue<int>()
 			{
 				Drums = 0,
 				Guitar = 0,
@@ -1143,17 +1143,17 @@ namespace DTXMania
 			};
 			b可視 = true;
 			dbチップサイズ倍率 = 1.0;
-			e楽器パート = E楽器パート.UNKNOWN;
+			e楽器パート = EPart.Unknown;
 			n透明度 = 0xff;
 		}
 
-		public CChip(int playPosition, int intData, int intDataInternalIndex, Ech定義 channel)
+		public CChip(int playPosition, int intData, int intDataInternalIndex, EChannel channel)
 			: this(playPosition, intData, channel)
 		{
 			n整数値_内部番号 = intDataInternalIndex;
 		}
 
-		public CChip(int playPosition, int intData, Ech定義 channel)
+		public CChip(int playPosition, int intData, EChannel channel)
 			: this()
 		{
 			n発声位置 = playPosition;
@@ -1161,7 +1161,7 @@ namespace DTXMania
 			eチャンネル番号 = channel;
 		}
 
-		public CChip(int playPosition, double phraseLengthFactor, Ech定義 channel)
+		public CChip(int playPosition, double phraseLengthFactor, EChannel channel)
 			: this()
 		{
 			n発声位置 = playPosition;
@@ -1169,13 +1169,13 @@ namespace DTXMania
 			eチャンネル番号 = channel;
 		}
 
-		public CChip(Ech定義 channel)
+		public CChip(EChannel channel)
 			: this()
 		{
 			eチャンネル番号 = channel;
 		}
 
-		public CChip(int playPosition, int intData, int intDataInternalIndex, Ech定義 channel,
+		public CChip(int playPosition, int intData, int intDataInternalIndex, EChannel channel,
 			int playPositionMs, bool bSoundAfterPlayEnd)
 			: this(playPosition, intData, intDataInternalIndex, channel)
 		{
@@ -1240,7 +1240,7 @@ namespace DTXMania
 		{
 			int nDuration = 0;
 
-			if (this.bWAVを使うチャンネルである)		// WAV
+			if (this.bWAVを使うチャンネルである)   // WAV
 			{
 				CDTX.CWAV wc;
 				CDTXMania.Instance.DTX.listWAV.TryGetValue(this.n整数値_内部番号, out wc);
@@ -1253,7 +1253,7 @@ namespace DTXMania
 					nDuration = (wc.rSound[0] == null) ? 0 : wc.rSound[0].n総演奏時間ms;
 				}
 			}
-			else if (this.eチャンネル番号 == Ech定義.Movie || this.eチャンネル番号 == Ech定義.MovieFull)	// AVI
+			else if (this.eチャンネル番号 == EChannel.Movie || this.eチャンネル番号 == EChannel.MovieFull)  // AVI
 			{
 				if (this.rAVI != null && this.rAVI.avi != null)
 				{
@@ -1270,21 +1270,21 @@ namespace DTXMania
 		public int CompareTo(CChip other)
 		{
 			byte[] n優先度 = new byte[] {
-					5, 5, 3, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 
-					5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 
-					7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
-					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 
+					5, 5, 3, 3, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5,
+					5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5,
+					7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
 					5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
 				};
 
@@ -1318,7 +1318,7 @@ namespace DTXMania
 
 
 
-		public bool bAssignAutoPlayState(STAUTOPLAY bIsAutoPlay)
+		public bool bAssignAutoPlayState()
 		{
 			bool ret = false;
 			bool bGtBsR = bGuitarBass_R;
@@ -1328,7 +1328,7 @@ namespace DTXMania
 			bool bGtBsO = bGuitarBass_Open;
 			if (bDrums可視チップ)
 			{
-				if (bIsAutoPlay[CStage演奏画面共通.nチャンネル0Atoレーン07[eチャンネル番号 - Ech定義.HiHatClose]])
+				if (CDTXMania.Instance.ConfigIni.bAutoPlay[EnumConverter.PadFromChannel(eチャンネル番号)])
 				{
 					ret = true;
 				}
@@ -1338,15 +1338,17 @@ namespace DTXMania
 				//Trace.TraceInformation( "chip:{0}{1}{2} ", bGtBsR, bGtBsG, bGtBsB );
 				//Trace.TraceInformation( "auto:{0}{1}{2} ", bIsAutoPlay[ (int) Eレーン.GtR ], bIsAutoPlay[ (int) Eレーン.GtG ], bIsAutoPlay[ (int) Eレーン.GtB ]);
 				ret = true;
-				if (bIsAutoPlay[(int)Eレーン.GtPick] == false) ret = false;
+				if (CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.GtPick] == false) ret = false;
 				else
 				{
-					if (bGtBsR == true && bIsAutoPlay[(int)Eレーン.GtR] == false) ret = false;
-					else if (bGtBsG == true && bIsAutoPlay[(int)Eレーン.GtG] == false) ret = false;
-					else if (bGtBsB == true && bIsAutoPlay[(int)Eレーン.GtB] == false) ret = false;
-					else if (bGtBsW == true && bIsAutoPlay[(int)Eレーン.GtW] == false) ret = false;
+					if (bGtBsR == true && CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.GtR] == false) ret = false;
+					else if (bGtBsG == true && CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.GtG] == false) ret = false;
+					else if (bGtBsB == true && CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.GtB] == false) ret = false;
+					else if (bGtBsW == true && CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.GtWail] == false) ret = false;
 					else if (bGtBsO == true &&
-						(bIsAutoPlay[(int)Eレーン.GtR] == false || bIsAutoPlay[(int)Eレーン.GtG] == false || bIsAutoPlay[(int)Eレーン.GtB] == false))
+						(CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.GtR] == false ||
+						CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.GtG] == false ||
+						CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.GtB] == false))
 						ret = false;
 				}
 				//Trace.TraceInformation( "{0:x2}: {1}", pChip.nチャンネル番号, bPChipIsAutoPlay.ToString() );
@@ -1354,15 +1356,17 @@ namespace DTXMania
 			else if (bBass可視チップ)
 			{
 				ret = true;
-				if (bIsAutoPlay[(int)Eレーン.BsPick] == false) ret = false;
+				if (CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.BsPick] == false) ret = false;
 				else
 				{
-					if (bGtBsR == true && bIsAutoPlay[(int)Eレーン.BsR] == false) ret = false;
-					else if (bGtBsG == true && bIsAutoPlay[(int)Eレーン.BsG] == false) ret = false;
-					else if (bGtBsB == true && bIsAutoPlay[(int)Eレーン.BsB] == false) ret = false;
-					else if (bGtBsW == true && bIsAutoPlay[(int)Eレーン.BsW] == false) ret = false;
+					if (bGtBsR == true && CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.BsR] == false) ret = false;
+					else if (bGtBsG == true && CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.BsG] == false) ret = false;
+					else if (bGtBsB == true && CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.BsB] == false) ret = false;
+					else if (bGtBsW == true && CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.BsWail] == false) ret = false;
 					else if (bGtBsO == true &&
-						(bIsAutoPlay[(int)Eレーン.BsR] == false || bIsAutoPlay[(int)Eレーン.BsG] == false || bIsAutoPlay[(int)Eレーン.BsB] == false))
+						(CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.BsR] == false ||
+						CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.BsG] == false ||
+						CDTXMania.Instance.ConfigIni.bAutoPlay[EPad.BsB] == false))
 						ret = false;
 				}
 			}
@@ -1382,21 +1386,21 @@ namespace DTXMania
 
 		internal void ConvertSE25_26_27ToCY_RCY_LCY()
 		{
-			if ((Ech定義.SE25 <= eチャンネル番号) && (eチャンネル番号 <= Ech定義.SE27))
+			if ((EChannel.SE25 <= eチャンネル番号) && (eチャンネル番号 <= EChannel.SE27))
 			{
-				Ech定義[] ch = { Ech定義.Cymbal, Ech定義.RideCymbal, Ech定義.LeftCymbal };
-				eチャンネル番号 = ch[eチャンネル番号 - Ech定義.SE25];
+				EChannel[] ch = { EChannel.Cymbal, EChannel.RideCymbal, EChannel.LeftCymbal };
+				eチャンネル番号 = ch[eチャンネル番号 - EChannel.SE25];
 			}
 		}
 
 		internal void SetNoChipGuitarToOpen()
 		{
-			eチャンネル番号 = Ech定義.Guitar_Open;
+			eチャンネル番号 = EChannel.Guitar_Open;
 		}
 
 		internal void SetNoChipBassToOpen()
 		{
-			eチャンネル番号 = Ech定義.Bass_Open;
+			eチャンネル番号 = EChannel.Bass_Open;
 		}
 	}
 

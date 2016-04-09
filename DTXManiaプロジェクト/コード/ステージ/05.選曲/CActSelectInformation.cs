@@ -38,7 +38,7 @@ namespace DTXMania
 			{
 				string[,] infofiles = {		// #25381 2011.6.4 yyagi
 				   { @"Graphics\ScreenSelect information 1.png", @"Graphics\ScreenSelect information 2.png" },
-				   { @"Graphics\ScreenSelect information 1e.png", @"Graphics\ScreenSelect information 2e.png" }
+					 { @"Graphics\ScreenSelect information 1e.png", @"Graphics\ScreenSelect information 2e.png" }
 				};
 				int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
 				this.txInfo[0] = TextureFactory.tテクスチャの生成(CSkin.Path(infofiles[c, 0]), false);
@@ -68,7 +68,7 @@ namespace DTXMania
 				if (this.ctスクロール用.b終了値に達した)
 				{
 					this.n画像Index上 = this.n画像Index下;
-					this.n画像Index下 = (this.n画像Index下 + 1) % stInfo.GetLength(0);		//8;
+					this.n画像Index下 = (this.n画像Index下 + 1) % stInfo.GetLength(0);    //8;
 					this.ctスクロール用.n現在の値 = 0;
 				}
 				int n現在の値 = this.ctスクロール用.n現在の値;

@@ -20,11 +20,11 @@ namespace DTXMania
 		}
 		public void t選択曲が変更された()
 		{
-			this.ct遅延表示 = new CCounter(-CDTXMania.Instance.ConfigIni.n曲が選択されてからプレビュー画像が表示開始されるまでのウェイトms, 100, 1, CDTXMania.Instance.Timer);
+			this.ct遅延表示 = new CCounter(-CDTXMania.Instance.ConfigIni.nPreImageWeightMs, 100, 1, CDTXMania.Instance.Timer);
 			this.b新しいプレビューファイルを読み込んだ = false;
 		}
 
-		public bool bIsPlayingPremovie		// #27060
+		public bool bIsPlayingPremovie    // #27060
 		{
 			get
 			{
@@ -239,7 +239,7 @@ namespace DTXMania
 			}
 			//this.pAVIBmp = IntPtr.Zero;
 			//this.nAVI再生開始時刻 = -1;
-			if (!CDTXMania.Instance.ConfigIni.bストイックモード)
+			if (!CDTXMania.Instance.ConfigIni.bStoicMode)
 			{
 				if (this.tプレビュー動画の指定があれば構築する())
 				{
@@ -289,7 +289,7 @@ namespace DTXMania
 		private bool tプレビュー動画の指定があれば構築する()
 		{
 			Cスコア cスコア = CDTXMania.Instance.stage選曲.r現在選択中のスコア;
-			if ((CDTXMania.Instance.ConfigIni.bAVI有効 && (cスコア != null)) && !string.IsNullOrEmpty(cスコア.譜面情報.Premovie))
+			if ((CDTXMania.Instance.ConfigIni.bAVI && (cスコア != null)) && !string.IsNullOrEmpty(cスコア.譜面情報.Premovie))
 			{
 				string filename = cスコア.ファイル情報.フォルダの絶対パス + cスコア.譜面情報.Premovie;
 				if (filename.Equals(this.str現在のファイル名))
@@ -309,9 +309,9 @@ namespace DTXMania
 				}
 				try
 				{
-					this.rAVI = new CDTX.CAVI(00, this.str現在のファイル名, "", CDTXMania.Instance.ConfigIni.n演奏速度);
+					this.rAVI = new CDTX.CAVI(00, this.str現在のファイル名, "", CDTXMania.Instance.ConfigIni.nPlaySpeed);
 					this.rAVI.OnDeviceCreated();
-					this.actAVI.Start(Ech定義.Movie, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
+					this.actAVI.Start(EChannel.Movie, rAVI, 204, 269, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1);
 				}
 				catch (Exception e)
 				{
@@ -404,7 +404,7 @@ namespace DTXMania
 							{
 								str = cスコア.譜面情報.ジャンル;
 							}
-#if false	// #32644 2013.12.21 yyagi "Unknown"なジャンル表示を削除。DTX/BMSなどの種別表示もしない。
+#if false  // #32644 2013.12.21 yyagi "Unknown"なジャンル表示を削除。DTX/BMSなどの種別表示もしない。
 							else
 							{
 								switch( cスコア.譜面情報.曲種別 )
@@ -550,7 +550,7 @@ namespace DTXMania
 
 				if (this.rAVI != null)
 				{
-					this.actAVI.t進行描画(x, y, 612, 605);
+					actAVI.t進行描画(x, y, 612, 605);
 					return;
 				}
 
@@ -568,8 +568,8 @@ namespace DTXMania
 					this.r表示するプレビュー画像.vc拡大縮小倍率.X = cmg.magX;
 					this.r表示するプレビュー画像.vc拡大縮小倍率.Y = cmg.magY;
 
-					x += (int)((612 - width * cmg.magX ) / 2 );
-					y += (int)((605 - height * cmg.magY ) / 2 );
+					x += (int)((612 - width * cmg.magX) / 2);
+					y += (int)((605 - height * cmg.magY) / 2);
 					this.r表示するプレビュー画像.n透明度 = (int)(255f * num3);
 					this.r表示するプレビュー画像.t2D描画(CDTXMania.Instance.Device, x, y);
 				}

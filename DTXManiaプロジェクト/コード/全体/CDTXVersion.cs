@@ -131,7 +131,7 @@ namespace DTXMania
 			// 英字部分（あれば）
 			if (this.n小数部 >= 1000000)
 			{
-				int n英字 = Math.Min(this.n小数部 / 1000000, 26);	// 1～26
+				int n英字 = Math.Min(this.n小数部 / 1000000, 26);  // 1～26
 				result.Append(CDTXVersion.DIG36[10 + (n英字 - 1)]);
 			}
 
@@ -175,7 +175,7 @@ namespace DTXMania
 		{
 			return ((x.n整数部 < y.n整数部) || ((x.n整数部 == y.n整数部) && (x.n小数部 <= y.n小数部)));
 		}
-		public override bool Equals(object obj)			// 2011.1.3 yyagi: warningを無くすために追加
+		public override bool Equals(object obj)     // 2011.1.3 yyagi: warningを無くすために追加
 		{
 			if (obj == null)
 			{
@@ -192,7 +192,7 @@ namespace DTXMania
 			}
 			return true;
 		}
-		public override int GetHashCode()				// 2011.1.3 yyagi: warningを無くすために追加
+		public override int GetHashCode()       // 2011.1.3 yyagi: warningを無くすために追加
 		{
 			string v = this.toString();
 			return v.GetHashCode();

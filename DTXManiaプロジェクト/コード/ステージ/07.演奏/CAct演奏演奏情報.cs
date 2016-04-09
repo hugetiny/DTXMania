@@ -8,37 +8,27 @@ namespace DTXMania
 {
 	internal class CAct演奏演奏情報 : CActivity
 	{
-		// プロパティ
-
 		public double dbBPM;
 		public int n小節番号;
 
-
-		// コンストラクタ
-
-		public CAct演奏演奏情報()
-		{
-			base.b活性化してない = true;
-		}
-
-
-		// CActivity 実装
-
 		public override void On活性化()
 		{
-			this.n小節番号 = 0;
-			this.dbBPM = CDTXMania.Instance.DTX.BASEBPM + CDTXMania.Instance.DTX.BPM;
-			base.On活性化();
+			if (b活性化してない)
+			{
+				this.n小節番号 = 0;
+				this.dbBPM = CDTXMania.Instance.DTX.BASEBPM + CDTXMania.Instance.DTX.BPM;
+				base.On活性化();
+			}
 		}
+
 		public override int On進行描画()
 		{
-			throw new InvalidOperationException("t進行描画(int x, int y) のほうを使用してください。");
-		}
-		public void t進行描画(int x, int y)
-		{
-			if (!base.b活性化してない)
+			if (b活性化してる &&
+				CDTXMania.Instance.ConfigIni.b演奏情報を表示する)
 			{
-				y += (int)(0x153 * Scale.Y);
+				int x = CDTXMania.Instance.ConfigIni.cdDebugX[CDTXMania.Instance.ConfigIni.eActiveInst];
+				int y = CDTXMania.Instance.ConfigIni.cdDebugY[CDTXMania.Instance.ConfigIni.eActiveInst];
+        y += (int)(0x153 * Scale.Y);
 				CDTXMania.Instance.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.白,
 					string.Format("JudgeLine D/G/B Adj: {0} px", CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums, CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Guitar, CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Bass));
 				y -= 0x10 * 2;
@@ -59,11 +49,12 @@ namespace DTXMania
 				y -= 0x10 * 2;
 				//CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound CPU :    {0:####0.00}%", CDTXMania.Instance.Sound管理.GetCPUusage() ) );
 				y -= 0x10 * 2;
-				CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Mixing:  {0:####0}", CDTXMania.Instance.Sound管理.GetMixingStreams() ) );
+				CDTXMania.Instance.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.白, string.Format("Sound Mixing:  {0:####0}", CDTXMania.Instance.Sound管理.GetMixingStreams()));
 				y -= 0x10 * 2;
-				CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound Streams: {0:####0}", CDTXMania.Instance.Sound管理.GetStreams() ) );
+				CDTXMania.Instance.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.白, string.Format("Sound Streams: {0:####0}", CDTXMania.Instance.Sound管理.GetStreams()));
 				//y -= 0x10 * 2;
 			}
+			return 0;
 		}
 	}
 }

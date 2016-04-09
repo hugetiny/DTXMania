@@ -58,12 +58,12 @@ namespace DTXMania
 			public string Premovie;
 			public string Presound;
 			public string Backgound;
-			public STDGBVALUE<int> レベル;
-			public STDGBVALUE<CScoreIni.ERANK> 最大ランク;
-			public STDGBVALUE<double> 最大スキル;
-			public STDGBVALUE<bool> フルコンボ;
-			public STDGBVALUE<int> 演奏回数;
-			public STDGBVALUE<int> 使用レーン数;
+			public STDGBSValue<int> レベル;
+			public STDGBSValue<CScoreIni.ERANK> 最大ランク;
+			public STDGBSValue<double> 最大スキル;
+			public STDGBSValue<bool> フルコンボ;
+			public STDGBSValue<int> 演奏回数;
+			public STDGBSValue<int> 使用レーン数;
 			public STHISTORY 演奏履歴;
 			public bool レベルを非表示にする;
 			public EDTX種別 曲種別;
@@ -161,13 +161,13 @@ namespace DTXMania
 			this.譜面情報.Premovie = "";
 			this.譜面情報.Presound = "";
 			this.譜面情報.Backgound = "";
-			this.譜面情報.レベル = new STDGBVALUE<int>();
-			this.譜面情報.最大ランク = new STDGBVALUE<CScoreIni.ERANK>();
+			this.譜面情報.レベル = new STDGBSValue<int>();
+			this.譜面情報.最大ランク = new STDGBSValue<CScoreIni.ERANK>();
 			this.譜面情報.最大ランク.Drums = CScoreIni.ERANK.UNKNOWN;
 			this.譜面情報.最大ランク.Guitar = CScoreIni.ERANK.UNKNOWN;
 			this.譜面情報.最大ランク.Bass = CScoreIni.ERANK.UNKNOWN;
-			this.譜面情報.フルコンボ = new STDGBVALUE<bool>();
-			this.譜面情報.演奏回数 = new STDGBVALUE<int>();
+			this.譜面情報.フルコンボ = new STDGBSValue<bool>();
+			this.譜面情報.演奏回数 = new STDGBSValue<int>();
 			this.譜面情報.演奏履歴 = new ST譜面情報.STHISTORY();
 			this.譜面情報.演奏履歴.行1 = "";
 			this.譜面情報.演奏履歴.行2 = "";
@@ -175,11 +175,11 @@ namespace DTXMania
 			this.譜面情報.演奏履歴.行4 = "";
 			this.譜面情報.演奏履歴.行5 = "";
 			this.譜面情報.レベルを非表示にする = false;
-			this.譜面情報.最大スキル = new STDGBVALUE<double>();
+			this.譜面情報.最大スキル = new STDGBSValue<double>();
 			this.譜面情報.曲種別 = EDTX種別.DTX;
 			this.譜面情報.Bpm = 120.0;
 			this.譜面情報.Duration = 0;
-			this.譜面情報.使用レーン数 = new STDGBVALUE<int>();
+			this.譜面情報.使用レーン数 = new STDGBSValue<int>();
 		}
 	}
 }

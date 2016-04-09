@@ -9,6 +9,8 @@ namespace DTXMania
 {
 	internal class CAct演奏チップファイアGB : CActivity
 	{
+		static ELane[] lanes = new ELane[] { ELane.GtR, ELane.GtG, ELane.GtB, ELane.BsR, ELane.BsG, ELane.BsB };
+
 		public CAct演奏チップファイアGB()
 		{
 			base.b活性化してない = true;
@@ -20,33 +22,9 @@ namespace DTXMania
 			{
 				if (0 <= nLane && nLane < 6)
 				{
-					E楽器パート e楽器パート = (nLane < 3) ? E楽器パート.GUITAR : E楽器パート.BASS;
-					int x = 0;
-
-					if (nLane == 0)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.GtR.X + CDTXMania.Instance.Coordinates.Lane.GtR.W / 2;
-					}
-					else if (nLane == 1)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.GtG.X + CDTXMania.Instance.Coordinates.Lane.GtG.W / 2;
-					}
-					else if (nLane == 2)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.GtB.X + CDTXMania.Instance.Coordinates.Lane.GtB.W / 2;
-					}
-					else if (nLane == 3)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.BsR.X + CDTXMania.Instance.Coordinates.Lane.BsR.W / 2;
-					}
-					else if (nLane == 4)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.BsG.X + CDTXMania.Instance.Coordinates.Lane.BsG.W / 2;
-					}
-					else if (nLane == 5)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.BsB.X + CDTXMania.Instance.Coordinates.Lane.BsB.W / 2;
-					}
+					EPart e楽器パート = (nLane < 3) ? EPart.Guitar : EPart.Bass;
+					int x = CDTXMania.Instance.ConfigIni.GetLaneX(lanes[nLane])
+						+ CDTXMania.Instance.ConfigIni.GetLaneW(lanes[nLane]) / 2;
 
 					int offsety = CDTXMania.Instance.Coordinates.ImgJudgeLine.H / 2;
 					int y = C演奏判定ライン座標共通.n判定ラインY座標(e楽器パート, false, true);
@@ -117,27 +95,28 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない)
+			if (b活性化してる && CDTXMania.Instance.ConfigIni.bGuitar有効 &&
+					(CDTXMania.Instance.DTX.bチップがある.Guitar || CDTXMania.Instance.DTX.bチップがある.Bass))
 			{
 				for (int i = 0; i < 6; i++)
 				{
-					this.ct進行[i].t進行();
-					if (this.ct進行[i].b終了値に達した)
+					ct進行[i].t進行();
+					if (ct進行[i].b終了値に達した)
 					{
-						this.ct進行[i].t停止();
+						ct進行[i].t停止();
 					}
 				}
 				for (int j = 0; j < 6; j++)
 				{
-					if ((this.ct進行[j].n現在の経過時間ms != -1) && (this.tx火花[j % 3] != null))
+					if ((ct進行[j].n現在の経過時間ms != -1) && (tx火花[j % 3] != null))
 					{
-						float scale = (float)(3.0 * Math.Cos((Math.PI * (90.0 - (90.0 * (((double)this.ct進行[j].n現在の値) / 56.0)))) / 180.0));
-						int x = (int)(this.pt中央位置[j].X) - ((int)((this.tx火花[j % 3].sz画像サイズ.Width * scale) / 2f));
-						int y = (int)(this.pt中央位置[j].Y) - ((int)((this.tx火花[j % 3].sz画像サイズ.Height * scale) / 2f));
-						this.tx火花[j % 3].n透明度 = (this.ct進行[j].n現在の値 < 0x1c) ? 0xff : (0xff - ((int)(255.0 * Math.Cos((Math.PI * (90.0 - (90.0 * (((double)(this.ct進行[j].n現在の値 - 0x1c)) / 28.0)))) / 180.0))));
-						this.tx火花[j % 3].vc拡大縮小倍率 = new Vector3(scale, scale, 1f);
+						float scale = (float)(3.0 * Math.Cos((Math.PI * (90.0 - (90.0 * (((double)ct進行[j].n現在の値) / 56.0)))) / 180.0));
+						int x = (int)(pt中央位置[j].X) - ((int)((tx火花[j % 3].sz画像サイズ.Width * scale) / 2f));
+						int y = (int)(pt中央位置[j].Y) - ((int)((tx火花[j % 3].sz画像サイズ.Height * scale) / 2f));
+						tx火花[j % 3].n透明度 = (ct進行[j].n現在の値 < 0x1c) ? 0xff : (0xff - ((int)(255.0 * Math.Cos((Math.PI * (90.0 - (90.0 * (((double)(ct進行[j].n現在の値 - 0x1c)) / 28.0)))) / 180.0))));
+						tx火花[j % 3].vc拡大縮小倍率 = new Vector3(scale, scale, 1f);
 
-						this.tx火花[j % 3].t2D描画(CDTXMania.Instance.Device, x, y);
+						tx火花[j % 3].t2D描画(CDTXMania.Instance.Device, x, y);
 					}
 				}
 			}

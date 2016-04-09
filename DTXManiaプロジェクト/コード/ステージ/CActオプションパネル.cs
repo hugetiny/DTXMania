@@ -4,290 +4,149 @@ using System.Text;
 using System.Drawing;
 using SlimDX.Direct3D9;
 using FDK;
+using DTXMania.Coordinates;
 
 namespace DTXMania
 {
 	internal class CActオプションパネル : CActivity
 	{
-		// CActivity 実装
+		public STDGBSValue<CXY> Pos;
+
+		EOptionPanelDirection direction;
+		Rectangle rect;
+
+		readonly Point[] ptDark = new Point[] { new Point(1, 0), new Point(1, 1), new Point(1, 7) };
+		/// <summary>
+		/// Off, Hid, Sud, HidSud, SInv, FInv
+		/// </summary>
+		readonly Point[] ptSudHidInv = new Point[] { new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(0, 3), new Point(4, 7), new Point(5, 7) };
+		readonly Point[] ptLight = new Point[] { new Point(5, 4), new Point(5, 5) };
+		readonly Point[] ptRandom = new Point[] { new Point(3, 4), new Point(3, 5), new Point(3, 6), new Point(3, 7) };
+		readonly Point[] ptReverse = new Point[] { new Point(1, 2), new Point(1, 3) };
+		readonly Point[] ptTight = new Point[] { new Point(4, 4), new Point(4, 5) };
+		readonly Point[] ptScrollSpeed = new Point[]
+		{
+			new Point(2, 0), new Point(2, 1), new Point(2, 2), new Point(2, 3),
+			new Point(3, 0), new Point(3, 1), new Point(3, 2), new Point(3, 3),
+			new Point(4, 0), new Point(4, 1), new Point(4, 2), new Point(4, 3),
+			new Point(5, 0), new Point(5, 1), new Point(5, 2), new Point(5, 3)
+		};
+
+		private CTexture txオプションパネル;
+
+		public CActオプションパネル(EOptionPanelDirection dir)
+		{
+			direction = dir;
+			rect = new Rectangle();
+		}
 
 		public override void On非活性化()
 		{
-			if (!base.b活性化してない)
+			if (base.b活性化してる)
 			{
 				TextureFactory.tテクスチャの解放(ref this.txオプションパネル);
 				base.On非活性化();
 			}
 		}
+
 		public override void OnManagedリソースの作成()
 		{
-			if (!base.b活性化してない)
+			if (base.b活性化してる)
 			{
 				this.txオプションパネル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\Screen option panels.png"), false);
 				base.OnManagedリソースの作成();
 			}
 		}
+
+		public override void OnManagedリソースの解放()
+		{
+			if (base.b活性化してる)
+			{
+				TextureFactory.tテクスチャの解放(ref txオプションパネル);
+				base.OnManagedリソースの解放();
+			}
+		}
+
+		private void IncrementXY(ref int x, ref int y)
+		{
+			if (direction == EOptionPanelDirection.Horizontal)
+			{
+				x += rect.Width;
+			}
+			else if (direction == EOptionPanelDirection.Vertical)
+			{
+				y += rect.Height;
+			}
+		}
+
+		private void DrawOption(int idx, Point[] pts, int x, int y)
+		{
+			if (idx >= pts.Length)
+			{
+				idx = pts.Length - 1;
+			}
+			if (idx < 0)
+			{
+				idx = 0;
+			}
+			Point p = pts[idx];
+			rect.X = p.X * rect.Width;
+			rect.Y = p.Y * rect.Height;
+			txオプションパネル.t2D描画(CDTXMania.Instance.Device, x, y, rect);
+		}
+
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない)
+			if (base.b活性化してる)
 			{
-				Device device = CDTXMania.Instance.Device;
-				CConfigIni configIni = CDTXMania.Instance.ConfigIni;
 				if (this.txオプションパネル != null)
 				{
-					#region [ スクロール速度表示 ]
-					int drums = configIni.n譜面スクロール速度.Drums;
-					if (drums > 15)
+
+					for (EPart part = EPart.Drums; part <= EPart.Bass; ++part)
 					{
-						drums = 15;
+						int x = Pos[part].X;
+						int y = Pos[part].Y;
+						
+						rect.Width = CDTXMania.Instance.Coordinates.ImgOptionPanel.W;
+						rect.Height = CDTXMania.Instance.Coordinates.ImgOptionPanel.H;
+
+						// Dark
+						DrawOption((int)CDTXMania.Instance.ConfigIni.eDark.Value, ptDark, x, y);
+						IncrementXY(ref x, ref y);
+
+						// ScrollSpeed
+						DrawOption(CDTXMania.Instance.ConfigIni.nScrollSpeed[part]-1, ptScrollSpeed, x, y);
+						IncrementXY(ref x, ref y);
+
+						// Sud Hid Inv
+						DrawOption((int)CDTXMania.Instance.ConfigIni.eSudHidInv[part].Value, ptSudHidInv, x, y);
+						IncrementXY(ref x, ref y);
+
+						// Reverse
+						DrawOption(CDTXMania.Instance.ConfigIni.bReverse[part] ? 1 : 0, ptReverse, x, y);
+						IncrementXY(ref x, ref y);
+
+						if (part == EPart.Drums)
+						{
+							// Tight
+							DrawOption(CDTXMania.Instance.ConfigIni.bTight ? 1 : 0, ptTight, x, y);
+							IncrementXY(ref x, ref y);
+						}
+
+						if (part == EPart.Guitar || part == EPart.Bass)
+						{
+							// Random
+							DrawOption((int)CDTXMania.Instance.ConfigIni.eRandom[part].Value, ptRandom, x, y);
+							IncrementXY(ref x, ref y);
+
+							// Light
+							DrawOption(CDTXMania.Instance.ConfigIni.bLight[part].Value ? 1 : 0, ptLight, x, y);
+							IncrementXY(ref x, ref y);
+						}
 					}
-					this.txオプションパネル.t2D描画(
-						device,
-						0x171 * Scale.X,
-						12 * Scale.Y - 4,
-						this.rc譜面スピード[drums]
-					);
-					int guitar = configIni.n譜面スクロール速度.Guitar;
-					if (guitar > 15)
-					{
-						guitar = 15;
-					}
-					this.txオプションパネル.t2D描画(
-						device,
-						0x171 * Scale.X,
-						0x18 * Scale.Y - 4,
-						this.rc譜面スピード[guitar]
-					);
-					int bass = configIni.n譜面スクロール速度.Bass;
-					if (bass > 15)
-					{
-						bass = 15;
-					}
-					this.txオプションパネル.t2D描画(
-						device,
-						0x171 * Scale.X,
-						0x24 * Scale.Y - 4,
-						this.rc譜面スピード[bass]
-					);
-					#endregion
-					#region [ Sudden/Hidden/Invisible ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x189 * Scale.X,
-						12 * Scale.Y - 4,
-						this.rcHS[(configIni.bHidden.Drums ? 1 : 0) + (configIni.bSudden.Drums ? 2 : 0) +
-									(configIni.eInvisible.Drums == EInvisible.SEMI ? 4 : 0) +
-									(configIni.eInvisible.Drums == EInvisible.FULL ? 5 : 0)]);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x189 * Scale.X,
-						0x18 * Scale.Y - 4,
-						this.rcHS[(configIni.bHidden.Guitar ? 1 : 0) + (configIni.bSudden.Guitar ? 2 : 0) +
-									(configIni.eInvisible.Guitar == EInvisible.SEMI ? 4 : 0) +
-									(configIni.eInvisible.Guitar == EInvisible.FULL ? 5 : 0)]);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x189 * Scale.X,
-						0x24 * Scale.Y - 4,
-						this.rcHS[(configIni.bHidden.Bass ? 1 : 0) + (configIni.bSudden.Bass ? 2 : 0) +
-									(configIni.eInvisible.Bass == EInvisible.SEMI ? 4 : 0) +
-									(configIni.eInvisible.Bass == EInvisible.FULL ? 5 : 0)]);
-					#endregion
-					#region [ Dark ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1a1 * Scale.X,
-						12 * Scale.Y - 4,
-						this.rcDark[(int)configIni.eDark]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1a1 * Scale.X,
-						0x18 * Scale.Y - 4,
-						this.rcDark[(int)configIni.eDark]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1a1 * Scale.X,
-						0x24 * Scale.Y - 4,
-						this.rcDark[(int)configIni.eDark]
-					);
-					#endregion
-					#region [ Reverse ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1b9 * Scale.X,
-						12 * Scale.Y - 4,
-						this.rcReverse[configIni.bReverse.Drums ? 1 : 0]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1b9 * Scale.X,
-						0x18 * Scale.Y - 4,
-						this.rcReverse[configIni.bReverse.Guitar ? 1 : 0]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1b9 * Scale.X,
-						0x24 * Scale.Y - 4,
-						this.rcReverse[configIni.bReverse.Bass ? 1 : 0]
-					);
-					#endregion
-					#region [ 判定文字表示位置 ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1d1 * Scale.X,
-						12 * Scale.Y - 4,
-						this.rcPosition[(int)configIni.判定文字表示位置.Drums]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1d1 * Scale.X,
-						0x18 * Scale.Y - 4,
-						this.rcPosition[(int)configIni.判定文字表示位置.Guitar]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1d1 * Scale.X,
-						0x24 * Scale.Y - 4,
-						this.rcPosition[(int)configIni.判定文字表示位置.Bass]
-					);
-					#endregion
-					#region [ Tight ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1e9 * Scale.X,
-						12 * Scale.Y - 4,
-						this.rcTight[configIni.bTight ? 1 : 0]
-					);
-					#endregion
-					#region [ Random ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1e9 * Scale.X,
-						0x18 * Scale.Y - 4,
-						this.rcRandom[(int)configIni.eRandom.Guitar]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x1e9 * Scale.X,
-						0x24 * Scale.Y - 4,
-						this.rcRandom[(int)configIni.eRandom.Bass]
-					);
-					#endregion
-					#region [ ComboPosigion ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x201 * Scale.X,
-						12 * Scale.Y - 4,
-						this.rcComboPos[(int)configIni.ドラムコンボ文字の表示位置]
-					);
-					#endregion
-					#region [ Light ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x201 * Scale.X,
-						0x18 * Scale.Y - 4,
-						this.rcLight[configIni.bLight.Guitar ? 1 : 0]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x201 * Scale.X,
-						0x24 * Scale.Y - 4,
-						this.rcLight[configIni.bLight.Bass ? 1 : 0]
-					);
-					#endregion
-					#region [ Left ]
-					this.txオプションパネル.t2D描画(
-						device,
-						0x219 * Scale.X,
-						0x18 * Scale.Y - 4,
-						this.rcLeft[configIni.bLeft.Guitar ? 1 : 0]
-					);
-					this.txオプションパネル.t2D描画(
-						device,
-						0x219 * Scale.X,
-						0x24 * Scale.Y - 4,
-						this.rcLeft[configIni.bLeft.Bass ? 1 : 0]
-					);
-					#endregion
 				}
 			}
 			return 0;
 		}
-
-
-		// その他
-
-		#region [ private ]
-		//-----------------
-		private readonly Rectangle[] rcComboPos = new Rectangle[] {
-			new Rectangle( (int)(0x30 * Scale.X), (int)(0x48 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x30 * Scale.X), (int)(60 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x30 * Scale.X), (int)(0x30 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x18 * Scale.X), (int)(0x48 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
-		};
-		private readonly Rectangle[] rcDark = new Rectangle[] {
-			new Rectangle( (int)(0x18 * Scale.X), (int)(0 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x18 * Scale.X), (int)(12 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x18 * Scale.X), (int)(0x54 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
-		};
-		private readonly Rectangle[] rcHS = new Rectangle[] {
-			new Rectangle( (int)(0 * Scale.X), (int)(0 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),		// OFF
-			new Rectangle( (int)(0 * Scale.X), (int)(12 * Scale.Y),(int)( 0x18 * Scale.X), (int)(12 * Scale.Y) ),		// Hidden
-			new Rectangle( (int)(0 * Scale.X), (int)(0x18 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),		// Sudden
-			new Rectangle( (int)(0 * Scale.X), (int)(0x24 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),		// H/S
-			new Rectangle( (int)(0x60 * Scale.X), (int)(0x54 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),	// Semi-Invisible
-			new Rectangle( (int)(120 * Scale.X), (int)(0x54 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )	// Full-Invisible
-		};
-		private readonly Rectangle[] rcLeft = new Rectangle[] {
-			new Rectangle( (int)(0x60 * Scale.X), (int)(0x48 * Scale.Y),(int)( 0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(120 * Scale.X),(int)( 0x48 * Scale.Y),(int)( 0x18 * Scale.X), (int)(12 * Scale.Y) )
-		};
-		private readonly Rectangle[] rcLight = new Rectangle[] {
-			new Rectangle( (int)(120 * Scale.X), (int)(0x30 * Scale.Y),(int)( 0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(120 * Scale.X), (int)(60 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
-		};
-		private readonly Rectangle[] rcPosition = new Rectangle[] {
-			new Rectangle( (int)(24 * Scale.X), (int)( 72 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) ),		// OFF
-			new Rectangle( (int)( 0 * Scale.X), (int)( 48 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) ),		// P-A
-			new Rectangle( (int)( 0 * Scale.X), (int)( 60 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) ),		// P-B
-			new Rectangle( (int)( 0 * Scale.X), (int)( 72 * Scale.Y), (int)( 24 * Scale.X), (int)(12 * Scale.Y) ),		// P-C
-		};
-		private readonly Rectangle[] rcRandom = new Rectangle[] {
-			new Rectangle( (int)(0x48 * Scale.X), (int)(0x30 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x48 * Scale.X), (int)(60 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x48 * Scale.X), (int)(0x48 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x48 * Scale.X), (int)(0x54 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
-		};
-		private readonly Rectangle[] rcReverse = new Rectangle[] {
-			new Rectangle( (int)(0x18 * Scale.X), (int)(0x18 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x18 * Scale.X), (int)(0x24 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
-		};
-		private readonly Rectangle[] rcTight = new Rectangle[] {
-			new Rectangle( (int)(0x60 * Scale.X), (int)(0x30 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x60 * Scale.X), (int)(60 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
-		};
-		private readonly Rectangle[] rc譜面スピード = new Rectangle[] {
-			new Rectangle( (int)(0x30 * Scale.X), (int)(0 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x30 * Scale.X), (int)(12 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x30 * Scale.X), (int)(0x18 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x30 * Scale.X), (int)(0x24 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x48 * Scale.X), (int)(0 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x48 * Scale.X), (int)(12 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x48 * Scale.X), (int)(0x18 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x48 * Scale.X), (int)(0x24 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x60 * Scale.X), (int)(0 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x60 * Scale.X), (int)(12 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x60 * Scale.X), (int)(0x18 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(0x60 * Scale.X), (int)(0x24 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(120 * Scale.X), (int)(0 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(120 * Scale.X), (int)(12 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(120 * Scale.X), (int)(0x18 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) ),
-			new Rectangle( (int)(120 * Scale.X), (int)(0x24 * Scale.Y), (int)(0x18 * Scale.X), (int)(12 * Scale.Y) )
-		};
-		private CTexture txオプションパネル;
-		//-----------------
-		#endregion
 	}
 }

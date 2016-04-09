@@ -179,7 +179,7 @@ namespace DTXMania
 		{
 			#region [ 以前レンダリングしたことのある文字列/フォントか? (キャッシュにヒットするか?) ]
 			int index = listFontCache.FindIndex(
-				delegate(FontCache fontcache)
+				delegate (FontCache fontcache)
 				{
 					return (
 						drawstr == fontcache.drawstr &&
@@ -188,7 +188,7 @@ namespace DTXMania
 						edgeColor == fontcache.edgeColor &&
 						gradationTopColor == fontcache.gradationTopColor &&
 						gradationBottomColor == fontcache.gradationBottomColor
-						// _font == fontcache.font
+					// _font == fontcache.font
 					);
 				}
 			);

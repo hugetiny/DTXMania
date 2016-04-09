@@ -20,21 +20,21 @@ namespace DTXMania
 			base.b活性化してない = true;
 		}
 
-		public void Start(E楽器パート part, CChip r歓声Chip = null)
+		public void Start(EPart part, CChip r歓声Chip = null)
 		{
 			for (int i = 0; i < 4; i++)
 			{
 				if ((this.ct進行用[(int)part, i] == null) || this.ct進行用[(int)part, i].b停止中)
 				{
 					this.ct進行用[(int)part, i] = new CCounter(0, 300, 2, CDTXMania.Instance.Timer);
-					if (CDTXMania.Instance.ConfigIni.b歓声を発声する)
+					if (CDTXMania.Instance.ConfigIni.bAudience)
 					{
 						if (r歓声Chip != null)
 						{
-							CDTXMania.Instance.DTX.tチップの再生(r歓声Chip, CSound管理.rc演奏用タイマ.nシステム時刻, (int)Eレーン.BGM, CDTXMania.Instance.DTX.nモニタを考慮した音量(E楽器パート.UNKNOWN));
+							CDTXMania.Instance.DTX.tチップの再生(r歓声Chip, CSound管理.rc演奏用タイマ.nシステム時刻, CDTXMania.Instance.DTX.nモニタを考慮した音量(EPart.Unknown));
 							return;
 						}
-						CDTXMania.Instance.Skin.sound歓声音.n位置_次に鳴るサウンド = (part == E楽器パート.GUITAR) ? -50 : 50;
+						CDTXMania.Instance.Skin.sound歓声音.n位置_次に鳴るサウンド = (part == EPart.Guitar) ? -50 : 50;
 						CDTXMania.Instance.Skin.sound歓声音.t再生する();
 						return;
 					}
@@ -79,39 +79,39 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる)
 			{
 				for (int i = 0; i < 2; i++)
 				{
-					E楽器パート e楽器パート = (i == 0) ? E楽器パート.GUITAR : E楽器パート.BASS;
-					if (CDTXMania.Instance.ConfigIni.b楽器有効[e楽器パート])
+					EPart inst = (i == 0) ? EPart.Guitar : EPart.Bass;
+					if (CDTXMania.Instance.ConfigIni.b楽器有効(inst) && CDTXMania.Instance.DTX.bチップがある[inst] )
 					{
 						for (int k = 0; k < 4; k++)
 						{
-							if ((this.ct進行用[(int)e楽器パート, k] != null) && !this.ct進行用[(int)e楽器パート, k].b停止中)
+							if ((this.ct進行用[(int)inst, k] != null) && !this.ct進行用[(int)inst, k].b停止中)
 							{
-								if (this.ct進行用[(int)e楽器パート, k].b終了値に達した)
+								if (this.ct進行用[(int)inst, k].b終了値に達した)
 								{
-									this.ct進行用[(int)e楽器パート, k].t停止();
+									this.ct進行用[(int)inst, k].t停止();
 								}
 								else
 								{
-									this.ct進行用[(int)e楽器パート, k].t進行();
+									this.ct進行用[(int)inst, k].t進行();
 								}
 							}
 
-							if ((this.ct進行用[(int)e楽器パート, k] != null) && !this.ct進行用[(int)e楽器パート, k].b停止中)
+							if ((this.ct進行用[(int)inst, k] != null) && !this.ct進行用[(int)inst, k].b停止中)
 							{
 								Rectangle rc = CDTXMania.Instance.Coordinates.ImgGtWailingBonus;
 
-								int x = (e楽器パート == E楽器パート.GUITAR) ?
-									CDTXMania.Instance.Coordinates.Lane.GtW.X + (CDTXMania.Instance.Coordinates.Lane.GtW.W - rc.Width) / 2 :
-									CDTXMania.Instance.Coordinates.Lane.BsW.X + (CDTXMania.Instance.Coordinates.Lane.BsW.W - rc.Width) / 2;
+								int x = (inst == EPart.Guitar) ?
+									CDTXMania.Instance.ConfigIni.GetLaneX(ELane.GtW) + (CDTXMania.Instance.ConfigIni.GetLaneW(ELane.GtW) - rc.Width) / 2 :
+									CDTXMania.Instance.ConfigIni.GetLaneX(ELane.BsW) + (CDTXMania.Instance.ConfigIni.GetLaneW(ELane.BsW) - rc.Width) / 2;
 
 								int y = 0;
-								int ct = this.ct進行用[(int)e楽器パート, k].n現在の値;
+								int ct = this.ct進行用[(int)inst, k].n現在の値;
 
-								int yj = C演奏判定ライン座標共通.n判定ラインY座標(e楽器パート, false, true, C演奏判定ライン座標共通.Reverse.NotReverse);
+								int yj = C演奏判定ライン座標共通.n判定ラインY座標(inst, false, true, C演奏判定ライン座標共通.Reverse.NotReverse);
 
 								if (ct < 100)
 								{
@@ -130,7 +130,7 @@ namespace DTXMania
 									y = (int)(yj - (((double)(rc.Height * (ct - 200))) / 100.0));
 								}
 
-								if (CDTXMania.Instance.ConfigIni.bReverse[e楽器パート])
+								if (CDTXMania.Instance.ConfigIni.bReverse[inst])
 								{
 									y = SampleFramework.GameWindowSize.Height - y - rc.Height;
 								}

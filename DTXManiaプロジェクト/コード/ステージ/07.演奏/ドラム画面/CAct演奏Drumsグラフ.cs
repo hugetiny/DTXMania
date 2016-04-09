@@ -22,14 +22,14 @@ namespace DTXMania
 		// 修正等
 		// ・画像がないと落ちる→修正済
 
-		public STDGBVALUE<double> dbTarget;
-		private STDGBVALUE<double> dbTargetDisp;
-		public STDGBVALUE<double> dbCurrent;
-		private STDGBVALUE<double> dbCurrentDisp;
+		public STDGBSValue<double> dbTarget;
+		private STDGBSValue<double> dbTargetDisp;
+		public STDGBSValue<double> dbCurrent;
+		private STDGBSValue<double> dbCurrentDisp;
 
 		private CTexture txグラフ;
 
-		private STDGBVALUE<CCounter> counterYposInImg;
+		private STDGBSValue<CCounter> counterYposInImg;
 		private readonly int slices = 10;
 
 		public CAct演奏グラフ()
@@ -41,11 +41,11 @@ namespace DTXMania
 		{
 			if (base.b活性化してない)
 			{
-				this.dbTarget = new STDGBVALUE<double>();
+				this.dbTarget = new STDGBSValue<double>();
 				dbTarget.Drums = dbTarget.Guitar = dbTarget.Bass = 80.0;
-				this.dbCurrent = new STDGBVALUE<double>();
+				this.dbCurrent = new STDGBSValue<double>();
 				dbCurrent.Drums = dbCurrent.Guitar = dbCurrent.Bass = 0.0;
-				counterYposInImg = new STDGBVALUE<CCounter>();
+				counterYposInImg = new STDGBSValue<CCounter>();
 				base.On活性化();
 			}
 		}
@@ -71,15 +71,17 @@ namespace DTXMania
 				base.OnManagedリソースの解放();
 			}
 		}
-		
+
 		public override int On進行描画()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる && !CDTXMania.Instance.ConfigIni.bStoicMode)
 			{
 
-				for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
+				for (EPart inst = EPart.Drums; inst <= EPart.Bass; ++inst)
 				{
-					if (CDTXMania.Instance.ConfigIni.b楽器有効[inst])
+					if (CDTXMania.Instance.ConfigIni.b楽器有効(inst) &&
+						CDTXMania.Instance.ConfigIni.bGraph[inst] &&
+						CDTXMania.Instance.DTX.bチップがある[inst])
 					{
 
 						if (base.b初めての進行描画)
@@ -93,6 +95,10 @@ namespace DTXMania
 						counterYposInImg[inst].t進行Loop();
 						int stYposInImg = counterYposInImg[inst].n現在の値;
 
+						int gx = CDTXMania.Instance.ConfigIni.cdInstX[inst][CDTXMania.Instance.ConfigIni.eActiveInst].Value
+							+ CDTXMania.Instance.Coordinates.Instrument[inst].W;
+						int gy = 0;
+
 						// 背景暗幕
 						if (this.txグラフ != null)
 						{
@@ -100,12 +106,7 @@ namespace DTXMania
 							this.txグラフ.vc拡大縮小倍率.Y = CDTXMania.Instance.Coordinates.Graph[inst].H;
 
 							this.txグラフ.n透明度 = 128;
-							this.txグラフ.t2D描画(
-								CDTXMania.Instance.Device,
-								CDTXMania.Instance.Coordinates.Graph[inst].X,
-								CDTXMania.Instance.Coordinates.Graph[inst].Y,
-								new Rectangle(62, 0, 1, 1)
-								);
+							this.txグラフ.t2D描画(CDTXMania.Instance.Device, gx, gy, new Rectangle(62, 0, 1, 1));
 
 							// 基準線
 
@@ -115,12 +116,8 @@ namespace DTXMania
 
 							for (int i = 0; i < slices; i++)
 							{
-								this.txグラフ.t2D描画(
-									CDTXMania.Instance.Device,
-									CDTXMania.Instance.Coordinates.Graph[inst].X,
-									CDTXMania.Instance.Coordinates.Graph[inst].Y + CDTXMania.Instance.Coordinates.Graph[inst].H * i / slices,
-									new Rectangle(60, 0, 1, 1)
-									);
+								this.txグラフ.t2D描画(CDTXMania.Instance.Device,
+									gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H * i / slices, new Rectangle(60, 0, 1, 1));
 							}
 
 							for (int i = 0; i < 5; i++)
@@ -129,7 +126,7 @@ namespace DTXMania
 								// 基準線を越えたら線が黄色くなる
 								if (this.dbCurrent[inst] >= (100 - i * slices))
 								{
-									rectangle = new Rectangle(61, 0, 1, 1);	//黄色
+									rectangle = new Rectangle(61, 0, 1, 1); //黄色
 									if (this.txグラフ != null)
 									{
 										this.txグラフ.n透明度 = 224;
@@ -148,8 +145,7 @@ namespace DTXMania
 								{
 									this.txグラフ.t2D描画(
 										CDTXMania.Instance.Device,
-										CDTXMania.Instance.Coordinates.Graph[inst].X,
-										CDTXMania.Instance.Coordinates.Graph[inst].Y + i * CDTXMania.Instance.Coordinates.Graph[inst].H / slices,
+										gx, gy + i * CDTXMania.Instance.Coordinates.Graph[inst].H / slices,
 										rectangle
 										);
 								}
@@ -171,14 +167,12 @@ namespace DTXMania
 							this.txグラフ.n透明度 = 255;
 							this.txグラフ.t2D描画(
 								CDTXMania.Instance.Device,
-								CDTXMania.Instance.Coordinates.Graph[inst].X,
-								CDTXMania.Instance.Coordinates.Graph[inst].Y + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
+								gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
 								new Rectangle(0, 5 + stYposInImg, 30, ar)
 								);
 							this.txグラフ.t2D描画( // 上部白いバー
 								CDTXMania.Instance.Device,
-								CDTXMania.Instance.Coordinates.Graph[inst].X,
-								CDTXMania.Instance.Coordinates.Graph[inst].Y + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
+								gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
 								new Rectangle(0, 0, 30, 5)
 							);
 
@@ -190,8 +184,7 @@ namespace DTXMania
 								this.txグラフ.b加算合成 = true;
 								this.txグラフ.t2D描画(
 									CDTXMania.Instance.Device,
-									CDTXMania.Instance.Coordinates.Graph[inst].X,
-									CDTXMania.Instance.Coordinates.Graph[inst].Y + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
+									gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
 									new Rectangle(0, 5 + stYposInImg, 30, ar)
 									);
 								this.txグラフ.b加算合成 = false;
@@ -209,15 +202,13 @@ namespace DTXMania
 
 							this.txグラフ.t2D描画(
 								CDTXMania.Instance.Device,
-								CDTXMania.Instance.Coordinates.Graph[inst].X + 30,
-								CDTXMania.Instance.Coordinates.Graph[inst].Y + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
+								gx + 30,
+								gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
 								new Rectangle(30, 5 + stYposInImg, 30, ar)
 								);
 							this.txグラフ.n透明度 = 255;
 							this.txグラフ.t2D描画( // 上部白いバー
-								CDTXMania.Instance.Device,
-								CDTXMania.Instance.Coordinates.Graph[inst].X + 30,
-								CDTXMania.Instance.Coordinates.Graph[inst].Y + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
+								CDTXMania.Instance.Device, gx + 30, gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
 								new Rectangle(30, 0, 30, 5)
 							);
 						}

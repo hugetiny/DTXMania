@@ -11,8 +11,6 @@ namespace DTXMania
 {
 	internal class CActResultParameterPanel : CActivity
 	{
-		// コンストラクタ
-
 		public CActResultParameterPanel()
 		{
 			ST文字位置[] st文字位置Array = new ST文字位置[11];
@@ -187,12 +185,12 @@ namespace DTXMania
 				);
 			}
 			int num = this.ct表示用.n現在の値;
-			STDGBVALUE<Point> pointArray = new STDGBVALUE<Point>();
+			STDGBSValue<Point> pointArray = new STDGBSValue<Point>();
 			pointArray.Drums = new Point((int)(0x68 * Scale.X), (int)(0x29 * Scale.Y));
 			pointArray.Guitar = new Point((int)(0xc7 * Scale.X), (int)(0x29 * Scale.Y));
 			pointArray.Bass = new Point((int)(0x129 * Scale.X), (int)(0x29 * Scale.Y));
-			
-			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+
+			for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 			{
 				int x = this.n本体X + pointArray[i].X;
 				int y = this.n本体Y + pointArray[i].Y;
@@ -294,7 +292,7 @@ namespace DTXMania
 			}
 			if (this.ct表示用.n現在の値 >= 900)
 			{
-				for (E楽器パート j = E楽器パート.DRUMS; j <= E楽器パート.BASS; j++)
+				for (EPart j = EPart.Drums; j <= EPart.Bass; j++)
 				{
 					if (CDTXMania.Instance.stage結果.st演奏記録[j].bフルコンボである)
 					{

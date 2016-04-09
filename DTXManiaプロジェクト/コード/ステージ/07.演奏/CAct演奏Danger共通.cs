@@ -10,31 +10,28 @@ namespace DTXMania
 	internal class CAct演奏Danger共通 : CActivity
 	{
 		private CTextureAf txDANGER;
-		private bool[] bDanger中 = { false, false, false };
+		private bool bDanger中;
+		// = { false, false, false };
 		private CCounter ct移動用;
 		private CCounter ct透明度用;
 		private const int n波長 = 40;
 		private const int n透明度MAX = 180;
 		private const int n透明度MIN = 20;
-		
+
 		public override void On活性化()
 		{
-			if (base.b活性化してない)
+			if (b活性化してない)
 			{
-				for (int i = 0; i < 3; i++)
-				{
-					this.bDanger中[i] = false;
-				}
-				this.ct移動用 = null;
-				this.ct透明度用 = null;
-
+				bDanger中 = false;
+				ct移動用 = null;
+				ct透明度用 = null;
 				base.On活性化();
 			}
 		}
 
 		public override void On非活性化()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる)
 			{
 				this.ct移動用 = null;
 				this.ct透明度用 = null;
@@ -44,7 +41,7 @@ namespace DTXMania
 
 		public override void OnManagedリソースの作成()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる)
 			{
 				this.txDANGER = TextureFactory.tテクスチャの生成Af(CSkin.Path(@"Graphics\ScreenPlayDrums danger.png"), false);
 				base.OnManagedリソースの作成();
@@ -53,7 +50,7 @@ namespace DTXMania
 
 		public override void OnManagedリソースの解放()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる)
 			{
 				TextureFactory.tテクスチャの解放(ref this.txDANGER);
 				base.OnManagedリソースの解放();
@@ -69,22 +66,22 @@ namespace DTXMania
 		/// <returns></returns>
 		public int t進行描画(bool isDanger)
 		{
-			if (base.b活性化してる)
+			if (b活性化してる)
 			{
 				if (!isDanger)
 				{
-					this.bDanger中[(int)E楽器パート.DRUMS] = false;
+					bDanger中 = false;
 					return 0;
 				}
-				if (!this.bDanger中[(int)E楽器パート.DRUMS])
+				if (!bDanger中)
 				{
 					this.ct移動用 = new CCounter(0, 0x7f, 7, CDTXMania.Instance.Timer);
 					this.ct透明度用 = new CCounter(0, 0x167, 4, CDTXMania.Instance.Timer);
 				}
-				this.bDanger中[(int)E楽器パート.DRUMS] = isDanger;
+				bDanger中 = isDanger;
 				this.ct移動用.t進行Loop();
 				this.ct透明度用.t進行Loop();
-				if (!this.bDanger中[(int)E楽器パート.DRUMS])
+				if (!bDanger中)
 				{
 					return 0;
 				}

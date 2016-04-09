@@ -9,15 +9,24 @@ namespace DTXMania
 {
 	internal class CAct演奏Drumsパッド : CActivity
 	{
-		private readonly int[] n描画順 = new int[] { 3, 6, 5, 4, 2, 1, 8, 7, 0 };
+		private readonly EPad[] n描画順 = new EPad[] {
+						EPad.BD,
+						EPad.FT,
+						EPad.LT,
+						EPad.HT,
+						EPad.SD,
+						EPad.CY,
+						EPad.HH,
+						EPad.RD,
+						EPad.LC
+				};
 		private long nY座標制御タイマ;
 		private long nフラッシュ制御タイマ;
-		private STパッド状態[] stパッド状態 = new STパッド状態[9];
+		private STPadValue<STパッド状態> stパッド状態 = new STPadValue<STパッド状態>();
 		private CTexture txパッド;
 		private CTexture tx光るパッド;
 
-		[StructLayout(LayoutKind.Sequential)]
-		private struct STパッド状態
+		private class STパッド状態
 		{
 			public int n明るさ;
 			public int nY座標オフセットdot;
@@ -30,25 +39,10 @@ namespace DTXMania
 			}
 		}
 
-		[StructLayout(LayoutKind.Sequential)]
-		private struct ST基本位置
+		public void Hit(EPad ePad)
 		{
-			public int x;
-			public int y;
-			public Rectangle rc;
-
-			public ST基本位置(int x_, int y_, Rectangle rc_)
-			{
-				x = x_;
-				y = y_;
-				rc = rc_;
-			}
-		}
-
-		public void Hit(int nLane)
-		{
-			this.stパッド状態[nLane].n明るさ = 6;
-			this.stパッド状態[nLane].nY座標加速度dot = 2;
+			this.stパッド状態[ePad].n明るさ = 6;
+			this.stパッド状態[ePad].nY座標加速度dot = 2;
 		}
 
 		public override void On活性化()
@@ -57,7 +51,7 @@ namespace DTXMania
 			{
 				this.nフラッシュ制御タイマ = -1;
 				this.nY座標制御タイマ = -1;
-				for (int i = 0; i < 9; i++)
+				for (EPad i = EPad.DrumsPadMin; i < EPad.DrumsPadMax; ++i)
 				{
 					this.stパッド状態[i] = new STパッド状態(0, 0, 0);
 				}
@@ -87,13 +81,16 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる &&
+				CDTXMania.Instance.ConfigIni.bDrums有効 &&
+				CDTXMania.Instance.DTX.bチップがある.Drums &&
+				CDTXMania.Instance.ConfigIni.eDark != EDark.Full)
 			{
-				if (base.b初めての進行描画)
+				if (b初めての進行描画)
 				{
-					this.nフラッシュ制御タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
-					this.nY座標制御タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
-					base.b初めての進行描画 = false;
+					nフラッシュ制御タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
+					nY座標制御タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
+					b初めての進行描画 = false;
 				}
 				long n現在時刻 = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
 				if (n現在時刻 < this.nフラッシュ制御タイマ)
@@ -102,7 +99,7 @@ namespace DTXMania
 				}
 				while ((n現在時刻 - this.nフラッシュ制御タイマ) >= 15)
 				{
-					for (int i = 0; i < 9; i++)
+					for (EPad i = EPad.DrumsPadMin; i < EPad.DrumsPadMax; i++)
 					{
 						if (this.stパッド状態[i].n明るさ > 0)
 						{
@@ -118,7 +115,7 @@ namespace DTXMania
 				}
 				while ((n現在時刻 - this.nY座標制御タイマ) >= 5)
 				{
-					for (int i = 0; i < 9; i++)
+					for (EPad i = EPad.DrumsPadMin; i < EPad.DrumsPadMax; i++)
 					{
 						this.stパッド状態[i].nY座標オフセットdot += this.stパッド状態[i].nY座標加速度dot;
 						if (this.stパッド状態[i].nY座標オフセットdot > 15)
@@ -135,73 +132,14 @@ namespace DTXMania
 					this.nY座標制御タイマ += 5;
 				}
 				#region [ 表示 ]
-				for (int idx = 0; idx < 9; idx++)
+				for (int idx = 0; idx < n描画順.Length; idx++)
 				{
-					Rectangle rc;
-					int x = 0;
-					int yoffset = 0;
-					int i = n描画順[idx];
-
-					if (i == 0)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadLCY;
-						x = CDTXMania.Instance.Coordinates.Lane.LCY.X + (CDTXMania.Instance.Coordinates.Lane.LCY.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadLCY.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetLCY.Y;
-					}
-					else if (i == 1)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadHH;
-						x = CDTXMania.Instance.Coordinates.Lane.HHC.X + (CDTXMania.Instance.Coordinates.Lane.HHC.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadHH.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetHH.Y;
-					}
-					else if (i == 2)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadSD;
-						x = CDTXMania.Instance.Coordinates.Lane.SD.X + (CDTXMania.Instance.Coordinates.Lane.SD.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadSD.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetSD.Y;
-					}
-					else if (i == 3)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadBD;
-						x = CDTXMania.Instance.Coordinates.Lane.BD.X + (CDTXMania.Instance.Coordinates.Lane.BD.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadBD.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetBD.Y;
-					}
-					else if (i == 4)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadHT;
-						x = CDTXMania.Instance.Coordinates.Lane.HT.X + (CDTXMania.Instance.Coordinates.Lane.HT.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadHT.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetHT.Y;
-					}
-					else if (i == 5)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadLT;
-						x = CDTXMania.Instance.Coordinates.Lane.LT.X + (CDTXMania.Instance.Coordinates.Lane.LT.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadLT.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetLT.Y;
-					}
-					else if (i == 6)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadFT;
-						x = CDTXMania.Instance.Coordinates.Lane.FT.X + (CDTXMania.Instance.Coordinates.Lane.FT.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadFT.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetFT.Y;
-					}
-					else if (i == 7)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadCY;
-						x = CDTXMania.Instance.Coordinates.Lane.CY.X + (CDTXMania.Instance.Coordinates.Lane.CY.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadCY.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetCY.Y;
-					}
-					else if (i == 8)
-					{
-						rc = CDTXMania.Instance.Coordinates.ImgDrPadRCY;
-						x = CDTXMania.Instance.Coordinates.Lane.RCY.X + CDTXMania.Instance.Coordinates.DrPadOffsetRCY.X +
-							(CDTXMania.Instance.Coordinates.Lane.RCY.W / 2 - CDTXMania.Instance.Coordinates.ImgDrPadRCY.W / 2);
-						yoffset = CDTXMania.Instance.Coordinates.DrPadOffsetRCY.Y;
-					}
-					else
-					{
-						rc = new Rectangle();
-					}
-
+					EPad i = n描画順[idx];
+					Rectangle rc = CDTXMania.Instance.Coordinates.ImgDrPad[i];
+					int x = CDTXMania.Instance.ConfigIni.GetLaneX(EnumConverter.LaneFromPad(i)) +
+							(CDTXMania.Instance.ConfigIni.GetLaneW(EnumConverter.LaneFromPad(i)) / 2 -
+							CDTXMania.Instance.Coordinates.ImgDrPad[i].W / 2);
+					int yoffset = CDTXMania.Instance.Coordinates.DrPadOffset[i].Y;
 					int y = (CDTXMania.Instance.ConfigIni.bReverse.Drums ?
 						 SampleFramework.GameWindowSize.Height - CDTXMania.Instance.Coordinates.DrPad.Y - yoffset - rc.Height :
 						 CDTXMania.Instance.Coordinates.DrPad.Y + yoffset) + 2 * this.stパッド状態[i].nY座標オフセットdot;

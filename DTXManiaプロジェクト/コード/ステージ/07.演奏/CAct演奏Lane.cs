@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using SlimDX;
 using FDK;
 using System.Drawing;
+using DTXMania.Coordinates;
 
 namespace DTXMania
 {
@@ -44,45 +45,51 @@ namespace DTXMania
 											int q = (y / 5);
 
 											lanebg.SetPixel(x, y,
-												(p + q) % 2 == 1 ? Color.FromArgb(CDTXMania.Instance.ConfigIni.n背景の透過度, 10, 10, 10) :
-												Color.FromArgb(CDTXMania.Instance.ConfigIni.n背景の透過度, 20, 20, 20));
+												(p + q) % 2 == 1 ? Color.FromArgb(CDTXMania.Instance.ConfigIni.nBGAlpha, 10, 10, 10) :
+												Color.FromArgb(CDTXMania.Instance.ConfigIni.nBGAlpha, 20, 20, 20));
 										}
 									}
 
-									Func<STX, STRect, bool> drawer = (x, w) =>
+									Func<int, CRect, bool> drawer = (x, w) =>
 									{
 										using (TextureBrush tex = new TextureBrush(lanebg))
 										{
-											g.FillRectangle(tex, new Rectangle(x.X, 0, w.W, SampleFramework.GameWindowSize.Height));
-											g.DrawLine(pen, x.X, 0, x.X, SampleFramework.GameWindowSize.Height);
-											g.DrawLine(grayPen, x.X + 2, 0, x.X + 2, SampleFramework.GameWindowSize.Height);
-											g.DrawLine(pen, x.X + w.W, 0, x.X + w.W, SampleFramework.GameWindowSize.Height);
-											g.DrawLine(grayPen, x.X + w.W + 2, 0, x.X + w.W + 2, SampleFramework.GameWindowSize.Height);
+											g.FillRectangle(tex, new Rectangle(x, 0, w.W, SampleFramework.GameWindowSize.Height));
+											g.DrawLine(pen, x, 0, x, SampleFramework.GameWindowSize.Height);
+											g.DrawLine(grayPen, x + 2, 0, x + 2, SampleFramework.GameWindowSize.Height);
+											g.DrawLine(pen, x + w.W, 0, x + w.W, SampleFramework.GameWindowSize.Height);
+											g.DrawLine(grayPen, x + w.W + 2, 0, x + w.W + 2, SampleFramework.GameWindowSize.Height);
 										}
 										return false;
 									};
 
-									if (CDTXMania.Instance.ConfigIni.bDrums有効)
+									if (CDTXMania.Instance.ConfigIni.bDrums有効 && CDTXMania.Instance.DTX.bチップがある[EPart.Drums])
 									{
-										drawer(CDTXMania.Instance.Coordinates.Lane.LCY, CDTXMania.Instance.Coordinates.ImgDrChipCY);
-										drawer(CDTXMania.Instance.Coordinates.Lane.HHC, CDTXMania.Instance.Coordinates.ImgDrChipHHC);
-										drawer(CDTXMania.Instance.Coordinates.Lane.SD, CDTXMania.Instance.Coordinates.ImgDrChipSD);
-										drawer(CDTXMania.Instance.Coordinates.Lane.BD, CDTXMania.Instance.Coordinates.ImgDrChipBD);
-										drawer(CDTXMania.Instance.Coordinates.Lane.HT, CDTXMania.Instance.Coordinates.ImgDrChipHT);
-										drawer(CDTXMania.Instance.Coordinates.Lane.LT, CDTXMania.Instance.Coordinates.ImgDrChipLT);
-										drawer(CDTXMania.Instance.Coordinates.Lane.FT, CDTXMania.Instance.Coordinates.ImgDrChipFT);
-										drawer(CDTXMania.Instance.Coordinates.Lane.CY, CDTXMania.Instance.Coordinates.ImgDrChipCY);
+										drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.LC), CDTXMania.Instance.Coordinates.ImgDrChip[EPad.CY]);
+										drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.HH), CDTXMania.Instance.Coordinates.ImgDrChip[EPad.HH]);
+										drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.SD), CDTXMania.Instance.Coordinates.ImgDrChip[EPad.SD]);
+										drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.BD), CDTXMania.Instance.Coordinates.ImgDrChip[EPad.BD]);
+										drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.HT), CDTXMania.Instance.Coordinates.ImgDrChip[EPad.HT]);
+										drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.LT), CDTXMania.Instance.Coordinates.ImgDrChip[EPad.LT]);
+										drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.FT), CDTXMania.Instance.Coordinates.ImgDrChip[EPad.FT]);
+										drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.CY), CDTXMania.Instance.Coordinates.ImgDrChip[EPad.CY]);
 									}
 									if (CDTXMania.Instance.ConfigIni.bGuitar有効)
 									{
-										drawer(CDTXMania.Instance.Coordinates.Lane.GtR, CDTXMania.Instance.Coordinates.ImgGtRGBButton);
-										drawer(CDTXMania.Instance.Coordinates.Lane.GtG, CDTXMania.Instance.Coordinates.ImgGtRGBButton);
-										drawer(CDTXMania.Instance.Coordinates.Lane.GtB, CDTXMania.Instance.Coordinates.ImgGtRGBButton);
-										drawer(CDTXMania.Instance.Coordinates.Lane.GtW, CDTXMania.Instance.Coordinates.ImgGtRGBButton);
-										drawer(CDTXMania.Instance.Coordinates.Lane.BsR, CDTXMania.Instance.Coordinates.ImgGtRGBButton);
-										drawer(CDTXMania.Instance.Coordinates.Lane.BsG, CDTXMania.Instance.Coordinates.ImgGtRGBButton);
-										drawer(CDTXMania.Instance.Coordinates.Lane.BsB, CDTXMania.Instance.Coordinates.ImgGtRGBButton);
-										drawer(CDTXMania.Instance.Coordinates.Lane.BsW, CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+										if (CDTXMania.Instance.DTX.bチップがある[EPart.Guitar])
+										{
+											drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.GtR), CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+											drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.GtG), CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+											drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.GtB), CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+											drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.GtW), CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+										}
+										if (CDTXMania.Instance.DTX.bチップがある[EPart.Bass])
+										{
+											drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.BsR), CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+											drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.BsG), CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+											drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.BsB), CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+											drawer(CDTXMania.Instance.ConfigIni.GetLaneX(ELane.BsW), CDTXMania.Instance.Coordinates.ImgGtRGBButton);
+										}
 									}
 									this.txLane = TextureFactory.tテクスチャの生成(lanetex, true);
 								}
@@ -96,7 +103,7 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる && CDTXMania.Instance.ConfigIni.eDark == EDark.Off)
 			{
 				txLane.t2D描画(CDTXMania.Instance.Device, 0, 0);
 				return base.On進行描画();

@@ -33,7 +33,7 @@ namespace DTXMania
 				this.tBGMフェードイン開始();
 				if ((cスコア.譜面情報.Presound != null) && (cスコア.譜面情報.Presound.Length > 0))
 				{
-					this.ct再生待ちウェイト = new CCounter(0, CDTXMania.Instance.ConfigIni.n曲が選択されてからプレビュー音が鳴るまでのウェイトms, 1, CDTXMania.Instance.Timer);
+					this.ct再生待ちウェイト = new CCounter(0, CDTXMania.Instance.ConfigIni.nPreSoundWeightMs, 1, CDTXMania.Instance.Timer);
 				}
 			}
 		}
@@ -123,7 +123,7 @@ namespace DTXMania
 				try
 				{
 					this.sound = CDTXMania.Instance.Sound管理.tサウンドを生成する(strPreviewFilename);
-					this.sound.n音量 = 80;	// CDTXMania.Instance.ConfigIni.n自動再生音量;			// #25217 changed preview volume from AutoVolume
+					this.sound.n音量 = 80;  // CDTXMania.Instance.ConfigIni.n自動再生音量;			// #25217 changed preview volume from AutoVolume
 					this.sound.t再生を開始する(true);
 					this.str現在のファイル名 = strPreviewFilename;
 					this.tBGMフェードアウト開始();

@@ -10,17 +10,6 @@ namespace DTXMania
 {
 	internal class CAct演奏ステータスパネル共通 : CActivity
 	{
-		// コンストラクタ
-		public CAct演奏ステータスパネル共通()
-		{
-			base.b活性化してない = true;
-		}
-
-		public override void On活性化()
-		{
-			base.On活性化();
-		}
-
 		public override void OnManagedリソースの作成()
 		{
 			if (base.b活性化してる)
@@ -29,7 +18,7 @@ namespace DTXMania
 				base.OnManagedリソースの作成();
 			}
 		}
-	
+
 		public override void OnManagedリソースの解放()
 		{
 			if (base.b活性化してる)
@@ -41,15 +30,15 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる)
 			{
-				if ((this.txStatusPanels != null))
+				if (txStatusPanels != null)
 				{
-					for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
+					for (EPart inst = EPart.Drums; inst <= EPart.Bass; ++inst)
 					{
-						if (CDTXMania.Instance.ConfigIni.b楽器有効[inst])
+						if (CDTXMania.Instance.ConfigIni.b楽器有効(inst) && CDTXMania.Instance.DTX.bチップがある[inst])
 						{
-							int spd = CDTXMania.Instance.ConfigIni.n譜面スクロール速度[inst];
+							int spd = CDTXMania.Instance.ConfigIni.nScrollSpeed[inst];
 							if (spd < 0)
 							{
 								spd = 0;
@@ -58,13 +47,14 @@ namespace DTXMania
 							{
 								spd = 15;
 							}
-							int y = CDTXMania.Instance.Coordinates.StatusPanel[inst].Y;
+							int y = 0;
 							if (CDTXMania.Instance.ConfigIni.bReverse[inst])
 							{
 								y = SampleFramework.GameWindowSize.Height - (y + CDTXMania.Instance.Coordinates.ImgSpeedPanel.H);
 							}
 							this.txStatusPanels.t2D描画(CDTXMania.Instance.Device,
-								CDTXMania.Instance.Coordinates.StatusPanel[inst].X,
+								CDTXMania.Instance.ConfigIni.cdInstX[inst][CDTXMania.Instance.ConfigIni.eActiveInst].Value
+								- CDTXMania.Instance.Coordinates.StatusPanel.W,
 								y,
 								CDTXMania.Instance.Coordinates.ImgSpeedPanel.ApplyCounterXY(spd % 11, spd / 11, 0, 0));
 						}

@@ -37,17 +37,11 @@ namespace DTXMania
 						txチップGB.n透明度 = pChip.n透明度;
 					}
 
-					E楽器パート gb = pChip.bGuitar可視チップ_Wailing含む ? E楽器パート.GUITAR : E楽器パート.BASS;
+					EPart gb = pChip.bGuitar可視チップ_Wailing含む ? EPart.Guitar : EPart.Bass;
 
-					int x = 0;
-					if (gb == E楽器パート.GUITAR)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.GtW.X + (CDTXMania.Instance.Coordinates.Lane.GtW.W - CDTXMania.Instance.Coordinates.ImgGtWailingChip.W) / 2;
-					}
-					else if (gb == E楽器パート.BASS)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.BsW.X + (CDTXMania.Instance.Coordinates.Lane.BsW.W - CDTXMania.Instance.Coordinates.ImgGtWailingChip.W) / 2;
-					}
+					int x = CDTXMania.Instance.ConfigIni.GetLaneX(gb == EPart.Guitar ? ELane.GtW : ELane.BsW)
+							+ (CDTXMania.Instance.ConfigIni.GetLaneW(gb == EPart.Guitar ? ELane.GtW : ELane.BsW)
+							- CDTXMania.Instance.Coordinates.ImgGtWailingChip.W) / 2;
 
 					int y = C演奏判定ライン座標共通.n判定ラインY座標(gb);
 
@@ -60,8 +54,8 @@ namespace DTXMania
 						y = y + (int)(pChip.nバーからの距離dot[gb]);
 					}
 
-					int numA = (int)(26 * Scale.Y);			// ドラム画面かギター画面かで変わる値
-					int showRangeY1 = (int)(355 * Scale.Y);	// ドラム画面かギター画面かで変わる値
+					int numA = (int)(26 * Scale.Y);     // ドラム画面かギター画面かで変わる値
+					int showRangeY1 = (int)(355 * Scale.Y); // ドラム画面かギター画面かで変わる値
 					int numB = y - (int)(0x39 * Scale.Y);
 					int numC = 0;
 					if ((numB < (showRangeY1 + numA)) && (numB > -numA))

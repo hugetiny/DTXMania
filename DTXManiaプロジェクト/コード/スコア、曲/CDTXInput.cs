@@ -156,7 +156,7 @@ namespace DTXMania
 						}
 					}
 					while (this.t入力_コメントをスキップする(ref ce));
-				#endregion
+					#endregion
 					//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
 					//Trace.TraceInformation( "抜き出し時間:             {0}", span.ToString() );
 					//timeBeginLoad = DateTime.Now;
@@ -184,17 +184,17 @@ namespace DTXMania
 							cbpm.n表記上の番号 = 0;
 							cbpm.dbBPM値 = 120.0;
 							this.listBPM.Add(cbpm.n内部番号, cbpm);
-							CChip chip = new CChip(0, 0, cbpm.n内部番号, Ech定義.BPMEx);
+							CChip chip = new CChip(0, 0, cbpm.n内部番号, EChannel.BPMEx);
 							this.listChip.Insert(0, chip);
 						}
 						else
 						{
-							CChip chip = new CChip(0, 0, cbpm.n内部番号, Ech定義.BPMEx);
+							CChip chip = new CChip(0, 0, cbpm.n内部番号, EChannel.BPMEx);
 							this.listChip.Insert(0, chip);
 						}
 						if (this.listBMP.ContainsKey(0))
 						{
-							CChip chip = new CChip(0, 0, 0, Ech定義.BGALayer1);
+							CChip chip = new CChip(0, 0, 0, EChannel.BGALayer1);
 							this.listChip.Insert(0, chip);
 						}
 						#endregion
@@ -280,16 +280,16 @@ namespace DTXMania
 						#region [ 拍子・拍線の挿入 ]
 						if (this.listChip.Count > 0)
 						{
-							this.listChip.Sort();		// 高速化のためにはこれを削りたいが、listChipの最後がn発声位置の終端である必要があるので、
-							// 保守性確保を優先してここでのソートは残しておく
-							// なお、093時点では、このソートを削除しても動作するようにはしてある。
-							// (ここまでの一部チップ登録を、listChip.Add(c)から同Insert(0,c)に変更してある)
-							// これにより、数ms程度ながらここでのソートも高速化されている。
+							this.listChip.Sort();   // 高速化のためにはこれを削りたいが、listChipの最後がn発声位置の終端である必要があるので、
+																			// 保守性確保を優先してここでのソートは残しておく
+																			// なお、093時点では、このソートを削除しても動作するようにはしてある。
+																			// (ここまでの一部チップ登録を、listChip.Add(c)から同Insert(0,c)に変更してある)
+																			// これにより、数ms程度ながらここでのソートも高速化されている。
 							double barlength = 1.0;
 							int nEndOfSong = (this.listChip[this.listChip.Count - 1].n発声位置 + 384) - (this.listChip[this.listChip.Count - 1].n発声位置 % 384);
-							for (int tick384 = 0; tick384 <= nEndOfSong; tick384 += 384)	// 小節線の挿入　(後に出てくる拍子線とループをまとめようとするなら、forループの終了条件の微妙な違いに注意が必要)
+							for (int tick384 = 0; tick384 <= nEndOfSong; tick384 += 384)  // 小節線の挿入　(後に出てくる拍子線とループをまとめようとするなら、forループの終了条件の微妙な違いに注意が必要)
 							{
-								CChip chip = new CChip(tick384, 36 * 36 - 1, Ech定義.BarLine);
+								CChip chip = new CChip(tick384, 36 * 36 - 1, EChannel.BarLine);
 								this.listChip.Add(chip);
 							}
 							//this.listChip.Sort();				// ここでのソートは不要。ただし最後にソートすること
@@ -300,7 +300,7 @@ namespace DTXMania
 								int n発声位置_C1_同一小節内 = 0;
 								while ((nChipNo_C1 < this.listChip.Count) && (this.listChip[nChipNo_C1].n発声位置 < (tick384 + 384)))
 								{
-									if (this.listChip[nChipNo_C1].eチャンネル番号 == Ech定義.BeatLineShift)				// 拍線シフトの検出
+									if (this.listChip[nChipNo_C1].eチャンネル番号 == EChannel.BeatLineShift)       // 拍線シフトの検出
 									{
 										n発声位置_C1_同一小節内 = this.listChip[nChipNo_C1].n発声位置 - tick384;
 									}
@@ -312,13 +312,13 @@ namespace DTXMania
 								}
 								while ((nChipNo_BarLength < this.listChip.Count) && (this.listChip[nChipNo_BarLength].n発声位置 <= tick384))
 								{
-									if (this.listChip[nChipNo_BarLength].eチャンネル番号 == Ech定義.BarLength)		// bar lengthの検出
+									if (this.listChip[nChipNo_BarLength].eチャンネル番号 == EChannel.BarLength)    // bar lengthの検出
 									{
 										barlength = this.listChip[nChipNo_BarLength].db実数値;
 									}
 									nChipNo_BarLength++;
 								}
-								for (int i = 0; i < 100; i++)								// 拍線の挿入
+								for (int i = 0; i < 100; i++)               // 拍線の挿入
 								{
 									int tickBeat = (int)(((double)(384 * i)) / (4.0 * barlength));
 									if ((tickBeat + n発声位置_C1_同一小節内) >= 384)
@@ -327,7 +327,7 @@ namespace DTXMania
 									}
 									if (((tickBeat + n発声位置_C1_同一小節内) % 384) != 0)
 									{
-										CChip chip = new CChip(tick384 + (tickBeat + n発声位置_C1_同一小節内), 36 * 36 - 1, Ech定義.BeatLine);
+										CChip chip = new CChip(tick384 + (tickBeat + n発声位置_C1_同一小節内), 36 * 36 - 1, EChannel.BeatLine);
 										this.listChip.Add(chip);
 									}
 								}
@@ -343,31 +343,31 @@ namespace DTXMania
 						for (int i = 0; i < this.listChip.Count; i++)
 						{
 							bool bChangedBeatBarStatus = false;
-							if ((this.listChip[i].eチャンネル番号 == Ech定義.BeatLineDisplay))
+							if ((this.listChip[i].eチャンネル番号 == EChannel.BeatLineDisplay))
 							{
-								if (this.listChip[i].n整数値 == 1)				// BAR/BEAT LINE = ON
+								if (this.listChip[i].n整数値 == 1)       // BAR/BEAT LINE = ON
 								{
 									bShowBeatBarLine = true;
 									bChangedBeatBarStatus = true;
 								}
-								else if (this.listChip[i].n整数値 == 2)			// BAR/BEAT LINE = OFF
+								else if (this.listChip[i].n整数値 == 2)      // BAR/BEAT LINE = OFF
 								{
 									bShowBeatBarLine = false;
 									bChangedBeatBarStatus = true;
 								}
 							}
 							int startIndex = i;
-							if (bChangedBeatBarStatus)							// C2チップの前に50/51チップが来ている可能性に配慮
+							if (bChangedBeatBarStatus)              // C2チップの前に50/51チップが来ている可能性に配慮
 							{
 								while (startIndex > 0 && this.listChip[startIndex].n発声位置 == this.listChip[i].n発声位置)
 								{
 									startIndex--;
 								}
-								startIndex++;	// 1つ小さく過ぎているので、戻す
+								startIndex++; // 1つ小さく過ぎているので、戻す
 							}
 							for (int j = startIndex; j <= i; j++)
 							{
-								if (((this.listChip[j].eチャンネル番号 == Ech定義.BarLine) || (this.listChip[j].eチャンネル番号 == Ech定義.BeatLine)) &&
+								if (((this.listChip[j].eチャンネル番号 == EChannel.BarLine) || (this.listChip[j].eチャンネル番号 == EChannel.BeatLine)) &&
 									(this.listChip[j].n整数値 == (36 * 36 - 1)))
 								{
 									this.listChip[j].b可視 = bShowBeatBarLine;
@@ -407,7 +407,7 @@ namespace DTXMania
 						//Trace.TraceInformation( "再生時刻変更:             {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
 						#region [ 可視チップ数カウント ]
-						for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
+						for (EPart inst = EPart.Drums; inst <= EPart.Bass; ++inst)
 						{
 							this.n可視チップ数[inst] = 0;
 						}
@@ -496,7 +496,7 @@ namespace DTXMania
 						//Trace.TraceInformation( "hash計算:                 {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
 						#region [ bLogDTX詳細ログ出力 ]
-						if (CDTXMania.Instance.ConfigIni.bLogDTX詳細ログ出力)
+						if (CDTXMania.Instance.ConfigIni.bLogDTX)
 						{
 							foreach (CWAV cwav in this.listWAV.Values)
 							{
@@ -536,11 +536,11 @@ namespace DTXMania
 							}
 						}
 						#endregion
-						
+
 						// #36177 使用レーン数の表示 add ikanick 16.03.20
 						#region [ 使用レーン数カウント ]
-						
-						for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; ++inst)
+
+						for (EPart inst = EPart.Drums; inst <= EPart.Bass; ++inst)
 						{
 							this.n使用レーン数[inst] = 0;
 						}
@@ -548,30 +548,35 @@ namespace DTXMania
 						foreach (CChip chip in this.listChip)
 						{
 							int ch = (int)chip.eチャンネル番号;
-							if (chip.bDrums可視チップ) {
-								if ( this.n使用レーン数.Drums == 0 ) this.n使用レーン数.Drums = 6;
-								if ( this.n使用レーン数.Drums < 10 ) {
-									if ( ( chip.eチャンネル番号 == Ech定義.FloorTom )
-									|| ( chip.eチャンネル番号 == Ech定義.HiHatOpen )
-									|| ( chip.eチャンネル番号 == Ech定義.RideCymbal )
-									|| ( chip.eチャンネル番号 == Ech定義.LeftCymbal ) )
+							if (chip.bDrums可視チップ)
+							{
+								if (this.n使用レーン数.Drums == 0) this.n使用レーン数.Drums = 6;
+								if (this.n使用レーン数.Drums < 10)
+								{
+									if ((chip.eチャンネル番号 == EChannel.FloorTom)
+									|| (chip.eチャンネル番号 == EChannel.HiHatOpen)
+									|| (chip.eチャンネル番号 == EChannel.RideCymbal)
+									|| (chip.eチャンネル番号 == EChannel.LeftCymbal))
 									{
 										this.n使用レーン数.Drums = 10;
 									}
 								}
-								if ( this.n使用レーン数.Drums < 12 ) {
-									if ( ( chip.eチャンネル番号 == Ech定義.LeftPedal )
-									|| ( chip.eチャンネル番号 == Ech定義.LeftBassDrum ) )
+								if (this.n使用レーン数.Drums < 12)
+								{
+									if ((chip.eチャンネル番号 == EChannel.LeftPedal)
+									|| (chip.eチャンネル番号 == EChannel.LeftBassDrum))
 									{
 										this.n使用レーン数.Drums = 12;
 									}
 								}
 							}
-							if (chip.bGuitar可視チップ) {
+							if (chip.bGuitar可視チップ)
+							{
 								// 5レーン未対応
 								//if ( this.n使用レーン数.Guitar == 0 ) this.n使用レーン数.Guitar = 3;
 							}
-							if (chip.bBass可視チップ) {
+							if (chip.bBass可視チップ)
+							{
 								// 5レーン未対応
 								//if ( this.n使用レーン数.Bass == 0 ) this.n使用レーン数.Bass = 3;
 							}
@@ -586,7 +591,7 @@ namespace DTXMania
 		private bool t入力_コマンド文字列を抜き出す(ref CharEnumerator ce, ref StringBuilder sb文字列)
 		{
 			if (!this.t入力_空白をスキップする(ref ce))
-				return false;	// 文字が尽きた
+				return false; // 文字が尽きた
 
 			#region [ コマンド終端文字(':')、半角空白、コメント開始文字(';')、改行のいずれかが出現するまでをコマンド文字列と見なし、sb文字列 にコピーする。]
 			//-----------------
@@ -595,7 +600,7 @@ namespace DTXMania
 				sb文字列.Append(ce.Current);
 
 				if (!ce.MoveNext())
-					return false;	// 文字が尽きた
+					return false; // 文字が尽きた
 			}
 			//-----------------
 			#endregion
@@ -605,10 +610,10 @@ namespace DTXMania
 			if (ce.Current == ':')
 			{
 				if (!ce.MoveNext())
-					return false;	// 文字が尽きた
+					return false; // 文字が尽きた
 
 				if (!this.t入力_空白をスキップする(ref ce))
-					return false;	// 文字が尽きた
+					return false; // 文字が尽きた
 			}
 			//-----------------
 			#endregion
@@ -622,7 +627,7 @@ namespace DTXMania
 			while (ce.Current != '\n')
 			{
 				if (!ce.MoveNext())
-					return false;	// 文字が尽きた
+					return false; // 文字が尽きた
 			}
 
 			// 改行の次の文字へ移動した結果を返す。
@@ -631,10 +636,10 @@ namespace DTXMania
 		}
 		private bool t入力_コメント文字列を抜き出す(ref CharEnumerator ce, ref StringBuilder sb文字列)
 		{
-			if (ce.Current != ';')		// コメント開始文字(';')じゃなければ正常帰還。
+			if (ce.Current != ';')    // コメント開始文字(';')じゃなければ正常帰還。
 				return true;
 
-			if (!ce.MoveNext())		// ';' の次で文字列が終わってたら終了帰還。
+			if (!ce.MoveNext())   // ';' の次で文字列が終わってたら終了帰還。
 				return false;
 
 			#region [ ';' の次の文字から '\n' の１つ前までをコメント文字列と見なし、sb文字列にコピーする。]
@@ -662,7 +667,7 @@ namespace DTXMania
 		private bool t入力_パラメータ文字列を抜き出す(ref CharEnumerator ce, ref StringBuilder sb文字列)
 		{
 			if (!this.t入力_空白をスキップする(ref ce))
-				return false;	// 文字が尽きた
+				return false; // 文字が尽きた
 
 			#region [ 改行またはコメント開始文字(';')が出現するまでをパラメータ文字列と見なし、sb文字列 にコピーする。]
 			//-----------------
@@ -685,10 +690,10 @@ namespace DTXMania
 			while (ce.Current == ' ' || ce.Current == '\n')
 			{
 				if (ce.Current == '\n')
-					this.n現在の行数++;		// 改行文字では行番号が増える。
+					this.n現在の行数++;    // 改行文字では行番号が増える。
 
 				if (!ce.MoveNext())
-					return false;	// 文字が尽きた
+					return false; // 文字が尽きた
 			}
 
 			return true;
@@ -700,7 +705,7 @@ namespace DTXMania
 			while (ce.Current == ' ')
 			{
 				if (!ce.MoveNext())
-					return false;	// 文字が尽きた
+					return false; // 文字が尽きた
 			}
 
 			return true;
@@ -725,16 +730,16 @@ namespace DTXMania
 				}
 				else if (this.bstackIFからENDIFをスキップする.Peek())
 				{
-					this.bstackIFからENDIFをスキップする.Push(true);	// 親が true ならその入れ子も問答無用で true 。
+					this.bstackIFからENDIFをスキップする.Push(true); // 親が true ならその入れ子も問答無用で true 。
 				}
-				else													// 親が false なら入れ子はパラメータと乱数を比較して結果を判断する。
+				else                          // 親が false なら入れ子はパラメータと乱数を比較して結果を判断する。
 				{
 					int n数値 = 0;
 
 					if (!int.TryParse(strパラメータ, out n数値))
 						n数値 = 1;
 
-					this.bstackIFからENDIFをスキップする.Push(n数値 != this.n現在の乱数);		// 乱数と数値が一致したら true 。
+					this.bstackIFからENDIFをスキップする.Push(n数値 != this.n現在の乱数);   // 乱数と数値が一致したら true 。
 				}
 			}
 			//-----------------
@@ -747,7 +752,7 @@ namespace DTXMania
 
 				if (this.bstackIFからENDIFをスキップする.Count > 1)
 				{
-					this.bstackIFからENDIFをスキップする.Pop();		// 入れ子を１つ脱出。
+					this.bstackIFからENDIFをスキップする.Pop();    // 入れ子を１つ脱出。
 				}
 				else
 				{
@@ -757,7 +762,7 @@ namespace DTXMania
 			//-----------------
 			#endregion
 
-			else if (!this.bstackIFからENDIFをスキップする.Peek())		// IF～ENDIF をスキップするなら以下はすべて無視。
+			else if (!this.bstackIFからENDIFをスキップする.Peek())   // IF～ENDIF をスキップするなら以下はすべて無視。
 			{
 				#region [ PATH_WAV ]
 				//-----------------
@@ -807,7 +812,7 @@ namespace DTXMania
 					int dlevel;
 					if (int.TryParse(strパラメータ, out dlevel))
 					{
-						this.LEVEL.Drums = Math.Min(Math.Max(dlevel, 0), 100);	// 0～100 に丸める
+						this.LEVEL.Drums = Math.Min(Math.Max(dlevel, 0), 100);  // 0～100 に丸める
 					}
 				}
 				//-----------------
@@ -821,7 +826,7 @@ namespace DTXMania
 					int glevel;
 					if (int.TryParse(strパラメータ, out glevel))
 					{
-						this.LEVEL.Guitar = Math.Min(Math.Max(glevel, 0), 100);		// 0～100 に丸める
+						this.LEVEL.Guitar = Math.Min(Math.Max(glevel, 0), 100);   // 0～100 に丸める
 					}
 				}
 				//-----------------
@@ -835,7 +840,7 @@ namespace DTXMania
 					int blevel;
 					if (int.TryParse(strパラメータ, out blevel))
 					{
-						this.LEVEL.Bass = Math.Min(Math.Max(blevel, 0), 100);		// 0～100 に丸める
+						this.LEVEL.Bass = Math.Min(Math.Max(blevel, 0), 100);   // 0～100 に丸める
 					}
 				}
 				//-----------------
@@ -947,7 +952,7 @@ namespace DTXMania
 					if (!int.TryParse(strパラメータ, out n数値))
 						n数値 = 1;
 
-					this.n現在の乱数 = CDTXMania.Instance.Random.Next(n数値) + 1;		// 1～数値 までの乱数を生成。
+					this.n現在の乱数 = CDTXMania.Instance.Random.Next(n数値) + 1;    // 1～数値 までの乱数を生成。
 				}
 				//-----------------
 				#endregion
@@ -982,7 +987,7 @@ namespace DTXMania
 				}
 				//-----------------
 				#endregion
-				else if (!this.bヘッダのみ)		// ヘッダのみの解析の場合、以下は無視。
+				else if (!this.bヘッダのみ)    // ヘッダのみの解析の場合、以下は無視。
 				{
 					#region [ PANEL ]
 					//-----------------
@@ -990,12 +995,12 @@ namespace DTXMania
 					{
 						this.t入力_パラメータ食い込みチェック("PANEL", ref strコマンド, ref strパラメータ);
 
-						int dummyResult;								// #23885 2010.12.12 yyagi: not to confuse "#PANEL strings (panel)" and "#PANEL int (panpot of EL)"
+						int dummyResult;                // #23885 2010.12.12 yyagi: not to confuse "#PANEL strings (panel)" and "#PANEL int (panpot of EL)"
 						if (!int.TryParse(strパラメータ, out dummyResult))
-						{		// 数値じゃないならPANELとみなす
-							this.PANEL = strパラメータ;							//
-							goto EOL;									//
-						}												// 数値ならPAN ELとみなす
+						{   // 数値じゃないならPANELとみなす
+							this.PANEL = strパラメータ;              //
+							goto EOL;                 //
+						}                       // 数値ならPAN ELとみなす
 
 					}
 					//-----------------
@@ -1035,8 +1040,8 @@ namespace DTXMania
 
 						double basebpm = 0.0;
 						//if( double.TryParse( str2, out num6 ) && ( num6 > 0.0 ) )
-						if (TryParse(strパラメータ, out basebpm) && basebpm > 0.0)	// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
-						{													// #24204 2011.01.21 yyagi: Fix the condition correctly
+						if (TryParse(strパラメータ, out basebpm) && basebpm > 0.0) // #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
+						{                         // #24204 2011.01.21 yyagi: Fix the condition correctly
 							this.BASEBPM = basebpm;
 						}
 					}
@@ -1089,9 +1094,9 @@ namespace DTXMania
 					{
 						this.t入力_行解析_チップ配置(strコマンド, strパラメータ, strコメント);
 					}
-				EOL:
-					Debug.Assert(true);		// #23885 2010.12.12 yyagi: dummy line to exit parsing the line
-					// 2011.8.17 from: "int xx=0;" から変更。毎回警告が出るので。
+					EOL:
+					Debug.Assert(true);   // #23885 2010.12.12 yyagi: dummy line to exit parsing the line
+																// 2011.8.17 from: "int xx=0;" から変更。毎回警告が出るので。
 				}
 				//else
 				//{	// Duration測定のため、bヘッダのみ==trueでも、チップ配置は行う
@@ -1106,10 +1111,10 @@ namespace DTXMania
 			#region [ "AVI" or "VIDEO" で始まらないコマンドは無効。]
 			//-----------------
 			if (strコマンド.StartsWith("AVI", StringComparison.OrdinalIgnoreCase))
-				strコマンド = strコマンド.Substring(3);		// strコマンド から先頭の"AVI"文字を除去。
+				strコマンド = strコマンド.Substring(3);   // strコマンド から先頭の"AVI"文字を除去。
 
 			else if (strコマンド.StartsWith("VIDEO", StringComparison.OrdinalIgnoreCase))
-				strコマンド = strコマンド.Substring(5);		// strコマンド から先頭の"VIDEO"文字を除去。
+				strコマンド = strコマンド.Substring(5);   // strコマンド から先頭の"VIDEO"文字を除去。
 
 			else
 				return false;
@@ -1119,7 +1124,7 @@ namespace DTXMania
 			// (2) パラメータを処理。
 
 			if (strコマンド.Length < 2)
-				return false;	// AVI番号 zz がないなら無効。
+				return false; // AVI番号 zz がないなら無効。
 
 			#region [ AVI番号 zz を取得する。]
 			//-----------------
@@ -1134,9 +1139,9 @@ namespace DTXMania
 
 			#region [ AVIリストに {zz, avi} の組を登録する。 ]
 			//-----------------
-			var avi = new CAVI(zz, strパラメータ, strコメント, CDTXMania.Instance.ConfigIni.n演奏速度);
+			var avi = new CAVI(zz, strパラメータ, strコメント, CDTXMania.Instance.ConfigIni.nPlaySpeed);
 
-			if (this.listAVI.ContainsKey(zz))	// 既にリスト中に存在しているなら削除。後のものが有効。
+			if (this.listAVI.ContainsKey(zz)) // 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listAVI.Remove(zz);
 
 			this.listAVI.Add(zz, avi);
@@ -1154,14 +1159,14 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("AVIPAN", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(6);	// strコマンド から先頭の"AVIPAN"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(6); // strコマンド から先頭の"AVIPAN"文字を除去。
+																			//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
 
 			if (strコマンド.Length < 2)
-				return false;	// AVIPAN番号 zz がないなら無効。
+				return false; // AVIPAN番号 zz がないなら無効。
 
 			#region [ AVIPAN番号 zz を取得する。]
 			//-----------------
@@ -1375,7 +1380,7 @@ namespace DTXMania
 
 			#region [ AVIPANリストに {zz, avipan} の組を登録する。]
 			//-----------------
-			if (this.listAVIPAN.ContainsKey(zz))	// 既にリスト中に存在しているなら削除。後のものが有効。
+			if (this.listAVIPAN.ContainsKey(zz))  // 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listAVIPAN.Remove(zz);
 
 			this.listAVIPAN.Add(zz, avipan);
@@ -1393,14 +1398,14 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("BGA", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(3);	// strコマンド から先頭の"BGA"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(3); // strコマンド から先頭の"BGA"文字を除去。
+																			//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
 
 			if (strコマンド.Length < 2)
-				return false;	// BGA番号 zz がないなら無効。
+				return false; // BGA番号 zz がないなら無効。
 
 			#region [ BGA番号 zz を取得する。]
 			//-----------------
@@ -1542,7 +1547,7 @@ namespace DTXMania
 			#endregion
 			#region [ BGAリストに {zz, bga} の組を登録する。]
 			//-----------------
-			if (this.listBGA.ContainsKey(zz))	// 既にリスト中に存在しているなら削除。後のものが有効。
+			if (this.listBGA.ContainsKey(zz)) // 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listBGA.Remove(zz);
 
 			this.listBGA.Add(zz, bga);
@@ -1560,14 +1565,14 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("BGAPAN", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(6);	// strコマンド から先頭の"BGAPAN"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(6); // strコマンド から先頭の"BGAPAN"文字を除去。
+																			//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
 
 			if (strコマンド.Length < 2)
-				return false;	// BGAPAN番号 zz がないなら無効。
+				return false; // BGAPAN番号 zz がないなら無効。
 
 			#region [ BGAPAN番号 zz を取得する。]
 			//-----------------
@@ -1781,7 +1786,7 @@ namespace DTXMania
 
 			#region [ BGAPANリストに {zz, bgapan} の組を登録する。]
 			//-----------------
-			if (this.listBGAPAN.ContainsKey(zz))	// 既にリスト中に存在しているなら削除。後のものが有効。
+			if (this.listBGAPAN.ContainsKey(zz))  // 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listBGAPAN.Remove(zz);
 
 			this.listBGAPAN.Add(zz, bgapan);
@@ -1799,8 +1804,8 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("BMP", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(3);	// strコマンド から先頭の"BMP"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(3); // strコマンド から先頭の"BMP"文字を除去。
+																			//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
@@ -1843,7 +1848,7 @@ namespace DTXMania
 
 			#region [ BMPリストに {zz, bmp} の組を登録。]
 			//-----------------
-			if (this.listBMP.ContainsKey(zz))	// 既にリスト中に存在しているなら削除。後のものが有効。
+			if (this.listBMP.ContainsKey(zz)) // 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listBMP.Remove(zz);
 
 			this.listBMP.Add(zz, bmp);
@@ -1861,14 +1866,14 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("BMPTEX", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(6);	// strコマンド から先頭の"BMPTEX"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(6); // strコマンド から先頭の"BMPTEX"文字を除去。
+																			//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
 
 			if (strコマンド.Length < 2)
-				return false;	// BMPTEX番号 zz がないなら無効。
+				return false; // BMPTEX番号 zz がないなら無効。
 
 			#region [ BMPTEX番号 zz を取得する。]
 			//-----------------
@@ -1890,7 +1895,7 @@ namespace DTXMania
 
 			#region [ BMPTEXリストに {zz, bmptex} の組を登録する。]
 			//-----------------
-			if (this.listBMPTEX.ContainsKey(zz))	// 既にリスト中に存在しているなら削除。後のものが有効。
+			if (this.listBMPTEX.ContainsKey(zz))  // 既にリスト中に存在しているなら削除。後のものが有効。
 				this.listBMPTEX.Remove(zz);
 
 			this.listBMPTEX.Add(zz, bmptex);
@@ -1908,8 +1913,8 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("BPM", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(3);	// strコマンド から先頭の"BPM"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(3); // strコマンド から先頭の"BPM"文字を除去。
+																			//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
@@ -1947,7 +1952,7 @@ namespace DTXMania
 			#region [ BPM値を取得する。]
 			//-----------------
 			//if( !double.TryParse( strパラメータ, out result ) )
-			if (!TryParse(strパラメータ, out dbBPM))			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
+			if (!TryParse(strパラメータ, out dbBPM))     // #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
 				return false;
 
 			if (dbBPM <= 0.0)
@@ -1955,8 +1960,8 @@ namespace DTXMania
 			//-----------------
 			#endregion
 
-			if (zz == 0)			// "#BPM00:" と "#BPM:" は等価。
-				this.BPM = dbBPM;	// この曲の代表 BPM に格納する。
+			if (zz == 0)      // "#BPM00:" と "#BPM:" は等価。
+				this.BPM = dbBPM; // この曲の代表 BPM に格納する。
 
 			#region [ BPMリストに {内部番号, zz, dbBPM} の組を登録。]
 			//-----------------
@@ -1973,16 +1978,16 @@ namespace DTXMania
 
 			#region [ BPM番号が zz であるBPM未設定のBPMチップがあれば、そのサイズを変更する。無限管理に対応。]
 			//-----------------
-			if (this.n無限管理BPM[zz] == -zz)	// 初期状態では n無限管理BPM[zz] = -zz である。この場合、#BPMzz がまだ出現していないことを意味する。
+			if (this.n無限管理BPM[zz] == -zz) // 初期状態では n無限管理BPM[zz] = -zz である。この場合、#BPMzz がまだ出現していないことを意味する。
 			{
-				foreach (CChip chip in listChip)	// これまでに出てきたチップのうち、該当する（BPM値が未設定の）BPMチップの値を変更する（仕組み上、必ず後方参照となる）。
+				foreach (CChip chip in listChip)  // これまでに出てきたチップのうち、該当する（BPM値が未設定の）BPMチップの値を変更する（仕組み上、必ず後方参照となる）。
 				{
 					chip.AdjustInfiniteManageIntInternalIndex(chip.bBPMチップである, zz, this.n内部番号BPM1to);
 				}
 			}
-			this.n無限管理BPM[zz] = this.n内部番号BPM1to;			// 次にこの BPM番号 zz を使うBPMチップが現れたら、このBPM値が格納されることになる。
-			this.n内部番号BPM1to++;		// 内部番号は単純増加連番。
-			//-----------------
+			this.n無限管理BPM[zz] = this.n内部番号BPM1to;     // 次にこの BPM番号 zz を使うBPMチップが現れたら、このBPM値が格納されることになる。
+			this.n内部番号BPM1to++;   // 内部番号は単純増加連番。
+														//-----------------
 			#endregion
 
 			return true;
@@ -1996,8 +2001,8 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("RESULTIMAGE", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(11);	// strコマンド から先頭の"RESULTIMAGE"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(11);  // strコマンド から先頭の"RESULTIMAGE"文字を除去。
+																				//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
@@ -2057,7 +2062,7 @@ namespace DTXMania
 		}
 		private void t入力_行解析_RESULTIMAGE_ファイルを設定する(int nランク0to6, string strファイル名)
 		{
-			if (nランク0to6 < 0 || nランク0to6 > 6)	// 値域チェック。
+			if (nランク0to6 < 0 || nランク0to6 > 6) // 値域チェック。
 				return;
 
 			// 指定されたランクから上位のすべてのランクについて、ファイル名を更新する。
@@ -2085,8 +2090,8 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("RESULTMOVIE", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(11);	// strコマンド から先頭の"RESULTMOVIE"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(11);  // strコマンド から先頭の"RESULTMOVIE"文字を除去。
+																				//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
@@ -2146,7 +2151,7 @@ namespace DTXMania
 		}
 		private void t入力_行解析_RESULTMOVIE_ファイルを設定する(int nランク0to6, string strファイル名)
 		{
-			if (nランク0to6 < 0 || nランク0to6 > 6)	// 値域チェック。
+			if (nランク0to6 < 0 || nランク0to6 > 6) // 値域チェック。
 				return;
 
 			// 指定されたランクから上位のすべてのランクについて、ファイル名を更新する。
@@ -2174,8 +2179,8 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("RESULTSOUND", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(11);	// strコマンド から先頭の"RESULTSOUND"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(11);  // strコマンド から先頭の"RESULTSOUND"文字を除去。
+																				//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
@@ -2235,7 +2240,7 @@ namespace DTXMania
 		}
 		private void t入力_行解析_RESULTSOUND_ファイルを設定する(int nランク0to6, string strファイル名)
 		{
-			if (nランク0to6 < 0 || nランク0to6 > 6)	// 値域チェック。
+			if (nランク0to6 < 0 || nランク0to6 > 6) // 値域チェック。
 				return;
 
 			// 指定されたランクから上位のすべてのランクについて、ファイル名を更新する。
@@ -2263,9 +2268,9 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("SIZE", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(4);	// strコマンド から先頭の"SIZE"文字を除去。
+			strコマンド = strコマンド.Substring(4); // strコマンド から先頭の"SIZE"文字を除去。
 
-			if (strコマンド.Length < 2)	// サイズ番号の指定がない場合は無効。
+			if (strコマンド.Length < 2) // サイズ番号の指定がない場合は無効。
 				return false;
 			//-----------------
 			#endregion
@@ -2290,24 +2295,24 @@ namespace DTXMania
 			int nサイズ値;
 
 			if (!int.TryParse(strパラメータ, out nサイズ値))
-				return true;	// int変換に失敗しても、この行自体の処理は終えたのでtrueを返す。
+				return true;  // int変換に失敗しても、この行自体の処理は終えたのでtrueを返す。
 
-			nサイズ値 = Math.Min(Math.Max(nサイズ値, 0), 100);	// 0未満は0、100超えは100に強制変換。
-			//-----------------
+			nサイズ値 = Math.Min(Math.Max(nサイズ値, 0), 100);  // 0未満は0、100超えは100に強制変換。
+																									//-----------------
 			#endregion
 
 			#region [ nWAV番号で示されるサイズ未設定のWAVチップがあれば、そのサイズを変更する。無限管理に対応。]
 			//-----------------
-			if (this.n無限管理SIZE[nWAV番号] == -nWAV番号)	// 初期状態では n無限管理SIZE[xx] = -xx である。この場合、#SIZExx がまだ出現していないことを意味する。
+			if (this.n無限管理SIZE[nWAV番号] == -nWAV番号)  // 初期状態では n無限管理SIZE[xx] = -xx である。この場合、#SIZExx がまだ出現していないことを意味する。
 			{
-				foreach (CWAV wav in this.listWAV.Values)		// これまでに出てきたWAVチップのうち、該当する（サイズが未設定の）チップのサイズを変更する（仕組み上、必ず後方参照となる）。
+				foreach (CWAV wav in this.listWAV.Values)   // これまでに出てきたWAVチップのうち、該当する（サイズが未設定の）チップのサイズを変更する（仕組み上、必ず後方参照となる）。
 				{
-					if (wav.nチップサイズ == -nWAV番号)		// #SIZExx 行より前の行に出現した #WAVxx では、チップサイズは -xx に初期化されている。
+					if (wav.nチップサイズ == -nWAV番号)   // #SIZExx 行より前の行に出現した #WAVxx では、チップサイズは -xx に初期化されている。
 						wav.nチップサイズ = nサイズ値;
 				}
 			}
-			this.n無限管理SIZE[nWAV番号] = nサイズ値;			// 次にこの nWAV番号を使うWAVチップが現れたら、負数の代わりに、このサイズ値が格納されることになる。
-			//-----------------
+			this.n無限管理SIZE[nWAV番号] = nサイズ値;     // 次にこの nWAV番号を使うWAVチップが現れたら、負数の代わりに、このサイズ値が格納されることになる。
+																					//-----------------
 			#endregion
 
 			return true;
@@ -2321,14 +2326,14 @@ namespace DTXMania
 			if (!strコマンド.StartsWith("WAV", StringComparison.OrdinalIgnoreCase))
 				return false;
 
-			strコマンド = strコマンド.Substring(3);	// strコマンド から先頭の"WAV"文字を除去。
-			//-----------------
+			strコマンド = strコマンド.Substring(3); // strコマンド から先頭の"WAV"文字を除去。
+																			//-----------------
 			#endregion
 
 			// (2) パラメータを処理。
 
 			if (strコマンド.Length < 2)
-				return false;	// WAV番号 zz がないなら無効。
+				return false; // WAV番号 zz がないなら無効。
 
 			#region [ WAV番号 zz を取得する。]
 			//-----------------
@@ -2360,16 +2365,16 @@ namespace DTXMania
 
 			#region [ WAV番号が zz である内部番号未設定のWAVチップがあれば、その内部番号を変更する。無限管理対応。]
 			//-----------------
-			if (this.n無限管理WAV[zz] == -zz)	// 初期状態では n無限管理WAV[zz] = -zz である。この場合、#WAVzz がまだ出現していないことを意味する。
+			if (this.n無限管理WAV[zz] == -zz) // 初期状態では n無限管理WAV[zz] = -zz である。この場合、#WAVzz がまだ出現していないことを意味する。
 			{
-				foreach (CChip chip in listChip)	// これまでに出てきたチップのうち、該当する（内部番号が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
+				foreach (CChip chip in listChip)  // これまでに出てきたチップのうち、該当する（内部番号が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
 				{
 					chip.AdjustInfiniteManageIntInternalIndex(chip.bWAVを使うチャンネルである, zz, n内部番号WAV1to);
 				}
 			}
-			this.n無限管理WAV[zz] = this.n内部番号WAV1to;			// 次にこの WAV番号 zz を使うWAVチップが現れたら、この内部番号が格納されることになる。
-			this.n内部番号WAV1to++;		// 内部番号は単純増加連番。
-			//-----------------
+			this.n無限管理WAV[zz] = this.n内部番号WAV1to;     // 次にこの WAV番号 zz を使うWAVチップが現れたら、この内部番号が格納されることになる。
+			this.n内部番号WAV1to++;   // 内部番号は単純増加連番。
+														//-----------------
 			#endregion
 
 			return true;
@@ -2381,10 +2386,10 @@ namespace DTXMania
 			#region [ "WAVPAN" or "PAN" で始まらないコマンドは無効。]
 			//-----------------
 			if (strコマンド.StartsWith("WAVPAN", StringComparison.OrdinalIgnoreCase))
-				strコマンド = strコマンド.Substring(6);		// strコマンド から先頭の"WAVPAN"文字を除去。
+				strコマンド = strコマンド.Substring(6);   // strコマンド から先頭の"WAVPAN"文字を除去。
 
 			else if (strコマンド.StartsWith("PAN", StringComparison.OrdinalIgnoreCase))
-				strコマンド = strコマンド.Substring(3);		// strコマンド から先頭の"PAN"文字を除去。
+				strコマンド = strコマンド.Substring(3);   // strコマンド から先頭の"PAN"文字を除去。
 
 			else
 				return false;
@@ -2394,7 +2399,7 @@ namespace DTXMania
 			// (2) パラメータを処理。
 
 			if (strコマンド.Length < 2)
-				return false;	// WAV番号 zz がないなら無効。
+				return false; // WAV番号 zz がないなら無効。
 
 			#region [ WAV番号 zz を取得する。]
 			//-----------------
@@ -2412,17 +2417,17 @@ namespace DTXMania
 			int n位置;
 			if (int.TryParse(strパラメータ, out n位置))
 			{
-				n位置 = Math.Min(Math.Max(n位置, -100), 100);	// -100～+100 に丸める
+				n位置 = Math.Min(Math.Max(n位置, -100), 100); // -100～+100 に丸める
 
-				if (this.n無限管理PAN[zz] == (-10000 - zz))	// 初期状態では n無限管理PAN[zz] = -10000 - zz である。この場合、#WAVPANzz, #PANzz がまだ出現していないことを意味する。
+				if (this.n無限管理PAN[zz] == (-10000 - zz)) // 初期状態では n無限管理PAN[zz] = -10000 - zz である。この場合、#WAVPANzz, #PANzz がまだ出現していないことを意味する。
 				{
-					foreach (CWAV wav in this.listWAV.Values)	// これまでに出てきたチップのうち、該当する（位置が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
+					foreach (CWAV wav in this.listWAV.Values) // これまでに出てきたチップのうち、該当する（位置が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
 					{
-						if (wav.n位置 == (-10000 - zz))	// #WAVPANzz, #PANzz 行より前の行に出現した #WAVzz では、位置は -10000-zz に初期化されている。
+						if (wav.n位置 == (-10000 - zz)) // #WAVPANzz, #PANzz 行より前の行に出現した #WAVzz では、位置は -10000-zz に初期化されている。
 							wav.n位置 = n位置;
 					}
 				}
-				this.n無限管理PAN[zz] = n位置;			// 次にこの WAV番号 zz を使うWAVチップが現れたら、この位置が格納されることになる。
+				this.n無限管理PAN[zz] = n位置;      // 次にこの WAV番号 zz を使うWAVチップが現れたら、この位置が格納されることになる。
 			}
 			//-----------------
 			#endregion
@@ -2436,10 +2441,10 @@ namespace DTXMania
 			#region [ "WAVCOL" or "VOLUME" で始まらないコマンドは無効。]
 			//-----------------
 			if (strコマンド.StartsWith("WAVVOL", StringComparison.OrdinalIgnoreCase))
-				strコマンド = strコマンド.Substring(6);		// strコマンド から先頭の"WAVVOL"文字を除去。
+				strコマンド = strコマンド.Substring(6);   // strコマンド から先頭の"WAVVOL"文字を除去。
 
 			else if (strコマンド.StartsWith("VOLUME", StringComparison.OrdinalIgnoreCase))
-				strコマンド = strコマンド.Substring(6);		// strコマンド から先頭の"VOLUME"文字を除去。
+				strコマンド = strコマンド.Substring(6);   // strコマンド から先頭の"VOLUME"文字を除去。
 
 			else
 				return false;
@@ -2449,7 +2454,7 @@ namespace DTXMania
 			// (2) パラメータを処理。
 
 			if (strコマンド.Length < 2)
-				return false;	// WAV番号 zz がないなら無効。
+				return false; // WAV番号 zz がないなら無効。
 
 			#region [ WAV番号 zz を取得する。]
 			//-----------------
@@ -2467,17 +2472,17 @@ namespace DTXMania
 			int n音量;
 			if (int.TryParse(strパラメータ, out n音量))
 			{
-				n音量 = Math.Min(Math.Max(n音量, 0), 100);	// 0～100に丸める。
+				n音量 = Math.Min(Math.Max(n音量, 0), 100);  // 0～100に丸める。
 
-				if (this.n無限管理VOL[zz] == -zz)	// 初期状態では n無限管理VOL[zz] = - zz である。この場合、#WAVVOLzz, #VOLUMEzz がまだ出現していないことを意味する。
+				if (this.n無限管理VOL[zz] == -zz) // 初期状態では n無限管理VOL[zz] = - zz である。この場合、#WAVVOLzz, #VOLUMEzz がまだ出現していないことを意味する。
 				{
-					foreach (CWAV wav in this.listWAV.Values)	// これまでに出てきたチップのうち、該当する（音量が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
+					foreach (CWAV wav in this.listWAV.Values) // これまでに出てきたチップのうち、該当する（音量が未設定の）WAVチップの値を変更する（仕組み上、必ず後方参照となる）。
 					{
-						if (wav.n音量 == -zz)	// #WAVVOLzz, #VOLUMEzz 行より前の行に出現した #WAVzz では、音量は -zz に初期化されている。
+						if (wav.n音量 == -zz) // #WAVVOLzz, #VOLUMEzz 行より前の行に出現した #WAVzz では、音量は -zz に初期化されている。
 							wav.n音量 = n音量;
 					}
 				}
-				this.n無限管理VOL[zz] = n音量;			// 次にこの WAV番号 zz を使うWAVチップが現れたら、この音量が格納されることになる。
+				this.n無限管理VOL[zz] = n音量;      // 次にこの WAV番号 zz を使うWAVチップが現れたら、この音量が格納されることになる。
 			}
 			//-----------------
 			#endregion
@@ -2488,7 +2493,7 @@ namespace DTXMania
 		{
 			// (1) コマンドを処理。
 
-			if (strコマンド.Length != 5)	// コマンドは必ず5文字であること。
+			if (strコマンド.Length != 5)  // コマンドは必ず5文字であること。
 				return false;
 
 			#region [ n小節番号 を取得する。]
@@ -2497,13 +2502,13 @@ namespace DTXMania
 			if (n小節番号 < 0)
 				return false;
 
-			n小節番号++;	// 先頭に空の1小節を設ける。
-			//-----------------
+			n小節番号++;  // 先頭に空の1小節を設ける。
+								//-----------------
 			#endregion
 
 			#region [ nチャンネル番号 を取得する。]
 			//-----------------
-			Ech定義 tmpチャンネル番号 = Ech定義.Invalid;
+			EChannel tmpチャンネル番号 = EChannel.Invalid;
 
 			// ファイルフォーマットによって処理が異なる。
 
@@ -2518,19 +2523,19 @@ namespace DTXMania
 					if (strチャンネル文字列.Equals(param.strGDAのチャンネル文字列, StringComparison.OrdinalIgnoreCase))
 					{
 						tmpチャンネル番号 = param.eDTXのチャンネル番号;
-						break;	// 置き換え成功
+						break;  // 置き換え成功
 					}
 				}
-				if (tmpチャンネル番号 == Ech定義.Invalid)
-					return false;	// 置き換え失敗
-				//-----------------
+				if (tmpチャンネル番号 == EChannel.Invalid)
+					return false; // 置き換え失敗
+												//-----------------
 				#endregion
 			}
 			else
 			{
 				#region [ (B) その他の場合：チャンネル番号は16進数2桁。]
 				//-----------------
-				tmpチャンネル番号 = (Ech定義)C変換.n16進数2桁の文字列を数値に変換して返す(strコマンド.Substring(3, 2));
+				tmpチャンネル番号 = (EChannel)C変換.n16進数2桁の文字列を数値に変換して返す(strコマンド.Substring(3, 2));
 
 				if (tmpチャンネル番号 < 0)
 					return false;
@@ -2544,12 +2549,12 @@ namespace DTXMania
 			// (2) Ch.02を処理。
 			#region [ 小節長変更(Ch.02)は他のチャンネルとはパラメータが特殊なので、先にとっとと終わらせる。 ]
 			//-----------------
-			if (tmpチャンネル番号 == Ech定義.BarLength)
+			if (tmpチャンネル番号 == EChannel.BarLength)
 			{
 				// 小節長倍率を取得する。
 				double db小節長倍率 = 1.0;
 				//if( !double.TryParse( strパラメータ, out result ) )
-				if (!this.TryParse(strパラメータ, out db小節長倍率))			// #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
+				if (!this.TryParse(strパラメータ, out db小節長倍率))      // #23880 2010.12.30 yyagi: alternative TryParse to permit both '.' and ',' for decimal point
 				{
 					Trace.TraceError("小節長倍率に不正な値を指定しました。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数);
 					return false;
@@ -2558,13 +2563,13 @@ namespace DTXMania
 				// 小節長倍率チップを一番先頭に配置する。
 				this.listChip.Insert(0, new CChip(n小節番号 * 384, db小節長倍率, tmpチャンネル番号));
 
-				return true;	// 配置終了。
+				return true;  // 配置終了。
 			}
 			//-----------------
 			#endregion
 
 			// (3) パラメータを処理。
-			if (string.IsNullOrEmpty(strパラメータ))		// パラメータはnullまたは空文字列ではないこと。
+			if (string.IsNullOrEmpty(strパラメータ))   // パラメータはnullまたは空文字列ではないこと。
 				return false;
 
 			#region [ strパラメータ にオブジェクト記述を格納し、その n文字数 をカウントする。]
@@ -2578,10 +2583,10 @@ namespace DTXMania
 			CharEnumerator ce = strパラメータ.GetEnumerator();
 			while (ce.MoveNext())
 			{
-				if (ce.Current == '_')		// '_' は無視。
+				if (ce.Current == '_')    // '_' は無視。
 					continue;
 
-				if (C変換.str36進数文字.IndexOf(ce.Current) < 0)	// オブジェクト記述は36進数文字であること。
+				if (C変換.str36進数文字.IndexOf(ce.Current) < 0)  // オブジェクト記述は36進数文字であること。
 				{
 					Trace.TraceError("不正なオブジェクト指定があります。[{0}: {1}行]", this.strファイル名の絶対パス, this.n現在の行数);
 					return false;
@@ -2591,9 +2596,9 @@ namespace DTXMania
 				n文字数++;
 			}
 
-			strパラメータ = sb.ToString();	// 正規化された文字列になりました。
+			strパラメータ = sb.ToString(); // 正規化された文字列になりました。
 
-			if ((n文字数 % 2) != 0)		// パラメータの文字数が奇数の場合、最後の1文字を無視する。
+			if ((n文字数 % 2) != 0)    // パラメータの文字数が奇数の場合、最後の1文字を無視する。
 				n文字数--;
 			//-----------------
 			#endregion
@@ -2601,13 +2606,13 @@ namespace DTXMania
 
 			// (4) パラメータをオブジェクト数値に分解して配置する。
 
-			for (int i = 0; i < (n文字数 / 2); i++)	// 2文字で1オブジェクト数値
+			for (int i = 0; i < (n文字数 / 2); i++)  // 2文字で1オブジェクト数値
 			{
 				#region [ nオブジェクト数値 を１つ取得する。'00' なら無視。]
 				//-----------------
 				int nオブジェクト数値 = 0;
 
-				if (tmpチャンネル番号 == Ech定義.BPM)
+				if (tmpチャンネル番号 == EChannel.BPM)
 				{
 					// Ch.03 のみ 16進数2桁。
 					nオブジェクト数値 = C変換.n16進数2桁の文字列を数値に変換して返す(strパラメータ.Substring(i * 2, 2));
@@ -2631,20 +2636,20 @@ namespace DTXMania
 
 				// チップがある更新
 				this.bチップがある.Drums |= chip.bDrums可視チップ;
-				this.bチップがある.HHOpen |= chip[Ech定義.HiHatOpen];
-				this.bチップがある.Ride |= chip[Ech定義.RideCymbal];
-				this.bチップがある.LeftCymbal |= chip[Ech定義.LeftCymbal];
-				this.bチップがある.LeftPedal |= chip[Ech定義.LeftPedal];
-				this.bチップがある.LeftBassDrum |= chip[Ech定義.LeftBassDrum];
+				this.bチップがある.HHOpen |= chip[EChannel.HiHatOpen];
+				this.bチップがある.Ride |= chip[EChannel.RideCymbal];
+				this.bチップがある.LeftCymbal |= chip[EChannel.LeftCymbal];
+				this.bチップがある.LeftPedal |= chip[EChannel.LeftPedal];
+				this.bチップがある.LeftBassDrum |= chip[EChannel.LeftBassDrum];
 				this.bチップがある.Guitar |= chip.bGuitar可視チップ;
-				this.bチップがある.OpenGuitar |= chip[Ech定義.Guitar_Open];
+				this.bチップがある.OpenGuitar |= chip[EChannel.Guitar_Open];
 				this.bチップがある.Bass |= chip.bBass可視チップ;
-				this.bチップがある.OpenBass |= chip[Ech定義.Bass_Open];
+				this.bチップがある.OpenBass |= chip[EChannel.Bass_Open];
 				this.bチップがある.BGA |= chip.bBGALayer;
 				this.bチップがある.Movie |= chip.bMovie;
 				if (chip.bMovie)
 				{
-					if (chip[Ech定義.MovieFull] || CDTXMania.Instance.ConfigIni.bForceAVIFullscreen)
+					if (chip[EChannel.MovieFull] || CDTXMania.Instance.ConfigIni.bFullAVI)
 					{
 						this.bMovieをFullscreen再生する = true;
 					}

@@ -16,6 +16,7 @@ namespace DTXMania
 		{
 			return tテクスチャの生成(fileName, false);
 		}
+
 		public static CTexture tテクスチャの生成(string fileName, bool b黒を透過する)
 		{
 			if (CDTXMania.Instance == null)
@@ -37,10 +38,12 @@ namespace DTXMania
 				return null;
 			}
 		}
+
 		public static CTextureAf tテクスチャの生成Af(string fileName)
 		{
 			return tテクスチャの生成Af(fileName, false);
 		}
+
 		public static CTextureAf tテクスチャの生成Af(string fileName, bool b黒を透過する)
 		{
 			if (CDTXMania.Instance == null)
@@ -62,18 +65,22 @@ namespace DTXMania
 				return null;
 			}
 		}
+
 		public static void tテクスチャの解放(ref CTexture tx)
 		{
 			t安全にDisposeする(ref tx);
 		}
+
 		public static void tテクスチャの解放(ref CTextureAf tx)
 		{
 			t安全にDisposeする(ref tx);
 		}
+
 		public static CTexture tテクスチャの生成(byte[] txData)
 		{
 			return tテクスチャの生成(txData, false);
 		}
+
 		public static CTexture tテクスチャの生成(byte[] txData, bool b黒を透過する)
 		{
 			if (CDTXMania.Instance == null)
@@ -100,6 +107,7 @@ namespace DTXMania
 		{
 			return tテクスチャの生成(bitmap, false);
 		}
+
 		public static CTexture tテクスチャの生成(Bitmap bitmap, bool b黒を透過する)
 		{
 			if (CDTXMania.Instance == null)
@@ -117,7 +125,7 @@ namespace DTXMania
 			}
 			catch (CTextureCreateFailedException)
 			{
-				Trace.TraceError("テクスチャの生成に失敗しました。(bitmap:{0}x{1} )", bitmap.Width, bitmap.Height );
+				Trace.TraceError("テクスチャの生成に失敗しました。(bitmap:{0}x{1} )", bitmap.Width, bitmap.Height);
 				return null;
 			}
 		}

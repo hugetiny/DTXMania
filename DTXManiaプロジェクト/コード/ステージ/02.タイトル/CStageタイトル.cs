@@ -183,23 +183,25 @@ namespace DTXMania
 				#endregion
 
 				#region [ キー入力 ]
-				if (base.eフェーズID == CStage.Eフェーズ.共通_通常状態		// 通常状態、かつ
-					&& CDTXMania.Instance.act現在入力を占有中のプラグイン == null)	// プラグインの入力占有がない
+				if (base.eフェーズID == CStage.Eフェーズ.共通_通常状態    // 通常状態、かつ
+					&& CDTXMania.Instance.act現在入力を占有中のプラグイン == null)  // プラグインの入力占有がない
 				{
 					if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)Key.Escape))
 						return (int)E戻り値.EXIT;
 
 					this.ctキー反復用.Up.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.UpArrow), new CCounter.DGキー処理(this.tカーソルを上へ移動する));
-					this.ctキー反復用.R.tキー反復(CDTXMania.Instance.Pad.b押されているGB(Eパッド.HH), new CCounter.DGキー処理(this.tカーソルを上へ移動する));
-					if (CDTXMania.Instance.Pad.b押された(E楽器パート.DRUMS, Eパッド.SD))
+					this.ctキー反復用.R.tキー反復(CDTXMania.Instance.Pad.b押されている(EPad.GtR) || CDTXMania.Instance.Pad.b押されている(EPad.BsR), new CCounter.DGキー処理(this.tカーソルを上へ移動する));
+					if (CDTXMania.Instance.Pad.b押された(EPad.SD))
 						this.tカーソルを上へ移動する();
 
 					this.ctキー反復用.Down.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.DownArrow), new CCounter.DGキー処理(this.tカーソルを下へ移動する));
-					this.ctキー反復用.B.tキー反復(CDTXMania.Instance.Pad.b押されているGB(Eパッド.BD), new CCounter.DGキー処理(this.tカーソルを下へ移動する));
-					if (CDTXMania.Instance.Pad.b押された(E楽器パート.DRUMS, Eパッド.LT))
+					this.ctキー反復用.B.tキー反復(CDTXMania.Instance.Pad.b押されている(EPad.GtB) || CDTXMania.Instance.Pad.b押されている(EPad.BsB), new CCounter.DGキー処理(this.tカーソルを下へ移動する));
+					if (CDTXMania.Instance.Pad.b押された(EPad.LT))
 						this.tカーソルを下へ移動する();
 
-					if ((CDTXMania.Instance.Pad.b押されたDGB(Eパッド.CY) || CDTXMania.Instance.Pad.b押された(E楽器パート.DRUMS, Eパッド.RD)) || (CDTXMania.Instance.Pad.b押された(E楽器パート.DRUMS, Eパッド.LC) || (CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Return))))
+					if ((CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
+						(CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
+						CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Return))))
 					{
 						if ((this.n現在のカーソル行 == (int)E戻り値.GAMESTART - 1) && CDTXMania.Instance.Skin.soundゲーム開始音.b読み込み成功)
 						{
@@ -231,7 +233,7 @@ namespace DTXMania
 				if (this.txメニュー != null)
 				{
 					int MENU_ITEM_H = txMenuItem[0].szテクスチャサイズ.Height;
-					int x = (1920 - txメニュー.szテクスチャサイズ.Width) / 2;	// MENU_X;
+					int x = (1920 - txメニュー.szテクスチャサイズ.Width) / 2; // MENU_X;
 					int y = MENU_Y + ((MENU_ITEM_H - MENU_H) / 2) + (this.n現在のカーソル行 * MENU_ITEM_H);
 					if (this.ct上移動用.b進行中)
 					{
@@ -297,7 +299,7 @@ namespace DTXMania
 
 							case (int)E戻り値.EXIT - 1:
 								return (int)E戻り値.EXIT;
-							//return ( this.n現在のカーソル行 + 1 );
+								//return ( this.n現在のカーソル行 + 1 );
 						}
 						break;
 
@@ -388,8 +390,8 @@ namespace DTXMania
 		private CCounter ct上移動用;
 		private int MENU_H = (int)(39 * 2.25);
 		private int MENU_W = (int)(227 * 3);
-		private int MENU_X = 800;	//206;
-		private int MENU_Y = 500;	//203;
+		private int MENU_X = 800; //206;
+		private int MENU_Y = 500; //203;
 		private int n現在のカーソル行;
 		private CTexture txメニュー;
 		private CTexture tx背景;

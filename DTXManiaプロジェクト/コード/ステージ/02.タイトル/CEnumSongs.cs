@@ -13,16 +13,16 @@ using SampleFramework;
 
 namespace DTXMania
 {
-	internal class CEnumSongs							// #27060 2011.2.7 yyagi 曲リストを取得するクラス
-	{													// ファイルキャッシュ(songslist.db)からの取得と、ディスクからの取得を、この一つのクラスに集約。
+	internal class CEnumSongs             // #27060 2011.2.7 yyagi 曲リストを取得するクラス
+	{                         // ファイルキャッシュ(songslist.db)からの取得と、ディスクからの取得を、この一つのクラスに集約。
 
-		public CSongs管理 Songs管理						// 曲の探索結果はこのSongs管理に読み込まれる
+		public CSongs管理 Songs管理           // 曲の探索結果はこのSongs管理に読み込まれる
 		{
 			get;
 			private set;
 		}
 
-		public bool IsSongListEnumCompletelyDone		// 曲リスト探索と、実際の曲リストへの反映が完了した？
+		public bool IsSongListEnumCompletelyDone    // 曲リスト探索と、実際の曲リストへの反映が完了した？
 		{
 			get
 			{
@@ -40,14 +40,14 @@ namespace DTXMania
 				return thDTXFileEnumerate.IsAlive;
 			}
 		}
-		public bool IsSongListEnumerated				// 曲リスト探索が完了したが、実際の曲リストへの反映はまだ？
+		public bool IsSongListEnumerated        // 曲リスト探索が完了したが、実際の曲リストへの反映はまだ？
 		{
 			get
 			{
 				return (this.state == DTXEnumState.Enumeratad);
 			}
 		}
-		public bool IsSongListEnumStarted				// 曲リスト探索開始後？(探索完了も含む)
+		public bool IsSongListEnumStarted       // 曲リスト探索開始後？(探索完了も含む)
 		{
 			get
 			{
@@ -57,9 +57,9 @@ namespace DTXMania
 		public void SongListEnumCompletelyDone()
 		{
 			this.state = DTXEnumState.CompletelyDone;
-			this.Songs管理 = null;						// GCはOSに任せる
+			this.Songs管理 = null;            // GCはOSに任せる
 		}
-		public bool IsSlowdown							// #PREMOVIE再生中は検索負荷を落とす
+		public bool IsSlowdown              // #PREMOVIE再生中は検索負荷を落とす
 		{
 			get
 			{
@@ -91,8 +91,8 @@ namespace DTXMania
 			None,
 			Ongoing,
 			Suspended,
-			Enumeratad,				// 探索完了、現在の曲リストに未反映
-			CompletelyDone			// 探索完了、現在の曲リストに反映完了
+			Enumeratad,       // 探索完了、現在の曲リストに未反映
+			CompletelyDone      // 探索完了、現在の曲リストに反映完了
 		}
 		private DTXEnumState state = DTXEnumState.None;
 
@@ -144,7 +144,7 @@ namespace DTXMania
 				}
 				// this.autoReset = new AutoResetEvent( true );
 
-				if (this.Songs管理 == null)		// Enumerating Songs完了後、CONFIG画面から再スキャンしたときにこうなる
+				if (this.Songs管理 == null)   // Enumerating Songs完了後、CONFIG画面から再スキャンしたときにこうなる
 				{
 					this.Songs管理 = new CSongs管理();
 				}
@@ -179,7 +179,7 @@ namespace DTXMania
 		{
 			if (this.state == DTXEnumState.Suspended)
 			{
-				if ((this.thDTXFileEnumerate.ThreadState & (System.Threading.ThreadState.WaitSleepJoin | System.Threading.ThreadState.StopRequested)) != 0)	//
+				if ((this.thDTXFileEnumerate.ThreadState & (System.Threading.ThreadState.WaitSleepJoin | System.Threading.ThreadState.StopRequested)) != 0) //
 				{
 					// this.thDTXFileEnumerate.Resume();	// obsoleteにつき使用中止
 					this.Songs管理.bIsSuspending = false;
@@ -221,7 +221,7 @@ namespace DTXMania
 				thDTXFileEnumerate = null;
 				this.state = DTXEnumState.None;
 
-				this.Songs管理 = null;					// Songs管理を再初期化する (途中まで作った曲リストの最後に、一から重複して追記することにならないようにする。)
+				this.Songs管理 = null;          // Songs管理を再初期化する (途中まで作った曲リストの最後に、一から重複して追記することにならないようにする。)
 				this.Songs管理 = new CSongs管理();
 			}
 		}
@@ -253,7 +253,7 @@ namespace DTXMania
 					CDTXMania.Instance.Skin.bgm起動画面.t再生する();
 					for (int i = 0; i < CDTXMania.Instance.Skin.nシステムサウンド数; i++)
 					{
-						if (!CDTXMania.Instance.Skin[i].b排他)	// BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
+						if (!CDTXMania.Instance.Skin[i].b排他)  // BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
 						{
 							CSkin.Cシステムサウンド cシステムサウンド = CDTXMania.Instance.Skin[i];
 							if (!CDTXMania.Instance.bコンパクトモード || cシステムサウンド.bCompact対象)
@@ -309,7 +309,7 @@ namespace DTXMania
 					if (!CDTXMania.Instance.ConfigIni.bConfigIniがないかDTXManiaのバージョンが異なる)
 					{
 						CSongs管理 s = new CSongs管理();
-						s = Deserialize(strPathSongList);		// 直接this.Songs管理にdeserialize()結果を代入するのは避ける。nullにされてしまうことがあるため。
+						s = Deserialize(strPathSongList);   // 直接this.Songs管理にdeserialize()結果を代入するのは避ける。nullにされてしまうことがあるため。
 						if (s != null)
 						{
 							this.Songs管理 = s;
@@ -358,7 +358,7 @@ namespace DTXMania
 							Trace.TraceError("songs.db の読み込みに失敗しました。");
 						}
 
-						int scores = (this.Songs管理 == null) ? 0 : this.Songs管理.nSongsDBから取得できたスコア数;	// 読み込み途中でアプリ終了した場合など、CDTXMania.Instance.Songs管理 がnullの場合があるので注意
+						int scores = (this.Songs管理 == null) ? 0 : this.Songs管理.nSongsDBから取得できたスコア数; // 読み込み途中でアプリ終了した場合など、CDTXMania.Instance.Songs管理 がnullの場合があるので注意
 						Trace.TraceInformation("songs.db の読み込みを完了しました。[{0}スコア]", scores);
 						lock (CDTXMania.Instance.stage起動.list進行文字列)
 						{
@@ -387,7 +387,7 @@ namespace DTXMania
 				CDTXMania.Instance.stage起動.eフェーズID = CStage.Eフェーズ.起動7_完了;
 				TimeSpan span = (TimeSpan)(DateTime.Now - now);
 				Trace.TraceInformation("起動所要時間: {0}", span.ToString());
-				lock (this)							// #28700 2012.6.12 yyagi; state change must be in finally{} for exiting as of compact mode.
+				lock (this)             // #28700 2012.6.12 yyagi; state change must be in finally{} for exiting as of compact mode.
 				{
 					state = DTXEnumState.CompletelyDone;
 				}
@@ -423,9 +423,9 @@ namespace DTXMania
 
 				try
 				{
-					if (!string.IsNullOrEmpty(CDTXMania.Instance.ConfigIni.str曲データ検索パス))
+					if (!string.IsNullOrEmpty(CDTXMania.Instance.ConfigIni.strSongDataPath))
 					{
-						string[] strArray = CDTXMania.Instance.ConfigIni.str曲データ検索パス.Split(new char[] { ';' });
+						string[] strArray = CDTXMania.Instance.ConfigIni.strSongDataPath.Value.Split(new char[] { ';' });
 						if (strArray.Length > 0)
 						{
 							// 全パスについて…
@@ -434,7 +434,7 @@ namespace DTXMania
 								string path = str;
 								if (!Path.IsPathRooted(path))
 								{
-									path = CDTXMania.Instance.strEXEのあるフォルダ + str;	// 相対パスの場合、絶対パスに直す(2010.9.16)
+									path = CDTXMania.Instance.strEXEのあるフォルダ + str;  // 相対パスの場合、絶対パスに直す(2010.9.16)
 								}
 
 								if (!string.IsNullOrEmpty(path))
@@ -648,7 +648,7 @@ namespace DTXMania
 				{
 					try
 					{
-						File.Delete(strPathSongList);	// serializeに失敗したら、songs2.dbファイルを消しておく
+						File.Delete(strPathSongList); // serializeに失敗したら、songs2.dbファイルを消しておく
 					}
 					catch (Exception)
 					{

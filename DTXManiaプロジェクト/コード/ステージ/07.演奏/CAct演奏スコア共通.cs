@@ -8,28 +8,25 @@ namespace DTXMania
 {
 	internal class CAct演奏スコア共通 : CActivity
 	{
-		// プロパティ
-		protected STDGBVALUE<long> nスコアの増分;
-		protected STDGBVALUE<double> n現在の本当のスコア;
-		protected STDGBVALUE<long> n現在表示中のスコア;
+		protected STDGBSValue<long> nスコアの増分;
+		protected STDGBSValue<double> n現在の本当のスコア;
+		protected STDGBSValue<long> n現在表示中のスコア;
 		protected long n進行用タイマ;
 		private readonly Point[] ptSCORE = new Point[] { new Point(0x1f, 0x1a9), new Point(0x1e9, 0x1a9) };
 		private CActDigit actDigit;
 
-		// コンストラクタ
 		public CAct演奏スコア共通()
 		{
 			base.list子Activities.Add(actDigit = new CActDigit(Color.Orange, Color.Black, Color.OrangeRed, Color.DarkOrange, 30));
 			base.b活性化してない = true;
 		}
 
-		// メソッド
-		public double Get(E楽器パート part)
+		public double Get(EPart part)
 		{
 			return this.n現在の本当のスコア[part];
 		}
 
-		public void Set(E楽器パート part, double nScore)
+		public void Set(EPart part, double nScore)
 		{
 			if (this.n現在の本当のスコア[part] != nScore)
 			{
@@ -48,52 +45,54 @@ namespace DTXMania
 		/// <param name="part"></param>
 		/// <param name="bAutoPlay"></param>
 		/// <param name="delta"></param>
-		public void Add(E楽器パート part, STAUTOPLAY bAutoPlay, long delta)
+		public void Add(EPart part, long delta)
 		{
 			double rev = 1.0;
 			switch (part)
 			{
-				case E楽器パート.UNKNOWN:
+				case EPart.Unknown:
 					throw new ArgumentException();
-				case E楽器パート.DRUMS:
-					if (!CDTXMania.Instance.ConfigIni.bドラムが全部オートプレイである)
+				case EPart.Drums:
+					if (!CDTXMania.Instance.ConfigIni.bIsAutoPlay(part))
 					{
-						if (bAutoPlay.BD == true)
+						if (CDTXMania.Instance.ConfigIni.bAutoPlay.BD == true)
 						{
 							rev /= 2;
 						}
 					}
 					break;
-				case E楽器パート.GUITAR:
-					if (!CDTXMania.Instance.ConfigIni.bギターが全部オートプレイである)
+				case EPart.Guitar:
+					if (!CDTXMania.Instance.ConfigIni.bIsAutoPlay(part))
 					{
-						if (bAutoPlay.GtW)
+						if (CDTXMania.Instance.ConfigIni.bAutoPlay.GtWail)
 						{
 							rev /= 2;
 						}
-						if (bAutoPlay.GtPick)
+						if (CDTXMania.Instance.ConfigIni.bAutoPlay.GtPick)
 						{
 							rev /= 3;
 						}
 						// Auto Neck
-						if (bAutoPlay.GtR || bAutoPlay.GtG || bAutoPlay.GtB)
+						if (CDTXMania.Instance.ConfigIni.bAutoPlay.GtR || CDTXMania.Instance.ConfigIni.bAutoPlay.GtG || CDTXMania.Instance.ConfigIni.bAutoPlay.GtB)
 						{
 							rev /= 4;
 						}
 					}
 					break;
-				case E楽器パート.BASS:
-					if (!CDTXMania.Instance.ConfigIni.bベースが全部オートプレイである)
+				case EPart.Bass:
+					if (!CDTXMania.Instance.ConfigIni.bIsAutoPlay(part))
 					{
-						if (bAutoPlay.BsW)
+						if (CDTXMania.Instance.ConfigIni.bAutoPlay.BsWail)
 						{
 							rev /= 2;
 						}
-						if (bAutoPlay.BsPick)
+						if (CDTXMania.Instance.ConfigIni.bAutoPlay.BsPick)
 						{
 							rev /= 3;
 						}
-						if (bAutoPlay.BsR || bAutoPlay.BsG || bAutoPlay.BsB)
+						if (CDTXMania.Instance.ConfigIni.bAutoPlay.BsR ||
+														CDTXMania.Instance.ConfigIni.bAutoPlay.BsG ||
+														CDTXMania.Instance.ConfigIni.bAutoPlay.BsB)
 						{
 							rev /= 4;
 						}
@@ -109,7 +108,7 @@ namespace DTXMania
 			if (base.b活性化してない)
 			{
 				this.n進行用タイマ = -1;
-				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+				for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 				{
 					this.n現在表示中のスコア[i] = 0L;
 					this.n現在の本当のスコア[i] = 0L;
@@ -122,17 +121,17 @@ namespace DTXMania
 		// CActivity 実装（共通クラスからの差分のみ）
 		public override int On進行描画()
 		{
-			if (base.b活性化してる)
+			if (b活性化してる)
 			{
-				if (base.b初めての進行描画)
+				if (b初めての進行描画)
 				{
 					n進行用タイマ = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
-					base.b初めての進行描画 = false;
+					b初めての進行描画 = false;
 				}
 
-				for (E楽器パート inst = E楽器パート.DRUMS; inst <= E楽器パート.BASS; inst++)
+				for (EPart inst = EPart.Drums; inst <= EPart.Bass; inst++)
 				{
-					if (CDTXMania.Instance.ConfigIni.b楽器有効[inst])
+					if (CDTXMania.Instance.ConfigIni.b楽器有効(inst) && CDTXMania.Instance.DTX.bチップがある[inst])
 					{
 						long num = FDK.CSound管理.rc演奏用タイマ.n現在時刻;
 						if (num < n進行用タイマ)
@@ -149,7 +148,8 @@ namespace DTXMania
 							n進行用タイマ += 10;
 						}
 
-						int x = CDTXMania.Instance.Coordinates.Score[inst].X;
+						int x = CDTXMania.Instance.ConfigIni.cdInstX[inst][CDTXMania.Instance.ConfigIni.eActiveInst].Value
+						+ CDTXMania.Instance.Coordinates.Instrument[inst].W / 2;
 						int y = CDTXMania.Instance.Coordinates.Score[inst].Y;
 
 						if (CDTXMania.Instance.ConfigIni.bReverse[inst])

@@ -177,7 +177,7 @@ namespace DTXMania
 				}
 				if (this.txArtist != null)
 				{
-					int x = (int)(SampleFramework.GameWindowSize.Width - (6 + 12) * Scale.X) - ((int)(this.txArtist.szテクスチャサイズ.Width * this.txArtist.vc拡大縮小倍率.X));		// #27648 2012.3.14 yyagi: -12 for scrollbar
+					int x = (int)(SampleFramework.GameWindowSize.Width - (6 + 12) * Scale.X) - ((int)(this.txArtist.szテクスチャサイズ.Width * this.txArtist.vc拡大縮小倍率.X));    // #27648 2012.3.14 yyagi: -12 for scrollbar
 					int y = (int)(231 * Scale.Y);
 					this.txArtist.t2D描画(CDTXMania.Instance.Device, x, y);
 				}

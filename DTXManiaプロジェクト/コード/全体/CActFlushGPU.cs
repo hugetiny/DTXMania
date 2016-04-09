@@ -21,7 +21,7 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
-				try			// #xxxxx 2012.12.31 yyagi: to prepare flush, first of all, I create q queue to the GPU.
+				try     // #xxxxx 2012.12.31 yyagi: to prepare flush, first of all, I create q queue to the GPU.
 				{
 					IDirect3DQuery9 = new SlimDX.Direct3D9.Query(CDTXMania.Instance.Device, QueryType.Occlusion);
 				}
@@ -44,7 +44,7 @@ namespace DTXMania
 			{
 				IDirect3DQuery9.Issue(Issue.End);
 				DWM.Flush();
-				IDirect3DQuery9.GetData<int>(true);	// flush GPU queue
+				IDirect3DQuery9.GetData<int>(true); // flush GPU queue
 			}
 			return 0;
 		}

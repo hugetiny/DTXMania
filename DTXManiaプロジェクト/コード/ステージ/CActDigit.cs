@@ -59,7 +59,7 @@ namespace DTXMania
 					TextureFactory.tテクスチャの解放(ref texDigit[i]);
 				}
 
-				using (FontFamily ff = new FontFamily("Meiryo UI"))
+				using (FontFamily ff = new FontFamily("MS PGothic"))
 				{
 					using (CPrivateFont cpf = new CPrivateFont(ff, pt, FontStyle.Bold))
 					{

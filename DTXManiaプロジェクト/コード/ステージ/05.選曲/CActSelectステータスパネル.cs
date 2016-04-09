@@ -22,7 +22,7 @@ namespace DTXMania
 			if ((c曲リストノード != null) && (cスコア != null))
 			{
 				this.n現在選択中の曲の難易度 = CDTXMania.Instance.stage選曲.n現在選択中の曲の難易度;
-				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+				for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 				{
 					int nLevel = cスコア.譜面情報.レベル[i];
 					if (nLevel < 0)
@@ -58,7 +58,7 @@ namespace DTXMania
 			this.n本体X = (int)(3 * Scale.X);
 			this.n本体Y = (int)(0x15d * Scale.Y);
 			this.n現在選択中の曲の難易度 = 0;
-			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+			for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 			{
 				this.n現在選択中の曲のレベル[i] = 0;
 				this.n現在選択中の曲の最高ランク[i] = CScoreIni.ERANK.UNKNOWN;
@@ -222,7 +222,7 @@ namespace DTXMania
 					int y = this.n本体Y + (int)(0x10 * Scale.Y);
 					index = this.n難易度開始文字位置;
 					flag = true;
-					while (index < (this.n難易度開始文字位置 + 55))	 // 0x24 -> 55
+					while (index < (this.n難易度開始文字位置 + 55))   // 0x24 -> 55
 					{
 						CDTXMania.Instance.act文字コンソール.tPrint(
 							x,
@@ -266,7 +266,7 @@ namespace DTXMania
 				//-----------------
 				if ((cスコア != null) && (this.txレベル数字 != null))
 				{
-					for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+					for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 					{
 						Rectangle rect十の位;
 						Rectangle rect一の位;
@@ -287,13 +287,13 @@ namespace DTXMania
 						int nRectOffsetY = (((nLevel / 25) % 2) == 0) ? (int)(64 * Scale.Y) : 0;
 						if (nLevel == 0)
 						{
-							rect十の位 = this.rc数字[11];		// "--"
-							rect一の位 = this.rc数字[11];		// "-- "
+							rect十の位 = this.rc数字[11];    // "--"
+							rect一の位 = this.rc数字[11];    // "-- "
 						}
 						else if (cスコア.譜面情報.レベルを非表示にする)
 						{
-							rect十の位 = this.rc数字[10];		// "?"
-							rect一の位 = this.rc数字[10];		// "?"
+							rect十の位 = this.rc数字[10];    // "?"
+							rect一の位 = this.rc数字[10];    // "?"
 						}
 						else
 						{
@@ -312,7 +312,7 @@ namespace DTXMania
 				#endregion
 				#region [ 選択曲の 最高スキル値ゲージ＋数値の描画 ]
 				//-----------------
-				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+				for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 				{
 					if (this.n現在選択中の曲のレベル[i] != 0)
 					{
@@ -369,7 +369,7 @@ namespace DTXMania
 				#endregion
 				#region [ 選択曲の 最高ランクの描画 ]
 				//-----------------
-				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+				for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 				{
 					CScoreIni.ERANK nMaxRank = this.n現在選択中の曲の最高ランク[i];
 					if (nMaxRank != CScoreIni.ERANK.UNKNOWN)
@@ -387,7 +387,7 @@ namespace DTXMania
 				#region [ 選択曲の FullCombo の 描画 ]
 				//-----------------
 				Rectangle rectFullCombo = new Rectangle((int)(30 * Scale.X), (int)(32 * Scale.Y), (int)(30 * Scale.X), (int)(16 * Scale.Y));
-				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+				for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 				{
 					if (this.b現在選択中の曲がフルコンボ[i])
 					{
@@ -422,13 +422,13 @@ namespace DTXMania
 			}
 		}
 
-		private STDGBVALUE<bool> b現在選択中の曲がフルコンボ;
+		private STDGBSValue<bool> b現在選択中の曲がフルコンボ;
 		private CCounter ct登場アニメ用;
 		private CCounter ct難易度スクロール用;
 		private CCounter ct難易度矢印用;
-		private STDGBVALUE<double> db現在選択中の曲の最高スキル値;
-		private STDGBVALUE<int> n現在選択中の曲のレベル;
-		private STDGBVALUE<CScoreIni.ERANK> n現在選択中の曲の最高ランク;
+		private STDGBSValue<double> db現在選択中の曲の最高スキル値;
+		private STDGBSValue<int> n現在選択中の曲のレベル;
+		private STDGBSValue<CScoreIni.ERANK> n現在選択中の曲の最高ランク;
 		private int n現在選択中の曲の難易度;
 		private int n難易度開始文字位置;
 		private const int n難易度表示可能文字数 = 0x24;
@@ -498,7 +498,7 @@ namespace DTXMania
 					num += length + 2;
 				}
 			}
-			if (num >= (this.n難易度開始文字位置 + 55))	// 0x24 -> 55
+			if (num >= (this.n難易度開始文字位置 + 55))  // 0x24 -> 55
 			{
 				return 1;
 			}
@@ -506,7 +506,7 @@ namespace DTXMania
 			{
 				return -1;
 			}
-			if (((num + length) - 1) >= (this.n難易度開始文字位置 + 55))	// 0x24 -> 55
+			if (((num + length) - 1) >= (this.n難易度開始文字位置 + 55)) // 0x24 -> 55
 			{
 				return 1;
 			}

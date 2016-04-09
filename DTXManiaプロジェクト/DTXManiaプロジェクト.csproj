@@ -17,7 +17,6 @@
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>SlimDXKey_yyagi.snk</AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <ApplicationManifest>DTXManiaGR.exe.x86.manifest</ApplicationManifest>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -50,6 +49,8 @@
     <NoWarn>0219</NoWarn>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -62,6 +63,9 @@
     <NoWarn>0219</NoWarn>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>DTXManiaGR.exe.x86.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
@@ -78,6 +82,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.ja-JP.resx" />
+    <None Include="コード\ステージ\04.コンフィグ\DeletedCode.cs" />
+    <Compile Include="コード\ステージ\04.コンフィグ\CConfigXml.cs" />
+    <Compile Include="コード\ステージ\04.コンフィグ\COption.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏Lane.cs" />
     <Compile Include="コード\ステージ\07.演奏\CStage演奏画面共通_描画.cs" />
     <Compile Include="コード\ステージ\07.演奏\TypesForPlayStage.cs" />

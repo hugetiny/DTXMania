@@ -9,20 +9,9 @@ namespace DTXMania
 {
 	internal class CAct演奏DrumsレーンフラッシュD : CActivity
 	{
-		[StructLayout(LayoutKind.Sequential)]
-		private struct STレーンサイズ
-		{
-			public int x;
-			public int w;
-			public STレーンサイズ(int x_, int w_)
-			{
-				x = x_;
-				w = w_;
-			}
-		}
-
-		private CCounter[] ct進行 = new CCounter[8];
-		private CTexture tx = new CTexture();
+		static ELane[] lanes = new ELane[] { ELane.LC, ELane.HH, ELane.SD, ELane.BD, ELane.HT, ELane.LT, ELane.FT, ELane.CY };
+		CCounter[] ct進行 = new CCounter[8];
+		CTexture tx = new CTexture();
 
 		// コンストラクタ
 		public CAct演奏DrumsレーンフラッシュD()
@@ -32,7 +21,7 @@ namespace DTXMania
 
 
 		// メソッド
-		public void Start(Eレーン lane, float f強弱度合い)
+		public void Start(ELane lane, float f強弱度合い)
 		{
 			int num = (int)((1f - f強弱度合い) * 55f);
 			this.ct進行[(int)lane] = new CCounter(num, 100, 4, CDTXMania.Instance.Timer);
@@ -78,7 +67,10 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない)
+			if (b活性化してる &&
+				CDTXMania.Instance.ConfigIni.bDrums有効 &&
+				CDTXMania.Instance.DTX.bチップがある.Drums &&
+				CDTXMania.Instance.ConfigIni.eDark == EDark.Off)
 			{
 				for (int i = 0; i < 8; i++)
 				{
@@ -95,50 +87,8 @@ namespace DTXMania
 				int imgX = CDTXMania.Instance.Coordinates.ImgDrLaneFlash.X;
 				for (int i = 0; i < 8; i++)
 				{
-					int x = 0;
-					int w = 0;
-
-					if (i == 0)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.LCY.X;
-						w = CDTXMania.Instance.Coordinates.Lane.LCY.W;
-					}
-					else if (i == 1)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.HHC.X;
-						w = CDTXMania.Instance.Coordinates.Lane.HHC.W;
-					}
-					else if (i == 2)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.SD.X;
-						w = CDTXMania.Instance.Coordinates.Lane.SD.W;
-					}
-					else if (i == 3)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.BD.X;
-						w = CDTXMania.Instance.Coordinates.Lane.BD.W;
-					}
-					else if (i == 4)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.HT.X;
-						w = CDTXMania.Instance.Coordinates.Lane.HT.W;
-					}
-					else if (i == 5)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.LT.X;
-						w = CDTXMania.Instance.Coordinates.Lane.LT.W;
-					}
-					else if (i == 6)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.FT.X;
-						w = CDTXMania.Instance.Coordinates.Lane.FT.W;
-					}
-					else if (i == 7)
-					{
-						x = CDTXMania.Instance.Coordinates.Lane.CY.X;
-						w = CDTXMania.Instance.Coordinates.Lane.CY.W;
-					}
-
+					int x = CDTXMania.Instance.ConfigIni.GetLaneX(lanes[i]);
+					int w = CDTXMania.Instance.ConfigIni.GetLaneW(lanes[i]);
 					if (!this.ct進行[i].b停止中)
 					{
 						if (tx != null)

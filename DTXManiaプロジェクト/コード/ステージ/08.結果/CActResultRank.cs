@@ -9,45 +9,53 @@ namespace DTXMania
 {
 	internal class CActResultRank : CActivity
 	{
-		// コンストラクタ
+		private CCounter ctランク表示;
+		private CCounter ct白波移動;
+		private int n本体X;
+		private int n本体Y;
+		private CTexture txランクパネル;
+		private CTexture txランク文字;
+		private CTexture tx白波;
 
 		public CActResultRank()
 		{
 			base.b活性化してない = true;
 		}
 
-
-		// メソッド
-
 		public void tアニメを完了させる()
 		{
 			this.ctランク表示.n現在の値 = this.ctランク表示.n終了値;
 		}
 
-
-		// CActivity 実装
-
 		public override void On活性化()
 		{
-			this.n本体X = 0x1ed;
-			this.n本体Y = 0x153;
-			base.On活性化();
+			if (b活性化してない)
+			{
+				this.n本体X = 0x1ed;
+				this.n本体Y = 0x153;
+				base.On活性化();
+			}
 		}
+
 		public override void On非活性化()
 		{
-			if (this.ct白波移動 != null)
+			if (b活性化してる)
 			{
-				this.ct白波移動 = null;
+				if (this.ct白波移動 != null)
+				{
+					this.ct白波移動 = null;
+				}
+				if (this.ctランク表示 != null)
+				{
+					this.ctランク表示 = null;
+				}
+				base.On非活性化();
 			}
-			if (this.ctランク表示 != null)
-			{
-				this.ctランク表示 = null;
-			}
-			base.On非活性化();
 		}
+
 		public override void OnManagedリソースの作成()
 		{
-			if (!base.b活性化してない)
+			if (base.b活性化してる)
 			{
 				this.txランクパネル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rank panel.png"));
 				this.tx白波 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rank wave.png"));
@@ -78,7 +86,7 @@ namespace DTXMania
 						break;
 
 					case CScoreIni.ERANK.E:
-					case CScoreIni.ERANK.UNKNOWN:	// #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
+					case CScoreIni.ERANK.UNKNOWN: // #23534 2010.10.28 yyagi: 演奏チップが0個のときは、rankEと見なす
 						this.txランク文字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenResult rankE.png"));
 						break;
 
@@ -89,9 +97,10 @@ namespace DTXMania
 				base.OnManagedリソースの作成();
 			}
 		}
+
 		public override void OnManagedリソースの解放()
 		{
-			if (!base.b活性化してない)
+			if (base.b活性化してる)
 			{
 				TextureFactory.tテクスチャの解放(ref this.txランクパネル);
 				TextureFactory.tテクスチャの解放(ref this.tx白波);
@@ -99,72 +108,60 @@ namespace DTXMania
 				base.OnManagedリソースの解放();
 			}
 		}
+
 		public override int On進行描画()
 		{
-			if (base.b活性化してない)
+			if (base.b活性化してる)
 			{
-				return 0;
-			}
-			if (base.b初めての進行描画)
-			{
-				this.ct白波移動 = new CCounter(-132, 0x170, 10, CDTXMania.Instance.Timer);
-				this.ctランク表示 = new CCounter(0, 0x514, 2, CDTXMania.Instance.Timer);
-				base.b初めての進行描画 = false;
-			}
-			this.ct白波移動.t進行Loop();
-			this.ctランク表示.t進行();
-			if (this.ctランク表示.n現在の値 >= 700)
-			{
-				float y = (this.ctランク表示.n現在の値 > 0x3e8) ? 1f : (((float)(this.ctランク表示.n現在の値 - 700)) / 300f);
-				if (this.txランクパネル != null)
+				if (base.b初めての進行描画)
 				{
-					this.txランクパネル.n透明度 = (int)(255f * y);
-					this.txランクパネル.vc拡大縮小倍率 = new Vector3(1f, y, 1f);
-					this.txランクパネル.t2D描画(
-						CDTXMania.Instance.Device,
-						this.n本体X * Scale.X,
-						(this.n本体Y + ((int)((1f - y) * 64f))) * Scale.Y
-					);
+					this.ct白波移動 = new CCounter(-132, 0x170, 10, CDTXMania.Instance.Timer);
+					this.ctランク表示 = new CCounter(0, 0x514, 2, CDTXMania.Instance.Timer);
+					base.b初めての進行描画 = false;
 				}
-			}
-			if (this.ctランク表示.n現在の値 >= 0x3e8)
-			{
-				double num2 = ((double)(this.ctランク表示.n現在の値 - 0x3e8)) / 300.0;
-				if (this.txランク文字 != null)
+				this.ct白波移動.t進行Loop();
+				this.ctランク表示.t進行();
+				if (this.ctランク表示.n現在の値 >= 700)
 				{
-					this.txランク文字.t2D描画(
-						CDTXMania.Instance.Device,
-						this.n本体X * Scale.X,
-						this.n本体Y * Scale.Y,
-						new Rectangle(
-							0,
-							0,
-							(int)(128.0 * num2 * Scale.X),
-							(int)(0x80 * Scale.Y)
-						)
-					);
+					float y = (this.ctランク表示.n現在の値 > 0x3e8) ? 1f : (((float)(this.ctランク表示.n現在の値 - 700)) / 300f);
+					if (this.txランクパネル != null)
+					{
+						this.txランクパネル.n透明度 = (int)(255f * y);
+						this.txランクパネル.vc拡大縮小倍率 = new Vector3(1f, y, 1f);
+						this.txランクパネル.t2D描画(
+							CDTXMania.Instance.Device,
+							this.n本体X * Scale.X,
+							(this.n本体Y + ((int)((1f - y) * 64f))) * Scale.Y
+						);
+					}
 				}
+				if (this.ctランク表示.n現在の値 >= 0x3e8)
+				{
+					double num2 = ((double)(this.ctランク表示.n現在の値 - 0x3e8)) / 300.0;
+					if (this.txランク文字 != null)
+					{
+						this.txランク文字.t2D描画(
+							CDTXMania.Instance.Device,
+							this.n本体X * Scale.X,
+							this.n本体Y * Scale.Y,
+							new Rectangle(
+								0,
+								0,
+								(int)(128.0 * num2 * Scale.X),
+								(int)(0x80 * Scale.Y)
+							)
+						);
+					}
+				}
+				this.t描画_白波();
+				if (!this.ctランク表示.b終了値に達した)
+				{
+					return 0;
+				}
+				return 1;
 			}
-			this.t描画_白波();
-			if (!this.ctランク表示.b終了値に達した)
-			{
-				return 0;
-			}
-			return 1;
+			return 0;
 		}
-
-
-		// その他
-
-		#region [ private ]
-		//-----------------
-		private CCounter ctランク表示;
-		private CCounter ct白波移動;
-		private int n本体X;
-		private int n本体Y;
-		private CTexture txランクパネル;
-		private CTexture txランク文字;
-		private CTexture tx白波;
 
 		private void t描画_白波()
 		{
@@ -209,7 +206,5 @@ namespace DTXMania
 				}
 			}
 		}
-		//-----------------
-		#endregion
 	}
 }

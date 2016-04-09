@@ -91,13 +91,13 @@ namespace DTXMania
 			// 事前チェック。
 
 			if (song == null)
-				return this.n現在のアンカ難易度レベル;	// 曲がまったくないよ
+				return this.n現在のアンカ難易度レベル;  // 曲がまったくないよ
 
 			if (song.arスコア[this.n現在のアンカ難易度レベル] != null)
-				return this.n現在のアンカ難易度レベル;	// 難易度ぴったりの曲があったよ
+				return this.n現在のアンカ難易度レベル;  // 難易度ぴったりの曲があったよ
 
 			if ((song.eノード種別 == C曲リストノード.Eノード種別.BOX) || (song.eノード種別 == C曲リストノード.Eノード種別.BACKBOX))
-				return 0;								// BOX と BACKBOX は関係無いよ
+				return 0;               // BOX と BACKBOX は関係無いよ
 
 
 			// 現在のアンカレベルから、難易度上向きに検索開始。
@@ -107,9 +107,9 @@ namespace DTXMania
 			for (int i = 0; i < 5; i++)
 			{
 				if (song.arスコア[n最も近いレベル] != null)
-					break;	// 曲があった。
+					break;  // 曲があった。
 
-				n最も近いレベル = (n最も近いレベル + 1) % 5;	// 曲がなかったので次の難易度レベルへGo。（5以上になったら0に戻る。）
+				n最も近いレベル = (n最も近いレベル + 1) % 5;  // 曲がなかったので次の難易度レベルへGo。（5以上になったら0に戻る。）
 			}
 
 
@@ -125,9 +125,9 @@ namespace DTXMania
 				for (int i = 0; i < 5; i++)
 				{
 					if (song.arスコア[n最も近いレベル] != null)
-						break;	// 曲があった。
+						break;  // 曲があった。
 
-					n最も近いレベル = ((n最も近いレベル - 1) + 5) % 5;	// 曲がなかったので次の難易度レベルへGo。（0未満になったら4に戻る。）
+					n最も近いレベル = ((n最も近いレベル - 1) + 5) % 5;  // 曲がなかったので次の難易度レベルへGo。（0未満になったら4に戻る。）
 				}
 			}
 
@@ -146,9 +146,9 @@ namespace DTXMania
 
 		private List<C曲リストノード> GetSongListWithinMe(C曲リストノード song)
 		{
-			if (song.r親ノード == null)					// root階層のノートだったら
+			if (song.r親ノード == null)         // root階層のノートだったら
 			{
-				return CDTXMania.Instance.Songs管理.list曲ルート;	// rootのリストを返す
+				return CDTXMania.Instance.Songs管理.list曲ルート; // rootのリストを返す
 			}
 			else
 			{
@@ -164,14 +164,14 @@ namespace DTXMania
 		}
 
 
-		public delegate void DGSortFunc(List<C曲リストノード> songList, E楽器パート eInst, int order, params object[] p);
+		public delegate void DGSortFunc(List<C曲リストノード> songList, EPart eInst, int order, params object[] p);
 		/// <summary>
 		/// 主にCSong管理.cs内にあるソート機能を、delegateで呼び出す。
 		/// </summary>
 		/// <param name="sf">ソート用に呼び出すメソッド</param>
 		/// <param name="eInst">ソート基準とする楽器</param>
 		/// <param name="order">-1=降順, 1=昇順</param>
-		public void t曲リストのソート(DGSortFunc sf, E楽器パート eInst, int order, params object[] p)
+		public void t曲リストのソート(DGSortFunc sf, EPart eInst, int order, params object[] p)
 		{
 			List<C曲リストノード> songList = GetSongListWithinMe(this.r現在選択中の曲);
 			if (songList == null)
@@ -215,7 +215,7 @@ namespace DTXMania
 			{
 				this.r現在選択中の曲 = this.r現在選択中の曲.list子リスト[0];
 				this.t現在選択中の曲を元に曲バーを再構成する();
-				this.t選択曲が変更された(false);									// #27648 項目数変更を反映させる
+				this.t選択曲が変更された(false);                 // #27648 項目数変更を反映させる
 			}
 			return ret;
 		}
@@ -248,7 +248,7 @@ namespace DTXMania
 			{
 				this.r現在選択中の曲 = this.r現在選択中の曲.r親ノード;
 				this.t現在選択中の曲を元に曲バーを再構成する();
-				this.t選択曲が変更された(false);									// #27648 項目数変更を反映させる
+				this.t選択曲が変更された(false);                 // #27648 項目数変更を反映させる
 			}
 			return ret;
 		}
@@ -277,7 +277,7 @@ namespace DTXMania
 		public void t難易度レベルをひとつ進める()
 		{
 			if ((this.r現在選択中の曲 == null) || (this.r現在選択中の曲.nスコア数 <= 1))
-				return;		// 曲にスコアが０～１個しかないなら進める意味なし。
+				return;   // 曲にスコアが０～１個しかないなら進める意味なし。
 
 
 			// 難易度レベルを＋１し、現在選曲中のスコアを変更する。
@@ -286,8 +286,8 @@ namespace DTXMania
 
 			for (int i = 0; i < 5; i++)
 			{
-				this.n現在のアンカ難易度レベル = (this.n現在のアンカ難易度レベル + 1) % 5;	// ５以上になったら０に戻る。
-				if (this.r現在選択中の曲.arスコア[this.n現在のアンカ難易度レベル] != null)	// 曲が存在してるならここで終了。存在してないなら次のレベルへGo。
+				this.n現在のアンカ難易度レベル = (this.n現在のアンカ難易度レベル + 1) % 5;  // ５以上になったら０に戻る。
+				if (this.r現在選択中の曲.arスコア[this.n現在のアンカ難易度レベル] != null)  // 曲が存在してるならここで終了。存在してないなら次のレベルへGo。
 					break;
 			}
 
@@ -301,7 +301,7 @@ namespace DTXMania
 			for (int i = this.n現在の選択行 - 5; i < ((this.n現在の選択行 - 5) + 13); i++)
 			{
 				int index = (i + 13) % 13;
-				for (E楽器パート m = E楽器パート.DRUMS; m <= E楽器パート.BASS; m++)
+				for (EPart m = EPart.Drums; m <= EPart.Bass; m++)
 				{
 					this.stバー情報[index].nスキル値[m] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[m];
 					this.stバー情報[index].n使用レーン数[m] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[m];
@@ -320,22 +320,22 @@ namespace DTXMania
 		/// 曲リストをリセットする
 		/// </summary>
 		/// <param name="cs"></param>
-		public void Refresh(CSongs管理 cs, bool bRemakeSongTitleBar)		// #26070 2012.2.28 yyagi
+		public void Refresh(CSongs管理 cs, bool bRemakeSongTitleBar)    // #26070 2012.2.28 yyagi
 		{
 			//			this.On非活性化();
 
-			if (cs != null && cs.list曲ルート.Count > 0)	// 新しい曲リストを検索して、1曲以上あった
+			if (cs != null && cs.list曲ルート.Count > 0)  // 新しい曲リストを検索して、1曲以上あった
 			{
 				CDTXMania.Instance.Songs管理 = cs;
 
-				if (this.r現在選択中の曲 != null)			// r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
+				if (this.r現在選択中の曲 != null)      // r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
 				{
 					this.r現在選択中の曲 = searchCurrentBreadcrumbsPosition(CDTXMania.Instance.Songs管理.list曲ルート, this.r現在選択中の曲.strBreadcrumbs);
-					if (bRemakeSongTitleBar)					// 選曲画面以外に居るときには再構成しない (非活性化しているときに実行すると例外となる)
+					if (bRemakeSongTitleBar)          // 選曲画面以外に居るときには再構成しない (非活性化しているときに実行すると例外となる)
 					{
 						this.t現在選択中の曲を元に曲バーを再構成する();
 					}
-#if false			// list子リストの中まではmatchしてくれないので、検索ロジックは手書きで実装 (searchCurrentBreadcrumbs())
+#if false      // list子リストの中まではmatchしてくれないので、検索ロジックは手書きで実装 (searchCurrentBreadcrumbs())
 					string bc = this.r現在選択中の曲.strBreadcrumbs;
 					Predicate<C曲リストノード> match = delegate( C曲リストノード c )
 					{
@@ -370,7 +370,7 @@ namespace DTXMania
 				{
 					return n;
 				}
-				else if (n.list子リスト != null && n.list子リスト.Count > 0)	// 子リストが存在するなら、再帰で探す
+				else if (n.list子リスト != null && n.list子リスト.Count > 0)  // 子リストが存在するなら、再帰で探す
 				{
 					C曲リストノード r = searchCurrentBreadcrumbsPosition(n.list子リスト, bc);
 					if (r != null) return r;
@@ -382,7 +382,7 @@ namespace DTXMania
 		/// <summary>
 		/// BOXのアイテム数と、今何番目を選択しているかをセットする
 		/// </summary>
-		public void t選択曲が変更された(bool bForce)	// #27648
+		public void t選択曲が変更された(bool bForce) // #27648
 		{
 			C曲リストノード song = CDTXMania.Instance.stage選曲.r現在選択中の曲;
 			if (song == null)
@@ -411,7 +411,7 @@ namespace DTXMania
 			if (this.b活性化してる)
 				return;
 
-			this.e楽器パート = E楽器パート.DRUMS;
+			this.e楽器パート = EPart.Drums;
 			this.b登場アニメ全部完了 = false;
 			this.n目標のスクロールカウンタ = 0;
 			this.n現在のスクロールカウンタ = 0;
@@ -421,11 +421,11 @@ namespace DTXMania
 			// 曲リスト文字は２倍（面積４倍）でテクスチャに描画してから縮小表示するので、フォントサイズは２倍とする。
 
 			FontStyle regular = FontStyle.Regular;
-			if (CDTXMania.Instance.ConfigIni.b選曲リストフォントを斜体にする) regular |= FontStyle.Italic;
-			if (CDTXMania.Instance.ConfigIni.b選曲リストフォントを太字にする) regular |= FontStyle.Bold;
+			if (CDTXMania.Instance.ConfigIni.bItalicFontSongSelect) regular |= FontStyle.Italic;
+			if (CDTXMania.Instance.ConfigIni.bBoldFontSongSelect) regular |= FontStyle.Bold;
 			this.ft曲リスト用フォント = new Font(
-				CDTXMania.Instance.ConfigIni.str選曲リストフォント,
-				(float)(CDTXMania.Instance.ConfigIni.n選曲リストフォントのサイズdot * 2 * Scale.Y),		// 後でScale.Yを掛けないように直すこと(Config.ini初期値変更)
+				CDTXMania.Instance.ConfigIni.strFontSongSelect,
+				(float)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 2 * Scale.Y),   // 後でScale.Yを掛けないように直すこと(Config.ini初期値変更)
 				regular,
 				GraphicsUnit.Pixel
 			);
@@ -443,7 +443,7 @@ namespace DTXMania
 
 			base.On活性化();
 
-			this.t選択曲が変更された(true);		// #27648 2012.3.31 yyagi 選曲画面に入った直後の 現在位置/全アイテム数 の表示を正しく行うため
+			this.t選択曲が変更された(true);    // #27648 2012.3.31 yyagi 選曲画面に入った直後の 現在位置/全アイテム数 の表示を正しく行うため
 		}
 		public override void On非活性化()
 		{
@@ -469,7 +469,7 @@ namespace DTXMania
 			this.tx選曲バー.Score = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect bar score selected.png"), false);
 			this.tx選曲バー.Box = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect bar box selected.png"), false);
 			this.tx選曲バー.Other = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect bar other selected.png"), false);
-			
+
 			this.txスキル数字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect skill number on list.png"), false);
 			this.tx使用レーン数数字 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect skill number on gauge etc.png"), false);
 			for (int i = 0; i < 13; i++)
@@ -494,7 +494,7 @@ namespace DTXMania
 
 					this.txSongNotFound = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
 
-					this.txSongNotFound.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f);	// 半分のサイズで表示する。
+					this.txSongNotFound.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f); // 半分のサイズで表示する。
 				}
 			}
 			catch (CTextureCreateFailedException)
@@ -518,7 +518,7 @@ namespace DTXMania
 
 					this.txEnumeratingSongs = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
 
-					this.txEnumeratingSongs.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f);	// 半分のサイズで表示する。
+					this.txEnumeratingSongs.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f); // 半分のサイズで表示する。
 				}
 			}
 			catch (CTextureCreateFailedException)
@@ -541,7 +541,7 @@ namespace DTXMania
 
 			for (int i = 0; i < 13; i++)
 				TextureFactory.t安全にDisposeする(ref this.stバー情報[i].txタイトル名);
-			
+
 			TextureFactory.t安全にDisposeする(ref this.txスキル数字);
 			TextureFactory.t安全にDisposeする(ref this.tx使用レーン数数字);
 			TextureFactory.t安全にDisposeする(ref this.txEnumeratingSongs);
@@ -592,7 +592,7 @@ namespace DTXMania
 			{
 				#region [ (1) 登場アニメフェーズの進行。]
 				//-----------------
-				for (int i = 0; i < 13; i++)	// パネルは全13枚。
+				for (int i = 0; i < 13; i++)  // パネルは全13枚。
 				{
 					this.ct登場アニメ用[i].t進行();
 
@@ -603,11 +603,11 @@ namespace DTXMania
 				// 全部の進行が終わったら、this.b登場アニメ全部完了 を true にする。
 
 				this.b登場アニメ全部完了 = true;
-				for (int i = 0; i < 13; i++)	// パネルは全13枚。
+				for (int i = 0; i < 13; i++)  // パネルは全13枚。
 				{
 					if (this.ct登場アニメ用[i].b進行中)
 					{
-						this.b登場アニメ全部完了 = false;	// まだ進行中のアニメがあるなら false のまま。
+						this.b登場アニメ全部完了 = false;  // まだ進行中のアニメがあるなら false のまま。
 						break;
 					}
 				}
@@ -620,7 +620,7 @@ namespace DTXMania
 				//-----------------
 				long n現在時刻 = CSound管理.rc演奏用タイマ.n現在時刻;
 
-				if (n現在時刻 < this.nスクロールタイマ)	// 念のため
+				if (n現在時刻 < this.nスクロールタイマ) // 念のため
 					this.nスクロールタイマ = n現在時刻;
 
 				const int nアニメ間隔 = 2;
@@ -652,25 +652,25 @@ namespace DTXMania
 
 					#region [ 加速度を加算し、現在のスクロールカウンタを目標のスクロールカウンタまで近づける。 ]
 					//-----------------
-					if (this.n現在のスクロールカウンタ < this.n目標のスクロールカウンタ)		// (A) 正の方向に未達の場合：
+					if (this.n現在のスクロールカウンタ < this.n目標のスクロールカウンタ)    // (A) 正の方向に未達の場合：
 					{
-						this.n現在のスクロールカウンタ += n加速度;								// カウンタを正方向に移動する。
+						this.n現在のスクロールカウンタ += n加速度;               // カウンタを正方向に移動する。
 
 						if (this.n現在のスクロールカウンタ > this.n目標のスクロールカウンタ)
-							this.n現在のスクロールカウンタ = this.n目標のスクロールカウンタ;	// 到着！スクロール停止！
+							this.n現在のスクロールカウンタ = this.n目標のスクロールカウンタ;  // 到着！スクロール停止！
 					}
 
-					else if (this.n現在のスクロールカウンタ > this.n目標のスクロールカウンタ)	// (B) 負の方向に未達の場合：
+					else if (this.n現在のスクロールカウンタ > this.n目標のスクロールカウンタ) // (B) 負の方向に未達の場合：
 					{
-						this.n現在のスクロールカウンタ -= n加速度;								// カウンタを負方向に移動する。
+						this.n現在のスクロールカウンタ -= n加速度;               // カウンタを負方向に移動する。
 
-						if (this.n現在のスクロールカウンタ < this.n目標のスクロールカウンタ)	// 到着！スクロール停止！
+						if (this.n現在のスクロールカウンタ < this.n目標のスクロールカウンタ)  // 到着！スクロール停止！
 							this.n現在のスクロールカウンタ = this.n目標のスクロールカウンタ;
 					}
 					//-----------------
 					#endregion
 
-					if (this.n現在のスクロールカウンタ >= 100)		// １行＝100カウント。
+					if (this.n現在のスクロールカウンタ >= 100)    // １行＝100カウント。
 					{
 						#region [ パネルを１行上にシフトする。]
 						//-----------------
@@ -687,7 +687,7 @@ namespace DTXMania
 						for (int i = 0; i < 7; i++)
 							song = this.r次の曲(song);
 
-						int index = (this.n現在の選択行 + 7) % 13;	// 新しく最下部に表示されるパネルのインデックス（0～12）。
+						int index = (this.n現在の選択行 + 7) % 13;  // 新しく最下部に表示されるパネルのインデックス（0～12）。
 						this.stバー情報[index].strタイトル文字列 = song.strタイトル;
 						this.stバー情報[index].col文字色 = song.col文字色;
 						this.t曲名バーの生成(index, this.stバー情報[index].strタイトル文字列, this.stバー情報[index].col文字色);
@@ -709,7 +709,7 @@ namespace DTXMania
 
 						// 新しく最下部に表示されるパネル用のスキル値を取得。
 
-						for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+						for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
 							this.stバー情報[index].n使用レーン数[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
@@ -720,10 +720,10 @@ namespace DTXMania
 						this.n現在のスクロールカウンタ -= 100;
 						this.n目標のスクロールカウンタ -= 100;
 
-						this.t選択曲が変更された(false);				// スクロールバー用に今何番目を選択しているかを更新
+						this.t選択曲が変更された(false);       // スクロールバー用に今何番目を選択しているかを更新
 
 						if (this.n目標のスクロールカウンタ == 0)
-							CDTXMania.Instance.stage選曲.t選択曲変更通知();		// スクロール完了＝選択曲変更！
+							CDTXMania.Instance.stage選曲.t選択曲変更通知();    // スクロール完了＝選択曲変更！
 
 						//-----------------
 						#endregion
@@ -745,7 +745,7 @@ namespace DTXMania
 						for (int i = 0; i < 5; i++)
 							song = this.r前の曲(song);
 
-						int index = ((this.n現在の選択行 - 5) + 13) % 13;	// 新しく最上部に表示されるパネルのインデックス（0～12）。
+						int index = ((this.n現在の選択行 - 5) + 13) % 13; // 新しく最上部に表示されるパネルのインデックス（0～12）。
 						this.stバー情報[index].strタイトル文字列 = song.strタイトル;
 						this.stバー情報[index].col文字色 = song.col文字色;
 						this.t曲名バーの生成(index, this.stバー情報[index].strタイトル文字列, this.stバー情報[index].col文字色);
@@ -767,7 +767,7 @@ namespace DTXMania
 
 						// 新しく最上部に表示されるパネル用のスキル値を取得。
 
-						for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+						for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
 							this.stバー情報[index].n使用レーン数[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
@@ -779,11 +779,11 @@ namespace DTXMania
 						this.n現在のスクロールカウンタ += 100;
 						this.n目標のスクロールカウンタ += 100;
 
-						this.t選択曲が変更された(false);				// スクロールバー用に今何番目を選択しているかを更新
+						this.t選択曲が変更された(false);       // スクロールバー用に今何番目を選択しているかを更新
 
 						if (this.n目標のスクロールカウンタ == 0)
-							CDTXMania.Instance.stage選曲.t選択曲変更通知();		// スクロール完了＝選択曲変更！
-						//-----------------
+							CDTXMania.Instance.stage選曲.t選択曲変更通知();    // スクロール完了＝選択曲変更！
+																												//-----------------
 						#endregion
 					}
 
@@ -830,7 +830,7 @@ namespace DTXMania
 			{
 				#region [ (1) 登場アニメフェーズの描画。]
 				//-----------------
-				for (int i = 0; i < 13; i++)	// パネルは全13枚。
+				for (int i = 0; i < 13; i++)  // パネルは全13枚。
 				{
 					if (this.ct登場アニメ用[i].n現在の値 >= 0)
 					{
@@ -858,20 +858,20 @@ namespace DTXMania
 									CDTXMania.Instance.Device,
 									(x + (int)(44 * Scale.X)) + (int)((16f + 0.5f) * Scale.X),
 									y + 35
-									//( y + (int) ( 0 * Scale.Y ) ) + (int) ( 16 * Scale.Y )
-									// ( y + (int) ( 5 * Scale.Y ) ) + (int) ( (16f-2f) * Scale.Y)
+								//( y + (int) ( 0 * Scale.Y ) ) + (int) ( 16 * Scale.Y )
+								// ( y + (int) ( 5 * Scale.Y ) ) + (int) ( (16f-2f) * Scale.Y)
 								);
 							//-----------------
 							#endregion
 							#region [ スキル値を描画。]
 							//-----------------
-							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
 								this.tスキル値の描画(x + (int)(28 * Scale.X), y + (int)(59), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
 							//-----------------
 							#endregion
 							#region [ 使用レーン数を描画。]
 							//-----------------
-							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
 								this.t使用レーン数の描画(x + (int)(0 * Scale.X), y + (int)53, this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
 							//-----------------
 							#endregion
@@ -900,13 +900,13 @@ namespace DTXMania
 							#endregion
 							#region [ スキル値を描画。]
 							//-----------------
-							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
 								this.tスキル値の描画(x + (int)(14 * Scale.X), y + (int)(14 * Scale.Y), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
 							//-----------------
 							#endregion
 							#region [ 使用レーン数を描画。]
 							//-----------------
-							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
 								this.t使用レーン数の描画(x + (int)(-14 * Scale.X), y + (int)(11 * Scale.Y), this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
 							//-----------------
 							#endregion
@@ -920,10 +920,10 @@ namespace DTXMania
 			{
 				#region [ (2) 通常フェーズの描画。]
 				//-----------------
-				for (int i = 0; i < 13; i++)	// パネルは全13枚。
+				for (int i = 0; i < 13; i++)  // パネルは全13枚。
 				{
-					if ((i == 0 && this.n現在のスクロールカウンタ > 0) ||		// 最上行は、上に移動中なら表示しない。
-						(i == 12 && this.n現在のスクロールカウンタ < 0))		// 最下行は、下に移動中なら表示しない。
+					if ((i == 0 && this.n現在のスクロールカウンタ > 0) ||   // 最上行は、上に移動中なら表示しない。
+						(i == 12 && this.n現在のスクロールカウンタ < 0))    // 最下行は、下に移動中なら表示しない。
 						continue;
 
 					int nパネル番号 = (((this.n現在の選択行 - 5) + i) + 13) % 13;
@@ -955,7 +955,7 @@ namespace DTXMania
 						#endregion
 						#region [ スキル値を描画。]
 						//-----------------
-						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
 							this.tスキル値の描画(
 								(int)(0xf4 * Scale.X),
 								(int)(0xd3 * Scale.Y),
@@ -965,7 +965,7 @@ namespace DTXMania
 						#endregion
 						#region [ 使用レーン数を描画。]
 						//-----------------
-						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
 							this.t使用レーン数の描画(
 								(int)(216 * Scale.X),
 								(int)(208 * Scale.Y),
@@ -995,13 +995,13 @@ namespace DTXMania
 						#endregion
 						#region [ スキル値を描画。]
 						//-----------------
-						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
 							this.tスキル値の描画(x + (int)(14 * Scale.X), y + (int)(14 * Scale.Y), this.stバー情報[nパネル番号].nスキル値[this.e楽器パート]);
 						//-----------------
 						#endregion
 						#region [ 使用レーン数を描画。]
 						//-----------------
-						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != E楽器パート.UNKNOWN))
+						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
 							this.t使用レーン数の描画(x + (int)(-14 * Scale.X), y + (int)(11 * Scale.Y), this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
 						//-----------------
 						#endregion
@@ -1091,8 +1091,8 @@ namespace DTXMania
 			public CActSelect曲リスト.Eバー種別 eバー種別;
 			public string strタイトル文字列;
 			public CTexture txタイトル名;
-			public STDGBVALUE<int> nスキル値;
-			public STDGBVALUE<int> n使用レーン数;
+			public STDGBSValue<int> nスキル値;
+			public STDGBSValue<int> n使用レーン数;
 			public Color col文字色;
 		}
 
@@ -1142,7 +1142,7 @@ namespace DTXMania
 		private bool b登場アニメ全部完了;
 		private Color color文字影 = Color.FromArgb(0x40, 10, 10, 10);
 		private CCounter[] ct登場アニメ用 = new CCounter[13];
-		private E楽器パート e楽器パート;
+		private EPart e楽器パート;
 		private Font ft曲リスト用フォント;
 		private long nスクロールタイマ;
 		private int n現在のスクロールカウンタ;
@@ -1228,7 +1228,7 @@ namespace DTXMania
 		}
 		private void tスキル値の描画(int x, int y, int nスキル値)
 		{
-			if (nスキル値 <= 0 || nスキル値 > 100)		// スキル値 0 ＝ 未プレイ なので表示しない。
+			if (nスキル値 <= 0 || nスキル値 > 100)    // スキル値 0 ＝ 未プレイ なので表示しない。
 				return;
 
 			int color = (nスキル値 == 100) ? 3 : (nスキル値 / 25);
@@ -1298,7 +1298,7 @@ namespace DTXMania
 				this.stバー情報[i].col文字色 = song.col文字色;
 				this.stバー情報[i].eバー種別 = this.e曲のバー種別を返す(song);
 
-				for (E楽器パート j = E楽器パート.DRUMS; j <= E楽器パート.BASS; j++)
+				for (EPart j = EPart.Drums; j <= EPart.Bass; j++)
 				{
 					this.stバー情報[i].nスキル値[j] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[j];
 					this.stバー情報[i].n使用レーン数[j] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[j];
@@ -1326,17 +1326,17 @@ namespace DTXMania
 						new Rectangle(
 							0,
 							0,
-							256,		//(int)(128 * Scale.X),
-							128			//(int)(64 * Scale.Y)
+							256,    //(int)(128 * Scale.X),
+							128     //(int)(64 * Scale.Y)
 						)
-					);	// ヘサキ
+					);  // ヘサキ
 				x += this.tx選曲バー[(int)type].sz画像サイズ.Width;
 
 				var rc = new Rectangle(
-					128,				//(int)(64 * Scale.X),
+					128,        //(int)(64 * Scale.X),
 					0,
-					128,				//(int)(64 * Scale.X),
-					128					//(int)(64 * Scale.Y)
+					128,        //(int)(64 * Scale.X),
+					128         //(int)(64 * Scale.Y)
 				);
 				while (x < SampleFramework.GameWindowSize.Width)
 				{
@@ -1346,8 +1346,8 @@ namespace DTXMania
 							x,
 							y,
 							rc
-						);	// 胴体；64pxずつ横につなげていく。
-					x += 128;		//(int)(64 * Scale.Y);
+						);  // 胴体；64pxずつ横につなげていく。
+					x += 128;   //(int)(64 * Scale.Y);
 				}
 				//-----------------
 				#endregion
@@ -1364,28 +1364,28 @@ namespace DTXMania
 						new Rectangle(
 							0,
 							0,
-							128,	//(int) ( 64 * Scale.X ),
-							69		//(int) ( 32 * Scale.Y )
-						//(int)(64 * Scale.X),
-						//(int)(32 * Scale.Y)
+							128,  //(int) ( 64 * Scale.X ),
+							69    //(int) ( 32 * Scale.Y )
+										//(int)(64 * Scale.X),
+										//(int)(32 * Scale.Y)
 						)
-					);		// ヘサキ
-				x += 64;		//(int) ( 64 * Scale.X );
+					);    // ヘサキ
+				x += 64;    //(int) ( 64 * Scale.X );
 
 				var rc = new Rectangle(
 					64,
 					0,
 					64,
 					69
-					//0,
-					//(int)(32 * Scale.Y),
-					//(int)(64 * Scale.X),
-					//(int)(32 * Scale.Y)
+				//0,
+				//(int)(32 * Scale.Y),
+				//(int)(64 * Scale.X),
+				//(int)(32 * Scale.Y)
 
-					//128,		//0,
-					//0,		//(int)(32 * Scale.Y),
-					//128,		//(int)(64 * Scale.X),
-					//128			//(int)(32 * Scale.Y)
+				//128,		//0,
+				//0,		//(int)(32 * Scale.Y),
+				//128,		//(int)(64 * Scale.X),
+				//128			//(int)(32 * Scale.Y)
 				);
 				while (x < SampleFramework.GameWindowSize.Width)
 				{
@@ -1395,8 +1395,8 @@ namespace DTXMania
 							x,
 							y,
 							rc
-						);	// 胴体；64pxずつ横につなげていく。
-					x += 64;	// (int) ( 64 * Scale.X );
+						);  // 胴体；64pxずつ横につなげていく。
+					x += 64;  // (int) ( 64 * Scale.X );
 				}
 				//-----------------
 				#endregion
@@ -1426,15 +1426,15 @@ namespace DTXMania
 				int height = (int)(25 * Scale.Y);
 				int width = (int)((sz曲名.Width + 2) * 0.5f);
 				if (width > (CDTXMania.Instance.Device.Capabilities.MaxTextureWidth / 2))
-					width = CDTXMania.Instance.Device.Capabilities.MaxTextureWidth / 2;	// 右端断ち切れ仕方ないよね
+					width = CDTXMania.Instance.Device.Capabilities.MaxTextureWidth / 2; // 右端断ち切れ仕方ないよね
 
-				float f拡大率X = (width <= n最大幅px) ? 0.5f : (((float)n最大幅px / (float)width) * 0.5f);	// 長い文字列は横方向に圧縮。
+				float f拡大率X = (width <= n最大幅px) ? 0.5f : (((float)n最大幅px / (float)width) * 0.5f); // 長い文字列は横方向に圧縮。
 
-				using (var bmp = new Bitmap(width * 2, height * 2, PixelFormat.Format32bppArgb))		// 2倍（面積4倍）のBitmapを確保。（0.5倍で表示する前提。）
+				using (var bmp = new Bitmap(width * 2, height * 2, PixelFormat.Format32bppArgb))    // 2倍（面積4倍）のBitmapを確保。（0.5倍で表示する前提。）
 				using (var g = Graphics.FromImage(bmp))
 				{
 					g.TextRenderingHint = TextRenderingHint.AntiAlias;
-					float y = (((float)bmp.Height) / 2f) - ((CDTXMania.Instance.ConfigIni.n選曲リストフォントのサイズdot * Scale.Y * 2f) / 2f);
+					float y = (((float)bmp.Height) / 2f) - ((CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * Scale.Y * 2f) / 2f);
 					g.DrawString(str曲名, this.ft曲リスト用フォント, new SolidBrush(this.color文字影), (float)2f, (float)(y + 2f));
 					g.DrawString(str曲名, this.ft曲リスト用フォント, new SolidBrush(color), 0f, y);
 
@@ -1481,18 +1481,18 @@ namespace DTXMania
 				this.txアイテム数数字.t2D描画(CDTXMania.Instance.Device, x, y, new Rectangle(dx, dy, (int)(8 * Scale.X), (int)(10 * Scale.Y)));
 			}
 		}
-		
+
 		private void t使用レーン数の描画(int x, int y, int n使用レーン数)
 		{
 			// #36177 使用レーン数の表示 add ikanick 16.03.20
-			if ( n使用レーン数 == 0 )
+			if (n使用レーン数 == 0)
 				return;
 
 			int n十の位 = n使用レーン数 / 10;
 			int n一の位 = n使用レーン数 % 10;
-			
+
 			// 十の位の描画。
-			if ( n十の位 != 0 )
+			if (n十の位 != 0)
 				this.t使用レーン数の描画_１桁描画(x + (int)(8 * Scale.X), y, n十の位);
 
 			// 一の位の描画。

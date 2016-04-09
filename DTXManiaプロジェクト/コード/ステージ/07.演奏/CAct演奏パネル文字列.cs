@@ -22,9 +22,9 @@ namespace DTXMania
 			{
 				TextureFactory.tテクスチャの解放(ref this.txPanel);
 
-				if ( !string.IsNullOrEmpty(str) )
+				if (!string.IsNullOrEmpty(str))
 				{
-					using (FontFamily ff = new FontFamily("Meiryo"))
+					using (FontFamily ff = new FontFamily("MS PGothic"))
 					{
 						using (CPrivateFont cpf = new CPrivateFont(ff, 24))
 						{
@@ -35,7 +35,7 @@ namespace DTXMania
 						}
 					}
 					this.Start();
-				}				
+				}
 			}
 		}
 
@@ -55,13 +55,13 @@ namespace DTXMania
 			this.Start();
 			base.On活性化();
 		}
-	
+
 		public override void On非活性化()
 		{
 			TextureFactory.tテクスチャの解放(ref this.txPanel);
 			base.On非活性化();
 		}
-		
+
 		public override void OnManagedリソースの作成()
 		{
 			if (!base.b活性化してない)
@@ -69,7 +69,7 @@ namespace DTXMania
 				base.OnManagedリソースの作成();
 			}
 		}
-		
+
 		public override void OnManagedリソースの解放()
 		{
 			if (!base.b活性化してない)
@@ -81,18 +81,15 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			throw new InvalidOperationException("t進行描画(x,y)のほうを使用してください。");
-		}
-
-		public int t進行描画(int x, int y)
-		{
-			if (!base.b活性化してない && !this.bMute)
+			if (b活性化してる && !this.bMute)
 			{
-				if (this.txPanel != null )
+				int x = CDTXMania.Instance.Coordinates.Panel.X;
+				int y = CDTXMania.Instance.Coordinates.Panel.Y;
+        if (this.txPanel != null)
 				{
 					Rectangle rectangle = new Rectangle(0, 0, txPanel.sz画像サイズ.Width, txPanel.sz画像サイズ.Height);
 					txPanel.fZ軸中心回転 = (float)(Math.PI / 2);
-					this.txPanel.t2D描画(CDTXMania.Instance.Device, x-rectangle.Width/2-rectangle.Height/2 , y+rectangle.Width/2-rectangle.Height/2, rectangle);
+					this.txPanel.t2D描画(CDTXMania.Instance.Device, x - rectangle.Width / 2 - rectangle.Height / 2, y + rectangle.Width / 2 - rectangle.Height / 2, rectangle);
 
 				}
 			}

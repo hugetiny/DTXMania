@@ -10,7 +10,16 @@ namespace DTXMania
 {
 	internal class CActDFPFont : CActivity
 	{
-		// コンストラクタ
+		[StructLayout(LayoutKind.Sequential)]
+		private struct ST文字領域
+		{
+			public char ch;
+			public Rectangle rc;
+		}
+
+		private readonly ST文字領域[] st文字領域;
+		private CTexture tx強調文字;
+		private CTexture tx通常文字;
 
 		public CActDFPFont()
 		{
@@ -480,7 +489,7 @@ namespace DTXMania
 			st文字領域93.rc = new Rectangle(0x12, 0xe3, 0x12, 0x1b);
 			st文字領域Array[0x5c] = st文字領域93;
 
-			st文字領域Array[0x5d] = new ST文字領域();						// #24954 2011.4.23 yyagi
+			st文字領域Array[0x5d] = new ST文字領域();           // #24954 2011.4.23 yyagi
 			st文字領域Array[0x5d].ch = '@';
 			st文字領域Array[0x5d].rc = new Rectangle(38, 227, 28, 28);
 			st文字領域Array[0x5e] = new ST文字領域();
@@ -490,9 +499,6 @@ namespace DTXMania
 
 			this.st文字領域 = st文字領域Array;
 		}
-
-
-		// メソッド
 
 		public int n文字列長dot(string str)
 		{
@@ -550,9 +556,6 @@ namespace DTXMania
 			}
 		}
 
-
-		// CActivity 実装
-
 		public override void OnManagedリソースの作成()
 		{
 			if (!base.b活性化してない)
@@ -562,6 +565,7 @@ namespace DTXMania
 				base.OnManagedリソースの作成();
 			}
 		}
+
 		public override void OnManagedリソースの解放()
 		{
 			if (!base.b活性化してない)
@@ -579,23 +583,5 @@ namespace DTXMania
 				base.OnManagedリソースの解放();
 			}
 		}
-
-
-		// その他
-
-		#region [ private ]
-		//-----------------
-		[StructLayout(LayoutKind.Sequential)]
-		private struct ST文字領域
-		{
-			public char ch;
-			public Rectangle rc;
-		}
-
-		private readonly ST文字領域[] st文字領域;
-		private CTexture tx強調文字;
-		private CTexture tx通常文字;
-		//-----------------
-		#endregion
 	}
 }

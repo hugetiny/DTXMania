@@ -90,7 +90,7 @@ namespace DTXMania
 					this.list進行文字列.Add("Release: " + CDTXMania.VERSION + " [" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + "]");
 
 					es = new CEnumSongs();
-					es.StartEnumFromCache();										// 曲リスト取得(別スレッドで実行される)
+					es.StartEnumFromCache();                    // 曲リスト取得(別スレッドで実行される)
 					base.b初めての進行描画 = false;
 					return 0;
 				}
@@ -158,9 +158,9 @@ namespace DTXMania
 				//-----------------
 				#endregion
 
-				if (es != null && es.IsSongListEnumCompletelyDone)							// 曲リスト作成が終わったら
+				if (es != null && es.IsSongListEnumCompletelyDone)              // 曲リスト作成が終わったら
 				{
-					CDTXMania.Instance.Songs管理 = (es != null) ? es.Songs管理 : null;		// 最後に、曲リストを拾い上げる
+					CDTXMania.Instance.Songs管理 = (es != null) ? es.Songs管理 : null;    // 最後に、曲リストを拾い上げる
 					return 1;
 				}
 			}
@@ -233,7 +233,7 @@ namespace DTXMania
 					Trace.Unindent();
 				}
 				//-----------------------------
-				#endregion
+		#endregion
 
 				if( CDTXMania.Instance.bコンパクトモード )
 				{
@@ -282,7 +282,7 @@ namespace DTXMania
 					Trace.Unindent();
 				}
 
-				#endregion
+		#endregion
 
 		#region [ 1) songs.db の読み込み ]
 				//-----------------------------
@@ -325,7 +325,7 @@ namespace DTXMania
 					Trace.Unindent();
 				}
 				//-----------------------------
-				#endregion
+		#endregion
 
 			}
 			finally

@@ -117,15 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="dtx" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\dtx.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="strCfgCommon左側メニューに戻ります" xml:space="preserve">
-    <value>Return to the left menu.</value>
+    <value>左側メニューに戻ります。</value>
   </data>
   <data name="strCfgKeyAssignキャプチャ説明" xml:space="preserve">
-    <value>Capture key assign:\nTo assign key for screen capture.\n(You can assign keyboard only. You can't use pads to capture screenshot.)</value>
+    <value>キャプチャキー設定：\n画面キャプチャのキーの割り当てを設定します。</value>
   </data>
   <data name="strCfgSysFullScreen" xml:space="preserve">
     <value>test</value>
@@ -166,7 +162,7 @@
   <data name="strCfgSysRandSubBox" xml:space="preserve">
     <value>test</value>
   </data>
-  <data name="strCfgDrAutoHH" xml:space="preserve">
+  <data name="strCfgDrAutoHHC" xml:space="preserve">
     <value>test</value>
   </data>
   <data name="strCfgDrAutoSD" xml:space="preserve">
@@ -185,10 +181,10 @@
     <value>test</value>
   </data>
   <data name="strCfgAutoCY" xml:space="preserve">
-    <value>Play the right cymbal automatically.</value>
+    <value>右シンバルを自動で演奏します。</value>
   </data>
   <data name="strCfgAutoLCY" xml:space="preserve">
-    <value>Play the left cymbal automatically.</value>
+    <value>左シンバルを自動で演奏します。</value>
   </data>
   <data name="strCfgGtAutoR" xml:space="preserve">
     <value>test</value>
@@ -206,19 +202,19 @@
     <value>test</value>
   </data>
   <data name="strCfgBsAutoR" xml:space="preserve">
-    <value>Press the bass R lane automatically.</value>
+    <value>ベースのRレーンを自動で演奏します。</value>
   </data>
   <data name="strCfgBsAutoG" xml:space="preserve">
-    <value>Press the bass G lane automatically.</value>
+    <value>ベースのGレーンを自動で抑えます。</value>
   </data>
   <data name="strCfgBsAutoB" xml:space="preserve">
-    <value>Press the bass B lane automatically.</value>
+    <value>ベースのBレーンを自動で抑えます。</value>
   </data>
   <data name="strCfgBsAutoPick" xml:space="preserve">
-    <value>Pick the bass automatically.</value>
+    <value>ベースを自動でピックします。</value>
   </data>
   <data name="strCfgBsAutoWailing" xml:space="preserve">
-    <value>Do the bass wailing automatically.</value>
+    <value>ベースのウェイリングを自動で行います。</value>
   </data>
   <data name="strCfgSysSoundLoadLimiter" xml:space="preserve">
     <value>test</value>
@@ -314,40 +310,40 @@
     <value>test</value>
   </data>
   <data name="strCfgDgbChipSoundMonitor" xml:space="preserve">
-    <value>test</value>
+    <value>チップ音を強調します。</value>
   </data>
   <data name="strCfgDgbSudden" xml:space="preserve">
-    <value>test</value>
+    <value />
   </data>
   <data name="strCfgDgbHidden" xml:space="preserve">
-    <value>test</value>
+    <value />
   </data>
   <data name="strCfgDgbReverse" xml:space="preserve">
-    <value>test</value>
+    <value>チップの進行方向が逆になります。</value>
   </data>
   <data name="strCfgDgbRandom" xml:space="preserve">
-    <value>test</value>
+    <value>チップをランダムに配置します。Random:小節単位でレーンが交換されます。\nSuper:チップごとにレーンが交換されます。\nHyper:チップごとにレーン構成がランダムになります。\n</value>
   </data>
   <data name="strCfgDgbLight" xml:space="preserve">
-    <value>test</value>
+    <value>チップがないところでピックした時BADになりません。</value>
   </data>
   <data name="strCfgDgbLeft" xml:space="preserve">
-    <value>test</value>
+    <value />
   </data>
   <data name="strCfgDgbScrollSpeed" xml:space="preserve">
-    <value>test</value>
+    <value>譜面のスクロール速度です。</value>
   </data>
   <data name="strCfgDgbInputAdjust" xml:space="preserve">
-    <value>test</value>
+    <value>入力のタイムスタンプを調節します。</value>
   </data>
   <data name="strCfgDgbMinComboDisp" xml:space="preserve">
-    <value>test</value>
+    <value>コンボを表示を開始するコンボ数です。</value>
   </data>
   <data name="strCfgDgbInvisible" xml:space="preserve">
-    <value>test</value>
+    <value />
   </data>
   <data name="strCfgDgbAutoGhost" xml:space="preserve">
-    <value>test</value>
+    <value>自動ゴーストを設定します。\nPerfect:全自動演奏です。\nHiSkill:最高スキルのゴーストです。\nHiScore:最高スコアのゴーストです。\nLastPlay:最後にプレーした時のゴーストです。\nOnline:オンラインゴーストです。\nDTXMania Online Stats のプラグイン\nが必要です。</value>
   </data>
   <data name="strCfgDgbTargetGhost" xml:space="preserve">
     <value>test</value>
@@ -437,13 +433,13 @@
     <value>test</value>
   </data>
   <data name="strCfgBsAllAuto" xml:space="preserve">
-    <value>Switch to play the bass automatically.</value>
+    <value>ベースの自動演奏設定を一括で行います。</value>
   </data>
   <data name="strCfgDgbDisplayCombo" xml:space="preserve">
-    <value />
+    <value>コンボを表示します。</value>
   </data>
   <data name="strCfgDgbDisplayJudge" xml:space="preserve">
-    <value />
+    <value>判定文字列を表示します。</value>
   </data>
   <data name="strCfgSysBGAAlpha" xml:space="preserve">
     <value />
@@ -455,7 +451,7 @@
     <value />
   </data>
   <data name="strCfgDgbSudHidInv" xml:space="preserve">
-    <value />
+    <value>Hidden:ある地点からチップが見えなくなります。\nSudden:ある地点までチップが見えません。\nSudHid:HiddenとSuddenを同時に適用します。\nSInvisible:チップが見えなくなりますが、\nミスをすると一定時間再表示されます。\nFInvisible:チップが見えなくなります。</value>
   </data>
   <data name="strCfgSysDebugInfo" xml:space="preserve">
     <value />
@@ -464,25 +460,16 @@
     <value />
   </data>
   <data name="strCfgDgbHiddenFrom" xml:space="preserve">
-    <value />
+    <value>Hiddenモードでチップが見えなくなる位置です。</value>
   </data>
   <data name="strCfgDgbSuddenFrom" xml:space="preserve">
-    <value />
-  </data>
-  <data name="strCfgAutoHHC" xml:space="preserve">
-    <value>Play the hi-hat (closed) automatically.</value>
+    <value>Suddenモードでチップが表示される位置です。</value>
   </data>
   <data name="strCfgAutoHHO" xml:space="preserve">
-    <value>Play the hi-hat (opened) automatically.</value>
+    <value>ハイハット（オープン）を自動で演奏します。</value>
   </data>
   <data name="strCfgAutoRD" xml:space="preserve">
-    <value>Play the ride cymbal automatically.</value>
-  </data>
-  <data name="strCfgDrAutoHHC" xml:space="preserve">
-    <value />
-  </data>
-  <data name="strCfgDrAutoHHO" xml:space="preserve">
-    <value />
+    <value>ライドシンバルを自動で演奏します。</value>
   </data>
   <data name="strCfgDispBassXBoth" xml:space="preserve">
     <value />
@@ -641,6 +628,6 @@
     <value />
   </data>
   <data name="strCfgDgbDisplayGraph" xml:space="preserve">
-    <value />
+    <value>グラフを表示します。</value>
   </data>
 </root>

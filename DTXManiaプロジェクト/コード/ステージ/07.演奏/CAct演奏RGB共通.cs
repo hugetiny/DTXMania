@@ -11,6 +11,7 @@ namespace DTXMania
 		// プロパティ
 		protected bool[] b押下状態 = new bool[6];
 		protected CTexture txRGB;
+		static ELane[] lanes = new ELane[] { ELane.GtR, ELane.GtG, ELane.GtB, ELane.BsR, ELane.BsG, ELane.BsB };
 
 
 		// コンストラクタ
@@ -55,44 +56,28 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない && CDTXMania.Instance.ConfigIni.bGuitar有効)
+			if (b活性化してる &&
+				CDTXMania.Instance.ConfigIni.bGuitar有効 &&
+				CDTXMania.Instance.ConfigIni.eDark != EDark.Full)
 			{
 				for (int i = 0; i < 6; i++)
 				{
-					E楽器パート inst = i < 3 ? E楽器パート.GUITAR : E楽器パート.BASS;
+					EPart inst = i < 3 ? EPart.Guitar : EPart.Bass;
 					if (CDTXMania.Instance.DTX.bチップがある[(int)inst])
 					{
-						int x = 0;
+						int x = CDTXMania.Instance.ConfigIni.GetLaneX(lanes[i]);
 						Rectangle rc;
 
-						if (i == 0)
+						if (i % 3 == 0)
 						{
-							x = CDTXMania.Instance.Coordinates.Lane.GtR.X;
 							rc = b押下状態[i] ? CDTXMania.Instance.Coordinates.ImgGtPressingButtonR : CDTXMania.Instance.Coordinates.ImgGtButtonR;
 						}
-						else if (i == 1)
+						else if (i % 3 == 1)
 						{
-							x = CDTXMania.Instance.Coordinates.Lane.GtG.X;
 							rc = b押下状態[i] ? CDTXMania.Instance.Coordinates.ImgGtPressingButtonG : CDTXMania.Instance.Coordinates.ImgGtButtonG;
 						}
-						else if (i == 2)
+						else if (i % 3 == 2)
 						{
-							x = CDTXMania.Instance.Coordinates.Lane.GtB.X;
-							rc = b押下状態[i] ? CDTXMania.Instance.Coordinates.ImgGtPressingButtonB : CDTXMania.Instance.Coordinates.ImgGtButtonB;
-						}
-						else if (i == 3)
-						{
-							x = CDTXMania.Instance.Coordinates.Lane.BsR.X;
-							rc = b押下状態[i] ? CDTXMania.Instance.Coordinates.ImgGtPressingButtonR : CDTXMania.Instance.Coordinates.ImgGtButtonR;
-						}
-						else if (i == 4)
-						{
-							x = CDTXMania.Instance.Coordinates.Lane.BsG.X;
-							rc = b押下状態[i] ? CDTXMania.Instance.Coordinates.ImgGtPressingButtonG : CDTXMania.Instance.Coordinates.ImgGtButtonG;
-						}
-						else if (i == 5)
-						{
-							x = CDTXMania.Instance.Coordinates.Lane.BsB.X;
 							rc = b押下状態[i] ? CDTXMania.Instance.Coordinates.ImgGtPressingButtonB : CDTXMania.Instance.Coordinates.ImgGtButtonB;
 						}
 						else
@@ -103,15 +88,15 @@ namespace DTXMania
 						if (txRGB != null)
 						{
 							int y = C演奏判定ライン座標共通.n演奏RGBボタンY座標(inst);
-							if( CDTXMania.Instance.ConfigIni.bReverse[inst] )
+							if (CDTXMania.Instance.ConfigIni.bReverse[inst])
 							{
-								y -= rc.Height/2;
+								y -= rc.Height / 2;
 							}
 							txRGB.t2D描画(CDTXMania.Instance.Device, x, y, rc);
 						}
 					}
 				}
-				for(int i = 0; i < 6; ++i)
+				for (int i = 0; i < 6; ++i)
 				{
 					b押下状態[i] = false;
 				}

@@ -8,40 +8,11 @@ using FDK;
 
 namespace DTXMania
 {
-	// グローバル定数
-
-	public enum Eシステムサウンド
-	{
-		BGMオプション画面 = 0,
-		BGMコンフィグ画面,
-		BGM起動画面,
-		BGM選曲画面,
-		SOUNDステージ失敗音,
-		SOUNDカーソル移動音,
-		SOUNDゲーム開始音,
-		SOUNDゲーム終了音,
-		SOUNDステージクリア音,
-		SOUNDタイトル音,
-		SOUNDフルコンボ音,
-		SOUND歓声音,
-		SOUND曲読込開始音,
-		SOUND決定音,
-		SOUND取消音,
-		SOUND変更音,
-		Count				// システムサウンド総数の計算用
-	}
-
 	internal class CSkin : IDisposable
 	{
-		// クラス
-
 		public class Cシステムサウンド : IDisposable
 		{
-			// static フィールド
-
 			public static CSkin.Cシステムサウンド r最後に再生した排他システムサウンド;
-
-			// フィールド、プロパティ
 
 			public bool bCompact対象;
 			public bool bループ;
@@ -49,6 +20,7 @@ namespace DTXMania
 			public bool b読み込み成功;
 			public bool b排他;
 			public string strファイル名 = "";
+
 			public bool b再生中
 			{
 				get
@@ -59,6 +31,7 @@ namespace DTXMania
 					return this.rSound[1 - this.n次に鳴るサウンド番号].b再生中;
 				}
 			}
+
 			public int n位置_現在のサウンド
 			{
 				get
@@ -76,6 +49,7 @@ namespace DTXMania
 						sound.n位置 = value;
 				}
 			}
+
 			public int n位置_次に鳴るサウンド
 			{
 				get
@@ -93,6 +67,7 @@ namespace DTXMania
 						sound.n位置 = value;
 				}
 			}
+
 			public int n音量_現在のサウンド
 			{
 				get
@@ -110,6 +85,7 @@ namespace DTXMania
 						sound.n音量 = value;
 				}
 			}
+
 			public int n音量_次に鳴るサウンド
 			{
 				get
@@ -130,6 +106,7 @@ namespace DTXMania
 					}
 				}
 			}
+
 			public int n長さ_現在のサウンド
 			{
 				get
@@ -142,6 +119,7 @@ namespace DTXMania
 					return sound.n総演奏時間ms;
 				}
 			}
+
 			public int n長さ_次に鳴るサウンド
 			{
 				get
@@ -171,13 +149,11 @@ namespace DTXMania
 				this.bCompact対象 = bCompact対象;
 				this.b読み込み未試行 = true;
 			}
+
 			public Cシステムサウンド()
 			{
 				this.b読み込み未試行 = true;
 			}
-
-
-			// メソッド
 
 			public void t読み込み()
 			{
@@ -190,30 +166,8 @@ namespace DTXMania
 				{
 					throw new FileNotFoundException(this.strファイル名);
 				}
-				////				for( int i = 0; i < 2; i++ )		// #27790 2012.3.10 yyagi 2回読み出しを、1回読みだし＋1回メモリコピーに変更
-				////				{
-				//                    try
-				//                    {
-				//                        this.rSound[ 0 ] = CDTXMania.Instance.Sound管理.tサウンドを生成する( CSkin.Path( this.strファイル名 ) );
-				//                    }
-				//                    catch
-				//                    {
-				//                        this.rSound[ 0 ] = null;
-				//                        throw;
-				//                    }
-				//                    if ( this.rSound[ 0 ] == null )	// #28243 2012.5.3 yyagi "this.rSound[ 0 ].bストリーム再生する"時もCloneするようにし、rSound[1]がnullにならないよう修正→rSound[1]の再生正常化
-				//                    {
-				//                        this.rSound[ 1 ] = null;
-				//                    }
-				//                    else
-				//                    {
-				//                        this.rSound[ 1 ] = ( CSound ) this.rSound[ 0 ].Clone();	// #27790 2012.3.10 yyagi add: to accelerate loading chip sounds
-				//                        CDTXMania.Instance.Sound管理.tサウンドを登録する( this.rSound[ 1 ] );	// #28243 2012.5.3 yyagi add (登録漏れによりストリーム再生処理が発生していなかった)
-				//                    }
 
-				////				}
-
-				for (int i = 0; i < 2; i++)		// 一旦Cloneを止めてASIO対応に専念
+				for (int i = 0; i < 2; i++)   // 一旦Cloneを止めてASIO対応に専念
 				{
 					try
 					{
@@ -227,6 +181,7 @@ namespace DTXMania
 				}
 				this.b読み込み成功 = true;
 			}
+
 			public void t再生する()
 			{
 				if (this.b読み込み未試行)
@@ -253,6 +208,7 @@ namespace DTXMania
 
 				this.n次に鳴るサウンド番号 = 1 - this.n次に鳴るサウンド番号;
 			}
+
 			public void t停止する()
 			{
 				if (this.rSound[0] != null)
@@ -464,10 +420,10 @@ namespace DTXMania
 		// 　選曲画面用に二種の情報を区別しない読み出し方法も提供する(GetCurrent...)
 
 		private object lockBoxDefSkin;
-		public static bool bUseBoxDefSkin = true;						// box.defからのスキン変更を許容するか否か
+		public static bool bUseBoxDefSkin = true;           // box.defからのスキン変更を許容するか否か
 
 		public string strSystemSkinRoot = null;
-		public string[] strSystemSkinSubfolders = null;		// List<string>だとignoreCaseな検索が面倒なので、配列に逃げる :-)
+		public string[] strSystemSkinSubfolders = null;   // List<string>だとignoreCaseな検索が面倒なので、配列に逃げる :-)
 		private string[] _strBoxDefSkinSubfolders = null;
 		public string[] strBoxDefSkinSubfolders
 		{
@@ -485,10 +441,10 @@ namespace DTXMania
 					_strBoxDefSkinSubfolders = value;
 				}
 			}
-		}			// 別スレッドからも書き込みアクセスされるため、スレッドセーフなアクセス法を提供
+		}     // 別スレッドからも書き込みアクセスされるため、スレッドセーフなアクセス法を提供
 
-		private static string strSystemSkinSubfolderFullName;			// Config画面で設定されたスキン
-		private static string strBoxDefSkinSubfolderFullName = "";		// box.defで指定されているスキン
+		private static string strSystemSkinSubfolderFullName;     // Config画面で設定されたスキン
+		private static string strBoxDefSkinSubfolderFullName = "";    // box.defで指定されているスキン
 
 		/// <summary>
 		/// スキンパス名をフルパスで取得する
@@ -506,6 +462,7 @@ namespace DTXMania
 				return strBoxDefSkinSubfolderFullName;
 			}
 		}
+
 		/// <summary>
 		/// スキンパス名をフルパスで設定する
 		/// </summary>
@@ -523,8 +480,6 @@ namespace DTXMania
 			}
 		}
 
-
-		// コンストラクタ
 		public CSkin(string _strSkinSubfolderFullName, bool _bUseBoxDefSkin)
 		{
 			lockBoxDefSkin = new object();
@@ -534,6 +489,7 @@ namespace DTXMania
 			ReloadSkinPaths();
 			PrepareReloadSkin();
 		}
+
 		public CSkin()
 		{
 			lockBoxDefSkin = new object();
@@ -542,6 +498,7 @@ namespace DTXMania
 			ReloadSkinPaths();
 			PrepareReloadSkin();
 		}
+
 		private string InitializeSkinPathRoot()
 		{
 			strSystemSkinRoot = System.IO.Path.Combine(CDTXMania.Instance.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar);
@@ -593,7 +550,7 @@ namespace DTXMania
 		{
 			for (int i = 0; i < nシステムサウンド数; i++)
 			{
-				if (!this[i].b排他)	// BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
+				if (!this[i].b排他) // BGM系以外のみ読み込む。(BGM系は必要になったときに読み込む)
 				{
 					Cシステムサウンド cシステムサウンド = this[i];
 					if (!CDTXMania.Instance.bコンパクトモード || cシステムサウンド.bCompact対象)
@@ -652,7 +609,7 @@ namespace DTXMania
 			}
 			Trace.TraceInformation("SkinPath入力: {0}", strSystemSkinSubfolderFullName);
 			Array.Resize(ref strSystemSkinSubfolders, size);
-			Array.Sort(strSystemSkinSubfolders);	// BinarySearch実行前にSortが必要
+			Array.Sort(strSystemSkinSubfolders);  // BinarySearch実行前にSortが必要
 			#endregion
 
 			#region [ 現在のSkinパスがbox.defスキンをCONFIG指定していた場合のために、最初にこれが有効かチェックする。有効ならこれを使う。 ]
@@ -698,8 +655,6 @@ namespace DTXMania
 			#endregion
 		}
 
-		// メソッド
-
 		public static string Path(string strファイルの相対パス)
 		{
 			if (strBoxDefSkinSubfolderFullName == "" || !bUseBoxDefSkin)
@@ -722,13 +677,14 @@ namespace DTXMania
 		{
 			if (skinPathFullName != null)
 			{
-				if (skinPathFullName == "")		// 「box.defで未定義」用
+				if (skinPathFullName == "")   // 「box.defで未定義」用
 					skinPathFullName = strSystemSkinSubfolderFullName;
 				string[] tmp = skinPathFullName.Split(System.IO.Path.DirectorySeparatorChar);
-				return tmp[tmp.Length - 2];		// ディレクトリ名の最後から2番目の要素がスキン名(最後の要素はnull。元stringの末尾が\なので。)
+				return tmp[tmp.Length - 2];   // ディレクトリ名の最後から2番目の要素がスキン名(最後の要素はnull。元stringの末尾が\なので。)
 			}
 			return null;
 		}
+
 		public static string[] GetSkinName(string[] skinPathFullNames)
 		{
 			string[] ret = new string[skinPathFullNames.Length];
@@ -777,7 +733,6 @@ namespace DTXMania
 			}
 			return false;
 		}
-
 
 		public void tRemoveMixerAll()
 		{

@@ -20,10 +20,6 @@ namespace DTXMania
 			get;
 			set;
 		}
-		/// <summary>楽器ごとのInvisibleモード</summary>
-		public STDGBVALUE<EInvisible> eInvisibleMode;
-
-
 
 		#region [ コンストラクタ ]
 		public CInvisibleChip()
@@ -52,7 +48,7 @@ namespace DTXMania
 		/// </summary>
 		public void Reset()
 		{
-			for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+			for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 			{
 				ccounter[i] = new CCounter();
 				b演奏チップが１つでもバーを通過した[i] = false;
@@ -63,12 +59,12 @@ namespace DTXMania
 		/// まだSemi-Invisibleを開始していなければ、開始する
 		/// </summary>
 		/// <param name="eInst"></param>
-		public void StartSemiInvisible(E楽器パート eInst)
+		public void StartSemiInvisible(EPart eInst)
 		{
 			if (!b演奏チップが１つでもバーを通過した[eInst])
 			{
 				b演奏チップが１つでもバーを通過した[eInst] = true;
-				if (this.eInvisibleMode[eInst] == EInvisible.SEMI)
+				if (CDTXMania.Instance.ConfigIni.eSudHidInv[eInst] == ESudHidInv.SemiInv)
 				{
 					ShowChipTemporally(eInst);
 					ccounter[eInst].n現在の値 = nDisplayTimeMs;
@@ -79,7 +75,7 @@ namespace DTXMania
 		/// 一時的にチップを表示するモードを開始する
 		/// </summary>
 		/// <param name="eInst">楽器パート</param>
-		public void ShowChipTemporally(E楽器パート eInst)
+		public void ShowChipTemporally(EPart eInst)
 		{
 			ccounter[eInst].t開始(0, nDisplayTimeMs + nFadeoutTimeMs + 1, 1, CDTXMania.Instance.Timer);
 		}
@@ -89,14 +85,14 @@ namespace DTXMania
 		/// </summary>
 		public enum EChipInvisibleState
 		{
-			SHOW,			// Missなどしてチップを表示中
-			FADEOUT,		// 表示期間終了後、フェードアウト中
-			INVISIBLE		// 完全非表示
+			SHOW,     // Missなどしてチップを表示中
+			FADEOUT,    // 表示期間終了後、フェードアウト中
+			INVISIBLE   // 完全非表示
 		}
 
 		internal EChipInvisibleState SetInvisibleStatus(ref CChip cc)
 		{
-			if (cc.e楽器パート == E楽器パート.UNKNOWN)
+			if (cc.e楽器パート == EPart.Unknown)
 			{
 				return EChipInvisibleState.SHOW;
 			}
@@ -104,20 +100,20 @@ namespace DTXMania
 
 			ccounter[cc.e楽器パート].t進行();
 
-			switch (eInvisibleMode[cc.e楽器パート])
+			switch (CDTXMania.Instance.ConfigIni.eSudHidInv[cc.e楽器パート].Value)
 			{
-				case EInvisible.OFF:
+				case ESudHidInv.Off:
 					cc.b可視 = true;
 					retcode = EChipInvisibleState.SHOW;
 					break;
 
-				case EInvisible.FULL:
+				case ESudHidInv.FullInv:
 					cc.b可視 = false;
 					retcode = EChipInvisibleState.INVISIBLE;
 					break;
 
-				case EInvisible.SEMI:
-					if (!b演奏チップが１つでもバーを通過した[cc.e楽器パート])	// まだ1つもチップがバーを通過していない時は、チップを表示する
+				case ESudHidInv.SemiInv:
+					if (!b演奏チップが１つでもバーを通過した[cc.e楽器パート]) // まだ1つもチップがバーを通過していない時は、チップを表示する
 					{
 						cc.b可視 = true;
 						cc.n透明度 = 255;
@@ -131,13 +127,13 @@ namespace DTXMania
 						cc.n透明度 = 255;
 						retcode = EChipInvisibleState.INVISIBLE;
 					}
-					else if (ccounter[cc.e楽器パート].n現在の値 < nDisplayTimeMs)								// 表示期間
+					else if (ccounter[cc.e楽器パート].n現在の値 < nDisplayTimeMs)                // 表示期間
 					{
 						cc.b可視 = true;
 						cc.n透明度 = 255;
 						retcode = EChipInvisibleState.SHOW;
 					}
-					else if (ccounter[cc.e楽器パート].n現在の値 < nDisplayTimeMs + nFadeoutTimeMs)		// フェードアウト期間
+					else if (ccounter[cc.e楽器パート].n現在の値 < nDisplayTimeMs + nFadeoutTimeMs)   // フェードアウト期間
 					{
 						cc.b可視 = true;
 						cc.n透明度 = 255 - (int)(Convert.ToDouble(ccounter[cc.e楽器パート].n現在の値 - nDisplayTimeMs) / nFadeoutTimeMs * 255.0);
@@ -153,13 +149,12 @@ namespace DTXMania
 			return retcode;
 		}
 
-		#region [ Dispose-Finalize パターン実装 ]
-		//-----------------
 		public void Dispose()
 		{
 			this.Dispose(true);
 			GC.SuppressFinalize(this);
 		}
+
 		protected void Dispose(bool disposeManagedObjects)
 		{
 			if (this.bDispose完了済み)
@@ -168,7 +163,7 @@ namespace DTXMania
 			if (disposeManagedObjects)
 			{
 				// (A) Managed リソースの解放
-				for (E楽器パート i = E楽器パート.DRUMS; i <= E楽器パート.BASS; i++)
+				for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 				{
 					// ctInvisibleTimer[ i ].Dispose();
 					ccounter[i].t停止();
@@ -184,11 +179,9 @@ namespace DTXMania
 		{
 			this.Dispose(false);
 		}
-		//-----------------
-		#endregion
 
-		private STDGBVALUE<CCounter> ccounter;
+		private STDGBSValue<CCounter> ccounter;
 		private bool bDispose完了済み = false;
-		private STDGBVALUE<bool> b演奏チップが１つでもバーを通過した;
+		private STDGBSValue<bool> b演奏チップが１つでもバーを通過した;
 	}
 }

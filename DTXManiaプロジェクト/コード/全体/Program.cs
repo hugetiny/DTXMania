@@ -23,7 +23,7 @@ namespace DTXMania
 				str存在しないときに表示するエラー文字列jp : str存在しないときに表示するエラー文字列en;
 			if (bLoadDllCheck)
 			{
-				IntPtr hModule = LoadLibrary(strDll名);		// 実際にLoadDll()してチェックする
+				IntPtr hModule = LoadLibrary(strDll名);    // 実際にLoadDll()してチェックする
 				if (hModule == IntPtr.Zero)
 				{
 					MessageBox.Show(str存在しないときに表示するエラー文字列, "DTXMania runtime error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
@@ -32,7 +32,7 @@ namespace DTXMania
 				FreeLibrary(hModule);
 			}
 			else
-			{													// 単純にファイルの存在有無をチェックするだけ (プロジェクトで「参照」していたり、アンマネージドなDLLが暗黙リンクされるものはこちら)
+			{                         // 単純にファイルの存在有無をチェックするだけ (プロジェクトで「参照」していたり、アンマネージドなDLLが暗黙リンクされるものはこちら)
 				string path = Path.Combine(System.IO.Directory.GetCurrentDirectory(), strDll名);
 				if (!File.Exists(path))
 				{
@@ -75,52 +75,64 @@ namespace DTXMania
 				if (!tDLLの存在チェック("dll\\SlimDX" + CDTXMania.SLIMDXDLL + ".dll",
 					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\FDK.dll",
 					"FDK.dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"FDK.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
-				if (!tDLLの存在チェック("xadec.dll",		// #35444 2015.8.27 yyagi; Changed dll path
+					))
+					bDLLnotfound = true;
+				if (!tDLLの存在チェック("xadec.dll",   // #35444 2015.8.27 yyagi; Changed dll path
 					"xadec.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"xadec.dll is not found." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\SoundDecoder.dll",
 					"SoundDecoder.dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"SoundDecoder.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック(CDTXMania.D3DXDLL,
 					CDTXMania.D3DXDLL + " が存在しません。" + newLine + "DirectX Redist フォルダの DXSETUP.exe を実行し、" + newLine + "必要な DirectX ランタイムをインストールしてください。",
 					CDTXMania.D3DXDLL + " is not found." + newLine + "Please execute DXSETUP.exe in \"DirectX Redist\" folder, to install DirectX runtimes required for DTXMania.",
 					true
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\bass.dll",
 					"bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"baas.dll is not found." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\Bass.Net.dll",
 					"Bass.Net.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"Bass.Net.dll is not found." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\bassmix.dll",
 					"bassmix.dll を読み込めません。bassmix.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"bassmix.dll is not loaded. bassmix.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\bassasio.dll",
 					"bassasio.dll を読み込めません。bassasio.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"bassasio.dll is not loaded. bassasio.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\basswasapi.dll",
 					"basswasapi.dll を読み込めません。basswasapi.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"basswasapi.dll is not loaded. basswasapi.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\bass_fx.dll",
 					"bass_fx.dll を読み込めません。bass_fx.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"bass_fx.dll is not loaded. bass_fx.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\DirectShowLib-2005.dll",
 					"DirectShowLib-2005.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"DirectShowLib-2005.dll is not found." + newLine + "Please download DTXMania again."
-					)) bDLLnotfound = true;
+					))
+					bDLLnotfound = true;
 				#endregion
 				if (!bDLLnotfound)
 				{
@@ -128,7 +140,7 @@ namespace DTXMania
 					Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
 #endif
 
-					DWM.EnableComposition(false);	// Disable AeroGrass temporally
+					DWM.EnableComposition(false); // Disable AeroGrass temporally
 
 					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
 					// BEGIM #24606 2011.03.08 from: DEBUG 時は例外発生箇所を直接デバッグできるようにするため、例外をキャッチしないようにする。
@@ -165,13 +177,13 @@ namespace DTXMania
 
 				// END #24615 2011.03.09 from
 			}
-			else		// DTXManiaが既に起動中
+			else    // DTXManiaが既に起動中
 			{
 
 				// → 引数が0個の時はそのまま終了
 				// 1個( コンパクトモード or DTXV -S) か2個 (DTXV -Nxxx ファイル名)のときは、そのプロセスにコマンドラインを丸々投げて終了する
 
-				for (int i = 0; i < 5; i++)		// 検索結果のハンドルがZeroになることがあるので、200ms間隔で5回リトライする
+				for (int i = 0; i < 5; i++)   // 検索結果のハンドルがZeroになることがあるので、200ms間隔で5回リトライする
 				{
 					#region [ 既に起動中のDTXManiaプロセスを検索する。]
 					// このやり方だと、ShowInTaskbar=falseでタスクバーに表示されないパターンの時に検索に失敗するようだが
@@ -185,7 +197,7 @@ namespace DTXMania
 
 					foreach (Process p in running)
 					{
-						if (p.Id != current.Id)	// プロセス名は同じでかつ、プロセスIDが自分自身とは異なるものを探す
+						if (p.Id != current.Id) // プロセス名は同じでかつ、プロセスIDが自分自身とは異なるものを探す
 						{
 							if (p.MainModule.FileName == current.MainModule.FileName && p.MainWindowHandle != IntPtr.Zero)
 							{

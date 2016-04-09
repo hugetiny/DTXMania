@@ -9,23 +9,15 @@ namespace DTXMania
 {
 	internal class CAct演奏ステージ失敗 : CActivity
 	{
-		// コンストラクタ
-
 		public CAct演奏ステージ失敗()
 		{
 			base.b活性化してない = true;
 		}
 
-
-		// メソッド
-
 		public void Start()
 		{
 			this.ct進行 = new CCounter(0, 0x3e8, 2, CDTXMania.Instance.Timer);
 		}
-
-
-		// CActivity 実装
 
 		public override void On活性化()
 		{
@@ -34,6 +26,7 @@ namespace DTXMania
 			this.ct進行 = new CCounter();
 			base.On活性化();
 		}
+
 		public override void On非活性化()
 		{
 			this.ct進行 = null;
@@ -44,6 +37,7 @@ namespace DTXMania
 			}
 			base.On非活性化();
 		}
+
 		public override void OnManagedリソースの作成()
 		{
 			if (!base.b活性化してない)
@@ -52,6 +46,7 @@ namespace DTXMania
 				base.OnManagedリソースの作成();
 			}
 		}
+
 		public override void OnManagedリソースの解放()
 		{
 			if (!base.b活性化してない)
@@ -60,6 +55,7 @@ namespace DTXMania
 				base.OnManagedリソースの解放();
 			}
 		}
+
 		public override int On進行描画()
 		{
 			if (base.b活性化してない)
@@ -131,16 +127,9 @@ namespace DTXMania
 			return 1;
 		}
 
-
-		// その他
-
-		#region [ private ]
-		//-----------------
 		private bool b効果音再生済み;
 		private CCounter ct進行;
 		private CSound sd効果音;
 		private CTexture txStageFailed;
-		//-----------------
-		#endregion
 	}
 }

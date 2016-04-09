@@ -48,7 +48,7 @@ namespace DTXMania
 
 			try
 			{
-				this.ctNowEnumeratingSongs = new CCounter();	// 0, 1000, 17, CDTXMania.Instance.Timer );
+				this.ctNowEnumeratingSongs = new CCounter();  // 0, 1000, 17, CDTXMania.Instance.Timer );
 				this.ctNowEnumeratingSongs.t開始(0, 100, 17, CDTXMania.Instance.Timer);
 			}
 			finally
@@ -88,7 +88,7 @@ namespace DTXMania
 			try
 			{
 				System.Drawing.Font ftMessage = new System.Drawing.Font("MS PGothic", 40 * 3f, FontStyle.Bold, GraphicsUnit.Pixel);
-				string[] strMessage = 
+				string[] strMessage =
 				{
 					"     曲データの一覧を\n       取得しています。\n   しばらくお待ちください。",
 					" Now enumerating songs.\n         Please wait..."

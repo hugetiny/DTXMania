@@ -8,7 +8,8 @@ namespace DTXMania
 {
 	internal class CStage終了 : CStage
 	{
-		// コンストラクタ
+		private CCounter ct時間稼ぎ;
+		private CTexture tx背景;
 
 		public CStage終了()
 		{
@@ -17,41 +18,44 @@ namespace DTXMania
 			base.b活性化してない = true;
 		}
 
-
-		// CStage 実装
-
 		public override void On活性化()
 		{
-			Trace.TraceInformation("終了ステージを活性化します。");
-			Trace.Indent();
-			try
+			if (b活性化してない)
 			{
-				this.ct時間稼ぎ = new CCounter();
-				base.On活性化();
-			}
-			finally
-			{
-				Trace.TraceInformation("終了ステージの活性化を完了しました。");
-				Trace.Unindent();
+				Trace.TraceInformation("終了ステージを活性化します。");
+				Trace.Indent();
+				try
+				{
+					this.ct時間稼ぎ = new CCounter();
+					base.On活性化();
+				}
+				finally
+				{
+					Trace.TraceInformation("終了ステージの活性化を完了しました。");
+					Trace.Unindent();
+				}
 			}
 		}
 		public override void On非活性化()
 		{
-			Trace.TraceInformation("終了ステージを非活性化します。");
-			Trace.Indent();
-			try
+			if (b活性化してる)
 			{
-				base.On非活性化();
-			}
-			finally
-			{
-				Trace.TraceInformation("終了ステージの非活性化を完了しました。");
-				Trace.Unindent();
+				Trace.TraceInformation("終了ステージを非活性化します。");
+				Trace.Indent();
+				try
+				{
+					base.On非活性化();
+				}
+				finally
+				{
+					Trace.TraceInformation("終了ステージの非活性化を完了しました。");
+					Trace.Unindent();
+				}
 			}
 		}
 		public override void OnManagedリソースの作成()
 		{
-			if (!base.b活性化してない)
+			if (base.b活性化してる)
 			{
 				this.tx背景 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenExit background.jpg"), false);
 				base.OnManagedリソースの作成();
@@ -59,7 +63,7 @@ namespace DTXMania
 		}
 		public override void OnManagedリソースの解放()
 		{
-			if (!base.b活性化してない)
+			if (base.b活性化してる)
 			{
 				TextureFactory.tテクスチャの解放(ref this.tx背景);
 				base.OnManagedリソースの解放();
@@ -67,7 +71,7 @@ namespace DTXMania
 		}
 		public override int On進行描画()
 		{
-			if (!base.b活性化してない)
+			if (base.b活性化してる)
 			{
 				if (base.b初めての進行描画)
 				{
@@ -88,14 +92,5 @@ namespace DTXMania
 			return 0;
 		}
 
-
-		// その他
-
-		#region [ private ]
-		//-----------------
-		private CCounter ct時間稼ぎ;
-		private CTexture tx背景;
-		//-----------------
-		#endregion
 	}
 }

@@ -40,16 +40,15 @@ namespace DTXMania
 		/// <param name="bWailingFrame">Wailing枠の座標か、判定ラインの座標か</param>
 		/// <param name="b補正あり">プレーヤーのライン表示位置補正情報を加えるかどうか</param>
 		/// <returns></returns>
-		public static int n判定ラインY座標(E楽器パート eInst, bool bWailingFrame = false, bool b補正あり = false, Reverse rt = Reverse.UseConfig)
+		public static int n判定ラインY座標(EPart eInst, bool bWailingFrame = false, bool b補正あり = false, Reverse rt = Reverse.UseConfig)
 		{
-			if (eInst == E楽器パート.UNKNOWN)
+			if (eInst == EPart.Unknown)
 			{
 				throw new ArgumentOutOfRangeException();
 			}
 			else
 			{
-				int ret = CDTXMania.Instance.Coordinates.JudgeLine[eInst].Y;
-
+				int ret = CDTXMania.Instance.ConfigIni.cdJudgeLineY[eInst];
 				int delta = CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset[eInst];
 
 				bool rev = false;
@@ -69,7 +68,7 @@ namespace DTXMania
 					{
 						ret -= CDTXMania.Instance.Coordinates.ImgGtWailingFrame.H / 2;
 					}
-					if (eInst == E楽器パート.DRUMS)
+					if (eInst == EPart.Drums)
 					{
 						delta = -delta;
 					}
@@ -80,7 +79,7 @@ namespace DTXMania
 					{
 						ret -= CDTXMania.Instance.Coordinates.ImgGtWailingFrame.H / 2;
 					}
-					if (eInst != E楽器パート.DRUMS)
+					if (eInst != EPart.Drums)
 					{
 						delta = -delta;
 					}
@@ -93,13 +92,13 @@ namespace DTXMania
 			}
 		}
 
-		public static int n演奏RGBボタンY座標(E楽器パート eInst)
+		public static int n演奏RGBボタンY座標(EPart eInst)
 		{
-			if (eInst == E楽器パート.DRUMS)
+			if (eInst == EPart.Drums)
 			{
 				throw new NotImplementedException();
 			}
-			else if (eInst == E楽器パート.UNKNOWN)
+			else if (eInst == EPart.Unknown)
 			{
 				throw new ArgumentOutOfRangeException();
 			}

@@ -80,8 +80,8 @@ namespace DTXMania
 			{
 				try
 				{
-					this._pfc = new System.Drawing.Text.PrivateFontCollection();	//PrivateFontCollectionオブジェクトを作成する
-					this._pfc.AddFontFile(fontpath);								//PrivateFontCollectionにフォントを追加する
+					this._pfc = new System.Drawing.Text.PrivateFontCollection();  //PrivateFontCollectionオブジェクトを作成する
+					this._pfc.AddFontFile(fontpath);                //PrivateFontCollectionにフォントを追加する
 					_fontfamily = _pfc.Families[0];
 				}
 				catch (System.IO.FileNotFoundException)
@@ -115,7 +115,7 @@ namespace DTXMania
 				if (!_fontfamily.IsStyleAvailable(style))
 				{
 					FontStyle[] FS = { FontStyle.Regular, FontStyle.Bold, FontStyle.Italic, FontStyle.Underline, FontStyle.Strikeout };
-					style = FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline | FontStyle.Strikeout;	// null非許容型なので、代わりに全盛をNGワードに設定
+					style = FontStyle.Regular | FontStyle.Bold | FontStyle.Italic | FontStyle.Underline | FontStyle.Strikeout;  // null非許容型なので、代わりに全盛をNGワードに設定
 					foreach (FontStyle ff in FS)
 					{
 						if (this._fontfamily.IsStyleAvailable(ff))
@@ -132,14 +132,14 @@ namespace DTXMania
 				}
 				//this._font = new Font(this._fontfamily, pt, style);			//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
 				float emSize = pt * 96.0f / 72.0f;
-				this._font = new Font(this._fontfamily, emSize, style, GraphicsUnit.Pixel);	//PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
-				//HighDPI対応のため、pxサイズで指定
+				this._font = new Font(this._fontfamily, emSize, style, GraphicsUnit.Pixel); //PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
+																																										//HighDPI対応のため、pxサイズで指定
 			}
 			else
 			// フォントファイルが見つからなかった場合 (MS PGothicを代わりに指定する)
 			{
 				float emSize = pt * 96.0f / 72.0f;
-				this._font = new Font("MS PGothic", emSize, style, GraphicsUnit.Pixel);	//MS PGothicのFontオブジェクトを作成する
+				this._font = new Font("MS PGothic", emSize, style, GraphicsUnit.Pixel); //MS PGothicのFontオブジェクトを作成する
 				FontFamily[] ffs = new System.Drawing.Text.InstalledFontCollection().Families;
 				int lcid = System.Globalization.CultureInfo.GetCultureInfo("en-us").LCID;
 				foreach (FontFamily ff in ffs)

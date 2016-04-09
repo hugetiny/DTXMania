@@ -61,7 +61,7 @@ namespace DTXMania
 			this.stLayer[i].n総移動時間ms = n総移動時間ms;
 			this.stLayer[i].n移動開始時刻ms = (n移動開始時刻ms != -1) ? n移動開始時刻ms : CDTXMania.Instance.Timer.n現在時刻;
 		}
-		
+
 		public void SkipStart(int n移動開始時刻ms)
 		{
 			for (int i = 0; i < CDTXMania.Instance.DTX.listChip.Count; i++)
@@ -73,28 +73,28 @@ namespace DTXMania
 				}
 				switch (chip.eBGA種別)
 				{
-					case EBGA種別.BMP:
+					case EBGAType.BMP:
 						if ((chip.rBMP != null) && (chip.rBMP.tx画像 != null))
 						{
 							this.Start(chip, chip.rBMP, null, chip.rBMP.n幅, chip.rBMP.n高さ, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms);
 						}
 						break;
 
-					case EBGA種別.BMPTEX:
+					case EBGAType.BMPTEX:
 						if ((chip.rBMPTEX != null) && (chip.rBMPTEX.tx画像 != null))
 						{
 							this.Start(chip, null, chip.rBMPTEX, chip.rBMPTEX.tx画像.sz画像サイズ.Width, chip.rBMPTEX.tx画像.sz画像サイズ.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms);
 						}
 						break;
 
-					case EBGA種別.BGA:
+					case EBGAType.BGA:
 						if (chip.rBGA != null)
 						{
 							this.Start(chip, chip.rBMP, chip.rBMPTEX, chip.rBGA.pt画像側右下座標.X - chip.rBGA.pt画像側左上座標.X, chip.rBGA.pt画像側右下座標.Y - chip.rBGA.pt画像側左上座標.Y, 0, 0, chip.rBGA.pt画像側左上座標.X, chip.rBGA.pt画像側左上座標.Y, 0, 0, chip.rBGA.pt表示座標.X, chip.rBGA.pt表示座標.Y, 0, 0, 0, chip.n発声時刻ms);
 						}
 						break;
 
-					case EBGA種別.BGAPAN:
+					case EBGAType.BGAPAN:
 						if (chip.rBGAPan != null)
 						{
 							this.Start(chip, chip.rBMP, chip.rBMPTEX, chip.rBGAPan.sz開始サイズ.Width, chip.rBGAPan.sz開始サイズ.Height, chip.rBGAPan.sz終了サイズ.Width, chip.rBGAPan.sz終了サイズ.Height, chip.rBGAPan.pt画像側開始位置.X, chip.rBGAPan.pt画像側開始位置.Y, chip.rBGAPan.pt画像側終了位置.X, chip.rBGAPan.pt画像側終了位置.Y, chip.rBGAPan.pt表示側開始位置.X, chip.rBGAPan.pt表示側開始位置.Y, chip.rBGAPan.pt表示側終了位置.X, chip.rBGAPan.pt表示側終了位置.Y, chip.n総移動時間, chip.n発声時刻ms);
@@ -160,13 +160,10 @@ namespace DTXMania
 
 		public override int On進行描画()
 		{
-			throw new InvalidOperationException("t進行描画(x,y)のほうを使用してください。");
-		}
-
-		public int t進行描画(int x, int y)
-		{
-			if (!base.b活性化してない)
+			if (b活性化してる && CDTXMania.Instance.ConfigIni.bBGA && !CDTXMania.Instance.ConfigIni.bStoicMode)
 			{
+				int x = CDTXMania.Instance.ConfigIni.cdMovieX[CDTXMania.Instance.ConfigIni.eActiveInst];
+				int y = CDTXMania.Instance.ConfigIni.cdMovieY[CDTXMania.Instance.ConfigIni.eActiveInst];
 				using (Bitmap bmp = new Bitmap(CDTXMania.Instance.Coordinates.Movie.W, CDTXMania.Instance.Coordinates.Movie.H))
 				{
 					for (int i = 0; i < 8; i++)
@@ -197,7 +194,7 @@ namespace DTXMania
 								(this.stLayer[i].rBMP != null) ? this.stLayer[i].rBMP.n幅 : this.stLayer[i].rBMPTEX.tx画像.sz画像サイズ.Width,
 								(this.stLayer[i].rBMP != null) ? this.stLayer[i].rBMP.n高さ : this.stLayer[i].rBMPTEX.tx画像.sz画像サイズ.Height);
 
-							int n再生位置 = (int)((CDTXMania.Instance.Timer.n現在時刻 - timeMoveStart) * (((double)CDTXMania.Instance.ConfigIni.n演奏速度) / 20.0));
+							int n再生位置 = (int)((CDTXMania.Instance.Timer.n現在時刻 - timeMoveStart) * (((double)CDTXMania.Instance.ConfigIni.nPlaySpeed) / 20.0));
 
 							if ((timeTotal != 0) && (timeTotal < n再生位置))
 							{
