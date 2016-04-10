@@ -38,7 +38,6 @@ namespace DTXMania
 		CAct演奏RGB共通 actRGB;
 		CAct演奏スコア共通 actScore;
 		CAct演奏ステージ失敗 actStageFailed;
-		CAct演奏ステータスパネル共通 actStatusPanels;
 		CAct演奏WailingBonus共通 actWailingBonus;
 		CAct演奏スクロール速度 act譜面スクロール速度;
 		CAct演奏DrumsチップファイアD actChipFireD;
@@ -115,7 +114,6 @@ namespace DTXMania
 			base.list子Activities.Add(this.actBGA = new CAct演奏BGA());
 			base.list子Activities.Add(this.actPanel = new CAct演奏パネル文字列());
 			base.list子Activities.Add(this.act譜面スクロール速度 = new CAct演奏スクロール速度());
-			base.list子Activities.Add(this.actStatusPanels = new CAct演奏ステータスパネル共通());
 			base.list子Activities.Add(this.actWailingBonus = new CAct演奏WailingBonus共通());
 			base.list子Activities.Add(this.actScore = new CAct演奏スコア共通());
 			base.list子Activities.Add(this.actRGB = new CAct演奏RGB共通());
@@ -473,8 +471,11 @@ namespace DTXMania
 
 				for (EPart part = EPart.Drums; part <= EPart.Bass; ++part)
 				{
-					actOptionPanel.Pos[part] = new Coordinates.CXY(CDTXMania.Instance.ConfigIni.cdInstX[part][CDTXMania.Instance.ConfigIni.eActiveInst]
-						- CDTXMania.Instance.Coordinates.ImgOptionPanel.W, 0);
+					if (CDTXMania.Instance.ConfigIni.b楽器有効(part))
+					{
+						actOptionPanel.Pos[part] = new Coordinates.CXY(CDTXMania.Instance.ConfigIni.cdInstX[part][CDTXMania.Instance.ConfigIni.eActiveInst]
+							- CDTXMania.Instance.Coordinates.ImgOptionPanel.W, 0);
+					}
 				}
 
 				base.On活性化();
@@ -615,7 +616,6 @@ namespace DTXMania
 					actLaneFlushGB.On進行描画();
 					actPanel.On進行描画();
 					actScore.On進行描画();
-					actStatusPanels.On進行描画();
 					actOptionPanel.On進行描画();
 					actGauge.On進行描画();
 					actGraph.On進行描画();

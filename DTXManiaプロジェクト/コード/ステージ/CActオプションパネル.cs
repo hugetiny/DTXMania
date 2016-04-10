@@ -104,44 +104,47 @@ namespace DTXMania
 
 					for (EPart part = EPart.Drums; part <= EPart.Bass; ++part)
 					{
-						int x = Pos[part].X;
-						int y = Pos[part].Y;
-						
-						rect.Width = CDTXMania.Instance.Coordinates.ImgOptionPanel.W;
-						rect.Height = CDTXMania.Instance.Coordinates.ImgOptionPanel.H;
-
-						// Dark
-						DrawOption((int)CDTXMania.Instance.ConfigIni.eDark.Value, ptDark, x, y);
-						IncrementXY(ref x, ref y);
-
-						// ScrollSpeed
-						DrawOption(CDTXMania.Instance.ConfigIni.nScrollSpeed[part]-1, ptScrollSpeed, x, y);
-						IncrementXY(ref x, ref y);
-
-						// Sud Hid Inv
-						DrawOption((int)CDTXMania.Instance.ConfigIni.eSudHidInv[part].Value, ptSudHidInv, x, y);
-						IncrementXY(ref x, ref y);
-
-						// Reverse
-						DrawOption(CDTXMania.Instance.ConfigIni.bReverse[part] ? 1 : 0, ptReverse, x, y);
-						IncrementXY(ref x, ref y);
-
-						if (part == EPart.Drums)
+						if (CDTXMania.Instance.ConfigIni.b楽器有効(part))
 						{
-							// Tight
-							DrawOption(CDTXMania.Instance.ConfigIni.bTight ? 1 : 0, ptTight, x, y);
-							IncrementXY(ref x, ref y);
-						}
+							int x = Pos[part].X;
+							int y = Pos[part].Y;
 
-						if (part == EPart.Guitar || part == EPart.Bass)
-						{
-							// Random
-							DrawOption((int)CDTXMania.Instance.ConfigIni.eRandom[part].Value, ptRandom, x, y);
+							rect.Width = CDTXMania.Instance.Coordinates.ImgOptionPanel.W;
+							rect.Height = CDTXMania.Instance.Coordinates.ImgOptionPanel.H;
+
+							// Dark
+							DrawOption((int)CDTXMania.Instance.ConfigIni.eDark.Value, ptDark, x, y);
 							IncrementXY(ref x, ref y);
 
-							// Light
-							DrawOption(CDTXMania.Instance.ConfigIni.bLight[part].Value ? 1 : 0, ptLight, x, y);
+							// ScrollSpeed
+							DrawOption(CDTXMania.Instance.ConfigIni.nScrollSpeed[part] - 1, ptScrollSpeed, x, y);
 							IncrementXY(ref x, ref y);
+
+							// Sud Hid Inv
+							DrawOption((int)CDTXMania.Instance.ConfigIni.eSudHidInv[part].Value, ptSudHidInv, x, y);
+							IncrementXY(ref x, ref y);
+
+							// Reverse
+							DrawOption(CDTXMania.Instance.ConfigIni.bReverse[part] ? 1 : 0, ptReverse, x, y);
+							IncrementXY(ref x, ref y);
+
+							if (part == EPart.Drums)
+							{
+								// Tight
+								DrawOption(CDTXMania.Instance.ConfigIni.bTight ? 1 : 0, ptTight, x, y);
+								IncrementXY(ref x, ref y);
+							}
+
+							if (part == EPart.Guitar || part == EPart.Bass)
+							{
+								// Random
+								DrawOption((int)CDTXMania.Instance.ConfigIni.eRandom[part].Value, ptRandom, x, y);
+								IncrementXY(ref x, ref y);
+
+								// Light
+								DrawOption(CDTXMania.Instance.ConfigIni.bLight[part].Value ? 1 : 0, ptLight, x, y);
+								IncrementXY(ref x, ref y);
+							}
 						}
 					}
 				}
