@@ -34,6 +34,12 @@
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.dgv割り当て一覧 = new System.Windows.Forms.DataGridView();
+			this.Assign_MIDI_Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Assign_Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Assign_DTX_Lane = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this.Assign_BackCh = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+			this.Assign_Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+			this.Assign_Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.labelMIDIImportSettingsFile = new System.Windows.Forms.Label();
 			this.buttonSaveSettings = new System.Windows.Forms.Button();
@@ -48,12 +54,6 @@
 			this.checkBoxベロシティカーブ調整 = new System.Windows.Forms.CheckBox();
 			this.groupbox4 = new System.Windows.Forms.GroupBox();
 			this.dgvチャンネル一覧 = new System.Windows.Forms.DataGridView();
-			this.Assign_MIDI_Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Assign_Key = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Assign_DTX_Lane = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this.Assign_BackCh = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-			this.Assign_Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-			this.Assign_Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Channel_Ch = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Channel_Notes = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this.Channel_Load = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -115,6 +115,57 @@
 			this.dgv割り当て一覧.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
 			this.dgv割り当て一覧.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv割り当て一覧_CellEndEdit);
 			this.dgv割り当て一覧.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv割り当て一覧_CellEnter);
+			// 
+			// Assign_MIDI_Key
+			// 
+			resources.ApplyResources(this.Assign_MIDI_Key, "Assign_MIDI_Key");
+			this.Assign_MIDI_Key.MaxInputLength = 4;
+			this.Assign_MIDI_Key.Name = "Assign_MIDI_Key";
+			this.Assign_MIDI_Key.ReadOnly = true;
+			this.Assign_MIDI_Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Assign_MIDI_Key.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// Assign_Key
+			// 
+			resources.ApplyResources(this.Assign_Key, "Assign_Key");
+			this.Assign_Key.MaxInputLength = 64;
+			this.Assign_Key.Name = "Assign_Key";
+			this.Assign_Key.ReadOnly = true;
+			this.Assign_Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Assign_Key.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// Assign_DTX_Lane
+			// 
+			this.Assign_DTX_Lane.AutoComplete = false;
+			this.Assign_DTX_Lane.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
+			this.Assign_DTX_Lane.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			resources.ApplyResources(this.Assign_DTX_Lane, "Assign_DTX_Lane");
+			this.Assign_DTX_Lane.MaxDropDownItems = 4;
+			this.Assign_DTX_Lane.Name = "Assign_DTX_Lane";
+			this.Assign_DTX_Lane.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			// 
+			// Assign_BackCh
+			// 
+			resources.ApplyResources(this.Assign_BackCh, "Assign_BackCh");
+			this.Assign_BackCh.Name = "Assign_BackCh";
+			this.Assign_BackCh.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			// 
+			// Assign_Notes
+			// 
+			resources.ApplyResources(this.Assign_Notes, "Assign_Notes");
+			this.Assign_Notes.MaxInputLength = 4;
+			this.Assign_Notes.Name = "Assign_Notes";
+			this.Assign_Notes.ReadOnly = true;
+			this.Assign_Notes.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+			// 
+			// Assign_Comment
+			// 
+			this.Assign_Comment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			resources.ApplyResources(this.Assign_Comment, "Assign_Comment");
+			this.Assign_Comment.MaxInputLength = 128;
+			this.Assign_Comment.Name = "Assign_Comment";
+			this.Assign_Comment.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+			this.Assign_Comment.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			// 
 			// groupBox1
 			// 
@@ -239,57 +290,6 @@
 			this.dgvチャンネル一覧.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgvチャンネル一覧.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvチャンネル一覧_CellValueChanged);
 			this.dgvチャンネル一覧.CurrentCellDirtyStateChanged += new System.EventHandler(this.dgvチャンネル一覧_CurrentCellDirtyStateChanged);
-			// 
-			// Assign_MIDI_Key
-			// 
-			resources.ApplyResources(this.Assign_MIDI_Key, "Assign_MIDI_Key");
-			this.Assign_MIDI_Key.MaxInputLength = 4;
-			this.Assign_MIDI_Key.Name = "Assign_MIDI_Key";
-			this.Assign_MIDI_Key.ReadOnly = true;
-			this.Assign_MIDI_Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Assign_MIDI_Key.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// Assign_Key
-			// 
-			resources.ApplyResources(this.Assign_Key, "Assign_Key");
-			this.Assign_Key.MaxInputLength = 64;
-			this.Assign_Key.Name = "Assign_Key";
-			this.Assign_Key.ReadOnly = true;
-			this.Assign_Key.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Assign_Key.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// Assign_DTX_Lane
-			// 
-			this.Assign_DTX_Lane.AutoComplete = false;
-			this.Assign_DTX_Lane.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.ComboBox;
-			this.Assign_DTX_Lane.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			resources.ApplyResources(this.Assign_DTX_Lane, "Assign_DTX_Lane");
-			this.Assign_DTX_Lane.MaxDropDownItems = 4;
-			this.Assign_DTX_Lane.Name = "Assign_DTX_Lane";
-			this.Assign_DTX_Lane.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			// 
-			// Assign_BackCh
-			// 
-			resources.ApplyResources(this.Assign_BackCh, "Assign_BackCh");
-			this.Assign_BackCh.Name = "Assign_BackCh";
-			this.Assign_BackCh.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			// 
-			// Assign_Notes
-			// 
-			resources.ApplyResources(this.Assign_Notes, "Assign_Notes");
-			this.Assign_Notes.MaxInputLength = 4;
-			this.Assign_Notes.Name = "Assign_Notes";
-			this.Assign_Notes.ReadOnly = true;
-			this.Assign_Notes.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-			// 
-			// Assign_Comment
-			// 
-			this.Assign_Comment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			resources.ApplyResources(this.Assign_Comment, "Assign_Comment");
-			this.Assign_Comment.MaxInputLength = 128;
-			this.Assign_Comment.Name = "Assign_Comment";
-			this.Assign_Comment.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-			this.Assign_Comment.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 			// 
 			// Channel_Ch
 			// 

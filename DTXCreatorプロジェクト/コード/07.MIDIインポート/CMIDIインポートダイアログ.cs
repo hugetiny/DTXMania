@@ -793,7 +793,19 @@ namespace DTXCreator.MIDIインポート
 			using ( var stream = new FileStream( this.formメインフォーム.strMIDIインポート設定ファイル, FileMode.Open ) )
 			{
 				var serializer = new System.Xml.Serialization.XmlSerializer( typeof( DTXC_MIDIConvSetting ) );
+				try
+				{
 				mcs = (DTXC_MIDIConvSetting) serializer.Deserialize( stream );
+				}
+				catch ( System.InvalidOperationException e )
+				{
+					// 読み込みエラー発生時は、xmlを新規作成する
+					stream.Close();		// Closeしないとこの際のファイル保存でファイルハンドルが重複してしまう
+					Trace.TraceError( "MIDIインポート設定をファイルから読み込む際に、エラーが発生しました: " + e.Message );
+					this.formメインフォーム.strMIDIインポート設定ファイル = Directory.GetCurrentDirectory() + @"\" + "DTXCreatorSMFSettings.xml";
+					tMIDIインポート設定をファイルに保存する();
+					return;
+				}
 			}
 			#endregion
 			

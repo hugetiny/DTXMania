@@ -237,6 +237,45 @@
   <metadata name="Assign_MIDI_Key.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="Assign_Key.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Assign_DTX_Lane.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Assign_BackCh.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Assign_Notes.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Assign_Comment.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="dgv割り当て一覧.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 18</value>
+  </data>
+  <data name="dgv割り当て一覧.Size" type="System.Drawing.Size, System.Drawing">
+    <value>512, 258</value>
+  </data>
+  <data name="dgv割り当て一覧.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;dgv割り当て一覧.Name" xml:space="preserve">
+    <value>dgv割り当て一覧</value>
+  </data>
+  <data name="&gt;&gt;dgv割り当て一覧.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgv割り当て一覧.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;dgv割り当て一覧.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <metadata name="Assign_MIDI_Key.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="Assign_MIDI_Key.HeaderText" xml:space="preserve">
     <value>MIDI_Key</value>
   </data>
@@ -281,27 +320,6 @@
   </metadata>
   <data name="Assign_Comment.HeaderText" xml:space="preserve">
     <value>Comment</value>
-  </data>
-  <data name="dgv割り当て一覧.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 18</value>
-  </data>
-  <data name="dgv割り当て一覧.Size" type="System.Drawing.Size, System.Drawing">
-    <value>512, 258</value>
-  </data>
-  <data name="dgv割り当て一覧.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;dgv割り当て一覧.Name" xml:space="preserve">
-    <value>dgv割り当て一覧</value>
-  </data>
-  <data name="&gt;&gt;dgv割り当て一覧.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;dgv割り当て一覧.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;dgv割り当て一覧.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="labelMIDIImportSettingsFile.Location" type="System.Drawing.Point, System.Drawing">
     <value>259, 322</value>
@@ -388,16 +406,16 @@
     <value>MiddleRight</value>
   </data>
   <data name="label重複チップ数.Location" type="System.Drawing.Point, System.Drawing">
-    <value>409, 279</value>
+    <value>374, 279</value>
   </data>
   <data name="label重複チップ数.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 23</value>
+    <value>144, 23</value>
   </data>
   <data name="label重複チップ数.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="label重複チップ数.Text" xml:space="preserve">
-    <value>(redundant chips)</value>
+    <value>redundant chips</value>
   </data>
   <data name="label重複チップ数.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
@@ -681,39 +699,6 @@
   <data name="&gt;&gt;checkBoxベロシティカーブ調整.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <metadata name="Channel_Ch.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Channel_Ch.HeaderText" xml:space="preserve">
-    <value>Ch</value>
-  </data>
-  <data name="Channel_Ch.Width" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <metadata name="Channel_Notes.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Channel_Notes.HeaderText" xml:space="preserve">
-    <value>Notes</value>
-  </data>
-  <metadata name="Channel_Load.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="Channel_Load.HeaderText" xml:space="preserve">
-    <value>Load</value>
-  </data>
-  <data name="Channel_Load.Width" type="System.Int32, mscorlib">
-    <value>40</value>
-  </data>
-  <data name="dgvチャンネル一覧.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 19</value>
-  </data>
-  <data name="dgvチャンネル一覧.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 256</value>
-  </data>
-  <data name="dgvチャンネル一覧.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;dgvチャンネル一覧.Name" xml:space="preserve">
     <value>dgvチャンネル一覧</value>
   </data>
@@ -752,6 +737,60 @@
   </data>
   <data name="&gt;&gt;groupbox4.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <metadata name="Channel_Ch.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Channel_Notes.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Channel_Load.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="dgvチャンネル一覧.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 19</value>
+  </data>
+  <data name="dgvチャンネル一覧.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 256</value>
+  </data>
+  <data name="dgvチャンネル一覧.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;dgvチャンネル一覧.Name" xml:space="preserve">
+    <value>dgvチャンネル一覧</value>
+  </data>
+  <data name="&gt;&gt;dgvチャンネル一覧.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DataGridView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;dgvチャンネル一覧.Parent" xml:space="preserve">
+    <value>groupbox4</value>
+  </data>
+  <data name="&gt;&gt;dgvチャンネル一覧.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="Channel_Ch.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="Channel_Ch.HeaderText" xml:space="preserve">
+    <value>Ch</value>
+  </data>
+  <data name="Channel_Ch.Width" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <metadata name="Channel_Notes.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="Channel_Notes.HeaderText" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <metadata name="Channel_Load.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="Channel_Load.HeaderText" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="Channel_Load.Width" type="System.Int32, mscorlib">
+    <value>40</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

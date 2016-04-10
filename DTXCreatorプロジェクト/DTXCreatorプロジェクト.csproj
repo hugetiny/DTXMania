@@ -56,6 +56,13 @@
     <NoWarn>0219</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, PublicKeyToken=53d0e4ef1f1579f5, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -204,9 +211,11 @@
     </Compile>
     <EmbeddedResource Include="コード\07.MIDIインポート\CMIDIインポートダイアログ.ja-JP.resx">
       <DependentUpon>CMIDIインポートダイアログ.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="コード\07.MIDIインポート\CMIDIインポートダイアログ.resx">
       <DependentUpon>CMIDIインポートダイアログ.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
