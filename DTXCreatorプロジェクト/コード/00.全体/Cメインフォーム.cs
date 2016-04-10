@@ -14,6 +14,7 @@ using DTXCreator.譜面;
 using DTXCreator.WAV_BMP_AVI;
 using DTXCreator.UndoRedo;
 using DTXCreator.オプション関連;
+using DTXCreator.MIDIインポート;
 using DTXCreator.汎用;
 using DTXCreator.Properties;
 using FDK;
@@ -43,13 +44,14 @@ namespace DTXCreator
 		public Cチップパレット dlgチップパレット;
 		private Cオプション管理 mgrオプション管理者 = null;
 		private C選択モード管理 mgr選択モード管理者 = null;
-		private C編集モード管理 mgr編集モード管理者 = null;
+		internal C編集モード管理 mgr編集モード管理者 = null;
 		internal C譜面管理 mgr譜面管理者 = null;
 		internal CWAVリスト管理 mgrWAVリスト管理者 = null;
 		internal CBMPリスト管理 mgrBMPリスト管理者 = null;
 		internal CAVIリスト管理 mgrAVIリスト管理者 = null;
 		internal CUndoRedo管理 mgrUndoRedo管理者 = null;
 		internal Cクリップボード cbクリップボード = null;
+		private CMIDIインポート管理 mgrMIDIインポート管理者 = null;
 
 		internal MakeTempDTX makeTempDTX = null;
 
@@ -145,6 +147,16 @@ namespace DTXCreator
 				}
 			}
 		}
+		
+		/// <summary>
+		/// 最後にMIDIを読み込んだフォルダ
+		/// </summary>
+		public string strMIDIインポートフォルダ;
+
+		/// <summary>
+		/// 最後に読み込まれたMIDIインポート設定ファイル
+		/// </summary>
+		public string strMIDIインポート設定ファイル;
 
 		//-----------------
 		#endregion
@@ -184,6 +196,7 @@ namespace DTXCreator
 			#region [ 全体を通して必要な管理者オブジェクトを生成する。]
 			//-----------------
 			this.mgrオプション管理者 = new Cオプション管理( this );
+			this.mgrMIDIインポート管理者 = new CMIDIインポート管理(this);
 			//-----------------
 			#endregion
 
@@ -394,6 +407,20 @@ namespace DTXCreator
 				this.t編集モードにする();
 			}
 			#endregion
+			#region [ MIDIインポートフォルダ関連 ]
+			//-----------------
+			this.strMIDIインポートフォルダ = this.appアプリ設定.LastMIDIImportFolder;
+			
+			if( ! Directory.Exists( this.strMIDIインポートフォルダ ) )
+				this.strMIDIインポートフォルダ = Directory.GetCurrentDirectory();
+
+			// 設定ファイル
+			this.strMIDIインポート設定ファイル = this.appアプリ設定.LastMIDIImportSettingsFile;
+			
+			if( ! File.Exists( this.strMIDIインポート設定ファイル ) ) this.strMIDIインポート設定ファイル = Directory.GetCurrentDirectory() + @"\" + "DTXCreatorSMFSettings.xml";
+			//-----------------
+			#endregion
+
 		}
 		private void tアプリ設定の保存()
 		{
@@ -466,7 +493,12 @@ namespace DTXCreator
 				this.appアプリ設定.AddLanesInfo( c.strレーン名, c.bIsVisible );
 			}
 			#endregion
-
+			#region [ MIDIインポートフォルダ関連 ]
+			//-----------------
+			this.appアプリ設定.LastMIDIImportFolder = this.strMIDIインポートフォルダ;
+			this.appアプリ設定.LastMIDIImportSettingsFile = this.strMIDIインポート設定ファイル;
+			//-----------------
+			#endregion
 
 			// 保存する。
 
@@ -484,7 +516,7 @@ namespace DTXCreator
 		#endregion
 		#region [ 新規作成 ]
 		//-----------------
-		private void tシナリオ_新規作成()
+		public void tシナリオ_新規作成()
 		{
 			// 作成前の保存確認。
 
@@ -738,7 +770,26 @@ namespace DTXCreator
 
 			#region [ ファイルを読み込む。]
 			//-----------------
-			this.t演奏ファイルを開いて読み込む( strファイル名 );
+			string strExt = Path.GetExtension( strファイル名 ).ToLower();
+
+			if ( strExt.Equals(".dtx") )
+			{
+				this.t演奏ファイルを開いて読み込む( strファイル名 );
+			}
+			else if (strExt.Equals(".smf") || strExt.Equals(".mid"))
+			{
+				this.mgrMIDIインポート管理者.tMIDIインポート管理を開く( strファイル名 );
+				this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
+			}
+			else
+			{
+				MessageBox.Show(
+					Resources.strDTXファイルではありませんMSG,
+					Resources.str確認ダイアログのタイトル,
+					MessageBoxButtons.OK, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button1 );
+
+				return;	// 中断
+			}
 			//-----------------
 			#endregion
 		}
@@ -1206,7 +1257,7 @@ namespace DTXCreator
 			this.tUndoRedo用GUIの有効無効を設定する();
 
 		}
-		private void t小節長を変更する_小節単位( int n小節番号, float f倍率 )
+		public void t小節長を変更する_小節単位( int n小節番号, float f倍率 )
 		{
 			// 対象の小節を取得。
 
@@ -2330,7 +2381,7 @@ namespace DTXCreator
 
 			return str相対ファイル名;
 		}
-		private DialogResult t未保存なら保存する()
+		public DialogResult t未保存なら保存する()
 		{
 			var result = DialogResult.OK;
 
@@ -5077,6 +5128,11 @@ namespace DTXCreator
 			this.mgrオプション管理者.tオプションダイアログを開いて編集し結果をアプリ設定に格納する();
 			this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
 		}
+		private void toolStripMenuItemMIDIImport_Click( object sender, EventArgs e)
+        {
+            this.mgrMIDIインポート管理者.tMIDIインポート管理をインポートメニューから開く();
+            this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
+        }
 		//-----------------
 		#endregion
 		#region [ GUIイベント：メニューバー [ヘルプ] ]
@@ -5256,22 +5312,10 @@ namespace DTXCreator
 		{
 			string filename = "";
 
-			#region [ マウスカーソルを待機中に変更 (アプリウインドウ外で右クリックメニュー選択していると、効果がない・・・) ]
-			this.Cursor = Cursors.WaitCursor;
-			#endregion
-
-
 			#region [ BGM, BPM, BEATレーンのレーン番号を取得 ]
 			int laneBGM = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BGM" );
 			int laneBPM = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BPM" );
 			int laneBEAT = this.mgr譜面管理者.nレーン名に対応するレーン番号を返す( "BEAT" );
-			#endregion
-
-			#region [ BPM,BEATレーンの情報を消去 ]
-			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBPM );
-			this.tシナリオ_削除();
-			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBEAT );
-			this.tシナリオ_削除();
 			#endregion
 
 			#region [ BGMレーンにあるチップを抽出して、beat検出する対象のサウンドファイルを決める ]
@@ -5306,9 +5350,24 @@ namespace DTXCreator
 				//}
 				//}
 			}
+			if ( filename == "" )
+			{
+				MessageBox.Show( "BGMチップが配置されていません。BGMチップを1つ配置してください。", "BGMチップ検出エラー", MessageBoxButtons.OK, MessageBoxIcon.Error );
+				return;
+			}
 			#endregion
 			#endregion
 
+			#region [ マウスカーソルを待機中に変更 (アプリウインドウ外で右クリックメニュー選択していると、効果がない・・・) ]
+			this.Cursor = Cursors.WaitCursor;
+			#endregion
+
+			#region [ BPM,BEATレーンの情報を消去 ]
+			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBPM );
+			this.tシナリオ_削除();
+			this.mgr選択モード管理者.tレーン上の全チップを選択する( laneBEAT );
+			this.tシナリオ_削除();
+			#endregion
 
 
 			#region [ BASSFXのBeat detectionを実行する ]
@@ -5524,10 +5583,6 @@ namespace DTXCreator
 
 			BPMchipsGeneneration_Main();
 
-			#region [ マウスカーソルの形を元に戻す ]
-			this.Cursor = Cursors.Default;
-			#endregion
-
 			cbd.Dispose();
 			cbd = null;
 
@@ -5539,9 +5594,14 @@ namespace DTXCreator
 			this.pictureBox譜面パネル.Invalidate();
 			#endregion
 
+
 			#region [ listBeatPositionsの開放 ]
 			listBeatPositions.Clear();
 			listBeatPositions = null;
+			#endregion
+
+			#region [ マウスカーソルの形を元に戻す ]
+			this.Cursor = Cursors.Default;
 			#endregion
 		}
 

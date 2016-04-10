@@ -827,7 +827,7 @@ namespace DTXCreator
 			Color color = ColorTranslator.FromHtml( strArray[ 1 ] );
 			if( ( nChipNo >= 0 ) && ( nChipNo <= 36 * 36 - 2 ) )
 			{
-				this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す_なければ新規生成する( nChipNo + 1 ).col背景色 = color;
+				this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す_なければ新規生成する( nChipNo ).col背景色 = color;
 			}
 			return true;
 		}
@@ -854,7 +854,7 @@ namespace DTXCreator
 			Color color = ColorTranslator.FromHtml( strArray[ 1 ] );
 			if( ( nChipNo >= 0 ) && ( nChipNo <= 36 * 36 - 2 ) )
 			{
-				this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す_なければ新規生成する( nChipNo + 1 ).col文字色 = color;
+				this._Form.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す_なければ新規生成する( nChipNo ).col文字色 = color;
 			}
 			return true;
 		}

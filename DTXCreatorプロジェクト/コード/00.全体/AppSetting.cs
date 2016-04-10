@@ -48,6 +48,8 @@ namespace DTXCreator
 			this._LastWorkFolder = Directory.GetCurrentDirectory();
 			this._ViewerInfo = new Viewer();
 			this._InitialOperationMode = false;
+			this._LastMIDIImportFolder = Directory.GetCurrentDirectory();
+			this._LastMIDIImportSettingsFile = "";
 		}
 		//-----------------
 		#endregion
@@ -352,6 +354,28 @@ namespace DTXCreator
 				this._Y = value;
 			}
 		}
+		public string LastMIDIImportFolder
+		{
+			get
+			{
+				return this._LastMIDIImportFolder;
+			}
+			set
+			{
+				this._LastMIDIImportFolder = value;
+			}
+		}
+		public string LastMIDIImportSettingsFile
+		{
+			get
+			{
+				return this._LastMIDIImportSettingsFile;
+			}
+			set
+			{
+				this._LastMIDIImportSettingsFile = value;
+			}
+		}
 
 		/// <summary>
 		/// 操作モードの初期値
@@ -502,6 +526,8 @@ namespace DTXCreator
 		private int _X;
 		private int _Y;
 		private bool _InitialOperationMode;
+		private string _LastMIDIImportFolder = "";
+		private string _LastMIDIImportSettingsFile = "";
 		//-----------------
 		#endregion
 	}

@@ -156,6 +156,8 @@
 			this.toolStripMenuItem再生停止 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItemツール = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItemオプション = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator19 = new System.Windows.Forms.ToolStripSeparator();
+			this.importMIDIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItemヘルプ = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItemDTXCreaterマニュアル = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItemバージョン = new System.Windows.Forms.ToolStripMenuItem();
@@ -1222,7 +1224,9 @@
 			// toolStripMenuItemツール
 			// 
 			this.toolStripMenuItemツール.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemオプション});
+            this.toolStripMenuItemオプション,
+            this.toolStripSeparator19,
+            this.importMIDIToolStripMenuItem});
 			this.toolStripMenuItemツール.Name = "toolStripMenuItemツール";
 			resources.ApplyResources(this.toolStripMenuItemツール, "toolStripMenuItemツール");
 			// 
@@ -1231,6 +1235,17 @@
 			this.toolStripMenuItemオプション.Name = "toolStripMenuItemオプション";
 			resources.ApplyResources(this.toolStripMenuItemオプション, "toolStripMenuItemオプション");
 			this.toolStripMenuItemオプション.Click += new System.EventHandler(this.toolStripMenuItemオプション_Click);
+			// 
+			// toolStripSeparator19
+			// 
+			this.toolStripSeparator19.Name = "toolStripSeparator19";
+			resources.ApplyResources(this.toolStripSeparator19, "toolStripSeparator19");
+			// 
+			// importMIDIToolStripMenuItem
+			// 
+			this.importMIDIToolStripMenuItem.Name = "importMIDIToolStripMenuItem";
+			resources.ApplyResources(this.importMIDIToolStripMenuItem, "importMIDIToolStripMenuItem");
+			this.importMIDIToolStripMenuItem.Click += new System.EventHandler(this.toolStripMenuItemMIDIImport_Click);
 			// 
 			// toolStripMenuItemヘルプ
 			// 
@@ -1867,5 +1882,7 @@
 		private System.Windows.Forms.ToolStripMenuItem generateBPMFromBeatChipsToolStripMenuItem;
 		internal System.Windows.Forms.CheckBox check556x710BGAAVI;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem難易度自動計算;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator19;
+		private System.Windows.Forms.ToolStripMenuItem importMIDIToolStripMenuItem;
 	}
 }

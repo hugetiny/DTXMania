@@ -125,7 +125,7 @@
     <value>..\コード\99.リソース\DTXC.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DTXC_VERSION" xml:space="preserve">
-    <value>031</value>
+    <value>032</value>
   </data>
   <data name="Redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\コード\99.リソース\edit_redohs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -313,5 +313,29 @@ Do you want to save the changes?</value>
   </data>
   <data name="str難易度計算マン計算中" xml:space="preserve">
     <value>Calculating DGB levels</value>
+  </data>
+  <data name="strMIDIインポートエラーのタイトル" xml:space="preserve">
+    <value>MIDI Import</value>
+  </data>
+  <data name="strMIDIファイルではないMSG" xml:space="preserve">
+    <value>This is not MIDI file.</value>
+  </data>
+  <data name="strMIDIファイル選択ダイアログのタイトル" xml:space="preserve">
+    <value>Select MIDI File</value>
+  </data>
+  <data name="strMIDIファイル選択ダイアログのフィルタ" xml:space="preserve">
+    <value>MIDI files (*.mid,*.midi,*.smf)|*.mid;*.midi;*.smf|All files (*.*)|*.*</value>
+  </data>
+  <data name="strMIDIインポート設定ファイルではないMSG" xml:space="preserve">
+    <value>This is not MIDI Import Settings file.</value>
+  </data>
+  <data name="strMIDIインポート設定ファイル保存ダイアログのタイトル" xml:space="preserve">
+    <value>Save As ...</value>
+  </data>
+  <data name="strMIDIインポート設定ファイル選択ダイアログのタイトル" xml:space="preserve">
+    <value>Select MIDI Import Settings File</value>
+  </data>
+  <data name="strMIDIインポート設定ファイル選択ダイアログのフィルタ" xml:space="preserve">
+    <value>MIDI Import Settings Files (*.xml)|*.xml|All files (*.*)|*.*</value>
   </data>
 </root>
