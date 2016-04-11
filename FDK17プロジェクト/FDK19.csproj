@@ -63,7 +63,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bass.Net, Version=2.4.11.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL" />
+    <Reference Include="Bass.Net, Version=2.4.11.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\実行時フォルダ\dll\Bass.Net.dll</HintPath>
+    </Reference>
     <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\実行時フォルダ(DTXCreator)\dll\DirectShowLib-2005.dll</HintPath>
@@ -158,6 +161,9 @@
     <Compile Include="コード\06.Tempo\CBeatDetect.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="コード\01.フレームワーク\Core\GameWindow.resx">
+      <DependentUpon>GameWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="コード\01.フレームワーク\Properties\Resources.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -423,8 +423,8 @@ namespace DTXMania
 			bBGA = new COptionBool(true);
 			bFillin = new COptionBool(true);
 			bLogDTX = new COptionBool(true);
-			bLogEnumerateSongs = new COptionBool(true);
-			bLogCreateRelease = new COptionBool(true);
+			bLogEnumerateSongs = new COptionBool(false);
+			bLogCreateRelease = new COptionBool(false);
 			bCymbalFree = new COptionBool(false);
 			bStoicMode = new COptionBool(false);
 			bItalicFontSongSelect = new COptionBool(false);
@@ -584,9 +584,9 @@ namespace DTXMania
 			cdDebugX.GBOnly = new COptionInteger(cdInstX.Drums.DrOnly);
 
 			cdDebugY = new STInstValue<COptionInteger>();
-			cdDebugY.Both = new COptionInteger(700);
-			cdDebugY.DrOnly = new COptionInteger(700);
-			cdDebugY.GBOnly = new COptionInteger(700);
+			cdDebugY.Both = new COptionInteger(200);
+			cdDebugY.DrOnly = new COptionInteger(200);
+			cdDebugY.GBOnly = new COptionInteger(200);
 
 			cdMovieX = new STInstValue<COptionInteger>();
 			cdMovieX.Both = new COptionInteger(619 + 682);

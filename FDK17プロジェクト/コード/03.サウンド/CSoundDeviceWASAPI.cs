@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Un4seen.Bass;
 using Un4seen.BassWasapi;
 using Un4seen.Bass.AddOn.Mix;
+using Un4seen.Bass.Misc;
 
 namespace FDK
 {
@@ -344,6 +345,13 @@ namespace FDK
 			}
 
 
+			//録音テスト
+			//w = new EncoderWAV( this.hMixer_DeviceOut );
+			//w.InputFile = null;    //STDIN
+			//w.OutputFile = "test2.wav";
+			//w.Start( null, IntPtr.Zero, false );
+			// decode the stream (if not using a decoding channel, simply call "Bass.BASS_ChannelPlay" here) 
+
 			// 出力を開始。
 
 			BassWasapi.BASS_WASAPI_Start();
@@ -380,6 +388,10 @@ namespace FDK
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
+			if ( w != null )
+			{
+				w.Stop();  // finish
+			}
 			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
 			if ( hMixer != -1 )
 			{
@@ -405,6 +417,9 @@ namespace FDK
 
 		protected int hMixer = -1;
 		protected int hMixer_DeviceOut = -1;
+		protected int hMixer_Record = -1;
+		protected EncoderWAV w;
+		protected int stream;
 		protected WASAPIPROC tWasapiProc = null;
 
 		protected int tWASAPI処理( IntPtr buffer, int length, IntPtr user )

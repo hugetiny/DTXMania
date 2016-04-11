@@ -28,7 +28,7 @@ namespace DTXMania
 			{
 				int x = CDTXMania.Instance.ConfigIni.cdDebugX[CDTXMania.Instance.ConfigIni.eActiveInst];
 				int y = CDTXMania.Instance.ConfigIni.cdDebugY[CDTXMania.Instance.ConfigIni.eActiveInst];
-        y += (int)(0x153 * Scale.Y);
+				y += (int) ( 0x153 * Scale.Y );
 				CDTXMania.Instance.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.白,
 					string.Format("JudgeLine D/G/B Adj: {0} px", CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums, CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Guitar, CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Bass));
 				y -= 0x10 * 2;
@@ -47,7 +47,7 @@ namespace DTXMania
 				//CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Frame:         {0:####0} fps", CDTXMania.Instance.FPS.n現在のFPS ) );
 				CDTXMania.Instance.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.白, string.Format("Frame:         {0} fps", CDTXMania.Instance.FPS.n現在のFPS));
 				y -= 0x10 * 2;
-				//CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound CPU :    {0:####0.00}%", CDTXMania.Instance.Sound管理.GetCPUusage() ) );
+				CDTXMania.Instance.act文字コンソール.tPrint( x, y, C文字コンソール.Eフォント種別.白, string.Format( "Sound CPU :    {0:####0.00}%", CDTXMania.Instance.Sound管理.GetCPUusage() ) );
 				y -= 0x10 * 2;
 				CDTXMania.Instance.act文字コンソール.tPrint(x, y, C文字コンソール.Eフォント種別.白, string.Format("Sound Mixing:  {0:####0}", CDTXMania.Instance.Sound管理.GetMixingStreams()));
 				y -= 0x10 * 2;
