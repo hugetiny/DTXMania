@@ -104,7 +104,13 @@ namespace DTXMania
 
 					for (EPart part = EPart.Drums; part <= EPart.Bass; ++part)
 					{
-						if (CDTXMania.Instance.ConfigIni.b楽器有効(part))
+						if ( CDTXMania.Instance.ConfigIni.b楽器有効(part) &&
+							(
+							(CDTXMania.Instance.r現在のステージ == CDTXMania.Instance.stage演奏画面 && 
+							 CDTXMania.Instance.DTX != null && CDTXMania.Instance.DTX.bチップがある[part]) ||
+							 CDTXMania.Instance.r現在のステージ != CDTXMania.Instance.stage演奏画面
+							)
+							)
 						{
 							int x = Pos[part].X;
 							int y = Pos[part].Y;
