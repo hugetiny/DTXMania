@@ -439,6 +439,17 @@ namespace DTXMania
 		Bad,
 		Auto
 	}
+	// #36177 使用レーン数 ikanick add 16.04.15
+	public enum EUseLanes : int
+	{
+		Dr_6,
+		Dr_10,
+		Dr_12,
+		GB_3,
+		GB_3_Open,
+		GB_5,
+		Other
+	}
 
 	[DataContract]
 	public enum EActiveInstrument

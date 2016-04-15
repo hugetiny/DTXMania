@@ -304,7 +304,7 @@ namespace DTXMania
 				for (EPart m = EPart.Drums; m <= EPart.Bass; m++)
 				{
 					this.stバー情報[index].nスキル値[m] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[m];
-					this.stバー情報[index].n使用レーン数[m] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[m];
+					this.stバー情報[index].n使用レーン数[m] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[m];
 				}
 				song = this.r次の曲(song);
 			}
@@ -712,7 +712,7 @@ namespace DTXMania
 						for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
-							this.stバー情報[index].n使用レーン数[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
+							this.stバー情報[index].n使用レーン数[i] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
 						}
 
 						// 1行(100カウント)移動完了。
@@ -770,7 +770,7 @@ namespace DTXMania
 						for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
-							this.stバー情報[index].n使用レーン数[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
+							this.stバー情報[index].n使用レーン数[i] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
 						}
 
 
@@ -1092,7 +1092,7 @@ namespace DTXMania
 			public string strタイトル文字列;
 			public CTexture txタイトル名;
 			public STDGBSValue<int> nスキル値;
-			public STDGBSValue<int> n使用レーン数;
+			public STDGBSValue<EUseLanes> n使用レーン数;
 			public Color col文字色;
 		}
 
@@ -1301,7 +1301,7 @@ namespace DTXMania
 				for (EPart j = EPart.Drums; j <= EPart.Bass; j++)
 				{
 					this.stバー情報[i].nスキル値[j] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[j];
-					this.stバー情報[i].n使用レーン数[j] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[j];
+					this.stバー情報[i].n使用レーン数[j] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[j];
 				}
 
 				song = this.r次の曲(song);
@@ -1481,10 +1481,18 @@ namespace DTXMania
 				this.txアイテム数数字.t2D描画(CDTXMania.Instance.Device, x, y, new Rectangle(dx, dy, (int)(8 * Scale.X), (int)(10 * Scale.Y)));
 			}
 		}
-
-		private void t使用レーン数の描画(int x, int y, int n使用レーン数)
+		
+		// #36177 使用レーン数の表示 add ikanick 16.03.20
+		private void t使用レーン数の描画(int x, int y, EUseLanes e使用レーン数)
 		{
-			// #36177 使用レーン数の表示 add ikanick 16.03.20
+			int n使用レーン数 = 0;
+			switch (e使用レーン数)
+			{
+				case EUseLanes.Dr_6		: n使用レーン数 = 6; break;
+				case EUseLanes.Dr_10	: n使用レーン数 = 10; break;
+				case EUseLanes.Dr_12	: n使用レーン数 = 12; break;
+			}
+
 			if (n使用レーン数 == 0)
 				return;
 

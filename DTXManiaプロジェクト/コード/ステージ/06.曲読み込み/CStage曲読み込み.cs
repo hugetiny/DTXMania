@@ -394,12 +394,15 @@ namespace DTXMania
 
 				case CStage.Eフェーズ.NOWLOADING_WAVファイルを読み込む:
 					{
-						if (nWAVcount == 1 && CDTXMania.Instance.DTX.listWAV.Count > 0)     // #28934 2012.7.7 yyagi (added checking Count)
+						if ( CDTXMania.Instance.DTX.listWAV.Count > 0 )     // #28934 2012.7.7 yyagi (added checking Count)
 						{
-							ShowProgressByFilename(CDTXMania.Instance.DTX.listWAV[nWAVcount].strファイル名);
+							//ShowProgressByFilename(CDTXMania.Instance.DTX.listWAV[nWAVcount].strファイル名); // #36046 進捗表示を追加
+							
+							double f進捗率 = nWAVcount * 100.0f / CDTXMania.Instance.DTX.listWAV.Count;
+							ShowProgressByFilename("" + f進捗率.ToString("0.0") + "% " + nWAVcount + "/" + CDTXMania.Instance.DTX.listWAV.Count + " " + CDTXMania.Instance.DTX.listWAV[nWAVcount].strファイル名);
 						}
 						int looptime = (CDTXMania.Instance.ConfigIni.bVSyncWait) ? 3 : 1;
-						if (CDTXMania.Instance.ConfigIni.bLoadSoundSpeed) looptime = CDTXMania.Instance.DTX.listWAV.Count / 20 + 1; // #xxxxx ikanick 2016.2.21 ロード高速化 垂直同期の有無に関わらず、1フレームに5%ぐらいずつロードする
+						if (CDTXMania.Instance.ConfigIni.bLoadSoundSpeed) looptime = CDTXMania.Instance.DTX.listWAV.Count / 20 + 1; // #36046 ikanick 2016.2.21 ロード高速化 垂直同期の有無に関わらず、1フレームに5%ぐらいずつロードする
 						for (int i = 0; i < looptime && nWAVcount <= CDTXMania.Instance.DTX.listWAV.Count; i++)
 						{
 							if (CDTXMania.Instance.DTX.listWAV[nWAVcount].listこのWAVを使用するチャンネル番号の集合.Count > 0) // #28674 2012.5.8 yyagi
@@ -407,11 +410,6 @@ namespace DTXMania
 								CDTXMania.Instance.DTX.tWAVの読み込み(CDTXMania.Instance.DTX.listWAV[nWAVcount]);
 							}
 							nWAVcount++;
-						}
-						if (nWAVcount <= CDTXMania.Instance.DTX.listWAV.Count)
-						{
-							double f進捗率 = nWAVcount * 100.0f / CDTXMania.Instance.DTX.listWAV.Count;
-							ShowProgressByFilename("" + f進捗率.ToString("0.0") + "% " + nWAVcount + "/" + CDTXMania.Instance.DTX.listWAV.Count + " " + CDTXMania.Instance.DTX.listWAV[nWAVcount].strファイル名);
 						}
 						if (nWAVcount > CDTXMania.Instance.DTX.listWAV.Count)
 						{

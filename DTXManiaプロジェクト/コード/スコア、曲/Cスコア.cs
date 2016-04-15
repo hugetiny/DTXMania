@@ -63,7 +63,7 @@ namespace DTXMania
 			public STDGBSValue<double> 最大スキル;
 			public STDGBSValue<bool> フルコンボ;
 			public STDGBSValue<int> 演奏回数;
-			public STDGBSValue<int> 使用レーン数;
+			public STDGBSValue<EUseLanes> 使用レーン数;
 			public STHISTORY 演奏履歴;
 			public bool レベルを非表示にする;
 			public EDTX種別 曲種別;
@@ -179,7 +179,7 @@ namespace DTXMania
 			this.譜面情報.曲種別 = EDTX種別.DTX;
 			this.譜面情報.Bpm = 120.0;
 			this.譜面情報.Duration = 0;
-			this.譜面情報.使用レーン数 = new STDGBSValue<int>();
+			this.譜面情報.使用レーン数 = new STDGBSValue<EUseLanes>();
 		}
 	}
 }

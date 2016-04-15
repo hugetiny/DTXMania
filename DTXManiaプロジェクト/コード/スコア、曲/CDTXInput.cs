@@ -492,6 +492,53 @@ namespace DTXMania
 							this.strハッシュofDTXファイル = "00000000000000000000000000000000";
 						}
 						#endregion
+						
+						// #36177 使用レーン数の表示 add ikanick 16.03.20
+						#region [ 使用レーン数カウント ]
+
+						for (EPart inst = EPart.Drums; inst <= EPart.Bass; ++inst)
+						{
+							this.n使用レーン数[inst] = EUseLanes.Other;
+						}
+						foreach (CChip chip in this.listChip)
+						{
+							int ch = (int)chip.eチャンネル番号;
+							if (chip.bDrums可視チップ)
+							{
+								if (this.n使用レーン数.Drums == EUseLanes.Other) this.n使用レーン数.Drums = EUseLanes.Dr_6;
+								if (this.n使用レーン数.Drums != EUseLanes.Dr_10)
+								{
+									if ((chip.eチャンネル番号 == EChannel.FloorTom)
+									|| (chip.eチャンネル番号 == EChannel.HiHatOpen)
+									|| (chip.eチャンネル番号 == EChannel.RideCymbal)
+									|| (chip.eチャンネル番号 == EChannel.LeftCymbal))
+									{
+										this.n使用レーン数.Drums = EUseLanes.Dr_10;
+									}
+								}
+								if (this.n使用レーン数.Drums != EUseLanes.Dr_12)
+								{
+									if ((chip.eチャンネル番号 == EChannel.LeftPedal)
+									|| (chip.eチャンネル番号 == EChannel.LeftBassDrum))
+									{
+										this.n使用レーン数.Drums = EUseLanes.Dr_12;
+									}
+								}
+							}
+							if (chip.bGuitar可視チップ)
+							{
+								// 5レーン未対応
+								if ( this.n使用レーン数.Guitar == EUseLanes.Other ) this.n使用レーン数.Guitar = EUseLanes.GB_3;
+							}
+							if (chip.bBass可視チップ)
+							{
+								// 5レーン未対応
+								if ( this.n使用レーン数.Bass == EUseLanes.Other ) this.n使用レーン数.Bass = EUseLanes.GB_3;
+							}
+						}
+
+						#endregion
+
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
 						//Trace.TraceInformation( "hash計算:                 {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
@@ -537,52 +584,6 @@ namespace DTXMania
 						}
 						#endregion
 
-						// #36177 使用レーン数の表示 add ikanick 16.03.20
-						#region [ 使用レーン数カウント ]
-
-						for (EPart inst = EPart.Drums; inst <= EPart.Bass; ++inst)
-						{
-							this.n使用レーン数[inst] = 0;
-						}
-						this.n使用レーン数.Drums = 0;
-						foreach (CChip chip in this.listChip)
-						{
-							int ch = (int)chip.eチャンネル番号;
-							if (chip.bDrums可視チップ)
-							{
-								if (this.n使用レーン数.Drums == 0) this.n使用レーン数.Drums = 6;
-								if (this.n使用レーン数.Drums < 10)
-								{
-									if ((chip.eチャンネル番号 == EChannel.FloorTom)
-									|| (chip.eチャンネル番号 == EChannel.HiHatOpen)
-									|| (chip.eチャンネル番号 == EChannel.RideCymbal)
-									|| (chip.eチャンネル番号 == EChannel.LeftCymbal))
-									{
-										this.n使用レーン数.Drums = 10;
-									}
-								}
-								if (this.n使用レーン数.Drums < 12)
-								{
-									if ((chip.eチャンネル番号 == EChannel.LeftPedal)
-									|| (chip.eチャンネル番号 == EChannel.LeftBassDrum))
-									{
-										this.n使用レーン数.Drums = 12;
-									}
-								}
-							}
-							if (chip.bGuitar可視チップ)
-							{
-								// 5レーン未対応
-								//if ( this.n使用レーン数.Guitar == 0 ) this.n使用レーン数.Guitar = 3;
-							}
-							if (chip.bBass可視チップ)
-							{
-								// 5レーン未対応
-								//if ( this.n使用レーン数.Bass == 0 ) this.n使用レーン数.Bass = 3;
-							}
-						}
-
-						#endregion
 
 					}
 				}

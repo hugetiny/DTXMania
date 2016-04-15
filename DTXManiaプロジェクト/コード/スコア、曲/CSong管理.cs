@@ -782,9 +782,9 @@ namespace DTXMania
 			cスコア.譜面情報.曲種別 = (EDTX種別)br.ReadInt32();
 			cスコア.譜面情報.Bpm = br.ReadDouble();
 			cスコア.譜面情報.Duration = br.ReadInt32();
-			cスコア.譜面情報.使用レーン数.Drums = br.ReadInt32();
-			cスコア.譜面情報.使用レーン数.Guitar = br.ReadInt32();
-			cスコア.譜面情報.使用レーン数.Bass = br.ReadInt32();
+			cスコア.譜面情報.使用レーン数.Drums = (EUseLanes)br.ReadInt32();
+			cスコア.譜面情報.使用レーン数.Guitar = (EUseLanes)br.ReadInt32();
+			cスコア.譜面情報.使用レーン数.Bass = (EUseLanes)br.ReadInt32();
 
 			//Debug.WriteLine( "songs.db: " + cスコア.ファイル情報.ファイルの絶対パス );
 			return cスコア;
@@ -1136,9 +1136,9 @@ namespace DTXMania
 					bw.Write((int)node.arスコア[i].譜面情報.曲種別);
 					bw.Write(node.arスコア[i].譜面情報.Bpm);
 					bw.Write(node.arスコア[i].譜面情報.Duration);
-					bw.Write(node.arスコア[i].譜面情報.使用レーン数.Drums);
-					bw.Write(node.arスコア[i].譜面情報.使用レーン数.Guitar);
-					bw.Write(node.arスコア[i].譜面情報.使用レーン数.Bass);
+					bw.Write((int)node.arスコア[i].譜面情報.使用レーン数.Drums);
+					bw.Write((int)node.arスコア[i].譜面情報.使用レーン数.Guitar);
+					bw.Write((int)node.arスコア[i].譜面情報.使用レーン数.Bass);
 					this.nSongsDBへ出力できたスコア数++;
 				}
 			}
