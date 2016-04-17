@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 using System;
 using FDK;
 
@@ -463,7 +464,7 @@ namespace DTXMania
 			strSongDataPath = new COptionString(@".\");
 			strFontSongSelect = new COptionString("MS PGothic");
 			strDTXManiaVersion = new COptionString(CDTXMania.VERSION);
-			strSystemSkinSubfolderPath = new COptionString("");
+			strSystemSkinSubfolderPath = new COptionString(@".\Default\");
 
 			// enum
 			eDamageLevel = new COptionEnum<EDamage>(EDamage.Normal);
@@ -653,7 +654,7 @@ namespace DTXMania
 			cdLaneOrder.BsW.Value = 3;
 
 			bConfigIniが存在している = System.IO.File.Exists(CDTXMania.Instance.strEXEのあるフォルダ + "Config.xml");
-			ClearKeyAssign();
+			SetDefaultKeyAssign();
 		}
 
 		/// <summary>
@@ -739,7 +740,7 @@ namespace DTXMania
 			eHitSoundPriorityCY.Initialize("CY Priority", Properties.Resources.strCfgDrCYPriority, typeof(EHitSoundPriority));
 			eHitSoundPriorityFT.Initialize("FT Priority", Properties.Resources.strCfgDrFTPriority, typeof(EHitSoundPriority));
 			eHitSoundPriorityHH.Initialize("HH Priority", Properties.Resources.strCfgDrHHPriority, typeof(EHitSoundPriority));
-			eJudgePriority.Initialize("Judge Priority", Properties.Resources.strCfgSysJudgePriority, typeof(EJudgeDisplayPriority));
+//			eJudgePriority.Initialize("Judge Priority", Properties.Resources.strCfgSysJudgePriority, typeof(EJudgeDisplayPriority));
 			eActiveInst.Initialize("PlayMode", Properties.Resources.strCfgSysPlayMode, typeof(EActiveInstrument));
 			nShowLagType.Initialize("ShowLagType", Properties.Resources.strCfgSysShowLagType, typeof(EShowLagType));
 
@@ -1103,6 +1104,150 @@ namespace DTXMania
 					KeyAssign[j][k] = new COptionKeyAssign();
 				}
 			}
+		}
+		private void SetDefaultKeyAssign()
+		{
+			if (KeyAssign == null)
+			{
+				ClearKeyAssign();
+			}
+
+			SetKeyAssignFromString( strDefaultKeyAssign );
+		}
+		private void SetKeyAssignFromString( string strParam )
+		{
+			if (strParam == null)
+			{
+				return;
+			}
+			string[] paramLines = strParam.Split( new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries );
+			if (paramLines.Length <= 1)
+			{
+				Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした1: " + strParam );
+				return;
+			}
+
+			Dictionary<string, EPad> dicStrEPad = new Dictionary<string, EPad>()
+			{
+				{ "HH", EPad.HH },
+				{ "SD", EPad.SD },
+				{ "BD", EPad.BD },
+				{ "HT", EPad.HT },
+				{ "LT", EPad.LT },
+				{ "FT", EPad.FT },
+				{ "CY", EPad.CY },
+				{ "HHO", EPad.HHO },
+				{ "RD", EPad.RD },
+				{ "LC", EPad.LC },
+				{ "HP", EPad.HP },
+				{ "GtR", EPad.GtR },
+				{ "GtG", EPad.GtG },
+				{ "GtB", EPad.GtB },
+				{ "GtPick", EPad.GtPick },
+				{ "GtWail", EPad.GtWail },
+				{ "GtDecide", EPad.GtDecide },
+				{ "GtCancel", EPad.GtCancel },
+				{ "BsR", EPad.BsR },
+				{ "BsG", EPad.BsG },
+				{ "BsB", EPad.BsB },
+				{ "BsPick", EPad.BsPick },
+				{ "BsWail", EPad.BsWail },
+				{ "BsDecide", EPad.BsDecide },
+				{ "BsCancel", EPad.BsCancel },
+				{ "Capture", EPad.Capture}
+			};
+
+			foreach ( string param in paramLines )
+			{
+				string[] tmp = param.Split( '=' );
+				if ( tmp.Length != 2 )
+				{
+					Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした2: " + param );
+					return;
+				}
+
+				string strPad = tmp[ 0 ];
+				string[] keys = tmp[ 1 ].Split( ',' );
+				if ( keys.Length <= 0 )
+				{
+					Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした3: " + tmp[ 1 ] );
+					return;
+				}
+				EPad e;
+				bool b = dicStrEPad.TryGetValue( strPad, out e );
+				if ( b == false )
+				{
+					Debug.WriteLine( "デフォルトキーアサインの文字列に誤りがあります1: " + strPad );
+				}
+				int count = 0;
+				foreach ( string key in keys )
+				{
+					char cInputDevice = key[ 0 ];
+					EInputDevice eid;
+					switch (cInputDevice)
+					{
+						case 'K': eid = EInputDevice.Keyboard; break;
+						case 'M': eid = EInputDevice.MIDIIn; break;
+						case 'J': eid = EInputDevice.JoyPad; break;
+						case 'N': eid = EInputDevice.Mouse; break;
+						default: eid = EInputDevice.Unknown; break;
+					}
+					int nID = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".IndexOf( key[ 1 ] );	// #24166 2011.1.15 yyagi: to support ID > 10, change 2nd character from Decimal to 36-numeral system. (e.g. J1023 -> JA23)
+					int nCode = Convert.ToInt32( key.Substring( 2 ) );
+
+					KeyAssign[ e ][ count ].Value.InputDevice = eid;
+					KeyAssign[ e ][ count ].Value.ID = nID;
+					KeyAssign[ e ][ count ].Value.Code = nCode;
+					count++;
+
+					// Debug.WriteLine( eid.ToString() + nID.ToString() + nCode.ToString() );
+				}
+			}
+		}
+const string strDefaultKeyAssign = @"
+HH=K035,M042,M093
+SD=K033,M025,M026,M027,M028,M029,M031,M032,M034,M037,M038,M040,M0113
+BD=K012,K0126,M033,M035,M036,M0112
+HT=K031,M048,M050
+LT=K011,M047
+FT=K023,M041,M043,M045
+CY=K022,M049,M052,M055,M057,M091
+HHO=K010,M046,M092
+RD=K020,M051,M053,M059,M089
+LC=K026
+HP=M044
+
+GtR=K055
+GtG=K056,J012
+GtB=K057
+GtPick=K0115,K046,J06
+GtWail=K0116
+GtDecide=K060
+GtCancel=K061
+
+BsR=K090
+BsG=K091,J013
+BsB=K092
+BsPick=K0103,K0100,J08
+BsWail=K089
+BsDecide=K096
+BsCancel=K097
+
+Capture=K065
+";
+		private string GetRelativePath( string strBasePath, string strTargetPath )
+		{
+			string strRelativePath = strTargetPath;
+			try
+			{
+				Uri uri = new Uri( strBasePath );
+				strRelativePath = Uri.UnescapeDataString( uri.MakeRelativeUri( new Uri( strTargetPath ) ).ToString() ).Replace( '/', '\\' );
+			}
+			catch ( UriFormatException )
+			{
+			}
+
+			return strRelativePath;
 		}
 	}
 }
