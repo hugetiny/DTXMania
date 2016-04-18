@@ -32,6 +32,31 @@ namespace FDK
 			}
 		}
 		/// <summary>
+		/// OSがVista以前ならfalse, Win7以降ならtrueを返す
+		/// </summary>
+		/// <returns></returns>
+		public static bool bIsWin7OrLater
+		{
+			get
+			{
+				//プラットフォームの取得
+				System.OperatingSystem os = System.Environment.OSVersion;
+				if ( os.Platform != PlatformID.Win32NT )		// NT系でなければ、XP以前か、PC Windows系以外のOSのため、Win8以降ではない。よってfalseを返す。
+				{
+					return false;
+				}
+
+				if ( os.Version.Major >= 6 && os.Version.Minor >= 1 )
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+		}
+		/// <summary>
 		/// OSがWin7以前ならfalse, Win8以降ならtrueを返す
 		/// </summary>
 		/// <returns></returns>
