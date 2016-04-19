@@ -506,7 +506,7 @@ namespace DTXMania
 							if (chip.bDrums可視チップ)
 							{
 								if (this.n使用レーン数.Drums == EUseLanes.Other) this.n使用レーン数.Drums = EUseLanes.Dr_6;
-								if (this.n使用レーン数.Drums != EUseLanes.Dr_10)
+								if ( ( this.n使用レーン数.Drums != EUseLanes.Dr_10 ) && ( this.n使用レーン数.Drums != EUseLanes.Dr_12 ) )
 								{
 									if ((chip.eチャンネル番号 == EChannel.FloorTom)
 									|| (chip.eチャンネル番号 == EChannel.HiHatOpen)
