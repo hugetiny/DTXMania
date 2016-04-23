@@ -317,6 +317,14 @@ namespace DTXCreator
 
 			#region [ ウィンドウの位置とサイズ ]
 			//-----------------
+			#region [ ウインドウが画面外に表示されようとしている場合は、左上にウインドウを強制的に移動する ]
+			int h = System.Windows.Forms.Screen.GetBounds( this ).Height;
+			int w = System.Windows.Forms.Screen.GetBounds( this ).Width;
+			if (this.appアプリ設定.X > w || this.appアプリ設定.Y > h)
+			{
+				this.appアプリ設定.X = this.appアプリ設定.Y = 0;
+			}
+			#endregion
 			this.SetDesktopBounds( this.appアプリ設定.X, this.appアプリ設定.Y, this.appアプリ設定.Width, this.appアプリ設定.Height );
 			//-----------------
 			#endregion
@@ -2270,13 +2278,13 @@ namespace DTXCreator
 			{
 				// 例外が発生したので相対パスとみなし、絶対パスに直す。
 
-				strファイルの絶対パス = this.str作業フォルダ名 + strファイル;
+				strファイルの絶対パス = Path.Combine( this.str作業フォルダ名, strファイル );
 			}
 
 			// 正規化する。(\a\b\c\..\d を \a\b\d にする)
 
-//			FileInfo fi = new FileInfo( strファイルの絶対パス );
-//\			strファイルの絶対パス = fi.FullName;
+			FileInfo fi = new FileInfo( strファイルの絶対パス );
+			strファイルの絶対パス = fi.FullName;
 
 			return strファイルの絶対パス;
 		}

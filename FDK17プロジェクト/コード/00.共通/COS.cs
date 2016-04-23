@@ -41,7 +41,7 @@ namespace FDK
 			{
 				//プラットフォームの取得
 				System.OperatingSystem os = System.Environment.OSVersion;
-				if ( os.Platform != PlatformID.Win32NT )		// NT系でなければ、XP以前か、PC Windows系以外のOSのため、Win8以降ではない。よってfalseを返す。
+				if ( os.Platform != PlatformID.Win32NT )		// NT系でなければ、XP以前か、PC Windows系以外のOSのため、Win7以降ではない。よってfalseを返す。
 				{
 					return false;
 				}
