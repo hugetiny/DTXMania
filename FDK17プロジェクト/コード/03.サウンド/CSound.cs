@@ -144,6 +144,14 @@ namespace FDK
 		/// <para>SoundDelay よりも小さい値であること。（小さすぎる場合はBASSによって自動修正される。）</para>
 		/// </summary>
 		public static int SoundUpdatePeriodSharedWASAPI = 6;
+		/// <summary>
+		/// WASAPI利用時に、サウンドバッファの更新をevent drivenにするか、pollingにするかの設定。
+		/// デフォルト設定はpolling。event drivenにすることで、よりラグを小さくできるが、CPU負荷は若干上昇する。
+		/// (更新頻度が上がるため)
+		/// なおこれをtrueにすると、SoundUpdatePeriodExclusiveWASAPIの設定は無視される。
+		/// </summary>
+		public static bool bSoundUpdateByEventWASAPI = false;
+
 		///// <summary>
 		///// <para>ASIO 出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
 		///// </summary>
@@ -208,12 +216,15 @@ namespace FDK
 		/// <param name="nSoundDelayExclusiveWASAPI"></param>
 		/// <param name="nSoundDelayASIO"></param>
 		/// <param name="nASIODevice"></param>
-		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType, int nSoundDelayExclusiveWASAPI, int nSoundDelayASIO, int nASIODevice, bool _bUseOSTimer )
+		public CSound管理( IntPtr handle, ESoundDeviceType soundDeviceType,
+			int nSoundDelayExclusiveWASAPI, bool _bSoundUpdateByEventWASAPI,
+			int nSoundDelayASIO, int nASIODevice,
+			bool _bUseOSTimer )
 		{
 			WindowHandle = handle;
 			SoundDevice = null;
 			//bUseOSTimer = false;
-			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, nSoundDelayASIO, nASIODevice, _bUseOSTimer );
+			t初期化( soundDeviceType, nSoundDelayExclusiveWASAPI, _bSoundUpdateByEventWASAPI, nSoundDelayASIO, nASIODevice, _bUseOSTimer );
 		}
 		public void Dispose()
 		{
@@ -236,10 +247,13 @@ namespace FDK
 		}
 		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice )
 		{
-			t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, _nSoundDelayASIO, _nASIODevice, false );
+			t初期化( soundDeviceType, _nSoundDelayExclusiveWASAPI, false, _nSoundDelayASIO, _nASIODevice, false );
 		}
 
-		public void t初期化( ESoundDeviceType soundDeviceType, int _nSoundDelayExclusiveWASAPI, int _nSoundDelayASIO, int _nASIODevice, bool _bUseOSTimer )
+		public void t初期化( ESoundDeviceType soundDeviceType,
+			int _nSoundDelayExclusiveWASAPI, bool _bSoundUpdateByEventWASAPI,
+			int _nSoundDelayASIO, int _nASIODevice,
+			bool _bUseOSTimer )
 		{
 			//SoundDevice = null;						// 後で再初期化することがあるので、null初期化はコンストラクタに回す
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
@@ -249,6 +263,7 @@ namespace FDK
 			SoundDelayASIO = _nSoundDelayASIO;
 			ASIODevice = _nASIODevice;
 			bUseOSTimer = _bUseOSTimer;
+			bSoundUpdateByEventWASAPI = _bSoundUpdateByEventWASAPI;
 
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 4 ]
 			{

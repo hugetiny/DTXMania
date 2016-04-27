@@ -630,4 +630,10 @@
   <data name="strCfgDgbDisplayGraph" xml:space="preserve">
     <value>グラフを表示します。</value>
   </data>
+  <data name="strCfgSysForceHighPowerPlan" xml:space="preserve">
+    <value>test_highpowerplan</value>
+  </data>
+  <data name="strCfgSysWASAPIEventDriven" xml:space="preserve">
+    <value>test_eventdriven</value>
+  </data>
 </root>

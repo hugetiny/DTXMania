@@ -144,7 +144,13 @@ namespace DTXMania
 		[DataMember]
 		// #23664 2013.2.24 yyagi ピッチ変更無しで再生速度を変更するかどうか,初期値はfalse (再生速度変更を、ピッチ変更にて行う)
 		public COptionBool bTimeStretch;
-
+		[DataMember( Order = 105 )]
+		// #34825 2016.4.27 yyagi DTXMania動作中のみ、電源プランをHighpowerに変更するかどうか
+		public COptionBool bForceHighPowerPlan;
+		[DataMember( Order = 105 )]
+		// #36261 2016.4.27 yyagi WASAPI動作をevent drivenにするかどうか
+		public COptionBool bEventDrivenWASAPI;
+		
 
 		[DataMember]
 		public COptionInteger nBGAlpha;
@@ -459,6 +465,8 @@ namespace DTXMania
 			bDynamicBassMixerManagement = new COptionBool(true);
 			bTimeStretch = new COptionBool(false);
 			nSoundDeviceType = new COptionEnum<ESoundDeviceTypeForConfig>(FDK.COS.bIsVistaOrLater ? ESoundDeviceTypeForConfig.WASAPI : ESoundDeviceTypeForConfig.DSound);
+			bForceHighPowerPlan = new COptionBool( false );
+			bEventDrivenWASAPI = new COptionBool( false );
 
 			// string
 			strSongDataPath = new COptionString(@".\");
@@ -705,6 +713,8 @@ namespace DTXMania
 			bUseBoxDefSkin.Initialize("UseBoxSkin", Properties.Resources.strCfgSysUseBoxDefSkin);
 			bUseOSTimer.Initialize("UseOSTimer", Properties.Resources.strCfgSysUseOSTimer);
 			bTimeStretch.Initialize("TimeStretch", Properties.Resources.strCfgSysTimeStretch);
+			bForceHighPowerPlan.Initialize( "Highpower", Properties.Resources.strCfgSysForceHighPowerPlan );
+			bEventDrivenWASAPI.Initialize( "WASAPI Event Driven", Properties.Resources.strCfgSysWASAPIEventDriven );
 
 			bCymbalFree.Initialize("CymbalFree", Properties.Resources.strCfgDrCymbalFree);
 			bDrumsHitSound.Initialize("DrumsChipSound", Properties.Resources.strCfgDrChipSound);

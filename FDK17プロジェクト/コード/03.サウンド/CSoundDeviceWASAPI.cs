@@ -214,7 +214,7 @@ namespace FDK
 //Retry:
 			var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
 			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
-			if ( COS.bIsWin7OrLater && ( mode == Eデバイスモード.排他 ) )
+			if ( COS.bIsWin7OrLater && CSound管理.bSoundUpdateByEventWASAPI )
 			{
 				flags |= BASSWASAPIInit.BASS_WASAPI_EVENT;	// Win7以降の場合は、WASAPIをevent drivenで動作させてCPU負荷減、レイテインシ改善
 			}

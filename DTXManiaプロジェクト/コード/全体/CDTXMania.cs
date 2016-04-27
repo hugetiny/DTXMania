@@ -602,11 +602,12 @@ namespace DTXMania
 						break;
 				}
 				Sound管理 = new CSound管理(base.Window.Handle,
-																		soundDeviceType,
-																		CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs,
-																		0,
-																		CDTXMania.Instance.ConfigIni.strASIODevice.Index,
-																		CDTXMania.Instance.ConfigIni.bUseOSTimer
+											soundDeviceType,
+											CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs,
+											CDTXMania.instance.ConfigIni.bEventDrivenWASAPI,
+											0,
+											CDTXMania.Instance.ConfigIni.strASIODevice.Index,
+											CDTXMania.Instance.ConfigIni.bUseOSTimer
 				);
 				//Sound管理 = FDK.CSound管理.Instance;
 				//Sound管理.t初期化( soundDeviceType, 0, 0, CDTXMania.Instance.ConfigIni.nASIODevice, base.Window.Handle );
@@ -866,7 +867,10 @@ namespace DTXMania
 
 			#region [ 現在の電源プランをバックアップし、HighPerformanceに変更 ]
 			CPowerPlan.BackupCurrentPowerPlan();
-			CPowerPlan.ChangeHighPerformance();
+			if ( CDTXMania.Instance.ConfigIni.bForceHighPowerPlan )
+			{
+				CPowerPlan.ChangeHighPerformance();
+			}
 			#endregion
 
 

@@ -22,9 +22,11 @@ namespace DTXMania
 		Eメニュー種別 eメニュー種別;
 		// #33689 2014.6.17 yyagi
 		bool InitialUseOSTimer;
+		bool InitialWASAPIEventDriven;
 		ESoundDeviceTypeForConfig InitialSystemSoundType;
 		int InitialWASAPIBufferSizeMs;
 		int InitialASIODevice;
+		bool InitialForceHighPower;
 		List<COptionBase> list項目リスト;
 		long nスクロール用タイマ値;
 		int n現在のスクロールカウンタ;
@@ -368,6 +370,7 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eActiveInst);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nPlaySpeed);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bTimeStretch);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bForceHighPowerPlan);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bStageFailed);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bRandSubBox);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bWaveAdjust);
@@ -386,7 +389,8 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLoadSoundSpeed);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nSoundDeviceType);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.strASIODevice);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.strASIODevice );
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseOSTimer);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nMasterVolume);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseBoxDefSkin);
@@ -638,6 +642,9 @@ namespace DTXMania
 				this.InitialWASAPIBufferSizeMs = CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs;
 				this.InitialASIODevice = CDTXMania.Instance.ConfigIni.strASIODevice.Index;
 				this.InitialUseOSTimer = CDTXMania.Instance.ConfigIni.bUseOSTimer;
+				this.InitialWASAPIEventDriven = CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI;
+
+				this.InitialForceHighPower = CDTXMania.Instance.ConfigIni.bForceHighPowerPlan;
 
 				// #27795 2012.3.11 yyagi; System設定の中でDrumsの設定を参照しているため、
 				this.t項目リストの設定(Eメニュー種別.Bass);
@@ -676,7 +683,8 @@ namespace DTXMania
 				if (InitialSystemSoundType != CDTXMania.Instance.ConfigIni.nSoundDeviceType ||
 						InitialWASAPIBufferSizeMs != CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs ||
 						InitialASIODevice != CDTXMania.Instance.ConfigIni.strASIODevice.Index ||
-						InitialUseOSTimer != CDTXMania.Instance.ConfigIni.bUseOSTimer)
+						InitialUseOSTimer != CDTXMania.Instance.ConfigIni.bUseOSTimer ||
+						InitialWASAPIEventDriven != CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI )
 				{
 					ESoundDeviceType soundDeviceType;
 					switch (CDTXMania.Instance.ConfigIni.nSoundDeviceType.Value)
@@ -698,6 +706,7 @@ namespace DTXMania
 					CDTXMania.Instance.Sound管理.t初期化(
 							soundDeviceType,
 							CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs,
+							CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI,
 							0,
 							CDTXMania.Instance.ConfigIni.strASIODevice.Index,
 							CDTXMania.Instance.ConfigIni.bUseOSTimer);
@@ -709,6 +718,16 @@ namespace DTXMania
 
 				FDK.CSound管理.bIsTimeStretch = CDTXMania.Instance.ConfigIni.bUseOSTimer;
 
+				#endregion
+				#region [ 電源プラン変更 ]
+				if ( CDTXMania.Instance.ConfigIni.bForceHighPowerPlan )
+				{
+					CPowerPlan.ChangeHighPerformance();
+				}
+				else
+				{
+					CPowerPlan.RestoreCurrentPowerPlan();
+				}
 				#endregion
 			}
 		}

@@ -643,4 +643,10 @@
   <data name="strCfgDgbDisplayGraph" xml:space="preserve">
     <value />
   </data>
+  <data name="strCfgSysForceHighPowerPlan" xml:space="preserve">
+    <value>test highpowerplan</value>
+  </data>
+  <data name="strCfgSysWASAPIEventDriven" xml:space="preserve">
+    <value>test WASAPIEventDriven</value>
+  </data>
 </root>

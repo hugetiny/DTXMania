@@ -139,6 +139,7 @@ namespace DTXMania
 #if DEBUG && TEST_ENGLISH
 					Thread.CurrentThread.CurrentCulture = new CultureInfo( "en-US" );
 #endif
+					Trace.TraceInformation( "Thread.CurrentThread.CurrentCulture=" + Thread.CurrentThread.CurrentCulture );
 
 					DWM.EnableComposition(false); // Disable AeroGrass temporally
 
