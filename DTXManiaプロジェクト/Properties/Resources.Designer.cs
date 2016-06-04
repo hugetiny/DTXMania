@@ -1653,5 +1653,14 @@ namespace DTXMania.Properties {
                 return ResourceManager.GetString("strCfgSysWASAPIEventDriven", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   START に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string strTitleStart {
+            get {
+                return ResourceManager.GetString("strTitleStart", resourceCulture);
+            }
+        }
     }
 }

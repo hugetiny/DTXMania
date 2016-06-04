@@ -636,4 +636,7 @@
   <data name="strCfgSysWASAPIEventDriven" xml:space="preserve">
     <value>test_eventdriven</value>
   </data>
+  <data name="strTitleStart" xml:space="preserve">
+    <value>スタート</value>
+  </data>
 </root>

@@ -495,7 +495,7 @@ namespace DTXMania
 			rcWindow = new Coordinates.CRect(100, 100, 1280, 720);
 			nSleepPerFrameMs = new COptionInteger(-1);
 			nSleepUnfocusMs = new COptionInteger(1);
-			nBGAlpha = new COptionInteger(200);
+			nBGAlpha = new COptionInteger(100);
 			nPreSoundWeightMs = new COptionInteger(1000);
 			nPreImageWeightMs = new COptionInteger(100);
 			nFontSizeDotSongSelect = new COptionInteger(20);
@@ -713,7 +713,7 @@ namespace DTXMania
 			bUseBoxDefSkin.Initialize("UseBoxSkin", Properties.Resources.strCfgSysUseBoxDefSkin);
 			bUseOSTimer.Initialize("UseOSTimer", Properties.Resources.strCfgSysUseOSTimer);
 			bTimeStretch.Initialize("TimeStretch", Properties.Resources.strCfgSysTimeStretch);
-			bForceHighPowerPlan.Initialize( "Highpower", Properties.Resources.strCfgSysForceHighPowerPlan );
+			bForceHighPowerPlan.Initialize( "Highpeformance", Properties.Resources.strCfgSysForceHighPowerPlan );
 			bEventDrivenWASAPI.Initialize( "WASAPI Event Driven", Properties.Resources.strCfgSysWASAPIEventDriven );
 
 			bCymbalFree.Initialize("CymbalFree", Properties.Resources.strCfgDrCymbalFree);

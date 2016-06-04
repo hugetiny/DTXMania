@@ -6,6 +6,9 @@ using System.Diagnostics;
 using System.Drawing;
 using SlimDX.DirectInput;
 using FDK;
+using System.Globalization;
+using System.Resources;
+using System.Threading;
 
 namespace DTXMania
 {
@@ -76,7 +79,41 @@ namespace DTXMania
 
 				prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), 36);
 				//prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );
-				string[] menuStr = { "START", "CONFIGURATION", "EXIT" };
+
+
+				System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture( "ja-JP" );
+					//System.Threading.Thread.CurrentThread.CurrentCulture;   
+				// ResourceManagerを取得する
+				System.Reflection.Assembly asm;
+				asm = System.Reflection.Assembly.GetExecutingAssembly();
+				//asm = System.Reflection.Assembly.Load( "DTXManiaGR" );
+
+				//または次のようにもできる
+				//asm = this.GetType().Assembly;
+
+				System.Resources.ResourceManager resource =
+					//new ResourceManager( "DTXManiaGR", this.GetType().Assembly );
+					DTXMania.Properties.Resources.ResourceManager;
+					//new ResourceManager( typeof(CStageタイトル));
+				CultureInfo culture = CultureInfo.CreateSpecificCulture( "ja-JP" );
+
+				//ResourceManager resource = new ResourceManager( "DTXMania.DTXManiaGR", asm );
+				//ResourceManager resource = new ResourceManager( "DTXManiaGR", asm );
+
+				//ResourceSet rs = resource.GetResourceSet( CultureInfo.CreateSpecificCulture( "ja-JP" ),
+				//					   true, false );
+				//if (rs == null)
+				//{
+				//	Debug.WriteLine( "No ja-JP resource set" );
+				//}
+
+
+//Debug.WriteLine( resource.GetString( "strTitleStart", new System.Globalization.CultureInfo( "ja-JP" ) ) );
+				//string strTitleStart = rs.GetString( "strTitleStart" );
+				string strTitleStart = resource.GetString( "strTitleStart", culture );
+				Debug.WriteLine( "{0}: {1}", culture.Name, strTitleStart );
+	
+				string[] menuStr = { strTitleStart, "CONFIGURATION", "EXIT" };
 				this.txMenuItem = new CTexture[menuStr.Length];
 				this.stMenuItem = new STMenuItem[menuStr.Length];
 

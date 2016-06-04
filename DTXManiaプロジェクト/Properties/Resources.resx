@@ -649,4 +649,7 @@
   <data name="strCfgSysWASAPIEventDriven" xml:space="preserve">
     <value>test WASAPIEventDriven</value>
   </data>
+  <data name="strTitleStart" xml:space="preserve">
+    <value>START</value>
+  </data>
 </root>

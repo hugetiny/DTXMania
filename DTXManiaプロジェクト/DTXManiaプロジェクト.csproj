@@ -82,7 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Resources.ja-JP.resx" />
+    <EmbeddedResource Include="Properties\Resources.ja-JP.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="コード\ステージ\04.コンフィグ\DeletedCode.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CConfigXml.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\COption.cs" />

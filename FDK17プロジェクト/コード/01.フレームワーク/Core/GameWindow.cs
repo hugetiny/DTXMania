@@ -670,5 +670,18 @@ namespace SampleFramework
 			InsertMenuItem(hSysMenu, 6, true, ref item5);
 		}
 		#endregion
+
+		private void InitializeComponent()
+		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameWindow));
+			this.SuspendLayout();
+			// 
+			// GameWindow
+			// 
+			resources.ApplyResources(this, "$this");
+			this.Name = "GameWindow";
+			this.ResumeLayout(false);
+
+		}
 	}
 }

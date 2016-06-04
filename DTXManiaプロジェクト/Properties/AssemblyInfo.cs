@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DTXManiaGR")]
-[assembly: AssemblyCopyright( "Copyright (C) 2000-2015 DTXMania Group" )]
+[assembly: AssemblyCopyright( "Copyright (C) 2000-2016 DTXMania Group" )]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
