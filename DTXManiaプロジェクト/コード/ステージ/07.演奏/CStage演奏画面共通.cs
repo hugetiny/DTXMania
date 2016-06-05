@@ -804,9 +804,11 @@ namespace DTXMania
 				//Debug.WriteLine( "☆queueLength=" + queueMixerSound.Count );
 				DateTime dtnow = DateTime.Now;
 				TimeSpan ts = dtnow - dtLastQueueOperation;
-				if (ts.Milliseconds > 7)
+				int nInterval = ( CDTXMania.Instance.ConfigIni.bVSyncWait ) ? 7 : 1;
+				int nMaxDequeueCount = ( CDTXMania.Instance.ConfigIni.bVSyncWait ) ? 2 : 1;
+				if (ts.Milliseconds > nInterval)
 				{
-					for (int i = 0; i < 2 && queueMixerSound.Count > 0; i++)
+					for (int i = 0; i < nMaxDequeueCount && queueMixerSound.Count > 0; i++)
 					{
 						dtLastQueueOperation = dtnow;
 						STMixer stm = queueMixerSound.Dequeue();

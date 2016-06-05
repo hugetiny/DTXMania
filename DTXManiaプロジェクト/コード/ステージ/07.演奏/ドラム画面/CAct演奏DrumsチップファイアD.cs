@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 using SlimDX;
 using FDK;
 
@@ -142,7 +143,7 @@ namespace DTXMania
 								this.st青い星[j].nLane = (int)lane;
 								this.st青い星[j].ct進行 = new CCounter(0, 100, 7, CDTXMania.Instance.Timer);
 								this.st青い星[j].fX = this.nレーンの中央X座標[(int)lane];
-								this.st青い星[j].fY = -posY;
+								this.st青い星[j].fY = posY;
 								this.st青い星[j].f加速度X = (float)(num7 * Math.Cos((Math.PI * 2 * n回転初期値) / 360.0));
 								this.st青い星[j].f加速度Y = (float)(num7 * (Math.Sin((Math.PI * 2 * n回転初期値) / 360.0) - 0.2));
 								this.st青い星[j].f加速度の加速度X = 0.995f;
@@ -229,7 +230,7 @@ namespace DTXMania
 					this.st細波[i].ct進行 = new CCounter();
 				}
 
-				posY = C演奏判定ライン座標共通.n判定ラインY座標(EPart.Drums, false, true);
+				posY = C演奏判定ライン座標共通.n判定ラインY座標(EPart.Drums, false, CDTXMania.Instance.ConfigIni.bReverse.Drums );
 				int offsety = CDTXMania.Instance.Coordinates.ImgJudgeLine.H / 2;
 				posY += offsety;
 
