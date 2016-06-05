@@ -428,6 +428,7 @@ namespace DTXMania
 						{
 							int lineLength = CDTXMania.Instance.Coordinates.Instrument[inst].W;
 							Rectangle rc = CDTXMania.Instance.Coordinates.ImgJudgeLine;
+							int barHeight = rc.Height;
 							for (int tmpW = 0; tmpW < lineLength; tmpW += rc.Width)
 							{
 								if (tmpW + rc.Width > lineLength)
@@ -435,7 +436,7 @@ namespace DTXMania
 									rc.Width = lineLength - tmpW;
 								}
 								this.txヒットバー.t2D描画(CDTXMania.Instance.Device,
-									CDTXMania.Instance.ConfigIni.cdInstX[inst][CDTXMania.Instance.ConfigIni.eActiveInst] + tmpW, y, rc);
+									CDTXMania.Instance.ConfigIni.cdInstX[ inst ][ CDTXMania.Instance.ConfigIni.eActiveInst ] + tmpW, y - barHeight / 2, rc );
 							}
 						}
 					}
