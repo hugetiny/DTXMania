@@ -546,12 +546,12 @@ namespace DTXMania
 					CDTXMania.Instance.Timer.tリセット();
 					if (CDTXMania.Instance.ConfigIni.bDrums有効)
 					{
-						ctチップ模様アニメ.Drums = new CCounter(0, 0x30, 10, CDTXMania.Instance.Timer);
+						ctチップ模様アニメ.Drums = new CCounter(0, 48, 10, CDTXMania.Instance.Timer);
 					}
 					if (CDTXMania.Instance.ConfigIni.bGuitar有効)
 					{
-						ctチップ模様アニメ.Guitar = new CCounter(0, 0x17, 20, CDTXMania.Instance.Timer);
-						ctチップ模様アニメ.Bass = new CCounter(0, 0x17, 20, CDTXMania.Instance.Timer);
+						ctチップ模様アニメ.Guitar = new CCounter(0, 48, 20, CDTXMania.Instance.Timer);
+						ctチップ模様アニメ.Bass = new CCounter(0, 48, 20, CDTXMania.Instance.Timer);
 						ctWailingチップ模様アニメ = new CCounter(0, 4, 50, CDTXMania.Instance.Timer);
 					}
 
