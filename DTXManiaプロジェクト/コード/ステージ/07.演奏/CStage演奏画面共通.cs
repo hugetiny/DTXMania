@@ -1221,18 +1221,21 @@ namespace DTXMania
 					incrementCombo = true;
 				}
 
-				switch (eJudgeResult)
-				{
-					case EJudge.Perfect:
-					case EJudge.Great:
-					case EJudge.Good:
-						this.actCombo.dgbコンボ数[pChip.e楽器パート].IncrementCombo();
-						break;
+                if( incrementCombo == true )
+                {
+                    switch (eJudgeResult)
+                    {
+                        case EJudge.Perfect:
+                        case EJudge.Great:
+                        case EJudge.Good:
+                            this.actCombo.dgbコンボ数[pChip.e楽器パート].IncrementCombo();
+                            break;
 
-					default:
-						this.actCombo.dgbコンボ数[pChip.e楽器パート].ResetCombo();
-						break;
-				}
+                        default:
+                            this.actCombo.dgbコンボ数[pChip.e楽器パート].ResetCombo();
+                            break;
+                    }
+                }
 			}
 
 			// スコア
