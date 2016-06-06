@@ -8,9 +8,10 @@ namespace DTXMania
 {
 	internal class CAct演奏レーンフラッシュGB共通 : CActivity
 	{
-		protected CCounter[] ct進行 = new CCounter[6];
-		CTexture tx = new CTexture();
 		static ELane[] lanes = new ELane[] { ELane.GtR, ELane.GtG, ELane.GtB, ELane.BsR, ELane.BsG, ELane.BsB };
+		static int MAXLANES = lanes.GetLength( 0 );
+		protected CCounter[] ct進行 = new CCounter[ MAXLANES ];
+		CTexture tx = new CTexture();
 
 		public void Start(int nLane)
 		{
@@ -21,7 +22,7 @@ namespace DTXMania
 		{
 			if (b活性化してない)
 			{
-				for (int i = 0; i < 6; i++)
+				for (int i = 0; i < MAXLANES; i++)
 				{
 					this.ct進行[i] = new CCounter();
 				}
@@ -33,7 +34,7 @@ namespace DTXMania
 		{
 			if (b活性化してる)
 			{
-				for (int i = 0; i < 6; i++)
+				for (int i = 0; i < MAXLANES; i++)
 				{
 					this.ct進行[i] = null;
 				}
@@ -66,13 +67,13 @@ namespace DTXMania
 				CDTXMania.Instance.ConfigIni.eDark == EDark.Off)
 			{
 				int imgX = CDTXMania.Instance.Coordinates.ImgGtLaneFlash.X;
-				for (int i = 0; i < 6; i++)
+				for (int i = 0; i < MAXLANES; i++)
 				{
-					if (i % 3 == 0)
+					if (i % (MAXLANES / 2) == 0)
 					{
 						imgX = CDTXMania.Instance.Coordinates.ImgGtLaneFlash.X;
 					}
-					EPart inst = (i < 3) ? EPart.Guitar : EPart.Bass;
+					EPart inst = (i < (MAXLANES / 2) ) ? EPart.Guitar : EPart.Bass;
 
 					int x = CDTXMania.Instance.ConfigIni.GetLaneX(lanes[i]);
 					int w = CDTXMania.Instance.ConfigIni.GetLaneW(lanes[i]);
@@ -93,7 +94,7 @@ namespace DTXMania
 							int y = CDTXMania.Instance.Coordinates.LaneFlash[inst].Y;
 							tx.t2D描画(
 								CDTXMania.Instance.Device,
-								x,
+								x + (int) ( w * ( ct進行[ i ].n現在の値 ) / (100 * 2) ),
 								CDTXMania.Instance.ConfigIni.bReverse[inst] ? SampleFramework.GameWindowSize.Height - y - CDTXMania.Instance.Coordinates.ImgGtLaneFlash.H : y,
 								new Rectangle(
 									imgX,
