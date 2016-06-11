@@ -2450,6 +2450,10 @@ namespace DTXMania
 			string[] strDLLs = System.IO.Directory.GetFiles(strプラグインフォルダパス, "*.dll");
 			foreach (string dllName in strDLLs)
 			{
+				if (Path.GetExtension(dllName).ToLower() != "dll")
+				{
+					continue;
+				}
 				try
 				{
 					// (1-1) dll をアセンブリとして読み込む。
