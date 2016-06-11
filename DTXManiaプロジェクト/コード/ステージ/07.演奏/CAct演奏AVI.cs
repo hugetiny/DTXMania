@@ -130,7 +130,8 @@ namespace DTXMania
 								}
 								this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bFullAVI);   // DTXVモードで、最初に途中再生で起動したときのために必要
 								this.rAVI.avi.Seek(n移動開始時刻ms - chip.n発声時刻ms);
-								this.Start(chip.eチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms);
+								//this.Start( chip.eチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
+								this.Start( chip.eチャンネル番号, chip.rAVI, (int)chip.rAVI.avi.nフレーム幅, (int)chip.rAVI.avi.nフレーム高さ, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 							}
 							continue;
 						}
@@ -176,7 +177,7 @@ namespace DTXMania
 			return 0;
 		}
 
-		public unsafe int t進行描画(int x, int y, int w, int h)
+		public int t進行描画(int x, int y, int w, int h)
 		{
 			if (b活性化してる &&
 				CDTXMania.Instance.ConfigIni.bAVI &&
@@ -221,38 +222,30 @@ namespace DTXMania
 					// yyagi: BGAの有無を見ないで、単純にFullScreenMovieならアス比保持で拡縮、そうでないなら縦横2倍＋位置変更なし。
 					// chnmr0 : 従来の大きさ以上のプレビュー動画で不都合が起きますのでここは常にアス比保持でフィッティングします。
 
-					float magX = 2, magY = 2;
 					int xx = x, yy = y;
-
-					if (CDTXMania.Instance.DTX != null && CDTXMania.Instance.DTX.bUse556x710BGAAVI)
+					float magX = 2, magY = 2;
+					if ( CDTXMania.Instance.DTX != null && CDTXMania.Instance.DTX.bUse556x710BGAAVI )
 					{
 						magX = magY = 1;
 					}
 
 					if (bFullScreenMovie || bIsPreviewMovie)
 					{
-						#region [ アスペクト比を維持した拡大縮小 ]
-						if (bFullScreenMovie)
-						{
-							xx = 0;
-							yy = 0;
-							w = SampleFramework.GameWindowSize.Width;
-							h = SampleFramework.GameWindowSize.Height;
-						}
+						CPreviewMagnifier.EPreviewType e = CPreviewMagnifier.EPreviewType.PlayingFront;
+						if ( bFullScreenMovie ) e = CPreviewMagnifier.EPreviewType.PlayingBackground;
+						if ( bIsPreviewMovie ) e = CPreviewMagnifier.EPreviewType.MusicSelect;
 
-						magX = (float)w / this.rAVI.avi.nフレーム幅;
-						magY = (float)h / this.rAVI.avi.nフレーム高さ;
-						if (magX > magY)
-						{
-							magX = magY;
-							xx += (int)((w - (this.rAVI.avi.nフレーム幅 * magY)) / 2);
-						}
-						else
-						{
-							magY = magX;
-							yy += (int)((h - (this.rAVI.avi.nフレーム高さ * magX)) / 2);
-						}
-						#endregion
+						CPreviewMagnifier cmg = new CPreviewMagnifier( e, xx, yy );
+						cmg.GetMagnifier(
+							(int) this.rAVI.avi.nフレーム幅,
+							(int) this.rAVI.avi.nフレーム高さ,
+							1.0f,
+							1.0f
+						);
+						magX = cmg.magX;
+						magY = cmg.magY;
+						xx = cmg.px;
+						yy = cmg.py;
 					}
 
 					this.tx描画用.vc拡大縮小倍率.X = magX;

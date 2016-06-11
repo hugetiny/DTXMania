@@ -18,6 +18,8 @@ namespace DTXMania
 		private long nBGMの総再生時間ms;
 		private long nBGM再生開始時刻;
 		private int n音符の表示位置X;
+		private int n背景の表示位置X;
+		private int n背景の表示位置Y;
 		private CSound sd読み込み音;
 		private string strSTAGEFILE;
 		private string str曲タイトル;
@@ -154,7 +156,19 @@ namespace DTXMania
 
 				if (!this.b音符を表示する && this.tx背景 != null)
 				{
-					this.tx背景.vc拡大縮小倍率 = new Vector3(Scale.X, Scale.Y, 1f); // とりあえずFullHD化
+					if ( this.tx背景.sz画像サイズ.Width <= 640 && this.tx背景.sz画像サイズ.Height <= 480 )	// VGAサイズ以下の背景の場合は、単純拡大しFullHD化
+					{
+						this.tx背景.vc拡大縮小倍率 = new Vector3( Scale.X, Scale.Y, 1f ); // とりあえずFullHD化
+						this.n背景の表示位置X = this.n背景の表示位置Y = 0;
+					}
+					else // #36373 VGAより大きな画像をSTAGEFILEに指定した場合は、アスペクト比を維持しつつ全画面に収まるように拡大縮小し表示
+					{
+						CPreviewMagnifier cmg = new CPreviewMagnifier( CPreviewMagnifier.EPreviewType.PlayingBackground );
+						cmg.GetMagnifier(this.tx背景.sz画像サイズ.Width, this.tx背景.sz画像サイズ.Height, 1.0f, 1.0f);
+						this.tx背景.vc拡大縮小倍率 = new Vector3( cmg.magX, cmg.magY, 1f );
+						this.n背景の表示位置X = cmg.px;
+						this.n背景の表示位置Y = cmg.py;
+					}
 				}
 				if (this.b音符を表示する)
 				{
@@ -264,7 +278,7 @@ namespace DTXMania
 			#region [ 背景、音符＋タイトル表示 ]
 			//-----------------------------
 			if (this.tx背景 != null)
-				this.tx背景.t2D描画(CDTXMania.Instance.Device, 0, 0);
+				this.tx背景.t2D描画(CDTXMania.Instance.Device, this.n背景の表示位置X, this.n背景の表示位置Y);
 
 			if (this.b音符を表示する)
 			{

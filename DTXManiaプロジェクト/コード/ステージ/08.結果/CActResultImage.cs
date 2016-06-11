@@ -136,8 +136,8 @@ namespace DTXMania
 				#region [ プレビュー画像表示 ]
 				else if (r表示するリザルト画像 != null)
 				{
-					CPreviewMagnifier cmg = new CPreviewMagnifier();
-					cmg.GetMagnifier(r表示するリザルト画像.sz画像サイズ.Width, r表示するリザルト画像.sz画像サイズ.Height, 1.0f, 1.0f, true);
+					CPreviewMagnifier cmg = new CPreviewMagnifier(CPreviewMagnifier.EPreviewType.MusicSelect);
+					cmg.GetMagnifier(r表示するリザルト画像.sz画像サイズ.Width, r表示するリザルト画像.sz画像サイズ.Height, 1.0f, 1.0f);
 
 					r表示するリザルト画像.vc拡大縮小倍率.X = cmg.magX;
 					r表示するリザルト画像.vc拡大縮小倍率.Y = cmg.magY;

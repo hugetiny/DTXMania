@@ -26,22 +26,31 @@ namespace DTXMania
 		/// </summary>
 		public float magY;
 
+		public int px;
+		public int py;
+
 		/// <summary>
 		/// プレビュー画像向けの拡大率か(それとも、演奏画面向けの拡大率か)
 		/// </summary>
-		public bool bIsPreview;
+		public enum EPreviewType : int
+		{
+			MusicSelect = 0,			// 選曲画面
+			PlayingFront = 1,			// 演奏画面(ウインドウ表示の動画)
+			PlayingBackground = 2		// 演奏画面(背景全画面表示の動画)
+		}
+		public EPreviewType ePreviewType;
 		#endregion
 
 		#region [ 定数定義 ]
 		// 配列の0,1要素はそれぞれ, Preview用, 演奏画面用
-		private int[] WIDTH_VGA_SET = { 204, 278 };                     // VGA版DTXManiaのプレビュー画像width値
-		private int[] HEIGHT_VGA_SET = { 269, 355 };                      // VGA版DTXManiaのプレビュー画像height値
-		private int[] WIDTH_HD_SET = { 400, 400 };                      // HD版DTXManiaのプレビュー画像width値
-		private int[] HEIGHT_HD_SET = { 400, 600 }; // 600は仮								// HD版DTXManiaのプレビュー画像height値
-		private int[] WIDTH_FHD_LIMIT = { 320, 320 };                     // VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
-		private int[] HEIGHT_FHD_LIMIT = { 416, 416 };                      // VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
-		private int[] WIDTH_FHD_SET = { (int)(204 * Scale.X), (int)(278 * Scale.X) }; // FHD版DTXManiaのプレビュー画像height値
-		private int[] HEIGHT_FHD_SET = { (int)(269 * Scale.Y), (int)(355 * Scale.Y) };  // FHD版DTXManiaのプレビュー画像height値
+		private int[] WIDTH_VGA_SET = { 204, 278, 640 };                     // VGA版DTXManiaのプレビュー画像width値
+		private int[] HEIGHT_VGA_SET = { 269, 355, 1920 };                      // VGA版DTXManiaのプレビュー画像height値
+		private int[] WIDTH_HD_SET = { 400, 400, 1920 };                      // HD版DTXManiaのプレビュー画像width値
+		private int[] HEIGHT_HD_SET = { 400, 600, 1080 }; // 600は仮								// HD版DTXManiaのプレビュー画像height値
+		private int[] WIDTH_FHD_LIMIT = { 320, 320, 640 };                     // VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
+		private int[] HEIGHT_FHD_LIMIT = { 416, 416, 480 };                      // VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
+		private int[] WIDTH_FHD_SET = { (int)(204 * Scale.X), (int)(278 * Scale.X), 1920 }; // FHD版DTXManiaのプレビュー画像height値
+		private int[] HEIGHT_FHD_SET = { (int)(269 * Scale.Y), (int)(355 * Scale.Y), 1080 };  // FHD版DTXManiaのプレビュー画像height値
 		#endregion
 
 
@@ -52,6 +61,20 @@ namespace DTXMania
 		public CPreviewMagnifier()
 		{
 		}
+		public CPreviewMagnifier(EPreviewType _ePreviewType)
+		{
+			CPreviewMagnifier_initializer(_ePreviewType, 0, 0);
+		}
+		public CPreviewMagnifier( EPreviewType _ePreviewType, int _px, int _py )
+		{
+			CPreviewMagnifier_initializer( _ePreviewType, _px, _py );
+		}
+		private void CPreviewMagnifier_initializer( EPreviewType _ePreviewType, int _px, int _py)
+		{
+			this.ePreviewType = _ePreviewType;
+			this.px = _px;
+			this.py = _py;
+		}
 		#endregion
 
 		/// <summary>
@@ -61,23 +84,36 @@ namespace DTXMania
 		/// <param name="height_org">元の高さ</param>
 		/// <param name="magX_org">元の拡大率(幅)</param>
 		/// <param name="magY_org">元の拡大率(高さ)</param>
-		/// <param name="bIsPreview">選曲画面(preview)用か、演奏画面用か</param>
 		/// <remarks>出力はプロパティで得てください。</remarks>
-		public void GetMagnifier(int width_org, int height_org, float magX_org, float magY_org, bool bIsPreview)
+		public void GetMagnifier(int width_org, int height_org, float magX_org, float magY_org)
 		{
-			this.bIsPreview = bIsPreview;
+			//bool bIsPreview = ( this.ePreviewType == EPreviewType.MusicSelect );
 
 			// #35820 画像サイズに関係なく、プレビュー領域に合わせる add ikanick 15.12.08
 			// #36176 プレビュー画像については、前仕様(204x269)画像はアスペクト比を維持する change ikanick 16.03.20
 
+			if ( this.ePreviewType == EPreviewType.PlayingBackground )	// フル背景動画に限り、上位指定の表示座標を無視する
+			{
+				this.px = this.py = 0;
+			}
+
+			#region [ アスペクト比を維持した拡大縮小 ]
 			this.width = width_org;
 			this.height = height_org;
 			this.magX = magX_org * width_fhd_set / width_org;
 			this.magY = magY_org * height_fhd_set / height_org;
-			if (bIsPreview && width_org <= width_vga_set && height_org <= height_vga_set)
+
+			if ( magX > magY )
 			{
-				this.magX = magX_org * width_fhd_set / width_org * (Convert.ToSingle(width_vga_set) / height_vga_set);
+				magX = magY;
+				px += (int) ( ( width_fhd_set - ( width_org * magY ) ) / 2 );
 			}
+			else
+			{
+				magY = magX;
+				py += (int) ( ( height_fhd_set - ( height_org * magX ) ) / 2 );
+			}
+			#endregion
 		}
 
 		#region [ bIsPreviewによる配列→定数読み替え ]
@@ -85,56 +121,56 @@ namespace DTXMania
 		{
 			get
 			{
-				return bIsPreview ? WIDTH_VGA_SET[0] : WIDTH_VGA_SET[1];
+				return WIDTH_VGA_SET[ (int)ePreviewType ];
 			}
 		}
 		private int height_vga_set
 		{
 			get
 			{
-				return bIsPreview ? HEIGHT_VGA_SET[0] : HEIGHT_VGA_SET[1];
+				return HEIGHT_VGA_SET[ (int)ePreviewType ];
 			}
 		}
 		private int width_hd_set
 		{
 			get
 			{
-				return bIsPreview ? WIDTH_HD_SET[0] : WIDTH_HD_SET[1];
+				return WIDTH_HD_SET[ (int)ePreviewType ];
 			}
 		}
 		private int height_hd_set
 		{
 			get
 			{
-				return bIsPreview ? HEIGHT_HD_SET[0] : HEIGHT_HD_SET[1];
+				return HEIGHT_HD_SET[ (int)ePreviewType ];
 			}
 		}
 		private int width_fhd_limit
 		{
 			get
 			{
-				return bIsPreview ? WIDTH_FHD_LIMIT[0] : WIDTH_FHD_LIMIT[1];
+				return WIDTH_FHD_LIMIT[ (int)ePreviewType ];
 			}
 		}
 		private int height_fhd_limit
 		{
 			get
 			{
-				return bIsPreview ? HEIGHT_FHD_LIMIT[0] : HEIGHT_FHD_LIMIT[1];
+				return HEIGHT_FHD_LIMIT[ (int)ePreviewType ];
 			}
 		}
 		private int width_fhd_set
 		{
 			get
 			{
-				return bIsPreview ? WIDTH_FHD_SET[0] : WIDTH_FHD_SET[1];
+				return WIDTH_FHD_SET[ (int)ePreviewType ];
 			}
 		}
 		private int height_fhd_set
 		{
 			get
 			{
-				return bIsPreview ? HEIGHT_FHD_SET[0] : HEIGHT_FHD_SET[1];
+				return HEIGHT_FHD_SET[ (int)ePreviewType ];
 			}
 		}
 		#endregion

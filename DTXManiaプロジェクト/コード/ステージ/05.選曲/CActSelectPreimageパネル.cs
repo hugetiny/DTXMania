@@ -554,14 +554,14 @@ namespace DTXMania
 					return;
 				}
 
-				float num3 = ((float)this.ct遅延表示.n現在の値) / 100f;
-				float mag = 0.9f + (0.1f * num3);
+				float f = ((float)this.ct遅延表示.n現在の値) / 100f;
+				float mag = 0.9f + (0.1f * f);
 
 				#region [ プレビュー画像表示 ]
 				if (this.r表示するプレビュー画像 != null)
 				{
-					CPreviewMagnifier cmg = new CPreviewMagnifier();
-					cmg.GetMagnifier(this.r表示するプレビュー画像.sz画像サイズ.Width, this.r表示するプレビュー画像.sz画像サイズ.Height, mag, mag, true);
+					CPreviewMagnifier cmg = new CPreviewMagnifier(CPreviewMagnifier.EPreviewType.MusicSelect);
+					cmg.GetMagnifier(this.r表示するプレビュー画像.sz画像サイズ.Width, this.r表示するプレビュー画像.sz画像サイズ.Height, mag, mag);
 
 					int width = cmg.width;
 					int height = cmg.height;
@@ -570,7 +570,7 @@ namespace DTXMania
 
 					x += (int)((612 - width * cmg.magX) / 2);
 					y += (int)((605 - height * cmg.magY) / 2);
-					this.r表示するプレビュー画像.n透明度 = (int)(255f * num3);
+					this.r表示するプレビュー画像.n透明度 = (int)(255f * f);
 					this.r表示するプレビュー画像.t2D描画(CDTXMania.Instance.Device, x, y);
 				}
 				#endregion
