@@ -203,15 +203,22 @@ namespace DTXMania
 				this.txMenuカーソル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenConfig menu cursor.png"), false);
 
 				prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y));
-				string[] strMenuItem = { "System", "Drums", "Guitar", "Bass", "Exit" };
+				string[] strMenuItem = { 
+					"strCfgSysMenuItem",
+					"strCfgDrMenuItem",
+					"strCfgGtMenuItem",
+					"strCfgBsMenuItem",
+					"strCfgExitMenuItem"
+				};
 				txMenuItemLeft = new CTexture[strMenuItem.Length, 2];
 				for (int i = 0; i < strMenuItem.Length; i++)
 				{
 					Bitmap bmpStr;
-					bmpStr = prvFont.DrawPrivateFont(strMenuItem[i], Color.White, Color.Black);
+					string s = CDTXMania.Instance.Resources.Title( strMenuItem[ i ] );
+					bmpStr = prvFont.DrawPrivateFont(s, Color.White, Color.Black);
 					txMenuItemLeft[i, 0] = TextureFactory.tテクスチャの生成(bmpStr, false);
 					bmpStr.Dispose();
-					bmpStr = prvFont.DrawPrivateFont(strMenuItem[i], Color.White, Color.Black, Color.Yellow, Color.OrangeRed);
+					bmpStr = prvFont.DrawPrivateFont(s, Color.White, Color.Black, Color.Yellow, Color.OrangeRed);
 					txMenuItemLeft[i, 1] = TextureFactory.tテクスチャの生成(bmpStr, false);
 					bmpStr.Dispose();
 				}
@@ -596,69 +603,17 @@ namespace DTXMania
 				{
 					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 
-					string[,] str = new string[2, 2];
-					switch (this.n現在のメニュー番号)
-					{
-						case 0:
-							str[0, 0] = "システムに関係する項目を設定します。";
-							str[0, 1] = "";
-							str[1, 0] = "Settings for an overall systems.";
-							break;
+					string[] desc = {
+						"strCfgSysMenuDesc",
+						"strCfgDrMenuDesc",
+						"strCfgGtMenuDesc",
+						"strCfgBsMenuDesc",
+						"strCfgExitMenuDesc"
+					};
+					string str = CDTXMania.Instance.Resources.Value( desc[ this.n現在のメニュー番号 ] );
 
-						//case 1:
-						//    str[0, 0] = "ドラムのキー入力に関する項目を設";
-						//    str[0, 1] = "定します。";
-						//    str[1, 0] = "Settings for the drums key/pad inputs.";
-						//    str[1, 1] = "";
-						//    break;
-
-						//case 2:
-						//    str[0, 0] = "ギターのキー入力に関する項目を設";
-						//    str[0, 1] = "定します。";
-						//    str[1, 0] = "Settings for the guitar key/pad inputs.";
-						//    str[1, 1] = "";
-						//    break;
-
-						//case 3:
-						//    str[0, 0] = "ベースのキー入力に関する項目を設";
-						//    str[0, 1] = "定します。";
-						//    str[1, 0] = "Settings for the bass key/pad inputs.";
-						//    str[1, 1] = "";
-						//    break;
-						case 1:
-							str[0, 0] = "ドラムの演奏に関する項目を設定します。";
-							str[0, 1] = "";
-							str[1, 0] = "Settings to play the drums.";
-							str[1, 1] = "";
-							break;
-
-						case 2:
-							str[0, 0] = "ギターの演奏に関する項目を設定します。";
-							str[0, 1] = "";
-							str[1, 0] = "Settings to play the guitar.";
-							str[1, 1] = "";
-							break;
-
-						case 3:
-							str[0, 0] = "ベースの演奏に関する項目を設定します。";
-							str[0, 1] = "";
-							str[1, 0] = "Settings to play the bass.";
-							str[1, 1] = "";
-							break;
-
-						case 4:
-							str[0, 0] = "設定を保存し、コンフィグ画面を終了します。";
-							str[0, 1] = "";
-							str[1, 0] = "Save the settings and exit from\nCONFIGURATION menu.";
-							str[1, 1] = "";
-							break;
-					}
-
-					int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
-					for (int i = 0; i < 2; i++)
-					{
-						graphics.DrawString(str[c, i], this.ftフォント, Brushes.White, new PointF(4f * Scale.X, (i * 30) * Scale.Y));
-					}
+					//int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
+					graphics.DrawString(str, this.ftフォント, Brushes.White, new PointF(4f * Scale.X, 0));
 				}
 				if (this.tx説明文パネル != null)
 				{

@@ -511,10 +511,11 @@ namespace DTXMania
 						if (nCurrentTime > wc.n再生開始時刻[i])
 						{
 							long nAbsTimeFromStartPlaying = nCurrentTime - wc.n再生開始時刻[i];
-							//Trace.TraceInformation( "再生位置自動補正: {0}, seek先={1}ms, 全音長={2}ms",
-							//    Path.GetFileName( wc.rSound[ 0 ].strファイル名 ),
-							//    nAbsTimeFromStartPlaying,
-							//    wc.rSound[ 0 ].n総演奏時間ms
+							//Trace.TraceInformation( "再生位置自動補正: {0}, 実タイマ値={1}, seek先={2}ms, 全音長={3}ms",
+							//	Path.GetFileName( wc.rSound[ 0 ].strファイル名 ),
+							//	nCurrentTime,
+							//	nAbsTimeFromStartPlaying,
+							//	wc.rSound[ 0 ].n総演奏時間ms
 							//);
 							// wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
 							wc.rSound[i].t再生位置を変更する(nAbsTimeFromStartPlaying);  // WASAPI/ASIO用

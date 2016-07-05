@@ -134,7 +134,8 @@ namespace DTXMania
 
 		public override string ToString()
 		{
-			return val ? "On" : "Off";
+			CResources cr = CDTXMania.Instance.Resources;
+			return val ? cr.Title("strCfgOn") : cr.Title("strCfgOff");
 		}
 
 		public void Initialize(string lbl, string expl)

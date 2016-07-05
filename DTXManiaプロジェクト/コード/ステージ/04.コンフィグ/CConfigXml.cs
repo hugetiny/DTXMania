@@ -150,7 +150,10 @@ namespace DTXMania
 		[DataMember( Order = 105 )]
 		// #36261 2016.4.27 yyagi WASAPI動作をevent drivenにするかどうか
 		public COptionBool bEventDrivenWASAPI;
-		
+		[DataMember( Order = 105 )]
+		// 言語設定
+		public COptionStringList strLanguageList;
+		public COptionString strLanguage;	
 
 		[DataMember]
 		public COptionInteger nBGAlpha;
@@ -575,6 +578,9 @@ namespace DTXMania
 			string[] asiodevs = CEnumerateAllAsioDevices.GetAllASIODevices();
 			strASIODevice = new COptionStringList(asiodevs.Length > 0 ? asiodevs[0] : null);
 
+			strLanguage = new COptionString( "" );		// "default"でなく"" にすること。そうすることで、Locale情報を使った初期化がなされる。
+			strLanguageList = new COptionStringList("");
+
 
 			cdInstX = new STDGBSValue<STInstValue<COptionInteger>>();
 			cdInstX.Drums = new STInstValue<COptionInteger>();
@@ -674,52 +680,54 @@ namespace DTXMania
 		public void DefaultDeserializer(StreamingContext sc)
 		{
 			// ラベル・説明文・上下限値
-			bFullScreen.Initialize("FullScreen", Properties.Resources.strCfgSysFullScreen);
-			bVSyncWait.Initialize("VSyncWait", Properties.Resources.strCfgSysVSync);
-			bStageFailed.Initialize("StageFailed", Properties.Resources.strCfgSysStageFailed);
-			bFullAVI.Initialize("FullAVI", Properties.Resources.strCfgSysFullAVI);
-			bAVI.Initialize("AVI", Properties.Resources.strCfgSysAVI);
-			bBGA.Initialize("BGA", Properties.Resources.strCfgSysBGA);
-			bLog.Initialize("Log", Properties.Resources.strCfgSysLog);
-			bStoicMode.Initialize("Stoic", Properties.Resources.strCfgSysStoic);
-			bWaveAdjust.Initialize("AdjustWaves", Properties.Resources.strCfgSysAdjustWaves);
-			bBGMPlay.Initialize("BGM", Properties.Resources.strCfgSysBGM);
-			bAudience.Initialize("Audience", Properties.Resources.strCfgSysAudience);
-			bScoreIni.Initialize("SaveRecord", Properties.Resources.strCfgSysSaveScoreIni);
-			bRandSubBox.Initialize("RandSubBox", Properties.Resources.strCfgSysRandSubBox);
-			bAutoPlay.HH.Initialize("HiHat(Close)", Properties.Resources.strCfgDrAutoHHC);
-			bAutoPlay.HHO.Initialize("HiHat(Open)", Properties.Resources.strCfgDrAutoHHO);
-			bAutoPlay.SD.Initialize("Snare", Properties.Resources.strCfgDrAutoSD);
-			bAutoPlay.BD.Initialize("Kick", Properties.Resources.strCfgDrAutoBD);
-			bAutoPlay.HT.Initialize("HighTom", Properties.Resources.strCfgDrAutoHT);
-			bAutoPlay.LT.Initialize("LowTom", Properties.Resources.strCfgDrAutoLT);
-			bAutoPlay.FT.Initialize("FloorTom", Properties.Resources.strCfgDrAutoFT);
-			bAutoPlay.CY.Initialize("Cymbal", Properties.Resources.strCfgAutoCY);
-			bAutoPlay.RD.Initialize("RideCymbal", Properties.Resources.strCfgAutoRD);
-			bAutoPlay.LC.Initialize("LeftCymbal", Properties.Resources.strCfgAutoLCY);
-			bAutoPlay.GtR.Initialize("R", Properties.Resources.strCfgGtAutoR);
-			bAutoPlay.GtG.Initialize("G", Properties.Resources.strCfgGtAutoG);
-			bAutoPlay.GtB.Initialize("B", Properties.Resources.strCfgGtAutoB);
-			bAutoPlay.GtPick.Initialize("Pick", Properties.Resources.strCfgGtAutoPick);
-			bAutoPlay.GtWail.Initialize("Wailing", Properties.Resources.strCfgGtAutoWailing);
-			bAutoPlay.BsR.Initialize("R", Properties.Resources.strCfgBsAutoR);
-			bAutoPlay.BsG.Initialize("G", Properties.Resources.strCfgBsAutoG);
-			bAutoPlay.BsB.Initialize("B", Properties.Resources.strCfgBsAutoB);
-			bAutoPlay.BsPick.Initialize("Pick", Properties.Resources.strCfgBsAutoPick);
-			bAutoPlay.BsWail.Initialize("Wailing", Properties.Resources.strCfgBsAutoWailing);
-			bLoadSoundSpeed.Initialize("SoundLoadLimiter", Properties.Resources.strCfgSysSoundLoadLimiter);
-			bIsAutoResultCapture.Initialize("AutoResultCapture", Properties.Resources.strCfgSysAutoResultCapture);
-			bBufferedInput.Initialize("BufferingInput", Properties.Resources.strCfgSysBufferingInput);
-			bUseBoxDefSkin.Initialize("UseBoxSkin", Properties.Resources.strCfgSysUseBoxDefSkin);
-			bUseOSTimer.Initialize("UseOSTimer", Properties.Resources.strCfgSysUseOSTimer);
-			bTimeStretch.Initialize("TimeStretch", Properties.Resources.strCfgSysTimeStretch);
-			bForceHighPowerPlan.Initialize( "Highpeformance", Properties.Resources.strCfgSysForceHighPowerPlan );
-			bEventDrivenWASAPI.Initialize( "WASAPI Event Driven", Properties.Resources.strCfgSysWASAPIEventDriven );
+			CResources cr = CDTXMania.Instance.Resources;
+			bFullScreen.Initialize( cr.Title("strCfgSysFullScreen"), cr.Value("strCfgSysFullScreen") );
+			bVSyncWait.Initialize( cr.Title("strCfgSysVSync"), cr.Value("strCfgSysVSync") );
+			bStageFailed.Initialize( cr.Title("strCfgSysStageFailed"), cr.Value("strCfgSysStageFailed") );
+			bFullAVI.Initialize( cr.Title("strCfgSysFullAVI"), cr.Value("strCfgSysFullAVI") );
+			bAVI.Initialize( cr.Title("strCfgSysAVI"), cr.Value("strCfgSysAVI") );
+			bBGA.Initialize( cr.Title("strCfgSysBGA"), cr.Value("strCfgSysBGA" ) );
+			bLog.Initialize( cr.Title("strCfgSysLog"), cr.Value("strCfgSysLog") );
+			bStoicMode.Initialize( cr.Title("strCfgSysStoic"), cr.Value("strCfgSysStoic") );
+			bWaveAdjust.Initialize( cr.Title("strCfgSysAdjustWaves"), cr.Value("strCfgSysAdjustWaves") );
+			bBGMPlay.Initialize( cr.Title("strCfgSysBGM"), cr.Value("strCfgSysBGM") );
+			bAudience.Initialize( cr.Title("strCfgSysAudience"), cr.Value("strCfgSysAudience") );
+			bScoreIni.Initialize( cr.Title("strCfgSysSaveScoreIni"), cr.Value("strCfgSysSaveScoreIni") );
+			bRandSubBox.Initialize( cr.Title("strCfgSysRandSubBox"), cr.Value("strCfgSysRandSubBox") );
+			bAutoPlay.HH.Initialize( cr.Title("strCfgDrAutoHHC"), cr.Value("strCfgDrAutoHHC") );
+			bAutoPlay.HHO.Initialize( cr.Title("strCfgDrAutoHHO"), cr.Value("strCfgDrAutoHHO") );
+			bAutoPlay.SD.Initialize( cr.Title("strCfgDrAutoSD"), cr.Value("strCfgDrAutoSD") );
+			bAutoPlay.BD.Initialize( cr.Title("strCfgDrAutoBD"), cr.Value("strCfgDrAutoBD") );
+			bAutoPlay.HT.Initialize( cr.Title("strCfgDrAutoHT"), cr.Value("strCfgDrAutoHT") );
+			bAutoPlay.LT.Initialize( cr.Title("strCfgDrAutoLT"), cr.Value("strCfgDrAutoLT") );
+			bAutoPlay.FT.Initialize( cr.Title("strCfgDrAutoFT"), cr.Value("strCfgDrAutoFT") );
+			bAutoPlay.CY.Initialize( cr.Title("strCfgDrAutoCY"), cr.Value("strCfgDrAutoCY") );
+			bAutoPlay.RD.Initialize( cr.Title("strCfgDrAutoRD"), cr.Value("strCfgDrAutoRD") );
+			bAutoPlay.LC.Initialize( cr.Title("strCfgDrAutoLCY"), cr.Value("strCfgDrAutoLCY") );
+			bAutoPlay.GtR.Initialize( cr.Title( "strCfgGtAutoR" ), cr.Value( "strCfgGtAutoR" ) );
+			bAutoPlay.GtG.Initialize( cr.Title( "strCfgGtAutoG" ), cr.Value( "strCfgGtAutoG" ) );
+			bAutoPlay.GtB.Initialize( cr.Title( "strCfgGtAutoB" ), cr.Value( "strCfgGtAutoB" ) );
+			bAutoPlay.GtPick.Initialize( cr.Title( "strCfgGtAutoPick" ), cr.Value( "strCfgGtAutoPick" ) );
+			bAutoPlay.GtWail.Initialize( cr.Title( "strCfgGtAutoWailing" ), cr.Value( "strCfgGtAutoWailing" ) );
+			bAutoPlay.BsR.Initialize( cr.Title( "strCfgBsAutoR" ), cr.Value( "strCfgBsAutoR" ) );
+			bAutoPlay.BsG.Initialize( cr.Title( "strCfgBsAutoG" ), cr.Value( "strCfgBsAutoG" ) );
+			bAutoPlay.BsB.Initialize( cr.Title( "strCfgBsAutoB" ), cr.Value( "strCfgBsAutoB" ) );
+			bAutoPlay.BsPick.Initialize( cr.Title( "strCfgBsAutoPick" ), cr.Value( "strCfgBsAutoPick" ) );
+			bAutoPlay.BsWail.Initialize( cr.Title( "strCfgBsAutoWailing" ), cr.Value( "strCfgBsAutoWailing" ) );
 
-			bCymbalFree.Initialize("CymbalFree", Properties.Resources.strCfgDrCymbalFree);
-			bDrumsHitSound.Initialize("DrumsChipSound", Properties.Resources.strCfgDrChipSound);
-			bFillin.Initialize("Fillin", Properties.Resources.strCfgDrFillin);
-			bTight.Initialize("Tight", Properties.Resources.strCfgDrTight);
+			bLoadSoundSpeed.Initialize( cr.Title("strCfgSysSoundLoadLimiter"), cr.Value("strCfgSysSoundLoadLimiter") );
+			bIsAutoResultCapture.Initialize( cr.Title("strCfgSysAutoResultCapture"), cr.Value("strCfgSysAutoResultCapture") );
+			bBufferedInput.Initialize( cr.Title("strCfgSysBufferingInput"), cr.Value("strCfgSysBufferingInput") );
+			bUseBoxDefSkin.Initialize( cr.Title("strCfgSysUseBoxDefSkin"), cr.Value("strCfgSysUseBoxDefSkin") );
+			bUseOSTimer.Initialize( cr.Title("strCfgSysUseOSTimer"), cr.Value("strCfgSysUseOSTimer") );
+			bTimeStretch.Initialize( cr.Title("strCfgSysTimeStretch"),  cr.Value("strCfgSysTimeStretch") );
+			bForceHighPowerPlan.Initialize( cr.Title("strCfgSysForceHighPowerPlan"), cr.Value("strCfgSysForceHighPowerPlan") );
+			bEventDrivenWASAPI.Initialize( cr.Title("strCfgSysWASAPIEventDriven"), cr.Value("strCfgSysWASAPIEventDriven") );
+
+			bCymbalFree.Initialize( cr.Title("strCfgDrCymbalFree"), cr.Value("strCfgDrCymbalFree") );
+			bDrumsHitSound.Initialize( cr.Title("strCfgDrChipSound"), cr.Value("strCfgDrChipSound") );
+			bFillin.Initialize( cr.Title("strCfgDrFillin"), cr.Value("strCfgDrFillin") );
+			bTight.Initialize( cr.Title("strCfgDrTight"), cr.Value("strCfgDrTight") );
 
 			bItalicFontSongSelect.Initialize("", "");
 			bBoldFontSongSelect.Initialize("", "");
@@ -734,36 +742,36 @@ namespace DTXMania
 			bIsAllowedDoubleClickFullscreen.Initialize("", "");
 			bIsEnabledSystemMenu.Initialize("", "");
 			bDynamicBassMixerManagement.Initialize("", "");
-			bDebugInfo.Initialize("DebugInfo", Properties.Resources.strCfgSysDebugInfo);
+			bDebugInfo.Initialize( cr.Title("strCfgSysDebugInfo"), cr.Value("strCfgSysDebugInfo") );
 
 			// enum
-			nSoundDeviceType.Initialize("SoundDevice", Properties.Resources.strCfgSysSoundDeviceType, typeof(ESoundDeviceTypeForConfig));
-			eDamageLevel.Initialize("DamageLevel", Properties.Resources.strCfgSysDamageLevel, typeof(EDamage));
-			eJudgePriority.Initialize("JudgePriority", Properties.Resources.strCfgSysJudgePriority, typeof(EJudgeDisplayPriority));
-			eCYGroup.Initialize("CY Grouping", Properties.Resources.strCfgDrCYGroup, typeof(ECYGroup));
-			eDark.Initialize("Dark", Properties.Resources.strCfgSysDark, typeof(EDark));
-			eFTGroup.Initialize("FT Grouping", Properties.Resources.strCfgDrFTGroup, typeof(EFTGroup));
-			eHHGroup.Initialize("HH Grouping", Properties.Resources.strCfgDrHHGroup, typeof(EHHGroup));
-			eBDGroup.Initialize("BD Grouping", Properties.Resources.strCfgDrBDGroup, typeof(EBDGroup));
+			nSoundDeviceType.Initialize( cr.Title("strCfgSysSoundDeviceType"), cr.Value("strCfgSysSoundDeviceType"), typeof(ESoundDeviceTypeForConfig));
+			eDamageLevel.Initialize( cr.Title("strCfgSysDamageLevel"), cr.Value("strCfgSysDamageLevel"), typeof(EDamage));
+			eJudgePriority.Initialize( cr.Title("strCfgSysJudgePriority"), cr.Value("strCfgSysJudgePriority"), typeof(EJudgeDisplayPriority));
+			eCYGroup.Initialize( cr.Title("strCfgDrCYGroup"), cr.Value("strCfgDrCYGroup"), typeof(ECYGroup));
+			eDark.Initialize( cr.Title("strCfgSysDark"), cr.Value("strCfgSysDark"), typeof(EDark));
+			eFTGroup.Initialize( cr.Title("strCfgDrFTGroup"), cr.Value("strCfgDrFTGroup"), typeof(EFTGroup));
+			eHHGroup.Initialize( cr.Title("strCfgDrHHGroup"), cr.Value("strCfgDrHHGroup"), typeof(EHHGroup));
+			eBDGroup.Initialize( cr.Title("strCfgDrBDGroup"), cr.Value("strCfgDrBDGroup"), typeof(EBDGroup));
 			Backup1BDHHGroup.Initialize("", "", typeof(EHHGroup));
 			Backup1BDPriotiry.Initialize("", "", typeof(EHitSoundPriority));
-			eHitSoundPriorityCY.Initialize("CY Priority", Properties.Resources.strCfgDrCYPriority, typeof(EHitSoundPriority));
-			eHitSoundPriorityFT.Initialize("FT Priority", Properties.Resources.strCfgDrFTPriority, typeof(EHitSoundPriority));
-			eHitSoundPriorityHH.Initialize("HH Priority", Properties.Resources.strCfgDrHHPriority, typeof(EHitSoundPriority));
+			eHitSoundPriorityCY.Initialize( cr.Title("strCfgDrCYPriority"), cr.Value("strCfgDrCYPriority"), typeof(EHitSoundPriority));
+			eHitSoundPriorityFT.Initialize( cr.Title("strCfgDrFTPriority"), cr.Value("strCfgDrFTPriority"), typeof(EHitSoundPriority));
+			eHitSoundPriorityHH.Initialize( cr.Title("strCfgDrHHPriority"), cr.Value("strCfgDrHHPriority"), typeof(EHitSoundPriority));
 //			eJudgePriority.Initialize("Judge Priority", Properties.Resources.strCfgSysJudgePriority, typeof(EJudgeDisplayPriority));
-			eActiveInst.Initialize("PlayMode", Properties.Resources.strCfgSysPlayMode, typeof(EActiveInstrument));
-			nShowLagType.Initialize("ShowLagType", Properties.Resources.strCfgSysShowLagType, typeof(EShowLagType));
+			eActiveInst.Initialize( cr.Title("strCfgSysPlayMode"), cr.Value("strCfgSysPlayMode"), typeof(EActiveInstrument));
+			nShowLagType.Initialize( cr.Title("strCfgSysShowLagType"), cr.Value("strCfgSysShowLagType"), typeof(EShowLagType));
 
 			// integer
 			nSleepPerFrameMs.Initialize("", "");
 			nSleepUnfocusMs.Initialize("", "");
-			nBGAlpha.Initialize("BGAlpha", Properties.Resources.strCfgSysBGAAlpha, 0, 255);
-			nPreSoundWeightMs.Initialize("PreSoundWait", Properties.Resources.strCfgSysPreSoundWait, 0, 10001);
-			nPreImageWeightMs.Initialize("PreImageWait", Properties.Resources.strCfgSysPreImageWait, 0, 10001);
+			nBGAlpha.Initialize( cr.Title("strCfgSysBGAAlpha"), cr.Value("strCfgSysBGAAlpha"), 0, 255);
+			nPreSoundWeightMs.Initialize( cr.Title("strCfgSysPreSoundWait"), cr.Value("strCfgSysPreSoundWait"), 0, 10001);
+			nPreImageWeightMs.Initialize( cr.Title("strCfgSysPreImageWait"), cr.Value("strCfgSysPreImageWait"), 0, 10001);
 			nFontSizeDotSongSelect.Initialize("", "", 5);
-			nAutoVolume.Initialize("AutoVolume", Properties.Resources.strCfgSysAutoVolume, 0, 101);
-			nChipVolume.Initialize("ChipVolume", Properties.Resources.strCfgSysChipVolume, 0, 101);
-			nPlaySpeed.Initialize("PlaySpeed", Properties.Resources.strCfgSysPlaySpeed, 5, 41);
+			nAutoVolume.Initialize( cr.Title("strCfgSysAutoVolume"), cr.Value("strCfgSysAutoVolume"), 0, 101);
+			nChipVolume.Initialize( cr.Title("strCfgSysChipVolume"), cr.Value("strCfgSysChipVolume"), 0, 101);
+			nPlaySpeed.Initialize( cr.Title("strCfgSysPlaySpeed"), cr.Value("strCfgSysPlaySpeed"), 5, 41);
 			nPlaySpeed.ValueFormatter = (x) =>
 			{
 				return "x" + (x / 20f).ToString("0.000");
@@ -781,44 +789,44 @@ namespace DTXMania
 			nVelocityMin.FT.Initialize("", "", 0, 128);
 			nVelocityMin.CY.Initialize("", "", 0, 128);
 			nVelocityMin.RD.Initialize("", "", 0, 128);
-			nRisky.Initialize("Risky", Properties.Resources.strCfgSysRisky, 0, 31);
-			nWASAPIBufferSizeMs.Initialize("WASAPIBufSize", Properties.Resources.strCfgSysWASAPIBufSize, 0, 100001);
+			nRisky.Initialize( cr.Title("strCfgSysRisky"), cr.Value("strCfgSysRisky"), 0, 31);
+			nWASAPIBufferSizeMs.Initialize( cr.Title("strCfgSysWASAPIBufSize"), cr.Value("strCfgSysWASAPIBufSize"), 0, 100001);
 			nChipDisplayTimeMs.Initialize("", "", 0);
 			nChipFadeoutTimeMs.Initialize("", "", 0);
 
-			nMasterVolume.Initialize("MasterVolume", Properties.Resources.strCfgSysMasterVolume, 0, 101);
+			nMasterVolume.Initialize( cr.Title("strCfgSysMasterVolume"), cr.Value("strCfgSysMasterVolume"), 0, 101);
 			nPoliphonicSounds.Initialize("", "", 1, 11);
 
 			// dgb
 			for (EPart i = EPart.Drums; i <= EPart.Unknown; i++)
 			{
-				bEmphasizePlaySound[i].Initialize("ChipSoundMonitor", Properties.Resources.strCfgDgbChipSoundMonitor);
-				bReverse[i].Initialize("Reverse", Properties.Resources.strCfgDgbReverse);
-				eRandom[i].Initialize("Random", Properties.Resources.strCfgDgbRandom, typeof(ERandom));
-				bLight[i].Initialize("Light", Properties.Resources.strCfgDgbLight);
-				bDisplayCombo[i].Initialize("DisplayCombo", Properties.Resources.strCfgDgbDisplayCombo);
-				bDisplayJudge[i].Initialize("DisplayJudge", Properties.Resources.strCfgDgbDisplayJudge);
-				bGraph[i].Initialize("Graph", Properties.Resources.strCfgDgbDisplayGraph);
-				nScrollSpeed[i].Initialize("ScrollSpeed", Properties.Resources.strCfgDgbScrollSpeed, 1, 101);
+				bEmphasizePlaySound[i].Initialize( cr.Title("strCfgDgbChipSoundMonitor"), cr.Value("strCfgDgbChipSoundMonitor") );
+				bReverse[i].Initialize( cr.Title("strCfgDgbReverse"), cr.Value("strCfgDgbReverse") );
+				eRandom[i].Initialize( cr.Title("strCfgDgbRandom"), cr.Value("strCfgDgbRandom"), typeof(ERandom));
+				bLight[i].Initialize( cr.Title("strCfgDgbLight"), cr.Value("strCfgDgbLight") );
+				bDisplayCombo[i].Initialize( cr.Title("strCfgDgbDisplayCombo"), cr.Value("strCfgDgbDisplayCombo") );
+				bDisplayJudge[i].Initialize( cr.Title("strCfgDgbDisplayJudge"), cr.Value("strCfgDgbDisplayJudge") );
+				bGraph[i].Initialize( cr.Title("strCfgDgbDisplayGraph"), cr.Value("strCfgDgbDisplayGraph") );
+				nScrollSpeed[i].Initialize( cr.Title("strCfgDgbScrollSpeed"), cr.Value("strCfgDgbScrollSpeed"), 1, 101);
 				nScrollSpeed[i].ValueFormatter = (x) =>
 					{
 						return "x" + (x * 0.5f).ToString("0.0");
 					};
-				nInputAdjustTimeMs[i].Initialize("InputAdjust", Properties.Resources.strCfgDgbInputAdjust, -99, 100);
+				nInputAdjustTimeMs[i].Initialize( cr.Title("strCfgDgbInputAdjust"), cr.Value("strCfgDgbInputAdjust"), -99, 100);
 				nJudgeLinePosOffset[i].Initialize("", "", -SampleFramework.GameWindowSize.Height, SampleFramework.GameWindowSize.Height + 1);
 				nViewerScrollSpeed[i].Initialize("", "", 1, 101);
-				nMinComboDisp[i].Initialize("MinComboDisp", Properties.Resources.strCfgDgbMinComboDisp, 2, 100001);
-				nSuddenFrom[i].Initialize("SudFrom", Properties.Resources.strCfgDgbSuddenFrom, 0, SampleFramework.GameWindowSize.Height + 1);
-				nHiddenFrom[i].Initialize("HidFrom", Properties.Resources.strCfgDgbHiddenFrom, 0, SampleFramework.GameWindowSize.Height + 1);
-				eAutoGhost[i].Initialize("AutoGhost", Properties.Resources.strCfgDgbAutoGhost, typeof(EAutoGhostData));
-				eTargetGhost[i].Initialize("TargetGhost", Properties.Resources.strCfgDgbTargetGhost, typeof(ETargetGhostData));
-				eSudHidInv[i].Initialize("SudHidInv", Properties.Resources.strCfgDgbSudHidInv, typeof(ESudHidInv));
+				nMinComboDisp[i].Initialize( cr.Title("strCfgDgbMinComboDisp"), cr.Value("strCfgDgbMinComboDisp"), 2, 100001);
+				nSuddenFrom[i].Initialize( cr.Title("strCfgDgbSuddenFrom"), cr.Value("strCfgDgbSuddenFrom"), 0, SampleFramework.GameWindowSize.Height + 1);
+				nHiddenFrom[i].Initialize( cr.Title("strCfgDgbHiddenFrom"), cr.Value("strCfgDgbHiddenFrom"), 0, SampleFramework.GameWindowSize.Height + 1);
+				eAutoGhost[i].Initialize( cr.Title("strCfgDgbAutoGhost"), cr.Value("strCfgDgbAutoGhost"), typeof(EAutoGhostData));
+				eTargetGhost[i].Initialize( cr.Title("strCfgDgbTargetGhost"), cr.Value("strCfgDgbTargetGhost"), typeof(ETargetGhostData));
+				eSudHidInv[i].Initialize( cr.Title("strCfgDgbSudHidInv"), cr.Value("strCfgDgbSudHidInv"), typeof(ESudHidInv));
 
 				fJudgeLinePosOffsetBase[i].Initialize("", "");
 			}
 
 			string[] asiodevs = CEnumerateAllAsioDevices.GetAllASIODevices();
-			strASIODevice.Initialize("ASIODevice", Properties.Resources.strCfgSysASIODevice, asiodevs);
+			strASIODevice.Initialize( cr.Title("strCfgSysASIODevice"), cr.Value("strCfgSysASIODevice"), asiodevs);
 
 			int crdStep = 10;
 			cdInstX.Drums.Both.Initialize("DrumsX(Both)", Properties.Resources.strCfgDispDrumsXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);

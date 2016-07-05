@@ -39,6 +39,7 @@ namespace DTXMania
 		public C文字コンソール act文字コンソール { get; private set; }
 		public bool bコンパクトモード { get; private set; }
 		public CConfigXml ConfigIni;
+		public CResources Resources;
 
 		public CDTX DTX
 		{
@@ -194,6 +195,20 @@ namespace DTXMania
 			// END #23629 2010.11.13 from
 			#endregion
 
+			#region [ 言語リソースの初期化 ]
+			Trace.TraceInformation( "言語リソースの初期化を行います。" );
+			Trace.Indent();
+			try
+			{
+				Resources = new CResources();
+				Resources.LoadResources( "" );
+				Trace.TraceInformation( "言語リソースの初期化を完了しました。" );
+			}
+			finally
+			{
+				Trace.Unindent();
+			}
+			#endregion
 
 			#region [ Config.ini の読込み ]
 			ConfigIni = new CConfigXml();
@@ -202,6 +217,7 @@ namespace DTXMania
 			this.Window.EnableSystemMenu = CDTXMania.Instance.ConfigIni.bIsEnabledSystemMenu;
 			// 2012.8.22 Config.iniが無いときに初期値が適用されるよう、この設定行をifブロック外に移動
 			#endregion
+
 
 			#region[座標値読み込み]
 			Coordinates = new Coordinates.CCoordinates();
@@ -236,6 +252,16 @@ namespace DTXMania
 			Trace.TraceInformation("ProcessorCount: " + Environment.ProcessorCount.ToString());
 			Trace.TraceInformation("CLR Version: " + Environment.Version.ToString());
 			#endregion
+
+			#region [ 言語の設定 ]
+			Debug.WriteLine( "language=" + Resources.Language );
+			Debug.WriteLine( "settings=" + instance.ConfigIni.strLanguage );
+			Resources.Language = instance.ConfigIni.strLanguage;
+			Trace.TraceInformation( "言語を{0}に設定しました。", Resources.Language );
+
+			#endregion
+
+	
 			#region [ DTXVmodeクラス の初期化 ]
 			//Trace.TraceInformation( "DTXVモードの初期化を行います。" );
 			//Trace.Indent();
@@ -733,6 +759,7 @@ namespace DTXMania
 				}
 			}
 			#endregion
+
 
 			Trace.TraceInformation("アプリケーションの初期化を完了しました。");
 
@@ -2421,7 +2448,6 @@ namespace DTXMania
 			if (this.listプラグイン.Count > 0)
 				Trace.TraceInformation(this.listプラグイン.Count + " 個のプラグインを読み込みました。");
 		}
-		#region [ Windowイベント処理 ]
 
 		private System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
 		{
@@ -2520,7 +2546,8 @@ namespace DTXMania
 				this.t指定フォルダ内でのプラグイン検索と生成(dir + "\\", strプラグイン型名);
 		}
 		//-----------------
-		private void Window_ApplicationActivated(object sender, EventArgs e)
+		#region [ Windowイベント処理 ]
+		private void Window_ApplicationActivated( object sender, EventArgs e )
 		{
 			this.bApplicationActive = true;
 		}

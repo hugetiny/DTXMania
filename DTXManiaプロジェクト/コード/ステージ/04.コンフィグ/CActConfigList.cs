@@ -228,6 +228,8 @@ namespace DTXMania
 				return opt;
 			};
 
+			CResources cr = CDTXMania.Instance.Resources;
+
 			if (eMenu == Eメニュー種別.DisplaySystem)
 			{
 				list項目リスト.Add(ReturnToMenu.System);
@@ -312,22 +314,22 @@ namespace DTXMania
 			else if (eMenu == Eメニュー種別.KeyAssignSystem)
 			{
 				list項目リスト.Add(ReturnToMenu.System);
-				list項目リスト.Add(PadNotifier(EPad.Capture, "Capture", Properties.Resources.strCfgKeyAssignキャプチャ説明));
+				list項目リスト.Add(PadNotifier(EPad.Capture, cr.Title("strCfgKeyAssignCapture"), cr.Value("strCfgKeyAssignCapture") ));
 			}
 			else if (eMenu == Eメニュー種別.KeyAssignDrums)
 			{
 				list項目リスト.Add(ReturnToMenu.Drums);
-				list項目リスト.Add(PadNotifier(EPad.LC, "LeftCymbal", Properties.Resources.strCfgKeyAssignLC));
-				list項目リスト.Add(PadNotifier(EPad.HH, "HiHat(Close)", Properties.Resources.strCfgKeyAssignHH));
-				list項目リスト.Add(PadNotifier(EPad.HHO, "HiHat(Open)", Properties.Resources.strCfgKeyAssignHHO));
-				list項目リスト.Add(PadNotifier(EPad.SD, "Snare", Properties.Resources.strCfgKeyAssignSD));
-				list項目リスト.Add(PadNotifier(EPad.BD, "Kick", Properties.Resources.strCfgKeyAssignBD));
-				list項目リスト.Add(PadNotifier(EPad.HT, "HighTom", Properties.Resources.strCfgKeyAssignHT));
-				list項目リスト.Add(PadNotifier(EPad.LT, "LowTom", Properties.Resources.strCfgKeyAssignLT));
-				list項目リスト.Add(PadNotifier(EPad.FT, "FloorTom", Properties.Resources.strCfgKeyAssignFT));
-				list項目リスト.Add(PadNotifier(EPad.CY, "Cymbal", Properties.Resources.strCfgKeyAssignCY));
-				list項目リスト.Add(PadNotifier(EPad.RD, "RideCymbal", Properties.Resources.strCfgKeyAssignRD));
-				list項目リスト.Add(PadNotifier(EPad.HP, "HiHatPedal", Properties.Resources.strCfgKeyAssignHP));
+				list項目リスト.Add(PadNotifier(EPad.LC, cr.Title("strCfgKeyAssignLC"), cr.Value("strCfgKeyAssignLC") ));
+				list項目リスト.Add(PadNotifier(EPad.HH, cr.Title("strCfgKeyAssignHH"), cr.Value("strCfgKeyAssignHH") ));
+				list項目リスト.Add(PadNotifier(EPad.HHO,cr.Title("strCfgKeyAssignHHO"), cr.Value("strCfgKeyAssignHHO") ));
+				list項目リスト.Add(PadNotifier(EPad.SD, cr.Title("strCfgKeyAssignSD"), cr.Value("strCfgKeyAssignSD") ));
+				list項目リスト.Add(PadNotifier(EPad.BD, cr.Title("strCfgKeyAssignBD"), cr.Value("strCfgKeyAssignBD") ));
+				list項目リスト.Add(PadNotifier(EPad.HT, cr.Title("strCfgKeyAssignHT"), cr.Value("strCfgKeyAssignHT") ));
+				list項目リスト.Add(PadNotifier(EPad.LT, cr.Title("strCfgKeyAssignLT"), cr.Value("strCfgKeyAssignLT") ));
+				list項目リスト.Add(PadNotifier(EPad.FT, cr.Title("strCfgKeyAssignFT"), cr.Value("strCfgKeyAssignFT") ));
+				list項目リスト.Add(PadNotifier(EPad.CY, cr.Title("strCfgKeyAssignCY"), cr.Value("strCfgKeyAssignCY") ));
+				list項目リスト.Add(PadNotifier(EPad.RD, cr.Title("strCfgKeyAssignRD"), cr.Value("strCfgKeyAssignRD") ));
+				list項目リスト.Add(PadNotifier(EPad.HP, cr.Title("strCfgKeyAssignHP"), cr.Value("strCfgKeyAssignHP") ));
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eHHGroup);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eFTGroup);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eCYGroup);
@@ -338,32 +340,36 @@ namespace DTXMania
 			else if (eMenu == Eメニュー種別.KeyAssignGuitar)
 			{
 				list項目リスト.Add(ReturnToMenu.Guitar);
-				list項目リスト.Add(PadNotifier(EPad.GtR, "R", Properties.Resources.strCfgKeyAssignGtR));
-				list項目リスト.Add(PadNotifier(EPad.GtG, "G", Properties.Resources.strCfgKeyAssignGtG));
-				list項目リスト.Add(PadNotifier(EPad.GtB, "B", Properties.Resources.strCfgKeyAssignGtB));
-				list項目リスト.Add(PadNotifier(EPad.GtPick, "Pick", Properties.Resources.strCfgKeyAssignGtPick));
-				list項目リスト.Add(PadNotifier(EPad.GtWail, "Wailing", Properties.Resources.strCfgKeyAssignGtWailing));
-				list項目リスト.Add(PadNotifier(EPad.GtDecide, "Decide", Properties.Resources.strCfgKeyAssignGtDecide));
-				list項目リスト.Add(PadNotifier(EPad.GtCancel, "Cancel", Properties.Resources.strCfgKeyAssignGtCancel));
+				list項目リスト.Add(PadNotifier(EPad.GtR, cr.Title("strCfgKeyAssignGtR"), cr.Value("strCfgKeyAssignGtR") ));
+				list項目リスト.Add(PadNotifier(EPad.GtG, cr.Title("strCfgKeyAssignGtG"), cr.Value("strCfgKeyAssignGtG") ));
+				list項目リスト.Add(PadNotifier(EPad.GtB, cr.Title("strCfgKeyAssignGtB"), cr.Value("strCfgKeyAssignGtB") ));
+				list項目リスト.Add(PadNotifier(EPad.GtPick, cr.Title("strCfgKeyAssignGtPick"), cr.Value("strCfgKeyAssignGtPick") ));
+				list項目リスト.Add(PadNotifier(EPad.GtWail, cr.Title("strCfgKeyAssignGtWailing"), cr.Value("strCfgKeyAssignGtWailing") ));
+				list項目リスト.Add(PadNotifier(EPad.GtDecide, cr.Title("strCfgKeyAssignGtDecide"), cr.Value("strCfgKeyAssignGtDecide") ));
+				list項目リスト.Add(PadNotifier(EPad.GtCancel, cr.Title("strCfgKeyAssignGtCancel"), cr.Value("strCfgKeyAssignGtCancel") ));
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nInputAdjustTimeMs.Guitar);
 			}
 			else if (eMenu == Eメニュー種別.KeyAssignBass)
 			{
 				list項目リスト.Add(ReturnToMenu.Bass);
-				list項目リスト.Add(PadNotifier(EPad.BsR, "R", Properties.Resources.strCfgKeyAssignBsR));
-				list項目リスト.Add(PadNotifier(EPad.BsG, "G", Properties.Resources.strCfgKeyAssignBsG));
-				list項目リスト.Add(PadNotifier(EPad.BsB, "B", Properties.Resources.strCfgKeyAssignBsB));
-				list項目リスト.Add(PadNotifier(EPad.BsPick, "Pick", Properties.Resources.strCfgKeyAssignBsPick));
-				list項目リスト.Add(PadNotifier(EPad.BsWail, "Wailing", Properties.Resources.strCfgKeyAssignBsWailing));
-				list項目リスト.Add(PadNotifier(EPad.BsDecide, "Decide", Properties.Resources.strCfgKeyAssignBsDecide));
-				list項目リスト.Add(PadNotifier(EPad.BsCancel, "Cancel", Properties.Resources.strCfgKeyAssignBsCancel));
+				list項目リスト.Add(PadNotifier(EPad.BsR, cr.Title("strCfgKeyAssignBsR"), cr.Value("strCfgKeyAssignBsR") ));
+				list項目リスト.Add(PadNotifier(EPad.BsG, cr.Title("strCfgKeyAssignBsG"), cr.Value("strCfgKeyAssignBsG") ));
+				list項目リスト.Add(PadNotifier(EPad.BsB, cr.Title("strCfgKeyAssignBsB"), cr.Value("strCfgKeyAssignBsB") ));
+				list項目リスト.Add(PadNotifier(EPad.BsPick, cr.Title("strCfgKeyAssignBsPick"), cr.Value("strCfgKeyAssignBsPick") ));
+				list項目リスト.Add(PadNotifier(EPad.BsWail, cr.Title("strCfgKeyAssignBsWailing"), cr.Value("strCfgKeyAssignBsWailing") ));
+				list項目リスト.Add(PadNotifier(EPad.BsDecide, cr.Title("strCfgKeyAssignBsDecide"), cr.Value("strCfgKeyAssignBsDecide") ));
+				list項目リスト.Add(PadNotifier(EPad.BsCancel, cr.Title("strCfgKeyAssignBsCancel"), cr.Value("strCfgKeyAssignBsCancel") ));
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nInputAdjustTimeMs.Bass);
 			}
 			else if (eMenu == Eメニュー種別.System)
 			{
 				list項目リスト.Add(ReturnToMenu.System);
+				COptionStringList lang = new COptionStringList("default");
+				lang.Initialize(cr.Title("strCfgLanguage"), cr.Value("strCfgLanguage"), cr.LanguageList );
+				list項目リスト.Add( lang );
+
 				COptionString enumsongs = new COptionString("");
-				enumsongs.Initialize("EnumerateSongs", Properties.Resources.strCfgSysEnumSongs);
+				enumsongs.Initialize( cr.Title("strCfgSysEnumSongs"), cr.Value("strCfgSysEnumSongs") );
 				list項目リスト.Add(enumsongs);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eDark);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nRisky);
@@ -416,7 +422,7 @@ namespace DTXMania
 			{
 				list項目リスト.Add(ReturnToMenu.Drums);
 				COptionEnum<EThreeState> AllAuto = new COptionEnum<EThreeState>(EThreeState.X);
-				AllAuto.Initialize("AllAuto", Properties.Resources.strCfgDrAllAuto, typeof(EThreeState));
+				AllAuto.Initialize( cr.Title("strCfgDrAllAuto"), cr.Value("strCfgDrAllAuto"), typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
 					CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Drums, AllAuto);
@@ -447,7 +453,7 @@ namespace DTXMania
 			{
 				list項目リスト.Add(ReturnToMenu.Guitar);
 				COptionEnum<EThreeState> AllAuto = new COptionEnum<EThreeState>(EThreeState.X);
-				AllAuto.Initialize("AllAuto", Properties.Resources.strCfgDrAllAuto, typeof(EThreeState));
+				AllAuto.Initialize( cr.Title("strCfgDrAllAuto"), cr.Value("strCfgDrAllAuto"), typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
 					CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Guitar, AllAuto);
@@ -469,7 +475,7 @@ namespace DTXMania
 			{
 				list項目リスト.Add(ReturnToMenu.Bass);
 				COptionEnum<EThreeState> AllAuto = new COptionEnum<EThreeState>(EThreeState.X);
-				AllAuto.Initialize("AllAuto", Properties.Resources.strCfgDrAllAuto, typeof(EThreeState));
+				AllAuto.Initialize( cr.Title("strCfgDrAllAuto"), cr.Value("strCfgDrAllAuto"), typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
 					CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Bass, AllAuto);
@@ -545,11 +551,13 @@ namespace DTXMania
 				DisplayMenu = new STDGBSValue<COptionLabel>();
 				KeyAssignMenu = new STDGBSValue<COptionLabel>();
 				ReturnToMenu = new STDGBSValue<COptionLabel>();
+
+				CResources cr = CDTXMania.Instance.Resources;
 				for (EPart i = EPart.Drums; i <= EPart.System; ++i)
 				{
-					DisplayMenu[i] = new COptionLabel("Display Options", "");
-					KeyAssignMenu[i] = new COptionLabel("Input Options", "");
-					ReturnToMenu[i] = new COptionLabel("<< Return to Menu", "");
+					DisplayMenu[i] = new COptionLabel( cr.Title("strCfgDisplayOption"), cr.Value("strCfgDisplayOption") );
+					KeyAssignMenu[i] = new COptionLabel( cr.Title("strCfgInputOption"), cr.Value("strCfgInputOption") );
+					ReturnToMenu[i] = new COptionLabel( cr.Title("strCfgReturnToMenu"), cr.Value("strCfgReturnToMenu") );
 				}
 
 				DisplayMenu.Drums.OnEnterDelegate = () =>

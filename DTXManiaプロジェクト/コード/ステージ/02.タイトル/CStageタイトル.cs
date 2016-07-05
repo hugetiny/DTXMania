@@ -80,40 +80,10 @@ namespace DTXMania
 				prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), 36);
 				//prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );
 
-
-				System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture( "ja-JP" );
-					//System.Threading.Thread.CurrentThread.CurrentCulture;   
-				// ResourceManagerを取得する
-				System.Reflection.Assembly asm;
-				asm = System.Reflection.Assembly.GetExecutingAssembly();
-				//asm = System.Reflection.Assembly.Load( "DTXManiaGR" );
-
-				//または次のようにもできる
-				//asm = this.GetType().Assembly;
-
-				System.Resources.ResourceManager resource =
-					//new ResourceManager( "DTXManiaGR", this.GetType().Assembly );
-					DTXMania.Properties.Resources.ResourceManager;
-					//new ResourceManager( typeof(CStageタイトル));
-				CultureInfo culture = CultureInfo.CreateSpecificCulture( "ja-JP" );
-
-				//ResourceManager resource = new ResourceManager( "DTXMania.DTXManiaGR", asm );
-				//ResourceManager resource = new ResourceManager( "DTXManiaGR", asm );
-
-				//ResourceSet rs = resource.GetResourceSet( CultureInfo.CreateSpecificCulture( "ja-JP" ),
-				//					   true, false );
-				//if (rs == null)
-				//{
-				//	Debug.WriteLine( "No ja-JP resource set" );
-				//}
-
-
-//Debug.WriteLine( resource.GetString( "strTitleStart", new System.Globalization.CultureInfo( "ja-JP" ) ) );
-				//string strTitleStart = rs.GetString( "strTitleStart" );
-				string strTitleStart = resource.GetString( "strTitleStart", culture );
-				Debug.WriteLine( "{0}: {1}", culture.Name, strTitleStart );
-	
-				string[] menuStr = { strTitleStart, "CONFIGURATION", "EXIT" };
+				string strTitleStart  = CDTXMania.Instance.Resources.Title( "strTitleStart" );
+				string strTitleConfig = CDTXMania.Instance.Resources.Title( "strTitleConfiguration" );
+				string strTitleExit   = CDTXMania.Instance.Resources.Title( "strTitleExit" );
+				string[] menuStr = { strTitleStart, strTitleConfig, strTitleExit };
 				this.txMenuItem = new CTexture[menuStr.Length];
 				this.stMenuItem = new STMenuItem[menuStr.Length];
 

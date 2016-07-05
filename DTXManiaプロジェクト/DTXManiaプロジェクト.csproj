@@ -85,6 +85,7 @@
     <EmbeddedResource Include="Properties\Resources.ja-JP.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="コード\ステージ\04.コンフィグ\DeletedCode.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CConfigXml.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\COption.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="コード\ステージ\07.演奏\CStage演奏画面共通_描画.cs" />
     <Compile Include="コード\ステージ\07.演奏\TypesForPlayStage.cs" />
     <Compile Include="コード\ステージ\CActDigit.cs" />
+    <Compile Include="コード\全体\CResources.cs" />
     <Compile Include="コード\全体\Coordinates.cs" />
     <Compile Include="コード\全体\STPlugin.cs" />
     <Compile Include="コード\全体\TextureFactory.cs" />

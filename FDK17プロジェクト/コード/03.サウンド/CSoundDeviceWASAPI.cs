@@ -150,13 +150,34 @@ namespace FDK
 			Debug.Assert( Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 ),		// 0:BASSストリームの自動更新を行わない。（BASSWASAPIから行うため）
 				string.Format( "BASS_SetConfig() に失敗しました。[{0}", Bass.BASS_ErrorGetCode() ) );
 
+			#region [ デバッグ用: BASSデバイスのenumerateと、ログ出力 ]
+			//Trace.TraceInformation( "BASSデバイス一覧:" );
+			//int defDevice = -1;
+			//BASS_DEVICEINFO bdi;
+			//for ( int n = 0; ( bdi = Bass.BASS_GetDeviceInfo( n ) ) != null; n++ )
+			//{
+			//	Trace.TraceInformation( "BASS Device #{0}: {1}: IsDefault={2}, flags={3}, type={4}",
+			//		n,
+			//		bdi.name,
+			//		bdi.IsDefault, bdi.flags.ToString(), bdi.type,ToString()
+			//	);
+
+			//	//if ( bdi.IsDefault )
+			//	//{
+			//	//	defDevice = n;
+			//	//	break;
+			//	//}
+			//}
+			#endregion
 
 			// BASS の初期化。
 
 			int nデバイス = 0;		// 0:"no device" … BASS からはデバイスへアクセスさせない。アクセスは BASSWASAPI アドオンから行う。
 			int n周波数 = 44100;	// 仮決め。lデバイス（≠ドライバ）がネイティブに対応している周波数であれば何でもいい？ようだ。BASSWASAPIでデバイスの周波数は変えられる。いずれにしろBASSMXで自動的にリサンプリングされる。
-			if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
-				throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			// BASS_Initは、WASAPI初期化の直前に行うよう変更。WASAPIのmix周波数を使って初期化することで、余計なリサンプリング処理を省き高速化するため。
+			//if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
+			//	throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+
 
 			#region [ デバッグ用: WASAPIデバイスのenumerateと、ログ出力 ]
 			// (デバッグ用)
@@ -165,12 +186,15 @@ namespace FDK
 			//BASS_WASAPI_DEVICEINFO wasapiDevInfo;
 			//for ( a = 0; ( wasapiDevInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( a ) ) != null; a++ )
 			//{
-			//    if ( ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_INPUT ) == 0 // device is an output device (not input)
-			//            && ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_ENABLED ) != 0 ) // and it is enabled
-			//    {
-			//        Trace.TraceInformation( "WASAPI Device #{0}: {1}", a, wasapiDevInfo.name );
-			//        count++; // count it
-			//    }
+			//	if ( ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_INPUT ) == 0 // device is an output device (not input)
+			//			&& ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_ENABLED ) != 0 ) // and it is enabled
+			//	{
+			//		Trace.TraceInformation( "WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, minperiod={4}s, mixchans={5}, mixfreq={6}",
+			//			a,
+			//			wasapiDevInfo.name,
+			//			wasapiDevInfo.IsDefault, wasapiDevInfo.defperiod, wasapiDevInfo.minperiod, wasapiDevInfo.mixchans, wasapiDevInfo.mixfreq );
+			//		count++; // count it
+			//	}
 			//}
 			#endregion
 
@@ -197,6 +221,10 @@ namespace FDK
 			}
 			if ( nDevNo != -1 )
 			{
+				if ( !Bass.BASS_Init( nデバイス, deviceInfo.mixfreq, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
+					throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+
+
 				// Trace.TraceInformation( "Selected Default WASAPI Device: {0}", deviceInfo.name );
 				// Trace.TraceInformation( "MinPeriod={0}, DefaultPeriod={1}", deviceInfo.minperiod, deviceInfo.defperiod );
 				n更新間隔ms = (long) ( deviceInfo.minperiod * 1000 );
@@ -294,13 +322,17 @@ namespace FDK
 			}
 
 
+
 			// WASAPI出力と同じフォーマットを持つ BASS ミキサーを作成。
+
+			//Debug.Assert( Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_MIXER_BUFFER, 5 ),		// バッファ量を最大量の5にする
+			//	string.Format( "BASS_SetConfig(CONFIG_MIXER_BUFFER) に失敗しました。[{0}", Bass.BASS_ErrorGetCode() ) );
 
 			var info = BassWasapi.BASS_WASAPI_GetInfo();
 			this.hMixer = BassMix.BASS_Mixer_StreamCreate(
 				info.freq,
 				info.chans,
-				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
+				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_MIXER_POSEX );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
 			if ( this.hMixer == 0 )
 			{
 				BASSError errcode = Bass.BASS_ErrorGetCode();
@@ -326,7 +358,7 @@ namespace FDK
 			this.hMixer_DeviceOut = BassMix.BASS_Mixer_StreamCreate(
 				info.freq,
 				info.chans,
-				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
+				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_MIXER_POSEX );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
 			if ( this.hMixer_DeviceOut == 0 )
 			{
 				BASSError errcode = Bass.BASS_ErrorGetCode();
