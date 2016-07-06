@@ -135,7 +135,7 @@ namespace DTXMania
 		public override string ToString()
 		{
 			CResources cr = CDTXMania.Instance.Resources;
-			return val ? cr.Title("strCfgOn") : cr.Title("strCfgOff");
+			return val ? cr.Label("strCfgOn") : cr.Label("strCfgOff");
 		}
 
 		public void Initialize(string lbl, string expl)
@@ -287,6 +287,7 @@ namespace DTXMania
 				ptr = value;
 				if (ptr >= Length) ptr = Length - 1;
 				if (ptr < 0) ptr = 0;
+				val = vals[ptr];
 			}
 		}
 

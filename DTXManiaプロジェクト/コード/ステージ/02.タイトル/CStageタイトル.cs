@@ -80,9 +80,9 @@ namespace DTXMania
 				prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), 36);
 				//prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );
 
-				string strTitleStart  = CDTXMania.Instance.Resources.Title( "strTitleStart" );
-				string strTitleConfig = CDTXMania.Instance.Resources.Title( "strTitleConfiguration" );
-				string strTitleExit   = CDTXMania.Instance.Resources.Title( "strTitleExit" );
+				string strTitleStart  = CDTXMania.Instance.Resources.Label( "strTitleStart" );
+				string strTitleConfig = CDTXMania.Instance.Resources.Label( "strTitleConfiguration" );
+				string strTitleExit   = CDTXMania.Instance.Resources.Label( "strTitleExit" );
 				string[] menuStr = { strTitleStart, strTitleConfig, strTitleExit };
 				this.txMenuItem = new CTexture[menuStr.Length];
 				this.stMenuItem = new STMenuItem[menuStr.Length];

@@ -214,7 +214,7 @@ namespace DTXMania
 				for (int i = 0; i < strMenuItem.Length; i++)
 				{
 					Bitmap bmpStr;
-					string s = CDTXMania.Instance.Resources.Title( strMenuItem[ i ] );
+					string s = CDTXMania.Instance.Resources.Label( strMenuItem[ i ] );
 					bmpStr = prvFont.DrawPrivateFont(s, Color.White, Color.Black);
 					txMenuItemLeft[i, 0] = TextureFactory.tテクスチャの生成(bmpStr, false);
 					bmpStr.Dispose();
@@ -610,7 +610,7 @@ namespace DTXMania
 						"strCfgBsMenuDesc",
 						"strCfgExitMenuDesc"
 					};
-					string str = CDTXMania.Instance.Resources.Value( desc[ this.n現在のメニュー番号 ] );
+					string str = CDTXMania.Instance.Resources.Explanation( desc[ this.n現在のメニュー番号 ] );
 
 					//int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
 					graphics.DrawString(str, this.ftフォント, Brushes.White, new PointF(4f * Scale.X, 0));
