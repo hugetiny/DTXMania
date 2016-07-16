@@ -432,7 +432,11 @@ namespace DTXMania
 				AllAuto.Initialize( cr.Label("strCfgDrAllAuto"), cr.Explanation("strCfgDrAllAuto"), typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
-					CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Drums, AllAuto);
+					if ( AllAuto.Value == EThreeState.X )
+					{
+						AllAuto.OnNext();
+					}
+					CDTXMania.Instance.ConfigIni.bAutoPlay.Set( EPart.Drums, AllAuto );
 				};
 				list項目リスト.Add(AllAuto);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bAutoPlay.LC);
@@ -463,7 +467,11 @@ namespace DTXMania
 				AllAuto.Initialize( cr.Label("strCfgDrAllAuto"), cr.Explanation("strCfgDrAllAuto"), typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
-					CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Guitar, AllAuto);
+					if ( AllAuto.Value == EThreeState.X )
+					{
+						AllAuto.OnNext();
+					}
+					CDTXMania.Instance.ConfigIni.bAutoPlay.Set( EPart.Guitar, AllAuto );
 				};
 				list項目リスト.Add(AllAuto);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bAutoPlay.GtR);
@@ -485,7 +493,11 @@ namespace DTXMania
 				AllAuto.Initialize( cr.Label("strCfgDrAllAuto"), cr.Explanation("strCfgDrAllAuto"), typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
-					CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Bass, AllAuto);
+					if ( AllAuto.Value == EThreeState.X )
+					{
+						AllAuto.OnNext();
+					}
+					CDTXMania.Instance.ConfigIni.bAutoPlay.Set( EPart.Bass, AllAuto );
 				};
 				list項目リスト.Add(AllAuto);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bAutoPlay.BsR);
