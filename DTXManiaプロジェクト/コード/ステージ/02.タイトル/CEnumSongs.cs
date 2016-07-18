@@ -643,7 +643,10 @@ namespace DTXMania
 			}
 			finally
 			{
-				output.Close();
+				if ( output != null )		// #36469 outputがnullのままfinallyに来た時の対策
+				{
+					output.Close();
+				}
 				if (!bSucceededSerialize)
 				{
 					try

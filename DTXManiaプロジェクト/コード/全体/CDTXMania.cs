@@ -1934,6 +1934,10 @@ namespace DTXMania
 				}
 			}
 			#endregion
+
+			GC.Collect( 0, GCCollectionMode.Optimized, false );		// Rel105で処理が重くなっていることに対する、暫定処置。
+																	// 重くなっている原因に対する適切な処置をして、処理が104程度に軽くなったら、
+																	// この暫定処置は削除します。
 		}
 
 		/// <summary>

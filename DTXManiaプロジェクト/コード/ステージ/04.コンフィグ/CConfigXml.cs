@@ -950,6 +950,26 @@ namespace DTXMania
 				CSkin.bUseBoxDefSkin = bUseBoxDefSkin;
 			};
 
+			bBufferedInput.OnEnterDelegate = () =>
+			{
+				// #36433 2016.7.18 yyagi
+				// BufferedInputのON/OFFを切り替えると、OFFからONへの切り替えの際に、Enterが再入されてしまい
+				// OFFに戻ってしまう(つまり切り替えができない)問題への対策。
+				// BufferedInputの切り替え時に、入力バッファをクリアする処理を追加する。
+				while ( 
+						( CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
+							( CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
+							  CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return )
+							)
+						)
+					  )
+				{
+					Thread.Sleep( 50 );
+					CDTXMania.Instance.Input管理.tポーリング(
+						CDTXMania.Instance.bApplicationActive, CDTXMania.Instance.ConfigIni.bBufferedInput );
+				}
+			};
+
 		}
 
 
