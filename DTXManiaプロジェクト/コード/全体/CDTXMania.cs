@@ -15,6 +15,7 @@ using FDK;
 using SampleFramework;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.Web;
 
 namespace DTXMania
 {
@@ -1987,7 +1988,35 @@ namespace DTXMania
 
 		public void SaveConfig()
 		{
-			CDTXMania.SerializeXML(strEXEのあるフォルダ + "Config.xml", ConfigIni);
+
+			#region [ Skinパスの絶対パス→相対パス変換 ]
+			string _strSystemSkinSubfolderPath = ConfigIni.strSystemSkinSubfolderPath.Value;
+			Uri uriRoot = new Uri( System.IO.Path.Combine( this.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
+			if ( ConfigIni.strSystemSkinSubfolderPath.Value != null && ConfigIni.strSystemSkinSubfolderPath.Value.Length == 0 )
+			{
+				// Config.iniが空の状態でDTXManiaをViewerとして起動・終了すると、strSystemSkinSubfolderFullName が空の状態でここに来る。
+				// → 初期値として Default/ を設定する。
+				ConfigIni.strSystemSkinSubfolderPath.Value = System.IO.Path.Combine( this.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar + "Default" + System.IO.Path.DirectorySeparatorChar );
+			}
+
+			// 起動直後は(Loadの前にSaveを通るため)Skinパスには初期値の相対パスが入っている場合がある。
+			// そのため、以下の処理を通すために、いったん絶対パスに変換
+			if ( !System.IO.Path.IsPathRooted( ConfigIni.strSystemSkinSubfolderPath.Value ) )
+			{
+				ConfigIni.strSystemSkinSubfolderPath.Value =
+					Path.Combine( Path.Combine( this.strEXEのあるフォルダ, "System" ), ConfigIni.strSystemSkinSubfolderPath );
+			}
+
+			Uri uriPath = new Uri( System.IO.Path.Combine( ConfigIni.strSystemSkinSubfolderPath.Value, "." + System.IO.Path.DirectorySeparatorChar ) );
+			string relPath = uriRoot.MakeRelativeUri( uriPath ).ToString();				// 相対パスを取得
+			relPath = System.Web.HttpUtility.UrlDecode( relPath );						// デコードする
+			relPath = relPath.Replace( '/', System.IO.Path.DirectorySeparatorChar );	// 区切り文字が\ではなく/なので置換する
+			ConfigIni.strSystemSkinSubfolderPath.Value = relPath;
+			#endregion
+			CDTXMania.SerializeXML( strEXEのあるフォルダ + "Config.xml", ConfigIni );
+
+			// 元の絶対パスに戻す
+			ConfigIni.strSystemSkinSubfolderPath.Value = _strSystemSkinSubfolderPath;
 		}
 
 		public void LoadConfig()
@@ -2005,6 +2034,12 @@ namespace DTXMania
 				{
 					ConfigIni = new CConfigXml();
 					SaveConfig();
+				}
+				// Skinパスの相対パスを、絶対パスに変換
+				if ( !System.IO.Path.IsPathRooted( ConfigIni.strSystemSkinSubfolderPath.Value ) )
+				{
+					ConfigIni.strSystemSkinSubfolderPath.Value =
+						Path.Combine( Path.Combine( this.strEXEのあるフォルダ, "System" ), ConfigIni.strSystemSkinSubfolderPath );
 				}
 			}
 		}
