@@ -39,6 +39,12 @@ namespace DTXCreator.オプション関連
 			cオプションダイアログ.radioButton_ASIO.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.ASIO;
 
 			int nASIOdevs = cオプションダイアログ.tASIOデバイスリストの内訳を生成する();
+			if ( nASIOdevs <= this.formメインフォーム.appアプリ設定.ViewerInfo.ASIODeviceNo )	// ASIOの構成が変わった(機器が減った)場合は、ASIOを使わない
+			{
+				this.formメインフォーム.appアプリ設定.ViewerInfo.ASIODeviceNo = 0;
+				cオプションダイアログ.radioButton_ASIO.Checked = false;
+				cオプションダイアログ.radioButton_DirectSound.Checked = true;
+			}
 			cオプションダイアログ.comboBox_ASIOdevices.SelectedIndex = this.formメインフォーム.appアプリ設定.ViewerInfo.ASIODeviceNo;
 			if ( nASIOdevs == 1 && cオプションダイアログ.comboBox_ASIOdevices.Items[ 0 ].ToString() == "None" )
 			{
