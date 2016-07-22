@@ -373,13 +373,6 @@ namespace DTXMania
 				}
 
 				cInvisibleChip.Reset();
-				string strLabel = CDTXMania.Instance.stage選曲.r確定された曲.ar難易度ラベル[CDTXMania.Instance.stage選曲.n確定された曲の難易度];
-				string strPanel = CDTXMania.Instance.DTX.TITLE;
-				if (!string.IsNullOrWhiteSpace(strLabel))
-				{
-					strPanel += "(" + strLabel + ")";
-				}
-				this.actPanel.SetPanelString(strPanel);
 				actGauge.Init(CDTXMania.Instance.ConfigIni.nRisky);
 				// 効果音のストリームをミキサーから解除しておく
 				CDTXMania.Instance.Skin.tRemoveMixerAll();
@@ -479,6 +472,19 @@ namespace DTXMania
 				}
 
 				base.On活性化();
+
+				// PANELの設定は、base.On活性化()の後に(actPanelの活性化の後)行うこと。
+				// さもないと、actPanelが活性化されていないため、パネル文字列の設定が機能しなくなる。
+				string strLabel = CDTXMania.Instance.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.Instance.stage選曲.n確定された曲の難易度 ];
+				string strPanel = CDTXMania.Instance.DTX.TITLE;
+				//string strSETDEFlabel = CDTXMania.Instance.stage選曲.r確定された曲.strタイトル;
+				if ( !string.IsNullOrWhiteSpace( strLabel ) && !strPanel.Contains(strLabel)
+				//	&& (strPanel == strSETDEFlabel)
+				)
+				{
+					strPanel += " (" + strLabel + ")";
+				}
+				this.actPanel.SetPanelString( strPanel );
 			}
 		}
 		public override void On非活性化()

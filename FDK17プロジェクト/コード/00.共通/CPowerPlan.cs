@@ -59,15 +59,15 @@ namespace FDK
 			);
 			if ( retval == 0 )
 			{
-				Debug.WriteLine( "SYSTEM_POWER_CAPABILITIES.AOAC: " + cap.AoAc );
+				//Debug.WriteLine( "SYSTEM_POWER_CAPABILITIES.AOAC: " + cap.AoAc );
 				if ( cap.AoAc )
 				{
-					Debug.WriteLine( "Connected Standby is enabled." );
+					//Debug.WriteLine( "Connected Standby is enabled." );
 					return true;
 				}
 				else
 				{
-					Debug.WriteLine( "Connected Standby is NOT enabled." );
+					//Debug.WriteLine( "Connected Standby is NOT enabled." );
 					return false;
 				}
 			}

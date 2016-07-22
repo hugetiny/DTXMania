@@ -9,16 +9,19 @@ using System.Diagnostics;
 
 namespace DTXMania
 {
+	/// <summary>
+	/// 多言語メッセージ情報を扱います。
+	/// </summary>
 	public class CResources
 	{
-		private string csvFileName = "resources.csv";
+		private const string csvFileName = @"System\resources.csv";
 
 		private string[] csvHeader = null;
 		private Dictionary<string, string> dict = new Dictionary<string, string>();
 
-		private string[] langcodelist = null, langlist = null;
+		private string[] langcodelist = null, langdisplist = null;
 
-		public string strLanguageCode;
+		private string strLanguageCode;
 
 
 		/// <summary>
@@ -41,7 +44,7 @@ namespace DTXMania
 					}
 
 				}
-Debug.WriteLine( "Get: strLanguageCode: " + strLanguageCode );
+//Debug.WriteLine( "Get: strLanguageCode: " + strLanguageCode );
 				return strLanguageCode;
 			}
 			set
@@ -72,22 +75,32 @@ Debug.WriteLine( "Get: strLanguageCode: " + strLanguageCode );
 				if ( CDTXMania.Instance.ConfigIni != null )
 				{
 					CDTXMania.Instance.ConfigIni.strLanguage.Value = strLanguageCode;
-Debug.WriteLine( "strLang.Value=" + CDTXMania.Instance.ConfigIni.strLanguage.Value );
+//Debug.WriteLine( "strLang.Value=" + CDTXMania.Instance.ConfigIni.strLanguage.Value );
 				}
-Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
+//Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
 			}
 		}
 
 		/// <summary>
-		/// 使用可能な
+		/// 使用可能な言語(表示名)のリストを返す
 		/// </summary>
-		public string[] LanguageList
+		/// <remarks>
+		/// listの格納順は、LanguageCodeListと一致する。
+		/// </remarks>
+		public string[] LanguageDispList
 		{
 			get
 			{
-				return langlist;
+				return langdisplist;
 			}
 		}
+
+		/// <summary>
+		/// 使用可能な言語(ja-JPなどの言語コード)のリストを返す
+		/// </summary>
+		/// <remarks>
+		/// listの格納順は、LanguageDispListと一致する。
+		/// </remarks>
 		public string[] LanguageCodeList
 		{
 			get
@@ -95,6 +108,10 @@ Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
 				return langcodelist;
 			}
 		}
+		/// <summary>
+		/// 現在設定されている言語のindex順を返す
+		/// LanguageDispListやLanguageCodeListのindexに相当する
+		/// </summary>
 		public int LanguageCodeIndex
 		{
 			get
@@ -105,6 +122,11 @@ Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
 			}
 		}
 		
+		/// <summary>
+		/// key名に相当するlabel(表示名)を返す
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
 		public string Label( string key )
 		{
 			return Resource( key, "title", strLanguageCode );
@@ -113,16 +135,27 @@ Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
 		{
 			return Resource( key, "title", strLang );
 		}
+		/// <summary>
+		/// key名に相当するExplanation(説明文)を返す
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
 		public string Explanation( string key )
 		{
 			return Resource( key, "value", strLanguageCode );
 		}
+		/// <summary>
+		/// key名に相当するitem(コンマ区切りの選択肢)を返す
+		/// ただし現在は未使用
+		/// /// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
 		public string Items( string key )
 		{
 			return Resource( key, "items", strLanguageCode );
 		}
 
-		public string Resource(string key, string strType)
+		private string Resource(string key, string strType)
 		{
 			return Resource( key, strType, strLanguageCode );
 		}
@@ -162,12 +195,19 @@ Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
 			return value;
 		}
 
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
 		public CResources()
 		{
 //            this.csvPath = excelPath;
         }
  
-        // language="ja-JP"とか。
+		/// <summary>
+		/// csvファイルを読み込んで、言語リソースを初期化する。
+		/// languageで指定した言語リソースがない場合は、default(=en-US)にフォールバックする。
+		/// </summary>
+		/// <param name="language">"ja-JP"などの言語情報。""の場合は、default(=en-US)が用いられる。</param>
         public void LoadResources(string language = "")
         {
 			// 参考: http://dobon.net/vb/dotnet/file/readcsvfile.html
@@ -226,15 +266,10 @@ Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
 			//後始末
 			tfp.Close();
 
-			//foreach ( string key in dict.Keys )
-			//{
-			//	Console.WriteLine( "{0} : {1}", key, dict[ key ] );
-			//}
-
 
 			#region [ langcodelist, langlist 生成 ]
 			List<string> lstLangCodeList = new List<string>();
-			List<string> lstLangList = new List<string>();
+			List<string> lstLangDispList = new List<string>();
 
 			for ( int i = 1; i < csvHeader.Length; i++ )		// 0から開始、ではない (0は名称定義)
 			{
@@ -242,13 +277,12 @@ Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
 				if ( !lstLangCodeList.Contains( s ) )
 				{
 					lstLangCodeList.Add( s );
-					lstLangList.Add( Label("strCfgLanguageName", s ) );
+					lstLangDispList.Add( Label("strCfgLanguageName", s ) );
 				}
 			}
 			langcodelist = lstLangCodeList.ToArray();
-			langlist = lstLangList.ToArray();
+			langdisplist = lstLangDispList.ToArray();
 			#endregion
-
 
 			Language = language;
         }
@@ -267,7 +301,7 @@ Debug.WriteLine( "Set: strLanguageCode: " + strLanguageCode );
 			dict = null;
 			csvHeader = null;
 			langcodelist = null;
-			langlist = null;
+			langdisplist = null;
 		}
 		~CResources()
 		{

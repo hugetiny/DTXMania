@@ -13,19 +13,18 @@ namespace DTXMania
 
 			string[] items = new string[] { "Z,Y,X,...", "A,B,C,..." };
 			COptionStringList title = new COptionStringList(items[0]);
-			title.Initialize("", "", items);
-			title.label = "Title";
+			title.Initialize( "strSortByTitle", items);
 			title.OnEnterDelegate = () =>
 			{
 				this.act曲リスト.t曲リストのソート(CDTXMania.Instance.Songs管理.t曲リストのソート2_タイトル順, eInst,
 						title.Index == 0 ? -1 : 1);
 				this.act曲リスト.t選択曲が変更された(true);
 			};
+			lci.Add( title );
 
 			items = new string[] { "99,98,97,...", "1,2,3,..." };
 			COptionStringList level = new COptionStringList(items[0]);
-			level.Initialize("", "", items);
-			level.label = "Level";
+			level.Initialize( "strSortByLevel", items);
 			level.OnEnterDelegate = () =>
 			{
 				this.act曲リスト.t曲リストのソート(
@@ -34,11 +33,11 @@ namespace DTXMania
 								this.act曲リスト.n現在のアンカ難易度レベル);
 				this.act曲リスト.t選択曲が変更された(true);
 			};
+			lci.Add( level );
 
 			items = new string[] { "E,D,C,...", "SS,S,A,..." };
 			COptionStringList bestrank = new COptionStringList(items[0]);
-			bestrank.Initialize("", "", items);
-			bestrank.label = "Best Rank";
+			bestrank.Initialize( "strSortByBestRank", items);
 			bestrank.OnEnterDelegate = () =>
 			{
 				this.act曲リスト.t曲リストのソート(
@@ -47,11 +46,11 @@ namespace DTXMania
 								this.act曲リスト.n現在のアンカ難易度レベル
 						);
 			};
+			lci.Add( bestrank );
 
 			items = new string[] { "10,9,8,...", "1,2,3,..." };
 			COptionStringList playcount = new COptionStringList(items[0]);
-			playcount.Initialize("", "", items);
-			playcount.label = "Play Count";
+			playcount.Initialize( "strSortByPlayCount", items);
 			playcount.OnEnterDelegate = () =>
 			{
 				this.act曲リスト.t曲リストのソート(
@@ -61,11 +60,11 @@ namespace DTXMania
 				);
 				this.act曲リスト.t選択曲が変更された(true);
 			};
+			lci.Add( playcount );
 
 			items = new string[] { "Z,Y,X,...", "A,B,C,..." };
 			COptionStringList author = new COptionStringList(items[0]);
-			author.Initialize("", "", items);
-			author.label = "Author";
+			author.Initialize( "strSortByAuthor", items);
 			author.OnEnterDelegate = () =>
 			{
 				this.act曲リスト.t曲リストのソート(
@@ -75,11 +74,11 @@ namespace DTXMania
 						);
 				this.act曲リスト.t選択曲が変更された(true);
 			};
+			lci.Add( author );
 
 			items = new string[] { "100,99,98,...", "1,2,3,..." };
 			COptionStringList skillpoint = new COptionStringList(items[0]);
-			skillpoint.Initialize("", "", items);
-			skillpoint.label = "Skill Point";
+			skillpoint.Initialize( "strSortBySkillPoint", items);
 			skillpoint.OnEnterDelegate = () =>
 			{
 				this.act曲リスト.t曲リストのソート(
@@ -89,11 +88,11 @@ namespace DTXMania
 						);
 				this.act曲リスト.t選択曲が変更された(true);
 			};
-
+			lci.Add( skillpoint );
+			
 			items = new string[] { "Dec.31,30,...", "Jan.1,2,..." };
 			COptionStringList date = new COptionStringList(items[0]);
-			date.Initialize("", "", items);
-			date.label = "Date";
+			date.Initialize( "strSortByDate", items);
 			date.OnEnterDelegate = () =>
 			{
 				this.act曲リスト.t曲リストのソート(
@@ -103,16 +102,18 @@ namespace DTXMania
 								);
 				this.act曲リスト.t選択曲が変更された(true);
 			};
+			lci.Add( date );
 
 
 			COptionString ret = new COptionString("Return");
-			ret.Initialize("Return", "");
+			ret.Initialize( "strSortReturn");
 			ret.OnEnterDelegate = () =>
 			{
 				this.tDeativatePopupMenu();
 			};
+			lci.Add( ret );
 
-			base.Initialize(lci, false, "SORT MENU");
+			base.Initialize(lci, false, CDTXMania.Instance.Resources.Label("strSortMenu"));
 		}
 
 

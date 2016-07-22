@@ -23,7 +23,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "105(160214)";
+		public static readonly string VERSION = "105(160801)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";     // June 2010
 																																//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -255,8 +255,9 @@ namespace DTXMania
 			#endregion
 
 			#region [ 言語の設定 ]
-			Debug.WriteLine( "language=" + Resources.Language );
-			Debug.WriteLine( "settings=" + instance.ConfigIni.strLanguage );
+			Trace.TraceInformation( "言語情報の読み込みを開始します。" );
+			//Debug.WriteLine( "language=" + Resources.Language );
+			//Debug.WriteLine( "settings=" + instance.ConfigIni.strLanguage );
 			Resources.Language = instance.ConfigIni.strLanguage;
 			Trace.TraceInformation( "言語を{0}に設定しました。", Resources.Language );
 
@@ -2013,6 +2014,8 @@ namespace DTXMania
 			relPath = relPath.Replace( '/', System.IO.Path.DirectorySeparatorChar );	// 区切り文字が\ではなく/なので置換する
 			ConfigIni.strSystemSkinSubfolderPath.Value = relPath;
 			#endregion
+			ConfigIni.strDTXManiaVersion.Value = CDTXMania.VERSION;
+
 			CDTXMania.SerializeXML( strEXEのあるフォルダ + "Config.xml", ConfigIni );
 
 			// 元の絶対パスに戻す

@@ -21,15 +21,60 @@ namespace DTXMania
 	public abstract class COptionBase
 	{
 		public EOptionType type;
+
+		private string _label;
 		/// <summary>
 		/// コンフィグ画面におけるこの項目を表す文字列。
+		/// nullの場合は、代わりにstrnameで名づけられたリソースから文字列を取得します。
 		/// </summary>
-		public string label;
+		public string label
+		{
+			get
+			{
+				return (_label == null)? CDTXMania.Instance.Resources.Label(_strname ) : _label;
+			}
+			set
+			{
+				_label = value;
+				_strname = null;
+			}
+		}
 
+		private string _explanation;
 		/// <summary>
-		/// 説明。Properties.Resources から取得してください。
+		/// 説明。
+		/// nullの場合は、代わりにstrnameで名づけられたリソースから文字列を取得します。
 		/// </summary>
-		public string explanation;
+		public string explanation
+		{
+			get
+			{
+				return ( _explanation == null ) ? CDTXMania.Instance.Resources.Explanation( _strname ) : _explanation;
+			}
+			set
+			{
+				_explanation = value;
+				_strname = null;
+			}
+		}
+
+		private string _strname;
+		/// <summary>
+		/// 文字列の名前。リソースから文字列を取得する場合のkey文字列として使用。
+		/// これがnullの場合は、labelとexplanationに設定された文字列を直接使います。
+		/// </summary>
+		public string strname
+		{
+			get
+			{
+				return _strname;
+			}
+			set
+			{
+				_strname = value;
+			}
+		
+		}
 
 		/// <summary>
 		/// OnEnter で用いる動作。たとえば、この値によってほかのオプションに制約を与える場合などに
@@ -143,6 +188,14 @@ namespace DTXMania
 		{
 			label = lbl;
 			explanation = expl;
+			strname = null;
+		}
+
+		public void Initialize( string strname_ )
+		{
+			label = null;
+			explanation = null;
+			strname = strname_;
 		}
 	}
 
@@ -234,6 +287,16 @@ namespace DTXMania
 			nMin = min;
 			nMax = max;
 			nStep = step;
+			strname = null;
+		}
+		public void Initialize( string _strname, int min = int.MinValue, int max = int.MaxValue, int step = 1 )
+		{
+			label = null;
+			explanation = null;
+			nMin = min;
+			nMax = max;
+			nStep = step;
+			strname = _strname;
 		}
 	}
 
@@ -347,7 +410,18 @@ namespace DTXMania
 		{
 			label = lbl;
 			explanation = expl;
-
+			strname = null;
+			InitialieMain( type );
+		}
+		public void Initialize( string _strname, Type type )
+		{
+			label = null;
+			explanation = null;
+			strname = _strname;
+			InitialieMain( type );
+		}
+		private void InitialieMain( Type type )
+		{
 			Length = type.GetEnumValues().Length;
 			vals = new E[Length];
 			int initptr = -1;
@@ -391,6 +465,13 @@ namespace DTXMania
 		{
 			label = lbl;
 			explanation = expl;
+			strname = null;
+		}
+		public void Initialize( string _strname )
+		{
+			label = null;
+			explanation = null;
+			strname = _strname;
 		}
 
 		public override string ToString()
@@ -411,7 +492,18 @@ namespace DTXMania
 		{
 			label = lbl;
 			explanation = expl;
-
+			strname = null;
+			InitializeMain( initvals );
+		}
+		public void Initialize( string _strname, string[] initvals )
+		{
+			label = null;
+			explanation = null;
+			strname = _strname;
+			InitializeMain( initvals );
+		}
+		public void InitializeMain( string[] initvals )
+		{
 			Length = initvals.Length;
 			vals = new string[Length];
 			int initptr = -1;
@@ -451,10 +543,17 @@ namespace DTXMania
 			val = init;
 		}
 
-		public void Initialize(string lbl, string expl)
+		public void Initialize( string lbl, string expl )
 		{
 			label = lbl;
 			explanation = expl;
+			strname = null;
+		}
+		public void Initialize( string _strname )
+		{
+			label = null;
+			explanation = null;
+			strname = _strname;
 		}
 
 		public override string ToString()
@@ -471,6 +570,15 @@ namespace DTXMania
 			type = EOptionType.Other;
 			label = lbl;
 			explanation = expl;
+			strname = null;
+		}
+		public COptionLabel( string _strname )
+			: base( "" )
+		{
+			type = EOptionType.Other;
+			label = null;
+			explanation = null;
+			strname = _strname;
 		}
 	}
 

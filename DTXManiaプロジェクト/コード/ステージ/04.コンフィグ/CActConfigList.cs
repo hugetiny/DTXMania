@@ -14,6 +14,8 @@ namespace DTXMania
 		STDGBSValue<COptionLabel> ReturnToMenu;
 		STDGBSValue<COptionLabel> KeyAssignMenu;
 		STDGBSValue<COptionLabel> DisplayMenu;
+		STDGBSValue<COptionLabel> EDrumsMenu;
+		COptionLabel HitRangeMenu;
 		COptionStringList skins;
 
 		bool b項目リスト側にフォーカスがある;
@@ -145,6 +147,14 @@ namespace DTXMania
 			else if (this.eメニュー種別 == Eメニュー種別.DisplayBass)
 			{
 				t項目リストの設定(Eメニュー種別.Bass);
+			}
+			else if (this.eメニュー種別 == Eメニュー種別.EDrumsSettings)
+			{
+				t項目リストの設定(Eメニュー種別.Drums);
+			}
+			else if (this.eメニュー種別 == Eメニュー種別.HitRangeSettings)
+			{
+				t項目リストの設定(Eメニュー種別.System);
 			}
 		}
 
@@ -311,6 +321,27 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nMinComboDisp.Bass);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bGraph.Bass);
 			}
+			else if (eMenu == Eメニュー種別.EDrumsSettings)
+			{
+				list項目リスト.Add(ReturnToMenu.Drums);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.LC);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.HH);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.SD);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.BD);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.HT);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.LT);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.FT);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.CY);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nVelocityMin.RD);
+			}
+			else if (eMenu == Eメニュー種別.HitRangeSettings)
+			{
+				list項目リスト.Add(ReturnToMenu.System);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nHitRange.Perfect);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nHitRange.Great);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nHitRange.Good);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nHitRange.Poor);
+			}
 			else if (eMenu == Eメニュー種別.KeyAssignSystem)
 			{
 				list項目リスト.Add(ReturnToMenu.System);
@@ -365,7 +396,7 @@ namespace DTXMania
 			{
 				list項目リスト.Add(ReturnToMenu.System);
 				COptionStringList langlist = new COptionStringList("default");
-				langlist.Initialize(cr.Label("strCfgLanguage"), cr.Explanation("strCfgLanguage"), cr.LanguageList );
+				langlist.Initialize( "strCfgLanguage", cr.LanguageDispList );
 				langlist.Index = CDTXMania.Instance.Resources.LanguageCodeIndex;
 				langlist.OnEnterDelegate = () =>
 				{
@@ -376,7 +407,7 @@ namespace DTXMania
 				list項目リスト.Add( langlist );
 			
 				COptionString enumsongs = new COptionString("");
-				enumsongs.Initialize( cr.Label("strCfgSysEnumSongs"), cr.Explanation("strCfgSysEnumSongs") );
+				enumsongs.Initialize( "strCfgSysEnumSongs" );
 				list項目リスト.Add(enumsongs);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eDark);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nRisky);
@@ -409,6 +440,7 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseBoxDefSkin);
 				list項目リスト.Add(skins);
 				list項目リスト.Add(DisplayMenu.System);
+				list項目リスト.Add(HitRangeMenu);
 				list項目リスト.Add(KeyAssignMenu.System);
 				enumsongs.OnEnterDelegate = () =>
 				{
@@ -429,7 +461,7 @@ namespace DTXMania
 			{
 				list項目リスト.Add(ReturnToMenu.Drums);
 				COptionEnum<EThreeState> AllAuto = new COptionEnum<EThreeState>(EThreeState.X);
-				AllAuto.Initialize( cr.Label("strCfgDrAllAuto"), cr.Explanation("strCfgDrAllAuto"), typeof(EThreeState));
+				AllAuto.Initialize( "strCfgDrAllAuto", typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
 					if ( AllAuto.Value == EThreeState.X )
@@ -458,13 +490,14 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDrumsHitSound);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Drums);
 				list項目リスト.Add(DisplayMenu.Drums);
+				list項目リスト.Add(EDrumsMenu.Drums);
 				list項目リスト.Add(KeyAssignMenu.Drums);
 			}
 			else if (eMenu == Eメニュー種別.Guitar)
 			{
 				list項目リスト.Add(ReturnToMenu.Guitar);
 				COptionEnum<EThreeState> AllAuto = new COptionEnum<EThreeState>(EThreeState.X);
-				AllAuto.Initialize( cr.Label("strCfgDrAllAuto"), cr.Explanation("strCfgDrAllAuto"), typeof(EThreeState));
+				AllAuto.Initialize( "strCfgDrAllAuto", typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
 					if ( AllAuto.Value == EThreeState.X )
@@ -490,7 +523,7 @@ namespace DTXMania
 			{
 				list項目リスト.Add(ReturnToMenu.Bass);
 				COptionEnum<EThreeState> AllAuto = new COptionEnum<EThreeState>(EThreeState.X);
-				AllAuto.Initialize( cr.Label("strCfgDrAllAuto"), cr.Explanation("strCfgDrAllAuto"), typeof(EThreeState));
+				AllAuto.Initialize( "strCfgDrAllAuto", typeof(EThreeState));
 				AllAuto.OnEnterDelegate = () =>
 				{
 					if ( AllAuto.Value == EThreeState.X )
@@ -567,17 +600,22 @@ namespace DTXMania
 				this.nスクロール用タイマ値 = -1;
 				this.ct三角矢印アニメ = new CCounter();
 
+
 				DisplayMenu = new STDGBSValue<COptionLabel>();
 				KeyAssignMenu = new STDGBSValue<COptionLabel>();
+				EDrumsMenu = new STDGBSValue<COptionLabel>();
 				ReturnToMenu = new STDGBSValue<COptionLabel>();
 
 				CResources cr = CDTXMania.Instance.Resources;
-				for (EPart i = EPart.Drums; i <= EPart.System; ++i)
+				for ( EPart i = EPart.Drums; i <= EPart.System; ++i )
 				{
-					DisplayMenu[i] = new COptionLabel( cr.Label("strCfgDisplayOption"), cr.Explanation("strCfgDisplayOption") );
-					KeyAssignMenu[i] = new COptionLabel( cr.Label("strCfgInputOption"), cr.Explanation("strCfgInputOption") );
-					ReturnToMenu[i] = new COptionLabel( cr.Label("strCfgReturnToMenu"), cr.Explanation("strCfgReturnToMenu") );
+					DisplayMenu[i] = new COptionLabel( "strCfgDisplayOption" );
+					KeyAssignMenu[i] = new COptionLabel( "strCfgInputOption" );
+					ReturnToMenu[i] = new COptionLabel( "strCfgReturnToMenu" );
 				}
+
+				EDrumsMenu[ EPart.Drums ] = new COptionLabel( "strCfgEDrumsOption" );
+				HitRangeMenu = new COptionLabel( "strCfgHitRangeOption" );
 
 				DisplayMenu.Drums.OnEnterDelegate = () =>
 				{
@@ -628,6 +666,14 @@ namespace DTXMania
 				ReturnToMenu.System.OnEnterDelegate = () =>
 				{
 					t項目リストの設定(Eメニュー種別.System);
+				};
+				EDrumsMenu.Drums.OnEnterDelegate = () =>
+				{
+					t項目リストの設定(Eメニュー種別.EDrumsSettings);
+				};
+				HitRangeMenu.OnEnterDelegate = () =>
+				{
+					t項目リストの設定( Eメニュー種別.HitRangeSettings );
 				};
 
 				#region [ スキン選択肢と、現在選択中のスキン(index)の準備 #28195 2012.5.2 yyagi ]
@@ -1097,6 +1143,8 @@ namespace DTXMania
 			DisplayDrums,
 			DisplayGuitar,
 			DisplayBass,
+			EDrumsSettings,
+			HitRangeSettings,
 			Unknown
 		}
 
