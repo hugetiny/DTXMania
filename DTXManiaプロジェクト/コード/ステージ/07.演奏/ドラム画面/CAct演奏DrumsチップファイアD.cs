@@ -74,17 +74,10 @@ namespace DTXMania
 		const int FIRE_MAX = 8 * 8;
 		readonly float[] fY波の最小仰角 = new float[] { -130f, -126f, -120f, -118f, -110f, -108f, -103f, -97f };
 		readonly float[] fY波の最大仰角 = new float[] { 70f, 72f, 77f, 84f, 89f, 91f, 99f, 107f };
-		readonly int[] nレーンの中央X座標 = new int[]
+		private int nレーンの中央X座標(int l)
 		{
-			CDTXMania.Instance.ConfigIni.GetLaneX(ELane.LC) + CDTXMania.Instance.ConfigIni.GetLaneW(ELane.LC)/2,
-			CDTXMania.Instance.ConfigIni.GetLaneX(ELane.HH) + CDTXMania.Instance.ConfigIni.GetLaneW(ELane.HH)/2,
-			CDTXMania.Instance.ConfigIni.GetLaneX(ELane.SD) + CDTXMania.Instance.ConfigIni.GetLaneW(ELane.SD)/2,
-			CDTXMania.Instance.ConfigIni.GetLaneX(ELane.BD) + CDTXMania.Instance.ConfigIni.GetLaneW(ELane.BD)/2,
-			CDTXMania.Instance.ConfigIni.GetLaneX(ELane.HT) + CDTXMania.Instance.ConfigIni.GetLaneW(ELane.HT)/2,
-			CDTXMania.Instance.ConfigIni.GetLaneX(ELane.LT) + CDTXMania.Instance.ConfigIni.GetLaneW(ELane.LT)/2,
-			CDTXMania.Instance.ConfigIni.GetLaneX(ELane.FT) + CDTXMania.Instance.ConfigIni.GetLaneW(ELane.FT)/2,
-			CDTXMania.Instance.ConfigIni.GetLaneX(ELane.CY) + CDTXMania.Instance.ConfigIni.GetLaneW(ELane.CY)/2,
-		};
+			return CDTXMania.Instance.ConfigIni.GetLaneX( (ELane)l ) + CDTXMania.Instance.ConfigIni.GetLaneW( (ELane)l ) / 2;
+		}
 		const int STAR_MAX = 0x100;
 		ST火花[] st火花 = new ST火花[FIRE_MAX];
 		ST大波[] st大波 = new ST大波[BIGWAVE_MAX];
@@ -142,7 +135,7 @@ namespace DTXMania
 								double num7 = 0.9 + (((double)CDTXMania.Instance.Random.Next(40)) / 100.0);
 								this.st青い星[j].nLane = (int)lane;
 								this.st青い星[j].ct進行 = new CCounter(0, 100, 7, CDTXMania.Instance.Timer);
-								this.st青い星[j].fX = this.nレーンの中央X座標[(int)lane];
+								this.st青い星[j].fX = nレーンの中央X座標( (int)lane );	// this.nレーンの中央X座標[ (int) lane ];
 								this.st青い星[j].fY = posY;
 								this.st青い星[j].f加速度X = (float)(num7 * Math.Cos((Math.PI * 2 * n回転初期値) / 360.0));
 								this.st青い星[j].f加速度Y = (float)(num7 * (Math.Sin((Math.PI * 2 * n回転初期値) / 360.0) - 0.2));
@@ -321,7 +314,7 @@ namespace DTXMania
 						identity *= Matrix.RotationZ(num3 + ((float)Math.PI / 2));
 						float num5 = ((float)(0.8 * Math.Sin(num2 * Math.PI / 2))) * this.st火花[i].fサイズ;
 
-						float dx = (this.nレーンの中央X座標[this.st火花[i].nLane] + (((float)Math.Cos((double)num3)) * num5) - SampleFramework.GameWindowSize.Width / 2);
+						float dx = (nレーンの中央X座標(this.st火花[i].nLane) + (((float)Math.Cos((double)num3)) * num5) - SampleFramework.GameWindowSize.Width / 2);
 						float dy = -(posY + (((float)Math.Sin((double)num3)) * num5) - SampleFramework.GameWindowSize.Height / 2f);
 						identity *= Matrix.Translation(dx, dy, 0f);
 						if (this.tx火花 != null)
@@ -405,7 +398,7 @@ namespace DTXMania
 							matrix3 *= Matrix.RotationX(this.st大波[i].f角度X);
 							matrix3 *= Matrix.RotationY(this.st大波[i].f角度Y);
 
-							float dx = this.nレーンの中央X座標[this.st大波[i].nLane] - SampleFramework.GameWindowSize.Width / 2;
+							float dx = nレーンの中央X座標(this.st大波[i].nLane) - SampleFramework.GameWindowSize.Width / 2;
 							float dy = -(posY - SampleFramework.GameWindowSize.Height / 2);
 							matrix3 *= Matrix.Translation(dx, dy, 0f);
 							if (this.tx大波 != null)
@@ -440,7 +433,7 @@ namespace DTXMania
 							matrix4 *= Matrix.RotationX(this.st細波[i].f角度X);
 							matrix4 *= Matrix.RotationY(this.st細波[i].f角度Y);
 
-							float dx = this.nレーンの中央X座標[this.st細波[i].nLane] - SampleFramework.GameWindowSize.Width / 2;
+							float dx = nレーンの中央X座標(this.st細波[i].nLane) - SampleFramework.GameWindowSize.Width / 2;
 							float dy = -(posY - SampleFramework.GameWindowSize.Height / 2);
 							matrix4 *= Matrix.Translation(dx, dy, 0f);
 							if (this.tx細波 != null)
