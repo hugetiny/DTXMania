@@ -204,11 +204,11 @@ namespace DTXMania
 
 				prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y));
 				string[] strMenuItem = { 
-					"strCfgSysMenuItem",
-					"strCfgDrMenuItem",
-					"strCfgGtMenuItem",
-					"strCfgBsMenuItem",
-					"strCfgExitMenuItem"
+					"strCfgSysMenuDesc",
+					"strCfgDrMenuDesc",
+					"strCfgGtMenuDesc",
+					"strCfgBsMenuDesc",
+					"strCfgExitMenuDesc"
 				};
 				txMenuItemLeft = new CTexture[strMenuItem.Length, 2];
 				for (int i = 0; i < strMenuItem.Length; i++)

@@ -830,67 +830,67 @@ namespace DTXMania
 			strASIODevice.Initialize( "strCfgSysASIODevice", asiodevs);
 
 			int crdStep = 10;
-			cdInstX.Drums.Both.Initialize("DrumsX(Both)", Properties.Resources.strCfgDispDrumsXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdInstX.Drums.DrOnly.Initialize("DrumsX(Dr)", Properties.Resources.strCfgDispDrumsXDr, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdInstX.Guitar.Both.Initialize("GuitarX(Both)", Properties.Resources.strCfgDispGuitarXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdInstX.Guitar.GBOnly.Initialize("GuitarX(GB)", Properties.Resources.strCfgDispGuitarXGB, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdInstX.Bass.Both.Initialize("BassX(Both)", Properties.Resources.strCfgDispBassXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdInstX.Bass.GBOnly.Initialize("BassX(GB)", Properties.Resources.strCfgDispBassXGB, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdInstX.Drums.Both.Initialize("strCfgDispDrumsXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdInstX.Drums.DrOnly.Initialize("strCfgDispDrumsXDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdInstX.Guitar.Both.Initialize("strCfgDispGuitarXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdInstX.Guitar.GBOnly.Initialize("strCfgDispGuitarXGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdInstX.Bass.Both.Initialize("strCfgDispBassXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdInstX.Bass.GBOnly.Initialize("strCfgDispBassXGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
 
-			cdDebugX.DrOnly.Initialize("DebugX(Dr)", Properties.Resources.strCfgDispDebugXDr, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdDebugX.Both.Initialize("DebugX(Both)", Properties.Resources.strCfgDispDebugXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdDebugX.GBOnly.Initialize("DebugX(GB)", Properties.Resources.strCfgDispDebugXGB, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdDebugY.DrOnly.Initialize("DebugY(Dr)", Properties.Resources.strCfgDispDebugYDr, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdDebugY.Both.Initialize("DebugY(Both)", Properties.Resources.strCfgDispDebugYBoth, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdDebugY.GBOnly.Initialize("DebugY(GB)", Properties.Resources.strCfgDispDebugYGB, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdDebugX.DrOnly.Initialize("strCfgDispDebugXDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdDebugX.Both.Initialize("strCfgDispDebugXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdDebugX.GBOnly.Initialize("strCfgDispDebugXGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdDebugY.DrOnly.Initialize("strCfgDispDebugYDr", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdDebugY.Both.Initialize("strCfgDispDebugYBoth", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdDebugY.GBOnly.Initialize("strCfgDispDebugYGB", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 
-			cdMovieX.DrOnly.Initialize("MovieX(Dr)", Properties.Resources.strCfgDispMovieXDr, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdMovieX.Both.Initialize("MovieX(Both)", Properties.Resources.strCfgDispMovieXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdMovieX.GBOnly.Initialize("MovieX(GB)", Properties.Resources.strCfgDispMovieXGB, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdMovieY.DrOnly.Initialize("MovieY(Dr)", Properties.Resources.strCfgDispMovieYDr, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdMovieY.Both.Initialize("MovieY(Both)", Properties.Resources.strCfgDispMovieYBoth, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdMovieY.GBOnly.Initialize("MovieY(GB)", Properties.Resources.strCfgDispMovieYGB, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdMovieX.DrOnly.Initialize("strCfgDispMovieXDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdMovieX.Both.Initialize("strCfgDispMovieXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdMovieX.GBOnly.Initialize("strCfgDispMovieXGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdMovieY.DrOnly.Initialize("strCfgDispMovieYDr", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdMovieY.Both.Initialize("strCfgDispMovieYBoth", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdMovieY.GBOnly.Initialize("strCfgDispMovieYGB", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 
-			cdComboX.Drums.Both.Initialize("ComboX(Both)", Properties.Resources.strCfgDispDrComboXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdComboX.Drums.DrOnly.Initialize("ComboX(Dr)", Properties.Resources.strCfgDispDrComboXDr, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdComboX.Guitar.Both.Initialize("ComboX(Both)", Properties.Resources.strCfgDispGtComboXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdComboX.Guitar.GBOnly.Initialize("ComboX(GB)", Properties.Resources.strCfgDispGtComboXGB, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdComboX.Bass.Both.Initialize("ComboX(Both)", Properties.Resources.strCfgDispBsComboXBoth, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdComboX.Bass.GBOnly.Initialize("ComboX(GB)", Properties.Resources.strCfgDispBsComboXGB, 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdComboX.Drums.Both.Initialize("strCfgDispDrComboXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdComboX.Drums.DrOnly.Initialize("strCfgDispDrComboXDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdComboX.Guitar.Both.Initialize("strCfgDispGtComboXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdComboX.Guitar.GBOnly.Initialize("strCfgDispGtComboXGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdComboX.Bass.Both.Initialize("strCfgDispBsComboXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdComboX.Bass.GBOnly.Initialize("strCfgDispBsComboXGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
 
-			cdComboY.Drums.Both.Initialize("ComboY(Both)", Properties.Resources.strCfgDispDrComboYBoth, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdComboY.Drums.DrOnly.Initialize("ComboY(Dr)", Properties.Resources.strCfgDispDrComboYDr, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdComboY.Guitar.Both.Initialize("ComboY(Both)", Properties.Resources.strCfgDispGtComboYBoth, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdComboY.Guitar.GBOnly.Initialize("ComboY(GB)", Properties.Resources.strCfgDispGtComboYGB, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdComboY.Bass.Both.Initialize("ComboY(Both)", Properties.Resources.strCfgDispBsComboYBoth, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdComboY.Bass.GBOnly.Initialize("ComboY(GB)", Properties.Resources.strCfgDispBsComboYGB, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdComboY.Drums.Both.Initialize("strCfgDispDrComboYBoth", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdComboY.Drums.DrOnly.Initialize("strCfgDispDrComboYDr", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdComboY.Guitar.Both.Initialize("strCfgDispGtComboYBoth", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdComboY.Guitar.GBOnly.Initialize("strCfgDispGtComboYGB", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdComboY.Bass.Both.Initialize("strCfgDispBsComboYBoth", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdComboY.Bass.GBOnly.Initialize("strCfgDispBsComboYGB", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 
-			cdJudgeLineY.Drums.Initialize("JudgeLine", Properties.Resources.strCfgDispDrJudgeLine, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdJudgeLineY.Guitar.Initialize("JudgeLine", Properties.Resources.strCfgDispGtJudgeLine, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdJudgeLineY.Bass.Initialize("JudgeLine", Properties.Resources.strCfgDispBsJudgeLine, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdJudgeLineY.Drums.Initialize("strCfgDispDrJudgeLine", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdJudgeLineY.Guitar.Initialize("strCfgDispGtJudgeLine", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdJudgeLineY.Bass.Initialize("strCfgDispBsJudgeLine", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 
-			cdJudgeY.Drums.Initialize("Judge", Properties.Resources.strCfgDispDrJudge, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdJudgeY.Guitar.Initialize("Judge", Properties.Resources.strCfgDispGtJudge, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
-			cdJudgeY.Bass.Initialize("Judge", Properties.Resources.strCfgDispBsJudge, 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdJudgeY.Drums.Initialize("strCfgDispDrJudge", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdJudgeY.Guitar.Initialize("strCfgDispGtJudge", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdJudgeY.Bass.Initialize("strCfgDispBsJudge", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 
-			cdLaneOrder.LC.Initialize("LC Order", Properties.Resources.strCfgDispLaneOrderLC, 0, 8);
-			cdLaneOrder.HH.Initialize("HH Order", Properties.Resources.strCfgDispLaneOrderHH, 0, 8);
-			cdLaneOrder.SD.Initialize("SD Order", Properties.Resources.strCfgDispLaneOrderSD, 0, 8);
-			cdLaneOrder.BD.Initialize("BD Order", Properties.Resources.strCfgDispLaneOrderBD, 0, 8);
-			cdLaneOrder.HT.Initialize("HT Order", Properties.Resources.strCfgDispLaneOrderHT, 0, 8);
-			cdLaneOrder.LT.Initialize("LT Order", Properties.Resources.strCfgDispLaneOrderLT, 0, 8);
-			cdLaneOrder.FT.Initialize("FT Order", Properties.Resources.strCfgDispLaneOrderFT, 0, 8);
-			cdLaneOrder.CY.Initialize("CY Order", Properties.Resources.strCfgDispLaneOrderCY, 0, 8);
+			cdLaneOrder.LC.Initialize("strCfgDispLaneOrderLC", 0, 8);
+			cdLaneOrder.HH.Initialize("strCfgDispLaneOrderHH", 0, 8);
+			cdLaneOrder.SD.Initialize("strCfgDispLaneOrderSD", 0, 8);
+			cdLaneOrder.BD.Initialize("strCfgDispLaneOrderBD", 0, 8);
+			cdLaneOrder.HT.Initialize("strCfgDispLaneOrderHT", 0, 8);
+			cdLaneOrder.LT.Initialize("strCfgDispLaneOrderLT", 0, 8);
+			cdLaneOrder.FT.Initialize("strCfgDispLaneOrderFT", 0, 8);
+			cdLaneOrder.CY.Initialize("strCfgDispLaneOrderCY", 0, 8);
 
-			cdLaneOrder.GtR.Initialize("R Order", Properties.Resources.strCfgDispLaneOrderGtR, 0, 4);
-			cdLaneOrder.GtG.Initialize("G Order", Properties.Resources.strCfgDispLaneOrderGtG, 0, 4);
-			cdLaneOrder.GtB.Initialize("B Order", Properties.Resources.strCfgDispLaneOrderGtB, 0, 4);
-			cdLaneOrder.GtW.Initialize("W Order", Properties.Resources.strCfgDispLaneOrderGtW, 0, 4);
+			cdLaneOrder.GtR.Initialize("strCfgDispLaneOrderGtR", 0, 4);
+			cdLaneOrder.GtG.Initialize("strCfgDispLaneOrderGtG", 0, 4);
+			cdLaneOrder.GtB.Initialize("strCfgDispLaneOrderGtB", 0, 4);
+			cdLaneOrder.GtW.Initialize("strCfgDispLaneOrderGtW", 0, 4);
 
-			cdLaneOrder.BsR.Initialize("R Order", Properties.Resources.strCfgDispLaneOrderBsR, 0, 4);
-			cdLaneOrder.BsG.Initialize("G Order", Properties.Resources.strCfgDispLaneOrderBsG, 0, 4);
-			cdLaneOrder.BsB.Initialize("B Order", Properties.Resources.strCfgDispLaneOrderBsB, 0, 4);
-			cdLaneOrder.BsW.Initialize("W Order", Properties.Resources.strCfgDispLaneOrderBsW, 0, 4);
+			cdLaneOrder.BsR.Initialize("strCfgDispLaneOrderBsR", 0, 4);
+			cdLaneOrder.BsG.Initialize("strCfgDispLaneOrderBsG", 0, 4);
+			cdLaneOrder.BsB.Initialize("strCfgDispLaneOrderBsB", 0, 4);
+			cdLaneOrder.BsW.Initialize("strCfgDispLaneOrderBsW", 0, 4);
 
 			SetEnterDelegates();
 		}
