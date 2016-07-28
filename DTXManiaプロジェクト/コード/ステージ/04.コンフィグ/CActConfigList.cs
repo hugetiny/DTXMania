@@ -414,6 +414,8 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eActiveInst);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nPlaySpeed);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bTimeStretch);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nSleepPerFrameMs);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nSleepUnfocusMs);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bForceHighPowerPlan);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bStageFailed);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bRandSubBox);
@@ -437,6 +439,7 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.strASIODevice );
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseOSTimer);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nMasterVolume);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nPolyphonicSounds);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseBoxDefSkin);
 				list項目リスト.Add(skins);
 				list項目リスト.Add(DisplayMenu.System);

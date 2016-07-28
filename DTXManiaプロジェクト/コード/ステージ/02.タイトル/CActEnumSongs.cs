@@ -84,26 +84,24 @@ namespace DTXMania
 			{
 				this.txDialogNowEnumeratingSongs = null;
 			}
-
 			try
 			{
-				System.Drawing.Font ftMessage = new System.Drawing.Font("MS PGothic", 40, FontStyle.Bold, GraphicsUnit.Pixel);
+				System.Drawing.Font ftMessage = new System.Drawing.Font( @"MS PGothic", 40.0f, FontStyle.Bold, GraphicsUnit.Pixel );
 				string strMessage = CDTXMania.Instance.Resources.Explanation("strEnumeratingSongs");
-				if ((strMessage != null) && (strMessage.Length > 0))
+				if ( ( strMessage != null ) && ( strMessage.Length > 0 ) )
 				{
-					Bitmap image = new Bitmap( 1, 1 );
+					Bitmap image = new Bitmap(1, 1);
 					Graphics graphics = Graphics.FromImage(image);
 					SizeF ef = graphics.MeasureString(strMessage, ftMessage);
-					Size size = new Size((int)Math.Ceiling((double)ef.Width), (int)Math.Ceiling((double)ef.Height));
+					Size size = new Size( (int) Math.Ceiling( (double) ef.Width ), (int) Math.Ceiling( (double) ef.Height ) );
 					graphics.Dispose();
 					image.Dispose();
 					image = new Bitmap(size.Width, size.Height);
 					graphics = Graphics.FromImage(image);
 					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					graphics.DrawString(strMessage, ftMessage, Brushes.White, (float)0f, (float)0f);
+					graphics.DrawString(strMessage, ftMessage, Brushes.White, (float) 0f, (float) 0f);
 					graphics.Dispose();
 					this.txMessage = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
-					//this.txMessage.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f);
 					image.Dispose();
 					TextureFactory.t安全にDisposeする(ref ftMessage);
 				}

@@ -380,13 +380,13 @@ namespace DTXMania
 			public List<EChannel> listこのWAVを使用するチャンネル番号の集合 = new List<EChannel>(16);
 			public int nチップサイズ = 100;
 			public int n位置;
-			public long[] n一時停止時刻 = new long[CDTXMania.Instance.ConfigIni.nPoliphonicSounds]; // 4
+			public long[] n一時停止時刻 = new long[CDTXMania.Instance.ConfigIni.nPolyphonicSounds]; // 4
 			public int n音量 = 100;
 			public int n現在再生中のサウンド番号;
-			public long[] n再生開始時刻 = new long[CDTXMania.Instance.ConfigIni.nPoliphonicSounds]; // 4
+			public long[] n再生開始時刻 = new long[CDTXMania.Instance.ConfigIni.nPolyphonicSounds]; // 4
 			public int n内部番号;
 			public int n表記上の番号;
-			public CSound[] rSound = new CSound[CDTXMania.Instance.ConfigIni.nPoliphonicSounds];    // 4
+			public CSound[] rSound = new CSound[CDTXMania.Instance.ConfigIni.nPolyphonicSounds];    // 4
 			public string strコメント文 = "";
 			public string strファイル名 = "";
 			public bool bBGMとして使わない
@@ -437,7 +437,7 @@ namespace DTXMania
 
 				if (bManagedリソースの解放も行う)
 				{
-					for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPoliphonicSounds; i++)  // 4
+					for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPolyphonicSounds; i++)  // 4
 					{
 						if (this.rSound[i] != null)
 							CDTXMania.Instance.Sound管理.tサウンドを破棄する(this.rSound[i]);

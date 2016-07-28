@@ -192,7 +192,7 @@ namespace DTXMania
 		// #28228 2012.5.1 yyagi レーン毎の最大同時発音数 
 		// #24820 2013.1.15 yyagi 初期値を4から2に変更。BASS.net使用時の負荷軽減のため。
 		// #24820 2013.1.17 yyagi 初期値を4に戻した。動的なミキサー制御がうまく動作しているため。
-		public COptionInteger nPoliphonicSounds;
+		public COptionInteger nPolyphonicSounds;
 		[DataMember]
 		// #24820 2013.1.15 yyagi WASAPIのバッファサイズ 初期値は50(0で自動設定)
 		public COptionInteger nWASAPIBufferSizeMs;
@@ -525,7 +525,7 @@ namespace DTXMania
 			nChipFadeoutTimeMs = new COptionInteger(2000);
 			rcViewerWindow = new Coordinates.CRect(100, 100, 1280, 720);
 			nMasterVolume = new COptionInteger(100);
-			nPoliphonicSounds = new COptionInteger(4);
+			nPolyphonicSounds = new COptionInteger(4);
 
 			// dgb
 			bEmphasizePlaySound = new STDGBSValue<COptionBool>();
@@ -684,7 +684,7 @@ namespace DTXMania
 			CResources cr = CDTXMania.Instance.Resources;
 			bFullScreen.Initialize( "strCfgSysFullScreen" );
 			bVSyncWait.Initialize( "strCfgSysVSync" );
-			bStageFailed.Initialize( "strCfgSysStageFailed" );
+			bStageFailed.Initialize( "strCfgSysStageFailed");
 			bFullAVI.Initialize( "strCfgSysFullAVI" );
 			bAVI.Initialize( "strCfgSysAVI" );
 			bBGA.Initialize( "strCfgSysBGA" );
@@ -764,9 +764,9 @@ namespace DTXMania
 			nShowLagType.Initialize( "strCfgSysShowLagType", typeof(EShowLagType));
 
 			// integer
-			nSleepPerFrameMs.Initialize("", "");
-			nSleepUnfocusMs.Initialize("", "");
-			nBGAlpha.Initialize( "strCfgSysBGAAlpha", 0, 255);
+			nSleepPerFrameMs.Initialize( "strCfgSysSleepPerFrame", -1, 33 );
+			nSleepUnfocusMs.Initialize( "strCfgSysSleepUnfocus", 0, 33 );
+			nBGAlpha.Initialize( "strCfgSysBGAAlpha", 0, 255 );
 			nPreSoundWeightMs.Initialize( "strCfgSysPreSoundWait", 0, 10001);
 			nPreImageWeightMs.Initialize( "strCfgSysPreImageWait", 0, 10001);
 			nFontSizeDotSongSelect.Initialize("", "", 5);
@@ -796,7 +796,7 @@ namespace DTXMania
 			nChipFadeoutTimeMs.Initialize("", "", 0);
 
 			nMasterVolume.Initialize( "strCfgSysMasterVolume", 0, 101);
-			nPoliphonicSounds.Initialize("", "", 1, 11);
+			nPolyphonicSounds.Initialize( "strCfgSysPolyphonicSounds", 1, 11 );
 
 			// dgb
 			for (EPart i = EPart.Drums; i <= EPart.Unknown; i++)

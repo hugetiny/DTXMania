@@ -214,7 +214,7 @@ namespace DTXMania
 			this.stGDAParam = stgdaparamArray;
 			#endregion
 			this.nBGMAdjust = 0;
-			this.nPolyphonicSounds = CDTXMania.Instance.ConfigIni.nPoliphonicSounds;
+			this.nPolyphonicSounds = CDTXMania.Instance.ConfigIni.nPolyphonicSounds;
 			this.dbDTXVPlaySpeed = 1.0f;
 			this.bUse556x710BGAAVI = false;
 			this.n使用レーン数 = new STDGBSValue<EUseLanes>();
