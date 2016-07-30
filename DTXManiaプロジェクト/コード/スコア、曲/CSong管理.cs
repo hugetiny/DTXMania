@@ -1758,7 +1758,7 @@ Debug.WriteLine( dBPM + ":" + c曲リストノード.strタイトル );
 
 		#region [ private ]
 		//-----------------
-		private const string SONGSDB_VERSION = "SongsDB3";
+		private const string SONGSDB_VERSION = "SongsDB4";
 		private List<string> listStrBoxDefSkinSubfolderFullName;
 
 		private int t比較0_共通(C曲リストノード n1, C曲リストノード n2)
