@@ -652,4 +652,7 @@
   <data name="strTitleStart" xml:space="preserve">
     <value>START</value>
   </data>
+  <data name="strCfgSysLoadDTXDetail" xml:space="preserve">
+    <value>test</value>
+  </data>
 </root>

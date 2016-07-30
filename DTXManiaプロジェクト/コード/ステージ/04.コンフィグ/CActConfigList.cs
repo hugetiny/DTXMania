@@ -440,6 +440,7 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseOSTimer);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nMasterVolume);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nPolyphonicSounds);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLoadDTXDetail);// #36177 2016.7.30 ikanick
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseBoxDefSkin);
 				list項目リスト.Add(skins);
 				list項目リスト.Add(DisplayMenu.System);

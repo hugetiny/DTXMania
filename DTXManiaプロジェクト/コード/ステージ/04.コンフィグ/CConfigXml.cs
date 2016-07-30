@@ -154,6 +154,10 @@ namespace DTXMania
 		// 言語設定
 		public COptionString strLanguage;
 	//	public COptionStringList strLanguageList;
+		
+		// #36177 2016.7.30 ikanick
+		[DataMember( Order = 105 )]
+		public COptionBool bLoadDTXDetail;
 
 		[DataMember]
 		public COptionInteger nBGAlpha;
@@ -470,6 +474,7 @@ namespace DTXMania
 			nSoundDeviceType = new COptionEnum<ESoundDeviceTypeForConfig>(FDK.COS.bIsVistaOrLater ? ESoundDeviceTypeForConfig.WASAPI : ESoundDeviceTypeForConfig.DSound);
 			bForceHighPowerPlan = new COptionBool( false );
 			bEventDrivenWASAPI = new COptionBool( false );
+			bLoadDTXDetail = new COptionBool( false ); 
 
 			// string
 			strSongDataPath = new COptionString(@".\");
@@ -724,6 +729,7 @@ namespace DTXMania
 			bTimeStretch.Initialize( "strCfgSysTimeStretch" );
 			bForceHighPowerPlan.Initialize( "strCfgSysForceHighPowerPlan" );
 			bEventDrivenWASAPI.Initialize( "strCfgSysWASAPIEventDriven" );
+			bLoadDTXDetail.Initialize( "strCfgSysLoadDTXDetail" ); // #36177 2016.7.30 ikanick
 
 			bCymbalFree.Initialize( "strCfgDrCymbalFree" );
 			bDrumsHitSound.Initialize( "strCfgDrChipSound" );

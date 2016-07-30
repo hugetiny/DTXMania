@@ -304,7 +304,7 @@ namespace DTXMania
 				for (EPart m = EPart.Drums; m <= EPart.Bass; m++)
 				{
 					this.stバー情報[index].nスキル値[m] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[m];
-					this.stバー情報[index].n使用レーン数[m] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[m];
+					this.stバー情報[index].e使用レーン数[m] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[m];
 				}
 				song = this.r次の曲(song);
 			}
@@ -712,7 +712,7 @@ namespace DTXMania
 						for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
-							this.stバー情報[index].n使用レーン数[i] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
+							this.stバー情報[index].e使用レーン数[i] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
 						}
 
 						// 1行(100カウント)移動完了。
@@ -770,7 +770,7 @@ namespace DTXMania
 						for (EPart i = EPart.Drums; i <= EPart.Bass; i++)
 						{
 							this.stバー情報[index].nスキル値[i] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[i];
-							this.stバー情報[index].n使用レーン数[i] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
+							this.stバー情報[index].e使用レーン数[i] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[i];
 						}
 
 
@@ -872,7 +872,7 @@ namespace DTXMania
 							#region [ 使用レーン数を描画。]
 							//-----------------
 							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
-								this.t使用レーン数の描画(x + (int)(0 * Scale.X), y + (int)53, this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
+								this.t使用レーン数の描画(x + (int)(0 * Scale.X), y + (int)53, this.stバー情報[nパネル番号].e使用レーン数[this.e楽器パート]);
 							//-----------------
 							#endregion
 						}
@@ -907,7 +907,7 @@ namespace DTXMania
 							#region [ 使用レーン数を描画。]
 							//-----------------
 							if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
-								this.t使用レーン数の描画(x + (int)(-14 * Scale.X), y + (int)(11 * Scale.Y), this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
+								this.t使用レーン数の描画(x + (int)(-14 * Scale.X), y + (int)(11 * Scale.Y), this.stバー情報[nパネル番号].e使用レーン数[this.e楽器パート]);
 							//-----------------
 							#endregion
 						}
@@ -969,7 +969,7 @@ namespace DTXMania
 							this.t使用レーン数の描画(
 								(int)(216 * Scale.X),
 								(int)(208 * Scale.Y),
-								this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]
+								this.stバー情報[nパネル番号].e使用レーン数[this.e楽器パート]
 							);
 						//-----------------
 						#endregion
@@ -1002,7 +1002,7 @@ namespace DTXMania
 						#region [ 使用レーン数を描画。]
 						//-----------------
 						if ((this.stバー情報[nパネル番号].eバー種別 == Eバー種別.Score) && (this.e楽器パート != EPart.Unknown))
-							this.t使用レーン数の描画(x + (int)(-14 * Scale.X), y + (int)(11 * Scale.Y), this.stバー情報[nパネル番号].n使用レーン数[this.e楽器パート]);
+							this.t使用レーン数の描画(x + (int)(-14 * Scale.X), y + (int)(11 * Scale.Y), this.stバー情報[nパネル番号].e使用レーン数[this.e楽器パート]);
 						//-----------------
 						#endregion
 					}
@@ -1092,7 +1092,7 @@ namespace DTXMania
 			public string strタイトル文字列;
 			public CTexture txタイトル名;
 			public STDGBSValue<int> nスキル値;
-			public STDGBSValue<EUseLanes> n使用レーン数;
+			public STDGBSValue<EUseLanes> e使用レーン数;
 			public Color col文字色;
 		}
 
@@ -1301,7 +1301,7 @@ namespace DTXMania
 				for (EPart j = EPart.Drums; j <= EPart.Bass; j++)
 				{
 					this.stバー情報[i].nスキル値[j] = (int)song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.最大スキル[j];
-					this.stバー情報[i].n使用レーン数[j] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[j];
+					this.stバー情報[i].e使用レーン数[j] = song.arスコア[this.n現在のアンカ難易度レベルに最も近い難易度レベルを返す(song)].譜面情報.使用レーン数[j];
 				}
 
 				song = this.r次の曲(song);
@@ -1493,8 +1493,7 @@ namespace DTXMania
 				case EUseLanes.Dr_12	: n使用レーン数 = 12; break;
 			}
 
-			if (n使用レーン数 == 0)
-				return;
+			if (n使用レーン数 == 0) return;
 
 			int n十の位 = n使用レーン数 / 10;
 			int n一の位 = n使用レーン数 % 10;

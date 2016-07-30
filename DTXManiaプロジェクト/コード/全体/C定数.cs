@@ -442,6 +442,7 @@ namespace DTXMania
 	// #36177 使用レーン数 ikanick add 16.04.15
 	public enum EUseLanes : int
 	{
+		None,
 		Dr_6,
 		Dr_10,
 		Dr_12,

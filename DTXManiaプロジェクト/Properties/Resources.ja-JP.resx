@@ -639,4 +639,7 @@
   <data name="strTitleStart" xml:space="preserve">
     <value>スタート</value>
   </data>
+  <data name="strCfgSysLoadDTXDetail" xml:space="preserve">
+    <value>test</value>
+  </data>
 </root>

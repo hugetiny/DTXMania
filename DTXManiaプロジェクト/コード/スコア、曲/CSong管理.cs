@@ -822,7 +822,8 @@ namespace DTXMania
 							{
 								try
 								{
-									CDTX cdtx = new CDTX(c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス, false);//DTX ファイルのヘッダだけ読み込んでいたが、使用レーン数の集計の為全て読み込みに変更
+									//#36177 2016.7.30 ikanick 曲データの取得時、bLoadDTXDetailがtrueであれば bヘッダのみをfalseにし 詳細なデータを取得する
+									CDTX cdtx = new CDTX(c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス, !CDTXMania.Instance.ConfigIni.bLoadDTXDetail );
 									c曲リストノード.arスコア[i].譜面情報.タイトル = cdtx.TITLE;
 									c曲リストノード.arスコア[i].譜面情報.アーティスト名 = cdtx.ARTIST;
 									c曲リストノード.arスコア[i].譜面情報.コメント = cdtx.COMMENT;
@@ -838,9 +839,14 @@ namespace DTXMania
 									c曲リストノード.arスコア[i].譜面情報.曲種別 = cdtx.e種別;
 									c曲リストノード.arスコア[i].譜面情報.Bpm = cdtx.BPM;
 									c曲リストノード.arスコア[i].譜面情報.Duration = 0;  //  (cdtx.listChip == null)? 0 : cdtx.listChip[ cdtx.listChip.Count - 1 ].n発声時刻ms;
+									
+									// #36177 2016.7.30 ikanick
+									#region [ LoadDTXDetail ]
 									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Drums = cdtx.n使用レーン数.Drums;
 									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Guitar = cdtx.n使用レーン数.Guitar;
 									c曲リストノード.arスコア[i].譜面情報.使用レーン数.Bass = cdtx.n使用レーン数.Bass;
+									#endregion
+
 									this.nファイルから反映できたスコア数++;
 									cdtx.On非活性化();
 									//Debug.WriteLine( "★" + this.nファイルから反映できたスコア数 + " " + c曲リストノード.arスコア[ i ].譜面情報.タイトル );
