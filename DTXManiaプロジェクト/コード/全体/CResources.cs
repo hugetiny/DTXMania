@@ -225,9 +225,8 @@ namespace DTXMania
 			//フィールドを"で囲み、改行文字、区切り文字を含めることができるか
 			//デフォルトでtrueなので、必要なし
 			tfp.HasFieldsEnclosedInQuotes = true;
-			//フィールドの前後からスペースを削除する
-			//デフォルトでtrueなので、必要なし
-			tfp.TrimWhiteSpace = true;
+			//フィールドの前後からスペースを削除しない
+			tfp.TrimWhiteSpace = false;
 
 			bool bAlreadyReadFirstLine = false;
 			while ( !tfp.EndOfData )
