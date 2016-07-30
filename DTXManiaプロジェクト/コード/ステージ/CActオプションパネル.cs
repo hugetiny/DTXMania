@@ -19,7 +19,7 @@ namespace DTXMania
 		/// <summary>
 		/// Off, Hid, Sud, HidSud, SInv, FInv
 		/// </summary>
-		readonly Point[] ptSudHidInv = new Point[] { new Point(0, 0), new Point(0, 1), new Point(0, 2), new Point(0, 3), new Point(4, 7), new Point(5, 7) };
+		readonly Point[] ptSudHidInv = new Point[] { new Point( 0, 0 ), new Point( 0, 2 ), new Point( 0, 1 ), new Point( 0, 3 ), new Point( 4, 7 ), new Point( 5, 7 ) };
 		readonly Point[] ptLight = new Point[] { new Point(5, 4), new Point(5, 5) };
 		readonly Point[] ptRandom = new Point[] { new Point(3, 4), new Point(3, 5), new Point(3, 6), new Point(3, 7) };
 		readonly Point[] ptReverse = new Point[] { new Point(1, 2), new Point(1, 3) };
