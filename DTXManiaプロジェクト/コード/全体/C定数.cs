@@ -1290,6 +1290,7 @@ namespace DTXMania
 				case EChannel.HiHatClose: return EPad.HH;
 				case EChannel.Snare: return EPad.SD;
 				case EChannel.BassDrum: return EPad.BD;
+				case EChannel.LeftBassDrum: return EPad.BD;
 				case EChannel.HighTom: return EPad.HT;
 				case EChannel.LowTom: return EPad.LT;
 				case EChannel.Cymbal: return EPad.CY;
@@ -1309,6 +1310,7 @@ namespace DTXMania
 				case EChannel.HiHatClose: return ELane.HH;
 				case EChannel.Snare: return ELane.SD;
 				case EChannel.BassDrum: return ELane.BD;
+				case EChannel.LeftBassDrum: return ELane.BD;
 				case EChannel.HighTom: return ELane.HT;
 				case EChannel.LowTom: return ELane.LT;
 				case EChannel.Cymbal: return ELane.CY;
@@ -1316,6 +1318,7 @@ namespace DTXMania
 				case EChannel.HiHatOpen: return ELane.HH;
 				case EChannel.RideCymbal: return ELane.CY;
 				case EChannel.LeftCymbal: return ELane.LC;
+				case EChannel.LeftPedal: return ELane.HH;		// LPは仮にHHに落とし込む 後日、CDTXInputで別Laneに割り振るようにした後、このcaseは削除する
 			}
 			throw new IndexOutOfRangeException();
 		}
