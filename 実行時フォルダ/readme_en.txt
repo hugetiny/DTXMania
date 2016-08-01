@@ -1,16 +1,16 @@
 ============================================================
   DTXMania .NET style
-  (C) 2000 2013 DTXMania Group
+  (C) 2000 2016 DTXMania Group
 ============================================================
 
 * Requirements
 
-(1) OS ...  WindowsXP / Vista / 7 (x86, x64) / 8 (x86, x64)
-(2) .NET Framework ... Version 2.0 or later
-   (You'll need to install .NET Framework 3.5 additionaly on Win8.)
+(1) OS ...  Windows Vista / 7 (x86, x64) / 8 (x86, x64) / 10 (x86, x64)
+(2) .NET Framework ... Version 4.5.1
+   (You'll need to install .NET Framework 4.5.1 additionaly on Win8.1 or before)
 (3) DirectX End User Runtime ... June 2010 Version or later
-   (You'll need to install DirextX 9.0c additionaly on Win8.)
-(4) Microsoft Visual C++ 2008 Redistributable Package (x86)
+   (You'll need to install DirextX 9.0c additionaly on Win8 or later.)
+(4) Microsoft Visual C++ 2013 Redistributable Package (x86)
 
 If you don't install any libraries descrived above,
 you'll fail to start DTXMania.
@@ -20,10 +20,10 @@ you'll fail to start DTXMania.
 
 About the Requiremtnts (3), this zip contains
 "minimum" runtime components in "DirectX Redist" folder.
+Please run DXSETUP.exe to install DirectX 9.0c (June/2010).
 
-If it's bothering you for downloading huge end user runtime
-from Microsoft website, you can install minimum components
-for DTXMania by running DXSETUP.exe in DirectX Redist folder.
+Especially for Win10, you cannot use web setup for DirectX.
+Please use DXSETUP.exe in DirectX Redist folder.
 
 
 * Installing DTXMania
@@ -51,17 +51,17 @@ put song data into the folder.
  make the folder at the same place where DTXManiaGR.exe is.)
 
 DTXMania searches all folders (includes all subfolders)
-specified in "DTXPath" section of Config.ini.
-Config.ini is automatically made after DTXMania's initial boot.
+specified in "strSongDataPath" section of Config.xml.
+Config.xml is automatically made after DTXMania's initial boot.
 
 DTXMania doesn't check the depth of subfolders.
 DTXMania seek all folders to the bottom of the subfolders.
 
 
 [Notice]
-In the initial DTXMania settings (in Config.ini files),
+In the initial DTXMania settings (in Config.xml files),
 the folder where DTXManiaGR.exe exists
-is specified as the song data folder (DTXPath).
+is specified as the song data folder (strSongDataPath).
 
 And DTXMania record each your playing result
 as the file ("score.ini" file).
@@ -77,7 +77,7 @@ carefully.
 
 * WASAPI / ASIO support
 
-Old DTXMania support only DirectSound. It's very "luggy" sound
+Old DTXMania support only DirectSound. It's very "laggy" sound
 system especially Windows Vista and above.
 
 Now, DTXMania support both WASAPI and ASIO on Release 096.

@@ -1,16 +1,16 @@
 ============================================================
   DTXMania .NET style
-  (C) 2000 2013 DTXMania Group
+  (C) 2000 2016 DTXMania Group
 ============================================================
 
 ■動作に必要なもの
 
-(1) OS ...  WindowsXP / Vista / 7 (x86, x64) / 8 (x86, x64)
-(2) .NET Framework ... 2.0 以降
-　(Win8では、.NET Framework 3.5の追加インストールが必要です)
+(1) OS ...  Windows Vista / 7 (x86, x64) / 8 (x86, x64) / 10 (x86, x64)
+(2) .NET Framework ... 4.5.1
+　(Win8.1以前のOSでは、.NET Framework 4.5.1の追加インストールが必要です)
 (3) DirectX エンドユーザ ランタイム ... June 2010 以降
-　(Win8では、DirectX 9.0cの追加インストールが必要です)
-(4) Microsoft Visual C++ 2008 Redistributable Package (x86)
+　(Win8以降では、DirectX 9.0cの追加インストールが必要です)
+(4) Microsoft Visual C++ 2013 Redistributable Package (x86)
 
 上記が導入されていない場合、以下のようなエラーダイアログが
 表示され、DTXMania を起動することができません。
@@ -25,9 +25,11 @@
 "DirectX Redist" の中に、DTXMania の動作に「必要最小限」の
 構成を入れてあります。
 
-Microsoft のサイトから何百MBもあるどでかいエンドユーザランタイムを
-ダウンロードしてくるのが面倒だという人は、ここにある DXSETUP.exe で
-DirectX をインストールして下さい。
+ここにある DXSETUP.exe で、DirectX をインストールして下さい。
+(以前は、Microsoft のサイトからDirectXのweb setupを利用することが
+ できましたが、Windows10ではその方法が使えません。
+ DirectX RedistフォルダのDXSETUP.exeを使ってください)
+
 
 ■DTXMania のインストール
 
@@ -49,15 +51,15 @@ DTXMania のフォルダごと全部削除して下さい。
 適当な名前（何でもよい）のフォルダを作り、その中にコピーして
 下さい。
 
-DTXMania は、Config.ini（DTXManiaを1回でも起動すると自動的に
-作成されます）の DTXPath で指定されたフォルダをルートフォルダ
+DTXMania は、Config.xml（DTXManiaを1回でも起動すると自動的に
+作成されます）の strSongDataPath で指定されたフォルダをルートフォルダ
 として曲データを検索します。
 
 ルートフォルダからの階層の深さは問いません。
 どこまでも深く探しに行きます。
 
 【注意】
-初期状態では、DTXPath には DTXManiaGR.exe の存在するフォルダが
+初期状態では、strSongDataPath には DTXManiaGR.exe の存在するフォルダが
 指定されています。
 
 DTXMania は、曲の演奏結果を、曲データの存在するフォルダ内に
