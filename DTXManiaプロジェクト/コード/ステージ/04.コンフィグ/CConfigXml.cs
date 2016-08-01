@@ -436,7 +436,7 @@ namespace DTXMania
 			bAVI = new COptionBool(true);
 			bBGA = new COptionBool(true);
 			bFillin = new COptionBool(true);
-			bLogDTX = new COptionBool(true);
+			bLogDTX = new COptionBool(false);
 			bLogEnumerateSongs = new COptionBool(false);
 			bLogCreateRelease = new COptionBool(false);
 			bCymbalFree = new COptionBool(false);
