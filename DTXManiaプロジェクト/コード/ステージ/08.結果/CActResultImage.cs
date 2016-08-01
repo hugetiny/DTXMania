@@ -181,6 +181,10 @@ namespace DTXMania
 			TextureFactory.tテクスチャの解放(ref txリザルト画像);
 			r表示するリザルト画像 = null;
 			strBackground = CDTXMania.Instance.DTX.strフォルダ名 + strBackground;
+			if (!File.Exists(strBackground))
+			{
+				return false;
+			}
 			using (Bitmap image = new Bitmap(strBackground))
 			{
 				using (Bitmap bitmap2 = new Bitmap(SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height))
