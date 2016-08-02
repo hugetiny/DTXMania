@@ -15,6 +15,7 @@ namespace DTXMania
 		STDGBSValue<COptionLabel> KeyAssignMenu;
 		STDGBSValue<COptionLabel> DisplayMenu;
 		STDGBSValue<COptionLabel> EDrumsMenu;
+		COptionLabel SoundMenu;
 		COptionLabel HitRangeMenu;
 		COptionStringList skins;
 
@@ -153,6 +154,10 @@ namespace DTXMania
 				t項目リストの設定(Eメニュー種別.Drums);
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.HitRangeSettings)
+			{
+				t項目リストの設定(Eメニュー種別.System);
+			}
+			else if ( this.eメニュー種別 == Eメニュー種別.SoundSettings)
 			{
 				t項目リストの設定(Eメニュー種別.System);
 			}
@@ -413,17 +418,13 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nRisky);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eActiveInst);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nPlaySpeed);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bTimeStretch);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nSleepPerFrameMs);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nSleepUnfocusMs);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bForceHighPowerPlan);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bStageFailed);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bRandSubBox);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bWaveAdjust);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nPreSoundWeightMs);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nPreImageWeightMs);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bBGMPlay);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bAudience);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eDamageLevel);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bScoreIni);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nChipVolume);
@@ -433,16 +434,10 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bBufferedInput);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLog);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLoadSoundSpeed);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nSoundDeviceType);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.strASIODevice );
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseOSTimer);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nMasterVolume);
-				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nPolyphonicSounds);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLoadDTXDetail);// #36177 2016.7.30 ikanick
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseBoxDefSkin);
 				list項目リスト.Add(skins);
+				list項目リスト.Add(SoundMenu);
 				list項目リスト.Add(DisplayMenu.System);
 				list項目リスト.Add(HitRangeMenu);
 				list項目リスト.Add(KeyAssignMenu.System);
@@ -461,7 +456,27 @@ namespace DTXMania
 					CDTXMania.Instance.actEnumSongs.On活性化();
 				};
 			}
-			else if (eMenu == Eメニュー種別.Drums)
+			else if ( eMenu == Eメニュー種別.SoundSettings )
+			{
+				list項目リスト.Add( ReturnToMenu.System );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bTimeStretch );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bWaveAdjust );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bBGMPlay );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bAudience );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nChipVolume );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nAutoVolume );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nSoundDeviceType );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nWASAPIBufferSizeMs );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.strASIODevice );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bUseOSTimer );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nMasterVolume );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nPolyphonicSounds );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.eClickType );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nClickHighVolume );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nClickLowVolume );
+			}
+			else if ( eMenu == Eメニュー種別.Drums )
 			{
 				list項目リスト.Add(ReturnToMenu.Drums);
 				COptionEnum<EThreeState> AllAuto = new COptionEnum<EThreeState>(EThreeState.X);
@@ -620,6 +635,7 @@ namespace DTXMania
 
 				EDrumsMenu[ EPart.Drums ] = new COptionLabel( "strCfgEDrumsOption" );
 				HitRangeMenu = new COptionLabel( "strCfgHitRangeOption" );
+				SoundMenu = new COptionLabel( "strCfgSoundOption" );
 
 				DisplayMenu.Drums.OnEnterDelegate = () =>
 				{
@@ -637,7 +653,6 @@ namespace DTXMania
 				{
 					t項目リストの設定(Eメニュー種別.DisplaySystem);
 				};
-
 				KeyAssignMenu.Drums.OnEnterDelegate = () =>
 				{
 					t項目リストの設定(Eメニュー種別.KeyAssignDrums);
@@ -678,6 +693,10 @@ namespace DTXMania
 				HitRangeMenu.OnEnterDelegate = () =>
 				{
 					t項目リストの設定( Eメニュー種別.HitRangeSettings );
+				};
+				SoundMenu.OnEnterDelegate = () =>
+				{
+					t項目リストの設定( Eメニュー種別.SoundSettings );
 				};
 
 				#region [ スキン選択肢と、現在選択中のスキン(index)の準備 #28195 2012.5.2 yyagi ]
@@ -789,6 +808,11 @@ namespace DTXMania
 							CDTXMania.Instance.ConfigIni.bUseOSTimer);
 					CDTXMania.Instance.ShowWindowTitleWithSoundType();
 				}
+				#endregion
+
+				#region [ メトロノーム音 音量設定 ]
+				CDTXMania.Instance.Skin.soundClickHigh.n音量 = CDTXMania.Instance.ConfigIni.nClickHighVolume;
+				CDTXMania.Instance.Skin.soundClickLow.n音量 = CDTXMania.Instance.ConfigIni.nClickLowVolume;
 				#endregion
 
 				#region [ サウンドのタイムストレッチモード変更 ]
@@ -1149,6 +1173,7 @@ namespace DTXMania
 			DisplayBass,
 			EDrumsSettings,
 			HitRangeSettings,
+			SoundSettings,
 			Unknown
 		}
 

@@ -68,6 +68,19 @@ namespace DTXMania
 				}
 			}
 
+			public int n音量
+			{
+				set
+				{
+					for ( int i = 0; i < this.rSound.GetLength( 0 ); i++ )
+					{
+						CSound sound = this.rSound[ i ];
+						if ( sound != null )
+							sound.n音量 = value;
+					}
+				}
+			}
+
 			public int n音量_現在のサウンド
 			{
 				get
@@ -284,7 +297,9 @@ namespace DTXMania
 		public Cシステムサウンド sound決定音 = null;
 		public Cシステムサウンド sound取消音 = null;
 		public Cシステムサウンド sound変更音 = null;
-		public readonly int nシステムサウンド数 = (int)Eシステムサウンド.Count;
+		public Cシステムサウンド soundClickHigh = null;
+		public Cシステムサウンド soundClickLow  = null;
+		public readonly int nシステムサウンド数 = (int) Eシステムサウンド.Count;
 		public Cシステムサウンド this[Eシステムサウンド sound]
 		{
 			get
@@ -327,6 +342,12 @@ namespace DTXMania
 					case Eシステムサウンド.SOUNDタイトル音:
 						return this.soundタイトル音;
 
+					case Eシステムサウンド.SOUNDClickHigh:
+						return this.soundClickHigh;
+
+					case Eシステムサウンド.SOUNDClickLow:
+						return this.soundClickLow;
+
 					case Eシステムサウンド.BGM起動画面:
 						return this.bgm起動画面;
 
@@ -348,53 +369,59 @@ namespace DTXMania
 			{
 				switch (index)
 				{
-					case 0:
+					case (int) Eシステムサウンド.SOUNDカーソル移動音:
 						return this.soundカーソル移動音;
 
-					case 1:
+					case (int) Eシステムサウンド.SOUND決定音:
 						return this.sound決定音;
 
-					case 2:
+					case (int) Eシステムサウンド.SOUND変更音:
 						return this.sound変更音;
 
-					case 3:
+					case (int) Eシステムサウンド.SOUND取消音:
 						return this.sound取消音;
 
-					case 4:
+					case (int) Eシステムサウンド.SOUND歓声音:
 						return this.sound歓声音;
 
-					case 5:
+					case (int) Eシステムサウンド.SOUNDステージ失敗音:
 						return this.soundSTAGEFAILED音;
 
-					case 6:
+					case (int) Eシステムサウンド.SOUNDゲーム開始音:
 						return this.soundゲーム開始音;
 
-					case 7:
+					case (int) Eシステムサウンド.SOUNDゲーム終了音:
 						return this.soundゲーム終了音;
 
-					case 8:
+					case (int) Eシステムサウンド.SOUNDステージクリア音:
 						return this.soundステージクリア音;
 
-					case 9:
+					case (int) Eシステムサウンド.SOUNDフルコンボ音:
 						return this.soundフルコンボ音;
 
-					case 10:
+					case (int) Eシステムサウンド.SOUND曲読込開始音:
 						return this.sound曲読込開始音;
 
-					case 11:
+					case (int) Eシステムサウンド.SOUNDタイトル音:
 						return this.soundタイトル音;
 
-					case 12:
+					case (int) Eシステムサウンド.BGM起動画面:
 						return this.bgm起動画面;
 
-					case 13:
+					case (int) Eシステムサウンド.BGMオプション画面:
 						return this.bgmオプション画面;
 
-					case 14:
+					case (int) Eシステムサウンド.BGMコンフィグ画面:
 						return this.bgmコンフィグ画面;
 
-					case 15:
+					case (int) Eシステムサウンド.BGM選曲画面:
 						return this.bgm選曲画面;
+
+					case (int) Eシステムサウンド.SOUNDClickHigh:
+						return this.soundClickHigh;
+
+					case (int) Eシステムサウンド.SOUNDClickLow:
+						return this.soundClickLow;
 				}
 				throw new IndexOutOfRangeException();
 			}
@@ -540,7 +567,9 @@ namespace DTXMania
 			this.soundフルコンボ音 = new Cシステムサウンド(@"Sounds\Full combo.ogg", false, false, true);
 			this.sound曲読込開始音 = new Cシステムサウンド(@"Sounds\Now loading.ogg", false, true, true);
 			this.soundタイトル音 = new Cシステムサウンド(@"Sounds\Title.ogg", false, true, false);
-			this.bgm起動画面 = new Cシステムサウンド(@"Sounds\Setup BGM.ogg", true, true, false);
+			this.soundClickHigh = new Cシステムサウンド( @"Sounds\Click_High.wav", false, false, false );
+			this.soundClickLow = new Cシステムサウンド( @"Sounds\Click_Low.wav", false, false, false );
+			this.bgm起動画面 = new Cシステムサウンド( @"Sounds\Setup BGM.ogg", true, true, false );
 			this.bgmオプション画面 = new Cシステムサウンド(@"Sounds\Option BGM.ogg", true, true, false);
 			this.bgmコンフィグ画面 = new Cシステムサウンド(@"Sounds\Config BGM.ogg", true, true, false);
 			this.bgm選曲画面 = new Cシステムサウンド(@"Sounds\Select BGM.ogg", true, true, false);

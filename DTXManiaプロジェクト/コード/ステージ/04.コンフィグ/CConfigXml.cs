@@ -252,6 +252,14 @@ namespace DTXMania
 		// #24820 2013.1.17 yyagi ASIOデバイス
 		public COptionStringList strASIODevice;
 
+		[DataMember( Order = 106 )]
+		public COptionEnum<EClickType> eClickType;
+		[DataMember( Order = 106 )]
+		public COptionInteger nClickHighVolume;
+		[DataMember( Order = 106 )]
+		public COptionInteger nClickLowVolume;
+
+
 		[DataMember]
 		public STDGBSValue<COptionBool> bLight;
 		[DataMember]
@@ -302,6 +310,8 @@ namespace DTXMania
 		[DataMember]
 		public STDGBSValue<COptionBool> bDisplayJudge;
 
+
+	
 		/// <summary>
 		/// 楽器左端座標。ここを基準に各パーツを配置する。
 		/// </summary>
@@ -531,6 +541,10 @@ namespace DTXMania
 			rcViewerWindow = new Coordinates.CRect(100, 100, 1280, 720);
 			nMasterVolume = new COptionInteger(100);
 			nPolyphonicSounds = new COptionInteger(4);
+
+			eClickType = new COptionEnum<EClickType>(EClickType.Off);
+			nClickHighVolume = new COptionInteger(100);
+			nClickLowVolume = new COptionInteger(100);
 
 			// dgb
 			bEmphasizePlaySound = new STDGBSValue<COptionBool>();
@@ -768,6 +782,11 @@ namespace DTXMania
 //			eJudgePriority.Initialize("Judge Priority", Properties.Resources.strCfgSysJudgePriority, typeof(EJudgeDisplayPriority));
 			eActiveInst.Initialize( "strCfgSysPlayMode", typeof(EActiveInstrument));
 			nShowLagType.Initialize( "strCfgSysShowLagType", typeof(EShowLagType));
+
+			eClickType.Initialize( "strCfgSysClickType", typeof( EClickType ) );
+			nClickHighVolume.Initialize( "strCfgSysClickHighVolume", 0, 101 );
+			nClickLowVolume.Initialize( "strCfgSysClickLowVolume", 0, 101 );
+
 
 			// integer
 			nSleepPerFrameMs.Initialize( "strCfgSysSleepPerFrame", -1, 33 );

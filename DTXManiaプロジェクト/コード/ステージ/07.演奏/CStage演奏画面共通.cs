@@ -182,6 +182,7 @@ namespace DTXMania
 				Drums.bDrums有効 = CDTXMania.Instance.ConfigIni.bDrums有効;
 				Drums.bSTAGEFAILED有効 = CDTXMania.Instance.ConfigIni.bStageFailed;
 				Drums.eダメージレベル = CDTXMania.Instance.ConfigIni.eDamageLevel;
+				Drums.eMetronome = CDTXMania.Instance.ConfigIni.eClickType;
 				Drums.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Drums;
 				Drums.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Drums;
 				Drums.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Drums;
@@ -246,6 +247,7 @@ namespace DTXMania
 				Guitar.bDrums有効 = CDTXMania.Instance.ConfigIni.bDrums有効;
 				Guitar.bSTAGEFAILED有効 = CDTXMania.Instance.ConfigIni.bStageFailed;
 				Guitar.eダメージレベル = CDTXMania.Instance.ConfigIni.eDamageLevel;
+				Guitar.eMetronome = CDTXMania.Instance.ConfigIni.eClickType;
 				Guitar.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Guitar;
 				Guitar.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Guitar;
 				Guitar.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Guitar;
@@ -309,6 +311,7 @@ namespace DTXMania
 				Bass.bSTAGEFAILED有効 = CDTXMania.Instance.ConfigIni.bStageFailed;
 				Bass.eダメージレベル = CDTXMania.Instance.ConfigIni.eDamageLevel;
 				// #24280 2011.1.29 yyagi
+				Bass.eMetronome = CDTXMania.Instance.ConfigIni.eClickType;
 				Bass.b演奏にキーボードを使用した = this.b演奏にキーボードを使った.Bass;
 				Bass.b演奏にMIDI入力を使用した = this.b演奏にMIDI入力を使った.Bass;
 				Bass.b演奏にジョイパッドを使用した = this.b演奏にジョイパッドを使った.Bass;
@@ -3156,7 +3159,23 @@ namespace DTXMania
 						}
 					}
 				}
-				else if (!pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
+				else if ( pChip[ EChannel.Click ] && !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
+				{
+					pChip.bHit = true;
+					if ( CDTXMania.Instance.ConfigIni.eClickType != EClickType.Off )
+					{
+						switch (pChip.n整数値)
+						{
+							case 1:
+								CDTXMania.Instance.Skin.soundClickHigh.t再生する();
+								break;
+							case 2:
+								CDTXMania.Instance.Skin.soundClickLow.t再生する();
+								break;
+						}
+					}
+				}
+				else if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )
 				{
 					// other chips
 					pChip.bHit = true;

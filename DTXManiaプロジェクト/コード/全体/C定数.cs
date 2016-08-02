@@ -290,7 +290,7 @@ namespace DTXMania
 		//nouse_e9			= 0xE9,
 		//nouse_ea			= 0xEA,
 		//nouse_eb			= 0xEB,
-		//nouse_ec			= 0xEC,
+		Click				= 0xEC,		// metronome click
 		//nouse_ed			= 0xED,
 		//nouse_ee			= 0xEE,
 		//nouse_ef			= 0xEF,
@@ -352,6 +352,8 @@ namespace DTXMania
 		SOUND決定音,
 		SOUND取消音,
 		SOUND変更音,
+		SOUNDClickHigh,
+		SOUNDClickLow,
 		Count               // システムサウンド総数の計算用
 	}
 
@@ -838,6 +840,19 @@ namespace DTXMania
 		Normal,
 		[EnumMember]
 		Other
+	}
+
+	[DataContract]
+	public enum EClickType
+	{
+		[EnumMember]
+		Off,
+		[EnumMember]
+		OnBeat,			// 表拍
+		[EnumMember]
+		OffBeat			// 裏拍
+//		[EnumMember]
+//		Triplet			// 3連符
 	}
 
 	[DataContract]

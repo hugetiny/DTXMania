@@ -126,6 +126,7 @@ namespace DTXMania
 			public int nRisky;    // #23559 2011.6.20 yyagi 0=OFF, 1-10=Risky
 			public string 最終更新日時;
 			public bool bギターとベースを入れ替えた; // #35417 2015.08.30 chnmr0 add
+			public EClickType eMetronome;		// #24159 2016.8.2 yyagi
 
 			public C演奏記録()
 			{
@@ -155,6 +156,7 @@ namespace DTXMania
 				this.レーン9モード = true;
 				this.nRisky = 0;                  // #23559 2011.6.20 yyagi
 				this.bギターとベースを入れ替えた = false; // #35417 2015.08.30 chnmr0 add
+				this.eMetronome = EClickType.Off;
 			}
 
 			public bool bフルコンボじゃない
@@ -894,6 +896,30 @@ namespace DTXMania
 											c演奏記録.bSTAGEFAILED有効 = C変換.bONorOFF(para[0]);
 										}
 										#endregion
+										#region [ Metronome ]
+										else if (item.Equals("Metronome"))
+										{
+											switch ( int.Parse( para ) )
+											{
+												case 0:
+													{
+														c演奏記録.eMetronome = EClickType.Off;
+														continue;
+													}
+												case 1:
+													{
+														c演奏記録.eMetronome = EClickType.OnBeat;
+														continue;
+													}
+												case 2:
+													{
+														c演奏記録.eMetronome = EClickType.OffBeat;
+														continue;
+													}
+											}
+											throw new Exception( "Metronome の値が無効です。" );
+										}
+										#endregion
 										else
 										{
 											#region [ DamageLevel ]
@@ -1092,6 +1118,7 @@ namespace DTXMania
 				writer.WriteLine("Drums={0}", sect.bDrums有効 ? 1 : 0);
 				writer.WriteLine("StageFailed={0}", sect.bSTAGEFAILED有効 ? 1 : 0);
 				writer.WriteLine("DamageLevel={0}", (int)sect.eダメージレベル);
+				writer.WriteLine("Metronome={0}", (int)sect.eMetronome);
 				writer.WriteLine("UseKeyboard={0}", sect.b演奏にキーボードを使用した ? 1 : 0);
 				writer.WriteLine("UseMIDIIN={0}", sect.b演奏にMIDI入力を使用した ? 1 : 0);
 				writer.WriteLine("UseJoypad={0}", sect.b演奏にジョイパッドを使用した ? 1 : 0);

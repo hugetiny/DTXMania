@@ -287,6 +287,7 @@ namespace DTXMania
 																			// これにより、数ms程度ながらここでのソートも高速化されている。
 							double barlength = 1.0;
 							int nEndOfSong = (this.listChip[this.listChip.Count - 1].n発声位置 + 384) - (this.listChip[this.listChip.Count - 1].n発声位置 % 384);
+							bool bClickOffBeat = (CDTXMania.Instance.ConfigIni.eClickType == EClickType.OffBeat);		// 裏拍でメトロノーム再生
 							for (int tick384 = 0; tick384 <= nEndOfSong; tick384 += 384)  // 小節線の挿入　(後に出てくる拍子線とループをまとめようとするなら、forループの終了条件の微妙な違いに注意が必要)
 							{
 								CChip chip = new CChip(tick384, 36 * 36 - 1, EChannel.BarLine);
@@ -318,6 +319,19 @@ namespace DTXMania
 									}
 									nChipNo_BarLength++;
 								}
+
+								// 小節線上のクリック音の挿入
+								int deltaOffBeat = (int) ( 384.0 / 8 / barlength );
+								if ( !bClickOffBeat )																// 裏拍でのメトロノーム再生の設定でなければ(Off設定であっても)
+								{
+									this.listChip.Add( new CChip( tick384, 1, EChannel.Click ) );					// 小節線上に、表拍のクリック音を挿入
+								}
+								else if ( tick384 + 384 / 8 <= nEndOfSong )											// 裏拍設定で、かつ曲長内に収まるなら
+								{
+									this.listChip.Add( new CChip( tick384 + deltaOffBeat, 1, EChannel.Click ) );	// 小節線から8分音符だけ後に、裏拍のクリック音を挿入
+								}
+
+
 								for (int i = 0; i < 100; i++)               // 拍線の挿入
 								{
 									int tickBeat = (int)(((double)(384 * i)) / (4.0 * barlength));
@@ -329,6 +343,15 @@ namespace DTXMania
 									{
 										CChip chip = new CChip(tick384 + (tickBeat + n発声位置_C1_同一小節内), 36 * 36 - 1, EChannel.BeatLine);
 										this.listChip.Add(chip);
+										if ( !bClickOffBeat )			// メトロノーム設定が裏拍設定でなければ、拍音を挿入
+										{
+											this.listChip.Add( new CChip( tick384 + ( tickBeat + n発声位置_C1_同一小節内 ), 2, EChannel.Click ) );
+										}
+										else if ( ( tickBeat + deltaOffBeat + n発声位置_C1_同一小節内 ) < 384 )	// 裏拍設定、かつ小節内に収まっていれば、拍音を挿入
+										{
+											this.listChip.Add( new CChip( tick384 + ( tickBeat + deltaOffBeat + n発声位置_C1_同一小節内 ), 2, EChannel.Click ) );
+										}
+										
 									}
 								}
 							}
