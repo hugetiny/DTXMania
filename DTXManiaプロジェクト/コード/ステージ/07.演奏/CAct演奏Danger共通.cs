@@ -10,6 +10,7 @@ namespace DTXMania
 	internal class CAct演奏Danger共通 : CActivity
 	{
 		private CTextureAf txDANGER;
+		private CTexture txRedScreen;
 		private bool bDanger中;
 		// = { false, false, false };
 		private CCounter ct移動用;
@@ -44,6 +45,20 @@ namespace DTXMania
 			if (b活性化してる)
 			{
 				this.txDANGER = TextureFactory.tテクスチャの生成Af(CSkin.Path(@"Graphics\ScreenPlayDrums danger.png"), false);
+
+				using ( Bitmap bmp = new Bitmap( SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height ) )
+				{
+					using ( var g = Graphics.FromImage( bmp ) )
+					{
+						using ( var brush = new SolidBrush( Color.Red ) )
+						{
+							g.FillRectangle( brush, 0, 0, bmp.Width, bmp.Height );
+						}
+					}
+					this.txRedScreen = TextureFactory.tテクスチャの生成( bmp );
+				}
+ 
+
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -52,6 +67,7 @@ namespace DTXMania
 		{
 			if (b活性化してる)
 			{
+				TextureFactory.tテクスチャの解放(ref this.txRedScreen);
 				TextureFactory.tテクスチャの解放(ref this.txDANGER);
 				base.OnManagedリソースの解放();
 			}
@@ -86,7 +102,12 @@ namespace DTXMania
 					return 0;
 				}
 				int num = this.ct透明度用.n現在の値;
-				if (this.txDANGER != null)
+				if ( txRedScreen != null )
+				{
+					this.txRedScreen.n透明度 = ( ( ( num < 180 ) ? num : ( 360 - num ) ) * 256 / 180) / 3 ;
+					this.txRedScreen.t2D描画( CDTXMania.Instance.Device, 0, 0 );
+				}
+				if ( this.txDANGER != null )
 				{
 					this.txDANGER.n透明度 = 60 + ((num < 180) ? num : (360 - num));
 				}
