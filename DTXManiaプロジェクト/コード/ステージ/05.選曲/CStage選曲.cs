@@ -930,7 +930,7 @@ namespace DTXMania
 			this.r確定された曲 = this.act曲リスト.r現在選択中の曲;
 			this.r確定されたスコア = this.act曲リスト.r現在選択中のスコア;
 			this.n確定された曲の難易度 = this.act曲リスト.n現在選択中の曲の現在の難易度レベル;
-			if ((this.r確定された曲 != null) && (this.r確定されたスコア != null))
+			if ((this.r確定された曲 != null) && (this.r確定されたスコア != null) && (File.Exists(this.r確定されたスコア.ファイル情報.ファイルの絶対パス)) )
 			{
 				this.eフェードアウト完了時の戻り値 = E戻り値.選曲した;
 				//	this.actFOtoNowLoading.tフェードアウト開始();				// #27787 2012.3.10 yyagi 曲決定時の画面フェードアウトの省略
