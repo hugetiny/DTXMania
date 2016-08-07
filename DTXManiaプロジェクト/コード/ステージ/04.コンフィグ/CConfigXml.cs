@@ -815,7 +815,7 @@ namespace DTXMania
 			nVelocityMin.FT.Initialize( "strCfgDrFTVelocityMin", 0, 128 );
 			nVelocityMin.CY.Initialize( "strCfgDrCYVelocityMin", 0, 128 );
 			nVelocityMin.RD.Initialize( "strCfgDrRDVelocityMin", 0, 128 );
-			nRisky.Initialize( "strCfgSysRisky", 0, 31 );
+			nRisky.Initialize( "strCfgSysRisky", 0, 100 );
 			nWASAPIBufferSizeMs.Initialize( "strCfgSysWASAPIBufSize", 0, 100001);
 			nChipDisplayTimeMs.Initialize("", "", 0);
 			nChipFadeoutTimeMs.Initialize("", "", 0);
