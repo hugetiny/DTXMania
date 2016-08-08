@@ -460,8 +460,6 @@ namespace DTXMania
 						span = (TimeSpan)(DateTime.Now - timeBeginLoadBMPAVI);
 						Trace.TraceInformation("BMP/AVI読込所要時間({0,4}): {1}", (CDTXMania.Instance.DTX.listBMP.Count + CDTXMania.Instance.DTX.listBMPTEX.Count + CDTXMania.Instance.DTX.listAVI.Count), span.ToString());
 
-						span = (TimeSpan)(DateTime.Now - timeBeginLoad);
-						Trace.TraceInformation("総読込時間:                {0}", span.ToString());
 
 						if (bitmapFilename != null)
 						{
@@ -479,10 +477,25 @@ namespace DTXMania
 							ftFilename = null;
 						}
 						CDTXMania.Instance.Timer.t更新();
-						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ;
+						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_LPを再配置する;
 						return (int)E曲読込画面の戻り値.継続;
 					}
 
+				case CStage.Eフェーズ.NOWLOADING_LPを再配置する:
+					{
+						TimeSpan span;
+						DateTime timeReassignLP = DateTime.Now;
+						CDTXMania.Instance.DTX.ReassignLP();
+		
+						span = (TimeSpan) ( DateTime.Now - timeReassignLP );
+						Trace.TraceInformation( "LP再配置所要時間:          {0}", span.ToString() );
+
+						span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
+						Trace.TraceInformation( "総読込時間:                {0}", span.ToString() );
+
+						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ;
+						return (int) E曲読込画面の戻り値.継続;
+					}
 				case CStage.Eフェーズ.NOWLOADING_システムサウンドBGMの完了を待つ:
 					{
 						long nCurrentTime = CDTXMania.Instance.Timer.n現在時刻;

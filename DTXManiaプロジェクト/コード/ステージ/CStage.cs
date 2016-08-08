@@ -58,6 +58,7 @@ namespace DTXMania
 			NOWLOADING_DTXファイルを読み込む,
 			NOWLOADING_WAVファイルを読み込む,
 			NOWLOADING_BMPファイルを読み込む,
+			NOWLOADING_LPを再配置する,
 			NOWLOADING_システムサウンドBGMの完了を待つ,
 			演奏_STAGE_FAILED,
 			演奏_STAGE_FAILED_フェードアウト,

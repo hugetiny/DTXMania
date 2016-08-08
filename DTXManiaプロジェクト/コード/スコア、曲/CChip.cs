@@ -22,7 +22,7 @@ namespace DTXMania
 		public EAVIType eAVI種別 { get; private set; }
 		public EBGAType eBGA種別 { get; private set; }
 		public EPart e楽器パート { get; private set; }
-		public EChannel eチャンネル番号 { get; private set; }
+		public EChannel eチャンネル番号 { get; set; }
 
 		/// <summary>
 		/// バーからの距離（スクロールスピードを反映したチップの発声時刻）
@@ -1263,6 +1263,32 @@ namespace DTXMania
 
 			double _db再生速度 = (CDTXMania.Instance.DTXVmode.Enabled) ? CDTXMania.Instance.DTX.dbDTXVPlaySpeed : CDTXMania.Instance.DTX.db再生速度;
 			return (int)(nDuration / _db再生速度);
+		}
+
+		public string GetSoundFilename()
+		{
+			if ( this.bWAVを使うチャンネルである )   // WAV
+			{
+				CDTX.CWAV wc;
+				CDTXMania.Instance.DTX.listWAV.TryGetValue( this.n整数値_内部番号, out wc );
+				if ( wc == null )
+				{
+					return null;
+				}
+				else if ( wc.rSound[ 0 ] == null )
+				{
+					return null;
+				}
+				else
+				{
+					return wc.rSound[ 0 ].strファイル名;
+				}
+			}
+			//else if ( this.eチャンネル番号 == EChannel.Movie || this.eチャンネル番号 == EChannel.MovieFull )  // AVI
+			//{
+			//}
+
+			return null;
 		}
 
 		#region [ IComparable 実装 ]

@@ -1333,7 +1333,7 @@ namespace DTXMania
 				case EChannel.HiHatOpen: return ELane.HH;
 				case EChannel.RideCymbal: return ELane.CY;
 				case EChannel.LeftCymbal: return ELane.LC;
-				case EChannel.LeftPedal: return ELane.HH;		// LPは仮にHHに落とし込む 後日、CDTXInputで別Laneに割り振るようにした後、このcaseは削除する
+				//case EChannel.LeftPedal: return ELane.HH;		// LPは仮にHHに落とし込む 後日、CDTXInputで別Laneに割り振るようにした後、このcaseは削除する
 			}
 			throw new IndexOutOfRangeException();
 		}

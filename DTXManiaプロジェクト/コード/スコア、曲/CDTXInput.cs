@@ -277,7 +277,7 @@ namespace DTXMania
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
 						//Trace.TraceInformation( "空打確認時間:             {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
-						#region [ 拍子・拍線の挿入 ]
+						#region [ 拍子・拍線の挿入と、クリック音の挿入 ]
 						if (this.listChip.Count > 0)
 						{
 							this.listChip.Sort();   // 高速化のためにはこれを削りたいが、listChipの最後がn発声位置の終端である必要があるので、
@@ -515,7 +515,7 @@ namespace DTXMania
 							this.strハッシュofDTXファイル = "00000000000000000000000000000000";
 						}
 						#endregion
-						
+
 						// #36177 使用レーン数の表示 add ikanick 16.03.20
 						#region [ 使用レーン数カウント ]
 
@@ -559,7 +559,9 @@ namespace DTXMania
 								if ( this.n使用レーン数.Bass == EUseLanes.Other ) this.n使用レーン数.Bass = EUseLanes.GB_3;
 							}
 						}
-
+						Trace.TraceInformation( "LeftPedal使用=" + this.bチップがある.LeftPedal );
+						Trace.TraceInformation( "LeftBass使用 =" + this.bチップがある.LeftBassDrum );
+						Trace.TraceInformation( "Lane Type    =" + this.n使用レーン数.Drums );
 						#endregion
 
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
@@ -610,6 +612,139 @@ namespace DTXMania
 
 					}
 				}
+			}
+		}
+
+		/// <summary>
+		/// #34016 LP/LBD使用譜面の吸収
+		/// </summary>
+		public void ReassignLP()
+		{
+			if ( this.bチップがある.LeftPedal )
+			{
+				if ( this.bチップがある.LeftBassDrum )
+				{	// LP かつ LBDがある場合
+					// → * LBDはBDに割り当て
+					//    * LPは、HO(foot splash)に割り当て。あるいは、HO(foot splash)とHC(close)のいずれかに割り当てる。
+					//      BPMから4分音符の長さを計算し、それより長いかどうかでHO/HCの仕分けを決定。 
+					//    * チップ音にサウンドファイルが割り当てられていない場合は、HCに割り当て 
+					//    * HO未使用の譜面の場合は、HCに割り当て
+
+					double bpm = this.BPM + this.BASEBPM;
+					double dbBarLength = 1.0;
+					double nLen4thNoteMs = (int) ( ( 60.0 / bpm / dbBarLength ) * 10 * 10 * 10 );
+
+					for ( int i = 0; i < this.listChip.Count; i++ )
+					{
+						// switch-caseにすると、listchip[i]の書き換えができないので、if-elseで記述
+						if ( this.listChip[ i ].eチャンネル番号 == EChannel.LeftBassDrum )
+						{
+							this.listChip[ i ].eチャンネル番号 = EChannel.BassDrum;
+						}
+						else if ( this.listChip[ i ].eチャンネル番号 == EChannel.LeftPedal )
+						{
+							int len = this.listChip[ i ].GetDuration();		// WAV未割当の場合は0が返る
+																			// HHOpen未使用の譜面であれば、無条件にHHCloseに落としこむ
+							this.listChip[ i ].eチャンネル番号 = ( len < nLen4thNoteMs || !this.bチップがある.HHOpen ) ? EChannel.HiHatClose : EChannel.HiHatOpen;
+						}
+						else if ( this.listChip[ i ].eチャンネル番号 == EChannel.BPM )
+						{
+							bpm = this.BPM + this.BASEBPM;
+							nLen4thNoteMs = (int) ( ( 60.0 / bpm / dbBarLength / 2 ) * 10 * 10 * 10 );
+						}
+						else if ( this.listChip[ i ].eチャンネル番号 == EChannel.BPMEx )
+						{
+							int n内部番号 = listChip[ i ].n整数値_内部番号;
+							if ( listBPM.ContainsKey( n内部番号 ) )
+							{
+								bpm = ( ( listBPM[ n内部番号 ].n表記上の番号 == 0 ) ? 0.0 : this.BASEBPM ) + listBPM[ n内部番号 ].dbBPM値;
+							}
+						}
+						else if ( this.listChip[ i ].eチャンネル番号 == EChannel.BarLength )
+						{
+							dbBarLength = this.listChip[ i ].db実数値;
+						}
+					}
+				}
+				else
+				{	// LPしかない場合
+					// → LPを、BD, HO, HCに割り当てる必要がある。
+					//    * BDへの割り当ては、BDレーンで同じ音を使っているかどうかで決定 
+					//    * HO, HCへの割り当ては、(BDの可能性を除いた後) HOにアサイン、あるいはチップの長さを見てHC/HOにアサイン
+					//    * チップ音にサウンドファイルが割り当てられていない場合は、HCに割り当て 
+					//    * HO未使用の譜面の場合は、HCに割り当て
+
+					double bpm = this.BPM + this.BASEBPM;
+					double dbBarLength = 1.0;
+					double nLen4thNoteMs = (int) ( ( 60.0 / bpm / dbBarLength ) * 10 * 10 * 10 );
+
+					#region [ BassDrumのファイル名一覧を作成 ]
+					List<string> listBDFilenames = new List<string>();
+					foreach ( CChip chip in listChip )
+					{
+						if (chip.eチャンネル番号 == EChannel.BassDrum)
+						{
+							string s = chip.GetSoundFilename();
+							if (s != null && !listBDFilenames.Contains(s))
+							{
+								listBDFilenames.Add(s);
+							}
+						}
+					}
+					#endregion
+
+					for ( int i = 0; i < this.listChip.Count; i++ )
+					{
+						if ( this.listChip[ i ].eチャンネル番号 == EChannel.LeftPedal )
+						{
+							string s = listChip[i].GetSoundFilename();
+							if (listBDFilenames.Contains(s))
+							{
+								this.listChip[i].eチャンネル番号 = EChannel.BassDrum;
+							}
+							else
+							{
+								int len = this.listChip[ i ].GetDuration();		// WAV未割当の場合は0が返る
+																				// HHOpen未使用の譜面であれば、無条件にHHCloseに落としこむ
+								this.listChip[ i ].eチャンネル番号 = ( len < nLen4thNoteMs || !this.bチップがある.HHOpen ) ? EChannel.HiHatClose : EChannel.HiHatOpen;
+							}
+						}
+						else if ( this.listChip[ i ].eチャンネル番号 == EChannel.BPM )
+						{
+							bpm = this.BPM + this.BASEBPM;
+							nLen4thNoteMs = (int) ( ( 60.0 / bpm / dbBarLength / 2 ) * 10 * 10 * 10 );
+						}
+						else if ( this.listChip[ i ].eチャンネル番号 == EChannel.BPMEx )
+						{
+							int n内部番号 = listChip[ i ].n整数値_内部番号;
+							if ( listBPM.ContainsKey( n内部番号 ) )
+							{
+								bpm = ( ( listBPM[ n内部番号 ].n表記上の番号 == 0 ) ? 0.0 : this.BASEBPM ) + listBPM[ n内部番号 ].dbBPM値;
+							}
+						}
+						else if ( this.listChip[ i ].eチャンネル番号 == EChannel.BarLength )
+						{
+							dbBarLength = this.listChip[ i ].db実数値;
+						}
+					}
+					listBDFilenames.Clear();
+					listBDFilenames = null;
+				}
+			}
+			else if ( this.bチップがある.LeftBassDrum )
+			{	// LBDのみがある場合
+				// → そのままBDに割り当て
+				for ( int i = 0; i < this.listChip.Count; i++ )
+				{
+					if ( this.listChip[ i ].eチャンネル番号 == EChannel.LeftBassDrum )
+					{
+						this.listChip[ i ].eチャンネル番号 = EChannel.BassDrum;
+					}
+				}
+			}
+			else
+			{	// LPもLBDもない場合
+				// → 何もしない
 			}
 		}
 		private bool t入力_コマンド文字列を抜き出す(ref CharEnumerator ce, ref StringBuilder sb文字列)
