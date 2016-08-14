@@ -342,6 +342,10 @@ namespace DTXMania.Coordinates
 			OptionPanelSelect.Drums = new CXY(1107, 23);
 			OptionPanelSelect.Guitar = new CXY(1107, 50);
 			OptionPanelSelect.Bass = new CXY(1107, 77);
+			
+			Graph.Drums = new CWH(62, 1080);
+			Graph.Guitar = new CWH(62, 1080);
+			Graph.Bass = new CWH(62, 1080);
 
 		}
 	}

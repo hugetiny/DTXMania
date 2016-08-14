@@ -99,117 +99,97 @@ namespace DTXMania
 							+ CDTXMania.Instance.Coordinates.Instrument[inst].W;
 						int gy = 0;
 
-						// 背景暗幕
 						if (this.txグラフ != null)
 						{
+							// 背景暗幕
+							this.txグラフ.n透明度 = 128;
 							this.txグラフ.vc拡大縮小倍率.X = CDTXMania.Instance.Coordinates.Graph[inst].W;
 							this.txグラフ.vc拡大縮小倍率.Y = CDTXMania.Instance.Coordinates.Graph[inst].H;
-
-							this.txグラフ.n透明度 = 128;
 							this.txグラフ.t2D描画(CDTXMania.Instance.Device, gx, gy, new Rectangle(62, 0, 1, 1));
 
 							// 基準線
-
-							this.txグラフ.n透明度 = 128;
 							this.txグラフ.vc拡大縮小倍率.X = CDTXMania.Instance.Coordinates.Graph[inst].W;
 							this.txグラフ.vc拡大縮小倍率.Y = 1f;
 
 							for (int i = 0; i < slices; i++)
 							{
-								this.txグラフ.t2D描画(CDTXMania.Instance.Device,
-									gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H * i / slices, new Rectangle(60, 0, 1, 1));
-							}
-
-							for (int i = 0; i < 5; i++)
-							{
-								Rectangle rectangle;
-								// 基準線を越えたら線が黄色くなる
-								if (this.dbCurrent[inst] >= (100 - i * slices))
+								if (this.dbCurrent[inst] < (100 - i * slices))
 								{
-									rectangle = new Rectangle(61, 0, 1, 1); //黄色
-									if (this.txグラフ != null)
-									{
-										this.txグラフ.n透明度 = 224;
-									}
+									// 通常の基準線(白)
+									this.txグラフ.n透明度 = 128;
+									this.txグラフ.t2D描画(CDTXMania.Instance.Device,
+										gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H * i / slices, new Rectangle(60, 0, 1, 1));
 								}
 								else
 								{
-									rectangle = new Rectangle(60, 0, 1, 1);
-									if (this.txグラフ != null)
-									{
-										this.txグラフ.n透明度 = 160;
-									}
-								}
-
-								if (this.txグラフ != null)
-								{
-									this.txグラフ.t2D描画(
-										CDTXMania.Instance.Device,
-										gx, gy + i * CDTXMania.Instance.Coordinates.Graph[inst].H / slices,
-										rectangle
-										);
+									// 基準線を越えたら線が黄色くなる
+									this.txグラフ.n透明度 = 224;
+									this.txグラフ.t2D描画(CDTXMania.Instance.Device,
+										gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H * i / slices, new Rectangle(61, 0, 1, 1));
 								}
 							}
 
-							// グラフ
+							// グラフのゲージ部分
+
 							// --現在値
+							this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
+
 							if (this.dbCurrentDisp[inst] < this.dbCurrent[inst])
 							{
 								this.dbCurrentDisp[inst] += (this.dbCurrent[inst] - this.dbCurrentDisp[inst]) / 5 + 0.01;
 							}
-							if (this.dbCurrentDisp[inst] >= this.dbCurrent[inst])
+							else
 							{
 								this.dbCurrentDisp[inst] = this.dbCurrent[inst];
 							}
 							int ar = (int)(CDTXMania.Instance.Coordinates.Graph[inst].H * this.dbCurrentDisp[inst] / 100.0);
 
-							this.txグラフ.vc拡大縮小倍率 = new Vector3(1f, 1f, 1f);
-							this.txグラフ.n透明度 = 255;
+							this.txグラフ.n透明度 = 224;
 							this.txグラフ.t2D描画(
 								CDTXMania.Instance.Device,
 								gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
 								new Rectangle(0, 5 + stYposInImg, 30, ar)
-								);
+							);
 							this.txグラフ.t2D描画( // 上部白いバー
 								CDTXMania.Instance.Device,
 								gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
-								new Rectangle(0, 0, 30, 5)
+								new Rectangle(63 + 0, 0, 30, 5)
 							);
 
-							// --現在値_目標越
+							// 目標を超えた時に発光？させる
 							if ((dbCurrent[inst] >= dbTarget[inst]))
 							{
-								// this.txグラフ.vc拡大縮小倍率 = new Vector3(1.4f, 1f, 1f);
 								this.txグラフ.n透明度 = 128;
 								this.txグラフ.b加算合成 = true;
 								this.txグラフ.t2D描画(
 									CDTXMania.Instance.Device,
 									gx, gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
 									new Rectangle(0, 5 + stYposInImg, 30, ar)
-									);
+								);
 								this.txグラフ.b加算合成 = false;
 							}
+
 							// --目標値
 							if (this.dbTargetDisp[inst] < this.dbTarget[inst])
 							{
 								this.dbTargetDisp[inst] += (this.dbTarget[inst] - this.dbTargetDisp[inst]) / 5 + 0.01;
 							}
-							if (this.dbTargetDisp[inst] >= this.dbTarget[inst])
+							else
 							{
 								this.dbTargetDisp[inst] = this.dbTarget[inst];
 							}
 							ar = (int)(CDTXMania.Instance.Coordinates.Graph[inst].H * this.dbTargetDisp[inst] / 100.0);
-
+							
+							this.txグラフ.n透明度 = 224;
 							this.txグラフ.t2D描画(
 								CDTXMania.Instance.Device,
 								gx + 30,
 								gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
 								new Rectangle(30, 5 + stYposInImg, 30, ar)
-								);
-							this.txグラフ.n透明度 = 255;
+							);
 							this.txグラフ.t2D描画( // 上部白いバー
 								CDTXMania.Instance.Device, gx + 30, gy + CDTXMania.Instance.Coordinates.Graph[inst].H - ar,
-								new Rectangle(30, 0, 30, 5)
+								new Rectangle(63 + 30, 0, 30, 5)
 							);
 						}
 					}
