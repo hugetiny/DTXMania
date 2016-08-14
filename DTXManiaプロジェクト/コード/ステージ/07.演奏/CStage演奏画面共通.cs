@@ -478,7 +478,8 @@ namespace DTXMania
 
 				// PANELの設定は、base.On活性化()の後に(actPanelの活性化の後)行うこと。
 				// さもないと、actPanelが活性化されていないため、パネル文字列の設定が機能しなくなる。
-				string strLabel = CDTXMania.Instance.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.Instance.stage選曲.n確定された曲の難易度 ];
+				string strLabel = (CDTXMania.Instance.stage選曲.r確定された曲 == null)?
+					null : CDTXMania.Instance.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.Instance.stage選曲.n確定された曲の難易度 ];
 				string strPanel = CDTXMania.Instance.DTX.TITLE;
 				//string strSETDEFlabel = CDTXMania.Instance.stage選曲.r確定された曲.strタイトル;
 				if ( !string.IsNullOrWhiteSpace( strLabel ) && !strPanel.Contains(strLabel)

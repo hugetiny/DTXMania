@@ -34,7 +34,7 @@ namespace DTXMania
 				if ( strLanguageCode == "" || strLanguageCode == null )
 				{
 					string s = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
-					if ( s == "" || !csvHeader.Contains( s+".title" ) )
+					if ( s == "" || csvHeader == null || !csvHeader.Contains( s+".title" ) )
 					{
 						strLanguageCode = "default";
 					}
@@ -52,7 +52,7 @@ namespace DTXMania
 				if ( value == "" || value == null )
 				{
 					string s = System.Threading.Thread.CurrentThread.CurrentUICulture.Name;
-					if ( s == "" || !csvHeader.Contains( s + ".title" ) )
+					if ( s == "" || csvHeader == null || !csvHeader.Contains( s + ".title" ) )
 					{
 						strLanguageCode = "default";
 					}
@@ -63,7 +63,7 @@ namespace DTXMania
 				}
 				else
 				{
-					if ( !csvHeader.Contains( value + ".title" ) )
+					if ( csvHeader == null || !csvHeader.Contains( value + ".title" ) )
 					{
 						strLanguageCode = "default";
 					}
@@ -211,12 +211,20 @@ namespace DTXMania
         public void LoadResources(string language = "")
         {
 			// 参考: http://dobon.net/vb/dotnet/file/readcsvfile.html
+			Microsoft.VisualBasic.FileIO.TextFieldParser tfp;
+			try
+			{
+				tfp = new Microsoft.VisualBasic.FileIO.TextFieldParser(
+						csvFileName,
+						System.Text.Encoding.Unicode
+				);
+			}
+			catch ( System.IO.FileNotFoundException e )
+			{
+				Trace.TraceError( "言語情報ファイル System/resources.csv が見つかりませんでした。" + e.Message );
+				return;
+			}
 
-			Microsoft.VisualBasic.FileIO.TextFieldParser tfp =
-				new Microsoft.VisualBasic.FileIO.TextFieldParser(
-					csvFileName,
-					System.Text.Encoding.Unicode
-			);
 			//フィールドが文字で区切られているとする
 			//デフォルトでDelimitedなので、必要なし
 			tfp.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
