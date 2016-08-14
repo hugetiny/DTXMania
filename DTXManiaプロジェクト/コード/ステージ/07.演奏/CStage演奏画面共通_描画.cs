@@ -380,7 +380,7 @@ namespace DTXMania
 
 					if ((CDTXMania.Instance.DTX.bチップがある[(int)inst]) && (ymin < y) && (y < ymax) &&
 						(CDTXMania.Instance.ConfigIni.eDark == EDark.Off ||
-						(CDTXMania.Instance.ConfigIni.eDark == EDark.Half && pChip[EChannel.BarLine])))
+						(CDTXMania.Instance.ConfigIni.eDark == EDark.Half && ( pChip[EChannel.BarLine] || pChip[EChannel.BeatLine] ))))
 						/*&& (pChip.nバーからの距離dot[(int)inst] >= n小節線消失距離dot)*/
 					{
 						int jx = CDTXMania.Instance.ConfigIni.cdInstX[inst][CDTXMania.Instance.ConfigIni.eActiveInst].Value;
