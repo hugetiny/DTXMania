@@ -23,7 +23,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "105(160801)";
+		public static readonly string VERSION = "106(160822)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";     // June 2010
 																																//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -2342,7 +2342,7 @@ namespace DTXMania
 				#endregion
 				#region [ Config.iniの出力 ]
 				//---------------------
-				Trace.TraceInformation("Config.ini を出力します。");
+				Trace.TraceInformation("Config.xml を出力します。");
 				//				if ( ConfigIni.bIsSwappedGuitarBass )			// #24063 2011.1.16 yyagi ギターベースがスワップしているときは元に戻す
 				if (ConfigIni.bIsSwappedGuitarBass_AutoFlagsAreSwapped) // #24415 2011.2.21 yyagi FLIP中かつ演奏中にalt-f4で終了したときは、AUTOのフラグをswapして戻す
 				{
@@ -2361,7 +2361,7 @@ namespace DTXMania
 					if (DTXVmode.Enabled)
 					{
 						DTXVmode.tUpdateConfigIni();
-						Trace.TraceInformation("DTXVモードの設定情報を、Config.iniに保存しました。");
+						Trace.TraceInformation("DTXVモードの設定情報を、Config.xmlに保存しました。");
 					}
 					else
 					{
@@ -2372,7 +2372,7 @@ namespace DTXMania
 				catch (Exception e)
 				{
 					Trace.TraceError(e.Message);
-					Trace.TraceError("Config.ini の出力に失敗しました。({0})", str);
+					Trace.TraceError("Config.xml の出力に失敗しました。({0})", str);
 				}
 				finally
 				{

@@ -172,6 +172,9 @@ namespace DTXMania
 				Drums.eDark = CDTXMania.Instance.ConfigIni.eDark;
 				Drums.n演奏速度分子 = CDTXMania.Instance.ConfigIni.nPlaySpeed;
 				Drums.n演奏速度分母 = 20;
+				Drums.e譜面レーンタイプ.Drums = CDTXMania.Instance.DTX.n使用レーン数.Drums;
+				Drums.e譜面レーンタイプ.Guitar= CDTXMania.Instance.DTX.n使用レーン数.Guitar;
+				Drums.e譜面レーンタイプ.Bass  = CDTXMania.Instance.DTX.n使用レーン数.Bass;
 				Drums.eHHGroup = CDTXMania.Instance.ConfigIni.eHHGroup.Value;
 				Drums.eFTGroup = CDTXMania.Instance.ConfigIni.eFTGroup.Value;
 				Drums.eCYGroup = CDTXMania.Instance.ConfigIni.eCYGroup.Value;
@@ -240,6 +243,9 @@ namespace DTXMania
 				Guitar.eHHGroup = CDTXMania.Instance.ConfigIni.eHHGroup;
 				Guitar.eFTGroup = CDTXMania.Instance.ConfigIni.eFTGroup;
 				Guitar.eCYGroup = CDTXMania.Instance.ConfigIni.eCYGroup;
+				Guitar.e譜面レーンタイプ.Drums = CDTXMania.Instance.DTX.n使用レーン数.Drums;
+				Guitar.e譜面レーンタイプ.Guitar = CDTXMania.Instance.DTX.n使用レーン数.Guitar;
+				Guitar.e譜面レーンタイプ.Bass = CDTXMania.Instance.DTX.n使用レーン数.Bass;
 				Guitar.eHitSoundPriorityHH = CDTXMania.Instance.ConfigIni.eHitSoundPriorityHH;
 				Guitar.eHitSoundPriorityFT = CDTXMania.Instance.ConfigIni.eHitSoundPriorityFT;
 				Guitar.eHitSoundPriorityCY = CDTXMania.Instance.ConfigIni.eHitSoundPriorityCY;
@@ -303,6 +309,9 @@ namespace DTXMania
 				Bass.eHHGroup = CDTXMania.Instance.ConfigIni.eHHGroup;
 				Bass.eFTGroup = CDTXMania.Instance.ConfigIni.eFTGroup;
 				Bass.eCYGroup = CDTXMania.Instance.ConfigIni.eCYGroup;
+				Bass.e譜面レーンタイプ.Drums = CDTXMania.Instance.DTX.n使用レーン数.Drums;
+				Bass.e譜面レーンタイプ.Guitar = CDTXMania.Instance.DTX.n使用レーン数.Guitar;
+				Bass.e譜面レーンタイプ.Bass = CDTXMania.Instance.DTX.n使用レーン数.Bass;
 				Bass.eHitSoundPriorityHH = CDTXMania.Instance.ConfigIni.eHitSoundPriorityHH;
 				Bass.eHitSoundPriorityFT = CDTXMania.Instance.ConfigIni.eHitSoundPriorityFT;
 				Bass.eHitSoundPriorityCY = CDTXMania.Instance.ConfigIni.eHitSoundPriorityCY;

@@ -122,7 +122,8 @@ namespace DTXMania
 			public int n最大コンボ数;
 			public int n全チップ数;
 			public string strDTXManiaのバージョン;
-			public bool レーン9モード;
+			//public bool レーン9モード;
+			public STDGBSValue<EUseLanes> e譜面レーンタイプ;
 			public int nRisky;    // #23559 2011.6.20 yyagi 0=OFF, 1-10=Risky
 			public string 最終更新日時;
 			public bool bギターとベースを入れ替えた; // #35417 2015.08.30 chnmr0 add
@@ -153,7 +154,10 @@ namespace DTXMania
 				this.strDTXManiaのバージョン = "Unknown";
 				this.最終更新日時 = "";
 				this.Hash = "00000000000000000000000000000000";
-				this.レーン9モード = true;
+				//this.レーン9モード = true;
+				this.e譜面レーンタイプ.Drums  = EUseLanes.Dr_6;
+				this.e譜面レーンタイプ.Guitar = EUseLanes.GB_3;
+				this.e譜面レーンタイプ.Bass   = EUseLanes.GB_3;
 				this.nRisky = 0;                  // #23559 2011.6.20 yyagi
 				this.bギターとベースを入れ替えた = false; // #35417 2015.08.30 chnmr0 add
 				this.eMetronome = EClickType.Off;
@@ -990,9 +994,21 @@ namespace DTXMania
 											{
 												c演奏記録.Hash = para;
 											}
-											else if (item.Equals("9LaneMode"))
+											//else if ( item.Equals( "9LaneMode" ) )
+											//{
+											//	c演奏記録.レーン9モード = C変換.bONorOFF( para[ 0 ] );
+											//}
+											else if (item.Equals("ScoreLaneTypeDrums"))
 											{
-												c演奏記録.レーン9モード = C変換.bONorOFF(para[0]);
+												c演奏記録.e譜面レーンタイプ.Drums = (EUseLanes) ( int.Parse( para ) );
+											}
+											else if ( item.Equals( "ScoreLaneTypeGuitar" ) )
+											{
+												c演奏記録.e譜面レーンタイプ.Guitar = (EUseLanes) ( int.Parse( para ) );
+											}
+											else if ( item.Equals( "ScoreLaneTypeBass" ) )
+											{
+												c演奏記録.e譜面レーンタイプ.Bass = (EUseLanes) ( int.Parse( para ) );
 											}
 										}
 									}
@@ -1108,6 +1124,9 @@ namespace DTXMania
 				writer.WriteLine("ScrollSpeedGuitar={0}", sect.f譜面スクロール速度.Guitar);
 				writer.WriteLine("ScrollSpeedBass={0}", sect.f譜面スクロール速度.Bass);
 				writer.WriteLine("PlaySpeed={0}/{1}", sect.n演奏速度分子, sect.n演奏速度分母);
+				writer.WriteLine("ScoreLaneTypeDrums={0}", (int) sect.e譜面レーンタイプ.Drums);
+				writer.WriteLine("ScoreLaneTypeGuitar={0}", (int) sect.e譜面レーンタイプ.Guitar);
+				writer.WriteLine("ScoreLaneTypeBass={0}", (int) sect.e譜面レーンタイプ.Bass);
 				writer.WriteLine("HHGroup={0}", (int)sect.eHHGroup);
 				writer.WriteLine("FTGroup={0}", (int)sect.eFTGroup);
 				writer.WriteLine("CYGroup={0}", (int)sect.eCYGroup);

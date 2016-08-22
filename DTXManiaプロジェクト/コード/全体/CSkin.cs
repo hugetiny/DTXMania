@@ -567,8 +567,8 @@ namespace DTXMania
 			this.soundフルコンボ音 = new Cシステムサウンド(@"Sounds\Full combo.ogg", false, false, true);
 			this.sound曲読込開始音 = new Cシステムサウンド(@"Sounds\Now loading.ogg", false, true, true);
 			this.soundタイトル音 = new Cシステムサウンド(@"Sounds\Title.ogg", false, true, false);
-			this.soundClickHigh = new Cシステムサウンド( @"Sounds\Click_High.wav", false, false, false );
-			this.soundClickLow = new Cシステムサウンド( @"Sounds\Click_Low.wav", false, false, false );
+			this.soundClickHigh = new Cシステムサウンド( @"Sounds\Click_High.ogg", false, false, false );
+			this.soundClickLow = new Cシステムサウンド( @"Sounds\Click_Low.ogg", false, false, false );
 			this.bgm起動画面 = new Cシステムサウンド( @"Sounds\Setup BGM.ogg", true, true, false );
 			this.bgmオプション画面 = new Cシステムサウンド(@"Sounds\Option BGM.ogg", true, true, false);
 			this.bgmコンフィグ画面 = new Cシステムサウンド(@"Sounds\Config BGM.ogg", true, true, false);
