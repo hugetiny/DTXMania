@@ -538,7 +538,7 @@ namespace DTXMania
 			nWASAPIBufferSizeMs = new COptionInteger(50);
 			nChipDisplayTimeMs = new COptionInteger(3000);
 			nChipFadeoutTimeMs = new COptionInteger(2000);
-			rcViewerWindow = new Coordinates.CRect(100, 100, 1280, 720);
+			rcViewerWindow = new Coordinates.CRect(100, 100, 640, 360);
 			nMasterVolume = new COptionInteger(100);
 			nPolyphonicSounds = new COptionInteger(4);
 
