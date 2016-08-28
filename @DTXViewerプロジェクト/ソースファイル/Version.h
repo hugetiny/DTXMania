@@ -1,3 +1,3 @@
 #pragma once
 
-#define	VERSION		"023(065b070617)"
+#define	VERSION		"024(065b160826)"

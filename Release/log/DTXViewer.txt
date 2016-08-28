@@ -1,0 +1,2 @@
+Direct3D T&L HAL デバイスを作成しました。
+Direct3D T&L HAL デバイスを作成しました。

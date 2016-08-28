@@ -1,0 +1,10 @@
+obj/ 
+bin/
+Debug/
+*.suo 
+*.csproj.user 
+*.snk 
+*.sdf
+*.obj
+*.log
+*.tlog

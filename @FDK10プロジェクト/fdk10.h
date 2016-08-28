@@ -36,7 +36,7 @@
  #pragma comment(linker, "/NODEFAULTLIB:libcmtd.lib")
  #pragma comment(lib, "d3dx.lib")
  #pragma comment(lib, "zlib.lib")
- #pragma comment(lib, "libpng.lib")
+ #pragma comment(lib, "libpng16.lib")
  #pragma comment(lib, "libogg_static.lib")
  #pragma comment(lib, "libvorbis_static.lib")
  #pragma comment(lib, "libvorbisfile_static.lib")
