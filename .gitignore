@@ -3,4 +3,12 @@ bin/
 *.suo
 *.csproj.user
 *.snk
-
+*.sdf
+*.obj
+*.log
+*.tlog
+*.pch
+*.idb
+*.pdb
+*.lastbuildstate
+*.unsuccessfulbuild

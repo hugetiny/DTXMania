@@ -37,7 +37,7 @@ namespace DTXMania
 	/// ・CActConfigList で新しく追加した項目を list に追加してください。
 	/// </summary>
 	[DataContract]
-	public class CConfigXml : IExtensibleDataObject
+	public class CConfigXml : IExtensibleDataObject, ICloneable
 	{
 		public static readonly int AssignableCodes = 16;
 
@@ -58,6 +58,16 @@ namespace DTXMania
 				extobj = value;
 			}
 		}
+
+		/// <summary>
+		/// とりあえずshallow copyによるClone()。
+		/// </summary>
+		/// <returns>自身を複製したCConfigXmlクラス。</returns>
+		public object Clone()
+		{
+			return (CConfigXml) MemberwiseClone();
+		}
+
 
 		[DataMember]
 		public COptionBool bFullAVI;
@@ -163,8 +173,13 @@ namespace DTXMania
 		public COptionInteger nBGAlpha;
 		[DataMember]
 		public Coordinates.CRect rcWindow;
+
+		public Coordinates.CRect rcWindow_backup;			// Viewerとしての使用時は、Playerとして使用する際のウインドウ情報をバックアップしておき、終了時に復元する
+															// 内部保持するだけの情報であるため、Config.xmlに保存する必要はなく、[DataMember]は不要
+
 		[DataMember]
 		public Coordinates.CRect rcViewerWindow;
+		
 		[DataMember]
 		public COptionInteger nMasterVolume;
 		[DataMember]
@@ -511,7 +526,8 @@ namespace DTXMania
 
 			// integer
 			rcWindow = new Coordinates.CRect(100, 100, 1280, 720);
-			nSleepPerFrameMs = new COptionInteger(-1);
+			rcWindow_backup = new Coordinates.CRect( 100, 100, 1280, 720 );
+			nSleepPerFrameMs = new COptionInteger( -1 );
 			nSleepUnfocusMs = new COptionInteger(1);
 			nBGAlpha = new COptionInteger(100);
 			nPreSoundWeightMs = new COptionInteger(1000);

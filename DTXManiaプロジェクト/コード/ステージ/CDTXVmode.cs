@@ -382,6 +382,7 @@ namespace DTXMania
 		/// </summary>
 		public void tUpdateConfigIni()
 		{
+			CConfigXml ConfigIni_backup = (CConfigXml) CDTXMania.Instance.ConfigIni.Clone();		// #36612 2016.9.12 yyagi
 			CDTXMania.Instance.LoadConfig();
 
 			// CConfigIni cc = new CConfigIni();
@@ -405,20 +406,24 @@ namespace DTXMania
 
 			for (EPart inst = EPart.Drums; inst <= EPart.Bass; ++inst)
 			{
-				CDTXMania.Instance.ConfigIni.nViewerScrollSpeed[inst].Value = CDTXMania.Instance.ConfigIni.nScrollSpeed[inst];
+				CDTXMania.Instance.ConfigIni.nViewerScrollSpeed[inst].Value = ConfigIni_backup.nScrollSpeed[inst];
 			}
-			CDTXMania.Instance.ConfigIni.bViewerShowDebugStatus.Value = CDTXMania.Instance.ConfigIni.bDebugInfo;
-			CDTXMania.Instance.ConfigIni.bViewerVSyncWait.Value = CDTXMania.Instance.ConfigIni.bVSyncWait;
-			CDTXMania.Instance.ConfigIni.bViewerTimeStretch.Value = CDTXMania.Instance.ConfigIni.bTimeStretch;
-			CDTXMania.Instance.ConfigIni.bViewerDrumsActive.Value = CDTXMania.Instance.ConfigIni.bDrums有効;
-			CDTXMania.Instance.ConfigIni.bViewerGuitarActive.Value = CDTXMania.Instance.ConfigIni.bGuitar有効;
+			CDTXMania.Instance.ConfigIni.bViewerShowDebugStatus.Value = ConfigIni_backup.bDebugInfo;
+			CDTXMania.Instance.ConfigIni.bViewerVSyncWait.Value = ConfigIni_backup.bVSyncWait;
+			CDTXMania.Instance.ConfigIni.bViewerTimeStretch.Value = ConfigIni_backup.bTimeStretch;
+			CDTXMania.Instance.ConfigIni.bViewerDrumsActive.Value = ConfigIni_backup.bDrums有効;
+			CDTXMania.Instance.ConfigIni.bViewerGuitarActive.Value = ConfigIni_backup.bGuitar有効;
 
-			CDTXMania.Instance.ConfigIni.rcViewerWindow.W = CDTXMania.Instance.ConfigIni.rcWindow.W;
-			CDTXMania.Instance.ConfigIni.rcViewerWindow.H = CDTXMania.Instance.ConfigIni.rcWindow.H;
-			CDTXMania.Instance.ConfigIni.rcViewerWindow.X = CDTXMania.Instance.ConfigIni.rcWindow.X;
-			CDTXMania.Instance.ConfigIni.rcViewerWindow.Y = CDTXMania.Instance.ConfigIni.rcWindow.Y;
+			CDTXMania.Instance.ConfigIni.rcViewerWindow.W = ConfigIni_backup.rcWindow.W;
+			CDTXMania.Instance.ConfigIni.rcViewerWindow.H = ConfigIni_backup.rcWindow.H;
+			CDTXMania.Instance.ConfigIni.rcViewerWindow.X = ConfigIni_backup.rcWindow.X;
+			CDTXMania.Instance.ConfigIni.rcViewerWindow.Y = ConfigIni_backup.rcWindow.Y;
+
+			CDTXMania.Instance.ConfigIni.rcWindow = ConfigIni_backup.rcWindow_backup;		// #36612 2016.9.12 yyagi
 
 			CDTXMania.Instance.SaveConfig();
+
+			ConfigIni_backup = null;
 		}
 
 		private string last_path;

@@ -329,6 +329,7 @@ namespace DTXMania
 					}
 
 					CDTXMania.Instance.ConfigIni.bFullScreen.Value = false;
+					CDTXMania.Instance.ConfigIni.rcWindow_backup = CDTXMania.Instance.ConfigIni.rcWindow;		// #36612 2016.9.12 yyagi
 					CDTXMania.Instance.ConfigIni.rcWindow.W = CDTXMania.Instance.ConfigIni.rcViewerWindow.W;
 					CDTXMania.Instance.ConfigIni.rcWindow.H = CDTXMania.Instance.ConfigIni.rcViewerWindow.H;
 					CDTXMania.Instance.ConfigIni.rcWindow.X = CDTXMania.Instance.ConfigIni.rcViewerWindow.X;
@@ -427,8 +428,8 @@ namespace DTXMania
 			base.Window.Location = new Point(ConfigIni.rcWindow.X, ConfigIni.rcWindow.Y);
 			// 事前にDTXVmodeの実体を作っておくこと
 			base.Window.Text = this.strWindowTitle;
-			base.Window.StartPosition = FormStartPosition.Manual;
-			base.Window.Location = new Point(ConfigIni.rcWindow.X, ConfigIni.rcWindow.Y);
+			//base.Window.StartPosition = FormStartPosition.Manual;
+			//base.Window.Location = new Point(ConfigIni.rcWindow.X, ConfigIni.rcWindow.Y);
 
 			// #34510 yyagi 2010.10.31 to change window size got from Config.ini
 			base.Window.ClientSize = new Size(ConfigIni.rcWindow.W, ConfigIni.rcWindow.H);
