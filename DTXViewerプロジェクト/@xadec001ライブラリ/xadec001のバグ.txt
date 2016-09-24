@@ -1,0 +1,10 @@
+◆ XA Decorder liblary 001 のバグ
+
+デコード後の XASTREAMHEADER::nDstUsed が大きめの値を返してくるので
+そのままのサイズで再生すると最後にノイズが乗る。
+
+そこで、xaDecodeConvert() 後のPCMサイズは、次の式で算出する。
+
+	dwPCMSize = nSamples * nChannels * 2;
+		（nSamples, nChannels は XAHEADER のメンバ）
+

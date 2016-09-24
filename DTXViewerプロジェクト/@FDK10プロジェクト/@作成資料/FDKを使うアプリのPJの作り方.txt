@@ -1,0 +1,86 @@
+
+
+■ (1) 新しいプロジェクトを作成する。
+
+<新しいプロジェクト>
+	[プロジェクトの種類]	"Win32"
+	[テンプレート]			"Win32 プロジェクト"
+	[OK]
+		
+<Win32 アプリケーション ウィザード>
+	[アプリケーションの設定]	選択
+	[アプリケーションの種類]	"Windows アプリケーション"
+	[空のプロジェクト]			チェック入れる
+	[完了]
+
+■ (2) stdafx.[h|cpp] を追加する。
+
+stdafx.h の内容
+--------------
+// stdafx.h
+// めったに修正されないものをプリコンパイルしておくことでコンパイル速度を上げる。
+#pragma once
+#include "fdk10.h"
+--------------
+
+stdafx.cpp の内容
+--------------
+#include "stdafx.h"
+
+// zlib で出る「vc80.pdb にシンボルがない」警告を抑制
+#pragma warning(disable: 4099)
+--------------
+
+■ (3) プロジェクトがデフォルトでプリコンパイルした stdafx.cpp を使うように設定する。
+
+<プロジェクトのプロパティページ>
+	[構成]		"すべての構成"
+	[構成プロパティ]>[C/C++]>[プリコンパイル済みヘッダー]>[プリコンパイル済みヘッダーの作成/使用]	"プリコンパイル済みヘッダーファイルを使用する(/Yu)"
+
+<stdafx.cpp のプロパティ>
+	[構成]		"すべての構成"	
+	[構成プロパティ]>[C/C++]>[プリコンパイル済みヘッダー]>[プリコンパイル済みヘッダーの作成/使用]	"プリコンパイル済みヘッダーファイルを作成する(/Yc)"
+
+■ (4) FDK にあわせてプロジェクトの構成を変更する。
+
+<プロジェクトのプロパティページ>
+	[構成]		"すべての構成"
+	[構成プロパティ]>[全般]>[文字セット]	"マルチバイト文字セットを使用する"
+
+	[構成]		"Debug"
+	[構成プロパティ]>[C/C++]>[コード生成]>[ランタイムライブラリ]	"マルチスレッド デバッグ(/MTd)"
+	
+	[構成]		"Release"
+	[構成プロパティ]>[C/C++]>[コード生成]>[ランタイムライブラリ]	"マルチスレッド(/MT)"
+
+■ (5) Main.[h|cpp] を作成し、WinMain() 関数を作成する。
+
+Main.h の例
+---------------
+#pragma once
+
+#include "CD3DApplication.h"
+
+extern CD3DApplication g_App;
+
+extern INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow );
+---------------
+
+Main.cpp の例
+---------------
+#include "stdafx.h"
+#include "Main.h"
+
+CD3DApplication g_App;
+
+INT WINAPI WinMain( HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow )
+{
+	if( FAILED( g_App.Create( hInst, (LPCTSTR)lpCmdLine ) ) )
+		return 0;
+
+	return g_App.Run();
+}
+---------------
+
+
+以上。
