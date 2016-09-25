@@ -587,9 +587,17 @@ namespace DTXMania
 							}
 							else if (item.Equals("AutoPlay"))
 							{
-								for (int i = 0; i < para.Length; i++)
+								if ( para.Length > (int) EPad.Max )
 								{
-									c演奏記録.bAutoPlay[(EPad)i] = C変換.bONorOFF(para[i]);
+									throw new IndexOutOfRangeException( "レーン数が想定より多いscore.iniを読み込みました。XG譜面のscore.iniファイルである可能性があります。" );
+									// Trace.TraceWarning( "レーン数が想定より多いscore.iniを読み込みました。XG譜面のscore.iniファイルである可能性があります。読み込みをスキップします。({0})", iniファイル名 );
+								}
+								else
+								{
+									for ( int i = 0; i < para.Length; i++ )
+									{
+										c演奏記録.bAutoPlay[ (EPad) i ] = C変換.bONorOFF( para[ i ] );
+									}
 								}
 							}
 							else if (item.Equals("GBFlip"))

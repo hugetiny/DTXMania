@@ -169,8 +169,8 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
-				TextureFactory.tテクスチャの解放(ref this.txCursor);
-				TextureFactory.tテクスチャの解放(ref this.txPopupMenuBackground);
+				//TextureFactory.tテクスチャの解放(ref this.txCursor);
+				//TextureFactory.tテクスチャの解放(ref this.txPopupMenuBackground);
 				for (int i = 0; i < 4; i++)
 				{
 					this.ctキー反復用[i] = null;
@@ -199,10 +199,19 @@ namespace DTXMania
 
 		public override void OnManagedリソースの解放()
 		{
-			if (!base.b活性化してない)
+			if ( base.b活性化してる )
 			{
-				TextureFactory.tテクスチャの解放(ref this.txPopupMenuBackground);
-				TextureFactory.tテクスチャの解放(ref this.txCursor);
+				TextureFactory.tテクスチャの解放( ref this.txPopupMenuBackground );
+				TextureFactory.tテクスチャの解放( ref this.txCursor );
+
+				TextureFactory.tテクスチャの解放( ref stqMenuTitle.txName );
+				if ( lciMenuItems != null )
+				{
+					for ( int i = 0; i < lciMenuItems.Length; i++ )
+					{
+						TextureFactory.tテクスチャの解放( ref lciMenuItems[i].txName );
+					}
+				}
 			}
 			base.OnManagedリソースの解放();
 		}

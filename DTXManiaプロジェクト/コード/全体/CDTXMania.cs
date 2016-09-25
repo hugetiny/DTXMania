@@ -23,7 +23,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "106(160822)";
+		public static readonly string VERSION = "107(160924)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";     // June 2010
 																																//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -364,6 +364,10 @@ namespace DTXMania
 				{
 					Trace.TraceInformation("コンパクトモードで起動します。[{0}]", strコンパクトモードファイル);
 				}
+			}
+			else
+			{
+				Trace.TraceInformation( "通常モードで起動します。" );
 			}
 			#endregion
 
@@ -1990,7 +1994,6 @@ namespace DTXMania
 
 		public void SaveConfig()
 		{
-
 			#region [ Skinパスの絶対パス→相対パス変換 ]
 			string _strSystemSkinSubfolderPath = ConfigIni.strSystemSkinSubfolderPath.Value;
 			Uri uriRoot = new Uri( System.IO.Path.Combine( this.strEXEのあるフォルダ, "System" + System.IO.Path.DirectorySeparatorChar ) );
@@ -2131,6 +2134,11 @@ namespace DTXMania
 				}
 				//---------------------
 				#endregion
+
+				#region [ 選曲ステージの終了処理 ]
+				stage選曲.On非活性化();
+				#endregion
+
 				#region [ プラグインの終了処理 ]
 				//---------------------
 				if (this.listプラグイン != null && this.listプラグイン.Count > 0)
@@ -2403,7 +2411,12 @@ namespace DTXMania
 				}
 				//---------------------
 				#endregion
-				Trace.TraceInformation("アプリケーションの終了処理を完了しました。");
+				#region [ DirectXの終了処理 ]
+				//---------------------
+				base.GraphicsDeviceManager.Dispose();
+				//---------------------
+				#endregion
+				Trace.TraceInformation( "アプリケーションの終了処理を完了しました。" );
 
 
 				this.b終了処理完了済み = true;

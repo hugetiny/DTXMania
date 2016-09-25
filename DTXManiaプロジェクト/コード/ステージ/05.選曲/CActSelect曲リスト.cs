@@ -322,11 +322,11 @@ namespace DTXMania
 		/// <param name="cs"></param>
 		public void Refresh(CSongs管理 cs, bool bRemakeSongTitleBar)    // #26070 2012.2.28 yyagi
 		{
-			//			this.On非活性化();
-
 			if (cs != null && cs.list曲ルート.Count > 0)  // 新しい曲リストを検索して、1曲以上あった
 			{
+				this.On非活性化();
 				CDTXMania.Instance.Songs管理 = cs;
+				this.On活性化();
 
 				if (this.r現在選択中の曲 != null)      // r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
 				{
@@ -349,9 +349,9 @@ namespace DTXMania
 					return;
 				}
 			}
-			this.On非活性化();
+			//this.On非活性化();
 			this.r現在選択中の曲 = null;
-			this.On活性化();
+			//this.On活性化();
 		}
 
 
@@ -1291,6 +1291,9 @@ namespace DTXMania
 
 			for (int i = 0; i < 5; i++)
 				song = this.r前の曲(song);
+
+			if ( song == null )
+				return;
 
 			for (int i = 0; i < 13; i++)
 			{
