@@ -448,13 +448,13 @@ namespace DTXMania
 		{
 			string bgfilename = null;
 
-			if ((CDTXMania.Instance.DTX.BACKGROUND != null) && (CDTXMania.Instance.DTX.BACKGROUND.Length > 0))
-			{
-				bgfilename = CDTXMania.Instance.DTX.BACKGROUND;
-			}
-			else if ((CDTXMania.Instance.DTX.BACKGROUND_GR != null) && (CDTXMania.Instance.DTX.BACKGROUND_GR.Length > 0))
+			if ((CDTXMania.Instance.ConfigIni.b楽器有効(EPart.Drums) == false) &&  (CDTXMania.Instance.DTX.BACKGROUND_GR != null) && (CDTXMania.Instance.DTX.BACKGROUND_GR.Length > 0))
 			{
 				bgfilename = CDTXMania.Instance.DTX.BACKGROUND_GR;
+			}
+			else if ((CDTXMania.Instance.DTX.BACKGROUND != null) && (CDTXMania.Instance.DTX.BACKGROUND.Length > 0))
+			{
+				bgfilename = CDTXMania.Instance.DTX.BACKGROUND;
 			}
 
 			if (bgfilename != null && bgfilename.Length > 0)
@@ -468,8 +468,8 @@ namespace DTXMania
 				{
 					using (Bitmap originalBackground = new Bitmap(bgfilename))
 					{
-						int W = originalBackground.Width;
-						int H = originalBackground.Height;
+						float W = originalBackground.Width;
+						float H = originalBackground.Height;
 
 						float mag = 1;
 						// VGA補正
@@ -501,14 +501,11 @@ namespace DTXMania
 						#region [ BGA領域黒抜き・テクスチャ変換・Full再生透明度 ]
 						if ((CDTXMania.Instance.DTX.listBMP.Count > 0) || (CDTXMania.Instance.DTX.listBMPTEX.Count > 0) || CDTXMania.Instance.DTX.listAVI.Count > 0)
 						{
-							using (Graphics graphics2 = Graphics.FromImage(image))
-							{
-								graphics2.FillRectangle(Brushes.Black,
-									new Rectangle(
-										CDTXMania.Instance.ConfigIni.cdMovieX[CDTXMania.Instance.ConfigIni.eActiveInst],
-										CDTXMania.Instance.ConfigIni.cdMovieY[CDTXMania.Instance.ConfigIni.eActiveInst],
-										CDTXMania.Instance.Coordinates.Movie.W, CDTXMania.Instance.Coordinates.Movie.H));
-							}
+							graphics3.FillRectangle(Brushes.Black,
+								new Rectangle(
+									CDTXMania.Instance.ConfigIni.cdMovieX[CDTXMania.Instance.ConfigIni.eActiveInst],
+									CDTXMania.Instance.ConfigIni.cdMovieY[CDTXMania.Instance.ConfigIni.eActiveInst],
+									CDTXMania.Instance.Coordinates.Movie.W, CDTXMania.Instance.Coordinates.Movie.H));
 						}
 						#endregion
 					}
