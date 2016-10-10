@@ -70,6 +70,7 @@ namespace DTXMania
 
 				Trace.WriteLine("Current Directory: " + Environment.CurrentDirectory);
 				Trace.WriteLine("EXEのあるフォルダ: " + Path.GetDirectoryName(Application.ExecutablePath));
+				Environment.CurrentDirectory = Path.GetDirectoryName(Application.ExecutablePath);
 
 				#region [DLLの存在チェック]
 				if (!tDLLの存在チェック("dll\\SlimDX" + CDTXMania.SLIMDXDLL + ".dll",
