@@ -477,11 +477,15 @@ namespace DTXMania
 			bDebugInfo = new COptionBool(false);
 			bLog = new COptionBool(true);
 			bAutoPlay = new COptionPadBool();
-			for (EPad pad = EPad.Min; pad < EPad.Max; ++pad)
+			for ( EPad pad = EPad.DrumsPadMin; pad < EPad.DrumsPadMax; ++pad )
 			{
-				bAutoPlay[pad] = new COptionBool(false);
+				bAutoPlay[ pad ] = new COptionBool( false );
 			}
-			bViewerVSyncWait = new COptionBool(true);
+			for ( EPad pad = EPad.GuitarPadMin; pad < EPad.BassPadMax; ++pad )
+			{
+				bAutoPlay[ pad ] = new COptionBool( true );
+			}
+			bViewerVSyncWait = new COptionBool( true );
 			bViewerShowDebugStatus = new COptionBool(true);
 			bViewerTimeStretch = new COptionBool(false);
 			bViewerDrumsActive = new COptionBool(true);
