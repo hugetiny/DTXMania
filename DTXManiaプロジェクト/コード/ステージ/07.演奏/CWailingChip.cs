@@ -54,8 +54,8 @@ namespace DTXMania
 						y = y + (int)(pChip.nバーからの距離dot[gb]);
 					}
 
-					int numA = (int)(26 * Scale.Y);     // ドラム画面かギター画面かで変わる値
-					int showRangeY1 = (int)(355 * Scale.Y); // ドラム画面かギター画面かで変わる値
+					int numA = (int)(26 * Scale.Y);			// wailing chipの高さの半分
+					int showRangeY1 = SampleFramework.GameWindowSize.Height;
 					int numB = y - (int)(0x39 * Scale.Y);
 					int numC = 0;
 					if ((numB < (showRangeY1 + numA)) && (numB > -numA))
