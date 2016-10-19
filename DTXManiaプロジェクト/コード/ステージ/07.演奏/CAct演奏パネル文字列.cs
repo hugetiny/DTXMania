@@ -85,7 +85,7 @@ namespace DTXMania
 			{
 				int x = CDTXMania.Instance.Coordinates.Panel.X;
 				int y = CDTXMania.Instance.Coordinates.Panel.Y;
-        if (this.txPanel != null)
+				if (this.txPanel != null)
 				{
 					Rectangle rectangle = new Rectangle(0, 0, txPanel.sz画像サイズ.Width, txPanel.sz画像サイズ.Height);
 					txPanel.fZ軸中心回転 = (float)(Math.PI / 2);

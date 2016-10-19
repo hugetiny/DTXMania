@@ -325,6 +325,7 @@ namespace DTXMania
 					sf.LineAlignment = StringAlignment.Far;
 					// 画面中央（水平方向位置）
 					sf.Alignment = StringAlignment.Center;
+					sf.FormatFlags = StringFormatFlags.NoWrap;
 
 					// レイアウト枠
 					Rectangle r = new Rectangle(0, 0, stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);

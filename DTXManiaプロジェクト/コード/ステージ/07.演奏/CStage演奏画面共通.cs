@@ -491,7 +491,7 @@ namespace DTXMania
 					null : CDTXMania.Instance.stage選曲.r確定された曲.ar難易度ラベル[ CDTXMania.Instance.stage選曲.n確定された曲の難易度 ];
 				string strPanel = CDTXMania.Instance.DTX.TITLE;
 				//string strSETDEFlabel = CDTXMania.Instance.stage選曲.r確定された曲.strタイトル;
-				if ( !string.IsNullOrWhiteSpace( strLabel ) && !strPanel.Contains(strLabel)
+				if ( !string.IsNullOrWhiteSpace( strLabel ) && !strPanel.ToLower().Contains(strLabel.ToLower() )
 				//	&& (strPanel == strSETDEFlabel)
 				)
 				{
