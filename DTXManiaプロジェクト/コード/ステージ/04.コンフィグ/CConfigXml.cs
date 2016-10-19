@@ -813,7 +813,7 @@ namespace DTXMania
 			// integer
 			nSleepPerFrameMs.Initialize( "strCfgSysSleepPerFrame", -1, 33 );
 			nSleepUnfocusMs.Initialize( "strCfgSysSleepUnfocus", 0, 33 );
-			nBGAlpha.Initialize( "strCfgSysBGAAlpha", 0, 255 );
+			nBGAlpha.Initialize( "strCfgSysBGAAlpha", 0, 256 );
 			nPreSoundWeightMs.Initialize( "strCfgSysPreSoundWait", 0, 10001);
 			nPreImageWeightMs.Initialize( "strCfgSysPreImageWait", 0, 10001);
 			nFontSizeDotSongSelect.Initialize("", "", 5);

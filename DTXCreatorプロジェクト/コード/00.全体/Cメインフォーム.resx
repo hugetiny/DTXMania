@@ -2720,76 +2720,82 @@ The image size is 204x269.</value>
     <value>203, 39</value>
   </metadata>
   <data name="toolStripMenuItem選択チップの切り取り.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItem選択チップの切り取り.Text" xml:space="preserve">
     <value>Cu&amp;t selected chip(s)</value>
   </data>
   <data name="toolStripMenuItem選択チップのコピー.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItem選択チップのコピー.Text" xml:space="preserve">
     <value>&amp;Copy selected chip(s)</value>
   </data>
   <data name="toolStripMenuItem選択チップの貼り付け.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItem選択チップの貼り付け.Text" xml:space="preserve">
     <value>&amp;Paste chip(s)</value>
   </data>
   <data name="toolStripMenuItem選択チップの削除.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItem選択チップの削除.Text" xml:space="preserve">
     <value>&amp;Delete selected chip(s)</value>
   </data>
   <data name="toolStripSeparator15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 6</value>
+    <value>247, 6</value>
   </data>
   <data name="toolStripMenuItemすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItemすべてのチップの選択.Text" xml:space="preserve">
     <value>Select &amp;All</value>
   </data>
   <data name="toolStripMenuItemレーン内のすべてのチップの選択1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
+  </data>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択1.Text" xml:space="preserve">
+    <value>Select a&amp;ll in the lane (all bar) []</value>
   </data>
   <data name="toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
+  </data>
+  <data name="toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2.Text" xml:space="preserve">
+    <value>Select a&amp;ll in the lane (after here) []</value>
   </data>
   <data name="toolStripMenuItem小節内のすべてのチップの選択.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItem小節内のすべてのチップの選択.Text" xml:space="preserve">
     <value>Select all in the pa&amp;rt []</value>
   </data>
   <data name="toolStripSeparator16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 6</value>
+    <value>247, 6</value>
   </data>
   <data name="toolStripMenuItem小節長変更.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItem小節長変更.Text" xml:space="preserve">
     <value>Change part length(&amp;B)</value>
   </data>
   <data name="toolStripSeparator17.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 6</value>
+    <value>247, 6</value>
   </data>
   <data name="toolStripMenuItem小節の挿入.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItem小節の挿入.Text" xml:space="preserve">
     <value>&amp;Insert part</value>
   </data>
   <data name="toolStripMenuItem小節の削除.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="toolStripMenuItem小節の削除.Text" xml:space="preserve">
     <value>D&amp;elete part</value>
   </data>
   <data name="toolStripSeparator18.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 6</value>
+    <value>247, 6</value>
   </data>
   <data name="generateBeatChipsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>234, 22</value>
@@ -2804,13 +2810,13 @@ The image size is 204x269.</value>
     <value>Generate &amp;BPM from Beat chips</value>
   </data>
   <data name="experimentalFeaturesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 22</value>
+    <value>250, 22</value>
   </data>
   <data name="experimentalFeaturesToolStripMenuItem.Text" xml:space="preserve">
     <value>E&amp;xperimental Features...</value>
   </data>
   <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 292</value>
+    <value>251, 314</value>
   </data>
   <data name="&gt;&gt;contextMenuStrip譜面右メニュー.Name" xml:space="preserve">
     <value>contextMenuStrip譜面右メニュー</value>
@@ -2818,9 +2824,6 @@ The image size is 204x269.</value>
   <data name="&gt;&gt;contextMenuStrip譜面右メニュー.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>ja-JP</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
