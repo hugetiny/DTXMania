@@ -387,14 +387,17 @@ namespace DTXMania
 						int jy = CDTXMania.Instance.ConfigIni.cdJudgeLineY[inst];
 						int jw = CDTXMania.Instance.Coordinates.Instrument[inst].W;
 						//小節線・拍線
-						for (int offsetX = 0; offsetX < jw; offsetX += rc.Width)
+						if (pChip.b可視)
 						{
-							int x = jx + offsetX;
-							if (offsetX + rc.Width > jw)
+							for ( int offsetX = 0; offsetX < jw; offsetX += rc.Width )
 							{
-								rc.Width = jw - offsetX;
+								int x = jx + offsetX;
+								if ( offsetX + rc.Width > jw )
+								{
+									rc.Width = jw - offsetX;
+								}
+								this.txチップ.t2D描画( CDTXMania.Instance.Device, x, y, rc );
 							}
-							this.txチップ.t2D描画(CDTXMania.Instance.Device, x, y, rc);
 						}
 						if (
 							pChip[EChannel.BarLine] &&
