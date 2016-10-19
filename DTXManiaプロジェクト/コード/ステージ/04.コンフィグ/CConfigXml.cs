@@ -699,12 +699,14 @@ namespace DTXMania
 			cdLaneOrder.FT.Value = 6;
 			cdLaneOrder.CY.Value = 7;
 
+			cdLaneOrder.GtR.Value = 0;
 			cdLaneOrder.GtG.Value = 1;
 			cdLaneOrder.GtB.Value = 2;
 			cdLaneOrder.GtW.Value = 3;
 
+			cdLaneOrder.BsR.Value = 0;
 			cdLaneOrder.BsG.Value = 1;
-			cdLaneOrder.BsR.Value = 2;
+			cdLaneOrder.GtB.Value = 2;
 			cdLaneOrder.BsW.Value = 3;
 
 			bConfigIniが存在している = System.IO.File.Exists(CDTXMania.Instance.strEXEのあるフォルダ + "Config.xml");
