@@ -4940,7 +4940,7 @@ namespace DTXCreator
 			if( this.t未保存なら保存する() == DialogResult.Cancel )
 				return;
 
-			this.t演奏ファイルを開いて読み込む( ( (ToolStripMenuItem) sender ).Text.Substring( 3 ) );
+			this.t演奏ファイルを開いて読み込む( ( (ToolStripMenuItem) sender ).ToolTipText );
 		}
 		//-----------------
 		#endregion
