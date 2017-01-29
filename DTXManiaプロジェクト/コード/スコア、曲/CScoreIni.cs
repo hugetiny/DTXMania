@@ -773,7 +773,7 @@ namespace DTXMania
 											{
 												case 0:
 													{
-														c演奏記録.eHHGroup = EHHGroup.None;
+														c演奏記録.eHHGroup = EHHGroup.Off;
 														continue;
 													}
 												case 1:
@@ -802,7 +802,7 @@ namespace DTXMania
 											{
 												case 0:
 													{
-														c演奏記録.eFTGroup = EFTGroup.None;
+														c演奏記録.eFTGroup = EFTGroup.Off;
 														continue;
 													}
 												case 1:
@@ -821,7 +821,7 @@ namespace DTXMania
 											{
 												case 0:
 													{
-														c演奏記録.eCYGroup = ECYGroup.None;
+														c演奏記録.eCYGroup = ECYGroup.Off;
 														continue;
 													}
 												case 1:

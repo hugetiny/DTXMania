@@ -1509,11 +1509,11 @@ namespace DTXMania
 				EFTGroup eFTGroup = CDTXMania.Instance.ConfigIni.eFTGroup;
 				ECYGroup eCYGroup = CDTXMania.Instance.ConfigIni.eCYGroup;
 
-				if (!CDTXMania.Instance.DTX.bチップがある.Ride && (eCYGroup == ECYGroup.None))
+				if (!CDTXMania.Instance.DTX.bチップがある.Ride && (eCYGroup == ECYGroup.Off))
 				{
 					eCYGroup = ECYGroup.Group;
 				}
-				if (!CDTXMania.Instance.DTX.bチップがある.HHOpen && (eHHGroup == EHHGroup.None))
+				if (!CDTXMania.Instance.DTX.bチップがある.HHOpen && (eHHGroup == EHHGroup.Off))
 				{
 					eHHGroup = EHHGroup.LC_HH;
 				}
@@ -1521,7 +1521,7 @@ namespace DTXMania
 				{
 					eHHGroup = EHHGroup.Group;
 				}
-				if (!CDTXMania.Instance.DTX.bチップがある.LeftCymbal && (eHHGroup == EHHGroup.None))
+				if (!CDTXMania.Instance.DTX.bチップがある.LeftCymbal && (eHHGroup == EHHGroup.Off))
 				{
 					eHHGroup = EHHGroup.HO_HC;
 				}
@@ -1808,7 +1808,7 @@ namespace DTXMania
 								EJudge e判定FT = (chipFT != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipFT, nInputAdjustTime) : EJudge.Miss;
 								switch (eFTGroup)
 								{
-									case EFTGroup.None:
+									case EFTGroup.Off:
 										#region [ LTのヒット処理 ]
 										//-----------------------------
 										if (e判定LT != EJudge.Miss)
@@ -1873,7 +1873,7 @@ namespace DTXMania
 								EJudge e判定FT = (chipFT != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipFT, nInputAdjustTime) : EJudge.Miss;
 								switch (eFTGroup)
 								{
-									case EFTGroup.None:
+									case EFTGroup.Off:
 										#region [ FTのヒット処理 ]
 										//-----------------------------
 										if (e判定FT != EJudge.Miss)
@@ -1946,7 +1946,7 @@ namespace DTXMania
 								SortChipsByNTime(chipArray, e判定Array, NumOfChips);
 								switch (eCYGroup)
 								{
-									case ECYGroup.None:
+									case ECYGroup.Off:
 										if (!CDTXMania.Instance.ConfigIni.bCymbalFree)
 										{
 											if (e判定CY != EJudge.Miss)
@@ -2028,7 +2028,7 @@ namespace DTXMania
 								EJudge e判定LC = (chipLC != null) ? this.e指定時刻からChipのJUDGEを返す(nTime, chipLC, nInputAdjustTime) : EJudge.Miss;
 								switch (eHHGroup)
 								{
-									case EHHGroup.None:
+									case EHHGroup.Off:
 										if (e判定HO != EJudge.Miss)
 										{
 											this.tドラムヒット処理(nTime, EPad.HHO, chipHO, inputEvent.nVelocity);
@@ -2234,7 +2234,7 @@ namespace DTXMania
 								SortChipsByNTime(chipArray, e判定Array, NumOfChips);
 								switch (eCYGroup)
 								{
-									case ECYGroup.None:
+									case ECYGroup.Off:
 										if (e判定RD != EJudge.Miss)
 										{
 											this.tドラムヒット処理(nTime, EPad.RD, chipRD, inputEvent.nVelocity);
@@ -2300,7 +2300,7 @@ namespace DTXMania
 								SortChipsByNTime(chipArray, e判定Array, NumOfChips);
 								switch (eHHGroup)
 								{
-									case EHHGroup.None:
+									case EHHGroup.Off:
 									case EHHGroup.LC_HH:
 										if (!CDTXMania.Instance.ConfigIni.bCymbalFree)
 										{
@@ -2472,7 +2472,7 @@ namespace DTXMania
 									{
 										CChip chipLT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.LowTom, nInputAdjustTime);
 										CChip chipFT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.FloorTom, nInputAdjustTime);
-										if (CDTXMania.Instance.ConfigIni.eFTGroup != EFTGroup.None)
+										if (CDTXMania.Instance.ConfigIni.eFTGroup != EFTGroup.Off)
 											rChip = (chipLT != null) ? chipLT : chipFT;
 										else
 											rChip = chipLT;
@@ -2483,7 +2483,7 @@ namespace DTXMania
 									{
 										CChip chipLT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.LowTom, nInputAdjustTime);
 										CChip chipFT = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.FloorTom, nInputAdjustTime);
-										if (CDTXMania.Instance.ConfigIni.eFTGroup != EFTGroup.None)
+										if (CDTXMania.Instance.ConfigIni.eFTGroup != EFTGroup.Off)
 											rChip = (chipFT != null) ? chipFT : chipLT;
 										else
 											rChip = chipFT;
@@ -2494,7 +2494,7 @@ namespace DTXMania
 									{
 										CChip chipCY = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.Cymbal, nInputAdjustTime);
 										CChip chipRD = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.RideCymbal, nInputAdjustTime);
-										if (CDTXMania.Instance.ConfigIni.eCYGroup != ECYGroup.None)
+										if (CDTXMania.Instance.ConfigIni.eCYGroup != ECYGroup.Off)
 											rChip = (chipCY != null) ? chipCY : chipRD;
 										else
 											rChip = chipCY;
@@ -2508,7 +2508,7 @@ namespace DTXMania
 										CChip chipLC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.LeftCymbal, nInputAdjustTime);
 										switch (CDTXMania.Instance.ConfigIni.eHHGroup.Value)
 										{
-											case EHHGroup.None:
+											case EHHGroup.Off:
 												rChip = chipHO;
 												break;
 
@@ -2550,7 +2550,7 @@ namespace DTXMania
 									{
 										CChip chipCY = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.Cymbal, nInputAdjustTime);
 										CChip chipRD = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.RideCymbal, nInputAdjustTime);
-										if (CDTXMania.Instance.ConfigIni.eCYGroup != ECYGroup.None)
+										if (CDTXMania.Instance.ConfigIni.eCYGroup != ECYGroup.Off)
 											rChip = (chipRD != null) ? chipRD : chipCY;
 										else
 											rChip = chipRD;
@@ -2564,7 +2564,7 @@ namespace DTXMania
 										CChip chipLC = this.r指定時刻に一番近いChip_ヒット未済問わず不可視考慮(nTime, EChannel.LeftCymbal, nInputAdjustTime);
 										switch (CDTXMania.Instance.ConfigIni.eHHGroup.Value)
 										{
-											case EHHGroup.None:
+											case EHHGroup.Off:
 											case EHHGroup.LC_HH:
 												rChip = chipLC;
 												break;

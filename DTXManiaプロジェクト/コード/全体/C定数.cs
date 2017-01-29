@@ -469,7 +469,7 @@ namespace DTXMania
 	public enum ECYGroup
 	{
 		[EnumMember]
-		None,
+		Off,
 		[EnumMember]
 		Group
 	}
@@ -478,7 +478,7 @@ namespace DTXMania
 	public enum EFTGroup
 	{
 		[EnumMember]
-		None,
+		Off,
 		[EnumMember]
 		Group
 	}
@@ -487,7 +487,7 @@ namespace DTXMania
 	public enum EHHGroup
 	{
 		[EnumMember]
-		None,
+		Off,
 		[EnumMember]
 		HO_HC,
 		[EnumMember]
@@ -502,7 +502,7 @@ namespace DTXMania
 	public enum EBDGroup
 	{
 		[EnumMember]
-		None,
+		Off,
 		[EnumMember]
 		Group
 	}

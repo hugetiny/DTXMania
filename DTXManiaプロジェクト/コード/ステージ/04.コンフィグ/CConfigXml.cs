@@ -514,12 +514,12 @@ namespace DTXMania
 			// enum
 			eDamageLevel = new COptionEnum<EDamage>(EDamage.Normal);
 			eJudgePriority = new COptionEnum<EJudgeDisplayPriority>(EJudgeDisplayPriority.Under);
-			eCYGroup = new COptionEnum<ECYGroup>(ECYGroup.None);
+			eCYGroup = new COptionEnum<ECYGroup>(ECYGroup.Off);
 			eDark = new COptionEnum<EDark>(EDark.Off);
-			eFTGroup = new COptionEnum<EFTGroup>(EFTGroup.None);
-			eHHGroup = new COptionEnum<EHHGroup>(EHHGroup.None);
-			eBDGroup = new COptionEnum<EBDGroup>(EBDGroup.None);
-			Backup1BDHHGroup = new COptionEnum<EHHGroup>(EHHGroup.None);
+			eFTGroup = new COptionEnum<EFTGroup>(EFTGroup.Off);
+			eHHGroup = new COptionEnum<EHHGroup>(EHHGroup.Off);
+			eBDGroup = new COptionEnum<EBDGroup>(EBDGroup.Off);
+			Backup1BDHHGroup = new COptionEnum<EHHGroup>(EHHGroup.Off);
 			Backup1BDPriotiry = new COptionEnum<EHitSoundPriority>(EHitSoundPriority.Chip);
 			eHitSoundPriorityCY = new COptionEnum<EHitSoundPriority>(EHitSoundPriority.Chip);
 			eHitSoundPriorityFT = new COptionEnum<EHitSoundPriority>(EHitSoundPriority.Chip);
@@ -971,7 +971,7 @@ namespace DTXMania
 					Backup1BDPriotiry.Value = eHitSoundPriorityHH;
 
 					// HH Group ... HH-0 → HH-2 / HH-1 → HH-3 / HH-2 → 変更なし / HH-3 → 変更なし
-					if (eHHGroup == EHHGroup.None)
+					if (eHHGroup == EHHGroup.Off)
 					{
 						eHHGroup.Value = EHHGroup.LC_HH;
 					}
