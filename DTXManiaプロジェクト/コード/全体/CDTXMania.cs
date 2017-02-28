@@ -210,7 +210,6 @@ namespace DTXMania
 				Trace.Unindent();
 			}
 			#endregion
-Debug.WriteLine( "strTitleStart=" + CDTXMania.Instance.Resources.Label( "strTitleStart" ));
 
 			#region [ Config.ini の読込み ]
 			ConfigIni = new CConfigXml();
@@ -223,6 +222,17 @@ Debug.WriteLine( "strTitleStart=" + CDTXMania.Instance.Resources.Label( "strTitl
 
 			#region[座標値読み込み]
 			Coordinates = new Coordinates.CCoordinates();
+			UpdateCoordinates();
+			//Coordinates = (DTXMania.Coordinates.CCoordinates) CDTXMania.DeserializeXML( strEXEのあるフォルダ + "Coordinates.xml", typeof( DTXMania.Coordinates.CCoordinates ) );
+			//if ( Coordinates == null )
+			//{
+			//	if ( File.Exists( strEXEのあるフォルダ + "Coordinates.xml" ) )
+			//	{
+			//		Trace.TraceInformation( "Coordinates.xmlファイルは存在します。" );
+			//	}
+			//	Trace.TraceInformation( "Coordiantes.xmlファイルの読み込みができませんでした。無視して進めます。" );
+			//	Coordinates = new Coordinates.CCoordinates();
+			//}
 			#endregion
 
 			#region [ ログ出力開始 ]
@@ -1967,8 +1977,9 @@ Debug.WriteLine( "strTitleStart=" + CDTXMania.Instance.Resources.Label( "strTitl
 					}
 				}
 			}
-			catch
+			catch (Exception e)
 			{
+				Trace.TraceWarning( e.Message );
 				ret = null;
 			}
 			return ret;
@@ -2051,6 +2062,114 @@ Debug.WriteLine( "strTitleStart=" + CDTXMania.Instance.Resources.Label( "strTitl
 				}
 			}
 		}
+		/// <summary>
+		/// 座標値を読み込む。Coordinates メンバ初期化後いつ呼び出しても構わない。
+		/// </summary>
+		public void UpdateCoordinates()
+		{
+			string coordXml = strEXEのあるフォルダ + "Coordinates.xml";
+ 
+			// デシリアライズ
+			if (File.Exists(coordXml))
+			{
+				using (XmlReader xr = XmlReader.Create(coordXml))
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Coordinates.CCoordinates));
+					Coordinates = (Coordinates.CCoordinates)serializer.ReadObject(xr);
+				}
+			}
+			// シリアライズ
+			XmlWriterSettings settings = new XmlWriterSettings();
+			settings.IndentChars = "  ";
+			settings.Indent = true;
+			settings.NewLineChars = Environment.NewLine;
+			settings.Encoding = new System.Text.UTF8Encoding( false );
+			using ( XmlWriter xw = XmlTextWriter.Create( coordXml, settings ) )
+			{
+				//XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+				//ns.Add( String.Empty, String.Empty );
+
+				//StreamWriter sw = new StreamWriter( "test2.xml", false, Encoding.UTF8 );
+				//serializer.Serialize( sw, item, ns );
+				//sw.Close
+
+				DataContractSerializer serializer = new DataContractSerializer( typeof( Coordinates.CCoordinates ) );
+				serializer.WriteObject( xw, Coordinates );
+				//serializer.WriteStartObject( xw, Coordinates );
+				//xw.WriteAttributeString( "xmlns", "d1p1", "http://www.w3.org/2000/xmlns/",
+				//	"http://schemas.microsoft.com/2003/10/Serialization/" );
+				//serializer.WriteObjectContent( xw, Coordinates );
+				//serializer.WriteEndObject( xw );
+			}
+
+			// もう一度デシリアライズ
+			if (File.Exists(coordXml))
+			{
+				using (XmlReader xr = XmlReader.Create(coordXml))
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Coordinates.CCoordinates));
+					Coordinates = (Coordinates.CCoordinates)serializer.ReadObject(xr);
+				}
+			}
+		}
+
+
+		/// <summary>
+		/// 保存するxmlからnamespaceを削除するためのXmlTextWriter
+		/// </summary>
+		//public class MyXmlTextWriter : XmlTextWriter
+		//{
+		//	private bool _ignoreAttr = false;
+
+		//	public MyXmlTextWriter( TextWriter w  )
+		//		: base( w )
+		//	{
+		//		Debug.WriteLine( "create" );
+		//	}
+
+		//	public override string LookupPrefix( string ns )
+		//	{
+		//		Debug.WriteLine( "luprefix" );
+		//		return string.Empty;
+		//	}
+
+		//	public override void WriteStartAttribute( string prefix, string localName, string ns )
+		//	{
+		//		Debug.WriteLine( "writestartattribute" );
+		//		if ( String.Compare( prefix, "xmlns", true ) == 0 )
+		//		{
+		//			Debug.WriteLine( "[!]" );
+		//			this._ignoreAttr = true;
+		//			return;
+		//		}
+		//	}
+
+		//	public override void WriteEndAttribute()
+		//	{
+		//		if ( this._ignoreAttr )
+		//		{
+		//			this._ignoreAttr = false;
+		//			return;
+		//		}
+		//		base.WriteEndAttribute();
+		//	}
+
+		//	public override void WriteString( string text )
+		//	{
+		//		Debug.WriteLine( "ws" );
+		//		if ( String.Compare( text, "http://www.w3.org/2001/XMLSchema-instance", true ) == 0 )
+		//		{
+		//			return;
+		//		}
+		//		base.WriteString( text );
+		//	}
+
+		//	public override void WriteStartElement( string prefix, string localName, string ns )
+		//	{
+		//		Debug.WriteLine( "wse" );
+		//		base.WriteStartElement( null, localName, null );
+		//	}
+		//}
 
 		public void ShowWindowTitleWithSoundType()
 		{

@@ -145,6 +145,14 @@ namespace DTXMania.Coordinates
 		public int W;
 		[DataMember]
 		public int H;
+
+		// Deserialize後、WとHは初期化されるが、rc, rcTmpが初期化されない問題への対処。
+		[OnDeserialized()]
+		private void OnDeserializedMethod(StreamingContext context)
+		{
+			rc = new System.Drawing.Rectangle( X, Y, W, H );
+			rcTmp = new System.Drawing.Rectangle( X, Y, W, H );
+		}
 	}
 
 	public class CCoordinates
