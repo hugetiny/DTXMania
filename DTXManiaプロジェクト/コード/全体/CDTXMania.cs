@@ -1953,7 +1953,7 @@ namespace DTXMania
 			}
 			#endregion
 
-			GC.Collect( 0, GCCollectionMode.Optimized, false );		// Rel105で処理が重くなっていることに対する、暫定処置。
+			//GC.Collect( 0, GCCollectionMode.Optimized, false );		// Rel105で処理が重くなっていることに対する、暫定処置。
 																	// 重くなっている原因に対する適切な処置をして、処理が104程度に軽くなったら、
 																	// この暫定処置は削除します。
 		}
@@ -2075,7 +2075,14 @@ namespace DTXMania
 				using (XmlReader xr = XmlReader.Create(coordXml))
 				{
 					DataContractSerializer serializer = new DataContractSerializer(typeof(Coordinates.CCoordinates));
-					Coordinates = (Coordinates.CCoordinates)serializer.ReadObject(xr);
+					try
+					{
+						Coordinates = (Coordinates.CCoordinates) serializer.ReadObject( xr );
+					}
+					catch (SerializationException e)
+					{
+						Trace.TraceWarning( "Rel107以前の古いフォーマットのCoordinates.xmlが読み込まれました。無視します。" );
+					}
 				}
 			}
 			// シリアライズ
@@ -2607,9 +2614,9 @@ namespace DTXMania
 		}
 		private void tガベージコレクションを実行する()
 		{
-			GC.Collect();
+			GC.Collect(0, GCCollectionMode.Optimized, true );
 			GC.WaitForPendingFinalizers();
-			GC.Collect();
+			GC.Collect(0, GCCollectionMode.Forced, true );
 			GC.WaitForPendingFinalizers();
 		}
 		private void tプラグイン検索と生成()
