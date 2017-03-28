@@ -156,7 +156,7 @@ namespace DTXMania
 				Drums.nMiss数_Auto含まない = this.nヒット数_Auto含まない.Drums.Miss;
 				Drums.n最大コンボ数 = this.actCombo.dgbコンボ数.Drums.n最高値;
 				Drums.n全チップ数 = CDTXMania.Instance.DTX.n可視チップ数.Drums;
-				for (EPad i = EPad.Min; i < EPad.Max; i++)
+				for ( EPad i = EPad.Min; i < EPad.BassPadMax; i++ )
 				{
 					Drums.bAutoPlay[i] = CDTXMania.Instance.ConfigIni.bAutoPlay[i];
 				}
@@ -224,7 +224,7 @@ namespace DTXMania
 				Guitar.nMiss数_Auto含まない = this.nヒット数_Auto含まない.Guitar.Miss;
 				Guitar.n最大コンボ数 = this.actCombo.dgbコンボ数.Guitar.n最高値;
 				Guitar.n全チップ数 = CDTXMania.Instance.DTX.n可視チップ数.Guitar;
-				for (EPad i = EPad.Min; i < EPad.Max; i++)
+				for (EPad i = EPad.Min; i < EPad.BassPadMax; i++)
 				{
 					Guitar.bAutoPlay[i] = CDTXMania.Instance.ConfigIni.bAutoPlay[i];
 				}
@@ -290,7 +290,7 @@ namespace DTXMania
 				Bass.nMiss数_Auto含まない = this.nヒット数_Auto含まない.Bass.Miss;
 				Bass.n最大コンボ数 = this.actCombo.dgbコンボ数.Bass.n最高値;
 				Bass.n全チップ数 = CDTXMania.Instance.DTX.n可視チップ数.Bass;
-				for (EPad i = EPad.Min; i < EPad.Max; i++)
+				for (EPad i = EPad.Min; i < EPad.BassPadMax; i++)
 				{
 					Bass.bAutoPlay[i] = CDTXMania.Instance.ConfigIni.bAutoPlay[i];
 				}
