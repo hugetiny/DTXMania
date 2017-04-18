@@ -1997,7 +1997,7 @@ namespace DTXMania
 			settings.Indent = true;
 			settings.NewLineChars = Environment.NewLine;
 			settings.Encoding = new System.Text.UTF8Encoding(false);
-			using (XmlWriter xw = XmlWriter.Create(xmlpath, settings))
+			using ( XmlWriter xw = XmlWriter.Create( new FileStreamSSD( xmlpath ), settings ) )
 			{
 				DataContractSerializer serializer = new DataContractSerializer(obj.GetType());
 				serializer.WriteObject(xw, obj);
@@ -2490,7 +2490,7 @@ namespace DTXMania
 							ConfigIni.SwapGuitarBassInfos_PlaySettings();
 					}
 				 */
-				string str = strEXEのあるフォルダ + "Config.ini";
+				string str = strEXEのあるフォルダ + "Config.xml";
 				Trace.Indent();
 				try
 				{

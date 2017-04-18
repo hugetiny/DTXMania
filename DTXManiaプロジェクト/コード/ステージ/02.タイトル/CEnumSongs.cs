@@ -630,7 +630,8 @@ namespace DTXMania
 			Stream output = null;
 			try
 			{
-				output = File.Create(strPathSongList);
+				//output = File.Create( strPathSongList );
+				output = new FileStreamSSD( strPathSongList );
 				BinaryFormatter formatter = new BinaryFormatter();
 				formatter.Serialize(output, cs);
 			}

@@ -95,6 +95,7 @@
     <Compile Include="コード\ステージ\CActDigit.cs" />
     <Compile Include="コード\全体\CResources.cs" />
     <Compile Include="コード\全体\Coordinates.cs" />
+    <Compile Include="コード\全体\FileStreamSSD.cs" />
     <Compile Include="コード\全体\STPlugin.cs" />
     <Compile Include="コード\全体\TextureFactory.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
