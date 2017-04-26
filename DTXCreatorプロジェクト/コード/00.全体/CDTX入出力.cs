@@ -1976,15 +1976,15 @@ namespace DTXCreator
 			{
 				sw.WriteLine( "#BPM: " + this._Form.numericUpDownBPM.Value );
 			}
-			if( this._Form.hScrollBarDLEVEL.Value != 0 )
+			// if( this._Form.hScrollBarDLEVEL.Value != 0 )
 			{
 				sw.WriteLine( "#DLEVEL: " + this._Form.hScrollBarDLEVEL.Value );
 			}
-			if( this._Form.hScrollBarGLEVEL.Value != 0 )
+			// if( this._Form.hScrollBarGLEVEL.Value != 0 )
 			{
 				sw.WriteLine( "#GLEVEL: " + this._Form.hScrollBarGLEVEL.Value );
 			}
-			if( this._Form.hScrollBarBLEVEL.Value != 0 )
+			// if( this._Form.hScrollBarBLEVEL.Value != 0 )
 			{
 				sw.WriteLine( "#BLEVEL: " + this._Form.hScrollBarBLEVEL.Value );
 			}
