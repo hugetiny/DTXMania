@@ -26,7 +26,7 @@ namespace DTXCreator.オプション関連
 			this.checkedListBoxLaneSelectList.BeginUpdate();
 			foreach ( DTXCreator.譜面.Cレーン c in listCLane)
 			{
-				if ( eLastLaneType != c.eLaneType )
+				if ( eLastLaneType != c.eLaneType && !this.checkedListBoxLaneSelectList.Items.Contains( c.eLaneType.ToString() ) )	// #36899 2017.4.27 yyagi 項目ダブりも抑制
 				{
 					eLastLaneType = c.eLaneType;
 					this.checkedListBoxLaneSelectList.Items.Add( eLastLaneType.ToString(), c.bIsVisible );
