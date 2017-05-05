@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using SlimDX;
-using SlimDX.DirectInput;
+using SharpDX;
+using SharpDX.DirectInput;
 
 namespace FDK
 {
@@ -86,7 +86,7 @@ namespace FDK
 				cinputkeyboard = new CInputKeyboard( hWnd, directInput );
 				cinputmouse = new CInputMouse( hWnd, directInput );
 			}
-			catch ( DirectInputException )
+			catch
 			{
 			}
 			if (cinputkeyboard != null)
@@ -99,7 +99,7 @@ namespace FDK
 			}
 			#endregion
 			#region [ Enumerate joypad ]
-			foreach ( DeviceInstance instance in this.directInput.GetDevices( DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly ) )
+			foreach ( DeviceInstance instance in this.directInput.GetDevices( DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly ) )
 			{
 				this.list入力デバイス.Add( new CInputJoystick( hWnd, instance, directInput ) );
 			}
@@ -184,7 +184,7 @@ namespace FDK
 					{
 						device.tポーリング(bWindowがアクティブ中, bバッファ入力を使用する);
 					}
-					catch (DirectInputException)							// #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
+					catch						// #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
 					{
 						this.list入力デバイス.Remove(device);
 						device.Dispose();

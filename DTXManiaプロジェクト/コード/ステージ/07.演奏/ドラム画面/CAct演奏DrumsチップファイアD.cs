@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using SlimDX;
+using SharpDX;
 using FDK;
 
 namespace DTXMania

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using SlimDX;
-using SlimDX.DirectInput;
+using SharpDX;
+using SharpDX.DirectInput;
 
 namespace FDK
 {
@@ -19,11 +19,11 @@ namespace FDK
 			try
 			{
 				this.devKeyboard = new Keyboard( directInput );
-				this.devKeyboard.SetCooperativeLevel( hWnd, CooperativeLevel.NoWinKey | CooperativeLevel.Foreground | CooperativeLevel.Nonexclusive );
+				this.devKeyboard.SetCooperativeLevel( hWnd, CooperativeLevel.NoWinKey | CooperativeLevel.Foreground | CooperativeLevel.NonExclusive );
 				this.devKeyboard.Properties.BufferSize = 0x20;
 				Trace.TraceInformation( this.devKeyboard.Information.ProductName + " を生成しました。" );
 			}
-			catch( DirectInputException )
+			catch
 			{
 				if( this.devKeyboard != null )
 				{
@@ -37,7 +37,7 @@ namespace FDK
 			{
 				this.devKeyboard.Acquire();
 			}
-			catch( DirectInputException )
+			catch
 			{
 			}
 
@@ -67,8 +67,11 @@ namespace FDK
 				this.bKeyPullUp[ i ] = false;
 			}
 
-			if ( ( ( bWindowがアクティブ中 && ( this.devKeyboard != null ) ) && !this.devKeyboard.Acquire().IsFailure ) && !this.devKeyboard.Poll().IsFailure )
+			if ( bWindowがアクティブ中 && ( this.devKeyboard != null ) )
 			{
+				this.devKeyboard.Acquire();
+				this.devKeyboard.Poll();
+
 				//this.list入力イベント = new List<STInputEvent>( 32 );
 				this.list入力イベント.Clear();			// #xxxxx 2012.6.11 yyagi; To optimize, I removed new();
 				int posEnter = -1;
@@ -79,24 +82,26 @@ namespace FDK
 					#region [ a.バッファ入力 ]
 					//-----------------------------
 					var bufferedData = this.devKeyboard.GetBufferedData();
-					if ( Result.Last.IsSuccess && bufferedData != null )
+					//if ( Result.Last.IsSuccess && bufferedData != null )
 					{
-						foreach ( KeyboardState data in bufferedData )
+						foreach ( KeyboardUpdate data in bufferedData )
 						{
-							foreach ( Key key in data.PressedKeys )
+							//foreach ( Key key in data.PressedKeys )
+							if( data.IsPressed )
 							{
+								var key = data.Key;
 								// #23708 2016.3.19 yyagi; Even if we remove ALT+ENTER key input by SuppressKeyPress = true in Form,
 								// it doesn't affect to DirectInput (ALT+ENTER does not remove)
 								// So we ignore ENTER input in ALT+ENTER combination here.
 								// Note: ENTER will be alived if you keyup ALT after ALT+ENTER.
-								if ( key != Key.Return || ( bKeyState[ (int)Key.LeftAlt ] == false && bKeyState[ (int)Key.RightAlt ] == false ) )
+								if( key != Key.Return || ( bKeyState[ (int)Key.LeftAlt ] == false && bKeyState[ (int)Key.RightAlt ] == false ) )
 								{
 									STInputEvent item = new STInputEvent()
 									{
 										nKey = (int) key,
 										b押された = true,
 										b離された = false,
-										nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
+										nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.Timestamp ),
 										nVelocity = CInput管理.n通常音量
 									};
 									this.list入力イベント.Add( item );
@@ -104,19 +109,21 @@ namespace FDK
 									this.bKeyState[ (int) key ] = true;
 									this.bKeyPushDown[ (int) key ] = true;
 								}
-								//if ( item.nKey == (int) SlimDX.DirectInput.Key.Space )
+								//if ( item.nKey == (int) SharpDX.DirectInput.Key.Space )
 								//{
 								//    Trace.TraceInformation( "FDK(buffered): SPACE key registered. " + ct.nシステム時刻 );
 								//}
 							}
-							foreach ( Key key in data.ReleasedKeys )
+							//foreach ( Key key in data.ReleasedKeys )
+							if( data.IsReleased )
 							{
+								var key = data.Key;
 								STInputEvent item = new STInputEvent()
 								{
 									nKey = (int) key,
 									b押された = false,
 									b離された = true,
-									nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.TimeStamp ),
+									nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.Timestamp ),
 									nVelocity = CInput管理.n通常音量
 								};
 								this.list入力イベント.Add( item );
@@ -134,7 +141,7 @@ namespace FDK
 					#region [ b.状態入力 ]
 					//-----------------------------
 					KeyboardState currentState = this.devKeyboard.GetCurrentState();
-					if ( Result.Last.IsSuccess && currentState != null )
+					//if ( Result.Last.IsSuccess && currentState != null )
 					{
 						foreach ( Key key in currentState.PressedKeys )
 						{
@@ -156,22 +163,22 @@ namespace FDK
 									this.bKeyPushDown[ (int) key ] = true;
 								}
 
-								//if ( (int) key == (int) SlimDX.DirectInput.Key.Space )
+								//if ( (int) key == (int) SharpDX.DirectInput.Key.Space )
 								//{
 								//    Trace.TraceInformation( "FDK(direct): SPACE key registered. " + ct.nシステム時刻 );
 								//}
 							}
 						}
-						foreach ( Key key in currentState.ReleasedKeys )
+						//foreach ( Key key in currentState.ReleasedKeys )
+						foreach( Key key in currentState.AllKeys )
 						{
-							if ( this.bKeyState[ (int) key ] == true )
+							if( this.bKeyState[ (int) key ] == true && !currentState.IsPressed( key ) ) // 前回は押されているのに今回は押されていない → 離された
 							{
-								var ev = new STInputEvent()
-								{
+								var ev = new STInputEvent() {
 									nKey = (int) key,
 									b押された = false,
 									b離された = true,
-									nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻,	// 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
+									nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻, // 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 									nVelocity = CInput管理.n通常音量,
 								};
 								this.list入力イベント.Add( ev );
@@ -185,10 +192,10 @@ namespace FDK
 					#endregion
 				}
 				#region [#23708 2011.4.8 yyagi Altが押されているときは、Enter押下情報を削除する -> 副作用が見つかり削除]
-				//if ( this.bKeyState[ (int) SlimDX.DirectInput.Key.RightAlt ] ||
-				//     this.bKeyState[ (int) SlimDX.DirectInput.Key.LeftAlt ] )
+				//if ( this.bKeyState[ (int) SharpDX.DirectInput.Key.RightAlt ] ||
+				//     this.bKeyState[ (int) SharpDX.DirectInput.Key.LeftAlt ] )
 				//{
-				//    int cr = (int) SlimDX.DirectInput.Key.Return;
+				//    int cr = (int) SharpDX.DirectInput.Key.Return;
 				//    this.bKeyPushDown[ cr ] = false;
 				//    this.bKeyPullUp[ cr ] = false;
 				//    this.bKeyState[ cr ] = false;

@@ -228,8 +228,8 @@ namespace DTXMania
 				if (this.bキー入力待ち)
 				{
 					#region [ Shift-F1: CONFIG画面 ]
-					if ((CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightShift) || CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftShift)) &&
-							CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.F1))
+					if ((CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightShift) || CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftShift)) &&
+							CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.F1))
 					{
 						// [SHIFT] + [F1] CONFIG
 						CDTXMania.Instance.Skin.sound取消音.t再生する();
@@ -238,7 +238,7 @@ namespace DTXMania
 					}
 					#endregion
 					#region [ キー入力: キャンセル ]
-					else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Escape)
+					else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Escape)
 							|| CDTXMania.Instance.Pad.bCancelPadIsPressedDGB())
 					{
 						// キャンセル
@@ -265,7 +265,7 @@ namespace DTXMania
 								 CDTXMania.Instance.Pad.b押された(EPad.CY) // #24756 2011.4.1 yyagi: Add condition "Drum-Decide" to enable CY in Sort Menu.
 							|| CDTXMania.Instance.Pad.b押された(EPad.RD)
 							|| CDTXMania.Instance.Pad.b押された(EPad.LC)
-							|| (CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Return)))
+							|| (CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない && CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Return)))
 					{
 						eInst = EPart.Drums;
 						eAction = ESortAction.Decide;
@@ -276,7 +276,7 @@ namespace DTXMania
 					}
 					#endregion
 					#region [ キー入力: 前に移動 ]
-					this.ctキー反復用.Up.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.UpArrow), new CCounter.DGキー処理(this.t前に移動));
+					this.ctキー反復用.Up.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.Up), new CCounter.DGキー処理(this.t前に移動));
 					this.ctキー反復用.R.tキー反復(CDTXMania.Instance.Pad.b押されている(EPad.GtR) || CDTXMania.Instance.Pad.b押されている(EPad.BsR), new CCounter.DGキー処理(this.t前に移動));
 					if (CDTXMania.Instance.Pad.b押された(EPad.SD))
 					{
@@ -284,7 +284,7 @@ namespace DTXMania
 					}
 					#endregion
 					#region [ キー入力: 次に移動 ]
-					this.ctキー反復用.Down.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.DownArrow), new CCounter.DGキー処理(this.t次に移動));
+					this.ctキー反復用.Down.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.Down), new CCounter.DGキー処理(this.t次に移動));
 					this.ctキー反復用.B.tキー反復(CDTXMania.Instance.Pad.b押されている(EPad.GtB) || CDTXMania.Instance.Pad.b押されている(EPad.BsB), new CCounter.DGキー処理(this.t次に移動));
 					if (CDTXMania.Instance.Pad.b押された(EPad.LT))
 					{

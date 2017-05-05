@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SlimDX;
+using SharpDX;
 using FDK;
 using System.Drawing;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing.Imaging;
+
+using Rectangle = System.Drawing.Rectangle;
 
 namespace DTXMania
 {

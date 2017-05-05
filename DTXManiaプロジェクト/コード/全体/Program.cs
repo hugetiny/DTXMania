@@ -73,11 +73,11 @@ namespace DTXMania
 				Environment.CurrentDirectory = Path.GetDirectoryName(Application.ExecutablePath);
 
 				#region [DLLの存在チェック]
-				if (!tDLLの存在チェック("dll\\SlimDX" + CDTXMania.SLIMDXDLL + ".dll",
-					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
-					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
-					))
-					bDLLnotfound = true;
+				//if (!tDLLの存在チェック("dll\\SlimDX" + CDTXMania.SLIMDXDLL + ".dll",
+				//	"SlimDX" + CDTXMania.SLIMDXDLL + ".dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+				//	"SlimDX" + CDTXMania.SLIMDXDLL + ".dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
+				//	))
+				//	bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\FDK.dll",
 					"FDK.dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"FDK.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."

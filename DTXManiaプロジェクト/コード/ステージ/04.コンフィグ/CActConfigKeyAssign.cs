@@ -4,7 +4,10 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using FDK;
-using SlimDX;
+using SharpDX;
+
+using Rectangle = System.Drawing.Rectangle;
+using Color = System.Drawing.Color;
 
 namespace DTXMania
 {
@@ -127,7 +130,7 @@ namespace DTXMania
 			{
 				if (this.bキー入力待ち)
 				{
-					if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Escape))
+					if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Escape))
 					{
 						CDTXMania.Instance.Skin.sound取消音.t再生する();
 						this.bキー入力待ち = false;
@@ -139,7 +142,7 @@ namespace DTXMania
 						CDTXMania.Instance.Input管理.tポーリング(CDTXMania.Instance.bApplicationActive, false);
 					}
 				}
-				else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Delete))
+				else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Delete))
 				{
 					CDTXMania.Instance.Skin.sound決定音.t再生する();
 					CDTXMania.Instance.ConfigIni.KeyAssign[this.pad][ptr].Reset();
@@ -419,12 +422,12 @@ namespace DTXMania
 		{
 			for (int i = 0; i < 0x100; i++)
 			{
-				if (i != (int)SlimDX.DirectInput.Key.Escape &&
-					i != (int)SlimDX.DirectInput.Key.UpArrow &&
-					i != (int)SlimDX.DirectInput.Key.DownArrow &&
-					i != (int)SlimDX.DirectInput.Key.LeftArrow &&
-					i != (int)SlimDX.DirectInput.Key.RightArrow &&
-					i != (int)SlimDX.DirectInput.Key.Delete &&
+				if (i != (int)SharpDX.DirectInput.Key.Escape &&
+					i != (int)SharpDX.DirectInput.Key.Up &&
+					i != (int)SharpDX.DirectInput.Key.Down &&
+					i != (int)SharpDX.DirectInput.Key.Left &&
+					i != (int)SharpDX.DirectInput.Key.Right &&
+					i != (int)SharpDX.DirectInput.Key.Delete &&
 					 CDTXMania.Instance.Input管理.Keyboard.bキーが押された(i))
 				{
 					CDTXMania.Instance.Skin.sound決定音.t再生する();

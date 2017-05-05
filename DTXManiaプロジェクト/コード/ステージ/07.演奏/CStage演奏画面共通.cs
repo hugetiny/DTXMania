@@ -8,8 +8,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
-using SlimDX;
-using SlimDX.Direct3D9;
+using SharpDX;
+using SharpDX.Direct3D9;
 using FDK;
 
 namespace DTXMania
@@ -1468,11 +1468,11 @@ namespace DTXMania
 		{
 			EPart part;
 			int offset = plusminus;
-			if (keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftShift) || keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightShift))  // Guitar InputAdjustTime
+			if (keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftShift) || keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightShift))  // Guitar InputAdjustTime
 			{
 				part = EPart.Guitar;
 			}
-			else if (keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftAlt) || keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightAlt)) // Bass InputAdjustTime
+			else if (keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftAlt) || keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightAlt)) // Bass InputAdjustTime
 			{
 				part = EPart.Bass;
 			}
@@ -1481,7 +1481,7 @@ namespace DTXMania
 				// Drums InputAdjustTime
 				part = EPart.Drums;
 			}
-			if (!keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftControl) && !keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightControl))
+			if (!keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftControl) && !keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightControl))
 			{
 				offset *= 10;
 			}
@@ -2646,8 +2646,8 @@ namespace DTXMania
 		protected void tキー入力()
 		{
 			IInputDevice keyboard = CDTXMania.Instance.Input管理.Keyboard;
-			if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.F1) &&
-					(keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightShift) || keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftShift)))
+			if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.F1) &&
+					(keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightShift) || keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftShift)))
 			{   // shift+f1 (pause)
 				this.bPAUSE = !this.bPAUSE;
 				if (this.bPAUSE)
@@ -2716,44 +2716,44 @@ namespace DTXMania
 					this.t入力処理_ギターベース(EPart.Bass);
 				}
 
-				if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.UpArrow) && (keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightShift) || keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftShift)))
+				if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Up) && (keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightShift) || keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftShift)))
 				{   // shift (+ctrl) + UpArrow (BGMAdjust)
-					CDTXMania.Instance.DTX.t各自動再生音チップの再生時刻を変更する((keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftControl) || keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightControl)) ? 1 : 10);
+					CDTXMania.Instance.DTX.t各自動再生音チップの再生時刻を変更する((keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftControl) || keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightControl)) ? 1 : 10);
 					CDTXMania.Instance.DTX.tWave再生位置自動補正();
 				}
-				else if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.DownArrow) && (keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightShift) || keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftShift)))
+				else if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Down) && (keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightShift) || keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftShift)))
 				{   // shift + DownArrow (BGMAdjust)
-					CDTXMania.Instance.DTX.t各自動再生音チップの再生時刻を変更する((keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftControl) || keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightControl)) ? -1 : -10);
+					CDTXMania.Instance.DTX.t各自動再生音チップの再生時刻を変更する((keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftControl) || keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightControl)) ? -1 : -10);
 					CDTXMania.Instance.DTX.tWave再生位置自動補正();
 				}
-				else if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.UpArrow))
+				else if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Up))
 				{   // UpArrow(scrollspeed up)
 					ドラムスクロール速度アップ();
 				}
-				else if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.DownArrow))
+				else if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Down))
 				{   // DownArrow (scrollspeed down)
 					ドラムスクロール速度ダウン();
 				}
-				else if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Delete))
+				else if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Delete))
 				{   // del (debug info)
 					CDTXMania.Instance.ConfigIni.bDebugInfo.Value = !CDTXMania.Instance.ConfigIni.bDebugInfo;
 				}
-				else if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.LeftArrow))      // #24243 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
+				else if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Left))      // #24243 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
 				{
 					ChangeInputAdjustTimeInPlaying(keyboard, -1);
 				}
-				else if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.RightArrow))     // #24243 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
+				else if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Right))     // #24243 2011.1.16 yyagi UI for InputAdjustTime in playing screen.
 				{
 					ChangeInputAdjustTimeInPlaying(keyboard, +1);
 				}
-				else if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.F5))
+				else if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.F5))
 				{
 					int nVal = CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums - 1;
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums.Value =
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Guitar.Value =
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Bass.Value = nVal;
 				}
-				else if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.F6))
+				else if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.F6))
 				{
 					int nVal = CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums + 1;
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums.Value =
@@ -2761,7 +2761,7 @@ namespace DTXMania
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Bass.Value = nVal;
 				}
 				else if ((base.eフェーズID == CStage.Eフェーズ.共通_通常状態) &&
-						(keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Escape) ||
+						(keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Escape) ||
 						CDTXMania.Instance.Pad.bCancelPadIsPressedGB()))
 				{
 					// escape (exit)

@@ -1007,7 +1007,7 @@ namespace DTXMania
 				while ( 
 						( CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
 							( CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
-							  CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return )
+							  CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int) SharpDX.DirectInput.Key.Return )
 							)
 						)
 					  )
@@ -1038,7 +1038,7 @@ namespace DTXMania
 					for (int k = 0; k < AssignableCodes; k++)
 					{
 						if ((KeyAssign[j][k].入力デバイス == EInputDevice.Keyboard) &&
-								(KeyAssign[j][k].コード == (int)SlimDX.DirectInput.Key.Return))
+								(KeyAssign[j][k].コード == (int)SharpDX.DirectInput.Key.Return))
 						{
 							return false;
 						}

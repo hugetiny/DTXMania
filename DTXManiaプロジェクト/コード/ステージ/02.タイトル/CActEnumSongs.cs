@@ -8,8 +8,8 @@ using System.Drawing;
 using System.Threading;
 using System.Globalization;
 using System.Runtime.Serialization.Formatters.Binary;
-using SlimDX;
-using SlimDX.Direct3D9;
+using SharpDX;
+using SharpDX.Direct3D9;
 using FDK;
 using SampleFramework;
 

@@ -5,8 +5,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Diagnostics;
-using SlimDX;
-using SlimDX.Direct3D9;
+using SharpDX;
+using SharpDX.Direct3D9;
+
+using Rectangle = System.Drawing.Rectangle;
+using Color = System.Drawing.Color;
 
 namespace FDK
 {
@@ -19,8 +22,7 @@ namespace FDK
 	/// </summary>
 	public class CTextureAf : CTexture, IDisposable
 	{
-
-				/// <summary>
+		/// <summary>
 		/// <para>指定された画像ファイルから Managed テクスチャを作成する。</para>
 		/// <para>利用可能な画像形式は、BMP, JPG, PNG, TGA, DDS, PPM, DIB, HDR, PFM のいずれか。</para>
 		/// </summary>

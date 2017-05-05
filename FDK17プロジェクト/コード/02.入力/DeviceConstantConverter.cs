@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using SlimDX.DirectInput;
+using SharpDX.DirectInput;
 
 namespace FDK
 {
@@ -54,7 +54,7 @@ namespace FDK
 					return Key.Equals;
 
 				case 14:
-					return Key.Backspace;
+					return Key.Back;
 
 				case 15:
 					return Key.Tab;
@@ -177,7 +177,7 @@ namespace FDK
 					return Key.RightShift;
 
 				case 0x37:
-					return Key.NumberPadStar;
+					return Key.Multiply;
 
 				case 0x38:
 					return Key.LeftAlt;
@@ -186,7 +186,7 @@ namespace FDK
 					return Key.Space;
 
 				case 0x3a:
-					return Key.CapsLock;
+					return Key.Capital;
 
 				case 0x3b:
 					return Key.F1;
@@ -234,7 +234,7 @@ namespace FDK
 					return Key.NumberPad9;
 
 				case 0x4a:
-					return Key.NumberPadMinus;
+					return Key.Subtract;
 
 				case 0x4b:
 					return Key.NumberPad4;
@@ -246,7 +246,7 @@ namespace FDK
 					return Key.NumberPad6;
 
 				case 0x4e:
-					return Key.NumberPadPlus;
+					return Key.Add;
 
 				case 0x4f:
 					return Key.NumberPad1;
@@ -261,7 +261,7 @@ namespace FDK
 					return Key.NumberPad0;
 
 				case 0x53:
-					return Key.NumberPadPeriod;
+					return Key.Decimal;
 
 				case 0x56:
 					return Key.Oem102;
@@ -360,7 +360,7 @@ namespace FDK
 					return Key.NumberPadComma;
 
 				case 0xb5:
-					return Key.NumberPadSlash;
+					return Key.Divide;
 
 				case 0xb7:
 					return Key.PrintScreen;
@@ -375,22 +375,22 @@ namespace FDK
 					return Key.Home;
 
 				case 200:
-					return Key.UpArrow;
+					return Key.Up;
 
 				case 0xc9:
 					return Key.PageUp;
 
 				case 0xcb:
-					return Key.LeftArrow;
+					return Key.Left;
 
 				case 0xcd:
-					return Key.RightArrow;
+					return Key.Right;
 
 				case 0xcf:
 					return Key.End;
 
 				case 0xd0:
-					return Key.DownArrow;
+					return Key.Down;
 
 				case 0xd1:
 					return Key.PageDown;
@@ -578,7 +578,7 @@ namespace FDK
 				case Key.AX:
 					return 150;
 
-				case Key.Backspace:
+				case Key.Back:
 					return 14;
 
 				case Key.Backslash:
@@ -587,7 +587,7 @@ namespace FDK
 				case Key.Calculator:
 					return 0xa1;
 
-				case Key.CapsLock:
+				case Key.Capital:
 					return 0x3a;
 
 				case Key.Colon:
@@ -602,7 +602,7 @@ namespace FDK
 				case Key.Delete:
 					return 0xd3;
 
-				case Key.DownArrow:
+				case Key.Down:
 					return 0xd0;
 
 				case Key.End:
@@ -680,7 +680,7 @@ namespace FDK
 				case Key.LeftControl:
 					return 0x1d;
 
-				case Key.LeftArrow:
+				case Key.Left:
 					return 0xcb;
 
 				case Key.LeftAlt:
@@ -758,19 +758,19 @@ namespace FDK
 				case Key.NumberPadEquals:
 					return 0x8d;
 
-				case Key.NumberPadMinus:
+				case Key.Subtract:
 					return 0x4a;
 
-				case Key.NumberPadPeriod:
+				case Key.Decimal:
 					return 0x53;
 
-				case Key.NumberPadPlus:
+				case Key.Add:
 					return 0x4e;
 
-				case Key.NumberPadSlash:
+				case Key.Divide:
 					return 0xb5;
 
-				case Key.NumberPadStar:
+				case Key.Multiply:
 					return 0x37;
 
 				case Key.Oem102:
@@ -806,7 +806,7 @@ namespace FDK
 				case Key.Return:
 					return 0x1c;
 
-				case Key.RightArrow:
+				case Key.Right:
 					return 0xcd;
 
 				case Key.RightAlt:
@@ -848,7 +848,7 @@ namespace FDK
 				case Key.Unlabeled:
 					return 0x97;
 
-				case Key.UpArrow:
+				case Key.Up:
 					return 200;
 
 				case Key.VolumeDown:
@@ -1016,7 +1016,7 @@ namespace FDK
 //				case Key.AX:
 //					return Keys.A;			///
 
-				case Key.Backspace:
+				case Key.Back:
 					return Keys.Back;
 
 				case Key.Backslash:
@@ -1025,7 +1025,7 @@ namespace FDK
 //				case Key.Calculator:
 //					return Keys.A;			///
 
-				case Key.CapsLock:
+				case Key.Capital:
 					return Keys.CapsLock;
 
 				case Key.Colon:
@@ -1040,7 +1040,7 @@ namespace FDK
 				case Key.Delete:
 					return Keys.Delete;
 
-				case Key.DownArrow:
+				case Key.Down:
 					return Keys.Down;
 
 				case Key.End:
@@ -1118,7 +1118,7 @@ namespace FDK
 				case Key.LeftControl:
 					return Keys.LControlKey;
 
-				case Key.LeftArrow:
+				case Key.Left:
 					return Keys.Left;
 
 				case Key.LeftAlt:
@@ -1194,21 +1194,21 @@ namespace FDK
 					return Keys.A;				//
 
 				case Key.NumberPadEquals:
-					return Keys.A;				//
+					return Keys.A;              //
 
-				case Key.NumberPadMinus:
+				case Key.Subtract:
 					return Keys.Subtract;
 
-				case Key.NumberPadPeriod:
+				case Key.Decimal:
 					return Keys.Decimal;
 
-				case Key.NumberPadPlus:
+				case Key.Add:
 					return Keys.Add;
 
-				case Key.NumberPadSlash:
+				case Key.Divide:
 					return Keys.Divide;
 
-				case Key.NumberPadStar:
+				case Key.Multiply:
 					return Keys.Multiply;		//
 
 				case Key.Oem102:
@@ -1244,7 +1244,7 @@ namespace FDK
 				case Key.Return:
 					return Keys.Return;
 
-				case Key.RightArrow:
+				case Key.Right:
 					return Keys.Right;
 
 				case Key.RightAlt:
@@ -1286,7 +1286,7 @@ namespace FDK
 //				case Key.Unlabeled:				///
 //					return Keys.A;
 
-				case Key.UpArrow:
+				case Key.Up:
 					return Keys.Up;
 
 				case Key.VolumeDown:

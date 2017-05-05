@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Diagnostics;
 using FDK;
-using SlimDX.Direct3D9;
+using SharpDX.Direct3D9;
 
 namespace DTXMania
 {
@@ -636,7 +636,7 @@ namespace DTXMania
 					if (
 						(CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
 						(CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
-						CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Return))) &&
+						CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Return))) &&
 						!this.bアニメが完了)
 					{
 						// #25406 2011.6.9 yyagi
@@ -650,7 +650,7 @@ namespace DTXMania
 					}
 					if (base.eフェーズID == CStage.Eフェーズ.共通_通常状態)
 					{
-						if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Escape))
+						if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Escape))
 						{
 							CDTXMania.Instance.Skin.sound取消音.t再生する();
 							this.actFO.tフェードアウト開始();
@@ -660,7 +660,7 @@ namespace DTXMania
 						if (
 							CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
 							(CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
-							CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Return)) &&
+							CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Return)) &&
 							this.bアニメが完了)
 						{
 							CDTXMania.Instance.Skin.sound取消音.t再生する();

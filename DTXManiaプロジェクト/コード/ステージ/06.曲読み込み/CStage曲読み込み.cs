@@ -4,9 +4,12 @@ using System.Text;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using SlimDX;
+using SharpDX;
 using System.Drawing.Text;
 using FDK;
+
+using Color = System.Drawing.Color;
+using RectangleF = System.Drawing.RectangleF;
 
 namespace DTXMania
 {
@@ -538,7 +541,7 @@ namespace DTXMania
 		protected bool tキー入力()
 		{
 			IInputDevice keyboard = CDTXMania.Instance.Input管理.Keyboard;
-			if (keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Escape))    // escape (exit)
+			if (keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Escape))    // escape (exit)
 			{
 				return true;
 			}

@@ -6,8 +6,12 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
-using SlimDX;
+using SharpDX;
 using FDK;
+
+using Rectangle = System.Drawing.Rectangle;
+using Color = System.Drawing.Color;
+using Point = System.Drawing.Point;
 
 namespace DTXMania
 {

@@ -5,8 +5,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Diagnostics;
-using SlimDX;
-using SlimDX.Direct3D9;
+using SharpDX;
+using SharpDX.Direct3D9;
+
+using Rectangle = System.Drawing.Rectangle;
 
 namespace FDK
 {
@@ -345,7 +347,8 @@ namespace FDK
 					}
 #else
 					IntPtr src_scan0 = (IntPtr) ( (Int64) srcBufData.Scan0 );
-					destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height );
+					//destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height );
+					CopyMemory( destDataRectangle.DataPointer.ToPointer(), src_scan0.ToPointer(), this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height );
 #endif
 					texture.UnlockRectangle( 0 );
 					bitmap.UnlockBits( srcBufData );
@@ -403,7 +406,7 @@ namespace FDK
 				float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 				float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
 				this.color4.Alpha = ( (float) this._透明度 ) / 255f;
-				int color = this.color4.ToArgb();
+				int color = this.color4.ToRgba();
 
 				if( this.bFlipY )
 				{
@@ -468,7 +471,7 @@ namespace FDK
 				float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 				float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
 				this.color4.Alpha = ( (float) this._透明度 ) / 255f;
-				int color = this.color4.ToArgb();
+				int color = this.color4.ToRgba();
 
 				if( this.cvPositionColoredVertexies == null )
 					this.cvPositionColoredVertexies = new PositionColoredTexturedVertex[ 4 ];
@@ -540,7 +543,7 @@ namespace FDK
 			float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 			float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
 			this.color4.Alpha = ( (float) this._透明度 ) / 255f;
-			int color = this.color4.ToArgb();
+			int color = this.color4.ToRgba();
 			
 			if( this.cvPositionColoredVertexies == null )
 				this.cvPositionColoredVertexies = new PositionColoredTexturedVertex[ 4 ];
@@ -625,14 +628,14 @@ namespace FDK
 			if( this.b加算合成 )
 			{
 				device.SetRenderState( RenderState.AlphaBlendEnable, true );
-				device.SetRenderState( RenderState.SourceBlend, SlimDX.Direct3D9.Blend.SourceAlpha );				// 5
-				device.SetRenderState( RenderState.DestinationBlend, SlimDX.Direct3D9.Blend.One );					// 2
+				device.SetRenderState( RenderState.SourceBlend, Blend.SourceAlpha );
+				device.SetRenderState( RenderState.DestinationBlend, Blend.One );
 			}
 			else
 			{
 				device.SetRenderState( RenderState.AlphaBlendEnable, true );
-				device.SetRenderState( RenderState.SourceBlend, SlimDX.Direct3D9.Blend.SourceAlpha );				// 5
-				device.SetRenderState( RenderState.DestinationBlend, SlimDX.Direct3D9.Blend.InverseSourceAlpha );	// 6
+				device.SetRenderState( RenderState.SourceBlend, Blend.SourceAlpha );
+				device.SetRenderState( RenderState.DestinationBlend, Blend.InverseSourceAlpha );
 			}
 		}
 		protected Size t指定されたサイズを超えない最適なテクスチャサイズを返す( Device device, Size sz指定サイズ )
@@ -690,7 +693,14 @@ namespace FDK
 		// 2012.3.21 さらなる new の省略作戦
 
 		protected Rectangle rc全画像;								// テクスチャ作ったらあとは不変
-		protected Color4 color4 = new Color4( 1f, 1f, 1f, 1f );	// アルファ以外は不変
+		protected Color4 color4 = new Color4( 1f, 1f, 1f, 1f ); // アルファ以外は不変
+																//-----------------
+		#endregion
+
+		#region " Win32 API "
+		//-----------------
+		[System.Runtime.InteropServices.DllImport( "kernel32.dll", SetLastError = true )]
+		private static extern unsafe void CopyMemory( void* dst, void* src, int size );
 		//-----------------
 		#endregion
 	}

@@ -5,17 +5,17 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Threading;
-using System.Runtime.Serialization.Formatters.Binary;
-using SlimDX;
-using SlimDX.Direct3D9;
+using SharpDX;
+using SharpDX.Direct3D9;
 using FDK;
 using SampleFramework;
 using System.Runtime.Serialization;
 using System.Xml;
-using System.Web;
+
+using Point = System.Drawing.Point;
+using Color = System.Drawing.Color;
 
 namespace DTXMania
 {
@@ -1084,7 +1084,7 @@ namespace DTXMania
 			#endregion
 
 			this.Device.BeginScene();
-			this.Device.Clear(ClearFlags.ZBuffer | ClearFlags.Target, Color.Black, 1f, 0);
+			this.Device.Clear(ClearFlags.ZBuffer | ClearFlags.Target, SharpDX.Color.Black, 1f, 0);
 
 			if (r現在のステージ != null)
 			{
@@ -2760,7 +2760,7 @@ namespace DTXMania
 				for (int i = 0; i < CConfigXml.AssignableCodes; i++)
 				{
 					if (ConfigIni.KeyAssign[EPad.Capture][i].コード > 0 &&
-							 e.KeyCode == DeviceConstantConverter.KeyToKeyCode((SlimDX.DirectInput.Key)ConfigIni.KeyAssign[EPad.Capture][i].コード))
+							 e.KeyCode == DeviceConstantConverter.KeyToKeyCode((SharpDX.DirectInput.Key)ConfigIni.KeyAssign[EPad.Capture][i].コード))
 					{
 						// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
 						string strFullPath =

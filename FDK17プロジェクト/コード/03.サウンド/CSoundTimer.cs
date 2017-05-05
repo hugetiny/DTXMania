@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using SlimDX.DirectInput;
+using SharpDX.DirectInput;
 
 namespace FDK
 {

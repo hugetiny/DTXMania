@@ -15,7 +15,8 @@
     <ApplicationIcon>dtx.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>SlimDXKey_yyagi.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -69,8 +70,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="SlimDXc_net20x86_Jun2010">
-      <HintPath>..\実行時フォルダ\dll\SlimDXc_net20x86_Jun2010.dll</HintPath>
+    <Reference Include="SharpDX, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.Direct3D9.3.1.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectInput, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.DirectInput.3.1.1\lib\net45\SharpDX.DirectInput.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectSound, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.DirectSound.3.1.1\lib\net45\SharpDX.DirectSound.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.DXGI.3.1.1\lib\net45\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.Mathematics.3.1.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -204,7 +220,6 @@
     <Compile Include="コード\全体\C定数.cs" />
     <Compile Include="コード\全体\C文字コンソール.cs" />
     <Compile Include="コード\全体\Program.cs" />
-    <None Include="SlimDXKey_yyagi.snk" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="dtx.ico" />
@@ -256,7 +271,7 @@ copy /Y "$(TargetPath)".config "$(SolutionDir)..\実行時フォルダ"
 move /Y "$(TargetDir)Bass.Net.dll" "$(TargetDir)dll"
 move /Y "$(TargetDir)DirectShowLib-2005.dll" "$(TargetDir)dll"
 move /Y "$(TargetDir)FDK.dll" "$(TargetDir)dll"
-move /Y "$(TargetDir)SlimDXc_net20x86_Jun2010.dll" "$(TargetDir)dll"
+
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

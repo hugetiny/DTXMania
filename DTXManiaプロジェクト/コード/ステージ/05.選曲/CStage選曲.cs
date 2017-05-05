@@ -393,7 +393,7 @@ namespace DTXMania
 					{
 						#region [ ESC ]
 						if (
-						CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Escape) ||
+						CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Escape) ||
 						(CDTXMania.Instance.Pad.bCancelPadIsPressedDGB() &&
 						(this.act曲リスト.r現在選択中の曲 != null && this.act曲リスト.r現在選択中の曲.r親ノード == null)))
 						{
@@ -405,8 +405,8 @@ namespace DTXMania
 						}
 						#endregion
 						#region [ Shift-F1: CONFIG画面 ]
-						if ((CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.RightShift) || CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.LeftShift)) &&
-							CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.F1))
+						if ((CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.RightShift) || CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.LeftShift)) &&
+							CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.F1))
 						{
 							this.actPresound.tサウンド停止();
 							// #24525 2011.3.16 yyagi: [SHIFT]-[F1]でCONFIG呼び出し
@@ -420,8 +420,8 @@ namespace DTXMania
 						#region [ Shift-F2: 未使用 ]
 						// #24525 2011.3.16 yyagi: [SHIFT]+[F2]は廃止(将来発生するかもしれない別用途のためにキープ)
 						/*
-											if ( ( CDTXMania.Instance.Input管理.Keyboard.bキーが押されている( (int)SlimDX.DirectInput.Key.RightShift ) || CDTXMania.Instance.Input管理.Keyboard.bキーが押されている( (int)SlimDX.DirectInput.Key.LeftShift ) ) &&
-												CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int)SlimDX.DirectInput.Key.F2 ) )
+											if ( ( CDTXMania.Instance.Input管理.Keyboard.bキーが押されている( (int)SharpDX.DirectInput.Key.RightShift ) || CDTXMania.Instance.Input管理.Keyboard.bキーが押されている( (int)SharpDX.DirectInput.Key.LeftShift ) ) &&
+												CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int)SharpDX.DirectInput.Key.F2 ) )
 											{	// [SHIFT] + [F2] CONFIGURATION
 												this.actPresound.tサウンド停止();
 												this.eフェードアウト完了時の戻り値 = E戻り値.コンフィグ呼び出し;
@@ -435,7 +435,7 @@ namespace DTXMania
 						if (this.act曲リスト.r現在選択中の曲 != null)
 						{
 							#region [ Right ]
-							if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.RightArrow))
+							if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Right))
 							{
 								if (this.act曲リスト.r現在選択中の曲 != null)
 								{
@@ -460,7 +460,7 @@ namespace DTXMania
 							if (
 								CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
 								(CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
-								CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Return)))
+								CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Return)))
 							{
 								CDTXMania.Instance.Skin.sound決定音.t再生する();
 								if (this.act曲リスト.r現在選択中の曲 != null)
@@ -505,7 +505,7 @@ namespace DTXMania
 							}
 							#endregion
 							#region [ Up ]
-							this.ctキー反復用.Up.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.UpArrow), new CCounter.DGキー処理(this.tカーソルを上へ移動する));
+							this.ctキー反復用.Up.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.Up), new CCounter.DGキー処理(this.tカーソルを上へ移動する));
 							this.ctキー反復用.R.tキー反復(CDTXMania.Instance.Pad.b押されている(EPad.GtR) || CDTXMania.Instance.Pad.b押されている(EPad.BsR), new CCounter.DGキー処理(this.tカーソルを上へ移動する));
 							if (CDTXMania.Instance.Pad.b押された(EPad.SD))
 							{
@@ -513,7 +513,7 @@ namespace DTXMania
 							}
 							#endregion
 							#region [ Down ]
-							this.ctキー反復用.Down.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.DownArrow), new CCounter.DGキー処理(this.tカーソルを下へ移動する));
+							this.ctキー反復用.Down.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SharpDX.DirectInput.Key.Down), new CCounter.DGキー処理(this.tカーソルを下へ移動する));
 							this.ctキー反復用.B.tキー反復(CDTXMania.Instance.Pad.b押されている(EPad.GtB) || CDTXMania.Instance.Pad.b押されている(EPad.BsB), new CCounter.DGキー処理(this.tカーソルを下へ移動する));
 							if (CDTXMania.Instance.Pad.b押された(EPad.LT))
 							{
@@ -523,7 +523,7 @@ namespace DTXMania
 							#region [ Upstairs / Left ]
 							if (((this.act曲リスト.r現在選択中の曲 != null) && (this.act曲リスト.r現在選択中の曲.r親ノード != null)) &&
 								(CDTXMania.Instance.Pad.bCancelPadIsPressedDGB() ||
-									CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.LeftArrow)))
+									CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Left)))
 							{
 								this.actPresound.tサウンド停止();
 								CDTXMania.Instance.Skin.sound取消音.t再生する();

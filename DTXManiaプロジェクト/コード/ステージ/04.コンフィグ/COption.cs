@@ -255,7 +255,7 @@ namespace DTXMania
 		public override void OnNext()
 		{
 			IInputDevice keyboard = CDTXMania.Instance.Input管理.Keyboard;
-			if ( keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftControl ) || keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightControl ) )
+			if ( keyboard.bキーが押されている( (int) SharpDX.DirectInput.Key.LeftControl ) || keyboard.bキーが押されている( (int) SharpDX.DirectInput.Key.RightControl ) )
 			{
 				val+=nStep;
 			}
@@ -269,7 +269,7 @@ namespace DTXMania
 		public override void OnPrevious()
 		{
 			IInputDevice keyboard = CDTXMania.Instance.Input管理.Keyboard;
-			if ( keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.LeftControl ) || keyboard.bキーが押されている( (int) SlimDX.DirectInput.Key.RightControl ) )
+			if ( keyboard.bキーが押されている( (int) SharpDX.DirectInput.Key.LeftControl ) || keyboard.bキーが押されている( (int) SharpDX.DirectInput.Key.RightControl ) )
 			{
 				val-=nStep;
 			}
