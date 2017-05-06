@@ -485,6 +485,7 @@ namespace DTXMania
 			{
 				bAutoPlay[ pad ] = new COptionBool( true );
 			}
+			bAutoPlay[ EPad.Capture ] = new COptionBool( true );
 			bViewerVSyncWait = new COptionBool( true );
 			bViewerShowDebugStatus = new COptionBool(true);
 			bViewerTimeStretch = new COptionBool(false);
@@ -756,6 +757,7 @@ namespace DTXMania
 			bAutoPlay.BsB.Initialize( "strCfgBsAutoB" );
 			bAutoPlay.BsPick.Initialize( "strCfgBsAutoPick" );
 			bAutoPlay.BsWail.Initialize( "strCfgBsAutoWailing" );
+			bAutoPlay.Capture.Initialize( "strCfgCapture" );
 
 			bLoadSoundSpeed.Initialize( "strCfgSysSoundLoadLimiter" );
 			bIsAutoResultCapture.Initialize( "strCfgSysAutoResultCapture" );
