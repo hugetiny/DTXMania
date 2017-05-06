@@ -102,7 +102,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="コード\ステージ\04.コンフィグ\DeletedCode.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\CConfigXml.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\COption.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏Lane.cs" />

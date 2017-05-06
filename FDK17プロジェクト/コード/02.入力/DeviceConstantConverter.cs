@@ -10,882 +10,886 @@ namespace FDK
 	{
 		// メソッド
 
-		public static Key DIKtoKey( int dik )
-		{
-			switch( dik )
-			{
-				case 1:
-					return Key.Escape;
+		#region [ SlimDX 用メソッド。SharpDX では DIK(int) と同じ値になるので、廃止。]
+		//public static Key DIKtoKey( int dik )
+		//{
+		//	switch( dik )
+		//	{
+		//		case 1:
+		//			return Key.Escape;
 
-				case 2:
-					return Key.D1;
+		//		case 2:
+		//			return Key.D1;
 
-				case 3:
-					return Key.D2;
+		//		case 3:
+		//			return Key.D2;
 
-				case 4:
-					return Key.D3;
+		//		case 4:
+		//			return Key.D3;
 
-				case 5:
-					return Key.D4;
+		//		case 5:
+		//			return Key.D4;
 
-				case 6:
-					return Key.D5;
+		//		case 6:
+		//			return Key.D5;
 
-				case 7:
-					return Key.D6;
+		//		case 7:
+		//			return Key.D6;
 
-				case 8:
-					return Key.D7;
+		//		case 8:
+		//			return Key.D7;
 
-				case 9:
-					return Key.D8;
+		//		case 9:
+		//			return Key.D8;
 
-				case 10:
-					return Key.D9;
+		//		case 10:
+		//			return Key.D9;
 
-				case 11:
-					return Key.D0;
+		//		case 11:
+		//			return Key.D0;
 
-				case 12:
-					return Key.Minus;
+		//		case 12:
+		//			return Key.Minus;
 
-				case 13:
-					return Key.Equals;
+		//		case 13:
+		//			return Key.Equals;
 
-				case 14:
-					return Key.Back;
+		//		case 14:
+		//			return Key.Back;
 
-				case 15:
-					return Key.Tab;
+		//		case 15:
+		//			return Key.Tab;
 
-				case 0x10:
-					return Key.Q;
+		//		case 0x10:
+		//			return Key.Q;
 
-				case 0x11:
-					return Key.W;
+		//		case 0x11:
+		//			return Key.W;
 
-				case 0x12:
-					return Key.E;
+		//		case 0x12:
+		//			return Key.E;
 
-				case 0x13:
-					return Key.R;
+		//		case 0x13:
+		//			return Key.R;
 
-				case 20:
-					return Key.T;
+		//		case 20:
+		//			return Key.T;
 
-				case 0x15:
-					return Key.Y;
+		//		case 0x15:
+		//			return Key.Y;
 
-				case 0x16:
-					return Key.U;
+		//		case 0x16:
+		//			return Key.U;
 
-				case 0x17:
-					return Key.I;
+		//		case 0x17:
+		//			return Key.I;
 
-				case 0x18:
-					return Key.O;
+		//		case 0x18:
+		//			return Key.O;
 
-				case 0x19:
-					return Key.P;
+		//		case 0x19:
+		//			return Key.P;
 
-				case 0x1a:
-					return Key.LeftBracket;
+		//		case 0x1a:
+		//			return Key.LeftBracket;
 
-				case 0x1b:
-					return Key.RightBracket;
+		//		case 0x1b:
+		//			return Key.RightBracket;
 
-				case 0x1c:
-					return Key.Return;
+		//		case 0x1c:
+		//			return Key.Return;
 
-				case 0x1d:
-					return Key.LeftControl;
+		//		case 0x1d:
+		//			return Key.LeftControl;
 
-				case 30:
-					return Key.A;
+		//		case 30:
+		//			return Key.A;
 
-				case 0x1f:
-					return Key.S;
+		//		case 0x1f:
+		//			return Key.S;
 
-				case 0x20:
-					return Key.D;
+		//		case 0x20:
+		//			return Key.D;
 
-				case 0x21:
-					return Key.F;
+		//		case 0x21:
+		//			return Key.F;
 
-				case 0x22:
-					return Key.G;
+		//		case 0x22:
+		//			return Key.G;
 
-				case 0x23:
-					return Key.H;
+		//		case 0x23:
+		//			return Key.H;
 
-				case 0x24:
-					return Key.J;
+		//		case 0x24:
+		//			return Key.J;
 
-				case 0x25:
-					return Key.K;
+		//		case 0x25:
+		//			return Key.K;
 
-				case 0x26:
-					return Key.L;
+		//		case 0x26:
+		//			return Key.L;
 
-				case 0x27:
-					return Key.Semicolon;
+		//		case 0x27:
+		//			return Key.Semicolon;
 
-				case 40:
-					return Key.Apostrophe;
+		//		case 40:
+		//			return Key.Apostrophe;
 
-				case 0x29:
-					return Key.Grave;
+		//		case 0x29:
+		//			return Key.Grave;
 
-				case 0x2a:
-					return Key.LeftShift;
+		//		case 0x2a:
+		//			return Key.LeftShift;
 
-				case 0x2b:
-					return Key.Backslash;
+		//		case 0x2b:
+		//			return Key.Backslash;
 
-				case 0x2c:
-					return Key.Z;
+		//		case 0x2c:
+		//			return Key.Z;
 
-				case 0x2d:
-					return Key.X;
+		//		case 0x2d:
+		//			return Key.X;
 
-				case 0x2e:
-					return Key.C;
+		//		case 0x2e:
+		//			return Key.C;
 
-				case 0x2f:
-					return Key.V;
+		//		case 0x2f:
+		//			return Key.V;
 
-				case 0x30:
-					return Key.B;
+		//		case 0x30:
+		//			return Key.B;
 
-				case 0x31:
-					return Key.N;
+		//		case 0x31:
+		//			return Key.N;
 
-				case 50:
-					return Key.M;
+		//		case 50:
+		//			return Key.M;
 
-				case 0x33:
-					return Key.Comma;
+		//		case 0x33:
+		//			return Key.Comma;
 
-				case 0x34:
-					return Key.Period;
+		//		case 0x34:
+		//			return Key.Period;
 
-				case 0x35:
-					return Key.Slash;
+		//		case 0x35:
+		//			return Key.Slash;
 
-				case 0x36:
-					return Key.RightShift;
+		//		case 0x36:
+		//			return Key.RightShift;
 
-				case 0x37:
-					return Key.Multiply;
+		//		case 0x37:
+		//			return Key.Multiply;
 
-				case 0x38:
-					return Key.LeftAlt;
+		//		case 0x38:
+		//			return Key.LeftAlt;
 
-				case 0x39:
-					return Key.Space;
+		//		case 0x39:
+		//			return Key.Space;
 
-				case 0x3a:
-					return Key.Capital;
+		//		case 0x3a:
+		//			return Key.Capital;
 
-				case 0x3b:
-					return Key.F1;
+		//		case 0x3b:
+		//			return Key.F1;
 
-				case 60:
-					return Key.F2;
+		//		case 60:
+		//			return Key.F2;
 
-				case 0x3d:
-					return Key.F3;
+		//		case 0x3d:
+		//			return Key.F3;
 
-				case 0x3e:
-					return Key.F4;
+		//		case 0x3e:
+		//			return Key.F4;
 
-				case 0x3f:
-					return Key.F5;
+		//		case 0x3f:
+		//			return Key.F5;
 
-				case 0x40:
-					return Key.F6;
+		//		case 0x40:
+		//			return Key.F6;
 
-				case 0x41:
-					return Key.F7;
+		//		case 0x41:
+		//			return Key.F7;
 
-				case 0x42:
-					return Key.F8;
+		//		case 0x42:
+		//			return Key.F8;
 
-				case 0x43:
-					return Key.F9;
+		//		case 0x43:
+		//			return Key.F9;
 
-				case 0x44:
-					return Key.F10;
+		//		case 0x44:
+		//			return Key.F10;
 
-				case 0x45:
-					return Key.NumberLock;
+		//		case 0x45:
+		//			return Key.NumberLock;
 
-				case 70:
-					return Key.ScrollLock;
+		//		case 70:
+		//			return Key.ScrollLock;
 
-				case 0x47:
-					return Key.NumberPad7;
+		//		case 0x47:
+		//			return Key.NumberPad7;
 
-				case 0x48:
-					return Key.NumberPad8;
+		//		case 0x48:
+		//			return Key.NumberPad8;
 
-				case 0x49:
-					return Key.NumberPad9;
+		//		case 0x49:
+		//			return Key.NumberPad9;
 
-				case 0x4a:
-					return Key.Subtract;
+		//		case 0x4a:
+		//			return Key.Subtract;
 
-				case 0x4b:
-					return Key.NumberPad4;
+		//		case 0x4b:
+		//			return Key.NumberPad4;
 
-				case 0x4c:
-					return Key.NumberPad5;
+		//		case 0x4c:
+		//			return Key.NumberPad5;
 
-				case 0x4d:
-					return Key.NumberPad6;
+		//		case 0x4d:
+		//			return Key.NumberPad6;
 
-				case 0x4e:
-					return Key.Add;
+		//		case 0x4e:
+		//			return Key.Add;
 
-				case 0x4f:
-					return Key.NumberPad1;
+		//		case 0x4f:
+		//			return Key.NumberPad1;
 
-				case 80:
-					return Key.NumberPad2;
+		//		case 80:
+		//			return Key.NumberPad2;
 
-				case 0x51:
-					return Key.NumberPad3;
+		//		case 0x51:
+		//			return Key.NumberPad3;
 
-				case 0x52:
-					return Key.NumberPad0;
+		//		case 0x52:
+		//			return Key.NumberPad0;
 
-				case 0x53:
-					return Key.Decimal;
+		//		case 0x53:
+		//			return Key.Decimal;
 
-				case 0x56:
-					return Key.Oem102;
+		//		case 0x56:
+		//			return Key.Oem102;
 
-				case 0x57:
-					return Key.F11;
+		//		case 0x57:
+		//			return Key.F11;
 
-				case 0x58:
-					return Key.F12;
+		//		case 0x58:
+		//			return Key.F12;
 
-				case 100:
-					return Key.F13;
+		//		case 100:
+		//			return Key.F13;
 
-				case 0x65:
-					return Key.F14;
+		//		case 0x65:
+		//			return Key.F14;
 
-				case 0x66:
-					return Key.F15;
+		//		case 0x66:
+		//			return Key.F15;
 
-				case 0x70:
-					return Key.Kana;
+		//		case 0x70:
+		//			return Key.Kana;
 
-				case 0x73:
-					return Key.AbntC1;
+		//		case 0x73:
+		//			return Key.AbntC1;
 
-				case 0x79:
-					return Key.Convert;
+		//		case 0x79:
+		//			return Key.Convert;
 
-				case 0x7b:
-					return Key.NoConvert;
+		//		case 0x7b:
+		//			return Key.NoConvert;
 
-				case 0x7d:
-					return Key.Yen;
+		//		case 0x7d:
+		//			return Key.Yen;
 
-				case 0x7e:
-					return Key.AbntC2;
+		//		case 0x7e:
+		//			return Key.AbntC2;
 
-				case 0x8d:
-					return Key.NumberPadEquals;
+		//		case 0x8d:
+		//			return Key.NumberPadEquals;
 
-				case 0x90:
-					return Key.PreviousTrack;
+		//		case 0x90:
+		//			return Key.PreviousTrack;
 
-				case 0x91:
-					return Key.AT;
+		//		case 0x91:
+		//			return Key.AT;
 
-				case 0x92:
-					return Key.Colon;
+		//		case 0x92:
+		//			return Key.Colon;
 
-				case 0x93:
-					return Key.Underline;
+		//		case 0x93:
+		//			return Key.Underline;
 
-				case 0x94:
-					return Key.Kanji;
+		//		case 0x94:
+		//			return Key.Kanji;
 
-				case 0x95:
-					return Key.Stop;
+		//		case 0x95:
+		//			return Key.Stop;
 
-				case 150:
-					return Key.AX;
+		//		case 150:
+		//			return Key.AX;
 
-				case 0x97:
-					return Key.Unlabeled;
+		//		case 0x97:
+		//			return Key.Unlabeled;
 
-				case 0x99:
-					return Key.NextTrack;
+		//		case 0x99:
+		//			return Key.NextTrack;
 
-				case 0x9c:
-					return Key.NumberPadEnter;
+		//		case 0x9c:
+		//			return Key.NumberPadEnter;
 
-				case 0x9d:
-					return Key.RightControl;
+		//		case 0x9d:
+		//			return Key.RightControl;
 
-				case 160:
-					return Key.Mute;
+		//		case 160:
+		//			return Key.Mute;
 
-				case 0xa1:
-					return Key.Calculator;
+		//		case 0xa1:
+		//			return Key.Calculator;
 
-				case 0xa2:
-					return Key.PlayPause;
+		//		case 0xa2:
+		//			return Key.PlayPause;
 
-				case 0xa4:
-					return Key.MediaStop;
+		//		case 0xa4:
+		//			return Key.MediaStop;
 
-				case 0xae:
-					return Key.VolumeDown;
+		//		case 0xae:
+		//			return Key.VolumeDown;
 
-				case 0xb0:
-					return Key.VolumeUp;
+		//		case 0xb0:
+		//			return Key.VolumeUp;
 
-				case 0xb2:
-					return Key.WebHome;
+		//		case 0xb2:
+		//			return Key.WebHome;
 
-				case 0xb3:
-					return Key.NumberPadComma;
+		//		case 0xb3:
+		//			return Key.NumberPadComma;
 
-				case 0xb5:
-					return Key.Divide;
+		//		case 0xb5:
+		//			return Key.Divide;
 
-				case 0xb7:
-					return Key.PrintScreen;
+		//		case 0xb7:
+		//			return Key.PrintScreen;
 
-				case 0xb8:
-					return Key.RightAlt;
+		//		case 0xb8:
+		//			return Key.RightAlt;
 
-				case 0xc5:
-					return Key.Pause;
+		//		case 0xc5:
+		//			return Key.Pause;
 
-				case 0xc7:
-					return Key.Home;
+		//		case 0xc7:
+		//			return Key.Home;
 
-				case 200:
-					return Key.Up;
+		//		case 200:
+		//			return Key.Up;
 
-				case 0xc9:
-					return Key.PageUp;
+		//		case 0xc9:
+		//			return Key.PageUp;
 
-				case 0xcb:
-					return Key.Left;
+		//		case 0xcb:
+		//			return Key.Left;
 
-				case 0xcd:
-					return Key.Right;
+		//		case 0xcd:
+		//			return Key.Right;
 
-				case 0xcf:
-					return Key.End;
+		//		case 0xcf:
+		//			return Key.End;
 
-				case 0xd0:
-					return Key.Down;
+		//		case 0xd0:
+		//			return Key.Down;
 
-				case 0xd1:
-					return Key.PageDown;
+		//		case 0xd1:
+		//			return Key.PageDown;
 
-				case 210:
-					return Key.Insert;
+		//		case 210:
+		//			return Key.Insert;
 
-				case 0xd3:
-					return Key.Delete;
+		//		case 0xd3:
+		//			return Key.Delete;
 
-				case 0xdb:
-					return Key.LeftWindowsKey;
+		//		case 0xdb:
+		//			return Key.LeftWindowsKey;
 
-				case 220:
-					return Key.RightWindowsKey;
+		//		case 220:
+		//			return Key.RightWindowsKey;
 
-				case 0xdd:
-					return Key.Applications;
+		//		case 0xdd:
+		//			return Key.Applications;
 
-				case 0xde:
-					return Key.Power;
+		//		case 0xde:
+		//			return Key.Power;
 
-				case 0xdf:
-					return Key.Sleep;
+		//		case 0xdf:
+		//			return Key.Sleep;
 
-				case 0xe3:
-					return Key.Wake;
+		//		case 0xe3:
+		//			return Key.Wake;
 
-				case 0xe5:
-					return Key.WebSearch;
+		//		case 0xe5:
+		//			return Key.WebSearch;
 
-				case 230:
-					return Key.WebFavorites;
+		//		case 230:
+		//			return Key.WebFavorites;
 
-				case 0xe7:
-					return Key.WebRefresh;
+		//		case 0xe7:
+		//			return Key.WebRefresh;
 
-				case 0xe8:
-					return Key.WebStop;
+		//		case 0xe8:
+		//			return Key.WebStop;
 
-				case 0xe9:
-					return Key.WebForward;
+		//		case 0xe9:
+		//			return Key.WebForward;
 
-				case 0xea:
-					return Key.WebBack;
+		//		case 0xea:
+		//			return Key.WebBack;
 
-				case 0xeb:
-					return Key.MyComputer;
+		//		case 0xeb:
+		//			return Key.MyComputer;
 
-				case 0xec:
-					return Key.Mail;
+		//		case 0xec:
+		//			return Key.Mail;
 
-				case 0xed:
-					return Key.MediaSelect;
-			}
-			return Key.Unknown;
-		}
-		public static int KeyToDIK( Key key )
-		{
-			switch( key )
-			{
-				case Key.D0:
-					return 11;
+		//		case 0xed:
+		//			return Key.MediaSelect;
+		//	}
+		//	return Key.Unknown;
+		//}
 
-				case Key.D1:
-					return 2;
+		//public static int KeyToDIK( Key key )
+		//{
+		//	switch( key )
+		//	{
+		//		case Key.D0:
+		//			return 11;
 
-				case Key.D2:
-					return 3;
+		//		case Key.D1:
+		//			return 2;
 
-				case Key.D3:
-					return 4;
+		//		case Key.D2:
+		//			return 3;
 
-				case Key.D4:
-					return 5;
+		//		case Key.D3:
+		//			return 4;
 
-				case Key.D5:
-					return 6;
+		//		case Key.D4:
+		//			return 5;
 
-				case Key.D6:
-					return 7;
+		//		case Key.D5:
+		//			return 6;
 
-				case Key.D7:
-					return 8;
+		//		case Key.D6:
+		//			return 7;
 
-				case Key.D8:
-					return 9;
+		//		case Key.D7:
+		//			return 8;
 
-				case Key.D9:
-					return 10;
+		//		case Key.D8:
+		//			return 9;
 
-				case Key.A:
-					return 30;
+		//		case Key.D9:
+		//			return 10;
 
-				case Key.B:
-					return 0x30;
+		//		case Key.A:
+		//			return 30;
 
-				case Key.C:
-					return 0x2e;
+		//		case Key.B:
+		//			return 0x30;
 
-				case Key.D:
-					return 0x20;
+		//		case Key.C:
+		//			return 0x2e;
 
-				case Key.E:
-					return 0x12;
+		//		case Key.D:
+		//			return 0x20;
 
-				case Key.F:
-					return 0x21;
+		//		case Key.E:
+		//			return 0x12;
 
-				case Key.G:
-					return 0x22;
+		//		case Key.F:
+		//			return 0x21;
 
-				case Key.H:
-					return 0x23;
+		//		case Key.G:
+		//			return 0x22;
 
-				case Key.I:
-					return 0x17;
+		//		case Key.H:
+		//			return 0x23;
 
-				case Key.J:
-					return 0x24;
+		//		case Key.I:
+		//			return 0x17;
 
-				case Key.K:
-					return 0x25;
+		//		case Key.J:
+		//			return 0x24;
 
-				case Key.L:
-					return 0x26;
+		//		case Key.K:
+		//			return 0x25;
 
-				case Key.M:
-					return 50;
+		//		case Key.L:
+		//			return 0x26;
 
-				case Key.N:
-					return 0x31;
+		//		case Key.M:
+		//			return 50;
 
-				case Key.O:
-					return 0x18;
+		//		case Key.N:
+		//			return 0x31;
 
-				case Key.P:
-					return 0x19;
+		//		case Key.O:
+		//			return 0x18;
 
-				case Key.Q:
-					return 0x10;
+		//		case Key.P:
+		//			return 0x19;
 
-				case Key.R:
-					return 0x13;
+		//		case Key.Q:
+		//			return 0x10;
 
-				case Key.S:
-					return 0x1f;
+		//		case Key.R:
+		//			return 0x13;
 
-				case Key.T:
-					return 20;
+		//		case Key.S:
+		//			return 0x1f;
 
-				case Key.U:
-					return 0x16;
+		//		case Key.T:
+		//			return 20;
 
-				case Key.V:
-					return 0x2f;
+		//		case Key.U:
+		//			return 0x16;
 
-				case Key.W:
-					return 0x11;
+		//		case Key.V:
+		//			return 0x2f;
 
-				case Key.X:
-					return 0x2d;
+		//		case Key.W:
+		//			return 0x11;
 
-				case Key.Y:
-					return 0x15;
+		//		case Key.X:
+		//			return 0x2d;
 
-				case Key.Z:
-					return 0x2c;
+		//		case Key.Y:
+		//			return 0x15;
 
-				case Key.AbntC1:
-					return 0x73;
+		//		case Key.Z:
+		//			return 0x2c;
 
-				case Key.AbntC2:
-					return 0x7e;
+		//		case Key.AbntC1:
+		//			return 0x73;
 
-				case Key.Apostrophe:
-					return 40;
+		//		case Key.AbntC2:
+		//			return 0x7e;
 
-				case Key.Applications:
-					return 0xdd;
+		//		case Key.Apostrophe:
+		//			return 40;
 
-				case Key.AT:
-					return 0x91;
+		//		case Key.Applications:
+		//			return 0xdd;
 
-				case Key.AX:
-					return 150;
+		//		case Key.AT:
+		//			return 0x91;
 
-				case Key.Back:
-					return 14;
+		//		case Key.AX:
+		//			return 150;
 
-				case Key.Backslash:
-					return 0x2b;
+		//		case Key.Back:
+		//			return 14;
 
-				case Key.Calculator:
-					return 0xa1;
+		//		case Key.Backslash:
+		//			return 0x2b;
 
-				case Key.Capital:
-					return 0x3a;
+		//		case Key.Calculator:
+		//			return 0xa1;
 
-				case Key.Colon:
-					return 0x92;
+		//		case Key.Capital:
+		//			return 0x3a;
 
-				case Key.Comma:
-					return 0x33;
+		//		case Key.Colon:
+		//			return 0x92;
 
-				case Key.Convert:
-					return 0x79;
+		//		case Key.Comma:
+		//			return 0x33;
 
-				case Key.Delete:
-					return 0xd3;
+		//		case Key.Convert:
+		//			return 0x79;
 
-				case Key.Down:
-					return 0xd0;
+		//		case Key.Delete:
+		//			return 0xd3;
 
-				case Key.End:
-					return 0xcf;
+		//		case Key.Down:
+		//			return 0xd0;
 
-				case Key.Equals:
-					return 13;
+		//		case Key.End:
+		//			return 0xcf;
 
-				case Key.Escape:
-					return 1;
+		//		case Key.Equals:
+		//			return 13;
 
-				case Key.F1:
-					return 0x3b;
+		//		case Key.Escape:
+		//			return 1;
 
-				case Key.F2:
-					return 60;
+		//		case Key.F1:
+		//			return 0x3b;
 
-				case Key.F3:
-					return 0x3d;
+		//		case Key.F2:
+		//			return 60;
 
-				case Key.F4:
-					return 0x3e;
+		//		case Key.F3:
+		//			return 0x3d;
 
-				case Key.F5:
-					return 0x3f;
+		//		case Key.F4:
+		//			return 0x3e;
 
-				case Key.F6:
-					return 0x40;
+		//		case Key.F5:
+		//			return 0x3f;
 
-				case Key.F7:
-					return 0x41;
+		//		case Key.F6:
+		//			return 0x40;
 
-				case Key.F8:
-					return 0x42;
+		//		case Key.F7:
+		//			return 0x41;
 
-				case Key.F9:
-					return 0x43;
+		//		case Key.F8:
+		//			return 0x42;
 
-				case Key.F10:
-					return 0x44;
+		//		case Key.F9:
+		//			return 0x43;
 
-				case Key.F11:
-					return 0x57;
+		//		case Key.F10:
+		//			return 0x44;
 
-				case Key.F12:
-					return 0x58;
+		//		case Key.F11:
+		//			return 0x57;
 
-				case Key.F13:
-					return 100;
+		//		case Key.F12:
+		//			return 0x58;
 
-				case Key.F14:
-					return 0x65;
+		//		case Key.F13:
+		//			return 100;
 
-				case Key.F15:
-					return 0x66;
+		//		case Key.F14:
+		//			return 0x65;
 
-				case Key.Grave:
-					return 0x29;
+		//		case Key.F15:
+		//			return 0x66;
 
-				case Key.Home:
-					return 0xc7;
+		//		case Key.Grave:
+		//			return 0x29;
 
-				case Key.Insert:
-					return 210;
+		//		case Key.Home:
+		//			return 0xc7;
 
-				case Key.Kana:
-					return 0x70;
+		//		case Key.Insert:
+		//			return 210;
 
-				case Key.Kanji:
-					return 0x94;
+		//		case Key.Kana:
+		//			return 0x70;
 
-				case Key.LeftBracket:
-					return 0x1a;
+		//		case Key.Kanji:
+		//			return 0x94;
 
-				case Key.LeftControl:
-					return 0x1d;
+		//		case Key.LeftBracket:
+		//			return 0x1a;
 
-				case Key.Left:
-					return 0xcb;
+		//		case Key.LeftControl:
+		//			return 0x1d;
 
-				case Key.LeftAlt:
-					return 0x38;
+		//		case Key.Left:
+		//			return 0xcb;
 
-				case Key.LeftShift:
-					return 0x2a;
+		//		case Key.LeftAlt:
+		//			return 0x38;
 
-				case Key.LeftWindowsKey:
-					return 0xdb;
+		//		case Key.LeftShift:
+		//			return 0x2a;
 
-				case Key.Mail:
-					return 0xec;
+		//		case Key.LeftWindowsKey:
+		//			return 0xdb;
 
-				case Key.MediaSelect:
-					return 0xed;
+		//		case Key.Mail:
+		//			return 0xec;
 
-				case Key.MediaStop:
-					return 0xa4;
+		//		case Key.MediaSelect:
+		//			return 0xed;
 
-				case Key.Minus:
-					return 12;
+		//		case Key.MediaStop:
+		//			return 0xa4;
 
-				case Key.Mute:
-					return 160;
+		//		case Key.Minus:
+		//			return 12;
 
-				case Key.MyComputer:
-					return 0xeb;
+		//		case Key.Mute:
+		//			return 160;
 
-				case Key.NextTrack:
-					return 0x99;
+		//		case Key.MyComputer:
+		//			return 0xeb;
 
-				case Key.NoConvert:
-					return 0x7b;
+		//		case Key.NextTrack:
+		//			return 0x99;
 
-				case Key.NumberLock:
-					return 0x45;
+		//		case Key.NoConvert:
+		//			return 0x7b;
 
-				case Key.NumberPad0:
-					return 0x52;
+		//		case Key.NumberLock:
+		//			return 0x45;
 
-				case Key.NumberPad1:
-					return 0x4f;
+		//		case Key.NumberPad0:
+		//			return 0x52;
 
-				case Key.NumberPad2:
-					return 80;
+		//		case Key.NumberPad1:
+		//			return 0x4f;
 
-				case Key.NumberPad3:
-					return 0x51;
+		//		case Key.NumberPad2:
+		//			return 80;
 
-				case Key.NumberPad4:
-					return 0x4b;
+		//		case Key.NumberPad3:
+		//			return 0x51;
 
-				case Key.NumberPad5:
-					return 0x4c;
+		//		case Key.NumberPad4:
+		//			return 0x4b;
 
-				case Key.NumberPad6:
-					return 0x4d;
+		//		case Key.NumberPad5:
+		//			return 0x4c;
 
-				case Key.NumberPad7:
-					return 0x47;
+		//		case Key.NumberPad6:
+		//			return 0x4d;
 
-				case Key.NumberPad8:
-					return 0x48;
+		//		case Key.NumberPad7:
+		//			return 0x47;
 
-				case Key.NumberPad9:
-					return 0x49;
+		//		case Key.NumberPad8:
+		//			return 0x48;
 
-				case Key.NumberPadComma:
-					return 0xb3;
+		//		case Key.NumberPad9:
+		//			return 0x49;
 
-				case Key.NumberPadEnter:
-					return 0x9c;
+		//		case Key.NumberPadComma:
+		//			return 0xb3;
 
-				case Key.NumberPadEquals:
-					return 0x8d;
+		//		case Key.NumberPadEnter:
+		//			return 0x9c;
 
-				case Key.Subtract:
-					return 0x4a;
+		//		case Key.NumberPadEquals:
+		//			return 0x8d;
 
-				case Key.Decimal:
-					return 0x53;
+		//		case Key.Subtract:
+		//			return 0x4a;
 
-				case Key.Add:
-					return 0x4e;
+		//		case Key.Decimal:
+		//			return 0x53;
 
-				case Key.Divide:
-					return 0xb5;
+		//		case Key.Add:
+		//			return 0x4e;
 
-				case Key.Multiply:
-					return 0x37;
+		//		case Key.Divide:
+		//			return 0xb5;
 
-				case Key.Oem102:
-					return 0x56;
+		//		case Key.Multiply:
+		//			return 0x37;
 
-				case Key.PageDown:
-					return 0xd1;
+		//		case Key.Oem102:
+		//			return 0x56;
 
-				case Key.PageUp:
-					return 0xc9;
+		//		case Key.PageDown:
+		//			return 0xd1;
 
-				case Key.Pause:
-					return 0xc5;
+		//		case Key.PageUp:
+		//			return 0xc9;
 
-				case Key.Period:
-					return 0x34;
+		//		case Key.Pause:
+		//			return 0xc5;
 
-				case Key.PlayPause:
-					return 0xa2;
+		//		case Key.Period:
+		//			return 0x34;
 
-				case Key.Power:
-					return 0xde;
+		//		case Key.PlayPause:
+		//			return 0xa2;
 
-				case Key.PreviousTrack:
-					return 0x90;
+		//		case Key.Power:
+		//			return 0xde;
 
-				case Key.RightBracket:
-					return 0x1b;
+		//		case Key.PreviousTrack:
+		//			return 0x90;
 
-				case Key.RightControl:
-					return 0x9d;
+		//		case Key.RightBracket:
+		//			return 0x1b;
 
-				case Key.Return:
-					return 0x1c;
+		//		case Key.RightControl:
+		//			return 0x9d;
 
-				case Key.Right:
-					return 0xcd;
+		//		case Key.Return:
+		//			return 0x1c;
 
-				case Key.RightAlt:
-					return 0xb8;
+		//		case Key.Right:
+		//			return 0xcd;
 
-				case Key.RightShift:
-					return 0x36;
+		//		case Key.RightAlt:
+		//			return 0xb8;
 
-				case Key.RightWindowsKey:
-					return 220;
+		//		case Key.RightShift:
+		//			return 0x36;
 
-				case Key.ScrollLock:
-					return 70;
+		//		case Key.RightWindowsKey:
+		//			return 220;
 
-				case Key.Semicolon:
-					return 0x27;
+		//		case Key.ScrollLock:
+		//			return 70;
 
-				case Key.Slash:
-					return 0x35;
+		//		case Key.Semicolon:
+		//			return 0x27;
 
-				case Key.Sleep:
-					return 0xdf;
+		//		case Key.Slash:
+		//			return 0x35;
 
-				case Key.Space:
-					return 0x39;
+		//		case Key.Sleep:
+		//			return 0xdf;
 
-				case Key.Stop:
-					return 0x95;
+		//		case Key.Space:
+		//			return 0x39;
 
-				case Key.PrintScreen:
-					return 0xb7;
+		//		case Key.Stop:
+		//			return 0x95;
 
-				case Key.Tab:
-					return 15;
+		//		case Key.PrintScreen:
+		//			return 0xb7;
 
-				case Key.Underline:
-					return 0x93;
+		//		case Key.Tab:
+		//			return 15;
 
-				case Key.Unlabeled:
-					return 0x97;
+		//		case Key.Underline:
+		//			return 0x93;
 
-				case Key.Up:
-					return 200;
+		//		case Key.Unlabeled:
+		//			return 0x97;
 
-				case Key.VolumeDown:
-					return 0xae;
+		//		case Key.Up:
+		//			return 200;
 
-				case Key.VolumeUp:
-					return 0xb0;
+		//		case Key.VolumeDown:
+		//			return 0xae;
 
-				case Key.Wake:
-					return 0xe3;
+		//		case Key.VolumeUp:
+		//			return 0xb0;
 
-				case Key.WebBack:
-					return 0xea;
+		//		case Key.Wake:
+		//			return 0xe3;
 
-				case Key.WebFavorites:
-					return 230;
+		//		case Key.WebBack:
+		//			return 0xea;
 
-				case Key.WebForward:
-					return 0xe9;
+		//		case Key.WebFavorites:
+		//			return 230;
 
-				case Key.WebHome:
-					return 0xb2;
+		//		case Key.WebForward:
+		//			return 0xe9;
 
-				case Key.WebRefresh:
-					return 0xe7;
+		//		case Key.WebHome:
+		//			return 0xb2;
 
-				case Key.WebSearch:
-					return 0xe5;
+		//		case Key.WebRefresh:
+		//			return 0xe7;
 
-				case Key.WebStop:
-					return 0xe8;
+		//		case Key.WebSearch:
+		//			return 0xe5;
 
-				case Key.Yen:
-					return 0x7d;
-			}
-			return 0;
-		}
+		//		case Key.WebStop:
+		//			return 0xe8;
+
+		//		case Key.Yen:
+		//			return 0x7d;
+		//	}
+		//	return 0;
+		//}
+		#endregion
+
 		public static Keys KeyToKeyCode( Key key )
 		{
 			switch ( key )
