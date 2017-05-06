@@ -83,7 +83,7 @@ namespace DTXMania
 					"FDK.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
-				if (!tDLLの存在チェック("xadec.dll",   // #35444 2015.8.27 yyagi; Changed dll path
+				if (!tDLLの存在チェック("dll\\xadec.dll",
 					"xadec.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"xadec.dll is not found." + newLine + "Please download DTXMania again."
 					))
