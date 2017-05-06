@@ -68,27 +68,26 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\実行時フォルダ\dll\Bass.Net.dll</HintPath>
     </Reference>
-    <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\実行時フォルダ(DTXCreator)\dll\DirectShowLib-2005.dll</HintPath>
+    <Reference Include="DirectShowLib-2005">
+      <HintPath>..\実行時フォルダ\dll\DirectShowLib-2005.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\DTXManiaプロジェクト\packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
+      <HintPath>..\packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\DTXManiaプロジェクト\packages\SharpDX.Direct3D9.3.1.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\packages\SharpDX.Direct3D9.3.1.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DirectInput, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\DTXManiaプロジェクト\packages\SharpDX.DirectInput.3.1.1\lib\net45\SharpDX.DirectInput.dll</HintPath>
+      <HintPath>..\packages\SharpDX.DirectInput.3.1.1\lib\net45\SharpDX.DirectInput.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DirectSound, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\DTXManiaプロジェクト\packages\SharpDX.DirectSound.3.1.1\lib\net45\SharpDX.DirectSound.dll</HintPath>
+      <HintPath>..\packages\SharpDX.DirectSound.3.1.1\lib\net45\SharpDX.DirectSound.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\DTXManiaプロジェクト\packages\SharpDX.DXGI.3.1.1\lib\net45\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\packages\SharpDX.DXGI.3.1.1\lib\net45\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>..\DTXManiaプロジェクト\packages\SharpDX.Mathematics.3.1.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>..\packages\SharpDX.Mathematics.3.1.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -218,22 +217,15 @@ xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D /EXCLUDE:$(TargetFileName)
 
 echo.
 echo (2) 出力フォルダ から 実行時フォルダ にコピーします。（日付の新しいファイルのみ）
-set DESTDIR="$(SolutionDir)..\実行時フォルダ\dll"
+set DESTDIR="$(SolutionDir)実行時フォルダ\dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
 xcopy "$(TargetDir)*.dll"  %25DESTDIR%25 /Y /D
 
 echo.
-echo (3) 出力フォルダ から 実行時フォルダ(DTXCreator) にコピーします。（日付の新しいファイルのみ）
-set DESTDIR="$(SolutionDir)..\実行時フォルダ(DTXCreator)\dll"
-if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D
-
-echo.
-echo (4) 実行時フォルダ から ソリューション出力フォルダ にコピーします。（日付の新しいファイルのみ）
+echo (3) 実行時フォルダ から ソリューション出力フォルダ にコピーします。（日付の新しいファイルのみ）
 set DESTDIR="$(SolutionDir)$(OutDir)dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(SolutionDir)..\実行時フォルダ\dll" %25DESTDIR%25 /Y /D
-rem xcopy  "$(SolutionDir)..\実行時フォルダ(DTXCreator)\dll" %25DESTDIR%25 /Y /D
+xcopy "$(SolutionDir)実行時フォルダ\dll" %25DESTDIR%25 /Y /D
 
 echo.
 echo ビルド後イベントを終了しました。

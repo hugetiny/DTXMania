@@ -71,22 +71,22 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="SharpDX, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
+      <HintPath>..\packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>packages\SharpDX.Direct3D9.3.1.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\packages\SharpDX.Direct3D9.3.1.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DirectInput, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>packages\SharpDX.DirectInput.3.1.1\lib\net45\SharpDX.DirectInput.dll</HintPath>
+      <HintPath>..\packages\SharpDX.DirectInput.3.1.1\lib\net45\SharpDX.DirectInput.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DirectSound, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>packages\SharpDX.DirectSound.3.1.1\lib\net45\SharpDX.DirectSound.dll</HintPath>
+      <HintPath>..\packages\SharpDX.DirectSound.3.1.1\lib\net45\SharpDX.DirectSound.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.DXGI, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>packages\SharpDX.DXGI.3.1.1\lib\net45\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\packages\SharpDX.DXGI.3.1.1\lib\net45\SharpDX.DXGI.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Mathematics, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
-      <HintPath>packages\SharpDX.Mathematics.3.1.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>..\packages\SharpDX.Mathematics.3.1.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -277,13 +277,13 @@ move /Y "$(TargetDir)*.dll" %25DESTDIR%25
 
 echo.
 echo (2) 出力フォルダ から 実行時フォルダ にコピーします。（dllは、日付の新しいファイルのみ）
-set DESTDIR="$(SolutionDir)..\実行時フォルダ"
+set DESTDIR="$(SolutionDir)実行時フォルダ"
 xcopy "$(TargetDir)$(TargetFileName)" %25DESTDIR%25 /Y
 xcopy "$(TargetDir)$(TargetFileName).config" %25DESTDIR%25 /Y
-set DESTDIR="$(SolutionDir)..\実行時フォルダ\ja-JP"
+set DESTDIR="$(SolutionDir)実行時フォルダ\ja-JP"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
 xcopy "$(TargetDir)ja-JP" %25DESTDIR%25 /Y
-set DESTDIR="$(SolutionDir)..\実行時フォルダ\dll"
+set DESTDIR="$(SolutionDir)実行時フォルダ\dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
 xcopy  "$(TargetDir)dll" %25DESTDIR%25 /Y /D
 
@@ -291,10 +291,10 @@ echo.
 echo (3) 実行時フォルダ から 出力フォルダ にコピーします。（日付の新しいファイルのみ）
 set DESTDIR="$(TargetDir)dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(SolutionDir)..\実行時フォルダ\dll" %25DESTDIR%25 /Y /D
+xcopy "$(SolutionDir)実行時フォルダ\dll" %25DESTDIR%25 /Y /D
 set DESTDIR="$(TargetDir)System"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(SolutionDir)..\実行時フォルダ\System" %25DESTDIR%25 /Y /D /S /E
+xcopy "$(SolutionDir)実行時フォルダ\System" %25DESTDIR%25 /Y /D /S /E
 
 echo.
 echo ビルド後イベントを終了しました。
