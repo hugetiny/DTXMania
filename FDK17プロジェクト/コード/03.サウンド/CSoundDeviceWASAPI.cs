@@ -172,7 +172,6 @@ namespace FDK
 
 			// BASS の初期化。
 
-			int nデバイス = 0;		// 0:"no device" … BASS からはデバイスへアクセスさせない。アクセスは BASSWASAPI アドオンから行う。
 			int n周波数 = 44100;	// 仮決め。lデバイス（≠ドライバ）がネイティブに対応している周波数であれば何でもいい？ようだ。BASSWASAPIでデバイスの周波数は変えられる。いずれにしろBASSMXで自動的にリサンプリングされる。
 			// BASS_Initは、WASAPI初期化の直前に行うよう変更。WASAPIのmix周波数を使って初期化することで、余計なリサンプリング処理を省き高速化するため。
 			//if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
@@ -200,7 +199,6 @@ namespace FDK
 
 			// BASS WASAPI の初期化。
 
-			nデバイス = -1;
 			n周波数 = 0;			// デフォルトデバイスの周波数 (0="mix format" sample rate)
 			int nチャンネル数 = 0;	// デフォルトデバイスのチャンネル数 (0="mix format" channels)
 			this.tWasapiProc = new WASAPIPROC( this.tWASAPI処理 );		// アンマネージに渡す delegate は、フィールドとして保持しておかないとGCでアドレスが変わってしまう。
@@ -221,7 +219,7 @@ namespace FDK
 			}
 			if ( nDevNo != -1 )
 			{
-				if ( !Bass.BASS_Init( nデバイス, deviceInfo.mixfreq, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
+				if ( !Bass.BASS_Init( 0, deviceInfo.mixfreq, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )  // device = 0:"no device": BASS からはデバイスへアクセスさせない。アクセスは BASSWASAPI アドオンから行う。
 					throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 
 
@@ -246,7 +244,7 @@ namespace FDK
 			{
 				flags |= BASSWASAPIInit.BASS_WASAPI_EVENT;	// Win7以降の場合は、WASAPIをevent drivenで動作させてCPU負荷減、レイテインシ改善
 			}
-			if ( BassWasapi.BASS_WASAPI_Init( nデバイス, n周波数, nチャンネル数, flags, ( n希望バッファサイズms / 1000.0f ), ( n更新間隔ms / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
+			if ( BassWasapi.BASS_WASAPI_Init( nDevNo, n周波数, nチャンネル数, flags, ( n希望バッファサイズms / 1000.0f ), ( n更新間隔ms / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
 			{
 				if( mode == Eデバイスモード.排他 )
 				{

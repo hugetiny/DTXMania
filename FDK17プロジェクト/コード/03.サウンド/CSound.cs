@@ -974,9 +974,11 @@ namespace FDK
 		{
 			// セカンダリバッファを作成し、PCMデータを書き込む。
 
+			this._Format = wfx;
+
 			this.Buffer = new SecondarySoundBuffer( DirectSound, new SoundBufferDescription()
 			{
-				Format = ( wfx.Encoding == WaveFormatEncoding.Pcm ) ? wfx : (SharpDX.Multimedia.WaveFormatExtensible) wfx,
+				Format = this._Format,
 				Flags = flags,
 				BufferBytes = nPCMサイズbyte,
 			} );
@@ -991,13 +993,9 @@ namespace FDK
 
 			// DTXMania用に追加
 			this.nオリジナルの周波数 = wfx.SampleRate;
-			var format = new SharpDX.Multimedia.WaveFormatExtensible[] { new SharpDX.Multimedia.WaveFormatExtensible( 0, 0, 0 ) };
-			this.Buffer.GetFormat( format, Marshal.SizeOf<SharpDX.Multimedia.WaveFormatExtensible>(), out _ );
-			n総演奏時間ms = (int) ( ( (double) nPCMサイズbyte ) / ( format[ 0 ].AverageBytesPerSecond * 0.001 ) );
-
+			n総演奏時間ms = (int) ( ( (double) nPCMサイズbyte ) / ( this._Format.AverageBytesPerSecond * 0.001 ) );
 
 			// インスタンスリストに登録。
-
 			CSound.listインスタンス.Add( this );
 		}
 
@@ -1238,13 +1236,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			}
 			else if( this.bDirectSoundである )
 			{
-				var format = new SharpDX.Multimedia.WaveFormatExtensible[] { new SharpDX.Multimedia.WaveFormatExtensible( 0, 0, 0 ) };
-				this.Buffer.GetFormat( format, Marshal.SizeOf<SharpDX.Multimedia.WaveFormatExtensible>(), out _ );
-
-				int n位置sample = (int) ( format[ 0 ].SampleRate * n位置ms * 0.001 * _db周波数倍率 * _db再生速度 );  // #30839 2013.2.24 yyagi; add _db周波数倍率 and _db再生速度
+				int n位置sample = (int) ( this._Format.SampleRate * n位置ms * 0.001 * _db周波数倍率 * _db再生速度 );  // #30839 2013.2.24 yyagi; add _db周波数倍率 and _db再生速度
 				try
 				{
-					this.Buffer.CurrentPosition = n位置sample * format[ 0 ].BlockAlign;
+					this.Buffer.CurrentPosition = n位置sample * this._Format.BlockAlign;
 				}
 				catch ( Exception e )
 				{
@@ -1272,11 +1267,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			{
 				this.Buffer.GetCurrentPosition( out int pos, out _ );
 				n位置byte = (long) pos;
-
-				var format = new SharpDX.Multimedia.WaveFormatExtensible[] { new SharpDX.Multimedia.WaveFormatExtensible( 0, 0, 0 ) };
-				this.Buffer.GetFormat( format, Marshal.SizeOf<SharpDX.Multimedia.WaveFormatExtensible>(), out _ );
-
-				db位置ms = n位置byte / format[ 0 ].SampleRate / 0.001 / _db周波数倍率 / _db再生速度;
+				db位置ms = n位置byte / this._Format.SampleRate / 0.001 / _db周波数倍率 / _db再生速度;
 			}
 			else
 			{
@@ -1502,6 +1493,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		private double _db周波数倍率 = 1.0;
 		private double _db再生速度 = 1.0;
 		private bool bIs1倍速再生 = true;
+		private WaveFormat _Format;
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
 		{

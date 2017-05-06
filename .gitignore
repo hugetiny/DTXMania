@@ -8,6 +8,8 @@
 *.sln.docstates
 Config.xml
 DTXManiaLog.txt
+songlist.db
+songs.db
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
