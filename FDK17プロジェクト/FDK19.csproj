@@ -207,11 +207,36 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ\dll\"
-copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ(DTXCreator)\dll\"
-copy /Y "$(TargetPath)" "$(SolutionDir)bin\x86\Debug\dll\"
+    <PostBuildEvent>echo.
+echo ビルド後イベントを開始します。
 
+echo.
+echo (1) 出力フォルダ から ソリューション出力フォルダ へコピーします。（日付の新しいファイルのみ）
+set DESTDIR="$(SolutionDir)$(OutDir)dll"
+if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
+xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D /EXCLUDE:$(TargetFileName)
 
+echo.
+echo (2) 出力フォルダ から 実行時フォルダ にコピーします。（日付の新しいファイルのみ）
+set DESTDIR="$(SolutionDir)..\実行時フォルダ\dll"
+if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
+xcopy "$(TargetDir)*.dll"  %25DESTDIR%25 /Y /D
+
+echo.
+echo (3) 出力フォルダ から 実行時フォルダ(DTXCreator) にコピーします。（日付の新しいファイルのみ）
+set DESTDIR="$(SolutionDir)..\実行時フォルダ(DTXCreator)\dll"
+if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
+xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D
+
+echo.
+echo (4) 実行時フォルダ から ソリューション出力フォルダ にコピーします。（日付の新しいファイルのみ）
+set DESTDIR="$(SolutionDir)$(OutDir)dll"
+if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
+xcopy "$(SolutionDir)..\実行時フォルダ\dll" %25DESTDIR%25 /Y /D
+rem xcopy  "$(SolutionDir)..\実行時フォルダ(DTXCreator)\dll" %25DESTDIR%25 /Y /D
+
+echo.
+echo ビルド後イベントを終了しました。
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
