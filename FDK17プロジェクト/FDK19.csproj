@@ -135,6 +135,7 @@
     <Compile Include="コード\02.入力\DeviceConstantConverter.cs" />
     <Compile Include="コード\02.入力\E入力デバイス種別.cs" />
     <Compile Include="コード\02.入力\IInputDevice.cs" />
+    <Compile Include="コード\02.入力\SlimDX.DirectInput.Key.cs" />
     <Compile Include="コード\02.入力\STInputEvent.cs" />
     <Compile Include="コード\03.サウンド\Cmp3.cs" />
     <Compile Include="コード\03.サウンド\Cogg.cs" />

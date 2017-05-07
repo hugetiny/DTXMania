@@ -2759,14 +2759,17 @@ namespace DTXMania
 			{
 				for (int i = 0; i < CConfigXml.AssignableCodes; i++)
 				{
-					if (ConfigIni.KeyAssign[EPad.Capture][i].コード > 0 &&
-							 e.KeyCode == DeviceConstantConverter.KeyToKeyCode((SharpDX.DirectInput.Key)ConfigIni.KeyAssign[EPad.Capture][i].コード))
+					var captureCode = (SlimDX.DirectInput.Key) ConfigIni.KeyAssign[ EPad.Capture ][ i ].コード;
+
+					if( (int) captureCode > 0 &&
+						DeviceConstantConverter.KeyToKeys.ContainsKey( captureCode ) &&
+						e.KeyCode == DeviceConstantConverter.KeyToKeys[ captureCode ] )
 					{
 						// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
 						string strFullPath =
-								 Path.Combine(CDTXMania.Instance.strEXEのあるフォルダ, "Capture_img");
-						strFullPath = Path.Combine(strFullPath, DateTime.Now.ToString("yyyyMMddHHmmss") + ".png");
-						SaveResultScreen(strFullPath);
+								 Path.Combine( CDTXMania.Instance.strEXEのあるフォルダ, "Capture_img" );
+						strFullPath = Path.Combine( strFullPath, DateTime.Now.ToString( "yyyyMMddHHmmss" ) + ".png" );
+						SaveResultScreen( strFullPath );
 					}
 				}
 			}
