@@ -87,20 +87,23 @@ namespace FDK
 					var bufferedData = this.devKeyboard.GetBufferedData();
 					//if ( Result.Last.IsSuccess && bufferedData != null )
 					{
-						foreach ( KeyboardUpdate data in bufferedData )
+						foreach( KeyboardUpdate data in bufferedData )
 						{
+							// #xxxxx: 2017.5.7: from: DIK (SharpDX.DirectInput.Key) を SlimDX.DirectInput.Key に変換。
+							var key = DeviceConstantConverter.DIKtoKey( data.Key );
+							if( SlimDXKey.Unknown == key )
+								continue;   // 未対応キーは無視。
+
 							//foreach ( Key key in data.PressedKeys )
 							if( data.IsPressed )
 							{
-								var key = data.Key;
 								// #23708 2016.3.19 yyagi; Even if we remove ALT+ENTER key input by SuppressKeyPress = true in Form,
 								// it doesn't affect to DirectInput (ALT+ENTER does not remove)
 								// So we ignore ENTER input in ALT+ENTER combination here.
 								// Note: ENTER will be alived if you keyup ALT after ALT+ENTER.
-								if( key != Key.Return || ( bKeyState[ (int)Key.LeftAlt ] == false && bKeyState[ (int)Key.RightAlt ] == false ) )
+								if( key != SlimDXKey.Return || ( bKeyState[ (int) SlimDXKey.LeftAlt ] == false && bKeyState[ (int) SlimDXKey.RightAlt ] == false ) )
 								{
-									STInputEvent item = new STInputEvent()
-									{
+									STInputEvent item = new STInputEvent() {
 										nKey = (int) key,
 										b押された = true,
 										b離された = false,
@@ -112,7 +115,7 @@ namespace FDK
 									this.bKeyState[ (int) key ] = true;
 									this.bKeyPushDown[ (int) key ] = true;
 								}
-								//if ( item.nKey == (int) SharpDX.DirectInput.Key.Space )
+								//if ( item.nKey == (int) SlimDXKey.Space )
 								//{
 								//    Trace.TraceInformation( "FDK(buffered): SPACE key registered. " + ct.nシステム時刻 );
 								//}
@@ -120,9 +123,7 @@ namespace FDK
 							//foreach ( Key key in data.ReleasedKeys )
 							if( data.IsReleased )
 							{
-								var key = data.Key;
-								STInputEvent item = new STInputEvent()
-								{
+								STInputEvent item = new STInputEvent() {
 									nKey = (int) key,
 									b押された = false,
 									b離された = true,
@@ -146,18 +147,22 @@ namespace FDK
 					KeyboardState currentState = this.devKeyboard.GetCurrentState();
 					//if ( Result.Last.IsSuccess && currentState != null )
 					{
-						foreach ( Key key in currentState.PressedKeys )
+						foreach( SharpDXKey dik in currentState.PressedKeys )
 						{
-							if ( this.bKeyState[ (int) key ] == false )
+							// #xxxxx: 2017.5.7: from: DIK (SharpDX.DirectInput.Key) を SlimDX.DirectInput.Key に変換。
+							var key = DeviceConstantConverter.DIKtoKey( dik );
+							if( SlimDXKey.Unknown == key )
+								continue;   // 未対応キーは無視。
+
+							if( this.bKeyState[ (int) key ] == false )
 							{
-								if ( key != Key.Return || ( bKeyState[ (int) Key.LeftAlt ] == false && bKeyState[ (int) Key.RightAlt ] == false ) )	// #23708 2016.3.19 yyagi
+								if( key != SlimDXKey.Return || ( bKeyState[ (int) SlimDXKey.LeftAlt ] == false && bKeyState[ (int) SlimDXKey.RightAlt ] == false ) )    // #23708 2016.3.19 yyagi
 								{
-									var ev = new STInputEvent()
-									{
+									var ev = new STInputEvent() {
 										nKey = (int) key,
 										b押された = true,
 										b離された = false,
-										nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻,	// 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
+										nTimeStamp = CSound管理.rc演奏用タイマ.nシステム時刻, // 演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 										nVelocity = CInput管理.n通常音量,
 									};
 									this.list入力イベント.Add( ev );
@@ -166,16 +171,21 @@ namespace FDK
 									this.bKeyPushDown[ (int) key ] = true;
 								}
 
-								//if ( (int) key == (int) SharpDX.DirectInput.Key.Space )
+								//if ( (int) key == (int) SlimDXKey.Space )
 								//{
 								//    Trace.TraceInformation( "FDK(direct): SPACE key registered. " + ct.nシステム時刻 );
 								//}
 							}
 						}
 						//foreach ( Key key in currentState.ReleasedKeys )
-						foreach( Key key in currentState.AllKeys )
+						foreach( SharpDXKey dik in currentState.AllKeys )
 						{
-							if( this.bKeyState[ (int) key ] == true && !currentState.IsPressed( key ) ) // 前回は押されているのに今回は押されていない → 離された
+							// DIK (SharpDX.DirectInput.Key) を SlimDX.DirectInput.Key に変換。
+							var key = DeviceConstantConverter.DIKtoKey( dik );
+							if( SlimDXKey.Unknown == key )
+								continue;   // 未対応キーは無視。
+
+							if( this.bKeyState[ (int) key ] == true && !currentState.IsPressed( dik ) ) // 前回は押されているのに今回は押されていない → 離された
 							{
 								var ev = new STInputEvent() {
 									nKey = (int) key,
@@ -195,10 +205,10 @@ namespace FDK
 					#endregion
 				}
 				#region [#23708 2011.4.8 yyagi Altが押されているときは、Enter押下情報を削除する -> 副作用が見つかり削除]
-				//if ( this.bKeyState[ (int) SharpDX.DirectInput.Key.RightAlt ] ||
-				//     this.bKeyState[ (int) SharpDX.DirectInput.Key.LeftAlt ] )
+				//if ( this.bKeyState[ (int) SlimDXKey.RightAlt ] ||
+				//     this.bKeyState[ (int) SlimDXKey.LeftAlt ] )
 				//{
-				//    int cr = (int) SharpDX.DirectInput.Key.Return;
+				//    int cr = (int) SlimDXKey.Return;
 				//    this.bKeyPushDown[ cr ] = false;
 				//    this.bKeyPullUp[ cr ] = false;
 				//    this.bKeyState[ cr ] = false;
@@ -206,18 +216,34 @@ namespace FDK
 				#endregion
 			}
 		}
+
+		/// <param name="nKey">
+		///		調べる SlimDX.DirectInput.Key を int にキャストした値。（SharpDX.DirectInput.Key ではないので注意。）
+		/// </param>
 		public bool bキーが押された( int nKey )
 		{
 			return this.bKeyPushDown[ nKey ];
 		}
+
+		/// <param name="nKey">
+		///		調べる SlimDX.DirectInput.Key を int にキャストした値。（SharpDX.DirectInput.Key ではないので注意。）
+		/// </param>
 		public bool bキーが押されている( int nKey )
 		{
 			return this.bKeyState[ nKey ];
 		}
+
+		/// <param name="nKey">
+		///		調べる SlimDX.DirectInput.Key を int にキャストした値。（SharpDX.DirectInput.Key ではないので注意。）
+		/// </param>
 		public bool bキーが離された( int nKey )
 		{
 			return this.bKeyPullUp[ nKey ];
 		}
+
+		/// <param name="nKey">
+		///		調べる SlimDX.DirectInput.Key を int にキャストした値。（SharpDX.DirectInput.Key ではないので注意。）
+		/// </param>
 		public bool bキーが離されている( int nKey )
 		{
 			return !this.bKeyState[ nKey ];
@@ -257,9 +283,9 @@ namespace FDK
 		#region [ private ]
 		//-----------------
 		private bool bDispose完了済み;
-		private bool[] bKeyPullUp = new bool[ 0x100 ];
-		private bool[] bKeyPushDown = new bool[ 0x100 ];
-		private bool[] bKeyState = new bool[ 0x100 ];
+		private bool[] bKeyPullUp = new bool[ 256 ];
+		private bool[] bKeyPushDown = new bool[ 256 ];
+		private bool[] bKeyState = new bool[ 256 ];
 		private Keyboard devKeyboard;
 		//private CTimer timer;
 		//private CTimer ct;
