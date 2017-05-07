@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using SharpDX;
 using SharpDX.DirectInput;
 
 namespace FDK

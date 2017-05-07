@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System;
 using FDK;
 
+using SlimDXKey = SlimDX.DirectInput.Key;
+
 namespace DTXMania
 {
 	/// <summary>
@@ -1009,7 +1011,7 @@ namespace DTXMania
 				while ( 
 						( CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
 							( CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
-							  CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int) SharpDX.DirectInput.Key.Return )
+							  CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int) SlimDXKey.Return )
 							)
 						)
 					  )
@@ -1040,7 +1042,7 @@ namespace DTXMania
 					for (int k = 0; k < AssignableCodes; k++)
 					{
 						if ((KeyAssign[j][k].入力デバイス == EInputDevice.Keyboard) &&
-								(KeyAssign[j][k].コード == (int)SharpDX.DirectInput.Key.Return))
+								(KeyAssign[j][k].コード == (int)SlimDXKey.Return))
 						{
 							return false;
 						}
@@ -1294,37 +1296,36 @@ namespace DTXMania
 			}
 		}
 
-		// #36529: 2017.5.7 from: SlimDX.DirectInput.Key 配列から SharpDX.DirectInput.Key 配列に変更。
 		const string strDefaultKeyAssign = @"
-HH=K044,M042,M093
-SD=K045,M025,M026,M027,M028,M029,M031,M032,M034,M037,M038,M040,M0113
-BD=K046,K057,M033,M035,M036,M0112
-HT=K047,M048,M050
-LT=K048,M047
-FT=K049,M041,M043,M045
-CY=K050,M049,M052,M055,M057,M091
-HHO=K030,M046,M092
-RD=K037,M051,M053,M059,M089
-LC=K016
+HH=K035,M042,M093
+SD=K033,M025,M026,M027,M028,M029,M031,M032,M034,M037,M038,M040,M0113
+BD=K012,K0126,M033,M035,M036,M0112
+HT=K031,M048,M050
+LT=K011,M047
+FT=K023,M041,M043,M045
+CY=K022,M049,M052,M055,M057,M091
+HHO=K010,M046,M092
+RD=K020,M051,M053,M059,M089
+LC=K026
 HP=M044
 
-GtR=K060
-GtG=K061
-GtB=K062
-GtPick=K027,K0146
-GtWail=K0157
-GtDecide=K065
-GtCancel=K066
+GtR=K055
+GtG=K056,J012
+GtB=K057
+GtPick=K0115,K046
+GtWail=K0116
+GtDecide=K060
+GtCancel=K061
 
-BsR=K079
-BsG=K080
-BsB=K081
-BsPick=K083,K0156
-BsWail=K082
-BsDecide=K071
-BsCancel=K072
+BsR=K090
+BsG=K091
+BsB=K092
+BsPick=K0103,K0100
+BsWail=K089
+BsDecide=K096
+BsCancel=K097
 
-Capture=K060
+Capture=K065
 ";
 		private string GetRelativePath( string strBasePath, string strTargetPath )
 		{

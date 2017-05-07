@@ -7,6 +7,8 @@ using System.Runtime.Serialization;
 using System.Diagnostics;
 using FDK;
 
+using SlimDXKey = SlimDX.DirectInput.Key;
+
 namespace DTXMania
 {
 	public delegate void VoidFunc();
@@ -255,7 +257,7 @@ namespace DTXMania
 		public override void OnNext()
 		{
 			IInputDevice keyboard = CDTXMania.Instance.Input管理.Keyboard;
-			if ( keyboard.bキーが押されている( (int) SharpDX.DirectInput.Key.LeftControl ) || keyboard.bキーが押されている( (int) SharpDX.DirectInput.Key.RightControl ) )
+			if ( keyboard.bキーが押されている( (int) SlimDXKey.LeftControl ) || keyboard.bキーが押されている( (int) SlimDXKey.RightControl ) )
 			{
 				val+=nStep;
 			}
@@ -269,7 +271,7 @@ namespace DTXMania
 		public override void OnPrevious()
 		{
 			IInputDevice keyboard = CDTXMania.Instance.Input管理.Keyboard;
-			if ( keyboard.bキーが押されている( (int) SharpDX.DirectInput.Key.LeftControl ) || keyboard.bキーが押されている( (int) SharpDX.DirectInput.Key.RightControl ) )
+			if ( keyboard.bキーが押されている( (int) SlimDXKey.LeftControl ) || keyboard.bキーが押されている( (int) SlimDXKey.RightControl ) )
 			{
 				val-=nStep;
 			}

@@ -180,7 +180,7 @@ namespace FDK
 						//foreach ( Key key in currentState.ReleasedKeys )
 						foreach( SharpDXKey dik in currentState.AllKeys )
 						{
-							// DIK (SharpDX.DirectInput.Key) を SlimDX.DirectInput.Key に変換。
+							// #xxxxx: 2017.5.7: from: DIK (SharpDX.DirectInput.Key) を SlimDX.DirectInput.Key に変換。
 							var key = DeviceConstantConverter.DIKtoKey( dik );
 							if( SlimDXKey.Unknown == key )
 								continue;   // 未対応キーは無視。

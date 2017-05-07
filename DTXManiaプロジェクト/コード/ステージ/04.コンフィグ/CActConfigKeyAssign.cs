@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using FDK;
 using SharpDX;
-using SharpDX.DirectInput;
 
 using Rectangle = System.Drawing.Rectangle;
 using Color = System.Drawing.Color;
+using SlimDXKey = SlimDX.DirectInput.Key;
 
 namespace DTXMania
 {
@@ -131,7 +131,7 @@ namespace DTXMania
 			{
 				if (this.bキー入力待ち)
 				{
-					if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Escape))
+					if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.Escape))
 					{
 						CDTXMania.Instance.Skin.sound取消音.t再生する();
 						this.bキー入力待ち = false;
@@ -143,7 +143,7 @@ namespace DTXMania
 						CDTXMania.Instance.Input管理.tポーリング(CDTXMania.Instance.bApplicationActive, false);
 					}
 				}
-				else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SharpDX.DirectInput.Key.Delete))
+				else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.Delete))
 				{
 					CDTXMania.Instance.Skin.sound決定音.t再生する();
 					CDTXMania.Instance.ConfigIni.KeyAssign[this.pad][ptr].Reset();
@@ -269,138 +269,138 @@ namespace DTXMania
 
 		private STKEYLABEL[] KeyLabel = new STKEYLABEL[] {
 			#region [ *** ]
-			new STKEYLABEL((int)Key.Escape, "[ESC]"),
-			new STKEYLABEL((int)Key.D1, "[ 1 ]"),
-			new STKEYLABEL((int)Key.D2, "[ 2 ]"),
-			new STKEYLABEL((int)Key.D3, "[ 3 ]"),
-			new STKEYLABEL((int)Key.D4, "[ 4 ]"),
-			new STKEYLABEL((int)Key.D5, "[ 5 ]"),
-			new STKEYLABEL((int)Key.D6, "[ 6 ]"),
-			new STKEYLABEL((int)Key.D7, "[ 7 ]"),
-			new STKEYLABEL((int)Key.D8, "[ 8 ]"),
-			new STKEYLABEL((int)Key.D9, "[ 9 ]"),
-			new STKEYLABEL((int)Key.D0, "[ 0 ]"),
-			new STKEYLABEL((int)Key.Minus, "[ - ]"),
-			new STKEYLABEL((int)Key.Equals, "[ = ]"),
-			new STKEYLABEL((int)Key.Back, "[BSC]"),
-			new STKEYLABEL((int)Key.Tab, "[TAB]"),
-			new STKEYLABEL((int)Key.Q, "[ Q ]"),
-			new STKEYLABEL((int)Key.W, "[ W ]"),
-			new STKEYLABEL((int)Key.E, "[ E ]"),
-			new STKEYLABEL((int)Key.R, "[ R ]"),
-			new STKEYLABEL((int)Key.T, "[ T ]"),
-			new STKEYLABEL((int)Key.Y, "[ Y ]"),
-			new STKEYLABEL((int)Key.U, "[ U ]"),
-			new STKEYLABEL((int)Key.I, "[ I ]"),
-			new STKEYLABEL((int)Key.O, "[ O ]"),
-			new STKEYLABEL((int)Key.P, "[ P ]"),
-			new STKEYLABEL((int)Key.LeftBracket, "[ [ ]"),
-			new STKEYLABEL((int)Key.RightBracket, "[ ] ]"),
-			new STKEYLABEL((int)Key.Return, "[Enter]"),
-			new STKEYLABEL((int)Key.LeftControl, "[L-Ctrl]"),
-			new STKEYLABEL((int)Key.A, "[ A ]"),
-			new STKEYLABEL((int)Key.S, "[ S ]"),
-			new STKEYLABEL((int)Key.D, "[ D ]"),
-			new STKEYLABEL((int)Key.F, "[ F ]"),
-			new STKEYLABEL((int)Key.G, "[ G ]"),
-			new STKEYLABEL((int)Key.H, "[ H ]"),
-			new STKEYLABEL((int)Key.J, "[ J ]"),
-			new STKEYLABEL((int)Key.K, "[ K ]"),
-			new STKEYLABEL((int)Key.L, "[ L ]"),
-			new STKEYLABEL((int)Key.Semicolon, "[ ; ]"),
-			new STKEYLABEL((int)Key.Apostrophe, "[ ' ]"),
-			new STKEYLABEL((int)Key.Grave, "[ ` ]"),
-			new STKEYLABEL((int)Key.LeftShift, "[L-Shift]"),
-			new STKEYLABEL((int)Key.Backslash, @"[ \]"),
-			new STKEYLABEL((int)Key.Z, "[ Z ]"),
-			new STKEYLABEL((int)Key.X, "[ X ]"),
-			new STKEYLABEL((int)Key.C, "[ C ]"),
-			new STKEYLABEL((int)Key.V, "[ V ]"),
-			new STKEYLABEL((int)Key.B, "[ B ]"),
-			new STKEYLABEL((int)Key.N, "[ N ]"),
-			new STKEYLABEL((int)Key.M, "[ M ]"),
-			new STKEYLABEL((int)Key.Comma, "[ , ]"),
-			new STKEYLABEL((int)Key.Period, "[ . ]"),
-			new STKEYLABEL((int)Key.Slash, "[ / ]"),
-			new STKEYLABEL((int)Key.RightShift, "[R-Shift]"),
-			new STKEYLABEL((int)Key.Multiply, "[ * ]"),
-			new STKEYLABEL((int)Key.LeftAlt, "[L-Alt]"),
-			new STKEYLABEL((int)Key.Space, "[Space]"),
-			new STKEYLABEL((int)Key.Capital, "[CAPS]"),
-			new STKEYLABEL((int)Key.F1, "[F1]"),
-			new STKEYLABEL((int)Key.F2, "[F2]"),
-			new STKEYLABEL((int)Key.F3, "[F3]"),
-			new STKEYLABEL((int)Key.F4, "[F4]"),
-			new STKEYLABEL((int)Key.F5, "[F5]"),
-			new STKEYLABEL((int)Key.F6, "[F6]"),
-			new STKEYLABEL((int)Key.F7, "[F7]"),
-			new STKEYLABEL((int)Key.F8, "[F8]"),
-			new STKEYLABEL((int)Key.F9, "[F9]"),
-			new STKEYLABEL((int)Key.F10, "[F10]"),
-			new STKEYLABEL((int)Key.NumberLock, "[NumLock]"),
-			new STKEYLABEL((int)Key.ScrollLock, "[Scroll]"),
-			new STKEYLABEL((int)Key.NumberPad7, "[NPad7]"),
-			new STKEYLABEL((int)Key.NumberPad8, "[NPad8]"),
-			new STKEYLABEL((int)Key.NumberPad9, "[NPad9]"),
-			new STKEYLABEL((int)Key.Subtract, "[NPad-]"),
-			new STKEYLABEL((int)Key.NumberPad4, "[NPad4]"),
-			new STKEYLABEL((int)Key.NumberPad5, "[NPad5]"),
-			new STKEYLABEL((int)Key.NumberPad6, "[NPad6]"),
-			new STKEYLABEL((int)Key.Add, "[NPad+]"),
-			new STKEYLABEL((int)Key.NumberPad1, "[NPad1]"),
-			new STKEYLABEL((int)Key.NumberPad2, "[NPad2]"),
-			new STKEYLABEL((int)Key.NumberPad3, "[NPad3]"),
-			new STKEYLABEL((int)Key.NumberPad0, "[NPad0]"),
-			new STKEYLABEL((int)Key.Decimal, "[NPad.]"),
-			new STKEYLABEL((int)Key.F11, "[F11]"),
-			new STKEYLABEL((int)Key.F12, "[F12]"),
-			new STKEYLABEL((int)Key.F13, "[F13]"),
-			new STKEYLABEL((int)Key.F14, "[F14]"),
-			new STKEYLABEL((int)Key.F15, "[F15]"),
-			new STKEYLABEL((int)Key.Kana, "[Kana]"),
-			new STKEYLABEL((int)Key.AbntC1, "[ ? ]"),
-			new STKEYLABEL((int)Key.Convert, "[Henkan]"),
-			new STKEYLABEL((int)Key.NoConvert, "[MuHenkan]"),
-			new STKEYLABEL((int)Key.Backslash, @"[ \ ]"),
-			new STKEYLABEL((int)Key.AbntC2, "[NPad.]"),
-			new STKEYLABEL((int)Key.NumberPadEquals, "[NPad=]"),
-			new STKEYLABEL((int)Key.PreviousTrack, "[ ^ ]"),	// DIK_CIRCUMFLEX = 0x90
-			new STKEYLABEL((int)Key.AT, "[ @ ]"),
-			new STKEYLABEL((int)Key.Colon, "[ : ]"),
-			new STKEYLABEL((int)Key.Underline, "[ _ ]"),
-			new STKEYLABEL((int)Key.Kanji, "[Kanji]"),
-			new STKEYLABEL((int)Key.Stop, "[Stop]"),
-			new STKEYLABEL((int)Key.AX, "[AX]"),
-			new STKEYLABEL((int)Key.NumberPadEnter, "[NPEnter]"),
-			new STKEYLABEL((int)Key.RightControl, "[R-Ctrl]"),
-			new STKEYLABEL((int)Key.Mute, "[Mute]"),
-			new STKEYLABEL((int)Key.Calculator, "[Calc]"),
-			new STKEYLABEL((int)Key.PlayPause, "[PlayPause]"),
-			new STKEYLABEL((int)Key.MediaStop, "[MediaStop]"),
-			new STKEYLABEL((int)Key.VolumeDown, "[Volume-]"),
-			new STKEYLABEL((int)Key.VolumeUp, "[Volume+]"),
-			new STKEYLABEL((int)Key.WebHome, "[WebHome]"),
-			new STKEYLABEL((int)Key.NumberPadComma, "[NPad,]"),
-			new STKEYLABEL((int)Key.Divide, "[ / ]"),
-			new STKEYLABEL((int)Key.PrintScreen, "[PrtScn]"),
-			new STKEYLABEL((int)Key.RightAlt, "[R-Alt]"),
-			new STKEYLABEL((int)Key.Pause, "[Pause]"),
-			new STKEYLABEL((int)Key.Home, "[Home]"),
-			new STKEYLABEL((int)Key.Up, "[Up]"),
-			new STKEYLABEL((int)Key.PageUp, "[PageUp]"),
-			new STKEYLABEL((int)Key.Left, "[Left]"),
-			new STKEYLABEL((int)Key.Right, "[Right]"),
-			new STKEYLABEL((int)Key.End, "[End]"),
-			new STKEYLABEL((int)Key.Down, "[Down]"),
-			new STKEYLABEL((int)Key.PageDown, "[PageDown]"),
-			new STKEYLABEL((int)Key.Insert, "[Insert]"),
-			new STKEYLABEL((int)Key.Delete, "[Delete]"),
-			new STKEYLABEL((int)Key.LeftWindowsKey, "[L-Win]"),
-			new STKEYLABEL((int)Key.RightWindowsKey, "[R-Win]"),
-			new STKEYLABEL((int)Key.Applications, "[APP]"),
-			new STKEYLABEL((int)Key.Power, "[Power]"),
-			new STKEYLABEL((int)Key.Sleep, "[Sleep]"),
-			new STKEYLABEL((int)Key.Wake, "[Wake]"),
+			new STKEYLABEL((int)SlimDXKey.Escape, "[ESC]"),
+			new STKEYLABEL((int)SlimDXKey.D1, "[ 1 ]"),
+			new STKEYLABEL((int)SlimDXKey.D2, "[ 2 ]"),
+			new STKEYLABEL((int)SlimDXKey.D3, "[ 3 ]"),
+			new STKEYLABEL((int)SlimDXKey.D4, "[ 4 ]"),
+			new STKEYLABEL((int)SlimDXKey.D5, "[ 5 ]"),
+			new STKEYLABEL((int)SlimDXKey.D6, "[ 6 ]"),
+			new STKEYLABEL((int)SlimDXKey.D7, "[ 7 ]"),
+			new STKEYLABEL((int)SlimDXKey.D8, "[ 8 ]"),
+			new STKEYLABEL((int)SlimDXKey.D9, "[ 9 ]"),
+			new STKEYLABEL((int)SlimDXKey.D0, "[ 0 ]"),
+			new STKEYLABEL((int)SlimDXKey.Minus, "[ - ]"),
+			new STKEYLABEL((int)SlimDXKey.Equals, "[ = ]"),
+			new STKEYLABEL((int)SlimDXKey.Backspace, "[BSC]"),
+			new STKEYLABEL((int)SlimDXKey.Tab, "[TAB]"),
+			new STKEYLABEL((int)SlimDXKey.Q, "[ Q ]"),
+			new STKEYLABEL((int)SlimDXKey.W, "[ W ]"),
+			new STKEYLABEL((int)SlimDXKey.E, "[ E ]"),
+			new STKEYLABEL((int)SlimDXKey.R, "[ R ]"),
+			new STKEYLABEL((int)SlimDXKey.T, "[ T ]"),
+			new STKEYLABEL((int)SlimDXKey.Y, "[ Y ]"),
+			new STKEYLABEL((int)SlimDXKey.U, "[ U ]"),
+			new STKEYLABEL((int)SlimDXKey.I, "[ I ]"),
+			new STKEYLABEL((int)SlimDXKey.O, "[ O ]"),
+			new STKEYLABEL((int)SlimDXKey.P, "[ P ]"),
+			new STKEYLABEL((int)SlimDXKey.LeftBracket, "[ [ ]"),
+			new STKEYLABEL((int)SlimDXKey.RightBracket, "[ ] ]"),
+			new STKEYLABEL((int)SlimDXKey.Return, "[Enter]"),
+			new STKEYLABEL((int)SlimDXKey.LeftControl, "[L-Ctrl]"),
+			new STKEYLABEL((int)SlimDXKey.A, "[ A ]"),
+			new STKEYLABEL((int)SlimDXKey.S, "[ S ]"),
+			new STKEYLABEL((int)SlimDXKey.D, "[ D ]"),
+			new STKEYLABEL((int)SlimDXKey.F, "[ F ]"),
+			new STKEYLABEL((int)SlimDXKey.G, "[ G ]"),
+			new STKEYLABEL((int)SlimDXKey.H, "[ H ]"),
+			new STKEYLABEL((int)SlimDXKey.J, "[ J ]"),
+			new STKEYLABEL((int)SlimDXKey.K, "[ K ]"),
+			new STKEYLABEL((int)SlimDXKey.L, "[ L ]"),
+			new STKEYLABEL((int)SlimDXKey.Semicolon, "[ ; ]"),
+			new STKEYLABEL((int)SlimDXKey.Apostrophe, "[ ' ]"),
+			new STKEYLABEL((int)SlimDXKey.Grave, "[ ` ]"),
+			new STKEYLABEL((int)SlimDXKey.LeftShift, "[L-Shift]"),
+			new STKEYLABEL((int)SlimDXKey.Backslash, @"[ \]"),
+			new STKEYLABEL((int)SlimDXKey.Z, "[ Z ]"),
+			new STKEYLABEL((int)SlimDXKey.X, "[ X ]"),
+			new STKEYLABEL((int)SlimDXKey.C, "[ C ]"),
+			new STKEYLABEL((int)SlimDXKey.V, "[ V ]"),
+			new STKEYLABEL((int)SlimDXKey.B, "[ B ]"),
+			new STKEYLABEL((int)SlimDXKey.N, "[ N ]"),
+			new STKEYLABEL((int)SlimDXKey.M, "[ M ]"),
+			new STKEYLABEL((int)SlimDXKey.Comma, "[ , ]"),
+			new STKEYLABEL((int)SlimDXKey.Period, "[ . ]"),
+			new STKEYLABEL((int)SlimDXKey.Slash, "[ / ]"),
+			new STKEYLABEL((int)SlimDXKey.RightShift, "[R-Shift]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPadStar, "[ * ]"),
+			new STKEYLABEL((int)SlimDXKey.LeftAlt, "[L-Alt]"),
+			new STKEYLABEL((int)SlimDXKey.Space, "[Space]"),
+			new STKEYLABEL((int)SlimDXKey.CapsLock, "[CAPS]"),
+			new STKEYLABEL((int)SlimDXKey.F1, "[F1]"),
+			new STKEYLABEL((int)SlimDXKey.F2, "[F2]"),
+			new STKEYLABEL((int)SlimDXKey.F3, "[F3]"),
+			new STKEYLABEL((int)SlimDXKey.F4, "[F4]"),
+			new STKEYLABEL((int)SlimDXKey.F5, "[F5]"),
+			new STKEYLABEL((int)SlimDXKey.F6, "[F6]"),
+			new STKEYLABEL((int)SlimDXKey.F7, "[F7]"),
+			new STKEYLABEL((int)SlimDXKey.F8, "[F8]"),
+			new STKEYLABEL((int)SlimDXKey.F9, "[F9]"),
+			new STKEYLABEL((int)SlimDXKey.F10, "[F10]"),
+			new STKEYLABEL((int)SlimDXKey.NumberLock, "[NumLock]"),
+			new STKEYLABEL((int)SlimDXKey.ScrollLock, "[Scroll]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad7, "[NPad7]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad8, "[NPad8]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad9, "[NPad9]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPadMinus, "[NPad-]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad4, "[NPad4]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad5, "[NPad5]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad6, "[NPad6]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPadPlus, "[NPad+]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad1, "[NPad1]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad2, "[NPad2]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad3, "[NPad3]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPad0, "[NPad0]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPadPeriod, "[NPad.]"),
+			new STKEYLABEL((int)SlimDXKey.F11, "[F11]"),
+			new STKEYLABEL((int)SlimDXKey.F12, "[F12]"),
+			new STKEYLABEL((int)SlimDXKey.F13, "[F13]"),
+			new STKEYLABEL((int)SlimDXKey.F14, "[F14]"),
+			new STKEYLABEL((int)SlimDXKey.F15, "[F15]"),
+			new STKEYLABEL((int)SlimDXKey.Kana, "[Kana]"),
+			new STKEYLABEL((int)SlimDXKey.AbntC1, "[ ? ]"),
+			new STKEYLABEL((int)SlimDXKey.Convert, "[Henkan]"),
+			new STKEYLABEL((int)SlimDXKey.NoConvert, "[MuHenkan]"),
+			new STKEYLABEL((int)SlimDXKey.Backslash, @"[ \ ]"),
+			new STKEYLABEL((int)SlimDXKey.AbntC2, "[NPad.]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPadEquals, "[NPad=]"),
+			new STKEYLABEL((int)SlimDXKey.PreviousTrack, "[ ^ ]"),	// DIK_CIRCUMFLEX = 0x90
+			new STKEYLABEL((int)SlimDXKey.AT, "[ @ ]"),
+			new STKEYLABEL((int)SlimDXKey.Colon, "[ : ]"),
+			new STKEYLABEL((int)SlimDXKey.Underline, "[ _ ]"),
+			new STKEYLABEL((int)SlimDXKey.Kanji, "[Kanji]"),
+			new STKEYLABEL((int)SlimDXKey.Stop, "[Stop]"),
+			new STKEYLABEL((int)SlimDXKey.AX, "[AX]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPadEnter, "[NPEnter]"),
+			new STKEYLABEL((int)SlimDXKey.RightControl, "[R-Ctrl]"),
+			new STKEYLABEL((int)SlimDXKey.Mute, "[Mute]"),
+			new STKEYLABEL((int)SlimDXKey.Calculator, "[Calc]"),
+			new STKEYLABEL((int)SlimDXKey.PlayPause, "[PlayPause]"),
+			new STKEYLABEL((int)SlimDXKey.MediaStop, "[MediaStop]"),
+			new STKEYLABEL((int)SlimDXKey.VolumeDown, "[Volume-]"),
+			new STKEYLABEL((int)SlimDXKey.VolumeUp, "[Volume+]"),
+			new STKEYLABEL((int)SlimDXKey.WebHome, "[WebHome]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPadComma, "[NPad,]"),
+			new STKEYLABEL((int)SlimDXKey.NumberPadSlash, "[ / ]"),
+			new STKEYLABEL((int)SlimDXKey.PrintScreen, "[PrtScn]"),
+			new STKEYLABEL((int)SlimDXKey.RightAlt, "[R-Alt]"),
+			new STKEYLABEL((int)SlimDXKey.Pause, "[Pause]"),
+			new STKEYLABEL((int)SlimDXKey.Home, "[Home]"),
+			new STKEYLABEL((int)SlimDXKey.UpArrow, "[Up]"),
+			new STKEYLABEL((int)SlimDXKey.PageUp, "[PageUp]"),
+			new STKEYLABEL((int)SlimDXKey.LeftArrow, "[Left]"),
+			new STKEYLABEL((int)SlimDXKey.RightArrow, "[Right]"),
+			new STKEYLABEL((int)SlimDXKey.End, "[End]"),
+			new STKEYLABEL((int)SlimDXKey.DownArrow, "[Down]"),
+			new STKEYLABEL((int)SlimDXKey.PageDown, "[PageDown]"),
+			new STKEYLABEL((int)SlimDXKey.Insert, "[Insert]"),
+			new STKEYLABEL((int)SlimDXKey.Delete, "[Delete]"),
+			new STKEYLABEL((int)SlimDXKey.LeftWindowsKey, "[L-Win]"),
+			new STKEYLABEL((int)SlimDXKey.RightWindowsKey, "[R-Win]"),
+			new STKEYLABEL((int)SlimDXKey.Applications, "[APP]"),
+			new STKEYLABEL((int)SlimDXKey.Power, "[Power]"),
+			new STKEYLABEL((int)SlimDXKey.Sleep, "[Sleep]"),
+			new STKEYLABEL((int)SlimDXKey.Wake, "[Wake]"),
 			#endregion
 		};
 
@@ -547,15 +547,15 @@ namespace DTXMania
 
 		private bool tキーチェックとアサイン_Keyboard()
 		{
-			for (int i = 0; i < 256; i++)
+			for( int i = 0; i < 256; i++ )
 			{
-				if (i != (int)Key.Escape &&
-					i != (int)Key.Up &&
-					i != (int)Key.Down &&
-					i != (int)Key.Left &&
-					i != (int)Key.Right &&
-					i != (int)Key.Delete &&
-					 CDTXMania.Instance.Input管理.Keyboard.bキーが押された(i))
+				if( i != (int) SlimDXKey.Escape &&
+					i != (int) SlimDXKey.UpArrow &&
+					i != (int) SlimDXKey.DownArrow &&
+					i != (int) SlimDXKey.LeftArrow &&
+					i != (int) SlimDXKey.RightArrow &&
+					i != (int) SlimDXKey.Delete &&
+					 CDTXMania.Instance.Input管理.Keyboard.bキーが押された( i ) )
 				{
 					CDTXMania.Instance.Skin.sound決定音.t再生する();
 
@@ -563,11 +563,11 @@ namespace DTXMania
 					if( i == CDTXMania.Instance.ConfigIni.KeyAssign[ pad ][ ptr ].コード )
 						CDTXMania.Instance.ConfigIni.KeyAssign[ pad ][ ptr ].コード = -1;
 
-					CDTXMania.Instance.ConfigIni.t指定した入力が既にアサイン済みである場合はそれを全削除する(EInputDevice.Keyboard, 0, i);
+					CDTXMania.Instance.ConfigIni.t指定した入力が既にアサイン済みである場合はそれを全削除する( EInputDevice.Keyboard, 0, i );
 
-					CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].入力デバイス = EInputDevice.Keyboard;
-					CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].ID = 0;
-					CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].コード = i;
+					CDTXMania.Instance.ConfigIni.KeyAssign[ pad ][ ptr ].入力デバイス = EInputDevice.Keyboard;
+					CDTXMania.Instance.ConfigIni.KeyAssign[ pad ][ ptr ].ID = 0;
+					CDTXMania.Instance.ConfigIni.KeyAssign[ pad ][ ptr ].コード = i;
 					return true;
 				}
 			}
