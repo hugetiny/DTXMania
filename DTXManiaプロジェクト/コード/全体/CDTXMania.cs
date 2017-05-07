@@ -2762,8 +2762,7 @@ namespace DTXMania
 					var captureCode = (SlimDX.DirectInput.Key) ConfigIni.KeyAssign[ EPad.Capture ][ i ].コード;
 
 					if( (int) captureCode > 0 &&
-						DeviceConstantConverter.KeyToKeys.ContainsKey( captureCode ) &&
-						e.KeyCode == DeviceConstantConverter.KeyToKeys[ captureCode ] )
+						e.KeyCode == DeviceConstantConverter.KeyToKeys( captureCode ) )
 					{
 						// Debug.WriteLine( "capture: " + string.Format( "{0:2x}", (int) e.KeyCode ) + " " + (int) e.KeyCode );
 						string strFullPath =

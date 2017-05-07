@@ -5,6 +5,9 @@ using System.Diagnostics;
 using SharpDX;
 using SharpDX.DirectInput;
 
+using SlimDXKey = SlimDX.DirectInput.Key;
+using SharpDXKey = SharpDX.DirectInput.Key;
+
 namespace FDK
 {
 	public class CInputKeyboard : IInputDevice, IDisposable
@@ -20,7 +23,7 @@ namespace FDK
 			{
 				this.devKeyboard = new Keyboard( directInput );
 				this.devKeyboard.SetCooperativeLevel( hWnd, CooperativeLevel.NoWinKey | CooperativeLevel.Foreground | CooperativeLevel.NonExclusive );
-				this.devKeyboard.Properties.BufferSize = 0x20;
+				this.devKeyboard.Properties.BufferSize = 32;
 				Trace.TraceInformation( this.devKeyboard.Information.ProductName + " を生成しました。" );
 			}
 			catch

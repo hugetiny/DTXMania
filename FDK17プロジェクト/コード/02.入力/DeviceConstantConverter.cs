@@ -10,10 +10,41 @@ namespace FDK
 {
 	public class DeviceConstantConverter
 	{
+		/// <returns>
+		///		対応する値がなければ SlimDX.DirectInput.Unknown を返す。
+		/// </returns>
+		public static SlimDXKey DIKtoKey( SharpDXKey key )
+		{
+			if( _DIKtoKey.ContainsKey( key ) )
+			{
+				return _DIKtoKey[ key ];
+			}
+			else
+			{
+				return SlimDXKey.Unknown;
+			}
+		}
+
+		/// <returns>
+		///		対応する値がなければ System.Windows.Forms.Keys.None を返す。
+		/// </returns>
+		public static WindowsKey KeyToKeys( SlimDXKey key )
+		{
+			if( _KeyToKeys.ContainsKey( key ) )
+			{
+				return _KeyToKeys[ key ];
+			}
+			else
+			{
+				return WindowsKey.None;
+			}
+		}
+
+
 		/// <summary>
 		///		DIK (SharpDX.DirectInput.Key) から SlimDX.DirectInput.Key への変換表。
 		/// </summary>
-		public static readonly Dictionary<SharpDXKey, SlimDXKey> DIKtoKey = new Dictionary<SharpDXKey, SlimDXKey>() {
+		private static readonly Dictionary<SharpDXKey, SlimDXKey> _DIKtoKey = new Dictionary<SharpDXKey, SlimDXKey>() {
 			#region [ *** ]
 			{ SharpDXKey.Unknown, SlimDXKey.Unknown },
 			{ SharpDXKey.Escape, SlimDXKey.Escape },
@@ -164,7 +195,7 @@ namespace FDK
 		/// <summary>
 		///		SlimDX.DirectInput.Key から System.Windows.Form.Keys への変換表。
 		/// </summary>
-		public static readonly Dictionary<SlimDXKey, WindowsKey> KeyToKeys = new Dictionary<SlimDXKey, WindowsKey>() {
+		private static readonly Dictionary<SlimDXKey, WindowsKey> _KeyToKeys = new Dictionary<SlimDXKey, WindowsKey>() {
 			#region [ *** ]
 			{ SlimDXKey.D0, WindowsKey.D0 },
 			{ SlimDXKey.D1, WindowsKey.D1 },
