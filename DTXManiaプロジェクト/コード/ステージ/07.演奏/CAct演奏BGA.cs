@@ -138,12 +138,21 @@ namespace DTXMania
 				{
 					try
 					{
+						var format = Format.A8R8G8B8;
+						switch( surface.Description.Format )	// バックバッファ用フォーマットで X を持つのはこれだけ。
+						{
+							case Format.X4R4G4B4: format = Format.A4R4G4B4; break;
+							case Format.X8B8G8R8: format = Format.A8R8G8B8; break;
+							case Format.X8R8G8B8: format = Format.A8R8G8B8; break;
+						}
+
 						this.txBGA = new CTexture( CDTXMania.Instance.Device,
 							size基準.Width,
 							size基準.Height,
-							surface.Description.Format,
+							format,
 							Pool.Default,
-							Usage.RenderTarget );
+							Usage.RenderTarget,
+							true );
 
 						txBGA.vc拡大縮小倍率 = new Vector3(
 							(float) CDTXMania.Instance.Coordinates.Movie.W / size基準.Width,
