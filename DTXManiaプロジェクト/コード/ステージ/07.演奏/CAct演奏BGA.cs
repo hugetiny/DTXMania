@@ -130,11 +130,11 @@ namespace DTXMania
 			base.On活性化();
 		}
 
-		public override void OnManagedリソースの作成()
+		public override void OnUnmanagedリソースの作成()
 		{
-			if (base.b活性化してる)
+			if( base.b活性化してる )
 			{
-				using (Surface surface = CDTXMania.Instance.Device.GetBackBuffer(0, 0))
+				using( Surface surface = CDTXMania.Instance.Device.GetBackBuffer( 0, 0 ) )
 				{
 					try
 					{
@@ -150,25 +150,25 @@ namespace DTXMania
 							(float) CDTXMania.Instance.Coordinates.Movie.H / size基準.Height,
 							1f );
 					}
-					catch (Exception e)
+					catch( Exception e )
 					{
-						Trace.TraceError("CAct演奏BGA: Error: ( " + e.Message + " )");
+						Trace.TraceError( "CAct演奏BGA: Error: ( " + e.Message + " )" );
 					}
 				}
-				base.OnManagedリソースの作成();
+				base.OnUnmanagedリソースの作成();
 			}
 		}
 
-		public override void OnManagedリソースの解放()
+		public override void OnUnmanagedリソースの解放()
 		{
-			if (base.b活性化してる)
+			if( base.b活性化してる )
 			{
-				if (this.txBGA != null)
+				if( this.txBGA != null )
 				{
 					this.txBGA.Dispose();
 					this.txBGA = null;
 				}
-				base.OnManagedリソースの解放();
+				base.OnUnmanagedリソースの解放();
 			}
 		}
 
