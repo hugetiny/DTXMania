@@ -565,8 +565,8 @@ namespace DTXMania
 			}
 			#endregion
 
-			#region [ マウス消去用のタイマーを初期化 ]
-			ccMouseShow = new CCounter();
+			#region [ マウス消去用のクラスを初期化 ]
+			cMouseHideControl = new CMouseHideControl();
 			#endregion
 
 			#region [ FPS カウンタの初期化 ]
@@ -840,18 +840,16 @@ namespace DTXMania
 					Instance.Window.FormBorderStyle = FormBorderStyle.None;
 					Instance.Window.WindowState = FormWindowState.Maximized;
 				}
-				if (ConfigIni.bウィンドウモード)
+				if (cMouseHideControl != null)
 				{
-					if (!this.bマウスカーソル表示中)
+					if (ConfigIni.bウィンドウモード)
 					{
-						Cursor.Show();
-						this.bマウスカーソル表示中 = true;
+						cMouseHideControl.Show();
 					}
-				}
-				else if (this.bマウスカーソル表示中)
-				{
-					Cursor.Hide();
-					this.bマウスカーソル表示中 = false;
+					else
+					{
+						cMouseHideControl.Hide();
+					}
 				}
 #endif
 			}
@@ -932,18 +930,16 @@ namespace DTXMania
 #endif
 		protected override void LoadContent()
 		{
-			if (ConfigIni.bウィンドウモード)
+			if (cMouseHideControl != null)
 			{
-				if (!this.bマウスカーソル表示中)
+				if (ConfigIni.bウィンドウモード)
 				{
-					Cursor.Show();
-					this.bマウスカーソル表示中 = true;
+					cMouseHideControl.Show();
 				}
-			}
-			else if (this.bマウスカーソル表示中)
-			{
-				Cursor.Hide();
-				this.bマウスカーソル表示中 = false;
+				else
+				{
+					cMouseHideControl.Hide();
+				}
 			}
 			this.Device.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f, 0f, (float)(-SampleFramework.GameWindowSize.Height / 2 * Math.Sqrt(3.0))), new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f)));
 			this.Device.SetTransform(TransformState.Projection, Matrix.PerspectiveFovLH(C変換.DegreeToRadian((float)60f), ((float)this.Device.Viewport.Width) / ((float)this.Device.Viewport.Height), -100f, 100f));
@@ -1921,12 +1917,7 @@ namespace DTXMania
 			}
 
 			#region [ マウスカーソル消去制御 ]
-			ccMouseShow.t進行();
-			if (bマウスカーソル表示中 && ccMouseShow.b終了値に達した)
-			{
-				Cursor.Hide();
-				bマウスカーソル表示中 = false;
-			}
+			cMouseHideControl.tHideCursorIfNeed();
 			#endregion
 			#region [ 全画面・ウインドウ切り替え ]
 			if (this.b次のタイミングで全画面_ウィンドウ切り替えを行う)
@@ -2190,7 +2181,6 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private bool bマウスカーソル表示中 = true;
 		private bool b終了処理完了済み;
 		private static CDTX dtx;
 		private List<CActivity> listトップレベルActivities;
@@ -2211,7 +2201,7 @@ namespace DTXMania
 			}
 		}
 		private CSound previewSound;
-		private CCounter ccMouseShow;
+		private CMouseHideControl cMouseHideControl = null;
 
 		private void t終了処理()
 		{
@@ -2737,6 +2727,7 @@ namespace DTXMania
 		private void Window_ApplicationDeactivated(object sender, EventArgs e)
 		{
 			this.bApplicationActive = false;
+			cMouseHideControl.Show();
 		}
 		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -2788,12 +2779,7 @@ namespace DTXMania
 		}
 		private void Window_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (ConfigIni.bウィンドウモード == true && this.bマウスカーソル表示中 == false)   // #36168 2016.3.19 yyagi: do not to show mouse cursor in full screen mode
-			{
-				Cursor.Show();
-				this.bマウスカーソル表示中 = true;
-			}
-			ccMouseShow.t開始(0, 1, 2000, Timer);
+			cMouseHideControl.tResetCursorState(ConfigIni.bウィンドウモード, this.bApplicationActive);
 		}
 
 		private void Window_ResizeEnd(object sender, EventArgs e)               // #23510 2010.11.20 yyagi: to get resized window size
@@ -2813,5 +2799,67 @@ namespace DTXMania
 		//List<int> swlist1, swlist2, swlist3, swlist4, swlist5;
 
 		#endregion
+
+		private class CMouseHideControl
+		{
+			private Point lastPosition;
+			private CCounter ccMouseShow;
+			private bool bマウスカーソル表示中;
+
+			/// <summary>
+			/// コンストラクタ
+			/// </summary>
+			public CMouseHideControl()
+			{
+				ccMouseShow = new CCounter();
+				lastPosition = Cursor.Position;
+				bマウスカーソル表示中 = true;
+				t開始();
+			}
+
+			public void t開始()
+			{
+				ccMouseShow.t開始(0, 20, 100, CDTXMania.instance.Timer);
+			}
+
+			public void tHideCursorIfNeed()
+			{
+				ccMouseShow.t進行();
+//Trace.TraceInformation("n現在の経過時間ms" + ccMouseShow.n現在の経過時間ms + ", n現在の値=" + ccMouseShow.n現在の値 + ", b終了値に達した=" + ccMouseShow.b終了値に達した);
+				if (bマウスカーソル表示中 && ccMouseShow.b終了値に達した)
+				{
+					Hide();
+				}
+
+			}
+
+			public void tResetCursorState(bool bWindowed, bool bApplicationActive)
+			{
+//Trace.TraceInformation("マウス移動: " + Cursor.Position.X + "," + Cursor.Position.Y);
+				if ((bWindowed == true && bマウスカーソル表示中 == false) || bApplicationActive == false)   // #36168 2016.3.19 yyagi: do not to show mouse cursor in full screen mode
+				{
+					Point currentPosition = Cursor.Position;
+//Trace.TraceInformation("current=" + currentPosition.ToString() + ", last=" + lastPosition.ToString());
+					if (lastPosition != currentPosition)
+					{
+//Trace.TraceInformation("移動発生");
+						lastPosition = currentPosition;
+						Show();
+						t開始();
+					}
+				}
+			}
+
+			public void Show()
+			{
+				Cursor.Show();
+				bマウスカーソル表示中 = true;
+			}
+			public void Hide()
+			{
+				Cursor.Hide();
+				bマウスカーソル表示中 = false;
+			}
+		}
 	}
 }
