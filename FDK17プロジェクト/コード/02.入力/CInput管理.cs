@@ -183,16 +183,19 @@ namespace FDK
 					{
 						device.tポーリング(bWindowがアクティブ中, bバッファ入力を使用する);
 					}
-					catch (Exception e)										// #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
+					catch (SharpDX.SharpDXException e)										// #24016 2011.1.6 yyagi: catch exception for unplugging USB joystick, and remove the device object from the polling items.
 					{
-						Trace.TraceError("tポーリング(): " + device.e入力デバイス種別.ToString() + " : " + e.Message);
-						if (device.e入力デバイス種別 == E入力デバイス種別.Joystick)
+						if( e.ResultCode == ResultCode.OtherApplicationHasPriority )
 						{
-							this.list入力デバイス.Remove(device);
-							device.Dispose();
-							Trace.TraceError("tポーリング時に対象deviceが抜かれており例外発生。同deviceをポーリング対象からRemoveしました。");
+							// #xxxxx: 2017.5.9: from: このエラーの時は、何もしない。
 						}
-						// Keyboard, mouseは、外されても、何もしない
+						else
+						{
+							// #xxxxx: 2017.5.9: from: その他のエラーの場合は、デバイスが外されたと想定してRemoveする。
+							this.list入力デバイス.Remove( device );
+							device.Dispose();
+							Trace.TraceError( "tポーリング時に対象deviceが抜かれており例外発生。同deviceをポーリング対象からRemoveしました。" );
+						}
 					}
 				}
 			}
