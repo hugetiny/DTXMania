@@ -451,7 +451,7 @@ namespace FDK
 				this.cvTransformedColoredVertexies[ 3 ].Color = color;
 				this.cvTransformedColoredVertexies[ 3 ].TextureCoordinates.X = f右U値;
 				this.cvTransformedColoredVertexies[ 3 ].TextureCoordinates.Y = f下V値;
-				
+
 				device.SetTexture( 0, this.texture );
 				device.VertexFormat = TransformedColoredTexturedVertex.Format;
 				device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 0, 2, this.cvTransformedColoredVertexies );

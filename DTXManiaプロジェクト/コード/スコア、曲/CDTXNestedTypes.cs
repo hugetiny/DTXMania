@@ -346,6 +346,7 @@ namespace DTXMania
 
 				this.bDisposed済み = true;
 			}
+			//-----------------
 			#endregion
 			#region [ private ]
 			//-----------------
