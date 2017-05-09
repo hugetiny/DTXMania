@@ -2828,7 +2828,11 @@ namespace DTXMania
 //Trace.TraceInformation("n現在の経過時間ms" + ccMouseShow.n現在の経過時間ms + ", n現在の値=" + ccMouseShow.n現在の値 + ", b終了値に達した=" + ccMouseShow.b終了値に達した);
 				if (bマウスカーソル表示中 && ccMouseShow.b終了値に達した)
 				{
-					Hide();
+					Point client_point = CDTXMania.Instance.Window.PointToClient(Cursor.Position);
+					if (client_point.Y >= 0)	// タイトルバー上にマウスカーソルがある場合は、隠さない
+					{
+						Hide();
+					}
 				}
 
 			}

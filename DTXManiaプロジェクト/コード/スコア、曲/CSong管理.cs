@@ -1082,8 +1082,8 @@ namespace DTXMania
 			this.nSongsDBへ出力できたスコア数 = 0;
 			try
 			{
-				BinaryWriter bw = new BinaryWriter( new FileStream( SongsDBファイル名, FileMode.Create, FileAccess.Write ) );
-				//BinaryWriter bw = new BinaryWriter( new FileStreamSSD( SongsDBファイル名, FileMode.Create, FileAccess.Write ) );
+				//BinaryWriter bw = new BinaryWriter( new FileStream( SongsDBファイル名, FileMode.Create, FileAccess.Write ) );
+				BinaryWriter bw = new BinaryWriter( new FileStreamSSD( SongsDBファイル名, FileMode.Create, FileAccess.Write ) );
 				bw.Write( SONGSDB_VERSION );
 				this.tSongsDBにリストを１つ出力する(bw, this.list曲ルート);
 				bw.Close();

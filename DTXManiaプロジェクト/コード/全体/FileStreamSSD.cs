@@ -16,8 +16,16 @@ namespace DTXMania
 		private string _filename;
 		private FileMode _mode;
 		private FileAccess _access;
-		private MemoryStream _ms_new = null, _ms_org = null;
+		private MemoryStream _ms_org = null;
 		private FileStream _fs;
+		private bool disposed = false;
+
+		/// <summary>
+		/// (baseではなく)このクラスのClose()が実行されたかどうか
+		/// </summary>
+		private bool bClosed = false;
+
+
 
 		#region [ コンストラクタ ]
 		public FileStreamSSD()
@@ -26,55 +34,31 @@ namespace DTXMania
 		}
 
 		public FileStreamSSD( string path )
+			: this(path, FileMode.Create, FileAccess.Write)
 		{
-//Trace.TraceInformation( "FileStreamSSD(" + Path.GetFileName(path) + "): Constractor" );
-			Initialize( path, FileMode.Create, FileAccess.Write );
 		}
 		public FileStreamSSD( string path, FileMode mode, FileAccess access )
+			: base()
 		{
-//Trace.TraceInformation( "FileStreamSSD(" + Path.GetFileName(path) + ", " + mode.ToString() + ", " + access.ToString() + "): Constractor" );
-			Initialize( path, mode, access );
-		}
-
-		private void Initialize( string path, FileMode mode, FileAccess access )
-		{
-			if ( mode != FileMode.Create )
+			if (mode != FileMode.Create)
 			{
-				throw new ArgumentException( mode.ToString() + "は、FileStreamSSD()でサポートしていません。" );
+				throw new ArgumentException(mode.ToString() + "は、FileStreamSSD()でサポートしていません。");
 			}
-			if ( access != FileAccess.Write )
+			if (access != FileAccess.Write)
 			{
-				throw new ArgumentException( access.ToString() + "は、FileStreamSSD()でサポートしていません。" );
+				throw new ArgumentException(access.ToString() + "は、FileStreamSSD()でサポートしていません。");
 			}
 			_filename = path;
 			_mode = mode;
 			_access = access;
-			_ms_new = new MemoryStream();
 		}
 		#endregion
-
-
-		/// <summary>
-		/// StreamのWrite。
-		/// </summary>
-		/// <param name="buffer"></param>
-		/// <param name="offset"></param>
-		/// <param name="count"></param>
-		public override void Write( byte[] buffer, int offset, int count )
-		{
-			_ms_new.Write( buffer, offset, count );
-//if ( Path.GetExtension( _filename ) != ".db" )
-//{
-//Debug.Write( "W" );
-//}
-		}
 
 		/// <summary>
 		/// StreamのClose。元ファイルとのコンペアを行い、一致していればファイルの上書きをしない
 		/// </summary>
-		public override void Close()
+		public new void Close()
 		{
-Debug.WriteLine( "---" );
 			bool bSame = true;
 			Flush();
 
@@ -82,68 +66,65 @@ Debug.WriteLine( "---" );
 			if ( !File.Exists( _filename ) )
 			{
 				bSame = false;
-Debug.WriteLine( Path.GetFileName( _filename ) + ": No file exists" );
 			}
 			else
 			// まず、既存ファイルをMemoryStreamにコピー
 			{
-Debug.WriteLine( "B2" );
-				using ( _fs = new FileStream( _filename, FileMode.Open, FileAccess.Read ) )
+				using ( _fs = new FileStream( _filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete ) )
 				{
-					Debug.WriteLine( "Length old=" + _fs.Length + ", new=" + _ms_new.Length );
 					// 元ファイルとファイルサイズが異なる場合は、
-					if ( _fs.Length != _ms_new.Length )
+					if ( _fs.Length != this.Length )
 					{
 						bSame = false;
-Debug.WriteLine( "B2: Set bSame=false" );
 					}
 					else
 					{
-Debug.WriteLine( "B2: copy from _fs to _ms_org" );
 						_ms_org = new MemoryStream();
 						_fs.CopyTo( _ms_org );
 					}
-				};	// _fs will be closed and disposed here, by using()
+				};
 				_fs = null;
 			}
 
-Debug.WriteLine( "C" );
 			if ( bSame )	// まだ新旧ファイルが一致している可能性があれば...
 			{
 				// MemoryStream同士のコンペア
 				_ms_org.Seek( 0, SeekOrigin.Begin );
-				_ms_new.Seek( 0, SeekOrigin.Begin );
-			
-Debug.WriteLine( "1" );
-				while (_ms_new.Position < _ms_new.Length )
+				this.Seek( 0, SeekOrigin.Begin );
+
+				try
 				{
-					int dorg = _ms_org.ReadByte();
-					int dnew = _ms_new.ReadByte();
-					if (dorg != dnew)
+					while (this.Position < this.Length)
 					{
-						bSame = false;
-						break;
+						int dorg = _ms_org.ReadByte();
+						int dnew = this.ReadByte();
+						if (dorg != dnew)
+						{
+							bSame = false;
+							break;
+						}
 					}
 				}
+				catch	// ファイルサイズが同じ場合のみtry内に来るため、通常ここには来ないはずだが、念のためbSame=false側に倒しておく
+				{
+					bSame = false;
+				}
 			}
-Debug.WriteLine( "2: bSame=" + bSame );
 			if ( _ms_org != null )
 			{
 				_ms_org.Close();
 				_ms_org.Dispose();
 				_ms_org = null;
 			}
-Debug.WriteLine( "3" );
-			_ms_new.Seek( 0, SeekOrigin.Begin );
+			this.Seek( 0, SeekOrigin.Begin );
 
-Debug.WriteLine( "new file length: " + _ms_new.Length );
 			// 元ファイルと新規ファイルが一致していない場合、新規ファイルで上書きする
 			if ( !bSame )
 			{
 				Trace.TraceInformation( Path.GetFileName( _filename ) + ": 以前のファイルから変化があったため、書き込みを実行します。" );
 				using ( _fs = new FileStream( _filename, _mode, _access ) )
 				{
-					_ms_new.CopyTo( _fs );
+					this.CopyTo( _fs );
 				}	// _fs will be closed and disposed, by using()
 				_fs = null;
 			}
@@ -151,11 +132,9 @@ Debug.WriteLine( "new file length: " + _ms_new.Length );
 			{
 				Trace.TraceInformation( Path.GetFileName( _filename ) + ": 以前のファイルから変化がなかったため、書き込みを行いません。" );
 			}
-			_ms_new.Close();
-			_ms_new.Dispose();
-			_ms_new = null;
 
-			//base.Close();
+			bClosed = true;		// base.Close()の前にフラグ変更のこと。さもないと、無限に再帰実行される
+			Dispose();
 		}
 
 
@@ -168,23 +147,34 @@ Debug.WriteLine( "new file length: " + _ms_new.Length );
 			GC.SuppressFinalize( this );
 			base.Dispose();
 		}
-		protected override void Dispose( bool bManagedDispose )
+		protected override void Dispose( bool disposing)
 		{
-			if ( this._ms_new != null )
+			if (!this.disposed)
 			{
-				this.Close();				// Close()する前にDispose()された場合用 (DataContractSerializer経由だと、ここに来る)
-				//this._ms_new.Dispose();	// Close()内でDisposeとnullクリアがなされるため、Disposeはしない
-				//this._ms_new = null;		// 
-			}
-			if ( this._ms_org != null )
-			{
-				this._ms_org.Dispose();
-				this._ms_org = null;
-			}
-			if ( this._fs != null )
-			{
-				this._fs.Dispose();
-				this._fs = null;
+				try
+				{
+					if (this._ms_org != null)
+					{
+						this._ms_org.Close();
+						this._ms_org.Dispose();
+						this._ms_org = null;
+					}
+					if (this._fs != null)
+					{
+						this._fs.Close();
+						this._fs.Dispose();
+						this._fs = null;
+					}
+					if (!bClosed)
+					{
+						this.Close();               // Close()なしでDispose()された場合用 (DataContractSerializer経由だと、ここに来る)
+					}
+					this.disposed = true;
+				}
+				finally
+				{
+					base.Dispose(disposing);
+				}
 			}
 		}
 		~FileStreamSSD()
