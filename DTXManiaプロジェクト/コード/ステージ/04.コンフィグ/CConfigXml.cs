@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System;
 using FDK;
 
+using SlimDXKey = SlimDX.DirectInput.Key;
+
 namespace DTXMania
 {
 	/// <summary>
@@ -485,6 +487,7 @@ namespace DTXMania
 			{
 				bAutoPlay[ pad ] = new COptionBool( true );
 			}
+			bAutoPlay[ EPad.Capture ] = new COptionBool( true );
 			bViewerVSyncWait = new COptionBool( true );
 			bViewerShowDebugStatus = new COptionBool(true);
 			bViewerTimeStretch = new COptionBool(false);
@@ -756,6 +759,7 @@ namespace DTXMania
 			bAutoPlay.BsB.Initialize( "strCfgBsAutoB" );
 			bAutoPlay.BsPick.Initialize( "strCfgBsAutoPick" );
 			bAutoPlay.BsWail.Initialize( "strCfgBsAutoWailing" );
+			bAutoPlay.Capture.Initialize( "strCfgCapture" );
 
 			bLoadSoundSpeed.Initialize( "strCfgSysSoundLoadLimiter" );
 			bIsAutoResultCapture.Initialize( "strCfgSysAutoResultCapture" );
@@ -1007,7 +1011,7 @@ namespace DTXMania
 				while ( 
 						( CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
 							( CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
-							  CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int) SlimDX.DirectInput.Key.Return )
+							  CDTXMania.Instance.Input管理.Keyboard.bキーが押された( (int) SlimDXKey.Return )
 							)
 						)
 					  )
@@ -1038,7 +1042,7 @@ namespace DTXMania
 					for (int k = 0; k < AssignableCodes; k++)
 					{
 						if ((KeyAssign[j][k].入力デバイス == EInputDevice.Keyboard) &&
-								(KeyAssign[j][k].コード == (int)SlimDX.DirectInput.Key.Return))
+								(KeyAssign[j][k].コード == (int)SlimDXKey.Return))
 						{
 							return false;
 						}
@@ -1291,7 +1295,8 @@ namespace DTXMania
 				}
 			}
 		}
-const string strDefaultKeyAssign = @"
+
+		const string strDefaultKeyAssign = @"
 HH=K035,M042,M093
 SD=K033,M025,M026,M027,M028,M029,M031,M032,M034,M037,M038,M040,M0113
 BD=K012,K0126,M033,M035,M036,M0112
@@ -1307,15 +1312,15 @@ HP=M044
 GtR=K055
 GtG=K056,J012
 GtB=K057
-GtPick=K0115,K046,J06
+GtPick=K0115,K046
 GtWail=K0116
 GtDecide=K060
 GtCancel=K061
 
 BsR=K090
-BsG=K091,J013
+BsG=K091
 BsB=K092
-BsPick=K0103,K0100,J08
+BsPick=K0103,K0100
 BsWail=K089
 BsDecide=K096
 BsCancel=K097

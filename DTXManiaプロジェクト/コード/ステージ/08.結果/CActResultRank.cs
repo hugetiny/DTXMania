@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using SlimDX;
+using SharpDX;
 using FDK;
+
+using Rectangle = System.Drawing.Rectangle;
 
 namespace DTXMania
 {

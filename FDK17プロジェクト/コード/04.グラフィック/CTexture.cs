@@ -5,8 +5,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Diagnostics;
-using SlimDX;
-using SlimDX.Direct3D9;
+using SharpDX;
+using SharpDX.Direct3D9;
+
+using Rectangle = System.Drawing.Rectangle;
 
 namespace FDK
 {
@@ -181,11 +183,11 @@ namespace FDK
 		/// <param name="pool">テクスチャの管理方法。</param>
 		/// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
 		public CTexture( Device device, int n幅, int n高さ, Format format, Pool pool )
-			: this( device, n幅, n高さ, format, pool, Usage.None )
+			: this( device, n幅, n高さ, format, pool, Usage.None, false )
 		{
 		}
 		
-		public CTexture( Device device, int n幅, int n高さ, Format format, Pool pool, Usage usage )
+		public CTexture( Device device, int n幅, int n高さ, Format format, Pool pool, Usage usage, bool b黒を透過する )
 			: this()
 		{
 			try
@@ -194,8 +196,9 @@ namespace FDK
 				this.sz画像サイズ = new Size( n幅, n高さ );
 				this.szテクスチャサイズ = this.t指定されたサイズを超えない最適なテクスチャサイズを返す( device, this.sz画像サイズ );
 				this.rc全画像 = new Rectangle( 0, 0, this.sz画像サイズ.Width, this.sz画像サイズ.Height );
-		
-				using ( var bitmap = new Bitmap( 1, 1 ) )
+				int colorKey = ( b黒を透過する ) ? unchecked((int) 0xFF000000) : 0;
+
+				using( var bitmap = new Bitmap( 1, 1 ) )
 				{
 					using ( var graphics = Graphics.FromImage( bitmap ) )
 					{
@@ -209,7 +212,7 @@ namespace FDK
 						pool = poolvar;
 #endif
 						// 中で更にメモリ読み込みし直していて無駄なので、Streamを使うのは止めたいところ
-						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, usage, format, pool, Filter.Point, Filter.None, 0 );
+						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, usage, format, pool, Filter.Point, Filter.None, colorKey );
 					}
 				}
 			}
@@ -345,7 +348,8 @@ namespace FDK
 					}
 #else
 					IntPtr src_scan0 = (IntPtr) ( (Int64) srcBufData.Scan0 );
-					destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height );
+					//destDataRectangle.Data.WriteRange( src_scan0, this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height );
+					CopyMemory( destDataRectangle.DataPointer.ToPointer(), src_scan0.ToPointer(), this.sz画像サイズ.Width * 4 * this.sz画像サイズ.Height );
 #endif
 					texture.UnlockRectangle( 0 );
 					bitmap.UnlockBits( srcBufData );
@@ -403,7 +407,7 @@ namespace FDK
 				float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 				float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
 				this.color4.Alpha = ( (float) this._透明度 ) / 255f;
-				int color = this.color4.ToArgb();
+				int color = this.color4.ToRgba();
 
 				if( this.bFlipY )
 				{
@@ -448,7 +452,7 @@ namespace FDK
 				this.cvTransformedColoredVertexies[ 3 ].Color = color;
 				this.cvTransformedColoredVertexies[ 3 ].TextureCoordinates.X = f右U値;
 				this.cvTransformedColoredVertexies[ 3 ].TextureCoordinates.Y = f下V値;
-				
+
 				device.SetTexture( 0, this.texture );
 				device.VertexFormat = TransformedColoredTexturedVertex.Format;
 				device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 0, 2, this.cvTransformedColoredVertexies );
@@ -468,7 +472,7 @@ namespace FDK
 				float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 				float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
 				this.color4.Alpha = ( (float) this._透明度 ) / 255f;
-				int color = this.color4.ToArgb();
+				int color = this.color4.ToRgba();
 
 				if( this.cvPositionColoredVertexies == null )
 					this.cvPositionColoredVertexies = new PositionColoredTexturedVertex[ 4 ];
@@ -540,7 +544,7 @@ namespace FDK
 			float f上V値 = ( (float) rc画像内の描画領域.Top ) / ( (float) this.szテクスチャサイズ.Height );
 			float f下V値 = ( (float) rc画像内の描画領域.Bottom ) / ( (float) this.szテクスチャサイズ.Height );
 			this.color4.Alpha = ( (float) this._透明度 ) / 255f;
-			int color = this.color4.ToArgb();
+			int color = this.color4.ToRgba();
 			
 			if( this.cvPositionColoredVertexies == null )
 				this.cvPositionColoredVertexies = new PositionColoredTexturedVertex[ 4 ];
@@ -625,14 +629,14 @@ namespace FDK
 			if( this.b加算合成 )
 			{
 				device.SetRenderState( RenderState.AlphaBlendEnable, true );
-				device.SetRenderState( RenderState.SourceBlend, SlimDX.Direct3D9.Blend.SourceAlpha );				// 5
-				device.SetRenderState( RenderState.DestinationBlend, SlimDX.Direct3D9.Blend.One );					// 2
+				device.SetRenderState( RenderState.SourceBlend, Blend.SourceAlpha );
+				device.SetRenderState( RenderState.DestinationBlend, Blend.One );
 			}
 			else
 			{
 				device.SetRenderState( RenderState.AlphaBlendEnable, true );
-				device.SetRenderState( RenderState.SourceBlend, SlimDX.Direct3D9.Blend.SourceAlpha );				// 5
-				device.SetRenderState( RenderState.DestinationBlend, SlimDX.Direct3D9.Blend.InverseSourceAlpha );	// 6
+				device.SetRenderState( RenderState.SourceBlend, Blend.SourceAlpha );
+				device.SetRenderState( RenderState.DestinationBlend, Blend.InverseSourceAlpha );
 			}
 		}
 		protected Size t指定されたサイズを超えない最適なテクスチャサイズを返す( Device device, Size sz指定サイズ )
@@ -690,7 +694,14 @@ namespace FDK
 		// 2012.3.21 さらなる new の省略作戦
 
 		protected Rectangle rc全画像;								// テクスチャ作ったらあとは不変
-		protected Color4 color4 = new Color4( 1f, 1f, 1f, 1f );	// アルファ以外は不変
+		protected Color4 color4 = new Color4( 1f, 1f, 1f, 1f ); // アルファ以外は不変
+																//-----------------
+		#endregion
+
+		#region " Win32 API "
+		//-----------------
+		[System.Runtime.InteropServices.DllImport( "kernel32.dll", SetLastError = true )]
+		private static extern unsafe void CopyMemory( void* dst, void* src, int size );
 		//-----------------
 		#endregion
 	}

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SlimDX;
+using SharpDX;
 using FDK;
-using System.Drawing;
 using DTXMania.Coordinates;
+
+using Color = System.Drawing.Color;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace DTXMania
 {

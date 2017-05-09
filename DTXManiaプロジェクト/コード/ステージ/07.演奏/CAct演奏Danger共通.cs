@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using FDK;
-using SlimDX;
+using SharpDX;
+
+using Color = System.Drawing.Color;
 
 namespace DTXMania
 {

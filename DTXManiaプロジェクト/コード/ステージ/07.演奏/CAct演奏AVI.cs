@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using SlimDX;
-using SlimDX.Direct3D9;
+using SharpDX;
+using SharpDX.Direct3D9;
 using FDK;
 using System.Diagnostics;
 

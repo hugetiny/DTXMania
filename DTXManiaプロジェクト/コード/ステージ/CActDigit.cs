@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using FDK;
 using System.Drawing;
-using SlimDX;
+using SharpDX;
+
+using Rectangle = System.Drawing.Rectangle;
+using Color = System.Drawing.Color;
 
 namespace DTXMania
 {

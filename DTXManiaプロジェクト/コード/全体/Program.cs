@@ -73,17 +73,17 @@ namespace DTXMania
 				Environment.CurrentDirectory = Path.GetDirectoryName(Application.ExecutablePath);
 
 				#region [DLLの存在チェック]
-				if (!tDLLの存在チェック("dll\\SlimDX" + CDTXMania.SLIMDXDLL + ".dll",
-					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
-					"SlimDX" + CDTXMania.SLIMDXDLL + ".dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
-					))
-					bDLLnotfound = true;
+				//if (!tDLLの存在チェック("dll\\SlimDX" + CDTXMania.SLIMDXDLL + ".dll",
+				//	"SlimDX" + CDTXMania.SLIMDXDLL + ".dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+				//	"SlimDX" + CDTXMania.SLIMDXDLL + ".dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
+				//	))
+				//	bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\FDK.dll",
 					"FDK.dll またはその依存するdllが存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"FDK.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
-				if (!tDLLの存在チェック("xadec.dll",   // #35444 2015.8.27 yyagi; Changed dll path
+				if (!tDLLの存在チェック("dll\\xadec.dll",
 					"xadec.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"xadec.dll is not found." + newLine + "Please download DTXMania again."
 					))
@@ -129,9 +129,9 @@ namespace DTXMania
 					"bass_fx.dll is not loaded. bass_fx.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
-				if (!tDLLの存在チェック("dll\\DirectShowLib-2005.dll",
-					"DirectShowLib-2005.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
-					"DirectShowLib-2005.dll is not found." + newLine + "Please download DTXMania again."
+				if (!tDLLの存在チェック("dll\\DirectShowLib.dll",
+					"DirectShowLib.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"DirectShowLib.dll is not found." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
 				#endregion

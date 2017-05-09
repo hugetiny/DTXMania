@@ -1,332 +1,528 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Coordinates xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/DTXMania">
-  <BarLine>
-    <Bass>
-      <X>1440</X>
-    </Bass>
-    <Drums>
-      <X>619</X>
-    </Drums>
-    <Guitar>
-      <X>78</X>
-    </Guitar>
-  </BarLine>
-  <Combo>
-    <Bass>
-      <X>1584</X>
-      <Y>800</Y>
-    </Bass>
-    <Drums>
-      <X>960</X>
-      <Y>80</Y>
-    </Drums>
-    <Guitar>
-      <X>336</X>
-      <Y>800</Y>
-    </Guitar>
-  </Combo>
+<CCoordinates xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/DTXMania.Coordinates">
   <Danger>
     <Max>1856</Max>
     <Min>0</Min>
   </Danger>
-  <Debug>
-    <X>1350</X>
-    <Y>128</Y>
-  </Debug>
-  <DrumsPad>
+  <DrPad>
     <Y>930</Y>
-  </DrumsPad>
-  <DrumsPadOffsetBD>
-    <Y>30</Y>
-  </DrumsPadOffsetBD>
-  <DrumsPadOffsetCY>
-    <Y>15</Y>
-  </DrumsPadOffsetCY>
-  <DrumsPadOffsetFT>
-    <Y>30</Y>
-  </DrumsPadOffsetFT>
-  <DrumsPadOffsetHH>
-    <Y>10</Y>
-  </DrumsPadOffsetHH>
-  <DrumsPadOffsetHT>
-    <Y>0</Y>
-  </DrumsPadOffsetHT>
-  <DrumsPadOffsetLCY>
-    <Y>0</Y>
-  </DrumsPadOffsetLCY>
-  <DrumsPadOffsetLT>
-    <Y>15</Y>
-  </DrumsPadOffsetLT>
-  <DrumsPadOffsetRCY>
-    <X>80</X>
-    <Y>0</Y>
-  </DrumsPadOffsetRCY>
-  <DrumsPadOffsetSD>
-    <Y>22</Y>
-  </DrumsPadOffsetSD>
+  </DrPad>
+  <DrPadOffset xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:BD>
+      <Y>30</Y>
+    </d2p1:BD>
+    <d2p1:BsB i:nil="true" />
+    <d2p1:BsCancel i:nil="true" />
+    <d2p1:BsDecide i:nil="true" />
+    <d2p1:BsG i:nil="true" />
+    <d2p1:BsPick i:nil="true" />
+    <d2p1:BsR i:nil="true" />
+    <d2p1:BsWail i:nil="true" />
+    <d2p1:CY>
+      <Y>15</Y>
+    </d2p1:CY>
+    <d2p1:Capture i:nil="true" />
+    <d2p1:FT>
+      <Y>30</Y>
+    </d2p1:FT>
+    <d2p1:GtB i:nil="true" />
+    <d2p1:GtCancel i:nil="true" />
+    <d2p1:GtDecide i:nil="true" />
+    <d2p1:GtG i:nil="true" />
+    <d2p1:GtPick i:nil="true" />
+    <d2p1:GtR i:nil="true" />
+    <d2p1:GtWail i:nil="true" />
+    <d2p1:HH>
+      <Y>10</Y>
+    </d2p1:HH>
+    <d2p1:HHO>
+      <Y>10</Y>
+    </d2p1:HHO>
+    <d2p1:HP i:nil="true" />
+    <d2p1:HT>
+      <Y>0</Y>
+    </d2p1:HT>
+    <d2p1:LC>
+      <Y>0</Y>
+    </d2p1:LC>
+    <d2p1:LT>
+      <Y>15</Y>
+    </d2p1:LT>
+    <d2p1:RD>
+      <Y>80</Y>
+    </d2p1:RD>
+    <d2p1:SD>
+      <Y>22</Y>
+    </d2p1:SD>
+  </DrPadOffset>
   <Gauge>
     <X>0</X>
     <Y>1080</Y>
   </Gauge>
   <GaugeMax>1080</GaugeMax>
-  <Graph>
-    <Bass>
-      <X>1728</X>
-      <Y>0</Y>
-      <Height>400</Height>
-      <Width>60</Width>
-    </Bass>
-    <Drums>
-      <X>1274</X>
-      <Y>0</Y>
-      <Height>400</Height>
-      <Width>60</Width>
-    </Drums>
-    <Guitar>
-      <X>480</X>
-      <Y>0</Y>
-      <Height>400</Height>
-      <Width>60</Width>
-    </Guitar>
+  <Graph xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:Bass>
+      <W>62</W>
+      <H>1080</H>
+    </d2p1:Bass>
+    <d2p1:Drums>
+      <W>62</W>
+      <H>1080</H>
+    </d2p1:Drums>
+    <d2p1:Guitar>
+      <W>62</W>
+      <H>1080</H>
+    </d2p1:Guitar>
+    <d2p1:System i:nil="true" />
+    <d2p1:Unknown i:nil="true" />
   </Graph>
-  <HiddenFadeOutFrom>
-    <Bass i:nil="true" />
-    <Drums>
-      <Y>337</Y>
-    </Drums>
-    <Guitar i:nil="true" />
-  </HiddenFadeOutFrom>
-  <HiddenFrom>
-    <Bass>
-      <Y>225</Y>
-    </Bass>
-    <Drums>
-      <Y>225</Y>
-    </Drums>
-    <Guitar>
-      <Y>225</Y>
-    </Guitar>
-  </HiddenFrom>
-  <Judge>
-    <Bass>
-      <X>1584</X>
-      <Y>600</Y>
-    </Bass>
-    <BassDrum>
-      <X>924</X>
-      <Y>420</Y>
-    </BassDrum>
-    <Cymbal>
-      <X>1232</X>
-      <Y>420</Y>
-    </Cymbal>
-    <FloorTom>
-      <X>1154</X>
-      <Y>350</Y>
-    </FloorTom>
-    <Guitar>
-      <X>336</X>
-      <Y>600</Y>
-    </Guitar>
-    <HiHatClose>
-      <X>767</X>
-      <Y>420</Y>
-    </HiHatClose>
-    <HighTom>
-      <X>1010</X>
-      <Y>350</Y>
-    </HighTom>
-    <LeftCymbal>
-      <X>688</X>
-      <Y>350</Y>
-    </LeftCymbal>
-    <LowTom>
-      <X>1082</X>
-      <Y>420</Y>
-    </LowTom>
-    <SnareDrum>
-      <X>839</X>
-      <Y>350</Y>
-    </SnareDrum>
-  </Judge>
-  <JudgeLine>
-    <Bass>
-      <X>1440</X>
-      <Y>138</Y>
-      <Width>216</Width>
-    </Bass>
-    <Drums>
-      <X>646</X>
-      <Y>942</Y>
-      <Width>629</Width>
-    </Drums>
-    <Guitar>
-      <X>192</X>
-      <Y>138</Y>
-      <Width>216</Width>
-    </Guitar>
-  </JudgeLine>
-  <Lane>
-    <BassB>
-      <X>1584</X>
-      <Width>72</Width>
-    </BassB>
-    <BassDrum>
-      <X>875</X>
-      <Width>99</Width>
-    </BassDrum>
-    <BassG>
-      <X>1512</X>
-      <Width>72</Width>
-    </BassG>
-    <BassOpen>
-      <X>1440</X>
-      <Width>72</Width>
-    </BassOpen>
-    <BassR>
-      <X>1440</X>
-      <Width>72</Width>
-    </BassR>
-    <BassWailing>
-      <X>1656</X>
-      <Width>72</Width>
-    </BassWailing>
-    <Cymbal>
-      <X>1190</X>
-      <Width>85</Width>
-    </Cymbal>
-    <FloorTom>
-      <X>1118</X>
-      <Width>72</Width>
-    </FloorTom>
-    <GuitarB>
-      <X>336</X>
-      <Width>72</Width>
-    </GuitarB>
-    <GuitarG>
-      <X>264</X>
-      <Width>72</Width>
-    </GuitarG>
-    <GuitarOpen>
-      <X>192</X>
-      <Width>72</Width>
-    </GuitarOpen>
-    <GuitarR>
-      <X>192</X>
-      <Width>72</Width>
-    </GuitarR>
-    <GuitarWailing>
-      <X>408</X>
-      <Width>72</Width>
-    </GuitarWailing>
-    <HiHatClose>
-      <X>731</X>
-      <Width>72</Width>
-    </HiHatClose>
-    <HiHatOpen>
-      <X>731</X>
-      <Width>72</Width>
-    </HiHatOpen>
-    <HighTom>
-      <X>974</X>
-      <Width>72</Width>
-    </HighTom>
-    <LeftCymbal>
-      <X>646</X>
-      <Width>85</Width>
-    </LeftCymbal>
-    <LowTom>
-      <X>1046</X>
-      <Width>72</Width>
-    </LowTom>
-    <RideCymbal>
-      <X>1190</X>
-      <Width>85</Width>
-    </RideCymbal>
-    <SnareDrum>
-      <X>803</X>
-      <Width>72</Width>
-    </SnareDrum>
-  </Lane>
-  <LaneFlash>
-    <Bass>
+  <ImgBarLine>
+    <X>0</X>
+    <Y>982</Y>
+    <H>3</H>
+    <W>480</W>
+  </ImgBarLine>
+  <ImgBeatLine>
+    <X>0</X>
+    <Y>985</Y>
+    <H>2</H>
+    <W>480</W>
+  </ImgBeatLine>
+  <ImgComboCombo>
+    <X>100</X>
+    <Y>140</Y>
+    <H>30</H>
+    <W>110</W>
+  </ImgComboCombo>
+  <ImgComboOneDigit>
+    <X>0</X>
+    <Y>0</Y>
+    <H>70</H>
+    <W>50</W>
+  </ImgComboOneDigit>
+  <ImgConsoleFont>
+    <X>0</X>
+    <Y>0</Y>
+    <H>32</H>
+    <W>16</W>
+  </ImgConsoleFont>
+  <ImgDanger>
+    <X>0</X>
+    <Y>0</Y>
+    <H>256</H>
+    <W>64</W>
+  </ImgDanger>
+  <ImgDrChip xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:BD>
+      <X>0</X>
+      <Y>20</Y>
+      <H>22</H>
+      <W>99</W>
+    </d2p1:BD>
+    <d2p1:BsB i:nil="true" />
+    <d2p1:BsCancel i:nil="true" />
+    <d2p1:BsDecide i:nil="true" />
+    <d2p1:BsG i:nil="true" />
+    <d2p1:BsPick i:nil="true" />
+    <d2p1:BsR i:nil="true" />
+    <d2p1:BsWail i:nil="true" />
+    <d2p1:CY>
+      <X>459</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>85</W>
+    </d2p1:CY>
+    <d2p1:Capture i:nil="true" />
+    <d2p1:FT>
+      <X>387</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>72</W>
+    </d2p1:FT>
+    <d2p1:GtB i:nil="true" />
+    <d2p1:GtCancel i:nil="true" />
+    <d2p1:GtDecide i:nil="true" />
+    <d2p1:GtG i:nil="true" />
+    <d2p1:GtPick i:nil="true" />
+    <d2p1:GtR i:nil="true" />
+    <d2p1:GtWail i:nil="true" />
+    <d2p1:HH>
+      <X>99</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>72</W>
+    </d2p1:HH>
+    <d2p1:HHO>
+      <X>544</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>58</W>
+    </d2p1:HHO>
+    <d2p1:HP i:nil="true" />
+    <d2p1:HT>
+      <X>243</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>72</W>
+    </d2p1:HT>
+    <d2p1:LC>
+      <X>459</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>85</W>
+    </d2p1:LC>
+    <d2p1:LT>
+      <X>315</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>72</W>
+    </d2p1:LT>
+    <d2p1:RD>
+      <X>544</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>58</W>
+    </d2p1:RD>
+    <d2p1:SD>
+      <X>171</X>
+      <Y>16</Y>
+      <H>18</H>
+      <W>72</W>
+    </d2p1:SD>
+  </ImgDrChip>
+  <ImgDrChipCYDeco>
+    <X>459</X>
+    <Y>786</Y>
+    <H>64</H>
+    <W>85</W>
+  </ImgDrChipCYDeco>
+  <ImgDrChipHHODeco>
+    <X>544</X>
+    <Y>791</Y>
+    <H>30</H>
+    <W>58</W>
+  </ImgDrChipHHODeco>
+  <ImgDrCountChip>48</ImgDrCountChip>
+  <ImgDrLaneFlash>
+    <X>0</X>
+    <Y>0</Y>
+    <H>768</H>
+    <W>-1</W>
+  </ImgDrLaneFlash>
+  <ImgDrPad xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:BD>
+      <X>0</X>
+      <Y>130</Y>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:BD>
+    <d2p1:BsB i:nil="true" />
+    <d2p1:BsCancel i:nil="true" />
+    <d2p1:BsDecide i:nil="true" />
+    <d2p1:BsG i:nil="true" />
+    <d2p1:BsPick i:nil="true" />
+    <d2p1:BsR i:nil="true" />
+    <d2p1:BsWail i:nil="true" />
+    <d2p1:CY>
+      <X>170</X>
+      <Y>260</Y>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:CY>
+    <d2p1:Capture i:nil="true" />
+    <d2p1:FT>
+      <X>0</X>
+      <Y>260</Y>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:FT>
+    <d2p1:GtB i:nil="true" />
+    <d2p1:GtCancel i:nil="true" />
+    <d2p1:GtDecide i:nil="true" />
+    <d2p1:GtG i:nil="true" />
+    <d2p1:GtPick i:nil="true" />
+    <d2p1:GtR i:nil="true" />
+    <d2p1:GtWail i:nil="true" />
+    <d2p1:HH>
+      <X>170</X>
       <Y>0</Y>
-    </Bass>
-    <Drums>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:HH>
+    <d2p1:HHO i:nil="true" />
+    <d2p1:HP i:nil="true" />
+    <d2p1:HT>
+      <X>170</X>
+      <Y>130</Y>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:HT>
+    <d2p1:LC>
+      <X>0</X>
+      <Y>0</Y>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:LC>
+    <d2p1:LT>
+      <X>340</X>
+      <Y>130</Y>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:LT>
+    <d2p1:RD>
+      <X>340</X>
+      <Y>260</Y>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:RD>
+    <d2p1:SD>
+      <X>340</X>
+      <Y>0</Y>
+      <H>130</H>
+      <W>170</W>
+    </d2p1:SD>
+  </ImgDrPad>
+  <ImgGaugeLight>
+    <X>0</X>
+    <Y>0</Y>
+    <H>576</H>
+    <W>48</W>
+  </ImgGaugeLight>
+  <ImgGaugeNormal>
+    <X>0</X>
+    <Y>0</Y>
+    <H>61</H>
+    <W>48</W>
+  </ImgGaugeNormal>
+  <ImgGaugeOrange>
+    <X>48</X>
+    <Y>0</Y>
+    <H>61</H>
+    <W>48</W>
+  </ImgGaugeOrange>
+  <ImgGaugeStar>
+    <X>0</X>
+    <Y>72</Y>
+    <H>72</H>
+    <W>96</W>
+  </ImgGaugeStar>
+  <ImgGaugeTopLight>
+    <X>144</X>
+    <Y>0</Y>
+    <H>36</H>
+    <W>48</W>
+  </ImgGaugeTopLight>
+  <ImgGtButtonB>
+    <X>144</X>
+    <Y>0</Y>
+    <H>72</H>
+    <W>72</W>
+  </ImgGtButtonB>
+  <ImgGtButtonG>
+    <X>72</X>
+    <Y>0</Y>
+    <H>72</H>
+    <W>72</W>
+  </ImgGtButtonG>
+  <ImgGtButtonR>
+    <X>0</X>
+    <Y>0</Y>
+    <H>72</H>
+    <W>72</W>
+  </ImgGtButtonR>
+  <ImgGtChipOpen>
+    <X>216</X>
+    <Y>0</Y>
+    <H>14</H>
+    <W>216</W>
+  </ImgGtChipOpen>
+  <ImgGtCountOpenChip>48</ImgGtCountOpenChip>
+  <ImgGtCountRGBChip>48</ImgGtCountRGBChip>
+  <ImgGtCountWailingChip>5</ImgGtCountWailingChip>
+  <ImgGtLaneFlash>
+    <X>0</X>
+    <Y>0</Y>
+    <H>512</H>
+    <W>-1</W>
+  </ImgGtLaneFlash>
+  <ImgGtPressingButtonB>
+    <X>144</X>
+    <Y>72</Y>
+    <H>72</H>
+    <W>72</W>
+  </ImgGtPressingButtonB>
+  <ImgGtPressingButtonG>
+    <X>72</X>
+    <Y>72</Y>
+    <H>72</H>
+    <W>72</W>
+  </ImgGtPressingButtonG>
+  <ImgGtPressingButtonR>
+    <X>0</X>
+    <Y>72</Y>
+    <H>72</H>
+    <W>72</W>
+  </ImgGtPressingButtonR>
+  <ImgGtRGBButton>
+    <X>0</X>
+    <Y>0</Y>
+    <H>14</H>
+    <W>72</W>
+  </ImgGtRGBButton>
+  <ImgGtWailingBonus>
+    <X>0</X>
+    <Y>0</Y>
+    <H>549</H>
+    <W>78</W>
+  </ImgGtWailingBonus>
+  <ImgGtWailingChip>
+    <X>0</X>
+    <Y>590</Y>
+    <H>120</H>
+    <W>60</W>
+  </ImgGtWailingChip>
+  <ImgGtWailingFrame>
+    <X>0</X>
+    <Y>0</Y>
+    <H>113</H>
+    <W>66</W>
+  </ImgGtWailingFrame>
+  <ImgJudgeLine>
+    <X>0</X>
+    <Y>0</Y>
+    <H>16</H>
+    <W>64</W>
+  </ImgJudgeLine>
+  <ImgJudgeString>
+    <X>0</X>
+    <Y>0</Y>
+    <H>36</H>
+    <W>256</W>
+  </ImgJudgeString>
+  <ImgOptionPanel>
+    <W>72</W>
+    <H>27</H>
+  </ImgOptionPanel>
+  <ImgScoreOneDigit>
+    <X>0</X>
+    <Y>0</Y>
+    <H>38</H>
+    <W>30</W>
+  </ImgScoreOneDigit>
+  <ImgSpeedPanel>
+    <X>0</X>
+    <Y>0</Y>
+    <H>164</H>
+    <W>45</W>
+  </ImgSpeedPanel>
+  <Instrument xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:Bass>
+      <W>288</W>
+    </d2p1:Bass>
+    <d2p1:Drums>
+      <W>629</W>
+    </d2p1:Drums>
+    <d2p1:Guitar>
+      <W>288</W>
+    </d2p1:Guitar>
+    <d2p1:System i:nil="true" />
+    <d2p1:Unknown i:nil="true" />
+  </Instrument>
+  <LaneFlash xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:Bass>
+      <Y>0</Y>
+    </d2p1:Bass>
+    <d2p1:Drums>
       <Y>312</Y>
-    </Drums>
-    <Guitar>
+    </d2p1:Drums>
+    <d2p1:Guitar>
       <Y>0</Y>
-    </Guitar>
+    </d2p1:Guitar>
+    <d2p1:System i:nil="true" />
+    <d2p1:Unknown i:nil="true" />
   </LaneFlash>
-  <MovieBGACommon>
-    <X>1153</X>
-    <Y>128</Y>
-    <Height>710</Height>
-    <Width>556</Width>
-  </MovieBGACommon>
-  <MovieBGADrumsOnly>
-    <X>1301</X>
-    <Y>128</Y>
-    <Height>710</Height>
-    <Width>556</Width>
-  </MovieBGADrumsOnly>
-  <MovieBGAGuitarsOnly>
-    <X>682</X>
-    <Y>112</Y>
-    <Height>710</Height>
-    <Width>556</Width>
-  </MovieBGAGuitarsOnly>
+  <Movie>
+    <W>556</W>
+    <H>710</H>
+  </Movie>
+  <OffsetGuitarBassSwap xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:STDGBSValueOfCYgsCjAoiJ>
+      <d2p1:Bass>
+        <Y>94</Y>
+      </d2p1:Bass>
+      <d2p1:Drums>
+        <Y>0</Y>
+      </d2p1:Drums>
+      <d2p1:Guitar>
+        <Y>47</Y>
+      </d2p1:Guitar>
+      <d2p1:System i:nil="true" />
+      <d2p1:Unknown i:nil="true" />
+    </d2p1:STDGBSValueOfCYgsCjAoiJ>
+    <d2p1:STDGBSValueOfCYgsCjAoiJ>
+      <d2p1:Bass>
+        <Y>47</Y>
+      </d2p1:Bass>
+      <d2p1:Drums>
+        <Y>0</Y>
+      </d2p1:Drums>
+      <d2p1:Guitar>
+        <Y>94</Y>
+      </d2p1:Guitar>
+      <d2p1:System i:nil="true" />
+      <d2p1:Unknown i:nil="true" />
+    </d2p1:STDGBSValueOfCYgsCjAoiJ>
+  </OffsetGuitarBassSwap>
+  <OptionPanelSelect xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:Bass>
+      <X>1107</X>
+      <Y>77</Y>
+    </d2p1:Bass>
+    <d2p1:Drums>
+      <X>1107</X>
+      <Y>23</Y>
+    </d2p1:Drums>
+    <d2p1:Guitar>
+      <X>1107</X>
+      <Y>50</Y>
+    </d2p1:Guitar>
+    <d2p1:System i:nil="true" />
+    <d2p1:Unknown i:nil="true" />
+  </OptionPanelSelect>
   <Panel>
     <X>1920</X>
     <Y>0</Y>
-    <Height>0</Height>
-    <Width>0</Width>
   </Panel>
-  <Score>
-    <Bass>
-      <X>1548</X>
-      <Y>10</Y>
-    </Bass>
-    <Drums>
-      <X>960</X>
-      <Y>10</Y>
-    </Drums>
-    <Guitar>
-      <X>300</X>
-      <Y>10</Y>
-    </Guitar>
+  <PointFullCombo xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:Bass>
+      <X>963</X>
+      <Y>533</Y>
+    </d2p1:Bass>
+    <d2p1:Drums>
+      <X>384</X>
+      <Y>533</Y>
+    </d2p1:Drums>
+    <d2p1:Guitar>
+      <X>669</X>
+      <Y>533</Y>
+    </d2p1:Guitar>
+    <d2p1:System i:nil="true" />
+    <d2p1:Unknown i:nil="true" />
+  </PointFullCombo>
+  <Score xmlns:d2p1="http://schemas.datacontract.org/2004/07/DTXMania">
+    <d2p1:Bass>
+      <Y>30</Y>
+    </d2p1:Bass>
+    <d2p1:Drums>
+      <Y>30</Y>
+    </d2p1:Drums>
+    <d2p1:Guitar>
+      <Y>30</Y>
+    </d2p1:Guitar>
+    <d2p1:System i:nil="true" />
+    <d2p1:Unknown i:nil="true" />
   </Score>
   <StatusPanel>
-    <Bass>
-      <X>1395</X>
-      <Y>0</Y>
-    </Bass>
-    <Drums>
-      <X>601</X>
-      <Y>0</Y>
-    </Drums>
-    <Guitar>
-      <X>147</X>
-      <Y>0</Y>
-    </Guitar>
+    <W>45</W>
   </StatusPanel>
-  <SuddenFadeInFrom>
-    <Bass i:nil="true" />
-    <Drums>
-      <Y>562</Y>
-    </Drums>
-    <Guitar i:nil="true" />
-  </SuddenFadeInFrom>
-  <SuddenFrom>
-    <Bass>
-      <Y>450</Y>
-    </Bass>
-    <Drums>
-      <Y>450</Y>
-    </Drums>
-    <Guitar>
-      <Y>450</Y>
-    </Guitar>
-  </SuddenFrom>
-</Coordinates>
+</CCoordinates>

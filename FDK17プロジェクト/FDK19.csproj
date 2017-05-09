@@ -13,7 +13,8 @@
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>SlimDXKey_yyagi.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <ApplicationIcon>
     </ApplicationIcon>
     <FileUpgradeFlags>
@@ -67,13 +68,26 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\実行時フォルダ\dll\Bass.Net.dll</HintPath>
     </Reference>
-    <Reference Include="DirectShowLib-2005, Version=2.1.0.0, Culture=neutral, PublicKeyToken=67e7b740cdfc2d3f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\実行時フォルダ(DTXCreator)\dll\DirectShowLib-2005.dll</HintPath>
+    <Reference Include="DirectShowLib, Version=2.1.0.1599, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DirectShowLib.1.0.0\lib\DirectShowLib.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDXc_net20x86_Jun2010, Version=1002.0.10.43, Culture=neutral, PublicKeyToken=53d0e4ef1f1579f5, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\実行時フォルダ\dll\SlimDXc_net20x86_Jun2010.dll</HintPath>
+    <Reference Include="SharpDX, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.3.1.1\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Direct3D9.3.1.1\lib\net45\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectInput, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DirectInput.3.1.1\lib\net45\SharpDX.DirectInput.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectSound, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DirectSound.3.1.1\lib\net45\SharpDX.DirectSound.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.DXGI.3.1.1\lib\net45\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics, Version=3.1.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpDX.Mathematics.3.1.1\lib\net45\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -121,6 +135,7 @@
     <Compile Include="コード\02.入力\DeviceConstantConverter.cs" />
     <Compile Include="コード\02.入力\E入力デバイス種別.cs" />
     <Compile Include="コード\02.入力\IInputDevice.cs" />
+    <Compile Include="コード\02.入力\SlimDX.DirectInput.Key.cs" />
     <Compile Include="コード\02.入力\STInputEvent.cs" />
     <Compile Include="コード\03.サウンド\Cmp3.cs" />
     <Compile Include="コード\03.サウンド\Cogg.cs" />
@@ -169,7 +184,7 @@
     <Content Include="コード\01.フレームワーク\Resources\sdx_icon_black.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SlimDXKey_yyagi.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -192,11 +207,29 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ\dll\"
-copy /Y "$(TargetPath)" "$(SolutionDir)..\実行時フォルダ(DTXCreator)\dll\"
-copy /Y "$(TargetPath)" "$(SolutionDir)bin\x86\Debug\dll\"
+    <PostBuildEvent>echo.
+echo ビルド後イベントを開始します。
 
+echo.
+echo (1) 出力フォルダ から ソリューション出力フォルダ へコピーします。（日付の新しいファイルのみ）
+set DESTDIR="$(SolutionDir)$(OutDir)dll"
+if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
+xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D /EXCLUDE:$(TargetFileName)
 
+echo.
+echo (2) 出力フォルダ から 実行時フォルダ にコピーします。（日付の新しいファイルのみ）
+set DESTDIR="$(SolutionDir)実行時フォルダ\dll"
+if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
+xcopy "$(TargetDir)*.dll"  %25DESTDIR%25 /Y /D
+
+echo.
+echo (3) 実行時フォルダ から ソリューション出力フォルダ にコピーします。（日付の新しいファイルのみ）
+set DESTDIR="$(SolutionDir)$(OutDir)dll"
+if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
+xcopy "$(SolutionDir)実行時フォルダ\dll" %25DESTDIR%25 /Y /D
+
+echo.
+echo ビルド後イベントを終了しました。
 </PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -6,8 +6,8 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
 using FDK;
-using System.Runtime.Serialization;
-using System.Threading;
+
+using SlimDXKey = SlimDX.DirectInput.Key;
 
 namespace DTXMania
 {
@@ -382,7 +382,7 @@ namespace DTXMania
 				// 曲データの一覧取得中は、キー入力を無効化する
 				if (!CDTXMania.Instance.EnumSongs.IsEnumerating || !CDTXMania.Instance.actEnumSongs.bコマンドでの曲データ取得)
 				{
-					if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Escape) || CDTXMania.Instance.Pad.bCancelPadIsPressedDGB())
+					if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.Escape) || CDTXMania.Instance.Pad.bCancelPadIsPressedDGB())
 					{
 						CDTXMania.Instance.Skin.sound取消音.t再生する();
 						if (!this.bメニューにフォーカス中)
@@ -406,7 +406,7 @@ namespace DTXMania
 						}
 					}
 					#region [ ← ]
-					else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.LeftArrow))   // 左カーソルキー
+					else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.LeftArrow))   // 左カーソルキー
 					{
 						if (!this.bメニューにフォーカス中)
 						{
@@ -435,7 +435,7 @@ namespace DTXMania
 					else if (
 						(CDTXMania.Instance.Pad.bDecidePadIsPressedDGB() ||
 						(CDTXMania.Instance.ConfigIni.bEnterがキー割り当てのどこにも使用されていない &&
-						CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.Return))))
+						CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.Return))))
 					{
 						#region [ EXIT ]
 						if (this.n現在のメニュー番号 == 4)
@@ -469,7 +469,7 @@ namespace DTXMania
 						}
 					}
 					#region [ → ]
-					else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDX.DirectInput.Key.RightArrow))  // 右カーソルキー
+					else if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.RightArrow))  // 右カーソルキー
 					{
 						#region [ EXIT ]
 						if (this.n現在のメニュー番号 == 4)
@@ -485,14 +485,27 @@ namespace DTXMania
 						}
 					}
 					#endregion
-					this.ctキー反復用.Up.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.UpArrow), new CCounter.DGキー処理(this.tカーソルを上へ移動する));
-					this.ctキー反復用.R.tキー反復(CDTXMania.Instance.Pad.b押されている(EPad.GtR) || CDTXMania.Instance.Pad.b押されている(EPad.BsR), new CCounter.DGキー処理(this.tカーソルを上へ移動する));
+
+					this.ctキー反復用.Up.tキー反復(
+						CDTXMania.Instance.Input管理.Keyboard.bキーが押されている( (int) SlimDXKey.UpArrow ),
+						new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
+
+					this.ctキー反復用.R.tキー反復(
+						CDTXMania.Instance.Pad.b押されている( EPad.GtR ) || CDTXMania.Instance.Pad.b押されている( EPad.BsR ),
+						new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
+
 					if (CDTXMania.Instance.Pad.b押された(EPad.SD))
 					{
 						this.tカーソルを上へ移動する();
 					}
-					this.ctキー反復用.Down.tキー反復(CDTXMania.Instance.Input管理.Keyboard.bキーが押されている((int)SlimDX.DirectInput.Key.DownArrow), new CCounter.DGキー処理(this.tカーソルを下へ移動する));
-					this.ctキー反復用.B.tキー反復(CDTXMania.Instance.Pad.b押されている(EPad.GtB) || CDTXMania.Instance.Pad.b押されている(EPad.BsB), new CCounter.DGキー処理(this.tカーソルを下へ移動する));
+					this.ctキー反復用.Down.tキー反復(
+						CDTXMania.Instance.Input管理.Keyboard.bキーが押されている( (int) SlimDXKey.DownArrow ),
+						new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
+
+					this.ctキー反復用.B.tキー反復(
+						CDTXMania.Instance.Pad.b押されている( EPad.GtB ) || CDTXMania.Instance.Pad.b押されている( EPad.BsB ),
+						new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
+
 					if (CDTXMania.Instance.Pad.b押された(EPad.LT))
 					{
 						this.tカーソルを下へ移動する();

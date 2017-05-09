@@ -4,8 +4,11 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
-using SlimDX;
+using SharpDX;
 using FDK;
+
+using Color = System.Drawing.Color;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace DTXMania
 {
