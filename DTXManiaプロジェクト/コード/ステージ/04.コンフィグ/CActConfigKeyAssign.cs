@@ -414,45 +414,45 @@ namespace DTXMania
 
 		private void tアサインコードの描画_Joypad(int line, int x, int y, int nID, int nCode, bool b強調)
 		{
-			string str = "";
+			string str = string.Format("{0,2}. ", line);
 			switch (nCode)
 			{
 				case 0:
-					str = "Left";
+					str += "Left";
 					break;
 
 				case 1:
-					str = "Right";
+					str += "Right";
 					break;
 
 				case 2:
-					str = "Up";
+					str += "Up";
 					break;
 
 				case 3:
-					str = "Down";
+					str += "Down";
 					break;
 
 				case 4:
-					str = "Forward";
+					str += "Forward";
 					break;
 
 				case 5:
-					str = "Back";
+					str += "Back";
 					break;
 
 				default:
 					if ((6 <= nCode) && (nCode < 6 + 128))              // other buttons (128 types)
 					{
-						str = string.Format("Button{0}", nCode - 5);
+						str += string.Format("Button{0}", nCode - 5);
 					}
 					else if ((6 + 128 <= nCode) && (nCode < 6 + 128 + 8))       // POV HAT ( 8 types; 45 degrees per HATs)
 					{
-						str = string.Format("POV {0}", (nCode - 6 - 128) * 45);
+						str += string.Format("POV {0}", (nCode - 6 - 128) * 45);
 					}
 					else
 					{
-						str = string.Format("Code{0}", nCode);
+						str += string.Format("Code{0}", nCode);
 					}
 					break;
 			}
