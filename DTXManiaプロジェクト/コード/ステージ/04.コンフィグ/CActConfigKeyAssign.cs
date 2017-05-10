@@ -603,10 +603,12 @@ namespace DTXMania
 			{
 				if (CDTXMania.Instance.Input管理.Mouse.bキーが押された(i))
 				{
+					CDTXMania.Instance.Skin.sound決定音.t再生する();
 					CDTXMania.Instance.ConfigIni.t指定した入力が既にアサイン済みである場合はそれを全削除する(EInputDevice.Mouse, 0, i);
 					CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].入力デバイス = EInputDevice.Mouse;
 					CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].ID = 0;
 					CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].コード = i;
+					return true;
 				}
 			}
 			return false;
