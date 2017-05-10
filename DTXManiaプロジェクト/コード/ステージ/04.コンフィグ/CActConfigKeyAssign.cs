@@ -533,6 +533,11 @@ namespace DTXMania
 						if (device.bキーが押された(i))
 						{
 							CDTXMania.Instance.Skin.sound決定音.t再生する();
+
+							// #xxxxx: 2017.5.7 from: アサイン済みのキーと今回割り当てるキーが同じである場合は、削除されないようコードを未使用値(ここでは-1)にする。
+							if (i == CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].コード)
+								CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].コード = -1;
+
 							CDTXMania.Instance.ConfigIni.t指定した入力が既にアサイン済みである場合はそれを全削除する(EInputDevice.JoyPad, device.ID, i);
 							CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].入力デバイス = EInputDevice.JoyPad;
 							CDTXMania.Instance.ConfigIni.KeyAssign[pad][ptr].ID = device.ID;
