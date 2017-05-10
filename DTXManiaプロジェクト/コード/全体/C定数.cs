@@ -646,7 +646,9 @@ namespace DTXMania
 		[EnumMember]
 		DSound,
 		[EnumMember]
-		WASAPI,
+		WASAPI_Exclusive,
+		[EnumMember]
+		WASAPI_Shared,
 		[EnumMember]
 		ASIO,
 	}

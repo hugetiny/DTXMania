@@ -795,8 +795,11 @@ namespace DTXMania
 						case ESoundDeviceTypeForConfig.ASIO:
 							soundDeviceType = ESoundDeviceType.ASIO;
 							break;
-						case ESoundDeviceTypeForConfig.WASAPI:
+						case ESoundDeviceTypeForConfig.WASAPI_Exclusive:
 							soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+							break;
+						case ESoundDeviceTypeForConfig.WASAPI_Shared:
+							soundDeviceType = ESoundDeviceType.SharedWASAPI;
 							break;
 						default:
 							soundDeviceType = ESoundDeviceType.Unknown;
@@ -846,6 +849,7 @@ namespace DTXMania
 				this.tx三角矢印 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenConfig triangle arrow.png"), false);
 				// スキン選択時に動的に設定するため、ここでは初期化しない
 				this.txSkinSample = null;
+				OnListMenuの初期化();
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -858,6 +862,8 @@ namespace DTXMania
 				TextureFactory.tテクスチャの解放(ref this.tx通常項目行パネル);
 				TextureFactory.tテクスチャの解放(ref this.txその他項目行パネル);
 				TextureFactory.tテクスチャの解放(ref this.tx三角矢印);
+
+				OnListMenuの解放();
 
 				base.OnManagedリソースの解放();
 			}

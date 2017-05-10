@@ -237,7 +237,7 @@ namespace FDK
 			}
 			#endregion
 
-//Retry:
+		Retry:
 			var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
 			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
 			if ( COS.bIsWin7OrLater && CSound管理.bSoundUpdateByEventWASAPI )
@@ -296,16 +296,16 @@ namespace FDK
 				}
 			}
 			#region [ #31737 WASAPI排他モードのみ利用可能とし、WASAPI共有モードは使用できないようにするために、WASAPI共有モードでの初期化フローを削除する。 ]
-			//else if ( mode == Eデバイスモード.排他 )
-			//{
-			//    Trace.TraceInformation("Failed to initialize setting BASS (WASAPI) mode [{0}]", Bass.BASS_ErrorGetCode().ToString() );
-			//    #region [ 排他モードに失敗したのなら共有モードでリトライ。]
-			//    //-----------------
-			//    mode = Eデバイスモード.共有;
-			//    goto Retry;
-			//    //-----------------
-			//    #endregion
-			//}
+			else if (mode == Eデバイスモード.排他)
+			{
+				Trace.TraceInformation("Failed to initialize setting BASS (WASAPI) mode [{0}]", Bass.BASS_ErrorGetCode().ToString());
+				#region [ 排他モードに失敗したのなら共有モードでリトライ。]
+				//-----------------
+				mode = Eデバイスモード.共有;
+				goto Retry;
+				//-----------------
+				#endregion
+			}
 			#endregion
 			else
 			{

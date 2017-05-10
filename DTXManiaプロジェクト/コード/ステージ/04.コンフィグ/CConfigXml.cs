@@ -503,7 +503,7 @@ namespace DTXMania
 			bUseOSTimer = new COptionBool(false);
 			bDynamicBassMixerManagement = new COptionBool(true);
 			bTimeStretch = new COptionBool(false);
-			nSoundDeviceType = new COptionEnum<ESoundDeviceTypeForConfig>(FDK.COS.bIsVistaOrLater ? ESoundDeviceTypeForConfig.WASAPI : ESoundDeviceTypeForConfig.DSound);
+			nSoundDeviceType = new COptionEnum<ESoundDeviceTypeForConfig>(FDK.COS.bIsVistaOrLater ? ESoundDeviceTypeForConfig.WASAPI_Exclusive : ESoundDeviceTypeForConfig.DSound);
 			bForceHighPowerPlan = new COptionBool( false );
 			bEventDrivenWASAPI = new COptionBool( false );
 			bLoadDTXDetail = new COptionBool( false ); 

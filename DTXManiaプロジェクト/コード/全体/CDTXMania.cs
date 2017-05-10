@@ -320,7 +320,10 @@ namespace DTXMania
 							ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.DSound;
 							break;
 						case ESoundDeviceType.ExclusiveWASAPI:
-							ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI;
+							ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Exclusive;
+							break;
+						case ESoundDeviceType.SharedWASAPI:
+							ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Shared;
 							break;
 						case ESoundDeviceType.ASIO:
 							ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.ASIO;
@@ -638,8 +641,11 @@ namespace DTXMania
 					case ESoundDeviceTypeForConfig.ASIO:
 						soundDeviceType = ESoundDeviceType.ASIO;
 						break;
-					case ESoundDeviceTypeForConfig.WASAPI:
+					case ESoundDeviceTypeForConfig.WASAPI_Exclusive:
 						soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
+						break;
+					case ESoundDeviceTypeForConfig.WASAPI_Shared:
+						soundDeviceType = ESoundDeviceType.SharedWASAPI;
 						break;
 					default:
 						soundDeviceType = ESoundDeviceType.Unknown;
