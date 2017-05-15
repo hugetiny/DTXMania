@@ -1,0 +1,658 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="dtx" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\dtx.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="strCfgCommon左側メニューに戻ります" xml:space="preserve">
+    <value>Return to the left menu.</value>
+  </data>
+  <data name="strCfgKeyAssignキャプチャ説明" xml:space="preserve">
+    <value>Capture key assign:\nTo assign key for screen capture.\n(You can assign keyboard only. You can't use pads to capture screenshot.)</value>
+  </data>
+  <data name="strCfgSysFullScreen" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysVSync" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysStageFailed" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysFullAVI" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysAVI" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysBGA" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysLog" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysStoic" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysAdjustWaves" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysBGM" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysAudience" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysSaveScoreIni" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysRandSubBox" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrAutoHH" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrAutoSD" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrAutoBD" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrAutoHT" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrAutoLT" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrAutoFT" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgAutoCY" xml:space="preserve">
+    <value>Play the right cymbal automatically.</value>
+  </data>
+  <data name="strCfgAutoLCY" xml:space="preserve">
+    <value>Play the left cymbal automatically.</value>
+  </data>
+  <data name="strCfgGtAutoR" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgGtAutoG" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgGtAutoB" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgGtAutoPick" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgGtAutoWailing" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgBsAutoR" xml:space="preserve">
+    <value>Press the bass R lane automatically.</value>
+  </data>
+  <data name="strCfgBsAutoG" xml:space="preserve">
+    <value>Press the bass G lane automatically.</value>
+  </data>
+  <data name="strCfgBsAutoB" xml:space="preserve">
+    <value>Press the bass B lane automatically.</value>
+  </data>
+  <data name="strCfgBsAutoPick" xml:space="preserve">
+    <value>Pick the bass automatically.</value>
+  </data>
+  <data name="strCfgBsAutoWailing" xml:space="preserve">
+    <value>Do the bass wailing automatically.</value>
+  </data>
+  <data name="strCfgSysSoundLoadLimiter" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysAutoResultCapture" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysBufferingInput" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysUseBoxDefSkin" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysUseOSTimer" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysTimeStretch" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrCymbalFree" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrChipSound" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrFillin" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrTight" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysSoundDeviceType" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysDamageLevel" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysJudgePriority" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrCYGroup" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSts" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrFTGroup" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrHHGroup" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrBDGroup" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrCYPriority" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrFTPriority" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrHHPriority" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysPlayMode" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysShowLagType" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysPreSoundWait" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysPreImageWait" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysAutoVolume" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysChipVolume" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysPlaySpeed" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysRisky" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysWASAPIBufSize" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysMasterVolume" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbChipSoundMonitor" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbSudden" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbHidden" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbReverse" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbRandom" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbLight" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbLeft" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbScrollSpeed" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbInputAdjust" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbMinComboDisp" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbInvisible" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbAutoGhost" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDgbTargetGhost" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgSysASIODevice" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignLC" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignHH" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignHHO" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignSD" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignBD" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignHT" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignLT" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignFT" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignCY" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignRD" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignHP" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignGtR" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignGtG" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignGtB" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignGtPick" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignGtWailing" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignGtDecide" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignGtCancel" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignBsR" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignBsG" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignBsB" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignBsPick" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignBsWailing" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignBsDecide" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgKeyAssignBsCancel" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgDrAllAuto" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgGtAllAuto" xml:space="preserve">
+    <value>test</value>
+  </data>
+  <data name="strCfgBsAllAuto" xml:space="preserve">
+    <value>Switch to play the bass automatically.</value>
+  </data>
+  <data name="strCfgDgbDisplayCombo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDgbDisplayJudge" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgSysBGAAlpha" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgSysDark" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgSysSkin" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDgbSudHidInv" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgSysDebugInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgSysEnumSongs" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDgbHiddenFrom" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDgbSuddenFrom" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgAutoHHC" xml:space="preserve">
+    <value>Play the hi-hat (closed) automatically.</value>
+  </data>
+  <data name="strCfgAutoHHO" xml:space="preserve">
+    <value>Play the hi-hat (opened) automatically.</value>
+  </data>
+  <data name="strCfgAutoRD" xml:space="preserve">
+    <value>Play the ride cymbal automatically.</value>
+  </data>
+  <data name="strCfgDrAutoHHC" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDrAutoHHO" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispBassXBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispBassXGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispBsComboXBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispBsComboXGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispBsComboYBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispBsComboYGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispBsJudge" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispBsJudgeLine" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDebugXBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDebugXDr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDebugXGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDebugYBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDebugYDr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDebugYGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDrComboXBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDrComboXDr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDrComboYBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDrComboYDr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDrJudge" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDrJudgeLine" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDrumsXBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispDrumsXDr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispGtComboXBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispGtComboXGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispGtComboYBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispGtComboYGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispGtJudge" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispGtJudgeLine" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispGuitarXBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispGuitarXGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderBD" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderBsB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderBsG" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderBsR" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderBsW" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderCY" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderFT" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderGtB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderGtG" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderGtR" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderGtW" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderHH" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderHT" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderLC" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderLT" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispLaneOrderSD" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispMovieXBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispMovieXDr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispMovieXGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispMovieYBoth" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispMovieYDr" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDispMovieYGB" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgDgbDisplayGraph" xml:space="preserve">
+    <value />
+  </data>
+  <data name="strCfgSysForceHighPowerPlan" xml:space="preserve">
+    <value>test highpowerplan</value>
+  </data>
+  <data name="strCfgSysWASAPIEventDriven" xml:space="preserve">
+    <value>test WASAPIEventDriven</value>
+  </data>
+  <data name="strTitleStart" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="strCfgSysLoadDTXDetail" xml:space="preserve">
+    <value>test</value>
+  </data>
+</root>
