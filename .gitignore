@@ -1,0 +1,8 @@
+DTXCreator/
+DTXMania/
+FDK/
+obj/
+bin/
+.vs/
+packages/
+*.suo
