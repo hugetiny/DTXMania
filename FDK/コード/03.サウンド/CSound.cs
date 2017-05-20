@@ -116,6 +116,105 @@ namespace FDK
 		{
 			return nStreams;
 		}
+
+		/// <summary>
+		/// サウンドファイルの実体への参照数。
+		/// </summary>
+		/// <remarks>0の時にCSound()を作ると実体を生成し、1以上の時はClone()する。開放の時も同様で、2以上の時は実体を開放せず、1の時に実体を開放する。</remarks>
+		/// <remarks>DirectSound時のみ使用する。</remarks>
+		private static Dictionary<string, int> dicWavFileRefCounter;
+		private static Dictionary<string, CSound> dicCSoundWavInstance;
+
+		public CSound tGetCSoundWavInstance(string fullPathName)
+		{
+			if (dicCSoundWavInstance.ContainsKey(fullPathName))
+			{
+//Debug.WriteLine("dic instance hit" + Path.GetFileName(fullPathName));
+				return dicCSoundWavInstance[fullPathName];
+			}
+			else
+			{
+//Debug.WriteLine("dic instance fail" + Path.GetFileName(fullPathName));
+				return null;
+			}
+		}
+		public bool tSetCSoundWavInstance(string fullPathName, CSound cs)
+		{
+			if (dicCSoundWavInstance.ContainsKey(fullPathName))
+			{
+//Debug.WriteLine("dic instance already set" + Path.GetFileName(fullPathName));
+
+				throw new ArgumentException("tSetCSoundWavInstance(" + fullPathName + "): 既に登録されています。");
+				return false;
+			}
+			else
+			{
+//Debug.WriteLine("dic instance add" + Path.GetFileName(fullPathName));
+				dicCSoundWavInstance.Add(fullPathName, cs);
+				return true;
+			}
+		}
+
+		public static int tGetWavFileRefCounter(string fullPathName)
+		{
+			if (dicWavFileRefCounter.ContainsKey(fullPathName))
+			{
+//Debug.WriteLine("dic ref counter = " +dicWavFileRefCounter[fullPathName] + " (" + Path.GetFileName(fullPathName) + ")" );
+				return dicWavFileRefCounter[fullPathName];
+			}
+			else
+			{
+//Debug.WriteLine("dic ref counter = 0 (" + Path.GetFileName(fullPathName) + ")" );
+				return 0;
+			}
+		}
+
+		public static int tIncrementWavFileRefCounter(string fullPathName)
+		{
+			if (dicWavFileRefCounter.ContainsKey(fullPathName))
+			{
+//Debug.WriteLine("dic incremented counter = " + tGetWavFileRefCounter(fullPathName) + "+1 (" + Path.GetFileName(fullPathName) + ")" );
+				return ++dicWavFileRefCounter[fullPathName];
+			}
+			else
+			{
+//Debug.WriteLine("dic incremented counter = 1 (" + Path.GetFileName(fullPathName) + ")" );
+				dicWavFileRefCounter.Add(fullPathName, 1);
+				return 1;
+			}
+		}
+
+		public static int tDecrementWavFileRefCounter(string fullPathName)
+		{
+			if (dicWavFileRefCounter.ContainsKey(fullPathName))
+			{
+//Debug.WriteLine("dic decremented counter = " + tGetWavFileRefCounter(fullPathName) + "-1 (" + Path.GetFileName(fullPathName) + ")" );
+				int value = --dicWavFileRefCounter[fullPathName];
+				if (value == 0)
+				{
+					dicWavFileRefCounter.Remove(fullPathName);
+					dicCSoundWavInstance.Remove(fullPathName);
+				}
+				else if (value < 0)
+				{
+					throw new Exception("tDecrementWavFileRefCounter(" + fullPathName + "): カウンタが負の値です。(" + value.ToString() + ")" );
+				}
+				return value;
+			}
+			else
+			{
+				//Debug.WriteLine("dic dec counter = null (" + Path.GetFileName(fullPathName) + ")" );
+				//throw new ArgumentException("tDecrementWavFileRefCounter(" + fullPathName + "): 引数に相当するサウンドファイルが登録されていません。");
+				return 0;
+			}
+		}
+
+		public static void tClearWavFileRefCounter()
+		{
+			dicWavFileRefCounter.Clear();
+			dicCSoundWavInstance.Clear();
+		}
+
 		#region [ WASAPI/ASIO/DirectSound設定値 ]
 		/// <summary>
 		/// <para>WASAPI 排他モード出力における再生遅延[ms]（の希望値）。最終的にはこの数値を基にドライバが決定する）。</para>
@@ -259,6 +358,7 @@ namespace FDK
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
 
+Debug.WriteLine("t初期化() 開始");
 			SoundDelayExclusiveWASAPI = _nSoundDelayExclusiveWASAPI;
 			SoundDelayASIO = _nSoundDelayASIO;
 			ASIODevice = _nASIODevice;
@@ -293,11 +393,14 @@ namespace FDK
 					n初期デバイス = 4;
 					break;
 			}
+Debug.WriteLine("t初期化() ループ開始");
 			for ( SoundDeviceType = ESoundDeviceTypes[ n初期デバイス ]; ; SoundDeviceType = ESoundDeviceTypes[ ++n初期デバイス ] )
 			{
 				try
 				{
+Debug.WriteLine("再構築 開始");
 					t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する();
+Debug.WriteLine("再構築 終了");
 					break;
 				}
 				catch ( Exception e )
@@ -314,10 +417,15 @@ namespace FDK
 			{
 				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, 4 );
 				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 );
+				Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_ASYNCFILE_BUFFER, 65536 * 4 );
 
 				Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
 				Trace.TraceInformation( "BASS_CONFIG_UpdateThreads=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS ) );
+				Trace.TraceInformation( "BASS_CONFIG_ASYNCFILE_BUFFER=" + Bass.BASS_GetConfig(BASSConfig.BASS_CONFIG_ASYNCFILE_BUFFER ) );
 			}
+
+			dicWavFileRefCounter = new Dictionary<string, int>();
+			dicCSoundWavInstance = new Dictionary<string, CSound>();
 		}
 
 		public void tDisableUpdateBufferAutomatically()
@@ -332,29 +440,49 @@ namespace FDK
 
 		public static void t終了()
 		{
-			C共通.tDisposeする( SoundDevice ); SoundDevice = null;
-			C共通.tDisposeする( ref rc演奏用タイマ );	// Global.Bass を解放した後に解放すること。（Global.Bass で参照されているため）
+Debug.WriteLine("t終了()の開始");
+			try
+			{
+				C共通.tDisposeする(SoundDevice); SoundDevice = null;
+			}
+			catch (Exception e)
+			{
+				Trace.TraceError(e.Message);
+			}
+Debug.WriteLine("SoundDeviceのDispose終了");
+			try
+			{
+				C共通.tDisposeする(ref rc演奏用タイマ); // Global.Bass を解放した後に解放すること。（Global.Bass で参照されているため）
+			}
+			catch (Exception e)
+			{
+				Trace.TraceError(e.Message);
+			}
+Debug.WriteLine("t終了()の終了");
 		}
 
 
 		public static void t現在のユーザConfigに従ってサウンドデバイスとすべての既存サウンドを再構築する()
 		{
 			#region [ すでにサウンドデバイスと演奏タイマが構築されていれば解放する。]
+Debug.WriteLine("開放チェック");
 			//-----------------
 			if ( SoundDevice != null )
 			{
 				// すでに生成済みのサウンドがあれば初期状態に戻す。
 
-				CSound.tすべてのサウンドを初期状態に戻す();		// リソースは解放するが、CSoundのインスタンスは残す。
+Debug.WriteLine("SoundDevice: すべてのサウンドを初期状態に戻す 開始");
+				CSound.tすべてのサウンドを初期状態に戻す();     // リソースは解放するが、CSoundのインスタンスは残す。
 
 
 				// サウンドデバイスと演奏タイマを解放する。
-
+Debug.WriteLine("SoundDevice: Disposing");
 				C共通.tDisposeする( SoundDevice ); SoundDevice = null;
 				C共通.tDisposeする( ref rc演奏用タイマ );	// Global.SoundDevice を解放した後に解放すること。（Global.SoundDevice で参照されているため）
 			}
 			//-----------------
 			#endregion
+Debug.WriteLine("SoundDevice: Start構築");
 
 			#region [ 新しいサウンドデバイスを構築する。]
 			//-----------------
@@ -379,6 +507,7 @@ namespace FDK
 				default:
 					throw new Exception( string.Format( "未対応の SoundDeviceType です。[{0}]", SoundDeviceType.ToString() ) );
 			}
+Debug.WriteLine("SoundDevice: Start構築完了");
 			//-----------------
 			#endregion
 			#region [ 新しい演奏タイマを構築する。]
@@ -386,10 +515,12 @@ namespace FDK
 			rc演奏用タイマ = new CSoundTimer( SoundDevice );
 			//-----------------
 			#endregion
+Debug.WriteLine("SoundDevice: 演奏タイマ構築完了");
 
 			SoundDevice.nMasterVolume = _nMasterVolume;					// サウンドデバイスに対して、マスターボリュームを再設定する
 
 			CSound.tすべてのサウンドを再構築する( SoundDevice );		// すでに生成済みのサウンドがあれば作り直す。
+Debug.WriteLine("SoundDevice: すべてのサウンドを再構築完了");
 		}
 		public CSound tサウンドを生成する( string filename )
 		{
@@ -397,7 +528,26 @@ namespace FDK
 			{
 				throw new Exception( string.Format( "未対応の SoundDeviceType です。[{0}]", SoundDeviceType.ToString() ) );
 			}
-			return SoundDevice.tサウンドを作成する( filename );
+			if (SoundDeviceType == ESoundDeviceType.DirectSound)
+			{
+				if (tIncrementWavFileRefCounter(filename) <= 1)
+				{
+					CSound cs = SoundDevice.tサウンドを作成する(filename);
+					tSetCSoundWavInstance(filename, cs);
+					return cs;
+				}
+				else
+				{
+					CSound cs = (CSound)tGetCSoundWavInstance(filename).Clone();
+					CSound.listインスタンス.Add(cs);
+//Debug.WriteLine("listインスタンスに追加3: " + Path.GetFileName(cs.strファイル名));
+					return cs;
+				}
+			}
+			else
+			{
+				return SoundDevice.tサウンドを作成する(filename);
+			}
 		}
 
 		private static DateTime lastUpdateTime = DateTime.MinValue;
@@ -740,6 +890,11 @@ namespace FDK
 			this._hTempoStream = 0;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		/// <remarks>CSoundの新規作成時に、新規作成かClone()するかを自動で判別するため、外部からは呼び出さないこと。</remarks>
 		public object Clone()
 		{
 			if ( !bDirectSoundである )
@@ -777,12 +932,13 @@ namespace FDK
 		public void tDirectSoundサウンドを作成する( string strファイル名, DirectSound DirectSound )
 		{
 			this.e作成方法 = E作成方法.ファイルから;
-			this.strファイル名 = strファイル名;
-			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 ||
-				 String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 ||
-				 String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )	// caselessで文字列比較
+			this.strファイル名 = Path.GetFullPath( strファイル名 );
+
+			if (String.Compare(Path.GetExtension(strファイル名), ".xa", true) == 0 ||
+				 String.Compare(Path.GetExtension(strファイル名), ".mp3", true) == 0 ||
+				 String.Compare(Path.GetExtension(strファイル名), ".ogg", true) == 0)    // caselessで文字列比較
 			{
-				tDirectSoundサウンドを作成するXaOggMp3( strファイル名, DirectSound );
+				tDirectSoundサウンドを作成するXaOggMp3(strファイル名, DirectSound);
 				return;
 			}
 
@@ -793,55 +949,55 @@ namespace FDK
 
 			{
 				#region [ ファイルがWAVかつPCMフォーマットか否か調べる。]
-				//-----------------
-				try
-				{
-					using( var ws = new SoundStream( new FileStream( strファイル名, FileMode.Open ) ) )
-					{
-						if( ws.Format.Encoding != WaveFormatEncoding.Pcm )
-							bファイルがWAVかつPCMフォーマットである = false;
-					}
-				}
-				catch
-				{
-					bファイルがWAVかつPCMフォーマットである = false;
-				}
-				//-----------------
-				#endregion
-
-				if ( bファイルがWAVかつPCMフォーマットである )
-				{
-					#region [ ファイルを読み込んで byArrWAVファイルイメージへ格納。]
 					//-----------------
-					var fs = File.Open( strファイル名, FileMode.Open, FileAccess.Read );
-					var br = new BinaryReader( fs );
-
-					byArrWAVファイルイメージ = new byte[ fs.Length ];
-					br.Read( byArrWAVファイルイメージ, 0, (int) fs.Length );
-
-					br.Close();
-					fs.Close();
+					try
+					{
+						using (var ws = new SoundStream(new FileStream(strファイル名, FileMode.Open)))
+						{
+							if (ws.Format.Encoding != WaveFormatEncoding.Pcm)
+								bファイルがWAVかつPCMフォーマットである = false;
+						}
+					}
+					catch
+					{
+						bファイルがWAVかつPCMフォーマットである = false;
+					}
 					//-----------------
 					#endregion
+
+				if (bファイルがWAVかつPCMフォーマットである)
+				{
+					#region [ ファイルを読み込んで byArrWAVファイルイメージへ格納。]
+						//-----------------
+						var fs = File.Open(strファイル名, FileMode.Open, FileAccess.Read);
+						var br = new BinaryReader(fs);
+
+						byArrWAVファイルイメージ = new byte[fs.Length];
+						br.Read(byArrWAVファイルイメージ, 0, (int)fs.Length);
+
+						br.Close();
+						fs.Close();
+						//-----------------
+						#endregion
 				}
 				else
 				{
 					#region [ DirectShow でデコード変換し、 byArrWAVファイルイメージへ格納。]
-					//-----------------
-					CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
-					//-----------------
-					#endregion
+						//-----------------
+						CDStoWAVFileImage.t変換(strファイル名, out byArrWAVファイルイメージ);
+						//-----------------
+						#endregion
 				}
 			}
 
 			// あとはあちらで。
 
-			this.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, DirectSound );
+			this.tDirectSoundサウンドを作成する(byArrWAVファイルイメージ, DirectSound);
 		}
 		public void tDirectSoundサウンドを作成するXaOggMp3( string strファイル名, DirectSound DirectSound )
 		{
 			this.e作成方法 = E作成方法.ファイルから;
-			this.strファイル名 = strファイル名;
+			this.strファイル名 = Path.GetFullPath( strファイル名 );
 
 
 			int nPCMデータの先頭インデックス = 0;
@@ -1002,6 +1158,7 @@ namespace FDK
 
 			// インスタンスリストに登録。
 			CSound.listインスタンス.Add( this );
+			//Debug.WriteLine("listインスタンスに追加2: " + Path.GetFileName(this.strファイル名));
 		}
 
 		#region [ DTXMania用の変換 ]
@@ -1284,6 +1441,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 		public static void tすべてのサウンドを初期状態に戻す()
 		{
+Debug.WriteLine("SoundDevice: すべてのサウンドを初期状態に戻すメイン");
 			foreach ( var sound in CSound.listインスタンス )
 			{
 				sound.t解放する( false );
@@ -1299,6 +1457,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 			var sounds = CSound.listインスタンス.ToArray();
 			CSound.listインスタンス.Clear();
+			CSound管理.tClearWavFileRefCounter();
 			
 
 			// 配列に基づいて個々のサウンドを作成する。
@@ -1389,7 +1548,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 						{
 							// 演奏終了後、長時間解放しないでいると、たまに AccessViolationException が発生することがある。
 						}
-						C共通.tDisposeする( ref this.Buffer );
+						if ( CSound管理.tDecrementWavFileRefCounter(this.strファイル名) > 0)
+						{
+							this.Buffer = null;
+						}
 					}
 					//-----------------
 					#endregion
@@ -1409,7 +1571,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					this.byArrWAVファイルイメージ = null;
 				}
 
-				if ( bインスタンス削除 )
+				if (bインスタンス削除)
 				{
 					//try
 					//{
@@ -1419,13 +1581,39 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					//{
 					//    Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
 					//}
-					bool b = CSound.listインスタンス.Remove( this );	// これだと、Clone()したサウンドのremoveに失敗する
-					if ( !b )
+
+					if (this.eデバイス種別 == ESoundDeviceType.DirectSound && CSound管理.tGetWavFileRefCounter(this.strファイル名) <= 0)
 					{
-						Debug.WriteLine( "FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName( this.strファイル名 ) );
+//Debug.WriteLine("実体をDisposeしました: " + Path.GetFileName(this.strファイル名));
+						C共通.tDisposeする(ref this.Buffer);
+					}
+					else
+					{
+//Debug.WriteLine("実体をDisposeしません: " + Path.GetFileName(this.strファイル名));
+					}
+					if (!CSound.listインスタンス.Contains(this))
+					{
+//Debug.WriteLine("Removeするitemが CSound.listインスタンスにありません: " + Path.GetFileName(this.strファイル名));
 					}
 
+//Debug.WriteLine("Remove前のインスタンス数=" + CSound.listインスタンス.Count);
+					bool b = CSound.listインスタンス.Remove(this);    // これだと、Clone()したサウンドのremoveに失敗する
+//Debug.WriteLine("Remove後のインスタンス数=" + CSound.listインスタンス.Count);
+					if (!b)
+					{
+						Debug.WriteLine("FAILED to remove CSound.listインスタンス: Count=" + CSound.listインスタンス.Count + ", filename=" + Path.GetFileName(this.strファイル名));
+					}
+//Debug.WriteLine("インスタンス一覧:");
+//ShowAllCSoundFiles();
 				}
+				else
+				{
+					//Debug.WriteLine("bインスタンス削除 == false for " + Path.GetFileName(this.strファイル名));
+				}
+			}
+			else
+			{
+				//Debug.WriteLine("bManagedも開放する == false for " + Path.GetFileName(this.strファイル名));
 			}
 		}
 		~CSound()
@@ -1523,7 +1711,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			#endregion
 
 			this.e作成方法 = E作成方法.ファイルから;
-			this.strファイル名 = strファイル名;
+			this.strファイル名 = Path.GetFullPath( strファイル名 );
 
 
 			// BASSファイルストリームを作成。
@@ -1614,7 +1802,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			nBytes = totalPCMSize;
 
 			this.e作成方法 = E作成方法.WAVファイルイメージから;		//.ファイルから;	// 再構築時はデコード後のイメージを流用する&Dispose時にhGCを解放する
-			this.strファイル名 = strファイル名;
+			this.strファイル名 = Path.GetFullPath( strファイル名 );
 			this.hGC = GCHandle.Alloc( this.byArrWAVファイルイメージ, GCHandleType.Pinned );		// byte[] をピン留め
 
 			//_cbStreamXA = new STREAMPROC( CallbackPlayingXA );
@@ -1675,6 +1863,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			// インスタンスリストに登録。
 
 			CSound.listインスタンス.Add( this );
+//Debug.WriteLine("listインスタンスに追加1: " + Path.GetFileName(this.strファイル名));
 
 			// n総演奏時間の取得; DTXMania用に追加。
 			double seconds = Bass.BASS_ChannelBytes2Seconds( this._hBassStream, nBytes );
