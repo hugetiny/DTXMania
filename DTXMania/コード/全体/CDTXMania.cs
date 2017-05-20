@@ -2655,7 +2655,7 @@ namespace DTXMania
 			string[] strDLLs = System.IO.Directory.GetFiles(strプラグインフォルダパス, "*.dll");
 			foreach (string dllName in strDLLs)
 			{
-				if (Path.GetExtension(dllName).ToLower() != "dll")
+				if (Path.GetExtension(dllName).ToLower() != ".dll")
 				{
 					continue;
 				}
