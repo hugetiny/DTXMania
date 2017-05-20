@@ -172,29 +172,29 @@ namespace FDK
 
 			// BASS の初期化。
 
-			int n周波数 = 44100;	// 仮決め。lデバイス（≠ドライバ）がネイティブに対応している周波数であれば何でもいい？ようだ。BASSWASAPIでデバイスの周波数は変えられる。いずれにしろBASSMXで自動的にリサンプリングされる。
-			// BASS_Initは、WASAPI初期化の直前に行うよう変更。WASAPIのmix周波数を使って初期化することで、余計なリサンプリング処理を省き高速化するため。
-			//if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
-			//	throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+			int n周波数 = 44100;   // 仮決め。lデバイス（≠ドライバ）がネイティブに対応している周波数であれば何でもいい？ようだ。BASSWASAPIでデバイスの周波数は変えられる。いずれにしろBASSMXで自動的にリサンプリングされる。
+								// BASS_Initは、WASAPI初期化の直前に行うよう変更。WASAPIのmix周波数を使って初期化することで、余計なリサンプリング処理を省き高速化するため。
+								//if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
+								//	throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
 
 
 			#region [ デバッグ用: WASAPIデバイスのenumerateと、ログ出力 ]
 			// (デバッグ用)
-			//Trace.TraceInformation( "WASAPIデバイス一覧:" );
-			//int a, count = 0;
-			//BASS_WASAPI_DEVICEINFO wasapiDevInfo;
-			//for ( a = 0; ( wasapiDevInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( a ) ) != null; a++ )
-			//{
-			//	if ( ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_INPUT ) == 0 // device is an output device (not input)
-			//			&& ( wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_ENABLED ) != 0 ) // and it is enabled
-			//	{
-			//		Trace.TraceInformation( "WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, minperiod={4}s, mixchans={5}, mixfreq={6}",
-			//			a,
-			//			wasapiDevInfo.name,
-			//			wasapiDevInfo.IsDefault, wasapiDevInfo.defperiod, wasapiDevInfo.minperiod, wasapiDevInfo.mixchans, wasapiDevInfo.mixfreq );
-			//		count++; // count it
-			//	}
-			//}
+			Trace.TraceInformation("WASAPIデバイス一覧:");
+			int a, count = 0;
+			BASS_WASAPI_DEVICEINFO wasapiDevInfo;
+			for (a = 0; (wasapiDevInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo(a)) != null; a++)
+			{
+				if ((wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_INPUT) == 0 // device is an output device (not input)
+						&& (wasapiDevInfo.flags & BASSWASAPIDeviceInfo.BASS_DEVICE_ENABLED) != 0) // and it is enabled
+				{
+					Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, minperiod={4}s, mixchans={5}, mixfreq={6}",
+						a,
+						wasapiDevInfo.name,
+						wasapiDevInfo.IsDefault, wasapiDevInfo.defperiod, wasapiDevInfo.minperiod, wasapiDevInfo.mixchans, wasapiDevInfo.mixfreq);
+					count++; // count it
+				}
+			}
 			#endregion
 
 			// BASS WASAPI の初期化。
@@ -242,7 +242,7 @@ namespace FDK
 			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
 			if ( COS.bIsWin7OrLater && CSound管理.bSoundUpdateByEventWASAPI )
 			{
-				flags |= BASSWASAPIInit.BASS_WASAPI_EVENT;	// Win7以降の場合は、WASAPIをevent drivenで動作させてCPU負荷減、レイテインシ改善
+				flags |= BASSWASAPIInit.BASS_WASAPI_EVENT;	// Win7以降の場合は、WASAPIをevent drivenで動作させてレイテインシ改善可能
 			}
 			if ( BassWasapi.BASS_WASAPI_Init( nDevNo, n周波数, nチャンネル数, flags, ( n希望バッファサイズms / 1000.0f ), ( n更新間隔ms / 1000.0f ), this.tWasapiProc, IntPtr.Zero ) )
 			{
@@ -268,14 +268,15 @@ namespace FDK
 					this.n実バッファサイズms = (long) ( wasapiInfo.buflen * 1000.0f / n1秒のバイト数 );
 					this.n実出力遅延ms = 0;	// 初期値はゼロ
 					Trace.TraceInformation( "使用デバイス: #" + nDevNo + " : " + deviceInfo.name + ", flags=" + deviceInfo.flags );
-					Trace.TraceInformation( "BASS を初期化しました。(WASAPI排他モード, {0}Hz, {1}ch, フォーマット:{2}, バッファ{3}bytes [{4}ms(希望{5}ms)], 更新間隔{6}ms)",
+					Trace.TraceInformation( "BASS を初期化しました。(WASAPI排他モード, {0}Hz, {1}ch, フォーマット:{2}, バッファ{3}bytes [{4}ms(希望{5}ms)], 更新間隔{6}ms, イベント動作={7})",
 						wasapiInfo.freq,
 						wasapiInfo.chans,
 						wasapiInfo.format.ToString(),
 						wasapiInfo.buflen,
 						n実バッファサイズms.ToString(),
 						n希望バッファサイズms.ToString(),
-						n更新間隔ms.ToString() );
+						n更新間隔ms.ToString(),
+						wasapiInfo.IsEventDriven.ToString() );
 					Trace.TraceInformation( "デバイスの最小更新時間={0}ms, 既定の更新時間={1}ms", deviceInfo.minperiod * 1000, deviceInfo.defperiod * 1000 );
 					this.bIsBASSFree = false;
 					//-----------------
@@ -289,16 +290,38 @@ namespace FDK
 					
 					this.n実出力遅延ms = 0;	// 初期値はゼロ
 					var devInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( BassWasapi.BASS_WASAPI_GetDevice() );	// 共有モードの場合、更新間隔はデバイスのデフォルト値に固定される。
-					Trace.TraceInformation( "BASS を初期化しました。(WASAPI共有モード, {0}ms, 更新間隔{1}ms)", n希望バッファサイズms, devInfo.defperiod * 1000.0f );
+					//Trace.TraceInformation( "BASS を初期化しました。(WASAPI共有モード, {0}ms, 更新間隔{1}ms)", n希望バッファサイズms, devInfo.defperiod * 1000.0f );
+					var wasapiInfo = BassWasapi.BASS_WASAPI_GetInfo();
+					int n1サンプルのバイト数 = 2 * wasapiInfo.chans; // default;
+					switch (wasapiInfo.format)      // BASS WASAPI で扱うサンプルはすべて 32bit float で固定されているが、デバイスはそうとは限らない。
+					{
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_8BIT: n1サンプルのバイト数 = 1 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_16BIT: n1サンプルのバイト数 = 2 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_24BIT: n1サンプルのバイト数 = 3 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_32BIT: n1サンプルのバイト数 = 4 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_FLOAT: n1サンプルのバイト数 = 4 * wasapiInfo.chans; break;
+					}
+					int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.freq;
+					this.n実バッファサイズms = (long)(wasapiInfo.buflen * 1000.0f / n1秒のバイト数);
+					Trace.TraceInformation("使用デバイス: #" + nDevNo + " : " + deviceInfo.name + ", flags=" + deviceInfo.flags);
+					Trace.TraceInformation("BASS を初期化しました。(WASAPI共有モード, {0}Hz, {1}ch, フォーマット:{2}, バッファ{3}bytes [{4}ms(希望{5}ms)], 更新間隔{6}ms, イベント動作={7})",
+						wasapiInfo.freq,
+						wasapiInfo.chans,
+						wasapiInfo.format.ToString(),
+						wasapiInfo.buflen,
+						n実バッファサイズms.ToString(),
+						n希望バッファサイズms.ToString(),
+						n更新間隔ms.ToString(),
+						wasapiInfo.IsEventDriven.ToString());
 					this.bIsBASSFree = false;
 					//-----------------
 					#endregion
 				}
 			}
-			#region [ #31737 WASAPI排他モードのみ利用可能とし、WASAPI共有モードは使用できないようにするために、WASAPI共有モードでの初期化フローを削除する。 ]
+			//#region [ #31737 WASAPI排他モードのみ利用可能とし、WASAPI共有モードは使用できないようにするために、WASAPI共有モードでの初期化フローを削除する。 ]
 			else if (mode == Eデバイスモード.排他)
 			{
-				Trace.TraceInformation("Failed to initialize setting BASS (WASAPI) mode [{0}]", Bass.BASS_ErrorGetCode().ToString());
+				Trace.TraceInformation("Failed to initialize setting BASS (WASAPI Exclusive) mode [{0}]", Bass.BASS_ErrorGetCode().ToString());
 				#region [ 排他モードに失敗したのなら共有モードでリトライ。]
 				//-----------------
 				mode = Eデバイスモード.共有;
@@ -306,7 +329,7 @@ namespace FDK
 				//-----------------
 				#endregion
 			}
-			#endregion
+			//#endregion
 			else
 			{
 				#region [ それでも失敗したら例外発生。]
@@ -314,7 +337,7 @@ namespace FDK
 				BASSError errcode = Bass.BASS_ErrorGetCode();
 				Bass.BASS_Free();
 				this.bIsBASSFree = true;
-				throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_WASAPI_Init)[{0}]", errcode ) );
+				throw new Exception( string.Format( "BASS (WASAPI Exclusive, Shared) の初期化に失敗しました。(BASS_WASAPI_Init)[{0}]", errcode ) );
 				//-----------------
 				#endregion
 			}

@@ -133,7 +133,7 @@ namespace FDK
 		/// <summary>
 		/// <para>WASAPI 共有モード出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
-		public static int SoundDelaySharedWASAPI = 100;
+		public static int SoundDelaySharedWASAPI = 10;
 		/// <summary>
 		/// <para>排他WASAPIバッファの更新間隔。出力間隔ではないので注意。</para>
 		/// <para>→ 自動設定されるのでSoundDelay よりも小さい値であること。（小さすぎる場合はBASSによって自動修正される。）</para>
@@ -143,7 +143,7 @@ namespace FDK
 		/// <para>共有WASAPIバッファの更新間隔。出力間隔ではないので注意。</para>
 		/// <para>SoundDelay よりも小さい値であること。（小さすぎる場合はBASSによって自動修正される。）</para>
 		/// </summary>
-		public static int SoundUpdatePeriodSharedWASAPI = 6;
+		public static int SoundUpdatePeriodSharedWASAPI = 3;
 		/// <summary>
 		/// WASAPI利用時に、サウンドバッファの更新をevent drivenにするか、pollingにするかの設定。
 		/// デフォルト設定はpolling。event drivenにすることで、よりラグを小さくできるが、CPU負荷は若干上昇する。
