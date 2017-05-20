@@ -406,7 +406,7 @@ echo (2) 出力フォルダ から 実行時リソースフォルダ にコピ�
 set DESTDIR=%25RUNTIMEDIR%25
 xcopy "$(TargetDir)$(TargetFileName)" %25DESTDIR%25 /Y
 xcopy "$(TargetDir)$(TargetFileName).config" %25DESTDIR%25 /Y
-set DESTDIR="%25RUNTIMEDIR%25\ja-JP"
+set DESTDIR=%25RUNTIMEDIR%25\ja-JP
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
 xcopy "$(TargetDir)ja-JP" %25DESTDIR%25 /Y
 set DESTDIR="%25RUNTIMEDIR%25\dll"
@@ -417,7 +417,7 @@ echo.
 echo (3) 実行時リソースフォルダ から 出力フォルダ にコピーします。（日付の新しいファイルのみ）
 set DESTDIR="$(TargetDir)dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy  "%25RUNTIMEDIR%25\dll" %25DESTDIR%25 /Y /D
+xcopy  %25RUNTIMEDIR%25\dll %25DESTDIR%25 /Y /D
 
 echo.
 echo ビルド後イベントを終了しました。

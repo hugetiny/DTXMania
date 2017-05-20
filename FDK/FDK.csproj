@@ -64,9 +64,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bass.Net, Version=2.4.11.1, Culture=neutral, PublicKeyToken=b7566c273e6ef480, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\実行時フォルダ\dll\Bass.Net.dll</HintPath>
+    <Reference Include="Bass.Net">
+      <HintPath>..\RuntimeResources\dll\Bass.Net.dll</HintPath>
     </Reference>
     <Reference Include="DirectShowLib, Version=2.1.0.1599, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DirectShowLib.1.0.0\lib\DirectShowLib.dll</HintPath>
@@ -216,7 +215,7 @@ echo.
 echo (1) 出力フォルダ から ソリューション出力フォルダ へコピーします。（日付の新しいファイルのみ）
 set DESTDIR="$(SolutionDir)$(OutDir)dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D /EXCLUDE:$(TargetFileName)
+xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D /EXCLUDE:"$(TargetFileName)"
 
 echo.
 echo (2) 出力フォルダ から 実行時リソースフォルダ にコピーします。（日付の新しいファイルのみ）
@@ -228,7 +227,7 @@ echo.
 echo (3) 実行時リソースフォルダ から ソリューション出力フォルダ にコピーします。（日付の新しいファイルのみ）
 set DESTDIR="$(SolutionDir)$(OutDir)dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "%25RUNTIMEDIR%25\dll" %25DESTDIR%25 /Y /D
+xcopy %25RUNTIMEDIR%25\dll %25DESTDIR%25 /Y /D
 
 echo.
 echo ビルド後イベントを終了しました。
