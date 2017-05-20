@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{ECE2FCB4-B588-47E1-A4DB-F5566132FCAC}</ProjectGuid>
+    <RootNamespace>FDK</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProgramFiles)\Microsoft DirectX 9.0 SDK (October 2004)\Include;$(SolutionDir)@jpeglibソリューション\jpeg-8c;$(SolutionDir)@libpngソリューション\lpng157;$(SolutionDir)@OggVorbisソリューション\libogg-1.3.0\include;$(SolutionDir)@OggVorbisソリューション\libvorbis-1.3.2\include;$(SolutionDir)@xadec001ライブラリ;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProgramFiles)\Microsoft DirectX 9.0 SDK (October 2004)\Include;$(SolutionDir)@jpeglibソリューション\jpeg-9b;$(SolutionDir)@libpngソリューション\lpng1623;$(SolutionDir)@OggVorbisソリューション\libogg-1.3.2\include;$(SolutionDir)@OggVorbisソリューション\libvorbis-1.3.5\include;$(SolutionDir)@xadec001ライブラリ;$(IncludePath)</IncludePath>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CallingConvention>Cdecl</CallingConvention>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)$(Configuration)\$(TargetFileName)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CallingConvention>Cdecl</CallingConvention>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)$(Configuration)\$(TargetFileName)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="CAvi.cpp" />
+    <ClCompile Include="CSurface.cpp" />
+    <ClCompile Include="CSurfaceManager.cpp" />
+    <ClCompile Include="CTexture.cpp" />
+    <ClCompile Include="CTextureManager.cpp" />
+    <ClCompile Include="LoadJPEG.cpp" />
+    <ClCompile Include="LoadPNG.cpp" />
+    <ClCompile Include="Activity.cpp" />
+    <ClCompile Include="CArrayList.cpp" />
+    <ClCompile Include="CCounter.cpp" />
+    <ClCompile Include="CD3DApplication.cpp" />
+    <ClCompile Include="CD3DDisplay.cpp" />
+    <ClCompile Include="CFile.cpp" />
+    <ClCompile Include="CFileMM.cpp" />
+    <ClCompile Include="CommandLineParser.cpp" />
+    <ClCompile Include="CSetString.cpp" />
+    <ClCompile Include="CTimer.cpp" />
+    <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DTX.cpp" />
+    <ClCompile Include="FDKError.cpp" />
+    <ClCompile Include="fifo.cpp" />
+    <ClCompile Include="GetDXVersion.cpp" />
+    <ClCompile Include="MD5.cpp" />
+    <ClCompile Include="SerializeFileIO.cpp" />
+    <ClCompile Include="str2float.cpp" />
+    <ClCompile Include="WindowPositions.cpp" />
+    <ClCompile Include="CDirectInput.cpp" />
+    <ClCompile Include="CMIDIInput.cpp" />
+    <ClCompile Include="CMIDIOutput.cpp" />
+    <ClCompile Include="COgg.cpp" />
+    <ClCompile Include="CSound.cpp" />
+    <ClCompile Include="CSoundManager.cpp" />
+    <ClCompile Include="CSoundStream.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CAvi.h" />
+    <ClInclude Include="CSurface.h" />
+    <ClInclude Include="CSurfaceManager.h" />
+    <ClInclude Include="CTexture.h" />
+    <ClInclude Include="CTextureManager.h" />
+    <ClInclude Include="LoadJPEG.h" />
+    <ClInclude Include="LoadPNG.h" />
+    <ClInclude Include="Activity.h" />
+    <ClInclude Include="CArrayList.h" />
+    <ClInclude Include="CCounter.h" />
+    <ClInclude Include="CD3DApplication.h" />
+    <ClInclude Include="CD3DDisplay.h" />
+    <ClInclude Include="CFile.h" />
+    <ClInclude Include="CFileMM.h" />
+    <ClInclude Include="CommandLineParser.h" />
+    <ClInclude Include="CSet.h" />
+    <ClInclude Include="CSetString.h" />
+    <ClInclude Include="CTimer.h" />
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="DTX.h" />
+    <ClInclude Include="FDKError.h" />
+    <ClInclude Include="fifo.h" />
+    <ClInclude Include="GetDXVersion.h" />
+    <ClInclude Include="MD5.h" />
+    <ClInclude Include="SerializeFileIO.h" />
+    <ClInclude Include="str2float.h" />
+    <ClInclude Include="WindowPositions.h" />
+    <ClInclude Include="CDirectInput.h" />
+    <ClInclude Include="CMIDIInput.h" />
+    <ClInclude Include="CMIDIOutput.h" />
+    <ClInclude Include="COgg.h" />
+    <ClInclude Include="CSound.h" />
+    <ClInclude Include="CSoundManager.h" />
+    <ClInclude Include="CSoundStream.h" />
+    <ClInclude Include="fdk10.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="%40作成資料\FDKのフロー.ppt" />
+    <None Include="%40作成資料\FDKを使うアプリのPJの作り方.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -6,3 +6,5 @@ bin/
 .vs/
 packages/
 *.suo
+DTXMania.sln
+RuntimeResources/
