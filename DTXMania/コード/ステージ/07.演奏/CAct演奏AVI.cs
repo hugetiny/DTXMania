@@ -229,7 +229,7 @@ namespace DTXMania
 						magX = magY = 1;
 					}
 
-					if (bFullScreenMovie || bIsPreviewMovie)
+					//if (bFullScreenMovie || bIsPreviewMovie)	// #37227 2017.5.29 yyagi: 動画表示の拡縮を、右横ウインドウ表示での動画再生にも適用
 					{
 						CPreviewMagnifier.EPreviewType e = CPreviewMagnifier.EPreviewType.PlayingFront;
 						if ( bFullScreenMovie ) e = CPreviewMagnifier.EPreviewType.PlayingBackground;

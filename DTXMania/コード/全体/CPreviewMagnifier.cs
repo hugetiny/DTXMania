@@ -49,8 +49,9 @@ namespace DTXMania
 		private int[] HEIGHT_HD_SET = { 400, 600, 1080 }; // 600は仮								// HD版DTXManiaのプレビュー画像height値
 		private int[] WIDTH_FHD_LIMIT = { 320, 320, 640 };                     // VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
 		private int[] HEIGHT_FHD_LIMIT = { 416, 416, 480 };                      // VGA版/FullHD版どちらのプレビュー画像とみなすかのwidth閾値
-		private int[] WIDTH_FHD_SET = { (int)(204 * Scale.X), (int)(278 * Scale.X), 1920 }; // FHD版DTXManiaのプレビュー画像height値
-		private int[] HEIGHT_FHD_SET = { (int)(269 * Scale.Y), (int)(355 * Scale.Y), 1080 };  // FHD版DTXManiaのプレビュー画像height値
+		private int[] WIDTH_FHD_SET = { (int)(204 * Scale.X), (int)(278 * 2), 1920 }; // FHD版DTXManiaのプレビュー画像height値
+		private int[] HEIGHT_FHD_SET = { (int)(269 * Scale.Y), (int)(355 * 2), 1080 };  // FHD版DTXManiaのプレビュー画像height値
+																						// #37227 2017.5.29 yyagi 105以降の新演奏画面では、BGA/AVI領域の縦横倍率はx2
 		#endregion
 
 
