@@ -41,6 +41,10 @@ namespace DTXMania
 
 		public void Hit(EPad ePad)
 		{
+			if (ePad == EPad.HHO)       // #37173 2017.5.30 yyagi; There is HH pad, but no HHO pad. So, HH pad should be flashed insted of HHO
+			{
+				ePad = EPad.HH;
+			}
 			this.stパッド状態[ePad].n明るさ = 6;
 			this.stパッド状態[ePad].nY座標加速度dot = 2;
 		}
