@@ -180,6 +180,7 @@ namespace DTXMania
 			if (!File.Exists(filename))     // 指定したファイルが存在しないなら例外終了
 			{
 				Trace.TraceError("ファイルが見つかりません。({0})", filename);
+				this.last_path = filename;
 				throw new FileNotFoundException();
 				//return false;
 			}
