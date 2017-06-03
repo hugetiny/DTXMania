@@ -644,13 +644,13 @@ namespace DTXMania
 	public enum ESoundDeviceTypeForConfig
 	{
 		[EnumMember]
-		DSound,
+		ASIO,
 		[EnumMember]
 		WASAPI_Exclusive,
 		[EnumMember]
 		WASAPI_Shared,
 		[EnumMember]
-		ASIO,
+		DSound,
 	}
 
 	[DataContract]

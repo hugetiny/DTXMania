@@ -133,7 +133,7 @@ namespace FDK
 		/// <summary>
 		/// <para>WASAPI 共有モード出力における再生遅延[ms]。ユーザが決定する。</para>
 		/// </summary>
-		public static int SoundDelaySharedWASAPI = 100;
+		public static int SoundDelaySharedWASAPI = 10;
 		/// <summary>
 		/// <para>排他WASAPIバッファの更新間隔。出力間隔ではないので注意。</para>
 		/// <para>→ 自動設定されるのでSoundDelay よりも小さい値であること。（小さすぎる場合はBASSによって自動修正される。）</para>
@@ -258,7 +258,6 @@ namespace FDK
 			//SoundDevice = null;						// 後で再初期化することがあるので、null初期化はコンストラクタに回す
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
-
 			SoundDelayExclusiveWASAPI = _nSoundDelayExclusiveWASAPI;
 			SoundDelayASIO = _nSoundDelayASIO;
 			ASIODevice = _nASIODevice;
@@ -267,21 +266,21 @@ namespace FDK
 
 			ESoundDeviceType[] ESoundDeviceTypes = new ESoundDeviceType[ 5 ]
 			{
-				ESoundDeviceType.ExclusiveWASAPI,
 				ESoundDeviceType.ASIO,
+				ESoundDeviceType.ExclusiveWASAPI,
 				ESoundDeviceType.SharedWASAPI,
 				ESoundDeviceType.DirectSound,
 				ESoundDeviceType.Unknown
 			};
 
-			int n初期デバイス;
-			switch ( soundDeviceType )
+			int n初期デバイス;    // = (int) soundDeviceType;
+			switch (soundDeviceType)
 			{
 				case ESoundDeviceType.ExclusiveWASAPI:
-					n初期デバイス = 0;
+					n初期デバイス = 1;
 					break;
 				case ESoundDeviceType.ASIO:
-					n初期デバイス = 1;
+					n初期デバイス = 0;
 					break;
 				case ESoundDeviceType.SharedWASAPI:
 					n初期デバイス = 2;
@@ -293,7 +292,7 @@ namespace FDK
 					n初期デバイス = 4;
 					break;
 			}
-			for ( SoundDeviceType = ESoundDeviceTypes[ n初期デバイス ]; ; SoundDeviceType = ESoundDeviceTypes[ ++n初期デバイス ] )
+			for (SoundDeviceType = ESoundDeviceTypes[n初期デバイス]; ; SoundDeviceType = ESoundDeviceTypes[++n初期デバイス])
 			{
 				try
 				{
@@ -310,6 +309,11 @@ namespace FDK
 					}
 				}
 			}
+			//if (　n初期デバイス > ESoundDeviceTypes.Length )
+			//{
+			//	Trace.TraceError(string.Format("サウンドデバイスの初期化に失敗しました。"));
+			//	throw new Exception("サウンドデバイスの初期化に失敗しました。");
+			//}
 			if ( soundDeviceType == ESoundDeviceType.ExclusiveWASAPI || soundDeviceType == ESoundDeviceType.ASIO || soundDeviceType == ESoundDeviceType.SharedWASAPI )
 			{
 				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, 4 );
