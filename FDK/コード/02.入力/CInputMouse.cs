@@ -26,7 +26,7 @@ namespace FDK
 				this.devMouse = new Mouse( directInput );
 				this.devMouse.SetCooperativeLevel( hWnd, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive );
 				this.devMouse.Properties.BufferSize = 0x20;
-				Trace.TraceInformation( this.devMouse.Information.ProductName + " を生成しました。" );
+				Trace.TraceInformation( this.devMouse.Information.ProductName.Trim(new char[] { '\0' }) + " を生成しました。" );	// なぜか0x00のゴミが出るので削除
 			}
 			catch
 			{

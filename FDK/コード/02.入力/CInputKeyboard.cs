@@ -24,7 +24,7 @@ namespace FDK
 				this.devKeyboard = new Keyboard( directInput );
 				this.devKeyboard.SetCooperativeLevel( hWnd, CooperativeLevel.NoWinKey | CooperativeLevel.Foreground | CooperativeLevel.NonExclusive );
 				this.devKeyboard.Properties.BufferSize = 32;
-				Trace.TraceInformation( this.devKeyboard.Information.ProductName + " を生成しました。" );
+				Trace.TraceInformation( this.devKeyboard.Information.ProductName.Trim(new char[] { '\0' } ) + " を生成しました。" );    // なぜか0x00のゴミが出るので削除
 			}
 			catch
 			{
