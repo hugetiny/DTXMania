@@ -34,6 +34,7 @@ namespace FDK
 				{
 					this.tイベント種別を出力する( eventType );
 					this.tインデントを出力する();
+					SanitizeUsername( ref message );
 					this.streamWriter.WriteLine( message );
 				}
 				catch( ObjectDisposedException )
@@ -49,7 +50,9 @@ namespace FDK
 				{
 					this.tイベント種別を出力する( eventType );
 					this.tインデントを出力する();
-					this.streamWriter.WriteLine( string.Format( format, args ) );
+					string message = string.Format(format, args);
+					SanitizeUsername( ref message );
+					this.streamWriter.WriteLine( message );
 				}
 				catch( ObjectDisposedException )
 				{
@@ -81,6 +84,23 @@ namespace FDK
 				{
 				}
 			}
+		}
+		private string SanitizeUsername(ref string message)
+		{
+			string userprofile = System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+			// もしユーザー名の情報が出力に存在する場合は、伏字にする
+			if (message.Contains(userprofile))
+			{
+				char delimiter = System.IO.Path.DirectorySeparatorChar;
+				string[] u = userprofile.Split(delimiter);
+				int c = u[u.Length - 1].Length;     // ユーザー名の文字数
+				u[u.Length - 1] = "*".PadRight(c, '*');
+				string sanitizedusername = string.Join(delimiter.ToString(), u);
+				message = message.Replace(userprofile, sanitizedusername);
+				return message;
+			}
+			return message;
 		}
 
 		protected override void Dispose( bool disposing )
