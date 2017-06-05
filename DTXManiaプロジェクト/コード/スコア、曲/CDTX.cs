@@ -1707,19 +1707,19 @@ namespace DTXMania
 					#endregion
 
 					// 残りはClone等で登録する
-					//if ( bIsDirectSound )	// DShowでの再生の場合はCloneする
-					//{
-					//    for ( int i = 1; i < nPoly; i++ )
-					//    {
-					//        cwav.rSound[ i ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
-					//        // CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
-					//    }
-					//    for ( int i = nPoly; i < nPolyphonicSounds; i++ )
-					//    {
-					//        cwav.rSound[ i ] = null;
-					//    }
-					//}
-					//else															// WASAPI/ASIO時は通常通り登録
+					if (bIsDirectSound)	// DShowでの再生の場合はCloneする
+					{
+						for (int i = 1; i < nPoly; i++)
+						{
+							cwav.rSound[i] = (CSound)cwav.rSound[0].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
+							// CDTXMania.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
+						}
+						for (int i = nPoly; i < nPolyphonicSounds; i++)
+						{
+							cwav.rSound[i] = null;
+						}
+					}
+					else															// WASAPI/ASIO時は通常通り登録
 					{
 						for ( int i = 1; i < nPoly; i++ )
 						{
