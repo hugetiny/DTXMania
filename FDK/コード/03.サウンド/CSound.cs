@@ -753,8 +753,7 @@ namespace FDK
 			CSound clone = (CSound) MemberwiseClone();	// これだけだとCY連打が途切れる＆タイトルに戻る際にNullRef例外発生
 			clone.Buffer = this.DirectSound.DuplicateSoundBuffer( this.Buffer );
 
-			// CSound.listインスタンス.Add( this );			// インスタンスリストに登録。
-			// 本来これを加えるべきだが、Add後Removeできなくなっている。Clone()の仕方の問題であろう。
+			CSound.listインスタンス.Add( clone );          // インスタンスリストに登録。
 
 			return clone;
 		}
