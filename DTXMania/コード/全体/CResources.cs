@@ -147,12 +147,29 @@ namespace DTXMania
 		/// <summary>
 		/// key名に相当するitem(コンマ区切りの選択肢)を返す
 		/// ただし現在は未使用
-		/// /// </summary>
+		/// </summary>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		public string Items( string key )
+		public string ItemsStr( string key )
 		{
 			return Resource( key, "items", strLanguageCode );
+		}
+
+		/// <summary>
+		/// key名に相当するitemの配列を返す
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		public string[] Items(string key)
+		{
+			string itemstr = Resource(key, "items", strLanguageCode);
+			string[] items = itemstr.Split(',');
+			for (int i = 0; i <items.Length; i++)
+			{
+				items[i] = items[i].Trim();
+			}
+			return items;
+
 		}
 
 		private string Resource(string key, string strType)

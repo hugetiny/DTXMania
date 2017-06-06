@@ -78,6 +78,28 @@ namespace DTXMania
 		
 		}
 
+		public string item
+		{
+			get
+			{
+				string[] s = CDTXMania.Instance.Resources.Items(_strname);
+				if ( (s == null) || (s.Length <= 0) || (s[0] == "") )
+				{
+					return null;
+				}
+				if (s.Length < Index)
+				{
+					return null;
+					//throw new IndexOutOfRangeException("Resource index error: key=" + _strname + ", Index=" + Index);
+				}
+				return s[Index];
+			}
+			set
+			{
+
+			}
+		}
+
 		/// <summary>
 		/// OnEnter で用いる動作。たとえば、この値によってほかのオプションに制約を与える場合などに
 		/// その処理を登録しておけば、値の確定後実行されます。
@@ -463,7 +485,25 @@ namespace DTXMania
 				ptr = initptr;
 			}
 		}
+		public override string ToString()
+		{
+			string  s = item;
+			if ( s == null )
+			{
+				return val.ToString();
+			}
+			else
+			{
+				return s;
+			}
+			//	CResources cr = CDTXMania.Instance.Resources;
+		//	return val ? cr.Label("strCfgOn") : cr.Label("strCfgOff");
+		}
 
+		//public override string ToString()
+		//{
+		//	return val.ToString();
+		//}
 	}
 
 	[DataContract]
@@ -738,7 +778,7 @@ namespace DTXMania
 		public void SetAutoPick(EPart e)
 		{
 			Set(e, EThreeState.Off);
-			if (e == EPart.Drums)
+			if (e == EPart.Guitar)
 			{
 				GtPick.Value = true;
 			}
@@ -751,7 +791,7 @@ namespace DTXMania
 		public void SetAutoNeck(EPart e)
 		{
 			Set(e, EThreeState.Off);
-			if (e == EPart.Drums)
+			if (e == EPart.Guitar)
 			{
 				GtR.Value = true;
 				GtG.Value = true;

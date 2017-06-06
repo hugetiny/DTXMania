@@ -157,10 +157,10 @@ namespace DTXMania
 					{
 						CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoPick(nInst);
 					}
-					else if (QAuto.Value == "All Off")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.Set(nInst, EThreeState.Off);
-					}
+					//else if (QAuto.Value == "All Off")
+					//{
+					//	CDTXMania.Instance.ConfigIni.bAutoPlay.Set(nInst, EThreeState.Off);
+					//}
 					MakeAutoPanel();
 				};
 			}
