@@ -1917,7 +1917,7 @@ namespace DTXMania
 #if !GPUFlushAfterPresent
 			actFlushGPU.On進行描画();       // Flush GPU	// EndScene()～Present()間 (つまりVSync前) でFlush実行
 #endif
-			if (Sound管理.GetCurrentSoundDeviceType() != "DirectSound")
+			if (Sound管理.CurrentSoundDeviceType != ESoundDeviceType.DirectSound)
 			{
 				Sound管理.t再生中の処理をする();   // サウンドバッファの更新; 画面描画と同期させることで、スクロールをスムーズにする
 			}
@@ -2178,7 +2178,7 @@ namespace DTXMania
 		public void ShowWindowTitleWithSoundType()
 		{
 			string delay = "";
-			if (Sound管理.GetCurrentSoundDeviceType() != "DirectSound")
+			if (Sound管理.CurrentSoundDeviceType != ESoundDeviceType.DirectSound)
 			{
 				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
 			}

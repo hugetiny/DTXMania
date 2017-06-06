@@ -180,11 +180,22 @@ namespace DTXMania
 					throw new FileNotFoundException(this.strファイル名);
 				}
 
-				for (int i = 0; i < 2; i++)   // 一旦Cloneを止めてASIO対応に専念
+				for (int i = 0; i < 2; i++)
 				{
 					try
 					{
-						this.rSound[i] = CDTXMania.Instance.Sound管理.tサウンドを生成する(CSkin.Path(this.strファイル名));
+						if (i > 0 && CDTXMania.Instance.Sound管理.CurrentSoundDeviceType == ESoundDeviceType.DirectSound )
+						{
+							this.rSound[i] = (CSound)this.rSound[0].Clone();
+							if (this.rSound[i] == null)
+							{
+								Trace.TraceWarning("Clone failed: " + System.IO.Path.GetFileName(this.strファイル名));
+							}
+						}
+						else
+						{
+							this.rSound[i] = CDTXMania.Instance.Sound管理.tサウンドを生成する(CSkin.Path(this.strファイル名));
+						}
 					}
 					catch
 					{
@@ -236,7 +247,7 @@ namespace DTXMania
 
 			public void tRemoveMixer()
 			{
-				if (CDTXMania.Instance.Sound管理.GetCurrentSoundDeviceType() != "DirectShow")
+				if (CDTXMania.Instance.Sound管理.CurrentSoundDeviceType != ESoundDeviceType.DirectSound )
 				{
 					for (int i = 0; i < 2; i++)
 					{

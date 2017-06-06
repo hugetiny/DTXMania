@@ -470,6 +470,13 @@ namespace FDK
 					return "Unknown";
 			}
 		}
+		public ESoundDeviceType CurrentSoundDeviceType
+		{
+			get
+			{
+				return SoundDeviceType;
+			}
+		}
 
 		public void AddMixer( CSound cs, double db再生速度, bool _b演奏終了後も再生が続くチップである )
 		{

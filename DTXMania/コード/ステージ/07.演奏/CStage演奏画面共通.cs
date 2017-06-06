@@ -391,7 +391,7 @@ namespace DTXMania
 				// 効果音のストリームをミキサーから解除しておく
 				CDTXMania.Instance.Skin.tRemoveMixerAll();
 				queueMixerSound = new Queue<STMixer>(64);
-				bIsDirectSound = (CDTXMania.Instance.Sound管理.GetCurrentSoundDeviceType() == "DirectSound");
+				bIsDirectSound = (CDTXMania.Instance.Sound管理.CurrentSoundDeviceType == ESoundDeviceType.DirectSound);
 				this.bPAUSE = false;
 
 				if (CDTXMania.Instance.DTXVmode.Enabled)
