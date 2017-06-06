@@ -457,15 +457,15 @@ namespace DTXCreator
 						string soundtypeopt = "";
 						switch ( SoundType )
 						{
-							//case ViewerSoundType.DirectSound:
 							case FDK.ESoundDeviceType.DirectSound:
 								soundtypeopt = "D";
 								break;
-							//case ViewerSoundType.WASAPI:
 							case FDK.ESoundDeviceType.ExclusiveWASAPI:
-								soundtypeopt = "W";
+								soundtypeopt = "WE";
 								break;
-							//case ViewerSoundType.ASIO:
+							case FDK.ESoundDeviceType.SharedWASAPI:
+								soundtypeopt = "WS";
+								break;
 							case FDK.ESoundDeviceType.ASIO:
 								soundtypeopt = "A";
 								soundtypeopt += ASIODeviceNo.ToString();

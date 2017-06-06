@@ -259,7 +259,7 @@ namespace DTXMania
 					}
 					else if (arg.StartsWith("-D", StringComparison.OrdinalIgnoreCase))
 					{
-						// -DW, -DA1など
+						// -DWE, -DWS, -DA1など
 						arg = arg.Substring(2); // -D を削除
 						switch (arg[0])
 						{
@@ -277,16 +277,35 @@ namespace DTXMania
 								arg = arg.Substring(1);
 								break;
 							#endregion
-							#region [ WASAPI ]
+							#region [ WASAPI(Exclusive/Shared) ]
 							case 'W':
-								if (this.soundDeviceType != ESoundDeviceType.ExclusiveWASAPI)
 								{
-									this.ChangedSoundDevice = true;
-									this.soundDeviceType = ESoundDeviceType.ExclusiveWASAPI;
-								}
-								else
-								{
-									this.ChangedSoundDevice = false;
+									ESoundDeviceType new_sounddevicetype;
+									arg = arg.Substring(1);
+									char c = arg[0];
+									//arg = arg.Substring(1);
+
+									switch (c)
+									{
+										case 'E':
+											new_sounddevicetype = ESoundDeviceType.ExclusiveWASAPI;
+											break;
+										case 'S':
+											new_sounddevicetype = ESoundDeviceType.SharedWASAPI;
+											break;
+										default:
+											new_sounddevicetype = ESoundDeviceType.Unknown;
+											break;
+									}
+									if (this.soundDeviceType != new_sounddevicetype)
+									{
+										this.ChangedSoundDevice = true;
+										this.soundDeviceType = new_sounddevicetype;
+									}
+									else
+									{
+										this.ChangedSoundDevice = false;
+									}
 								}
 								arg = arg.Substring(1);
 								break;

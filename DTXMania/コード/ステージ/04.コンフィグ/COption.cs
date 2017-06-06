@@ -496,14 +496,7 @@ namespace DTXMania
 			{
 				return s;
 			}
-			//	CResources cr = CDTXMania.Instance.Resources;
-		//	return val ? cr.Label("strCfgOn") : cr.Label("strCfgOff");
 		}
-
-		//public override string ToString()
-		//{
-		//	return val.ToString();
-		//}
 	}
 
 	[DataContract]

@@ -35,7 +35,8 @@ namespace DTXCreator.オプション関連
 
 			cオプションダイアログ.groupBox_SoundDeviceSettings.Enabled = !this.formメインフォーム.appアプリ設定.ViewerInfo.bViewerIsDTXV;
 			cオプションダイアログ.radioButton_DirectSound.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.DirectSound;
-			cオプションダイアログ.radioButton_WASAPI.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.ExclusiveWASAPI;
+			cオプションダイアログ.radioButton_WASAPI_Exclusive.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.ExclusiveWASAPI;
+			cオプションダイアログ.radioButton_WASAPI_Shared.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.SharedWASAPI;
 			cオプションダイアログ.radioButton_ASIO.Checked = this.formメインフォーム.appアプリ設定.ViewerInfo.SoundType == FDK.ESoundDeviceType.ASIO;
 
 			int nASIOdevs = cオプションダイアログ.tASIOデバイスリストの内訳を生成する();
@@ -86,10 +87,15 @@ namespace DTXCreator.オプション関連
 					//vst = AppSetting.ViewerSoundType.DirectSound;
 					vst = FDK.ESoundDeviceType.DirectSound;
 				}
-				else if ( cオプションダイアログ.radioButton_WASAPI.Checked )
+				else if ( cオプションダイアログ.radioButton_WASAPI_Exclusive.Checked )
 				{
 					//vst = AppSetting.ViewerSoundType.WASAPI;
 					vst = FDK.ESoundDeviceType.ExclusiveWASAPI;
+				}
+				else if ( cオプションダイアログ.radioButton_WASAPI_Shared.Checked )
+				{
+					//vst = AppSetting.ViewerSoundType.WASAPI;
+					vst = FDK.ESoundDeviceType.SharedWASAPI;
 				}
 				else if ( cオプションダイアログ.radioButton_ASIO.Checked )
 				{

@@ -68,7 +68,8 @@ namespace DTXCreator.オプション関連
 		private void radioButton_UseDTXViewer_CheckedChanged( object sender, EventArgs e )
 		{
 			this.radioButton_DirectSound.Enabled = false;
-			this.radioButton_WASAPI.Enabled = false;
+			this.radioButton_WASAPI_Exclusive.Enabled = false;
+			this.radioButton_WASAPI_Shared.Enabled = false;
 			this.radioButton_ASIO.Enabled = false;
 			this.comboBox_ASIOdevices.Enabled = false;
 			this.groupBox_SoundDeviceSettings.Enabled = false;
@@ -77,7 +78,8 @@ namespace DTXCreator.オプション関連
 		private void radioButton_UseDTXManiaGR_CheckedChanged( object sender, EventArgs e )
 		{
 			this.radioButton_DirectSound.Enabled = true;
-			this.radioButton_WASAPI.Enabled = true;
+			this.radioButton_WASAPI_Exclusive.Enabled = true;
+			this.radioButton_WASAPI_Shared.Enabled = true;
 			this.radioButton_ASIO.Enabled = true;
 			this.comboBox_ASIOdevices.Enabled = true;
 			this.groupBox_SoundDeviceSettings.Enabled = true;
@@ -88,7 +90,12 @@ namespace DTXCreator.オプション関連
 			this.comboBox_ASIOdevices.Enabled = false;
 		}
 
-		private void radioButton_WASAPI_CheckedChanged( object sender, EventArgs e )
+		private void radioButton_WASAPI_Exclusive_CheckedChanged(object sender, EventArgs e)
+		{
+			this.comboBox_ASIOdevices.Enabled = false;
+		}
+
+		private void radioButton_WASAPI_Shared_CheckedChanged(object sender, EventArgs e)
 		{
 			this.comboBox_ASIOdevices.Enabled = false;
 		}
@@ -107,5 +114,6 @@ namespace DTXCreator.オプション関連
 		{
 
 		}
+
 	}
 }
