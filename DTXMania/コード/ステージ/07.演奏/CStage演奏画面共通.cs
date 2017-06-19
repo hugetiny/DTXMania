@@ -8,6 +8,8 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
+
 using SharpDX;
 using SharpDX.Direct3D9;
 using FDK;
@@ -101,6 +103,12 @@ namespace DTXMania
 		CWailingChip共通[] cWailingChip;
 
 		STDGBSValue<CScoreIni.C演奏記録> record;
+
+#if TEST_MEASUREFRAMEDRAWTIME
+		Stopwatch sw = new Stopwatch();
+		List<long> swlist = new List<long>(100000);
+		List<long> tmlist = new List<long>(100000);
+#endif
 
 		public CStage演奏画面共通()
 		{
@@ -500,6 +508,15 @@ namespace DTXMania
 					strPanel += " (" + strLabel + ")";
 				}
 				this.actPanel.SetPanelString( strPanel );
+
+#if TEST_MEASUREFRAMEDRAWTIME
+				swlist.Clear();
+				swlist.Capacity = 100000;
+				sw.Reset();
+				sw.Start();
+				tmlist.Clear();
+				tmlist.Capacity = 100000;
+#endif
 			}
 		}
 		public override void On非活性化()
@@ -523,6 +540,27 @@ namespace DTXMania
 				cInvisibleChip.Dispose();
 				cInvisibleChip = null;
 				base.On非活性化();
+
+#if TEST_MEASUREFRAMEDRAWTIME
+				sw.Stop();
+				Trace.TraceInformation("Freq={0:F10}", Stopwatch.Frequency);
+				Trace.TraceInformation("IsHighResolution=" + Stopwatch.IsHighResolution);
+				Trace.TraceInformation("Count=" + swlist.Count );
+				double last_d = 0;
+				long last_t = 0;
+				int p = 0;
+				foreach (long l in swlist)
+				{
+					double d = (double)l / Stopwatch.Frequency;
+					double d2 = d - last_d;
+					long t = tmlist[p++];
+					long t2 = t - last_t;
+					Trace.TraceInformation("{0:F10}, {1:F10}, {2:d6}, {3:d3}", d, d2, t, t2);
+					last_d = d;
+					last_t = t;
+				}
+				swlist.Clear();
+#endif
 			}
 		}
 		public override void OnManagedリソースの作成()
@@ -779,6 +817,11 @@ namespace DTXMania
 				{
 					this.tキー入力();
 				}
+
+#if TEST_MEASUREFRAMEDRAWTIME
+				swlist.Add(sw.ElapsedTicks);
+				tmlist.Add(CSound管理.rc演奏用タイマ.n現在時刻ms);
+#endif
 			}
 			return 0;
 		}
@@ -835,11 +878,17 @@ namespace DTXMania
 						STMixer stm = queueMixerSound.Dequeue();
 						if (stm.bIsAdd)
 						{
-							CDTXMania.Instance.Sound管理.AddMixer(stm.csound, db再生速度, stm.b演奏終了後も再生が続くチップである);
+						//	var task = Task.Run(() =>
+						//	{
+							   CDTXMania.Instance.Sound管理.AddMixer(stm.csound, db再生速度, stm.b演奏終了後も再生が続くチップである);
+						//	});
 						}
 						else
 						{
-							CDTXMania.Instance.Sound管理.RemoveMixer(stm.csound);
+						//	var task = Task.Run(() =>
+						//	{
+								CDTXMania.Instance.Sound管理.RemoveMixer(stm.csound);
+						//	});
 						}
 					}
 				}

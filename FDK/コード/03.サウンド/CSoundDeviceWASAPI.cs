@@ -227,17 +227,15 @@ namespace FDK
 
 				// Trace.TraceInformation( "Selected Default WASAPI Device: {0}", deviceInfo.name );
 				// Trace.TraceInformation( "MinPeriod={0}, DefaultPeriod={1}", deviceInfo.minperiod, deviceInfo.defperiod );
-				//n更新間隔ms = (long) ( deviceInfo.minperiod * 1000 );
 
-				n更新間隔ms = Convert.ToInt64(Math.Ceiling(deviceInfo.minperiod * 1000.0f));
+				// n更新間隔ms = ( mode == Eデバイスモード.排他 )?	Convert.ToInt64(Math.Ceiling(deviceInfo.minperiod * 1000.0f)) : Convert.ToInt64(Math.Ceiling(deviceInfo.defperiod * 1000.0f));
+				// 更新間隔として、WASAPI排他時はminperiodより大きい最小のms値を、WASAPI共有時はdefperiodより大きい最小のms値を用いる
+				// Win10では、更新間隔がminperiod以下だと、確実にBASS_ERROR_UNKNOWNとなる。
 
-				//n更新間隔ms = Convert.ToInt64((deviceInfo.minperiod + 0.0005) * 1000.0f);   // Win10では、更新間隔がminperiod以下だと、確実にBASS_ERROR_UNKNOWN
-				//n更新間隔ms = Convert.ToInt64((deviceInfo.defperiod + 0.0005) * 1000.0f);   // Win10では、更新間隔がminperiod以下だと、確実にBASS_ERROR_UNKNOWN
-
-				if ( n希望バッファサイズms <= 0 || n希望バッファサイズms < n更新間隔ms + 1 )
-				{
-					n希望バッファサイズms = n更新間隔ms + 1; // 2013.4.25 #31237 yyagi; バッファサイズ設定の完全自動化。更新間隔＝バッファサイズにするとBASS_ERROR_UNKNOWNになるので+1する。
-				}
+				//if ( n希望バッファサイズms <= 0 || n希望バッファサイズms < n更新間隔ms + 1 )
+				//{
+				//	n希望バッファサイズms = n更新間隔ms + 1; // 2013.4.25 #31237 yyagi; バッファサイズ設定の完全自動化。更新間隔＝バッファサイズにするとBASS_ERROR_UNKNOWNになるので+1する。
+				//}
 			}
 			else
 			{
@@ -273,10 +271,29 @@ namespace FDK
 			}
 			n周波数 = deviceInfo.mixfreq;
 			nチャンネル数 = deviceInfo.mixchans;
-		Trace.TraceInformation("n希望バッファサイズms=" + n希望バッファサイズms);
-		Trace.TraceInformation("n更新間隔ms=" + n更新間隔ms);
-			float f希望バッファサイズsec = (n希望バッファサイズms > 0) ? (n希望バッファサイズms / 1000.0f) : deviceInfo.minperiod * 4;
-			float f更新間隔sec = (n更新間隔ms > 0)? (n更新間隔ms / 1000.0f) : deviceInfo.minperiod;
+
+			Trace.TraceInformation("n希望バッファサイズms=" + n希望バッファサイズms);
+			Trace.TraceInformation("n更新間隔ms=" + n更新間隔ms);
+
+
+			// 更新間隔として、WASAPI排他時はminperiodより大きい最小のms値を、WASAPI共有時はdefperiodより大きい最小のms値を用いる
+			float fPeriod = (mode == Eデバイスモード.排他) ? deviceInfo.minperiod : deviceInfo.defperiod;
+			Trace.TraceInformation("fPeriod=" + fPeriod);
+			float f更新間隔sec = (n更新間隔ms > 0) ? (n更新間隔ms / 1000.0f) : fPeriod;
+			if (f更新間隔sec < fPeriod)
+			{
+				f更新間隔sec = fPeriod;	// Win10では、更新間隔がminperiod以下だと、確実にBASS_ERROR_UNKNOWNとなる。
+			}
+			// バッファサイズは、更新間隔より大きくする必要あり。(イコールだと、WASAPI排他での初期化時にBASS_ERROR_UNKNOWNとなる)
+			// そのため、最低でも、更新間隔より1ms大きく設定する。
+			float f希望バッファサイズsec = (n希望バッファサイズms > 0) ? (n希望バッファサイズms / 1000.0f) : fPeriod + 0.001f;
+			if (f希望バッファサイズsec < fPeriod)
+			{
+				f希望バッファサイズsec = fPeriod + 0.001f;
+			}
+			Trace.TraceInformation("f希望バッファサイズsec=" + f希望バッファサイズsec);
+			Trace.TraceInformation("f更新間隔sec=" + f更新間隔sec);
+
 			Trace.TraceInformation("Start Bass_Wasapi_Init(device=" + nDevNo + ", freq=" + n周波数 + ", nchans=" + nチャンネル数 + ", flags=" + flags + "," +
 				" buffer=" + f希望バッファサイズsec + ", period=" + f更新間隔sec);
 			if (BassWasapi.BASS_WASAPI_Init(nDevNo, n周波数, nチャンネル数, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero))

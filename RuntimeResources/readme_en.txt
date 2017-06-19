@@ -1,11 +1,11 @@
 ============================================================
   DTXMania .NET style
-  (C) 2000 2016 DTXMania Group
+  (C) 2000 2017 DTXMania Group
 ============================================================
 
 * Requirements
 
-(1) OS ...  Windows Vista / 7 (x86, x64) / 8 (x86, x64) / 10 (x86, x64)
+(1) OS ...  Windows 7 (x86, x64) / 8 (x86, x64) / 10 (x86, x64)
 (2) .NET Framework ... Version 4.5.1
    (You'll need to install .NET Framework 4.5.1 additionaly on Win8.1 or before)
 (3) DirectX End User Runtime ... June 2010 Version or later
