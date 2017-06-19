@@ -880,16 +880,24 @@ namespace FDK
 					hr = sampleGrabber.FindPin("Out", out grabberOutputPin);
 					DsError.ThrowExceptionForHR(hr);
 					hr = grabberOutputPin.ConnectedTo(out grabberOutputConnectedPin);
-					DsError.ThrowExceptionForHR(hr);
-					hr = grabberOutputConnectedPin.Disconnect();
-					DsError.ThrowExceptionForHR(hr);
-					hr = grabberOutputPin.Disconnect();
-					DsError.ThrowExceptionForHR(hr);
+					// grabberのoutに何もつながっていない場合(つまり、grabberのoutとrendererのinが直結している場合)は、
+					// grabberのoutと、別のフィルタのinの間の切断処理を行わない。
+					if (hr == CWin32.S_OK)
+					{
+						hr = grabberOutputConnectedPin.Disconnect();
+						DsError.ThrowExceptionForHR(hr);
+						hr = grabberOutputPin.Disconnect();
+						DsError.ThrowExceptionForHR(hr);
+					}
+					else
+					{
+						//Debug.WriteLine("grabber out: 未接続:");
+					}
 					hr = grabberOutputPin.Connect(nullRendererInputPin, null);
 					DsError.ThrowExceptionForHR(hr);
 				}
 
-				if( audioRenderer != null && audioRendererInputPin != null )
+				if ( audioRenderer != null && audioRendererInputPin != null )
 				{
 					C共通.tCOMオブジェクトを解放する(ref connectedOutputPin);
 
