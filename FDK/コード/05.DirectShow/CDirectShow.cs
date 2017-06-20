@@ -851,7 +851,7 @@ namespace FDK
 			{
 				// videoRenderer を探す。
 				CDirectShow.SearchMMRenderers(graphBuilder, out videoRenderer, out videoRendererInputPin, out audioRenderer, out audioRendererInputPin);
-				if (videoRenderer != null && audioRendererInputPin != null)
+				if (videoRenderer != null && videoRendererInputPin != null)
 				{
 					// 既存のレンダラにつながっているピン対を取得
 					hr = videoRendererInputPin.ConnectedTo(out connectedOutputPin);
@@ -882,16 +882,16 @@ namespace FDK
 					hr = grabberOutputPin.ConnectedTo(out grabberOutputConnectedPin);
 					// grabberのoutに何もつながっていない場合(つまり、grabberのoutとrendererのinが直結している場合)は、
 					// grabberのoutと、別のフィルタのinの間の切断処理を行わない。
-					if (hr == CWin32.S_OK)
+					if (hr != CWin32.S_OK)
+					{
+						//Debug.WriteLine("grabber out: 未接続:");
+					}
+					else
 					{
 						hr = grabberOutputConnectedPin.Disconnect();
 						DsError.ThrowExceptionForHR(hr);
 						hr = grabberOutputPin.Disconnect();
 						DsError.ThrowExceptionForHR(hr);
-					}
-					else
-					{
-						//Debug.WriteLine("grabber out: 未接続:");
 					}
 					hr = grabberOutputPin.Connect(nullRendererInputPin, null);
 					DsError.ThrowExceptionForHR(hr);
