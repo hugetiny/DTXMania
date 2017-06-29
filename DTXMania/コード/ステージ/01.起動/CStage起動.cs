@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using System.Drawing;
 using System.Threading;
 using System.IO;
 using FDK;
@@ -68,7 +69,46 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
-				this.tx背景 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSetup background.jpg"), false);
+				#region [ 警告画面の文章描画 ]
+				string strTitleCautionHead = CDTXMania.Instance.Resources.Label("strTitleCaution");
+				string strTitleCautionStr  = CDTXMania.Instance.Resources.Explanation("strTitleCaution");
+				string fontPath = CDTXMania.Instance.Resources.Explanation("strCfgBaseFontFileName");
+
+				var prvFont = new CPrivateFastFont(CSkin.Path( Path.Combine(@"Graphics\fonts\", fontPath)), 40);
+				
+				var bmp = new Bitmap(CSkin.Path(@"Graphics\ScreenSetup background.jpg"));
+
+
+				var bmpCaution = prvFont.DrawPrivateFont( strTitleCautionHead, Color.White, Color.Black);
+				var strComments = strTitleCautionStr.Split(new string[] { "\n" }, StringSplitOptions.None );
+
+				Graphics g = Graphics.FromImage(bmp);
+
+				g.DrawImage(bmpCaution, (bmp.Width - bmpCaution.Width) / 2, 298);       // "WARNING" 描画
+				bmpCaution.Dispose();
+				bmpCaution = null;
+
+				int y = 380;
+				foreach (var s in strComments)											// 警告文面 描画
+				{
+					string ss = s.Trim();
+					var b = prvFont.DrawPrivateFont(ss, Color.White, Color.FromArgb(0, 6, 255));
+					int x = (bmp.Width - b.Width) / 2;
+					g.DrawImage(b, x, y);
+					b.Dispose();
+
+					y += prvFont.RectStrings.Height;
+				}
+				g.Dispose();
+				prvFont.Dispose();
+				prvFont = null;
+
+				this.tx背景 = TextureFactory.tテクスチャの生成(bmp);
+
+				bmp.Dispose();
+				bmp = null;
+				#endregion
+
 				base.OnManagedリソースの作成();
 			}
 		}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.IO;
 using FDK;
 using SharpDX;
 
@@ -112,7 +113,38 @@ namespace DTXMania
 			{
 				this.prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y)); // t項目リストの設定 の前に必要
 				this.txカーソル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenConfig menu cursor.png"), false);
-				this.txHitKeyダイアログ = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenConfig hit key to assign dialog.png"), false);
+
+				#region [ Hit key to assign ダイアログイメージ作成 ]
+				string fontPath = CDTXMania.Instance.Resources.Explanation("strCfgBaseFontFileName");
+				var prvFont = new CPrivateFastFont(CSkin.Path(Path.Combine(@"Graphics\fonts\", fontPath)), 30, FontStyle.Bold);
+				var bmp = new Bitmap(CSkin.Path(@"Graphics\ScreenConfig hit key to assign dialog.png"));
+
+				string strHitKey = CDTXMania.Instance.Resources.Explanation("strCfgHitKeyToAssign");
+				var strComments = strHitKey.Split(new string[] { "\n" }, StringSplitOptions.None);
+
+				Graphics g = Graphics.FromImage(bmp);
+
+				int y = 20;
+				foreach (var s in strComments)
+				{
+					string ss = s.Trim();
+					var b = prvFont.DrawPrivateFont(ss, Color.White);
+					int x = (bmp.Width - b.Width) / 2;
+					g.DrawImage(b, x, y);
+					b.Dispose();
+
+					y += prvFont.RectStrings.Height;
+				}
+				g.Dispose();
+				prvFont.Dispose();
+				prvFont = null;
+
+				this.txHitKeyダイアログ = TextureFactory.tテクスチャの生成(bmp, false);
+
+				bmp.Dispose();
+				bmp = null;
+				#endregion
+
 				base.OnManagedリソースの作成();
 			}
 		}
