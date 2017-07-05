@@ -72,7 +72,7 @@ namespace DTXMania
 				#region [ 警告画面の文章描画 ]
 				string strTitleCautionHead = CDTXMania.Instance.Resources.Label("strTitleCaution");
 				string strTitleCautionStr  = CDTXMania.Instance.Resources.Explanation("strTitleCaution");
-				string fontPath = CDTXMania.Instance.Resources.Explanation("strCfgBaseFontFileName");
+				string fontPath = CDTXMania.Instance.Resources.Explanation("strCfgBootFontFileName");
 
 				var prvFont = new CPrivateFastFont(CSkin.Path( Path.Combine(@"Graphics\fonts\", fontPath)), 40);
 				

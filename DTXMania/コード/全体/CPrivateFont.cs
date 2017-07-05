@@ -35,7 +35,7 @@ namespace DTXMania
 	/// で表示してください。
 	/// 
 	/// 注意点
-	/// 任意のフォントでのレンダリングは結構負荷が大きいので、なるべｋなら描画フレーム毎にフォントを再レンダリングするようなことはせず、
+	/// 任意のフォントでのレンダリングは結構負荷が大きいので、なるべくなら描画フレーム毎にフォントを再レンダリングするようなことはせず、
 	/// 一旦レンダリングしたものを描画に使い回すようにしてください。
 	/// また、長い文字列を与えると、返されるBitmapも横長になります。この横長画像をそのままテクスチャとして使うと、
 	/// 古いPCで問題を発生させやすいです。これを回避するには、一旦Bitmapとして取得したのち、256pixや512pixで分割して
@@ -46,19 +46,23 @@ namespace DTXMania
 		#region [ コンストラクタ ]
 		public CPrivateFont(FontFamily fontfamily, int pt, FontStyle style)
 		{
-			Initialize(null, fontfamily, pt, style);
+			Initialize(null, null, fontfamily, pt, style);
 		}
 		public CPrivateFont(FontFamily fontfamily, int pt)
 		{
-			Initialize(null, fontfamily, pt, FontStyle.Regular);
+			Initialize(null, null, fontfamily, pt, FontStyle.Regular);
+		}
+		public CPrivateFont(string fontpath, FontFamily fontfamily, int pt, FontStyle style)
+		{
+			Initialize(fontpath, null, fontfamily, pt, style);
 		}
 		public CPrivateFont(string fontpath, int pt, FontStyle style)
 		{
-			Initialize(fontpath, null, pt, style);
+			Initialize(fontpath, null, null, pt, style);
 		}
 		public CPrivateFont(string fontpath, int pt)
 		{
-			Initialize(fontpath, null, pt, FontStyle.Regular);
+			Initialize(fontpath, null, null, pt, FontStyle.Regular);
 		}
 		public CPrivateFont()
 		{
@@ -66,7 +70,7 @@ namespace DTXMania
 		}
 		#endregion
 
-		protected void Initialize(string fontpath, FontFamily fontfamily, int pt, FontStyle style)
+		protected void Initialize(string fontpath, string baseFontPath, FontFamily fontfamily, int pt, FontStyle style)
 		{
 			this._pfc = null;
 			this._fontfamily = null;
@@ -75,6 +79,7 @@ namespace DTXMania
 			this._rectStrings = new Rectangle(0, 0, 0, 0);
 			this._ptOrigin = new Point(0, 0);
 			this.bDispose完了済み = false;
+			this._baseFontname = baseFontPath;
 
 			if (fontfamily != null)
 			{
@@ -84,15 +89,17 @@ namespace DTXMania
 			{
 				try
 				{
-					this._pfc = new System.Drawing.Text.PrivateFontCollection();  //PrivateFontCollectionオブジェクトを作成する
-					this._pfc.AddFontFile(fontpath);                //PrivateFontCollectionにフォントを追加する
+					this._pfc = new System.Drawing.Text.PrivateFontCollection();    //PrivateFontCollectionオブジェクトを作成する
+					this._pfc.AddFontFile(fontpath);								//PrivateFontCollectionにフォントを追加する
 					_fontfamily = _pfc.Families[0];
 				}
-				catch (System.IO.FileNotFoundException)
+				catch (Exception e) when (e is System.IO.FileNotFoundException || e is System.Runtime.InteropServices.ExternalException)
 				{
+					Trace.TraceWarning(e.Message);
 					Trace.TraceWarning("プライベートフォントの追加に失敗しました({0})。代わりにMS PGothicの使用を試みます。", fontpath);
 					//throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
 					//return;
+
 					_fontfamily = null;
 				}
 
@@ -441,6 +448,7 @@ namespace DTXMania
 		private int _pt;
 		private Rectangle _rectStrings;
 		private Point _ptOrigin;
+		private string _baseFontname = null;
 		//-----------------
 		#endregion
 	}
