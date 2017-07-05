@@ -368,10 +368,7 @@ namespace DTXMania
 					c曲リストノード.arスコア[0] = new Cスコア();
 					c曲リストノード.arスコア[0].ファイル情報.フォルダの絶対パス = infoDir.FullName + @"\";
 					c曲リストノード.arスコア[0].譜面情報.タイトル = c曲リストノード.strタイトル;
-					c曲リストノード.arスコア[0].譜面情報.コメント =
-						(CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
-						"BOX に移動します。" :
-						"Enter into the BOX.";
+					c曲リストノード.arスコア[0].譜面情報.コメント = CDTXMania.Instance.Resources.Explanation("strSelectBox");
 					listノードリスト.Add(c曲リストノード);
 					if (File.Exists(infoDir.FullName + @"\box.def"))
 					{
@@ -943,7 +940,7 @@ namespace DTXMania
 			{
 				C曲リストノード itemRandom = new C曲リストノード();
 				itemRandom.eノード種別 = C曲リストノード.Eノード種別.RANDOM;
-				itemRandom.strタイトル = "< RANDOM SELECT >";
+				itemRandom.strタイトル = CDTXMania.Instance.Resources.Label("strSelectMusicRandomSelect");
 				itemRandom.nスコア数 = 5;
 				itemRandom.r親ノード = ノードリスト[0].r親ノード;
 
@@ -953,11 +950,8 @@ namespace DTXMania
 				for (int i = 0; i < 5; i++)
 				{
 					itemRandom.arスコア[i] = new Cスコア();
-					itemRandom.arスコア[i].譜面情報.タイトル = string.Format("< RANDOM SELECT Lv.{0} >", i + 1);
-					itemRandom.arスコア[i].譜面情報.コメント =
-						 (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
-						 string.Format("難易度レベル {0} 付近の曲をランダムに選択します。難易度レベルを持たない曲も選択候補となります。", i + 1) :
-						 string.Format("Random select from the songs which has the level about L{0}. Non-leveled songs may also selected.", i + 1);
+					itemRandom.arスコア[i].譜面情報.タイトル = string.Format(CDTXMania.Instance.Resources.Label("strSelectMusicRandomSelectLevelX"), i + 1);
+					itemRandom.arスコア[i].譜面情報.コメント = string.Format(CDTXMania.Instance.Resources.Explanation("strSelectMusicRandomSelectLevelX"), i + 1);
 					itemRandom.ar難易度ラベル[i] = string.Format("L{0}", i + 1);
 				}
 				ノードリスト.Add(itemRandom);
@@ -996,7 +990,7 @@ namespace DTXMania
 				{
 					C曲リストノード itemBack = new C曲リストノード();
 					itemBack.eノード種別 = C曲リストノード.Eノード種別.BACKBOX;
-					itemBack.strタイトル = "<< BACK";
+					itemBack.strタイトル = CDTXMania.Instance.Resources.Label("strSelectMusicBack");
 					itemBack.nスコア数 = 1;
 					itemBack.r親ノード = c曲リストノード;
 
@@ -1014,10 +1008,7 @@ namespace DTXMania
 					itemBack.arスコア[0] = new Cスコア();
 					itemBack.arスコア[0].ファイル情報.フォルダの絶対パス = "";
 					itemBack.arスコア[0].譜面情報.タイトル = itemBack.strタイトル;
-					itemBack.arスコア[0].譜面情報.コメント =
-						(CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
-						"BOX を出ます。" :
-						"Exit from the BOX.";
+					itemBack.arスコア[0].譜面情報.コメント = CDTXMania.Instance.Resources.Explanation("strSelectMusicBack");
 					c曲リストノード.list子リスト.Insert(0, itemBack);
 
 					#region [ ログ出力 ]

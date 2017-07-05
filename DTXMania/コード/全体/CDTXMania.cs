@@ -245,12 +245,9 @@ namespace DTXMania
 				}
 				catch (System.UnauthorizedAccessException)          // #24481 2011.2.20 yyagi
 				{
-					int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
-					string[] mes_writeErr = {
-												"DTXManiaLog.txtへの書き込みができませんでした。書き込みできるようにしてから、再度起動してください。",
-												"Failed to write DTXManiaLog.txt. Please set it writable and try again."
-										};
-					MessageBox.Show(mes_writeErr[c], "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					Resources.Language = instance.ConfigIni.strLanguage;
+					string mes = CDTXMania.Instance.Resources.Explanation("strErrorLogWrite");
+					MessageBox.Show(mes, "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					Environment.Exit(1);
 				}
 			}
@@ -426,12 +423,8 @@ namespace DTXMania
 				Trace.TraceError(exception2.Message);
 				Trace.TraceError("DirectInput, MIDI入力の初期化に失敗しました。");
 
-				int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
-				string[] mes_writeErr = {
-												"DirectInputまたはMIDI入力の初期化に失敗しました。DTXManiaGRを終了します。",
-												"Failed to initialize DirectInput (or MIDI-IN)."
-								};
-				MessageBox.Show(mes_writeErr[c], "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				string mes = CDTXMania.Instance.Resources.Explanation("strErrorLogWrite");
+				MessageBox.Show(mes, "DTXMania boot error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				Environment.Exit(1);
 			}
 			finally
@@ -554,7 +547,7 @@ namespace DTXMania
 			}
 
 			#region [ Skin配下にある言語リソースの確認と初期化 ]
-			Trace.TraceInformation("Skinフォルダに言語リソースがないか確認します。");
+			Trace.TraceInformation("スキンフォルダに言語リソースがないか確認します。");
 			Trace.Indent();
 			try
 			{
