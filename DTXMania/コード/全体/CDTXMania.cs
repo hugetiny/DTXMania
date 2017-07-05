@@ -23,7 +23,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "109(170701)";
+		public static readonly string VERSION = "109(170801)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";     // June 2010
 																																//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -552,6 +552,31 @@ namespace DTXMania
 			{
 				Trace.Unindent();
 			}
+
+			#region [ Skin配下にある言語リソースの確認と初期化 ]
+			Trace.TraceInformation("Skinフォルダに言語リソースがないか確認します。");
+			Trace.Indent();
+			try
+			{
+				Resources.csvCurrentPath = CDTXMania.Instance.ConfigIni.strSystemSkinSubfolderPath.Value;
+				Trace.TraceInformation("Skin Path:" + Resources.csvCurrentPath);
+				bool ret = Resources.LoadResources(instance.ConfigIni.strLanguage);
+				if (ret)
+				{
+					Trace.TraceInformation("スキンフォルダ内に言語リソースが見つかりました。この言語リソースを使用します。");
+				}
+				else
+				{
+					Trace.TraceInformation("スキンフォルダ内の言語リソースを使用できません。既定の言語リソースを使用します。");
+
+				}
+			}
+			finally
+			{
+				Trace.Unindent();
+			}
+			#endregion
+
 			#endregion
 
 			#region [ Timer の初期化 ]

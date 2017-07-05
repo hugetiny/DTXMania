@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Resources;
 using System.Diagnostics;
+using System.IO;
 
 
 namespace DTXMania
@@ -14,7 +15,17 @@ namespace DTXMania
 	/// </summary>
 	public class CResources
 	{
-		private const string csvFileName = @"System\resources.csv";
+		private const string csvRootPath = @"System";
+		public string csvCurrentPath
+		{
+			get;
+			set;
+		}
+		public void ResetCsvPath()
+		{
+			csvCurrentPath = csvRootPath;
+		}
+		private string csvFileName = @"resources.csv";
 
 		private string[] csvHeader = null;
 		private Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -217,29 +228,30 @@ namespace DTXMania
 		/// </summary>
 		public CResources()
 		{
+			csvCurrentPath = csvRootPath;
 //            this.csvPath = excelPath;
-        }
- 
+		}
+
 		/// <summary>
 		/// csvファイルを読み込んで、言語リソースを初期化する。
 		/// languageで指定した言語リソースがない場合は、default(=en-US)にフォールバックする。
 		/// </summary>
 		/// <param name="language">"ja-JP"などの言語情報。""の場合は、default(=en-US)が用いられる。</param>
-        public void LoadResources(string language = "")
+		public bool LoadResources(string language = "")
         {
 			// 参考: http://dobon.net/vb/dotnet/file/readcsvfile.html
 			Microsoft.VisualBasic.FileIO.TextFieldParser tfp;
 			try
 			{
 				tfp = new Microsoft.VisualBasic.FileIO.TextFieldParser(
-						csvFileName,
+						Path.Combine(csvCurrentPath, csvFileName),
 						System.Text.Encoding.Unicode
 				);
 			}
 			catch ( System.IO.FileNotFoundException e )
 			{
 				Trace.TraceError( "言語情報ファイル System/resources.csv が見つかりませんでした。" + e.Message );
-				return;
+				return false;
 			}
 
 			//フィールドが文字で区切られているとする
@@ -309,6 +321,8 @@ namespace DTXMania
 			#endregion
 
 			Language = language;
+
+			return true;
         }
 
 	

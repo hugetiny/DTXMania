@@ -83,6 +83,28 @@ namespace DTXMania
 			CDTXMania.Instance.Skin.PrepareReloadSkin();
 			CDTXMania.Instance.Skin.ReloadSkin();
 
+			#region [もし言語リソースがスキン内にあれば、それに切り替える]
+			try
+			{
+				CDTXMania.Instance.Resources.csvCurrentPath = CDTXMania.Instance.ConfigIni.strSystemSkinSubfolderPath.Value;
+				bool ret = CDTXMania.Instance.Resources.LoadResources(CDTXMania.Instance.ConfigIni.strLanguage);
+				if (ret)
+				{
+					Trace.TraceInformation("スキンフォルダ内に言語リソースが見つかりました。この言語リソースを使用します。");
+				}
+				else
+				{
+					Trace.TraceInformation("スキンフォルダ内の言語リソースを使用できません。既定の言語リソースを使用します。");
+					CDTXMania.Instance.Resources.ResetCsvPath();
+					CDTXMania.Instance.Resources.LoadResources(CDTXMania.Instance.ConfigIni.strLanguage);   // 既定の言語リソースを使った起動ができているわけだから、
+																											// 既定の言語リソースへの切り替えにあたってのエラー処理は省略。
+				}
+			}
+			catch { };
+			#endregion
+
+
+
 			CDTXMania.Instance.act文字コンソール.On活性化();
 		}
 	}
