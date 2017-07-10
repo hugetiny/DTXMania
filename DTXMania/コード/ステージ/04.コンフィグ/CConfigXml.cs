@@ -558,7 +558,7 @@ namespace DTXMania
 			nVelocityMin.HH.Value = 20;
 
 			nRisky = new COptionInteger(0);
-			nWASAPIBufferSizeMs = new COptionInteger(50);
+			nWASAPIBufferSizeMs = new COptionInteger(0);
 			nChipDisplayTimeMs = new COptionInteger(3000);
 			nChipFadeoutTimeMs = new COptionInteger(2000);
 			rcViewerWindow = new Coordinates.CRect(100, 100, 640, 360);

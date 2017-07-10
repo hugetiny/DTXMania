@@ -291,6 +291,13 @@ namespace FDK
 			{
 				f希望バッファサイズsec = fPeriod + 0.001f;
 			}
+			// WASAPI排他時は、バッファサイズは更新間隔の4倍必要(event driven時を除く)
+			if (mode == Eデバイスモード.排他 &&
+				(flags & BASSWASAPIInit.BASS_WASAPI_EVENT) != BASSWASAPIInit.BASS_WASAPI_EVENT &&
+				f希望バッファサイズsec < f更新間隔sec * 4)
+			{
+				f希望バッファサイズsec = f更新間隔sec * 4;
+			}
 			Trace.TraceInformation("f希望バッファサイズsec=" + f希望バッファサイズsec);
 			Trace.TraceInformation("f更新間隔sec=" + f更新間隔sec);
 
