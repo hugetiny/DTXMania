@@ -6,8 +6,9 @@
 * Requirements
 
 (1) OS ...  Windows 7 (x86, x64) / 8 (x86, x64) / 10 (x86, x64)
-(2) .NET Framework ... Version 4.5.1
-   (You'll need to install .NET Framework 4.5.1 additionaly on Win8.1 or before)
+(2) .NET Framework ... Version 4.7
+   (You'll need to install .NET Framework 4.7 additionaly on Win10 Creaturs Update or before)
+    https://support.microsoft.com/en-us/help/3186497/the-net-framework-4-7-offline-installer-for-windows
 (3) DirectX End User Runtime ... June 2010 Version or later
    (You'll need to install DirextX 9.0c additionaly on Win8 or later.)
 (4) Microsoft Visual C++ 2013 Redistributable Package (x86)
@@ -77,37 +78,26 @@ carefully.
 
 * WASAPI / ASIO support
 
-Old DTXMania support only DirectSound. It's very "laggy" sound
-system especially Windows Vista and above.
-
-Now, DTXMania support both WASAPI and ASIO on Release 096.
+DTXMania support both WASAPI and ASIO on Release 096.
 (Of course DirectSound is still supported)
+From Release 109, about WASAPI support, both WASAPI-Exclusive
+and WASAPI-Shared have been also suported.
+
 To use WASAPI or ASIO, you can reduce the lag from hitting pads
 to output the sound.
 
-If you use Vista or later, DTXMania initially uses WASAPI.
-(If you use XP, DTXMania initially uses DirectSound.)
+If you use Vista or later, DTXMania initially try to uses WASAPI-Exclusive.
+(If you use XP, DTXMania initially uses DSound(DirectSound).)
 If you want to use ASIO, you have to change CONFIGURATION-
-System-SoundType to "ASIO".
+System-Sound Option-SoundType to "ASIO".
+
+If you specify "ASIO" but your system can't use it,
+DTXMania automatically try to use "WASAPI-Exclusive".
+In the same way, in case system can't use "WASAPI-Exclusive",
+"WASAPI-Shared" is used. "WASAPI-Shared" can't, "DSound" is used.
 
 
-If you specify "WASAPI" but your system can't use it,
-DTXMania automatically try to use "ASIO".
-And if "ASIO" is not used on your system, "DirectSound" is used.
-
-** IMPORTANT NOTICE *******************************************
-If you use WASAPI or ASIO, DTXMania uses different timer method
-what DTXMania used on DirectSound.
-It may cause "the sync issue" between BGM and song score.
-(Especially you'll see the out of sync if the DTX data author
- made it by Win7+DTXCreator(DTXViewer), I believe.)
-
-Though I managed to solve the issue, but still I can't find the way
-to keep the timer compatibility.
-You may have to edit the song data to keep sync again.
-****************************************************************
-
-Selected sound-type(WASAPI/ASIO/DirectSound) and sound
+Selected sound-type(ASIO/WASAPI-Exclusive/WASAPI-Shared/DirectSound) and sound
 buffer size (= lag time) are shown on the DTXMania window title bar.
 It's very helpful for you to try configuring DTXMania.
 So you should use window mode during your sound configuring
@@ -119,12 +109,14 @@ Please check the notice below to configure WASAPI/ASIO.
 
 
 * Notice (WASAPI)
-WASAPI can use on Windows Vista and above.
-You can't use it on XP.
+If you set WASAPI-Exclusive but become WASAPI-Shared,
+please try following;
+1. set WASAPI-Exclusive
+2. then reboot DTXMania
 
 * Notice (ASIO)
-ASIO can use on Windows XP.
-However, the sound device must support ASIO.
+To use ASIO, your sound device must support ASIO.
+(if you don't have it, you may try "ASIO2ALL")
 
 You must specify the buffer size (latancy).
 You can specify it by the sound device.
@@ -133,10 +125,10 @@ You can specify it by the sound device.
 
 If DTXMania fails to use ASIO device
 (by nonproper buffer size, etc),
-DTXMania uses DirectSound.
+DTXMania uses WASAPI (Exclusive/Shared).
 
-You also have to specify ASIODevice. It specifies
-what sound device is used by DTXMania.
+You also have to specify CONFIGURATION/System/Sound Options/ASIODevice.
+It specifies what sound device is used by DTXMania.
 (If you choose WASAPI or DirectSound, DTXMania uses
  OS-default sound device)
 If you specify non-existing sound device, DTXMania

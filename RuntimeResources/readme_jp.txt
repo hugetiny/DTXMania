@@ -6,8 +6,9 @@
 ■動作に必要なもの
 
 (1) OS ...  Windows 7 (x86, x64) / 8 (x86, x64) / 8.1 (x86, x64) / 10 (x86, x64)
-(2) .NET Framework ... 4.5.1
-　(Win8.1以前のOSでは、.NET Framework 4.5.1の追加インストールが必要です)
+(2) .NET Framework ... 4.7
+　(Win10 Creaturs Update以前のOSでは、.NET Framework 4.7の追加インストールが必要です)
+　https://support.microsoft.com/ja-jp/help/3186497/the-net-framework-4-7-offline-installer-for-windows
 (3) DirectX エンドユーザ ランタイム ... June 2010 以降
 　(Win8以降では、DirectX 9.0cの追加インストールが必要です)
 (4) Microsoft Visual C++ 2013 Redistributable Package (x86)
