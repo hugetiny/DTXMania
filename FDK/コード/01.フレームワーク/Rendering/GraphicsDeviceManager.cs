@@ -683,9 +683,9 @@ namespace SampleFramework
 			builder.AppendFormat( " ({0})", Enum.GetName( typeof( SharpDX.Direct3D9.Format ), CurrentSettings.Direct3D9.PresentParameters.AutoDepthStencilFormat ) );
 
 			if( CurrentSettings.Direct3D9.PresentParameters.MultiSampleType == MultisampleType.NonMaskable )
-				builder.Append( " (Nonmaskable Multisample)" );
+				builder.AppendFormat( " (Nonmaskable Multisample {0}x)", (int)CurrentSettings.Direct3D9.PresentParameters.MultiSampleQuality);
 			else if( CurrentSettings.Direct3D9.PresentParameters.MultiSampleType != MultisampleType.None )
-				builder.AppendFormat( " ({0}x Multisample)", (int) CurrentSettings.Direct3D9.PresentParameters.MultiSampleQuality );
+				builder.AppendFormat( " (Multisample {0}x Type={1})", (int) CurrentSettings.Direct3D9.PresentParameters.MultiSampleQuality, CurrentSettings.Direct3D9.PresentParameters.MultiSampleType.ToString() );
 
 			DeviceStatistics = builder.ToString();
 		}

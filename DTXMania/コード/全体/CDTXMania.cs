@@ -23,7 +23,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "109(170801)";
+		public static readonly string VERSION = "109(170723)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";     // June 2010
 																																//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -483,14 +483,12 @@ namespace DTXMania
 #endif
 			settings.BackBufferWidth = SampleFramework.GameWindowSize.Width;
 			settings.BackBufferHeight = SampleFramework.GameWindowSize.Height;
-			//			settings.BackBufferCount = 3;
 			settings.EnableVSync = ConfigIni.bVSyncWait;
-			//			settings.BackBufferFormat = Format.A8R8G8B8;
-			//      settings.MultisampleType = MultisampleType.FourSamples;
-			//      settings.MultisampleQuality = 4;
-			//			settings.MultisampleType = MultisampleType.None;
-			//			settings.MultisampleQuality = 0;
-			settings.Multithreaded = true;
+			//settings.MultisampleType = MultisampleType.FourSamples;
+			settings.MultisampleQuality = 3;
+			settings.MultisampleType = MultisampleType.NonMaskable;
+			//settings.MultisampleQuality = 3;
+
 
 			try
 			{
@@ -507,6 +505,8 @@ namespace DTXMania
 			Trace.TraceInformation("MaxTextureWidth  = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.MaxTextureWidth);
 			Trace.TraceInformation("MaxTextureHeight = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.MaxTextureHeight);
 			Trace.TraceInformation("TextureCaps      = " + base.GraphicsDeviceManager.Direct3D9.Device.Capabilities.TextureCaps.ToString());
+			Trace.TraceInformation("DeviceInformation= " + base.GraphicsDeviceManager.DeviceInformation.ToString());
+			Trace.TraceInformation("DeviceStatics    = " + base.GraphicsDeviceManager.DeviceStatistics.ToString());
 
 			base.IsFixedTimeStep = false;
 			//			base.TargetElapsedTime = TimeSpan.FromTicks( 10000000 / 75 );
@@ -968,8 +968,8 @@ namespace DTXMania
 			this.Device.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f, 0f, (float)(-SampleFramework.GameWindowSize.Height / 2 * Math.Sqrt(3.0))), new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f)));
 			this.Device.SetTransform(TransformState.Projection, Matrix.PerspectiveFovLH(C変換.DegreeToRadian((float)60f), ((float)this.Device.Viewport.Width) / ((float)this.Device.Viewport.Height), -100f, 100f));
 			this.Device.SetRenderState(RenderState.Lighting, false);
-			this.Device.SetRenderState(RenderState.ZEnable, false);
-			this.Device.SetRenderState(RenderState.AntialiasedLineEnable, false);
+			this.Device.SetRenderState(RenderState.ZEnable, true);
+			this.Device.SetRenderState(RenderState.AntialiasedLineEnable, true);
 			this.Device.SetRenderState(RenderState.AlphaTestEnable, true);
 			this.Device.SetRenderState(RenderState.AlphaRef, 10);
 
