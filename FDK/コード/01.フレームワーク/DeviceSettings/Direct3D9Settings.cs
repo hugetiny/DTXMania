@@ -316,7 +316,7 @@ namespace SampleFramework
 				for(int i = 0; i < combo.MultisampleTypes.Count; i++)
 				{
 					MultisampleType type = combo.MultisampleTypes[i];
-					int quality = combo.MultisampleQualities[0];
+					int quality = combo.MultisampleQualities[i];
 
 					if(Math.Abs(type - input.PresentParameters.MultiSampleType) < Math.Abs(bestType - input.PresentParameters.MultiSampleType))
 					{
