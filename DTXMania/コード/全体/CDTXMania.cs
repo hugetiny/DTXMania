@@ -484,10 +484,10 @@ namespace DTXMania
 			settings.BackBufferWidth = SampleFramework.GameWindowSize.Width;
 			settings.BackBufferHeight = SampleFramework.GameWindowSize.Height;
 			settings.EnableVSync = ConfigIni.bVSyncWait;
-			//settings.MultisampleType = MultisampleType.FourSamples;
-			settings.MultisampleQuality = 3;
-			settings.MultisampleType = MultisampleType.NonMaskable;
-			//settings.MultisampleQuality = 3;
+            //settings.MultisampleType = MultisampleType.FourSamples;
+            //settings.MultisampleQuality = 3;
+            //settings.MultisampleType = MultisampleType.NonMaskable;
+            //settings.Multithreaded = true;
 
 
 			try
@@ -553,7 +553,8 @@ namespace DTXMania
 			{
 				Resources.csvCurrentPath = CDTXMania.Instance.ConfigIni.strSystemSkinSubfolderPath.Value;
 				Trace.TraceInformation("Skin Path:" + Resources.csvCurrentPath);
-				bool ret = Resources.LoadResources(instance.ConfigIni.strLanguage);
+
+                bool ret = Resources.LoadResources(instance.ConfigIni.strLanguage);
 				if (ret)
 				{
 					Trace.TraceInformation("スキンフォルダ内に言語リソースが見つかりました。この言語リソースを使用します。");
@@ -968,8 +969,8 @@ namespace DTXMania
 			this.Device.SetTransform(TransformState.View, Matrix.LookAtLH(new Vector3(0f, 0f, (float)(-SampleFramework.GameWindowSize.Height / 2 * Math.Sqrt(3.0))), new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f)));
 			this.Device.SetTransform(TransformState.Projection, Matrix.PerspectiveFovLH(C変換.DegreeToRadian((float)60f), ((float)this.Device.Viewport.Width) / ((float)this.Device.Viewport.Height), -100f, 100f));
 			this.Device.SetRenderState(RenderState.Lighting, false);
-			this.Device.SetRenderState(RenderState.ZEnable, true);
-			this.Device.SetRenderState(RenderState.AntialiasedLineEnable, true);
+			this.Device.SetRenderState(RenderState.ZEnable, false);						// trueにすると、一部システムで画面表示できなくなる
+			this.Device.SetRenderState(RenderState.AntialiasedLineEnable, false);       // trueにすると、一部システムで画面表示できなくなる 
 			this.Device.SetRenderState(RenderState.AlphaTestEnable, true);
 			this.Device.SetRenderState(RenderState.AlphaRef, 10);
 
@@ -1149,7 +1150,7 @@ namespace DTXMania
 					case CStage.Eステージ.曲読み込み:
 						if (EnumSongs != null)
 						{
-							#region [ (特定条件時) 曲検索スレッドの起動・開始 ]
+                            #region [ (特定条件時) 曲検索スレッドの起動・開始 ]
 							if (r現在のステージ.eステージID == CStage.Eステージ.タイトル &&
 									 r直前のステージ.eステージID == CStage.Eステージ.起動 &&
 									 this.n進行描画の戻り値 == (int)CStageタイトル.E戻り値.継続 &&
@@ -1262,9 +1263,9 @@ namespace DTXMania
 						break;
 
 					case CStage.Eステージ.タイトル:
-						#region [ *** ]
-						//-----------------------------
-						switch (this.n進行描画の戻り値)
+                        #region [ *** ]
+                        //-----------------------------
+                        switch (this.n進行描画の戻り値)
 						{
 							case (int)CStageタイトル.E戻り値.GAMESTART:
 								#region [ 選曲処理へ ]
@@ -2012,11 +2013,14 @@ namespace DTXMania
 			settings.Indent = true;
 			settings.NewLineChars = Environment.NewLine;
 			settings.Encoding = new System.Text.UTF8Encoding(false);
-			using ( XmlWriter xw = XmlWriter.Create( new FileStreamSSD( xmlpath ), settings ) )
-			{
-				DataContractSerializer serializer = new DataContractSerializer(obj.GetType());
-				serializer.WriteObject(xw, obj);
-			}
+            using (FileStreamSSD fsssd = new FileStreamSSD(xmlpath))
+            {
+                using (XmlWriter xw = XmlWriter.Create(fsssd, settings))
+                {
+                    DataContractSerializer serializer = new DataContractSerializer(obj.GetType());
+                    serializer.WriteObject(xw, obj);
+                }
+            }
 		}
 
 		public void SaveConfig()

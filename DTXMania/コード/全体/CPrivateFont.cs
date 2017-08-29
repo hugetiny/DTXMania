@@ -431,8 +431,13 @@ namespace DTXMania
 					this._pfc.Dispose();
 					this._pfc = null;
 				}
+                if (this._fontfamily != null)
+                {
+                    this._fontfamily.Dispose();
+                    this._fontfamily = null;
+                }
 
-				this.bDispose完了済み = true;
+                this.bDispose完了済み = true;
 			}
 		}
 		//-----------------

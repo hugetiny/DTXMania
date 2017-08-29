@@ -241,22 +241,29 @@ namespace DTXMania
         {
 			// 参考: http://dobon.net/vb/dotnet/file/readcsvfile.html
 			Microsoft.VisualBasic.FileIO.TextFieldParser tfp;
-			try
-			{
-				tfp = new Microsoft.VisualBasic.FileIO.TextFieldParser(
+
+            // ファイル無しのエラーは、TextFieldParserの例外処理ではcatchできない。なぜかDTXMania.CDTXMania.Draw()でのNullReferenceExceptionとなる。
+            if (!File.Exists(Path.Combine(csvCurrentPath, csvFileName)))
+            {
+                Trace.TraceError("言語情報ファイル System/resources.csv が見つかりませんでした。{0}", Path.Combine(csvCurrentPath, csvFileName));
+                return false;
+            }
+            try
+            {
+                tfp = new Microsoft.VisualBasic.FileIO.TextFieldParser(
 						Path.Combine(csvCurrentPath, csvFileName),
 						System.Text.Encoding.Unicode
 				);
 			}
-			catch ( System.IO.FileNotFoundException e )
-			{
-				Trace.TraceError( "言語情報ファイル System/resources.csv が見つかりませんでした。" + e.Message );
-				return false;
-			}
+			catch ( Exception e ) when (e is ArgumentNullException || e is ArgumentException || e is FileNotFoundException)
+            {
+                Trace.TraceError("言語情報ファイル System/resources.csv が見つかりませんでした。" + e.Message);
+                return false;
+            }
 
-			//フィールドが文字で区切られているとする
-			//デフォルトでDelimitedなので、必要なし
-			tfp.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
+            //フィールドが文字で区切られているとする
+            //デフォルトでDelimitedなので、必要なし
+            tfp.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
 			//区切り文字を,とする
 			tfp.Delimiters = new string[] { "," };
 			//フィールドを"で囲み、改行文字、区切り文字を含めることができるか
