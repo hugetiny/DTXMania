@@ -559,9 +559,9 @@ namespace DTXMania
 								if ( this.n使用レーン数.Bass == EUseLanes.Other ) this.n使用レーン数.Bass = EUseLanes.GB_3;
 							}
 						}
-						Trace.TraceInformation( "LeftPedal使用=" + this.bチップがある.LeftPedal );
-						Trace.TraceInformation( "LeftBass使用 =" + this.bチップがある.LeftBassDrum );
-						Trace.TraceInformation( "Lane Type    =" + this.n使用レーン数.Drums );
+						//Trace.TraceInformation( "LeftPedal使用=" + this.bチップがある.LeftPedal );
+						//Trace.TraceInformation( "LeftBass使用 =" + this.bチップがある.LeftBassDrum );
+						//Trace.TraceInformation( "Lane Type    =" + this.n使用レーン数.Drums );
 						#endregion
 
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );

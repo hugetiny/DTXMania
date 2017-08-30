@@ -38,7 +38,7 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
-				Trace.TraceInformation("Information用 Pad画像生成 開始。");
+				//Trace.TraceInformation("Information用 Pad画像生成 開始。");
 
 				int fontsize = 19;
 
@@ -291,7 +291,7 @@ namespace DTXMania
 				#endregion
 
 				g = null;
-				Trace.TraceInformation("Information用 Pad画像生成 終了。");
+				//Trace.TraceInformation("Information用 Pad画像生成 終了。");
 				#endregion
 
 				string fontPath = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicInformationFontFileName");
