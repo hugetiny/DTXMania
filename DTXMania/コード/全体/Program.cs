@@ -13,6 +13,27 @@ namespace DTXMania
 {
 	internal class Program
 	{
+		#region [ バージョン情報とアセンブリ情報の整合性チェック ]
+		private static bool tVERSIONチェック()
+		{
+			// 本体バージョンを取得
+			CDTXVersion cdtxver = new CDTXVersion(CDTXMania.VERSION);
+			int ver_sys_major = cdtxver.n整数部;
+
+			//自分自身のAssemblyを取得
+			System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
+			int ver_asm_major = asm.GetName().Version.Major;
+
+			if (ver_sys_major != ver_asm_major)
+			{
+				MessageBox.Show("リリースバージョン(" + ver_sys_major.ToString() + ")とアセンブリバージョン(" + ver_asm_major.ToString() + ")が異なります。",
+					"DTXMania build error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return true;
+			}
+			return false;
+		}
+		#endregion
+
 		#region [ 二重起動チェック、DLL存在チェック ]
 		//-----------------------------
 		private static Mutex mutex二重起動防止用;
@@ -134,6 +155,9 @@ namespace DTXMania
 					"DirectShowLib.dll is not found." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
+				#endregion
+				#region [バージョン情報とアセンブリ情報の整合性チェック]
+				tVERSIONチェック();
 				#endregion
 				if (!bDLLnotfound)
 				{
