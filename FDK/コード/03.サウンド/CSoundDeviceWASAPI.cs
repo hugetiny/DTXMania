@@ -108,8 +108,8 @@ namespace FDK
 		/// WASAPIの初期化
 		/// </summary>
 		/// <param name="mode"></param>
-		/// <param name="n希望バッファサイズms">(未使用; 本メソッド内で自動設定する)</param>
-		/// <param name="n更新間隔ms">(未使用; 本メソッド内で自動設定する)</param>
+		/// <param name="n希望バッファサイズms">WASAPIのサウンドバッファサイズ</param>
+		/// <param name="n更新間隔ms">サウンドバッファの更新間隔</param>
 		public CSoundDeviceWASAPI( Eデバイスモード mode, long n希望バッファサイズms, long n更新間隔ms )
 		{
 			// 初期化。
@@ -172,7 +172,7 @@ namespace FDK
 
 			// BASS の初期化。
 
-			int n周波数 = 44100;   // 仮決め。lデバイス（≠ドライバ）がネイティブに対応している周波数であれば何でもいい？ようだ。BASSWASAPIでデバイスの周波数は変えられる。いずれにしろBASSMXで自動的にリサンプリングされる。
+			int n周波数 = 48000;   // 仮決め。lデバイス（≠ドライバ）がネイティブに対応している周波数であれば何でもいい？ようだ。BASSWASAPIでデバイスの周波数は変えられる。いずれにしろBASSMXで自動的にリサンプリングされる。
 								// BASS_Initは、WASAPI初期化の直前に行うよう変更。WASAPIのmix周波数を使って初期化することで、余計なリサンプリング処理を省き高速化するため。
 								//if( !Bass.BASS_Init( nデバイス, n周波数, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero ) )
 								//	throw new Exception( string.Format( "BASS (WASAPI) の初期化に失敗しました。(BASS_Init)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
@@ -260,10 +260,10 @@ namespace FDK
 					count++; // count it
 				}
 			}
-			#endregion
+		#endregion
 
 		Retry:
-			var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
+			var flags = (mode == Eデバイスモード.排他) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
 			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
 			if ( COS.bIsWin7OrLater && CSound管理.bSoundUpdateByEventWASAPI )
 			{
@@ -272,18 +272,20 @@ namespace FDK
 			n周波数 = deviceInfo.mixfreq;
 			nチャンネル数 = deviceInfo.mixchans;
 
-			Trace.TraceInformation("n希望バッファサイズms=" + n希望バッファサイズms);
-			Trace.TraceInformation("n更新間隔ms=" + n更新間隔ms);
-
-
 			// 更新間隔として、WASAPI排他時はminperiodより大きい最小のms値を、WASAPI共有時はdefperiodより大きい最小のms値を用いる
+			// (Win10のlow latency modeではない前提でまずは設定値を決める)
 			float fPeriod = (mode == Eデバイスモード.排他) ? deviceInfo.minperiod : deviceInfo.defperiod;
-			Trace.TraceInformation("fPeriod=" + fPeriod);
+
+			Trace.TraceInformation("arg: n希望バッファサイズms=" + n希望バッファサイズms);
+			Trace.TraceInformation("arg: n更新間隔ms=" + n更新間隔ms);
+			Trace.TraceInformation("fPeriod = " + fPeriod + " (排他時: minperiod, 共有時: defperiod。Win10 low latency audio考慮前)");
+
 			float f更新間隔sec = (n更新間隔ms > 0) ? (n更新間隔ms / 1000.0f) : fPeriod;
 			if (f更新間隔sec < fPeriod)
 			{
 				f更新間隔sec = fPeriod;	// Win10では、更新間隔がminperiod以下だと、確実にBASS_ERROR_UNKNOWNとなる。
 			}
+			Trace.TraceInformation("f更新間隔sec=" + f更新間隔sec);
 			// バッファサイズは、更新間隔より大きくする必要あり。(イコールだと、WASAPI排他での初期化時にBASS_ERROR_UNKNOWNとなる)
 			// そのため、最低でも、更新間隔より1ms大きく設定する。
 			float f希望バッファサイズsec = (n希望バッファサイズms > 0) ? (n希望バッファサイズms / 1000.0f) : fPeriod + 0.001f;
@@ -291,15 +293,36 @@ namespace FDK
 			{
 				f希望バッファサイズsec = fPeriod + 0.001f;
 			}
-			// WASAPI排他時は、バッファサイズは更新間隔の4倍必要(event driven時を除く)
-			if (mode == Eデバイスモード.排他 &&
-				(flags & BASSWASAPIInit.BASS_WASAPI_EVENT) != BASSWASAPIInit.BASS_WASAPI_EVENT &&
-				f希望バッファサイズsec < f更新間隔sec * 4)
+			// WASAPI排他時は、バッファサイズは更新間隔の4倍必要(event driven時は2倍)
+			if (mode == Eデバイスモード.排他)
 			{
-				f希望バッファサイズsec = f更新間隔sec * 4;
+				if ( (flags & BASSWASAPIInit.BASS_WASAPI_EVENT) != BASSWASAPIInit.BASS_WASAPI_EVENT &&
+					f希望バッファサイズsec < f更新間隔sec * 4)
+				{
+					f希望バッファサイズsec = f更新間隔sec * 4;
+				}
+				else if ((flags & BASSWASAPIInit.BASS_WASAPI_EVENT) == BASSWASAPIInit.BASS_WASAPI_EVENT &&
+					f希望バッファサイズsec < f更新間隔sec * 2)
+				{
+					f希望バッファサイズsec = f更新間隔sec * 2;
+				}
 			}
-			Trace.TraceInformation("f希望バッファサイズsec=" + f希望バッファサイズsec);
-			Trace.TraceInformation("f更新間隔sec=" + f更新間隔sec);
+
+			if (COS.bIsWin10OrLater && (mode == Eデバイスモード.共有))		// Win10 low latency shared mode support
+			{
+				// バッファ自動設定をユーザーが望む場合は、periodを最小値にする。さもなくば、バッファサイズとしてユーザーが指定した値を、periodとして用いる。
+				if (n希望バッファサイズms == 0)
+				{
+					f更新間隔sec = deviceInfo.minperiod;
+				}
+				else
+				{
+					f更新間隔sec = n希望バッファサイズms / 1000.0f;
+				}
+				f希望バッファサイズsec = 0.0f;
+			}
+
+			Trace.TraceInformation("f希望バッファサイズsec=" + f希望バッファサイズsec + ", f更新間隔sec=" + f更新間隔sec + ": Win10 low latency audio 考慮後");
 
 			Trace.TraceInformation("Start Bass_Wasapi_Init(device=" + nDevNo + ", freq=" + n周波数 + ", nchans=" + nチャンネル数 + ", flags=" + flags + "," +
 				" buffer=" + f希望バッファサイズsec + ", period=" + f更新間隔sec);
@@ -351,7 +374,7 @@ namespace FDK
 					int n1サンプルのバイト数 = 2 * wasapiInfo.chans; // default;
 					int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.freq;
 					this.n実バッファサイズms = (long)(wasapiInfo.buflen * 1000.0f / n1秒のバイト数);
-					this.n実出力遅延ms = 0;	// 初期値はゼロ
+					this.n実出力遅延ms = 0;  // 初期値はゼロ
 					var devInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( BassWasapi.BASS_WASAPI_GetDevice() );	// 共有モードの場合、更新間隔はデバイスのデフォルト値に固定される。
 					//Trace.TraceInformation( "BASS を初期化しました。(WASAPI共有モード, 希望バッファサイズ={0}ms, 更新間隔{1}ms)", n希望バッファサイズms, devInfo.defperiod * 1000.0f );
 					Trace.TraceInformation("使用デバイス: #" + nDevNo + " : " + deviceInfo.name + ", flags=" + deviceInfo.flags);
@@ -361,8 +384,9 @@ namespace FDK
 						wasapiInfo.format.ToString(),
 						wasapiInfo.buflen,
 						n実バッファサイズms.ToString(),
-						n希望バッファサイズms.ToString(),
-						n更新間隔ms.ToString());
+						(f希望バッファサイズsec * 1000).ToString(),  //n希望バッファサイズms.ToString(),
+						(f更新間隔sec * 1000).ToString()            //n更新間隔ms.ToString()
+					);
 					Trace.TraceInformation("デバイスの最小更新時間={0}ms, 既定の更新時間={1}ms", deviceInfo.minperiod * 1000, deviceInfo.defperiod * 1000);
 					this.bIsBASSFree = false;
 					//-----------------

@@ -259,6 +259,7 @@ namespace FDK
 			rc演奏用タイマ = null;						// Global.Bass 依存（つまりユーザ依存）
 			nMixing = 0;
 			SoundDelayExclusiveWASAPI = _nSoundDelayExclusiveWASAPI;
+			SoundDelaySharedWASAPI = _nSoundDelayExclusiveWASAPI;
 			SoundDelayASIO = _nSoundDelayASIO;
 			ASIODevice = _nASIODevice;
 			bUseOSTimer = _bUseOSTimer;
@@ -1580,35 +1581,46 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			//-----------------
 			try
 			{
+Debug.WriteLine("1:" + strファイル名);
 				using( var ws = new SoundStream( new FileStream( strファイル名, FileMode.Open ) ) )
 				{
+Debug.WriteLine("2");
 					if( ws.Format.Encoding == WaveFormatEncoding.OggVorbisMode2Plus ||
 						ws.Format.Encoding == WaveFormatEncoding.OggVorbisMode3Plus )
 					{
+Debug.WriteLine("3");
 						Trace.TraceInformation( Path.GetFileName( strファイル名 ) + ": RIFF chunked Vorbis. Decode to raw Wave first, to avoid BASS.DLL troubles" );
 						try
 						{
+Debug.WriteLine("4");
 							CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
+Debug.WriteLine("5");
 							bファイルにVorbisコンテナが含まれている = true;
+Debug.WriteLine("6");
 						}
 						catch
 						{
+Debug.WriteLine("7");
 							Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : RIFF chunked Vorbisのデコードに失敗しました。" );
 						}
 					}
+Debug.WriteLine("8");
 				}
 			}
 			catch ( InvalidDataException )
 			{
 				// DirectShowのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
 				// Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : デコードに失敗しました。" );
+Debug.WriteLine("9");
 			}
-			catch ( Exception )
+			catch ( Exception e)
 			{
+Debug.WriteLine("10: " + e.Message);
 				Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : 読み込みに失敗しました。" );
 			}
 			#endregion
 
+Debug.WriteLine("11 " + bファイルにVorbisコンテナが含まれている.ToString());
 			return bファイルにVorbisコンテナが含まれている;
 		}
 

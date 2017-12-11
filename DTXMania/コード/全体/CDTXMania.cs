@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Management;
 using SharpDX;
 using SharpDX.Direct3D9;
 using FDK;
@@ -23,7 +24,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "110(170901)";
+		public static readonly string VERSION = "111(180101)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";     // June 2010
 																																//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -197,13 +198,13 @@ namespace DTXMania
 			#endregion
 
 			#region [ 言語リソースの初期化 ]
-			Trace.TraceInformation( "言語リソースの初期化を行います。" );
+			Trace.TraceInformation("言語リソースの初期化を行います。");
 			Trace.Indent();
 			try
 			{
 				Resources = new CResources();
-				Resources.LoadResources( "" );
-				Trace.TraceInformation( "言語リソースの初期化を完了しました。" );
+				Resources.LoadResources("");
+				Trace.TraceInformation("言語リソースの初期化を完了しました。");
 			}
 			finally
 			{
@@ -257,21 +258,21 @@ namespace DTXMania
 			Trace.WriteLine("");
 			Trace.TraceInformation("----------------------");
 			Trace.TraceInformation("■ アプリケーションの初期化");
-			Trace.TraceInformation("OS Version: " + Environment.OSVersion);
-			Trace.TraceInformation("ProcessorCount: " + Environment.ProcessorCount.ToString());
-			Trace.TraceInformation("CLR Version: " + Environment.Version.ToString());
+
+			PutSystemLog();
+
+
 			#endregion
 
 			#region [ 言語の設定 ]
-			Trace.TraceInformation( "言語情報の読み込みを開始します。" );
+			Trace.TraceInformation("言語情報の読み込みを開始します。");
 			//Debug.WriteLine( "language=" + Resources.Language );
 			//Debug.WriteLine( "settings=" + instance.ConfigIni.strLanguage );
 			Resources.Language = instance.ConfigIni.strLanguage;
-			Trace.TraceInformation( "言語を{0}に設定しました。", Resources.Language );
+			Trace.TraceInformation("言語を{0}に設定しました。", Resources.Language);
 
 			#endregion
 
-	
 			#region [ DTXVmodeクラス の初期化 ]
 			//Trace.TraceInformation( "DTXVモードの初期化を行います。" );
 			//Trace.Indent();
@@ -340,7 +341,7 @@ namespace DTXMania
 					}
 
 					CDTXMania.Instance.ConfigIni.bFullScreen.Value = false;
-					CDTXMania.Instance.ConfigIni.rcWindow_backup = CDTXMania.Instance.ConfigIni.rcWindow;		// #36612 2016.9.12 yyagi
+					CDTXMania.Instance.ConfigIni.rcWindow_backup = CDTXMania.Instance.ConfigIni.rcWindow;       // #36612 2016.9.12 yyagi
 					CDTXMania.Instance.ConfigIni.rcWindow.W = CDTXMania.Instance.ConfigIni.rcViewerWindow.W;
 					CDTXMania.Instance.ConfigIni.rcWindow.H = CDTXMania.Instance.ConfigIni.rcViewerWindow.H;
 					CDTXMania.Instance.ConfigIni.rcWindow.X = CDTXMania.Instance.ConfigIni.rcViewerWindow.X;
@@ -378,7 +379,7 @@ namespace DTXMania
 			}
 			else
 			{
-				Trace.TraceInformation( "通常モードで起動します。" );
+				Trace.TraceInformation("通常モードで起動します。");
 			}
 			#endregion
 
@@ -484,10 +485,10 @@ namespace DTXMania
 			settings.BackBufferWidth = SampleFramework.GameWindowSize.Width;
 			settings.BackBufferHeight = SampleFramework.GameWindowSize.Height;
 			settings.EnableVSync = ConfigIni.bVSyncWait;
-            //settings.MultisampleType = MultisampleType.FourSamples;
-            //settings.MultisampleQuality = 3;
-            //settings.MultisampleType = MultisampleType.NonMaskable;
-            //settings.Multithreaded = true;
+			//settings.MultisampleType = MultisampleType.FourSamples;
+			//settings.MultisampleQuality = 3;
+			//settings.MultisampleType = MultisampleType.NonMaskable;
+			//settings.Multithreaded = true;
 
 
 			try
@@ -554,7 +555,7 @@ namespace DTXMania
 				Resources.csvCurrentPath = CDTXMania.Instance.ConfigIni.strSystemSkinSubfolderPath.Value;
 				Trace.TraceInformation("Skin Path:" + Resources.csvCurrentPath);
 
-                bool ret = Resources.LoadResources(instance.ConfigIni.strLanguage);
+				bool ret = Resources.LoadResources(instance.ConfigIni.strLanguage);
 				if (ret)
 				{
 					Trace.TraceInformation("スキンフォルダ内に言語リソースが見つかりました。この言語リソースを使用します。");
@@ -822,6 +823,7 @@ namespace DTXMania
 			#endregion
 		}
 
+
 		public void t全画面_ウィンドウモード切り替え()
 		{
 #if WindowedFullscreen
@@ -1026,6 +1028,10 @@ namespace DTXMania
 		}
 		protected override void Draw(GameTime gameTime)
 		{
+			if (Sound管理 == null)
+			{
+				return;
+			}
 			Sound管理.t再生中の処理をする();
 
 			if (Timer != null)
@@ -1969,7 +1975,7 @@ namespace DTXMania
 			}
 			#endregion
 
-			//GC.Collect( 0, GCCollectionMode.Optimized, false );		// Rel105で処理が重くなっていることに対する、暫定処置。
+			GC.Collect( 0, GCCollectionMode.Optimized, false );		// Rel105で処理が重くなっていることに対する、暫定処置。
 																	// 重くなっている原因に対する適切な処置をして、処理が104程度に軽くなったら、
 																	// この暫定処置は削除します。
 		}
@@ -2893,5 +2899,145 @@ namespace DTXMania
 				bマウスカーソル表示中 = false;
 			}
 		}
+
+		/// <summary>
+		/// システム環境のログを出力する
+		/// </summary>
+		private void PutSystemLog()
+		{
+			System.Management.ManagementClass mc =
+				new System.Management.ManagementClass("Win32_Processor");
+			System.Management.ManagementObjectCollection moc = mc.GetInstances();
+			foreach (System.Management.ManagementObject mo in moc)
+			{
+				Trace.TraceInformation("-------------------------");
+				Trace.TraceInformation("CPU Information:");
+				//Trace.TraceInformation("DeviceID      = {0}", mo["DeviceID"]);
+				Trace.TraceInformation("Name          = {0}", mo["Name"]);
+				Trace.TraceInformation("MaxClockSpeed = {0}MHz", mo["MaxClockSpeed"]);
+				Trace.TraceInformation("L2CacheSize   = {0}KB", mo["L2CacheSize"]);
+				Trace.TraceInformation("L3CacheSize   = {0}KB", mo["L3CacheSize"]);
+				Trace.TraceInformation("NumberOfLogicalProcessors = {0}", mo["NumberOfLogicalProcessors"]);
+			}
+			moc.Dispose();
+			moc.Dispose();
+
+			//System.Management.ManagementClass mc =
+			//	new System.Management.ManagementClass("Win32_OperatingSystem");
+			//System.Management.ManagementObjectCollection moc = mc.GetInstances();
+			mc =
+				new System.Management.ManagementClass("Win32_OperatingSystem");
+			moc = mc.GetInstances();
+			foreach (System.Management.ManagementObject mo in moc)
+			{
+				Trace.TraceInformation("-------------------------");
+				Trace.TraceInformation("OS Information:");
+				//簡単な説明（Windows 8.1では「Microsoft Windows 8.1 Pro」等）
+				Trace.TraceInformation("OS: " + mo["Caption"]);
+				//バージョン（Windows 8.1では、「6.3.9600」）
+				Trace.TraceInformation("Version: " + mo["Version"]);
+				//ビルド番号（Windows 8.1では「9600」）
+				//Trace.TraceInformation( "BuildNumber: " + mo["BuildNumber"]);
+
+				//サービスパック（Windows 8.1ではNULL）
+				Trace.TraceInformation("CSDVersion (ServicePack): " + mo["CSDVersion"]);
+				//言語（日本語は「1041」）
+				Trace.TraceInformation("OSLanguage: " + mo["OSLanguage"]);
+
+				Trace.TraceInformation("OSArchitecture: " + mo["OSArchitecture"]);
+
+				//Trace.TraceInformation("TotalVisibleMemorySize = {0}", mo["TotalVisibleMemorySize"]);
+			}
+			moc.Dispose();
+			mc.Dispose();
+
+			Trace.TraceInformation("-------------------------");
+			Trace.TraceInformation("General Environment Information:");
+			//Trace.TraceInformation("OS Version: " + Environment.OSVersion);	// fake version will be returned (due to the lack of manifest settings)
+			//Trace.TraceInformation("ProcessorCount: " + Environment.ProcessorCount.ToString());
+			Trace.TraceInformation("CLR Version: " + Environment.Version.ToString());
+			Trace.TraceInformation("SystemPageSize: " + Environment.SystemPageSize.ToString());
+
+			var cominfo = new Microsoft.VisualBasic.Devices.ComputerInfo();
+			Trace.TraceInformation("TotalPhysicalMemorySize: {0:F2}GB", (cominfo.TotalPhysicalMemory / 1024f / 1024f / 1024f));
+			Trace.TraceInformation("VirtialMemorySize: {0:F2}GB", (cominfo.TotalVirtualMemory / 1024f / 1024f / 1024f));
+			Trace.TraceInformation("FreePhysicalMemorySize: {0:F2}MB", (cominfo.AvailablePhysicalMemory / 1024f / 1024f));
+			Trace.TraceInformation("FreeVirtualMemorySize: {0:F2}MB", (cominfo.AvailableVirtualMemory / 1024f / 1024f));
+			//Trace.TraceInformation(cominfo.OSFullName + ", " + cominfo.OSPlatform + ", " + cominfo.OSVersion);
+
+			mc = new System.Management.ManagementClass("Win32_PhysicalMemory");
+			moc = mc.GetInstances();
+			Trace.TraceInformation("-------------------------");
+			Trace.TraceInformation("Physical Memory Information:");
+			foreach (System.Management.ManagementObject mo in moc)
+			{
+				Trace.TraceInformation("Capacity: {0:F2}GB", (Convert.ToInt64(mo["Capacity"]) / 1024f / 1024f / 1024f));
+			}
+			moc.Dispose();
+			mc.Dispose();
+
+			mc = new System.Management.ManagementClass("Win32_DisplayControllerConfiguration");
+			moc = mc.GetInstances();
+			foreach (System.Management.ManagementObject mo in moc)
+			{
+				Trace.TraceInformation("-------------------------");
+				Trace.TraceInformation("Display Adapter Information:");
+				Trace.TraceInformation("Name: " + mo["Name"]);
+				Trace.TraceInformation("VideoMode: " + mo["VideoMode"]);
+				Trace.TraceInformation("HorizontalResolution: " + mo["HorizontalResolution"]);
+				Trace.TraceInformation("VerticalResolution: " + mo["VerticalResolution"]);
+				Trace.TraceInformation("RefreshRate: " + mo["RefreshRate"]);
+			}
+			moc.Dispose();
+			mc.Dispose();
+
+			mc = new System.Management.ManagementClass("Win32_VideoController");
+			moc = mc.GetInstances();
+			foreach (System.Management.ManagementObject mo in moc)
+			{
+				Trace.TraceInformation("-------------------------");
+				Trace.TraceInformation("Video Controller Information:");
+				Trace.TraceInformation("Description: " + mo["Description"]);
+				Trace.TraceInformation("AdapterRAM: {0}MB", (Convert.ToInt64(mo["AdapterRAM"]) / 1024f / 1024f));
+				Trace.TraceInformation("CapabilityDescriptions: " + mo["CapabilityDescriptions"]);
+			}
+			moc.Dispose();
+			mc.Dispose();
+
+			mc = new System.Management.ManagementClass("Win32_DesktopMonitor");
+			moc = mc.GetInstances();
+			foreach (System.Management.ManagementObject mo in moc)
+			{
+				Trace.TraceInformation("-------------------------");
+				Trace.TraceInformation("Display Information:");
+				Trace.TraceInformation("Description: " + mo["Description"]);
+				Trace.TraceInformation("PixelsPerXLogicalInch: " + mo["PixelsPerXLogicalInch"]);
+				Trace.TraceInformation("PixelsPerYLogicalInch: " + mo["PixelsPerYLogicalInch"]);
+				Trace.TraceInformation("ScreenWidth: " + mo["ScreenWidth"]);
+				Trace.TraceInformation("ScreenHeight: " + mo["ScreenHeight"]);
+			}
+			moc.Dispose();
+			mc.Dispose();
+
+			mc = new System.Management.ManagementClass("Win32_SoundDevice");
+			moc = mc.GetInstances();
+			foreach (System.Management.ManagementObject mo in moc)
+			{
+				Trace.TraceInformation("-------------------------");
+				Trace.TraceInformation("Sound Information:");
+				//Trace.TraceInformation("Caption: " + mo["Caption"]);
+				Trace.TraceInformation("ProductName: " + mo["ProductName"]);
+				//Trace.TraceInformation("DMABufferSize: " + mo["DMABufferSize"]);
+			}
+			moc.Dispose();
+			mc.Dispose();
+
+			Trace.TraceInformation("----------------------");
+			Trace.TraceInformation("DTXMania settings:");
+			Trace.TraceInformation("VSyncWait: " + ConfigIni.bVSyncWait.ToString());
+			Trace.TraceInformation("Fullscreen: " + ConfigIni.bFullScreen.ToString());
+			Trace.TraceInformation("----------------------");
+		}
+
 	}
 }

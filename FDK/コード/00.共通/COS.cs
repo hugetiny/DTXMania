@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Management;
 
 namespace FDK
 {
@@ -58,13 +59,21 @@ namespace FDK
 		private static bool bCheckOSVersion(int major, int minor)
 		{
 			//プラットフォームの取得
-			System.OperatingSystem os = System.Environment.OSVersion;
-			if (os.Platform != PlatformID.Win32NT)      // NT系でなければ、XP以前か、PC Windows系以外のOS。
-			{
-				return false;
-			}
+			//System.OperatingSystem os = System.Environment.OSVersion;
+			//if (os.Platform != PlatformID.Win32NT)      // NT系でなければ、XP以前か、PC Windows系以外のOS。
+			//{
+			//	return false;
+			//}
+			//var mmb = tpGetOSVersion();
+			int _major, _minor, _build;
+			tpGetOSVersion(out _major, out _minor, out _build);
 
-			if (os.Version.Major >= major && os.Version.Minor >= minor)
+			//if (os.Version.Major >= major && os.Version.Minor >= minor)
+			if (_major > major)
+			{
+				return true;
+			}
+			else if (_major == major && _minor >= minor)
 			{
 				return true;
 			}
@@ -72,6 +81,74 @@ namespace FDK
 			{
 				return false;
 			}
+		}
+
+
+		//public static (int major, int minor, int build) tpGetOSVersion()
+		public static void tpGetOSVersion(out int major, out int minor, out int build)
+		{
+			//var result = (major: 0, minor: 0, build: 0);
+			major = 0;
+			minor = 0;
+			build = 0;
+
+			System.Management.ManagementClass mc =
+				new System.Management.ManagementClass("Win32_OperatingSystem");
+			System.Management.ManagementObjectCollection moc = mc.GetInstances();
+
+			foreach (System.Management.ManagementObject mo in moc)
+			{
+				string ver = mo["Version"].ToString();
+				string[] majorminor = ver.Split(new char[] { '.' }, StringSplitOptions.None);
+
+				major = Convert.ToInt32(majorminor[0]);
+				minor = Convert.ToInt32(majorminor[1]);
+				build = Convert.ToInt32(mo["BuildNumber"]);
+
+				break;  // 1回ループで終了(でいいよね)
+			}
+			moc.Dispose();
+			mc.Dispose();
+
+			//return result;
+		}
+		public enum WIN10BUILD : int
+		{
+			TH1 = 10240,
+			TH2 = 10586,
+			RS1 = 14393,
+			RS2 = 15063,
+			RS3 = 16299,
+			UNKNOWN = 999999,
+			NOTWIN10 = 0
+		}
+		private static WIN10BUILD GetWin10BuildNumber()
+		{
+			WIN10BUILD ret = WIN10BUILD.UNKNOWN;
+
+			//var mmb = tpGetOSVersion();
+			int major, minor, build;
+			tpGetOSVersion(out major, out minor, out build);
+
+			if (major != 10)
+			{
+				ret = WIN10BUILD.NOTWIN10;
+			}
+			else if ((build != (int)WIN10BUILD.TH1) &&
+					  (build != (int)WIN10BUILD.TH2) &&
+					  (build != (int)WIN10BUILD.RS1) &&
+					  (build != (int)WIN10BUILD.RS2) &&
+					  (build != (int)WIN10BUILD.RS3)
+			)
+			{
+				ret = (WIN10BUILD)build;
+			}
+			else
+			{
+				ret = WIN10BUILD.UNKNOWN;
+			}
+
+			return ret;
 		}
 	}
 }
