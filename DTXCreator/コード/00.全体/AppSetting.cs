@@ -425,7 +425,9 @@ namespace DTXCreator
 				PlayStartOption = "-N-1";
 				PlayStopOption = "-S";
 				//SoundType =  (FDK.COS.bIsVistaOrLater)? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
-				SoundType = ( FDK.COS.bIsVistaOrLater ) ? FDK.ESoundDeviceType.ExclusiveWASAPI : FDK.ESoundDeviceType.DirectSound;
+				SoundType = ( FDK.COS.bIsVistaOrLater ) ?
+								( ( FDK.COS.bIsWin10OrLater ) ? FDK.ESoundDeviceType.SharedWASAPI : FDK.ESoundDeviceType.ExclusiveWASAPI )
+							: FDK.ESoundDeviceType.DirectSound;
 				ASIODeviceNo = 0;
 				GRmode = false;
 				TimeStretch = false;
