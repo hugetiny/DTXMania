@@ -411,7 +411,7 @@ namespace DTXCreator
 			public string PlayStartOption = "-N-1";
 			public string PlayStopOption = "-S";
 			// public ViewerSoundType SoundType = ( FDK.COS.bIsVistaOrLater ) ? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
-			public FDK.ESoundDeviceType SoundType = ( FDK.COS.bIsVistaOrLater ) ? FDK.ESoundDeviceType.ExclusiveWASAPI : FDK.ESoundDeviceType.DirectSound;
+			public FDK.ESoundDeviceType SoundType = ( FDK.COS.bIsVistaOrLater() ) ? FDK.ESoundDeviceType.ExclusiveWASAPI : FDK.ESoundDeviceType.DirectSound;
 			public int ASIODeviceNo = 0;
 			public bool GRmode;
 			public bool TimeStretch;
@@ -425,8 +425,8 @@ namespace DTXCreator
 				PlayStartOption = "-N-1";
 				PlayStopOption = "-S";
 				//SoundType =  (FDK.COS.bIsVistaOrLater)? ViewerSoundType.WASAPI : ViewerSoundType.DirectSound;
-				SoundType = ( FDK.COS.bIsVistaOrLater ) ?
-								( ( FDK.COS.bIsWin10OrLater ) ? FDK.ESoundDeviceType.SharedWASAPI : FDK.ESoundDeviceType.ExclusiveWASAPI )
+				SoundType = ( FDK.COS.bIsVistaOrLater() ) ?
+								( ( FDK.COS.bIsWin10OrLater() ) ? FDK.ESoundDeviceType.SharedWASAPI : FDK.ESoundDeviceType.ExclusiveWASAPI )
 							: FDK.ESoundDeviceType.DirectSound;
 				ASIODeviceNo = 0;
 				GRmode = false;

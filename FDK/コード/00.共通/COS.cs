@@ -11,45 +11,55 @@ namespace FDK
 		/// OSがXP以前ならfalse, Vista以降ならtrueを返す
 		/// </summary>
 		/// <returns></returns>
-		public static bool bIsVistaOrLater
+		public static bool bIsVistaOrLater()
 		{
-			get
-			{
-				return bCheckOSVersion(6, 0);
-			}
+			return bCheckOSVersion(6, 0);
 		}
 		/// <summary>
 		/// OSがVista以前ならfalse, Win7以降ならtrueを返す
 		/// </summary>
 		/// <returns></returns>
-		public static bool bIsWin7OrLater
+		public static bool bIsWin7OrLater()
 		{
-			get
-			{
-				return bCheckOSVersion(6, 1);
-			}
+			return bCheckOSVersion(6, 1);
 		}
 		/// <summary>
 		/// OSがWin7以前ならfalse, Win8以降ならtrueを返す
 		/// </summary>
 		/// <returns></returns>
-		public static bool bIsWin8OrLater
+		public static bool bIsWin8OrLater()
 		{
-			get
-			{
-				return bCheckOSVersion(6, 2);
-			}
+			return bCheckOSVersion(6, 2);
 		}
 		/// <summary>
-		/// OSがWin8.1以前ならfalse, Win10以降ならtrueを返す
+		/// OSがWin10以前ならfalse, Win10以降ならtrueを返す
 		/// </summary>
 		/// <returns></returns>
-		public static bool bIsWin10OrLater
+		public static bool bIsWin10OrLater()
 		{
-			get
+			return bCheckOSVersion(10, 0);
+		}
+		/// <summary>
+		/// OSがWin10以降、かつ指定build以降ならtrueを返す
+		/// </summary>
+		/// <returns></returns>
+		public static bool bIsWin10OrLater(WIN10BUILD build)
+		{
+			if (bCheckOSVersion(10, 0))
 			{
-				return bCheckOSVersion(10, 0);
+				if ( GetWin10BuildNumber() >= build )
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 			}
+			else
+			{
+				return false;
+			};
 		}
 
 
@@ -119,7 +129,7 @@ namespace FDK
 			RS1 = 14393,
 			RS2 = 15063,
 			RS3 = 16299,
-			UNKNOWN = 999999,
+			UNKNOWN = -1,
 			NOTWIN10 = 0
 		}
 		private static WIN10BUILD GetWin10BuildNumber()

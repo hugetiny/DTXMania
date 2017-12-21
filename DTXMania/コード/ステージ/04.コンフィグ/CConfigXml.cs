@@ -504,8 +504,8 @@ namespace DTXMania
 			bDynamicBassMixerManagement = new COptionBool(true);
 			bTimeStretch = new COptionBool(false);
 			nSoundDeviceType = new COptionEnum<ESoundDeviceTypeForConfig>(
-				FDK.COS.bIsVistaOrLater ? 
-					(FDK.COS.bIsWin10OrLater? ESoundDeviceTypeForConfig.WASAPI_Shared : ESoundDeviceTypeForConfig.WASAPI_Exclusive) 
+				FDK.COS.bIsVistaOrLater() ? 
+					(FDK.COS.bIsWin10OrLater()? ESoundDeviceTypeForConfig.WASAPI_Shared : ESoundDeviceTypeForConfig.WASAPI_Exclusive) 
 					: ESoundDeviceTypeForConfig.DSound
 			);
 			bForceHighPowerPlan = new COptionBool( false );

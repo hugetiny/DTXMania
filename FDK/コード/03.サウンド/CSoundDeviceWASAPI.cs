@@ -265,7 +265,7 @@ namespace FDK
 		Retry:
 			var flags = (mode == Eデバイスモード.排他) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
 			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
-			if ( COS.bIsWin7OrLater && CSound管理.bSoundUpdateByEventWASAPI )
+			if ( COS.bIsWin7OrLater() && CSound管理.bSoundUpdateByEventWASAPI )
 			{
 				flags |= BASSWASAPIInit.BASS_WASAPI_EVENT;	// Win7以降の場合は、WASAPIをevent drivenで動作させてCPU負荷減、レイテインシ改善
 			}
@@ -308,7 +308,7 @@ namespace FDK
 				}
 			}
 
-			if (COS.bIsWin10OrLater && (mode == Eデバイスモード.共有))		// Win10 low latency shared mode support
+			if (COS.bIsWin10OrLater() && (mode == Eデバイスモード.共有))		// Win10 low latency shared mode support
 			{
 				// バッファ自動設定をユーザーが望む場合は、periodを最小値にする。さもなくば、バッファサイズとしてユーザーが指定した値を、periodとして用いる。
 				if (n希望バッファサイズms == 0)
