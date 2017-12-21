@@ -383,6 +383,14 @@ namespace DTXMania
 			}
 			#endregion
 
+			#region [ 現在の電源プランをバックアップし、CONFIGのHighPower=ONの場合は HighPerformanceに変更 ]
+			CPowerPlan.BackupCurrentPowerPlan();
+			if (CDTXMania.Instance.ConfigIni.bForceHighPowerPlan)
+			{
+				CPowerPlan.ChangeHighPerformance();
+			}
+			#endregion
+
 			#region [ Input管理 の初期化 ]
 			Trace.TraceInformation("DirectInput, MIDI入力の初期化を行います。");
 			Trace.Indent();
@@ -934,16 +942,6 @@ namespace DTXMania
 				st.plugin.OnManagedリソースの作成();
 				Directory.SetCurrentDirectory(CDTXMania.Instance.strEXEのあるフォルダ);
 			}
-
-			#region [ 現在の電源プランをバックアップし、HighPerformanceに変更 ]
-			CPowerPlan.BackupCurrentPowerPlan();
-			if ( CDTXMania.Instance.ConfigIni.bForceHighPowerPlan )
-			{
-				CPowerPlan.ChangeHighPerformance();
-			}
-			#endregion
-
-
 #if GPUFlushAfterPresent
 			FrameEnd += dtxmania_FrameEnd;
 #endif
@@ -1018,7 +1016,6 @@ namespace DTXMania
 		}
 		protected override void OnExiting(EventArgs e)
 		{
-			CPowerPlan.RestoreCurrentPowerPlan();           // 電源プランを元のものに戻す
 			CPowerManagement.tEnableMonitorSuspend();       // スリープ抑止状態を解除
 			this.t終了処理();
 			base.OnExiting(e);
@@ -1948,7 +1945,7 @@ namespace DTXMania
 			}
 
 			#region [ マウスカーソル消去制御 ]
-			cMouseHideControl.tHideCursorIfNeed();
+			if (cMouseHideControl != null) cMouseHideControl.tHideCursorIfNeed();
 			#endregion
 			#region [ 全画面・ウインドウ切り替え ]
 			if (this.b次のタイミングで全画面_ウィンドウ切り替えを行う)
@@ -2243,6 +2240,9 @@ namespace DTXMania
 			{
 				Trace.TraceInformation("----------------------");
 				Trace.TraceInformation("■ アプリケーションの終了");
+				#region[ 電源プランの復元 ]
+				CPowerPlan.RestoreCurrentPowerPlan();           // 電源プランを元のものに戻す
+				#endregion
 				#region [ 曲検索の終了処理 ]
 				//---------------------
 				if (actEnumSongs != null)
@@ -2761,7 +2761,7 @@ namespace DTXMania
 		private void Window_ApplicationDeactivated(object sender, EventArgs e)
 		{
 			this.bApplicationActive = false;
-			cMouseHideControl.Show();
+			if (cMouseHideControl != null) cMouseHideControl.Show();
 		}
 		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -2813,7 +2813,7 @@ namespace DTXMania
 		}
 		private void Window_MouseMove(object sender, MouseEventArgs e)
 		{
-			cMouseHideControl.tResetCursorState(ConfigIni.bウィンドウモード, this.bApplicationActive);
+			if (cMouseHideControl != null) cMouseHideControl.tResetCursorState(ConfigIni.bウィンドウモード, this.bApplicationActive);
 		}
 
 		private void Window_ResizeEnd(object sender, EventArgs e)               // #23510 2010.11.20 yyagi: to get resized window size

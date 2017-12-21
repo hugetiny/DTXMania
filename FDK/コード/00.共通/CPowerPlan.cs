@@ -20,15 +20,17 @@ namespace FDK
 		readonly private static Guid GuidHighPerformance = new Guid( "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c" );		// Vista以降は全部これのはず
 		private static Guid GuidBackup = Guid.Empty;
 		private static bool bConnectedStandbySupported = false;
+		private static bool bChangedPowerPlan = false;
 
 
 		public static void BackupCurrentPowerPlan()
 		{
 			bConnectedStandbySupported = IsConnetedStandbySupported();
 			
-			if ( bConnectedStandbySupported )
+			if ( bConnectedStandbySupported || FDK.COS.bIsWin10OrLater(COS.WIN10BUILD.RS3) )
 			{
 				// 何もしない
+				Trace.TraceInformation( "ConnectedStandby対応機種またはWindows10(1709)以降のため、電源プランのバックアップは行いません。" );
 			}
 			else
 			{
@@ -43,7 +45,7 @@ namespace FDK
 		/// </summary>
 		private static bool IsConnetedStandbySupported()
 		{
-			if ( !COS.bIsWin8OrLater )
+			if ( !COS.bIsWin8OrLater() )
 			{
 				// Win8以前であれば、ConnectedStandby非サポートが確定
 				return false;
@@ -81,30 +83,44 @@ namespace FDK
 
 		public static void RestoreCurrentPowerPlan()
 		{
-			if ( bConnectedStandbySupported )
+			if (bConnectedStandbySupported || FDK.COS.bIsWin10OrLater(COS.WIN10BUILD.RS3))
 			{
 				// 何もしない
+				Trace.TraceInformation("ConnectedStandby対応機種またはWindows10(1709)以降のため、電源プランの復元は行いません。");
 			}
 			else
 			{
 				if ( GuidBackup != System.Guid.Empty )
 				{
-					SetActivePowerPlan( GuidBackup );
-					Trace.TraceInformation( "電源プランを、「{0}」に戻しました。", GetFriendlyName( GuidBackup ) );
+					if (bChangedPowerPlan)
+					{
+						SetActivePowerPlan(GuidBackup);
+						Trace.TraceInformation("電源プランを、「{0}」に戻しました。", GetFriendlyName(GuidBackup));
+					}
+					else
+					{
+						Trace.TraceInformation("DTXManiaで電源プランを変更していないため、電源プランの復元を行いません。");
+					}
 					GuidBackup = System.Guid.Empty;
+					bChangedPowerPlan = false;
+				}
+				else
+				{
+					Trace.TraceInformation("起動時に電源プランをバックアップしていないため、電源プランの復元を行いません。", GetFriendlyName(GuidBackup));
 				}
 			}
 		}
 		public static void ChangeHighPerformance()
 		{
-			if ( bConnectedStandbySupported )
+			if ( bConnectedStandbySupported || FDK.COS.bIsWin10OrLater(COS.WIN10BUILD.RS3))
 			{
-				Trace.TraceInformation( "ConnectedStandby対応機種のため、電源プランの変更を行いません。" );
+				Trace.TraceInformation( "ConnectedStandby対応機種またはWindows10(1709)以降のため、電源プランの変更を行いません。" );
 			}
 			else
 			{
 				SetActivePowerPlan( GuidHighPerformance );
 				Trace.TraceInformation( "電源プランを、「{0}」に変更しました。", GetFriendlyName( GuidHighPerformance ) );
+				bChangedPowerPlan = true;
 			}
 		}
 

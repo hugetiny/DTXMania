@@ -834,7 +834,10 @@ namespace DTXMania
 				}
 				else
 				{
-					CPowerPlan.RestoreCurrentPowerPlan();
+					// HighPower=OFFを維持したとき、またはONからOFFにしたときは、
+					// 特に電源プランの変更をしない。
+					// 電源プランの復元は、アプリ終了時に行う。
+					// CPowerPlan.RestoreCurrentPowerPlan();
 				}
 				#endregion
 			}
