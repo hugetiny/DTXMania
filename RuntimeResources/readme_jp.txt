@@ -1,6 +1,6 @@
 ============================================================
   DTXMania .NET style
-  (C) 2000 2017 DTXMania Group
+  (C) 2000 2018 DTXMania Group
 ============================================================
 
 ■動作に必要なもの
@@ -75,23 +75,23 @@ socre.ini ファイルとして出力します。そのため、
 
 
 ■WASAPI/ASIO対応について
-DTXManiaは、Release 096以降、WASAPI/ASIOに対応しています。
-また、Release 109以降では、WASAPIは、WASAPI-Exclusive(WASAPI排他)と
-WASAPI-Shared(WASAPI共有)の両方に対応しました。
-(Release 096～108のWASAPI対応は、WASAPI排他のみでした)
+DTXManiaは、WASAPI-Exclusive(WASAPI排他)とWASAPI-Shared(WASAPI共有),
+ASIOによるサウンド出力に対応しています。
+更に、Release111以降では、Win10でのWASAPI共有低遅延モードに
+対応しています。
 
-WASAPI排他又はASIOを使用することで、従来のバージョンと比べて、
-パッドを叩いてから音が出るまでのラグを小さくすることができます。
+WASAPI排他(Win10では、WASAPI共有も可)、又はASIOを使用することで、
+従来のバージョンと比べて、パッドを叩いてから音が出るまでのラグを
+小さくすることができます。
 
-初期状態ではWASAPI排他でサウンドを再生する設定になっています。
+初期状態では、Win10ではWASAPI共有を、それ以外のOSではWASAPI排他を
+使ってサウンドを再生する設定になっています。
 ASIOに変更する場合は、CONFIGURATIONで、SoundTypeをASIOに変更して下さい。
-(XPをお使いの場合は、初期設定はDirectSound(従来と同じ)です。)
 
-
-ASIOを使用するように設定しても、これが使用できない場合は、自動的に
-WASAPI_Exclusive(WASAPI排他)を使うよう試みます。更にWASAPI排他が使用
-できない場合はWASAPI_Shared(WASAPI共有)を、WASAPI共有が使用できない
-ときは、DirectSoundを使います。
+ASIOを使用するように設定した場合でも、これが使用できない場合は、
+自動的にWASAPI_Exclusive(WASAPI排他)を使うよう試みます。
+更にWASAPI排他が使用できない場合はWASAPI_Shared(WASAPI共有)を、
+WASAPI共有が使用できないときは、DirectSoundを使います。
 
 
 ウインドウのタイトルに、使用しているサウンド出力方式と、

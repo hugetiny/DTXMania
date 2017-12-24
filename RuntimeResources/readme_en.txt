@@ -1,6 +1,6 @@
 ============================================================
   DTXMania .NET style
-  (C) 2000 2017 DTXMania Group
+  (C) 2000 2018 DTXMania Group
 ============================================================
 
 * Requirements
@@ -78,16 +78,15 @@ carefully.
 
 * WASAPI / ASIO support
 
-DTXMania support both WASAPI and ASIO on Release 096.
-(Of course DirectSound is still supported)
-From Release 109, about WASAPI support, both WASAPI-Exclusive
-and WASAPI-Shared have been also suported.
+DTXMania supports WASAPI(Exclusive/Shared) and ASIO.
+For Win10, low-latency WASAPI-shared mode is also supported.
 
 To use WASAPI or ASIO, you can reduce the lag from hitting pads
 to output the sound.
 
 If you use Vista or later, DTXMania initially try to uses WASAPI-Exclusive.
-(If you use XP, DTXMania initially uses DSound(DirectSound).)
+(If you use Win10, DTXMania initially uses WASAPI-Shared by default.
+ If you use XP, DTXMania initially uses DSound(DirectSound).)
 If you want to use ASIO, you have to change CONFIGURATION-
 System-Sound Option-SoundType to "ASIO".
 
