@@ -70,18 +70,18 @@ namespace DTXMania
 		public ECommand Command
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public ESoundDeviceType soundDeviceType
 		{
 			get;
-			private set;
+			set;
 		}
 		public int nASIOdevice
 		{
 			get;
-			private set;
+			set;
 		}
 		/// <summary>
 		/// 前回からサウンドデバイスが変更されたか
@@ -89,7 +89,7 @@ namespace DTXMania
 		public bool ChangedSoundDevice
 		{
 			get;
-			private set;
+			set;
 		}
 
 		public string filename
@@ -103,22 +103,22 @@ namespace DTXMania
 		public string previewFilename
 		{
 			get;
-			private set;
+			set;
 		}
 		public int previewVolume
 		{
 			get;
-			private set;
+			set;
 		}
 		public int previewPan
 		{
 			get;
-			private set;
+			set;
 		}
 		public bool GRmode
 		{
 			get;
-			private set;
+			set;
 		}
 		public bool lastGRmode
 		{
@@ -128,7 +128,7 @@ namespace DTXMania
 		public bool TimeStretch
 		{
 			get;
-			private set;
+			set;
 		}
 		public bool lastTimeStretch
 		{
@@ -138,7 +138,7 @@ namespace DTXMania
 		public bool VSyncWait
 		{
 			get;
-			private set;
+			set;
 		}
 		public bool lastVSyncWait
 		{
@@ -206,196 +206,6 @@ namespace DTXMania
 			return false;
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="arg"></param>
-		/// <param name="nStartBar"></param>
-		/// <param name="command"></param>
-		/// <returns>DTXV用の引数であればtrue</returns>
-		/// <remarks>内部でEnabled, nStartBar, Command, NeedReload, filename, last_path, last_timestampを設定する</remarks>
-		public bool ParseArguments(string arg)
-		{
-			bool ret = false, analyzing = true;
-			this.nStartBar = 0;
-
-			if (arg != null)
-			{
-				while (analyzing)
-				{
-					if (arg == "")
-					{
-						analyzing = false;
-					}
-					else if (arg.StartsWith("-V", StringComparison.OrdinalIgnoreCase))    // サウンド再生
-					{
-						// -Vvvv,ppp,"filename"の形式。 vvv=volume, ppp=pan.
-						this.Enabled = true;
-						this.Command = ECommand.Preview;
-						this.Refreshed = true;
-						ret = true;
-						arg = arg.Substring(2);
-
-						int pVol = arg.IndexOf(',');                  //Trace.TraceInformation( "pVol=" + pVol );
-						string strVol = arg.Substring(0, pVol);           //Trace.TraceInformation( "strVol=" + strVol );
-						this.previewVolume = Convert.ToInt32(strVol);         //Trace.TraceInformation( "previewVolume=" + previewVolume );
-						int pPan = arg.IndexOf(',', pVol + 1);            //Trace.TraceInformation( "pPan=" + pPan );
-						string strPan = arg.Substring(pVol + 1, pPan - pVol - 1);   //Trace.TraceInformation( "strPan=" + strPan );
-						this.previewPan = Convert.ToInt32(strPan);          //Trace.TraceInformation( "previewPan=" + previewPan );
-
-						arg = arg.Substring(pPan + 1);
-						arg = arg.Trim(new char[] { '\"' });
-						this.previewFilename = arg;
-						analyzing = false;
-					}
-					// -S  -Nxxx  filename
-					else if (arg.StartsWith("-S", StringComparison.OrdinalIgnoreCase))    // DTXV再生停止
-					{
-						this.Enabled = true;
-						this.Command = ECommand.Stop;
-						this.Refreshed = true;
-						ret = true;
-						arg = arg.Substring(2);
-					}
-					else if (arg.StartsWith("-D", StringComparison.OrdinalIgnoreCase))
-					{
-						// -DWE, -DWS, -DA1など
-						arg = arg.Substring(2); // -D を削除
-						switch (arg[0])
-						{
-							#region [ DirectSound ]
-							case 'D':
-								if (this.soundDeviceType != ESoundDeviceType.DirectSound)
-								{
-									this.ChangedSoundDevice = true;
-									this.soundDeviceType = ESoundDeviceType.DirectSound;
-								}
-								else
-								{
-									this.ChangedSoundDevice = false;
-								}
-								arg = arg.Substring(1);
-								break;
-							#endregion
-							#region [ WASAPI(Exclusive/Shared) ]
-							case 'W':
-								{
-									ESoundDeviceType new_sounddevicetype;
-									arg = arg.Substring(1);
-									char c = arg[0];
-									//arg = arg.Substring(1);
-
-									switch (c)
-									{
-										case 'E':
-											new_sounddevicetype = ESoundDeviceType.ExclusiveWASAPI;
-											break;
-										case 'S':
-											new_sounddevicetype = ESoundDeviceType.SharedWASAPI;
-											break;
-										default:
-											new_sounddevicetype = ESoundDeviceType.Unknown;
-											break;
-									}
-									if (this.soundDeviceType != new_sounddevicetype)
-									{
-										this.ChangedSoundDevice = true;
-										this.soundDeviceType = new_sounddevicetype;
-									}
-									else
-									{
-										this.ChangedSoundDevice = false;
-									}
-								}
-								arg = arg.Substring(1);
-								break;
-							#endregion
-							#region [ ASIO ]
-							case 'A':
-								if (this.soundDeviceType != ESoundDeviceType.ASIO)
-								{
-									this.ChangedSoundDevice = true;
-									this.soundDeviceType = ESoundDeviceType.ASIO;
-								}
-								else
-								{
-									this.ChangedSoundDevice = false;
-								}
-								arg = arg.Substring(1);
-
-								int nAsioDev = 0, p = 0;
-								while (true)
-								{
-									char c = arg[0];
-									if ('0' <= c && c <= '9')
-									{
-										nAsioDev *= 10;
-										nAsioDev += c - '0';
-										p++;
-										arg = arg.Substring(1);
-										continue;
-									}
-									else
-									{
-										break;
-									}
-								}
-								if (this.nASIOdevice != nAsioDev)
-								{
-									this.ChangedSoundDevice = true;
-									this.nASIOdevice = nAsioDev;
-								}
-								break;
-								#endregion
-						}
-						#region [ GRmode, TimeStretch, VSyncWait ]
-						{
-							// Reload判定は、-Nのところで行う
-							this.GRmode = (arg[0] == 'Y');
-							this.TimeStretch = (arg[1] == 'Y');
-							this.VSyncWait = (arg[2] == 'Y');
-
-							arg = arg.Substring(3);
-						}
-						#endregion
-					}
-					else if (arg.StartsWith("-N", StringComparison.OrdinalIgnoreCase))
-					{
-						this.Enabled = true;
-						this.Command = ECommand.Play;
-						ret = true;
-
-						arg = arg.Substring(2);         // "-N"を除去
-						string[] p = arg.Split(new char[] { ' ' });
-						this.nStartBar = int.Parse(p[0]);     // 再生開始小節
-						if (this.nStartBar < 0)
-						{
-							this.nStartBar = -1;
-						}
-
-						int startIndex = arg.IndexOf(' ');
-						string filename = arg.Substring(startIndex + 1);  // 再生ファイル名(フルパス) これで引数が終わっていることを想定
-						try
-						{
-							filename = filename.Trim(new char[] { '\"' });
-							bIsNeedReloadDTX(filename);
-						}
-						catch // 指定ファイルが存在しない
-						{
-						}
-						arg = "";
-						analyzing = false;
-					}
-					else
-					{
-						analyzing = false;
-					}
-				}
-			}
-			//string[] s = { "Stop", "Play", "Preview" };
-			//Trace.TraceInformation( "Command: " + s[ (int) this.Command ] );
-			return ret;
-		}
 
 		/// <summary>
 		/// Viewer関連の設定のみを更新して、Config.iniに書き出す

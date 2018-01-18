@@ -175,12 +175,14 @@ namespace DTXMania
 				return base.Window.Handle;
 			}
 		}
-		public CDTXVmode DTXVmode { get; set; }// #28821 2014.1.23 yyagi
-		#endregion
+        public CDTXVmode DTXVmode;                       // #28821 2014.1.23 yyagi
+        public CDTX2WAVmode DTX2WAVmode;
+        public CCommandParse CommandParse;
+        #endregion
 
-		// コンストラクタ
+        // コンストラクタ
 
-		private CDTXMania()
+        private CDTXMania()
 		{
 		}
 
@@ -273,16 +275,22 @@ namespace DTXMania
 
 			#endregion
 
-			#region [ DTXVmodeクラス の初期化 ]
+			#region [ DTXVmodeクラス, DTX2WAVmodeクラス, CommandParseクラス の初期化 ]
 			//Trace.TraceInformation( "DTXVモードの初期化を行います。" );
 			//Trace.Indent();
 			try
 			{
 				DTXVmode = new CDTXVmode();
 				DTXVmode.Enabled = false;
-				//Trace.TraceInformation( "DTXVモードの初期化を完了しました。" );
-			}
-			finally
+                //Trace.TraceInformation( "DTXVモードの初期化を完了しました。" );
+
+                DTX2WAVmode = new CDTX2WAVmode();
+                //Trace.TraceInformation( "DTX2WAVモードの初期化を完了しました。" );
+
+                CommandParse = new CCommandParse();
+                //Trace.TraceInformation( "CommandParseの初期化を完了しました。" );
+            }
+            finally
 			{
 				//Trace.Unindent();
 			}
@@ -307,7 +315,7 @@ namespace DTXMania
 						arg += commandLineArgs[i];
 					}
 				}
-				DTXVmode.ParseArguments(arg);
+				CommandParse.ParseArguments(arg, ref DTXVmode, ref DTX2WAVmode);
 				if (DTXVmode.Enabled)
 				{
 					DTXVmode.Refreshed = false;                             // 初回起動時は再読み込みに走らせない
@@ -1067,7 +1075,7 @@ namespace DTXMania
 
 				if (strMes != null)
 				{
-					DTXVmode.ParseArguments(strMes);
+					CommandParse.ParseArguments(strMes, ref DTXVmode, ref DTX2WAVmode);
 
 					if (DTXVmode.Enabled)
 					{
