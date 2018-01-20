@@ -291,7 +291,7 @@ namespace DTXMania
 		//nouse_ea			= 0xEA,
 		//nouse_eb			= 0xEB,
 		Click				= 0xEC,		// metronome click
-		//nouse_ed			= 0xED,
+		FirstSoundChip		= 0xED,		// Trigger to start recording
 		//nouse_ee			= 0xEE,
 		//nouse_ef			= 0xEF,
 		//nouse_f0			= 0xF0,

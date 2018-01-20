@@ -552,6 +552,23 @@ namespace DTXMania
 				}
 			}
 		}
+        public bool tWavのいずれかが再生中()
+        {
+            foreach (CWAV wc in this.listWAV.Values)
+            {
+                if (wc.rSound[0] != null)
+                {
+                    for (int i = 0; i < nPolyphonicSounds; i++)
+                    {
+                        if ((wc.rSound[i] != null) && (wc.rSound[i].b再生中))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
 
 		public void tWavの再生停止(int nWaveの内部番号)
 		{

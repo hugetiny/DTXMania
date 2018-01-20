@@ -23,5 +23,7 @@ namespace FDK
 		CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ );
 		void tサウンドを作成する( string strファイル名, ref CSound sound );
 		void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound );
+		bool tStartRecording();
+		bool tStopRecording();
 	}
 }

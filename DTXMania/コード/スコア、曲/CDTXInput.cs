@@ -277,7 +277,7 @@ namespace DTXMania
 						//span = (TimeSpan) ( DateTime.Now - timeBeginLoad );
 						//Trace.TraceInformation( "空打確認時間:             {0}", span.ToString() );
 						//timeBeginLoad = DateTime.Now;
-						#region [ 拍子・拍線の挿入と、クリック音の挿入 ]
+						#region [ 拍子・拍線の挿入と、クリック音の挿入と、最初に再生するサウンド直前へのマーカー挿入(録音開始トリガ) ]
 						if (this.listChip.Count > 0)
 						{
 							this.listChip.Sort();   // 高速化のためにはこれを削りたいが、listChipの最後がn発声位置の終端である必要があるので、
@@ -355,6 +355,19 @@ namespace DTXMania
 									}
 								}
 							}
+
+							// 最初にサウンドの再生を開始するチップの位置に、録音開始トリガのマーカーを挿入
+							for (int i = 0; i < listChip.Count; i++)
+							{
+								if (listChip[i].bWAVを使うチャンネルである)
+								{
+									int playPosition = listChip[i].n発声位置;
+									CChip chip = new CChip(playPosition, 36 * 36 - 1, EChannel.FirstSoundChip);
+									this.listChip.Insert(i, chip);
+									break;
+								}
+							}
+
 							this.listChip.Sort();
 						}
 						#endregion

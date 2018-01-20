@@ -481,17 +481,31 @@ namespace FDK
 			}
 
 
-			//録音テスト
-			//w = new EncoderWAV( this.hMixer_DeviceOut );
-			//w.InputFile = null;    //STDIN
-			//w.OutputFile = "test2.wav";
-			//w.Start( null, IntPtr.Zero, false );
-			// decode the stream (if not using a decoding channel, simply call "Bass.BASS_ChannelPlay" here) 
+			// 録音設定(DTX2WAV)
+			encoder = new EncoderWAV(this.hMixer_DeviceOut);
+			encoder.InputFile = null;    //STDIN
+			encoder.OutputFile = CSound管理.strRecordOutFilename;
+			encoder.UseAsyncQueue = true;
+			encoder.Start(null, IntPtr.Zero, true);		// PAUSE状態で録音開始
+
 
 			// 出力を開始。
-
 			BassWasapi.BASS_WASAPI_Start();
 		}
+
+		#region [録音開始]
+		public bool tStartRecording()
+		{
+			return encoder.Pause(false);
+		}
+		#endregion
+		#region [録音終了]
+		public bool tStopRecording()
+		{
+			return encoder.Stop(true);
+		}
+		#endregion
+
 		#region [ tサウンドを作成する() ]
 		public CSound tサウンドを作成する( string strファイル名 )
 		{
@@ -524,10 +538,12 @@ namespace FDK
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
-			//if ( w != null )
-			//{
-			//	w.Stop();  // finish
-			//}
+			if ( encoder != null )
+			{
+				encoder.Stop();  // finish
+				encoder.Dispose();
+				encoder = null;
+			}
 			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
 			if ( hMixer != -1 )
 			{
@@ -554,7 +570,7 @@ namespace FDK
 		protected int hMixer = -1;
 		protected int hMixer_DeviceOut = -1;
 		protected int hMixer_Record = -1;
-		protected EncoderWAV w;
+		protected EncoderWAV encoder;
 		protected int stream;
 		protected WASAPIPROC tWasapiProc = null;
 

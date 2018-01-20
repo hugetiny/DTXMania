@@ -24,7 +24,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "111(180101)";
+		public static readonly string VERSION = "112(180201)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";     // June 2010
 																																//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -354,6 +354,109 @@ namespace DTXMania
 					CDTXMania.Instance.ConfigIni.rcWindow.H = CDTXMania.Instance.ConfigIni.rcViewerWindow.H;
 					CDTXMania.Instance.ConfigIni.rcWindow.X = CDTXMania.Instance.ConfigIni.rcViewerWindow.X;
 					CDTXMania.Instance.ConfigIni.rcWindow.Y = CDTXMania.Instance.ConfigIni.rcViewerWindow.Y;
+				}
+				else if (DTX2WAVmode.Enabled)
+				{
+					strコンパクトモードファイル = DTX2WAVmode.dtxfilename;
+					FDK.CSound管理.strRecordInputDTXfilename = DTX2WAVmode.dtxfilename;
+					FDK.CSound管理.strRecordOutFilename = DTX2WAVmode.outfilename;
+					FDK.CSound管理.strRecordFileType = DTX2WAVmode.Format.ToString();
+					#region [ 録音用の本体設定 ]
+					ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Shared;
+					CDTXMania.Instance.ConfigIni.bVSyncWait.Value = false;
+					CDTXMania.Instance.ConfigIni.bTimeStretch.Value = false;
+					CDTXMania.Instance.ConfigIni.eActiveInst.Value = EActiveInstrument.Both;
+
+					CDTXMania.Instance.ConfigIni.bFullScreen.Value = false;
+					CDTXMania.Instance.ConfigIni.rcWindow_backup = CDTXMania.Instance.ConfigIni.rcWindow;
+					CDTXMania.Instance.ConfigIni.rcWindow.W = CDTXMania.Instance.ConfigIni.rcViewerWindow.W;
+					CDTXMania.Instance.ConfigIni.rcWindow.H = CDTXMania.Instance.ConfigIni.rcViewerWindow.H;
+					CDTXMania.Instance.ConfigIni.rcWindow.X = CDTXMania.Instance.ConfigIni.rcViewerWindow.X;
+					CDTXMania.Instance.ConfigIni.rcWindow.Y = CDTXMania.Instance.ConfigIni.rcViewerWindow.Y;
+
+					//全オート
+					CDTXMania.instance.ConfigIni.bAutoPlay.LC.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.HH.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.HHO.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.SD.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.BD.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.HT.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.LT.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.FT.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.CY.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.RD.Value = true;
+
+					CDTXMania.instance.ConfigIni.bAutoPlay.GtR.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.GtG.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.GtB.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.GtPick.Value = true;
+					//CDTXMania.instance.ConfigIni.bAutoPlay.GtWail.Value = true;  // 無くてもよい 処理不可削減のため、敢えてWailはAutoにしない
+					CDTXMania.instance.ConfigIni.bAutoPlay.BsR.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.BsG.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.BsB.Value = true;
+					CDTXMania.instance.ConfigIni.bAutoPlay.BsPick.Value = true;
+					//CDTXMania.instance.ConfigIni.bAutoPlay.BsWail.Value = true;
+
+					//FillInオフ, 歓声オフ
+					CDTXMania.instance.ConfigIni.bFillin.Value = false;
+					CDTXMania.instance.ConfigIni.bAudience.Value = false;
+					//ストイックモード
+					CDTXMania.instance.ConfigIni.bStoicMode.Value = false;
+					//チップ非表示
+					CDTXMania.instance.ConfigIni.eSudHidInv.Drums.Value = ESudHidInv.FullInv;
+					CDTXMania.instance.ConfigIni.eSudHidInv.Guitar.Value = ESudHidInv.FullInv;
+					CDTXMania.instance.ConfigIni.eSudHidInv.Bass.Value = ESudHidInv.FullInv;
+
+					// Dark=Full
+					CDTXMania.instance.ConfigIni.eDark.Value = EDark.Full;
+
+					//多重再生数=4
+					CDTXMania.instance.ConfigIni.nPolyphonicSounds.Value = 4;
+
+					//再生速度x1
+					CDTXMania.instance.ConfigIni.nPlaySpeed.Value = 20;
+
+					//メトロノーム音量0
+					CDTXMania.instance.ConfigIni.eClickType.Value = EClickType.Off;
+					CDTXMania.instance.ConfigIni.nClickHighVolume.Value = 0;
+					CDTXMania.instance.ConfigIni.nClickLowVolume.Value = 0;
+
+					//自動再生音量=100
+					CDTXMania.instance.ConfigIni.nAutoVolume.Value = 100;
+					CDTXMania.instance.ConfigIni.nChipVolume.Value = 100;
+
+					//マスターボリューム100
+					CDTXMania.instance.ConfigIni.nMasterVolume.Value = 100;
+
+					//StageFailedオフ
+					CDTXMania.instance.ConfigIni.bStageFailed.Value = false;
+
+					//グラフ無効
+					CDTXMania.instance.ConfigIni.bGraph.Drums.Value = false;
+					CDTXMania.instance.ConfigIni.bGraph.Guitar.Value = false;
+					CDTXMania.instance.ConfigIni.bGraph.Bass.Value = false;
+
+					//コンボ非表示,判定非表示
+					CDTXMania.instance.ConfigIni.bDisplayCombo.Drums.Value = false;
+					CDTXMania.instance.ConfigIni.bDisplayCombo.Guitar.Value = false;
+					CDTXMania.instance.ConfigIni.bDisplayCombo.Bass.Value = false;
+					CDTXMania.instance.ConfigIni.bDisplayJudge.Drums.Value = false;
+					CDTXMania.instance.ConfigIni.bDisplayJudge.Guitar.Value = false;
+					CDTXMania.instance.ConfigIni.bDisplayJudge.Bass.Value = false;
+
+
+					//デバッグ表示オフ
+					//CDTXMania.instance.ConfigIni.b演奏情報を表示する = false;
+					CDTXMania.instance.ConfigIni.bDebugInfo.Value = false;
+
+					//BGAオフ, AVIオフ
+					CDTXMania.instance.ConfigIni.bBGA.Value = false;
+					CDTXMania.instance.ConfigIni.bAVI.Value = false;
+
+					//BGMオン、チップ音オン
+					CDTXMania.instance.ConfigIni.bBGMPlay.Value = true;
+					CDTXMania.instance.ConfigIni.bDrumsHitSound.Value = true;
+					#endregion
 				}
 				else                                                        // 通常のコンパクトモード
 				{
@@ -2215,7 +2318,11 @@ namespace DTXMania
 			{
 				delay = "(" + Sound管理.GetSoundDelay() + "ms)";
 			}
-			base.Window.Text = strWindowTitle + " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
+			base.Window.Text = strWindowTitle;
+			if (!this.DTX2WAVmode.Enabled)
+			{
+				base.Window.Text += " (" + Sound管理.GetCurrentSoundDeviceType() + delay + ")";
+			}
 		}
 
 		#region [ private ]
@@ -2232,6 +2339,10 @@ namespace DTXMania
 				if (DTXVmode.Enabled)
 				{
 					return "DTXMViewer release " + VERSION;
+				}
+				else if (DTX2WAVmode.Enabled)
+				{
+					return "DTX2WAV (" + VERSION + "): " + Path.GetFileName(this.DTX2WAVmode.dtxfilename);
 				}
 				else
 				{
@@ -2530,6 +2641,11 @@ namespace DTXMania
 					{
 						DTXVmode.tUpdateConfigIni();
 						Trace.TraceInformation("DTXVモードの設定情報を、Config.xmlに保存しました。");
+					}
+					else if (DTX2WAVmode.Enabled)
+					{
+						DTX2WAVmode.tUpdateConfigIni();
+						Trace.TraceInformation("DTX2WAVモードの設定情報を、Config.xmlに保存しました。");
 					}
 					else
 					{

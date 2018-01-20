@@ -352,6 +352,17 @@ namespace FDK
 			}
 		}
 
+		#region [ 録音制御用(WASAPI以外でのみ使用) ]
+		public bool tStartRecording()
+		{
+			return false;
+		}
+		public bool tStopRecording()
+		{
+			return false;
+		}
+		#endregion
+
 		#region [ tサウンドを作成する() ]
 		public CSound tサウンドを作成する( string strファイル名 )
 		{

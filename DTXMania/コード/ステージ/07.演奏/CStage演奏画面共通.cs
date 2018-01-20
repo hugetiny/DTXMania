@@ -412,7 +412,7 @@ namespace DTXMania
 					db再生速度 = ((double)CDTXMania.Instance.ConfigIni.nPlaySpeed) / 20.0;
 				}
 
-				bValidScore = (CDTXMania.Instance.DTXVmode.Enabled) ? false : true;
+				bValidScore = (CDTXMania.Instance.DTXVmode.Enabled || CDTXMania.Instance.DTX2WAVmode.Enabled) ? false : true;
 
 				cWailingChip = new CWailingChip共通[3];
 				// 0:未使用, 1:Gutiar, 2:Bass
@@ -449,6 +449,7 @@ namespace DTXMania
 					}
 				}
 				#endregion
+
 
 				if (CDTXMania.Instance.ConfigIni.bIsSwappedGuitarBass)  // #24063 2011.1.24 yyagi Gt/Bsの譜面情報入れ替え
 				{
@@ -671,16 +672,19 @@ namespace DTXMania
 						CStage.Eフェーズ eフェーズid1 = base.eフェーズID;
 					}
 					#endregion
-					actLane.On進行描画();
-					actLaneFlushGB.On進行描画();
-					actPanel.On進行描画();
-					actScore.On進行描画();
-					actOptionPanel.On進行描画();
-					actGauge.On進行描画();
-					actGraph.On進行描画();
-					actLaneFlushD.On進行描画();
-					actDANGER.t進行描画(actGauge.IsDanger);
-					act譜面スクロール速度.On進行描画();
+                    if (!CDTXMania.Instance.DTX2WAVmode.Enabled)
+                    {
+                        actLane.On進行描画();
+                        actLaneFlushGB.On進行描画();
+                        actPanel.On進行描画();
+                        actScore.On進行描画();
+                        actOptionPanel.On進行描画();
+                        actGauge.On進行描画();
+                        actGraph.On進行描画();
+                        actLaneFlushD.On進行描画();
+                        actDANGER.t進行描画(actGauge.IsDanger);
+                    }
+                    act譜面スクロール速度.On進行描画();
 					t進行描画_判定ライン();
 					actWailingBonus.On進行描画();
 
@@ -702,10 +706,12 @@ namespace DTXMania
 						actJudgeString.On進行描画();
 						actCombo.On進行描画();
 					}
-
-					actChipFireD.On進行描画();
-					actChipFireGB.On進行描画();
-					actPlayInfo.On進行描画();
+                    if (!CDTXMania.Instance.DTX2WAVmode.Enabled)
+                    {
+                        actChipFireD.On進行描画();
+                        actChipFireGB.On進行描画();
+                        actPlayInfo.On進行描画();
+                    }
 
 					// Wailing
 					if ((CDTXMania.Instance.ConfigIni.eDark != EDark.Full) &&
@@ -755,6 +761,25 @@ namespace DTXMania
 						}
 						Thread.Sleep(5);
 						// DTXCからの次のメッセージを待ち続ける
+					}
+                    else if (CDTXMania.Instance.DTX2WAVmode.Enabled)
+                    {
+						// すべての再生が終わるのを待って、録音を終了し、アプリを終了する
+						bool bPlaying = true;
+						while (bPlaying)
+						{
+							bPlaying = CDTXMania.Instance.DTX.tWavのいずれかが再生中();
+							if (bPlaying)
+							{
+								Thread.Sleep(5);
+							}
+						}
+
+						FDK.CSound管理.t録音終了();
+
+						this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.演奏中断;
+						base.eフェーズID = CStage.Eフェーズ.共通_終了状態;
+						return (int)this.eフェードアウト完了時の戻り値;
 					}
 					else
 					{
@@ -3234,6 +3259,15 @@ namespace DTXMania
 								CDTXMania.Instance.Skin.soundClickLow.t再生する();
 								break;
 						}
+					}
+				}
+				else if (pChip[EChannel.FirstSoundChip] && !pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
+				{
+					pChip.bHit = true;
+					if (CDTXMania.Instance.DTX2WAVmode.Enabled)
+					{
+						FDK.CSound管理.t録音開始();
+						Trace.TraceInformation("録音を開始しました。");
 					}
 				}
 				else if ( !pChip.bHit && ( pChip.nバーからの距離dot.Drums < 0 ) )

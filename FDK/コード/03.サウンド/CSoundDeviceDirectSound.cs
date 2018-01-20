@@ -194,6 +194,17 @@ namespace FDK
 			Trace.TraceInformation( "DirectSound を初期化しました。({0})({1})", ( priority ) ? "Priority" : "Normal", bUseOSTimer? "OStimer" : "FDKtimer" );
 		}
 
+		#region [ 録音制御用(WASAPI以外でのみ使用) ]
+		public bool tStartRecording()
+		{
+			return false;
+		}
+		public bool tStopRecording()
+		{
+			return false;
+		}
+		#endregion
+
 		public CSound tサウンドを作成する( string strファイル名 )
 		{
 			var sound = new CSound();

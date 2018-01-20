@@ -194,6 +194,16 @@ namespace FDK
 			}
 		}
 
+		/// <summary>
+		/// 録音機能で使うファイル名
+		/// </summary>
+		public static string strRecordInputDTXfilename;
+		public static string strRecordOutFilename;
+
+		/// <summary>
+		/// 録音機能で使うファイルタイプ
+		/// </summary>
+		public static string strRecordFileType;
 		#endregion
 
 
@@ -497,6 +507,19 @@ namespace FDK
 		public void RemoveMixer( CSound cs )
 		{
 			cs.tBASSサウンドをミキサーから削除する();
+		}
+
+		/// <summary>
+		/// 録音のPAUSEを解除し、録音を開始する。
+		/// </summary>
+		public static bool t録音開始()
+		{
+			return SoundDevice.tStartRecording();
+
+		}
+		public static bool t録音終了()
+		{
+			return SoundDevice.tStartRecording();
 		}
 	}
 	#endregion
