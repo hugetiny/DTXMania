@@ -273,6 +273,7 @@ namespace FDK
 			}
 
 			// ASIO 出力と同じフォーマットを持つ BASS ミキサーを作成。
+			// 1つのまとめとなるmixer (hMixer) と、そこにつなぐ複数の楽器別mixer (hMixer _forChips)を作成。
 
 			var flag = BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_STREAM_DECODE;	// デコードのみ＝発声しない。ASIO に出力されるだけ。
 			if( this.fmtASIOデバイスフォーマット == BASSASIOFormat.BASS_ASIO_FORMAT_FLOAT )
@@ -287,6 +288,32 @@ namespace FDK
 				this.bIsBASSFree = true;
 				throw new Exception( string.Format( "BASSミキサ(mixing)の作成に失敗しました。[{0}]", err ) );
 			}
+
+			////以下は録音用なので、WASAPIのみで使う
+			//for (int i = 0; i < (int)CSound.EInstType.Unknown; i++)
+			//{
+			//	this.hMixer_forChips[i] = BassMix.BASS_Mixer_StreamCreate((int)this.db周波数, this.n出力チャンネル数, flag);
+			//	if (this.hMixer_forChips[i] == 0)
+			//	{
+			//		BASSError errcode = Bass.BASS_ErrorGetCode();
+			//		BassAsio.BASS_ASIO_Free();
+			//		Bass.BASS_Free();
+			//		this.bIsBASSFree = true;
+			//		throw new Exception(string.Format("BASSミキサ(楽器[{1}]ごとのmixing)の作成に失敗しました。[{0}]", errcode, i));
+			//	}
+
+			//	bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hMixer_forChips[i], BASSFlag.BASS_DEFAULT);
+			//	if (!b1)
+			//	{
+			//		BASSError errcode = Bass.BASS_ErrorGetCode();
+			//		BassAsio.BASS_ASIO_Free();
+			//		Bass.BASS_Free();
+			//		this.bIsBASSFree = true;
+			//		throw new Exception(string.Format("個別BASSミキサ({1}}から(mixing)への接続に失敗しました。[{0}]", errcode, i));
+			//	};
+			//}
+
+
 
 			// BASS ミキサーの1秒あたりのバイト数を算出。
 
@@ -364,25 +391,33 @@ namespace FDK
 		#endregion
 
 		#region [ tサウンドを作成する() ]
-		public CSound tサウンドを作成する( string strファイル名 )
+		public CSound tサウンドを作成する(string strファイル名)
+		{
+			return tサウンドを作成する(strファイル名, CSound.EInstType.Unknown);
+		}
+		public CSound tサウンドを作成する( string strファイル名, CSound.EInstType eInstType)
 		{
 			var sound = new CSound();
-			sound.tASIOサウンドを作成する( strファイル名, this.hMixer );
+			sound.tASIOサウンドを作成する( strファイル名, this.hMixer, eInstType );
 			return sound;
 		}
 		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ )
 		{
+			return tサウンドを作成する( byArrWAVファイルイメージ, CSound.EInstType.Unknown);
+		}
+		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound.EInstType eInstType )
+		{
 			var sound = new CSound();
-			sound.tASIOサウンドを作成する( byArrWAVファイルイメージ, this.hMixer );
+			sound.tASIOサウンドを作成する( byArrWAVファイルイメージ, this.hMixer, eInstType );
 			return sound;
 		}
-		public void tサウンドを作成する( string strファイル名, ref CSound sound )
+		public void tサウンドを作成する(string strファイル名, ref CSound sound, CSound.EInstType eInstType )
 		{
-			sound.tASIOサウンドを作成する( strファイル名, this.hMixer );
+			sound.tASIOサウンドを作成する( strファイル名, this.hMixer, eInstType );
 		}
-		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound )
+		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound, CSound.EInstType eInstType )
 		{
-			sound.tASIOサウンドを作成する( byArrWAVファイルイメージ, this.hMixer );
+			sound.tASIOサウンドを作成する( byArrWAVファイルイメージ, this.hMixer, eInstType );
 		}
 		#endregion
 
@@ -422,7 +457,8 @@ namespace FDK
 
 
 		protected int hMixer = -1;
-		protected int hMixer_DeviceOut = -1; 
+		protected int hMixer_DeviceOut = -1;
+		//protected int[] hMixer_forChips = new int[(int)CSound.EInstType.Unknown];  //DTX2WAV対応 BGM, SE, Drums...を別々のmixerに入れて、個別に音量変更できるようにする
 		protected int n出力チャンネル数 = 0;
 		protected double db周波数 = 0.0;
 		protected int nバッファサイズsample = 0;

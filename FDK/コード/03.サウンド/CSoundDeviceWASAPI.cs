@@ -423,7 +423,9 @@ namespace FDK
 
 
 
+
 			// WASAPI出力と同じフォーマットを持つ BASS ミキサーを作成。
+			// 1つのまとめとなるmixer (hMixer) と、そこにつなぐ複数の楽器別mixer (hMixer _forChips)を作成。
 
 			//Debug.Assert( Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_MIXER_BUFFER, 5 ),		// バッファ量を最大量の5にする
 			//	string.Format( "BASS_SetConfig(CONFIG_MIXER_BUFFER) に失敗しました。[{0}", Bass.BASS_ErrorGetCode() ) );
@@ -442,6 +444,32 @@ namespace FDK
 				throw new Exception( string.Format( "BASSミキサ(mixing)の作成に失敗しました。[{0}]", errcode ) );
 			}
 
+			for (int i = 0; i <= (int)CSound.EInstType.Unknown; i++)
+			{
+				this.hMixer_Chips[ i ] = BassMix.BASS_Mixer_StreamCreate(
+					info.freq,
+					info.chans,
+					BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_MIXER_POSEX);    // デコードのみ＝発声しない。WASAPIに出力されるだけ。
+				if (this.hMixer_Chips[ i ] == 0)
+				{
+					BASSError errcode = Bass.BASS_ErrorGetCode();
+					BassWasapi.BASS_WASAPI_Free();
+					Bass.BASS_Free();
+					this.bIsBASSFree = true;
+					throw new Exception(string.Format("BASSミキサ(楽器[{1}]ごとのmixing)の作成に失敗しました。[{0}]", errcode, i));
+				}
+
+				bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hMixer_Chips[i], BASSFlag.BASS_DEFAULT);
+				if (!b1)
+				{
+					BASSError errcode = Bass.BASS_ErrorGetCode();
+					BassWasapi.BASS_WASAPI_Free();
+					Bass.BASS_Free();
+					this.bIsBASSFree = true;
+					throw new Exception(string.Format("個別BASSミキサ({1}}から(mixing)への接続に失敗しました。[{0}]", errcode, i));
+				};
+
+			}
 
 			// BASS ミキサーの1秒あたりのバイト数を算出。
 
@@ -480,14 +508,19 @@ namespace FDK
 				};
 			}
 
+			//Bass.BASS_ChannelSetAttribute(this.hMixer_Chips[(int)CSound.EInstType.Guitar], BASSAttribute.BASS_ATTRIB_VOL, 1.50f);
+
 
 			// 録音設定(DTX2WAV)
 			encoder = new EncoderWAV(this.hMixer_DeviceOut);
 			encoder.InputFile = null;    //STDIN
 			encoder.OutputFile = CSound管理.strRecordOutFilename;
 			encoder.UseAsyncQueue = true;
-			encoder.Start(null, IntPtr.Zero, true);		// PAUSE状態で録音開始
+			encoder.Start(null, IntPtr.Zero, true);     // PAUSE状態で録音開始
 
+			//Bass.BASS_ChannelSetAttribute(this.hMixer_DeviceOut, BASSAttribute.BASS_ATTRIB_VOL, 0.10f);
+			//Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_GVOL_SAMPLE, 1000);
+			//Bass.BASS_SetVolume(0.1f);
 
 			// 出力を開始。
 			BassWasapi.BASS_WASAPI_Start();
@@ -507,25 +540,37 @@ namespace FDK
 		#endregion
 
 		#region [ tサウンドを作成する() ]
-		public CSound tサウンドを作成する( string strファイル名 )
+		public CSound tサウンドを作成する(string strファイル名)
+		{
+			return tサウンドを作成する( strファイル名, CSound.EInstType.Unknown );
+		}
+		public CSound tサウンドを作成する( string strファイル名, CSound.EInstType eInstType )
 		{
 			var sound = new CSound();
-			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.e出力デバイス );
+			int hmixer = hMixer_Chips[ (int)eInstType ];
+			sound.tWASAPIサウンドを作成する( strファイル名, hmixer, this.e出力デバイス, eInstType );
 			return sound;
 		}
 		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ )
 		{
+			return tサウンドを作成する( byArrWAVファイルイメージ, CSound.EInstType.Unknown);
+		}
+		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound.EInstType eInstType )
+		{
 			var sound = new CSound();
-			sound.tWASAPIサウンドを作成する( byArrWAVファイルイメージ, this.hMixer, this.e出力デバイス );
+			int hmixer = hMixer_Chips[(int)eInstType];
+			sound.tWASAPIサウンドを作成する( byArrWAVファイルイメージ, hmixer, this.e出力デバイス, eInstType );
 			return sound;
 		}
-		public void tサウンドを作成する( string strファイル名, ref CSound sound )
+		public void tサウンドを作成する( string strファイル名, ref CSound sound, CSound.EInstType eInstType )
 		{
-			sound.tWASAPIサウンドを作成する( strファイル名, this.hMixer, this.e出力デバイス );
+			int hmixer = hMixer_Chips[(int)eInstType];
+			sound.tWASAPIサウンドを作成する( strファイル名, hmixer, this.e出力デバイス, eInstType );
 		}
-		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound )
+		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound, CSound.EInstType eInstType)
 		{
-			sound.tWASAPIサウンドを作成する( byArrWAVファイルイメージ, this.hMixer, this.e出力デバイス );
+			int hmixer = hMixer_Chips[(int)eInstType];
+			sound.tWASAPIサウンドを作成する( byArrWAVファイルイメージ, hmixer, this.e出力デバイス, eInstType );
 		}
 		#endregion
 
@@ -570,6 +615,8 @@ namespace FDK
 		protected int hMixer = -1;
 		protected int hMixer_DeviceOut = -1;
 		protected int hMixer_Record = -1;
+		protected int[] hMixer_Chips = new int[(int)CSound.EInstType.Unknown + 1];  //DTX2WAV対応 BGM, SE, Drums...を別々のmixerに入れて、個別に音量変更できるようにする
+
 		protected EncoderWAV encoder;
 		protected int stream;
 		protected WASAPIPROC tWasapiProc = null;

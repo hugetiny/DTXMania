@@ -295,7 +295,7 @@ namespace DTXMania
 				//Trace.Unindent();
 			}
 			#endregion
-			#region [ コンパクトモードスイッチの有無、もしくは、DTXViewerとしての起動 ]
+			#region [ コンパクトモードスイッチの有無、もしくは、DTXViewer/DTX2WAVとしての起動 ]
 			bコンパクトモード = false;
 			strコンパクトモードファイル = "";
 			string[] commandLineArgs = Environment.GetCommandLineArgs();
@@ -362,7 +362,9 @@ namespace DTXMania
 					FDK.CSound管理.strRecordOutFilename = DTX2WAVmode.outfilename;
 					FDK.CSound管理.strRecordFileType = DTX2WAVmode.Format.ToString();
 					#region [ 録音用の本体設定 ]
-					ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Shared;
+					CDTXMania.Instance.ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Exclusive;
+					CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI.Value = false;
+
 					CDTXMania.Instance.ConfigIni.bVSyncWait.Value = false;
 					CDTXMania.Instance.ConfigIni.bTimeStretch.Value = false;
 					CDTXMania.Instance.ConfigIni.eActiveInst.Value = EActiveInstrument.Both;
@@ -456,6 +458,12 @@ namespace DTXMania
 					//BGMオン、チップ音オン
 					CDTXMania.instance.ConfigIni.bBGMPlay.Value = true;
 					CDTXMania.instance.ConfigIni.bDrumsHitSound.Value = true;
+
+					//パート強調オフ
+					CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Drums.Value = false;
+					CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Guitar.Value = false;
+					CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Bass.Value = false;
+
 					#endregion
 				}
 				else                                                        // 通常のコンパクトモード
@@ -482,6 +490,10 @@ namespace DTXMania
 				if (DTXVmode.Enabled)
 				{
 					Trace.TraceInformation("DTXVモードで起動します。[{0}]", strコンパクトモードファイル);
+				}
+				else if (DTX2WAVmode.Enabled)
+				{
+					Trace.TraceInformation("DTX2WAVモードで起動します。[{0}]", strコンパクトモードファイル);
 				}
 				else
 				{
@@ -641,6 +653,11 @@ namespace DTXMania
 #endif
 			actFlushGPU = new CActFlushGPU();
 			#endregion
+
+			if (DTX2WAVmode.Enabled)
+			{
+				this.Window.WindowState = FormWindowState.Minimized;		//DTX2WAVモード時は自動的に最小化したいが、まだうまくいかない
+			}
 
 			DTX = null;
 

@@ -205,38 +205,48 @@ namespace FDK
 		}
 		#endregion
 
+		#region [ tサウンドを作成する() ]
 		public CSound tサウンドを作成する( string strファイル名 )
 		{
+			return tサウンドを作成する( strファイル名, CSound.EInstType.Unknown );
+		}
+		public CSound tサウンドを作成する( string strファイル名, CSound.EInstType eInstType )
+		{
 			var sound = new CSound();
-			sound.tDirectSoundサウンドを作成する( strファイル名, this.DirectSound );
+			sound.tDirectSoundサウンドを作成する( strファイル名, this.DirectSound, eInstType );
 			return sound;
 		}
 		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ )
 		{
-			var sound = new CSound();
-			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound );
-			return sound;
+			return tサウンドを作成する( byArrWAVファイルイメージ, CSound.EInstType.Unknown);
 		}
-		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ, BufferFlags flags )
+		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound.EInstType eInstType )
 		{
 			var sound = new CSound();
-			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound, flags );
+			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound, eInstType );
+			return sound;
+		}
+		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ, BufferFlags flags, CSound.EInstType eInstType )
+		{
+			var sound = new CSound();
+			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound, flags, eInstType );
 			return sound;
 		}
 
 		// 既存のインスタンス（生成直後 or Dispose済み）に対してサウンドを生成する。
-		public void tサウンドを作成する( string strファイル名, ref CSound sound )
+		public void tサウンドを作成する( string strファイル名, ref CSound sound, CSound.EInstType eInstType )
 		{
-			sound.tDirectSoundサウンドを作成する( strファイル名, this.DirectSound );
+			sound.tDirectSoundサウンドを作成する( strファイル名, this.DirectSound, eInstType );
 		}
-		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound )
+		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound, CSound.EInstType eInstType )
 		{
-			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound );
+			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound, eInstType );
 		}
-		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, BufferFlags flags, ref CSound sound )
+		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, BufferFlags flags, ref CSound sound, CSound.EInstType eInstType )
 		{
-			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound, flags );
+			sound.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, this.DirectSound, flags, eInstType );
 		}
+		#endregion
 
 		#region [ Dispose-Finallizeパターン実装 ]
 		//-----------------

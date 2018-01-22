@@ -611,40 +611,19 @@ namespace DTXMania
 				bool bIsDirectSound = (CDTXMania.Instance.Sound管理.CurrentSoundDeviceType == ESoundDeviceType.DirectSound);
 				try
 				{
-					//try
-					//{
-					//    cwav.rSound[ 0 ] = CDTXMania.Instance.app.Sound管理.tサウンドを生成する( str );
-					//    cwav.rSound[ 0 ].n音量 = 100;
-					//    if ( CDTXMania.Instance.app.ConfigIni.bLog作成解放ログ出力 )
-					//    {
-					//        Trace.TraceInformation( "サウンドを作成しました。({3})({0})({1})({2}bytes)", cwav.strコメント文, str, cwav.rSound[ 0 ].nサウンドバッファサイズ, cwav.rSound[ 0 ].bストリーム再生する ? "Stream" : "OnMemory" );
-					//    }
-					//}
-					//catch
-					//{
-					//    cwav.rSound[ 0 ] = null;
-					//    Trace.TraceError( "サウンドの作成に失敗しました。({0})({1})", cwav.strコメント文, str );
-					//}
-					//if ( cwav.rSound[ 0 ] == null )	// #xxxxx 2012.5.3 yyagi rSound[1-3]もClone()するようにし、これらのストリーム再生がおかしくなる問題を修正
-					//{
-					//    for ( int j = 1; j < nPolyphonicSounds; j++ )
-					//    {
-					//        cwav.rSound[ j ] = null;
-					//    }
-					//}
-					//else
-					//{
-					//    for ( int j = 1; j < nPolyphonicSounds; j++ )
-					//    {
-					//        cwav.rSound[ j ] = (CSound) cwav.rSound[ 0 ].Clone();	// #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
-					//        CDTXMania.Instance.app.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
-					//    }
-					//}
+
+					FDK.CSound.EInstType eInstType;
+					if      (cwav.bIsBGMSound)    eInstType = CSound.EInstType.BGM;
+					else if (cwav.bIsSESound)     eInstType = CSound.EInstType.SE;
+					else if (cwav.bIsDrumsSound)  eInstType = CSound.EInstType.Drums;
+					else if (cwav.bIsGuitarSound) eInstType = CSound.EInstType.Guitar;
+					else if (cwav.bIsBassSound)   eInstType = CSound.EInstType.Bass;
+					else                          eInstType = CSound.EInstType.Unknown;
 
 					// まず1つめを登録する
 					try
 					{
-						cwav.rSound[0] = CDTXMania.Instance.Sound管理.tサウンドを生成する(str);
+						cwav.rSound[0] = CDTXMania.Instance.Sound管理.tサウンドを生成する(str, eInstType);
 						cwav.rSound[0].n音量 = 100;
 						if (!CDTXMania.Instance.ConfigIni.bDynamicBassMixerManagement)
 						{
@@ -693,7 +672,7 @@ namespace DTXMania
 						{
 							try
 							{
-								cwav.rSound[i] = CDTXMania.Instance.Sound管理.tサウンドを生成する(str);
+								cwav.rSound[i] = CDTXMania.Instance.Sound管理.tサウンドを生成する(str, eInstType);
 								cwav.rSound[i].n音量 = 100;
 								if (!CDTXMania.Instance.ConfigIni.bDynamicBassMixerManagement)
 								{

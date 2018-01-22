@@ -20,9 +20,13 @@ namespace FDK
 		CTimer tmシステムタイマ { get; }
 
 		CSound tサウンドを作成する( string strファイル名 );
+		CSound tサウンドを作成する( string strファイル名, CSound.EInstType einstType );
 		CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ );
-		void tサウンドを作成する( string strファイル名, ref CSound sound );
-		void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound );
+		CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound.EInstType eInstType );
+		//void tサウンドを作成する( string strファイル名, ref CSound sound );
+		void tサウンドを作成する( string strファイル名, ref CSound sound, CSound.EInstType eInstType );
+		//void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound );
+		void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound, CSound.EInstType eInstType );
 		bool tStartRecording();
 		bool tStopRecording();
 	}
