@@ -582,69 +582,35 @@
   <data name="&gt;&gt;button_Convert.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
+  <data name="checkBox_MonitorSound.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label10.Font" type="System.Drawing.Font, System.Drawing">
-    <value>MS UI Gothic, 48pt</value>
-  </data>
-  <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="checkBox_MonitorSound.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 34</value>
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>405, 128</value>
-  </data>
-  <data name="label10.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>使えませんねん
-亀は万年</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>groupBox2</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="checkBox1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="checkBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="checkBox_MonitorSound.Location" type="System.Drawing.Point, System.Drawing">
     <value>22, 227</value>
   </data>
-  <data name="checkBox1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="checkBox_MonitorSound.Size" type="System.Drawing.Size, System.Drawing">
     <value>522, 16</value>
   </data>
-  <data name="checkBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="checkBox_MonitorSound.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
-  <data name="checkBox1.Text" xml:space="preserve">
+  <data name="checkBox_MonitorSound.Text" xml:space="preserve">
     <value>録音中の音をスピーカーに出力する(しかし実現方法不明。WASAPI排他じゃなければやりようがあるのだが)</value>
   </data>
-  <data name="&gt;&gt;checkBox1.Name" xml:space="preserve">
-    <value>checkBox1</value>
+  <data name="&gt;&gt;checkBox_MonitorSound.Name" xml:space="preserve">
+    <value>checkBox_MonitorSound</value>
   </data>
-  <data name="&gt;&gt;checkBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;checkBox_MonitorSound.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;checkBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;checkBox_MonitorSound.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;checkBox1.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;checkBox_MonitorSound.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="bindingSource_Master.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>177, 56</value>
@@ -668,7 +634,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;numericUpDown_Master.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -680,13 +646,13 @@
     <value>20, 188</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 12</value>
+    <value>100, 12</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
-    <value>マスターボリューム</value>
+    <value>マスターボリューム(%)</value>
   </data>
   <data name="&gt;&gt;label9.Name" xml:space="preserve">
     <value>label9</value>
@@ -698,11 +664,8 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
-  <metadata name="bindingSource_Master.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>177, 56</value>
-  </metadata>
   <data name="trackBar_Master.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -728,7 +691,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;trackBar_Master.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <metadata name="bindingSource_Bass.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 56</value>
@@ -752,7 +715,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;numericUpDown_Bass.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="label8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -764,13 +727,13 @@
     <value>20, 135</value>
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 12</value>
+    <value>79, 12</value>
   </data>
   <data name="label8.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
   <data name="label8.Text" xml:space="preserve">
-    <value>Bassの音量</value>
+    <value>Bassの音量(%)</value>
   </data>
   <data name="&gt;&gt;label8.Name" xml:space="preserve">
     <value>label8</value>
@@ -782,11 +745,8 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
-  <metadata name="bindingSource_Bass.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 56</value>
-  </metadata>
   <data name="trackBar_Bass.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -812,7 +772,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;trackBar_Bass.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <metadata name="bindingSource_Guitar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>1069, 17</value>
@@ -836,7 +796,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;numericUpDown_Guitar.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -848,13 +808,13 @@
     <value>20, 107</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 12</value>
+    <value>84, 12</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
-    <value>Guitarの音量</value>
+    <value>Guitarの音量(%)</value>
   </data>
   <data name="&gt;&gt;label7.Name" xml:space="preserve">
     <value>label7</value>
@@ -866,11 +826,8 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
-  <metadata name="bindingSource_Guitar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1069, 17</value>
-  </metadata>
   <data name="trackBar_Guitar.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -896,7 +853,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;trackBar_Guitar.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <metadata name="bindingSource_Drums.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>932, 17</value>
@@ -920,7 +877,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;numericUpDown_Drums.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -932,13 +889,13 @@
     <value>20, 79</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 12</value>
+    <value>86, 12</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>Drumsの音量</value>
+    <value>Drumsの音量(%)</value>
   </data>
   <data name="&gt;&gt;label6.Name" xml:space="preserve">
     <value>label6</value>
@@ -950,11 +907,8 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
-  <metadata name="bindingSource_Drums.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>932, 17</value>
-  </metadata>
   <data name="trackBar_Drums.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -980,7 +934,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;trackBar_Drums.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <metadata name="bindingSource_SE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>783, 17</value>
@@ -1004,7 +958,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;numericUpDown_SE.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1016,13 +970,13 @@
     <value>20, 51</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
+    <value>67, 12</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>SEの音量</value>
+    <value>SEの音量(%)</value>
   </data>
   <data name="&gt;&gt;label5.Name" xml:space="preserve">
     <value>label5</value>
@@ -1034,11 +988,8 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>14</value>
   </data>
-  <metadata name="bindingSource_SE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>783, 17</value>
-  </metadata>
   <data name="trackBar_SE.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -1064,7 +1015,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;trackBar_SE.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>15</value>
   </data>
   <metadata name="bindingSource_BGM.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>621, 17</value>
@@ -1088,7 +1039,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;numericUpDown_BGM.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="label4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1100,13 +1051,13 @@
     <value>20, 23</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 12</value>
+    <value>78, 12</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
-    <value>BGMの音量</value>
+    <value>BGMの音量(%)</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
@@ -1118,7 +1069,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>17</value>
   </data>
   <data name="trackBar_BGM.AutoSize" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1145,7 +1096,7 @@
     <value>groupBox2</value>
   </data>
   <data name="&gt;&gt;trackBar_BGM.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>18</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 150</value>
@@ -1246,6 +1197,21 @@
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <metadata name="bindingSource_Master.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>177, 56</value>
+  </metadata>
+  <metadata name="bindingSource_Bass.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 56</value>
+  </metadata>
+  <metadata name="bindingSource_Guitar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>1069, 17</value>
+  </metadata>
+  <metadata name="bindingSource_Drums.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>932, 17</value>
+  </metadata>
+  <metadata name="bindingSource_SE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>783, 17</value>
+  </metadata>
   <metadata name="bindingSource_BGM.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>621, 17</value>
   </metadata>
@@ -1255,21 +1221,6 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>524, 17</value>
   </metadata>
-  <metadata name="bindingSource_SE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>783, 17</value>
-  </metadata>
-  <metadata name="bindingSource_Drums.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>932, 17</value>
-  </metadata>
-  <metadata name="bindingSource_Guitar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1069, 17</value>
-  </metadata>
-  <metadata name="bindingSource_Bass.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 56</value>
-  </metadata>
-  <metadata name="bindingSource_Master.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>177, 56</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1278,9 +1229,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>681, 535</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>DTX2WAV</value>
@@ -1315,6 +1263,36 @@
   <data name="&gt;&gt;openFileDialog1.Type" xml:space="preserve">
     <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;bindingSource_Master.Name" xml:space="preserve">
+    <value>bindingSource_Master</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Master.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Bass.Name" xml:space="preserve">
+    <value>bindingSource_Bass</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Bass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Guitar.Name" xml:space="preserve">
+    <value>bindingSource_Guitar</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Guitar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Drums.Name" xml:space="preserve">
+    <value>bindingSource_Drums</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Drums.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_SE.Name" xml:space="preserve">
+    <value>bindingSource_SE</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_SE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;bindingSource_BGM.Name" xml:space="preserve">
     <value>bindingSource_BGM</value>
   </data>
@@ -1332,36 +1310,6 @@
   </data>
   <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_SE.Name" xml:space="preserve">
-    <value>bindingSource_SE</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_SE.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Drums.Name" xml:space="preserve">
-    <value>bindingSource_Drums</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Drums.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Guitar.Name" xml:space="preserve">
-    <value>bindingSource_Guitar</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Guitar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Bass.Name" xml:space="preserve">
-    <value>bindingSource_Bass</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Bass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Master.Name" xml:space="preserve">
-    <value>bindingSource_Master</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Master.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>

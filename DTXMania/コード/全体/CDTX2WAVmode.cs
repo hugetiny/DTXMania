@@ -49,6 +49,7 @@ namespace DTXMania
             set;
         }
 
+		public int[] nMixerVolume = { 100, 100, 100, 100, 100, 100 };
 
         /// <summary>
         /// コンストラクタ

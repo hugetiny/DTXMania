@@ -358,9 +358,16 @@ namespace DTXMania
 				else if (DTX2WAVmode.Enabled)
 				{
 					strコンパクトモードファイル = DTX2WAVmode.dtxfilename;
+					#region [ FDKへの録音設定 ]
 					FDK.CSound管理.strRecordInputDTXfilename = DTX2WAVmode.dtxfilename;
 					FDK.CSound管理.strRecordOutFilename = DTX2WAVmode.outfilename;
 					FDK.CSound管理.strRecordFileType = DTX2WAVmode.Format.ToString();
+					for (int i = 0; i < (int)FDK.CSound.EInstType.Unknown; i++)
+					{
+						FDK.CSound管理.nMixerVolume[ i ] = DTX2WAVmode.nMixerVolume[ i ];
+					}
+					ConfigIni.nMasterVolume.Value = DTX2WAVmode.nMixerVolume[(int)FDK.CSound.EInstType.Unknown];	// [5](Unknown)のところにMasterVolumeが入ってくるので注意
+					#endregion
 					#region [ 録音用の本体設定 ]
 					CDTXMania.Instance.ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Exclusive;
 					CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI.Value = false;

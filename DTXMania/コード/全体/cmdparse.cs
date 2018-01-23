@@ -36,13 +36,14 @@ namespace DTXMania
         /// <remarks>DTXモードとして使う場合、内部でEnabled, nStartBar, Command, NeedReload, filename, last_path, last_timestampを設定する</remarks>
         public ECommandType ParseArguments(string arg, ref CDTXVmode cdtxv, ref CDTX2WAVmode cdtx2wav)
         {
-            // -Vvvv,ppp,"soundfilename"    サウンドファイルの再生 vvv=volume, ppp=pan
-            // -S                           DTXV再生停止
-            // -D(サウンドモード)(YかNが3文字続く) Viewerの設定
-            //                              (サウンドモード) WE=WASAPI Exclusive, WS=WASAPI Shared, A1=ASIO(数値はデバイス番号), D=DSound
-            //                              YYY, YNYなど  1文字目=GRmode, 2文字目=TmeStretch, 3文字目=VSyncWait
-            // -Nxxx                        再生開始小節番号
-            // -Etype,freq,bitrate,"outfilename","dtxfilename"   DTX2WAVとして使用 type="WAV"or"MP3"or"OGG", freq=48000など, bitrate=192 (kHzなど)
+			// -Vvvv,ppp,"soundfilename"    サウンドファイルの再生 vvv=volume, ppp=pan
+			// -S                           DTXV再生停止
+			// -D(サウンドモード)(YかNが3文字続く) Viewerの設定
+			//                              (サウンドモード) WE=WASAPI Exclusive, WS=WASAPI Shared, A1=ASIO(数値はデバイス番号), D=DSound
+			//                              YYY, YNYなど  1文字目=GRmode, 2文字目=TmeStretch, 3文字目=VSyncWait
+			// -Nxxx                        再生開始小節番号
+			// -Etype,freq,bitrate,volBGM,volSE,volDrums,volGuitar,volBassmvolMaster,"outfilename","dtxfilename"
+			//  DTX2WAVとして使用 type="WAV"or"MP3"or"OGG", freq=48000など, bitrate=192 (kHzなど)
 
             ECommandType ret = ECommandType.DTXMania;
             bool analyzing = true;
@@ -226,7 +227,9 @@ namespace DTXMania
 						arg = arg.Substring(2);
 
 						Regex re = new Regex(
-							"(?<type>.+?),(?<freq>.+?),(?<bitrate>.+?),(?<outfile>\"?.+\"??),(?<dtxfile>\"?.+\"??)",
+							"(?<type>.+?),(?<freq>.+?),(?<bitrate>.+?)," +
+							"(?<volBGM>.+?),(?<volSE>.+?),(?<volDrums>.+?),(?<volGuitar>.+?),(?<volBass>.+?),(?<volMaster>.+?)," +
+							"(?<outfile>\"?.+\"??),(?<dtxfile>\"?.+\"??)",
 							RegexOptions.IgnoreCase
 						);
 						Match m = re.Match(arg);
@@ -248,6 +251,12 @@ namespace DTXMania
 								break;
 						}
 						Trace.TraceInformation("cdtx2wav.Format=" + cdtx2wav.Format.ToString());
+						cdtx2wav.nMixerVolume[ 0 ] = Convert.ToInt32(m.Groups["volBGM"].Value);
+						cdtx2wav.nMixerVolume[ 1 ] = Convert.ToInt32(m.Groups["volSE"].Value);
+						cdtx2wav.nMixerVolume[ 2 ] = Convert.ToInt32(m.Groups["volDrums"].Value);
+						cdtx2wav.nMixerVolume[ 3 ] = Convert.ToInt32(m.Groups["volGuitar"].Value);
+						cdtx2wav.nMixerVolume[ 4 ] = Convert.ToInt32(m.Groups["volBass"].Value);
+						cdtx2wav.nMixerVolume[ 5 ] = Convert.ToInt32(m.Groups["volMaster"].Value);
 
 						cdtx2wav.freq = Convert.ToInt32(m.Groups["freq"].Value);
 						cdtx2wav.bitrate = Convert.ToInt32(m.Groups["bitrate"].Value);

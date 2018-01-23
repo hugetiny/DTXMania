@@ -30,15 +30,48 @@ namespace DTX2WAV
 		/// <summary>
 		/// メインウインドウの表示時に実行
 		/// タイトルバーに、アプリ名とリリース番号を表示する
+		/// 設定値の復元
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void Main_Shown(object sender, EventArgs e)
 		{
+			#region [ タイトルバーの設定 ]
 			System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
 			int ver_asm_major = asm.GetName().Version.Major;
-
 			this.Text = "DTX2WAV Rel" + ver_asm_major.ToString("D3");
+			#endregion
+
+			#region [ 設定値の復元 ]
+			// アプリのverup時は旧バージョンの設定を引き継ぐ。
+			// さもなくば、前回終了時の設定値を引き継ぐ。
+			if (Properties.Settings.Default.IsUpgrade == false)
+			{
+				// Upgradeを実行する
+				Properties.Settings.Default.Upgrade();
+
+				// 「Upgradeを実行した」という情報を設定する
+				Properties.Settings.Default.IsUpgrade = true;
+
+				// 現行バージョンの設定を保存する
+				Properties.Settings.Default.Save();
+			}
+			else
+			{
+				// 設定値の復元
+				Properties.Settings.Default.Reload();
+			}
+			#endregion
+
+			#region [ 復元した設定値を、Formに反映する ]
+			numericUpDown_BGM.Value    = Properties.Settings.Default.nVol_BGM;
+			numericUpDown_SE.Value     = Properties.Settings.Default.nVol_SE;
+			numericUpDown_Drums.Value  = Properties.Settings.Default.nVol_Drums;
+			numericUpDown_Guitar.Value = Properties.Settings.Default.nVol_Guitar;
+			numericUpDown_Bass.Value   = Properties.Settings.Default.nVol_Bass;
+			numericUpDown_Master.Value = Properties.Settings.Default.nVol_Master;
+			checkBox_MonitorSound.Checked = Properties.Settings.Default.bMonitorSound;
+			#endregion
 		}
 
 		private void button_browseDTX_Click(object sender, EventArgs e)
@@ -142,7 +175,9 @@ namespace DTX2WAV
 
 			//アプリ名と引数の情報を設定
 			p.StartInfo.FileName = "DTXManiaGR.exe";
-			p.StartInfo.Arguments = $"-E{comboBox_AudioFormat.Text.ToUpper()},48000,192,\"{textBox_BrowseAudio.Text}\",\"{textBox_BrowseDTX.Text}\"";
+			p.StartInfo.Arguments = $"-E{comboBox_AudioFormat.Text.ToUpper()},48000,192,";
+			p.StartInfo.Arguments += $"{numericUpDown_BGM.Value},{numericUpDown_SE.Value},{numericUpDown_Drums.Value},{numericUpDown_Guitar.Value},{numericUpDown_Bass.Value},{numericUpDown_Master.Value},";
+			p.StartInfo.Arguments += $"\"{textBox_BrowseAudio.Text}\",\"{textBox_BrowseDTX.Text}\"";
 
 			//起動する
 			p.Start();
@@ -245,6 +280,27 @@ namespace DTX2WAV
 				}
 			}
 
+		}
+
+		/// <summary>
+		/// アプリ終了時に、設定値を保存
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Main_FormClosing(object sender, FormClosingEventArgs e)
+		{
+
+			#region [ Formの設定値を、Propertiesに退避する ]
+			Properties.Settings.Default.nVol_BGM      = (int)numericUpDown_BGM.Value;
+			Properties.Settings.Default.nVol_SE       = (int)numericUpDown_SE.Value;
+			Properties.Settings.Default.nVol_Drums    = (int)numericUpDown_Drums.Value;
+			Properties.Settings.Default.nVol_Guitar   = (int)numericUpDown_Guitar.Value;
+			Properties.Settings.Default.nVol_Bass     = (int)numericUpDown_Bass.Value;
+			Properties.Settings.Default.nVol_Master   = (int)numericUpDown_Master.Value;
+			Properties.Settings.Default.bMonitorSound = checkBox_MonitorSound.Checked;
+			#endregion
+
+			Properties.Settings.Default.Save();
 		}
 	}
 	

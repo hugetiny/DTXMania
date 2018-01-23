@@ -51,58 +51,57 @@
 			this.button_Cancel = new System.Windows.Forms.Button();
 			this.button_Convert = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.label10 = new System.Windows.Forms.Label();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.checkBox_MonitorSound = new System.Windows.Forms.CheckBox();
 			this.numericUpDown_Master = new System.Windows.Forms.NumericUpDown();
+			this.bindingSource_Master = new System.Windows.Forms.BindingSource(this.components);
 			this.label9 = new System.Windows.Forms.Label();
 			this.trackBar_Master = new System.Windows.Forms.TrackBar();
 			this.numericUpDown_Bass = new System.Windows.Forms.NumericUpDown();
+			this.bindingSource_Bass = new System.Windows.Forms.BindingSource(this.components);
 			this.label8 = new System.Windows.Forms.Label();
 			this.trackBar_Bass = new System.Windows.Forms.TrackBar();
 			this.numericUpDown_Guitar = new System.Windows.Forms.NumericUpDown();
+			this.bindingSource_Guitar = new System.Windows.Forms.BindingSource(this.components);
 			this.label7 = new System.Windows.Forms.Label();
 			this.trackBar_Guitar = new System.Windows.Forms.TrackBar();
 			this.numericUpDown_Drums = new System.Windows.Forms.NumericUpDown();
+			this.bindingSource_Drums = new System.Windows.Forms.BindingSource(this.components);
 			this.label6 = new System.Windows.Forms.Label();
 			this.trackBar_Drums = new System.Windows.Forms.TrackBar();
 			this.numericUpDown_SE = new System.Windows.Forms.NumericUpDown();
-			this.bindingSource_BGM = new System.Windows.Forms.BindingSource(this.components);
+			this.bindingSource_SE = new System.Windows.Forms.BindingSource(this.components);
 			this.label5 = new System.Windows.Forms.Label();
 			this.trackBar_SE = new System.Windows.Forms.TrackBar();
 			this.numericUpDown_BGM = new System.Windows.Forms.NumericUpDown();
+			this.bindingSource_BGM = new System.Windows.Forms.BindingSource(this.components);
 			this.label4 = new System.Windows.Forms.Label();
 			this.trackBar_BGM = new System.Windows.Forms.TrackBar();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.bindingSource_SE = new System.Windows.Forms.BindingSource(this.components);
-			this.bindingSource_Drums = new System.Windows.Forms.BindingSource(this.components);
-			this.bindingSource_Guitar = new System.Windows.Forms.BindingSource(this.components);
-			this.bindingSource_Bass = new System.Windows.Forms.BindingSource(this.components);
-			this.bindingSource_Master = new System.Windows.Forms.BindingSource(this.components);
 			this.menuStrip1.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Master)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Master)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Master)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Bass)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Bass)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Bass)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Guitar)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Guitar)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Guitar)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Drums)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Drums)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Drums)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_SE)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_BGM)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_SE)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_SE)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BGM)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_BGM)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_BGM)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_SE)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Drums)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Guitar)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Bass)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Master)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -243,8 +242,7 @@
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Controls.Add(this.label10);
-			this.groupBox2.Controls.Add(this.checkBox1);
+			this.groupBox2.Controls.Add(this.checkBox_MonitorSound);
 			this.groupBox2.Controls.Add(this.numericUpDown_Master);
 			this.groupBox2.Controls.Add(this.label9);
 			this.groupBox2.Controls.Add(this.trackBar_Master);
@@ -267,18 +265,13 @@
 			this.groupBox2.Name = "groupBox2";
 			this.groupBox2.TabStop = false;
 			// 
-			// label10
+			// checkBox_MonitorSound
 			// 
-			resources.ApplyResources(this.label10, "label10");
-			this.label10.Name = "label10";
-			// 
-			// checkBox1
-			// 
-			resources.ApplyResources(this.checkBox1, "checkBox1");
-			this.checkBox1.Checked = true;
-			this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.UseVisualStyleBackColor = true;
+			resources.ApplyResources(this.checkBox_MonitorSound, "checkBox_MonitorSound");
+			this.checkBox_MonitorSound.Checked = true;
+			this.checkBox_MonitorSound.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.checkBox_MonitorSound.Name = "checkBox_MonitorSound";
+			this.checkBox_MonitorSound.UseVisualStyleBackColor = true;
 			// 
 			// numericUpDown_Master
 			// 
@@ -290,6 +283,10 @@
             0,
             0,
             0});
+			// 
+			// bindingSource_Master
+			// 
+			this.bindingSource_Master.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
 			// 
 			// label9
 			// 
@@ -322,6 +319,10 @@
             0,
             0});
 			// 
+			// bindingSource_Bass
+			// 
+			this.bindingSource_Bass.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
+			// 
 			// label8
 			// 
 			resources.ApplyResources(this.label8, "label8");
@@ -352,6 +353,10 @@
             0,
             0,
             0});
+			// 
+			// bindingSource_Guitar
+			// 
+			this.bindingSource_Guitar.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
 			// 
 			// label7
 			// 
@@ -384,6 +389,10 @@
             0,
             0});
 			// 
+			// bindingSource_Drums
+			// 
+			this.bindingSource_Drums.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
+			// 
 			// label6
 			// 
 			resources.ApplyResources(this.label6, "label6");
@@ -415,9 +424,9 @@
             0,
             0});
 			// 
-			// bindingSource_BGM
+			// bindingSource_SE
 			// 
-			this.bindingSource_BGM.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
+			this.bindingSource_SE.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
 			// 
 			// label5
 			// 
@@ -450,6 +459,10 @@
             0,
             0});
 			// 
+			// bindingSource_BGM
+			// 
+			this.bindingSource_BGM.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
+			// 
 			// label4
 			// 
 			resources.ApplyResources(this.label4, "label4");
@@ -471,26 +484,6 @@
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.UseVisualStyleBackColor = true;
 			// 
-			// bindingSource_SE
-			// 
-			this.bindingSource_SE.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
-			// 
-			// bindingSource_Drums
-			// 
-			this.bindingSource_Drums.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
-			// 
-			// bindingSource_Guitar
-			// 
-			this.bindingSource_Guitar.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
-			// 
-			// bindingSource_Bass
-			// 
-			this.bindingSource_Bass.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
-			// 
-			// bindingSource_Master
-			// 
-			this.bindingSource_Master.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
-			// 
 			// Main
 			// 
 			resources.ApplyResources(this, "$this");
@@ -500,6 +493,7 @@
 			this.Controls.Add(this.menuStrip1);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "Main";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
 			this.Shown += new System.EventHandler(this.Main_Shown);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
@@ -510,23 +504,23 @@
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Master)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Master)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Master)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Bass)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Bass)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Bass)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Guitar)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Guitar)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Guitar)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Drums)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Drums)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Drums)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_SE)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_BGM)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_SE)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_SE)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BGM)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_BGM)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_BGM)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_SE)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Drums)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Guitar)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Bass)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Master)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -554,7 +548,7 @@
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.CheckBox checkBox1;
+		private System.Windows.Forms.CheckBox checkBox_MonitorSound;
 		private System.Windows.Forms.NumericUpDown numericUpDown_Master;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.TrackBar trackBar_Master;
@@ -578,7 +572,6 @@
 		private System.Windows.Forms.BindingSource bindingSource_BGM;
 		private System.Windows.Forms.Button button_Cancel;
 		private System.Windows.Forms.Button button_Convert;
-		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.BindingSource bindingSource_SE;
 		private System.Windows.Forms.BindingSource bindingSource_Drums;
 		private System.Windows.Forms.BindingSource bindingSource_Guitar;

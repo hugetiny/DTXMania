@@ -459,6 +459,10 @@ namespace FDK
 					throw new Exception(string.Format("BASSミキサ(楽器[{1}]ごとのmixing)の作成に失敗しました。[{0}]", errcode, i));
 				}
 
+				// Mixerのボリューム設定
+				Bass.BASS_ChannelSetAttribute(this.hMixer_Chips[ i ], BASSAttribute.BASS_ATTRIB_VOL, CSound管理.nMixerVolume[ i ] / 100.0f );
+Trace.TraceInformation("Vol{0}: {1}", i, CSound管理.nMixerVolume[i]);
+
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hMixer_Chips[i], BASSFlag.BASS_DEFAULT);
 				if (!b1)
 				{
@@ -507,8 +511,6 @@ namespace FDK
 					throw new Exception( string.Format( "BASSミキサ(最終段とmixing)の接続に失敗しました。[{0}]", errcode ) );
 				};
 			}
-
-			//Bass.BASS_ChannelSetAttribute(this.hMixer_Chips[(int)CSound.EInstType.Guitar], BASSAttribute.BASS_ATTRIB_VOL, 1.50f);
 
 
 			// 録音設定(DTX2WAV)

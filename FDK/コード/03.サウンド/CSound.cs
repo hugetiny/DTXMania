@@ -204,6 +204,12 @@ namespace FDK
 		/// 録音機能で使うファイルタイプ
 		/// </summary>
 		public static string strRecordFileType;
+
+
+		/// <summary>
+		/// 録音機能で使うミキサーボリューム
+		/// </summary>
+		public static int[] nMixerVolume = { 100, 100, 100, 100, 100, 100 };	// BGM,SE,Drums,Guitar,Bass,Unknown
 		#endregion
 
 
