@@ -104,6 +104,8 @@ namespace DTXMania
 
 		STDGBSValue<CScoreIni.C演奏記録> record;
 
+		long nLastSendMessageTime;
+
 #if TEST_MEASUREFRAMEDRAWTIME
 		Stopwatch sw = new Stopwatch();
 		List<long> swlist = new List<long>(100000);
@@ -510,6 +512,8 @@ namespace DTXMania
 				}
 				this.actPanel.SetPanelString( strPanel );
 
+				nLastSendMessageTime = 0;
+
 #if TEST_MEASUREFRAMEDRAWTIME
 				swlist.Clear();
 				swlist.Capacity = 100000;
@@ -832,6 +836,17 @@ namespace DTXMania
 				if (bIsFinishedFadeout)
 				{
 					return (int)this.eフェードアウト完了時の戻り値;
+				}
+
+				// DTX2WAVに進捗状況を送信。1秒ごとに1回ずつ送信する。
+				if (CDTXMania.Instance.DTX2WAVmode.Enabled)
+				{
+					if (nLastSendMessageTime + 1000 < CDTXMania.Instance.Timer.n現在時刻)
+					{
+						int nEstimateTimeMs = (CDTXMania.Instance.DTX.listChip.Count > 0) ? CDTXMania.Instance.DTX.listChip[CDTXMania.Instance.DTX.listChip.Count - 1].n発声時刻ms : 0;
+						CDTXMania.Instance.DTX2WAVmode.SendMessage2DTX2WAV("TIME," + CDTXMania.Instance.Timer.n現在時刻.ToString() + "," + nEstimateTimeMs.ToString());
+						nLastSendMessageTime = CDTXMania.Instance.Timer.n現在時刻;
+					}
 				}
 
 				ManageMixerQueue();

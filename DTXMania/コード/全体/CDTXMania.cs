@@ -147,6 +147,7 @@ namespace DTXMania
 		public CStage終了 stage終了 { get; private set; }
 		public CStage r現在のステージ = null;
 		public CStage r直前のステージ = null;
+		public CStage r1フレーム前のステージ = null;
 		public string strEXEのあるフォルダ { get; private set; }
 		public string strコンパクトモードファイル { get; private set; }
 		public CTimer Timer { get; private set; }
@@ -501,6 +502,7 @@ namespace DTXMania
 				else if (DTX2WAVmode.Enabled)
 				{
 					Trace.TraceInformation("DTX2WAVモードで起動します。[{0}]", strコンパクトモードファイル);
+					DTX2WAVmode.SendMessage2DTX2WAV("BOOT");
 				}
 				else
 				{
@@ -1194,12 +1196,11 @@ namespace DTXMania
 			}
 			#endregion
 
-			#region [ DTXCreatorからの指示 ]
+			#region [ DTXCreator/DTX2WAVからの指示 ]
 			if (this.Window.IsReceivedMessage)  // ウインドウメッセージで、
 			{
 				string strMes = this.Window.strMessage;
 				this.Window.IsReceivedMessage = false;
-
 				if (strMes != null)
 				{
 					CommandParse.ParseArguments(strMes, ref DTXVmode, ref DTX2WAVmode);
@@ -1238,6 +1239,23 @@ namespace DTXMania
 							}
 						}
 					}
+					if (DTX2WAVmode.Enabled)
+					{
+						if (DTX2WAVmode.Command == CDTX2WAVmode.ECommand.Cancel)
+						{
+							Trace.TraceInformation("録音のCancelコマンドをDTXMania本来が受信しました。");
+							// 録音を終了するために、[ESC]が押されたようにふるまう
+							//Microsoft.VisualBasic.Interaction.AppActivate("メモ帳");
+
+							//SendKeys.Send("{ESC}");
+							//SendKeys.SendWait("%{F4}");
+							//Application.Exit();
+							DTX.t全チップの再生停止();
+							DTX.On非活性化();
+							r現在のステージ.On非活性化();
+							base.Window.Close();
+						}
+					}
 				}
 			}
 			#endregion
@@ -1265,6 +1283,24 @@ namespace DTXMania
 				//---------------------
 				#endregion
 
+				#region [ DTX2WAVモード時、ステージが変わるたびに、そのことをDTX2WAVアプリ側に通知する ]
+				if (DTX2WAVmode.Enabled && r現在のステージ != r1フレーム前のステージ)
+				{
+					r1フレーム前のステージ = r現在のステージ;
+					//Trace.TraceInformation("Stage変更 to : " + r現在のステージ.eステージID.ToString());
+					switch (r現在のステージ.eステージID)
+					{
+						case CStage.Eステージ.曲読み込み:
+							DTX2WAVmode.SendMessage2DTX2WAV("LOAD");
+							break;
+						case CStage.Eステージ.演奏:
+							DTX2WAVmode.SendMessage2DTX2WAV("PLAY");
+							break;
+						default:
+							break;
+					}
+				}
+				#endregion
 
 				CScoreIni scoreIni = null;
 
@@ -2670,6 +2706,7 @@ namespace DTXMania
 					{
 						DTX2WAVmode.tUpdateConfigIni();
 						Trace.TraceInformation("DTX2WAVモードの設定情報を、Config.xmlに保存しました。");
+						DTX2WAVmode.SendMessage2DTX2WAV("TERM");
 					}
 					else
 					{

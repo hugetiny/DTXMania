@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace DTX2WAV
 {
 	public partial class Main : Form
 	{
-		Form_Converting f;
+		Form_Recording formRecording;
 
 		public Main()
 		{
@@ -101,7 +102,7 @@ namespace DTX2WAV
 
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void button_browseWAV_Click(object sender, EventArgs e)
 		{
 			SaveFileDialog sfd = new SaveFileDialog();
 
@@ -183,32 +184,38 @@ namespace DTX2WAV
 			p.Start();
 
 			//モーダルで変換中ダイアログを表示して、処理をいったん止める(キャンセル or 正常終了イベント待ち)
-			f = new Form_Converting();
-			f.ShowDialog(this);
+			formRecording = new Form_Recording();
+			//formRecording.StartPosition = FormStartPosition.CenterParent;
+			formRecording.ShowDialog(this);
 
-			if (f != null)
+			if (formRecording != null)
 			{
 				//フォームでCancelボタンが押されると、ここに来る
 				//変換終了時のイベントで正常終了する場合は、p_Exited()で終了して、fがnullになって、ここはスキップされる
-				f.Dispose();
-				f = null;
+				formRecording.Dispose();
+				formRecording = null;
 			}
 		}
 
 		private void p_Exited(object sender, EventArgs e)
 		{
-			if (f != null)
+			if (formRecording != null)
 			{
-				f.Dispose();
-				f = null;
+				formRecording.Dispose();
+				formRecording = null;
 			}
 
-			MessageBox.Show(
-				"変換が正常に終了しました。",
-				"変換終了",
-				MessageBoxButtons.OK,
-				MessageBoxIcon.Information
-			);
+			//MessageBox.Show(
+			//	"録音が正常に終了しました。",
+			//	"録音終了",
+			//	MessageBoxButtons.OK,
+			//	MessageBoxIcon.Information
+			//);
+
+			using (Form_Finished f = new Form_Finished())
+			{
+				f.ShowDialog();
+			}
 		}
 
 		/// <summary>
@@ -301,6 +308,32 @@ namespace DTX2WAV
 			#endregion
 
 			Properties.Settings.Default.Save();
+		}
+
+
+		#region #28821 2014.1.23 yyagi add: 外部からの文字列メッセージ送受信 定数定義
+		[StructLayout(LayoutKind.Sequential)]
+		public struct COPYDATASTRUCT
+		{
+			public IntPtr dwData;
+			public UInt32 cbData;
+			public IntPtr lpData;
+		}
+		#endregion
+		/// <summary>
+		/// メッセージを受信する
+		/// </summary>
+		/// <param name="m"></param>
+		protected override void WndProc(ref Message m)
+		{
+			if (m.Msg == 0x004A) //WM_COPYDATA
+			{
+				COPYDATASTRUCT cds = (COPYDATASTRUCT)Marshal.PtrToStructure(m.LParam, typeof(COPYDATASTRUCT));
+				string strMessage = Marshal.PtrToStringUni(cds.lpData);
+//Debug.WriteLine("Msg received: " + strMessage);
+				formRecording.label_state.Text = strMessage;	// Form_Recordingにメッセージの内容を伝える
+			}
+			base.WndProc(ref m);
 		}
 	}
 	

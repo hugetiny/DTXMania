@@ -10,11 +10,15 @@ using System.Windows.Forms;
 
 namespace DTX2WAV
 {
-	public partial class Form_Converting : Form
+	public partial class Form_Finished : Form
 	{
-		public Form_Converting()
+		public Form_Finished()
 		{
 			InitializeComponent();
 		}
+
+		private void button_OK_Click(object sender, EventArgs e)
+		{
+			this.Close();		}
 	}
 }

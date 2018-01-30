@@ -268,9 +268,19 @@ namespace DTXMania
 						Trace.TraceInformation("cdtx2wav.outfilename=" + cdtx2wav.outfilename);
 						Trace.TraceInformation("cdtx2wav.dtxfilename=" + cdtx2wav.dtxfilename);
 
+						cdtx2wav.Command = CDTX2WAVmode.ECommand.Record;
+
 						analyzing = false;
 					}
 					#endregion
+					// -S
+					else if (arg.StartsWith("-C", StringComparison.OrdinalIgnoreCase))    // DTXV再生停止
+					{
+						cdtx2wav.Enabled = true;
+						cdtx2wav.Command = CDTX2WAVmode.ECommand.Cancel;
+						ret = ECommandType.DTX2WAV;
+						arg = arg.Substring(2);
+					}
 					else
 					{
 						analyzing = false;

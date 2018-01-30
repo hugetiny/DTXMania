@@ -13,7 +13,21 @@ namespace DTXMania
 {
     public class CDTX2WAVmode
     {
-        public enum FormatType
+		public enum ECommand
+		{
+			Record,
+			Cancel,
+			Other
+		}
+		/// <summary>
+		/// DTXWAVからのコマンド
+		/// </summary>
+		public ECommand Command
+		{
+			get;
+			set;
+		}
+		public enum FormatType
         {
             WAV,
             OGG,
@@ -57,6 +71,7 @@ namespace DTXMania
         public CDTX2WAVmode()
         {
             this.Enabled = false;
+			this.Command = ECommand.Other;
             this.Format = FormatType.WAV;
             this.VSyncWait = false;         // とりあえず VSyncWait=OFF固定で考える
             this.outfilename = "";
@@ -86,5 +101,55 @@ namespace DTXMania
 
             ConfigIni_backup = null;
         }
+
+
+		private System.IntPtr hTargetMainWindowHandle = IntPtr.Zero;
+		private System.IntPtr hCurrentMainWindowHandle;
+		
+		/// <summary>
+		/// DTX2WAVにメッセージを送信する
+		/// </summary>
+		/// <param name="strSend">送信するテキスト</param>
+		public void SendMessage2DTX2WAV(string strSend)
+		{
+			for (int i = 0; i < 5; i++)   // 検索結果のハンドルがZeroになることがあるので、200ms間隔で5回リトライする
+			{
+				hCurrentMainWindowHandle = Process.GetCurrentProcess().MainWindowHandle;
+
+				if (hTargetMainWindowHandle == IntPtr.Zero)
+				{
+//Trace.TraceInformation("ハンドル創作");
+					#region [ 既に起動中のDTX2WAV(の録音中ダイアログ)プロセスを検索する。]
+
+					Process[] running = Process.GetProcesses();
+					foreach (Process p in running)
+					{
+//Trace.TraceInformation("WindowTitle: " + p.MainWindowTitle);
+						if (p.MainWindowHandle != IntPtr.Zero && p.MainWindowTitle.Contains("DTX2WAV Rel"))
+						{
+//Trace.TraceInformation("WindowTitle: " + p.MainWindowTitle);
+							hTargetMainWindowHandle = p.MainWindowHandle;
+							break;
+						}
+					}
+					#endregion
+
+				}
+
+				#region [ 起動中のDTXManiaがいれば、そのプロセスにコマンドラインを投げる ]
+				if (hTargetMainWindowHandle != null && strSend != null)
+				{
+					CSendMessage.sendmessage(hTargetMainWindowHandle, hCurrentMainWindowHandle, strSend);
+//Trace.TraceInformation("SendToDTX2WAV: " + strSend + ", " + hTargetMainWindowHandle + ", " + hCurrentMainWindowHandle);
+					return;
+				}
+				#endregion
+				else
+				{
+					Trace.TraceInformation("メッセージ送信先のプロセスが見つからず。5回リトライします。");
+					Thread.Sleep(200);
+				}
+			}
+		}
     }
 }

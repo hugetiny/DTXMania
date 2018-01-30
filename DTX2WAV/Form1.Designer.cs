@@ -184,7 +184,7 @@
 			resources.ApplyResources(this.button_BrowseAudio, "button_BrowseAudio");
 			this.button_BrowseAudio.Name = "button_BrowseAudio";
 			this.button_BrowseAudio.UseVisualStyleBackColor = true;
-			this.button_BrowseAudio.Click += new System.EventHandler(this.button2_Click);
+			this.button_BrowseAudio.Click += new System.EventHandler(this.button_browseWAV_Click);
 			// 
 			// textBox_BrowseAudio
 			// 

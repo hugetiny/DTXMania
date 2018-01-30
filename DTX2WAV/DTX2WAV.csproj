@@ -48,17 +48,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSendMessage.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_Converting.cs">
+    <Compile Include="Form_FInished.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form_Converting.Designer.cs">
-      <DependentUpon>Form_Converting.cs</DependentUpon>
+    <Compile Include="Form_FInished.Designer.cs">
+      <DependentUpon>Form_FInished.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form_Recording.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Recording.Designer.cs">
+      <DependentUpon>Form_Recording.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,8 +75,11 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form_Converting.resx">
-      <DependentUpon>Form_Converting.cs</DependentUpon>
+    <EmbeddedResource Include="Form_FInished.resx">
+      <DependentUpon>Form_FInished.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Recording.resx">
+      <DependentUpon>Form_Recording.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
