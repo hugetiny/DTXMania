@@ -15,19 +15,28 @@ namespace MidiInChecker2
 		CInputManager InputManager;
 		System.Threading.Timer timer;
 		object lockobj = new object();
-		int looptimes = 10;
+		int looptimes = 11;
+
+		private void Form_Main_Shown(object sender, EventArgs e)
+		{
+			#region [ タイトルバーの設定 ]
+			System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
+			int ver_asm_major = asm.GetName().Version.Major;
+			this.Text = "MidiInChecker2 Rel" + ver_asm_major.ToString("D3");
+			#endregion
+		}
 
 		public Form_Main()
 		{
 			InitializeComponent();
 			InputManager = new CInputManager();
 
-			LogTextBox.AppendText( "Number of MIDI devices: " + InputManager.nInputMidiDevices + "\r\n" );
+			RichLogTextBox.AppendText( "Number of MIDI devices: " + InputManager.nInputMidiDevices + "\r\n" );
 			foreach ( string s in InputManager.listStrMidiDevices )
 			{
-				LogTextBox.AppendText( s + "\r\n" );
+				RichLogTextBox.AppendText( s + "\r\n" );
 			}
-			LogTextBox.AppendText( "\r\nHit any MIDI Pad to show the signal info.\r\n\r\n\n" );
+			RichLogTextBox.AppendText( "\r\nHit any MIDI Pad to show the signal info.\r\n\r\n\n" );
 
 			#region [タイマーで0.1秒ごとにログ画面を更新するように初期化する]
 			TimerCallback timerDelegate = new TimerCallback(mainloop);
@@ -50,33 +59,64 @@ namespace MidiInChecker2
 					{
 						foreach ( STInputEvent ev in device.list入力イベント )
 						{
-							int nMIDIevent = ev.nKey & 0xFF;
-							int nNote = ( ev.nKey >> 8 ) & 0xFF;	// note#
-							// int nVelo = ( ev.nKey >> 16 ) & 0xFF;	// velocity
-
-							string s = DateTime.Now.ToString( "hh:mm:ss.fff" ) +
-									": Device=" + device.ID +
-									", MIDIevent=0x" + nMIDIevent.ToString( "X2" ) +
-									", Note#=0x" + nNote.ToString( "X2" ) +
-									", Velocity=" + ev.nVelocity.ToString( "D3" ) +
-
-									"\r\n";
-							Invoke( new AppendTextDelegate( appendLogText ), s );
+							Invoke( new AppendTextDelegate( appendLogText ), device.ID, ev);
 							looptimes = 0;
 						}
 					}
 				}
 				if (looptimes++ == 10)	// 10回ループ(1秒間)の間に入力がなければ、空行を挿入する。
 				{
-					Invoke(new AppendTextDelegate( appendLogText ), "------------------------------------------------------------\r\n");
+					Invoke(new AppendTextDelegate( appendLogText ), -1, new STInputEvent() );
 				}
 			}
 		}
 
-		delegate void AppendTextDelegate( string text );
-		private void appendLogText( string text )
+		delegate void AppendTextDelegate( int id, STInputEvent ev );
+		private void appendLogText( int id, STInputEvent ev )
 		{
-			LogTextBox.AppendText( text );
+			string text;
+
+			if (id == -1)
+			{
+				RichLogTextBox.SelectionColor = Color.Black;    // reset color
+				text = "------------------------------------------------------------\r\n";
+			}
+			else
+			{
+				int nMIDIevent = ev.nKey & 0xFF;
+				int nNote = (ev.nKey >> 8) & 0xFF;    // note#
+													  // int nVelo = ( ev.nKey >> 16 ) & 0xFF;	// velocity
+
+				DateTime dt = new DateTime(ev.nTimeStamp);
+
+				text = dt.ToString("hh:mm:ss.fff") +
+						": Device=" + id +
+						", MidiEvent=0x" + nMIDIevent.ToString("X2") +
+						", Note#=0x" + nNote.ToString("X2") +
+						", Velocity=" + ev.nVelocity.ToString("D3") +
+						"\r\n";
+
+				Color[] cMidiEvent =
+				{
+					Color.Gray,			// 0x8x Note Off
+					Color.Black,		// 0x9x Note On
+					Color.Black,		// 0xAx
+					Color.Green,		// 0xBx Control change
+					Color.Black,		// 0xCx
+					Color.Black,		// 0xDx
+					Color.Blue,			// 0xEx Pitch bend
+					Color.Black,        // 0xFx
+				};
+				Color c = cMidiEvent[(nMIDIevent >> 4) - 8];
+				if ( (nMIDIevent & 0xF0) == 0x90 && (ev.nVelocity == 0) )
+				{
+					c = cMidiEvent[0];	// Note off color
+				}
+				RichLogTextBox.SelectionColor = c;
+			}
+			RichLogTextBox.Focus();
+			RichLogTextBox.AppendText( text );
+			RichLogTextBox.SelectionColor = Color.Black;	// reset color
 		}
 
 		// ダサい。後日改善予定。
@@ -113,7 +153,7 @@ namespace MidiInChecker2
 		{
 			if ( e.KeyCode == System.Windows.Forms.Keys.A & e.Control == true )
 			{
-				LogTextBox.SelectAll();
+				RichLogTextBox.SelectAll();
 			} 
 		}
 	}

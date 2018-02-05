@@ -29,19 +29,13 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Main));
-			this.LogTextBox = new System.Windows.Forms.TextBox();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.buttonOK = new System.Windows.Forms.Button();
+			this.RichLogTextBox = new System.Windows.Forms.RichTextBox();
 			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
-			// 
-			// LogTextBox
-			// 
-			resources.ApplyResources(this.LogTextBox, "LogTextBox");
-			this.LogTextBox.Name = "LogTextBox";
-			this.LogTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LogTextBox_KeyDown);
 			// 
 			// menuStrip1
 			// 
@@ -70,16 +64,22 @@
 			this.buttonOK.UseVisualStyleBackColor = true;
 			this.buttonOK.Click += new System.EventHandler(this.button1_Click);
 			// 
+			// RichLogTextBox
+			// 
+			resources.ApplyResources(this.RichLogTextBox, "RichLogTextBox");
+			this.RichLogTextBox.Name = "RichLogTextBox";
+			// 
 			// Form_Main
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.RichLogTextBox);
 			this.Controls.Add(this.buttonOK);
 			this.Controls.Add(this.menuStrip1);
-			this.Controls.Add(this.LogTextBox);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "Form_Main";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Main_FormClosing);
+			this.Shown += new System.EventHandler(this.Form_Main_Shown);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
@@ -88,12 +88,11 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.TextBox LogTextBox;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
 		private System.Windows.Forms.Button buttonOK;
+		private System.Windows.Forms.RichTextBox RichLogTextBox;
 	}
 }
 
