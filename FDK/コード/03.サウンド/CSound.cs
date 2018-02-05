@@ -842,9 +842,17 @@ namespace FDK
 				 String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 ||
 				 String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )	// caselessで文字列比較
 			{
-				tDirectSoundサウンドを作成するXaOggMp3( strファイル名, DirectSound );
-				this.eInstType = _eInstType;
-				return;
+				try
+				{
+					tDirectSoundサウンドを作成するXaOggMp3(strファイル名, DirectSound);
+					this.eInstType = _eInstType;
+					return;
+				}
+				catch (Exception e)
+				{
+					Trace.TraceWarning("xaファイルの作成に失敗しました。({0})", e.Message);
+					Trace.TraceWarning("続けて、他のデコーダでの作成を試みます。");
+				}
 			}
 
 			// すべてのファイルを DirectShow でデコードすると時間がかかるので、ファイルが WAV かつ PCM フォーマットでない場合のみ DirectShow でデコードする。
@@ -855,9 +863,10 @@ namespace FDK
 			{
 				#region [ ファイルがWAVかつPCMフォーマットか否か調べる。]
 				//-----------------
+				SoundStream ws = null;
 				try
 				{
-					using( var ws = new SoundStream( new FileStream( strファイル名, FileMode.Open ) ) )
+					using( ws = new SoundStream( new FileStream( strファイル名, FileMode.Open, FileAccess.Read, FileShare.ReadWrite ) ) )
 					{
 						if( ws.Format.Encoding != WaveFormatEncoding.Pcm )
 							bファイルがWAVかつPCMフォーマットである = false;
@@ -867,6 +876,14 @@ namespace FDK
 				{
 					bファイルがWAVかつPCMフォーマットである = false;
 				}
+				finally
+				{
+					if (ws != null)
+					{
+						ws.Close();
+						ws.Dispose();
+					}
+				}
 				//-----------------
 				#endregion
 
@@ -874,7 +891,7 @@ namespace FDK
 				{
 					#region [ ファイルを読み込んで byArrWAVファイルイメージへ格納。]
 					//-----------------
-					var fs = File.Open( strファイル名, FileMode.Open, FileAccess.Read );
+					var fs = File.Open( strファイル名, FileMode.Open, FileAccess.Read, FileShare.ReadWrite );
 					var br = new BinaryReader( fs );
 
 					byArrWAVファイルイメージ = new byte[ fs.Length ];
@@ -1573,13 +1590,32 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			switch ( Path.GetExtension( strファイル名 ).ToLower() )
 			{
 				case ".xa":
-					tBASSサウンドを作成するXA( strファイル名, hMixer, flags );
-					return;
+					try
+					{
+						tBASSサウンドを作成するXA(strファイル名, hMixer, flags);
+						return;
+					}
+					catch (Exception e)
+					{
+						Trace.TraceWarning("xaファイルの作成に失敗しました。({0})", e.Message);
+						Trace.TraceWarning("続けて、他のデコーダでの作成を試みます。");
+					}
+
+					// XAのデコードに失敗した場合は、続けて中身がoggなwavとしてDirectShowデコーダでのデコードを試みる。
+					// oggのでコードが成功した場合は、そのままこのブロックの中でBASSサウンドを生成。
+					// さもなければ、switchの外でbassに任せてデコード。
+					if (tRIFFchunkedVorbisならDirectShowでDecodeする(strファイル名, ref byArrWAVファイルイメージ))
+					{
+						tBASSサウンドを作成する(byArrWAVファイルイメージ, hMixer, flags);
+						return;
+					}
+					break;
 
 				case ".wav":
 					if ( tRIFFchunkedVorbisならDirectShowでDecodeする( strファイル名, ref byArrWAVファイルイメージ ) )
 					{
-						tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, flags );
+						//tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, flags );
+						tBASSサウンドを作成する(strファイル名, hMixer, flags);
 						return;
 					}
 					break;
@@ -1637,46 +1673,36 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			//-----------------
 			try
 			{
-//Debug.WriteLine("1:" + strファイル名);
 				using( var ws = new SoundStream( new FileStream( strファイル名, FileMode.Open ) ) )
 				{
-//Debug.WriteLine("2");
 					if( ws.Format.Encoding == WaveFormatEncoding.OggVorbisMode2Plus ||
 						ws.Format.Encoding == WaveFormatEncoding.OggVorbisMode3Plus )
 					{
-//Debug.WriteLine("3");
 						Trace.TraceInformation( Path.GetFileName( strファイル名 ) + ": RIFF chunked Vorbis. Decode to raw Wave first, to avoid BASS.DLL troubles" );
 						try
 						{
-//Debug.WriteLine("4");
 							CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
-//Debug.WriteLine("5");
 							bファイルにVorbisコンテナが含まれている = true;
-//Debug.WriteLine("6");
 						}
 						catch
 						{
-//Debug.WriteLine("7");
 							Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : RIFF chunked Vorbisのデコードに失敗しました。" );
 						}
 					}
-//Debug.WriteLine("8");
 				}
 			}
-			catch ( InvalidDataException )
+			catch ( InvalidDataException e)
 			{
-				// DirectShowのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
-				// Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : デコードに失敗しました。" );
-//Debug.WriteLine("9");
+				// DirectShowでのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
+				Trace.TraceWarning( "Warning: {0}: デコードに失敗しました。別の方法でデコードします。({1})", Path.GetFileName(strファイル名), e.Message );
 			}
 			catch ( Exception e)
 			{
-//Debug.WriteLine("10: " + e.Message);
-				Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : 読み込みに失敗しました。" );
+				// DirectShowでのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
+				Trace.TraceWarning( "Warning: {0}: 読み込みに失敗しました。別の方法でデコードします。({1})", Path.GetFileName( strファイル名 ), e.Message );
 			}
 			#endregion
 
-//Debug.WriteLine("11 " + bファイルにVorbisコンテナが含まれている.ToString());
 			return bファイルにVorbisコンテナが含まれている;
 		}
 
