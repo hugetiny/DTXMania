@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager( typeof( Form_Main ) );
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Main));
 			this.LogTextBox = new System.Windows.Forms.TextBox();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,50 +39,50 @@
 			// 
 			// LogTextBox
 			// 
-			resources.ApplyResources( this.LogTextBox, "LogTextBox" );
+			resources.ApplyResources(this.LogTextBox, "LogTextBox");
 			this.LogTextBox.Name = "LogTextBox";
-			this.LogTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler( this.LogTextBox_KeyDown );
+			this.LogTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LogTextBox_KeyDown);
 			// 
 			// menuStrip1
 			// 
-			this.menuStrip1.Items.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem} );
-			resources.ApplyResources( this.menuStrip1, "menuStrip1" );
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem});
+			resources.ApplyResources(this.menuStrip1, "menuStrip1");
 			this.menuStrip1.Name = "menuStrip1";
 			// 
 			// exitToolStripMenuItem
 			// 
-			this.exitToolStripMenuItem.DropDownItems.AddRange( new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem1} );
+			this.exitToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem1});
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			resources.ApplyResources( this.exitToolStripMenuItem, "exitToolStripMenuItem" );
+			resources.ApplyResources(this.exitToolStripMenuItem, "exitToolStripMenuItem");
 			// 
 			// exitToolStripMenuItem1
 			// 
 			this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-			resources.ApplyResources( this.exitToolStripMenuItem1, "exitToolStripMenuItem1" );
-			this.exitToolStripMenuItem1.Click += new System.EventHandler( this.exitToolStripMenuItem1_Click );
+			resources.ApplyResources(this.exitToolStripMenuItem1, "exitToolStripMenuItem1");
+			this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
 			// 
 			// buttonOK
 			// 
-			resources.ApplyResources( this.buttonOK, "buttonOK" );
+			resources.ApplyResources(this.buttonOK, "buttonOK");
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.UseVisualStyleBackColor = true;
-			this.buttonOK.Click += new System.EventHandler( this.button1_Click );
+			this.buttonOK.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// Form_Main
 			// 
-			resources.ApplyResources( this, "$this" );
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add( this.buttonOK );
-			this.Controls.Add( this.menuStrip1 );
-			this.Controls.Add( this.LogTextBox );
+			this.Controls.Add(this.buttonOK);
+			this.Controls.Add(this.menuStrip1);
+			this.Controls.Add(this.LogTextBox);
 			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "Form_Main";
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler( this.Form_Main_FormClosing );
-			this.menuStrip1.ResumeLayout( false );
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Main_FormClosing);
+			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
-			this.ResumeLayout( false );
+			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
