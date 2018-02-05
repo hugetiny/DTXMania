@@ -181,7 +181,8 @@ namespace FDK
 			#region [ デバッグ用: サウンドデバイスのenumerateと、ログ出力 ]
 			//(デバッグ用)
 			Trace.TraceInformation("サウンドデバイス一覧:");
-			int a, count = 0;
+			int a;
+			string strDefaultSoundDeviceName = "";
 			BASS_DEVICEINFO[] bassDevInfos = Bass.BASS_GetDeviceInfos();
 			for (a = 0; a < bassDevInfos.GetLength(0); a++)
 			{
@@ -194,7 +195,10 @@ namespace FDK
 						bassDevInfos[a].flags,
 						bassDevInfos[a].driver
 					);
-					count++; // count it
+					if (bassDevInfos[a].IsDefault)
+					{
+						strDefaultSoundDeviceName = bassDevInfos[a].name;
+					}
 				}
 			}
 			#endregion
@@ -213,9 +217,19 @@ namespace FDK
 			BASS_WASAPI_DEVICEINFO deviceInfo;
 			for ( int n = 0; ( deviceInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( n ) ) != null; n++ )
 			{
-				if ( deviceInfo.IsDefault )
+				// BASS_DEVICEINFOとBASS_WASAPI_DEVICEINFOで、IsDefaultとなっているデバイスが異なる場合がある。
+				// (WASAPIでIsDefaultとなっているデバイスが正しくない場合がある)
+				// そのため、BASS_DEVICEでIsDefaultとなっているものを探し、それと同じ名前のWASAPIデバイスを使用する。
+				//if ( deviceInfo.IsDefault )
+				if ( deviceInfo.name == strDefaultSoundDeviceName)
 				{
 					nDevNo = n;
+#region [ 既定の出力デバイスの情報を表示 ]
+Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, minperiod={4}s, mixchans={5}, mixfreq={6}",
+	n,
+	deviceInfo.name,
+	deviceInfo.IsDefault, deviceInfo.defperiod, deviceInfo.minperiod, deviceInfo.mixchans, deviceInfo.mixfreq);
+#endregion
 					break;
 				}
 			}
@@ -257,7 +271,6 @@ namespace FDK
 						a,
 						wasapiDevInfo.name,
 						wasapiDevInfo.IsDefault, wasapiDevInfo.defperiod, wasapiDevInfo.minperiod, wasapiDevInfo.mixchans, wasapiDevInfo.mixfreq);
-					count++; // count it
 				}
 			}
 		#endregion
