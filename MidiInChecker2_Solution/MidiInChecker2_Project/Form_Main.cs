@@ -15,6 +15,7 @@ namespace MidiInChecker2
 		CInputManager InputManager;
 		System.Threading.Timer timer;
 		object lockobj = new object();
+		int looptimes = 10;
 
 		public Form_Main()
 		{
@@ -61,8 +62,13 @@ namespace MidiInChecker2
 
 									"\r\n";
 							Invoke( new AppendTextDelegate( appendLogText ), s );
+							looptimes = 0;
 						}
 					}
+				}
+				if (looptimes++ == 10)	// 10回ループ(1秒間)の間に入力がなければ、空行を挿入する。
+				{
+					Invoke(new AppendTextDelegate( appendLogText ), "------------------------------------------------------------\r\n");
 				}
 			}
 		}
