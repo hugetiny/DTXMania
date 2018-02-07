@@ -1,6 +1,6 @@
 ﻿namespace DTX2WAV
 {
-	partial class Form_Finished
+	partial class Form_Finished_OK
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Finished));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Finished_OK));
 			this.button_OK = new System.Windows.Forms.Button();
 			this.label_finished = new System.Windows.Forms.Label();
 			this.SuspendLayout();

@@ -660,10 +660,10 @@ namespace DTXMania
 					}
 				}
 
-				// AVI / BGA
 				if (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED &&
 					base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト)
 				{
+					// AVI / BGA
 					actAVI.t進行描画(
 						CDTXMania.Instance.ConfigIni.cdMovieX[CDTXMania.Instance.ConfigIni.eActiveInst],
 						CDTXMania.Instance.ConfigIni.cdMovieY[CDTXMania.Instance.ConfigIni.eActiveInst],
@@ -3484,7 +3484,7 @@ namespace DTXMania
 
 		private void t進行描画_チップ_ウェイリング(ref CChip pChip)
 		{
-			if (CDTXMania.Instance.ConfigIni.bGuitar有効)
+			if (CDTXMania.Instance.ConfigIni.bGuitar有効 && (!CDTXMania.Instance.DTX2WAVmode.Enabled))
 			{
 				EPart indexInst = pChip.bGuitar可視チップ_Wailing含む ? EPart.Guitar : EPart.Bass;
 				#region [ Sud Hid Inv 処理 ]

@@ -10,15 +10,16 @@ using System.Windows.Forms;
 
 namespace DTX2WAV
 {
-	public partial class Form_Finished : Form
+	public partial class Form_Finished_OK : Form
 	{
-		public Form_Finished()
+		public Form_Finished_OK()
 		{
 			InitializeComponent();
 		}
 
 		private void button_OK_Click(object sender, EventArgs e)
 		{
-			this.Close();		}
+			this.Close();
+		}
 	}
 }

@@ -55,11 +55,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_FInished.cs">
+    <Compile Include="Form_FInished_OK.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form_FInished.Designer.cs">
-      <DependentUpon>Form_FInished.cs</DependentUpon>
+    <Compile Include="Form_FInished_OK.Designer.cs">
+      <DependentUpon>Form_FInished_OK.cs</DependentUpon>
     </Compile>
     <Compile Include="Form_Recording.cs">
       <SubType>Form</SubType>
@@ -75,8 +75,8 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form_FInished.resx">
-      <DependentUpon>Form_FInished.cs</DependentUpon>
+    <EmbeddedResource Include="Form_FInished_OK.resx">
+      <DependentUpon>Form_FInished_OK.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Recording.resx">
       <DependentUpon>Form_Recording.cs</DependentUpon>

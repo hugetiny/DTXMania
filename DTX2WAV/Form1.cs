@@ -16,7 +16,8 @@ namespace DTX2WAV
 	public partial class Main : Form
 	{
 		Form_Recording formRecording;
-
+		Form_Finished_OK formFinishedOK;
+		
 		public Main()
 		{
 			InitializeComponent();
@@ -212,10 +213,12 @@ namespace DTX2WAV
 			//	MessageBoxIcon.Information
 			//);
 
-			using (Form_Finished f = new Form_Finished())
-			{
-				f.ShowDialog();
-			}
+			formFinishedOK = new Form_Finished_OK();
+			//formFinishedOK.StartPosition = FormStartPosition.CenterParent;
+			formFinishedOK.ShowDialog(this);
+
+			formFinishedOK.Dispose();
+			formFinishedOK = null;
 		}
 
 		/// <summary>
@@ -330,7 +333,6 @@ namespace DTX2WAV
 			{
 				COPYDATASTRUCT cds = (COPYDATASTRUCT)Marshal.PtrToStructure(m.LParam, typeof(COPYDATASTRUCT));
 				string strMessage = Marshal.PtrToStringUni(cds.lpData);
-//Debug.WriteLine("Msg received: " + strMessage);
 				formRecording.label_state.Text = strMessage;	// Form_Recordingにメッセージの内容を伝える
 			}
 			base.WndProc(ref m);

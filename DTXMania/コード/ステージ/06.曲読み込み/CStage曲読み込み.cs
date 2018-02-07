@@ -83,7 +83,8 @@ namespace DTXMania
 					this.strSTAGEFILE = CSkin.Path(@"Graphics\\ScreenNowLoading background.jpg");
 					this.b音符を表示する = true;
 				}
-				if (((cdtx.SOUND_NOWLOADING != null) && (cdtx.SOUND_NOWLOADING.Length > 0)) && File.Exists(cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING))
+				if (((cdtx.SOUND_NOWLOADING != null) && (cdtx.SOUND_NOWLOADING.Length > 0)) && File.Exists(cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING)
+					&& (!CDTXMania.Instance.DTX2WAVmode.Enabled))
 				{
 					string strNowLoadingサウンドファイルパス = cdtx.strフォルダ名 + cdtx.SOUND_NOWLOADING;
 					try
@@ -454,33 +455,37 @@ namespace DTXMania
 
 				case CStage.Eフェーズ.NOWLOADING_BMPファイルを読み込む:
 					{
-						TimeSpan span;
-						DateTime timeBeginLoadBMPAVI = DateTime.Now;
-						if (CDTXMania.Instance.ConfigIni.bBGA)
-							CDTXMania.Instance.DTX.tBMP_BMPTEXの読み込み();
-
-						if (CDTXMania.Instance.ConfigIni.bAVI)
-							CDTXMania.Instance.DTX.tAVIの読み込み();
-						span = (TimeSpan)(DateTime.Now - timeBeginLoadBMPAVI);
-						Trace.TraceInformation("BMP/AVI読込所要時間({0,4}): {1}", (CDTXMania.Instance.DTX.listBMP.Count + CDTXMania.Instance.DTX.listBMPTEX.Count + CDTXMania.Instance.DTX.listAVI.Count), span.ToString());
-
-
-						if (bitmapFilename != null)
+						if (!CDTXMania.Instance.DTX2WAVmode.Enabled)
 						{
-							bitmapFilename.Dispose();
-							bitmapFilename = null;
-						}
-						if (graphicsFilename != null)
-						{
-							graphicsFilename.Dispose();
-							graphicsFilename = null;
-						}
-						if (ftFilename != null)
-						{
-							ftFilename.Dispose();
-							ftFilename = null;
+							TimeSpan span;
+							DateTime timeBeginLoadBMPAVI = DateTime.Now;
+							if (CDTXMania.Instance.ConfigIni.bBGA)
+								CDTXMania.Instance.DTX.tBMP_BMPTEXの読み込み();
+
+							if (CDTXMania.Instance.ConfigIni.bAVI)
+								CDTXMania.Instance.DTX.tAVIの読み込み();
+							span = (TimeSpan)(DateTime.Now - timeBeginLoadBMPAVI);
+							Trace.TraceInformation("BMP/AVI読込所要時間({0,4}): {1}", (CDTXMania.Instance.DTX.listBMP.Count + CDTXMania.Instance.DTX.listBMPTEX.Count + CDTXMania.Instance.DTX.listAVI.Count), span.ToString());
+
+
+							if (bitmapFilename != null)
+							{
+								bitmapFilename.Dispose();
+								bitmapFilename = null;
+							}
+							if (graphicsFilename != null)
+							{
+								graphicsFilename.Dispose();
+								graphicsFilename = null;
+							}
+							if (ftFilename != null)
+							{
+								ftFilename.Dispose();
+								ftFilename = null;
+							}
 						}
 						CDTXMania.Instance.Timer.t更新();
+
 						base.eフェーズID = CStage.Eフェーズ.NOWLOADING_LPを再配置する;
 						return (int)E曲読込画面の戻り値.継続;
 					}
