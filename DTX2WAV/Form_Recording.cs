@@ -33,6 +33,11 @@ namespace DTX2WAV
 		private void Form_Recording_Load(object sender, EventArgs e)
 		{
 			progressBar_Recording.Value = 0;
+			//#region [ 進捗表示ラベルの背景色を透明にする ]
+			//label_currentTime.BackColor = Color.Transparent;
+			//label_currentTime.Parent = progressBar_Recording;
+			//label_currentTime.ForeColor = Color.Black;
+			//#endregion
 		}
 
 

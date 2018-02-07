@@ -16,8 +16,8 @@ namespace DTX2WAV
 	public partial class Main : Form
 	{
 		Form_Recording formRecording;
-		Form_Finished_OK formFinishedOK;
-		
+		Process p_DTXMania = null;
+
 		public Main()
 		{
 			InitializeComponent();
@@ -149,6 +149,7 @@ namespace DTX2WAV
 		/// <param name="e"></param>
 		private void button_Convert_Click(object sender, EventArgs e)
 		{
+			#region [ in/outファイル名など、必要な設定がなされているかをチェック ]
 			if (!File.Exists(textBox_BrowseDTX.Text))
 			{
 				MessageBox.Show("DTXファイルがありません。", "ファイルが見つかりません", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -166,23 +167,26 @@ namespace DTX2WAV
 				MessageBox.Show("出力ファイルとして、DTX/GDA/G2Dファイルを指定しています。", "出力ファイル指定エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
+			#endregion
 
-			System.Diagnostics.Process p = new System.Diagnostics.Process();
+			#region [ 録音用にDTXManiaプロセスを起動する ]
+			p_DTXMania = new System.Diagnostics.Process();
 
 			//イベントハンドラがフォームを作成したスレッドで実行されるようにする
-			p.SynchronizingObject = this;
+			p_DTXMania.SynchronizingObject = this;
 			//イベントハンドラの追加
-			p.Exited += new EventHandler(p_Exited);
-			p.EnableRaisingEvents = true;
+			p_DTXMania.Exited += new EventHandler(p_Exited);
+			p_DTXMania.EnableRaisingEvents = true;
 
 			//アプリ名と引数の情報を設定
-			p.StartInfo.FileName = "DTXManiaGR.exe";
-			p.StartInfo.Arguments = $"-E{comboBox_AudioFormat.Text.ToUpper()},48000,192,";
-			p.StartInfo.Arguments += $"{numericUpDown_BGM.Value},{numericUpDown_SE.Value},{numericUpDown_Drums.Value},{numericUpDown_Guitar.Value},{numericUpDown_Bass.Value},{numericUpDown_Master.Value},";
-			p.StartInfo.Arguments += $"\"{textBox_BrowseAudio.Text}\",\"{textBox_BrowseDTX.Text}\"";
+			p_DTXMania.StartInfo.FileName = "DTXManiaGR.exe";
+			p_DTXMania.StartInfo.Arguments = $"-E{comboBox_AudioFormat.Text.ToUpper()},48000,192,";
+			p_DTXMania.StartInfo.Arguments += $"{numericUpDown_BGM.Value},{numericUpDown_SE.Value},{numericUpDown_Drums.Value},{numericUpDown_Guitar.Value},{numericUpDown_Bass.Value},{numericUpDown_Master.Value},";
+			p_DTXMania.StartInfo.Arguments += $"\"{textBox_BrowseAudio.Text}\",\"{textBox_BrowseDTX.Text}\"";
 
 			//起動する
-			p.Start();
+			p_DTXMania.Start();
+			#endregion
 
 			//モーダルで変換中ダイアログを表示して、処理をいったん止める(キャンセル or 正常終了イベント待ち)
 			formRecording = new Form_Recording();
@@ -205,20 +209,35 @@ namespace DTX2WAV
 				formRecording.Dispose();
 				formRecording = null;
 			}
+			
+			// DTXManiaプロセスの返り値を確認し、それに応じたダイアログを表示する
+			if (p_DTXMania != null)
+			{
+				//MessageBox.Show(p_DTXMania.ExitCode.ToString());
 
-			//MessageBox.Show(
-			//	"録音が正常に終了しました。",
-			//	"録音終了",
-			//	MessageBoxButtons.OK,
-			//	MessageBoxIcon.Information
-			//);
+				switch (p_DTXMania.ExitCode)
+				{
+					case 0:		// 正常終了
+						using (var f = new Form_Finished_OK())
+						{
+							f.ShowDialog(this);
+						}
+						break;
 
-			formFinishedOK = new Form_Finished_OK();
-			//formFinishedOK.StartPosition = FormStartPosition.CenterParent;
-			formFinishedOK.ShowDialog(this);
+					case 10010:		// Cancel
+						using (var f = new Form_Finished_Fail())
+						{
+							f.ShowDialog(this);
+						}
+						break;
 
-			formFinishedOK.Dispose();
-			formFinishedOK = null;
+					default:
+						break;
+
+				}
+			}
+			p_DTXMania.Dispose();
+			p_DTXMania = null;
 		}
 
 		/// <summary>

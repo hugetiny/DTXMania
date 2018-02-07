@@ -1243,17 +1243,18 @@ namespace DTXMania
 					{
 						if (DTX2WAVmode.Command == CDTX2WAVmode.ECommand.Cancel)
 						{
-							Trace.TraceInformation("録音のCancelコマンドをDTXMania本来が受信しました。");
-							// 録音を終了するために、[ESC]が押されたようにふるまう
+							Trace.TraceInformation("録音のCancelコマンドをDTXMania本体が受信しました。");
 							//Microsoft.VisualBasic.Interaction.AppActivate("メモ帳");
-
 							//SendKeys.Send("{ESC}");
 							//SendKeys.SendWait("%{F4}");
 							//Application.Exit();
 							DTX.t全チップの再生停止();
 							DTX.On非活性化();
 							r現在のステージ.On非活性化();
-							base.Window.Close();
+
+							//Environment.ExitCode = 10010;		// この組み合わせではダメ、返り値が反映されない
+							//base.Window.Close();
+							Environment.Exit(10010);			// このやり方ならばOK
 						}
 					}
 				}

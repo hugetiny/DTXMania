@@ -80,7 +80,7 @@ namespace DTXMania
 		#endregion
 
 		[STAThread]
-		private static void Main()
+		private static int Main()
 		{
 			mutex二重起動防止用 = new Mutex(false, "DTXManiaMutex");
 
@@ -270,6 +270,7 @@ namespace DTXMania
 					}
 				}
 			}
+			return 0;
 		}
 	}
 }

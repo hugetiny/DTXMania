@@ -55,6 +55,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Finished_Fail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Finished_Fail.Designer.cs">
+      <DependentUpon>Form_Finished_Fail.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_FInished_OK.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +80,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Finished_Fail.resx">
+      <DependentUpon>Form_Finished_Fail.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_FInished_OK.resx">
       <DependentUpon>Form_FInished_OK.cs</DependentUpon>
