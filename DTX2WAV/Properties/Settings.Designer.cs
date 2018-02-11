@@ -130,5 +130,17 @@ namespace DTX2WAV.Properties {
                 this["IsUpgrade"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int nAudioFormat {
+            get {
+                return ((int)(this["nAudioFormat"]));
+            }
+            set {
+                this["nAudioFormat"] = value;
+            }
+        }
     }
 }

@@ -367,9 +367,20 @@ namespace DTXMania
 					{
 						FDK.CSound管理.nMixerVolume[ i ] = DTX2WAVmode.nMixerVolume[ i ];
 					}
-					ConfigIni.nMasterVolume.Value = DTX2WAVmode.nMixerVolume[(int)FDK.CSound.EInstType.Unknown];	// [5](Unknown)のところにMasterVolumeが入ってくるので注意
+					ConfigIni.nMasterVolume.Value = DTX2WAVmode.nMixerVolume[(int)FDK.CSound.EInstType.Unknown];    // [5](Unknown)のところにMasterVolumeが入ってくるので注意
+																													// CSound管理.nMixerVolume[5]は、結局ここからは変更しないため、
+																													// 事実上初期値=100で固定。
 					#endregion
 					#region [ 録音用の本体設定 ]
+
+					// 本体プロセスの優先度を少し上げる (最小化状態で動作させると、処理性能が落ちるようなので
+					// → ほとんど効果がなかったので止めます
+					//Process thisProcess = System.Diagnostics.Process.GetCurrentProcess();
+					//thisProcess.PriorityClass = ProcessPriorityClass.AboveNormal;
+
+					// エンコーダーのパス設定 (=DLLフォルダ)
+					FDK.CSound管理.strEncoderPath = Path.Combine(strEXEのあるフォルダ, "DLL");
+
 					CDTXMania.Instance.ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Exclusive;
 					CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI.Value = false;
 
@@ -436,7 +447,7 @@ namespace DTXMania
 					CDTXMania.instance.ConfigIni.nChipVolume.Value = 100;
 
 					//マスターボリューム100
-					CDTXMania.instance.ConfigIni.nMasterVolume.Value = 100;
+					//CDTXMania.instance.ConfigIni.nMasterVolume.Value = 100;	// DTX2WAV側から設定するので、ここでは触らない
 
 					//StageFailedオフ
 					CDTXMania.instance.ConfigIni.bStageFailed.Value = false;
@@ -472,6 +483,9 @@ namespace DTXMania
 					CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Guitar.Value = false;
 					CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Bass.Value = false;
 
+					// パッド入力等、基本操作の無効化 (ESCを除く)
+					//CDTXMania.Instance.ConfigIni.KeyAssign[][];
+					
 					#endregion
 				}
 				else                                                        // 通常のコンパクトモード
@@ -665,7 +679,7 @@ namespace DTXMania
 
 			if (DTX2WAVmode.Enabled)
 			{
-				this.Window.WindowState = FormWindowState.Minimized;		//DTX2WAVモード時は自動的に最小化したいが、まだうまくいかない
+				this.Window.WindowState = FormWindowState.Minimized;		//DTX2WAVモード時は自動的に最小化
 			}
 
 			DTX = null;
@@ -1865,6 +1879,10 @@ namespace DTXMania
 								DTX.t全チップの再生停止();
 								DTX.On非活性化();
 								r現在のステージ.On非活性化();
+								if (DTX2WAVmode.Enabled)
+								{
+									Environment.Exit(0);
+								}
 								if (bコンパクトモード)
 								{
 									base.Window.Close();

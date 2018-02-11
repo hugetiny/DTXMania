@@ -514,7 +514,7 @@ namespace DTXMania
 						//						if ( ( nCurrentTime - this.nBGM再生開始時刻 ) > ( this.nBGMの総再生時間ms - 1000 ) )
 						if ((nCurrentTime - this.nBGM再生開始時刻) >= (this.nBGMの総再生時間ms))  // #27787 2012.3.10 yyagi 1000ms == フェードイン分の時間
 						{
-							if (!CDTXMania.Instance.DTXVmode.Enabled)
+							if (!CDTXMania.Instance.DTXVmode.Enabled && !CDTXMania.Instance.DTX2WAVmode.Enabled)
 							{
 								this.actFO.tフェードアウト開始();
 							}
@@ -524,7 +524,7 @@ namespace DTXMania
 					}
 
 				case CStage.Eフェーズ.共通_フェードアウト:
-					if (this.actFO.On進行描画() == 0 && !CDTXMania.Instance.DTXVmode.Enabled)   // DTXVモード時は、フェードアウト省略
+					if (this.actFO.On進行描画() == 0 && !CDTXMania.Instance.DTXVmode.Enabled && !CDTXMania.Instance.DTX2WAVmode.Enabled)   // DTXVモード時は、フェードアウト省略
 						return 0;
 
 					if (txFilename != null)

@@ -140,6 +140,7 @@
 			this.Controls.Add(this.progressBar_Recording);
 			this.Controls.Add(this.label_Recording);
 			this.Controls.Add(this.button_CancelConverting);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "Form_Recording";
 			this.Load += new System.EventHandler(this.Form_Recording_Load);
 			this.ResumeLayout(false);

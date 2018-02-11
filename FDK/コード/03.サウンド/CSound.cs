@@ -209,7 +209,13 @@ namespace FDK
 		/// <summary>
 		/// 録音機能で使うミキサーボリューム
 		/// </summary>
-		public static int[] nMixerVolume = { 100, 100, 100, 100, 100, 100 };	// BGM,SE,Drums,Guitar,Bass,Unknown
+		public static int[] nMixerVolume = { 100, 100, 100, 100, 100, 100 };    // BGM,SE,Drums,Guitar,Bass, Unknown(Unknownだけは外部から更新されないので事実上100で固定)
+
+		/// <summary>
+		/// 録音機能で使う、エンコーダーパス (DLLフォルダ)
+		/// </summary>
+		public static string strEncoderPath;
+
 		#endregion
 
 
@@ -382,11 +388,11 @@ namespace FDK
 			switch ( SoundDeviceType )
 			{
 				case ESoundDeviceType.ExclusiveWASAPI:
-					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.Eデバイスモード.排他, SoundDelayExclusiveWASAPI, SoundUpdatePeriodExclusiveWASAPI );
+					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.Eデバイスモード.排他, SoundDelayExclusiveWASAPI, SoundUpdatePeriodExclusiveWASAPI, strRecordFileType, strEncoderPath );
 					break;
 
 				case ESoundDeviceType.SharedWASAPI:
-					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.Eデバイスモード.共有, SoundDelaySharedWASAPI, SoundUpdatePeriodSharedWASAPI );
+					SoundDevice = new CSoundDeviceWASAPI( CSoundDeviceWASAPI.Eデバイスモード.共有, SoundDelaySharedWASAPI, SoundUpdatePeriodSharedWASAPI, strRecordFileType, strEncoderPath );
 					break;
 
 				case ESoundDeviceType.ASIO:

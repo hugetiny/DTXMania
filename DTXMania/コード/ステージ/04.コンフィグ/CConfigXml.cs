@@ -850,7 +850,7 @@ namespace DTXMania
 			nChipDisplayTimeMs.Initialize("", "", 0);
 			nChipFadeoutTimeMs.Initialize("", "", 0);
 
-			nMasterVolume.Initialize( "strCfgSysMasterVolume", 0, 101);
+			nMasterVolume.Initialize( "strCfgSysMasterVolume", 0, 201);
 			nPolyphonicSounds.Initialize( "strCfgSysPolyphonicSounds", 1, 11 );
 
 			// dgb

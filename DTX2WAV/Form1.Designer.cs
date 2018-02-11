@@ -165,6 +165,7 @@
 			// 
 			// comboBox_AudioFormat
 			// 
+			this.comboBox_AudioFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.comboBox_AudioFormat.FormattingEnabled = true;
 			this.comboBox_AudioFormat.Items.AddRange(new object[] {
             resources.GetString("comboBox_AudioFormat.Items"),
@@ -277,6 +278,11 @@
 			// 
 			this.numericUpDown_Master.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.bindingSource_Master, "Value", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			resources.ApplyResources(this.numericUpDown_Master, "numericUpDown_Master");
+			this.numericUpDown_Master.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
 			this.numericUpDown_Master.Name = "numericUpDown_Master";
 			this.numericUpDown_Master.Value = new decimal(new int[] {
             100,
@@ -298,7 +304,7 @@
 			resources.ApplyResources(this.trackBar_Master, "trackBar_Master");
 			this.trackBar_Master.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.bindingSource_Master, "Value", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
 			this.trackBar_Master.LargeChange = 10;
-			this.trackBar_Master.Maximum = 100;
+			this.trackBar_Master.Maximum = 200;
 			this.trackBar_Master.Name = "trackBar_Master";
 			this.trackBar_Master.TickFrequency = 10;
 			this.trackBar_Master.Value = 100;

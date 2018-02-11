@@ -73,6 +73,7 @@ namespace DTX2WAV
 			numericUpDown_Bass.Value   = Properties.Settings.Default.nVol_Bass;
 			numericUpDown_Master.Value = Properties.Settings.Default.nVol_Master;
 			checkBox_MonitorSound.Checked = Properties.Settings.Default.bMonitorSound;
+			comboBox_AudioFormat.SelectedIndex = Properties.Settings.Default.nAudioFormat;
 			#endregion
 		}
 
@@ -231,7 +232,7 @@ namespace DTX2WAV
 						}
 						break;
 
-					default:
+					default:		// DTXMania本体を強制終了した、など
 						break;
 
 				}
@@ -327,6 +328,7 @@ namespace DTX2WAV
 			Properties.Settings.Default.nVol_Bass     = (int)numericUpDown_Bass.Value;
 			Properties.Settings.Default.nVol_Master   = (int)numericUpDown_Master.Value;
 			Properties.Settings.Default.bMonitorSound = checkBox_MonitorSound.Checked;
+			Properties.Settings.Default.nAudioFormat = comboBox_AudioFormat.SelectedIndex;
 			#endregion
 
 			Properties.Settings.Default.Save();

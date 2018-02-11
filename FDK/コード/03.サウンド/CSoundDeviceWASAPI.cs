@@ -29,6 +29,8 @@ namespace FDK
 			protected set;
 		}
 
+		public string strRecordFileType = null;
+
 		// CSoundTimer 用に公開しているプロパティ
 
 		public long n経過時間ms
@@ -110,7 +112,7 @@ namespace FDK
 		/// <param name="mode"></param>
 		/// <param name="n希望バッファサイズms">WASAPIのサウンドバッファサイズ</param>
 		/// <param name="n更新間隔ms">サウンドバッファの更新間隔</param>
-		public CSoundDeviceWASAPI( Eデバイスモード mode, long n希望バッファサイズms, long n更新間隔ms )
+		public CSoundDeviceWASAPI( Eデバイスモード mode, long n希望バッファサイズms, long n更新間隔ms, string strRecordFileType, string strEncoderPath )
 		{
 			// 初期化。
 
@@ -456,6 +458,13 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 				this.bIsBASSFree = true;
 				throw new Exception( string.Format( "BASSミキサ(mixing)の作成に失敗しました。[{0}]", errcode ) );
 			}
+//			if (strRecordFileType != "")
+//			{
+//				// DTX2WAV時には、マスターボリュームをここで設定する
+//				// 
+//				Bass.BASS_ChannelSetAttribute(this.hMixer, BASSAttribute.BASS_ATTRIB_VOL, CSound管理.nMixerVolume[5] / 100.0f);
+//Trace.TraceInformation("Vol5: {0}", CSound管理.nMixerVolume[5]);
+//			}
 
 			for (int i = 0; i <= (int)CSound.EInstType.Unknown; i++)
 			{
@@ -474,7 +483,7 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 
 				// Mixerのボリューム設定
 				Bass.BASS_ChannelSetAttribute(this.hMixer_Chips[ i ], BASSAttribute.BASS_ATTRIB_VOL, CSound管理.nMixerVolume[ i ] / 100.0f );
-Trace.TraceInformation("Vol{0}: {1}", i, CSound管理.nMixerVolume[i]);
+//Trace.TraceInformation("Vol{0}: {1}", i, CSound管理.nMixerVolume[i]);
 
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hMixer_Chips[i], BASSFlag.BASS_DEFAULT);
 				if (!b1)
@@ -527,12 +536,44 @@ Trace.TraceInformation("Vol{0}: {1}", i, CSound管理.nMixerVolume[i]);
 
 
 			// 録音設定(DTX2WAV)
-			encoder = new EncoderWAV(this.hMixer_DeviceOut);
-			encoder.InputFile = null;    //STDIN
-			encoder.OutputFile = CSound管理.strRecordOutFilename;
-			encoder.UseAsyncQueue = true;
-			encoder.Start(null, IntPtr.Zero, true);     // PAUSE状態で録音開始
+			if (strRecordFileType != "")
+			{
+				switch (strRecordFileType.ToUpper())
+				{
+					case "WAV":
+						encoder = new EncoderWAV(this.hMixer_DeviceOut);
+						break;
+					case "OGG":
+						{
+							var e = new EncoderOGG(this.hMixer_DeviceOut);
+							e.EncoderDirectory = strEncoderPath;
+							e.OGG_UseQualityMode = true;
+							e.OGG_Quality = 8.0f;
+							//e.OGG_Bitrate = 128;
+							//e.OGG_MinBitrate = 0;
+							//e.OGG_MaxBitrate = 0;
 
+							encoder = e;
+						}
+						break;
+					case "MP3":
+						{
+							var e = new EncoderLAME(this.hMixer_DeviceOut);
+							e.EncoderDirectory = strEncoderPath;
+							e.LAME_UseVBR = false;
+							e.LAME_Bitrate = 192;
+							encoder = e;
+						}
+						break;
+					default:
+						encoder = new EncoderWAV(this.hMixer_DeviceOut);
+						break;
+				}
+				encoder.InputFile = null;    //STDIN
+				encoder.OutputFile = CSound管理.strRecordOutFilename;
+				encoder.UseAsyncQueue = true;
+				encoder.Start(null, IntPtr.Zero, true);     // PAUSE状態で録音開始
+			}
 			//Bass.BASS_ChannelSetAttribute(this.hMixer_DeviceOut, BASSAttribute.BASS_ATTRIB_VOL, 0.10f);
 			//Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_GVOL_SAMPLE, 1000);
 			//Bass.BASS_SetVolume(0.1f);
@@ -632,7 +673,7 @@ Trace.TraceInformation("Vol{0}: {1}", i, CSound管理.nMixerVolume[i]);
 		protected int hMixer_Record = -1;
 		protected int[] hMixer_Chips = new int[(int)CSound.EInstType.Unknown + 1];  //DTX2WAV対応 BGM, SE, Drums...を別々のmixerに入れて、個別に音量変更できるようにする
 
-		protected EncoderWAV encoder;
+		protected BaseEncoder encoder;
 		protected int stream;
 		protected WASAPIPROC tWasapiProc = null;
 
