@@ -80,7 +80,6 @@ namespace DTX2WAV
 					string[] s = label_state.Text.Split(new char[] { ',' });
 					int nEstimateTimeMs = Convert.ToInt32(s[2]);
 					int nCurrentTimeMs = Convert.ToInt32(s[1]);
-//Debug.WriteLine(label_state.Text + ": " + nCurrentTimeMs + " : " + nEstimateTimeMs);
 
 					if (nCurrentTimeMs > nEstimateTimeMs)
 					{
@@ -88,7 +87,6 @@ namespace DTX2WAV
 					}
 					progressBar_Recording.Value = (int)(((double)nCurrentTimeMs / (double)nEstimateTimeMs) * 10000);
 
-					//int nEstimateTimeMs = (CDTXMania.Instance.DTX.listChip.Count > 0) ? CDTXMania.Instance.DTX.listChip[CDTXMania.Instance.DTX.listChip.Count - 1].n発声時刻ms : 0;
 					string strEstimateTime = (((double)nEstimateTimeMs) / 1000.0).ToString("####0.00");
 					string strCurrentTime = (((double)nCurrentTimeMs) / 1000.0).ToString("####0.00");
 

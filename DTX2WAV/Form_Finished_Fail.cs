@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace DTX2WAV
 {
-	public partial class Form_Finished_OK : Form
+	public partial class Form_Finished_Fail : Form
 	{
-		public Form_Finished_OK()
+		public Form_Finished_Fail()
 		{
 			InitializeComponent();
 		}
@@ -22,14 +22,14 @@ namespace DTX2WAV
 			this.Close();
 		}
 
-		private void Form_Finished_OK_Shown(object sender, EventArgs e)
+		private void Form_Finished_Fail_Shown(object sender, EventArgs e)
 		{
-			Bitmap canvas = new Bitmap(pictureBox_OKIcon.Width, pictureBox_OKIcon.Height);
+			Bitmap canvas = new Bitmap(pictureBox_FailIcon.Width, pictureBox_FailIcon.Height);
 			Graphics g = Graphics.FromImage(canvas);
 
-			g.DrawIcon(SystemIcons.Information, 0, 0);
+			g.DrawIcon(SystemIcons.Warning, 0, 0);
 			g.Dispose();
-			pictureBox_OKIcon.Image = canvas;
+			pictureBox_FailIcon.Image = canvas;
 		}
 	}
 }

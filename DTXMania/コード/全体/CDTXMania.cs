@@ -1262,8 +1262,11 @@ namespace DTXMania
 							//SendKeys.Send("{ESC}");
 							//SendKeys.SendWait("%{F4}");
 							//Application.Exit();
-							DTX.t全チップの再生停止();
-							DTX.On非活性化();
+							if (DTX != null)	// 曲読み込みの前に録音Cancelされると、DTXがnullのままここにきてでGPFとなる→nullチェック追加
+							{
+								DTX.t全チップの再生停止();
+								DTX.On非活性化();
+							}
 							r現在のステージ.On非活性化();
 
 							//Environment.ExitCode = 10010;		// この組み合わせではダメ、返り値が反映されない
