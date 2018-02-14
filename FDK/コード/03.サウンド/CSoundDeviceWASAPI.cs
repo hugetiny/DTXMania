@@ -536,7 +536,7 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 
 
 			// 録音設定(DTX2WAV)
-			if (strRecordFileType != "")
+			if (!string.IsNullOrEmpty(strRecordFileType))
 			{
 				switch (strRecordFileType.ToUpper())
 				{
