@@ -293,7 +293,9 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.cdLaneOrder.CY);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eSudHidInv.Drums);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bReverse.Drums);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDisplayCombo.Drums);		// 112追加
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nMinComboDisp.Drums);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDisplayJudge.Drums);		// 112追加
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bGraph.Drums);
 			}
 			else if (eMenu == Eメニュー種別.DisplayGuitar)
@@ -310,7 +312,9 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.cdLaneOrder.GtB);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eSudHidInv.Guitar);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bReverse.Guitar);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDisplayCombo.Guitar);		// 112追加
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nMinComboDisp.Guitar);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDisplayJudge.Guitar);		// 112追加
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bGraph.Guitar);
 			}
 			else if (eMenu == Eメニュー種別.DisplayBass)
@@ -327,7 +331,9 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.cdLaneOrder.BsB);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eSudHidInv.Bass);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bReverse.Bass);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDisplayCombo.Bass);		// 112追加
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nMinComboDisp.Bass);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDisplayJudge.Bass);		// 112追加
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bGraph.Bass);
 			}
 			else if (eMenu == Eメニュー種別.EDrumsSettings)
