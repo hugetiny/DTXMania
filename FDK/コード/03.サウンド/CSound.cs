@@ -216,6 +216,17 @@ namespace FDK
 		/// </summary>
 		public static string strEncoderPath;
 
+		/// <summary>
+		/// 録音機能で使う、サンプリング周波数
+		/// </summary>
+		public static int nFreq;
+
+		/// <summary>
+		/// 録音機能で使う、ビットレート(OGG時は、Q値(-1～10)
+		/// </summary>
+		public static int nBitrate;
+
+
 		#endregion
 
 

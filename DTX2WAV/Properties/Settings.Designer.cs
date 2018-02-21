@@ -97,7 +97,7 @@ namespace DTX2WAV.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public int nVol_Master {
             get {
                 return ((int)(this["nVol_Master"]));
@@ -140,6 +140,30 @@ namespace DTX2WAV.Properties {
             }
             set {
                 this["nAudioFormat"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int nOgg_Q {
+            get {
+                return ((int)(this["nOgg_Q"]));
+            }
+            set {
+                this["nOgg_Q"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int nMP3_bps {
+            get {
+                return ((int)(this["nMP3_bps"]));
+            }
+            set {
+                this["nMP3_bps"] = value;
             }
         }
     }

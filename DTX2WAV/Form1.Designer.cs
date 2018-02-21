@@ -38,7 +38,7 @@
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.label1 = new System.Windows.Forms.Label();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.groupBox_recfiles = new System.Windows.Forms.GroupBox();
 			this.comboBox_AudioFormat = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.button_BrowseAudio = new System.Windows.Forms.Button();
@@ -50,7 +50,7 @@
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.button_Cancel = new System.Windows.Forms.Button();
 			this.button_Convert = new System.Windows.Forms.Button();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.groupBox_volumes = new System.Windows.Forms.GroupBox();
 			this.checkBox_MonitorSound = new System.Windows.Forms.CheckBox();
 			this.numericUpDown_Master = new System.Windows.Forms.NumericUpDown();
 			this.bindingSource_Master = new System.Windows.Forms.BindingSource(this.components);
@@ -77,13 +77,21 @@
 			this.label4 = new System.Windows.Forms.Label();
 			this.trackBar_BGM = new System.Windows.Forms.TrackBar();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.groupBox_MP3 = new System.Windows.Forms.GroupBox();
+			this.label11 = new System.Windows.Forms.Label();
+			this.groupBox_Ogg = new System.Windows.Forms.GroupBox();
+			this.numericUpDown_Ogg_Q = new System.Windows.Forms.NumericUpDown();
+			this.bindingSource_Ogg_Q = new System.Windows.Forms.BindingSource(this.components);
+			this.label10 = new System.Windows.Forms.Label();
+			this.trackBar_Ogg_Q = new System.Windows.Forms.TrackBar();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.comboBox_MP3_bps = new System.Windows.Forms.ComboBox();
 			this.menuStrip1.SuspendLayout();
-			this.groupBox1.SuspendLayout();
+			this.groupBox_recfiles.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
-			this.groupBox2.SuspendLayout();
+			this.groupBox_volumes.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Master)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Master)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Master)).BeginInit();
@@ -102,6 +110,12 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BGM)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.bindingSource_BGM)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_BGM)).BeginInit();
+			this.tabPage2.SuspendLayout();
+			this.groupBox_MP3.SuspendLayout();
+			this.groupBox_Ogg.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Ogg_Q)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Ogg_Q)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.trackBar_Ogg_Q)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -149,19 +163,19 @@
 			resources.ApplyResources(this.label1, "label1");
 			this.label1.Name = "label1";
 			// 
-			// groupBox1
+			// groupBox_recfiles
 			// 
-			this.groupBox1.Controls.Add(this.comboBox_AudioFormat);
-			this.groupBox1.Controls.Add(this.label3);
-			this.groupBox1.Controls.Add(this.button_BrowseAudio);
-			this.groupBox1.Controls.Add(this.textBox_BrowseAudio);
-			this.groupBox1.Controls.Add(this.label2);
-			this.groupBox1.Controls.Add(this.button_browseDTX);
-			this.groupBox1.Controls.Add(this.textBox_BrowseDTX);
-			this.groupBox1.Controls.Add(this.label1);
-			resources.ApplyResources(this.groupBox1, "groupBox1");
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.TabStop = false;
+			resources.ApplyResources(this.groupBox_recfiles, "groupBox_recfiles");
+			this.groupBox_recfiles.Controls.Add(this.comboBox_AudioFormat);
+			this.groupBox_recfiles.Controls.Add(this.label3);
+			this.groupBox_recfiles.Controls.Add(this.button_BrowseAudio);
+			this.groupBox_recfiles.Controls.Add(this.textBox_BrowseAudio);
+			this.groupBox_recfiles.Controls.Add(this.label2);
+			this.groupBox_recfiles.Controls.Add(this.button_browseDTX);
+			this.groupBox_recfiles.Controls.Add(this.textBox_BrowseDTX);
+			this.groupBox_recfiles.Controls.Add(this.label1);
+			this.groupBox_recfiles.Name = "groupBox_recfiles";
+			this.groupBox_recfiles.TabStop = false;
 			// 
 			// comboBox_AudioFormat
 			// 
@@ -216,13 +230,14 @@
 			resources.ApplyResources(this.tabControl1, "tabControl1");
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
+			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
 			// tabPage1
 			// 
 			this.tabPage1.Controls.Add(this.button_Cancel);
 			this.tabPage1.Controls.Add(this.button_Convert);
-			this.tabPage1.Controls.Add(this.groupBox2);
-			this.tabPage1.Controls.Add(this.groupBox1);
+			this.tabPage1.Controls.Add(this.groupBox_volumes);
+			this.tabPage1.Controls.Add(this.groupBox_recfiles);
 			resources.ApplyResources(this.tabPage1, "tabPage1");
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -241,30 +256,30 @@
 			this.button_Convert.UseVisualStyleBackColor = true;
 			this.button_Convert.Click += new System.EventHandler(this.button_Convert_Click);
 			// 
-			// groupBox2
+			// groupBox_volumes
 			// 
-			this.groupBox2.Controls.Add(this.checkBox_MonitorSound);
-			this.groupBox2.Controls.Add(this.numericUpDown_Master);
-			this.groupBox2.Controls.Add(this.label9);
-			this.groupBox2.Controls.Add(this.trackBar_Master);
-			this.groupBox2.Controls.Add(this.numericUpDown_Bass);
-			this.groupBox2.Controls.Add(this.label8);
-			this.groupBox2.Controls.Add(this.trackBar_Bass);
-			this.groupBox2.Controls.Add(this.numericUpDown_Guitar);
-			this.groupBox2.Controls.Add(this.label7);
-			this.groupBox2.Controls.Add(this.trackBar_Guitar);
-			this.groupBox2.Controls.Add(this.numericUpDown_Drums);
-			this.groupBox2.Controls.Add(this.label6);
-			this.groupBox2.Controls.Add(this.trackBar_Drums);
-			this.groupBox2.Controls.Add(this.numericUpDown_SE);
-			this.groupBox2.Controls.Add(this.label5);
-			this.groupBox2.Controls.Add(this.trackBar_SE);
-			this.groupBox2.Controls.Add(this.numericUpDown_BGM);
-			this.groupBox2.Controls.Add(this.label4);
-			this.groupBox2.Controls.Add(this.trackBar_BGM);
-			resources.ApplyResources(this.groupBox2, "groupBox2");
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.TabStop = false;
+			resources.ApplyResources(this.groupBox_volumes, "groupBox_volumes");
+			this.groupBox_volumes.Controls.Add(this.checkBox_MonitorSound);
+			this.groupBox_volumes.Controls.Add(this.numericUpDown_Master);
+			this.groupBox_volumes.Controls.Add(this.label9);
+			this.groupBox_volumes.Controls.Add(this.trackBar_Master);
+			this.groupBox_volumes.Controls.Add(this.numericUpDown_Bass);
+			this.groupBox_volumes.Controls.Add(this.label8);
+			this.groupBox_volumes.Controls.Add(this.trackBar_Bass);
+			this.groupBox_volumes.Controls.Add(this.numericUpDown_Guitar);
+			this.groupBox_volumes.Controls.Add(this.label7);
+			this.groupBox_volumes.Controls.Add(this.trackBar_Guitar);
+			this.groupBox_volumes.Controls.Add(this.numericUpDown_Drums);
+			this.groupBox_volumes.Controls.Add(this.label6);
+			this.groupBox_volumes.Controls.Add(this.trackBar_Drums);
+			this.groupBox_volumes.Controls.Add(this.numericUpDown_SE);
+			this.groupBox_volumes.Controls.Add(this.label5);
+			this.groupBox_volumes.Controls.Add(this.trackBar_SE);
+			this.groupBox_volumes.Controls.Add(this.numericUpDown_BGM);
+			this.groupBox_volumes.Controls.Add(this.label4);
+			this.groupBox_volumes.Controls.Add(this.trackBar_BGM);
+			this.groupBox_volumes.Name = "groupBox_volumes";
+			this.groupBox_volumes.TabStop = false;
 			// 
 			// checkBox_MonitorSound
 			// 
@@ -486,9 +501,90 @@
 			// 
 			// tabPage2
 			// 
+			this.tabPage2.Controls.Add(this.groupBox_MP3);
+			this.tabPage2.Controls.Add(this.groupBox_Ogg);
 			resources.ApplyResources(this.tabPage2, "tabPage2");
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.UseVisualStyleBackColor = true;
+			// 
+			// groupBox_MP3
+			// 
+			this.groupBox_MP3.Controls.Add(this.comboBox_MP3_bps);
+			this.groupBox_MP3.Controls.Add(this.label11);
+			resources.ApplyResources(this.groupBox_MP3, "groupBox_MP3");
+			this.groupBox_MP3.Name = "groupBox_MP3";
+			this.groupBox_MP3.TabStop = false;
+			// 
+			// label11
+			// 
+			resources.ApplyResources(this.label11, "label11");
+			this.label11.Name = "label11";
+			// 
+			// groupBox_Ogg
+			// 
+			this.groupBox_Ogg.Controls.Add(this.numericUpDown_Ogg_Q);
+			this.groupBox_Ogg.Controls.Add(this.label10);
+			this.groupBox_Ogg.Controls.Add(this.trackBar_Ogg_Q);
+			resources.ApplyResources(this.groupBox_Ogg, "groupBox_Ogg");
+			this.groupBox_Ogg.Name = "groupBox_Ogg";
+			this.groupBox_Ogg.TabStop = false;
+			// 
+			// numericUpDown_Ogg_Q
+			// 
+			this.numericUpDown_Ogg_Q.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.bindingSource_Ogg_Q, "Value", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			resources.ApplyResources(this.numericUpDown_Ogg_Q, "numericUpDown_Ogg_Q");
+			this.numericUpDown_Ogg_Q.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+			this.numericUpDown_Ogg_Q.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+			this.numericUpDown_Ogg_Q.Name = "numericUpDown_Ogg_Q";
+			this.numericUpDown_Ogg_Q.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+			// 
+			// bindingSource_Ogg_Q
+			// 
+			this.bindingSource_Ogg_Q.DataSource = typeof(DTX2WAV.Main.VolumeSlider);
+			// 
+			// label10
+			// 
+			resources.ApplyResources(this.label10, "label10");
+			this.label10.Name = "label10";
+			// 
+			// trackBar_Ogg_Q
+			// 
+			resources.ApplyResources(this.trackBar_Ogg_Q, "trackBar_Ogg_Q");
+			this.trackBar_Ogg_Q.DataBindings.Add(new System.Windows.Forms.Binding("Value", this.bindingSource_Ogg_Q, "Value", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+			this.trackBar_Ogg_Q.LargeChange = 1;
+			this.trackBar_Ogg_Q.Minimum = -1;
+			this.trackBar_Ogg_Q.Name = "trackBar_Ogg_Q";
+			this.trackBar_Ogg_Q.Value = 10;
+			// 
+			// comboBox_MP3_bps
+			// 
+			this.comboBox_MP3_bps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBox_MP3_bps.FormattingEnabled = true;
+			this.comboBox_MP3_bps.Items.AddRange(new object[] {
+            resources.GetString("comboBox_MP3_bps.Items"),
+            resources.GetString("comboBox_MP3_bps.Items1"),
+            resources.GetString("comboBox_MP3_bps.Items2"),
+            resources.GetString("comboBox_MP3_bps.Items3"),
+            resources.GetString("comboBox_MP3_bps.Items4"),
+            resources.GetString("comboBox_MP3_bps.Items5"),
+            resources.GetString("comboBox_MP3_bps.Items6"),
+            resources.GetString("comboBox_MP3_bps.Items7"),
+            resources.GetString("comboBox_MP3_bps.Items8"),
+            resources.GetString("comboBox_MP3_bps.Items9")});
+			resources.ApplyResources(this.comboBox_MP3_bps, "comboBox_MP3_bps");
+			this.comboBox_MP3_bps.Name = "comboBox_MP3_bps";
 			// 
 			// Main
 			// 
@@ -503,12 +599,12 @@
 			this.Shown += new System.EventHandler(this.Main_Shown);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
-			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
+			this.groupBox_recfiles.ResumeLayout(false);
+			this.groupBox_recfiles.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox2.PerformLayout();
+			this.groupBox_volumes.ResumeLayout(false);
+			this.groupBox_volumes.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Master)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Master)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_Master)).EndInit();
@@ -527,6 +623,14 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_BGM)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.bindingSource_BGM)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar_BGM)).EndInit();
+			this.tabPage2.ResumeLayout(false);
+			this.groupBox_MP3.ResumeLayout(false);
+			this.groupBox_MP3.PerformLayout();
+			this.groupBox_Ogg.ResumeLayout(false);
+			this.groupBox_Ogg.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.numericUpDown_Ogg_Q)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.bindingSource_Ogg_Q)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.trackBar_Ogg_Q)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -541,7 +645,7 @@
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.GroupBox groupBox_recfiles;
 		private System.Windows.Forms.ComboBox comboBox_AudioFormat;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button button_BrowseAudio;
@@ -553,7 +657,7 @@
 		private System.Windows.Forms.TabPage tabPage1;
 		private System.Windows.Forms.TabPage tabPage2;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.GroupBox groupBox_volumes;
 		private System.Windows.Forms.CheckBox checkBox_MonitorSound;
 		private System.Windows.Forms.NumericUpDown numericUpDown_Master;
 		private System.Windows.Forms.Label label9;
@@ -583,6 +687,14 @@
 		private System.Windows.Forms.BindingSource bindingSource_Guitar;
 		private System.Windows.Forms.BindingSource bindingSource_Bass;
 		private System.Windows.Forms.BindingSource bindingSource_Master;
+		private System.Windows.Forms.GroupBox groupBox_MP3;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.GroupBox groupBox_Ogg;
+		private System.Windows.Forms.NumericUpDown numericUpDown_Ogg_Q;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.TrackBar trackBar_Ogg_Q;
+		private System.Windows.Forms.BindingSource bindingSource_Ogg_Q;
+		private System.Windows.Forms.ComboBox comboBox_MP3_bps;
 	}
 }
 

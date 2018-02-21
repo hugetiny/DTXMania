@@ -17,6 +17,7 @@ namespace DTX2WAV
 	{
 		Form_Recording formRecording;
 		Process p_DTXMania = null;
+		bool bOpenedEncodingSettingTab = false;
 
 		public Main()
 		{
@@ -27,6 +28,7 @@ namespace DTX2WAV
 			bindingSource_Guitar.DataSource = new VolumeSlider();
 			bindingSource_Bass.DataSource = new VolumeSlider();
 			bindingSource_Master.DataSource = new VolumeSlider();
+			bindingSource_Ogg_Q.DataSource = new VolumeSlider();
 		}
 
 		/// <summary>
@@ -66,14 +68,17 @@ namespace DTX2WAV
 			#endregion
 
 			#region [ 復元した設定値を、Formに反映する ]
-			numericUpDown_BGM.Value    = Properties.Settings.Default.nVol_BGM;
-			numericUpDown_SE.Value     = Properties.Settings.Default.nVol_SE;
-			numericUpDown_Drums.Value  = Properties.Settings.Default.nVol_Drums;
-			numericUpDown_Guitar.Value = Properties.Settings.Default.nVol_Guitar;
-			numericUpDown_Bass.Value   = Properties.Settings.Default.nVol_Bass;
-			numericUpDown_Master.Value = Properties.Settings.Default.nVol_Master;
-			checkBox_MonitorSound.Checked = Properties.Settings.Default.bMonitorSound;
+			numericUpDown_BGM.Value            = Properties.Settings.Default.nVol_BGM;
+			numericUpDown_SE.Value             = Properties.Settings.Default.nVol_SE;
+			numericUpDown_Drums.Value          = Properties.Settings.Default.nVol_Drums;
+			numericUpDown_Guitar.Value         = Properties.Settings.Default.nVol_Guitar;
+			numericUpDown_Bass.Value           = Properties.Settings.Default.nVol_Bass;
+			numericUpDown_Master.Value         = Properties.Settings.Default.nVol_Master;
+			checkBox_MonitorSound.Checked      = Properties.Settings.Default.bMonitorSound;
 			comboBox_AudioFormat.SelectedIndex = Properties.Settings.Default.nAudioFormat;
+
+			numericUpDown_Ogg_Q.Value          = Properties.Settings.Default.nOgg_Q;        // この設定は後でもう一度実施する。tabControl1_SelectedIndexChanged()へ。
+			comboBox_MP3_bps.SelectedIndex     = Properties.Settings.Default.nMP3_bps;
 			#endregion
 		}
 
@@ -181,12 +186,40 @@ namespace DTX2WAV
 
 			//アプリ名と引数の情報を設定
 			p_DTXMania.StartInfo.FileName = "DTXManiaGR.exe";
-			p_DTXMania.StartInfo.Arguments = $"-E{comboBox_AudioFormat.Text.ToUpper()},48000,192,";
+			p_DTXMania.StartInfo.Arguments  = $"-E{comboBox_AudioFormat.Text.ToUpper()},";
+
+			switch (comboBox_AudioFormat.Text.ToUpper())
+			{
+				case "WAV":
+					p_DTXMania.StartInfo.Arguments +=  "48000,192,";	// freqとbitrate、DTXMania側ではいずれも無視される
+					break;
+				case "OGG":
+					p_DTXMania.StartInfo.Arguments += $"48000,{numericUpDown_Ogg_Q.Value},";
+					break;
+				case "MP3":
+					p_DTXMania.StartInfo.Arguments += $"48000,{comboBox_MP3_bps.Text},";
+					break;
+				default:
+					p_DTXMania.StartInfo.Arguments +=  "48000,192,";
+					break;
+			}
+
 			p_DTXMania.StartInfo.Arguments += $"{numericUpDown_BGM.Value},{numericUpDown_SE.Value},{numericUpDown_Drums.Value},{numericUpDown_Guitar.Value},{numericUpDown_Bass.Value},{numericUpDown_Master.Value},";
 			p_DTXMania.StartInfo.Arguments += $"\"{textBox_BrowseAudio.Text}\",\"{textBox_BrowseDTX.Text}\"";
 
 			//起動する
-			p_DTXMania.Start();
+			try
+			{
+				p_DTXMania.Start();
+			}
+			catch (Exception)
+			{
+				MessageBox.Show("DTXMania本体の起動に失敗しました。録音できません。", "Failed launching DTXMania", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				p_DTXMania.Close();
+				p_DTXMania.Dispose();
+				p_DTXMania = null;
+				return;
+			}
 			#endregion
 
 			//モーダルで変換中ダイアログを表示して、処理をいったん止める(キャンセル or 正常終了イベント待ち)
@@ -237,6 +270,7 @@ namespace DTX2WAV
 
 				}
 			}
+			p_DTXMania.Close();
 			p_DTXMania.Dispose();
 			p_DTXMania = null;
 		}
@@ -328,7 +362,9 @@ namespace DTX2WAV
 			Properties.Settings.Default.nVol_Bass     = (int)numericUpDown_Bass.Value;
 			Properties.Settings.Default.nVol_Master   = (int)numericUpDown_Master.Value;
 			Properties.Settings.Default.bMonitorSound = checkBox_MonitorSound.Checked;
-			Properties.Settings.Default.nAudioFormat = comboBox_AudioFormat.SelectedIndex;
+			Properties.Settings.Default.nAudioFormat  = comboBox_AudioFormat.SelectedIndex;
+			Properties.Settings.Default.nOgg_Q        = (int)numericUpDown_Ogg_Q.Value;
+			Properties.Settings.Default.nMP3_bps      = comboBox_MP3_bps.SelectedIndex;
 			#endregion
 
 			Properties.Settings.Default.Save();
@@ -357,6 +393,21 @@ namespace DTX2WAV
 				formRecording.label_state.Text = strMessage;	// Form_Recordingにメッセージの内容を伝える
 			}
 			base.WndProc(ref m);
+		}
+
+
+
+		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// Encoding Settingsタブにある、numericUpDownかTrackbarの値は、
+			// Form_Shown()で初期化した値が、
+			// タブの初回オープン時にゼロクリアされてしまう模様。
+			// そのため、この値だけは、タブの初回オープン時に初期化する。
+			if (tabControl1.SelectedIndex == 1 && bOpenedEncodingSettingTab == false)
+			{
+				bOpenedEncodingSettingTab = true;
+				numericUpDown_Ogg_Q.Value = Properties.Settings.Default.nOgg_Q;
+			}
 		}
 	}
 	

@@ -363,6 +363,7 @@ namespace DTXMania
 					FDK.CSound管理.strRecordInputDTXfilename = DTX2WAVmode.dtxfilename;
 					FDK.CSound管理.strRecordOutFilename = DTX2WAVmode.outfilename;
 					FDK.CSound管理.strRecordFileType = DTX2WAVmode.Format.ToString();
+					FDK.CSound管理.nBitrate = DTX2WAVmode.bitrate;
 					for (int i = 0; i < (int)FDK.CSound.EInstType.Unknown; i++)
 					{
 						FDK.CSound管理.nMixerVolume[ i ] = DTX2WAVmode.nMixerVolume[ i ];
@@ -381,19 +382,19 @@ namespace DTXMania
 					// エンコーダーのパス設定 (=DLLフォルダ)
 					FDK.CSound管理.strEncoderPath = Path.Combine(strEXEのあるフォルダ, "DLL");
 
-					CDTXMania.Instance.ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Exclusive;
-					CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI.Value = false;
+					CDTXMania.instance.ConfigIni.nSoundDeviceType.Value = ESoundDeviceTypeForConfig.WASAPI_Exclusive;
+					CDTXMania.instance.ConfigIni.bEventDrivenWASAPI.Value = false;
 
-					CDTXMania.Instance.ConfigIni.bVSyncWait.Value = false;
-					CDTXMania.Instance.ConfigIni.bTimeStretch.Value = false;
-					CDTXMania.Instance.ConfigIni.eActiveInst.Value = EActiveInstrument.Both;
+					CDTXMania.instance.ConfigIni.bVSyncWait.Value = false;
+					CDTXMania.instance.ConfigIni.bTimeStretch.Value = false;
+					CDTXMania.instance.ConfigIni.eActiveInst.Value = EActiveInstrument.Both;
 
-					CDTXMania.Instance.ConfigIni.bFullScreen.Value = false;
-					CDTXMania.Instance.ConfigIni.rcWindow_backup = CDTXMania.Instance.ConfigIni.rcWindow;
-					CDTXMania.Instance.ConfigIni.rcWindow.W = CDTXMania.Instance.ConfigIni.rcViewerWindow.W;
-					CDTXMania.Instance.ConfigIni.rcWindow.H = CDTXMania.Instance.ConfigIni.rcViewerWindow.H;
-					CDTXMania.Instance.ConfigIni.rcWindow.X = CDTXMania.Instance.ConfigIni.rcViewerWindow.X;
-					CDTXMania.Instance.ConfigIni.rcWindow.Y = CDTXMania.Instance.ConfigIni.rcViewerWindow.Y;
+					CDTXMania.instance.ConfigIni.bFullScreen.Value = false;
+					CDTXMania.instance.ConfigIni.rcWindow_backup = CDTXMania.Instance.ConfigIni.rcWindow;
+					CDTXMania.instance.ConfigIni.rcWindow.W = CDTXMania.Instance.ConfigIni.rcViewerWindow.W;
+					CDTXMania.instance.ConfigIni.rcWindow.H = CDTXMania.Instance.ConfigIni.rcViewerWindow.H;
+					CDTXMania.instance.ConfigIni.rcWindow.X = CDTXMania.Instance.ConfigIni.rcViewerWindow.X;
+					CDTXMania.instance.ConfigIni.rcWindow.Y = CDTXMania.Instance.ConfigIni.rcViewerWindow.Y;
 
 					//全オート
 					CDTXMania.instance.ConfigIni.bAutoPlay.LC.Value = true;
@@ -479,9 +480,9 @@ namespace DTXMania
 					CDTXMania.instance.ConfigIni.bDrumsHitSound.Value = true;
 
 					//パート強調オフ
-					CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Drums.Value = false;
-					CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Guitar.Value = false;
-					CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Bass.Value = false;
+					CDTXMania.instance.ConfigIni.bEmphasizePlaySound.Drums.Value = false;
+					CDTXMania.instance.ConfigIni.bEmphasizePlaySound.Guitar.Value = false;
+					CDTXMania.instance.ConfigIni.bEmphasizePlaySound.Bass.Value = false;
 
 					// パッド入力等、基本操作の無効化 (ESCを除く)
 					//CDTXMania.Instance.ConfigIni.KeyAssign[][];

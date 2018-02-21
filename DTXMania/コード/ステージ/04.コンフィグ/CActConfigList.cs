@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Threading;
 using SharpDX;
 using FDK;
+using System.IO;
 
 using Color = System.Drawing.Color;
 using Point = System.Drawing.Point;
@@ -622,7 +623,11 @@ namespace DTXMania
 			{
 				this.list項目リスト = new List<COptionBase>();
 				this.eメニュー種別 = Eメニュー種別.Unknown;
-				this.prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y));
+
+				CResources cr = CDTXMania.Instance.Resources;
+				string fontname = cr.Explanation("strCfgConfigurationFontFileName");
+				string path = Path.Combine(@"Graphics\fonts", fontname);
+				this.prvFont = new CPrivateFastFont(CSkin.Path(path), (int)(18 * Scale.Y));
 				this.b要素値にフォーカス中 = false;
 				this.n目標のスクロールカウンタ = 0;
 				this.n現在のスクロールカウンタ = 0;
@@ -635,7 +640,7 @@ namespace DTXMania
 				EDrumsMenu = new STDGBSValue<COptionLabel>();
 				ReturnToMenu = new STDGBSValue<COptionLabel>();
 
-				CResources cr = CDTXMania.Instance.Resources;
+				//CResources cr = CDTXMania.Instance.Resources;
 				for ( EPart i = EPart.Drums; i <= EPart.System; ++i )
 				{
 					DisplayMenu[i] = new COptionLabel( "strCfgDisplayOption" );

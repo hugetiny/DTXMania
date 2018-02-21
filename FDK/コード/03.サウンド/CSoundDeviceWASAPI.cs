@@ -458,13 +458,7 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 				this.bIsBASSFree = true;
 				throw new Exception( string.Format( "BASSミキサ(mixing)の作成に失敗しました。[{0}]", errcode ) );
 			}
-//			if (strRecordFileType != "")
-//			{
-//				// DTX2WAV時には、マスターボリュームをここで設定する
-//				// 
-//				Bass.BASS_ChannelSetAttribute(this.hMixer, BASSAttribute.BASS_ATTRIB_VOL, CSound管理.nMixerVolume[5] / 100.0f);
-//Trace.TraceInformation("Vol5: {0}", CSound管理.nMixerVolume[5]);
-//			}
+
 
 			for (int i = 0; i <= (int)CSound.EInstType.Unknown; i++)
 			{
@@ -548,7 +542,7 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 							var e = new EncoderOGG(this.hMixer_DeviceOut);
 							e.EncoderDirectory = strEncoderPath;
 							e.OGG_UseQualityMode = true;
-							e.OGG_Quality = 8.0f;
+							e.OGG_Quality = (float)CSound管理.nBitrate;
 							//e.OGG_Bitrate = 128;
 							//e.OGG_MinBitrate = 0;
 							//e.OGG_MaxBitrate = 0;
@@ -561,7 +555,7 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 							var e = new EncoderLAME(this.hMixer_DeviceOut);
 							e.EncoderDirectory = strEncoderPath;
 							e.LAME_UseVBR = false;
-							e.LAME_Bitrate = 192;
+							e.LAME_Bitrate = CSound管理.nBitrate;
 							encoder = e;
 						}
 						break;
