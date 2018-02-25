@@ -56,8 +56,10 @@ namespace DTXMania
 
 		public void Initialize(List<COptionBase> menulist, bool showAllItems, string title, int defaultPos = 0)
 		{
-
-			prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y));
+			string fontname = CDTXMania.Instance.Resources.Explanation("strCfgPopupFontFileName");
+			string path = Path.Combine(@"Graphics\fonts", fontname);
+			this.prvFont = new CPrivateFastFont(CSkin.Path(path), (int)(18 * Scale.Y));
+			//prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y));
 
 			stqMenuTitle = new stQuickMenuItem();
 			stqMenuTitle.cItem = new COptionString(title);

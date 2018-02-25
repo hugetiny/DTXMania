@@ -111,7 +111,10 @@ namespace DTXMania
 		{
 			if (base.b活性化してる)
 			{
-				this.prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y)); // t項目リストの設定 の前に必要
+				string fontname = CDTXMania.Instance.Resources.Explanation("strCfgConfigurationKeyAssignFontFileName");
+				string path = Path.Combine(@"Graphics\fonts", fontname);
+				this.prvFont = new CPrivateFastFont(CSkin.Path(path), (int)(18 * Scale.Y));
+				//this.prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y)); // t項目リストの設定 の前に必要
 				this.txカーソル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenConfig menu cursor.png"), false);
 
 				#region [ Hit key to assign ダイアログイメージ作成 ]

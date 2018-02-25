@@ -4,6 +4,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using FDK;
 
 using SlimDXKey = SlimDX.DirectInput.Key;
@@ -75,7 +76,10 @@ namespace DTXMania
 				this.tx背景 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenTitle background.jpg"), false);
 				this.txメニュー = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenTitle menu.png"), false);
 
-				prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), 36);
+				string fontname = CDTXMania.Instance.Resources.Explanation("strCfgConfigurationTopItemsFontFileName");
+				string path = Path.Combine(@"Graphics\fonts", fontname);
+				this.prvFont = new CPrivateFastFont(CSkin.Path(path), (int)(16 * Scale.Y));
+				//prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), 36);
 				//prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );
 
 				string strTitleStart  = CDTXMania.Instance.Resources.Label( "strTitleStart" );

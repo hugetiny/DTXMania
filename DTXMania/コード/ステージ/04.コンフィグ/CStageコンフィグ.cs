@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Diagnostics;
+using System.IO;
 using FDK;
 
 using SlimDXKey = SlimDX.DirectInput.Key;
@@ -202,7 +203,10 @@ namespace DTXMania
 				this.tx下部パネル = TextureFactory.tテクスチャの生成Af(CSkin.Path(@"Graphics\ScreenConfig footer panel.png"), true);
 				this.txMenuカーソル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenConfig menu cursor.png"), false);
 
-				prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y));
+				CResources cr = CDTXMania.Instance.Resources;
+				string fontname = cr.Explanation("strCfgConfigurationTopItemsFontFileName");
+				string path = Path.Combine(@"Graphics\fonts", fontname);
+				prvFont = new CPrivateFastFont(CSkin.Path(path), (int)(18 * Scale.Y));
 				string[] strMenuItem = { 
 					"strCfgSysMenuDesc",
 					"strCfgDrMenuDesc",

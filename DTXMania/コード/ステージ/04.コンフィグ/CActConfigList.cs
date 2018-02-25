@@ -625,7 +625,7 @@ namespace DTXMania
 				this.eメニュー種別 = Eメニュー種別.Unknown;
 
 				CResources cr = CDTXMania.Instance.Resources;
-				string fontname = cr.Explanation("strCfgConfigurationFontFileName");
+				string fontname = cr.Explanation("strCfgConfigurationItemsFontFileName");
 				string path = Path.Combine(@"Graphics\fonts", fontname);
 				this.prvFont = new CPrivateFastFont(CSkin.Path(path), (int)(18 * Scale.Y));
 				this.b要素値にフォーカス中 = false;
