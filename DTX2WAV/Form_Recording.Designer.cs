@@ -117,8 +117,8 @@
 			// 
 			// label_currentTime
 			// 
-			this.label_currentTime.ForeColor = System.Drawing.SystemColors.ControlText;
 			resources.ApplyResources(this.label_currentTime, "label_currentTime");
+			this.label_currentTime.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.label_currentTime.Name = "label_currentTime";
 			// 
 			// Form_Recording

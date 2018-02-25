@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;USE_ENGLISHRESOURCE_</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -81,23 +81,34 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Finished_Fail.ja-JP.resx">
+      <DependentUpon>Form_Finished_Fail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Finished_Fail.resx">
       <DependentUpon>Form_Finished_Fail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_FInished_OK.ja-JP.resx">
+      <DependentUpon>Form_FInished_OK.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_FInished_OK.resx">
       <DependentUpon>Form_FInished_OK.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Recording.ja-JP.resx">
+      <DependentUpon>Form_Recording.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_Recording.resx">
       <DependentUpon>Form_Recording.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ja-JP.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\DataSources\DTX2WAV.Properties.Resources.datasource" />
     <None Include="Properties\DataSources\DTX2WAV.Properties.Settings.datasource" />

@@ -118,381 +118,384 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="button_CancelConverting.Location" type="System.Drawing.Point, System.Drawing">
-    <value>95, 204</value>
-  </data>
   <data name="button_CancelConverting.Size" type="System.Drawing.Size, System.Drawing">
     <value>88, 23</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="button_CancelConverting.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="button_CancelConverting.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;button_CancelConverting.Name" xml:space="preserve">
-    <value>button_CancelConverting</value>
-  </data>
-  <data name="&gt;&gt;button_CancelConverting.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button_CancelConverting.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;button_CancelConverting.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="label_Recording.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_Recording.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 21</value>
-  </data>
-  <data name="label_Recording.Size" type="System.Drawing.Size, System.Drawing">
-    <value>270, 12</value>
-  </data>
-  <data name="label_Recording.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="label_Recording.Text" xml:space="preserve">
-    <value>録音中です。演奏が終わるまで、そのままお待ちください。</value>
-  </data>
-  <data name="&gt;&gt;label_Recording.Name" xml:space="preserve">
-    <value>label_Recording</value>
-  </data>
-  <data name="&gt;&gt;label_Recording.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_Recording.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_Recording.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="progressBar_Recording.Location" type="System.Drawing.Point, System.Drawing">
-    <value>34, 160</value>
-  </data>
-  <data name="progressBar_Recording.Size" type="System.Drawing.Size, System.Drawing">
-    <value>209, 23</value>
-  </data>
-  <data name="progressBar_Recording.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;progressBar_Recording.Name" xml:space="preserve">
-    <value>progressBar_Recording</value>
-  </data>
-  <data name="&gt;&gt;progressBar_Recording.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;progressBar_Recording.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;progressBar_Recording.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="label_boot.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_boot.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 57</value>
-  </data>
-  <data name="label_boot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 12</value>
-  </data>
-  <data name="label_boot.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="label_boot.Text" xml:space="preserve">
-    <value>DTXManiaのバックグラウンド起動</value>
-  </data>
-  <data name="&gt;&gt;label_boot.Name" xml:space="preserve">
-    <value>label_boot</value>
-  </data>
-  <data name="&gt;&gt;label_boot.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_boot.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_boot.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="label_loading.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_loading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 82</value>
-  </data>
-  <data name="label_loading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 12</value>
-  </data>
-  <data name="label_loading.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label_loading.Text" xml:space="preserve">
-    <value>曲データの読み込み</value>
-  </data>
-  <data name="&gt;&gt;label_loading.Name" xml:space="preserve">
-    <value>label_loading</value>
-  </data>
-  <data name="&gt;&gt;label_loading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_loading.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_loading.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="label_playing.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_playing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 108</value>
-  </data>
-  <data name="label_playing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label_playing.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="label_playing.Text" xml:space="preserve">
-    <value>演奏</value>
-  </data>
-  <data name="&gt;&gt;label_playing.Name" xml:space="preserve">
-    <value>label_playing</value>
-  </data>
-  <data name="&gt;&gt;label_playing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_playing.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_playing.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="label_exit.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_exit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 134</value>
-  </data>
-  <data name="label_exit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 12</value>
-  </data>
-  <data name="label_exit.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="label_exit.Text" xml:space="preserve">
-    <value>終了</value>
-  </data>
-  <data name="&gt;&gt;label_exit.Name" xml:space="preserve">
-    <value>label_exit</value>
-  </data>
-  <data name="&gt;&gt;label_exit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_exit.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_exit.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="label_state.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_state.Location" type="System.Drawing.Point, System.Drawing">
-    <value>220, 240</value>
-  </data>
-  <data name="label_state.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 12</value>
-  </data>
-  <data name="label_state.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="label_state.Text" xml:space="preserve">
-    <value>***</value>
-  </data>
-  <data name="label_state.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;label_state.Name" xml:space="preserve">
-    <value>label_state</value>
-  </data>
-  <data name="&gt;&gt;label_state.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_state.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_state.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="label_boot_check.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_boot_check.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 57</value>
-  </data>
-  <data name="label_boot_check.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 12</value>
-  </data>
-  <data name="label_boot_check.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;label_boot_check.Name" xml:space="preserve">
-    <value>label_boot_check</value>
-  </data>
-  <data name="&gt;&gt;label_boot_check.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_boot_check.Parent" xml:space="preserve">
-    <value>$this</value>
   </data>
   <data name="&gt;&gt;label_boot_check.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="label_loading_check.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="label_estimateTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label_currentTime.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;label_exit_check.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label_exit.Name" xml:space="preserve">
+    <value>label_exit</value>
   </data>
   <data name="label_loading_check.Location" type="System.Drawing.Point, System.Drawing">
     <value>88, 82</value>
   </data>
-  <data name="label_loading_check.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 12</value>
-  </data>
-  <data name="label_loading_check.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;label_loading_check.Name" xml:space="preserve">
-    <value>label_loading_check</value>
-  </data>
   <data name="&gt;&gt;label_loading_check.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label_loading_check.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;label_currentTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label_loading_check.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="label_playing_check.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_playing_check.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 108</value>
-  </data>
-  <data name="label_playing_check.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 12</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>284, 261</value>
   </data>
   <data name="label_playing_check.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="&gt;&gt;label_playing_check.Name" xml:space="preserve">
-    <value>label_playing_check</value>
+  <data name="label_boot_check.Location" type="System.Drawing.Point, System.Drawing">
+    <value>88, 57</value>
   </data>
-  <data name="&gt;&gt;label_playing_check.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label_boot.Text" xml:space="preserve">
+    <value>Launching DTXMania (minimized)</value>
   </data>
-  <data name="&gt;&gt;label_playing_check.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label_playing.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;button_CancelConverting.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label_exit_check.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label_exit_check.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;progressBar_Recording.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;label_playing_check.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="label_exit_check.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="label_state.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 12</value>
   </data>
-  <data name="label_exit_check.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 134</value>
+  <data name="label_state.Text" xml:space="preserve">
+    <value>***</value>
   </data>
-  <data name="label_exit_check.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 12</value>
+  <data name="&gt;&gt;progressBar_Recording.Name" xml:space="preserve">
+    <value>progressBar_Recording</value>
   </data>
-  <data name="label_exit_check.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;label_exit_check.Name" xml:space="preserve">
-    <value>label_exit_check</value>
-  </data>
-  <data name="&gt;&gt;label_exit_check.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_exit_check.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_exit_check.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="label_estimateTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>164, 186</value>
-  </data>
-  <data name="label_estimateTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 12</value>
-  </data>
-  <data name="label_estimateTime.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="label_estimateTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopRight</value>
-  </data>
-  <data name="&gt;&gt;label_estimateTime.Name" xml:space="preserve">
-    <value>label_estimateTime</value>
-  </data>
-  <data name="&gt;&gt;label_estimateTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_estimateTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_estimateTime.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label_currentTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>87, 186</value>
-  </data>
-  <data name="label_currentTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 12</value>
-  </data>
-  <data name="label_currentTime.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="label_currentTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopCenter</value>
-  </data>
-  <data name="&gt;&gt;label_currentTime.Name" xml:space="preserve">
-    <value>label_currentTime</value>
-  </data>
-  <data name="&gt;&gt;label_currentTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_currentTime.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_currentTime.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 12</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>284, 261</value>
+  <data name="label_exit.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="label_exit.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_loading.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 12</value>
+  </data>
+  <data name="label_loading.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;button_CancelConverting.Name" xml:space="preserve">
+    <value>button_CancelConverting</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>DTX2WAV [録音中...]</value>
+  <data name="&gt;&gt;label_playing.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>Form_Recording</value>
+  <data name="&gt;&gt;label_loading_check.Name" xml:space="preserve">
+    <value>label_loading_check</value>
+  </data>
+  <data name="&gt;&gt;label_boot.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label_loading_check.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label_playing_check.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_currentTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 12</value>
+  </data>
+  <data name="label_state.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;label_state.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_exit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 134</value>
+  </data>
+  <data name="label_loading.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="label_estimateTime.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="label_playing.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="label_Recording.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 21</value>
+  </data>
+  <data name="button_CancelConverting.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label_loading.Text" xml:space="preserve">
+    <value>Loading song</value>
+  </data>
+  <data name="progressBar_Recording.Location" type="System.Drawing.Point, System.Drawing">
+    <value>34, 160</value>
+  </data>
+  <data name="&gt;&gt;label_estimateTime.Name" xml:space="preserve">
+    <value>label_estimateTime</value>
+  </data>
+  <data name="label_Recording.Text" xml:space="preserve">
+    <value>Recording Please wait while playing...</value>
+  </data>
+  <data name="label_loading.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 82</value>
+  </data>
+  <data name="label_playing_check.Location" type="System.Drawing.Point, System.Drawing">
+    <value>88, 108</value>
+  </data>
+  <data name="label_boot.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;label_estimateTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_state.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="label_estimateTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 12</value>
+  </data>
+  <data name="&gt;&gt;label_loading.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_exit_check.Location" type="System.Drawing.Point, System.Drawing">
+    <value>88, 134</value>
+  </data>
+  <data name="label_Recording.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label_playing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_playing.Name" xml:space="preserve">
+    <value>label_playing</value>
+  </data>
+  <data name="&gt;&gt;label_Recording.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_Recording.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;label_Recording.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;label_currentTime.Name" xml:space="preserve">
+    <value>label_currentTime</value>
+  </data>
+  <data name="&gt;&gt;label_Recording.Name" xml:space="preserve">
+    <value>label_Recording</value>
+  </data>
+  <data name="label_exit_check.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 12</value>
+  </data>
+  <data name="label_currentTime.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopCenter</value>
+  </data>
+  <data name="&gt;&gt;label_estimateTime.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label_loading_check.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 12</value>
+  </data>
+  <data name="&gt;&gt;label_exit.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="label_currentTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>87, 186</value>
+  </data>
+  <data name="&gt;&gt;label_loading.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label_state.Name" xml:space="preserve">
+    <value>label_state</value>
+  </data>
+  <data name="&gt;&gt;label_boot.Name" xml:space="preserve">
+    <value>label_boot</value>
+  </data>
+  <data name="&gt;&gt;label_boot_check.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label_loading_check.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;label_loading.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;label_exit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_state.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="label_playing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 12</value>
+  </data>
+  <data name="&gt;&gt;button_CancelConverting.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_CancelConverting.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;label_boot.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;label_exit.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label_boot.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 12</value>
+  </data>
+  <data name="label_boot.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 57</value>
+  </data>
+  <data name="label_state.Location" type="System.Drawing.Point, System.Drawing">
+    <value>220, 240</value>
+  </data>
+  <data name="label_playing.Text" xml:space="preserve">
+    <value>Playing</value>
+  </data>
+  <data name="&gt;&gt;label_loading.Name" xml:space="preserve">
+    <value>label_loading</value>
+  </data>
+  <data name="progressBar_Recording.Size" type="System.Drawing.Size, System.Drawing">
+    <value>209, 23</value>
+  </data>
+  <data name="label_playing_check.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_estimateTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>164, 186</value>
+  </data>
+  <data name="&gt;&gt;progressBar_Recording.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="label_exit_check.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;label_playing_check.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label_playing_check.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 12</value>
+  </data>
+  <data name="button_CancelConverting.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 204</value>
+  </data>
+  <data name="&gt;&gt;label_boot_check.Name" xml:space="preserve">
+    <value>label_boot_check</value>
+  </data>
+  <data name="&gt;&gt;label_estimateTime.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>DTX2WAV [Recording...]</value>
+  </data>
+  <data name="&gt;&gt;label_currentTime.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label_loading_check.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;label_playing_check.Name" xml:space="preserve">
+    <value>label_playing_check</value>
+  </data>
+  <data name="&gt;&gt;label_exit_check.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_Recording.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label_boot_check.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_CancelConverting.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="label_playing.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_boot_check.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 12</value>
+  </data>
+  <data name="label_state.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="label_playing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 108</value>
+  </data>
+  <data name="&gt;&gt;progressBar_Recording.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_exit_check.Name" xml:space="preserve">
+    <value>label_exit_check</value>
+  </data>
+  <data name="progressBar_Recording.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label_loading_check.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label_boot.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="label_exit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 12</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>Form_Recording</value>
+  </data>
+  <data name="label_exit.Text" xml:space="preserve">
+    <value>Terminating</value>
+  </data>
+  <data name="&gt;&gt;label_currentTime.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="label_Recording.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 12</value>
+  </data>
+  <data name="label_boot_check.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;label_state.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label_boot.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_boot_check.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>ja-JP</value>
+  </metadata>
 </root>

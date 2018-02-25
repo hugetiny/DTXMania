@@ -86,9 +86,9 @@ namespace DTX2WAV
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
 
-			ofd.Filter = "DTXファイル(*.dtx)|*.dtx|GDAファイル(*.gda;*.g2d)|*.gda;*.g2d)|すべてのファイル(*.*)|*.*";
+			ofd.Filter = Properties.Resources.ofdFilter;
 			ofd.FilterIndex = 1;
-			ofd.Title = "DTXファイルを選択してください";
+			ofd.Title = Properties.Resources.ofdTitle;
 
 			ofd.RestoreDirectory = false;
 
@@ -103,7 +103,6 @@ namespace DTX2WAV
 									Path.GetDirectoryName(ofd.FileName),
 									Path.GetFileNameWithoutExtension(ofd.FileName) + "." + comboBox_AudioFormat.Text.ToLower()
 				);
-				Debug.WriteLine("out:" + outpath);
 				textBox_BrowseAudio.Text = outpath;
 			}
 
@@ -117,22 +116,22 @@ namespace DTX2WAV
 			switch (comboBox_AudioFormat.Text)
 			{
 				case "WAV":
-					filter = "WAVファイル(*.wav)|*.wav|すべてのファイル(*.*)|*.*";
+					filter = Properties.Resources.sfdFilterWAV;
 					break;
 				case "OGG":
-					filter = "OGGファイル(*.ogg)|*.ogg|すべてのファイル(*.*)|*.*";
+					filter = Properties.Resources.sfdFilterOGG;
 					break;
 				case "MP3":
-					filter = "MP3ファイル(*.mp3)|*.mp3|すべてのファイル(*.*)|*.*";
+					filter = Properties.Resources.sfdFilterMP3;
 					break;
 				default:
-					filter = "すべてのファイル(*.*)|*.*";
+					filter = Properties.Resources.sfdFilterALL;
 					break;
 			}
 			sfd.Filter = filter;
 			sfd.FilterIndex = 1;
 			sfd.DefaultExt = "." + comboBox_AudioFormat.Text.ToLower();
-			sfd.Title = "出力ファイル名を選択してください";
+			sfd.Title = Properties.Resources.sfdTitle;
 
 			sfd.RestoreDirectory = false;
 			sfd.AddExtension = true;
@@ -158,19 +157,19 @@ namespace DTX2WAV
 			#region [ in/outファイル名など、必要な設定がなされているかをチェック ]
 			if (!File.Exists(textBox_BrowseDTX.Text))
 			{
-				MessageBox.Show("DTXファイルがありません。", "ファイルが見つかりません", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(Properties.Resources.errNoDTXFileText, Properties.Resources.errNoDTXFileCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			if (textBox_BrowseAudio.Text == "")
 			{
-				MessageBox.Show("出力ファイルが指定されていません。", "ファイルが見つかりません", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(Properties.Resources.errNoOutFileText, Properties.Resources.errNoOutFileCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
 			string inext = Path.GetExtension(textBox_BrowseAudio.Text).ToLower();
 			if (inext == ".dtx" || inext == ".gda" || inext == ".g2d")
 			{
-				MessageBox.Show("出力ファイルとして、DTX/GDA/G2Dファイルを指定しています。", "出力ファイル指定エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(Properties.Resources.errIllegalExtentionText, Properties.Resources.errIllegalExtentionCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 			#endregion
@@ -214,7 +213,7 @@ namespace DTX2WAV
 			}
 			catch (Exception)
 			{
-				MessageBox.Show("DTXMania本体の起動に失敗しました。録音できません。", "Failed launching DTXMania", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(Properties.Resources.errFailedLaunchingDTXManiaText, Properties.Resources.errFailedLaunchingDTXManiaCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				p_DTXMania.Close();
 				p_DTXMania.Dispose();
 				p_DTXMania = null;

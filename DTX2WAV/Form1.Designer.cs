@@ -37,13 +37,13 @@
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-			this.label1 = new System.Windows.Forms.Label();
+			this.label_infile = new System.Windows.Forms.Label();
 			this.groupBox_recfiles = new System.Windows.Forms.GroupBox();
 			this.comboBox_AudioFormat = new System.Windows.Forms.ComboBox();
-			this.label3 = new System.Windows.Forms.Label();
+			this.label_filetype = new System.Windows.Forms.Label();
 			this.button_BrowseAudio = new System.Windows.Forms.Button();
 			this.textBox_BrowseAudio = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
+			this.label_outfile = new System.Windows.Forms.Label();
 			this.button_browseDTX = new System.Windows.Forms.Button();
 			this.textBox_BrowseDTX = new System.Windows.Forms.TextBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -78,15 +78,17 @@
 			this.trackBar_BGM = new System.Windows.Forms.TrackBar();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
 			this.groupBox_MP3 = new System.Windows.Forms.GroupBox();
+			this.comboBox_MP3_bps = new System.Windows.Forms.ComboBox();
 			this.label11 = new System.Windows.Forms.Label();
 			this.groupBox_Ogg = new System.Windows.Forms.GroupBox();
+			this.label_highq = new System.Windows.Forms.Label();
+			this.label_ogg_lowq = new System.Windows.Forms.Label();
 			this.numericUpDown_Ogg_Q = new System.Windows.Forms.NumericUpDown();
 			this.bindingSource_Ogg_Q = new System.Windows.Forms.BindingSource(this.components);
 			this.label10 = new System.Windows.Forms.Label();
 			this.trackBar_Ogg_Q = new System.Windows.Forms.TrackBar();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.comboBox_MP3_bps = new System.Windows.Forms.ComboBox();
 			this.menuStrip1.SuspendLayout();
 			this.groupBox_recfiles.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -158,22 +160,22 @@
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
-			// label1
+			// label_infile
 			// 
-			resources.ApplyResources(this.label1, "label1");
-			this.label1.Name = "label1";
+			resources.ApplyResources(this.label_infile, "label_infile");
+			this.label_infile.Name = "label_infile";
 			// 
 			// groupBox_recfiles
 			// 
 			resources.ApplyResources(this.groupBox_recfiles, "groupBox_recfiles");
 			this.groupBox_recfiles.Controls.Add(this.comboBox_AudioFormat);
-			this.groupBox_recfiles.Controls.Add(this.label3);
+			this.groupBox_recfiles.Controls.Add(this.label_filetype);
 			this.groupBox_recfiles.Controls.Add(this.button_BrowseAudio);
 			this.groupBox_recfiles.Controls.Add(this.textBox_BrowseAudio);
-			this.groupBox_recfiles.Controls.Add(this.label2);
+			this.groupBox_recfiles.Controls.Add(this.label_outfile);
 			this.groupBox_recfiles.Controls.Add(this.button_browseDTX);
 			this.groupBox_recfiles.Controls.Add(this.textBox_BrowseDTX);
-			this.groupBox_recfiles.Controls.Add(this.label1);
+			this.groupBox_recfiles.Controls.Add(this.label_infile);
 			this.groupBox_recfiles.Name = "groupBox_recfiles";
 			this.groupBox_recfiles.TabStop = false;
 			// 
@@ -189,10 +191,10 @@
 			this.comboBox_AudioFormat.Name = "comboBox_AudioFormat";
 			this.comboBox_AudioFormat.SelectedIndexChanged += new System.EventHandler(this.comboBox_AudioFormat_SelectedIndexChanged);
 			// 
-			// label3
+			// label_filetype
 			// 
-			resources.ApplyResources(this.label3, "label3");
-			this.label3.Name = "label3";
+			resources.ApplyResources(this.label_filetype, "label_filetype");
+			this.label_filetype.Name = "label_filetype";
 			// 
 			// button_BrowseAudio
 			// 
@@ -206,10 +208,10 @@
 			resources.ApplyResources(this.textBox_BrowseAudio, "textBox_BrowseAudio");
 			this.textBox_BrowseAudio.Name = "textBox_BrowseAudio";
 			// 
-			// label2
+			// label_outfile
 			// 
-			resources.ApplyResources(this.label2, "label2");
-			this.label2.Name = "label2";
+			resources.ApplyResources(this.label_outfile, "label_outfile");
+			this.label_outfile.Name = "label_outfile";
 			// 
 			// button_browseDTX
 			// 
@@ -515,6 +517,24 @@
 			this.groupBox_MP3.Name = "groupBox_MP3";
 			this.groupBox_MP3.TabStop = false;
 			// 
+			// comboBox_MP3_bps
+			// 
+			this.comboBox_MP3_bps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.comboBox_MP3_bps.FormattingEnabled = true;
+			this.comboBox_MP3_bps.Items.AddRange(new object[] {
+            resources.GetString("comboBox_MP3_bps.Items"),
+            resources.GetString("comboBox_MP3_bps.Items1"),
+            resources.GetString("comboBox_MP3_bps.Items2"),
+            resources.GetString("comboBox_MP3_bps.Items3"),
+            resources.GetString("comboBox_MP3_bps.Items4"),
+            resources.GetString("comboBox_MP3_bps.Items5"),
+            resources.GetString("comboBox_MP3_bps.Items6"),
+            resources.GetString("comboBox_MP3_bps.Items7"),
+            resources.GetString("comboBox_MP3_bps.Items8"),
+            resources.GetString("comboBox_MP3_bps.Items9")});
+			resources.ApplyResources(this.comboBox_MP3_bps, "comboBox_MP3_bps");
+			this.comboBox_MP3_bps.Name = "comboBox_MP3_bps";
+			// 
 			// label11
 			// 
 			resources.ApplyResources(this.label11, "label11");
@@ -522,12 +542,24 @@
 			// 
 			// groupBox_Ogg
 			// 
+			this.groupBox_Ogg.Controls.Add(this.label_highq);
+			this.groupBox_Ogg.Controls.Add(this.label_ogg_lowq);
 			this.groupBox_Ogg.Controls.Add(this.numericUpDown_Ogg_Q);
 			this.groupBox_Ogg.Controls.Add(this.label10);
 			this.groupBox_Ogg.Controls.Add(this.trackBar_Ogg_Q);
 			resources.ApplyResources(this.groupBox_Ogg, "groupBox_Ogg");
 			this.groupBox_Ogg.Name = "groupBox_Ogg";
 			this.groupBox_Ogg.TabStop = false;
+			// 
+			// label_highq
+			// 
+			resources.ApplyResources(this.label_highq, "label_highq");
+			this.label_highq.Name = "label_highq";
+			// 
+			// label_ogg_lowq
+			// 
+			resources.ApplyResources(this.label_ogg_lowq, "label_ogg_lowq");
+			this.label_ogg_lowq.Name = "label_ogg_lowq";
 			// 
 			// numericUpDown_Ogg_Q
 			// 
@@ -567,24 +599,6 @@
 			this.trackBar_Ogg_Q.Minimum = -1;
 			this.trackBar_Ogg_Q.Name = "trackBar_Ogg_Q";
 			this.trackBar_Ogg_Q.Value = 10;
-			// 
-			// comboBox_MP3_bps
-			// 
-			this.comboBox_MP3_bps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBox_MP3_bps.FormattingEnabled = true;
-			this.comboBox_MP3_bps.Items.AddRange(new object[] {
-            resources.GetString("comboBox_MP3_bps.Items"),
-            resources.GetString("comboBox_MP3_bps.Items1"),
-            resources.GetString("comboBox_MP3_bps.Items2"),
-            resources.GetString("comboBox_MP3_bps.Items3"),
-            resources.GetString("comboBox_MP3_bps.Items4"),
-            resources.GetString("comboBox_MP3_bps.Items5"),
-            resources.GetString("comboBox_MP3_bps.Items6"),
-            resources.GetString("comboBox_MP3_bps.Items7"),
-            resources.GetString("comboBox_MP3_bps.Items8"),
-            resources.GetString("comboBox_MP3_bps.Items9")});
-			resources.ApplyResources(this.comboBox_MP3_bps, "comboBox_MP3_bps");
-			this.comboBox_MP3_bps.Name = "comboBox_MP3_bps";
 			// 
 			// Main
 			// 
@@ -644,13 +658,13 @@
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.StatusStrip statusStrip1;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
-		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label_infile;
 		private System.Windows.Forms.GroupBox groupBox_recfiles;
 		private System.Windows.Forms.ComboBox comboBox_AudioFormat;
-		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label_filetype;
 		private System.Windows.Forms.Button button_BrowseAudio;
 		private System.Windows.Forms.TextBox textBox_BrowseAudio;
-		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label_outfile;
 		private System.Windows.Forms.Button button_browseDTX;
 		private System.Windows.Forms.TextBox textBox_BrowseDTX;
 		private System.Windows.Forms.TabControl tabControl1;
@@ -695,6 +709,8 @@
 		private System.Windows.Forms.TrackBar trackBar_Ogg_Q;
 		private System.Windows.Forms.BindingSource bindingSource_Ogg_Q;
 		private System.Windows.Forms.ComboBox comboBox_MP3_bps;
+		private System.Windows.Forms.Label label_highq;
+		private System.Windows.Forms.Label label_ogg_lowq;
 	}
 }
 

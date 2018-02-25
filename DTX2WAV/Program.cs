@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Globalization;
 using System.IO;
 
 namespace DTX2WAV
@@ -17,6 +19,11 @@ namespace DTX2WAV
 		[STAThread]
 		static void Main()
 		{
+#if DEBUG
+#if USE_ENGLISHRESOURCE
+			Thread.CurrentThread.CurrentUICulture = new CultureInfo( "en-GB", false );	// yyagi; For testing English resources
+#endif
+#endif
 			// 以下、DOBON.NETを参照した。mutexを使って二重起動を抑制。
 			//Mutex名を決める（必ずアプリケーション固有の文字列に変更すること！）
 			string mutexName = "DTX2WAV";
@@ -84,8 +91,6 @@ namespace DTX2WAV
 				}
 				mutex.Close();
 			}
-
-
 		}
 
 		// .NET TIPSより

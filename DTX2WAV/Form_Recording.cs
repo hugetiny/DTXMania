@@ -53,28 +53,28 @@ namespace DTX2WAV
 			switch (label_state.Text.Substring(0,4).ToUpper())
 			{
 				case "BOOT":
-					label_boot_check.Text = "→";
+					label_boot_check.Text = ">>";
 					label_loading_check.Text = "";
 					label_playing_check.Text = "";
 					label_exit_check.Text = "";
 					break;
 				case "LOAD":
 					label_boot_check.Text = "✔";
-					label_loading_check.Text = "→";
+					label_loading_check.Text = ">>";
 					label_playing_check.Text = "";
 					label_exit_check.Text = "";
 					break;
 				case "PLAY":
 					label_boot_check.Text = "✔";
 					label_loading_check.Text = "✔";
-					label_playing_check.Text = "→";
+					label_playing_check.Text = ">>";
 					label_exit_check.Text = "";
 					break;
 				case "TERM":
 					label_boot_check.Text = "✔";
 					label_loading_check.Text = "✔";
 					label_playing_check.Text = "✔";
-					label_exit_check.Text = "→";
+					label_exit_check.Text = ">>";
 					break;
 				case "TIME":
 					string[] s = label_state.Text.Split(new char[] { ',' });
