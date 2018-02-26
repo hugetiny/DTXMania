@@ -28,7 +28,7 @@
 1. Run DTX2WAV.exe.
 2. Click [Browse] at the right of [Input DTX file],
   to specify source DTX file.
-Å@(You can also specify GDA/G2D file as the input)
+  (You can also specify GDA/G2D file as the input)
 3. Once you specify 2. then [Output Audio file] is also set automatically.
   (Basically the file extention is changed to ".wav" etc, from DTX file)
   If you need, you can modify the output file path.
@@ -39,7 +39,7 @@
   Usually you should leave them all at 100%, but for example you can
   enhance guitar sound by setting "Guitar=200%, others=50%".
 6. At [Encoder settings] tab, you can configure OGG/MP3 encoding settings
-Å@(Only bitrate can be configured)
+  (Only bitrate can be configured)
 7. Click [Start Recording] to start recording.
   Then you'll see "DTX2WAV [Recording...]" dialog. Please wait, until
   the recording finishes. At this time, DTX2WAV will launch DTXMania
