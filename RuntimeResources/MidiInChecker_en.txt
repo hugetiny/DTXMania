@@ -1,0 +1,44 @@
+============================================================
+  MidiInChecker2
+  (C) 2000 2018 DTXMania Group
+============================================================
+
+* Requirements
+
+(1) OS:  Windows 7 / 8.1 / 10 (x86/x64)
+(2) .NET Framework: 4.7 and above.
+   (You'll need to install .NET Framework 4.7 additionaly on Win10 Creaturs Update or before)
+    https://support.microsoft.com/en-us/help/3186497/the-net-framework-4-7-offline-installer-for-windows
+
+
+
+## Installing MidiInChecker2
+ * You don't have to install MidiInChecker2.
+ * You simply put "MidiInChecker2.exe" to any floder you want to.
+  (MidiInChecker2.exe works withour any DLLs (FDK.DLL etc))
+
+## Uninstalling
+ * Remove MidiInChcker2.exe.
+  (MidiInChecker2 doesn't use registry.)
+
+
+## How to use
+ * Connect PC and E-Drums with MIDI I/F. Then Run MidiInChcker2, and Hit any pad in E-Drums.
+  In case PC and E-Drumes are connected successfully, MidiInChecker2 shows logs whenever
+  you hit pad.
+  Usually, 1 pad-hit will invoke 2 logs (Note on, Note off) with pad-related Note number.
+  (In some E-drums models, or In some E-drums settings, E-drums may not output Note-off)
+
+ * If no logs are output whenver you hit any e-drums pads, it means you failed connecting
+  between PC and e-drums.
+  Please check
+   * [MIDI-IN] (or [TO MIDI-OUT]) of PC(or USB-MIDI)
+     and  
+     [MIDI-OUT] of E-drums.
+     are connected.
+  If it's no problem, then Power-Off E-drums, and power-On e-drums. (In other words, reboot e-drums)
+
+  If you connect both USB (PC and E-Drums), then check USB connection, and reboot E-drums.
+
+## Notice
+ * You'll need some MIDI knowledge, if you want to understand the output of MidiInChecker2 well.

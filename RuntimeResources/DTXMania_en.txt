@@ -5,11 +5,11 @@
 
 * Requirements
 
-(1) OS ...  Windows 7 (x86, x64) / 8 (x86, x64) / 10 (x86, x64)
-(2) .NET Framework ... Version 4.7
+(1) OS:  Windows 7 / 8.1 / 10 (x86, x64)
+(2) .NET Framework: Version 4.7 or above
    (You'll need to install .NET Framework 4.7 additionaly on Win10 Creaturs Update or before)
     https://support.microsoft.com/en-us/help/3186497/the-net-framework-4-7-offline-installer-for-windows
-(3) DirectX End User Runtime ... June 2010 Version or later
+(3) DirectX9 End User Runtime: June 2010 Version or later
    (You'll need to install DirextX 9.0c additionaly on Win8 or later.)
 (4) Microsoft Visual C++ 2013 Redistributable Package (x86)
 
@@ -30,7 +30,7 @@ Please use DXSETUP.exe in DirectX Redist folder.
 * Installing DTXMania
 
 You don't have to install DTXMania.
-You simply put all files to any floder you want to.
+You simply put all files to any folder you want to.
 
 
 * Uninstalling DTXMania
@@ -84,16 +84,15 @@ For Win10, low-latency WASAPI-shared mode is also supported.
 To use WASAPI or ASIO, you can reduce the lag from hitting pads
 to output the sound.
 
-If you use Vista or later, DTXMania initially try to uses WASAPI-Exclusive.
-(If you use Win10, DTXMania initially uses WASAPI-Shared by default.
- If you use XP, DTXMania initially uses DSound(DirectSound).)
-If you want to use ASIO, you have to change CONFIGURATION-
-System-Sound Option-SoundType to "ASIO".
+If you use Win10, DTXMania initially uses WASAPI-Shared by default.
+If you use other OS, DTXMania initially try to use WASAPI-Exclusive.
+If you want to use ASIO, you have to change [CONFIGURATION]-
+[System]-[Sound Option]-[SoundType] to "ASIO".
 
 If you specify "ASIO" but your system can't use it,
 DTXMania automatically try to use "WASAPI-Exclusive".
 In the same way, in case system can't use "WASAPI-Exclusive",
-"WASAPI-Shared" is used. "WASAPI-Shared" can't, "DSound" is used.
+"WASAPI-Shared" is used. "WASAPI-Shared" can't, "DSound" (DirectSound) is used.
 
 
 Selected sound-type(ASIO/WASAPI-Exclusive/WASAPI-Shared/DirectSound) and sound
@@ -108,10 +107,9 @@ Please check the notice below to configure WASAPI/ASIO.
 
 
 * Notice (WASAPI)
-If you set WASAPI-Exclusive but become WASAPI-Shared,
-please try following;
-1. set WASAPI-Exclusive
-2. then reboot DTXMania
+Only Win10 can set small lag in WASAPI-Shared,
+Basically. the lag in WASAPI-Shared (in Win7/8.1) is about 2-3times bigger
+ than WASAPI-Exclusive's one.
 
 * Notice (ASIO)
 To use ASIO, your sound device must support ASIO.
@@ -132,3 +130,14 @@ It specifies what sound device is used by DTXMania.
  OS-default sound device)
 If you specify non-existing sound device, DTXMania
 may not start.
+
+
+* Notice (E-Drums)
+I DO NOT RECOMMEND USB-MIDI converter, which device name is "USB2.0-MIDI".
+(Like this: https://www.amazon.com/Interface-Adapter-Converter-Keyboard-Windows/dp/B01MDTDNC1 )
+
+This cable often brake signals from MIDI-IN. As the result, in DTXMania,
+some mysterious toubles occurs... like below.
+ * I hit PAD, but sometimes it doesn't registered
+ * I hit PAD one, but sometimes triggered two times
+

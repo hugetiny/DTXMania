@@ -117,929 +117,1016 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>191, 17</value>
-  </metadata>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Ogg_Q.Name" xml:space="preserve">
+    <value>trackBar_Ogg_Q</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 22</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>E&amp;xit</value>
-  </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 20</value>
-  </data>
-  <data name="toolStripMenuItem1.Text" xml:space="preserve">
-    <value>&amp;File</value>
-  </data>
-  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 20</value>
-  </data>
-  <data name="editToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Edit</value>
-  </data>
-  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 20</value>
-  </data>
-  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Help</value>
-  </data>
-  <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>655, 24</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="menuStrip1.Text" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="&gt;&gt;menuStrip1.Name" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="&gt;&gt;menuStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuStrip1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>306, 17</value>
-  </metadata>
-  <data name="statusStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 497</value>
-  </data>
-  <data name="statusStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>655, 22</value>
-  </data>
-  <data name="statusStrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="statusStrip1.Text" xml:space="preserve">
-    <value>statusStrip1</value>
-  </data>
-  <data name="&gt;&gt;statusStrip1.Name" xml:space="preserve">
-    <value>statusStrip1</value>
-  </data>
-  <data name="&gt;&gt;statusStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;statusStrip1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;statusStrip1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>422, 17</value>
-  </metadata>
-  <data name="label_infile.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label_infile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="label_infile.Location" type="System.Drawing.Point, System.Drawing">
     <value>20, 26</value>
   </data>
-  <data name="label_infile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 12</value>
+  <data name="&gt;&gt;numericUpDown_Ogg_Q.Name" xml:space="preserve">
+    <value>numericUpDown_Ogg_Q</value>
   </data>
-  <data name="label_infile.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;numericUpDown_Ogg_Q.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="label_infile.Text" xml:space="preserve">
-    <value>Input &amp;DTX file</value>
+  <data name="label7.Text" xml:space="preserve">
+    <value>Guitar (%)</value>
   </data>
-  <data name="&gt;&gt;label_infile.Name" xml:space="preserve">
-    <value>label_infile</value>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>14</value>
   </data>
-  <data name="&gt;&gt;label_infile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_infile.Parent" xml:space="preserve">
-    <value>groupBox_recfiles</value>
-  </data>
-  <data name="&gt;&gt;label_infile.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="groupBox_recfiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
-  </data>
-  <data name="comboBox_AudioFormat.Items" xml:space="preserve">
-    <value>WAV</value>
-  </data>
-  <data name="comboBox_AudioFormat.Items1" xml:space="preserve">
-    <value>OGG</value>
-  </data>
-  <data name="comboBox_AudioFormat.Items2" xml:space="preserve">
-    <value>MP3</value>
-  </data>
-  <data name="comboBox_AudioFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 100</value>
-  </data>
-  <data name="comboBox_AudioFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 20</value>
-  </data>
-  <data name="comboBox_AudioFormat.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;comboBox_AudioFormat.Name" xml:space="preserve">
-    <value>comboBox_AudioFormat</value>
-  </data>
-  <data name="&gt;&gt;comboBox_AudioFormat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;comboBox_AudioFormat.Parent" xml:space="preserve">
-    <value>groupBox_recfiles</value>
-  </data>
-  <data name="&gt;&gt;comboBox_AudioFormat.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label_filetype.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_filetype.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="button_Convert.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label_filetype.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 103</value>
-  </data>
-  <data name="label_filetype.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 12</value>
-  </data>
-  <data name="label_filetype.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="label_filetype.Text" xml:space="preserve">
-    <value>Audio file type(&amp;M)</value>
-  </data>
-  <data name="&gt;&gt;label_filetype.Name" xml:space="preserve">
-    <value>label_filetype</value>
-  </data>
-  <data name="&gt;&gt;label_filetype.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_filetype.Parent" xml:space="preserve">
-    <value>groupBox_recfiles</value>
-  </data>
-  <data name="&gt;&gt;label_filetype.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;button_Convert.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="button_BrowseAudio.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="button_BrowseAudio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 59</value>
+  <data name="&gt;&gt;bindingSource_Guitar.Name" xml:space="preserve">
+    <value>bindingSource_Guitar</value>
   </data>
-  <data name="button_BrowseAudio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+  <data name="&gt;&gt;numericUpDown_Ogg_Q.Parent" xml:space="preserve">
+    <value>groupBox_Ogg</value>
   </data>
-  <data name="button_BrowseAudio.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="button_BrowseAudio.Text" xml:space="preserve">
-    <value>Browse</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
   </data>
   <data name="&gt;&gt;button_BrowseAudio.Name" xml:space="preserve">
     <value>button_BrowseAudio</value>
   </data>
-  <data name="&gt;&gt;button_BrowseAudio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="textBox_BrowseDTX.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="&gt;&gt;button_BrowseAudio.Parent" xml:space="preserve">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="numericUpDown_SE.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label10.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_SE.Name" xml:space="preserve">
+    <value>numericUpDown_SE</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Guitar.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="trackBar_Ogg_Q.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Drums.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_outfile.Parent" xml:space="preserve">
     <value>groupBox_recfiles</value>
   </data>
-  <data name="&gt;&gt;button_BrowseAudio.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;trackBar_Bass.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="comboBox_AudioFormat.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 100</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Drums.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="button_BrowseAudio.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Guitar.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="numericUpDown_Guitar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 19</value>
+  </data>
+  <data name="textBox_BrowseAudio.Size" type="System.Drawing.Size, System.Drawing">
+    <value>342, 19</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_SE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="trackBar_Master.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 183</value>
+  </data>
+  <data name="groupBox_volumes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="button_browseDTX.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="textBox_BrowseAudio.Location" type="System.Drawing.Point, System.Drawing">
     <value>177, 61</value>
   </data>
-  <data name="textBox_BrowseAudio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>342, 19</value>
-  </data>
-  <data name="textBox_BrowseAudio.TabIndex" type="System.Int32, mscorlib">
+  <data name="label11.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;textBox_BrowseAudio.Name" xml:space="preserve">
-    <value>textBox_BrowseAudio</value>
-  </data>
-  <data name="&gt;&gt;textBox_BrowseAudio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;textBox_BrowseAudio.Parent" xml:space="preserve">
-    <value>groupBox_recfiles</value>
-  </data>
-  <data name="&gt;&gt;textBox_BrowseAudio.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="label_outfile.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_outfile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="trackBar_SE.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label_outfile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 64</value>
-  </data>
-  <data name="label_outfile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 12</value>
-  </data>
-  <data name="label_outfile.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="label_outfile.Text" xml:space="preserve">
-    <value>Output &amp;Audio file</value>
-  </data>
-  <data name="&gt;&gt;label_outfile.Name" xml:space="preserve">
-    <value>label_outfile</value>
-  </data>
-  <data name="&gt;&gt;label_outfile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_outfile.Parent" xml:space="preserve">
-    <value>groupBox_recfiles</value>
-  </data>
-  <data name="&gt;&gt;label_outfile.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="button_browseDTX.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="button_browseDTX.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 21</value>
-  </data>
-  <data name="button_browseDTX.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="button_browseDTX.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="button_browseDTX.Text" xml:space="preserve">
-    <value>Browse</value>
-  </data>
-  <data name="&gt;&gt;button_browseDTX.Name" xml:space="preserve">
-    <value>button_browseDTX</value>
-  </data>
-  <data name="&gt;&gt;button_browseDTX.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button_browseDTX.Parent" xml:space="preserve">
-    <value>groupBox_recfiles</value>
-  </data>
-  <data name="&gt;&gt;button_browseDTX.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="textBox_BrowseDTX.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 23</value>
-  </data>
-  <data name="textBox_BrowseDTX.Size" type="System.Drawing.Size, System.Drawing">
-    <value>342, 19</value>
-  </data>
-  <data name="textBox_BrowseDTX.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;textBox_BrowseDTX.Name" xml:space="preserve">
-    <value>textBox_BrowseDTX</value>
-  </data>
-  <data name="&gt;&gt;textBox_BrowseDTX.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;textBox_BrowseDTX.Parent" xml:space="preserve">
-    <value>groupBox_recfiles</value>
-  </data>
-  <data name="&gt;&gt;textBox_BrowseDTX.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="groupBox_recfiles.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
-  </data>
-  <data name="groupBox_recfiles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>633, 138</value>
-  </data>
-  <data name="groupBox_recfiles.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="groupBox_recfiles.Text" xml:space="preserve">
-    <value>Input/Output file</value>
-  </data>
-  <data name="&gt;&gt;groupBox_recfiles.Name" xml:space="preserve">
-    <value>groupBox_recfiles</value>
-  </data>
-  <data name="&gt;&gt;groupBox_recfiles.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox_recfiles.Parent" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;groupBox_recfiles.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="button_Cancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="button_Cancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="button_Cancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>531, 411</value>
-  </data>
-  <data name="button_Cancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="button_Cancel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="button_Cancel.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
-  <data name="&gt;&gt;button_Cancel.Name" xml:space="preserve">
-    <value>button_Cancel</value>
-  </data>
-  <data name="&gt;&gt;button_Cancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button_Cancel.Parent" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;button_Cancel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="button_Convert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="button_Convert.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="button_Convert.Location" type="System.Drawing.Point, System.Drawing">
-    <value>403, 410</value>
-  </data>
-  <data name="button_Convert.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 23</value>
-  </data>
-  <data name="button_Convert.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="button_Convert.Text" xml:space="preserve">
-    <value>Start Recording</value>
-  </data>
-  <data name="&gt;&gt;button_Convert.Name" xml:space="preserve">
-    <value>button_Convert</value>
-  </data>
-  <data name="&gt;&gt;button_Convert.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;button_Convert.Parent" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;button_Convert.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="groupBox_volumes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left, Right</value>
-  </data>
-  <data name="checkBox_MonitorSound.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="checkBox_MonitorSound.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="checkBox_MonitorSound.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 227</value>
-  </data>
-  <data name="checkBox_MonitorSound.Size" type="System.Drawing.Size, System.Drawing">
-    <value>495, 16</value>
-  </data>
-  <data name="checkBox_MonitorSound.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="checkBox_MonitorSound.Text" xml:space="preserve">
-    <value>Output ercording sound to the speaker for monitering (but yet not implemented to set it off)</value>
-  </data>
-  <data name="checkBox_MonitorSound.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;checkBox_MonitorSound.Name" xml:space="preserve">
-    <value>checkBox_MonitorSound</value>
-  </data>
-  <data name="&gt;&gt;checkBox_MonitorSound.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkBox_MonitorSound.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;checkBox_MonitorSound.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="bindingSource_Master.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>346, 56</value>
-  </metadata>
-  <data name="numericUpDown_Master.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 186</value>
-  </data>
-  <data name="numericUpDown_Master.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 19</value>
-  </data>
-  <data name="numericUpDown_Master.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Master.Name" xml:space="preserve">
-    <value>numericUpDown_Master</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Master.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Master.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Master.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label9.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 188</value>
-  </data>
-  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 12</value>
-  </data>
-  <data name="label9.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="label9.Text" xml:space="preserve">
-    <value>Master volume (%)</value>
-  </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
-  <data name="&gt;&gt;label9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="trackBar_Master.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="trackBar_Master.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="trackBar_Master.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 183</value>
-  </data>
-  <data name="trackBar_Master.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 22</value>
-  </data>
-  <data name="trackBar_Master.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Master.Name" xml:space="preserve">
-    <value>trackBar_Master</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Master.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Master.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Master.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <metadata name="bindingSource_Bass.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>186, 56</value>
-  </metadata>
-  <data name="numericUpDown_Bass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 133</value>
-  </data>
-  <data name="numericUpDown_Bass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 19</value>
-  </data>
-  <data name="numericUpDown_Bass.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Bass.Name" xml:space="preserve">
-    <value>numericUpDown_Bass</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Bass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Bass.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Bass.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 135</value>
-  </data>
-  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 12</value>
-  </data>
-  <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>Bass (%)</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="trackBar_Bass.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="trackBar_Bass.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="trackBar_Bass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 130</value>
-  </data>
-  <data name="trackBar_Bass.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 22</value>
-  </data>
-  <data name="trackBar_Bass.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Bass.Name" xml:space="preserve">
-    <value>trackBar_Bass</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Bass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Bass.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
+  <data name="comboBox_AudioFormat.Items" xml:space="preserve">
+    <value>WAV</value>
   </data>
   <data name="&gt;&gt;trackBar_Bass.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <metadata name="bindingSource_Guitar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 56</value>
-  </metadata>
-  <data name="numericUpDown_Guitar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 105</value>
+  <data name="groupBox_recfiles.Text" xml:space="preserve">
+    <value>Input/Output file</value>
   </data>
-  <data name="numericUpDown_Guitar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 19</value>
+  <data name="&gt;&gt;trackBar_Master.Name" xml:space="preserve">
+    <value>trackBar_Master</value>
   </data>
-  <data name="numericUpDown_Guitar.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="groupBox_volumes.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="&gt;&gt;numericUpDown_Guitar.Name" xml:space="preserve">
-    <value>numericUpDown_Guitar</value>
+  <data name="&gt;&gt;openFileDialog1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_Guitar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="comboBox_MP3_bps.Items9" xml:space="preserve">
+    <value>320</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_Guitar.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
+  <data name="&gt;&gt;label_highq.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_Guitar.ZOrder" xml:space="preserve">
-    <value>7</value>
+  <data name="&gt;&gt;trackBar_Bass.Name" xml:space="preserve">
+    <value>trackBar_Bass</value>
   </data>
-  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;trackBar_BGM.ZOrder" xml:space="preserve">
+    <value>18</value>
   </data>
-  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="comboBox_MP3_bps.Items5" xml:space="preserve">
+    <value>160</value>
   </data>
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 107</value>
-  </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 12</value>
-  </data>
-  <data name="label7.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="label7.Text" xml:space="preserve">
-    <value>Guitar (%)</value>
-  </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
-  </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="trackBar_Guitar.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="trackBar_Guitar.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="trackBar_Guitar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 102</value>
-  </data>
-  <data name="trackBar_Guitar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 22</value>
-  </data>
-  <data name="trackBar_Guitar.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Guitar.Name" xml:space="preserve">
-    <value>trackBar_Guitar</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Guitar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Guitar.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Guitar.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <metadata name="bindingSource_Drums.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1106, 17</value>
-  </metadata>
-  <data name="numericUpDown_Drums.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 77</value>
-  </data>
-  <data name="numericUpDown_Drums.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 19</value>
-  </data>
-  <data name="numericUpDown_Drums.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Drums.Name" xml:space="preserve">
-    <value>numericUpDown_Drums</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Drums.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Drums.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Drums.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 79</value>
-  </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 12</value>
-  </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="label6.Text" xml:space="preserve">
-    <value>Drums (%)</value>
-  </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
-  </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="trackBar_Drums.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="trackBar_Drums.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="trackBar_Drums.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 74</value>
-  </data>
-  <data name="trackBar_Drums.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 22</value>
-  </data>
-  <data name="trackBar_Drums.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="button_browseDTX.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;trackBar_Drums.Name" xml:space="preserve">
     <value>trackBar_Drums</value>
   </data>
-  <data name="&gt;&gt;trackBar_Drums.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;exitToolStripMenuItem.Name" xml:space="preserve">
+    <value>exitToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;trackBar_Drums.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
     <value>groupBox_volumes</value>
   </data>
-  <data name="&gt;&gt;trackBar_Drums.ZOrder" xml:space="preserve">
-    <value>12</value>
+  <data name="&gt;&gt;comboBox_MP3_bps.Parent" xml:space="preserve">
+    <value>groupBox_MP3</value>
   </data>
-  <metadata name="bindingSource_SE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>957, 17</value>
-  </metadata>
-  <data name="numericUpDown_SE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 49</value>
+  <data name="&gt;&gt;textBox_BrowseAudio.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="numericUpDown_SE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 19</value>
+  <data name="&gt;&gt;button_BrowseAudio.Parent" xml:space="preserve">
+    <value>groupBox_recfiles</value>
   </data>
-  <data name="numericUpDown_SE.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="&gt;&gt;statusStrip1.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_SE.Name" xml:space="preserve">
-    <value>numericUpDown_SE</value>
+  <data name="statusStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>655, 22</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_SE.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label10.Name" xml:space="preserve">
+    <value>label10</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_SE.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_SE.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 51</value>
-  </data>
-  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 12</value>
-  </data>
-  <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>SE (%)</value>
-  </data>
-  <data name="&gt;&gt;label5.Name" xml:space="preserve">
-    <value>label5</value>
-  </data>
-  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+  <data name="&gt;&gt;label_ogg_lowq.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label5.Parent" xml:space="preserve">
     <value>groupBox_volumes</value>
   </data>
-  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="trackBar_SE.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="trackBar_SE.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="trackBar_SE.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 46</value>
-  </data>
-  <data name="trackBar_SE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 22</value>
-  </data>
-  <data name="trackBar_SE.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
   <data name="&gt;&gt;trackBar_SE.Name" xml:space="preserve">
     <value>trackBar_SE</value>
   </data>
-  <data name="&gt;&gt;trackBar_SE.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label_filetype.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;trackBar_SE.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
+  <data name="checkBox_MonitorSound.Text" xml:space="preserve">
+    <value>Output ercording sound to the speaker for monitering (but yet not implemented to set it off)</value>
   </data>
-  <data name="&gt;&gt;trackBar_SE.ZOrder" xml:space="preserve">
-    <value>15</value>
+  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 12</value>
   </data>
-  <metadata name="bindingSource_BGM.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>795, 17</value>
-  </metadata>
-  <data name="numericUpDown_BGM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 21</value>
+  <data name="&gt;&gt;comboBox_AudioFormat.Parent" xml:space="preserve">
+    <value>groupBox_recfiles</value>
   </data>
-  <data name="numericUpDown_BGM.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="button_Cancel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;button_Convert.Parent" xml:space="preserve">
+    <value>tabPage1</value>
+  </data>
+  <data name="&gt;&gt;groupBox_MP3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;statusStrip1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label_infile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;button_Cancel.Parent" xml:space="preserve">
+    <value>tabPage1</value>
+  </data>
+  <data name="&gt;&gt;comboBox_AudioFormat.Name" xml:space="preserve">
+    <value>comboBox_AudioFormat</value>
+  </data>
+  <data name="&gt;&gt;label11.Name" xml:space="preserve">
+    <value>label11</value>
+  </data>
+  <data name="&gt;&gt;label_highq.Parent" xml:space="preserve">
+    <value>groupBox_Ogg</value>
+  </data>
+  <data name="numericUpDown_Drums.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 19</value>
   </data>
-  <data name="numericUpDown_BGM.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 24</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_BGM.Name" xml:space="preserve">
-    <value>numericUpDown_BGM</value>
+  <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;numericUpDown_BGM.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_BGM.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
+  <data name="trackBar_Guitar.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="&gt;&gt;numericUpDown_BGM.ZOrder" xml:space="preserve">
-    <value>16</value>
+  <data name="&gt;&gt;menuStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="label10.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 23</value>
-  </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 12</value>
-  </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>BGM (%)</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+  <data name="&gt;&gt;label7.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>groupBox_volumes</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="trackBar_BGM.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="trackBar_BGM.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="label9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="trackBar_BGM.Location" type="System.Drawing.Point, System.Drawing">
-    <value>177, 18</value>
+  <data name="numericUpDown_Bass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 133</value>
   </data>
-  <data name="trackBar_BGM.Size" type="System.Drawing.Size, System.Drawing">
-    <value>330, 22</value>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 22</value>
   </data>
-  <data name="trackBar_BGM.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;trackBar_BGM.Name" xml:space="preserve">
-    <value>trackBar_BGM</value>
-  </data>
-  <data name="&gt;&gt;trackBar_BGM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trackBar_BGM.Parent" xml:space="preserve">
+  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
     <value>groupBox_volumes</value>
   </data>
-  <data name="&gt;&gt;trackBar_BGM.ZOrder" xml:space="preserve">
-    <value>18</value>
+  <data name="numericUpDown_Master.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 19</value>
+  </data>
+  <data name="trackBar_Guitar.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="trackBar_Bass.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;checkBox_MonitorSound.Name" xml:space="preserve">
+    <value>checkBox_MonitorSound</value>
+  </data>
+  <data name="label_filetype.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;label10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox_MP3.Name" xml:space="preserve">
+    <value>groupBox_MP3</value>
+  </data>
+  <data name="&gt;&gt;button_Convert.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuStrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="label_highq.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;textBox_BrowseAudio.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="checkBox_MonitorSound.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Guitar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="trackBar_BGM.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="checkBox_MonitorSound.Location" type="System.Drawing.Point, System.Drawing">
+    <value>22, 227</value>
+  </data>
+  <data name="button_BrowseAudio.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Ogg_Q.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Bass.Name" xml:space="preserve">
+    <value>numericUpDown_Bass</value>
+  </data>
+  <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 12</value>
+  </data>
+  <data name="comboBox_MP3_bps.Items1" xml:space="preserve">
+    <value>80</value>
+  </data>
+  <data name="&gt;&gt;button_Cancel.Name" xml:space="preserve">
+    <value>button_Cancel</value>
+  </data>
+  <data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label9.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
   </data>
   <data name="groupBox_volumes.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 150</value>
   </data>
-  <data name="groupBox_volumes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>633, 254</value>
+  <data name="trackBar_Ogg_Q.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 18</value>
   </data>
-  <data name="groupBox_volumes.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;trackBar_SE.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="tabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Guitar.Name" xml:space="preserve">
+    <value>trackBar_Guitar</value>
+  </data>
+  <data name="checkBox_MonitorSound.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_SE.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label_infile.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
+    <value>groupBox_MP3</value>
+  </data>
+  <data name="&gt;&gt;checkBox_MonitorSound.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_MP3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 79</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Master.Name" xml:space="preserve">
+    <value>bindingSource_Master</value>
+  </data>
+  <data name="tabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="label_highq.Text" xml:space="preserve">
+    <value>High quality</value>
+  </data>
+  <data name="label_outfile.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>655, 473</value>
+  </data>
+  <data name="&gt;&gt;button_BrowseAudio.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;trackBar_SE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="trackBar_Guitar.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label_highq.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="trackBar_Guitar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 102</value>
+  </data>
+  <data name="&gt;&gt;saveFileDialog1.Name" xml:space="preserve">
+    <value>saveFileDialog1</value>
+  </data>
+  <data name="&gt;&gt;button_Convert.Name" xml:space="preserve">
+    <value>button_Convert</value>
+  </data>
+  <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label_ogg_lowq.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 12</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Guitar.Name" xml:space="preserve">
+    <value>numericUpDown_Guitar</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkBox_MonitorSound.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="button_Convert.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 23</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_SE.Name" xml:space="preserve">
+    <value>bindingSource_SE</value>
+  </data>
+  <data name="&gt;&gt;label_highq.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="statusStrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 497</value>
+  </data>
+  <data name="&gt;&gt;editToolStripMenuItem.Name" xml:space="preserve">
+    <value>editToolStripMenuItem</value>
+  </data>
+  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 12</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Master.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_Ogg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="&gt;&gt;label_filetype.Parent" xml:space="preserve">
+    <value>groupBox_recfiles</value>
+  </data>
+  <data name="&gt;&gt;button_Cancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 188</value>
+  </data>
+  <data name="button_Cancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;button_Cancel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="trackBar_Bass.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label_outfile.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 64</value>
+  </data>
+  <data name="&gt;&gt;groupBox_recfiles.Parent" xml:space="preserve">
+    <value>tabPage1</value>
   </data>
   <data name="groupBox_volumes.Text" xml:space="preserve">
     <value>Volume settings</value>
   </data>
-  <data name="&gt;&gt;groupBox_volumes.Name" xml:space="preserve">
+  <data name="&gt;&gt;numericUpDown_Guitar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="numericUpDown_Guitar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 105</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Master.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label9.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;button_browseDTX.Name" xml:space="preserve">
+    <value>button_browseDTX</value>
+  </data>
+  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="numericUpDown_SE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 49</value>
+  </data>
+  <data name="toolStripMenuItem1.Text" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
+  <data name="numericUpDown_BGM.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>BGM (%)</value>
+  </data>
+  <data name="label_ogg_lowq.Location" type="System.Drawing.Point, System.Drawing">
+    <value>115, 47</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 20</value>
+  </data>
+  <data name="&gt;&gt;label_highq.Name" xml:space="preserve">
+    <value>label_highq</value>
+  </data>
+  <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 27</value>
+  </data>
+  <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="&gt;&gt;groupBox_recfiles.Name" xml:space="preserve">
+    <value>groupBox_recfiles</value>
+  </data>
+  <data name="label_infile.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;textBox_BrowseDTX.Name" xml:space="preserve">
+    <value>textBox_BrowseDTX</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Guitar.Parent" xml:space="preserve">
     <value>groupBox_volumes</value>
+  </data>
+  <data name="trackBar_Master.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label_infile.Text" xml:space="preserve">
+    <value>Input &amp;DTX file</value>
+  </data>
+  <data name="checkBox_MonitorSound.Size" type="System.Drawing.Size, System.Drawing">
+    <value>495, 16</value>
+  </data>
+  <data name="&gt;&gt;label9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="textBox_BrowseAudio.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="trackBar_Master.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;statusStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label_infile.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;textBox_BrowseDTX.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_infile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="menuStrip1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textBox_BrowseDTX.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 23</value>
+  </data>
+  <data name="checkBox_MonitorSound.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;label9.Name" xml:space="preserve">
+    <value>label9</value>
+  </data>
+  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Help</value>
+  </data>
+  <data name="numericUpDown_BGM.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label_filetype.Text" xml:space="preserve">
+    <value>Audio file type(&amp;M)</value>
+  </data>
+  <data name="trackBar_BGM.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;label7.Name" xml:space="preserve">
+    <value>label7</value>
+  </data>
+  <data name="trackBar_Master.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Master.Name" xml:space="preserve">
+    <value>numericUpDown_Master</value>
+  </data>
+  <data name="&gt;&gt;label_outfile.Name" xml:space="preserve">
+    <value>label_outfile</value>
+  </data>
+  <data name="numericUpDown_Bass.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 19</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Drums.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
+    <value>groupBox_Ogg</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="numericUpDown_Master.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_Convert.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="&gt;&gt;label_filetype.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="button_BrowseAudio.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 12</value>
+  </data>
+  <data name="&gt;&gt;button_browseDTX.Parent" xml:space="preserve">
+    <value>groupBox_recfiles</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Drums.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Drums.Name" xml:space="preserve">
+    <value>numericUpDown_Drums</value>
+  </data>
+  <data name="menuStrip1.Text" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="label_outfile.Text" xml:space="preserve">
+    <value>Output &amp;Audio file</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="trackBar_Bass.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="numericUpDown_Drums.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="checkBox_MonitorSound.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="groupBox_recfiles.Size" type="System.Drawing.Size, System.Drawing">
+    <value>633, 138</value>
+  </data>
+  <data name="textBox_BrowseDTX.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Ogg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_filetype.Name" xml:space="preserve">
+    <value>label_filetype</value>
+  </data>
+  <data name="&gt;&gt;checkBox_MonitorSound.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;textBox_BrowseAudio.Parent" xml:space="preserve">
+    <value>groupBox_recfiles</value>
+  </data>
+  <data name="numericUpDown_SE.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_BGM.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_SE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_filetype.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_ogg_lowq.Parent" xml:space="preserve">
+    <value>groupBox_Ogg</value>
+  </data>
+  <data name="label_filetype.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 12</value>
+  </data>
+  <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 51</value>
+  </data>
+  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Drums.Name" xml:space="preserve">
+    <value>bindingSource_Drums</value>
+  </data>
+  <data name="numericUpDown_Ogg_Q.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;trackBar_Master.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;label_infile.Name" xml:space="preserve">
+    <value>label_infile</value>
+  </data>
+  <data name="trackBar_Master.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 22</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="trackBar_Drums.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
+    <value>helpToolStripMenuItem</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 12</value>
+  </data>
+  <data name="button_Convert.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_MP3.Text" xml:space="preserve">
+    <value>MP3</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Bass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label11.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Guitar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 22</value>
+  </data>
+  <data name="comboBox_MP3_bps.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Bass.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 22</value>
+  </data>
+  <data name="label_filetype.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_browseDTX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Bass.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;groupBox_recfiles.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_MP3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>644, 78</value>
+  </data>
+  <data name="button_Convert.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="label_outfile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 12</value>
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>Convert</value>
+  </data>
+  <data name="comboBox_AudioFormat.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>Bass (%)</value>
+  </data>
+  <data name="numericUpDown_Bass.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;comboBox_AudioFormat.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label_outfile.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="comboBox_MP3_bps.Items4" xml:space="preserve">
+    <value>128</value>
+  </data>
+  <data name="groupBox_MP3.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Ogg_Q.Parent" xml:space="preserve">
+    <value>groupBox_Ogg</value>
+  </data>
+  <data name="trackBar_SE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 22</value>
+  </data>
+  <data name="comboBox_MP3_bps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 20</value>
+  </data>
+  <data name="label_ogg_lowq.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 12</value>
+  </data>
+  <data name="comboBox_MP3_bps.Items" xml:space="preserve">
+    <value>64</value>
+  </data>
+  <data name="&gt;&gt;openFileDialog1.Name" xml:space="preserve">
+    <value>openFileDialog1</value>
+  </data>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="label_ogg_lowq.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label7.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_Convert.Text" xml:space="preserve">
+    <value>Start Recording</value>
+  </data>
+  <data name="label_highq.Size" type="System.Drawing.Size, System.Drawing">
+    <value>66, 12</value>
+  </data>
+  <data name="groupBox_volumes.Size" type="System.Drawing.Size, System.Drawing">
+    <value>633, 254</value>
+  </data>
+  <data name="&gt;&gt;groupBox_MP3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Ogg.Name" xml:space="preserve">
+    <value>groupBox_Ogg</value>
+  </data>
+  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 20</value>
+  </data>
+  <data name="numericUpDown_BGM.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 21</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Ogg_Q.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_ogg_lowq.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Ogg.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="numericUpDown_Ogg_Q.Location" type="System.Drawing.Point, System.Drawing">
+    <value>561, 25</value>
+  </data>
+  <data name="numericUpDown_Bass.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="numericUpDown_Guitar.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="menuStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>655, 24</value>
+  </data>
+  <data name="&gt;&gt;label_outfile.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_BGM.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="checkBox_MonitorSound.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="groupBox_Ogg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>644, 67</value>
+  </data>
+  <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
+    <value>tabPage1</value>
+  </data>
+  <data name="button_BrowseAudio.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="trackBar_SE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 46</value>
+  </data>
+  <data name="&gt;&gt;menuStrip1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;label_outfile.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="trackBar_BGM.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 18</value>
+  </data>
+  <data name="comboBox_MP3_bps.Location" type="System.Drawing.Point, System.Drawing">
+    <value>117, 24</value>
+  </data>
+  <data name="label_filetype.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 103</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Bass.Name" xml:space="preserve">
+    <value>bindingSource_Bass</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="button_BrowseAudio.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 59</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="trackBar_Drums.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 22</value>
+  </data>
+  <data name="label_highq.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Drums.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="statusStrip1.Text" xml:space="preserve">
+    <value>statusStrip1</value>
+  </data>
+  <data name="trackBar_Guitar.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="numericUpDown_Guitar.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Drums.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="comboBox_AudioFormat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>121, 20</value>
+  </data>
+  <data name="button_Convert.Location" type="System.Drawing.Point, System.Drawing">
+    <value>403, 410</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Guitar.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="textBox_BrowseDTX.Size" type="System.Drawing.Size, System.Drawing">
+    <value>342, 19</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Master.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="numericUpDown_BGM.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 19</value>
   </data>
   <data name="&gt;&gt;groupBox_volumes.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1047,454 +1134,505 @@
   <data name="&gt;&gt;groupBox_volumes.Parent" xml:space="preserve">
     <value>tabPage1</value>
   </data>
+  <data name="trackBar_Bass.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 130</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Master.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 79</value>
+  </data>
+  <data name="label5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="trackBar_BGM.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 22</value>
+  </data>
   <data name="&gt;&gt;groupBox_volumes.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 12</value>
   </data>
-  <data name="tabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>647, 447</value>
-  </data>
-  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>Convert</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
-    <value>tabPage1</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items" xml:space="preserve">
-    <value>64</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items1" xml:space="preserve">
-    <value>80</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items2" xml:space="preserve">
-    <value>96</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items3" xml:space="preserve">
-    <value>112</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items4" xml:space="preserve">
-    <value>128</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items5" xml:space="preserve">
-    <value>160</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items6" xml:space="preserve">
-    <value>192</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items7" xml:space="preserve">
-    <value>224</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items8" xml:space="preserve">
-    <value>256</value>
-  </data>
-  <data name="comboBox_MP3_bps.Items9" xml:space="preserve">
-    <value>320</value>
-  </data>
-  <data name="comboBox_MP3_bps.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 24</value>
-  </data>
-  <data name="comboBox_MP3_bps.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 20</value>
-  </data>
-  <data name="comboBox_MP3_bps.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="label5.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;comboBox_MP3_bps.Name" xml:space="preserve">
     <value>comboBox_MP3_bps</value>
   </data>
-  <data name="&gt;&gt;comboBox_MP3_bps.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="comboBox_MP3_bps.Items3" xml:space="preserve">
+    <value>112</value>
   </data>
-  <data name="&gt;&gt;comboBox_MP3_bps.Parent" xml:space="preserve">
-    <value>groupBox_MP3</value>
+  <data name="&gt;&gt;numericUpDown_BGM.Name" xml:space="preserve">
+    <value>numericUpDown_BGM</value>
   </data>
-  <data name="&gt;&gt;comboBox_MP3_bps.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;textBox_BrowseAudio.Name" xml:space="preserve">
+    <value>textBox_BrowseAudio</value>
+  </data>
+  <data name="comboBox_MP3_bps.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="label11.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 27</value>
-  </data>
-  <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 12</value>
-  </data>
-  <data name="label11.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;groupBox_recfiles.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="label11.Text" xml:space="preserve">
-    <value>Bitrate:</value>
-  </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
-  </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>groupBox_MP3</value>
-  </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="groupBox_MP3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 79</value>
-  </data>
-  <data name="groupBox_MP3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>644, 78</value>
-  </data>
-  <data name="groupBox_MP3.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="groupBox_MP3.Text" xml:space="preserve">
-    <value>MP3</value>
-  </data>
-  <data name="&gt;&gt;groupBox_MP3.Name" xml:space="preserve">
-    <value>groupBox_MP3</value>
-  </data>
-  <data name="&gt;&gt;groupBox_MP3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox_MP3.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;groupBox_MP3.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label_highq.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label_highq.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="editToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Edit</value>
   </data>
-  <data name="label_highq.Location" type="System.Drawing.Point, System.Drawing">
-    <value>493, 47</value>
+  <data name="&gt;&gt;button_browseDTX.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="label_highq.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 12</value>
+  <data name="button_Cancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
-  <data name="label_highq.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="label_highq.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="label_highq.Text" xml:space="preserve">
-    <value>High quality</value>
-  </data>
-  <data name="&gt;&gt;label_highq.Name" xml:space="preserve">
-    <value>label_highq</value>
-  </data>
-  <data name="&gt;&gt;label_highq.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_highq.Parent" xml:space="preserve">
-    <value>groupBox_Ogg</value>
-  </data>
-  <data name="&gt;&gt;label_highq.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label_ogg_lowq.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_ogg_lowq.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 47</value>
-  </data>
-  <data name="label_ogg_lowq.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 12</value>
-  </data>
-  <data name="label_ogg_lowq.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="label_ogg_lowq.Text" xml:space="preserve">
-    <value>Low quality</value>
-  </data>
-  <data name="&gt;&gt;label_ogg_lowq.Name" xml:space="preserve">
-    <value>label_ogg_lowq</value>
-  </data>
-  <data name="&gt;&gt;label_ogg_lowq.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_ogg_lowq.Parent" xml:space="preserve">
-    <value>groupBox_Ogg</value>
-  </data>
-  <data name="&gt;&gt;label_ogg_lowq.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <metadata name="bindingSource_Ogg_Q.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="numericUpDown_Ogg_Q.Location" type="System.Drawing.Point, System.Drawing">
-    <value>561, 25</value>
-  </data>
-  <data name="numericUpDown_Ogg_Q.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 19</value>
+  <data name="button_Cancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
   <data name="numericUpDown_Ogg_Q.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_Ogg_Q.Name" xml:space="preserve">
-    <value>numericUpDown_Ogg_Q</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Ogg_Q.Type" xml:space="preserve">
+  <data name="&gt;&gt;numericUpDown_Bass.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;numericUpDown_Ogg_Q.Parent" xml:space="preserve">
-    <value>groupBox_Ogg</value>
-  </data>
-  <data name="&gt;&gt;numericUpDown_Ogg_Q.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="label10.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>18, 25</value>
-  </data>
-  <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 12</value>
-  </data>
-  <data name="label10.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="label10.Text" xml:space="preserve">
-    <value>Quality Setting:</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>groupBox_Ogg</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="trackBar_Ogg_Q.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="trackBar_Ogg_Q.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 18</value>
-  </data>
-  <data name="trackBar_Ogg_Q.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 26</value>
-  </data>
-  <data name="trackBar_Ogg_Q.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Ogg_Q.Name" xml:space="preserve">
-    <value>trackBar_Ogg_Q</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Ogg_Q.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Ogg_Q.Parent" xml:space="preserve">
-    <value>groupBox_Ogg</value>
-  </data>
-  <data name="&gt;&gt;trackBar_Ogg_Q.ZOrder" xml:space="preserve">
+  <data name="button_BrowseAudio.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="groupBox_Ogg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
+  <data name="&gt;&gt;button_browseDTX.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="groupBox_Ogg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>644, 67</value>
+  <data name="statusStrip1.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="groupBox_Ogg.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="label_filetype.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label6.Text" xml:space="preserve">
+    <value>Drums (%)</value>
+  </data>
+  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="trackBar_Ogg_Q.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="button_browseDTX.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;textBox_BrowseDTX.Parent" xml:space="preserve">
+    <value>groupBox_recfiles</value>
+  </data>
+  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="tabPage2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="comboBox_AudioFormat.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="groupBox_Ogg.Text" xml:space="preserve">
     <value>Ogg</value>
   </data>
-  <data name="&gt;&gt;groupBox_Ogg.Name" xml:space="preserve">
-    <value>groupBox_Ogg</value>
-  </data>
-  <data name="&gt;&gt;groupBox_Ogg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;groupBox_Ogg.Parent" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;groupBox_Ogg.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>647, 447</value>
-  </data>
-  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>Encoder Settings</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Name" xml:space="preserve">
-    <value>tabPage2</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tabControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 24</value>
-  </data>
-  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>655, 473</value>
-  </data>
-  <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>562, 17</value>
-  </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>698, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>655, 519</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>DTX2WAV</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
-    <value>toolStripMenuItem1</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;exitToolStripMenuItem.Name" xml:space="preserve">
-    <value>exitToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;editToolStripMenuItem.Name" xml:space="preserve">
-    <value>editToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;editToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
-    <value>helpToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;openFileDialog1.Name" xml:space="preserve">
-    <value>openFileDialog1</value>
-  </data>
-  <data name="&gt;&gt;openFileDialog1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Master.Name" xml:space="preserve">
-    <value>bindingSource_Master</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Master.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Bass.Name" xml:space="preserve">
-    <value>bindingSource_Bass</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Bass.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Guitar.Name" xml:space="preserve">
-    <value>bindingSource_Guitar</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Guitar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Drums.Name" xml:space="preserve">
-    <value>bindingSource_Drums</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Drums.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_SE.Name" xml:space="preserve">
-    <value>bindingSource_SE</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_SE.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_BGM.Name" xml:space="preserve">
-    <value>bindingSource_BGM</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_BGM.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Ogg_Q.Name" xml:space="preserve">
-    <value>bindingSource_Ogg_Q</value>
-  </data>
-  <data name="&gt;&gt;bindingSource_Ogg_Q.Type" xml:space="preserve">
-    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;saveFileDialog1.Name" xml:space="preserve">
-    <value>saveFileDialog1</value>
+  <data name="label_infile.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 12</value>
   </data>
   <data name="&gt;&gt;saveFileDialog1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SaveFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
-    <value>toolTip1</value>
+  <data name="tabPage2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Ogg_Q.Name" xml:space="preserve">
+    <value>bindingSource_Ogg_Q</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>Main</value>
+  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label_highq.Location" type="System.Drawing.Point, System.Drawing">
+    <value>493, 47</value>
   </data>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 135</value>
+  </data>
+  <data name="&gt;&gt;trackBar_BGM.Name" xml:space="preserve">
+    <value>trackBar_BGM</value>
+  </data>
+  <data name="comboBox_AudioFormat.Items1" xml:space="preserve">
+    <value>OGG</value>
+  </data>
+  <data name="trackBar_Drums.Location" type="System.Drawing.Point, System.Drawing">
+    <value>177, 74</value>
+  </data>
+  <data name="&gt;&gt;menuStrip1.Name" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Drums.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="trackBar_Bass.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="numericUpDown_Drums.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;comboBox_MP3_bps.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label_ogg_lowq.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_SE.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 12</value>
+  </data>
+  <data name="numericUpDown_Master.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Ogg_Q.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="numericUpDown_Master.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 186</value>
+  </data>
+  <data name="button_Cancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>531, 411</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_MP3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Ogg_Q.Size" type="System.Drawing.Size, System.Drawing">
+    <value>426, 26</value>
+  </data>
+  <data name="tabControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;editToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>Encoder Settings</value>
+  </data>
+  <data name="comboBox_MP3_bps.Items7" xml:space="preserve">
+    <value>224</value>
+  </data>
+  <data name="groupBox_recfiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;groupBox_volumes.Name" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;statusStrip1.Name" xml:space="preserve">
+    <value>statusStrip1</value>
+  </data>
+  <data name="&gt;&gt;groupBox_MP3.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="comboBox_MP3_bps.Items2" xml:space="preserve">
+    <value>96</value>
+  </data>
+  <data name="trackBar_Master.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="trackBar_Drums.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 25</value>
+  </data>
+  <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="numericUpDown_Ogg_Q.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 19</value>
+  </data>
+  <data name="button_Cancel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="label10.Text" xml:space="preserve">
+    <value>Quality Setting:</value>
+  </data>
+  <data name="trackBar_BGM.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="label_outfile.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 20</value>
+  </data>
+  <data name="trackBar_Drums.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>Master volume (%)</value>
+  </data>
+  <data name="button_browseDTX.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>655, 519</value>
+  </data>
+  <data name="trackBar_SE.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;comboBox_AudioFormat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="numericUpDown_Drums.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 77</value>
+  </data>
+  <data name="groupBox_volumes.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label_ogg_lowq.Name" xml:space="preserve">
+    <value>label_ogg_lowq</value>
+  </data>
+  <data name="label5.Text" xml:space="preserve">
+    <value>SE (%)</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>DTX2WAV</value>
+  </data>
+  <data name="label_ogg_lowq.Text" xml:space="preserve">
+    <value>Low quality</value>
+  </data>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="trackBar_Drums.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="numericUpDown_SE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 19</value>
+  </data>
+  <data name="tabControl1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Ogg_Q.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="trackBar_BGM.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="groupBox_Ogg.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="tabPage1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;button_BrowseAudio.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>647, 447</value>
+  </data>
+  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;textBox_BrowseDTX.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Guitar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_recfiles.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_Bass.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button_Cancel.Text" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 23</value>
+  </data>
+  <data name="&gt;&gt;trackBar_BGM.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="statusStrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="trackBar_SE.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="comboBox_AudioFormat.Items2" xml:space="preserve">
+    <value>MP3</value>
+  </data>
+  <data name="button_browseDTX.Location" type="System.Drawing.Point, System.Drawing">
+    <value>525, 21</value>
+  </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;trackBar_SE.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;trackBar_BGM.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="groupBox_recfiles.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 6</value>
+  </data>
+  <data name="&gt;&gt;trackBar_Ogg_Q.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
+    <value>toolStripMenuItem1</value>
+  </data>
+  <data name="groupBox_recfiles.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="label11.Text" xml:space="preserve">
+    <value>Bitrate:</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Bass.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="groupBox_Ogg.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tabPage2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Master.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>20, 107</value>
+  </data>
+  <data name="tabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>647, 447</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_SE.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;numericUpDown_Master.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_infile.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="comboBox_MP3_bps.Items6" xml:space="preserve">
+    <value>192</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_infile.Parent" xml:space="preserve">
+    <value>groupBox_recfiles</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="comboBox_MP3_bps.Items8" xml:space="preserve">
+    <value>256</value>
+  </data>
+  <data name="&gt;&gt;groupBox_Ogg.Parent" xml:space="preserve">
+    <value>tabPage2</value>
+  </data>
+  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="textBox_BrowseAudio.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;numericUpDown_BGM.Parent" xml:space="preserve">
+    <value>groupBox_volumes</value>
+  </data>
+  <data name="&gt;&gt;comboBox_MP3_bps.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="label_outfile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;bindingSource_BGM.Name" xml:space="preserve">
+    <value>bindingSource_BGM</value>
+  </data>
+  <metadata name="bindingSource_Drums.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>1106, 17</value>
+  </metadata>
+  <metadata name="bindingSource_Ogg_Q.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="bindingSource_SE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>957, 17</value>
+  </metadata>
+  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>191, 17</value>
+  </metadata>
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>306, 17</value>
+  </metadata>
+  <metadata name="bindingSource_Guitar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 56</value>
+  </metadata>
+  <metadata name="bindingSource_Bass.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>186, 56</value>
+  </metadata>
+  <metadata name="bindingSource_Master.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>346, 56</value>
+  </metadata>
+  <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>422, 17</value>
+  </metadata>
+  <metadata name="saveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>562, 17</value>
+  </metadata>
+  <metadata name="bindingSource_BGM.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>795, 17</value>
+  </metadata>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>698, 17</value>
+  </metadata>
 </root>
