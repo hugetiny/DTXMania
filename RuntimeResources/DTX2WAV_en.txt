@@ -29,6 +29,8 @@
 2. Click [Browse] at the right of [Input DTX file],
   to specify source DTX file.
   (You can also specify GDA/G2D file as the input)
+  Instead of clicking [Browse], you can drag&drop DTX file
+  to the text input area.
 3. Once you specify 2. then [Output Audio file] is also set automatically.
   (Basically the file extention is changed to ".wav" etc, from DTX file)
   If you need, you can modify the output file path.

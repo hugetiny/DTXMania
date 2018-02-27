@@ -98,14 +98,17 @@ namespace DTX2WAV
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
 				textBox_BrowseDTX.Text = ofd.FileName;
-
-				string outpath = Path.Combine(
-									Path.GetDirectoryName(ofd.FileName),
-									Path.GetFileNameWithoutExtension(ofd.FileName) + "." + comboBox_AudioFormat.Text.ToLower()
-				);
-				textBox_BrowseAudio.Text = outpath;
+				UpdateOutPath(ofd.FileName);
 			}
+		}
 
+		private void UpdateOutPath(string infile)
+		{
+			string outpath = Path.Combine(
+								Path.GetDirectoryName(infile),
+								Path.GetFileNameWithoutExtension(infile) + "." + comboBox_AudioFormat.Text.ToLower()
+			);
+			textBox_BrowseAudio.Text = outpath;
 		}
 
 		private void button_browseWAV_Click(object sender, EventArgs e)
@@ -407,6 +410,47 @@ namespace DTX2WAV
 				bOpenedEncodingSettingTab = true;
 				numericUpDown_Ogg_Q.Value = Properties.Settings.Default.nOgg_Q;
 			}
+		}
+
+		/// <summary>
+		/// 入力DTX欄にファイルをドラッグしたときの動作 (マウスカーソルを変更する)
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void textBox_BrowseDTX_DragEnter(object sender, DragEventArgs e)
+		{
+			//コントロール内にドラッグされたとき実行される
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				//ドラッグされたデータ形式を調べ、ファイル1個のときはコピーとする
+				string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+				if (fileName.Length == 1 &&
+					(Path.GetExtension(fileName[0]).ToLower() == ".dtx" ||
+					 Path.GetExtension(fileName[0]).ToLower() == ".gda" ||
+					 Path.GetExtension(fileName[0]).ToLower() == ".g2d"
+					))
+				{
+					e.Effect = DragDropEffects.Copy;
+				}
+				else
+				{
+					e.Effect = DragDropEffects.None;		//ファイルが複数ある場合は受け付けない
+				}
+			}
+			else
+			{
+				e.Effect = DragDropEffects.None;			//ファイル以外は受け付けない
+			}
+		}
+
+		private void textBox_BrowseDTX_DragDrop(object sender, DragEventArgs e)
+		{
+			//コントロール内にドロップされたとき実行される
+			//ドロップされたファイル名(1個)を取得する
+			string[] fileName = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+			textBox_BrowseDTX.Text = fileName[0];
+
+			UpdateOutPath(fileName[0]);
 		}
 	}
 	
