@@ -166,5 +166,17 @@ namespace DTX2WAV.Properties {
                 this["nMP3_bps"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool bOverwriteCheck {
+            get {
+                return ((bool)(this["bOverwriteCheck"]));
+            }
+            set {
+                this["bOverwriteCheck"] = value;
+            }
+        }
     }
 }

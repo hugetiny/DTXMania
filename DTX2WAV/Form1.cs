@@ -76,6 +76,7 @@ namespace DTX2WAV
 			numericUpDown_Master.Value         = Properties.Settings.Default.nVol_Master;
 			checkBox_MonitorSound.Checked      = Properties.Settings.Default.bMonitorSound;
 			comboBox_AudioFormat.SelectedIndex = Properties.Settings.Default.nAudioFormat;
+			checkBox_overwriteCheck.Checked    = Properties.Settings.Default.bOverwriteCheck;
 
 			numericUpDown_Ogg_Q.Value          = Properties.Settings.Default.nOgg_Q;        // この設定は後でもう一度実施する。tabControl1_SelectedIndexChanged()へ。
 			comboBox_MP3_bps.SelectedIndex     = Properties.Settings.Default.nMP3_bps;
@@ -174,6 +175,17 @@ namespace DTX2WAV
 			{
 				MessageBox.Show(Properties.Resources.errIllegalExtentionText, Properties.Resources.errIllegalExtentionCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
+			}
+			if (checkBox_overwriteCheck.Checked)
+			{
+				if (File.Exists(textBox_BrowseAudio.Text))
+				{
+					DialogResult result = MessageBox.Show(Properties.Resources.confirmOverwriteText, Properties.Resources.confirmOverwriteCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+					if (result == DialogResult.Cancel || result == DialogResult.No)
+					{
+						return;
+					}
+				}
 			}
 			#endregion
 
@@ -367,6 +379,7 @@ namespace DTX2WAV
 			Properties.Settings.Default.nAudioFormat  = comboBox_AudioFormat.SelectedIndex;
 			Properties.Settings.Default.nOgg_Q        = (int)numericUpDown_Ogg_Q.Value;
 			Properties.Settings.Default.nMP3_bps      = comboBox_MP3_bps.SelectedIndex;
+			Properties.Settings.Default.bOverwriteCheck = checkBox_overwriteCheck.Checked;
 			#endregion
 
 			Properties.Settings.Default.Save();

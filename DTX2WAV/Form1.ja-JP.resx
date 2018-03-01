@@ -118,6 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>終了(&amp;X)</value>
+  </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 20</value>
   </data>
@@ -136,11 +142,11 @@
   <data name="helpToolStripMenuItem.Text" xml:space="preserve">
     <value>ヘルプ(&amp;H)</value>
   </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 22</value>
+  <data name="menuStrip1.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>終了(&amp;X)</value>
+  <data name="statusStrip1.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label_infile.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 12</value>
@@ -148,14 +154,26 @@
   <data name="label_infile.Text" xml:space="preserve">
     <value>録音元の&amp;DTXファイル</value>
   </data>
-  <data name="groupBox_recfiles.Text" xml:space="preserve">
-    <value>録音ファイルの指定</value>
+  <data name="label_infile.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="comboBox_AudioFormat.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label_filetype.Text" xml:space="preserve">
     <value>出力ファイルの種類</value>
   </data>
+  <data name="label_filetype.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="button_BrowseAudio.Text" xml:space="preserve">
     <value>参照</value>
+  </data>
+  <data name="button_BrowseAudio.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textBox_BrowseAudio.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label_outfile.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 12</value>
@@ -163,14 +181,38 @@
   <data name="label_outfile.Text" xml:space="preserve">
     <value>出力するオーディオファイル(&amp;A)</value>
   </data>
+  <data name="label_outfile.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="button_browseDTX.Text" xml:space="preserve">
     <value>参照</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>録音</value>
+  <data name="button_browseDTX.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textBox_BrowseDTX.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_recfiles.Text" xml:space="preserve">
+    <value>録音ファイルの指定</value>
+  </data>
+  <data name="groupBox_recfiles.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="checkBox_overwriteCheck.Size" type="System.Drawing.Size, System.Drawing">
+    <value>145, 16</value>
+  </data>
+  <data name="checkBox_overwriteCheck.Text" xml:space="preserve">
+    <value>録音前に上書き確認する</value>
+  </data>
+  <data name="checkBox_overwriteCheck.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="button_Cancel.Text" xml:space="preserve">
     <value>終了</value>
+  </data>
+  <data name="button_Cancel.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="button_Convert.Location" type="System.Drawing.Point, System.Drawing">
     <value>440, 410</value>
@@ -181,8 +223,8 @@
   <data name="button_Convert.Text" xml:space="preserve">
     <value>録音</value>
   </data>
-  <data name="groupBox_volumes.Text" xml:space="preserve">
-    <value>音量設定</value>
+  <data name="button_Convert.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="checkBox_MonitorSound.Size" type="System.Drawing.Size, System.Drawing">
     <value>401, 16</value>
@@ -190,11 +232,26 @@
   <data name="checkBox_MonitorSound.Text" xml:space="preserve">
     <value>録音中の音をスピーカーに出力する(しかし実現方法不明のため現在はON固定)</value>
   </data>
+  <data name="checkBox_MonitorSound.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="numericUpDown_Master.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 12</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>マスターボリューム(%)</value>
+  </data>
+  <data name="label9.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Master.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="numericUpDown_Bass.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
     <value>79, 12</value>
@@ -202,11 +259,29 @@
   <data name="label8.Text" xml:space="preserve">
     <value>Bassの音量(%)</value>
   </data>
+  <data name="label8.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Bass.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="numericUpDown_Guitar.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 12</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>Guitarの音量(%)</value>
+  </data>
+  <data name="label7.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Guitar.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="numericUpDown_Drums.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 12</value>
@@ -214,11 +289,29 @@
   <data name="label6.Text" xml:space="preserve">
     <value>Drumsの音量(%)</value>
   </data>
+  <data name="label6.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Drums.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="numericUpDown_SE.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 12</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>SEの音量(%)</value>
+  </data>
+  <data name="label5.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_SE.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="numericUpDown_BGM.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 12</value>
@@ -226,8 +319,26 @@
   <data name="label4.Text" xml:space="preserve">
     <value>BGMの音量(%)</value>
   </data>
-  <data name="tabPage2.Text" xml:space="preserve">
-    <value>OGG/MP3設定</value>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_BGM.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_volumes.Text" xml:space="preserve">
+    <value>音量設定</value>
+  </data>
+  <data name="groupBox_volumes.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPage1.Text" xml:space="preserve">
+    <value>録音</value>
+  </data>
+  <data name="tabPage1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="comboBox_MP3_bps.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 12</value>
@@ -235,11 +346,20 @@
   <data name="label11.Text" xml:space="preserve">
     <value>ビットレート</value>
   </data>
+  <data name="label11.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_MP3.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label_highq.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 12</value>
   </data>
   <data name="label_highq.Text" xml:space="preserve">
     <value>高音質</value>
+  </data>
+  <data name="label_highq.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label_ogg_lowq.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 12</value>
@@ -247,10 +367,37 @@
   <data name="label_ogg_lowq.Text" xml:space="preserve">
     <value>低音質</value>
   </data>
+  <data name="label_ogg_lowq.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="numericUpDown_Ogg_Q.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
   </data>
   <data name="label10.Text" xml:space="preserve">
     <value>品質</value>
+  </data>
+  <data name="label10.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trackBar_Ogg_Q.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="groupBox_Ogg.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPage2.Text" xml:space="preserve">
+    <value>OGG/MP3設定</value>
+  </data>
+  <data name="tabPage2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabControl1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

@@ -61,6 +61,24 @@ namespace DTX2WAV.Properties {
         }
         
         /// <summary>
+        ///   Overwrite confirmation に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string confirmOverwriteCaption {
+            get {
+                return ResourceManager.GetString("confirmOverwriteCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Output audio file already exists. Overwrite? に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string confirmOverwriteText {
+            get {
+                return ResourceManager.GetString("confirmOverwriteText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Failed launching DTXMania に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string errFailedLaunchingDTXManiaCaption {
