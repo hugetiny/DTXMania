@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using System.Diagnostics;
+using System.IO;
 using SharpDX;
 using FDK;
 
@@ -24,13 +25,14 @@ namespace DTXMania
 			if (cスコア != null)
 			{
 				Bitmap image = new Bitmap(1, 1);
+				#region [ ARTISTテクスチャ生成 ]
 				TextureFactory.tテクスチャの解放(ref this.txArtist);
 				this.strArtist = cスコア.譜面情報.アーティスト名;
 				if ((this.strArtist != null) && (this.strArtist.Length > 0))
 				{
 					Graphics graphics = Graphics.FromImage(image);
 					graphics.PageUnit = GraphicsUnit.Pixel;
-					SizeF ef = graphics.MeasureString(this.strArtist, this.ft描画用フォント);
+					SizeF ef = graphics.MeasureString(this.strArtist, this.ftArtist描画用フォント);
 					graphics.Dispose();
 					if (ef.Width > SampleFramework.GameWindowSize.Width)
 					{
@@ -38,10 +40,10 @@ namespace DTXMania
 					}
 					try
 					{
-						Bitmap bitmap2 = new Bitmap((int)Math.Ceiling((double)ef.Width), (int)Math.Ceiling((double)this.ft描画用フォント.Size));
+						Bitmap bitmap2 = new Bitmap((int)Math.Ceiling((double)ef.Width), (int)Math.Ceiling((double)this.ftArtist描画用フォント.Size));
 						graphics = Graphics.FromImage(bitmap2);
 						graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-						graphics.DrawString(this.strArtist, this.ft描画用フォント, Brushes.White, (float)0f, (float)0f);
+						graphics.DrawString(this.strArtist, this.ftArtist描画用フォント, Brushes.White, (float)0f, (float)0f);
 						graphics.Dispose();
 						this.txArtist = new CTexture(CDTXMania.Instance.Device, bitmap2, CDTXMania.Instance.TextureFormat);
 						this.txArtist.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f);
@@ -53,21 +55,23 @@ namespace DTXMania
 						this.txArtist = null;
 					}
 				}
+				#endregion
+				#region [ COMMENTテクスチャ生成 ]
 				TextureFactory.tテクスチャの解放(ref this.txComment);
 				this.strComment = cスコア.譜面情報.コメント;
 				if ((this.strComment != null) && (this.strComment.Length > 0))
 				{
 					Graphics graphics2 = Graphics.FromImage(image);
 					graphics2.PageUnit = GraphicsUnit.Pixel;
-					SizeF ef2 = graphics2.MeasureString(this.strComment, this.ft描画用フォント);
+					SizeF ef2 = graphics2.MeasureString(this.strComment, this.ftComment描画用フォント);
 					Size size = new Size((int)Math.Ceiling((double)ef2.Width), (int)Math.Ceiling((double)ef2.Height));
 					graphics2.Dispose();
 					this.nテクスチャの最大幅 = CDTXMania.Instance.Device.Capabilities.MaxTextureWidth;
 					int maxTextureHeight = CDTXMania.Instance.Device.Capabilities.MaxTextureHeight;
-					Bitmap bitmap3 = new Bitmap(size.Width, (int)Math.Ceiling((double)this.ft描画用フォント.Size));
+					Bitmap bitmap3 = new Bitmap(size.Width, (int)Math.Ceiling((double)this.ftComment描画用フォント.Size));
 					graphics2 = Graphics.FromImage(bitmap3);
 					graphics2.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					graphics2.DrawString(this.strComment, this.ft描画用フォント, Brushes.White, (float)0f, (float)0f);
+					graphics2.DrawString(this.strComment, this.ftComment描画用フォント, Brushes.White, (float)0f, (float)0f);
 					graphics2.Dispose();
 					this.nComment行数 = 1;
 					this.nComment最終行の幅 = size.Width;
@@ -76,12 +80,12 @@ namespace DTXMania
 						this.nComment行数++;
 						this.nComment最終行の幅 -= this.nテクスチャの最大幅;
 					}
-					while ((this.nComment行数 * ((int)Math.Ceiling((double)this.ft描画用フォント.Size))) > maxTextureHeight)
+					while ((this.nComment行数 * ((int)Math.Ceiling((double)this.ftComment描画用フォント.Size))) > maxTextureHeight)
 					{
 						this.nComment行数--;
 						this.nComment最終行の幅 = this.nテクスチャの最大幅;
 					}
-					Bitmap bitmap4 = new Bitmap((this.nComment行数 > 1) ? this.nテクスチャの最大幅 : this.nComment最終行の幅, this.nComment行数 * ((int)Math.Ceiling((double)this.ft描画用フォント.Size)));
+					Bitmap bitmap4 = new Bitmap((this.nComment行数 > 1) ? this.nテクスチャの最大幅 : this.nComment最終行の幅, this.nComment行数 * ((int)Math.Ceiling((double)this.ftComment描画用フォント.Size)));
 					graphics2 = Graphics.FromImage(bitmap4);
 					Rectangle srcRect = new Rectangle();
 					Rectangle destRect = new Rectangle();
@@ -111,6 +115,7 @@ namespace DTXMania
 					bitmap4.Dispose();
 					bitmap3.Dispose();
 				}
+#endregion
 				image.Dispose();
 				if (this.txComment != null)
 				{
@@ -129,7 +134,19 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			this.ft描画用フォント = new Font("MS PGothic", 26f * Scale.Y, GraphicsUnit.Pixel);
+			string fontname = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicSongCommentFontFileName");
+			string path = Path.Combine(@"Graphics\fonts", fontname);
+			this.pfComment描画用フォント = new CPrivateFastFont( CSkin.Path(path), (float)(26f * Scale.Y * 72f / 96f) );
+			// 72f/96f: 従来互換のために追加。DPI依存→非依存化に付随した変更。
+			this.ftComment描画用フォント = this.pfComment描画用フォント.font;
+
+			fontname = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicSongArtistFontFileName");
+			path = Path.Combine(@"Graphics\fonts", fontname);
+			this.pfArtist描画用フォント = new CPrivateFastFont( CSkin.Path(path), (float)(26f * Scale.Y * 72f / 96f) );
+			// 72f/96f: 従来互換のために追加。DPI依存→非依存化に付随した変更。
+			this.ftArtist描画用フォント = this.pfArtist描画用フォント.font;
+
+			//this.ftComment描画用フォント = new Font("MS PGothic", 26f * Scale.Y, GraphicsUnit.Pixel);
 			this.txArtist = null;
 			this.txComment = null;
 			this.strArtist = "";
@@ -144,10 +161,25 @@ namespace DTXMania
 		{
 			TextureFactory.tテクスチャの解放(ref this.txArtist);
 			TextureFactory.tテクスチャの解放(ref this.txComment);
-			if (this.ft描画用フォント != null)
+			//if (this.ftComment描画用フォント != null)
+			//{
+			//	this.ftComment描画用フォント.Dispose();
+			//	this.ftComment描画用フォント = null;
+			//}
+			//if (this.ftArtist描画用フォント != null)
+			//{
+			//	this.ftArtist描画用フォント.Dispose();
+			//	this.ftArtist描画用フォント = null;
+			//}
+			if (this.pfComment描画用フォント != null)
 			{
-				this.ft描画用フォント.Dispose();
-				this.ft描画用フォント = null;
+				this.pfComment描画用フォント.Dispose();
+				this.pfComment描画用フォント = null;
+			}
+			if (this.pfArtist描画用フォント != null)
+			{
+				this.pfArtist描画用フォント.Dispose();
+				this.pfArtist描画用フォント = null;
 			}
 			this.ctComment = null;
 			base.On非活性化();
@@ -187,7 +219,7 @@ namespace DTXMania
 				{
 					int num3 = (int)(0xf8 * Scale.X);
 					int num4 = (int)(0xf5 * Scale.Y);
-					Rectangle rectangle = new Rectangle(this.ctComment.n現在の値, 0, nComment表示幅, (int)this.ft描画用フォント.Size);
+					Rectangle rectangle = new Rectangle(this.ctComment.n現在の値, 0, nComment表示幅, (int)this.ftComment描画用フォント.Size);
 					if (rectangle.X < 0)
 					{
 						num3 += -rectangle.X;
@@ -199,11 +231,11 @@ namespace DTXMania
 					while (rectangle.Width > 0)
 					{
 						rectangle2.X = ((int)(((float)rectangle.X) / this.txComment.vc拡大縮小倍率.X)) % this.nテクスチャの最大幅;
-						rectangle2.Y = num5 * ((int)this.ft描画用フォント.Size);
+						rectangle2.Y = num5 * ((int)this.ftComment描画用フォント.Size);
 						int num6 = ((num5 + 1) == this.nComment行数) ? this.nComment最終行の幅 : this.nテクスチャの最大幅;
 						int num7 = num6 - rectangle2.X;
 						rectangle2.Width = num7;
-						rectangle2.Height = (int)this.ft描画用フォント.Size;
+						rectangle2.Height = (int)this.ftComment描画用フォント.Size;
 						this.txComment.t2D描画(CDTXMania.Instance.Device, num3, num4, rectangle2);
 						if (++num5 == this.nComment行数)
 						{
@@ -225,7 +257,8 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 		private CCounter ctComment;
-		private Font ft描画用フォント;
+		private Font ftComment描画用フォント, ftArtist描画用フォント;
+		private CPrivateFastFont pfComment描画用フォント, pfArtist描画用フォント;
 		private int nComment行数;
 		private int nComment最終行の幅;
 		private const int nComment表示幅 = (int)(0x182 * Scale.X);

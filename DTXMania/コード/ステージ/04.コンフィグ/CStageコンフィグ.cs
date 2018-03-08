@@ -31,7 +31,7 @@ namespace DTXMania
 		CTextureAf tx上部パネル;
 		CTexture tx説明文パネル;
 		CTexture tx背景;
-		CPrivateFastFont prvFont;
+		CPrivateFastFont prvFont, prvFont_Description;
 		CTexture[,] txMenuItemLeft;
 		STDGBSValue<float> fDisplayLagTimeBaseMs;
 
@@ -131,7 +131,11 @@ namespace DTXMania
 				try
 				{
 					this.n現在のメニュー番号 = 0;
-					this.ftフォント = new Font("MS PGothic", 26f / 2 * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel);            //
+					string fontname = CDTXMania.Instance.Resources.Explanation("strCfgConfigurationDescriptionFontFileName");
+					string path = Path.Combine(@"Graphics\fonts", fontname);
+					this.prvFont_Description = new CPrivateFastFont(CSkin.Path(path), (int)(26f/3.5 * Scale.Y));
+
+					this.ftフォント = this.prvFont_Description.font;	//new Font("MS PGothic", 26f / 2 * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel);            //
 					for (int i = 0; i < 4; i++)
 					{
 						this.ctキー反復用[i] = new CCounter(0, 0, 0, CDTXMania.Instance.Timer);
@@ -175,6 +179,8 @@ namespace DTXMania
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Drums.Value = (int)(fDisplayLagTimeBaseMs.Drums * (CDTXMania.Instance.ConfigIni.nScrollSpeed.Drums + 1));
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Guitar.Value = (int)(fDisplayLagTimeBaseMs.Guitar * (CDTXMania.Instance.ConfigIni.nScrollSpeed.Guitar + 1));
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Bass.Value = (int)(fDisplayLagTimeBaseMs.Bass * (CDTXMania.Instance.ConfigIni.nScrollSpeed.Bass + 1));
+
+					prvFont_Description.Dispose();
 
 					base.On非活性化();
 				}

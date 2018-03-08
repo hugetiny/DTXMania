@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Drawing.Text;
+using System.IO;
 using SharpDX;
 using FDK;
 
@@ -426,12 +427,20 @@ namespace DTXMania
 			FontStyle regular = FontStyle.Regular;
 			if (CDTXMania.Instance.ConfigIni.bItalicFontSongSelect) regular |= FontStyle.Italic;
 			if (CDTXMania.Instance.ConfigIni.bBoldFontSongSelect) regular |= FontStyle.Bold;
-			this.ft曲リスト用フォント = new Font(
-				CDTXMania.Instance.ConfigIni.strFontSongSelect,
-				(float)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 2 * Scale.Y),   // 後でScale.Yを掛けないように直すこと(Config.ini初期値変更)
-				regular,
-				GraphicsUnit.Pixel
-			);
+
+			string fontname = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicSongListFontFileName");
+			string path = Path.Combine(@"Graphics\fonts", fontname);
+			this.privateFont_SongList = new CPrivateFastFont(CSkin.Path(path), (float)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 2 * Scale.Y * 72f / 96f), regular);
+																								// 72f/96f: 従来互換のために追加。DPI依存→非依存化に付随した変更。
+			this.ft曲リスト用フォント = this.privateFont_SongList.font;
+
+			//this.ft曲リスト用フォント = new Font(
+			//	CDTXMania.Instance.ConfigIni.strFontSongSelect,
+			//	(float)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 2 * Scale.Y),   // 後でScale.Yを掛けないように直すこと(Config.ini初期値変更)
+			//	regular,
+			//	GraphicsUnit.Pixel
+			//);
+
 
 
 			// 現在選択中の曲がない（＝はじめての活性化）なら、現在選択中の曲をルートの先頭ノードに設定する。
@@ -1147,6 +1156,7 @@ namespace DTXMania
 		private CCounter[] ct登場アニメ用 = new CCounter[13];
 		private EPart e楽器パート;
 		private Font ft曲リスト用フォント;
+		private CPrivateFastFont privateFont_SongList;
 		private long nスクロールタイマ;
 		private int n現在のスクロールカウンタ;
 		private int n現在の選択行;
