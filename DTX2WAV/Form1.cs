@@ -201,6 +201,7 @@ namespace DTX2WAV
 			//アプリ名と引数の情報を設定
 			p_DTXMania.StartInfo.FileName = "DTXManiaGR.exe";
 			p_DTXMania.StartInfo.Arguments  = $"-E{comboBox_AudioFormat.Text.ToUpper()},";
+			p_DTXMania.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
 
 			switch (comboBox_AudioFormat.Text.ToUpper())
 			{
@@ -240,6 +241,7 @@ namespace DTX2WAV
 			formRecording = new Form_Recording();
 			//formRecording.StartPosition = FormStartPosition.CenterParent;
 			formRecording.ShowDialog(this);
+			this.Activate();
 
 			if (formRecording != null)
 			{
