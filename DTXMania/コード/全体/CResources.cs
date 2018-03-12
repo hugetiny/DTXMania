@@ -245,7 +245,7 @@ namespace DTXMania
             // ファイル無しのエラーは、TextFieldParserの例外処理ではcatchできない。なぜかDTXMania.CDTXMania.Draw()でのNullReferenceExceptionとなる。
             if (!File.Exists(Path.Combine(csvCurrentPath, csvFileName)))
             {
-                Trace.TraceError("言語情報ファイル System/resources.csv が見つかりませんでした。{0}", Path.Combine(csvCurrentPath, csvFileName));
+                Trace.TraceWarning("言語情報ファイル System/resources.csv が見つかりませんでした。({0})", Path.Combine(csvCurrentPath, csvFileName));
                 return false;
             }
             try
@@ -257,7 +257,7 @@ namespace DTXMania
 			}
 			catch ( Exception e ) when (e is ArgumentNullException || e is ArgumentException || e is FileNotFoundException)
             {
-                Trace.TraceError("言語情報ファイル System/resources.csv が見つかりませんでした。" + e.Message);
+                Trace.TraceWarning("言語情報ファイル System/resources.csv が見つかりませんでした。" + e.Message);
                 return false;
             }
 
