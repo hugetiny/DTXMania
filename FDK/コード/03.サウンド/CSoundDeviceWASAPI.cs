@@ -639,11 +639,41 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 				encoder.Dispose();
 				encoder = null;
 			}
-			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
-			if ( hMixer != -1 )
+			this.e出力デバイス = ESoundDeviceType.Unknown;        // まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
+
+			if ( this.hMixer_DeviceOut != 0 )
 			{
-				Bass.BASS_StreamFree( this.hMixer );
+				BassMix.BASS_Mixer_ChannelPause(this.hMixer_DeviceOut);
+				Bass.BASS_StreamFree(this.hMixer_DeviceOut);
+				this.hMixer_DeviceOut = 0;
 			}
+			if (this.hMixer_Record != 0)
+			{
+				BassMix.BASS_Mixer_ChannelPause(this.hMixer_Record);
+				Bass.BASS_StreamFree(this.hMixer_Record);
+				this.hMixer_Record = 0;
+			}
+
+			if (hMixer != 0)
+			{
+				BassMix.BASS_Mixer_ChannelPause(this.hMixer_Record);
+				Bass.BASS_StreamFree(this.hMixer);
+			}
+			if (this.hMixer_Chips != null)
+			{
+				for (int i = 0; i <= (int)CSound.EInstType.Unknown; i++)
+				{
+					if (this.hMixer_Chips[i] != 0)
+					{
+						// Mixerにinputされるchannelsがfreeされると、Mixerへのinputも自動でremoveされる。
+						// 従い、ここでは、mixer本体をfreeするだけでよい
+						BassMix.BASS_Mixer_ChannelPause(this.hMixer_Chips[i]);
+						Bass.BASS_StreamFree(this.hMixer_Chips[i]);
+						this.hMixer_Chips[i] = 0;
+					}
+				}
+			}
+
 			if ( !this.bIsBASSFree )
 			{
 				BassWasapi.BASS_WASAPI_Free();	// システムタイマより先に呼び出すこと。（tWasapi処理() の中でシステムタイマを参照してるため）
@@ -662,9 +692,9 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 		//-----------------
 		#endregion
 
-		protected int hMixer = -1;
-		protected int hMixer_DeviceOut = -1;
-		protected int hMixer_Record = -1;
+		protected int hMixer = 0;
+		protected int hMixer_DeviceOut = 0;
+		protected int hMixer_Record = 0;
 		protected int[] hMixer_Chips = new int[(int)CSound.EInstType.Unknown + 1];  //DTX2WAV対応 BGM, SE, Drums...を別々のmixerに入れて、個別に音量変更できるようにする
 
 		protected BaseEncoder encoder;

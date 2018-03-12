@@ -431,10 +431,18 @@ namespace FDK
 		}
 		protected void Dispose( bool bManagedDispose )
 		{
-			this.e出力デバイス = ESoundDeviceType.Unknown;		// まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
-			if ( hMixer != -1 )
+			this.e出力デバイス = ESoundDeviceType.Unknown;        // まず出力停止する(Dispose中にクラス内にアクセスされることを防ぐ)
+			if ( hMixer_DeviceOut != 0)
 			{
+				BassMix.BASS_Mixer_ChannelPause(this.hMixer_DeviceOut);
+				Bass.BASS_StreamFree(this.hMixer_DeviceOut);
+				this.hMixer_DeviceOut = 0;
+			}
+			if ( hMixer != 0 )
+			{
+				BassMix.BASS_Mixer_ChannelPause(this.hMixer);
 				Bass.BASS_StreamFree( this.hMixer );
+				this.hMixer = 0;
 			}
 			if ( !this.bIsBASSFree )
 			{
@@ -456,8 +464,8 @@ namespace FDK
 		#endregion
 
 
-		protected int hMixer = -1;
-		protected int hMixer_DeviceOut = -1;
+		protected int hMixer = 0;
+		protected int hMixer_DeviceOut = 0;
 		//protected int[] hMixer_forChips = new int[(int)CSound.EInstType.Unknown];  //DTX2WAV対応 BGM, SE, Drums...を別々のmixerに入れて、個別に音量変更できるようにする
 		protected int n出力チャンネル数 = 0;
 		protected double db周波数 = 0.0;
