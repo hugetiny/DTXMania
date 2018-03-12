@@ -241,26 +241,44 @@ namespace DTXMania
 		//-----------------
 		public new void Dispose()
 		{
-			if (!this.bDispose完了済み_CPrivateFastFont)
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		protected new void Dispose(bool disposeManagedObjects)
+		{
+			if (this.bDispose完了済み_CPrivateFastFont)
+				return;
+
+			if (disposeManagedObjects)
 			{
-				if (listFontCache != null)
-				{
-					//Debug.WriteLine( "Disposing CPrivateFastFont()" );
-					#region [ キャッシュしている画像を破棄する ]
-					foreach (FontCache bc in listFontCache)
-					{
-						if (bc.bmp != null)
-						{
-							bc.bmp.Dispose();
-						}
-					}
-					#endregion
-					listFontCache.Clear();
-					listFontCache = null;
-				}
-				this.bDispose完了済み_CPrivateFastFont = true;
+				// (A) Managed リソースの解放
 			}
+
+			// (B) Unamanaged リソースの解放
+			if (listFontCache != null)
+			{
+				//Debug.WriteLine( "Disposing CPrivateFastFont()" );
+				#region [ キャッシュしている画像を破棄する(画像=大きい=LOHに格納=GCでComactされない=Unmanaged扱い) ]
+				foreach (FontCache bc in listFontCache)
+				{
+					if (bc.bmp != null)
+					{
+						bc.bmp.Dispose();
+					}
+				}
+				#endregion
+				listFontCache.Clear();
+				listFontCache = null;
+			}
+
+			this.bDispose完了済み_CPrivateFastFont = true;
+
 			base.Dispose();
+		}
+		//-----------------
+		~CPrivateFastFont()
+		{
+			this.Dispose(false);
 		}
 		//-----------------
 		#endregion

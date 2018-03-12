@@ -587,21 +587,37 @@ namespace FDK
 			device.DrawUserPrimitives( PrimitiveType.TriangleStrip, 2, this.cvPositionColoredVertexies );
 		}
 
-		#region [ IDisposable 実装 ]
+
+		#region [ Dispose-Finalize パターン実装 ]
 		//-----------------
 		public void Dispose()
 		{
-			if( !this.bDispose完了済み )
-			{
-				// テクスチャの破棄
-				if( this.texture != null )
-				{
-					this.texture.Dispose();
-					this.texture = null;
-				}
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		protected void Dispose(bool disposeManagedObjects)
+		{
+			if (this.bDispose完了済み)
+				return;
 
-				this.bDispose完了済み = true;
+			if (disposeManagedObjects)
+			{
+				// (A) Managed リソースの解放
 			}
+
+			// (B) Unamanaged リソースの解放
+			// テクスチャの破棄 (テクスチャはサイズが大きい=LOHに格納される=GCで回収されない=unmanaged扱いする(以前からそうしていましたが改めて))
+			if (this.texture != null)
+			{
+				this.texture.Dispose();
+				this.texture = null;
+			}
+
+			this.bDispose完了済み = true;
+		}
+		~CTexture()
+		{
+			this.Dispose(false);
 		}
 		//-----------------
 		#endregion

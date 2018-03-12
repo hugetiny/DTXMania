@@ -18,39 +18,53 @@ namespace DTXMania
 	/// <summary>
 	/// プライベートフォントでの描画を扱うクラス。
 	/// </summary>
-	/// <exception cref="FileNotFoundException">フォントファイルが見つからない時に例外発生</exception>
-	/// <exception cref="ArgumentException">スタイル指定不正時に例外発生</exception>
+	/// <exception cref="FileNotFoundException">フォントファイルが見つからず、更にMS PGothicのフォント指定にも失敗したときに例外発生</exception>
 	/// <remarks>
 	/// 簡単な使い方
 	/// CPrivateFont prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\mplus-1p-bold.ttf" ), 36 );	// プライベートフォント
 	/// とか
 	/// CPrivateFont prvFont = new CPrivateFont( "MS UI Gothic", 36, FontStyle.Bold );						// システムフォント
-	/// CPrivateFont prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\Arial" ), 36 );				// システムフォント(拡張子の有無で判断。拡張子なしの場合はパス名を指定しても無視する)
+	/// CPrivateFont prvFont = new CPrivateFont( CSkin.Path( @"Graphics\fonts\Arial" ), 36 );				// システムフォント
+	/// (拡張子の有無でシステムフォントかプライベートフォントかを判断。拡張子なしの場合はパス名指定部分は無視される)
 	/// とか
 	/// CPrivateFont prvFont = new CPrivateFont( new FontFamily("MS UI Gothic"), 36, FontStyle.Bold );		// システムフォント指定方法その2
 	/// とかした上で、
 	/// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black );							// フォント色＝白、縁の色＝黒の例。縁の色は省略可能
 	/// とか
 	/// Bitmap bmp = prvFont.DrawPrivateFont( "ABCDE", Color.White, Color.Black, Color.Yellow, Color.OrangeRed ); // 上下グラデーション(Yellow→OrangeRed)
+	/// とか
+	/// prvFont.font.DrawString(...)
 	/// とかして、
 	/// CTexture ctBmp = TextureFactory.tテクスチャの生成( bmp, false );
 	/// ctBMP.t2D描画( ～～～ );
 	/// で表示してください。
+	/// 
+	/// フォントファイルが見つからない時には、代わりにMS PGothicを使用しようと試みます。(MS PGothicも使えなかったときは、FileNotFoundException発生)
+	/// スタイル指定不正時には、それなりのスタイルを設定します。
 	/// 
 	/// 注意点
 	/// 任意のフォントでのレンダリングは結構負荷が大きいので、なるべくなら描画フレーム毎にフォントを再レンダリングするようなことはせず、
 	/// 一旦レンダリングしたものを描画に使い回すようにしてください。
 	/// また、長い文字列を与えると、返されるBitmapも横長になります。この横長画像をそのままテクスチャとして使うと、
 	/// 古いPCで問題を発生させやすいです。これを回避するには、一旦Bitmapとして取得したのち、256pixや512pixで分割して
-	/// テクスチャに定義するようにしてください。
+	/// テクスチャに定義するようにしてください。(CTextureAf()は、そのあたりを自動処理してくれます)
 	/// </remarks>
 	public class CPrivateFont : IDisposable
 	{
+		/// <summary>
+		/// プライベートフォントのFontクラス。CPrivateFont()の初期化後に使用可能となる。
+		/// プライベートフォントでDrawString()したい場合にご利用ください。
+		/// </summary>
 		public Font font
 		{
 			get => _font;
 		}
 
+		/// <summary>
+		/// フォント登録失敗時に代替使用するフォント名。システムフォントのみ設定可能。
+		/// 後日外部指定できるようにします。(＝コンストラクタで指定できるようにします)
+		/// </summary>
+		private string strAlternativeFont = "MS PGothic";
 
 		#region [ コンストラクタ ]
 		public CPrivateFont(FontFamily fontfamily, float pt, FontStyle style)
@@ -116,10 +130,9 @@ namespace DTXMania
 						_fontfamily = _pfc.Families[0];
 						bIsSystemFont = false;
 					}
-					//拡張子なし == Ariel, MS Gothicなど、システムフォントの指定
+					//拡張子なし == Arial, MS Gothicなど、システムフォントの指定
 					else
 					{
-						//指定されたフォント名のFontオブジェクトを作成する
 						this._font = PublicFont(Path.GetFileName(fontpath), emSize, style, GraphicsUnit.Pixel); 
 						bIsSystemFont = true;
 					}
@@ -127,7 +140,7 @@ namespace DTXMania
 				catch (Exception e) when (e is System.IO.FileNotFoundException || e is System.Runtime.InteropServices.ExternalException)
 				{
 					Trace.TraceWarning(e.Message);
-					Trace.TraceWarning("プライベートフォントの追加に失敗しました({0})。代わりにMS PGothicの使用を試みます。", fontpath);
+					Trace.TraceWarning("プライベートフォントの追加に失敗しました({0})。代わりに{1}の使用を試みます。", fontpath, strAlternativeFont);
 					//throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
 					//return;
 
@@ -150,13 +163,12 @@ namespace DTXMania
 				//}
 			}
 
-			// 通常フォントの登録に成功した場合
+			// システムフォントの登録に成功した場合
 			if (bIsSystemFont && _font != null)
 			{
 				// 追加処理なし。何もしない
 			}
-			// PrivateFontの登録に成功したが、指定されたフォントスタイルが適用できない場合は、フォント内で定義されているスタイルから候補を選んで使用する
-			// 何もスタイルが使えないようなフォントなら、例外を出す。
+			// PrivateFontの登録に成功した場合は、指定されたフォントスタイルをできるだけ適用する
 			else if (_fontfamily != null)
 			{
 				if (!_fontfamily.IsStyleAvailable(style))
@@ -179,23 +191,23 @@ namespace DTXMania
 				}
 				this._font = new Font(this._fontfamily, emSize, style, GraphicsUnit.Pixel); //PrivateFontCollectionの先頭のフォントのFontオブジェクトを作成する
 			}
-			// PrivateFontと通常フォント、どちらの登録もできていない場合は、MS PGothicを代わりに設定しようと試みる
+			// PrivateFontと通常フォント、どちらの登録もできていない場合は、MS PGothic改め代替フォントを代わりに設定しようと試みる
 			else
 			{
-				this._font = PublicFont("MS PGothic", emSize, style, GraphicsUnit.Pixel);		//MS PGothicのFontオブジェクトを作成する
+				this._font = PublicFont(strAlternativeFont, emSize, style, GraphicsUnit.Pixel);	
 				if (this._font != null )
 				{ 
-					Trace.TraceInformation("{0}の代わりにMS PGothicを指定しました。", Path.GetFileName(fontpath));
+					Trace.TraceInformation("{0}の代わりに{1}を指定しました。", Path.GetFileName(fontpath), strAlternativeFont);
 					bIsSystemFont = true;
 					return;
 				}
-				throw new FileNotFoundException("プライベートフォントの追加に失敗し、MS PGothicでの代替処理にも失敗しました。({0})", Path.GetFileName(fontpath));
+				throw new FileNotFoundException(string.Format("プライベートフォントの追加に失敗し、{1}での代替処理にも失敗しました。({0})", Path.GetFileName(fontpath), strAlternativeFont));
 			}
 		}
 
 
 		/// <summary>
-		/// プライベートフォントではない、通常のフォント指定
+		/// プライベートフォントではない、システムフォントの設定
 		/// </summary>
 		/// <param name="fontname">フォント名</param>
 		/// <param name="emSize">フォントサイズ</param>
@@ -346,7 +358,7 @@ namespace DTXMania
 		/// <param name="edgeColor">縁取色</param>
 		/// <param name="gradationTopColor">グラデーション 上側の色</param>
 		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
-		/// <returns>描画済テクスチャ</returns>
+		/// <returns>描画済Bitmap</returns>
 		protected Bitmap DrawPrivateFont(string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor)
 		{
 			if (this._fontfamily == null || drawstr == null || drawstr == "")
@@ -471,8 +483,17 @@ namespace DTXMania
 		//-----------------
 		public void Dispose()
 		{
-			if (!this.bDispose完了済み)
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		protected void Dispose(bool disposeManagedObjects)
+		{
+			if (this.bDispose完了済み)
+				return;
+
+			if (disposeManagedObjects)
 			{
+				// (A) Managed リソースの解放
 				if (this._font != null)
 				{
 					this._font.Dispose();
@@ -483,14 +504,21 @@ namespace DTXMania
 					this._pfc.Dispose();
 					this._pfc = null;
 				}
-                if (this._fontfamily != null)
-                {
-                    this._fontfamily.Dispose();
-                    this._fontfamily = null;
-                }
-
-                this.bDispose完了済み = true;
+				if (this._fontfamily != null)
+				{
+					this._fontfamily.Dispose();
+					this._fontfamily = null;
+				}
 			}
+
+			// (B) Unamanaged リソースの解放
+
+			this.bDispose完了済み = true;
+		}
+		//-----------------
+		~CPrivateFont()
+		{
+			this.Dispose(false);
 		}
 		//-----------------
 		#endregion

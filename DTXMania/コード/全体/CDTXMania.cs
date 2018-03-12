@@ -13,6 +13,7 @@ using SharpDX.Direct3D9;
 using FDK;
 using SampleFramework;
 using System.Runtime.Serialization;
+using System.Runtime;
 using System.Xml;
 
 using Point = System.Drawing.Point;
@@ -2846,10 +2847,16 @@ namespace DTXMania
 		}
 		private void tガベージコレクションを実行する()
 		{
+			// LOHに対するコンパクションを要求
+			GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+
 			GC.Collect(0, GCCollectionMode.Optimized, true );
 			GC.WaitForPendingFinalizers();
 			GC.Collect(0, GCCollectionMode.Forced, true );
 			GC.WaitForPendingFinalizers();
+
+			// 通常通り、LOHへのGCを抑制
+			GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.Default;
 		}
 		private void tプラグイン検索と生成()
 		{
