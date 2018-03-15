@@ -12,6 +12,16 @@ using Rectangle = System.Drawing.Rectangle;
 
 namespace FDK
 {
+	/// <summary>
+	/// テクスチャを扱うクラス。
+	/// 使用終了時は必ずDispose()してください。Finalize時の自動Disposeはありません。
+	/// Disposeを忘れた場合は、メモリリークに直結します。
+	/// Finalize時にDisposeしない代わりに、Finalize時にテクスチャのDispose漏れを検出し、
+	/// Trace.TraceWarning()でログを出力します。
+	/// see also:
+	/// https://osdn.net/projects/dtxmania/ticket/38036
+	/// https://github.com/sharpdx/SharpDX/pull/192?w=1
+	/// </summary>
 	public class CTexture : IDisposable
 	{
 		#region [ プロパティ ]
@@ -84,6 +94,7 @@ namespace FDK
 			this.szテクスチャサイズ = new Size( 0, 0 );
 			this._透明度 = 0xff;
 			this.texture = null;
+			this.bSharpDXTextureDispose完了済み = true;
 			this.cvPositionColoredVertexies = null;
 			this.b加算合成 = false;
 			this.fZ軸中心回転 = 0f;
@@ -91,7 +102,7 @@ namespace FDK
 			this.bFlipY = false;
 //			this._txData = null;
 		}
-		
+
 		/// <summary>
 		/// <para>指定されたビットマップオブジェクトから Managed テクスチャを作成する。</para>
 		/// <para>テクスチャのサイズは、BITMAP画像のサイズ以上、かつ、D3D9デバイスで生成可能な最小のサイズに自動的に調節される。
@@ -119,6 +130,7 @@ namespace FDK
 					stream.Seek( 0L, SeekOrigin.Begin );
 					int colorKey = unchecked( (int) 0xFF000000 );
 					this.texture = Texture.FromStream( device, stream, this.szテクスチャサイズ.Width, this.szテクスチャサイズ.Height, 1, Usage.None, format, poolvar, Filter.Point, Filter.None, colorKey );
+					this.bSharpDXTextureDispose完了済み = false;
 				}
 			}
 			catch ( Exception e )
@@ -213,6 +225,7 @@ namespace FDK
 #endif
 						// 中で更にメモリ読み込みし直していて無駄なので、Streamを使うのは止めたいところ
 						this.texture = Texture.FromStream( device, stream, n幅, n高さ, 1, usage, format, pool, Filter.Point, Filter.None, colorKey );
+						this.bSharpDXTextureDispose完了済み = false;
 					}
 				}
 			}
@@ -276,6 +289,7 @@ namespace FDK
 				//				{
 				//Trace.TraceInformation( "CTexture() start: " );
 				this.texture = Texture.FromMemory( device, txData, this.sz画像サイズ.Width, this.sz画像サイズ.Height, 1, Usage.None, format, pool, Filter.Point, Filter.None, colorKey );
+				this.bSharpDXTextureDispose完了済み = false;
 				//Trace.TraceInformation( "CTexture() end:   " );
 				//				}
 			}
@@ -353,6 +367,7 @@ namespace FDK
 #endif
 					texture.UnlockRectangle( 0 );
 					bitmap.UnlockBits( srcBufData );
+					this.bSharpDXTextureDispose完了済み = false;
 				}
 				//Trace.TraceInformation( "CTExture() End: " );
 			}
@@ -603,20 +618,28 @@ namespace FDK
 			if (disposeManagedObjects)
 			{
 				// (A) Managed リソースの解放
+				// テクスチャの破棄 (SharpDXのテクスチャは、SharpDX側で管理されるため、FDKからはmanagedリソースと見做す)
+				if (this.texture != null)
+				{
+					this.texture.Dispose();
+					this.texture = null;
+					this.bSharpDXTextureDispose完了済み = true;
+				}
 			}
 
 			// (B) Unamanaged リソースの解放
-			// テクスチャの破棄 (テクスチャはサイズが大きい=LOHに格納される=GCで回収されない=unmanaged扱いする(以前からそうしていましたが改めて))
-			if (this.texture != null)
-			{
-				this.texture.Dispose();
-				this.texture = null;
-			}
+
 
 			this.bDispose完了済み = true;
 		}
 		~CTexture()
 		{
+			// ファイナライザの動作時にtextureのDisposeがされていない場合は、
+			// CTextureのDispose漏れと見做して警告をログ出力する
+			if (!this.bSharpDXTextureDispose完了済み)
+			{
+				Trace.TraceWarning("CTexture: Dispose漏れを検出しました。(Size=({0}, {1}))", sz画像サイズ.Width, sz画像サイズ.Height );
+			}
 			this.Dispose(false);
 		}
 		//-----------------
@@ -628,7 +651,7 @@ namespace FDK
 		#region [ private ]
 		//-----------------
 		protected int _透明度;
-		private bool bDispose完了済み;
+		private bool bDispose完了済み, bSharpDXTextureDispose完了済み;
 		protected PositionColoredTexturedVertex[] cvPositionColoredVertexies;
 		protected TransformedColoredTexturedVertex[] cvTransformedColoredVertexies;
 		protected const Pool poolvar =												// 2011.4.25 yyagi
