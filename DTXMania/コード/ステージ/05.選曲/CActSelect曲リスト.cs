@@ -330,7 +330,8 @@ namespace DTXMania
 			{
 				this.On非活性化();
 				CDTXMania.Instance.Songs管理 = cs;
-				this.On活性化();
+                if( CDTXMania.Instance.r現在のステージ.eステージID == CStage.Eステージ.選曲 ) // #38233 2018.4.28 kairera0467 選曲画面以外から呼び出された時に活性化とリソース生成が行われないよう変更
+				    this.On活性化();
 
 				if (this.r現在選択中の曲 != null)      // r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
 				{
