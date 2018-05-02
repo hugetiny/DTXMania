@@ -232,11 +232,11 @@ namespace DTXMania
 			this.On活性化();
 			this.t入力_全入力文字列から(str全入力文字列);
 		}
-		public CDTX(string strファイル名, bool bヘッダのみ)
+		public CDTX(string strファイル名, bool bEnumerating, bool bレーン情報を確認する)
 			: this()
 		{
 			this.On活性化();
-			this.t入力(strファイル名, bヘッダのみ);
+			this.t入力(strファイル名, bEnumerating, bレーン情報を確認する);
 		}
 		private CDTX(string str全入力文字列, double db再生速度, int nBGMAdjust)
 			: this()
@@ -244,12 +244,13 @@ namespace DTXMania
 			this.On活性化();
 			this.t入力_全入力文字列から(str全入力文字列, db再生速度, nBGMAdjust);
 		}
-		public CDTX(string strファイル名, bool bヘッダのみ, double db再生速度, int nBGMAdjust)
+		public CDTX(string strファイル名, bool bEnumerating, bool bレーン情報を確認する, double db再生速度, int nBGMAdjust)
 			: this()
 		{
 			this.On活性化();
-			this.t入力(strファイル名, bヘッダのみ, db再生速度, nBGMAdjust);
+			this.t入力(strファイル名, bEnumerating, bレーン情報を確認する, db再生速度, nBGMAdjust);
 		}
+
 		#endregion
 
 
@@ -1257,6 +1258,7 @@ namespace DTXMania
 
 		private readonly STGDAPARAM[] stGDAParam;
 		private bool bヘッダのみ;
+		private bool bレーン情報を確認する;
 		private Stack<bool> bstackIFからENDIFをスキップする;
 
 		private int n現在の行数;

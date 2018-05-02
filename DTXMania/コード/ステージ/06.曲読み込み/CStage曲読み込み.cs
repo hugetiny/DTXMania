@@ -71,7 +71,7 @@ namespace DTXMania
 				string strDTXファイルパス = (CDTXMania.Instance.bコンパクトモード) ?
 					CDTXMania.Instance.strコンパクトモードファイル : CDTXMania.Instance.stage選曲.r確定されたスコア.ファイル情報.ファイルの絶対パス;
 
-				CDTX cdtx = new CDTX(strDTXファイルパス, true);
+				CDTX cdtx = new CDTX(strDTXファイルパス, false, false);
 				this.str曲タイトル = cdtx.TITLE;
 				if (((cdtx.STAGEFILE != null) && (cdtx.STAGEFILE.Length > 0)) && (File.Exists(cdtx.strフォルダ名 + cdtx.STAGEFILE) && !CDTXMania.Instance.ConfigIni.bStoicMode))
 				{
@@ -332,7 +332,7 @@ namespace DTXMania
 						if ((CDTXMania.Instance.DTX != null) && CDTXMania.Instance.DTX.b活性化してる)
 							CDTXMania.Instance.DTX.On非活性化();
 
-						CDTXMania.Instance.DTX = new CDTX(str, false, ((double)CDTXMania.Instance.ConfigIni.nPlaySpeed) / 20.0, ini.stファイル.BGMAdjust);
+						CDTXMania.Instance.DTX = new CDTX(str, false, true, ((double)CDTXMania.Instance.ConfigIni.nPlaySpeed) / 20.0, ini.stファイル.BGMAdjust);
 						Trace.TraceInformation("----曲情報-----------------");
 						Trace.TraceInformation("TITLE: {0}", CDTXMania.Instance.DTX.TITLE);
 						Trace.TraceInformation("FILE: {0}", CDTXMania.Instance.DTX.strファイル名の絶対パス);

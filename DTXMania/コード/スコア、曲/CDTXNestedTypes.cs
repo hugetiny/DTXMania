@@ -243,10 +243,20 @@ namespace DTXMania
 			{
 				get
 				{
-					if (!string.IsNullOrEmpty(CDTXMania.Instance.DTX.PATH_WAV))
-						return CDTXMania.Instance.DTX.PATH_WAV + this.strファイル名;
+					if (CDTXMania.Instance.DTX != null)
+					{
+						if (!string.IsNullOrEmpty(CDTXMania.Instance.DTX.PATH_WAV))
+							return CDTXMania.Instance.DTX.PATH_WAV + this.strファイル名;
+						else
+							return CDTXMania.Instance.DTX.strフォルダ名 + this.strファイル名;
+					}
 					else
-						return CDTXMania.Instance.DTX.strフォルダ名 + this.strファイル名;
+					{
+						// 2018.5.2 add yyagi
+						// enumarating && bLoadDTXDetail==true && バージョンアップ直後のみ、ここにくる
+						// enumarating時限定の話なので、dtx内のbmpを読み込む必要はなく、nullを返してしまえばよい
+						return null;
+					}
 				}
 			}
 

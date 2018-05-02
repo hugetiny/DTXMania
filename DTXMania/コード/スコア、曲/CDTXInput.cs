@@ -15,13 +15,14 @@ namespace DTXMania
 {
 	public partial class CDTX
 	{
-		public void t入力(string strファイル名, bool bヘッダのみ)
+		public void t入力(string strファイル名, bool bEnumerating, bool bレーン情報を確認する)
 		{
-			this.t入力(strファイル名, bヘッダのみ, 1.0, 0);
+			this.t入力(strファイル名, bEnumerating, bレーン情報を確認する, 1.0, 0);
 		}
-		public void t入力(string strファイル名, bool bヘッダのみ, double db再生速度, int nBGMAdjust)
+		public void t入力(string strファイル名, bool bEnumerating, bool bレーン情報を確認する, double db再生速度, int nBGMAdjust)
 		{
-			this.bヘッダのみ = bヘッダのみ;
+			this.bヘッダのみ = bEnumerating;
+			this.bレーン情報を確認する = bレーン情報を確認する;
 			this.strファイル名の絶対パス = Path.GetFullPath(strファイル名);
 			this.strファイル名 = Path.GetFileName(this.strファイル名の絶対パス);
 			this.strフォルダ名 = Path.GetDirectoryName(this.strファイル名の絶対パス) + @"\";
@@ -165,7 +166,7 @@ namespace DTXMania
 					this.n無限管理VOL = null;
 					this.n無限管理PAN = null;
 					this.n無限管理SIZE = null;
-					if (!this.bヘッダのみ)
+					if (!this.bヘッダのみ && this.bレーン情報を確認する)
 					{
 						#region [ BPM/BMP初期化 ]
 						CBPM cbpm = null;

@@ -820,7 +820,7 @@ namespace DTXMania
 								try
 								{
 									//#36177 2016.7.30 ikanick 曲データの取得時、bLoadDTXDetailがtrueであれば bヘッダのみをfalseにし 詳細なデータを取得する
-									CDTX cdtx = new CDTX(c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス, !CDTXMania.Instance.ConfigIni.bLoadDTXDetail );
+									CDTX cdtx = new CDTX(c曲リストノード.arスコア[i].ファイル情報.ファイルの絶対パス, true, CDTXMania.Instance.ConfigIni.bLoadDTXDetail );
 									c曲リストノード.arスコア[i].譜面情報.タイトル = cdtx.TITLE;
 									c曲リストノード.arスコア[i].譜面情報.アーティスト名 = cdtx.ARTIST;
 									c曲リストノード.arスコア[i].譜面情報.コメント = cdtx.COMMENT;
