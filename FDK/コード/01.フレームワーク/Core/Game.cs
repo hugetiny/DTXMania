@@ -189,6 +189,8 @@ namespace SampleFramework
 #if DEBUG
             //Configuration.DetectDoubleDispose = true;
             Configuration.EnableObjectTracking = true;
+			//Configuration.EnableTrackingReleaseOnFinalizer = true;
+			//Configuration.EnableReleaseOnFinalizer = true;
 #else
             //Configuration.DetectDoubleDispose = false;
             Configuration.EnableObjectTracking = false;
