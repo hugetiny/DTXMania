@@ -68,3 +68,7 @@
   If you tried several times but in vain, try to de-minimize DTXMania before recording.
   (The DTXMania window will black, but DTXMania's performance will be improved than
    minimized, so the sound may become good.)
+
+ * WAV file contains 24bit-float data. (not typical 16bit-integer data).
+  It is because DTXMania internally handles all sound files as 24bit float data.
+
