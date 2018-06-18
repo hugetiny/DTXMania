@@ -535,7 +535,11 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 				switch (strRecordFileType.ToUpper())
 				{
 					case "WAV":
-						encoder = new EncoderWAV(this.hMixer_DeviceOut);
+						{
+							var e = new EncoderWAV(this.hMixer_DeviceOut);
+							//e.WAV_EncoderType = BASSChannelType.BASS_CTYPE_STREAM_WAV_PCM;
+							encoder = e;
+						}
 						break;
 					case "OGG":
 						{
