@@ -145,22 +145,10 @@ namespace FDK
 			{
 				ret = WIN10BUILD.NOTWIN10;
 			}
-			ret = (WIN10BUILD)build;
-
-			//else if ((build != (int)WIN10BUILD.TH1) &&		// 現状だと、「新しすぎるビルド」はWin10でなくUNKNOWNになってしまう。要改善。
-			//		 (build != (int)WIN10BUILD.TH2) &&
-			//		 (build != (int)WIN10BUILD.RS1) &&
-			//		 (build != (int)WIN10BUILD.RS2) &&
-			//		 (build != (int)WIN10BUILD.RS3) &&
-			//		 (build != (int)WIN10BUILD.RS4)
-			//)
-			//{
-			//	ret = (WIN10BUILD)build;
-			//}
-			//else
-			//{
-			//	ret = WIN10BUILD.UNKNOWN;
-			//}
+			else
+			{
+				ret = (WIN10BUILD)build;
+			}
 
 			return ret;
 		}
