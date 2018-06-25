@@ -129,7 +129,8 @@ namespace FDK
 			RS1 = 14393,
 			RS2 = 15063,
 			RS3 = 16299,
-			UNKNOWN = -1,
+			RS4 = 17134,
+			UNKNOWN  = -1,
 			NOTWIN10 = 0
 		}
 		private static WIN10BUILD GetWin10BuildNumber()
@@ -144,19 +145,22 @@ namespace FDK
 			{
 				ret = WIN10BUILD.NOTWIN10;
 			}
-			else if ((build != (int)WIN10BUILD.TH1) &&
-					  (build != (int)WIN10BUILD.TH2) &&
-					  (build != (int)WIN10BUILD.RS1) &&
-					  (build != (int)WIN10BUILD.RS2) &&
-					  (build != (int)WIN10BUILD.RS3)
-			)
-			{
-				ret = (WIN10BUILD)build;
-			}
-			else
-			{
-				ret = WIN10BUILD.UNKNOWN;
-			}
+			ret = (WIN10BUILD)build;
+
+			//else if ((build != (int)WIN10BUILD.TH1) &&		// 現状だと、「新しすぎるビルド」はWin10でなくUNKNOWNになってしまう。要改善。
+			//		 (build != (int)WIN10BUILD.TH2) &&
+			//		 (build != (int)WIN10BUILD.RS1) &&
+			//		 (build != (int)WIN10BUILD.RS2) &&
+			//		 (build != (int)WIN10BUILD.RS3) &&
+			//		 (build != (int)WIN10BUILD.RS4)
+			//)
+			//{
+			//	ret = (WIN10BUILD)build;
+			//}
+			//else
+			//{
+			//	ret = WIN10BUILD.UNKNOWN;
+			//}
 
 			return ret;
 		}
