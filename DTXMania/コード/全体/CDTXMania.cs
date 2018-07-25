@@ -25,11 +25,11 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "112(180301)";
+		public static readonly string VERSION = "113(180801)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";     // June 2010
-																																//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
-																																//public static readonly string D3DXDLL = "d3dx9_41.dll";	// March 2009
+		//public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
+		//public static readonly string D3DXDLL = "d3dx9_41.dll";	// March 2009
 		private static CDTXMania instance = new CDTXMania();
 
 		public static CDTXMania Instance

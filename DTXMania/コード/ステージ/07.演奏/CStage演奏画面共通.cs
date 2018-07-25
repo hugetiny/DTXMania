@@ -3107,10 +3107,20 @@ namespace DTXMania
 						{
 							this.actAVI.bHasBGA = true;
 						}
-						if (pChip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bFullAVI)
+						if (CDTXMania.Instance.ConfigIni.bFullAVI)
 						{
-							this.actAVI.bFullScreenMovie = true;
+							this.actAVI.bFullScreenMovieCentering = CDTXMania.Instance.ConfigIni.bForceFullMovieCentering.Both;
+							if (!this.actAVI.bFullScreenMovieCentering)
+							{
+								this.actAVI.nFullScreenMovieX = CDTXMania.Instance.ConfigIni.cdForceFullMovieX.Both;
+								this.actAVI.nFullScreenMovieY = CDTXMania.Instance.ConfigIni.cdForceFullMovieY.Both;
+							}
+							if (pChip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bFullAVI)
+							{
+								this.actAVI.bFullScreenMovie = true;
+							}
 						}
+
 						switch (pChip.eAVI種別)
 						{
 							case EAVIType.AVI:

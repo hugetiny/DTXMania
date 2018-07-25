@@ -36,9 +36,22 @@ namespace DTXMania
 		/// </remarks>
 		public bool bIsPreviewMovie
 		{
-			get;
-			set;
+			get
+			{
+				return _bIsPreviewMovie;
+			}
+			set
+			{
+				_bIsPreviewMovie = value;
+				if (value == true)
+				{
+					this.bFullScreenMovieCentering = true;
+				}
+			}
 		}
+		private bool _bIsPreviewMovie;
+
+
 		public bool bHasBGA
 		{
 			get;
@@ -49,6 +62,22 @@ namespace DTXMania
 			get;
 			set;
 		}
+		public bool bFullScreenMovieCentering
+		{
+			get;
+			set;
+		}
+		public int nFullScreenMovieX
+		{
+			get;
+			set;
+		}
+		public int nFullScreenMovieY
+		{
+			get;
+			set;
+		}
+
 
 		public void PrepareProperSizeTexture(int width, int height)
 		{
@@ -244,8 +273,16 @@ namespace DTXMania
 						);
 						magX = cmg.magX;
 						magY = cmg.magY;
-						xx = cmg.px;
-						yy = cmg.py;
+						if (bFullScreenMovieCentering)
+						{
+							xx = cmg.px;
+							yy = cmg.py;
+						}
+						else
+						{
+							xx = nFullScreenMovieX;
+							yy = nFullScreenMovieY;
+						}
 					}
 
 					this.tx描画用.vc拡大縮小倍率.X = magX;

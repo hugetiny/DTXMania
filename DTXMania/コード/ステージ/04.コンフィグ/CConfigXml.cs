@@ -356,6 +356,12 @@ namespace DTXMania
 		public STDGBSValue<COptionInteger> nSuddenFrom;
 		[DataMember]
 		public STDGBSValue<COptionInteger> nHiddenFrom;
+		[DataMember(Order = 113)]
+		public STInstValue<COptionInteger> cdForceFullMovieX;	// #38362 2018.7.19 add yyagi
+		[DataMember(Order = 113)]
+		public STInstValue<COptionInteger> cdForceFullMovieY;   // #38362 2018.7.19 add yyagi
+		[DataMember(Order = 113)]
+		public STInstValue<COptionBool> bForceFullMovieCentering;   // #38362 2018.7.19 add yyagi
 
 
 		public int GetLaneX(ELane e)
@@ -660,6 +666,23 @@ namespace DTXMania
 			cdMovieY.DrOnly = new COptionInteger(128);
 			cdMovieY.GBOnly = new COptionInteger(128);
 
+			#region [ #38362 ForcedFullScreen X, Y, flag ] 
+			cdForceFullMovieX = new STInstValue<COptionInteger>();
+			cdForceFullMovieX.Both = new COptionInteger(0);
+			cdForceFullMovieX.DrOnly = new COptionInteger(0);
+			cdForceFullMovieX.GBOnly = new COptionInteger(0);
+
+			cdForceFullMovieY = new STInstValue<COptionInteger>();
+			cdForceFullMovieY.Both = new COptionInteger(0);
+			cdForceFullMovieY.DrOnly = new COptionInteger(0);
+			cdForceFullMovieY.GBOnly = new COptionInteger(0);
+
+			bForceFullMovieCentering = new STInstValue<COptionBool>();
+			bForceFullMovieCentering.Both = new COptionBool(true);
+			bForceFullMovieCentering.DrOnly = new COptionBool(true);
+			bForceFullMovieCentering.GBOnly = new COptionBool(true);
+			#endregion
+
 			cdComboX = new STDGBSValue<STInstValue<COptionInteger>>();
 			cdComboX.Drums = new STInstValue<COptionInteger>();
 			cdComboX.Drums.Both = new COptionInteger(cdInstX.Drums.Both + (72 * 5 + 85 * 2 + 99) / 2);
@@ -905,6 +928,18 @@ namespace DTXMania
 			cdMovieY.DrOnly.Initialize("strCfgDispMovieYDr", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 			cdMovieY.Both.Initialize("strCfgDispMovieYBoth", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 			cdMovieY.GBOnly.Initialize("strCfgDispMovieYGB", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+
+			cdForceFullMovieX.DrOnly.Initialize("strCfgForceFullMovieXDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdForceFullMovieX.Both.Initialize("strCfgForceFullMovieXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdForceFullMovieX.GBOnly.Initialize("strCfgForceFullMovieXGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+
+			cdForceFullMovieY.DrOnly.Initialize("strCfgForceFullMovieYDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdForceFullMovieY.Both.Initialize("strCfgForceFullMovieYBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdForceFullMovieY.GBOnly.Initialize("strCfgForceFullMovieYGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+
+			bForceFullMovieCentering.DrOnly.Initialize("strCfgForceFullMovieCenteringDr");
+			bForceFullMovieCentering.Both.Initialize("strCfgForceFullMovieCenteringBoth");
+			bForceFullMovieCentering.GBOnly.Initialize("strCfgForceFullMovieCenteringGB");
 
 			cdComboX.Drums.Both.Initialize("strCfgDispDrComboXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
 			cdComboX.Drums.DrOnly.Initialize("strCfgDispDrComboXDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);

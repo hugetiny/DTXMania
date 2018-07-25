@@ -270,6 +270,9 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.cdMovieY.DrOnly);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.cdMovieX.GBOnly);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.cdMovieY.GBOnly);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bForceFullMovieCentering.Both);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.cdForceFullMovieX.Both);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.cdForceFullMovieY.Both);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nBGAlpha);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nShowLagType);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eJudgePriority);
