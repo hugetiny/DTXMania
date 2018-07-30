@@ -152,7 +152,7 @@ namespace DTXMania
 			if (File.Exists(path))
 			{
 				CSetDef def = new CSetDef(path);
-				new FileInfo(path);
+				//new FileInfo(path);
 				if (CDTXMania.Instance.ConfigIni.bLogEnumerateSongs)
 				{
 					Trace.TraceInformation("set.def検出 : {0}", path);
