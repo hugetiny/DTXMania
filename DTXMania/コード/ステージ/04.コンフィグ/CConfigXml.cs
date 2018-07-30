@@ -171,6 +171,10 @@ namespace DTXMania
 		[DataMember( Order = 105 )]
 		public COptionBool bLoadDTXDetail;
 
+		[DataMember(Order = 113)]
+		public COptionBool bShowSongPath;   // #38404 2018.7.30 add yyagi
+
+
 		[DataMember]
 		public COptionInteger nBGAlpha;
 		[DataMember]
@@ -516,7 +520,8 @@ namespace DTXMania
 			);
 			bForceHighPowerPlan = new COptionBool( false );
 			bEventDrivenWASAPI = new COptionBool( false );
-			bLoadDTXDetail = new COptionBool( false ); 
+			bLoadDTXDetail = new COptionBool( false );
+			bShowSongPath = new COptionBool( false );
 
 			// string
 			strSongDataPath = new COptionString(@".\");
@@ -817,6 +822,8 @@ namespace DTXMania
 			bIsEnabledSystemMenu.Initialize("", "");
 			bDynamicBassMixerManagement.Initialize("", "");
 			bDebugInfo.Initialize( "strCfgSysDebugInfo" );
+
+			bShowSongPath.Initialize( "strCfgShowSongPath" );
 
 			// enum
 			nSoundDeviceType.Initialize( "strCfgSysSoundDeviceType", typeof(ESoundDeviceTypeForConfig));

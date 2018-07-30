@@ -104,6 +104,7 @@
     </EmbeddedResource>
     <Compile Include="コード\ステージ\04.コンフィグ\CConfigXml.cs" />
     <Compile Include="コード\ステージ\04.コンフィグ\COption.cs" />
+    <Compile Include="コード\ステージ\05.選曲\CActShowSongPath.cs" />
     <Compile Include="コード\ステージ\07.演奏\CAct演奏Lane.cs" />
     <Compile Include="コード\ステージ\07.演奏\CStage演奏画面共通_描画.cs" />
     <Compile Include="コード\ステージ\07.演奏\TypesForPlayStage.cs" />

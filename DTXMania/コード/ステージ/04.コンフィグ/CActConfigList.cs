@@ -276,6 +276,7 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nBGAlpha);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nShowLagType);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eJudgePriority);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bShowSongPath);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDebugInfo);
 			}
 			else if (eMenu == Eメニュー種別.DisplayDrums)
