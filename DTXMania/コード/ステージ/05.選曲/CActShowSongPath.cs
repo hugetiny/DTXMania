@@ -39,11 +39,6 @@ namespace DTXMania
 					sf.FormatFlags = StringFormatFlags.LineLimit;
 					SizeF ef = graphics.MeasureString(this.strSongPath, this.ftSongPath描画用フォント, SampleFramework.GameWindowSize.Width, sf);
 					graphics.Dispose();
-					//if (ef.Width > SampleFramework.GameWindowSize.Width)
-					//{
-					//	ef.Width = SampleFramework.GameWindowSize.Width;
-					//	ef.Height *= 3;
-					//}
 					try
 					{
 						Bitmap bitmap2 = new Bitmap((int)Math.Ceiling((double)ef.Width), (int)Math.Ceiling((double)ef.Height));
@@ -83,7 +78,6 @@ namespace DTXMania
 
 			this.txSongPath = null;
 			this.strSongPath = "";
-			this.nテクスチャの最大幅 = 0;
 
 			base.On活性化();
 		}
@@ -103,8 +97,6 @@ namespace DTXMania
 			{
 				this.t選択曲が変更された();
 				base.OnManagedリソースの作成();
-
-//				ScreenSelect bar score selected.ong
 			}
 		}
 		public override void OnManagedリソースの解放()
@@ -136,8 +128,6 @@ namespace DTXMania
 		//-----------------
 		private Font ftSongPath描画用フォント;
 		private CPrivateFastFont pfSongPath描画用フォント;
-		private const int nSongPath表示幅 = (int)(0x182 * Scale.X);
-		private int nテクスチャの最大幅;
 		private string strSongPath;
 		private CTexture txSongPath;
 		//-----------------
