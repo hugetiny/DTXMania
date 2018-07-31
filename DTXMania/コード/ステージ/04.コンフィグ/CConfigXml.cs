@@ -70,9 +70,12 @@ namespace DTXMania
 			return (CConfigXml) MemberwiseClone();
 		}
 
-
+		/// <summary>
+		/// 従来のAVIをウインドウ全体に拡大表示するかどうか
+		/// </summary>
 		[DataMember]
 		public COptionBool bFullAVI;
+
 		[DataMember]
 		public COptionBool bAVI;
 		[DataMember]
@@ -360,10 +363,19 @@ namespace DTXMania
 		public STDGBSValue<COptionInteger> nSuddenFrom;
 		[DataMember]
 		public STDGBSValue<COptionInteger> nHiddenFrom;
+		/// <summary>
+		/// 旧AVIを強制的にウインドウ全体に表示するときの、X座標
+		/// </summary>
 		[DataMember(Order = 113)]
-		public STInstValue<COptionInteger> cdForceFullMovieX;	// #38362 2018.7.19 add yyagi
+		public STInstValue<COptionInteger> cdForceFullMovieX;   // #38362 2018.7.19 add yyagi
+		/// <summary>
+		/// 旧AVIを強制的にウインドウ全体に表示するときの、Y座標
+		/// </summary>
 		[DataMember(Order = 113)]
 		public STInstValue<COptionInteger> cdForceFullMovieY;   // #38362 2018.7.19 add yyagi
+		/// <summary>
+		/// 旧AVIを強制的にウインドウ全体に表示するときに、センタリング表示するかどうか
+		/// </summary>
 		[DataMember(Order = 113)]
 		public STInstValue<COptionBool> bForceFullMovieCentering;   // #38362 2018.7.19 add yyagi
 
@@ -936,13 +948,13 @@ namespace DTXMania
 			cdMovieY.Both.Initialize("strCfgDispMovieYBoth", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 			cdMovieY.GBOnly.Initialize("strCfgDispMovieYGB", 0, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 
-			cdForceFullMovieX.DrOnly.Initialize("strCfgForceFullMovieXDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdForceFullMovieX.Both.Initialize("strCfgForceFullMovieXBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdForceFullMovieX.GBOnly.Initialize("strCfgForceFullMovieXGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdForceFullMovieX.DrOnly.Initialize("strCfgForceFullMovieXDr", -SampleFramework.GameWindowSize.Width, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdForceFullMovieX.Both.Initialize("strCfgForceFullMovieXBoth", -SampleFramework.GameWindowSize.Width, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdForceFullMovieX.GBOnly.Initialize("strCfgForceFullMovieXGB", -SampleFramework.GameWindowSize.Width, 1 + SampleFramework.GameWindowSize.Width, crdStep);
 
-			cdForceFullMovieY.DrOnly.Initialize("strCfgForceFullMovieYDr", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdForceFullMovieY.Both.Initialize("strCfgForceFullMovieYBoth", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
-			cdForceFullMovieY.GBOnly.Initialize("strCfgForceFullMovieYGB", 0, 1 + SampleFramework.GameWindowSize.Width, crdStep);
+			cdForceFullMovieY.DrOnly.Initialize("strCfgForceFullMovieYDr", -SampleFramework.GameWindowSize.Height, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdForceFullMovieY.Both.Initialize("strCfgForceFullMovieYBoth", -SampleFramework.GameWindowSize.Height, 1 + SampleFramework.GameWindowSize.Height, crdStep);
+			cdForceFullMovieY.GBOnly.Initialize("strCfgForceFullMovieYGB", -SampleFramework.GameWindowSize.Height, 1 + SampleFramework.GameWindowSize.Height, crdStep);
 
 			bForceFullMovieCentering.DrOnly.Initialize("strCfgForceFullMovieCenteringDr");
 			bForceFullMovieCentering.Both.Initialize("strCfgForceFullMovieCenteringBoth");

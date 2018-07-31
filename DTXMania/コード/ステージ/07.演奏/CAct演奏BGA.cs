@@ -32,7 +32,7 @@ namespace DTXMania
 
 		private CTexture txBGA;
 		private STLAYER[] stLayer = new STLAYER[8];
-		private readonly Size size基準 = new Size( 278, 355 );
+		private Size size基準;
 
 		public CAct演奏BGA()
 		{
@@ -145,6 +145,8 @@ namespace DTXMania
 							case Format.X8B8G8R8: format = Format.A8R8G8B8; break;
 							case Format.X8R8G8B8: format = Format.A8R8G8B8; break;
 						}
+						size基準 = (CDTXMania.Instance.DTX.bUse556x710BGAAVI)?
+							new Size(278 * 2, 355 * 2) : new Size( 278, 355 );
 
 						this.txBGA = new CTexture( CDTXMania.Instance.Device,
 							size基準.Width,

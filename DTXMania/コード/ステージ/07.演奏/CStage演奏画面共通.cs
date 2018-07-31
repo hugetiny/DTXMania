@@ -3098,7 +3098,7 @@ namespace DTXMania
 				{
 					this.t進行描画_チップ_フィルイン(ref pChip);
 				}
-				else if (pChip.bMovie && !pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))
+				else if (pChip.bMovie && !pChip.bHit && (pChip.nバーからの距離dot.Drums < 0))		// 動画全般
 				{
 					pChip.bHit = true;
 					if (CDTXMania.Instance.ConfigIni.bAVI)
@@ -3107,18 +3107,18 @@ namespace DTXMania
 						{
 							this.actAVI.bHasBGA = true;
 						}
+						this.actAVI.bFullScreenMovieCentering = (pChip.eチャンネル番号 == EChannel.MovieFull) ? true : CDTXMania.Instance.ConfigIni.bForceFullMovieCentering.Both;
 						if (CDTXMania.Instance.ConfigIni.bFullAVI)
 						{
-							this.actAVI.bFullScreenMovieCentering = CDTXMania.Instance.ConfigIni.bForceFullMovieCentering.Both;
 							if (!this.actAVI.bFullScreenMovieCentering)
 							{
 								this.actAVI.nFullScreenMovieX = CDTXMania.Instance.ConfigIni.cdForceFullMovieX.Both;
 								this.actAVI.nFullScreenMovieY = CDTXMania.Instance.ConfigIni.cdForceFullMovieY.Both;
 							}
-							if (pChip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bFullAVI)
-							{
-								this.actAVI.bFullScreenMovie = true;
-							}
+						}
+						if (pChip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bFullAVI)
+						{
+							this.actAVI.bFullScreenMovie = true;
 						}
 
 						switch (pChip.eAVI種別)

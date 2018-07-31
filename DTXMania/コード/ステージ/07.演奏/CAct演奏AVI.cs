@@ -57,21 +57,33 @@ namespace DTXMania
 			get;
 			set;
 		}
+		/// <summary>
+		/// AVIをウインドウ全体に表示するかどうか
+		/// </summary>
 		public bool bFullScreenMovie
 		{
 			get;
 			set;
 		}
+		/// <summary>
+		/// ウインドウ全体で再生するAVIを、センタリング表示するかどうか
+		/// </summary>
 		public bool bFullScreenMovieCentering
 		{
 			get;
 			set;
 		}
+		/// <summary>
+		/// ウインドウ全体で再生するAVIを、センタリング表示しない場合の、表示X座標
+		/// </summary>
 		public int nFullScreenMovieX
 		{
 			get;
 			set;
 		}
+		/// <summary>
+		/// ウインドウ全体で再生するAVIを、センタリング表示しない場合の、表示Y座標
+		/// </summary>
 		public int nFullScreenMovieY
 		{
 			get;
@@ -278,11 +290,17 @@ namespace DTXMania
 							xx = cmg.px;
 							yy = cmg.py;
 						}
-						else
+						else if (bFullScreenMovie)
 						{
 							xx = nFullScreenMovieX;
 							yy = nFullScreenMovieY;
 						}
+						// fullscreenでないときはxx=x, yy=yだが、xx,yyの初期値がx,yのためここでわざわざ記載する必要なし
+						//else
+						//{
+						//	xx = x;
+						//	yy = y;
+						//}
 					}
 
 					this.tx描画用.vc拡大縮小倍率.X = magX;
