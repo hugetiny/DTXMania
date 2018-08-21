@@ -590,7 +590,7 @@ namespace DTXMania
 			nChipFadeoutTimeMs = new COptionInteger(2000);
 			rcViewerWindow = new Coordinates.CRect(100, 100, 640, 360);
 			nMasterVolume = new COptionInteger(100);
-			nPolyphonicSounds = new COptionInteger(4);
+			nPolyphonicSounds = new COptionInteger(2);					// #38474 2018.8.3 yyagi 4 -> 2, to reduce sound mixing load 
 
 			eClickType = new COptionEnum<EClickType>(EClickType.Off);
 			nClickHighVolume = new COptionInteger(100);
