@@ -1766,7 +1766,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 			// 個々のストリームの出力をテンポ変更のストリームに入力する。テンポ変更ストリームの出力を、Mixerに出力する。
 
-//			if ( CSound管理.bIsTimeStretch )	// TimeStretchのON/OFFに関わりなく、テンポ変更のストリームを生成する。後からON/OFF切り替え可能とするため。
+			_hTempoStream = 0;
+			if ( CSound管理.bIsTimeStretch )	// TimeStretchのON/OFFに関わりなく、テンポ変更のストリームを生成する。後からON/OFF切り替え可能とするため。
+												// ... と思ったが、1サウンド辺り1つのテンポ変更ストリームが存在することになり、
+												// ミキシング負荷が非常に高くなるため、結局TimeStretch=ONの時のみ店舗変更ストリームを提供することにした。
 			{
 				this._hTempoStream = BassFx.BASS_FX_TempoCreate( this._hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
 				if ( this._hTempoStream == 0 )
