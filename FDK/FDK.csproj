@@ -47,7 +47,7 @@
     </DocumentationFile>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>0219</NoWarn>
-    <DefineConstants>TRACE;DEBUG;TEST_CancelEnterCodeInAltEnter2 TEST_Direct3D9Ex_</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEST_CancelEnterCodeInAltEnter2 TEST_Direct3D9Ex_ TEST_MulthThreadedMixer_</DefineConstants>
     <Optimize>false</Optimize>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -138,6 +138,7 @@
     <Compile Include="コード\02.入力\IInputDevice.cs" />
     <Compile Include="コード\02.入力\SlimDX.DirectInput.Key.cs" />
     <Compile Include="コード\02.入力\STInputEvent.cs" />
+    <Compile Include="コード\03.サウンド\BASSThreadedMixerWrapper.cs" />
     <Compile Include="コード\03.サウンド\Cmp3.cs" />
     <Compile Include="コード\03.サウンド\Cogg.cs" />
     <Compile Include="コード\03.サウンド\CSound.cs" />

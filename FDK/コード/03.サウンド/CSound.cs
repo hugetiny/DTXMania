@@ -1771,19 +1771,19 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 												// ... と思ったが、1サウンド辺り1つのテンポ変更ストリームが存在することになり、
 												// ミキシング負荷が非常に高くなるため、結局TimeStretch=ONの時のみ店舗変更ストリームを提供することにした。
 			{
-				this._hTempoStream = BassFx.BASS_FX_TempoCreate( this._hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE );
-				if ( this._hTempoStream == 0 )
+				this._hTempoStream = BassFx.BASS_FX_TempoCreate(this._hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE);
+				if (this._hTempoStream == 0)
 				{
 					hGC.Free();
-					throw new Exception( string.Format( "サウンドストリームの生成に失敗しました。(BASS_FX_TempoCreate)[{0}]", Bass.BASS_ErrorGetCode().ToString() ) );
+					throw new Exception(string.Format("サウンドストリームの生成に失敗しました。(BASS_FX_TempoCreate)[{0}]", Bass.BASS_ErrorGetCode().ToString()));
 				}
 				else
 				{
-					Bass.BASS_ChannelSetAttribute( this._hTempoStream, BASSAttribute.BASS_ATTRIB_TEMPO_OPTION_USE_QUICKALGO, 1f );	// 高速化(音の品質は少し落ちる)
+					Bass.BASS_ChannelSetAttribute(this._hTempoStream, BASSAttribute.BASS_ATTRIB_TEMPO_OPTION_USE_QUICKALGO, 1f);    // 高速化(音の品質は少し落ちる)
 				}
 			}
 
-			if ( _hTempoStream != 0 && !this.bIs1倍速再生 )	// 再生速度がx1.000のときは、TempoStreamを用いないようにして高速化する
+			if (_hTempoStream != 0 && !this.bIs1倍速再生)   // 再生速度がx1.000のときは、TempoStreamを用いないようにして高速化する
 			{
 				this.hBassStream = _hTempoStream;
 			}
@@ -1791,7 +1791,6 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			{
 				this.hBassStream = _hBassStream;
 			}
-
 			// #32248 再生終了時に発火するcallbackを登録する (演奏終了後に再生終了するチップを非同期的にミキサーから削除するため。)
 			_cbEndofStream = new SYNCPROC( CallbackEndofStream );
 			Bass.BASS_ChannelSetSync( hBassStream, BASSSync.BASS_SYNC_END | BASSSync.BASS_SYNC_MIXTIME, 0, _cbEndofStream, IntPtr.Zero );
@@ -1853,7 +1852,9 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		}
 		public bool tBASSサウンドをミキサーから削除する( int channel )
 		{
-			bool b = BassMix.BASS_Mixer_ChannelRemove( channel );
+//bool b = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_RemoveSource((IntPtr)this.hMixer, channel );
+//mixingChannel.Remove((IntPtr)this.hMixer);
+			bool b = BassMix.BASS_Mixer_ChannelRemove(channel);
 			if ( b )
 			{
 				Interlocked.Decrement( ref CSound管理.nMixing );
@@ -1863,10 +1864,13 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		}
 
 
-// mixer への追加
-		
+		// mixer への追加
+
+//private List<IntPtr> mixingChannel = new List<IntPtr>();
+
 		public bool tBASSサウンドをミキサーに追加する()
 		{
+//if (!mixingChannel.Contains((IntPtr)this.hMixer))
 			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
 			{
 				BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN | BASSFlag.BASS_MIXER_PAUSE;
@@ -1875,7 +1879,9 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				// preloadされることを期待して、敢えてflagからはBASS_MIXER_PAUSEを外してAddChannelした上で、すぐにPAUSEする
 				// -> ChannelUpdateでprebufferできることが分かったため、BASS_MIXER_PAUSEを使用することにした
 
-				bool b1 = BassMix.BASS_Mixer_StreamAddChannel( this.hMixer, this.hBassStream, bf );
+//bool b1 = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_AddSource( (IntPtr)this.hMixer, this.hBassStream, IntPtr.Zero );
+//mixingChannel.Add((IntPtr)this.hMixer);
+				bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hBassStream, bf);
 				//bool b2 = BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
 //Trace.TraceInformation( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );

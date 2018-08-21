@@ -436,6 +436,8 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 				#endregion
 			}
 
+//LoadLibraryに失敗する・・・
+//BASSThreadedMixerLibraryWrapper.InitBASSThreadedMixerLibrary();
 
 
 
@@ -446,10 +448,17 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 			//	string.Format( "BASS_SetConfig(CONFIG_MIXER_BUFFER) に失敗しました。[{0}", Bass.BASS_ErrorGetCode() ) );
 
 			var info = BassWasapi.BASS_WASAPI_GetInfo();
+//this.hMixer = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_Create(
+//				info.freq,
+//				info.chans,
+//				(int)(BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_MIXER_POSEX),
+//				out hMixerThreaded
+//			);
+
 			this.hMixer = BassMix.BASS_Mixer_StreamCreate(
 				info.freq,
 				info.chans,
-				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_MIXER_POSEX );	// デコードのみ＝発声しない。WASAPIに出力されるだけ。
+				BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_MIXER_POSEX);    // デコードのみ＝発声しない。WASAPIに出力されるだけ。
 			if ( this.hMixer == 0 )
 			{
 				BASSError errcode = Bass.BASS_ErrorGetCode();
@@ -462,6 +471,12 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 
 			for (int i = 0; i <= (int)CSound.EInstType.Unknown; i++)
 			{
+//this.hMixer_Chips[i] = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_Create(
+//	info.freq,
+//	info.chans,
+//	(int)(BASSFlag.BASS_MIXER_NONSTOP | BASSFlag.BASS_SAMPLE_FLOAT | BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_MIXER_POSEX),
+//	out this.hMixerThreaded_Chips[i]
+//);    // デコードのみ＝発声しない。WASAPIに出力されるだけ。
 				this.hMixer_Chips[ i ] = BassMix.BASS_Mixer_StreamCreate(
 					info.freq,
 					info.chans,
@@ -476,9 +491,10 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 				}
 
 				// Mixerのボリューム設定
-				Bass.BASS_ChannelSetAttribute(this.hMixer_Chips[ i ], BASSAttribute.BASS_ATTRIB_VOL, CSound管理.nMixerVolume[ i ] / 100.0f );
-//Trace.TraceInformation("Vol{0}: {1}", i, CSound管理.nMixerVolume[i]);
+				Bass.BASS_ChannelSetAttribute(this.hMixer_Chips[i], BASSAttribute.BASS_ATTRIB_VOL, CSound管理.nMixerVolume[i] / 100.0f);
+				//Trace.TraceInformation("Vol{0}: {1}", i, CSound管理.nMixerVolume[i]);
 
+//bool b1 = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_AddSource(this.hMixerThreaded, this.hMixer_Chips[i], IntPtr.Zero);
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hMixer_Chips[i], BASSFlag.BASS_DEFAULT);
 				if (!b1)
 				{
@@ -601,7 +617,8 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 		public CSound tサウンドを作成する( string strファイル名, CSound.EInstType eInstType )
 		{
 			var sound = new CSound();
-			int hmixer = hMixer_Chips[ (int)eInstType ];
+//int hmixer = (int)hMixerThreaded_Chips[ (int)eInstType ];
+			int hmixer = hMixer_Chips[(int)eInstType];
 			sound.tWASAPIサウンドを作成する( strファイル名, hmixer, this.e出力デバイス, eInstType );
 			return sound;
 		}
@@ -612,17 +629,20 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 		public CSound tサウンドを作成する( byte[] byArrWAVファイルイメージ, CSound.EInstType eInstType )
 		{
 			var sound = new CSound();
+//int hmixer = (int)hMixerThreaded_Chips[(int)eInstType];
 			int hmixer = hMixer_Chips[(int)eInstType];
 			sound.tWASAPIサウンドを作成する( byArrWAVファイルイメージ, hmixer, this.e出力デバイス, eInstType );
 			return sound;
 		}
 		public void tサウンドを作成する( string strファイル名, ref CSound sound, CSound.EInstType eInstType )
 		{
+//int hmixer = (int)hMixerThreaded_Chips[(int)eInstType];
 			int hmixer = hMixer_Chips[(int)eInstType];
 			sound.tWASAPIサウンドを作成する( strファイル名, hmixer, this.e出力デバイス, eInstType );
 		}
 		public void tサウンドを作成する( byte[] byArrWAVファイルイメージ, ref CSound sound, CSound.EInstType eInstType)
 		{
+//int hmixer = (int)hMixerThreaded_Chips[(int)eInstType];
 			int hmixer = hMixer_Chips[(int)eInstType];
 			sound.tWASAPIサウンドを作成する( byArrWAVファイルイメージ, hmixer, this.e出力デバイス, eInstType );
 		}
@@ -677,6 +697,7 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 					}
 				}
 			}
+//BASSThreadedMixerLibraryWrapper.FreeBASSThreadedMixerLibrary();
 
 			if ( !this.bIsBASSFree )
 			{
@@ -701,6 +722,9 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 		protected int hMixer_Record = 0;
 		protected int[] hMixer_Chips = new int[(int)CSound.EInstType.Unknown + 1];  //DTX2WAV対応 BGM, SE, Drums...を別々のmixerに入れて、個別に音量変更できるようにする
 
+//protected IntPtr hMixerThreaded = IntPtr.Zero;
+//protected IntPtr[] hMixerThreaded_Chips = new IntPtr[(int)CSound.EInstType.Unknown + 1];
+
 		protected BaseEncoder encoder;
 		protected int stream;
 		protected WASAPIPROC tWasapiProc = null;
@@ -709,7 +733,8 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 		{
 			// BASSミキサからの出力データをそのまま WASAPI buffer へ丸投げ。
 
-			int num = Bass.BASS_ChannelGetData( this.hMixer_DeviceOut, buffer, length );		// num = 実際に転送した長さ
+			int num = Bass.BASS_ChannelGetData( this.hMixer_DeviceOut, buffer, length );        // num = 実際に転送した長さ
+			//int num = BassMix.BASS_Mixer_ChannelGetData(this.hMixer_DeviceOut, buffer, length);      // これだと動作がめちゃくちゃ重くなる
 			if ( num == -1 ) num = 0;
 
 
