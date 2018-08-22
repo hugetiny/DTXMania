@@ -1769,7 +1769,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			_hTempoStream = 0;
 			if ( CSound管理.bIsTimeStretch )	// TimeStretchのON/OFFに関わりなく、テンポ変更のストリームを生成する。後からON/OFF切り替え可能とするため。
 												// ... と思ったが、1サウンド辺り1つのテンポ変更ストリームが存在することになり、
-												// ミキシング負荷が非常に高くなるため、結局TimeStretch=ONの時のみ店舗変更ストリームを提供することにした。
+												// ミキシング負荷が非常に高くなるため、結局TimeStretch=ONの時のみテンポ変更ストリームを提供することにした。
 			{
 				this._hTempoStream = BassFx.BASS_FX_TempoCreate(this._hBassStream, BASSFlag.BASS_STREAM_DECODE | BASSFlag.BASS_FX_FREESOURCE);
 				if (this._hTempoStream == 0)
@@ -1852,9 +1852,12 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		}
 		public bool tBASSサウンドをミキサーから削除する( int channel )
 		{
-//bool b = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_RemoveSource((IntPtr)this.hMixer, channel );
-//mixingChannel.Remove((IntPtr)this.hMixer);
+#if TEST_MultiThreadedMixer
+			bool b = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_RemoveSource((IntPtr)this.hMixer, channel );
+			mixingChannel.Remove((IntPtr)this.hMixer);
+#else
 			bool b = BassMix.BASS_Mixer_ChannelRemove(channel);
+#endif
 			if ( b )
 			{
 				Interlocked.Decrement( ref CSound管理.nMixing );
@@ -1865,13 +1868,17 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 
 		// mixer への追加
-
-//private List<IntPtr> mixingChannel = new List<IntPtr>();
+#if TEST_MultiThreadedMixer
+		private List<IntPtr> mixingChannel = new List<IntPtr>();
+#endif
 
 		public bool tBASSサウンドをミキサーに追加する()
 		{
-//if (!mixingChannel.Contains((IntPtr)this.hMixer))
+#if TEST_MultiThreadedMixer
+			if (!mixingChannel.Contains((IntPtr)this.hMixer))
+#else
 			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
+#endif
 			{
 				BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN | BASSFlag.BASS_MIXER_PAUSE;
 				Interlocked.Increment( ref CSound管理.nMixing );
@@ -1879,9 +1886,12 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				// preloadされることを期待して、敢えてflagからはBASS_MIXER_PAUSEを外してAddChannelした上で、すぐにPAUSEする
 				// -> ChannelUpdateでprebufferできることが分かったため、BASS_MIXER_PAUSEを使用することにした
 
-//bool b1 = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_AddSource( (IntPtr)this.hMixer, this.hBassStream, IntPtr.Zero );
-//mixingChannel.Add((IntPtr)this.hMixer);
+#if TEST_MultiThreadedMixer
+				bool b1 = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_AddSource( (IntPtr)this.hMixer, this.hBassStream, IntPtr.Zero );
+				mixingChannel.Add((IntPtr)this.hMixer);
+#else
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hBassStream, bf);
+#endif
 				//bool b2 = BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
 //Trace.TraceInformation( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
@@ -1891,7 +1901,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			return true;
 		}
 
-		#region [ tオンメモリ方式でデコードする() ]
+#region [ tオンメモリ方式でデコードする() ]
 		public void tオンメモリ方式でデコードする( string strファイル名, out byte[] buffer,
 			out int nPCMデータの先頭インデックス, out int totalPCMSize, out CWin32.WAVEFORMATEX wfx,
 			bool bIntegrateWaveHeader )
@@ -2004,7 +2014,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				sounddecoder = null;
 			}
 		}
-		#endregion
-		#endregion
+#endregion
+#endregion
 	}
 }
