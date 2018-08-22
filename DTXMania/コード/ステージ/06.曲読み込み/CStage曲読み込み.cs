@@ -436,7 +436,7 @@ namespace DTXMania
 							Trace.TraceInformation("WAV読込所要時間({0,4}):     {1}", CDTXMania.Instance.DTX.listWAV.Count, span.ToString());
 							timeBeginLoadWAV = DateTime.Now;
 
-							if (CDTXMania.Instance.ConfigIni.bDynamicBassMixerManagement)
+							if (CDTXMania.Instance.ConfigIni.bDynamicBassMixerManagement.Value)
 							{
 								CDTXMania.Instance.DTX.PlanToAddMixerChannel();
 							}
