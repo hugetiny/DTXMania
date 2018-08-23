@@ -70,11 +70,13 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			string fontname = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicSongCommentFontFileName");
-			string path = Path.Combine(@"Graphics\fonts", fontname);
-			this.pfSongPath描画用フォント = new CPrivateFastFont( CSkin.Path(path), (float)(12f * Scale.Y * 72f / 96f) );
-			// 72f/96f: 従来互換のために追加。DPI依存→非依存化に付随した変更。
-			this.ftSongPath描画用フォント = this.pfSongPath描画用フォント.font;
+			//string fontname = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicSongCommentFontFileName");
+			//string path = Path.Combine(@"Graphics\fonts", fontname);
+			//this.pfSongPath描画用フォント = new CPrivateFastFont( CSkin.Path(path), (float)(12f * Scale.Y * 72f / 96f) );
+			//// 72f/96f: 従来互換のために追加。DPI依存→非依存化に付随した変更。
+			//this.ftSongPath描画用フォント = this.pfSongPath描画用フォント.font;
+
+			this.ftSongPath描画用フォント = new Font("MS UI Gothic", (float)(12f * Scale.Y));
 
 			this.txSongPath = null;
 			this.strSongPath = "";

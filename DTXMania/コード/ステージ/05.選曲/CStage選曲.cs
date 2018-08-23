@@ -110,7 +110,6 @@ namespace DTXMania
 			list子Activities.Add(this.actShowCurrentPosition = new CActSelectShowCurrentPosition());
 			list子Activities.Add(this.actQuickConfig = new CActSelectQuickConfig());
 			list子Activities.Add(this.actAVI = new CAct演奏AVI());
-			list子Activities.Add(this.actShowSongPath = new CActShowSongPath());
 
 			CommandHistory = new CCommandHistory();    // #24063 2011.1.16 yyagi
 			actPreimageパネル.actAVI = this.actAVI;
@@ -126,7 +125,6 @@ namespace DTXMania
 			this.act演奏履歴パネル.t選択曲が変更された();
 			this.actステータスパネル.t選択曲が変更された();
 			this.actArtistComment.t選択曲が変更された();
-			this.actShowSongPath.t選択曲が変更された();
 
 			#region [ プラグインにも通知する（BOX, RANDOM, BACK なら通知しない）]
 			//---------------------
@@ -180,7 +178,7 @@ namespace DTXMania
 			{
 				this.eフェードアウト完了時の戻り値 = E戻り値.継続;
 				this.bBGM再生済み = false;
-
+				this.ftフォント = new Font("MS PGothic", 26f * Scale.X, GraphicsUnit.Pixel);
 				for (int i = 0; i < 4; i++)
 				{
 					this.ctキー反復用[i] = new CCounter(0, 0, 0, CDTXMania.Instance.Timer);
@@ -201,6 +199,11 @@ namespace DTXMania
 			Trace.Indent();
 			try
 			{
+				if (this.ftフォント != null)
+				{
+					this.ftフォント.Dispose();
+					this.ftフォント = null;
+				}
 				for (int i = 0; i < 4; i++)
 				{
 					this.ctキー反復用[i] = null;
@@ -328,7 +331,6 @@ namespace DTXMania
 				}
 				#endregion
 				this.actShowCurrentPosition.On進行描画();               // #27648 2011.3.28 yyagi
-				this.actShowSongPath.On進行描画();                      // #38404 2018.7.30 yyagi
 
 				#region [ フェーズ処理 ]
 				switch (base.eフェーズID)
@@ -429,12 +431,6 @@ namespace DTXMania
 												return 0;
 											}
 						*/
-						#endregion
-						#region [ Delete: 曲データのフルパス表示ON/OFF ]
-						if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.Delete))
-						{
-							CDTXMania.Instance.ConfigIni.bShowSongPath.Value = !CDTXMania.Instance.ConfigIni.bShowSongPath.Value;
-						}
 						#endregion
 						if (this.act曲リスト.r現在選択中の曲 != null)
 						{
@@ -760,13 +756,12 @@ namespace DTXMania
 		private CActSortSongs actSortSongs;
 		private CActSelectQuickConfig actQuickConfig;
 		private CAct演奏AVI actAVI;
-		private CActShowSongPath actShowSongPath;
 
 		private bool bBGM再生済み;
 		private STキー反復用カウンタ ctキー反復用;
 		private CCounter ct登場時アニメ用共通;
 		private E戻り値 eフェードアウト完了時の戻り値;
-
+		private Font ftフォント;
 		private CTextureAf txコメントバー;
 		private CTextureAf tx下部パネル;
 		private CTextureAf tx上部パネル;

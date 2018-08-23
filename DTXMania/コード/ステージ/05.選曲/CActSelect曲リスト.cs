@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Drawing.Text;
-using System.IO;
 using SharpDX;
 using FDK;
 
@@ -330,8 +329,7 @@ namespace DTXMania
 			{
 				this.On非活性化();
 				CDTXMania.Instance.Songs管理 = cs;
-                if( CDTXMania.Instance.r現在のステージ.eステージID == CStage.Eステージ.選曲 ) // #38233 2018.4.28 kairera0467 選曲画面以外から呼び出された時に活性化とリソース生成が行われないよう変更
-				    this.On活性化();
+				this.On活性化();
 
 				if (this.r現在選択中の曲 != null)      // r現在選択中の曲==null とは、「最初songlist.dbが無かった or 検索したが1曲もない」
 				{
@@ -428,20 +426,12 @@ namespace DTXMania
 			FontStyle regular = FontStyle.Regular;
 			if (CDTXMania.Instance.ConfigIni.bItalicFontSongSelect) regular |= FontStyle.Italic;
 			if (CDTXMania.Instance.ConfigIni.bBoldFontSongSelect) regular |= FontStyle.Bold;
-
-			string fontname = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicSongListFontFileName");
-			string path = Path.Combine(@"Graphics\fonts", fontname);
-			this.privateFont_SongList = new CPrivateFastFont(CSkin.Path(path), (float)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 2 * Scale.Y * 72f / 96f), regular);
-																								// 72f/96f: 従来互換のために追加。DPI依存→非依存化に付随した変更。
-			this.ft曲リスト用フォント = this.privateFont_SongList.font;
-
-			//this.ft曲リスト用フォント = new Font(
-			//	CDTXMania.Instance.ConfigIni.strFontSongSelect,
-			//	(float)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 2 * Scale.Y),   // 後でScale.Yを掛けないように直すこと(Config.ini初期値変更)
-			//	regular,
-			//	GraphicsUnit.Pixel
-			//);
-
+			this.ft曲リスト用フォント = new Font(
+				CDTXMania.Instance.ConfigIni.strFontSongSelect,
+				(float)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 2 * Scale.Y),   // 後でScale.Yを掛けないように直すこと(Config.ini初期値変更)
+				regular,
+				GraphicsUnit.Pixel
+			);
 
 
 			// 現在選択中の曲がない（＝はじめての活性化）なら、現在選択中の曲をルートの先頭ノードに設定する。
@@ -1157,7 +1147,6 @@ namespace DTXMania
 		private CCounter[] ct登場アニメ用 = new CCounter[13];
 		private EPart e楽器パート;
 		private Font ft曲リスト用フォント;
-		private CPrivateFastFont privateFont_SongList;
 		private long nスクロールタイマ;
 		private int n現在のスクロールカウンタ;
 		private int n現在の選択行;

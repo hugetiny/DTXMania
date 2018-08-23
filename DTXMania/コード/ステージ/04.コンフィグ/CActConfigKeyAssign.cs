@@ -113,11 +113,13 @@ namespace DTXMania
 			{
 				string fontname = CDTXMania.Instance.Resources.Explanation("strCfgConfigurationKeyAssignFontFileName");
 				string path = Path.Combine(@"Graphics\fonts", fontname);
-				this.pf項目名 = new CPrivateFastFont(CSkin.Path(path), (int)(18 * Scale.Y));   // t項目リストの設定 の前に必要
+				this.prvFont = new CPrivateFastFont(CSkin.Path(path), (int)(18 * Scale.Y));
+				//this.prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y)); // t項目リストの設定 の前に必要
 				this.txカーソル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenConfig menu cursor.png"), false);
 
 				#region [ Hit key to assign ダイアログイメージ作成 ]
-				this.pfダイアログ = new CPrivateFastFont(CSkin.Path(Path.Combine(@"Graphics\fonts\", fontname)), 30, FontStyle.Bold);
+				string fontPath = CDTXMania.Instance.Resources.Explanation("strCfgBaseFontFileName");
+				var prvFont = new CPrivateFastFont(CSkin.Path(Path.Combine(@"Graphics\fonts\", fontPath)), 30, FontStyle.Bold);
 				var bmp = new Bitmap(CSkin.Path(@"Graphics\ScreenConfig hit key to assign dialog.png"));
 
 				string strHitKey = CDTXMania.Instance.Resources.Explanation("strCfgHitKeyToAssign");
@@ -129,16 +131,16 @@ namespace DTXMania
 				foreach (var s in strComments)
 				{
 					string ss = s.Trim();
-					var b = pfダイアログ.DrawPrivateFont(ss, Color.White);
+					var b = prvFont.DrawPrivateFont(ss, Color.White);
 					int x = (bmp.Width - b.Width) / 2;
 					g.DrawImage(b, x, y);
 					b.Dispose();
 
-					y += pfダイアログ.RectStrings.Height;
+					y += prvFont.RectStrings.Height;
 				}
 				g.Dispose();
-				//prvFont.Dispose();
-				//prvFont = null;
+				prvFont.Dispose();
+				prvFont = null;
 
 				this.txHitKeyダイアログ = TextureFactory.tテクスチャの生成(bmp, false);
 
@@ -154,8 +156,7 @@ namespace DTXMania
 		{
 			if (base.b活性化してる)
 			{
-				TextureFactory.t安全にDisposeする(ref pfダイアログ);
-				TextureFactory.t安全にDisposeする(ref pf項目名);
+				TextureFactory.t安全にDisposeする(ref prvFont);
 			}
 		}
 
@@ -203,7 +204,7 @@ namespace DTXMania
 				int num5 = 20;
 				int x = 0x134;
 				int y = 0x40;
-				using (Bitmap bmpStr = pf項目名.DrawPrivateFont(this.strパッド名, Color.White, Color.Black))
+				using (Bitmap bmpStr = prvFont.DrawPrivateFont(this.strパッド名, Color.White, Color.Black))
 				{
 					CTexture txStr = TextureFactory.tテクスチャの生成(bmpStr);
 					txStr.vc拡大縮小倍率 = new Vector3(0.75f, 0.75f, 1f);
@@ -239,8 +240,8 @@ namespace DTXMania
 							strParam = string.Format("{0,2}.", i + 1);
 							b強調 = (ptr == i);
 							using (Bitmap bmpStr = b強調 ?
-									pf項目名.DrawPrivateFont(strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
-									pf項目名.DrawPrivateFont(strParam, Color.White, Color.Black))
+									prvFont.DrawPrivateFont(strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
+									prvFont.DrawPrivateFont(strParam, Color.White, Color.Black))
 							{
 								CTexture txStr = TextureFactory.tテクスチャの生成(bmpStr, false);
 								txStr.vc拡大縮小倍率 = new Vector3(0.75f, 0.75f, 1f);
@@ -255,8 +256,8 @@ namespace DTXMania
 				strParam = "Reset All Assign";
 				b強調 = (ptr == CConfigXml.AssignableCodes - 2);
 				using (Bitmap bmpStr = b強調 ?
-						pf項目名.DrawPrivateFont(strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
-						pf項目名.DrawPrivateFont(strParam, Color.White, Color.Black))
+						prvFont.DrawPrivateFont(strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
+						prvFont.DrawPrivateFont(strParam, Color.White, Color.Black))
 				{
 					CTexture txStr = TextureFactory.tテクスチャの生成(bmpStr, false);
 					txStr.vc拡大縮小倍率 = new Vector3(0.75f, 0.75f, 1f);
@@ -268,8 +269,8 @@ namespace DTXMania
 				strParam = "<< Returnto List";
 				b強調 = (ptr == CConfigXml.AssignableCodes - 1);
 				using (Bitmap bmpStr = b強調 ?
-						pf項目名.DrawPrivateFont(strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
-						pf項目名.DrawPrivateFont(strParam, Color.White, Color.Black))
+						prvFont.DrawPrivateFont(strParam, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
+						prvFont.DrawPrivateFont(strParam, Color.White, Color.Black))
 				{
 					CTexture txStr = TextureFactory.tテクスチャの生成(bmpStr, false);
 					txStr.vc拡大縮小倍率 = new Vector3(0.75f, 0.75f, 1f);
@@ -444,7 +445,7 @@ namespace DTXMania
 		private string strパッド名;
 		private CTexture txHitKeyダイアログ;
 		private CTexture txカーソル;
-		private CPrivateFastFont pf項目名, pfダイアログ;
+		private CPrivateFastFont prvFont;
 
 		private void tアサインコードの描画_Joypad(int line, int x, int y, int nID, int nCode, bool b強調)
 		{
@@ -491,8 +492,8 @@ namespace DTXMania
 					break;
 			}
 			using (Bitmap bmpStr = b強調 ?
-					pf項目名.DrawPrivateFont(str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
-					pf項目名.DrawPrivateFont(str, Color.White, Color.Black))
+					prvFont.DrawPrivateFont(str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
+					prvFont.DrawPrivateFont(str, Color.White, Color.Black))
 			{
 				CTexture txStr = TextureFactory.tテクスチャの生成(bmpStr, false);
 				txStr.vc拡大縮小倍率 = new Vector3(0.75f, 0.75f, 1f);
@@ -518,8 +519,8 @@ namespace DTXMania
 			}
 
 			using (Bitmap bmpStr = b強調 ?
-					pf項目名.DrawPrivateFont(str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
-					pf項目名.DrawPrivateFont(str, Color.White, Color.Black))
+					prvFont.DrawPrivateFont(str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
+					prvFont.DrawPrivateFont(str, Color.White, Color.Black))
 			{
 				CTexture txStr = TextureFactory.tテクスチャの生成(bmpStr, false);
 				txStr.vc拡大縮小倍率 = new Vector3(0.75f, 0.75f, 1f);
@@ -532,8 +533,8 @@ namespace DTXMania
 		{
 			string str = string.Format("{0,2}. MidiIn #{1} code.{2}", line, nID, nCode);
 			using (Bitmap bmpStr = b強調 ?
-					pf項目名.DrawPrivateFont(str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
-					pf項目名.DrawPrivateFont(str, Color.White, Color.Black))
+					prvFont.DrawPrivateFont(str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
+					prvFont.DrawPrivateFont(str, Color.White, Color.Black))
 			{
 				CTexture txStr = TextureFactory.tテクスチャの生成(bmpStr, false);
 				txStr.vc拡大縮小倍率 = new Vector3(0.75f, 0.75f, 1f);
@@ -546,8 +547,8 @@ namespace DTXMania
 		{
 			string str = string.Format("{0,2}. Mouse Button{1}", line, nCode);
 			using (Bitmap bmpStr = b強調 ?
-					pf項目名.DrawPrivateFont(str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
-					pf項目名.DrawPrivateFont(str, Color.White, Color.Black))
+					prvFont.DrawPrivateFont(str, Color.White, Color.Black, Color.Yellow, Color.OrangeRed) :
+					prvFont.DrawPrivateFont(str, Color.White, Color.Black))
 			{
 				CTexture txStr = TextureFactory.tテクスチャの生成(bmpStr, false);
 				txStr.vc拡大縮小倍率 = new Vector3(0.75f, 0.75f, 1f);
