@@ -839,7 +839,7 @@ namespace DTXMania
 
 				#region [ サウンドのタイムストレッチモード変更 ]
 
-				FDK.CSound管理.bIsTimeStretch = CDTXMania.Instance.ConfigIni.bUseOSTimer;
+				FDK.CSound管理.bIsTimeStretch = CDTXMania.Instance.ConfigIni.bTimeStretch.Value;
 
 				#endregion
 				#region [ 電源プラン変更 ]
