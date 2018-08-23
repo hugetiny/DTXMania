@@ -110,6 +110,7 @@ namespace DTXMania
 			list子Activities.Add(this.actShowCurrentPosition = new CActSelectShowCurrentPosition());
 			list子Activities.Add(this.actQuickConfig = new CActSelectQuickConfig());
 			list子Activities.Add(this.actAVI = new CAct演奏AVI());
+			list子Activities.Add(this.actShowSongPath = new CActShowSongPath());
 
 			CommandHistory = new CCommandHistory();    // #24063 2011.1.16 yyagi
 			actPreimageパネル.actAVI = this.actAVI;
@@ -125,6 +126,7 @@ namespace DTXMania
 			this.act演奏履歴パネル.t選択曲が変更された();
 			this.actステータスパネル.t選択曲が変更された();
 			this.actArtistComment.t選択曲が変更された();
+			this.actShowSongPath.t選択曲が変更された();
 
 			#region [ プラグインにも通知する（BOX, RANDOM, BACK なら通知しない）]
 			//---------------------
@@ -331,6 +333,7 @@ namespace DTXMania
 				}
 				#endregion
 				this.actShowCurrentPosition.On進行描画();               // #27648 2011.3.28 yyagi
+				this.actShowSongPath.On進行描画();                      // #38404 2018.7.30 yyagi
 
 				#region [ フェーズ処理 ]
 				switch (base.eフェーズID)
@@ -434,6 +437,12 @@ namespace DTXMania
 						#endregion
 						if (this.act曲リスト.r現在選択中の曲 != null)
 						{
+							#region [ Delete: 曲データのフルパス表示ON/OFF ]
+							if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.Delete))
+							{
+								CDTXMania.Instance.ConfigIni.bShowSongPath.Value = !CDTXMania.Instance.ConfigIni.bShowSongPath.Value;
+							}
+							#endregion
 							#region [ Right ]
 							if (CDTXMania.Instance.Input管理.Keyboard.bキーが押された((int)SlimDXKey.RightArrow))
 							{
@@ -756,6 +765,7 @@ namespace DTXMania
 		private CActSortSongs actSortSongs;
 		private CActSelectQuickConfig actQuickConfig;
 		private CAct演奏AVI actAVI;
+		private CActShowSongPath actShowSongPath;
 
 		private bool bBGM再生済み;
 		private STキー反復用カウンタ ctキー反復用;
