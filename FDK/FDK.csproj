@@ -218,11 +218,11 @@ echo.
 echo (1) 出力フォルダ から ソリューション出力フォルダ へコピーします。（日付の新しいファイルのみ）
 set DESTDIR="$(SolutionDir)$(OutDir)dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D /EXCLUDE:"$(TargetFileName)"
+xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D /EXCLUDE:$(TargetFileName)
 
 echo.
 echo (2) 出力フォルダ から 実行時リソースフォルダ にコピーします。（日付の新しいファイルのみ）
-set DESTDIR="%25RUNTIMEDIR%25\dll"
+set DESTDIR=%25RUNTIMEDIR%25\dll
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
 xcopy "$(TargetDir)*.dll"  %25DESTDIR%25 /Y /D
 
