@@ -84,6 +84,7 @@ namespace FDK
 			protected set;
 		}
 		public Vector3 vc拡大縮小倍率;
+		public string filename;
 		#endregion
 
 		// コンストラクタ
@@ -101,6 +102,7 @@ namespace FDK
 			this.vc拡大縮小倍率 = new Vector3( 1f, 1f, 1f );
 			this.bFlipY = false;
 //			this._txData = null;
+			this.filename = "";
 		}
 
 		/// <summary>
@@ -260,6 +262,7 @@ namespace FDK
 				throw new FileNotFoundException( string.Format( "ファイルが存在しません。\n[{0}]", strファイル名 ) );
 
 			Byte[] _txData = File.ReadAllBytes( strファイル名 );
+			this.filename = Path.GetFileName( strファイル名 );
 			MakeTexture( device, _txData, format, b黒を透過する, pool );
 		}
 
@@ -638,7 +641,7 @@ namespace FDK
 			// CTextureのDispose漏れと見做して警告をログ出力する
 			if (!this.bSharpDXTextureDispose完了済み)
 			{
-				Trace.TraceWarning("CTexture: Dispose漏れを検出しました。(Size=({0}, {1}))", sz画像サイズ.Width, sz画像サイズ.Height );
+				Trace.TraceWarning("CTexture: Dispose漏れを検出しました。(Size=({0}, {1}), filename={2})", sz画像サイズ.Width, sz画像サイズ.Height, filename );
 			}
 			this.Dispose(false);
 		}
