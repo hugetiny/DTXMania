@@ -686,7 +686,10 @@ namespace DTXMania
                         actGauge.On進行描画();
                         actGraph.On進行描画();
                         actLaneFlushD.On進行描画();
-                        actDANGER.t進行描画(actGauge.IsDanger);
+						if (CDTXMania.Instance.ConfigIni.bStageFailed)  // #38693 2018.10.30 yyagi red-flashing only when StageFailed=ON
+						{
+							actDANGER.t進行描画(actGauge.IsDanger);
+						}
                     }
                     act譜面スクロール速度.On進行描画();
 					t進行描画_判定ライン();
@@ -1583,7 +1586,7 @@ namespace DTXMania
 		private void t入力処理_ドラム()
 		{
 			for (EPad ePad = EPad.DrumsPadMin; ePad < EPad.DrumsPadMax; ePad++)        // #27029 2012.1.4 from: <10 to <=10; Eパッドの要素が１つ（HP）増えたため。
-																																								 //		  2012.1.5 yyagi: (int)Eパッド.MAX に変更。Eパッドの要素数への依存を無くすため。
+																					 //		  2012.1.5 yyagi: (int)Eパッド.MAX に変更。Eパッドの要素数への依存を無くすため。
 			{
 				List<STInputEvent> listInputEvent = CDTXMania.Instance.Pad.GetEvents(ePad);
 
