@@ -222,7 +222,7 @@ namespace DTXMania
 		// #24820 2013.1.17 yyagi 初期値を4に戻した。動的なミキサー制御がうまく動作しているため。
 		public COptionInteger nPolyphonicSounds;
 		[DataMember]
-		// #24820 2013.1.15 yyagi WASAPIのバッファサイズ 初期値は50(0で自動設定)
+		// #24820 2013.1.15 yyagi WASAPIのバッファサイズ(WASAPI排他時)または更新間隔(WASAPI共有時)。初期値は更新間隔=2。(0で自動設定)
 		public COptionInteger nWASAPIBufferSizeMs;
 
 
@@ -585,7 +585,7 @@ namespace DTXMania
 			nVelocityMin.HH.Value = 20;
 
 			nRisky = new COptionInteger(0);
-			nWASAPIBufferSizeMs = new COptionInteger(0);
+			nWASAPIBufferSizeMs = new COptionInteger(2);
 			nChipDisplayTimeMs = new COptionInteger(3000);
 			nChipFadeoutTimeMs = new COptionInteger(2000);
 			rcViewerWindow = new Coordinates.CRect(100, 100, 640, 360);
