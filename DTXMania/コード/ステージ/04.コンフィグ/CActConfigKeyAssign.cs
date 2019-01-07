@@ -587,7 +587,11 @@ namespace DTXMania
 
 		private bool tキーチェックとアサイン_Keyboard()
 		{
-			for( int i = 0; i < 256; i++ )
+			if (CDTXMania.Instance.Input管理.Keyboard == null)        // #38848 2019.1.7 yyagi; need to null check because it become null in case you've never connected keyboard (maybe so)
+			{
+				return false;
+			}
+			for ( int i = 0; i < 256; i++ )
 			{
 				if( i != (int) SlimDXKey.Escape &&
 					i != (int) SlimDXKey.UpArrow &&
@@ -639,6 +643,10 @@ namespace DTXMania
 
 		private bool tキーチェックとアサイン_Mouse()
 		{
+			if (CDTXMania.Instance.Input管理.Mouse == null)		// #38848 2019.1.7 yyagi; need to null check because it become null in case you've never connected mouse (possibly. reported.)
+			{
+				return false;
+			}
 			for (int i = 0; i < 8; i++)
 			{
 				if (CDTXMania.Instance.Input管理.Mouse.bキーが押された(i))
