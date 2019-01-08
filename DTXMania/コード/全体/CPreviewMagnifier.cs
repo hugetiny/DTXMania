@@ -29,14 +29,17 @@ namespace DTXMania
 		public int px;
 		public int py;
 
+		private int freestyle_w, freestyle_h;
+
 		/// <summary>
 		/// プレビュー画像向けの拡大率か(それとも、演奏画面向けの拡大率か)
 		/// </summary>
 		public enum EPreviewType : int
 		{
 			MusicSelect = 0,			// 選曲画面
-			PlayingFront = 1,			// 演奏画面(ウインドウ表示の動画)
-			PlayingBackground = 2		// 演奏画面(背景全画面表示の動画)
+			PlayingFront = 1,			// 演奏画面(ウインドウ表示の動画,サイズ固定(従来方式)
+			PlayingBackground = 2,		// 演奏画面(背景全画面表示の動画)
+			PlayingFrontScalable = 3	// 演奏画面(ウインドウ表示の動画,サイズ可変
 		}
 		public EPreviewType ePreviewType;
 		#endregion
@@ -64,17 +67,23 @@ namespace DTXMania
 		}
 		public CPreviewMagnifier(EPreviewType _ePreviewType)
 		{
-			CPreviewMagnifier_initializer(_ePreviewType, 0, 0);
+			CPreviewMagnifier_initializer(_ePreviewType, 0, 0, 1, 1);
 		}
 		public CPreviewMagnifier( EPreviewType _ePreviewType, int _px, int _py )
 		{
-			CPreviewMagnifier_initializer( _ePreviewType, _px, _py );
+			CPreviewMagnifier_initializer( _ePreviewType, _px, _py, 1, 1 );
 		}
-		private void CPreviewMagnifier_initializer( EPreviewType _ePreviewType, int _px, int _py)
+		public CPreviewMagnifier(EPreviewType _ePreviewType, int _px, int _py, int _w, int _h)
+		{
+			CPreviewMagnifier_initializer(_ePreviewType, _px, _py, _w, _h);
+		}
+		private void CPreviewMagnifier_initializer(EPreviewType _ePreviewType, int _px, int _py, int _w, int _h)
 		{
 			this.ePreviewType = _ePreviewType;
 			this.px = _px;
 			this.py = _py;
+			this.freestyle_w = _w;
+			this.freestyle_h = _h;
 		}
 		#endregion
 
@@ -101,18 +110,20 @@ namespace DTXMania
 			#region [ アスペクト比を維持した拡大縮小 ]
 			this.width = width_org;
 			this.height = height_org;
-			this.magX = magX_org * width_fhd_set / width_org;
-			this.magY = magY_org * height_fhd_set / height_org;
+			int W = (this.ePreviewType == EPreviewType.PlayingFrontScalable)? freestyle_w : width_fhd_set;
+			int H = (this.ePreviewType == EPreviewType.PlayingFrontScalable)? freestyle_h : height_fhd_set;
+			this.magX = magX_org * W  / width_org;
+			this.magY = magY_org * H / height_org;
 
 			if ( magX > magY )
 			{
 				magX = magY;
-				px += (int) ( ( width_fhd_set - ( width_org * magY ) ) / 2 );
+				px += (int) ( ( W - ( width_org * magY ) ) / 2 );
 			}
 			else
 			{
 				magY = magX;
-				py += (int) ( ( height_fhd_set - ( height_org * magX ) ) / 2 );
+				py += (int) ( ( H - ( height_org * magX ) ) / 2 );
 			}
 			#endregion
 		}

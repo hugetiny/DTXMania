@@ -36,20 +36,24 @@ namespace DTXMania
 		/// </remarks>
 		public bool bIsPreviewMovie
 		{
-			get
-			{
-				return _bIsPreviewMovie;
-			}
-			set
-			{
-				_bIsPreviewMovie = value;
-				if (value == true)
-				{
-					this.bFullScreenMovieCentering = true;
-				}
-			}
+			get; set;
 		}
-		private bool _bIsPreviewMovie;
+		//public bool bIsPreviewMovie
+		//{
+		//	get
+		//	{
+		//		return _bIsPreviewMovie;
+		//	}
+		//	set
+		//	{
+		//		_bIsPreviewMovie = value;
+		//		//if (value == true)
+		//		//{
+		//		//	this.bFullScreenMovieCentering = true;
+		//		//}
+		//	}
+		//}
+		//private bool _bIsPreviewMovie;
 
 
 		public bool bHasBGA
@@ -68,27 +72,44 @@ namespace DTXMania
 		/// <summary>
 		/// ウインドウ全体で再生するAVIを、センタリング表示するかどうか
 		/// </summary>
-		public bool bFullScreenMovieCentering
+		//public bool bFullScreenMovieCentering
+		//{
+		//	get;
+		//	set;
+		//}
+
+		public int X
 		{
-			get;
-			set;
+			get; set;
 		}
-		/// <summary>
-		/// ウインドウ全体で再生するAVIを、センタリング表示しない場合の、表示X座標
-		/// </summary>
-		public int nFullScreenMovieX
+		public int Y
 		{
-			get;
-			set;
+			get; set;
 		}
-		/// <summary>
-		/// ウインドウ全体で再生するAVIを、センタリング表示しない場合の、表示Y座標
-		/// </summary>
-		public int nFullScreenMovieY
+		public int Width
 		{
-			get;
-			set;
+			get; set;
 		}
+		public int Height
+		{
+			get; set;
+		}
+		///// <summary>
+		///// ウインドウ全体で再生するAVIを、センタリング表示しない場合の、表示X座標
+		///// </summary>
+		//public int nFullScreenMovieX
+		//{
+		//	get;
+		//	set;
+		//}
+		///// <summary>
+		///// ウインドウ全体で再生するAVIを、センタリング表示しない場合の、表示Y座標
+		///// </summary>
+		//public int nFullScreenMovieY
+		//{
+		//	get;
+		//	set;
+		//}
 
 
 		public void PrepareProperSizeTexture(int width, int height)
@@ -169,7 +190,7 @@ namespace DTXMania
 								{
 									this.rAVI = chip.rAVI;    // DTXVモードで、最初に途中再生で起動したときに、ここに来る
 								}
-								this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bFullAVI);   // DTXVモードで、最初に途中再生で起動したときのために必要
+								this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull);   // DTXVモードで、最初に途中再生で起動したときのために必要
 								this.rAVI.avi.Seek(n移動開始時刻ms - chip.n発声時刻ms);
 								//this.Start( chip.eチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 								this.Start( chip.eチャンネル番号, chip.rAVI, (int)chip.rAVI.avi.nフレーム幅, (int)chip.rAVI.avi.nフレーム高さ, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
@@ -184,7 +205,8 @@ namespace DTXMania
 								{
 									this.rAVI = chip.rAVI;    // DTXVモードで、最初に途中再生で起動したときに、ここに来る
 								}
-								this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bFullAVI);   // DTXVモードで、最初に途中再生で起動したときのために必要
+								//this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bForceScalingAVI);   // DTXVモードで、最初に途中再生で起動したときのために必要
+								this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull);	// DTXVモードで、最初に途中再生で起動したときのために必要
 								this.rAVI.avi.Seek(n移動開始時刻ms - chip.n発声時刻ms);
 								this.Start(chip.eチャンネル番号, chip.rAVI, chip.rAVIPan.sz開始サイズ.Width, chip.rAVIPan.sz開始サイズ.Height, chip.rAVIPan.sz終了サイズ.Width, chip.rAVIPan.sz終了サイズ.Height, chip.rAVIPan.pt動画側開始位置.X, chip.rAVIPan.pt動画側開始位置.Y, chip.rAVIPan.pt動画側終了位置.X, chip.rAVIPan.pt動画側終了位置.Y, chip.rAVIPan.pt表示側開始位置.X, chip.rAVIPan.pt表示側開始位置.Y, chip.rAVIPan.pt表示側終了位置.X, chip.rAVIPan.pt表示側終了位置.Y, chip.n総移動時間, chip.n発声時刻ms);
 							}
@@ -220,6 +242,16 @@ namespace DTXMania
 
 		public int t進行描画(int x, int y, int w, int h)
 		{
+			this.X = x;
+			this.Y = y;
+			this.Width = w;
+			this.Height = h;
+			return t進行描画();
+		}
+		public int t進行描画()
+		{
+			int x = X, y = Y, w = Width, h = Height;
+
 			if (b活性化してる &&
 				CDTXMania.Instance.ConfigIni.bAVI &&
 				!CDTXMania.Instance.ConfigIni.bStoicMode)
@@ -272,11 +304,13 @@ namespace DTXMania
 
 					//if (bFullScreenMovie || bIsPreviewMovie)	// #37227 2017.5.29 yyagi: 動画表示の拡縮を、右横ウインドウ表示での動画再生にも適用
 					{
-						CPreviewMagnifier.EPreviewType e = CPreviewMagnifier.EPreviewType.PlayingFront;
+						CPreviewMagnifier.EPreviewType e = CPreviewMagnifier.EPreviewType.PlayingFrontScalable;
 						if ( bFullScreenMovie ) e = CPreviewMagnifier.EPreviewType.PlayingBackground;
-						if ( bIsPreviewMovie ) e = CPreviewMagnifier.EPreviewType.MusicSelect;
+						if ( bIsPreviewMovie )  e = CPreviewMagnifier.EPreviewType.MusicSelect;
 
-						CPreviewMagnifier cmg = new CPreviewMagnifier( e, xx, yy );
+//Trace.TraceInformation("InMovie1:{0},{1},{2},{3} Type={4}", x, y, w, h, e);
+
+						CPreviewMagnifier cmg = new CPreviewMagnifier( e, xx, yy, w, h );
 						cmg.GetMagnifier(
 							(int) this.rAVI.avi.nフレーム幅,
 							(int) this.rAVI.avi.nフレーム高さ,
@@ -285,22 +319,23 @@ namespace DTXMania
 						);
 						magX = cmg.magX;
 						magY = cmg.magY;
-						if (bFullScreenMovieCentering)
+						//if (bFullScreenMovieCentering)
 						{
 							xx = cmg.px;
 							yy = cmg.py;
 						}
-						else if (bFullScreenMovie)
-						{
-							xx = nFullScreenMovieX;
-							yy = nFullScreenMovieY;
-						}
+						////else if (bFullScreenMovie)
+						////{
+						////	xx = nFullScreenMovieX;
+						////	yy = nFullScreenMovieY;
+						////}
 						// fullscreenでないときはxx=x, yy=yだが、xx,yyの初期値がx,yのためここでわざわざ記載する必要なし
 						//else
 						//{
 						//	xx = x;
 						//	yy = y;
 						//}
+//Trace.TraceInformation("InMovie2:{0},{1},{2},{3}: {4}, {5}", xx, yy, w*magX, w*magY, magX, magY);
 					}
 
 					this.tx描画用.vc拡大縮小倍率.X = magX;
@@ -320,7 +355,7 @@ namespace DTXMania
 				this.rAVI = null;
 				this.n移動開始時刻ms = -1;
 				this.bHasBGA = false;
-				this.bFullScreenMovie = false;
+				//this.bFullScreenMovie = false;
 				base.On活性化();
 			}
 		}

@@ -508,8 +508,8 @@ namespace DTXMania
 						{
 							graphics3.FillRectangle(Brushes.Black,
 								new Rectangle(
-									CDTXMania.Instance.ConfigIni.cdMovieX[CDTXMania.Instance.ConfigIni.eActiveInst],
-									CDTXMania.Instance.ConfigIni.cdMovieY[CDTXMania.Instance.ConfigIni.eActiveInst],
+									CDTXMania.Instance.ConfigIni.cdAVIX[CDTXMania.Instance.ConfigIni.eActiveInst],
+									CDTXMania.Instance.ConfigIni.cdAVIY[CDTXMania.Instance.ConfigIni.eActiveInst],
 									CDTXMania.Instance.Coordinates.Movie.W, CDTXMania.Instance.Coordinates.Movie.H));
 						}
 						#endregion

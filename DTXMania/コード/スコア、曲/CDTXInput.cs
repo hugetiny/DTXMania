@@ -2822,7 +2822,7 @@ namespace DTXMania
 				this.bチップがある.Movie |= chip.bMovie;
 				if (chip.bMovie)
 				{
-					if (chip[EChannel.MovieFull] || CDTXMania.Instance.ConfigIni.bFullAVI)
+					if (chip[EChannel.MovieFull] || CDTXMania.Instance.ConfigIni.bForceScalingAVI)
 					{
 						this.bMovieをFullscreen再生する = true;
 					}

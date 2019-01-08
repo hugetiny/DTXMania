@@ -664,11 +664,12 @@ namespace DTXMania
 					base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED_フェードアウト)
 				{
 					// AVI / BGA
-					actAVI.t進行描画(
-						CDTXMania.Instance.ConfigIni.cdMovieX[CDTXMania.Instance.ConfigIni.eActiveInst],
-						CDTXMania.Instance.ConfigIni.cdMovieY[CDTXMania.Instance.ConfigIni.eActiveInst],
-						CDTXMania.Instance.Coordinates.Movie.W,
-						CDTXMania.Instance.Coordinates.Movie.H);
+					//actAVI.t進行描画(
+					//	CDTXMania.Instance.ConfigIni.cdAVIX[CDTXMania.Instance.ConfigIni.eActiveInst],
+					//	CDTXMania.Instance.ConfigIni.cdAVIY[CDTXMania.Instance.ConfigIni.eActiveInst],
+					//	CDTXMania.Instance.Coordinates.Movie.W,
+					//	CDTXMania.Instance.Coordinates.Movie.H);
+					actAVI.t進行描画();
 					actBGA.On進行描画();
 					#region [MIDIBGM 処理?]
 					if (base.eフェーズID != CStage.Eフェーズ.演奏_STAGE_FAILED)
@@ -3110,26 +3111,54 @@ namespace DTXMania
 						{
 							this.actAVI.bHasBGA = true;
 						}
-						this.actAVI.bFullScreenMovieCentering = (pChip.eチャンネル番号 == EChannel.MovieFull) ? true : CDTXMania.Instance.ConfigIni.bForceFullMovieCentering.Both;
-						if (CDTXMania.Instance.ConfigIni.bFullAVI)
+						//this.actAVI.bFullScreenMovieCentering = (pChip.eチャンネル番号 == EChannel.MovieFull) ? true : CDTXMania.Instance.ConfigIni.bForceFullMovieCentering.Both;
+						//this.actAVI.bFullScreenMovieCentering = true;
+						//if (CDTXMania.Instance.ConfigIni.bForceScalingAVI)
+						//{
+						//	//if (!this.actAVI.bFullScreenMovieCentering)
+						//	//{
+						//		this.actAVI.nFullScreenMovieX = CDTXMania.Instance.ConfigIni.cdForceScaledMovieX.Both;
+						//		this.actAVI.nFullScreenMovieY = CDTXMania.Instance.ConfigIni.cdForceScaledMovieY.Both;
+						//	//}
+						//}
+						//if (pChip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bForceScalingAVI)
+						//if (pChip.eチャンネル番号 == EChannel.MovieFull)
+						//{
+						//	this.actAVI.bFullScreenMovie = true;
+						//}
+
+						if (pChip.eチャンネル番号 == EChannel.MovieFull)			// 新movie(Fullscreen movie)の場合
 						{
-							if (!this.actAVI.bFullScreenMovieCentering)
-							{
-								this.actAVI.nFullScreenMovieX = CDTXMania.Instance.ConfigIni.cdForceFullMovieX.Both;
-								this.actAVI.nFullScreenMovieY = CDTXMania.Instance.ConfigIni.cdForceFullMovieY.Both;
-							}
+							this.actAVI.X      = 0;
+							this.actAVI.Y      = 0;
+							this.actAVI.Width  = SampleFramework.GameWindowSize.Width;
+							this.actAVI.Height = SampleFramework.GameWindowSize.Height;
+//Trace.TraceInformation("MovieFull:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
 						}
-						if (pChip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bFullAVI)
+						else if (CDTXMania.Instance.ConfigIni.bForceScalingAVI)		// 旧AVIを拡大表示する場合
 						{
-							this.actAVI.bFullScreenMovie = true;
+							this.actAVI.X      = CDTXMania.Instance.ConfigIni.cdForceScaledMovieX[CDTXMania.Instance.ConfigIni.eActiveInst];
+							this.actAVI.Y      = CDTXMania.Instance.ConfigIni.cdForceScaledMovieY[CDTXMania.Instance.ConfigIni.eActiveInst];
+							this.actAVI.Width  = CDTXMania.Instance.ConfigIni.cdForceScaledMovieW[CDTXMania.Instance.ConfigIni.eActiveInst];
+							this.actAVI.Height = CDTXMania.Instance.ConfigIni.cdForceScaledMovieH[CDTXMania.Instance.ConfigIni.eActiveInst];
+//Trace.TraceInformation("ScaledAVI:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
 						}
+						else														// 旧AVIをそのまま表示する場合
+						{
+							this.actAVI.X      = CDTXMania.Instance.ConfigIni.cdAVIX[CDTXMania.Instance.ConfigIni.eActiveInst];
+							this.actAVI.Y      = CDTXMania.Instance.ConfigIni.cdAVIY[CDTXMania.Instance.ConfigIni.eActiveInst];
+							this.actAVI.Width  = CDTXMania.Instance.Coordinates.Movie.W;
+							this.actAVI.Height = CDTXMania.Instance.Coordinates.Movie.H;
+//Trace.TraceInformation("NormalAVI:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
+						}
+
+						int startWidth  = !this.actAVI.bFullScreenMovie ? 278 : SampleFramework.GameWindowSize.Width;
+						int startHeight = !this.actAVI.bFullScreenMovie ? 355 : SampleFramework.GameWindowSize.Height;
 
 						switch (pChip.eAVI種別)
 						{
 							case EAVIType.AVI:
 								{
-									int startWidth = !this.actAVI.bFullScreenMovie ? 278 : SampleFramework.GameWindowSize.Width;
-									int startHeight = !this.actAVI.bFullScreenMovie ? 355 : SampleFramework.GameWindowSize.Height;
 									this.actAVI.Start(pChip.eチャンネル番号, pChip.rAVI, startWidth, startHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms);
 								}
 								break;
