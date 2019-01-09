@@ -151,6 +151,10 @@ namespace DTXMania
 
 		public void Start(EChannel nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n移動開始時刻ms)
 		{
+			Start(nチャンネル番号, rAVI, n開始サイズW, n開始サイズH, n終了サイズW, n終了サイズH, n画像側開始位置X, n画像側開始位置Y, n画像側終了位置X, n画像側終了位置Y, n表示側開始位置X, n表示側開始位置Y, n表示側終了位置X, n表示側終了位置Y, n総移動時間ms, n移動開始時刻ms, false);
+		}
+		public void Start(EChannel nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n移動開始時刻ms, bool bPlayFromBegging)
+		{
 			if (nチャンネル番号 == EChannel.Movie || nチャンネル番号 == EChannel.MovieFull)
 			{
 				this.rAVI = rAVI;
@@ -169,11 +173,16 @@ namespace DTXMania
 				this.n総移動時間ms = n総移動時間ms;
 				this.PrepareProperSizeTexture((int)this.rAVI.avi.nフレーム幅, (int)this.rAVI.avi.nフレーム高さ);
 				this.n移動開始時刻ms = (n移動開始時刻ms != -1) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
+				if (bPlayFromBegging)		// DTXCで途中から再生した後、最初から再生すると、動画が最初から再生されず最初の途中再生の続きから再生されてしまう問題の修正
+				{
+					this.rAVI.avi.Seek(0);
+				}
 				this.rAVI.avi.Run();
 			}
 		}
 		public void SkipStart(int n移動開始時刻ms)
 		{
+Trace.TraceInformation("Try to seek...{0}", n移動開始時刻ms);
 			foreach (CChip chip in CDTXMania.Instance.DTX.listChip)
 			{
 				if (chip.n発声時刻ms > n移動開始時刻ms)
@@ -190,8 +199,12 @@ namespace DTXMania
 								{
 									this.rAVI = chip.rAVI;    // DTXVモードで、最初に途中再生で起動したときに、ここに来る
 								}
-								this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull);   // DTXVモードで、最初に途中再生で起動したときのために必要
+								{
+									this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull);   // DTXVモードで、最初に途中再生で起動したときのために必要
+									SetXYWH();
+								}
 								this.rAVI.avi.Seek(n移動開始時刻ms - chip.n発声時刻ms);
+Trace.TraceInformation("Seeked1: abs={0}, rel={1}", n移動開始時刻ms, n移動開始時刻ms - chip.n発声時刻ms);
 								//this.Start( chip.eチャンネル番号, chip.rAVI, SampleFramework.GameWindowSize.Width, SampleFramework.GameWindowSize.Height, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 								this.Start( chip.eチャンネル番号, chip.rAVI, (int)chip.rAVI.avi.nフレーム幅, (int)chip.rAVI.avi.nフレーム高さ, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, chip.n発声時刻ms );
 							}
@@ -205,9 +218,12 @@ namespace DTXMania
 								{
 									this.rAVI = chip.rAVI;    // DTXVモードで、最初に途中再生で起動したときに、ここに来る
 								}
-								//this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bForceScalingAVI);   // DTXVモードで、最初に途中再生で起動したときのために必要
-								this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull);	// DTXVモードで、最初に途中再生で起動したときのために必要
+								{
+									this.bFullScreenMovie = (chip.eチャンネル番号 == EChannel.MovieFull);  // DTXVモードで、最初に途中再生で起動したときのために必要
+									SetXYWH();
+								}
 								this.rAVI.avi.Seek(n移動開始時刻ms - chip.n発声時刻ms);
+Trace.TraceInformation("Seeked2: abs={0}, rel={1}", n移動開始時刻ms, n移動開始時刻ms - chip.n発声時刻ms);
 								this.Start(chip.eチャンネル番号, chip.rAVI, chip.rAVIPan.sz開始サイズ.Width, chip.rAVIPan.sz開始サイズ.Height, chip.rAVIPan.sz終了サイズ.Width, chip.rAVIPan.sz終了サイズ.Height, chip.rAVIPan.pt動画側開始位置.X, chip.rAVIPan.pt動画側開始位置.Y, chip.rAVIPan.pt動画側終了位置.X, chip.rAVIPan.pt動画側終了位置.Y, chip.rAVIPan.pt表示側開始位置.X, chip.rAVIPan.pt表示側開始位置.Y, chip.rAVIPan.pt表示側終了位置.X, chip.rAVIPan.pt表示側終了位置.Y, chip.n総移動時間, chip.n発声時刻ms);
 							}
 							continue;
@@ -230,6 +246,39 @@ namespace DTXMania
 				this.n移動開始時刻ms = n再開時刻ms;
 			}
 		}
+
+		/// <summary>
+		/// 動画描画領域の設定
+		/// </summary>
+		public void SetXYWH()
+		{
+			if (bFullScreenMovie)										// 新movie(Fullscreen movie)の場合
+			{
+				X = 0;
+				Y = 0;
+				Width = SampleFramework.GameWindowSize.Width;
+				Height = SampleFramework.GameWindowSize.Height;
+//Trace.TraceInformation("MovieFull:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
+			}
+			else if (CDTXMania.Instance.ConfigIni.bForceScalingAVI)		// 旧AVIを拡大表示する場合
+			{
+				X = CDTXMania.Instance.ConfigIni.cdForceScaledMovieX[CDTXMania.Instance.ConfigIni.eActiveInst];
+				Y = CDTXMania.Instance.ConfigIni.cdForceScaledMovieY[CDTXMania.Instance.ConfigIni.eActiveInst];
+				Width = CDTXMania.Instance.ConfigIni.cdForceScaledMovieW[CDTXMania.Instance.ConfigIni.eActiveInst];
+				Height = CDTXMania.Instance.ConfigIni.cdForceScaledMovieH[CDTXMania.Instance.ConfigIni.eActiveInst];
+//Trace.TraceInformation("ScaledAVI:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
+			}
+			else                                                        // 旧AVIをそのまま表示する場合
+			{
+				X = CDTXMania.Instance.ConfigIni.cdAVIX[CDTXMania.Instance.ConfigIni.eActiveInst];
+				Y = CDTXMania.Instance.ConfigIni.cdAVIY[CDTXMania.Instance.ConfigIni.eActiveInst];
+				Width = CDTXMania.Instance.Coordinates.Movie.W;
+				Height = CDTXMania.Instance.Coordinates.Movie.H;
+//Trace.TraceInformation("NormalAVI:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
+			}
+		}
+
+
 
 		/// <summary>
 		/// この関数は AVI 再生のために使用できません。かわりに座標と大きさ指定可能な描画関数を使用してください。

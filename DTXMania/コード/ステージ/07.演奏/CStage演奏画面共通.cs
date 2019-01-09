@@ -3122,51 +3122,29 @@ namespace DTXMania
 						//	//}
 						//}
 						//if (pChip.eチャンネル番号 == EChannel.MovieFull || CDTXMania.Instance.ConfigIni.bForceScalingAVI)
-						//if (pChip.eチャンネル番号 == EChannel.MovieFull)
-						//{
-						//	this.actAVI.bFullScreenMovie = true;
-						//}
-
-						if (pChip.eチャンネル番号 == EChannel.MovieFull)			// 新movie(Fullscreen movie)の場合
+						if (pChip.eチャンネル番号 == EChannel.MovieFull)
 						{
-							this.actAVI.X      = 0;
-							this.actAVI.Y      = 0;
-							this.actAVI.Width  = SampleFramework.GameWindowSize.Width;
-							this.actAVI.Height = SampleFramework.GameWindowSize.Height;
-//Trace.TraceInformation("MovieFull:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
-						}
-						else if (CDTXMania.Instance.ConfigIni.bForceScalingAVI)		// 旧AVIを拡大表示する場合
-						{
-							this.actAVI.X      = CDTXMania.Instance.ConfigIni.cdForceScaledMovieX[CDTXMania.Instance.ConfigIni.eActiveInst];
-							this.actAVI.Y      = CDTXMania.Instance.ConfigIni.cdForceScaledMovieY[CDTXMania.Instance.ConfigIni.eActiveInst];
-							this.actAVI.Width  = CDTXMania.Instance.ConfigIni.cdForceScaledMovieW[CDTXMania.Instance.ConfigIni.eActiveInst];
-							this.actAVI.Height = CDTXMania.Instance.ConfigIni.cdForceScaledMovieH[CDTXMania.Instance.ConfigIni.eActiveInst];
-//Trace.TraceInformation("ScaledAVI:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
-						}
-						else														// 旧AVIをそのまま表示する場合
-						{
-							this.actAVI.X      = CDTXMania.Instance.ConfigIni.cdAVIX[CDTXMania.Instance.ConfigIni.eActiveInst];
-							this.actAVI.Y      = CDTXMania.Instance.ConfigIni.cdAVIY[CDTXMania.Instance.ConfigIni.eActiveInst];
-							this.actAVI.Width  = CDTXMania.Instance.Coordinates.Movie.W;
-							this.actAVI.Height = CDTXMania.Instance.Coordinates.Movie.H;
-//Trace.TraceInformation("NormalAVI:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);
+							this.actAVI.bFullScreenMovie = true;
 						}
 
-						int startWidth  = !this.actAVI.bFullScreenMovie ? 278 : SampleFramework.GameWindowSize.Width;
+						this.actAVI.SetXYWH();
+
+						int startWidth = !this.actAVI.bFullScreenMovie ? 278 : SampleFramework.GameWindowSize.Width;
 						int startHeight = !this.actAVI.bFullScreenMovie ? 355 : SampleFramework.GameWindowSize.Height;
 
 						switch (pChip.eAVI種別)
 						{
 							case EAVIType.AVI:
 								{
-									this.actAVI.Start(pChip.eチャンネル番号, pChip.rAVI, startWidth, startHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms);
+									
+									this.actAVI.Start(pChip.eチャンネル番号, pChip.rAVI, startWidth, startHeight, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, pChip.n発声時刻ms, true);
 								}
 								break;
 
 							case EAVIType.AVIPAN:
 								if (pChip.rAVIPan != null)
 								{
-									this.actAVI.Start(pChip.eチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, pChip.n発声時刻ms);
+									this.actAVI.Start(pChip.eチャンネル番号, pChip.rAVI, pChip.rAVIPan.sz開始サイズ.Width, pChip.rAVIPan.sz開始サイズ.Height, pChip.rAVIPan.sz終了サイズ.Width, pChip.rAVIPan.sz終了サイズ.Height, pChip.rAVIPan.pt動画側開始位置.X, pChip.rAVIPan.pt動画側開始位置.Y, pChip.rAVIPan.pt動画側終了位置.X, pChip.rAVIPan.pt動画側終了位置.Y, pChip.rAVIPan.pt表示側開始位置.X, pChip.rAVIPan.pt表示側開始位置.Y, pChip.rAVIPan.pt表示側終了位置.X, pChip.rAVIPan.pt表示側終了位置.Y, pChip.n総移動時間, pChip.n発声時刻ms, true);
 								}
 								break;
 						}
@@ -3335,6 +3313,7 @@ namespace DTXMania
 			}
 			return false;
 		}
+
 
 		public void t再読込()
 		{
@@ -3522,6 +3501,7 @@ namespace DTXMania
 			CDTXMania.Instance.ConfigIni.bBGMPlay.Value = true;
 			CDTXMania.Instance.ConfigIni.nRisky.Value = 0;
 			CDTXMania.Instance.ConfigIni.nShowLagType.Value = EShowLagType.Off;
+			CDTXMania.Instance.ConfigIni.bForceScalingAVI.Value = false;
 		}
 
 		private void t進行描画_チップ_ウェイリング(ref CChip pChip)
