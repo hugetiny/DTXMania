@@ -267,3 +267,4 @@ paket-files/
 __pycache__/
 *.pyc
 Thumbs.db
+実行時フォルダ/Config.ini
