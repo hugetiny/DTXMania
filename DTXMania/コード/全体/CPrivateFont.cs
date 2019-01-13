@@ -33,7 +33,7 @@ namespace DTXMania
 	/// CTexture ctBmp = TextureFactory.tテクスチャの生成( bmp, false );
 	/// ctBMP.t2D描画( ～～～ );
 	/// で表示してください。
-	/// 
+	///  
 	/// 注意点
 	/// 任意のフォントでのレンダリングは結構負荷が大きいので、なるべくなら描画フレーム毎にフォントを再レンダリングするようなことはせず、
 	/// 一旦レンダリングしたものを描画に使い回すようにしてください。
@@ -168,20 +168,20 @@ namespace DTXMania
 			// フォントファイルが見つからなかった場合 (MS PGothicを代わりに指定する)
 			{
 				float emSize = pt * 96.0f / 72.0f;
-				this._font = new Font("MS PGothic", emSize, style, GraphicsUnit.Pixel); //MS PGothicのFontオブジェクトを作成する
+				this._font = new Font(strAlternativeFont, emSize, style, GraphicsUnit.Pixel); //MS PGothicのFontオブジェクトを作成する
 				FontFamily[] ffs = new System.Drawing.Text.InstalledFontCollection().Families;
 				int lcid = System.Globalization.CultureInfo.GetCultureInfo("en-us").LCID;
 				foreach (FontFamily ff in ffs)
 				{
 					// Trace.WriteLine( lcid ) );
-					if (ff.GetName(lcid) == "MS PGothic")
+					if (ff.GetName(lcid) == strAlternativeFont)
 					{
 						this._fontfamily = ff;
-						Trace.TraceInformation("MS PGothicを代わりに指定しました。");
+						Trace.TraceInformation($"{strAlternativeFont}を代わりに指定しました。");
 						return;
 					}
 				}
-				throw new FileNotFoundException("プライベートフォントの追加に失敗し、MS PGothicでの代替処理にも失敗しました。({0})", Path.GetFileName(fontpath));
+				throw new FileNotFoundException($"プライベートフォントの追加に失敗し、{strAlternativeFont}での代替処理にも失敗しました。({Path.GetFileName(fontpath)})");
 			}
 		}
 

@@ -149,11 +149,7 @@ namespace DTXMania
 			}
 		}
 
-		public void Start(EChannel nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n移動開始時刻ms)
-		{
-			Start(nチャンネル番号, rAVI, n開始サイズW, n開始サイズH, n終了サイズW, n終了サイズH, n画像側開始位置X, n画像側開始位置Y, n画像側終了位置X, n画像側終了位置Y, n表示側開始位置X, n表示側開始位置Y, n表示側終了位置X, n表示側終了位置Y, n総移動時間ms, n移動開始時刻ms, false);
-		}
-		public void Start(EChannel nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n移動開始時刻ms, bool bPlayFromBegging)
+		public void Start(EChannel nチャンネル番号, CDTX.CAVI rAVI, int n開始サイズW, int n開始サイズH, int n終了サイズW, int n終了サイズH, int n画像側開始位置X, int n画像側開始位置Y, int n画像側終了位置X, int n画像側終了位置Y, int n表示側開始位置X, int n表示側開始位置Y, int n表示側終了位置X, int n表示側終了位置Y, int n総移動時間ms, int n移動開始時刻ms, bool bPlayFromBeginning = false)
 		{
 			if (nチャンネル番号 == EChannel.Movie || nチャンネル番号 == EChannel.MovieFull)
 			{
@@ -173,7 +169,7 @@ namespace DTXMania
 				this.n総移動時間ms = n総移動時間ms;
 				this.PrepareProperSizeTexture((int)this.rAVI.avi.nフレーム幅, (int)this.rAVI.avi.nフレーム高さ);
 				this.n移動開始時刻ms = (n移動開始時刻ms != -1) ? n移動開始時刻ms : CSound管理.rc演奏用タイマ.n現在時刻;
-				if (bPlayFromBegging)		// DTXCで途中から再生した後、最初から再生すると、動画が最初から再生されず最初の途中再生の続きから再生されてしまう問題の修正
+				if (bPlayFromBeginning)		// DTXCで途中から再生した後、最初から再生すると、動画が最初から再生されず最初の途中再生の続きから再生されてしまう問題の修正
 				{
 					this.rAVI.avi.Seek(0);
 				}
