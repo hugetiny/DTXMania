@@ -3501,7 +3501,8 @@ namespace DTXMania
 			CDTXMania.Instance.ConfigIni.bBGMPlay.Value = true;
 			CDTXMania.Instance.ConfigIni.nRisky.Value = 0;
 			CDTXMania.Instance.ConfigIni.nShowLagType.Value = EShowLagType.Off;
-			CDTXMania.Instance.ConfigIni.bForceScalingAVI.Value = false;
+			//CDTXMania.Instance.ConfigIni.bForceScalingAVI.Value = false;		// DTXVモード時の各種表示要素の表示座標を「譜面制作者のカスタマイズ状態」にするか「DTXMania初期状態」にするかで
+																				// 悩みました。
 		}
 
 		private void t進行描画_チップ_ウェイリング(ref CChip pChip)

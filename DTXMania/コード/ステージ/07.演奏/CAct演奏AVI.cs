@@ -270,8 +270,8 @@ Trace.TraceInformation("Seeked2: abs={0}, rel={1}", n移動開始時刻ms, n移�
 			}
 			else                                                        // 旧AVIをそのまま表示する場合
 			{
-				X = CDTXMania.Instance.ConfigIni.cdAVIX[CDTXMania.Instance.ConfigIni.eActiveInst];
-				Y = CDTXMania.Instance.ConfigIni.cdAVIY[CDTXMania.Instance.ConfigIni.eActiveInst];
+				X = CDTXMania.Instance.ConfigIni.cdLegacyAVIX[CDTXMania.Instance.ConfigIni.eActiveInst];
+				Y = CDTXMania.Instance.ConfigIni.cdLegacyAVIY[CDTXMania.Instance.ConfigIni.eActiveInst];
 				Width = CDTXMania.Instance.Coordinates.Movie.W;
 				Height = CDTXMania.Instance.Coordinates.Movie.H;
 //Trace.TraceInformation("NormalAVI:{0},{1},{2},{3}", this.actAVI.X, this.actAVI.Y, this.actAVI.Width, this.actAVI.Height);

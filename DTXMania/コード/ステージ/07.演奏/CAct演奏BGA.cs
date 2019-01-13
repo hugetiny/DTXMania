@@ -379,8 +379,8 @@ namespace DTXMania
 
 				// (2) バックバッファに txBGA を描画する。
 
-				int x = CDTXMania.Instance.ConfigIni.cdAVIX[ CDTXMania.Instance.ConfigIni.eActiveInst ];
-				int y = CDTXMania.Instance.ConfigIni.cdAVIY[ CDTXMania.Instance.ConfigIni.eActiveInst ];
+				int x = CDTXMania.Instance.ConfigIni.cdLegacyAVIX[ CDTXMania.Instance.ConfigIni.eActiveInst ];
+				int y = CDTXMania.Instance.ConfigIni.cdLegacyAVIY[ CDTXMania.Instance.ConfigIni.eActiveInst ];
 
 				txBGA.t2D描画( CDTXMania.Instance.Device, x, y );
 			}
