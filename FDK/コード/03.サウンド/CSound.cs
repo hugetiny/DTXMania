@@ -1999,11 +1999,12 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 						buffer[ i ] = bs[ i ];
 					}
 				}
-				int s = ( bIntegrateWaveHeader ) ? 44 : 0;
-				for ( int i = 0; i < totalPCMSize; i++ )
-				{
-					buffer[ i + s ] = buffer_rawdata[ i ];
-				}
+				//int s = ( bIntegrateWaveHeader ) ? 44 : 0;
+				//for ( int i = 0; i < totalPCMSize; i++ )
+				//{
+				//	buffer[ i + s ] = buffer_rawdata[ i ];
+				//}
+				Array.Copy(buffer_rawdata, 0, buffer, wavheadersize, totalPCMSize);
 				totalPCMSize += wavheadersize;
 				nPCMデータの先頭インデックス = wavheadersize;
 			}
