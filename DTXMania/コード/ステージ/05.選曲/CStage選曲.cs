@@ -548,7 +548,12 @@ namespace DTXMania
 							{
 								this.actPresound.tサウンド停止();
 								CDTXMania.Instance.Skin.sound取消音.t再生する();
-								this.act曲リスト.tBOXを出る();
+								bool bNeedChangeSkin = this.act曲リスト.tBOXを出る();
+								if (bNeedChangeSkin)
+								{
+									this.eフェードアウト完了時の戻り値 = E戻り値.スキン変更;
+									base.eフェーズID = Eフェーズ.選曲_NowLoading画面へのフェードアウト;
+								}
 								this.t選択曲変更通知();
 							}
 							#endregion
