@@ -1,6 +1,6 @@
 ============================================================
   DTXMania .NET style
-  (C) 2000 2018 DTXMania Group
+  (C) 2000 2019 DTXMania Group
 ============================================================
 
 * Requirements
@@ -131,6 +131,11 @@ It specifies what sound device is used by DTXMania.
 If you specify non-existing sound device, DTXMania
 may not start.
 
+* Notice (Sound Device)
+In case you use sound device connected via USB, it causes larger lags
+and bigger CPU loads than PCIExpress-connected one.
+(It means it may causes not only laggy, but also non-smooth scroll)
+I recoomend you to use on-mother or PCIExpress-connected sound device.
 
 * Notice (E-Drums)
 I DO NOT RECOMMEND USB-MIDI converter, which device name is "USB2.0-MIDI".
