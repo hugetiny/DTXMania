@@ -104,9 +104,9 @@ namespace DTXMania
 					"FDK.dll, or its depended DLL, is not found." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
-				if (!tDLLの存在チェック("dll\\xadec.dll",
-					"xadec.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
-					"xadec.dll is not found." + newLine + "Please download DTXMania again."
+				if (!tDLLの存在チェック("dll\\libbjxa.dll",
+					"libbjxa.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"libbjxa.dll is not found." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\SoundDecoder.dll",
