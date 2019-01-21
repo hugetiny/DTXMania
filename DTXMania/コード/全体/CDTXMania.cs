@@ -546,6 +546,26 @@ namespace DTXMania
 			{
 				bool bUseMIDIIn = !DTXVmode.Enabled;
 				Input管理 = new CInput管理(base.Window.Handle, bUseMIDIIn);
+
+				// If the users uses MIDI2.0-USB cable, then warn it
+				if (bUseMIDIIn && CDTXMania.Instance.ConfigIni.bWarnMIDI20USB.Value)
+				{
+					foreach (IInputDevice device in Input管理.list入力デバイス)
+					{
+						if ((device.e入力デバイス種別 == E入力デバイス種別.MidiIn) && (device.strDeviceName == "USB2.0-MIDI"))
+						{
+							string strWarnMes = CDTXMania.Instance.Resources.Explanation("strWarnMIDI20USB");
+							var ret = MessageBox.Show(strWarnMes, "DTXMania Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+							if (ret == DialogResult.OK)
+							{
+								CDTXMania.Instance.ConfigIni.bWarnMIDI20USB.Value = false;
+							}
+						}
+					}
+				}
+
+
+
 				foreach (IInputDevice device in Input管理.list入力デバイス)
 				{
 					if ((device.e入力デバイス種別 == E入力デバイス種別.Joystick) && !ConfigIni.dicJoystick.Value.ContainsValue(device.GUID))

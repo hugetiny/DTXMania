@@ -111,7 +111,6 @@ namespace FDK
 				for ( uint i = 0; i < nMidiDevices; i++ )
 				{
 					CInputMIDI item = new CInputMIDI( i );
-					this.list入力デバイス.Add( item );
 					CWin32.MIDIINCAPS lpMidiInCaps = new CWin32.MIDIINCAPS();
 					uint num3 = CWin32.midiInGetDevCaps( i, ref lpMidiInCaps, (uint) Marshal.SizeOf( lpMidiInCaps ) );
 					if ( num3 != 0 )
@@ -127,6 +126,8 @@ namespace FDK
 					{
 						Trace.TraceError( "MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", i, lpMidiInCaps.szPname );
 					}
+					item.strDeviceName = lpMidiInCaps.szPname;
+					this.list入力デバイス.Add(item);
 				}
 			}
 			else

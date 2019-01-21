@@ -25,6 +25,7 @@ namespace FDK
 				this.devKeyboard.SetCooperativeLevel( hWnd, CooperativeLevel.NoWinKey | CooperativeLevel.Foreground | CooperativeLevel.NonExclusive );
 				this.devKeyboard.Properties.BufferSize = 32;
 				Trace.TraceInformation( this.devKeyboard.Information.ProductName.Trim(new char[] { '\0' } ) + " を生成しました。" );    // なぜか0x00のゴミが出るので削除
+				this.strDeviceName = this.devKeyboard.Information.ProductName.Trim(new char[] { '\0' });
 			}
 			catch
 			{
@@ -61,6 +62,7 @@ namespace FDK
 		public string GUID { get; private set; }
 		public int ID { get; private set; }
 		public List<STInputEvent> list入力イベント { get; private set; }
+		public string strDeviceName { get; set; }
 
 		public void tポーリング( bool bWindowがアクティブ中, bool bバッファ入力を使用する )
 		{

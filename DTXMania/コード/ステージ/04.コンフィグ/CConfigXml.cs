@@ -393,6 +393,13 @@ namespace DTXMania
 		[DataMember(Order = 114)]
 		public STInstValue<COptionInteger> cdForceScaledMovieH;   // #38362 2018.1.8 add yyagi
 
+		/// <summary>
+		/// 旧AVIを強制的にウインドウ全体に表示するときの、Y座標
+		/// (114で...FullMovieYから...ScalewdMovieYに改名)
+		/// </summary>
+		[DataMember(Order = 115)]
+		public COptionBool bWarnMIDI20USB;		// #37961 2019.1.21 add yyagi
+
 
 		public int GetLaneX(ELane e)
 		{
@@ -548,6 +555,8 @@ namespace DTXMania
 			bEventDrivenWASAPI = new COptionBool( false );
 			bLoadDTXDetail = new COptionBool( false );
 			bShowSongPath = new COptionBool( false );
+
+			bWarnMIDI20USB = new COptionBool(true);
 
 			// string
 			strSongDataPath = new COptionString(@".\");

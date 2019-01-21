@@ -16,26 +16,27 @@ namespace FDK
 
 		// コンストラクタ
 
-		public CInputMouse( IntPtr hWnd, DirectInput directInput )
+		public CInputMouse(IntPtr hWnd, DirectInput directInput)
 		{
 			this.e入力デバイス種別 = E入力デバイス種別.Mouse;
 			this.GUID = "";
 			this.ID = 0;
 			try
 			{
-				this.devMouse = new Mouse( directInput );
-				this.devMouse.SetCooperativeLevel( hWnd, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive );
+				this.devMouse = new Mouse(directInput);
+				this.devMouse.SetCooperativeLevel(hWnd, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
 				this.devMouse.Properties.BufferSize = 0x20;
-				Trace.TraceInformation( this.devMouse.Information.ProductName.Trim(new char[] { '\0' }) + " を生成しました。" );	// なぜか0x00のゴミが出るので削除
+				Trace.TraceInformation(this.devMouse.Information.ProductName.Trim(new char[] { '\0' }) + " を生成しました。");  // なぜか0x00のゴミが出るので削除
+				this.strDeviceName = this.devMouse.Information.ProductName.Trim(new char[] { '\0' });
 			}
 			catch
 			{
-				if( this.devMouse != null )
+				if (this.devMouse != null)
 				{
 					this.devMouse.Dispose();
 					this.devMouse = null;
 				}
-				Trace.TraceWarning( "Mouse デバイスの生成に失敗しました。" );
+				Trace.TraceWarning("Mouse デバイスの生成に失敗しました。");
 				throw;
 			}
 			try
@@ -46,11 +47,11 @@ namespace FDK
 			{
 			}
 
-			for( int i = 0; i < this.bMouseState.Length; i++ )
-				this.bMouseState[ i ] = false;
+			for (int i = 0; i < this.bMouseState.Length; i++)
+				this.bMouseState[i] = false;
 
 			//this.timer = new CTimer( CTimer.E種別.MultiMedia );
-			this.list入力イベント = new List<STInputEvent>( 32 );
+			this.list入力イベント = new List<STInputEvent>(32);
 		}
 
 
@@ -62,6 +63,7 @@ namespace FDK
 		public string GUID { get; private set; }
 		public int ID { get; private set; }
 		public List<STInputEvent> list入力イベント { get; private set; }
+		public string strDeviceName {get; set; }
 
 		public void tポーリング( bool bWindowがアクティブ中, bool bバッファ入力を使用する )
 		{
