@@ -17,6 +17,8 @@ namespace FDK
 
 		private string filename;
 		private byte[] srcBuf = null;
+		private short[] pcmbuf = null;
+
 		//private int nHandle = -1;
 		private bjxa.Decoder bjxa = new bjxa.Decoder();
 		private bjxa.Format format = null;
@@ -106,7 +108,7 @@ namespace FDK
 		{
 			#region [ Decodig xa data ]
 			srcBuf = new byte[format.Blocks * format.BlockSizeXa];
-			var pcmbuf = new short[format.Blocks * format.BlockSizePcm];
+			pcmbuf = new short[format.Blocks * format.BlockSizePcm];
 
 			if (fs.Read(srcBuf, 0, srcBuf.Length) != srcBuf.Length)
 			{
@@ -132,7 +134,8 @@ namespace FDK
 			//string shortpath = Path.GetFileName(filename);
 			//Trace.TraceInformation($"libbjxa: decode succeeded: {shortpath} = {szDestSize}");
 
-			srcBuf = null;
+//SaveWav(filename);
+
 			pcmbuf = null;
 
 			#region [ Debug info ]
@@ -148,10 +151,59 @@ namespace FDK
 		}
 		public override void Close(int nHandle)
 		{
+			srcBuf = null;
 			fs.Close();
 		}
 
 
+
+
+		private void SaveWav(string filename)
+		{
+			long _TotalPCMSize = (uint)format.DataLengthPcm;
+			CWin32.WAVEFORMATEX _wfx = waveformatex;
+
+			string outfile = Path.GetFileName(filename);
+			var fs2 = new FileStream(outfile + ".wav", FileMode.Create);
+			var st = new BinaryWriter(fs2);
+
+			st.Write(new byte[] { 0x52, 0x49, 0x46, 0x46 }, 0, 4);      // 'RIFF'
+			st.Write((int)_TotalPCMSize + 44 - 8);      // filesize - 8 [byte]；今は不明なので後で上書きする。
+			st.Write(new byte[] { 0x57, 0x41, 0x56, 0x45 }, 0, 4);      // 'WAVE'
+			st.Write(new byte[] { 0x66, 0x6D, 0x74, 0x20 }, 0, 4);      // 'fmt '
+			st.Write(new byte[] { 0x10, 0x00, 0x00, 0x00 }, 0, 4);      // chunk size 16bytes
+			st.Write(new byte[] { 0x01, 0x00 }, 0, 2);                  // formatTag 0001 PCM
+			st.Write((short)_wfx.nChannels);                              // channels
+			st.Write((int)_wfx.nSamplesPerSec);                             // samples per sec
+			st.Write((int)_wfx.nAvgBytesPerSec);          // avg bytesper sec
+			st.Write((short)_wfx.nBlockAlign);                        // blockalign = 16bit * mono/stereo
+			st.Write((short)_wfx.wBitsPerSample);                  // bitspersample = 16bits
+
+			st.Write(new byte[] { 0x64, 0x61, 0x74, 0x61 }, 0, 4);      // 'data'
+			st.Write((int)_TotalPCMSize);      // datasize 
+
+
+			//var pcmbuf = new short[format.Blocks * format.BlockSizePcm];
+			//if (fs.Read(srcBuf, 0, srcBuf.Length) != srcBuf.Length)
+			//{
+			//	string s = Path.GetFileName(filename);
+			//	throw new Exception($"Failed to load xa data: {s}");
+			//}
+			//int ret = bjxa.Decode(srcBuf, pcmbuf, out long pcmBufLength);
+
+			int shortsize = (int)(format.Blocks * format.BlockSizePcm);
+			var pcmbuf_bytes = new byte[shortsize * 2];
+			for (int i = 0; i < shortsize; i++)
+			{
+				var b = BitConverter.GetBytes(pcmbuf[i]);
+				pcmbuf_bytes[i * 2] = b[0];
+				pcmbuf_bytes[i * 2 + 1] = b[1];
+			}
+			st.Write(pcmbuf_bytes);
+			Trace.TraceInformation($"wrote ({outfile}.wav) " + fs2.Length);
+			st.Dispose();
+			fs2.Dispose();
+		}
 
 		#region [ IDisposable implementatitons ]
 		//-----------------

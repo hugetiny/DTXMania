@@ -857,7 +857,7 @@ namespace FDK
 			this.strファイル名 = strファイル名;
 			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 ||
 				 String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 ||
-				 String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )	// caselessで文字列比較
+				 String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )   // caselessで文字列比較
 			{
 				try
 				{
@@ -867,7 +867,8 @@ namespace FDK
 				}
 				catch (Exception e)
 				{
-					Trace.TraceWarning("xaファイルの作成に失敗しました。({0})", e.Message);
+					string s = Path.GetFileName(strファイル名);
+					Trace.TraceWarning($"directsoundサウンドの作成に失敗しました。({s}: {e.Message})");
 					Trace.TraceWarning("続けて、他のデコーダでの作成を試みます。");
 				}
 			}
@@ -1067,6 +1068,12 @@ namespace FDK
 			tDirectSoundサウンドを作成する_セカンダリバッファの作成とWAVデータ書き込み(
 				ref byArrWAVファイルイメージ, DirectSound, flags, wfx, nPCMサイズbyte, nPCMデータの先頭インデックス );
 			this.eInstType = _eInstType;
+
+//var st = new FileStream("temp3.wav", FileMode.Create);
+//st.Write(byArrWAVファイルイメージ, 0, byArrWAVファイルイメージ.Length);
+//st.Dispose();
+//Trace.TraceInformation("wrote " + byArrWAVファイルイメージ.Length);
+
 		}
 
 		private void tDirectSoundサウンドを作成する_セカンダリバッファの作成とWAVデータ書き込み
@@ -1917,11 +1924,11 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			}
 			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )
 			{
-				sounddecoder = new Cogg();
+				sounddecoder = new Cmp3ogg();
 			}
 			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 )
 			{
-				sounddecoder = new Cmp3();
+				sounddecoder = new Cmp3ogg();
 			}
 			else
 			{
@@ -1970,7 +1977,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					var ms = new MemoryStream();
 					var bw = new BinaryWriter( ms );
 					bw.Write( new byte[] { 0x52, 0x49, 0x46, 0x46 } );		// 'RIFF'
-					bw.Write( (UInt32) totalPCMSize + 44 - 8 );				// ファイルサイズ - 8 [byte]；今は不明なので後で上書きする。
+					bw.Write( (UInt32) totalPCMSize + 44 - 8 );				// ファイルサイズ - 8 [byte]；
 					bw.Write( new byte[] { 0x57, 0x41, 0x56, 0x45 } );		// 'WAVE'
 					bw.Write( new byte[] { 0x66, 0x6D, 0x74, 0x20 } );		// 'fmt '
 					bw.Write( (UInt32) ( 16 + ( ( wfx拡張領域_Length > 0 ) ? ( 2/*sizeof(WAVEFORMATEX.cbSize)*/ + wfx拡張領域_Length ) : 0 ) ) );	// fmtチャンクのサイズ[byte]
@@ -2007,6 +2014,13 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				Array.Copy(buffer_rawdata, 0, buffer, wavheadersize, totalPCMSize);
 				totalPCMSize += wavheadersize;
 				nPCMデータの先頭インデックス = wavheadersize;
+
+//string filename = Path.GetFileName(this.strファイル名);
+//var st = new FileStream(filename+".wav", FileMode.Create);
+//st.Write(buffer, 0, buffer.Length);
+//st.Dispose();
+//Trace.TraceInformation($"wrote ({filename}.wav)" + buffer.Length);
+
 			}
 			finally
 			{
