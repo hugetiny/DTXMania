@@ -28,7 +28,7 @@ namespace FDK
 			if (stream_in == 0)
 			{
 				BASSError be = Bass.BASS_ErrorGetCode();
-				Trace.TraceInformation("Cmp3: streamcreatefile error: " + be.ToString());
+				Trace.TraceInformation("Cmp3ogg: streamcreatefile error: " + be.ToString());
 			}
 			_TotalPCMSize = Bass.BASS_ChannelGetLength(stream_in);
 
@@ -74,13 +74,10 @@ namespace FDK
 		public override uint GetTotalPCMSize( int nHandle )
 		{
 			return (uint)_TotalPCMSize;
-
-			// return mp3GetTotalPCMSize( nHandle );
 		}
 		public override int Seek( int nHandle, uint dwPosition )
 		{
 			return 0;
-			//return mp3Seek( nHandle, dwPosition );
 		}
 		public override int Decode( int nHandle, IntPtr pDest, uint szDestSize, int bLoop )
 		{
@@ -91,16 +88,18 @@ namespace FDK
 			int LEN = 65536;
 			byte[] data = new byte[LEN]; // 2 x 16-bit and length in is bytes
 			int len = 0;
+			long lastSize = _TotalPCMSize;
 			do
 			{
 				len = Bass.BASS_ChannelGetData(stream_in, data, LEN);
+				lastSize -= len;
 				if (len < 0)
 				{
 					BASSError be = Bass.BASS_ErrorGetCode();
 					Trace.TraceInformation("Cmp3: BASS_ChannelGetData Error: " + be.ToString());
 				}
 				bw_out.Write(data, 0, len);
-			} while (len == LEN);
+			} while (lastSize > 0);
 			#endregion
 
 			wavdata = ms_out.ToArray();
