@@ -1939,32 +1939,29 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			{
 				throw new Exception( string.Format( "ファイルが見つかりませんでした。({0})", strファイル名 ) );
 			}
-			int nHandle = sounddecoder.Open( strファイル名 );
-			if ( nHandle < 0 )
+			int ret = sounddecoder.Open( strファイル名 );
+			if ( ret < 0 )
 			{
-				throw new Exception( string.Format( "Open() に失敗しました。({0})({1})", nHandle, strファイル名 ) );
+				throw new Exception( string.Format( "Open() に失敗しました。({0})({1})", ret, strファイル名 ) );
 			}
-			wfx = new CWin32.WAVEFORMATEX();
-			if ( sounddecoder.GetFormat( nHandle, ref wfx ) < 0 )
+			wfx = sounddecoder.wfx;
+			if ( wfx.wFormatTag == 0 )	// 正しく初期化されていない場合
 			{
-				sounddecoder.Close( nHandle );
+				sounddecoder.Close();
 				throw new Exception( string.Format( "GetFormat() に失敗しました。({0})", strファイル名 ) );
 			}
-			//totalPCMSize = (int) sounddecoder.nTotalPCMSize;		//  tデコード後のサイズを調べる()で既に取得済みの値を流用する。ms単位の高速化だが、チップ音がたくさんあると塵積で結構効果がある
-			totalPCMSize = (int) sounddecoder.GetTotalPCMSize( nHandle );
+			totalPCMSize = (int) sounddecoder.nTotalPCMSize;		//  tデコード後のサイズを調べる()で既に取得済みの値を流用する。ms単位の高速化だが、チップ音がたくさんあると塵積で結構効果がある
 			if ( totalPCMSize == 0 )
 			{
-				sounddecoder.Close( nHandle );
+				sounddecoder.Close();
 				throw new Exception( string.Format( "GetTotalPCMSize() に失敗しました。({0})", strファイル名 ) );
 			}
 			totalPCMSize += ( ( totalPCMSize % 2 ) != 0 ) ? 1 : 0;
 			int wavheadersize = ( bIntegrateWaveHeader ) ? 44 : 0;
-			byte[] buffer_rawdata = new byte[ totalPCMSize ];
 			buffer = new byte[ wavheadersize + totalPCMSize ];
-			GCHandle handle = GCHandle.Alloc( buffer_rawdata, GCHandleType.Pinned );
 			try
 			{
-				if ( sounddecoder.Decode( nHandle, handle.AddrOfPinnedObject(), (uint) totalPCMSize, 0 ) < 0 )
+				if (sounddecoder.Decode(ref buffer, wavheadersize) < 0)
 				{
 					buffer = null;
 					throw new Exception( string.Format( "デコードに失敗しました。({0})", strファイル名 ) );
@@ -2006,12 +2003,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 						buffer[ i ] = bs[ i ];
 					}
 				}
-				//int s = ( bIntegrateWaveHeader ) ? 44 : 0;
-				//for ( int i = 0; i < totalPCMSize; i++ )
-				//{
-				//	buffer[ i + s ] = buffer_rawdata[ i ];
-				//}
-				Array.Copy(buffer_rawdata, 0, buffer, wavheadersize, totalPCMSize);
+
 				totalPCMSize += wavheadersize;
 				nPCMデータの先頭インデックス = wavheadersize;
 
@@ -2024,8 +2016,8 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			}
 			finally
 			{
-				handle.Free();
-				sounddecoder.Close( nHandle );
+				//handle.Free();
+				sounddecoder.Close();
 				sounddecoder = null;
 			}
 		}

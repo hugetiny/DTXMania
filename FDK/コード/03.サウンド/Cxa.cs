@@ -9,24 +9,20 @@ using System.Threading;
 
 namespace FDK
 {
-	public unsafe class Cxa : SoundDecoder    //, IDisposable
+	public unsafe class Cxa	: SoundDecoder, IDisposable
 	{
-		//static byte[] FOURCC = Encoding.ASCII.GetBytes("1DWK"); // KWD1 (little endian)
-
-		public CWin32.WAVEFORMATEX waveformatex;
-
-		private string filename;
+		private string _filename;
 		private byte[] srcBuf = null;
 		private short[] pcmbuf = null;
 
-		//private int nHandle = -1;
-		private bjxa.Decoder bjxa = new bjxa.Decoder();
+		private bjxa.Decoder bjxa;
 		private bjxa.Format format = null;
 		private FileStream fs;
 
 		public override int Open(string filename)
 		{
-			this.filename = filename;
+			this._filename = filename;
+			bjxa = new bjxa.Decoder();
 
 			#region [ Reading XA headers, then store it ]
 			fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);   // Need to set FileShare flag, to avoid locking after Closer()
@@ -51,15 +47,16 @@ namespace FDK
 
 
 			#region [ Getting WAVEFORMEX info ]
-			waveformatex = new CWin32.WAVEFORMATEX();
-
-			waveformatex.wFormatTag = (ushort)format.WaveFormatPcm;
-			waveformatex.nChannels = (ushort)format.Channels;
-			waveformatex.nSamplesPerSec = format.SamplesRate;
-			waveformatex.nAvgBytesPerSec = format.WaveByteRate;
-			waveformatex.nBlockAlign = (ushort)format.WaveBlockAlign;
-			waveformatex.wBitsPerSample = (ushort)format.SampleBits;
-			waveformatex.cbSize = 0;
+			wfx = new CWin32.WAVEFORMATEX(
+				(ushort)format.WaveFormatPcm,       // wFormatTag
+				(ushort)format.Channels,            // nChannels
+				format.SamplesRate,                 // nSamplesPerSec
+				format.WaveByteRate,                // nAvgBytesPerSec
+				(ushort)format.WaveBlockAlign,      // nBlockAlign
+				(ushort)format.SampleBits,          // wBitsPerSample
+				0                                   // cbSize				
+			);
+			#endregion
 
 			#region [ Debug info ]
 			//Debug.WriteLine( "**WAVEFORMATEX**" );
@@ -71,65 +68,29 @@ namespace FDK
 			//Debug.WriteLine( "wBitsPerSample=  " + waveformatex.wBitsPerSample.ToString( "X4" ) );
 			//Debug.WriteLine( "cbSize=          " + waveformatex.cbSize.ToString( "X4" ) );
 			#endregion
-			#endregion
 
-			return 0x7FFFFFFF;  // Anyway, return non-zero value
-		}
-		public override int GetFormat(int nHandle, ref CWin32.WAVEFORMATEX wfx)
-		{
-			#region [ Copying WAVEFORMATEX structure data ]
-			wfx.nAvgBytesPerSec = waveformatex.nAvgBytesPerSec;
-			wfx.wBitsPerSample = waveformatex.wBitsPerSample;
-			wfx.nBlockAlign = waveformatex.nBlockAlign;
-			wfx.nChannels = waveformatex.nChannels;
-			wfx.wFormatTag = waveformatex.wFormatTag;
-			wfx.nSamplesPerSec = waveformatex.nSamplesPerSec;
+			nTotalPCMSize = (uint)format.DataLengthPcm;
 
 			return 0;
-			#endregion
 		}
-		public override uint GetTotalPCMSize(int nHandle)
-		{
-			#region [ Getting PCM length ]
-			uint dlen = (uint)format.DataLengthPcm;
-			#region [ Debug info ]
-			//Debug.WriteLine( "**INTERNAL VALUE**" );
-			//Debug.WriteLine( "dlen=          " + dlen );
-			#endregion
-			#endregion
 
-			return dlen;
-		}
-		public override int Seek(int nHandle, uint dwPosition)
-		{
-			return 0;
-		}
-		public override int Decode(int nHandle, IntPtr pDest, uint szDestSize, int bLoop)
+		public override int Decode(ref byte[] Dest, long offset)
 		{
 			#region [ Decodig xa data ]
 			srcBuf = new byte[format.Blocks * format.BlockSizeXa];
-			pcmbuf = new short[format.Blocks * format.BlockSizePcm];
+			//pcmbuf = new short[format.Blocks * format.BlockSizePcm];
+			pcmbuf = new short[nTotalPCMSize / 2];
+			//Dest = new byte[format.Blocks * format.BlockSizePcm * 2];
+			Dest = new byte[nTotalPCMSize];
 
-			if (fs.Read(srcBuf, 0, srcBuf.Length) != srcBuf.Length)
+			if (fs.Read(srcBuf, 0, srcBuf.Length) < srcBuf.Length)
 			{
-				string s = Path.GetFileName(filename);
+				string s = Path.GetFileName(_filename);
 				throw new Exception( $"Failed to load xa data: {s}");
 			}
+			
 			int ret = bjxa.Decode(srcBuf, pcmbuf, out long pcmBufLength);
-
-			Marshal.Copy(pcmbuf, 0, pDest, (int)format.DataLengthPcm/2);
-
-			#region [ alternative copy way ]
-			// if you can't use Marshal.Copy, try this.
-			//unsafe
-			//{
-			//	short* pWavBuf = (short*)pDest;
-			//	for (int i = 0; i < format.DataLengthPcm/2; i++)
-			//	{
-			//		*pWavBuf++ = pcmbuf[i];
-			//	}
-			//}
-			#endregion
+			Buffer.BlockCopy(pcmbuf, 0, Dest, (int)offset, (int)nTotalPCMSize);
 
 			//string shortpath = Path.GetFileName(filename);
 			//Trace.TraceInformation($"libbjxa: decode succeeded: {shortpath} = {szDestSize}");
@@ -149,7 +110,7 @@ namespace FDK
 
 			return 0;
 		}
-		public override void Close(int nHandle)
+		public override void Close()
 		{
 			srcBuf = null;
 			fs.Close();
@@ -161,7 +122,7 @@ namespace FDK
 		private void SaveWav(string filename)
 		{
 			long _TotalPCMSize = (uint)format.DataLengthPcm;
-			CWin32.WAVEFORMATEX _wfx = waveformatex;
+			CWin32.WAVEFORMATEX _wfx = wfx;
 
 			string outfile = Path.GetFileName(filename);
 			var fs2 = new FileStream(outfile + ".wav", FileMode.Create);
