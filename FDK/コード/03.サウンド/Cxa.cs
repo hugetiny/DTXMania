@@ -59,14 +59,14 @@ namespace FDK
 			#endregion
 
 			#region [ Debug info ]
-			//Debug.WriteLine( "**WAVEFORMATEX**" );
-			//Debug.WriteLine( "wFormatTag=      " + waveformatex.wFormatTag.ToString( "X4" ) );
-			//Debug.WriteLine( "nChannels =      " + waveformatex.nChannels.ToString( "X4" ) );
-			//Debug.WriteLine( "nSamplesPerSec=  " + waveformatex.nSamplesPerSec.ToString( "X8" ) );
-			//Debug.WriteLine( "nAvgBytesPerSec= " + waveformatex.nAvgBytesPerSec.ToString( "X8" ) );
-			//Debug.WriteLine( "nBlockAlign=     " + waveformatex.nBlockAlign.ToString( "X4" ) );
-			//Debug.WriteLine( "wBitsPerSample=  " + waveformatex.wBitsPerSample.ToString( "X4" ) );
-			//Debug.WriteLine( "cbSize=          " + waveformatex.cbSize.ToString( "X4" ) );
+			//Debug.WriteLine("**WAVEFORMATEX**");
+			//Debug.WriteLine("wFormatTag=      " + waveformatex.wFormatTag.ToString("X4"));
+			//Debug.WriteLine("nChannels =      " + waveformatex.nChannels.ToString("X4"));
+			//Debug.WriteLine("nSamplesPerSec=  " + waveformatex.nSamplesPerSec.ToString("X8"));
+			//Debug.WriteLine("nAvgBytesPerSec= " + waveformatex.nAvgBytesPerSec.ToString("X8"));
+			//Debug.WriteLine("nBlockAlign=     " + waveformatex.nBlockAlign.ToString("X4"));
+			//Debug.WriteLine("wBitsPerSample=  " + waveformatex.wBitsPerSample.ToString("X4"));
+			//Debug.WriteLine("cbSize=          " + waveformatex.cbSize.ToString("X4"));
 			#endregion
 
 			nTotalPCMSize = (uint)format.DataLengthPcm;
@@ -79,9 +79,9 @@ namespace FDK
 			#region [ Decodig xa data ]
 			srcBuf = new byte[format.Blocks * format.BlockSizeXa];
 			//pcmbuf = new short[format.Blocks * format.BlockSizePcm];
-			pcmbuf = new short[nTotalPCMSize / 2];
+			pcmbuf = new short[(nTotalPCMSize + offset)　/ 2];
 			//Dest = new byte[format.Blocks * format.BlockSizePcm * 2];
-			Dest = new byte[nTotalPCMSize];
+			Dest = new byte[nTotalPCMSize + offset];
 
 			if (fs.Read(srcBuf, 0, srcBuf.Length) < srcBuf.Length)
 			{
