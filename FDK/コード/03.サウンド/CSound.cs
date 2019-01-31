@@ -350,7 +350,13 @@ namespace FDK
 			//}
 			if ( soundDeviceType == ESoundDeviceType.ExclusiveWASAPI || soundDeviceType == ESoundDeviceType.ASIO || soundDeviceType == ESoundDeviceType.SharedWASAPI )
 			{
-				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, 4 );
+				#region [ CPU論理コア数の取得 (HT含む) ]
+				CWin32.SYSTEM_INFO sysInfo = new CWin32.SYSTEM_INFO();
+				CWin32.GetSystemInfo(ref sysInfo);
+				int nCPUCores = (int)sysInfo.dwNumberOfProcessors;
+				#endregion
+
+				Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, nCPUCores );
 				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 );
 
 				Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
@@ -1715,14 +1721,19 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					}
 				}
 			}
+			// 以下、SharpDX.Multimedia.SoundStreamの生成に失敗した場合の処置
 			catch ( InvalidDataException e)
 			{
-				// DirectShowでのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
 				Trace.TraceWarning( "Warning: {0}: デコードに失敗しました。別の方法でデコードします。({1})", Path.GetFileName(strファイル名), e.Message );
+			}
+			catch ( InvalidOperationException e)	// RIFF chunked mp3の場合は、ここに来る
+			{
+				// DirectShowでのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
+				Trace.TraceWarning("Warning: {0}: RIFF Chunked MP3はSharpDXで扱えないため、別の方法でデコードします。({1})", Path.GetFileName(strファイル名), e.Message );
+
 			}
 			catch ( Exception e)
 			{
-				// DirectShowでのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
 				Trace.TraceWarning( "Warning: {0}: 読み込みに失敗しました。別の方法でデコードします。({1})", Path.GetFileName( strファイル名 ), e.Message );
 			}
 			#endregion
