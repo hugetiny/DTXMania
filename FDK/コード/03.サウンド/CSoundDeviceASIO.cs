@@ -117,6 +117,11 @@ namespace FDK
 			}
 		}
 
+		public string strDefaultSoundDeviceBusType {
+			get;
+			protected set;
+		}
+
 		// メソッド
 
 		public CSoundDeviceASIO( long n希望バッファサイズms, int _nASIODevice )
@@ -231,7 +236,9 @@ namespace FDK
 				#endregion
 			}
 
+			strDefaultSoundDeviceBusType = "";		// ASIOは低遅延前提のはずなので、deafult sound device(のバスタイプ)を気に掛けないことにする
 
+			
 			// ASIO 出力チャンネルの初期化。
 
 			this.tAsioProc = new ASIOPROC( this.tAsio処理 );		// アンマネージに渡す delegate は、フィールドとして保持しておかないとGCでアドレスが変わってしまう。

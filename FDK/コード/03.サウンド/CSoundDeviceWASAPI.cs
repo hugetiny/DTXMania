@@ -104,6 +104,13 @@ namespace FDK
 				}
 			}
 		}
+
+		public string strDefaultSoundDeviceBusType {
+			get;
+			protected set;
+		}
+
+		
 		// メソッド
 
 		/// <summary>
@@ -184,22 +191,30 @@ namespace FDK
 			//(デバッグ用)
 			Trace.TraceInformation("サウンドデバイス一覧:");
 			int a;
-			string strDefaultSoundDeviceName = "";
+			string strDefaultSoundDeviceName = null;
 			BASS_DEVICEINFO[] bassDevInfos = Bass.BASS_GetDeviceInfos();
 			for (a = 0; a < bassDevInfos.GetLength(0); a++)
 			{
 				{
-					Trace.TraceInformation("Sound Device #{0}: {1}: IsDefault={2}, isEnabled={3}, flags={4}, driver={5}",
+					Trace.TraceInformation("Sound Device #{0}: {1}: IsDefault={2}, isEnabled={3}, flags={4}, id={5}",
 						a,
 						bassDevInfos[a].name,
 						bassDevInfos[a].IsDefault,
 						bassDevInfos[a].IsEnabled,
 						bassDevInfos[a].flags,
-						bassDevInfos[a].driver
+						bassDevInfos[a].id
 					);
 					if (bassDevInfos[a].IsDefault)
 					{
+						// これはOS標準のdefault device。後でWASAPIのdefault deviceと比較する。
 						strDefaultSoundDeviceName = bassDevInfos[a].name;
+						
+						// 以下はOS標準 default deviceのbus type (PNPIDの頭の文字列)。上位側で使用する。
+						string[] s = bassDevInfos[a].id.ToString().ToUpper().Split(new char[] { '#' });
+						if (s != null && s[0] != null)
+						{
+							strDefaultSoundDeviceBusType = s[0];
+						}
 					}
 				}
 			}

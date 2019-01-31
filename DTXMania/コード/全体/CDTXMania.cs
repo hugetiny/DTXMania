@@ -867,6 +867,24 @@ namespace DTXMania
 				FDK.CSound管理.bIsTimeStretch = CDTXMania.Instance.ConfigIni.bTimeStretch;
 				Sound管理.nMasterVolume = CDTXMania.Instance.ConfigIni.nMasterVolume;
 				//FDK.CSound管理.bIsMP3DecodeByWindowsCodec = CDTXMania.Instance.ConfigIni.bNoMP3Streaming;
+
+
+				string strDefaultSoundDeviceBusType = CSound管理.strDefaultDeviceBusType;
+				Trace.TraceInformation($"Bus type of the default sound device = {strDefaultSoundDeviceBusType}");
+
+				if (strDefaultSoundDeviceBusType.ToUpper().Equals("USB"))
+				{
+					if (CDTXMania.Instance.ConfigIni.bWarnSoundDeviceOnUSB.Value)
+					{
+						string strWarnMes = CDTXMania.Instance.Resources.Explanation("strWarnSoundDeviceOnUSB");
+						var ret = MessageBox.Show(strWarnMes, "DTXMania Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
+						if (ret == DialogResult.OK)
+						{
+							CDTXMania.Instance.ConfigIni.bWarnSoundDeviceOnUSB.Value = false;
+						}
+					}
+				}
+
 				Trace.TraceInformation("サウンドデバイスの初期化を完了しました。");
 			}
 			catch (Exception e)
@@ -3260,10 +3278,15 @@ namespace DTXMania
 			foreach (System.Management.ManagementObject mo in moc)
 			{
 				Trace.TraceInformation("-------------------------");
-				Trace.TraceInformation("Sound Information:");
+				Trace.TraceInformation("Audio Information:");
 				//Trace.TraceInformation("Caption: " + mo["Caption"]);
-				Trace.TraceInformation("ProductName: " + mo["ProductName"]);
+				//Trace.TraceInformation("ProductName: " + mo["ProductName"]);
 				//Trace.TraceInformation("DMABufferSize: " + mo["DMABufferSize"]);
+
+				foreach (PropertyData property in mo.Properties)
+				{
+					Trace.TraceInformation("{0}:{1}", property.Name, property.Value);
+				}
 			}
 			moc.Dispose();
 			mc.Dispose();

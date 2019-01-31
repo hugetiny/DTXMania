@@ -41,6 +41,14 @@ namespace FDK
 
 		public static bool bIsTimeStretch = false;
 
+		public static string strDefaultDeviceBusType
+		{
+			get
+			{
+				return SoundDevice.strDefaultSoundDeviceBusType;
+			}
+		}
+	
 		private static int _nMasterVolume;
 		public int nMasterVolume
 		{
@@ -359,7 +367,7 @@ namespace FDK
 				Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, nCPUCores );
 				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 );
 
-				Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
+				//Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
 				Trace.TraceInformation( "BASS_CONFIG_UpdateThreads=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS ) );
 			}
 		}

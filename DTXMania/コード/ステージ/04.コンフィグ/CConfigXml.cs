@@ -394,11 +394,16 @@ namespace DTXMania
 		public STInstValue<COptionInteger> cdForceScaledMovieH;   // #38362 2018.1.8 add yyagi
 
 		/// <summary>
-		/// 旧AVIを強制的にウインドウ全体に表示するときの、Y座標
-		/// (114で...FullMovieYから...ScalewdMovieYに改名)
+		/// USBケーブル「MIDI2.0-USB」を使用しているときの警告表示有無
 		/// </summary>
 		[DataMember(Order = 115)]
-		public COptionBool bWarnMIDI20USB;		// #37961 2019.1.21 add yyagi
+		public COptionBool bWarnMIDI20USB;      // #37961 2019.1.21 add yyagi
+
+		/// <summary>
+		/// USB接続のサウンドデバイスを使用しているときの警告表示有無
+		/// </summary>
+		[DataMember(Order = 115)]
+		public COptionBool bWarnSoundDeviceOnUSB;		// #38358 2019.2.1 add yyagi
 
 
 		public int GetLaneX(ELane e)
@@ -557,6 +562,7 @@ namespace DTXMania
 			bShowSongPath = new COptionBool( false );
 
 			bWarnMIDI20USB = new COptionBool(true);
+			bWarnSoundDeviceOnUSB = new COptionBool(true);
 
 			// string
 			strSongDataPath = new COptionString(@".\");

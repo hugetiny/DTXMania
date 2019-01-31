@@ -104,6 +104,12 @@ namespace FDK
 			}
 		}
 
+		public string strDefaultSoundDeviceBusType
+		{
+			get;
+			protected set;
+		}
+
 
 		// メソッド
 
@@ -191,6 +197,9 @@ namespace FDK
 			{
 				ctimer = new CTimer( CTimer.E種別.MultiMedia );
 			}
+
+			strDefaultSoundDeviceBusType = "";		// DirectSoundの処理負荷は軽いので、deafult sound device(のバスタイプ)を気に掛ける必要なし
+
 			Trace.TraceInformation( "DirectSound を初期化しました。({0})({1})", ( priority ) ? "Priority" : "Normal", bUseOSTimer? "OStimer" : "FDKtimer" );
 		}
 
