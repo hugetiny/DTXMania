@@ -3152,6 +3152,7 @@ namespace DTXMania
 				Trace.TraceInformation("MaxClockSpeed = {0}MHz", mo["MaxClockSpeed"]);
 				Trace.TraceInformation("L2CacheSize   = {0}KB", mo["L2CacheSize"]);
 				Trace.TraceInformation("L3CacheSize   = {0}KB", mo["L3CacheSize"]);
+				Trace.TraceInformation("NumberOfCores = {0}", mo["NumberOfCores"]);
 				Trace.TraceInformation("NumberOfLogicalProcessors = {0}", mo["NumberOfLogicalProcessors"]);
 			}
 			moc.Dispose();
