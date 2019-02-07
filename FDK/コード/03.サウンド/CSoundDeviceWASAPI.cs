@@ -348,6 +348,10 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 				else
 				{
 					f更新間隔sec = n希望バッファサイズms / 1000.0f;
+					if (f更新間隔sec < deviceInfo.minperiod)
+					{
+						f更新間隔sec = deviceInfo.minperiod;
+					}
 				}
 				f希望バッファサイズsec = 0.0f;
 			}
