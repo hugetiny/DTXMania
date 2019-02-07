@@ -1220,7 +1220,7 @@ namespace DTXMania
 			{
 				return;
 			}
-			Sound管理.t再生中の処理をする();
+			//Sound管理.t再生中の処理をする();
 
 			if (Timer != null)
 				Timer.t更新();
