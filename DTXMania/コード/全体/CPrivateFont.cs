@@ -105,36 +105,51 @@ namespace DTXMania
 			}
 			else
 			{
-				try
+				if (Path.GetFileName(fontpath) == "")
 				{
-					this._pfc = new System.Drawing.Text.PrivateFontCollection();    //PrivateFontCollectionオブジェクトを作成する
-					this._pfc.AddFontFile(fontpath);								//PrivateFontCollectionにフォントを追加する
-					_fontfamily = _pfc.Families[0];
-				}
-				catch (Exception e) when (e is System.IO.FileNotFoundException || e is System.Runtime.InteropServices.ExternalException)
-				{
-					Trace.TraceWarning(e.Message);
-					Trace.TraceWarning("プライベートフォントの追加に失敗しました({0})。代わりにMS PGothicの使用を試みます。", fontpath);
-					//throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
-					//return;
-
+					Trace.TraceWarning($"No font filename is specified (only path is specified, etc). Trying to use MS PGothic as alternative. ({fontpath})");
 					_fontfamily = null;
 				}
+				else
+				{
+					try
+					{
+						this._pfc = new System.Drawing.Text.PrivateFontCollection();    //PrivateFontCollectionオブジェクトを作成する
+						this._pfc.AddFontFile(fontpath);                                //PrivateFontCollectionにフォントを追加する
+						_fontfamily = _pfc.Families[0];
+					}
+					catch (Exception e) when (e is System.IO.FileNotFoundException || e is System.Runtime.InteropServices.ExternalException)
+					{
+						Trace.TraceWarning(e.Message);
+						Trace.TraceWarning("プライベートフォントの追加に失敗しました({0})。代わりにMS PGothicの使用を試みます。", fontpath);
+						//throw new FileNotFoundException( "プライベートフォントの追加に失敗しました。({0})", Path.GetFileName( fontpath ) );
+						//return;
 
-				//foreach ( FontFamily ff in _pfc.Families )
-				//{
-				//	Debug.WriteLine( "fontname=" + ff.Name );
-				//	if ( ff.Name == Path.GetFileNameWithoutExtension( fontpath ) )
-				//	{
-				//		_fontfamily = ff;
-				//		break;
-				//	}
-				//}
-				//if ( _fontfamily == null )
-				//{
-				//	Trace.TraceError( "プライベートフォントの追加後、検索に失敗しました。({0})", fontpath );
-				//	return;
-				//}
+						_fontfamily = null;
+					}
+					catch (IndexOutOfRangeException e)
+					{
+						Trace.TraceWarning(e.Message);
+						Trace.TraceWarning($"AddFontFile() succeeded, but not reflected to the Array of Families. Failed to add PrivateFont({fontpath}).");
+						_fontfamily = null;
+					}
+
+					//foreach ( FontFamily ff in _pfc.Families )
+					//{
+					//	Debug.WriteLine( "fontname=" + ff.Name );
+					//	if ( ff.Name == Path.GetFileNameWithoutExtension( fontpath ) )
+					//	{
+					//		_fontfamily = ff;
+					//		break;
+					//	}
+					//}
+					//if ( _fontfamily == null )
+					//{
+					//	Trace.TraceError( "プライベートフォントの追加後、検索に失敗しました。({0})", fontpath );
+					//	return;
+					//}
+				}
+
 			}
 
 			// 指定されたフォントスタイルが適用できない場合は、フォント内で定義されているスタイルから候補を選んで使用する
