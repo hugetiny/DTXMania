@@ -479,23 +479,20 @@ namespace DTXMania
 			for (int i = 0; i < 13; i++)
 				this.t曲名バーの生成(i, this.stバー情報[i].strタイトル文字列, this.stバー情報[i].col文字色);
 
-			int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
+			CResources cr = CDTXMania.Instance.Resources;
 			#region [ Songs not found画像 ]
 			try
 			{
 				using (Bitmap image = new Bitmap(SampleFramework.GameWindowSize.Width, (int)(128 * Scale.Y)))
 				using (Graphics graphics = Graphics.FromImage(image))
 				{
-					string[] s1 = { "曲データが見つかりません。", "Songs not found." };
-					string[] s2 = { "曲データをDTXManiaGR.exe以下の", "You need to install songs." };
-					string[] s3 = { "フォルダにインストールして下さい。", "" };
-					graphics.DrawString(s1[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)(2f * Scale.Y));
-					graphics.DrawString(s1[c], this.ft曲リスト用フォント, Brushes.White, (float)0f, (float)0f);
-					graphics.DrawString(s2[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)(44f * Scale.Y));
-					graphics.DrawString(s2[c], this.ft曲リスト用フォント, Brushes.White, (float)0f, (float)(42f * Scale.Y));
-					graphics.DrawString(s3[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)(86f * Scale.Y));
-					graphics.DrawString(s3[c], this.ft曲リスト用フォント, Brushes.White, (float)0f, (float)(84f * Scale.Y));
-
+					string[] s = cr.Explanation("strEnumeratingSongsNotFound").Split(new string[] { Environment.NewLine }, 3, StringSplitOptions.None);
+					for (int i = 0; i < s.Length; i++)
+					{
+						if (i * 42 > 128 * Scale.Y) break;	// break if drawstrings over texture size
+						graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)((2 + 42 * i) * Scale.Y));
+						graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.White,    (float) 0f,            (float)((42 * i)     * Scale.Y));
+					}
 					this.txSongNotFound = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
 
 					this.txSongNotFound.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f); // 半分のサイズで表示する。
@@ -513,13 +510,13 @@ namespace DTXMania
 				using (Bitmap image = new Bitmap(SampleFramework.GameWindowSize.Width, (int)(96 * Scale.Y)))
 				using (Graphics graphics = Graphics.FromImage(image))
 				{
-					string[] s1 = { "曲データを検索しています。", "Now enumerating songs." };
-					string[] s2 = { "そのまましばらくお待ち下さい。", "Please wait..." };
-					graphics.DrawString(s1[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)(2f * Scale.Y));
-					graphics.DrawString(s1[c], this.ft曲リスト用フォント, Brushes.White, (float)0f, (float)0f);
-					graphics.DrawString(s2[c], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)(44f * Scale.Y));
-					graphics.DrawString(s2[c], this.ft曲リスト用フォント, Brushes.White, (float)0f, (float)(42f * Scale.Y));
-
+					string[] s = cr.Explanation("strEnumeratingSongs").Split(new string[] { Environment.NewLine }, 2, StringSplitOptions.None);
+					for (int i = 0; i < s.Length; i++)
+					{
+						if (i * 42 > 96 * Scale.Y) break;  // break if drawstrings over texture size
+						graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)((2 + 42 * i) * Scale.Y));
+						graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.White,    (float) 0f,            (float)((42 * i)     * Scale.Y));
+					}
 					this.txEnumeratingSongs = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
 
 					this.txEnumeratingSongs.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f); // 半分のサイズで表示する。
