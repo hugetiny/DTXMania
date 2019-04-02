@@ -366,8 +366,12 @@ namespace FDK
 				Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS, nCPUCores );
 				//Bass.BASS_SetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD, 0 );
 
-				//Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
+				Trace.TraceInformation( "BASS_CONFIG_UpdatePeriod=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATEPERIOD ) );
 				Trace.TraceInformation( "BASS_CONFIG_UpdateThreads=" + Bass.BASS_GetConfig( BASSConfig.BASS_CONFIG_UPDATETHREADS ) );
+
+				Bass.BASS_SetConfig(BASSConfig.BASS_CONFIG_ASYNCFILE_BUFFER, 65536 * 8);    // 非同期読み込み用に512KBのバッファを確保、初期値は64KB
+				Trace.TraceInformation("BASS_CONFIG_ASyncfile_Buffer=" + Bass.BASS_GetConfig(BASSConfig.BASS_CONFIG_ASYNCFILE_BUFFER));
+
 			}
 		}
 
@@ -475,6 +479,11 @@ namespace FDK
 			//    {
 			//        Trace.TraceInformation( "BASS_UPdate() failed: " + Bass.BASS_ErrorGetCode().ToString() );
 			//    }
+			//}
+			//bool b = Bass.BASS_Update( 8 );		// 1/FPS * 2 くらい推奨?
+			//if (!b)
+			//{
+			//	Trace.TraceInformation("BASS_UPdate() failed: " + Bass.BASS_ErrorGetCode().ToString());
 			//}
 		}
 
