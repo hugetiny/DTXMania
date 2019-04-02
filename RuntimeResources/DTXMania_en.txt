@@ -75,6 +75,23 @@ It would become a problem if your windows account doesn't have
 administraor permission. You have to choose the song data folder
 carefully.
 
+* For Windows10 users
+Using "Game Mode" is strongly recommended, because sudden
+scroll lag will be decreased.
+
+Here is the steps to set Game Mode for DTXMania.
+1.Click "Start" - "Settings (Gear icon)". Settings window will appear.
+2.Click "Gaming". Then click "Game Mode" in the left pane.
+3.In the right pane, Set "Game Mode" = On,
+4.Launch DTXMania.
+5.Click DTXMania window to activate it. Then push "Windows+G"
+  key to show Game Bar.
+6.At the Game Bar, click "Gear" icon (Game bar settings)
+  at the top-right of the window.
+7.Check it to ON "Remember this is a game".
+8.Close settings windows.
+
+
 
 * WASAPI / ASIO support
 
