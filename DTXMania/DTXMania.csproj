@@ -69,6 +69,32 @@
   <PropertyGroup>
     <ApplicationManifest>DTXManiaGR.exe.x86.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;_TEST_ENGLISH TEST_Direct3D9Ex_ WindowedFullscreen TEST_MEASUREFRAMEDRAWTIME_ SOUNDCPULOAD</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <NoWarn>0219</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;TEST_ENGLISH_ TEST_Direct3D9Ex_ WindowedFullscreen SOUNDCPULOAD</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <NoWarn>0219</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="SharpDX, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
@@ -291,13 +317,13 @@ if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
 xcopy "$(TargetDir)ja-JP" %25DESTDIR%25 /Y
 set DESTDIR=%25RUNTIMEDIR%25\dll
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy  "$(TargetDir)dll" %25DESTDIR%25 /Y /D
+xcopy  "$(TargetDir)dll" %25DESTDIR%25 /Y /D /S
 
 echo.
 echo (3) 実行時リソースフォルダ から 出力フォルダ にコピーします。（日付の新しいファイルのみ）
 set DESTDIR="$(TargetDir)dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy %25RUNTIMEDIR%25\dll %25DESTDIR%25 /Y /D
+xcopy %25RUNTIMEDIR%25\dll %25DESTDIR%25 /Y /D /S
 set DESTDIR="$(TargetDir)System"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
 xcopy %25RUNTIMEDIR%25\System %25DESTDIR%25 /Y /D /S /E

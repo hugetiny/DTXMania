@@ -63,6 +63,28 @@
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;USE_ENGLISHRESOURCE_ USE_GERMANRESOURCE_</DefineConstants>
+    <NoWarn>0219</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>0219</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -411,13 +433,13 @@ if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
 xcopy "$(TargetDir)ja-JP" %25DESTDIR%25 /Y
 set DESTDIR="%25RUNTIMEDIR%25\dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy  "$(TargetDir)dll" %25DESTDIR%25 /Y /D
+xcopy  "$(TargetDir)dll" %25DESTDIR%25 /S /Y /D
 
 echo.
 echo (3) 実行時リソースフォルダ から 出力フォルダ にコピーします。（日付の新しいファイルのみ）
 set DESTDIR="$(TargetDir)dll"
 if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy  %25RUNTIMEDIR%25\dll %25DESTDIR%25 /Y /D
+xcopy  %25RUNTIMEDIR%25\dll %25DESTDIR%25 /S /Y /D
 
 echo.
 echo ビルド後イベントを終了しました。

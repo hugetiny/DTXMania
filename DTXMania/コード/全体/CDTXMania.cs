@@ -258,7 +258,7 @@ namespace DTXMania
 			}
 			Trace.WriteLine("");
 			Trace.WriteLine("DTXMania powered by YAMAHA Silent Session Drums");
-			Trace.WriteLine(string.Format("Release: {0}", VERSION));
+			Trace.WriteLine(string.Format("Release: {0} {1} mode.", VERSION, (Environment.Is64BitProcess)? "x64":"x86" ));
 			Trace.WriteLine("");
 			Trace.TraceInformation("----------------------");
 			Trace.TraceInformation("■ アプリケーションの初期化");
@@ -2458,17 +2458,19 @@ namespace DTXMania
 		{
 			get
 			{
-				if (DTXVmode.Enabled)
+				string strCPUmode = (Environment.Is64BitProcess) ? " [x64]" : " [x86]";
+
+					if (DTXVmode.Enabled)
 				{
-					return "DTXMViewer release " + VERSION;
+					return "DTXMViewer release " + VERSION + strCPUmode;
 				}
 				else if (DTX2WAVmode.Enabled)
 				{
-					return "DTX2WAV (" + VERSION + "): " + Path.GetFileName(this.DTX2WAVmode.dtxfilename);
+					return "DTX2WAV (" + VERSION + "): " + Path.GetFileName(this.DTX2WAVmode.dtxfilename) + strCPUmode;
 				}
 				else
 				{
-					return "DTXMania .NET style release " + VERSION;
+					return "DTXMania .NET style release " + VERSION + strCPUmode;
 				}
 			}
 		}

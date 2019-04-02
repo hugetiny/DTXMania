@@ -38,7 +38,7 @@ namespace DTXMania
 		//-----------------------------
 		private static Mutex mutex二重起動防止用;
 
-		private static bool tDLLの存在チェック(string strDll名, string str存在しないときに表示するエラー文字列jp, string str存在しないときに表示するエラー文字列en, bool bLoadDllCheck)
+		private static bool tDLLの存在チェック(string strDll名, string str存在しないときに表示するエラー文字列jp, string str存在しないときに表示するエラー文字列en, bool bLoadDllCheck=false)
 		{
 			string str存在しないときに表示するエラー文字列 = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
 				str存在しないときに表示するエラー文字列jp : str存在しないときに表示するエラー文字列en;
@@ -63,11 +63,6 @@ namespace DTXMania
 			}
 			return true;
 		}
-		private static bool tDLLの存在チェック(string strDll名, string str存在しないときに表示するエラー文字列jp, string str存在しないときに表示するエラー文字列en)
-		{
-			//return true;
-			return tDLLの存在チェック(strDll名, str存在しないときに表示するエラー文字列jp, str存在しないときに表示するエラー文字列en, false);
-		}
 
 		#region [DllImport]
 		[DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -75,6 +70,9 @@ namespace DTXMania
 
 		[DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
 		internal static extern IntPtr LoadLibrary(string lpFileName);
+
+		[DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
+		internal static extern bool SetDllDirectory(string lpPathName);
 		#endregion
 		//-----------------------------
 		#endregion
@@ -115,6 +113,34 @@ namespace DTXMania
 					true
 					))
 					bDLLnotfound = true;
+				#region [ x64 ]
+				if (!tDLLの存在チェック(@"dll\x64\bass.dll",
+					"bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"baas.dll is not found." + newLine + "Please download DTXMania again."
+					))
+					bDLLnotfound = true;
+				if (!tDLLの存在チェック(@"dll\x64\bassmix.dll",
+					"bassmix.dll を読み込めません。bassmix.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"bassmix.dll is not loaded. bassmix.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
+					))
+					bDLLnotfound = true;
+				if (!tDLLの存在チェック(@"dll\x64\bassasio.dll",
+					"bassasio.dll を読み込めません。bassasio.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"bassasio.dll is not loaded. bassasio.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
+					))
+					bDLLnotfound = true;
+				if (!tDLLの存在チェック(@"dll\x64\basswasapi.dll",
+					"basswasapi.dll を読み込めません。basswasapi.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"basswasapi.dll is not loaded. basswasapi.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
+					))
+					bDLLnotfound = true;
+				if (!tDLLの存在チェック(@"dll\x64\bass_fx.dll",
+					"bass_fx.dll を読み込めません。bass_fx.dll か bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"bass_fx.dll is not loaded. bass_fx.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
+					))
+					bDLLnotfound = true;
+				#endregion
+
 				if (!tDLLの存在チェック("dll\\bass.dll",
 					"bass.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"baas.dll is not found." + newLine + "Please download DTXMania again."
@@ -168,6 +194,16 @@ namespace DTXMania
 
 					DWM.EnableComposition(false); // Disable AeroGrass temporally
 
+					string path = Path.GetDirectoryName(Application.ExecutablePath);
+					SetDllDirectory(null);
+					if (Environment.Is64BitProcess)
+					{
+						SetDllDirectory(Path.Combine(path, @"dll\x64"));
+					}
+					else
+					{
+						SetDllDirectory(Path.Combine(path, @"dll"));
+					}
 					// BEGIN #23670 2010.11.13 from: キャッチされない例外は放出せずに、ログに詳細を出力する。
 					// BEGIM #24606 2011.03.08 from: DEBUG 時は例外発生箇所を直接デバッグできるようにするため、例外をキャッチしないようにする。
 #if !DEBUG
