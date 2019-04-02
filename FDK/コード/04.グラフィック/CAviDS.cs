@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using DirectShowLib;
-using DirectShowLib.DES;
 using SharpDX;
 
 namespace FDK

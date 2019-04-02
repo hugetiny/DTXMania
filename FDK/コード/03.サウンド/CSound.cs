@@ -14,7 +14,6 @@ using Un4seen.BassAsio;
 using Un4seen.BassWasapi;
 using Un4seen.Bass.AddOn.Mix;
 using Un4seen.Bass.AddOn.Fx;
-using DirectShowLib;
 
 namespace FDK
 {
@@ -464,8 +463,8 @@ namespace FDK
 		}
 		public void t再生中の処理をする()
 		{
-//★★★★★★★★★★★★★★★★★★★★★ダミー★★★★★★★★★★★★★★★★★★
-//			Debug.Write( "再生中の処理をする()" );
+			//★★★★★★★★★★★★★★★★★★★★★ダミー★★★★★★★★★★★★★★★★★★
+			//			Debug.Write( "再生中の処理をする()" );
 			//DateTime now = DateTime.Now;
 			//TimeSpan ts = now - lastUpdateTime;
 			//if ( ts.Milliseconds > 5 )
