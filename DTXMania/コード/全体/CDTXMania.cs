@@ -3176,7 +3176,7 @@ namespace DTXMania
 				Trace.TraceInformation("NumberOfLogicalProcessors = {0}", mo["NumberOfLogicalProcessors"]);
 			}
 			moc.Dispose();
-			moc.Dispose();
+			mc.Dispose();
 
 			//System.Management.ManagementClass mc =
 			//	new System.Management.ManagementClass("Win32_OperatingSystem");

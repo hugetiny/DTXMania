@@ -130,6 +130,7 @@ namespace FDK
 			RS2 = 15063,
 			RS3 = 16299,
 			RS4 = 17134,
+            RS5 = 17763,
 			UNKNOWN  = -1,
 			NOTWIN10 = 0
 		}
