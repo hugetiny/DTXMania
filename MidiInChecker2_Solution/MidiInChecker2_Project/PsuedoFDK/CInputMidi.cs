@@ -9,7 +9,7 @@ namespace MidiInChecker2
 	{
 		// プロパティ
 
-		public uint hMidiIn;
+		public IntPtr hMidiIn;
 		public List<STInputEvent> listEventBuffer;
 
 
@@ -17,7 +17,7 @@ namespace MidiInChecker2
 
 		public CInputMIDI( uint nID )
 		{
-			this.hMidiIn = 0;
+			this.hMidiIn = IntPtr.Zero;
 			this.listEventBuffer = new List<STInputEvent>( 32 );
 			this.list入力イベント = new List<STInputEvent>( 32 );
 			this.e入力デバイス種別 = E入力デバイス種別.MidiIn;

@@ -45,7 +45,7 @@ namespace MidiInChecker2
 				{
 					Trace.TraceError( "MIDI In: Device{0}: midiInDevCaps(): {1:X2}: ", i, retcode );
 				}
-				else if ( ( CWin32.midiInOpen( ref item.hMidiIn, i, this.proc, 0, 0x30000 ) == 0 ) && ( item.hMidiIn != 0 ) )
+				else if ( ( CWin32.midiInOpen( ref item.hMidiIn, i, this.proc, IntPtr.Zero, 0x30000 ) == 0 ) && ( item.hMidiIn != IntPtr.Zero ) )
 				{
 					CWin32.midiInStart( item.hMidiIn );
 					Trace.TraceInformation( "MIDI In: [{0}] \"{1}\" の入力受付を開始しました。", i, lpMidiInCaps.szPname );
@@ -154,7 +154,7 @@ namespace MidiInChecker2
 		private object objMidiIn排他用 = new object();
 		private CWin32.MidiInProc proc;
 
-		private void MidiInCallback( uint hMidiIn, uint wMsg, int dwInstance, int dwParam1, int dwParam2 )
+		private void MidiInCallback( IntPtr hMidiIn, uint wMsg, int dwInstance, int dwParam1, int dwParam2 )
 		{
 			int p = dwParam1 & 0xF0;
 			if ( wMsg != CWin32.MIM_DATA )	// || ( p != 0x80 && p != 0x90 && p != 0xB0 ) )
