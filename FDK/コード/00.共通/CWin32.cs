@@ -523,7 +523,7 @@ namespace FDK
 			public uint dwPageSize;
 			public IntPtr lpMinimumApplicationAddress;
 			public IntPtr lpMaximumApplicationAddress;
-			public IntPtr dwActiveProcessorMask;
+			public UIntPtr dwActiveProcessorMask;
 			public uint dwNumberOfProcessors;
 			public uint dwProcessorType;
 			public uint dwAllocationGranularity;
