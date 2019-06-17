@@ -383,7 +383,7 @@ namespace FDK
 		[DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
 		public static extern bool SystemParametersInfo( uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni );
 		[DllImport( "kernel32.dll" )]
-		public static extern void GetSystemInfo( ref SYSTEM_INFO ptmpsi );
+		public static extern void GetSystemInfo( out SYSTEM_INFO ptmpsi );
 		[DllImport( "kernel32.dll" )]
 		internal static extern ExecutionState SetThreadExecutionState( ExecutionState esFlags );
 
@@ -521,14 +521,14 @@ namespace FDK
 		{
 			public uint dwOemId;
 			public uint dwPageSize;
-			public uint lpMinimumApplicationAddress;
-			public uint lpMaximumApplicationAddress;
-			public uint dwActiveProcessorMask;
+			public IntPtr lpMinimumApplicationAddress;
+			public IntPtr lpMaximumApplicationAddress;
+			public IntPtr dwActiveProcessorMask;
 			public uint dwNumberOfProcessors;
 			public uint dwProcessorType;
 			public uint dwAllocationGranularity;
-			public uint dwProcessorLevel;
-			public uint dwProcessorRevision;
+			public ushort dwProcessorLevel;
+			public ushort dwProcessorRevision;
 		}
 		public struct BATTERY_REPORTING_SCALE
 		{
