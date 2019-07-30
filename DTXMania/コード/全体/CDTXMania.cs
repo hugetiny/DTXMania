@@ -2222,7 +2222,8 @@ namespace DTXMania
 			{
 				if (File.Exists(xmlpath))
 				{
-					using (XmlReader xr = XmlReader.Create(xmlpath))
+					using (StreamReader reader = new StreamReader(xmlpath, Encoding.GetEncoding("SHIFT_JIS")))
+					using (XmlReader xr = XmlReader.Create(reader))
 					{
 						DataContractSerializer serializer = new DataContractSerializer(t);
 						ret = serializer.ReadObject(xr);
