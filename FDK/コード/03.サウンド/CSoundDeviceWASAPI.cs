@@ -234,11 +234,15 @@ namespace FDK
 			BASS_WASAPI_DEVICEINFO deviceInfo;
 			for ( int n = 0; ( deviceInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( n ) ) != null; n++ )
 			{
-				// BASS_DEVICEINFOとBASS_WASAPI_DEVICEINFOで、IsDefaultとなっているデバイスが異なる場合がある。
+				// #37940 2018.2.15: BASS_DEVICEINFOとBASS_WASAPI_DEVICEINFOで、IsDefaultとなっているデバイスが異なる場合がある。
 				// (WASAPIでIsDefaultとなっているデバイスが正しくない場合がある)
 				// そのため、BASS_DEVICEでIsDefaultとなっているものを探し、それと同じ名前のWASAPIデバイスを使用する。
+				// #39490 2019.8.19: 更に、環境によっては同じ名前のWASAPIデバイスが複数定義されている場合があるため、
+				// 実際に利用可能なWASAPIデバイスのみに対象を絞り込む。
+				// (具体的には、defperiod, minperiod, mixchans, mixfreqがすべて0のデバイスは使用不可のため
+				//  これらが0でないものを選択する)
 				//if ( deviceInfo.IsDefault )
-				if ( deviceInfo.name == strDefaultSoundDeviceName)
+				if ( deviceInfo.name == strDefaultSoundDeviceName && deviceInfo.mixfreq > 0 )
 				{
 					nDevNo = n;
 #region [ 既定の出力デバイスの情報を表示 ]
