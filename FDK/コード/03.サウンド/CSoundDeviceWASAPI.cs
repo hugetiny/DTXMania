@@ -366,8 +366,8 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 			Trace.TraceInformation("f希望バッファサイズsec=" + f希望バッファサイズsec + ", f更新間隔sec=" + f更新間隔sec + ": Win10 low latency audio 考慮後");
 			Trace.TraceInformation("Start Bass_Wasapi_Init(device=" + nDevNo + ", freq=" + n周波数 + ", nchans=" + nチャンネル数 + ", flags=" + flags + "," +
 				" buffer=" + f希望バッファサイズsec + ", period=" + f更新間隔sec + ")" );
-			//if (BassWasapi.BASS_WASAPI_Init(nDevNo, n周波数, nチャンネル数, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero))
-			if (BassWasapi.BASS_WASAPI_Init(-1, 0, 0, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero))
+			if (BassWasapi.BASS_WASAPI_Init(nDevNo, n周波数, nチャンネル数, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero))
+			//if (BassWasapi.BASS_WASAPI_Init(-1, 0, 0, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero))
 			{
 				if ( mode == Eデバイスモード.排他 )
 				{
