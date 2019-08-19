@@ -178,7 +178,8 @@
     <Compile Include="コード\02.入力\SlimDX.DirectInput.Key.cs" />
     <Compile Include="コード\02.入力\STInputEvent.cs" />
     <Compile Include="コード\03.サウンド\BASSThreadedMixerWrapper.cs" />
-    <Compile Include="コード\03.サウンド\Cmp3ogg.cs" />
+    <Compile Include="コード\03.サウンド\Cogg.cs" />
+    <Compile Include="コード\03.サウンド\Cmp3.cs" />
     <Compile Include="コード\03.サウンド\CSound.cs" />
     <Compile Include="コード\03.サウンド\CSoundDeviceASIO.cs" />
     <Compile Include="コード\03.サウンド\CSoundDeviceDirectSound.cs" />
@@ -242,6 +243,10 @@
     <ProjectReference Include="..\libbjxa\libbjxa.csproj">
       <Project>{41e67409-f5ec-4216-a790-2519a7b22e51}</Project>
       <Name>libbjxa</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NVorbis\NVorbis.csproj">
+      <Project>{88bf6538-b1da-41a5-adfc-7af6936e93be}</Project>
+      <Name>NVorbis</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

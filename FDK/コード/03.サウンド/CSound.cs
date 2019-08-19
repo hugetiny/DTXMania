@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Linq;
 using SharpDX;
 using SharpDX.DirectSound;
 using SharpDX.Multimedia;
@@ -877,21 +878,18 @@ namespace FDK
 		{
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
-			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 ||
-				 String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 ||
-				 String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )   // caselessで文字列比較
 			{
 				try
 				{
-					tDirectSoundサウンドを作成するXaOggMp3(strファイル名, DirectSound);
+					tDirectSoundサウンドを作成するbyBASS(strファイル名, DirectSound);
 					this.eInstType = _eInstType;
 					return;
 				}
 				catch (Exception e)
 				{
 					string s = Path.GetFileName(strファイル名);
-					Trace.TraceWarning($"directsoundサウンドの作成に失敗しました。({s}: {e.Message})");
-					Trace.TraceWarning("続けて、他のデコーダでの作成を試みます。");
+					Trace.TraceWarning($"Failed to create DirectSound buffer by using BASS.DLL.({s}: {e.Message})");
+					Trace.TraceWarning("Retrying by using DirectShow decoder.");
 				}
 			}
 
@@ -956,7 +954,7 @@ namespace FDK
 
 			this.tDirectSoundサウンドを作成する( byArrWAVファイルイメージ, DirectSound, _eInstType );
 		}
-		public void tDirectSoundサウンドを作成するXaOggMp3( string strファイル名, DirectSound DirectSound )
+		public void tDirectSoundサウンドを作成するbyBASS( string strファイル名, DirectSound DirectSound )
 		{
 			this.e作成方法 = E作成方法.ファイルから;
 			this.strファイル名 = strファイル名;
@@ -967,9 +965,11 @@ namespace FDK
 
 			int nPCMサイズbyte;
 			CWin32.WAVEFORMATEX cw32wfx;
+//Trace.TraceInformation($"Decode start: {Path.GetFileName(strファイル名)}");
 			tオンメモリ方式でデコードする( strファイル名, out this.byArrWAVファイルイメージ,
-			out nPCMデータの先頭インデックス, out nPCMサイズbyte, out cw32wfx, false );
-			WaveFormat wfx = WaveFormat.CreateCustomFormat( WaveFormatEncoding.Pcm, (int) cw32wfx.nSamplesPerSec, (int) cw32wfx.nChannels, (int) cw32wfx.nAvgBytesPerSec, (int) cw32wfx.nBlockAlign, (int) cw32wfx.wBitsPerSample );
+				out nPCMデータの先頭インデックス, out nPCMサイズbyte, out cw32wfx, false );
+//Trace.TraceInformation($"Decode   end: {Path.GetFileName(strファイル名)}");
+			WaveFormat wfx = WaveFormat.CreateCustomFormat( (WaveFormatEncoding)(cw32wfx.wFormatTag), (int) cw32wfx.nSamplesPerSec, (int) cw32wfx.nChannels, (int) cw32wfx.nAvgBytesPerSec, (int) cw32wfx.nBlockAlign, (int) cw32wfx.wBitsPerSample );
 
 			// セカンダリバッファを作成し、PCMデータを書き込む。
 			tDirectSoundサウンドを作成する_セカンダリバッファの作成とWAVデータ書き込み
@@ -1630,44 +1630,29 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		private bool bIs1倍速再生 = true;
 		private WaveFormat _Format;
 
-		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags )
+		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags, bool bForceUseBassDll = false )
 		{
-			#region [ xaとwav(RIFF chunked vorbis)に対しては専用の処理をする ]
-			switch ( Path.GetExtension( strファイル名 ).ToLower() )
+			#region [ xaとwav(RIFF chunked vorbis)に対しては専用の処理をする → tBASSサウンドを作成するXAOgg()に集約。 ]
+			if (!bForceUseBassDll)
 			{
-				case ".xa":
-					try
-					{
-						tBASSサウンドを作成するXA(strファイル名, hMixer, flags);
-						return;
-					}
-					catch (Exception e)
-					{
-						Trace.TraceWarning("xaファイルの作成に失敗しました。({0})", e.Message);
-						Trace.TraceWarning("続けて、他のデコーダでの作成を試みます。");
-					}
+				switch (Path.GetExtension(strファイル名).ToLower())
+				{
+					case ".xa":
+					case ".wav":
+						try
+						{
+							tBASSサウンドを作成するXAOgg(strファイル名, hMixer, flags);
+							return;
+						}
+						catch (Exception e)
+						{
+							Trace.TraceError($"tBASSサウンドを作成する(): Failed to decode ({Path.GetFileName(strファイル名)}) {e.ToString()}");
+						}
+						break;
 
-					// XAのデコードに失敗した場合は、続けて中身がoggなwavとしてDirectShowデコーダでのデコードを試みる。
-					// oggのでコードが成功した場合は、そのままこのブロックの中でBASSサウンドを生成。
-					// さもなければ、switchの外でbassに任せてデコード。
-					if (tRIFFchunkedVorbisならDirectShowでDecodeする(strファイル名, ref byArrWAVファイルイメージ))
-					{
-						tBASSサウンドを作成する(byArrWAVファイルイメージ, hMixer, flags);
-						return;
-					}
-					break;
-
-				case ".wav":
-					if ( tRIFFchunkedVorbisならDirectShowでDecodeする( strファイル名, ref byArrWAVファイルイメージ ) )
-					{
-						//tBASSサウンドを作成する( byArrWAVファイルイメージ, hMixer, flags );
-						tBASSサウンドを作成する(strファイル名, hMixer, flags);
-						return;
-					}
-					break;
-
-				default:
-					break;
+					default:
+						break;
+				}
 			}
 			#endregion
 
@@ -1704,60 +1689,99 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		}
 
 		/// <summary>
-		/// Decode "RIFF chunked Vorbis" to "raw wave"
-		/// because BASE.DLL has two problems for RIFF chunked Vorbis;
-		/// 1. time seek is not fine  2. delay occurs (about 10ms)
+		/// Return wFormatTag of WAV file
 		/// </summary>
-		/// <param name="strファイル名">wave filename</param>
-		/// <param name="byArrWAVファイルイメージ">wav file image</param>
+		/// <param name="filename"></param>
 		/// <returns></returns>
-		private bool tRIFFchunkedVorbisならDirectShowでDecodeする( string strファイル名, ref byte[] byArrWAVファイルイメージ )
+		private ushort GetWavFormatTag(string filename)
 		{
-			bool bファイルにVorbisコンテナが含まれている = false;
-
-			#region [ ファイルがWAVかつ、Vorbisコンテナが含まれているかを調べ、それに該当するなら、DirectShowでデコードする。]
-			//-----------------
-			try
+			ushort wFormatTag = 0;
+			using (var br = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read)))
 			{
-				using( var ws = new SoundStream( new FileStream( strファイル名, FileMode.Open ) ) )
+				if (br.ReadUInt32() != 0x46464952)				// 'RIFF'
 				{
-					if( ws.Format.Encoding == WaveFormatEncoding.OggVorbisMode2Plus ||
-						ws.Format.Encoding == WaveFormatEncoding.OggVorbisMode3Plus )
-					{
-						Trace.TraceInformation( Path.GetFileName( strファイル名 ) + ": RIFF chunked Vorbis. Decode to raw Wave first, to avoid BASS.DLL troubles" );
-						try
-						{
-							CDStoWAVFileImage.t変換( strファイル名, out byArrWAVファイルイメージ );
-							bファイルにVorbisコンテナが含まれている = true;
-						}
-						catch
-						{
-							Trace.TraceWarning( "Warning: " + Path.GetFileName( strファイル名 ) + " : RIFF chunked Vorbisのデコードに失敗しました。" );
-						}
-					}
+					Trace.TraceError(Path.GetFileName(filename) + ": No RIFF header. No WAV format.");
+					return 0;   // Unknown format
 				}
-			}
-			// 以下、SharpDX.Multimedia.SoundStreamの生成に失敗した場合の処置
-			catch ( InvalidDataException e)
-			{
-				Trace.TraceWarning( "Warning: {0}: デコードに失敗しました。別の方法でデコードします。({1})", Path.GetFileName(strファイル名), e.Message );
-			}
-			catch ( InvalidOperationException e)	// RIFF chunked mp3の場合は、ここに来る
-			{
-				// DirectShowでのデコードに失敗したら、次はACMでのデコードを試すことになるため、ここではエラーログを出さない。
-				Trace.TraceWarning("Warning: {0}: RIFF Chunked MP3はSharpDXで扱えないため、別の方法でデコードします。({1})", Path.GetFileName(strファイル名), e.Message );
 
-			}
-			catch ( Exception e)
-			{
-				Trace.TraceWarning( "Warning: {0}: 読み込みに失敗しました。別の方法でデコードします。({1})", Path.GetFileName( strファイル名 ), e.Message );
-			}
-			#endregion
+				var nRiffChunkSize = br.ReadUInt32();			// chunk size
 
-			return bファイルにVorbisコンテナが含まれている;
+				if (br.ReadUInt32() != 0x45564157)				// 'WAVE'
+				{
+					Trace.TraceError(Path.GetFileName(filename) + ": Not WAVE format. No WAV format.");
+					return 0;   // Unknown format
+				}
+				if (br.ReadUInt32() != 0x20746D66)				// 'fmt '
+				{
+					Trace.TraceError(Path.GetFileName(filename) + ": Not fmt identifier. No WAV format.");
+					return 0;   // Unknown format
+				}
+				var nFmtChunkSize	= br.ReadUInt32();			// fmt chunk size (== WAVEFORMATEX chunk size)
+
+				wFormatTag			= br.ReadUInt16();          // wFormatTag
+#if DEBUG__
+				var nChannels		= br.ReadUInt16();			// nChannels
+				var nSamplesPerSec	= br.ReadUInt32();			// nSamplesPerSec
+				var nAvgBytesPerSec	= br.ReadUInt32();			// nAvgBytesPerSec
+				var nBlockAlign		= br.ReadUInt16();			// nBlockAlign
+				var nBitsPerSample	= br.ReadUInt16();			// nBitsPerSample
+				var cbSize			= br.ReadUInt16();			// cbSize
+
+				Trace.TraceInformation($"       Filename: {Path.GetFileName(filename)}");
+				Trace.TraceInformation($"      ChunkSize: {nRiffChunkSize.ToString("X8")}");
+				Trace.TraceInformation($"   FmtChunkSize: {nFmtChunkSize.ToString("X8")}");
+				Trace.TraceInformation($"     wFormatTag: {wFormatTag.ToString("X4")}");
+				Trace.TraceInformation($"      nChannels: {nChannels}");
+				Trace.TraceInformation($" nSamplesPerSec: {nSamplesPerSec}");
+				Trace.TraceInformation($"nAvgBytesPerSec: {nAvgBytesPerSec}");
+				Trace.TraceInformation($"    nBlockAlign: {nBlockAlign}");
+				Trace.TraceInformation($" nBitsPerSample: {nBitsPerSample}");
+				Trace.TraceInformation($"         cbSize: {cbSize}");
+#endif
+			}
+			return wFormatTag;
 		}
 
-		private void tBASSサウンドを作成するXA( string strファイル名, int hMixer, BASSFlag flags )
+		/// <summary>
+		/// Return whether the specified WAVE file is ogg or not
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <returns></returns>
+		private bool bIsRiffChunkedVorbis(string filename)
+		{
+			switch (GetWavFormatTag(filename))
+			{
+				case 0x674F:    // OggVorbisMode 1
+				case 0x6750:    // OggVorbisMode 2
+				case 0x6751:    // OggVorbisMode 3
+				case 0x676F:    // OggVorbisMode 1+
+				case 0x6770:    // OggVorbisMode 2+
+				case 0x6771:    // OggVorbisMode 3+
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		/// <summary>
+		/// Return whether the specified WAVE file is mp3 or not
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <returns></returns>
+		private bool bIsRiffChunkedMp3(string filename)
+		{
+			if (GetWavFormatTag(filename) == 0x55)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+
+		private void tBASSサウンドを作成するXAOgg( string strファイル名, int hMixer, BASSFlag flags )
 		{
 			int nPCMデータの先頭インデックス;
 			CWin32.WAVEFORMATEX wfx;
@@ -1935,37 +1959,143 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			return true;
 		}
 
-#region [ tオンメモリ方式でデコードする() ]
+		#region [ tオンメモリ方式でデコードする() ]
 		public void tオンメモリ方式でデコードする( string strファイル名, out byte[] buffer,
 			out int nPCMデータの先頭インデックス, out int totalPCMSize, out CWin32.WAVEFORMATEX wfx,
 			bool bIntegrateWaveHeader )
+		{
+			if (!File.Exists(strファイル名))
+			{
+				throw new FileNotFoundException( $"tオンメモリ方式でデコードする(): ファイルが見つかりませんでした。({strファイル名})");
+			}
+
+			string ext = Path.GetExtension(strファイル名);
+
+			// .xaのファイルは、
+			// 1. まずxaとしてデコード
+			// 2. 失敗したら、続けて中身がoggなwavとして、生のoggに変換を試みる。
+			// 3. 失敗したら、BASSに任せてデコード。(Cmp3がBASSでデコードする)
+			#region [ xa ]
+			if (String.Compare(ext, ".xa", true) == 0)
+			{
+				try
+				{
+					tオンメモリ方式でデコードするmain(strファイル名, out buffer,
+						out nPCMデータの先頭インデックス, out totalPCMSize, out wfx,
+						bIntegrateWaveHeader, CodecType.Xa);
+				}
+				catch (Exception)
+				{
+					try
+					{
+						Trace.TraceInformation($"xadecode: failed to decode as xa. Trying to decode as ogg. ({Path.GetFileName(strファイル名)})");
+						tオンメモリ方式でデコードするmain(strファイル名, out buffer,
+							out nPCMデータの先頭インデックス, out totalPCMSize, out wfx,
+							bIntegrateWaveHeader, CodecType.Ogg);
+					}
+					catch (Exception)
+					{
+						try
+						{
+							Trace.TraceInformation($"xadecode: failed to decode as ogg. Trying to decode as wav. ({Path.GetFileName(strファイル名)})");
+							tオンメモリ方式でデコードするmain(strファイル名, out buffer,
+								out nPCMデータの先頭インデックス, out totalPCMSize, out wfx,
+								bIntegrateWaveHeader, CodecType.Wav);
+						}
+						catch (Exception e)
+						{
+							throw new Exception(e.Message);
+						}
+					}
+				}
+			}
+			#endregion
+			// .oggのファイルは、
+			// 1. oggとしてデコード。
+			#region [ ogg ]
+			else if (String.Compare(ext, ".ogg", true) == 0)
+			{
+				tオンメモリ方式でデコードするmain(strファイル名, out buffer,
+					out nPCMデータの先頭インデックス, out totalPCMSize, out wfx,
+					bIntegrateWaveHeader, CodecType.Ogg);
+			}
+			#endregion
+			// .mp3のファイルは、
+			// 1. mp3としてデコード。
+			#region [ mp3 ]
+			else if (String.Compare(ext, ".mp3", true) == 0)
+			{
+				tオンメモリ方式でデコードするmain(strファイル名, out buffer,
+					out nPCMデータの先頭インデックス, out totalPCMSize, out wfx,
+					bIntegrateWaveHeader, CodecType.Mp3);
+			}
+			#endregion
+			// .wavのファイルは、
+			// 2. riff chunked Vorbisなら、vorbisとしてデコード。
+			// 3. その他は、mp3としてデコード(つまりbass.dllにお任せ)
+			#region [ wav ]
+			else if (String.Compare(ext, ".wav", true) == 0)
+			{
+				if (bIsRiffChunkedVorbis(strファイル名))
+				{
+					Trace.TraceInformation($"{Path.GetFileName(strファイル名)}: RIFF chunked Vorbis file. Will be decode by Cogg.");
+					tオンメモリ方式でデコードするmain(strファイル名, out buffer,
+						out nPCMデータの先頭インデックス, out totalPCMSize, out wfx,
+						bIntegrateWaveHeader, CodecType.Ogg);
+				}
+				else
+				{
+					Trace.TraceInformation($"{Path.GetFileName(strファイル名)}: RIFF chunked mp3 file, raw wave file, or others. Will be decode by Cmp3.");
+					tオンメモリ方式でデコードするmain(strファイル名, out buffer,
+						out nPCMデータの先頭インデックス, out totalPCMSize, out wfx,
+						bIntegrateWaveHeader, CodecType.Mp3);
+				}
+			}
+			#endregion
+			#region [ others (NotImplementedException()) ]
+			else
+			{
+				throw new NotImplementedException();
+			}
+			#endregion
+		}
+
+
+		public enum CodecType
+		{
+			Xa,
+			Ogg,
+			Mp3,
+			Wav
+		}
+
+		public void tオンメモリ方式でデコードするmain( string strファイル名, out byte[] buffer,
+			out int nPCMデータの先頭インデックス, out int totalPCMSize, out CWin32.WAVEFORMATEX wfx,
+			bool bIntegrateWaveHeader, CodecType codectype)
 		{
 			nPCMデータの先頭インデックス = 0;
 			//int nPCMサイズbyte = (int) ( xa.xaheader.nSamples * xa.xaheader.nChannels * 2 );	// nBytes = Bass.BASS_ChannelGetLength( this.hBassStream );
 
 			SoundDecoder sounddecoder;
 
-			if ( String.Compare( Path.GetExtension( strファイル名 ), ".xa", true ) == 0 )
+			switch (codectype)
 			{
-				sounddecoder = new Cxa();
-			}
-			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".ogg", true ) == 0 )
-			{
-				sounddecoder = new Cmp3ogg();
-			}
-			else if ( String.Compare( Path.GetExtension( strファイル名 ), ".mp3", true ) == 0 )
-			{
-				sounddecoder = new Cmp3ogg();
-			}
-			else
-			{
-				throw new NotImplementedException();
+				case CodecType.Xa:
+					sounddecoder = new Cxa();
+					break;
+				case CodecType.Ogg:
+					sounddecoder = new Cogg();
+					break;
+				case CodecType.Mp3:
+					sounddecoder = new Cmp3();
+					break;
+				case CodecType.Wav:
+					sounddecoder = new Cmp3();
+					break;
+				default:
+					throw new NotImplementedException();
 			}
 
-			if ( !File.Exists( strファイル名 ) )
-			{
-				throw new Exception( string.Format( "ファイルが見つかりませんでした。({0})", strファイル名 ) );
-			}
 			int ret = sounddecoder.Open( strファイル名 );
 			if ( ret < 0 )
 			{

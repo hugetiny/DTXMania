@@ -11,21 +11,22 @@ using Un4seen.Bass.Misc;
 
 namespace FDK
 {
-	public unsafe class Cmp3ogg : SoundDecoder
+	public unsafe class Cmp3 : SoundDecoder
 	{
 		private int stream_in = -1;
-
+		private bool bBASS_Already_Init = false;
 
 		public override int Open( string filename )
 		{
-			bool r = Bass.BASS_Init(0, 48000, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+			bBASS_Already_Init = !Bass.BASS_Init(0, 48000, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+			// WASAPI/ASIO使用時は(BASS_ERROR_ALREADYとなって)falseが返るので、覚えておく。
+			// 後でCmp3.Close()時にBASSを終了させないようにするため。
 
 			stream_in = Bass.BASS_StreamCreateFile(filename, 0, 0, BASSFlag.BASS_DEFAULT | BASSFlag.BASS_STREAM_DECODE);
-			// BASS_DEFAULT: output 32bit (16bit stereo)
 			if (stream_in == 0)
 			{
 				BASSError be = Bass.BASS_ErrorGetCode();
-				Trace.TraceInformation("Cmp3ogg: StreamCreateFile error: " + be.ToString());
+				Trace.TraceInformation("Cmp3: StreamCreateFile error: " + be.ToString());
 			}
 			nTotalPCMSize = Bass.BASS_ChannelGetLength(stream_in);
 
@@ -48,12 +49,12 @@ namespace FDK
 			return 0;
 		}
 
-		public override int Decode( ref byte[] Dest, long offset )
+		public override int Decode(ref byte[] Dest, long offset)
 		{
 			#region [ decode ]
 			int LEN = 65536;
 			byte[] data = new byte[LEN]; // 2 x 16-bit and length in is bytes
-			int len = 0;
+			long len = 0;
 			long p = 0;
 			do
 			{
@@ -62,6 +63,10 @@ namespace FDK
 				{
 					BASSError be = Bass.BASS_ErrorGetCode();
 					Trace.TraceInformation("Cmp3: BASS_ChannelGetData Error: " + be.ToString());
+				}
+				if (p + len > nTotalPCMSize)
+				{
+					len = nTotalPCMSize - p;
 				}
 				Array.Copy(data, 0, Dest, p, len);
 				p += len;
@@ -76,8 +81,11 @@ namespace FDK
 
 		public override void Close()
 		{
-			Bass.BASS_StreamFree(stream_in);
-			Bass.BASS_Free();
+			if (!bBASS_Already_Init)
+			{
+				Bass.BASS_StreamFree(stream_in);
+				Bass.BASS_Free();
+			}
 		}
 
 		/// <summary>
@@ -91,7 +99,7 @@ namespace FDK
 			var st = new BinaryWriter(fs);
 
 			st.Write(new byte[] { 0x52, 0x49, 0x46, 0x46 });      // 'RIFF'
-			st.Write((int)(nTotalPCMSize + 44 - 8));      // filesize - 8 [byte]；今は不明なので後で上書きする。
+			st.Write((int)(nTotalPCMSize + 44 - 8));            // RIFF chunk size
 			st.Write(new byte[] { 0x57, 0x41, 0x56, 0x45 });      // 'WAVE'
 			st.Write(new byte[] { 0x66, 0x6D, 0x74, 0x20 });      // 'fmt '
 			st.Write(new byte[] { 0x10, 0x00, 0x00, 0x00 });      // chunk size 16bytes
