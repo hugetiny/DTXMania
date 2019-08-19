@@ -68,7 +68,7 @@ namespace FDK
 			#region [ decode ]
 
 			// create a buffer for reading samples
-			var readBuffer = new float[wfx.nAvgBytesPerSec * 5];  // 5sec buffer
+			var readBuffer = new float[vorbis.Channels * vorbis.SampleRate * 5];  // 5sec buffer
 
 			// go grab samples
 			int cnt;
