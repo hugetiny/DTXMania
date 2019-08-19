@@ -140,6 +140,7 @@ namespace FDK
 
 			#region [ BASS Version Check ]
 			// BASS のバージョンチェック。
+			Trace.TraceInformation($"BASS Version: {Bass.BASS_GetVersion().ToString("X4")}");
 			int nBASSVersion = Utils.HighWord( Bass.BASS_GetVersion() );
 			if( nBASSVersion != Bass.BASSVERSION )
 				throw new DllNotFoundException( string.Format( "bass.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSVersion, Bass.BASSVERSION ) );
@@ -297,8 +298,9 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 		#endregion
 
 		Retry:
-			var flags = (mode == Eデバイスモード.排他) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT;
-			//var flags = ( mode == Eデバイスモード.排他 ) ? BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE : BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EVENT;
+			var flags = (mode == Eデバイスモード.排他) ?
+				BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_EXCLUSIVE :
+				BASSWASAPIInit.BASS_WASAPI_AUTOFORMAT | BASSWASAPIInit.BASS_WASAPI_SHARED;	// 注: BASS_WASAPI_SHARED==0 なので、SHAREDの指定は意味なし
 			if ( COS.bIsWin7OrLater() && CSound管理.bSoundUpdateByEventWASAPI )
 			{
 				flags |= BASSWASAPIInit.BASS_WASAPI_EVENT;	// Win7以降の場合は、WASAPIをevent drivenで動作させてCPU負荷減、レイテインシ改善
@@ -327,15 +329,16 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 			{
 				f希望バッファサイズsec = fPeriod + 0.001f;
 			}
-			// WASAPI排他時は、バッファサイズは更新間隔の4倍必要(event driven時は2倍)
+			// Event Driven時は、バッファサイズは更新間隔の2倍必要
+			// WASAPI排他時は、バッファサイズは更新間隔の4倍必要
 			if (mode == Eデバイスモード.排他)
 			{
-				if ( (flags & BASSWASAPIInit.BASS_WASAPI_EVENT) != BASSWASAPIInit.BASS_WASAPI_EVENT &&
+				if ( !(flags.HasFlag(BASSWASAPIInit.BASS_WASAPI_EVENT)) &&
 					f希望バッファサイズsec < f更新間隔sec * 4)
 				{
 					f希望バッファサイズsec = f更新間隔sec * 4;
 				}
-				else if ((flags & BASSWASAPIInit.BASS_WASAPI_EVENT) == BASSWASAPIInit.BASS_WASAPI_EVENT &&
+				else if (flags.HasFlag(BASSWASAPIInit.BASS_WASAPI_EVENT) &&
 					f希望バッファサイズsec < f更新間隔sec * 2)
 				{
 					f希望バッファサイズsec = f更新間隔sec * 2;
@@ -357,23 +360,21 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 						f更新間隔sec = deviceInfo.minperiod;
 					}
 				}
-				f希望バッファサイズsec = 0.0f;
+				f希望バッファサイズsec = 0.0f;		// in Win10 low latency shared mode support, it must be zero.
 			}
 
 			Trace.TraceInformation("f希望バッファサイズsec=" + f希望バッファサイズsec + ", f更新間隔sec=" + f更新間隔sec + ": Win10 low latency audio 考慮後");
-
 			Trace.TraceInformation("Start Bass_Wasapi_Init(device=" + nDevNo + ", freq=" + n周波数 + ", nchans=" + nチャンネル数 + ", flags=" + flags + "," +
 				" buffer=" + f希望バッファサイズsec + ", period=" + f更新間隔sec + ")" );
-			if (BassWasapi.BASS_WASAPI_Init(nDevNo, n周波数, nチャンネル数, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero))
+			//if (BassWasapi.BASS_WASAPI_Init(nDevNo, n周波数, nチャンネル数, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero))
+			if (BassWasapi.BASS_WASAPI_Init(-1, 0, 0, flags, f希望バッファサイズsec, f更新間隔sec, this.tWasapiProc, IntPtr.Zero))
 			{
-					if ( mode == Eデバイスモード.排他 )
+				if ( mode == Eデバイスモード.排他 )
 				{
 					#region [ 排他モードで作成成功。]
 					//-----------------
 					this.e出力デバイス = ESoundDeviceType.ExclusiveWASAPI;
 
-					nDevNo = BassWasapi.BASS_WASAPI_GetDevice();
-					deviceInfo = BassWasapi.BASS_WASAPI_GetDeviceInfo( nDevNo );
 					var wasapiInfo = BassWasapi.BASS_WASAPI_GetInfo();
 					int n1サンプルのバイト数 = 2 * wasapiInfo.chans;	// default;
 					switch( wasapiInfo.format )		// BASS WASAPI で扱うサンプルはすべて 32bit float で固定されているが、デバイスはそうとは限らない。
@@ -383,6 +384,7 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_24BIT: n1サンプルのバイト数 = 3 * wasapiInfo.chans; break;
 						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_32BIT: n1サンプルのバイト数 = 4 * wasapiInfo.chans; break;
 						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_FLOAT: n1サンプルのバイト数 = 4 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_UNKNOWN: throw new ArgumentOutOfRangeException($"WASAPI format error ({wasapiInfo.ToString()})");
 					}
 					int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.freq;
 					this.n実バッファサイズms = (long) ( wasapiInfo.buflen * 1000.0f / n1秒のバイト数 );
@@ -410,6 +412,15 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 
 					var wasapiInfo = BassWasapi.BASS_WASAPI_GetInfo();
 					int n1サンプルのバイト数 = 2 * wasapiInfo.chans; // default;
+					switch (wasapiInfo.format)      // BASS WASAPI で扱うサンプルはすべて 32bit float で固定されているが、デバイスはそうとは限らない。
+					{
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_8BIT: n1サンプルのバイト数 = 1 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_16BIT: n1サンプルのバイト数 = 2 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_24BIT: n1サンプルのバイト数 = 3 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_32BIT: n1サンプルのバイト数 = 4 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_FLOAT: n1サンプルのバイト数 = 4 * wasapiInfo.chans; break;
+						case BASSWASAPIFormat.BASS_WASAPI_FORMAT_UNKNOWN: throw new ArgumentOutOfRangeException($"WASAPI format error ({wasapiInfo.ToString()})");
+					}
 					int n1秒のバイト数 = n1サンプルのバイト数 * wasapiInfo.freq;
 					this.n実バッファサイズms = (long)(wasapiInfo.buflen * 1000.0f / n1秒のバイト数);
 					this.n実出力遅延ms = 0;  // 初期値はゼロ

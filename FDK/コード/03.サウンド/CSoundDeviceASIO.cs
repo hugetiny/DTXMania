@@ -143,6 +143,7 @@ namespace FDK
 
 			#region [ BASS Version Check ]
 			// BASS のバージョンチェック。
+			Trace.TraceInformation($"BASS Version: {Bass.BASS_GetVersion().ToString("X4")}");
 			int nBASSVersion = Utils.HighWord( Bass.BASS_GetVersion() );
 			if( nBASSVersion != Bass.BASSVERSION )
 				throw new DllNotFoundException( string.Format( "bass.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSVersion, Bass.BASSVERSION ) );
