@@ -471,28 +471,35 @@ namespace DTXMania
 			{
 				if (bgfilename != null && File.Exists(bgfilename))
 				{
-					using (Bitmap originalBackground = new Bitmap(bgfilename))
+					try
 					{
-						float W = originalBackground.Width;
-						float H = originalBackground.Height;
-
-						float mag = 1;
-						// VGA補正
-						if (W > 0 && H > 0)
+						using (Bitmap originalBackground = new Bitmap(bgfilename))
 						{
-							float mx = SampleFramework.GameWindowSize.Width / W;
-							float my = SampleFramework.GameWindowSize.Height / H;
+							float W = originalBackground.Width;
+							float H = originalBackground.Height;
 
-							mag = Math.Min(mx, my);
-						}
+							float mag = 1;
+							// VGA補正
+							if (W > 0 && H > 0)
+							{
+								float mx = SampleFramework.GameWindowSize.Width / W;
+								float my = SampleFramework.GameWindowSize.Height / H;
 
-						using (Graphics graphic2 = Graphics.FromImage(bgbitmap))
-						{
-							float x = (SampleFramework.GameWindowSize.Width - W * mag) / 2;
-							float y = (SampleFramework.GameWindowSize.Height - H * mag) / 2;
-							graphic2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-							graphic2.DrawImage(originalBackground, x, y, W * mag, H * mag);
+								mag = Math.Min(mx, my);
+							}
+
+							using (Graphics graphic2 = Graphics.FromImage(bgbitmap))
+							{
+								float x = (SampleFramework.GameWindowSize.Width - W * mag) / 2;
+								float y = (SampleFramework.GameWindowSize.Height - H * mag) / 2;
+								graphic2.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+								graphic2.DrawImage(originalBackground, x, y, W * mag, H * mag);
+							}
 						}
+					}
+					catch (ArgumentException)
+					{
+						Trace.TraceError($"t背景テクスチャの生成(): 指定されたファイルを静止画として開けませんでした。({Path.GetFileName(bgfilename)})");
 					}
 				}
 
