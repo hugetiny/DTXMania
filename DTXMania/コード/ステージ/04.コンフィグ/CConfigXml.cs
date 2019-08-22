@@ -403,8 +403,13 @@ namespace DTXMania
 		/// USB接続のサウンドデバイスを使用しているときの警告表示有無
 		/// </summary>
 		[DataMember(Order = 115)]
-		public COptionBool bWarnSoundDeviceOnUSB;		// #38358 2019.2.1 add yyagi
+		public COptionBool bWarnSoundDeviceOnUSB;       // #38358 2019.2.1 add yyagi
 
+		/// <summary>
+		/// 一定以上の時間差があるとチップ音を再生させない設定
+		/// </summary>
+		[DataMember(Order = 115)]
+		public COptionInteger nStrictHitSoundRange;     // #39499 2019.8.22 add yyagi
 
 		public int GetLaneX(ELane e)
 		{
@@ -605,6 +610,8 @@ namespace DTXMania
 			nHitRange.Great = new COptionInteger(67);
 			nHitRange.Good = new COptionInteger(84);
 			nHitRange.Poor = new COptionInteger(117);
+
+			nStrictHitSoundRange = new COptionInteger(0);
 
 			nVelocityMin = new STPadValue<COptionInteger>();
 			for (EPad pad = EPad.Min; pad < EPad.Max; ++pad)
@@ -917,6 +924,9 @@ namespace DTXMania
 			nHitRange.Great.Initialize( "strCfgRangeGreat", 0 );
 			nHitRange.Good.Initialize( "strCfgRangeGood", 0 );
 			nHitRange.Poor.Initialize( "strCfgRangePoor", 0 );
+
+			nStrictHitSoundRange.Initialize("strCfgDrStrictHitSoundRange", 0, 1000);
+
 			nVelocityMin.LC.Initialize( "strCfgDrLCVelocityMin", 0, 128 );
 			nVelocityMin.HH.Initialize( "strCfgDrHHVelocityMin", 0, 128 );
 			nVelocityMin.SD.Initialize( "strCfgDrSDVelocityMin", 0, 128 );

@@ -3906,7 +3906,11 @@ namespace DTXMania
 						rChip = pChip;
 					}
 				}
-				this.tサウンド再生(rChip, CSound管理.rc演奏用タイマ.nシステム時刻, EPart.Drums, CDTXMania.Instance.ConfigIni.nChipVolume, CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Drums);
+				if (CDTXMania.Instance.ConfigIni.nStrictHitSoundRange == 0 ||
+					(CDTXMania.Instance.ConfigIni.nStrictHitSoundRange >= Math.Abs(nHitTime + nInputAdjustTime - pChip.n発声時刻ms)))
+				{
+					this.tサウンド再生(rChip, CSound管理.rc演奏用タイマ.nシステム時刻, EPart.Drums, CDTXMania.Instance.ConfigIni.nChipVolume, CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Drums);
+				}
 			}
 			return true;
 		}

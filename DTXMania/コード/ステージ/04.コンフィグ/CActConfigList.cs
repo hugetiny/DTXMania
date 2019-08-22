@@ -532,6 +532,7 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bTight);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bFillin);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bDrumsHitSound);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nStrictHitSoundRange);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bEmphasizePlaySound.Drums);
 				list項目リスト.Add(DisplayMenu.Drums);
 				list項目リスト.Add(EDrumsMenu.Drums);
