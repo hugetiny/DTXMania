@@ -45,7 +45,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;_TEST_ENGLISH TEST_Direct3D9Ex_ WindowedFullscreen TEST_MEASUREFRAMEDRAWTIME_ SOUNDCPULOAD</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;_TEST_ENGLISH TEST_Direct3D9Ex_ WindowedFullscreen TEST_MEASUREFRAMEDRAWTIME_ _SOUNDCPULOAD</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>0219</NoWarn>
     <DebugType>full</DebugType>
