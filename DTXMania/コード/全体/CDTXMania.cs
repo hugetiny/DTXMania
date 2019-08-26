@@ -638,6 +638,7 @@ namespace DTXMania
 			base.Window.Icon = Properties.Resources.dtx;
 			base.Window.KeyDown += new KeyEventHandler(this.Window_KeyDown);
 			base.Window.MouseUp += new MouseEventHandler(this.Window_MouseUp);
+			base.Window.MouseDown += new MouseEventHandler(this.Window_MouseDown);
 			// #23510 2010.11.13 yyagi: to go fullscreen mode
 			base.Window.MouseDoubleClick += new MouseEventHandler(this.Window_MouseDoubleClick);
 			// #23510 2010.11.20 yyagi: to set resized window size in Config.ini
@@ -3058,6 +3059,11 @@ namespace DTXMania
 		{
 			mb = e.Button;
 		}
+		private void Window_MouseDown(object sender, MouseEventArgs e)
+		{
+			currentMousePosition.X = Control.MousePosition.X;
+			currentMousePosition.Y = Control.MousePosition.Y;
+		}
 
 		private void Window_MouseDoubleClick(object sender, MouseEventArgs e)   // #23510 2010.11.13 yyagi: to go full screen mode
 		{
@@ -3067,11 +3073,23 @@ namespace DTXMania
 				this.t全画面_ウィンドウモード切り替え();
 			}
 		}
+		private Point currentMousePosition = new Point(-1,-1);
 		private void Window_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (cMouseHideControl != null) cMouseHideControl.tResetCursorState(ConfigIni.bウィンドウモード, this.bApplicationActive);
-		}
+			if (Control.MouseButtons.HasFlag(MouseButtons.Left))
+			{
+				int X = base.Window.Location.X;
+				X += (Control.MousePosition.X - currentMousePosition.X);
+				int Y = base.Window.Location.Y;
+				Y += (Control.MousePosition.Y - currentMousePosition.Y);
 
+				base.Window.Location = new Point(X, Y);
+
+				currentMousePosition.X = Control.MousePosition.X;
+				currentMousePosition.Y = Control.MousePosition.Y;
+			}
+		}
 		private void Window_ResizeEnd(object sender, EventArgs e)               // #23510 2010.11.20 yyagi: to get resized window size
 		{
 			if (ConfigIni.bウィンドウモード)
