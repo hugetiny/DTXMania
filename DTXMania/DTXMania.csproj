@@ -158,6 +158,7 @@
     <Compile Include="コード\ステージ\07.演奏\TypesForPlayStage.cs" />
     <Compile Include="コード\ステージ\CActDigit.cs" />
     <Compile Include="コード\全体\cmdparse.cs" />
+    <Compile Include="コード\全体\CPutSystemLog.cs" />
     <Compile Include="コード\全体\CResources.cs" />
     <Compile Include="コード\全体\Coordinates.cs" />
     <Compile Include="コード\全体\CDTX2WAVmode.cs" />
