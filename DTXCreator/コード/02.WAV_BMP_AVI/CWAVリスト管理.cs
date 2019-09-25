@@ -141,6 +141,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			cサウンドプロパティダイアログ.textBoxラベル.Text = item.SubItems[ 0 ].Text;
 			cサウンドプロパティダイアログ.textBoxWAV番号.Text = item.SubItems[ 1 ].Text;
 			cサウンドプロパティダイアログ.textBoxファイル.Text = item.SubItems[ 2 ].Text;
+			cサウンドプロパティダイアログ.button試聴.Enabled = (cサウンドプロパティダイアログ.textBoxファイル.Text.Length > 0);
 			cサウンドプロパティダイアログ.textBox音量.Text = item.SubItems[ 3 ].Text;
 			cサウンドプロパティダイアログ.textBox位置.Text = item.SubItems[ 4 ].Text;
 			cサウンドプロパティダイアログ.hScrollBar音量.Value = cサウンドプロパティダイアログ.wav.n音量0to100;

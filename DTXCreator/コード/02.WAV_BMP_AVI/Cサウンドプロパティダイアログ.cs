@@ -23,8 +23,6 @@ namespace DTXCreator.WAV_BMP_AVI
 			this.dgサウンドファイルを再生する = dgサウンドファイルを再生する;
 
 			this.InitializeComponent();
-
-			this.button試聴.Enabled = (this.textBoxファイル.Text != "");
 		}
 		public void t位置testBoxの値を範囲修正したのちtextBox位置とhScrollBar位置へ反映させる()
 		{
@@ -103,7 +101,7 @@ namespace DTXCreator.WAV_BMP_AVI
 				string str = Cファイル選択_パス変換.str基点からの相対パスに変換して返す( dialog.FileName, this.str相対パスの基点フォルダ );
 				str.Replace( '/', Path.DirectorySeparatorChar);
 				this.textBoxファイル.Text = str;
-				this.button試聴.Enabled = (this.textBoxファイル.Text != "");
+				this.button試聴.Enabled = (this.textBoxファイル.Text.Length > 0);
 			}
 		}
 		private void button参照_KeyDown( object sender, KeyEventArgs e )
