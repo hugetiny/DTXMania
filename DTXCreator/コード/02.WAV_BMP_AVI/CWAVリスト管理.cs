@@ -220,8 +220,8 @@ namespace DTXCreator.WAV_BMP_AVI
 				string strWavFilenameFullPath = this._Form.strファイルの存在するディレクトリを絶対パスで返す( wc.strファイル名 );
 				try
 				{
-					bool dtxmProcess = this._Form.DetectDTXManiaProcess();
-					if ( dtxmProcess != false )	// DTXManiaがViewerとして起動中なら
+					// WASAPI排他モードのDTXManiaをViewerとして起動中なら
+					if (this._Form.appアプリ設定.ViewerInfo.SoundType == ESoundDeviceType.ExclusiveWASAPI && this._Form.DetectDTXManiaProcess())
 					{
 //Debug.WriteLine( "DTXManiaで再生" );
 						// DTXManiaで再生する
