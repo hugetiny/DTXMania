@@ -194,8 +194,11 @@ namespace DTXCreator.WAV_BMP_AVI
 				{
 					try
 					{
+						// #39610 パス末尾を必ずパス区切り文字にすることで、次のUriでパス名をファイル名と誤認識させないようにする
+						// 例えば、c:\dtxdata というフォルダ名を、dtxdataというファイルであると誤解しないように、末尾に\をつけて c:\dtxdata\にする
+						str基本フォルダ名 = str基本フォルダ名.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
 						Uri uri = new Uri( str基本フォルダ名 );
-						cwav.strファイル名 = Uri.UnescapeDataString( uri.MakeRelativeUri( new Uri( cwav.strファイル名 ) ).ToString() ).Replace( '/', '\\' );
+						cwav.strファイル名 = Uri.UnescapeDataString( uri.MakeRelativeUri( new Uri( cwav.strファイル名 ) ).ToString() ).Replace( '/', Path.DirectorySeparatorChar);
 					}
 					catch( UriFormatException )
 					{

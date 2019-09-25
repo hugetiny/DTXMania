@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 
 namespace DTXCreator.汎用
 {
@@ -29,23 +30,27 @@ namespace DTXCreator.汎用
 			{
 				return "";
 			}
+			// #39610 パス末尾を必ずパス区切り文字にすることで、次のUriでパス名をファイル名と誤認識させないようにする
+			// 例えば、c:\dtxdata というフォルダ名を、dtxdataというファイルであると誤解しないように、末尾に\をつけて c:\dtxdata\にする
+			str基点となる絶対パス = str基点となる絶対パス.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
 			Uri uri = new Uri( str基点となる絶対パス );
-			return Uri.UnescapeDataString( uri.MakeRelativeUri( new Uri( str変換対象の絶対パス ) ).ToString() ).Replace( '/', '\\' );
+			return Uri.UnescapeDataString( uri.MakeRelativeUri( new Uri( str変換対象の絶対パス ) ).ToString() ).Replace( '/', Path.DirectorySeparatorChar);
 		}
 		public static string str指定されたファイルの存在するフォルダを絶対パスで返す( string strファイルのパス, string strパスが相対の場合の基点絶対パス )
 		{
 			if( !b絶対パスである( strファイルのパス ) )
 			{
-				strファイルのパス = strパスが相対の場合の基点絶対パス + strファイルのパス;
+				strファイルのパス = Path.Combine( strパスが相対の場合の基点絶対パス, strファイルのパス );
 			}
 			string directoryName = Path.GetDirectoryName( strファイルのパス );
 			if( directoryName == null )
 			{
-				return @"\";
+				return Path.DirectorySeparatorChar.ToString();
 			}
-			if( !directoryName.EndsWith( @"\" ) )
+			if( !directoryName.EndsWith(Path.DirectorySeparatorChar.ToString()) )
 			{
-				directoryName = directoryName + @"\";
+				directoryName = directoryName + Path.DirectorySeparatorChar.ToString();
 			}
 			return directoryName;
 		}
