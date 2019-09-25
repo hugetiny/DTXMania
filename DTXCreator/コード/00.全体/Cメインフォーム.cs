@@ -5764,57 +5764,17 @@ namespace DTXCreator
 
 		public bool DetectDTXManiaProcess()
 		{
-			bool target = false;
-//Debug.WriteLine( "process start" );
-			for ( int i = 0; i < 2; i++ )		// 検索結果のハンドルがZeroになることがあるので、50ms間隔で1回リトライする
-			{
-				#region [ 既に起動中のDTXManiaプロセスを検索する。]
-				// このやり方だと、ShowInTaskbar=falseでタスクバーに表示されないパターンの時に検索に失敗するようだが
-				// DTXManiaでそのパターンはない？のでこのままいく。
-				// FindWindowを使えばこのパターンにも対応できるが、C#でビルドするアプリはウインドウクラス名を自前指定できないので、これは使わない。
+			// 検索結果のハンドルがZeroになることがあるので、50ms間隔で1回リトライする
+			#region [ 既に起動中のDTXManiaプロセスを検索する。]
+			// #39609 DTXManiaプロセス検索の単純化&高速化
+			System.Diagnostics.Process[] ps = System.Diagnostics.Process.GetProcessesByName("DTXManiaGR");
+			if (ps.Length > 0) return true;
+			Thread.Sleep(50);
 
-				//Process current = Process.GetCurrentProcess();
-				//Process[] running = Process.GetProcessesByName( current.ProcessName );
-				string appPath = Application.ExecutablePath;
-				string processname = Path.Combine( Path.GetDirectoryName( appPath ), "DTXManiaGR.exe" );
-//Debug.WriteLine( "processname=" + processname );
-				//Process[] running = Process.GetProcesses();	// .GetProcessesByName( processname );
-
-				System.Management.ManagementClass mc =
-					new System.Management.ManagementClass( "Win32_Process" );
-				System.Management.ManagementObjectCollection moc = mc.GetInstances();
-				
-				//IntPtr hWnd = FindWindow( null, "DTXMania .NET style release " + CDTXMania.VERSION );
-
-				foreach ( System.Management.ManagementObject mo in moc )
-				{
-//Debug.WriteLine( "filename=" + mo["ExecutablePath"] );
-//Debug.WriteLine( "2" );
-if ( (string)mo[ "ExecutablePath" ] == processname )
-{
-//Debug.WriteLine( "3" );
-	//if ( mo["ProcessId"] != 0 )
-	{
-//Debug.WriteLine( "4" );
-		target = true;
-		break;
-	}
-}
-//Debug.WriteLine( "5" );
-				}
-				#endregion
-
-				#region [ 起動中のDTXManiaがいれば、そのプロセスを返す ]
-				if ( target != false )
-				{
-					break;
-				}
-				#endregion
-				Thread.Sleep(50);
-			}
-
-//Debug.WriteLine( "process end;" );
-			return target;
+			ps = System.Diagnostics.Process.GetProcessesByName("DTXManiaGR");
+			if (ps.Length > 0) return true;
+			#endregion
+			return false;
 		}
 
 		private void calcDifficultyToolStripMenuItem_Click(object sender, EventArgs e)
