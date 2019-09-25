@@ -5766,7 +5766,7 @@ namespace DTXCreator
 		{
 			bool target = false;
 //Debug.WriteLine( "process start" );
-			for ( int i = 0; i < 5; i++ )		// 検索結果のハンドルがZeroになることがあるので、200ms間隔で5回リトライする
+			for ( int i = 0; i < 2; i++ )		// 検索結果のハンドルがZeroになることがあるので、50ms間隔で1回リトライする
 			{
 				#region [ 既に起動中のDTXManiaプロセスを検索する。]
 				// このやり方だと、ShowInTaskbar=falseでタスクバーに表示されないパターンの時に検索に失敗するようだが
@@ -5810,6 +5810,7 @@ if ( (string)mo[ "ExecutablePath" ] == processname )
 					break;
 				}
 				#endregion
+				Thread.Sleep(50);
 			}
 
 //Debug.WriteLine( "process end;" );

@@ -16,6 +16,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		public int n現在選択中のItem番号0to1294 = -1;
 
 		internal delegate void DGサウンドを再生する( int nWAV番号1to1295 );
+		internal delegate void DGサウンドファイルを再生する( string filename);
 
 		public CWAVリスト管理( Cメインフォーム pメインフォーム, ListView pListViewWAVリスト )
 		{
@@ -135,7 +136,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			{
 				directoryName = Path.GetDirectoryName( this._Form.strファイルの存在するディレクトリを絶対パスで返す( item.SubItems[ 2 ].Text ) );
 			}
-			Cサウンドプロパティダイアログ cサウンドプロパティダイアログ = new Cサウンドプロパティダイアログ( str相対パスの基本フォルダ, directoryName, new DGサウンドを再生する( this.tプレビュー音を再生する ) );
+			Cサウンドプロパティダイアログ cサウンドプロパティダイアログ = new Cサウンドプロパティダイアログ( str相対パスの基本フォルダ, directoryName, new DGサウンドファイルを再生する( this.tプレビュー音を再生する ) );
 			cサウンドプロパティダイアログ.wav = cwav;
 			cサウンドプロパティダイアログ.textBoxラベル.Text = item.SubItems[ 0 ].Text;
 			cサウンドプロパティダイアログ.textBoxWAV番号.Text = item.SubItems[ 1 ].Text;
@@ -256,6 +257,12 @@ namespace DTXCreator.WAV_BMP_AVI
 		{
 			CWAV wc = this.WAVキャッシュ.tWAVをキャッシュから検索して返す( nWAV番号1to1295 );
 			this.tプレビュー音を再生する( wc );
+		}
+		public void tプレビュー音を再生する(string filename)
+		{
+			CWAV wc = new CWAV();
+			wc.strファイル名 = filename;
+			this.tプレビュー音を再生する(wc);
 		}
 		public void tプレビュー音を停止する()
 		{

@@ -4,6 +4,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
+using System.Diagnostics;
+using System.IO;
 using DTXCreator.汎用;
 using DTXCreator.Properties;
 using FDK;
@@ -14,13 +16,15 @@ namespace DTXCreator.WAV_BMP_AVI
 	{
 		internal CWAV wav;
 
-		public Cサウンドプロパティダイアログ( string str相対パスの基点フォルダ, string str初期フォルダ, CWAVリスト管理.DGサウンドを再生する dgサウンドを再生する )
+		public Cサウンドプロパティダイアログ( string str相対パスの基点フォルダ, string str初期フォルダ, CWAVリスト管理.DGサウンドファイルを再生する dgサウンドファイルを再生する )
 		{
 			this.str相対パスの基点フォルダ = str相対パスの基点フォルダ;
 			this.str初期フォルダ = str初期フォルダ;
-			this.dgサウンドを再生する = dgサウンドを再生する;
+			this.dgサウンドファイルを再生する = dgサウンドファイルを再生する;
 
 			this.InitializeComponent();
+
+			this.button試聴.Enabled = (this.textBoxファイル.Text != "");
 		}
 		public void t位置testBoxの値を範囲修正したのちtextBox位置とhScrollBar位置へ反映させる()
 		{
@@ -59,7 +63,7 @@ namespace DTXCreator.WAV_BMP_AVI
 			this.hScrollBar音量.Value = num;
 		}
 
-		private CWAVリスト管理.DGサウンドを再生する dgサウンドを再生する;
+		private CWAVリスト管理.DGサウンドファイルを再生する dgサウンドファイルを再生する;
 		private string str初期フォルダ = "";
 		private string str相対パスの基点フォルダ = "";
 		private static int[] カスタムカラー;
@@ -97,8 +101,9 @@ namespace DTXCreator.WAV_BMP_AVI
 			if( dialog.ShowDialog() == DialogResult.OK )
 			{
 				string str = Cファイル選択_パス変換.str基点からの相対パスに変換して返す( dialog.FileName, this.str相対パスの基点フォルダ );
-				str.Replace( '/', '\\' );
+				str.Replace( '/', Path.DirectorySeparatorChar);
 				this.textBoxファイル.Text = str;
+				this.button試聴.Enabled = (this.textBoxファイル.Text != "");
 			}
 		}
 		private void button参照_KeyDown( object sender, KeyEventArgs e )
@@ -204,8 +209,7 @@ namespace DTXCreator.WAV_BMP_AVI
 		}
 		private void button試聴_Click( object sender, EventArgs e )
 		{
-			int num = C変換.n36進数2桁の文字列を数値に変換して返す( this.textBoxWAV番号.Text );
-			this.dgサウンドを再生する( num );
+			this.dgサウンドファイルを再生する( this.textBoxファイル.Text);
 		}
 		private void button試聴_KeyDown( object sender, KeyEventArgs e )
 		{
