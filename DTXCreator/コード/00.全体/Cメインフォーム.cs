@@ -125,14 +125,20 @@ namespace DTXCreator
 					if( this.strDTXファイル名.Length > 0 )
 						strタイトル = this.strDTXファイル名;
 
-					
+
 					// タイトル文字列を修正。
 
-					if( this._b未保存 )
+					if (this._b未保存)
 					{
 						// 変更ありかつ未保存なら「*」を付ける
-
-						this.Text = "DTXC* [" + strタイトル + "]";
+						if (COS.bIsWin10OrLater(COS.WIN10BUILD._19H1))	// Win10 19H1以降のお作法は、タイトルバーの頭に*を表示
+						{
+							this.Text = "*DTXC [" + strタイトル + "]";
+						}
+						else
+						{
+							this.Text = "DTXC* [" + strタイトル + "]";
+						}
 						this.toolStripMenuItem上書き保存.Enabled = true;
 						this.toolStripButton上書き保存.Enabled = true;
 					}
@@ -5156,13 +5162,15 @@ namespace DTXCreator
 		{
 			try
 			{
-				// マニュアルを別プロセスとして開く。
-
-				Process.Start( this.strDTXCのあるフォルダ名 + @"\Manual.chm" );
+				// マニュアルサイトをブラウザで開く。
+				string strURL = (CultureInfo.CurrentUICulture.Name == "ja-JP")?
+					"https://osdn.net/projects/dtxmania/wiki/faq_index#h2-DTX.E3.83.87.E3.83.BC.E3.82.BF.E5.88.B6.E4.BD.9C.E8.80.85.E5.90.91.E3.81.91.E3.81.AE.E3.82.88.E3.81.8F.E3.81.82.E3.82.8B.E8.B3.AA.E5.95.8F"
+				:	"https://osdn.net/projects/dtxmania/wiki/faq_index_e#h2-For.20DTX.20data.20Manipulators";
+				Process.Start(strURL);
 			}
 			catch
 			{
-				this.toolStripMenuItemDTXCreaterマニュアル.Enabled = false;
+				//this.toolStripMenuItemDTXCreaterマニュアル.Enabled = false;
 			}
 		}
 		private void toolStripMenuItemバージョン_Click( object sender, EventArgs e )
@@ -5781,16 +5789,16 @@ namespace DTXCreator
 		{
 			DTXCreator.コード._05.譜面.C難易度自動計算マン f = new コード._05.譜面.C難易度自動計算マン(this);
 
-      Cメッセージポップアップ pop = new Cメッセージポップアップ(Resources.str難易度計算マン計算中);
-      pop.Owner = this;
-      pop.Show();
-      pop.Refresh();
+			Cメッセージポップアップ pop = new Cメッセージポップアップ(Resources.str難易度計算マン計算中);
+			pop.Owner = this;
+			pop.Show();
+			pop.Refresh();
 
 			f.Prepare();
-      hScrollBarDLEVEL.Value = f.DLevel;
+			hScrollBarDLEVEL.Value = f.DLevel;
 			hScrollBarGLEVEL.Value = f.GLevel;
 			hScrollBarBLEVEL.Value = f.BLevel;
-      pop.Close();
+			pop.Close();
 		}
 
 		//-----------------
