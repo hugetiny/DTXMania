@@ -292,7 +292,7 @@ namespace DTXMania
 					}
 					else
 					{
-						for ( int i = 0; i < fields.GetLength( 0 ); i++ )
+						for (int i = 0; i < Math.Min(fields.Length, csvHeader.Length); i++)
 						{
 							string key = strItemName + "." + csvHeader[ i ];
 							string value = fields[ i ];
