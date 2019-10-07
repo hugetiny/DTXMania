@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="BGMのみ再生" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\datacontainer_newrecordhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\DataContainer_NewRecordHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="dtxcreator" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\コード\99.リソース\DTXC.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -128,7 +128,7 @@
     <value>035</value>
   </data>
   <data name="Redo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\edit_redohs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\Edit_RedoHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="strBPM選択ダイアログの説明文" xml:space="preserve">
     <value>Specify a BPM value.</value>
@@ -234,79 +234,79 @@ Do you want to save the changes?</value>
     <value>Now loading...</value>
   </data>
   <data name="Undo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\edit_undohs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\Edit_UndoHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="りらちょー" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\コード\99.リソース\りらちょー.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="コピー" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\copyhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\CopyHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="スピーカー" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\audiohs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\AudioHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="バージョン情報" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\コード\99.リソース\バージョン情報.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ヘルプ" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\help.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\Help.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="上移動" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\moveup.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\MoveUp.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="下移動" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\movedown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\MoveDown.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="保存" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\savehs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\saveHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="再生" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\datacontainer_movenexths.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\DataContainer_MoveNextHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="再生一時停止" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\pausehs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\PauseHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="再生停止" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\stophs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\StopHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="切り取り" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\cuths.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\CutHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="削除" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\deletehs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\deleteHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="動画ドキュメント" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\videodoc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\VideoDoc.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="新規作成" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\documenths.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\DocumentHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="最初から再生" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\コード\99.リソース\最初から再生.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="画像ドキュメント" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\picdoc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\PicDoc.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="矢印ポインタ" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\pointerhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\PointerHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="表示形式選択" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\コード\99.リソース\表示形式.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="貼り付け" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\pastehs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\PasteHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="鉛筆" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\コード\99.リソース\pencil.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="開く" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\openhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\openHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="音楽ドキュメント" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\musicdoc.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\MusicDoc.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ﾁｯﾌﾟﾊﾟﾚｯﾄ" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\コード\99.リソース\editinformationhs.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\コード\99.リソース\EditInformationHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="str名前を付けて保存ダイアログのフィルタ" xml:space="preserve">
     <value>DTX files(*.dtx)|*.dtx</value>
