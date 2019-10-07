@@ -149,29 +149,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>echo.
-echo ビルド後イベントを開始します。
-set RUNTIMEDIR="$(SolutionDir)RuntimeResources"
-
-echo.
-echo (2) 出力フォルダ から 実行時リソースフォルダ にコピーします。
-set DESTDIR=%25RUNTIMEDIR%25
-xcopy "$(TargetDir)$(TargetFileName)" %25DESTDIR%25 /Y
-rem xcopy "$(TargetDir)$(TargetFileName).config" %25DESTDIR%25 /Y
-rem set DESTDIR=%25RUNTIMEDIR%25\ja-JP
-rem if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-rem xcopy "$(TargetDir)ja-JP" %25DESTDIR%25 /Y
-
-echo.
-echo ビルド後イベントを終了しました。
-</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)RuntimeResources" />
+    <!--Copy SourceFiles="$(TargetDir)ja-JP" DestinationFolder="$(SolutionDir)RuntimeResources\ja-JP" /-->
   </Target>
-  -->
 </Project>

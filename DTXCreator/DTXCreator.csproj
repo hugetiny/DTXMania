@@ -424,45 +424,10 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
+    <!--Copy SourceFiles="$(TargetDir)*.dll" DestinationFolder="$(SolutionDir)RuntimeResources\dll" /-->
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)RuntimeResources" />
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName).config" DestinationFolder="$(SolutionDir)RuntimeResources" />
+    <Copy SourceFiles="$(TargetDir)ja-JP\DTXCreator.resources.dll" DestinationFolder="$(SolutionDir)RuntimeResources\ja-JP\" />
   </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>echo.
-echo ビルド後イベントを開始します。
-
-set RUNTIMEDIR="$(SolutionDir)RuntimeResources"
-
-echo.
-echo (1) 出力フォルダ内のdllファイルを出力フォルダ/dllフォルダへ移動します。
-set DESTDIR="$(TargetDir)dll"
-if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-move /Y "$(TargetDir)*.dll" %25DESTDIR%25
-
-echo.
-echo (2) 出力フォルダ から 実行時リソースフォルダ にコピーします。（dllは、日付の新しいファイルのみ）
-set DESTDIR=%25RUNTIMEDIR%25
-xcopy "$(TargetDir)$(TargetFileName)" %25DESTDIR%25 /Y
-xcopy "$(TargetDir)$(TargetFileName).config" %25DESTDIR%25 /Y
-set DESTDIR=%25RUNTIMEDIR%25\ja-JP
-if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(TargetDir)ja-JP" %25DESTDIR%25 /Y
-set DESTDIR="%25RUNTIMEDIR%25\dll"
-if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy  "$(TargetDir)dll" %25DESTDIR%25 /S /Y /D
-
-echo.
-echo (3) 実行時リソースフォルダ から 出力フォルダ にコピーします。（日付の新しいファイルのみ）
-set DESTDIR="$(TargetDir)dll"
-if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy  %25RUNTIMEDIR%25\dll %25DESTDIR%25 /S /Y /D
-
-echo.
-echo ビルド後イベントを終了しました。
-</PostBuildEvent>
-  </PropertyGroup>
 </Project>

@@ -141,6 +141,7 @@
     <Compile Include="コード\00.共通\CPowerPlan.cs" />
     <Compile Include="コード\00.共通\CSendMessage.cs" />
     <Compile Include="コード\00.共通\CTimerBase.cs" />
+    <Compile Include="コード\00.共通\CWindowsTheme.cs" />
     <Compile Include="コード\00.共通\C一定間隔処理.cs" />
     <Compile Include="コード\00.共通\C共通.cs" />
     <Compile Include="コード\01.フレームワーク\Core\GameWindowSize.cs" />
@@ -250,39 +251,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)$(OutDir)dll" />
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(SolutionDir)RuntimeResources\dll" />
   </Target>
-  -->
-  <PropertyGroup>
-    <PostBuildEvent>echo.
-echo ビルド後イベントを開始します。
-
-set RUNTIMEDIR="$(SolutionDir)RuntimeResources"
-
-echo.
-echo (1) 出力フォルダ から ソリューション出力フォルダ へコピーします。（日付の新しいファイルのみ）
-set DESTDIR="$(SolutionDir)$(OutDir)dll"
-if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(TargetDir)*.dll" %25DESTDIR%25 /Y /D /EXCLUDE:$(TargetFileName)
-
-echo.
-echo (2) 出力フォルダ から 実行時リソースフォルダ にコピーします。（日付の新しいファイルのみ）
-set DESTDIR=%25RUNTIMEDIR%25\dll
-if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy "$(TargetDir)*.dll"  %25DESTDIR%25 /Y /D
-
-echo.
-echo (3) 実行時リソースフォルダ から ソリューション出力フォルダ にコピーします。（日付の新しいファイルのみ）
-set DESTDIR="$(SolutionDir)$(OutDir)dll"
-if not exist %25DESTDIR%25 mkdir %25DESTDIR%25
-xcopy %25RUNTIMEDIR%25\dll %25DESTDIR%25 /Y /D
-
-echo.
-echo ビルド後イベントを終了しました。
-</PostBuildEvent>
-  </PropertyGroup>
 </Project>
