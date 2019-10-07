@@ -97,6 +97,41 @@ namespace FDK
 			set;
 		}
 
+		#region [ ローカル関数 ]
+		private void POVの処理( int p, JoystickUpdate data )
+		{
+			int nPovDegree = data.Value;
+			STInputEvent e = new STInputEvent();
+			int nWay = ( nPovDegree + 2250 ) / 4500;
+			if( nWay == 8 ) nWay = 0;
+			//Debug.WriteLine( "POVS:" + povs[ 0 ].ToString( CultureInfo.CurrentCulture ) + ", " +stevent.nKey );
+			//Debug.WriteLine( "nPovDegree=" + nPovDegree );
+			if( nPovDegree == -1 )
+			{
+				e.nKey = 6 + 128 + this.nPovState[ p ];
+				this.nPovState[ p ] = -1;
+				//Debug.WriteLine( "POVS離された" + data.TimeStamp + " " + e.nKey );
+				e.b押された = false;
+				e.nVelocity = 0;
+				this.bButtonState[ e.nKey ] = false;
+				this.bButtonPullUp[ e.nKey ] = true;
+			}
+			else
+			{
+				this.nPovState[ p ] = nWay;
+				e.nKey = 6 + 128 + nWay;
+				e.b押された = true;
+				e.nVelocity = CInput管理.n通常音量;
+				this.bButtonState[ e.nKey ] = true;
+				this.bButtonPushDown[ e.nKey ] = true;
+				//Debug.WriteLine( "POVS押された" + data.TimeStamp + " " + e.nKey );
+			}
+			//e.nTimeStamp = data.TimeStamp;
+			e.nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.Timestamp );
+			this.list入力イベント.Add( e );
+		}
+		#endregion
+
 		public void tポーリング( bool bWindowがアクティブ中, bool bバッファ入力を使用する )
 		{
 			#region [ bButtonフラグ初期化 ]
@@ -197,22 +232,22 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 								// #26880 2011.12.6 yyagi: improve to support "pullup" of POV buttons
 								case JoystickOffset.PointOfViewControllers0:
 									#region [ POV HAT 4/8way ]
-									POVの処理( 0, data.Value );
+									POVの処理( 0, data );
 									#endregion
 									break;
 								case JoystickOffset.PointOfViewControllers1:
 									#region [ POV HAT 4/8way ]
-									POVの処理( 1, data.Value );
+									POVの処理( 1, data );
 									#endregion
 									break;
 								case JoystickOffset.PointOfViewControllers2:
 									#region [ POV HAT 4/8way ]
-									POVの処理( 2, data.Value );
+									POVの処理( 2, data );
 									#endregion
 									break;
 								case JoystickOffset.PointOfViewControllers3:
 									#region [ POV HAT 4/8way ]
-									POVの処理( 3, data.Value );
+									POVの処理( 3, data );
 									#endregion
 									break;
 								default:
@@ -259,40 +294,6 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 									#endregion
 									break;
 							}
-
-							#region [ ローカル関数 ]
-							void POVの処理( int p, int nPovDegree )
-							{
-								STInputEvent e = new STInputEvent();
-								int nWay = ( nPovDegree + 2250 ) / 4500;
-								if( nWay == 8 ) nWay = 0;
-								//Debug.WriteLine( "POVS:" + povs[ 0 ].ToString( CultureInfo.CurrentCulture ) + ", " +stevent.nKey );
-								//Debug.WriteLine( "nPovDegree=" + nPovDegree );
-								if( nPovDegree == -1 )
-								{
-									e.nKey = 6 + 128 + this.nPovState[ p ];
-									this.nPovState[ p ] = -1;
-									//Debug.WriteLine( "POVS離された" + data.TimeStamp + " " + e.nKey );
-									e.b押された = false;
-									e.nVelocity = 0;
-									this.bButtonState[ e.nKey ] = false;
-									this.bButtonPullUp[ e.nKey ] = true;
-								}
-								else
-								{
-									this.nPovState[ p ] = nWay;
-									e.nKey = 6 + 128 + nWay;
-									e.b押された = true;
-									e.nVelocity = CInput管理.n通常音量;
-									this.bButtonState[ e.nKey ] = true;
-									this.bButtonPushDown[ e.nKey ] = true;
-									//Debug.WriteLine( "POVS押された" + data.TimeStamp + " " + e.nKey );
-								}
-								//e.nTimeStamp = data.TimeStamp;
-								e.nTimeStamp = CSound管理.rc演奏用タイマ.nサウンドタイマーのシステム時刻msへの変換( data.Timestamp );
-								this.list入力イベント.Add( e );
-							}
-							#endregion
 						}
 					}
 					//-----------------------------
