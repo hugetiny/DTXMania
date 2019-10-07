@@ -135,7 +135,10 @@ namespace FDK
 		private static Guid GetActivePowerPlan()
 		{
 			IntPtr pCurrentSchemeGuid = IntPtr.Zero;
-			CWin32.PowerGetActiveScheme( IntPtr.Zero, ref pCurrentSchemeGuid );
+			if (CWin32.PowerGetActiveScheme(IntPtr.Zero, ref pCurrentSchemeGuid) != 0)
+			{
+				return Guid.Empty;
+			}
 			var currentSchemeGuid = (Guid) Marshal.PtrToStructure( pCurrentSchemeGuid, typeof( Guid ) );
 			return currentSchemeGuid;
 		}
