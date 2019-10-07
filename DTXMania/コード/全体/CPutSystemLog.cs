@@ -13,13 +13,32 @@ namespace DTXMania
 	/// </summary>
 	public static class CPutSystemLog
 	{
+		delegate void SystemLogDelegate(System.Management.ManagementObject mo);
+
+		private static void TryPutSystemLog(string path, SystemLogDelegate fn)
+		{
+			System.Management.ManagementClass mc = new System.Management.ManagementClass(path);
+			System.Management.ManagementObjectCollection moc = mc.GetInstances();
+			try
+			{
+				foreach (System.Management.ManagementObject mo in moc)
+				{
+					fn(mo);
+				}
+			}
+			catch (Exception e)
+			{
+				// The Mono runtime doesn't implement everything
+				Trace.TraceInformation("{0}: {1}: {2}", path, e.GetType(), e.Message);
+				Console.Write("{0}: {1}: {2}\n", path, e.GetType(), e.Message);
+			}
+			moc.Dispose();
+			mc.Dispose();
+		}
+
 		public static void PutSystemLog()
 		{
-			System.Management.ManagementClass mc =
-				new System.Management.ManagementClass("Win32_Processor");
-			System.Management.ManagementObjectCollection moc = mc.GetInstances();
-			foreach (System.Management.ManagementObject mo in moc)
-			{
+			TryPutSystemLog("Win32_Processor", (mo) => {
 				Trace.TraceInformation("-------------------------");
 				Trace.TraceInformation("CPU Information:");
 				//Trace.TraceInformation("DeviceID      = {0}", mo["DeviceID"]);
@@ -29,18 +48,9 @@ namespace DTXMania
 				Trace.TraceInformation("L3CacheSize   = {0}KB", mo["L3CacheSize"]);
 				Trace.TraceInformation("NumberOfCores = {0}", mo["NumberOfCores"]);
 				Trace.TraceInformation("NumberOfLogicalProcessors = {0}", mo["NumberOfLogicalProcessors"]);
-			}
-			moc.Dispose();
-			mc.Dispose();
+			});
 
-			//System.Management.ManagementClass mc =
-			//	new System.Management.ManagementClass("Win32_OperatingSystem");
-			//System.Management.ManagementObjectCollection moc = mc.GetInstances();
-			mc =
-				new System.Management.ManagementClass("Win32_OperatingSystem");
-			moc = mc.GetInstances();
-			foreach (System.Management.ManagementObject mo in moc)
-			{
+			TryPutSystemLog("Win32_OperatingSystem", (mo) => {
 				Trace.TraceInformation("-------------------------");
 				Trace.TraceInformation("OS Information:");
 				//簡単な説明（Windows 8.1では「Microsoft Windows 8.1 Pro」等）
@@ -58,9 +68,7 @@ namespace DTXMania
 				Trace.TraceInformation("OSArchitecture: " + mo["OSArchitecture"]);
 
 				//Trace.TraceInformation("TotalVisibleMemorySize = {0}", mo["TotalVisibleMemorySize"]);
-			}
-			moc.Dispose();
-			mc.Dispose();
+			});
 
 			Trace.TraceInformation("-------------------------");
 			Trace.TraceInformation("General Environment Information:");
@@ -76,21 +84,13 @@ namespace DTXMania
 			Trace.TraceInformation("FreeVirtualMemorySize: {0:F2}MB", (cominfo.AvailableVirtualMemory / 1024f / 1024f));
 			//Trace.TraceInformation(cominfo.OSFullName + ", " + cominfo.OSPlatform + ", " + cominfo.OSVersion);
 
-			mc = new System.Management.ManagementClass("Win32_PhysicalMemory");
-			moc = mc.GetInstances();
 			Trace.TraceInformation("-------------------------");
 			Trace.TraceInformation("Physical Memory Information:");
-			foreach (System.Management.ManagementObject mo in moc)
-			{
+			TryPutSystemLog("Win32_PhysicalMemory", (mo) => {
 				Trace.TraceInformation("Capacity: {0:F2}GB", (Convert.ToInt64(mo["Capacity"]) / 1024f / 1024f / 1024f));
-			}
-			moc.Dispose();
-			mc.Dispose();
+			});
 
-			mc = new System.Management.ManagementClass("Win32_DisplayControllerConfiguration");
-			moc = mc.GetInstances();
-			foreach (System.Management.ManagementObject mo in moc)
-			{
+			TryPutSystemLog("Win32_DisplayControllerConfiguration", (mo) => {
 				Trace.TraceInformation("-------------------------");
 				Trace.TraceInformation("Display Adapter Information:");
 				Trace.TraceInformation("Name: " + mo["Name"]);
@@ -98,27 +98,17 @@ namespace DTXMania
 				Trace.TraceInformation("HorizontalResolution: " + mo["HorizontalResolution"]);
 				Trace.TraceInformation("VerticalResolution: " + mo["VerticalResolution"]);
 				Trace.TraceInformation("RefreshRate: " + mo["RefreshRate"]);
-			}
-			moc.Dispose();
-			mc.Dispose();
+			});
 
-			mc = new System.Management.ManagementClass("Win32_VideoController");
-			moc = mc.GetInstances();
-			foreach (System.Management.ManagementObject mo in moc)
-			{
+			TryPutSystemLog("Win32_VideoController", (mo) => {
 				Trace.TraceInformation("-------------------------");
 				Trace.TraceInformation("Video Controller Information:");
 				Trace.TraceInformation("Description: " + mo["Description"]);
 				Trace.TraceInformation("AdapterRAM: {0}MB", (Convert.ToInt64(mo["AdapterRAM"]) / 1024f / 1024f));
 				Trace.TraceInformation("CapabilityDescriptions: " + mo["CapabilityDescriptions"]);
-			}
-			moc.Dispose();
-			mc.Dispose();
+			});
 
-			mc = new System.Management.ManagementClass("Win32_DesktopMonitor");
-			moc = mc.GetInstances();
-			foreach (System.Management.ManagementObject mo in moc)
-			{
+			TryPutSystemLog("Win32_DesktopMonitor", (mo) => {
 				Trace.TraceInformation("-------------------------");
 				Trace.TraceInformation("Display Information:");
 				Trace.TraceInformation("Description: " + mo["Description"]);
@@ -126,14 +116,9 @@ namespace DTXMania
 				Trace.TraceInformation("PixelsPerYLogicalInch: " + mo["PixelsPerYLogicalInch"]);
 				Trace.TraceInformation("ScreenWidth: " + mo["ScreenWidth"]);
 				Trace.TraceInformation("ScreenHeight: " + mo["ScreenHeight"]);
-			}
-			moc.Dispose();
-			mc.Dispose();
+			});
 
-			mc = new System.Management.ManagementClass("Win32_SoundDevice");
-			moc = mc.GetInstances();
-			foreach (System.Management.ManagementObject mo in moc)
-			{
+			TryPutSystemLog("Win32_SoundDevice", (mo) => {
 				Trace.TraceInformation("-------------------------");
 				Trace.TraceInformation("Audio Information:");
 				//Trace.TraceInformation("Caption: " + mo["Caption"]);
@@ -144,9 +129,7 @@ namespace DTXMania
 				{
 					Trace.TraceInformation("{0}:{1}", property.Name, property.Value);
 				}
-			}
-			moc.Dispose();
-			mc.Dispose();
+			});
 
 			Trace.TraceInformation("----------------------");
 			Trace.TraceInformation("DTXMania settings:");
