@@ -20,7 +20,7 @@ namespace DTXMania
 	{
 		// プロパティ
 		#region [ properties ]
-		public static readonly string VERSION = "099f(180901)";
+		public static readonly string VERSION = "099g(191022)";
 		public static readonly string SLIMDXDLL = "c_net20x86_Jun2010";
 		public static readonly string D3DXDLL = "d3dx9_43.dll";		// June 2010
         //public static readonly string D3DXDLL = "d3dx9_42.dll";	// February 2010
@@ -510,6 +510,10 @@ namespace DTXMania
 		}
 		protected override void Draw( GameTime gameTime )
 		{
+			if (Sound管理 == null)
+			{
+				return;
+			}
 			Sound管理.t再生中の処理をする();
 
 			if( Timer != null )
