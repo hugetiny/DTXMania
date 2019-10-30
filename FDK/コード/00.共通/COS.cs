@@ -124,18 +124,18 @@ namespace FDK
 		}
 		public enum WIN10BUILD : int
 		{
-			TH1 = 10240,
-			TH2 = 10586,
-			RS1 = 14393,
-			RS2 = 15063,
-			RS3 = 16299,
-			RS4 = 17134,
-            RS5 = 17763,
-            _19H1 = 18362,
+			TH1 = 10240,	// 1507: 
+			TH2 = 10586,	// 1511: November Update
+			RS1 = 14393,	// 1607: Anniversary Update
+			RS2 = 15063,	// 1703: Creators Update
+			RS3 = 16299,	// 1709: Fall Creators Update
+			RS4 = 17134,	// 1803: April 2018 Update
+            RS5 = 17763,	// 1809: October 2018 Update
+            _19H1 = 18362,	// 1903: May 2019 Update
 			UNKNOWN  = -1,
 			NOTWIN10 = 0
 		}
-		private static WIN10BUILD GetWin10BuildNumber()
+		public static WIN10BUILD GetWin10BuildNumber()
 		{
 			WIN10BUILD ret = WIN10BUILD.UNKNOWN;
 
