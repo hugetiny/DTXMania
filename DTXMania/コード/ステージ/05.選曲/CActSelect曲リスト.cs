@@ -1492,6 +1492,8 @@ namespace DTXMania
 			int n使用レーン数 = 0;
 			switch (e使用レーン数)
 			{
+				//case EUseLanes.None:  n使用レーン数 = 90; break;
+				//case EUseLanes.Other: n使用レーン数 = 99; break;
 				case EUseLanes.Dr_6		: n使用レーン数 = 6; break;
 				case EUseLanes.Dr_10	: n使用レーン数 = 10; break;
 				case EUseLanes.Dr_12	: n使用レーン数 = 12; break;

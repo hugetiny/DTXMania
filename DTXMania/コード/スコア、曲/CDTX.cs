@@ -132,6 +132,7 @@ namespace DTXMania
 			this.bチップがある.Movie = false;
 			this.bチップがある.LeftPedal = false;
 			this.bチップがある.LeftBassDrum = false;
+			this.bチップがある.FloorTom = false;
 			this.bMovieをFullscreen再生する = false;
 			this.strファイル名 = "";
 			this.strフォルダ名 = "";
@@ -606,7 +607,6 @@ namespace DTXMania
 				//				Debug.WriteLine(strCount);
 				//				CDTXMania.Instance.app.act文字コンソール.tPrint(0, 0, C文字コンソール.Eフォント種別.白, strCount);
 				//				count++;
-
 				string str = string.IsNullOrEmpty(this.PATH_WAV) ? this.strフォルダ名 : this.PATH_WAV;
 				str = str + cwav.strファイル名;
 				bool bIsDirectSound = (CDTXMania.Instance.Sound管理.CurrentSoundDeviceType == ESoundDeviceType.DirectSound);

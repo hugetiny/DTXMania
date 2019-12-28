@@ -570,6 +570,13 @@ namespace DTXMania
 			public bool LeftPedal;
 			public bool LeftBassDrum;
 
+			public bool FloorTom;
+
+			public bool GuitarY;
+			public bool GuitarP;
+			public bool BassY;
+			public bool BassP;
+
 			public bool this[EPart inst]
 			{
 				get
@@ -626,6 +633,21 @@ namespace DTXMania
 
 						case 9:
 							return this.LeftBassDrum;
+
+						case 10:
+							return this.FloorTom;
+
+						case 11:
+							return this.GuitarY;
+
+						case 12:
+							return this.GuitarP;
+
+						case 13:
+							return this.BassY;
+
+						case 14:
+							return this.BassP;
 					}
 					throw new IndexOutOfRangeException();
 				}
@@ -671,6 +693,26 @@ namespace DTXMania
 
 						case 9:
 							this.LeftBassDrum = value;
+							return;
+
+						case 10:
+							this.FloorTom = value;
+							return;
+
+						case 11:
+							this.GuitarY = value;
+							return;
+
+						case 12:
+							this.GuitarP = value;
+							return;
+
+						case 13:
+							this.BassY= value;
+							return;
+
+						case 14:
+							this.BassP = value;
 							return;
 					}
 					throw new IndexOutOfRangeException();
