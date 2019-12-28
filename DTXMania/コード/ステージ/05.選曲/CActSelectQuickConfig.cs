@@ -79,40 +79,41 @@ namespace DTXMania
 				int dr_init_idx = 3;
 				if (CDTXMania.Instance.ConfigIni.bAutoPlay.IsAllTrue(EPart.Drums))
 				{
-					dr_init_idx = 0;
+					dr_init_idx = 0;	// All On
 				}
 				else if (CDTXMania.Instance.ConfigIni.bAutoPlay.bIsAutoHH)
 				{
-					dr_init_idx = 1;
+					dr_init_idx = 1;	// Auto HH
 				}
 				else if (CDTXMania.Instance.ConfigIni.bAutoPlay.bIsAutoBD)
 				{
-					dr_init_idx = 2;
+					dr_init_idx = 2;	// Auto BD
 				}
 				else if (CDTXMania.Instance.ConfigIni.bAutoPlay.IsAllFalse(EPart.Drums))
 				{
-					dr_init_idx = 4;
+					dr_init_idx = 4;	// All Off
 				}
+Trace.TraceInformation("MakeListCItemBase: index=" + dr_init_idx + " " + items_dr[dr_init_idx]);
 				QAuto.Initialize("Auto", "", items_dr);
 				QAuto.Index = dr_init_idx;
 				QAuto.OnEnterDelegate = () =>
 				{
-					if (QAuto.Value == "All On")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Drums, EThreeState.On);
-					}
-					else if (QAuto.Value == "All Off")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Drums, EThreeState.Off);
-					}
-					else if (QAuto.Value == "Auto HH")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoHH();
-					}
-					else if (QAuto.Value == "Auto BD")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoBD();
-					}
+					//if (QAuto.Value == "All On")
+					//{
+					//	//CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Drums, EThreeState.On);
+					//}
+					//else if (QAuto.Value == "All Off")
+					//{
+					//	//CDTXMania.Instance.ConfigIni.bAutoPlay.Set(EPart.Drums, EThreeState.Off);
+					//}
+					//else if (QAuto.Value == "Auto HH")
+					//{
+					//	//CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoHH();
+					//}
+					//else if (QAuto.Value == "Auto BD")
+					//{
+					//	//CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoBD();
+					//}
 					MakeAutoPanel();
 				};
 			}
@@ -141,22 +142,22 @@ namespace DTXMania
 				QAuto.Index = gt_init_idx;
 				QAuto.OnEnterDelegate = () =>
 				{
-					if (QAuto.Value == "All On")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.Set(nInst, EThreeState.On);
-					}
-					else if (QAuto.Value == "All Off")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.Set(nInst, EThreeState.Off);
-					}
-					else if (QAuto.Value == "Auto Neck")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoNeck(nInst);
-					}
-					else if (QAuto.Value == "Auto Pick")
-					{
-						CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoPick(nInst);
-					}
+					//if (QAuto.Value == "All On")
+					//{
+					//	CDTXMania.Instance.ConfigIni.bAutoPlay.Set(nInst, EThreeState.On);
+					//}
+					//else if (QAuto.Value == "All Off")
+					//{
+					//	CDTXMania.Instance.ConfigIni.bAutoPlay.Set(nInst, EThreeState.Off);
+					//}
+					//else if (QAuto.Value == "Auto Neck")
+					//{
+					//	CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoNeck(nInst);
+					//}
+					//else if (QAuto.Value == "Auto Pick")
+					//{
+					//	CDTXMania.Instance.ConfigIni.bAutoPlay.SetAutoPick(nInst);
+					//}
 					//else if (QAuto.Value == "All Off")
 					//{
 					//	CDTXMania.Instance.ConfigIni.bAutoPlay.Set(nInst, EThreeState.Off);
@@ -169,12 +170,14 @@ namespace DTXMania
 			more.OnEnterDelegate = () =>
 			{
 				bGotoDetailConfig = true;
+				SetAutoParameters();
 				tDeativatePopupMenu();
 			};
 
 			COptionLabel tret = new COptionLabel("Return", "");
 			tret.OnEnterDelegate = () =>
 			{
+				SetAutoParameters();
 				tDeativatePopupMenu();
 			};
 
@@ -227,35 +230,79 @@ namespace DTXMania
 		}
 
 		/// <summary>
+		/// ESC押下時の処理。設定情報の保持を行う。
+		/// </summary>
+		public override void tCancel()
+		{
+			SetAutoParameters();
+			base.tCancel();
+		}
+
+		// 本当は、現在のレーン順に合わせた表示順にしたいが・・・
+		private string[] strPadNames = new[] {
+			"LC", "HO", "HH", "BD", "SD", "HT", "LT", "FT", "RD", "CY"
+		};
+
+		/// <summary>
 		/// DrumsのAUTOパラメータを一覧表示するパネルを作成する
 		/// </summary>
 		public void MakeAutoPanel()
 		{
 			Bitmap image = new Bitmap((int)(300 * Scale.X), (int)(130 * Scale.Y));
 			Graphics graphics = Graphics.FromImage(image);
+			graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
 
-			string header = "", s = "";
+			string header = "", state = "";
 			switch (QTarget.Index)
 			{
-				case 0:
-					header = "LHSBHLFC";
-					s = GetAutoParameters(EPart.Drums);
+				case 0:		// Drums
+					header = "";
+					for (int i = 0; i < strPadNames.Length; i++)
+					{
+						//header += e[i].GetType().GetEnumName;
+						//Trace.TraceInformation(e[i].GetType..type.GetType()..Name);
+						//Trace.TraceInformation(e[i].GetType().Name);
+						//Trace.TraceInformation(e[i].GetType().GetEnumName(e[i]));
+						//header += e[i].GetType().GetEnumName(e[i]);
+
+						header += strPadNames[i];
+					}
+
+					//header = nameof(EPad.LC);
+					//header += nameof(CDTXMania.Instance.ConfigIni.bAutoPlay.LC);
+
+
+					state = GetAutoParameters(EPart.Drums);
 					break;
-				case 1:
-					header = "RGBPW";
-					s = GetAutoParameters(EPart.Guitar);
+				case 1:		// Guitar
+					header = "R G B P W ";
+					state = GetAutoParameters(EPart.Guitar);
 					break;
-				case 2:
-					header = "RGBPW";
-					s = GetAutoParameters(EPart.Bass);
+				case 2:		// Bass
+					header = "R G B P W ";
+					state = GetAutoParameters(EPart.Bass);
 					break;
 				default:
 					break;
 			}
-			for (int i = 0; i < header.Length; i++)
+			for (int i = 0; i < header.Length; i += 2)
 			{
-				graphics.DrawString(header[i].ToString(), this.ft表示用フォント, Brushes.White, (float)i * 24 * Scale.X, (float)0f);
-				graphics.DrawString(s[i].ToString(), this.ft表示用フォント, Brushes.White, (float)i * 24 * Scale.X, (float)24f * Scale.Y);
+				string hh = header.Substring(i, 2);
+				string ss = state.Substring(i/2, 1);
+
+				if (hh[1] == ' ')
+				{
+					graphics.DrawString(hh[0].ToString(), this.ft表示用フォント, Brushes.White, (float)(i/2) * 20 * Scale.X, (float)0f);
+				}
+				else
+				{
+					graphics.ScaleTransform(0.5F, 0.5F);
+					graphics.DrawString(hh[0].ToString(), this.ft表示用フォント, Brushes.White, (float)i * 20 * Scale.X, (float)0f);
+					graphics.DrawString(hh[1].ToString(), this.ft表示用フォント, Brushes.White, (float)(i+0.7f) * 20 * Scale.X, (float)12f * Scale.Y);
+					graphics.ResetTransform();
+				}
+
+				graphics.DrawString(ss.ToString(), this.ft表示用フォント, Brushes.White, (float)(i/2) * 20 * Scale.X, (float)24f * Scale.Y);
 			}
 			graphics.Dispose();
 
@@ -283,6 +330,7 @@ namespace DTXMania
 		/// <returns>AutoならA,さもなくば_。この文字が複数並んだ文字列。</returns>
 		private string GetAutoParameters(EPart target)
 		{
+Trace.TraceInformation("GetAutpParameters: QAuto.Index=" + QAuto.Index);
 			string s = "";
 			switch (target)
 			{
@@ -297,12 +345,27 @@ namespace DTXMania
 							s = "_AA_______";
 							break;
 						case 2: // Auto BD
-							s = "____A_____";
+							s = "___A______";
 							break;
 						case 3: // Custom
-							for (EPad i = EPad.DrumsPadMin; i < EPad.DrumsPadMax; i++)
+							// 本当は、現在のレーン順に合わせた表示順にしたいが・・・
+							COptionBool[] e = new[] {
+								CDTXMania.Instance.ConfigIni.bAutoPlay.LC,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.HHO,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.HH,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.BD,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.SD,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.HT,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.LT,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.FT,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.RD,
+								CDTXMania.Instance.ConfigIni.bAutoPlay.CY,
+							};
+							//for (EPad i = EPad.DrumsPadMin; i < EPad.DrumsPadMax; i++)
+							for (int i = 0; i < e.Length; i++)
 							{
-								s += (CDTXMania.Instance.ConfigIni.bAutoPlay[i]) ? "A" : "_";
+								//s += (CDTXMania.Instance.ConfigIni.bAutoPlay[i]) ? "A" : "_";
+								s += (e[i].Value) ? "A" : "_";
 							}
 							break;
 						case 4: // OFF
@@ -349,6 +412,55 @@ namespace DTXMania
 			return s;
 		}
 
+		/// <summary>
+		/// ConfigIni.bAutoPlayに簡易CONFIGの状態を反映する
+		/// </summary>
+		private void SetAutoParameters()
+		{
+			string s;
+			#region [Drums]
+			s = GetAutoParameters(EPart.Drums);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.LC.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.HHO.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.HH.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.BD.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.SD.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.HT.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.LT.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.FT.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.RD.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.CY.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			#endregion
+			#region [Guitar]
+			s = GetAutoParameters(EPart.Drums);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtR.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtG.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtB.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtPick.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtWail.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			#endregion
+			#region [Bass]
+			s = GetAutoParameters(EPart.Drums);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtR.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtG.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtB.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtPick.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			CDTXMania.Instance.ConfigIni.bAutoPlay.GtWail.Value = (s[0] == 'A'); s = s.Remove(0, 1);
+			#endregion
+
+			//for (EPart target = EPart.Guitar; target < EPart.Bass; target++)
+			//{
+			//	s += GetAutoParameters(target);
+			//}
+			////	EPad from = (target == EPart.Guitar) ? EPad.GuitarPadMin : EPad.BassPadMin;
+			////	EPad to = (target == EPart.Guitar) ? EPad.GuitarPadMax : EPad.BassPadMax;
+			//int j = 0;
+			//for (EPad i = EPad.GuitarPadMin; i < EPad.BassPadMax; i++)
+			//{
+			//	CDTXMania.Instance.ConfigIni.bAutoPlay[i].Value = (s[j++] == 'A') ? true : false;
+			//}
+			Trace.TraceInformation("Saved:");
+		}
 
 		// CActivity 実装
 

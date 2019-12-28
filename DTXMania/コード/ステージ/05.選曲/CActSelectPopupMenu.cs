@@ -112,6 +112,15 @@ namespace DTXMania
 		{
 		}
 
+
+		/// <summary>
+		/// 追加のキャンセル処理。必要に応じて、継承先で記述する。
+		/// </summary>
+		public virtual void tCancel()
+		{
+
+		}
+
 		public void t次に移動()
 		{
 			if (this.bキー入力待ち)
@@ -246,7 +255,7 @@ namespace DTXMania
 					{
 						// キャンセル
 						CDTXMania.Instance.Skin.sound取消音.t再生する();
-						// tCancel();
+						tCancel();
 						this.bIsActivePopupMenu = false;
 					}
 					#endregion
