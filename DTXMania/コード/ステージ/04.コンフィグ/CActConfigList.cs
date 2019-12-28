@@ -458,6 +458,9 @@ namespace DTXMania
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bIsAutoResultCapture);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bBufferedInput);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLog);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLogEnumerateSongs);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLogCreateRelease);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLogDTX);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLoadSoundSpeed);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bLoadDTXDetail);// #36177 2016.7.30 ikanick
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bUseBoxDefSkin);

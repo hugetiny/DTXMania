@@ -868,9 +868,9 @@ namespace DTXMania
 
 			bItalicFontSongSelect.Initialize("", "");
 			bBoldFontSongSelect.Initialize("", "");
-			bLogDTX.Initialize("", "");
-			bLogEnumerateSongs.Initialize("", "");
-			bLogCreateRelease.Initialize("", "");
+			bLogDTX.Initialize("strCfgSysLogDTX");
+			bLogEnumerateSongs.Initialize("strCfgSysLogEnumerateSongs");	//
+			bLogCreateRelease.Initialize("strCfgSysLogCreateRelease");
 			bViewerVSyncWait.Initialize("", "");
 			bViewerShowDebugStatus.Initialize("", "");
 			bViewerTimeStretch.Initialize("", "");
