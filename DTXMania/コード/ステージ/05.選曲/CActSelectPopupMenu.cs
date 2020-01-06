@@ -64,15 +64,16 @@ namespace DTXMania
 			stqMenuTitle = new stQuickMenuItem();
 			stqMenuTitle.cItem = new COptionString(title);
 			stqMenuTitle.cItem.label = title;
-			stqMenuTitle.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(title, Color.White, Color.Black), false);
-			stqMenuTitle.rectName = prvFont.RectStrings;
+			//stqMenuTitle.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(title, Color.White, Color.Black), false);
+			//stqMenuTitle.rectName = prvFont.RectStrings;
 			lciMenuItems = new stQuickMenuItem[menulist.Count];
 			for (int i = 0; i < menulist.Count; i++)
 			{
 				stQuickMenuItem stqm = new stQuickMenuItem();
 				stqm.cItem = menulist[i];
-				stqm.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(menulist[i].label, Color.White, Color.Black), false);
-				stqm.rectName = prvFont.RectStrings;
+				stqm.label = menulist[i].label;
+				//stqm.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(menulist[i].label, Color.White, Color.Black), false);
+				//stqm.rectName = prvFont.RectStrings;
 				lciMenuItems[i] = stqm;
 			}
 
@@ -205,6 +206,18 @@ namespace DTXMania
 				{
 					this.txPopupMenuBackground = TextureFactory.tテクスチャの生成(pathPopupMenuBackground, false);
 				}
+
+				if (stqMenuTitle.txName == null)
+				{
+					stqMenuTitle.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(stqMenuTitle.cItem.label, Color.White, Color.Black), false);
+					stqMenuTitle.rectName = prvFont.RectStrings;
+				}
+				for (int i = 0; i < lciMenuItems.Length; i++)
+				{
+					lciMenuItems[i].txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(lciMenuItems[i].label, Color.White, Color.Black), false);
+					lciMenuItems[i].rectName= prvFont.RectStrings;
+				}
+
 				base.OnManagedリソースの作成();
 			}
 		}
@@ -325,7 +338,10 @@ namespace DTXMania
 				#endregion
 				#region [ タイトル描画 ]
 				int x = (int)(240 * Scale.X), y = (int)(16 * Scale.Y);
-				stqMenuTitle.txName.t2D描画(CDTXMania.Instance.Device, x, y);
+				if (stqMenuTitle.txName != null)
+				{
+					stqMenuTitle.txName.t2D描画(CDTXMania.Instance.Device, x, y);
+				}
 				#endregion
 				#region [ カーソル描画 ]
 				if (this.txCursor != null)
@@ -393,6 +409,7 @@ namespace DTXMania
 			internal COptionBase cItem;
 			internal CTexture txName;
 			internal Rectangle rectName;
+			internal string label;
 		}
 		private stQuickMenuItem[] lciMenuItems;
 		CPrivateFastFont prvFont;
