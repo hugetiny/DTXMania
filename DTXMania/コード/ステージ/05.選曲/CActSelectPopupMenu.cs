@@ -61,11 +61,30 @@ namespace DTXMania
 			this.prvFont = new CPrivateFastFont(CSkin.Path(path), (int)(18 * Scale.Y));
 			//prvFont = new CPrivateFastFont(CSkin.Path(@"Graphics\fonts\mplus-1p-heavy.ttf"), (int)(18 * Scale.Y));
 
-			stqMenuTitle = new stQuickMenuItem();
+			
+			//stqMenuTitle = new stQuickMenuItem();
+			//stqMenuTitleはprivate変数として宣言済みのため、stqMenuItemｇはnewする必要なし。
+			//newすると、QuickConfigでDrums/Guitar/Bassを切り替えるたびにstqMenuTitleが
+			//別の変数として再初期化され、付随していたstqMenuTitle.txNameのテクスチャがDispose漏れとして検出されてしまう
+			//(切り替えのたびにInitialize()を呼び出す設計の問題でもあるが)
+
 			stqMenuTitle.cItem = new COptionString(title);
 			stqMenuTitle.cItem.label = title;
 			//stqMenuTitle.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(title, Color.White, Color.Black), false);
 			//stqMenuTitle.rectName = prvFont.RectStrings;
+
+			// lciMenuItemsもstqMenuTitleと同様に、newの実行前に、既に紐づいているCTextureを解放しておく
+			if (lciMenuItems != null)
+
+			{
+				for (int i = 0; i < lciMenuItems.Length; i++)
+				{
+					if (lciMenuItems[i].txName != null)
+					{
+						TextureFactory.tテクスチャの解放(ref lciMenuItems[i].txName);
+					}
+				}
+			}
 			lciMenuItems = new stQuickMenuItem[menulist.Count];
 			for (int i = 0; i < menulist.Count; i++)
 			{
@@ -79,6 +98,8 @@ namespace DTXMania
 
 			bShowAllItems = showAllItems;
 			n現在の選択行 = defaultPos;
+
+			this.OnManagedリソースの作成();
 		}
 
 
@@ -200,21 +221,35 @@ namespace DTXMania
 				string pathPopupMenuBackground = CSkin.Path(@"Graphics\ScreenSelect sort menu background.png");
 				if (File.Exists(pathCursor))
 				{
-					this.txCursor = TextureFactory.tテクスチャの生成(pathCursor, false);
+					if (this.txCursor != null)
+					{
+						TextureFactory.tテクスチャの解放(ref this.txCursor);
+					}
+					this.txCursor = TextureFactory.tテクスチャの生成(pathCursor, false, "txCursor");
 				}
 				if (File.Exists(pathPopupMenuBackground))
 				{
-					this.txPopupMenuBackground = TextureFactory.tテクスチャの生成(pathPopupMenuBackground, false);
+					if (this.txPopupMenuBackground != null)
+					{
+						TextureFactory.tテクスチャの解放(ref this.txPopupMenuBackground);
+					}
+					this.txPopupMenuBackground = TextureFactory.tテクスチャの生成(pathPopupMenuBackground, false, "txPopupMenuBackground");
 				}
 
-				if (stqMenuTitle.txName == null)
+				if (this.stqMenuTitle.txName != null)
 				{
-					stqMenuTitle.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(stqMenuTitle.cItem.label, Color.White, Color.Black), false);
-					stqMenuTitle.rectName = prvFont.RectStrings;
+					TextureFactory.tテクスチャの解放(ref this.stqMenuTitle.txName);
 				}
+				stqMenuTitle.txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(stqMenuTitle.cItem.label, Color.White, Color.Black), false, "stqMenuTitle.txName");
+				stqMenuTitle.rectName = prvFont.RectStrings;
+
 				for (int i = 0; i < lciMenuItems.Length; i++)
 				{
-					lciMenuItems[i].txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(lciMenuItems[i].label, Color.White, Color.Black), false);
+					if (lciMenuItems[i].txName != null)
+					{
+						TextureFactory.tテクスチャの解放(ref lciMenuItems[i].txName);
+					}
+					lciMenuItems[i].txName = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(lciMenuItems[i].label, Color.White, Color.Black), false, "lciMenuItems[i].txName");
 					lciMenuItems[i].rectName= prvFont.RectStrings;
 				}
 
