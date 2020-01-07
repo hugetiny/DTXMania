@@ -12,12 +12,12 @@ namespace DTXMania
 		#region [ 汎用ヘルパー ]
 		//-----------------
 		#region [ tテクスチャの生成 ]
-		public static CTexture tテクスチャの生成(string fileName)
+		public static CTexture tテクスチャの生成(string fileName, string _label = "" )
 		{
-			return tテクスチャの生成(fileName, false);
+			return tテクスチャの生成(fileName, false, _label);
 		}
 
-		public static CTexture tテクスチャの生成(string fileName, bool b黒を透過する)
+		public static CTexture tテクスチャの生成(string fileName, bool b黒を透過する, string _label = "")
 		{
 			if (CDTXMania.Instance == null)
 			{
@@ -25,7 +25,7 @@ namespace DTXMania
 			}
 			try
 			{
-				return new CTexture(CDTXMania.Instance.Device, fileName, CDTXMania.Instance.TextureFormat, b黒を透過する);
+				return new CTexture(CDTXMania.Instance.Device, fileName, CDTXMania.Instance.TextureFormat, b黒を透過する, _label);
 			}
 			catch (CTextureCreateFailedException)
 			{
@@ -39,12 +39,12 @@ namespace DTXMania
 			}
 		}
 
-		public static CTextureAf tテクスチャの生成Af(string fileName)
+		public static CTextureAf tテクスチャの生成Af(string fileName, string _label = "")
 		{
-			return tテクスチャの生成Af(fileName, false);
+			return tテクスチャの生成Af(fileName, false, _label);
 		}
 
-		public static CTextureAf tテクスチャの生成Af(string fileName, bool b黒を透過する)
+		public static CTextureAf tテクスチャの生成Af(string fileName, bool b黒を透過する, string _label = "")
 		{
 			if (CDTXMania.Instance == null)
 			{
@@ -52,7 +52,7 @@ namespace DTXMania
 			}
 			try
 			{
-				return new CTextureAf(CDTXMania.Instance.Device, fileName, CDTXMania.Instance.TextureFormat, b黒を透過する);
+				return new CTextureAf(CDTXMania.Instance.Device, fileName, CDTXMania.Instance.TextureFormat, b黒を透過する, _label);
 			}
 			catch (CTextureCreateFailedException)
 			{
@@ -76,12 +76,12 @@ namespace DTXMania
 			t安全にDisposeする(ref tx);
 		}
 
-		public static CTexture tテクスチャの生成(byte[] txData)
+		public static CTexture tテクスチャの生成(byte[] txData, string _label = "")
 		{
-			return tテクスチャの生成(txData, false);
+			return tテクスチャの生成(txData, false, _label);
 		}
 
-		public static CTexture tテクスチャの生成(byte[] txData, bool b黒を透過する)
+		public static CTexture tテクスチャの生成(byte[] txData, bool b黒を透過する, string _label = "")
 		{
 			if (CDTXMania.Instance == null)
 			{
@@ -94,7 +94,7 @@ namespace DTXMania
 			}
 			try
 			{
-				return new CTexture(CDTXMania.Instance.Device, txData, CDTXMania.Instance.TextureFormat, b黒を透過する);
+				return new CTexture(CDTXMania.Instance.Device, txData, CDTXMania.Instance.TextureFormat, b黒を透過する, _label);
 			}
 			catch (CTextureCreateFailedException)
 			{
@@ -103,12 +103,12 @@ namespace DTXMania
 			}
 		}
 
-		public static CTexture tテクスチャの生成(Bitmap bitmap)
+		public static CTexture tテクスチャの生成(Bitmap bitmap, string _label = "")
 		{
-			return tテクスチャの生成(bitmap, false);
+			return tテクスチャの生成(bitmap, false, _label);
 		}
 
-		public static CTexture tテクスチャの生成(Bitmap bitmap, bool b黒を透過する)
+		public static CTexture tテクスチャの生成(Bitmap bitmap, bool b黒を透過する, string _label = "")
 		{
 			if (CDTXMania.Instance == null)
 			{
@@ -121,7 +121,7 @@ namespace DTXMania
 			}
 			try
 			{
-				return new CTexture(CDTXMania.Instance.Device, bitmap, CDTXMania.Instance.TextureFormat, b黒を透過する);
+				return new CTexture(CDTXMania.Instance.Device, bitmap, CDTXMania.Instance.TextureFormat, b黒を透過する, _label);
 			}
 			catch (CTextureCreateFailedException)
 			{

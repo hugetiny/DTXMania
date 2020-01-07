@@ -31,8 +31,8 @@ namespace FDK
 		/// <param name="format">テクスチャのフォーマット。</param>
 		/// <param name="b黒を透過する">画像の黒（0xFFFFFFFF）を透過させるなら true。</param>
 		/// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-		public CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する )
-			: this( device, strファイル名, format, b黒を透過する, Pool.Managed )
+		public CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する, string _label = "")
+			: this( device, strファイル名, format, b黒を透過する, Pool.Managed, _label )
 		{
 		}
 
@@ -49,15 +49,15 @@ namespace FDK
 		/// <param name="b黒を透過する">画像の黒（0xFFFFFFFF）を透過させるなら true。</param>
 		/// <param name="pool">テクスチャの管理方法。</param>
 		/// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-		public CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool )
+		public CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool, string _label = "")
 		{
-			MakeTexture( device, strファイル名, format, b黒を透過する, pool );
+			MakeTexture( device, strファイル名, format, b黒を透過する, pool, _label );
 		}
 
 
 
 
-		public new void MakeTexture( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool )
+		public new void MakeTexture( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool, string _label = "")
 		{
 			if ( !File.Exists( strファイル名 ) )		// #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
 				throw new FileNotFoundException( string.Format( "ファイルが存在しません。\n[{0}]", strファイル名 ) );
@@ -71,7 +71,7 @@ namespace FDK
 			if ( !bサイズは２の累乗でなければならない && b条件付きでサイズは２の累乗でなくてもOK )
 			{
 				//Debug.WriteLine( Path.GetFileName( strファイル名 )  + ": 最適化は不要です。" );
-				base.MakeTexture( device, strファイル名, format, b黒を透過する, pool );
+				base.MakeTexture( device, strファイル名, format, b黒を透過する, pool, _label);
 				return;
 			}
 
@@ -154,7 +154,7 @@ namespace FDK
 			g = null;
 			bmpOrg.Dispose();
 			bmpOrg = null;
-			base.MakeTexture( device, bmpNew, format, b黒を透過する, pool );
+			base.MakeTexture( device, bmpNew, format, b黒を透過する, pool, _label );
 			bmpNew.Dispose();
 			bmpNew = null;
 			#endregion
