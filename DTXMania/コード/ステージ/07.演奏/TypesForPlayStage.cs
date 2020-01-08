@@ -115,10 +115,10 @@ namespace DTXMania
 							return this.LT;
 
 						case 5:
-							return this.FT;
+							return this.CY;
 
 						case 6:
-							return this.CY;
+							return this.FT;
 
 						case 7:
 							return this.HHO;
@@ -156,11 +156,11 @@ namespace DTXMania
 							return;
 
 						case 5:
-							this.FT = value;
+							this.CY = value;
 							return;
 
 						case 6:
-							this.CY = value;
+							this.FT = value;
 							return;
 
 						case 7:
