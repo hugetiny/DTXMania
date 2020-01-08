@@ -131,8 +131,9 @@ namespace FDK
 			RS3 = 16299,	// 1709: Fall Creators Update
 			RS4 = 17134,	// 1803: April 2018 Update
             RS5 = 17763,	// 1809: October 2018 Update
-            _19H1 = 18362,	// 1903: May 2019 Update
-			UNKNOWN  = -1,
+            _19H1 = 18362,  // 1903: May 2019 Update
+			_19H2 = 18363,  // 1909: November 2019 Update
+			UNKNOWN = -1,
 			NOTWIN10 = 0
 		}
 		public static WIN10BUILD GetWin10BuildNumber()
