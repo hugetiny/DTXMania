@@ -50,35 +50,26 @@ namespace DTXMania
 				if (QTarget.Index == 0)
 				{
 					QAutoIndex.Bass = QAuto.Index;
-Trace.TraceInformation("QAutoIndex.Bass=" + QAutoIndex.Bass);
 					QAuto.Index = QAutoIndex.Drums;
-Trace.TraceInformation("QAuto,Index=" + QAuto.Index);
 					nCurrentTarget = EPart.Drums;
 				}
 				else if (QTarget.Index == 1)
 				{
 					QAutoIndex.Drums = QAuto.Index;
-Trace.TraceInformation("QAutoIndex.Drums=" + QAutoIndex.Drums);
 					QAuto.Index = QAutoIndex.Guitar;
-Trace.TraceInformation("QAuto,Index=" + QAuto.Index);
 					nCurrentTarget = EPart.Guitar;
 				}
 				else if (QTarget.Index == 2)
 				{
 					QAutoIndex.Guitar = QAuto.Index;
-Trace.TraceInformation("QAutoIndex.Guitar=" + QAutoIndex.Guitar);
 					QAuto.Index = QAutoIndex.Bass;
-Trace.TraceInformation("QAuto,Index=" + QAuto.Index);
 					nCurrentTarget = EPart.Bass;
 				}
 				lci = MakeListCItemBase(nCurrentTarget, false);	// false: QAuto.Indexを初期化しない
-Trace.TraceInformation("AQAuto.Index=" + QAuto.Index);
 				// eInst = (E楽器パート) nCurrentTarget;
 				// ここではeInstは変えない。メニューを開いたタイミングでのみeInstを使う
 				Initialize(lci, true, QuickCfgTitle, n現在の選択行);
-Trace.TraceInformation("BQAuto.Index=" + QAuto.Index);
 				MakeAutoPanel();
-Trace.TraceInformation("CQAuto.Index=" + QAuto.Index);
 			};
 			lci = MakeListCItemBase(EPart.Drums);
 			// ConfSet=0, nInst=Drums
@@ -87,7 +78,6 @@ Trace.TraceInformation("CQAuto.Index=" + QAuto.Index);
 			QAutoIndex.Drums = GetAutoIndex(EPart.Drums);
 			QAutoIndex.Guitar = GetAutoIndex(EPart.Guitar);
 			QAutoIndex.Bass = GetAutoIndex(EPart.Bass);
-Trace.TraceInformation($"★ {QAutoIndex.Drums}, {QAutoIndex.Guitar}, {QAutoIndex.Bass}");
 		}
 
 		private List<COptionBase> MakeListCItemBase(EPart nInst, bool bInitQAutoIndex = true)
@@ -115,9 +105,7 @@ Trace.TraceInformation($"★ {QAutoIndex.Drums}, {QAutoIndex.Guitar}, {QAutoInde
 				//{
 				//	dr_init_idx = 4;	// All Off
 				//}
-Trace.TraceInformation("1QAuto.Index=" + QAuto.Index);
 				QAuto.Initialize("Auto", "", items_dr);
-Trace.TraceInformation("xQAuto.Index=" + QAuto.Index);
 				if (bInitQAutoIndex)
 				{
 					QAuto.Index = GetAutoIndex(nInst);     //dr_init_idx;
@@ -126,7 +114,6 @@ Trace.TraceInformation("xQAuto.Index=" + QAuto.Index);
 				{
 					QAuto.Index = QAutoIndex.Drums;		// QAuto.Initialize()でIndexが初期化されるため、再設定する
 				}
-Trace.TraceInformation("2QAuto.Index=" + QAuto.Index);
 				QAuto.OnEnterDelegate = () =>
 				{
 					//if (QAuto.Value == "All On")
@@ -262,7 +249,6 @@ Trace.TraceInformation("2QAuto.Index=" + QAuto.Index);
 				{
 					init_idx = 4;    // All Off
 				}
-Trace.TraceInformation("GetAutoIndex: Drums: " + init_idx);
 			}
 			else if (nInst == EPart.Guitar || nInst == EPart.Bass)
 			{
@@ -283,7 +269,6 @@ Trace.TraceInformation("GetAutoIndex: Drums: " + init_idx);
 				{
 					init_idx = 4;	// All Off
 				}
-Trace.TraceInformation("GetAutoIndex: GtBs: " + init_idx);
 			}
 			else
 			{
@@ -296,11 +281,6 @@ Trace.TraceInformation("GetAutoIndex: GtBs: " + init_idx);
 		// メソッド
 		public override void tActivatePopupMenu(EPart einst)
 		{
-			// Activateすると、DrumsのAutoIndexだけ化けているので、Instance.Configiniから再取得する
-			//QAutoIndex.Drums = GetAutoIndex(EPart.Drums);
-			//QAutoIndex.Guitar = GetAutoIndex(EPart.Guitar);
-			//QAutoIndex.Bass = GetAutoIndex(EPart.Bass);
-
 			this.CActSelectQuickConfigMain();
 			base.tActivatePopupMenu(einst);
 		}
