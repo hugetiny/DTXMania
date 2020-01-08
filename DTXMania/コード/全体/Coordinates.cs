@@ -227,7 +227,7 @@ namespace DTXMania.Coordinates
 
 			ImgGtChipOpen = new CRect(72 * 3, 0, 72 * 3, 14);
 			ImgGtRGBButton = new CRect(0, 0, 72, 14);
-			ImgGtWailingChip = new CRect(0, 590, 60, 120);
+			ImgGtWailingChip = new CRect(0, 590, 70, 120);
 			ImgGtCountWailingChip = 5;
 			ImgGtCountRGBChip = 48;
 			ImgGtCountOpenChip = 48;
@@ -245,7 +245,7 @@ namespace DTXMania.Coordinates
 			ImgComboCombo = new CRect(100, 140, 110, 30);
 			ImgComboOneDigit = new CRect(0, 0, 50, 70);
 
-			ImgGtWailingFrame = new CRect(0, 0, 66, 113);
+			ImgGtWailingFrame = new CRect(0, 0, 70, 120);
 			ImgSpeedPanel = new CRect(0, 0, 45, 164);
 
 			ImgConsoleFont = new CRect(0, 0, 16, 32);
