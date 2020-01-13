@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DTXManiaGR")]
-[assembly: AssemblyCopyright("Copyright (C) 2000-2019 DTXMania Group")]
+[assembly: AssemblyCopyright("Copyright (C) 2000-2020 DTXMania Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,8 +33,8 @@ using System.Resources;
 // すべての値を指定するか、下のように '*' を使ってビルドおよびリビジョン番号を 
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("115.0.0.0")]
-[assembly: AssemblyFileVersion("115.0.0.0")]
+[assembly: AssemblyVersion("117.0.0.0")]
+[assembly: AssemblyFileVersion("117.0.0.0")]
 [assembly: NeutralResourcesLanguageAttribute("ja-JP")]
 
 // このアセンブリは「ライブラリ」である（難読化ツールへの指示）。

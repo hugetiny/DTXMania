@@ -1,11 +1,11 @@
 ============================================================
   DTXMania .NET style
-  (C) 2000 2019 DTXMania Group
+  (C) 2000 2020 DTXMania Group
 ============================================================
 
 ■動作に必要なもの
 
-(1) OS:  Windows 7 / 8.1 / 10 の、32bit/64bit版。
+(1) OS:  Windows 8.1 / 10 の、32bit/64bit版。
 (2) .NET Framework: 4.7以上。
  　(Win10 Creators Update (1703) 以前のOSでは、.NET Framework 4.7の追加インストールが必要です)
 　https://support.microsoft.com/ja-jp/help/3186497/the-net-framework-4-7-offline-installer-for-windows
