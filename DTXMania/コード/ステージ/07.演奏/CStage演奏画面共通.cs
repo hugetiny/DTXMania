@@ -699,7 +699,6 @@ namespace DTXMania
 					// RGB, Judge, Combo (Priority Under Chip)
 					if (CDTXMania.Instance.ConfigIni.eJudgePriority == EJudgeDisplayPriority.Under)
 					{
-						actRGB.On進行描画();
 						actJudgeString.On進行描画();
 						actCombo.On進行描画();
 					}
@@ -710,11 +709,11 @@ namespace DTXMania
 					// RGB, Judge, Combo (Priority Over Chip)
 					if (CDTXMania.Instance.ConfigIni.eJudgePriority == EJudgeDisplayPriority.Over)
 					{
-						actRGB.On進行描画();
 						actJudgeString.On進行描画();
 						actCombo.On進行描画();
 					}
-                    if (!CDTXMania.Instance.DTX2WAVmode.Enabled)
+					actRGB.On進行描画();
+					if (!CDTXMania.Instance.DTX2WAVmode.Enabled)
                     {
                         actChipFireD.On進行描画();
                         actChipFireGB.On進行描画();
