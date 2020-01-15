@@ -321,7 +321,7 @@ namespace DTXMania.Coordinates
 			DrPadOffset.LT = new CY(15);
 			DrPadOffset.FT = new CY(30);
 			DrPadOffset.CY = new CY(15);
-			DrPadOffset.RD = new CY(80);
+			DrPadOffset.RD = new CY(50);
 			DrPad = new CY(930);
 
 			Instrument = new STDGBSValue<CW>();

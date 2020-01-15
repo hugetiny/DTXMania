@@ -143,6 +143,10 @@ namespace DTXMania
 					int x = CDTXMania.Instance.ConfigIni.GetLaneX(EnumConverter.LaneFromPad(i)) +
 							(CDTXMania.Instance.ConfigIni.GetLaneW(EnumConverter.LaneFromPad(i)) / 2 -
 							CDTXMania.Instance.Coordinates.ImgDrPad[i].W / 2);
+					if (i == EPad.RD)
+					{
+						x += 50;
+					}
 					int yoffset = CDTXMania.Instance.Coordinates.DrPadOffset[i].Y;
 					int y = (CDTXMania.Instance.ConfigIni.bReverse.Drums ?
 						 SampleFramework.GameWindowSize.Height - CDTXMania.Instance.Coordinates.DrPad.Y - yoffset - rc.Height :
