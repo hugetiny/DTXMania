@@ -886,6 +886,13 @@ namespace DTXMania
 
 				Trace.TraceInformation("サウンドデバイスの初期化を完了しました。");
 			}
+			catch (NullReferenceException)  // No audio output found
+			{
+				Trace.TraceError("Error: No sound output devices are ready.");
+				string strWarnMes = CDTXMania.Instance.Resources.Explanation("strErrorNoActiveSoundDevice");
+				MessageBox.Show(strWarnMes, "DTXMania Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+				Environment.Exit(-1);
+			}
 			catch (Exception e)
 			{
 				Trace.TraceError(e.Message);
