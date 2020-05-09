@@ -496,6 +496,6 @@ namespace MidiInChecker2
 
 		// Win32 メッセージ処理デリゲート
 
-		public delegate void MidiInProc( IntPtr hMidiIn, uint wMsg, int dwInstance, int dwParam1, int dwParam2 );
+		public delegate void MidiInProc( IntPtr hMidiIn, uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2 );
 	}
 }

@@ -154,9 +154,9 @@ namespace MidiInChecker2
 		private object objMidiIn排他用 = new object();
 		private CWin32.MidiInProc proc;
 
-		private void MidiInCallback( IntPtr hMidiIn, uint wMsg, int dwInstance, int dwParam1, int dwParam2 )
+		private void MidiInCallback( IntPtr hMidiIn, uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2 )
 		{
-			int p = dwParam1 & 0xF0;
+			int p = (int)dwParam1 & 0xF0;
 			if ( wMsg != CWin32.MIM_DATA )	// || ( p != 0x80 && p != 0x90 && p != 0xB0 ) )
 				return;
 

@@ -113,17 +113,21 @@ namespace FDK
 					{
 						Trace.TraceError( "MIDI In: Device{0}: midiInDevCaps(): {1:X2}: ", i, num3 );
 					}
-					else if ( ( CWin32.midiInOpen( ref item.hMidiIn, i, this.proc, IntPtr.Zero, 0x30000 ) == 0 ) && ( item.hMidiIn != IntPtr.Zero ) )
-					{
-						CWin32.midiInStart( item.hMidiIn );
-						Trace.TraceInformation( "MIDI In: [{0}] \"{1}\" の入力受付を開始しました。", i, lpMidiInCaps.szPname );
-					}
 					else
 					{
-						Trace.TraceError( "MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", i, lpMidiInCaps.szPname );
+						uint ret = CWin32.midiInOpen(ref item.hMidiIn, i, this.proc, IntPtr.Zero, 0x30000);
+						Trace.TraceInformation("midiInOpen()==" + ret);
+						Trace.TraceInformation("item.hMidiIn==" + item.hMidiIn.ToString());
+						if ((ret == 0) && (item.hMidiIn != IntPtr.Zero))
+						{
+							CWin32.midiInStart(item.hMidiIn);
+							Trace.TraceInformation("MIDI In: [{0}] \"{1}\" の入力受付を開始しました。", i, lpMidiInCaps.szPname);
+							item.strDeviceName = lpMidiInCaps.szPname;
+							this.list入力デバイス.Add(item);
+							continue;
+						}
 					}
-					item.strDeviceName = lpMidiInCaps.szPname;
-					this.list入力デバイス.Add(item);
+					Trace.TraceError( "MIDI In: [{0}] \"{1}\" の入力受付の開始に失敗しました。", i, lpMidiInCaps.szPname );
 				}
 			}
 			else
@@ -263,15 +267,17 @@ namespace FDK
 		private CWin32.MidiInProc proc;
 //		private CTimer timer;
 
-		private void MidiInCallback( IntPtr hMidiIn, uint wMsg, int dwInstance, int dwParam1, int dwParam2 )
+		private void MidiInCallback( IntPtr hMidiIn, uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2 )
 		{
-			int p = dwParam1 & 0xF0;
+			int p = (int)dwParam1 & 0xF0;
 			if( wMsg != CWin32.MIM_DATA || ( p != 0x80 && p != 0x90 && p != 0xB0 ) )
 				return;
 
-            long time = CSound管理.rc演奏用タイマ.nシステム時刻;	// lock前に取得。演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
+            long time = CSound管理.rc演奏用タイマ.nシステム時刻;  // lock前に取得。演奏用タイマと同じタイマを使うことで、BGMと譜面、入力ずれを防ぐ。
 
-			lock( this.objMidiIn排他用 )
+//Trace.TraceInformation($"MidiInCallback: hMidiIn={hMidiIn.ToString("X4")}, dwInstance={dwInstance.ToString("X4")}, dwParam1={dwParam1.ToString("X4")}, dwParam2={dwParam2.ToString("X4")}");
+
+			lock ( this.objMidiIn排他用 )
 			{
 				if( ( this.list入力デバイス != null ) && ( this.list入力デバイス.Count != 0 ) )
 				{

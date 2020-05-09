@@ -28,15 +28,18 @@ namespace FDK
 
 		// メソッド
 
-		public void tメッセージからMIDI信号のみ受信( uint wMsg, int dwInstance, int dwParam1, int dwParam2, long n受信システム時刻 )
+		public void tメッセージからMIDI信号のみ受信( uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2, long n受信システム時刻 )
 		{
 			if( wMsg == CWin32.MIM_DATA )
 			{
-				int nMIDIevent = dwParam1 & 0xF0;
-				int nPara1 = ( dwParam1 >> 8 ) & 0xFF;
-				int nPara2 = ( dwParam1 >> 16 ) & 0xFF;
+				int nMIDIevent = (int)dwParam1 & 0xF0;
+				int nPara1 = ( (int)dwParam1 >> 8 ) & 0xFF;
+				int nPara2 = ( (int)dwParam1 >> 16 ) & 0xFF;
+				int nPara3 = ((int)dwParam2 >> 8) & 0xFF;
+				int nPara4 = ((int)dwParam2 >> 16) & 0xFF;
 
-// Trace.TraceInformation( "MIDIevent={0:X2} para1={1:X2} para2={2:X2}", nMIDIevent, nPara1, nPara2 );
+
+//				Trace.TraceInformation( "MIDIevent={0:X2} para1={1:X2} para2={2:X2} para3={3:X2} para4={4:X2}", nMIDIevent, nPara1, nPara2, nPara3, nPara4 );
 			
 				if( ( nMIDIevent == 0x90 ) && ( nPara2 != 0 ) )		// Note ON
 				{

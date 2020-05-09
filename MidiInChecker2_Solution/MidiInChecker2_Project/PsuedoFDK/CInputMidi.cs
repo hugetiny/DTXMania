@@ -28,13 +28,13 @@ namespace MidiInChecker2
 
 		// メソッド
 
-		public void tメッセージからMIDI信号のみ受信( uint wMsg, int dwInstance, int dwParam1, int dwParam2, long n受信システム時刻 )
+		public void tメッセージからMIDI信号のみ受信( uint wMsg, IntPtr dwInstance, IntPtr dwParam1, IntPtr dwParam2, long n受信システム時刻 )
 		{
 			if ( wMsg == CWin32.MIM_DATA )
 			{
-				int nMIDIevent = dwParam1 & 0xFF;
-				int nPara1 = ( dwParam1 >> 8 ) & 0xFF;
-				int nPara2 = ( dwParam1 >> 16 ) & 0xFF;
+				int nMIDIevent = (int)dwParam1 & 0xFF;
+				int nPara1 = ( (int)dwParam1 >> 8 ) & 0xFF;
+				int nPara2 = ( (int)dwParam1 >> 16 ) & 0xFF;
 
 				Trace.TraceInformation( "MIDIevent={0:X2} para1={1:X2} para2={2:X2}", nMIDIevent, nPara1, nPara2 );
 
@@ -42,7 +42,7 @@ namespace MidiInChecker2
 				{
 					STInputEvent item = new STInputEvent();
 					// item.nKey = nPara1;
-					item.nKey = dwParam1;
+					item.nKey = (int)dwParam1;
 					item.b押された = true;
 					item.nTimeStamp = n受信システム時刻;
 					item.nVelocity = nPara2;
