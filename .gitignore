@@ -268,3 +268,5 @@ __pycache__/
 *.pyc
 Thumbs.db
 実行時フォルダ/Config.ini
+RuntimeResources/DTXCreatorSetting.config
+FDK/FDK.csproj.orig
