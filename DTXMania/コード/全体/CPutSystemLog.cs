@@ -127,7 +127,10 @@ namespace DTXMania
 
 				foreach (PropertyData property in mo.Properties)
 				{
-					Trace.TraceInformation("{0}:{1}", property.Name, property.Value);
+					if (property.Name != "SystemName")	// avoid to show systemname, because it's privacy info.
+					{
+						Trace.TraceInformation("{0}:{1}", property.Name, property.Value);
+					}
 				}
 			});
 
