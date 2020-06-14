@@ -18,6 +18,7 @@ namespace MidiInChecker2
 		object lockobj = new object();
 		int looptimes = 16;
 		bool bYAMAHA_way_note = false;
+		bool bIgnoreRealtimeMessage = true;
 
 		private void Form_Main_Shown(object sender, EventArgs e)
 		{
@@ -27,6 +28,8 @@ namespace MidiInChecker2
 			this.Text = "MidiInChecker2 Rel" + ver_asm_major.ToString("D3");
 			#endregion
 			RichLogTextBox.LanguageOption = RichTextBoxLanguageOptions.UIFonts;
+
+			ignoreRealtimeMessage_ToolStripMenuItem.Checked = bIgnoreRealtimeMessage;
 		}
 
 		/// <summary>
@@ -102,6 +105,11 @@ namespace MidiInChecker2
 				{
 					"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
 				};
+
+				if ( bIgnoreRealtimeMessage && 0xF8 <= nMIDIevent && nMIDIevent <= 0xFF )
+				{
+					return;
+				}
 
 				#region [ At first, put time, and MIDI event info ]
 				text = string.Format(
@@ -423,5 +431,16 @@ namespace MidiInChecker2
 			RichLogTextBox.SelectAll();
 		}
 		#endregion
+
+		private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			RichLogTextBox.Clear();
+		}
+
+		private void ignoreRealtimeMessage_ToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			bIgnoreRealtimeMessage = !bIgnoreRealtimeMessage;
+			ignoreRealtimeMessage_ToolStripMenuItem.Checked = bIgnoreRealtimeMessage;
+		}
 	}
 }

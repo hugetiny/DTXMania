@@ -39,12 +39,15 @@
 			this.copyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.RichLogTextBox = new System.Windows.Forms.RichTextBox();
 			this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pasteVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.optionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.ignoreRealtimeMessage_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			this.contextMenuStrip1.SuspendLayout();
 			this.SuspendLayout();
@@ -53,7 +56,8 @@
 			// 
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.optionToolStripMenuItem});
 			resources.ApplyResources(this.menuStrip1, "menuStrip1");
 			this.menuStrip1.Name = "menuStrip1";
 			// 
@@ -88,7 +92,8 @@
 			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copyToolStripMenuItem1,
             this.toolStripSeparator2,
-            this.selectAllToolStripMenuItem});
+            this.selectAllToolStripMenuItem,
+            this.clearAllToolStripMenuItem});
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
 			resources.ApplyResources(this.editToolStripMenuItem, "editToolStripMenuItem");
 			// 
@@ -108,6 +113,12 @@
 			this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
 			resources.ApplyResources(this.selectAllToolStripMenuItem, "selectAllToolStripMenuItem");
 			this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
+			// 
+			// clearAllToolStripMenuItem
+			// 
+			this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
+			resources.ApplyResources(this.clearAllToolStripMenuItem, "clearAllToolStripMenuItem");
+			this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.clearAllToolStripMenuItem_Click);
 			// 
 			// buttonOK
 			// 
@@ -149,6 +160,19 @@
 			this.saveFileDialog1.RestoreDirectory = true;
 			this.saveFileDialog1.SupportMultiDottedExtensions = true;
 			// 
+			// optionToolStripMenuItem
+			// 
+			this.optionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ignoreRealtimeMessage_ToolStripMenuItem});
+			this.optionToolStripMenuItem.Name = "optionToolStripMenuItem";
+			resources.ApplyResources(this.optionToolStripMenuItem, "optionToolStripMenuItem");
+			// 
+			// ignoreF8ToolStripMenuItem
+			// 
+			this.ignoreRealtimeMessage_ToolStripMenuItem.Name = "ignoreF8ToolStripMenuItem";
+			resources.ApplyResources(this.ignoreRealtimeMessage_ToolStripMenuItem, "ignoreF8ToolStripMenuItem");
+			this.ignoreRealtimeMessage_ToolStripMenuItem.Click += new System.EventHandler(this.ignoreRealtimeMessage_ToolStripMenuItem_Click);
+			// 
 			// Form_Main
 			// 
 			resources.ApplyResources(this, "$this");
@@ -184,6 +208,9 @@
 		private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem pasteVToolStripMenuItem;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+		private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem optionToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem ignoreRealtimeMessage_ToolStripMenuItem;
 	}
 }
 
