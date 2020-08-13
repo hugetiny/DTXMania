@@ -374,30 +374,6 @@ namespace DTXMania
 		読込中止
 	}
 
-	[Flags]
-	public enum EPadFlag        // #24063 2011.1.16 yyagi コマンド入力用 パッド入力のフラグ化
-	{
-		None = 0,
-		HH = 1,
-		R = 1,
-		SD = 2,
-		G = 2,
-		B = 4,
-		BD = 4,
-		HT = 8,
-		Pick = 8,
-		LT = 16,
-		Wail = 16,
-		FT = 32,
-		Cancel = 32,
-		CY = 64,
-		Decide = 128,
-		HHO = 128,
-		RD = 256,
-		LC = 512,
-		HP = 1024,              // #27029
-		Unknown = 2048
-	}
 
 	public enum ESoundChipType
 	{
@@ -600,6 +576,30 @@ namespace DTXMania
 		Unknown,
 	}
 
+	[Flags]
+	public enum EPadFlag        // #24063 2011.1.16 yyagi コマンド入力用 パッド入力のフラグ化
+	{
+		None = 0,
+		HH = 1,
+		R = 1,
+		SD = 2,
+		G = 2,
+		B = 4,
+		BD = 4,
+		HT = 8,
+		Pick = 8,
+		LT = 16,
+		Wail = 16,
+		FT = 32,
+		Cancel = 32,
+		CY = 64,
+		Decide = 128,
+		HHO = 128,
+		RD = 256,
+		LC = 512,
+		HP = 1024,              // #27029
+		Unknown = 2048
+	}
 
 	[DataContract]
 	public enum EDamage
@@ -626,7 +626,7 @@ namespace DTXMania
 	}
 
 	[DataContract]
-	public enum EPart      // ここを修正するときは、セットで次の EKeyConfigPart も修正すること。
+	public enum EPart
 	{
 		[EnumMember]
 		Drums,
