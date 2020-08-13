@@ -151,7 +151,7 @@ namespace MidiInChecker2
 					case 0xC0:  // Program Change
 						text += string.Format(
 							", ChangeProgram to {0}",
-							nNote.ToString("X2")
+							nNote
 						);
 						break;
 
@@ -302,7 +302,7 @@ namespace MidiInChecker2
 			"GeneralPurposeContoller1<LSB>",	// 0x30
 			"GeneralPurposeContoller2<LSB>",	// 0x31
 			"GeneralPurposeContoller3<LSB>",	// 0x32
-			"GeneralPurposeContoller4<LSB>",	// 0x34
+			"GeneralPurposeContoller4<LSB>",	// 0x33
 			"",
 			"",
 			"",
@@ -382,7 +382,7 @@ namespace MidiInChecker2
 			#endregion
 
 			string ret = string.Format(
-				", CtrlChgNo=0x{0} ({1}), data={2}",
+				", CtrlChgNo={0} ({1}), data={2}",
 				ctrl.ToString("D2"),
 				strCtrlChgName[ctrl],
 				data
