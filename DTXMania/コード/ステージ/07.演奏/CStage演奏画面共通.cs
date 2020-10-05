@@ -1500,14 +1500,14 @@ namespace DTXMania
 				{
 					// 検索対象が過去未来どちらにも見つからなかった
 				}
-				else if (idxPast >= 0)
+				else if (idxPast >= 0 && idxFuture < 0)
 				{
-					// 過去方向には見つかった
+					// 過去方向にのみ見つかった
 					ret = CDTXMania.Instance.DTX.listChip[idxPast];
 				}
-				else if (idxFuture >= 0)
+				else if (idxFuture >= 0 && idxPast < 0)
 				{
-					// 未来方向には見つかった
+					// 未来方向にのみ見つかった
 					ret = CDTXMania.Instance.DTX.listChip[idxFuture];
 				}
 				else
@@ -1518,6 +1518,7 @@ namespace DTXMania
 					if (nTimeDiff_Future < nTimeDiff_Past)
 					{
 						ret = CDTXMania.Instance.DTX.listChip[idxFuture];
+						// ここは、必要に応じて、過去チップを優先させる条件を追加した方がbetter??
 					}
 					else
 					{
