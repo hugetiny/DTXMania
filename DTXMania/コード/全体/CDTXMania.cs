@@ -3074,7 +3074,7 @@ namespace DTXMania
 		{
 			if (mb.Equals(MouseButtons.Left) && ConfigIni.bIsAllowedDoubleClickFullscreen)  // #26752 2011.11.27 yyagi
 			{
-				ConfigIni.bウィンドウモード = false;
+				ConfigIni.bウィンドウモード = !ConfigIni.bウィンドウモード;
 				this.t全画面_ウィンドウモード切り替え();
 			}
 		}
