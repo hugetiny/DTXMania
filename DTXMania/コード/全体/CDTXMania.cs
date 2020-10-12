@@ -2323,6 +2323,8 @@ namespace DTXMania
 						Path.Combine( Path.Combine( this.strEXEのあるフォルダ, "System" ), ConfigIni.strSystemSkinSubfolderPath );
 				}
 			}
+
+			ConfigIni.UpgradeConfig();	// 本体version upに伴ってConfig.xmlの定義が更新される場合の、最低限のフォローアップ
 		}
 		/// <summary>
 		/// 座標値を読み込む。Coordinates メンバ初期化後いつ呼び出しても構わない。

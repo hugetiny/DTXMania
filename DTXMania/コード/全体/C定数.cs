@@ -571,7 +571,11 @@ namespace DTXMania
 		[EnumMember]
 		Capture = 25,
 		[EnumMember]
-		Max = 26,
+		Up = 26,
+		[EnumMember]
+		Down = 27,
+		[EnumMember]
+		Max = 28,
 		[EnumMember]
 		Unknown,
 	}
@@ -916,6 +920,12 @@ namespace DTXMania
 		[DataMember]
 		public T Capture;
 
+		[DataMember]
+		public T Up;
+		[DataMember]
+		public T Down;
+
+
 		public T this[EPad e]
 		{
 			get
@@ -948,6 +958,8 @@ namespace DTXMania
 					case EPad.BsCancel: return BsCancel;
 					case EPad.BsDecide: return BsDecide;
 					case EPad.Capture: return Capture;
+					case EPad.Up: return Up;
+					case EPad.Down: return Down;
 				}
 				throw new IndexOutOfRangeException();
 			}
@@ -982,6 +994,8 @@ namespace DTXMania
 					case EPad.BsCancel: BsCancel = value; return;
 					case EPad.BsDecide: BsDecide = value; return;
 					case EPad.Capture: Capture = value; return;
+					case EPad.Up: Up= value; return;
+					case EPad.Down: Down= value; return;
 				}
 				throw new IndexOutOfRangeException();
 			}

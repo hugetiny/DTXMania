@@ -495,7 +495,8 @@ namespace DTXMania
 						new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 
 					this.ctキー反復用.R.tキー反復(
-						CDTXMania.Instance.Pad.b押されている( EPad.GtR ) || CDTXMania.Instance.Pad.b押されている( EPad.BsR ),
+						CDTXMania.Instance.Pad.b押されている( EPad.GtR ) || CDTXMania.Instance.Pad.b押されている( EPad.BsR ) ||
+						CDTXMania.Instance.Pad.b押されている( EPad.Up ),
 						new CCounter.DGキー処理( this.tカーソルを上へ移動する ) );
 
 					if (CDTXMania.Instance.Pad.b押された(EPad.SD))
@@ -507,7 +508,8 @@ namespace DTXMania
 						new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
 
 					this.ctキー反復用.B.tキー反復(
-						CDTXMania.Instance.Pad.b押されている( EPad.GtB ) || CDTXMania.Instance.Pad.b押されている( EPad.BsB ),
+						CDTXMania.Instance.Pad.b押されている( EPad.GtB ) || CDTXMania.Instance.Pad.b押されている( EPad.BsB ) ||
+						CDTXMania.Instance.Pad.b押されている( EPad.Down ),
 						new CCounter.DGキー処理( this.tカーソルを下へ移動する ) );
 
 					if (CDTXMania.Instance.Pad.b押された(EPad.LT))

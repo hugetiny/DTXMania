@@ -1360,7 +1360,9 @@ namespace DTXMania
 				{ "BsWail", EPad.BsWail },
 				{ "BsDecide", EPad.BsDecide },
 				{ "BsCancel", EPad.BsCancel },
-				{ "Capture", EPad.Capture}
+				{ "Capture", EPad.Capture},
+				{ "Up", EPad.Up},
+				{ "Down", EPad.Down}
 			};
 
 			foreach ( string param in paramLines )
@@ -1377,6 +1379,11 @@ namespace DTXMania
 				if ( keys.Length <= 0 )
 				{
 					Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした3: " + tmp[ 1 ] );
+					return;
+				}
+				else if (keys.Length == 1 && keys[0] == "")		// xxx= (no value)
+				{
+					Debug.WriteLine("デフォルトのキーアサインを設定できませんでした4: " + tmp[ 1 ]);
 					return;
 				}
 				EPad e;
@@ -1441,8 +1448,36 @@ BsDecide=K096
 BsCancel=K097
 
 Capture=K065
+Up=
+Down=
 ";
-		private string GetRelativePath( string strBasePath, string strTargetPath )
+		/// <summary>
+		/// Config Upgrade support
+		/// </summary>
+		public void UpgradeConfig()
+		{
+			// For KeyAssign:
+			// To avoid GPF when adding new entry (== EPad.MAX has been incremented by developper), check KeyAssign array to EPad.MAX
+			for (EPad j = EPad.Min; j < EPad.Max; ++j)
+			{
+				COptionKeyAssign ka;
+				try
+				{
+					ka = KeyAssign[j][0];
+				}
+				catch (NullReferenceException)
+				{
+					KeyAssign[j] = new COptionKeyAssign[AssignableCodes];
+					for (int k = 0; k < AssignableCodes; ++k)
+					{
+						KeyAssign[j][k] = new COptionKeyAssign();
+					}
+				}
+			}
+		}
+
+
+	private string GetRelativePath( string strBasePath, string strTargetPath )
 		{
 			string strRelativePath = strTargetPath;
 			try

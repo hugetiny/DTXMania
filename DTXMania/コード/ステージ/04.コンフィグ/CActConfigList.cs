@@ -376,6 +376,8 @@ namespace DTXMania
 			{
 				list項目リスト.Add(ReturnToMenu.System);
 				list項目リスト.Add(PadNotifier(EPad.Capture, cr.Label("strCfgKeyAssignCapture"), cr.Explanation("strCfgKeyAssignCapture") ));
+				list項目リスト.Add(PadNotifier(EPad.Up,      cr.Label("strCfgKeyAssignUp"),      cr.Explanation("strCfgKeyAssignUp")));
+				list項目リスト.Add(PadNotifier(EPad.Down,    cr.Label("strCfgKeyAssignDown"),    cr.Explanation("strCfgKeyAssignDown")));
 			}
 			else if (eMenu == Eメニュー種別.KeyAssignDrums)
 			{
