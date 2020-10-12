@@ -2737,6 +2737,7 @@ namespace DTXMania
 		}
 
 		private int nStartTime_ = 0;
+		private DateTime dtCurrentDateTime = DateTime.MinValue;
 
 		protected void tキー入力()
 		{
@@ -2855,14 +2856,34 @@ namespace DTXMania
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Guitar.Value =
 					CDTXMania.Instance.ConfigIni.nJudgeLinePosOffset.Bass.Value = nVal;
 				}
-				else if ((base.eフェーズID == CStage.Eフェーズ.共通_通常状態) &&
-						(keyboard.bキーが押された((int)SlimDXKey.Escape) ||
-						CDTXMania.Instance.Pad.bCancelPadIsPressedGB()))
+				else if (base.eフェーズID == CStage.Eフェーズ.共通_通常状態)
 				{
-					// escape (exit)
-					this.actFO.tフェードアウト開始();
-					base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
-					this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.演奏中断;
+					if (CDTXMania.Instance.Pad.bCancelPadIsPressingGB())
+					{
+						if (dtCurrentDateTime == DateTime.MinValue)
+						{
+							dtCurrentDateTime = DateAndTime.Now;
+						}
+						else if ( DateTime.Now - dtCurrentDateTime > TimeSpan.FromMilliseconds(1000))   // #40847 keep pushing Cancel 1sec to exit
+						{
+							// escape (exit)
+							this.actFO.tフェードアウト開始();
+							base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
+							this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.演奏中断;
+						}
+					}
+					else
+					{
+						dtCurrentDateTime = DateTime.MinValue;
+					}
+
+					if (keyboard.bキーが押された((int)SlimDXKey.Escape))
+					{
+						// escape (exit)
+						this.actFO.tフェードアウト開始();
+						base.eフェーズID = CStage.Eフェーズ.共通_フェードアウト;
+						this.eフェードアウト完了時の戻り値 = E演奏画面の戻り値.演奏中断;
+					}
 				}
 			}
 		}

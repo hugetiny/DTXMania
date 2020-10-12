@@ -162,6 +162,11 @@ namespace DTXMania
 			return b押された(EPad.GtCancel) || b押された(EPad.BsCancel);
 		}
 
+		public bool bCancelPadIsPressingGB()
+		{
+			return b押されている(EPad.GtCancel) || b押されている(EPad.BsCancel);
+		}
+
 		public bool b押されている(EPad pad)
 		{
 			COptionKeyAssign[] stkeyassignArray = CDTXMania.Instance.ConfigIni.KeyAssign[pad];
