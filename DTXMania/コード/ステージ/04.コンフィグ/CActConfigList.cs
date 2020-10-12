@@ -441,6 +441,7 @@ namespace DTXMania
 				COptionString enumsongs = new COptionString("");
 				enumsongs.Initialize( "strCfgSysEnumSongs" );
 				list項目リスト.Add(enumsongs);
+				list項目リスト.Add(CDTXMania.Instance.ConfigIni.bEnumerateSongsInBoot);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eDark);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.nRisky);
 				list項目リスト.Add(CDTXMania.Instance.ConfigIni.eActiveInst);

@@ -1368,7 +1368,8 @@ namespace DTXMania
 
 				CScoreIni scoreIni = null;
 
-				if (Control.IsKeyLocked(Keys.CapsLock))             // #30925 2013.3.11 yyagi; capslock=ON時は、EnumSongsしないようにして、起動負荷とASIOの音切れの関係を確認する
+				//if (Control.IsKeyLocked(Keys.CapsLock))             // #30925 2013.3.11 yyagi; capslock=ON時は、EnumSongsしないようにして、起動負荷とASIOの音切れの関係を確認する
+				if (!CDTXMania.instance.ConfigIni.bEnumerateSongsInBoot)	// #40772 2020.10.12 yyagi
 				{
 					// → songs.db等の書き込み時だと音切れするっぽい
 					actEnumSongs.On非活性化();

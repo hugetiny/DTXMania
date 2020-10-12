@@ -411,6 +411,13 @@ namespace DTXMania
 		[DataMember(Order = 115)]
 		public COptionInteger nStrictHitSoundRange;     // #39499 2019.8.22 add yyagi
 
+		/// <summary>
+		/// 起動時にEnumerate Songsをする/しない
+		/// </summary>
+		[DataMember(Order = 119)]
+		public COptionBool bEnumerateSongsInBoot;		// #40772 2020.10.12 add yyagi
+
+
 		public int GetLaneX(ELane e)
 		{
 			EPart p = EPart.Drums;
@@ -568,6 +575,8 @@ namespace DTXMania
 
 			bWarnMIDI20USB = new COptionBool(true);
 			bWarnSoundDeviceOnUSB = new COptionBool(true);
+
+			bEnumerateSongsInBoot = new COptionBool(true);
 
 			// string
 			strSongDataPath = new COptionString(@".\");
@@ -882,6 +891,8 @@ namespace DTXMania
 			bDebugInfo.Initialize( "strCfgSysDebugInfo" );
 
 			bShowSongPath.Initialize( "strCfgShowSongPath" );
+
+			bEnumerateSongsInBoot.Initialize("strCfgSysEnumSongsInBoot");
 
 			// enum
 			nSoundDeviceType.Initialize( "strCfgSysSoundDeviceType", typeof(ESoundDeviceTypeForConfig));
