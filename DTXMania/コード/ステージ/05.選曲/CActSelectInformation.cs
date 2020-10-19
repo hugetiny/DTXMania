@@ -348,49 +348,49 @@ namespace DTXMania
 									switch(ls)
 									{
 										case "[LC]":
-											l = "";	g.DrawImage(ImgDrPad.LC, x, y);	x += ImgDrPad.LC.Width;
+											l = "";	g.DrawImage(ImgDrPad.LC, x, y, ImgDrPad.LC.Width, ImgDrPad.LC.Height);	x += ImgDrPad.LC.Width;
 											break;
 										case "[HH]":
-											l = "";	g.DrawImage(ImgDrPad.HH, x, y);	x += ImgDrPad.HH.Width;
+											l = "";	g.DrawImage(ImgDrPad.HH, x, y, ImgDrPad.HH.Width, ImgDrPad.HH.Height);	x += ImgDrPad.HH.Width;
 											break;
 										case "[SD]":
-											l = "";	g.DrawImage(ImgDrPad.SD, x, y);	x += ImgDrPad.SD.Width;
+											l = "";	g.DrawImage(ImgDrPad.SD, x, y, ImgDrPad.SD.Width, ImgDrPad.SD.Height);	x += ImgDrPad.SD.Width;
 											break;
 										case "[BD]":
-											l = "";	g.DrawImage(ImgDrPad.BD, x, y);	x += ImgDrPad.BD.Width;
+											l = "";	g.DrawImage(ImgDrPad.BD, x, y, ImgDrPad.BD.Width, ImgDrPad.BD.Height);	x += ImgDrPad.BD.Width;
 											break;
 										case "[HT]":
-											l = ""; g.DrawImage(ImgDrPad.HT, x, y); x += ImgDrPad.HT.Width;
+											l = ""; g.DrawImage(ImgDrPad.HT, x, y, ImgDrPad.HT.Width, ImgDrPad.HT.Height); x += ImgDrPad.HT.Width;
 											break;
 										case "[LT]":
-											l = ""; g.DrawImage(ImgDrPad.LT, x, y); x += ImgDrPad.LT.Width;
+											l = ""; g.DrawImage(ImgDrPad.LT, x, y, ImgDrPad.LT.Width, ImgDrPad.LT.Height); x += ImgDrPad.LT.Width;
 											break;
 										case "[FT]":
-											l = ""; g.DrawImage(ImgDrPad.FT, x, y); x += ImgDrPad.FT.Width;
+											l = ""; g.DrawImage(ImgDrPad.FT, x, y, ImgDrPad.FT.Width, ImgDrPad.FT.Height); x += ImgDrPad.FT.Width;
 											break;
 										case "[CY]":
-											l = ""; g.DrawImage(ImgDrPad.CY, x, y); x += ImgDrPad.CY.Width;
+											l = ""; g.DrawImage(ImgDrPad.CY, x, y, ImgDrPad.CY.Width, ImgDrPad.CY.Height); x += ImgDrPad.CY.Width;
 											break;
 										case "[RD]":
-											l = ""; g.DrawImage(ImgDrPad.RD, x, y); x += ImgDrPad.RD.Width;
+											l = ""; g.DrawImage(ImgDrPad.RD, x, y, ImgDrPad.RD.Width, ImgDrPad.RD.Height); x += ImgDrPad.RD.Width;
 											break;
 										case "[R]":
-											l = ""; g.DrawImage(ImgGtPad.LC, x, y); x += ImgGtPad.LC.Width;
+											l = ""; g.DrawImage(ImgGtPad.LC, x, y, ImgGtPad.LC.Width, ImgGtPad.LC.Height); x += ImgGtPad.LC.Width;
 											break;
 										case "[G]":
-											l = ""; g.DrawImage(ImgGtPad.HH, x, y); x += ImgGtPad.HH.Width;
+											l = ""; g.DrawImage(ImgGtPad.HH, x, y, ImgGtPad.LC.Width, ImgGtPad.HH.Height); x += ImgGtPad.HH.Width;
 											break;
 										case "[B]":
-											l = ""; g.DrawImage(ImgGtPad.SD, x, y); x += ImgGtPad.SD.Width;
+											l = ""; g.DrawImage(ImgGtPad.SD, x, y, ImgGtPad.SD.Width, ImgGtPad.SD.Height); x += ImgGtPad.SD.Width;
 											break;
 										case "[P]":
-											l = ""; g.DrawImage(ImgGtPad.LT, x, y); x += ImgGtPad.LT.Width;
+											l = ""; g.DrawImage(ImgGtPad.LT, x, y, ImgGtPad.LT.Width, ImgGtPad.LT.Height); x += ImgGtPad.LT.Width;
 											break;
 										case "[START]":
-											l = ""; g.DrawImage(ImgGtPad.FT, x, y); x += ImgGtPad.FT.Width;
+											l = ""; g.DrawImage(ImgGtPad.FT, x, y, ImgGtPad.FT.Width, ImgGtPad.FT.Height); x += ImgGtPad.FT.Width;
 											break;
 										case "[CANCEL]":
-											l = ""; g.DrawImage(ImgGtPad.CY, x, y); x += ImgGtPad.CY.Width;
+											l = ""; g.DrawImage(ImgGtPad.CY, x, y, ImgGtPad.CY.Width, ImgGtPad.CY.Height); x += ImgGtPad.CY.Width;
 											break;
 										default:
 											break;
