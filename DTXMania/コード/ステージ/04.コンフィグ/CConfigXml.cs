@@ -1340,7 +1340,7 @@ namespace DTXMania
 			string[] paramLines = strParam.Split( new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries );
 			if (paramLines.Length <= 1)
 			{
-				Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした1: " + strParam );
+				Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした(1文字以下): " + strParam );
 				return;
 			}
 
@@ -1381,7 +1381,7 @@ namespace DTXMania
 				string[] tmp = param.Split( '=' );
 				if ( tmp.Length != 2 )
 				{
-					Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした2: " + param );
+					Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした(=で分けられていない): " + param );
 					return;
 				}
 
@@ -1389,12 +1389,12 @@ namespace DTXMania
 				string[] keys = tmp[ 1 ].Split( ',' );
 				if ( keys.Length <= 0 )
 				{
-					Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした3: " + tmp[ 1 ] );
+					Debug.WriteLine( "デフォルトのキーアサインを設定できませんでした(,でsplitして何も残らない): " + tmp[ 1 ] );
 					return;
 				}
 				else if (keys.Length == 1 && keys[0] == "")		// xxx= (no value)
 				{
-					Debug.WriteLine("デフォルトのキーアサインを設定できませんでした4: " + tmp[ 1 ]);
+					Debug.WriteLine("デフォルトのキーアサインを設定できませんでした(=の後が空): " + tmp[ 1 ]);
 					return;
 				}
 				EPad e;
