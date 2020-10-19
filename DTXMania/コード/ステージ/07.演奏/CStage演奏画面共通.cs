@@ -2862,7 +2862,7 @@ namespace DTXMania
 					{
 						if (dtCurrentDateTime == DateTime.MinValue)
 						{
-							dtCurrentDateTime = DateAndTime.Now;
+							dtCurrentDateTime = DateTime.Now;
 						}
 						else if ( DateTime.Now - dtCurrentDateTime > TimeSpan.FromMilliseconds(1000))   // #40847 keep pushing Cancel 1sec to exit
 						{
