@@ -24,7 +24,8 @@ namespace DTXMania
 		const int DESC_H = 0x80;
 		const int DESC_W = 220;
 		EItemPanelモード eItemPanelモード;
-		Font ftフォント;
+		//Font ftフォント;
+		CPrivateFastFont ftフォント;
 		int n現在のメニュー番号;
 		CTexture txMenuカーソル;
 		CTextureAf tx下部パネル;
@@ -131,7 +132,11 @@ namespace DTXMania
 				try
 				{
 					this.n現在のメニュー番号 = 0;
-					this.ftフォント = new Font("MS PGothic", 26f / 2 * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel);            //
+
+					CResources cr = CDTXMania.Instance.Resources;
+					string fontname = cr.Explanation("strCfgConfigurationDescriptionFontFileName");
+					string path = Path.Combine(@"Graphics\fonts", fontname);
+					this.ftフォント = new CPrivateFastFont(CSkin.Path(path), 17);
 					for (int i = 0; i < 4; i++)
 					{
 						this.ctキー反復用[i] = new CCounter(0, 0, 0, CDTXMania.Instance.Timer);
@@ -615,57 +620,37 @@ namespace DTXMania
 
 		private void t説明文パネルに現在選択されているメニューの説明を描画する()
 		{
-			using (Bitmap image = new Bitmap((int)(220 * 2 * Scale.X), (int)(192 * 2 * Scale.Y)))
+			string[] desc = {
+				"strCfgSysMenuDesc",
+				"strCfgDrMenuDesc",
+				"strCfgGtMenuDesc",
+				"strCfgBsMenuDesc",
+				"strCfgExitMenuDesc"
+			};
+			string str = CDTXMania.Instance.Resources.Explanation( desc[ this.n現在のメニュー番号 ] );
+
+			if (this.tx説明文パネル != null)
 			{
-				// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する。）
-				using (Graphics graphics = Graphics.FromImage(image))
-				{
-					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-
-					string[] desc = {
-						"strCfgSysMenuDesc",
-						"strCfgDrMenuDesc",
-						"strCfgGtMenuDesc",
-						"strCfgBsMenuDesc",
-						"strCfgExitMenuDesc"
-					};
-					string str = CDTXMania.Instance.Resources.Explanation( desc[ this.n現在のメニュー番号 ] );
-
-					//int c = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 0 : 1;
-					graphics.DrawString(str, this.ftフォント, Brushes.White, new PointF(4f * Scale.X, 0));
-				}
-				if (this.tx説明文パネル != null)
-				{
-					this.tx説明文パネル.Dispose();
-				}
-				this.tx説明文パネル = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
-				// this.tx説明文パネル.vc拡大縮小倍率.X = 0.5f;
-				// this.tx説明文パネル.vc拡大縮小倍率.Y = 0.5f;
+				this.tx説明文パネル.Dispose();
 			}
+			Bitmap image = ftフォント.DrawPrivateFont(str, Color.White, Color.Black);
+
+			this.tx説明文パネル = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
 		}
 
 		private void t説明文パネルに現在選択されている項目の説明を描画する()
 		{
-			using (Bitmap image = new Bitmap((int)(220 * Scale.X), (int)(192 * Scale.Y)))
+			COptionBase item = this.actList.ib現在の選択項目;
+
+			if (string.IsNullOrEmpty(item.explanation)) return;
+
+			if (this.tx説明文パネル != null)
 			{
-				// 説明文領域サイズの縦横 2 倍。（描画時に 0.5 倍で表示する・・・のは中止。処理速度向上のため。）
-				using (Graphics graphics = Graphics.FromImage(image))
-				{
-					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					COptionBase item = this.actList.ib現在の選択項目;
-					if (!string.IsNullOrEmpty(item.explanation))
-					{
-						graphics.DrawString(item.explanation, this.ftフォント, Brushes.White, new RectangleF(4f * Scale.X, (float)0 * Scale.Y, 630, 430));
-					}
-				}
-				if (this.tx説明文パネル != null)
-				{
-					this.tx説明文パネル.Dispose();
-				}
-				this.tx説明文パネル = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
-				//this.tx説明文パネル.vc拡大縮小倍率.X = 0.5f;
-				//this.tx説明文パネル.vc拡大縮小倍率.Y = 0.5f;
+				this.tx説明文パネル.Dispose();
 			}
+			Bitmap image = ftフォント.DrawPrivateFont(item.explanation, Color.White, Color.Black, new Size((int)(220 * Scale.X), (int)(192 * Scale.Y)));
+
+			this.tx説明文パネル = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
 		}
 	}
 }
