@@ -3147,6 +3147,10 @@ namespace DTXMania
 						{
 							this.actAVI.bFullScreenMovie = true;
 						}
+						else
+						{
+							this.actAVI.bFullScreenMovie = false;
+						}
 
 						this.actAVI.SetXYWH();
 
