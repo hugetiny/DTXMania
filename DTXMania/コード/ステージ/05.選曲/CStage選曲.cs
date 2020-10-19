@@ -180,7 +180,7 @@ namespace DTXMania
 			{
 				this.eフェードアウト完了時の戻り値 = E戻り値.継続;
 				this.bBGM再生済み = false;
-				this.ftフォント = new Font("MS PGothic", 26f * Scale.X, GraphicsUnit.Pixel);
+
 				for (int i = 0; i < 4; i++)
 				{
 					this.ctキー反復用[i] = new CCounter(0, 0, 0, CDTXMania.Instance.Timer);
@@ -201,11 +201,6 @@ namespace DTXMania
 			Trace.Indent();
 			try
 			{
-				if (this.ftフォント != null)
-				{
-					this.ftフォント.Dispose();
-					this.ftフォント = null;
-				}
 				for (int i = 0; i < 4; i++)
 				{
 					this.ctキー反復用[i] = null;
@@ -778,7 +773,6 @@ namespace DTXMania
 		private STキー反復用カウンタ ctキー反復用;
 		private CCounter ct登場時アニメ用共通;
 		private E戻り値 eフェードアウト完了時の戻り値;
-		private Font ftフォント;
 		private CTextureAf txコメントバー;
 		private CTextureAf tx下部パネル;
 		private CTextureAf tx上部パネル;
