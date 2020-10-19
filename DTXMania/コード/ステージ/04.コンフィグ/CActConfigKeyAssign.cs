@@ -118,7 +118,7 @@ namespace DTXMania
 				this.txカーソル = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenConfig menu cursor.png"), false);
 
 				#region [ Hit key to assign ダイアログイメージ作成 ]
-				string fontPath = CDTXMania.Instance.Resources.Explanation("strCfgBaseFontFileName");
+				string fontPath = CDTXMania.Instance.Resources.Explanation("strCfgConfigurationKeyAssignFontFileName");
 				var prvFont = new CPrivateFastFont(CSkin.Path(Path.Combine(@"Graphics\fonts\", fontPath)), 30, FontStyle.Bold);
 				var bmp = new Bitmap(CSkin.Path(@"Graphics\ScreenConfig hit key to assign dialog.png"));
 
