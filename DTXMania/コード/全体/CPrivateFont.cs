@@ -107,16 +107,25 @@ namespace DTXMania
 			{
 				if (Path.GetFileName(fontpath) == "")
 				{
-					Trace.TraceWarning($"No font filename is specified (only path is specified, etc). Trying to use MS PGothic as alternative. ({fontpath})");
+					Trace.TraceWarning($"No font filename is specified (only path is specified, etc). Trying to use MS PGothic as alternative. ({fontpath}, {baseFontPath}, {fontfamily}, {pt}, {style})");
 					_fontfamily = null;
 				}
 				else
 				{
 					try
 					{
-						this._pfc = new System.Drawing.Text.PrivateFontCollection();    //PrivateFontCollectionオブジェクトを作成する
-						this._pfc.AddFontFile(fontpath);                                //PrivateFontCollectionにフォントを追加する
-						_fontfamily = _pfc.Families[0];
+						if (Path.GetExtension(fontpath) != "")
+						{
+							// ttfなどを指定した場合
+							this._pfc = new System.Drawing.Text.PrivateFontCollection();    //PrivateFontCollectionオブジェクトを作成する
+							this._pfc.AddFontFile(fontpath);                                //PrivateFontCollectionにフォントを追加する
+							_fontfamily = _pfc.Families[0];
+						}
+						else
+						{
+							// "MS Gothic"などを指定した場合
+							this._fontfamily = new FontFamily(Path.GetFileNameWithoutExtension(fontpath));
+						}
 					}
 					catch (Exception e) when (e is System.IO.FileNotFoundException || e is System.Runtime.InteropServices.ExternalException)
 					{
@@ -215,9 +224,9 @@ namespace DTXMania
 		/// <param name="drawstr">描画文字列</param>
 		/// <param name="fontColor">描画色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public Bitmap DrawPrivateFont(string drawstr, Color fontColor)
+		public Bitmap DrawPrivateFont(string drawstr, Color fontColor, Size? sz = null)
 		{
-			return DrawPrivateFont(drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White);
+			return DrawPrivateFont(drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White, sz);
 		}
 
 		/// <summary>
@@ -227,9 +236,9 @@ namespace DTXMania
 		/// <param name="fontColor">描画色</param>
 		/// <param name="edgeColor">縁取色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor)
+		public Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor, Size? sz = null)
 		{
-			return DrawPrivateFont(drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White);
+			return DrawPrivateFont(drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White, sz);
 		}
 
 		/// <summary>
@@ -254,9 +263,9 @@ namespace DTXMania
 		/// <param name="gradationTopColor">グラデーション 上側の色</param>
 		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor)
+		public Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor, Size? sz = null)
 		{
-			return DrawPrivateFont(drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor);
+			return DrawPrivateFont(drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor,sz);
 		}
 
 #if こちらは使わない // (Bitmapではなく、CTextureを返す版)
@@ -327,8 +336,9 @@ namespace DTXMania
 		/// <param name="edgeColor">縁取色</param>
 		/// <param name="gradationTopColor">グラデーション 上側の色</param>
 		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
+		/// <param name="sz">描画領域(省略可; 省略時は横長の改行なし・中央寄せで、指定時は描画領域内に改行あり・Near寄せでbitmapを生成)</param>
 		/// <returns>描画済テクスチャ</returns>
-		protected Bitmap DrawPrivateFont(string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor)
+		protected Bitmap DrawPrivateFont(string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, Size? sz = null)
 		{
 			if (this._fontfamily == null || drawstr == null || drawstr == "")
 			{
@@ -349,11 +359,19 @@ namespace DTXMania
 			// 縁取りの縁のサイズは、とりあえずフォントの大きさの1/4とする
 			int nEdgePt = (bEdge) ? _pt / 4 : 0;
 
-			// 描画サイズを測定する
-			Size stringSize = System.Windows.Forms.TextRenderer.MeasureText(drawstr, this._font, new Size(int.MaxValue, int.MaxValue),
-				System.Windows.Forms.TextFormatFlags.NoPrefix |
-				System.Windows.Forms.TextFormatFlags.NoPadding
-			);
+			// 描画サイズを測定する (外部から描画領域を指定した場合は、それを使う)
+			Size stringSize;
+			if (sz.HasValue)
+			{
+				stringSize = sz.Value;
+			}
+			else
+			{
+				stringSize = System.Windows.Forms.TextRenderer.MeasureText(drawstr, this._font, new Size(int.MaxValue, int.MaxValue),
+					System.Windows.Forms.TextFormatFlags.NoPrefix |
+					System.Windows.Forms.TextFormatFlags.NoPadding
+				);
+			}
 
 			//取得した描画サイズを基に、描画先のbitmapを作成する
 			Bitmap bmp = new Bitmap(stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
@@ -365,12 +383,22 @@ namespace DTXMania
 
 				using (StringFormat sf = new StringFormat())
 				{
-					// 画面下部（垂直方向位置）
-					sf.LineAlignment = StringAlignment.Far;
-					// 画面中央（水平方向位置）
-					sf.Alignment = StringAlignment.Center;
-					sf.FormatFlags = StringFormatFlags.NoWrap;
-
+					if (sz.HasValue)
+					{
+						// 画面下部（垂直方向位置）
+						sf.LineAlignment = StringAlignment.Near;
+						// 画面中央（水平方向位置）
+						sf.Alignment = StringAlignment.Near;
+						sf.FormatFlags = StringFormatFlags.LineLimit;
+					}
+					else
+					{
+						// 画面下部（垂直方向位置）
+						sf.LineAlignment = StringAlignment.Far;
+						// 画面中央（水平方向位置）
+						sf.Alignment = StringAlignment.Center;
+						sf.FormatFlags = StringFormatFlags.NoWrap;
+					}
 					// レイアウト枠
 					Rectangle r = new Rectangle(0, 0, stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
 

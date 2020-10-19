@@ -74,9 +74,9 @@ namespace DTXMania
 		/// <param name="drawstr">描画文字列</param>
 		/// <param name="fontColor">描画色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor)
+		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor, Size? sz = null)
 		{
-			return DrawPrivateFont(drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White);
+			return DrawPrivateFont(drawstr, DrawMode.Normal, fontColor, Color.White, Color.White, Color.White, sz);
 		}
 
 		/// <summary>
@@ -86,9 +86,9 @@ namespace DTXMania
 		/// <param name="fontColor">描画色</param>
 		/// <param name="edgeColor">縁取色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor)
+		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor, Size? sz = null)
 		{
-			return DrawPrivateFont(drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White);
+			return DrawPrivateFont(drawstr, DrawMode.Edge, fontColor, edgeColor, Color.White, Color.White, sz);
 		}
 
 		/// <summary>
@@ -113,9 +113,9 @@ namespace DTXMania
 		/// <param name="gradationTopColor">グラデーション 上側の色</param>
 		/// <param name="gradationBottomColor">グラデーション 下側の色</param>
 		/// <returns>描画済テクスチャ</returns>
-		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor)
+		public new Bitmap DrawPrivateFont(string drawstr, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradataionBottomColor, Size? sz = null)
 		{
-			return DrawPrivateFont(drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor);
+			return DrawPrivateFont(drawstr, DrawMode.Edge | DrawMode.Gradation, fontColor, edgeColor, gradationTopColor, gradataionBottomColor, sz);
 		}
 
 #if こちらは使わない // (Bitmapではなく、CTextureを返す版)
@@ -175,7 +175,7 @@ namespace DTXMania
 #endif
 		#endregion
 
-		protected new Bitmap DrawPrivateFont(string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor)
+		protected new Bitmap DrawPrivateFont(string drawstr, DrawMode drawmode, Color fontColor, Color edgeColor, Color gradationTopColor, Color gradationBottomColor, Size? sz = null)
 		{
 			#region [ 以前レンダリングしたことのある文字列/フォントか? (キャッシュにヒットするか?) ]
 			int index = listFontCache.FindIndex(
@@ -198,7 +198,7 @@ namespace DTXMania
 				// キャッシュにヒットせず。
 				#region [ レンダリングして、キャッシュに登録 ]
 				FontCache fc = new FontCache();
-				fc.bmp = base.DrawPrivateFont(drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor);
+				fc.bmp = base.DrawPrivateFont(drawstr, drawmode, fontColor, edgeColor, gradationTopColor, gradationBottomColor, sz);
 				fc.drawstr = drawstr;
 				fc.drawmode = drawmode;
 				fc.fontColor = fontColor;
