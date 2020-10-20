@@ -852,6 +852,7 @@ namespace DTXMania
 				#region [ メトロノーム音 音量設定 ]
 				CDTXMania.Instance.Skin.soundClickHigh.n音量 = CDTXMania.Instance.ConfigIni.nClickHighVolume;
 				CDTXMania.Instance.Skin.soundClickLow.n音量 = CDTXMania.Instance.ConfigIni.nClickLowVolume;
+				CDTXMania.Instance.Skin.soundClickBottom.n音量 = CDTXMania.Instance.ConfigIni.nClickLowVolume;
 				#endregion
 
 				#region [ サウンドのタイムストレッチモード変更 ]
