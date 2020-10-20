@@ -354,7 +354,15 @@ namespace DTXMania
 		SOUND変更音,
 		SOUNDClickHigh,
 		SOUNDClickLow,
+		SOUNDClickBottom,
 		Count               // システムサウンド総数の計算用
+	}
+
+	public enum EClickSoundType : int
+	{
+		High = 1,
+		Low = 2,
+		Bottom = 3
 	}
 
 	public enum E演奏画面の戻り値
@@ -856,9 +864,9 @@ namespace DTXMania
 		[EnumMember]
 		OnBeat,			// 表拍
 		[EnumMember]
-		OffBeat			// 裏拍
-//		[EnumMember]
-//		Triplet			// 3連符
+		OffBeat,		// 裏拍
+		[EnumMember]
+		Triplet			// 3連符
 	}
 
 	[DataContract]

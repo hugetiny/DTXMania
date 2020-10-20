@@ -310,6 +310,7 @@ namespace DTXMania
 		public Cシステムサウンド sound変更音 = null;
 		public Cシステムサウンド soundClickHigh = null;
 		public Cシステムサウンド soundClickLow  = null;
+		public Cシステムサウンド soundClickBottom = null;
 		public readonly int nシステムサウンド数 = (int) Eシステムサウンド.Count;
 		public Cシステムサウンド this[Eシステムサウンド sound]
 		{
@@ -358,6 +359,9 @@ namespace DTXMania
 
 					case Eシステムサウンド.SOUNDClickLow:
 						return this.soundClickLow;
+
+					case Eシステムサウンド.SOUNDClickBottom:
+						return this.soundClickBottom;
 
 					case Eシステムサウンド.BGM起動画面:
 						return this.bgm起動画面;
@@ -433,6 +437,9 @@ namespace DTXMania
 
 					case (int) Eシステムサウンド.SOUNDClickLow:
 						return this.soundClickLow;
+
+					case (int)Eシステムサウンド.SOUNDClickBottom:
+						return this.soundClickBottom;
 				}
 				throw new IndexOutOfRangeException();
 			}
@@ -580,6 +587,7 @@ namespace DTXMania
 			this.soundタイトル音 = new Cシステムサウンド(@"Sounds\Title.ogg", false, true, false);
 			this.soundClickHigh = new Cシステムサウンド( @"Sounds\Click_High.ogg", false, false, false );
 			this.soundClickLow = new Cシステムサウンド( @"Sounds\Click_Low.ogg", false, false, false );
+			this.soundClickBottom = new Cシステムサウンド(@"Sounds\Click_Bottom.ogg", false, false, false);
 			this.bgm起動画面 = new Cシステムサウンド( @"Sounds\Setup BGM.ogg", true, true, false );
 			this.bgmオプション画面 = new Cシステムサウンド(@"Sounds\Option BGM.ogg", true, true, false);
 			this.bgmコンフィグ画面 = new Cシステムサウンド(@"Sounds\Config BGM.ogg", true, true, false);

@@ -3312,11 +3312,14 @@ namespace DTXMania
 					{
 						switch (pChip.n整数値)
 						{
-							case 1:
+							case (int)EClickSoundType.High:
 								CDTXMania.Instance.Skin.soundClickHigh.t再生する();
 								break;
-							case 2:
+							case (int)EClickSoundType.Low:
 								CDTXMania.Instance.Skin.soundClickLow.t再生する();
+								break;
+							case (int)EClickSoundType.Bottom:
+								CDTXMania.Instance.Skin.soundClickBottom.t再生する();
 								break;
 						}
 					}
