@@ -1137,6 +1137,10 @@ namespace FDK
 		}
 		public void t再生を開始する()
 		{
+			if (bBASSサウンドである && !bMixer登録済)
+			{
+				tBASSサウンドをミキサーに追加する();
+			}
 			t再生位置を先頭に戻す();
 			tサウンドを再生する();
 		}
@@ -1151,6 +1155,10 @@ namespace FDK
 				else
 				{
 					Bass.BASS_ChannelFlags( this.hBassStream, BASSFlag.BASS_DEFAULT, BASSFlag.BASS_DEFAULT );
+				}
+				if ( !bMixer登録済 )
+				{
+					tBASSサウンドをミキサーに追加する();
 				}
 			}
 			t再生位置を先頭に戻す();
@@ -1328,9 +1336,18 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		
 		public void t再生位置を先頭に戻す()
 		{
-			if( this.bBASSサウンドである )
+			if (this.bBASSサウンドである)
 			{
-				BassMix.BASS_Mixer_ChannelSetPosition( this.hBassStream, 0 );
+				if (!bMixer登録済)
+				{
+					tBASSサウンドをミキサーに追加する();
+				}
+
+				if (!BassMix.BASS_Mixer_ChannelSetPosition(this.hBassStream, 0))
+				{
+					BASSError errcode = Bass.BASS_ErrorGetCode();
+					Trace.TraceWarning($"{Path.GetFileName(this.strファイル名)}: BASS_Mixer_ChannelSetPosition()@t再生位置を先頭に戻す() failed. {errcode}");
+				}
 				//pos = 0;
 			}
 			else if( this.bDirectSoundである )
@@ -1628,6 +1645,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		private double _db周波数倍率 = 1.0;
 		private double _db再生速度 = 1.0;
 		private bool bIs1倍速再生 = true;
+		private bool bMixer登録済 = false;
 		private WaveFormat _Format;
 
 		private void tBASSサウンドを作成する( string strファイル名, int hMixer, BASSFlag flags, bool bForceUseBassDll = false )
@@ -1921,6 +1939,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				Interlocked.Decrement( ref CSound管理.nMixing );
 //				Debug.WriteLine( "Removed: " + Path.GetFileName( this.strファイル名 ) + " (" + channel + ")" + " MixedStreams=" + CSound管理.nMixing );
 			}
+			bMixer登録済 = false;
 			return b;
 		}
 
@@ -1938,7 +1957,9 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
 #endif
 			{
-				BASSFlag bf = BASSFlag.BASS_SPEAKER_FRONT | BASSFlag.BASS_MIXER_NORAMPIN | BASSFlag.BASS_MIXER_PAUSE;
+				// #41145 removed BassFlag.BASS_SPEAKER_FRONT for mono speaker.
+				// BASS_Mixer_StreamAddChannel() returns error if stereo (or higher) channels are input but speaker is mono.
+				BASSFlag bf = BASSFlag.BASS_MIXER_NORAMPIN | BASSFlag.BASS_MIXER_PAUSE;
 				Interlocked.Increment( ref CSound管理.nMixing );
 
 				// preloadされることを期待して、敢えてflagからはBASS_MIXER_PAUSEを外してAddChannelした上で、すぐにPAUSEする
@@ -1949,11 +1970,24 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				mixingChannel.Add((IntPtr)this.hMixer);
 #else
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hBassStream, bf);
+				if (!b1)
+				{
+					BASSError errcode = Bass.BASS_ErrorGetCode();
+					Trace.TraceWarning($"{Path.GetFileName(this.strファイル名)}: BASS_Mixer_StreamAddChannel()@tBASSサウンドをミキサーに追加する() failed. {errcode}");
+				}
 #endif
 				//bool b2 = BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
 //Trace.TraceInformation( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
-				Bass.BASS_ChannelUpdate( this.hBassStream, 0 );	// pre-buffer
+				if ( !Bass.BASS_ChannelUpdate( this.hBassStream, 0 ))   // pre-buffer
+				{
+					BASSError errcode = Bass.BASS_ErrorGetCode();
+					if (bMixer登録済 || errcode != BASSError.BASS_ERROR_NOTAVAIL)	// Mixer登録直後は必ずNOTAVAILが出てしまう模様
+					{
+						Trace.TraceWarning($"{Path.GetFileName(this.strファイル名)}: BASS_Mixer_ChannelUpdate()@tBASSサウンドをミキサーに追加する() failed. {errcode}");
+					}
+				}
+				bMixer登録済 = true;
 				return b1;	// &b2;
 			}
 			return true;
