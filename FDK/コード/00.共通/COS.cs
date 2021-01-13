@@ -133,6 +133,8 @@ namespace FDK
             RS5 = 17763,	// 1809: October 2018 Update
             _19H1 = 18362,  // 1903: May 2019 Update
 			_19H2 = 18363,  // 1909: November 2019 Update
+			_20H1 = 19041,	// 2004: May 2020 Update
+			_20H2 = 19042,	// 20H2
 			UNKNOWN = -1,
 			NOTWIN10 = 0
 		}
