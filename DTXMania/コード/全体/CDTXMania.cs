@@ -1025,6 +1025,7 @@ namespace DTXMania
 				r現在のステージ = stage起動;
 			}
 			r現在のステージ.On活性化();
+			this.Window.Activate();     // #41300 workaround to avoid SharpDX exception
 			#endregion
 		}
 
@@ -1056,7 +1057,7 @@ namespace DTXMania
 #if WindowedFullscreen
 					// #30666 2013.2.2 yyagi Don't use Fullscreen mode becasue NVIDIA GeForce is
 					// tend to delay drawing on Fullscreen mode. So DTXMania uses Maximized window
-					// in spite of using fullscreen mode.
+					// instead of using fullscreen mode.
 					Instance.Window.WindowState = FormWindowState.Normal;
 					Instance.Window.FormBorderStyle = FormBorderStyle.Sizable;
 					Instance.Window.WindowState = FormWindowState.Normal;
