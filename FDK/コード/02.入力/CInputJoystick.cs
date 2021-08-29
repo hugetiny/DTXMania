@@ -11,8 +11,27 @@ namespace FDK
 	{
 		// コンストラクタ
 
+		public enum EJoystickType : int
+		{
+			OTHERS = 0,
+			GITALLER = 1,
+			KONAMI_GITADORA_CONTROLLER = 2
+		}
+
+		/// <summary>
+		/// On/Off threshold value for using axis as a button
+		/// </summary>
+		public const int ThresholdAxisOnOff = 500;
+		public const int AxisRange = 1000;
+
 		public CInputJoystick( IntPtr hWnd, DeviceInstance di, DirectInput directInput )
 		{
+			var JoystickTypeDB = new List<(int vid, int pid, EJoystickType _joystickType)>
+			{
+				(0x0e8f, 0x0300, EJoystickType.GITALLER),
+				(0x1ccf, 0x1030, EJoystickType.KONAMI_GITADORA_CONTROLLER)
+			};
+
 			this.e入力デバイス種別 = E入力デバイス種別.Joystick;
 			this.GUID = di.InstanceGuid.ToString();
 			this.ID = 0;
@@ -21,25 +40,34 @@ namespace FDK
 				this.devJoystick = new Joystick( directInput, di.InstanceGuid );
 				this.devJoystick.SetCooperativeLevel( hWnd, CooperativeLevel.Foreground | CooperativeLevel.Exclusive );
 				this.devJoystick.Properties.BufferSize = 32;
-				Trace.TraceInformation( this.devJoystick.Information.InstanceName + "を生成しました。" );
+				Trace.TraceInformation( "{0} (VID={1:x4}, PID={2:x4}) has been initialized.",
+					this.devJoystick.Information.InstanceName, this.devJoystick.Properties.VendorId, this.devJoystick.Properties.ProductId
+				);
+
 				this.strDeviceName = this.devJoystick.Information.InstanceName;
+				this.VID = this.devJoystick.Properties.VendorId;
+				this.PID = this.devJoystick.Properties.ProductId;
+
+				this.JoystickType = JoystickTypeDB.Find(t => t.vid == this.VID && t.pid == this.PID)._joystickType;
+				Trace.TraceInformation($"JoystickType={this.JoystickType}");
 			}
 			catch
 			{
-				if( this.devJoystick != null )
+				
+				Trace.TraceError( $"Failed to initialize Joystick: {this.devJoystick?.Information?.InstanceName}");
+				if (this.devJoystick != null)
 				{
 					this.devJoystick.Dispose();
 					this.devJoystick = null;
 				}
-				Trace.TraceError( this.devJoystick.Information.InstanceName, new object[] { " の生成に失敗しました。" } );
 				throw;
 			}
-			foreach( DeviceObjectInstance instance in this.devJoystick.GetObjects() )
+			foreach ( DeviceObjectInstance instance in this.devJoystick.GetObjects() )
 			{
 				if( ( instance.ObjectId.Flags & DeviceObjectTypeFlags.Axis ) != DeviceObjectTypeFlags.All )
 				{
-					this.devJoystick.GetObjectPropertiesById( instance.ObjectId ).Range = new InputRange( -1000, 1000 );
-					this.devJoystick.GetObjectPropertiesById( instance.ObjectId ).DeadZone = 5000;		// 50%をデッドゾーンに設定
+					this.devJoystick.GetObjectPropertiesById( instance.ObjectId ).Range = new InputRange( -AxisRange, AxisRange );
+					this.devJoystick.GetObjectPropertiesById( instance.ObjectId ).DeadZone = ThresholdAxisOnOff;		// 50%をデッドゾーンに設定
 																												// 軸をON/OFFの2値で使うならこれで十分
 				}
 			}
@@ -86,6 +114,22 @@ namespace FDK
 			get; 
 			private set;
 		}
+		public int VID
+		{
+			get;
+			private set;
+		}
+		public int PID
+		{
+			get;
+			private set;
+		}
+		public EJoystickType JoystickType
+		{
+			get;
+			private set;
+		}
+
 		public List<STInputEvent> list入力イベント 
 		{
 			get;
@@ -131,6 +175,7 @@ namespace FDK
 			this.list入力イベント.Add( e );
 		}
 		#endregion
+
 
 		public void tポーリング( bool bWindowがアクティブ中, bool bバッファ入力を使用する )
 		{
@@ -308,7 +353,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 					{
 						#region [ X軸－ ]
 						//-----------------------------
-						if( currentState.X < -500 )
+						if( currentState.X < -ThresholdAxisOnOff )
 						{
 							if( this.bButtonState[ 0 ] == false )
 							{
@@ -346,7 +391,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 						#endregion
 						#region [ X軸＋ ]
 						//-----------------------------
-						if( currentState.X > 500 )
+						if( currentState.X > ThresholdAxisOnOff )
 						{
 							if( this.bButtonState[ 1 ] == false )
 							{
@@ -384,7 +429,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 						#endregion
 						#region [ Y軸－ ]
 						//-----------------------------
-						if( currentState.Y < -500 )
+						if( currentState.Y < -ThresholdAxisOnOff )
 						{
 							if( this.bButtonState[ 2 ] == false )
 							{
@@ -422,7 +467,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 						#endregion
 						#region [ Y軸＋ ]
 						//-----------------------------
-						if( currentState.Y > 500 )
+						if( currentState.Y > ThresholdAxisOnOff )
 						{
 							if( this.bButtonState[ 3 ] == false )
 							{
@@ -460,7 +505,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 						#endregion
 						#region [ Z軸－ ]
 						//-----------------------------
-						if( currentState.Z < -500 )
+						if( currentState.Z < -ThresholdAxisOnOff )
 						{
 							if( this.bButtonState[ 4 ] == false )
 							{
@@ -498,7 +543,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 						#endregion
 						#region [ Z軸＋ ]
 						//-----------------------------
-						if( currentState.Z > 500 )
+						if( currentState.Z > ThresholdAxisOnOff )
 						{
 							if( this.bButtonState[ 5 ] == false )
 							{
@@ -696,7 +741,7 @@ Trace.TraceInformation( "TS={0}: IsPressed={1}, IsReleased={2}", data.TimeStamp,
 		private void bButtonUpDown( JoystickUpdate data, int axisdata, int target, int contrary )	// #26871 2011.12.3 軸の反転に対応するためにリファクタ
 		{
 			int targetsign = ( target < contrary ) ? -1 : 1;
-			if ( Math.Abs( axisdata ) > 500 && ( targetsign == Math.Sign( axisdata ) ) )			// 軸の最大値の半分を超えていて、かつ
+			if ( Math.Abs( axisdata ) > ThresholdAxisOnOff && ( targetsign == Math.Sign( axisdata ) ) )			// 軸の最大値の半分を超えていて、かつ
 			{
 				if ( bDoUpDownCore( target, data, false ) )											// 直前までは超えていなければ、今回ON
 				{
