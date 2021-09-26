@@ -636,6 +636,8 @@ namespace DTXMania
 			Bitmap image = ftフォント.DrawPrivateFont(str, Color.White, Color.Black);
 
 			this.tx説明文パネル = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
+
+			TextureFactory.t安全にDisposeする(ref image);
 		}
 
 		private void t説明文パネルに現在選択されている項目の説明を描画する()
@@ -651,6 +653,8 @@ namespace DTXMania
 			Bitmap image = ftフォント.DrawPrivateFont(item.explanation, Color.White, Color.Black, new Size((int)(220 * Scale.X), (int)(192 * Scale.Y)));
 
 			this.tx説明文パネル = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
+
+			TextureFactory.t安全にDisposeする(ref image);
 		}
 	}
 }
