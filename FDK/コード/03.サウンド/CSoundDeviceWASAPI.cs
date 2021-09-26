@@ -146,11 +146,13 @@ namespace FDK
 				throw new DllNotFoundException( string.Format( "bass.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSVersion, Bass.BASSVERSION ) );
 
 			int nBASSMixVersion = Utils.HighWord( BassMix.BASS_Mixer_GetVersion() );
-			if( nBASSMixVersion != BassMix.BASSMIXVERSION )
+			Trace.TraceInformation($"BASSmix Version: {nBASSMixVersion.ToString("X4")}");
+			if ( nBASSMixVersion != BassMix.BASSMIXVERSION )
 				throw new DllNotFoundException( string.Format( "bassmix.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSMixVersion, BassMix.BASSMIXVERSION ) );
 
 			int nBASSWASAPIVersion = Utils.HighWord( BassWasapi.BASS_WASAPI_GetVersion() );
-			if( nBASSWASAPIVersion != BassWasapi.BASSWASAPIVERSION )
+			Trace.TraceInformation($"BASSWASAPI Version: {nBASSWASAPIVersion.ToString("X4")}");
+			if ( nBASSWASAPIVersion != BassWasapi.BASSWASAPIVERSION )
 				throw new DllNotFoundException( string.Format( "basswasapi.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSWASAPIVersion, BassWasapi.BASSWASAPIVERSION ) );
 			#endregion
 
@@ -211,7 +213,7 @@ namespace FDK
 						strDefaultSoundDeviceName = bassDevInfos[a].name;
 						
 						// 以下はOS標準 default deviceのbus type (PNPIDの頭の文字列)。上位側で使用する。
-						string[] s = bassDevInfos[a].id.ToString().ToUpper().Split(new char[] { '#' });
+						string[] s = bassDevInfos[a]?.id?.ToString().ToUpper().Split(new char[] { '#' });
 						if (s != null && s[0] != null)
 						{
 							strDefaultSoundDeviceBusType = s[0];
@@ -585,6 +587,39 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 					throw new Exception( string.Format( "BASSミキサ(最終段とmixing)の接続に失敗しました。[{0}]", errcode ) );
 				};
 			}
+
+			#region [ set number of mixing threads ]
+			{
+				#region [ Physical CPU cores (w/ HyperThreaded cores) ]
+				var sysInfo = new CWin32.SYSTEM_INFO();
+				CWin32.GetSystemInfo(out sysInfo);
+				int nCPUCores = (int)sysInfo.dwNumberOfProcessors;
+				#endregion
+
+				const int BASS_ATTRIB_MIXER_THREADS = 0x15001;
+				for (int i = 0; i <= (int)CSound.EInstType.Unknown; i++)
+				{
+					if ( !Bass.BASS_ChannelSetAttribute(this.hMixer_Chips[i], (BASSAttribute)BASS_ATTRIB_MIXER_THREADS, nCPUCores) )
+					{
+						BASSError errcode = Bass.BASS_ErrorGetCode();
+						BassWasapi.BASS_WASAPI_Free();
+						Bass.BASS_Free();
+						this.bIsBASSFree = true;
+						throw new Exception(string.Format( $"Failed to set the number of mixing threads: mixer {i}: {errcode}"));
+					};
+				}
+
+					if (!Bass.BASS_ChannelSetAttribute(this.hMixer_DeviceOut, (BASSAttribute)BASS_ATTRIB_MIXER_THREADS, nCPUCores))
+					{
+						BASSError errcode = Bass.BASS_ErrorGetCode();
+						BassWasapi.BASS_WASAPI_Free();
+						Bass.BASS_Free();
+						this.bIsBASSFree = true;
+						throw new Exception(string.Format($"Failed to set the number of mixing threads: mixer_DeviceOut: {errcode}"));
+					};
+
+			}
+			#endregion
 
 
 			// 録音設定(DTX2WAV)

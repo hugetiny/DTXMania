@@ -149,11 +149,13 @@ namespace FDK
 				throw new DllNotFoundException( string.Format( "bass.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSVersion, Bass.BASSVERSION ) );
 
 			int nBASSMixVersion = Utils.HighWord( BassMix.BASS_Mixer_GetVersion() );
-			if( nBASSMixVersion != BassMix.BASSMIXVERSION )
+			Trace.TraceInformation($"BASSmix Version: {nBASSMixVersion.ToString("X4")}"); 
+			if ( nBASSMixVersion != BassMix.BASSMIXVERSION )
 				throw new DllNotFoundException( string.Format( "bassmix.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSMixVersion, BassMix.BASSMIXVERSION ) );
 
 			int nBASSASIO = Utils.HighWord( BassAsio.BASS_ASIO_GetVersion() );
-			if( nBASSASIO != BassAsio.BASSASIOVERSION )
+			Trace.TraceInformation($"BASSASIO Version: {nBASSASIO.ToString("X4")}"); 
+			if ( nBASSASIO != BassAsio.BASSASIOVERSION )
 				throw new DllNotFoundException( string.Format( "bassasio.dll のバージョンが異なります({0})。このプログラムはバージョン{1}で動作します。", nBASSASIO, BassAsio.BASSASIOVERSION ) );
 			#endregion
 
@@ -365,6 +367,24 @@ namespace FDK
 				};
 			}
 
+			#region [ set number of mixing threads ]
+			{
+				var sysInfo = new CWin32.SYSTEM_INFO();
+				CWin32.GetSystemInfo(out sysInfo);
+				int nCPUCores = (int)sysInfo.dwNumberOfProcessors;
+
+				const int BASS_ATTRIB_MIXER_THREADS = 0x15001;
+
+				if (!Bass.BASS_ChannelSetAttribute(this.hMixer_DeviceOut, (BASSAttribute)BASS_ATTRIB_MIXER_THREADS, nCPUCores))
+				{
+					BASSError errcode = Bass.BASS_ErrorGetCode();
+					BassAsio.BASS_ASIO_Free();
+					Bass.BASS_Free();
+					this.bIsBASSFree = true;
+					throw new Exception(string.Format($"Failed to set the number of mixing threads: mixer_DeviceOut: {errcode}"));
+				};
+			}
+			#endregion
 
 			// 出力を開始。
 
