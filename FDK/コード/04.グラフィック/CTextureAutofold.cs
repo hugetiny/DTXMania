@@ -30,6 +30,7 @@ namespace FDK
 		/// <param name="strファイル名">画像ファイル名。</param>
 		/// <param name="format">テクスチャのフォーマット。</param>
 		/// <param name="b黒を透過する">画像の黒（0xFFFFFFFF）を透過させるなら true。</param>
+		/// <param name="_label">解放漏れを検出しやすくするためのラベル。</param>
 		/// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
 		public CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する, string _label = "")
 			: this( device, strファイル名, format, b黒を透過する, Pool.Managed, _label )
@@ -48,35 +49,70 @@ namespace FDK
 		/// <param name="format">テクスチャのフォーマット。</param>
 		/// <param name="b黒を透過する">画像の黒（0xFFFFFFFF）を透過させるなら true。</param>
 		/// <param name="pool">テクスチャの管理方法。</param>
+		/// <param name="_label">解放漏れを検出しやすくするためのラベル。</param>
 		/// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
-		public CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool, string _label = "")
+		public CTextureAf( Device device, string strファイル名, Format format, bool b黒を透過する = false, Pool pool = Pool.Managed, string _label = "")
 		{
-			MakeTexture( device, strファイル名, format, b黒を透過する, pool, _label );
+			MakeTextureMain( device, strファイル名, null, format, b黒を透過する, pool, _label );
 		}
 
-
-
-
-		public new void MakeTexture( Device device, string strファイル名, Format format, bool b黒を透過する, Pool pool, string _label = "")
+		/// <summary>
+		/// <para>画像ファイルからテクスチャを生成する。</para>
+		/// <para>利用可能な画像形式は、BMP, JPG, PNG, TGA, DDS, PPM, DIB, HDR, PFM のいずれか。</para>
+		/// <para>テクスチャのサイズは、画像のサイズ以上、かつ、D3D9デバイスで生成可能な最小のサイズに自動的に調節される。
+		/// その際、テクスチャの調節後のサイズにあわせた画像の拡大縮小は行わない。</para>
+		/// <para>その他、ミップマップ数は 1、Usage は None、イメージフィルタは Point、ミップマップフィルタは None になる。</para>
+		/// </summary>
+		/// <param name="device">Direct3D9 デバイス。</param>
+		/// <param name="_image">Bitmapデータ</param>
+		/// <param name="format">テクスチャのフォーマット。</param>
+		/// <param name="b黒を透過する">画像の黒（0xFFFFFFFF）を透過させるなら true。</param>
+		/// <param name="pool">テクスチャの管理方法。</param>
+		/// <param name="_label">解放漏れを検出しやすくするためのラベル。</param>
+		/// <exception cref="CTextureCreateFailedException">テクスチャの作成に失敗しました。</exception>
+		public CTextureAf(Device device, Bitmap _image, Format format, bool b黒を透過する = false, Pool pool = Pool.Managed, string _label = "")
 		{
-			if ( !File.Exists( strファイル名 ) )		// #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
-				throw new FileNotFoundException( string.Format( "ファイルが存在しません。\n[{0}]", strファイル名 ) );
+			MakeTextureMain(device, null, _image, format, b黒を透過する, pool, _label);
+		}
 
-			Byte[] _txData = File.ReadAllBytes( strファイル名 );
-			bool b条件付きでサイズは２の累乗でなくてもOK = ( device.Capabilities.TextureCaps & TextureCaps.NonPow2Conditional ) != 0;
-			bool bサイズは２の累乗でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.Pow2 ) != 0;
-			bool b正方形でなければならない = ( device.Capabilities.TextureCaps & TextureCaps.SquareOnly ) != 0;
+		public void MakeTextureMain(Device device, string strファイル名, Bitmap _image, Format format, bool b黒を透過する, Pool pool, string _label = "")
+		{
+			if (!File.Exists(strファイル名) && _image == null)       // #27122 2012.1.13 from: ImageInformation では FileNotFound 例外は返ってこないので、ここで自分でチェックする。わかりやすいログのために。
+				throw new FileNotFoundException(string.Format("ファイルが存在せず、Bitmapの引き渡しもありません。\n[{0}]", strファイル名));
+
+			bool b条件付きでサイズは２の累乗でなくてもOK = (device.Capabilities.TextureCaps & TextureCaps.NonPow2Conditional) != 0;
+			bool bサイズは２の累乗でなければならない = (device.Capabilities.TextureCaps & TextureCaps.Pow2) != 0;
+			bool b正方形でなければならない = (device.Capabilities.TextureCaps & TextureCaps.SquareOnly) != 0;
 
 			// そもそもこんな最適化をしなくてよいのなら、さっさとbaseに処理を委ねて終了
-			if ( !bサイズは２の累乗でなければならない && b条件付きでサイズは２の累乗でなくてもOK )
+			if (!bサイズは２の累乗でなければならない && b条件付きでサイズは２の累乗でなくてもOK)
 			{
 				//Debug.WriteLine( Path.GetFileName( strファイル名 )  + ": 最適化は不要です。" );
-				base.MakeTexture( device, strファイル名, format, b黒を透過する, pool, _label);
+				if (_image == null)
+				{
+					base.MakeTexture(device, strファイル名, format, b黒を透過する, pool, _label);
+				}
+				else
+				{
+					base.MakeTexture(device, _image, format, b黒を透過する, pool, _label);
+				}
 				return;
 			}
 
-			var information = ImageInformation.FromMemory( _txData );
-			int orgWidth = information.Width, orgHeight = information.Height;
+			Byte[] _txData = null;
+			ImageInformation information;
+			int orgWidth, orgHeight;
+			if (_image == null)
+			{
+				_txData = File.ReadAllBytes(strファイル名);
+				information = ImageInformation.FromMemory(_txData);
+				orgWidth = information.Width;
+				orgHeight = information.Height;
+			}
+			else
+			{
+				orgWidth = _image.Width;	orgHeight = _image.Height;
+			}
 			int w = orgWidth, h = orgHeight, foldtimes;
 
 			int nサポート可能な最大幅 = device.Capabilities.MaxTextureWidth;
@@ -96,8 +132,15 @@ namespace FDK
 				this.b横長のテクスチャである = true;
 				if ( !GetFoldedTextureSize( ref w, ref h, out foldtimes ) )
 				{
-//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念。" );
-					base.MakeTexture( device, strファイル名, format, b黒を透過する, pool );
+					//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念。" );
+					if (_image == null)
+					{
+						base.MakeTexture(device, strファイル名, format, b黒を透過する, pool);
+					}
+					else
+					{
+						base.MakeTexture(device, _image, format, b黒を透過する, pool);
+					}
 					return;
 				}
 			}
@@ -106,19 +149,34 @@ namespace FDK
 				this.b横長のテクスチャである = false;
 				if ( !GetFoldedTextureSize( ref h, ref w, out foldtimes ) )	// 縦横入れ替えて呼び出し
 				{
-//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念。" );
-					base.MakeTexture( device, strファイル名, format, b黒を透過する, pool );
+					//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": 最適化を断念。" );
+					if (_image == null)
+					{
+						base.MakeTexture(device, strファイル名, format, b黒を透過する, pool);
+					}
+					else
+					{
+						base.MakeTexture(device, _image, format, b黒を透過する, pool);
+					}
 					return;
 				}
 			}
 			#endregion
 
-//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": texture最適化結果: width=" + w + ", height=" + h + ", 折りたたみ回数=" + foldtimes );
+			//Debug.WriteLine( Path.GetFileName( strファイル名 ) + ": texture最適化結果: width=" + w + ", height=" + h + ", 折りたたみ回数=" + foldtimes );
 			#region [ 折りたたみテクスチャ画像を作り、テクスチャ登録する ]
 			// バイナリ(Byte配列)をBitmapに変換
-			MemoryStream mms = new MemoryStream( _txData );
-			Bitmap bmpOrg = new Bitmap( mms );
-			mms.Close();
+			Bitmap bmpOrg = null;
+			if (_image == null)
+			{
+				MemoryStream mms = new MemoryStream(_txData);
+				bmpOrg = new Bitmap(mms);
+				mms.Close();
+			}
+			else
+			{
+				bmpOrg = (Bitmap)_image.Clone();	// 参照渡しするとDisposeするのが怖くなるので、Cloneでとりあえず妥協
+			}
 
 			Bitmap bmpNew = new Bitmap( w, h );
 			Graphics g = Graphics.FromImage( bmpNew );
