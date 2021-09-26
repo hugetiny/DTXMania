@@ -10,8 +10,10 @@ using SharpDX;
 using FDK;
 
 using Rectangle = System.Drawing.Rectangle;
+using RectangleF = System.Drawing.RectangleF;
 using Color = System.Drawing.Color;
 using Point = System.Drawing.Point;
+using GraphicPath = System.Drawing.Drawing2D.GraphicsPath;
 
 namespace DTXMania
 {
@@ -353,11 +355,11 @@ namespace DTXMania
 				_ptOrigin = new Point(0, 0);
 				return new Bitmap(1, 1);
 			}
-			bool bEdge = ((drawmode & DrawMode.Edge) == DrawMode.Edge);
-			bool bGradation = ((drawmode & DrawMode.Gradation) == DrawMode.Gradation);
+			bool bEdge = drawmode.HasFlag(DrawMode.Edge);
+			bool bGradation = drawmode.HasFlag(DrawMode.Gradation);
 
 			// 縁取りの縁のサイズは、とりあえずフォントの大きさの1/4とする
-			int nEdgePt = (bEdge) ? _pt / 4 : 0;
+			int nEdgePt = (bEdge) ? _pt / 4 : _pt /8;
 
 			// 描画サイズを測定する (外部から描画領域を指定した場合は、それを使う)
 			Size stringSize;
@@ -367,40 +369,72 @@ namespace DTXMania
 			}
 			else
 			{
-				stringSize = System.Windows.Forms.TextRenderer.MeasureText(drawstr, this._font, new Size(int.MaxValue, int.MaxValue),
-					System.Windows.Forms.TextFormatFlags.NoPrefix |
-					System.Windows.Forms.TextFormatFlags.NoPadding
-				);
+				using (Bitmap b = new Bitmap(1, 1))
+				using (Graphics g = Graphics.FromImage(b))
+				using (StringFormat sf = new StringFormat(StringFormat.GenericTypographic))
+				{
+					//g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+					//sf.FormatFlags = StringFormatFlags.NoClip | StringFormatFlags.NoWrap;
+
+					//SizeF sizef = g.MeasureString(drawstr, this._font, int.MaxValue, sf) ;
+					//stringSize = sizef.ToSize();
+					stringSize = System.Windows.Forms.TextRenderer.MeasureText(drawstr, this._font, new Size(int.MaxValue, int.MaxValue),
+						System.Windows.Forms.TextFormatFlags.NoPrefix |
+						System.Windows.Forms.TextFormatFlags.NoPadding |
+						System.Windows.Forms.TextFormatFlags.Bottom
+					);
+
+					//Rectangle rc = MeasureStringPrecisely(g, drawstr, this._font, new Size(stringSize.Width * 2, stringSize.Height * 2), sf);
+					//stringSize = new Size(rc.Width, rc.Height);
+				}
 			}
 
+
+			// 文字数をカウントする (横幅に文字数*2の縁取り幅を確保するために用いる)
+			System.Globalization.StringInfo si = new System.Globalization.StringInfo(drawstr);
+			int len = si.LengthInTextElements;
+
+			Size stringSizeWithEdge = sz.HasValue ?
+				//	sz.Value : new Size((int)(stringSize.Width + nEdgePt * len), stringSize.Height + nEdgePt * 2);
+				//sz.Value : stringSize;
+				sz.Value : new Size((int)(stringSize.Width * 1.05f), stringSize.Height);
+
 			//取得した描画サイズを基に、描画先のbitmapを作成する
-			Bitmap bmp = new Bitmap(stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
+			//Bitmap bmp = new Bitmap(stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
+			Bitmap bmp = new Bitmap(stringSizeWithEdge.Width, stringSizeWithEdge.Height);
 			bmp.MakeTransparent();
 
 			using (Graphics g = Graphics.FromImage(bmp))
 			{
 				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+				g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
+				g.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
 				using (StringFormat sf = new StringFormat())
 				{
 					if (sz.HasValue)
 					{
-						// 画面下部（垂直方向位置）
+						// 画面上部（垂直方向位置）
 						sf.LineAlignment = StringAlignment.Near;
-						// 画面中央（水平方向位置）
+						// 画面左（水平方向位置）
 						sf.Alignment = StringAlignment.Near;
 						sf.FormatFlags = StringFormatFlags.LineLimit;
 					}
 					else
 					{
-						// 画面下部（垂直方向位置）
-						sf.LineAlignment = StringAlignment.Far;
+						// 画面上（垂直方向位置）
+						sf.LineAlignment = StringAlignment.Near;
 						// 画面中央（水平方向位置）
-						sf.Alignment = StringAlignment.Center;
+						//sf.Alignment = StringAlignment.Center;
+						sf.Alignment = StringAlignment.Near;
 						sf.FormatFlags = StringFormatFlags.NoWrap;
 					}
 					// レイアウト枠
-					Rectangle r = new Rectangle(0, 0, stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
+					//Rectangle r = new Rectangle(0, 0, stringSize.Width + nEdgePt * 2, stringSize.Height + nEdgePt * 2);
+					//Rectangle r = new Rectangle(0, 0, stringSizeWithEdge.Width, stringSizeWithEdge.Height);
+					Rectangle r = (sz.HasValue)?
+						new Rectangle(0, 0, (int)(stringSize.Width),        stringSize.Height) :
+						new Rectangle(0, 0, (int)(stringSize.Width * 1.2f), stringSize.Height);
 
 					// 縁取り有りの描画
 					if (bEdge)
@@ -409,7 +443,7 @@ namespace DTXMania
 						// (これをしないと、単位が違うために、小さめに描画されてしまう)
 						float sizeInPixels = _font.SizeInPoints * g.DpiY / 72;  // 1 inch = 72 points
 
-						using (System.Drawing.Drawing2D.GraphicsPath gp = new System.Drawing.Drawing2D.GraphicsPath())
+						using (GraphicsPath gp = new GraphicsPath())
 						{
 							gp.AddString(drawstr, this._fontfamily, (int)this._font.Style, sizeInPixels, r, sf);
 
@@ -438,10 +472,10 @@ namespace DTXMania
 						}
 						// System.Windows.Forms.TextRenderer.DrawText(g, drawstr, _font, new Point(0, 0), fontColor);
 					}
-#if debug表示
-			g.DrawRectangle( new Pen( Color.White, 1 ), new Rectangle( 1, 1, stringSize.Width-1, stringSize.Height-1 ) );
+//#if debug表示
+			g.DrawRectangle( new Pen( Color.White, 1 ), new Rectangle( 1, 1, stringSizeWithEdge.Width-1, stringSizeWithEdge.Height-1 ) );
 			g.DrawRectangle( new Pen( Color.Green, 1 ), new Rectangle( 0, 0, bmp.Width - 1, bmp.Height - 1 ) );
-#endif
+//#endif
 					_rectStrings = new Rectangle(0, 0, stringSize.Width, stringSize.Height);
 					_ptOrigin = new Point(nEdgePt * 2, nEdgePt * 2);
 				}
@@ -476,6 +510,18 @@ namespace DTXMania
 			}
 		}
 
+		public float Size
+		{
+			get
+			{
+				if (_font != null)
+				{
+					return _font.Size;
+				}
+				return 0f;
+			}
+		}
+
 		#region [ IDisposable 実装 ]
 		//-----------------
 		public void Dispose()
@@ -507,10 +553,10 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 		protected bool bDispose完了済み;
-		protected Font _font;
+		protected Font _font = null;
 
 		private System.Drawing.Text.PrivateFontCollection _pfc;
-		private FontFamily _fontfamily;
+		private FontFamily _fontfamily = null;
 		private int _pt;
 		private Rectangle _rectStrings;
 		private Point _ptOrigin;

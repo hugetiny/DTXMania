@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Drawing.Text;
+using System.IO;
 using SharpDX;
 using FDK;
 
@@ -427,12 +428,15 @@ namespace DTXMania
 			FontStyle regular = FontStyle.Regular;
 			if (CDTXMania.Instance.ConfigIni.bItalicFontSongSelect) regular |= FontStyle.Italic;
 			if (CDTXMania.Instance.ConfigIni.bBoldFontSongSelect) regular |= FontStyle.Bold;
-			this.ft曲リスト用フォント = new Font(
-				CDTXMania.Instance.ConfigIni.strFontSongSelect,
-				(float)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 2 * Scale.Y),   // 後でScale.Yを掛けないように直すこと(Config.ini初期値変更)
-				regular,
-				GraphicsUnit.Pixel
-			);
+
+			CResources cr = CDTXMania.Instance.Resources;
+			//string fontname = cr.Explanation("strCfgSelectMusicSongListFontFileName");
+			string fontname = cr.Explanation("strCfgTitleFontFileName");
+						
+			string path = Path.Combine(@"Graphics\fonts", fontname);
+			this.ft曲リスト用フォント = new CPrivateFastFont(CSkin.Path(path),
+				(int)(CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * 3),
+				regular);
 
 
 			// 現在選択中の曲がない（＝はじめての活性化）なら、現在選択中の曲をルートの先頭ノードに設定する。
@@ -483,19 +487,26 @@ namespace DTXMania
 			#region [ Songs not found画像 ]
 			try
 			{
-				using (Bitmap image = new Bitmap(SampleFramework.GameWindowSize.Width, (int)(128 * Scale.Y)))
-				using (Graphics graphics = Graphics.FromImage(image))
+//				using (Bitmap image = new Bitmap(SampleFramework.GameWindowSize.Width, (int)(128 * Scale.Y)))
+//				using (Graphics graphics = Graphics.FromImage(image))
 				{
-					string[] s = cr.Explanation("strEnumeratingSongsNotFound").Split(new string[] { Environment.NewLine }, 3, StringSplitOptions.None);
-					for (int i = 0; i < s.Length; i++)
-					{
-						if (i * 42 > 128 * Scale.Y) break;	// break if drawstrings over texture size
-						graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)((2 + 42 * i) * Scale.Y));
-						graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.White,    (float) 0f,            (float)((42 * i)     * Scale.Y));
-					}
+					//string[] s = cr.Explanation("strEnumeratingSongsNotFound").Split(new string[] { Environment.NewLine }, 3, StringSplitOptions.None);
+					string s = cr.Explanation("strEnumeratingSongsNotFound");
+					//for (int i = 0; i < s.Length; i++)
+					//{
+						//if (i * 42 > 128 * Scale.Y) break;  // break if drawstrings over texture size
+
+						Bitmap image = this.ft曲リスト用フォント.DrawPrivateFont(s, Color.White, Color.Black, new Size(SampleFramework.GameWindowSize.Width, (int)(128 * Scale.Y)));
+
+
+						//graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)((2 + 42 * i) * Scale.Y));
+						//graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.White,    (float) 0f,            (float)((42 * i)     * Scale.Y));
+					//}
 					this.txSongNotFound = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
 
 					this.txSongNotFound.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f); // 半分のサイズで表示する。
+
+					TextureFactory.t安全にDisposeする(ref image);
 				}
 			}
 			catch (CTextureCreateFailedException)
@@ -507,19 +518,23 @@ namespace DTXMania
 			#region [ "曲データを検索しています"画像 ]
 			try
 			{
-				using (Bitmap image = new Bitmap(SampleFramework.GameWindowSize.Width, (int)(96 * Scale.Y)))
-				using (Graphics graphics = Graphics.FromImage(image))
+				//using (Bitmap image = new Bitmap(SampleFramework.GameWindowSize.Width, (int)(96 * Scale.Y)))
+				//using (Graphics graphics = Graphics.FromImage(image))
 				{
-					string[] s = cr.Explanation("strEnumeratingSongs").Split(new string[] { Environment.NewLine }, 2, StringSplitOptions.None);
-					for (int i = 0; i < s.Length; i++)
-					{
-						if (i * 42 > 96 * Scale.Y) break;  // break if drawstrings over texture size
-						graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)((2 + 42 * i) * Scale.Y));
-						graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.White,    (float) 0f,            (float)((42 * i)     * Scale.Y));
-					}
+					//string[] s = cr.Explanation("strEnumeratingSongs").Split(new string[] { Environment.NewLine }, 2, StringSplitOptions.None);
+					string s = cr.Explanation("strEnumeratingSongs");
+					//for (int i = 0; i < s.Length; i++)
+					//{
+						//	if (i * 42 > 96 * Scale.Y) break;  // break if drawstrings over texture size
+						//graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.DarkGray, (float)(2f * Scale.X), (float)((2 + 42 * i) * Scale.Y));
+						//graphics.DrawString(s[i], this.ft曲リスト用フォント, Brushes.White,    (float) 0f,            (float)((42 * i)     * Scale.Y));
+					//}
+					Bitmap image = this.ft曲リスト用フォント.DrawPrivateFont(s, Color.White, Color.Black, new Size(SampleFramework.GameWindowSize.Width, (int)(128 * Scale.Y)));
 					this.txEnumeratingSongs = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
 
 					this.txEnumeratingSongs.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f); // 半分のサイズで表示する。
+
+					TextureFactory.t安全にDisposeする(ref image);
 				}
 			}
 			catch (CTextureCreateFailedException)
@@ -1144,7 +1159,7 @@ namespace DTXMania
 		private Color color文字影 = Color.FromArgb(0x40, 10, 10, 10);
 		private CCounter[] ct登場アニメ用 = new CCounter[13];
 		private EPart e楽器パート;
-		private Font ft曲リスト用フォント;
+		private CPrivateFastFont ft曲リスト用フォント;
 		private long nスクロールタイマ;
 		private int n現在のスクロールカウンタ;
 		private int n現在の選択行;
@@ -1413,40 +1428,20 @@ namespace DTXMania
 
 			try
 			{
-				SizeF sz曲名;
-
-				#region [ 曲名表示に必要となるサイズを取得する。]
-				//-----------------
-				using (var bmpDummy = new Bitmap(1, 1))
-				{
-					var g = Graphics.FromImage(bmpDummy);
-					g.PageUnit = GraphicsUnit.Pixel;
-					sz曲名 = g.MeasureString(str曲名, this.ft曲リスト用フォント);
-				}
-				//-----------------
-				#endregion
+				Bitmap bmp = this.ft曲リスト用フォント.DrawPrivateFont(str曲名, Color.White, Color.Black);
 
 				int n最大幅px = (int)(392 * Scale.Y);
 				int height = (int)(25 * Scale.Y);
-				int width = (int)((sz曲名.Width + 2) * 0.5f);
+				int width = (int)((bmp.Width + 2) * 0.5f);
 				if (width > (CDTXMania.Instance.Device.Capabilities.MaxTextureWidth / 2))
 					width = CDTXMania.Instance.Device.Capabilities.MaxTextureWidth / 2; // 右端断ち切れ仕方ないよね
-
 				float f拡大率X = (width <= n最大幅px) ? 0.5f : (((float)n最大幅px / (float)width) * 0.5f); // 長い文字列は横方向に圧縮。
 
-				using (var bmp = new Bitmap(width * 2, height * 2, PixelFormat.Format32bppArgb))    // 2倍（面積4倍）のBitmapを確保。（0.5倍で表示する前提。）
-				using (var g = Graphics.FromImage(bmp))
-				{
-					g.TextRenderingHint = TextRenderingHint.AntiAlias;
-					float y = (((float)bmp.Height) / 2f) - ((CDTXMania.Instance.ConfigIni.nFontSizeDotSongSelect * Scale.Y * 2f) / 2f);
-					g.DrawString(str曲名, this.ft曲リスト用フォント, new SolidBrush(this.color文字影), (float)2f, (float)(y + 2f));
-					g.DrawString(str曲名, this.ft曲リスト用フォント, new SolidBrush(color), 0f, y);
+				TextureFactory.t安全にDisposeする(ref this.stバー情報[nバー番号].txタイトル名);
 
-					TextureFactory.t安全にDisposeする(ref this.stバー情報[nバー番号].txタイトル名);
-
-					this.stバー情報[nバー番号].txタイトル名 = new CTexture(CDTXMania.Instance.Device, bmp, CDTXMania.Instance.TextureFormat);
-					this.stバー情報[nバー番号].txタイトル名.vc拡大縮小倍率 = new Vector3(f拡大率X, 0.5f, 1f);
-				}
+				this.stバー情報[nバー番号].txタイトル名 = new CTexture(CDTXMania.Instance.Device, bmp, CDTXMania.Instance.TextureFormat);
+				this.stバー情報[nバー番号].txタイトル名.vc拡大縮小倍率 = new Vector3(f拡大率X, 0.5f, 1f);
+				TextureFactory.t安全にDisposeする(ref bmp);
 			}
 			catch (CTextureCreateFailedException)
 			{

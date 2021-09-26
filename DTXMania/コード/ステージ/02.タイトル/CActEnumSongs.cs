@@ -86,24 +86,43 @@ namespace DTXMania
 			}
 			try
 			{
-				System.Drawing.Font ftMessage = new System.Drawing.Font( @"MS PGothic", 40.0f, FontStyle.Bold, GraphicsUnit.Pixel );
+				CPrivateFastFont pfMessage;
+				//System.Drawing.Font ftMessage = new System.Drawing.Font( @"MS PGothic", 40.0f, FontStyle.Bold, GraphicsUnit.Pixel );
+
+				string fontname = CDTXMania.Instance.Resources.Explanation("strCfgPopupFontFileName");
+				string path = Path.Combine(@"Graphics\fonts", fontname);
+				pfMessage = new CPrivateFastFont(CSkin.Path(path), 40);
+
 				string strMessage = CDTXMania.Instance.Resources.Explanation("strEnumeratingSongs");
 				if ( ( strMessage != null ) && ( strMessage.Length > 0 ) )
 				{
-					Bitmap image = new Bitmap(1, 1);
-					Graphics graphics = Graphics.FromImage(image);
-					SizeF ef = graphics.MeasureString(strMessage, ftMessage);
-					Size size = new Size( (int) Math.Ceiling( (double) ef.Width ), (int) Math.Ceiling( (double) ef.Height ) );
-					graphics.Dispose();
-					image.Dispose();
-					image = new Bitmap(size.Width, size.Height);
-					graphics = Graphics.FromImage(image);
-					graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-					graphics.DrawString(strMessage, ftMessage, Brushes.White, (float) 0f, (float) 0f);
-					graphics.Dispose();
-					this.txMessage = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
-					image.Dispose();
-					TextureFactory.t安全にDisposeする(ref ftMessage);
+					Bitmap image = pfMessage.DrawPrivateFont(
+						strMessage, System.Drawing.Color.White, System.Drawing.Color.Black,
+						new Size(SampleFramework.GameWindowSize.Width, (int)(128 * Scale.Y))
+					);
+					System.Drawing.Rectangle rect = pfMessage.RectStrings;
+
+					Bitmap image_trim = image.Clone(rect, image.PixelFormat);
+
+					this.txMessage = new CTexture(CDTXMania.Instance.Device, image_trim, CDTXMania.Instance.TextureFormat);
+
+
+					//Bitmap image = new Bitmap(1, 1);
+					//Graphics graphics = Graphics.FromImage(image);
+					//SizeF ef = graphics.MeasureString(strMessage, ftMessage);
+					//Size size = new Size( (int) Math.Ceiling( (double) ef.Width ), (int) Math.Ceiling( (double) ef.Height ) );
+					//graphics.Dispose();
+					//image.Dispose();
+					//image = new Bitmap(size.Width, size.Height);
+					//graphics = Graphics.FromImage(image);
+					//graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+					//graphics.DrawString(strMessage, ftMessage, Brushes.White, (float) 0f, (float) 0f);
+					//graphics.Dispose();
+					//this.txMessage = new CTexture(CDTXMania.Instance.Device, image, CDTXMania.Instance.TextureFormat);
+					//image.Dispose();
+					TextureFactory.t安全にDisposeする(ref image_trim);
+					TextureFactory.t安全にDisposeする(ref image);
+					TextureFactory.t安全にDisposeする(ref pfMessage);
 				}
 				else
 				{
