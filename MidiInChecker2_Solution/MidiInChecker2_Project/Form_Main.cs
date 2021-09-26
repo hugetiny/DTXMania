@@ -22,13 +22,6 @@ namespace MidiInChecker2
 
 		private void Form_Main_Shown(object sender, EventArgs e)
 		{
-			#region [ Title bar configuration (append version info) ]
-			System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
-			int ver_asm_major = asm.GetName().Version.Major;
-			this.Text = "MidiInChecker2 Rel" + ver_asm_major.ToString("D3");
-			#endregion
-			RichLogTextBox.LanguageOption = RichTextBoxLanguageOptions.UIFonts;
-
 			ignoreRealtimeMessage_ToolStripMenuItem.Checked = bIgnoreRealtimeMessage;
 		}
 
@@ -40,6 +33,15 @@ namespace MidiInChecker2
 			InitializeComponent();
 			InputManager = new CInputManager();
 
+			#region [ Title bar configuration (append version info) ]
+			System.Reflection.Assembly asm = System.Reflection.Assembly.GetExecutingAssembly();
+			int ver_asm_major = asm.GetName().Version.Major;
+			string ver = "MidiInChecker2 Rel" + ver_asm_major.ToString("D3");
+			this.Text = ver;
+			#endregion
+			RichLogTextBox.LanguageOption = RichTextBoxLanguageOptions.UIFonts;
+
+			RichLogTextBox.AppendText(ver + System.Environment.NewLine + System.Environment.NewLine);
 			RichLogTextBox.AppendText( "Number of MIDI devices: " + InputManager.nInputMidiDevices + System.Environment.NewLine );
 			foreach ( string s in InputManager.listStrMidiDevices )
 			{
