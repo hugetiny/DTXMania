@@ -635,7 +635,14 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 			//Bass.BASS_SetVolume(0.1f);
 
 			// 出力を開始。
-			BassWasapi.BASS_WASAPI_Start();
+			if ( !BassWasapi.BASS_WASAPI_Start() )
+			{
+				BASSError errcode = Bass.BASS_ErrorGetCode();
+				BassWasapi.BASS_WASAPI_Free();
+				Bass.BASS_Free();
+				this.bIsBASSFree = true;
+				throw new Exception( $"BASS_WASAPI_Start()に失敗しました。[{errcode}]");
+			}
 		}
 
 #region [録音開始]
