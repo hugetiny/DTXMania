@@ -93,7 +93,7 @@ namespace DTXMania
 				int maxX = 0;
 				for (int i = 0; i < menuStr.Length; i++)
 				{
-					txMenuItem[i] = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(menuStr[i], Color.White, Color.Black), false);
+					txMenuItem[i] = TextureFactory.tテクスチャの生成(prvFont.DrawPrivateFont(menuStr[i], Color.White, Color.Black), false, menuStr[i]);
 					//					txMenuItem[ i ] = prvFont.DrawPrivateFont( menuStr[ i ], Color.White, Color.Black, Color.Yellow, Color.OrangeRed );	// グラデーションもなかなかいける。
 					//					txMenuItem[ i ] = prvFont.DrawPrivateFont( menuStr[ i ], Color.White );
 					if (maxX < txMenuItem[i].szテクスチャサイズ.Width)

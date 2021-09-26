@@ -521,7 +521,7 @@ namespace DTXMania
 							//);
 							// wc.rSound[ i ].t再生位置を変更する( wc.rSound[ i ].t時刻から位置を返す( nAbsTimeFromStartPlaying ) );
 							wc.rSound[i].t再生位置を変更する(nAbsTimeFromStartPlaying);  // WASAPI/ASIO用
-																																	//Debug.WriteLine( "再生位置を変更: " + Path.GetFileName( wc.strファイル名 ) + nAbsTimeFromStartPlaying + "ms");
+							//Debug.WriteLine( "再生位置を変更: " + Path.GetFileName( wc.strファイル名 ) + nAbsTimeFromStartPlaying + "ms");
 						}
 					}
 				}

@@ -472,10 +472,10 @@ namespace DTXMania
 						}
 						// System.Windows.Forms.TextRenderer.DrawText(g, drawstr, _font, new Point(0, 0), fontColor);
 					}
-//#if debug表示
+#if debug表示
 			g.DrawRectangle( new Pen( Color.White, 1 ), new Rectangle( 1, 1, stringSizeWithEdge.Width-1, stringSizeWithEdge.Height-1 ) );
 			g.DrawRectangle( new Pen( Color.Green, 1 ), new Rectangle( 0, 0, bmp.Width - 1, bmp.Height - 1 ) );
-//#endif
+#endif
 					_rectStrings = new Rectangle(0, 0, stringSize.Width, stringSize.Height);
 					_ptOrigin = new Point(nEdgePt * 2, nEdgePt * 2);
 				}

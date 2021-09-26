@@ -969,6 +969,7 @@ namespace DTXMania
 				if (saveLag)
 				{
 					pChip.nLag = lag;
+//Trace.TraceInformation($"lag={lag}, chip={pChip.n整数値.ToString("x2")}");
 					// #23580 2011.1.3 yyagi: add "nInputAdjustTime" to add input timing adjust feature
 					if (pChip.e楽器パート != EPart.Unknown)
 					{

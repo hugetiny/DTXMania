@@ -530,9 +530,9 @@ namespace DTXMania
 			#endregion
 
 			#region [ 現在の電源プランをバックアップし、CONFIGのHighPower=ONの場合は HighPerformanceに変更 ]
-			CPowerPlan.BackupCurrentPowerPlan();
 			if (CDTXMania.Instance.ConfigIni.bForceHighPowerPlan)
 			{
+				CPowerPlan.BackupCurrentPowerPlan();
 				CPowerPlan.ChangeHighPerformance();
 			}
 			#endregion
