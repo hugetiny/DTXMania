@@ -6,9 +6,9 @@
 * Requirements
 
 (1) OS:  Windows 8.1 / 10 (x86, x64)
-(2) .NET Framework: Version 4.7 or above
-   (You'll need to install .NET Framework 4.7 additionaly on Win10 Creaturs Update or before)
-    https://support.microsoft.com/en-us/help/3186497/the-net-framework-4-7-offline-installer-for-windows
+(2) .NET Framework: Version 4.7.2 or above
+   (You'll need to install .NET Framework 4.7.2 additionaly on Win10 Creaturs Update or before)
+    https://support.microsoft.com/ja-jp/help/4054530/microsoft-net-framework-4-7-2-offline-installer-for-windows
 (3) DirectX9 End User Runtime: June 2010 Version or later
    (You'll need to install DirextX 9.0c additionaly on Win8 or later.)
 (4) Microsoft Visual C++ 2013 Redistributable Package (x86)
@@ -63,6 +63,12 @@ DTXMania seek all folders to the bottom of the subfolders.
 In the initial DTXMania settings (in Config.xml files),
 the folder where DTXManiaGR.exe exists
 is specified as the song data folder (strSongDataPath).
+For example,
+  <strSongDataPath>
+    <val>c:\data\dtx\;d:\test\</val>
+  </strSongDataPath>
+
+
 
 And DTXMania record each your playing result
 as the file ("score.ini" file).

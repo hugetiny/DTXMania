@@ -6,9 +6,9 @@
 ■動作に必要なもの
 
 (1) OS:  Windows 8.1 / 10 の、32bit/64bit版。
-(2) .NET Framework: 4.7以上。
- 　(Win10 Creators Update (1703) 以前のOSでは、.NET Framework 4.7の追加インストールが必要です)
-　https://support.microsoft.com/ja-jp/help/3186497/the-net-framework-4-7-offline-installer-for-windows
+(2) .NET Framework: 4.7.2以上。
+ 　(Win10 Creators Update (1703) 以前のOSでは、.NET Framework 4.7.2の追加インストールが必要です)
+　https://support.microsoft.com/ja-jp/help/4054530/microsoft-net-framework-4-7-2-offline-installer-for-windows
 (3) DirectX9 エンドユーザ ランタイム: June 2010 以降
 　(Win8以降では、DirectX 9.0cの追加インストールが必要です)
 (4) Microsoft Visual C++ 2013 Redistributable Package (x86)
@@ -61,8 +61,12 @@ DTXMania は、通常、DTXManiaGR.exeがあるフォルダをルートフォルダと
 Config.xml（DTXManiaを1回でも起動すると、DTXManiaGR.exeと同じ
 フォルダに自動的に作成されます）の strSongDataPath の内容を変更
 することで、ルートフォルダを変更できます。
-(この際に、ルートフォルダは、セミコロンで区切って、複数指定できます)
-
+(この際に、ルートフォルダは、セミコロンで区切って、複数指定できます。
+ 例:
+  <strSongDataPath>
+    <val>c:\data\dtx\;d:\test\</val>
+  </strSongDataPath>
+)
 
 
 DTXMania は、曲の演奏結果を、曲データの存在するフォルダ内に
