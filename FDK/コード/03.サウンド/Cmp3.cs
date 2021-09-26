@@ -27,6 +27,7 @@ namespace FDK
 			{
 				BASSError be = Bass.BASS_ErrorGetCode();
 				Trace.TraceInformation("Cmp3: StreamCreateFile error: " + be.ToString());
+				return 0;
 			}
 			nTotalPCMSize = Bass.BASS_ChannelGetLength(stream_in);
 
