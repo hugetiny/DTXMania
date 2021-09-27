@@ -171,11 +171,6 @@ namespace DTXMania
 					"bass_fx.dll is not loaded. bass_fx.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
-				//if (!tDLLの存在チェック("dll\\BASSThreadedMixer.dll",
-				//	"BASSThreadedMixer.dll を読み込めません。BASSThreadedMixer.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
-				//	"BASSThreadedMixer.dll is not loaded. BASSThreadedMixer.dll must not exist." + newLine + "Please download DTXMania again."
-				//	))
-				//	bDLLnotfound = true;
 				if (!tDLLの存在チェック("dll\\DirectShowLib.dll",
 					"DirectShowLib.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
 					"DirectShowLib.dll is not found." + newLine + "Please download DTXMania again."

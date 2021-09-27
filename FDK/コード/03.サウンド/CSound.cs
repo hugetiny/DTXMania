@@ -1928,12 +1928,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 		}
 		public bool tBASSサウンドをミキサーから削除する( int channel )
 		{
-#if TEST_MultiThreadedMixer
-			bool b = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_RemoveSource((IntPtr)this.hMixer, channel );
-			mixingChannel.Remove((IntPtr)this.hMixer);
-#else
 			bool b = BassMix.BASS_Mixer_ChannelRemove(channel);
-#endif
 			if ( b )
 			{
 				Interlocked.Decrement( ref CSound管理.nMixing );
@@ -1945,17 +1940,10 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 
 
 		// mixer への追加
-#if TEST_MultiThreadedMixer
-		private List<IntPtr> mixingChannel = new List<IntPtr>();
-#endif
 
 		public bool tBASSサウンドをミキサーに追加する()
 		{
-#if TEST_MultiThreadedMixer
-			if (!mixingChannel.Contains((IntPtr)this.hMixer))
-#else
 			if ( BassMix.BASS_Mixer_ChannelGetMixer( hBassStream ) == 0 )
-#endif
 			{
 				// #41145 removed BassFlag.BASS_SPEAKER_FRONT for mono speaker.
 				// BASS_Mixer_StreamAddChannel() returns error if stereo (or higher) channels are input but speaker is mono.
@@ -1965,17 +1953,12 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 				// preloadされることを期待して、敢えてflagからはBASS_MIXER_PAUSEを外してAddChannelした上で、すぐにPAUSEする
 				// -> ChannelUpdateでprebufferできることが分かったため、BASS_MIXER_PAUSEを使用することにした
 
-#if TEST_MultiThreadedMixer
-				bool b1 = BASSThreadedMixerLibraryWrapper.BASS_ThreadedMixer_AddSource( (IntPtr)this.hMixer, this.hBassStream, IntPtr.Zero );
-				mixingChannel.Add((IntPtr)this.hMixer);
-#else
 				bool b1 = BassMix.BASS_Mixer_StreamAddChannel(this.hMixer, this.hBassStream, bf);
 				if (!b1)
 				{
 					BASSError errcode = Bass.BASS_ErrorGetCode();
 					Trace.TraceWarning($"{Path.GetFileName(this.strファイル名)}: BASS_Mixer_StreamAddChannel()@tBASSサウンドをミキサーに追加する() failed. {errcode}");
 				}
-#endif
 				//bool b2 = BassMix.BASS_Mixer_ChannelPause( this.hBassStream );
 				t再生位置を先頭に戻す();	// StreamAddChannelの後で再生位置を戻さないとダメ。逆だと再生位置が変わらない。
 //Trace.TraceInformation( "Add Mixer: " + Path.GetFileName( this.strファイル名 ) + " (" + hBassStream + ")" + " MixedStreams=" + CSound管理.nMixing );
