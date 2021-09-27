@@ -760,7 +760,8 @@ namespace DTXMania
 					initIdx = 0;
 				}
 				skins = new COptionStringList(skinNames[initIdx]);
-				skins.Initialize("Skin", Properties.Resources.strCfgSysSkin, skinNames);
+				//skins.Initialize("Skin", Properties.Resources.strCfgSysSkin, skinNames);
+				skins.Initialize("strCfgSysSkin", skinNames);
 
 				skins.OnEnterDelegate = () =>
 				{
