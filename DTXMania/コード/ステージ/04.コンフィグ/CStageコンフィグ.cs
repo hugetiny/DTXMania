@@ -286,7 +286,7 @@ namespace DTXMania
 					Rectangle rectangle;
 					this.txMenuカーソル.n透明度 = this.bメニューにフォーカス中 ? 0xff : 0x80;
 					int x = (int)(0x37 * Scale.X);
-					int y = (int)((0x61 + (this.n現在のメニュー番号 * 0x19)) * Scale.Y);
+					int y = (int)((0x60 + (this.n現在のメニュー番号 * 0x19)) * Scale.Y);
 					int num3 = (int)(170 * Scale.X);
 					this.txMenuカーソル.t2D描画(CDTXMania.Instance.Device, x, y, new Rectangle(0, 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y)));
 					this.txMenuカーソル.t2D描画(CDTXMania.Instance.Device, (x + num3) - 0x10 * Scale.X, y, new Rectangle((int)(0x10 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y)));
@@ -305,7 +305,7 @@ namespace DTXMania
 				#endregion
 
 				#region [ メニュー ]
-				int menuY = (int)(100 * Scale.Y) - 20;
+				int menuY = (int)(100 * Scale.Y) - 12;
 				int stepY = (int)(25 * Scale.Y);
 				for (int i = 0; i < txMenuItemLeft.GetLength(0); i++)
 				{

@@ -1095,7 +1095,7 @@ namespace DTXMania
 					if (listMenu[nItem].txMenuItemRight != null)
 					{
 						// 自前のキャッシュに含まれているようなら、再レンダリングせずキャッシュを使用
-						listMenu[nItem].txMenuItemRight.t2D描画(CDTXMania.Instance.Device, (x + 0x12) * Scale.X, (y + 12) * Scale.Y - 20);
+						listMenu[nItem].txMenuItemRight.t2D描画(CDTXMania.Instance.Device, (x + 0x12) * Scale.X, (y + 12) * Scale.Y - 10);
 					}
 					else
 					{
@@ -1151,11 +1151,11 @@ namespace DTXMania
 
 					if (bColored)
 					{
-						listMenu[nItem].txParamColored.t2D描画(CDTXMania.Instance.Device, (x + 210) * Scale.X, (y + 12) * Scale.Y - 20);
+						listMenu[nItem].txParamColored.t2D描画(CDTXMania.Instance.Device, (x + 210) * Scale.X, (y + 12) * Scale.Y - 10);
 					}
 					else
 					{
-						listMenu[nItem].txParam.t2D描画(CDTXMania.Instance.Device, (x + 210) * Scale.X, (y + 12) * Scale.Y - 20);
+						listMenu[nItem].txParam.t2D描画(CDTXMania.Instance.Device, (x + 210) * Scale.X, (y + 12) * Scale.Y - 10);
 					}
 					nItem = this.t次の項目(nItem);
 				}

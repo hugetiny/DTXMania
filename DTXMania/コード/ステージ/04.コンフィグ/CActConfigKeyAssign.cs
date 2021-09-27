@@ -186,19 +186,18 @@ namespace DTXMania
 
 				if (this.txカーソル != null)
 				{
-					int num = 20;
-					int num2 = 0x144;
-					int num3 = 0x3e + (num * (ptr + 1));
+					int stepX = 0x144;
+					int stepY = 0x3e + (20 * (ptr + 1));
 					this.txカーソル.vc拡大縮小倍率 = new Vector3(1f, 0.75f, 1f);
-					this.txカーソル.t2D描画(CDTXMania.Instance.Device, num2 * Scale.X, num3 * Scale.Y - 6, new Rectangle(0, 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y)));
-					num2 += 0x10;
+					this.txカーソル.t2D描画(CDTXMania.Instance.Device, stepX * Scale.X, stepY * Scale.Y - 14, new Rectangle(0, 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y)));
+					stepX += 0x10;
 					Rectangle rectangle = new Rectangle((int)(8 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y));
 					for (int j = 0; j < 14; j++)
 					{
-						this.txカーソル.t2D描画(CDTXMania.Instance.Device, num2 * Scale.X, num3 * Scale.Y - 6, rectangle);
-						num2 += 0x10;
+						this.txカーソル.t2D描画(CDTXMania.Instance.Device, stepX * Scale.X, stepY * Scale.Y - 14, rectangle);
+						stepX += 0x10;
 					}
-					this.txカーソル.t2D描画(CDTXMania.Instance.Device, num2 * Scale.X, num3 * Scale.Y - 6, new Rectangle((int)(0x10 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y)));
+					this.txカーソル.t2D描画(CDTXMania.Instance.Device, stepX * Scale.X, stepY * Scale.Y - 14, new Rectangle((int)(0x10 * Scale.X), 0, (int)(0x10 * Scale.X), (int)(0x20 * Scale.Y)));
 				}
 
 				int num5 = 20;
