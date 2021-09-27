@@ -887,7 +887,7 @@ namespace DTXMania
 			bViewerGuitarActive.Initialize("", "");
 			bIsAllowedDoubleClickFullscreen.Initialize("", "");
 			bIsEnabledSystemMenu.Initialize("", "");
-			bDynamicBassMixerManagement.Initialize("", "");
+			bDynamicBassMixerManagement.Initialize("strCfgSysDynamicMixerManagement");
 			bDebugInfo.Initialize( "strCfgSysDebugInfo" );
 
 			bShowSongPath.Initialize( "strCfgShowSongPath" );

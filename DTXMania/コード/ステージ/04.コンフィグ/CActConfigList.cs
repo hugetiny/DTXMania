@@ -501,6 +501,7 @@ namespace DTXMania
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bEventDrivenWASAPI );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.strASIODevice );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bUseOSTimer );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bDynamicBassMixerManagement );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nMasterVolume );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nPolyphonicSounds );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.eClickType );
