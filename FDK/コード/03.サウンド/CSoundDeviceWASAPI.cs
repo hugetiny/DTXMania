@@ -776,7 +776,7 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 
 			if (hMixer != 0)
 			{
-				BassMix.BASS_Mixer_ChannelPause(this.hMixer_Record);
+				BassMix.BASS_Mixer_ChannelPause(this.hMixer);
 				Bass.BASS_StreamFree(this.hMixer);
 			}
 			if (this.hMixer_Chips != null)
