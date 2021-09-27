@@ -175,9 +175,9 @@ namespace DTXMania
 				{
 					if (bPlayFromBeginning)     // DTXCで途中から再生した後、最初から再生すると、動画が最初から再生されず最初の途中再生の続きから再生されてしまう問題の修正
 					{
-						this.rAVI.avi.Seek(0);
+						this.rAVI?.avi?.Seek(0);
 					}
-					this.rAVI.avi.Run();
+					this.rAVI?.avi?.Run();
 				});
 			}
 		}
