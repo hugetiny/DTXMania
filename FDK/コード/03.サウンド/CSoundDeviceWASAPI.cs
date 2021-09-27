@@ -576,10 +576,6 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 					if (!Bass.BASS_ChannelSetAttribute(this.hMixer_Chips[i], (BASSAttribute)BASS_ATTRIB_MIXER_THREADS, nCPUCores))
 					{
 						BASSError errcode = Bass.BASS_ErrorGetCode();
-						//BassWasapi.BASS_WASAPI_Free();
-						//Bass.BASS_Free();
-						//this.bIsBASSFree = true;
-						//throw new Exception(string.Format( $"Failed to set the number of mixing threads: mixer {i}: {errcode}"));
 						Trace.TraceWarning($"Failed to set the number of mixing threads: mixer {i}: {errcode}");
 					}
 				}
@@ -587,10 +583,6 @@ Trace.TraceInformation("WASAPI Device #{0}: {1}: IsDefault={2}, defPeriod={3}s, 
 					if (!Bass.BASS_ChannelSetAttribute(this.hMixer_DeviceOut, (BASSAttribute)BASS_ATTRIB_MIXER_THREADS, nCPUCores))
 					{
 						BASSError errcode = Bass.BASS_ErrorGetCode();
-						//BassWasapi.BASS_WASAPI_Free();
-						//Bass.BASS_Free();
-						//this.bIsBASSFree = true;
-						//throw new Exception(string.Format($"Failed to set the number of mixing threads: mixer_DeviceOut: {errcode}"));
 						Trace.TraceWarning($"Failed to set the number of mixing threads: mixer_DeviceOut: {errcode}");
 					}
 

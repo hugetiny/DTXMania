@@ -830,7 +830,7 @@ namespace DTXMania
 		public void DefaultDeserializer(StreamingContext sc)
 		{
 			// ラベル・説明文・上下限値
-			CResources cr = CDTXMania.Instance.Resources;
+			//CResources cr = CDTXMania.Instance.Resources;
 			bFullScreen.Initialize( "strCfgSysFullScreen" );
 			bVSyncWait.Initialize( "strCfgSysVSync" );
 			bStageFailed.Initialize( "strCfgSysStageFailed");
