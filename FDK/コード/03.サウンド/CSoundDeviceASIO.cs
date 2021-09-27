@@ -378,10 +378,11 @@ namespace FDK
 				if (!Bass.BASS_ChannelSetAttribute(this.hMixer_DeviceOut, (BASSAttribute)BASS_ATTRIB_MIXER_THREADS, nCPUCores))
 				{
 					BASSError errcode = Bass.BASS_ErrorGetCode();
-					BassAsio.BASS_ASIO_Free();
-					Bass.BASS_Free();
-					this.bIsBASSFree = true;
-					throw new Exception(string.Format($"Failed to set the number of mixing threads: mixer_DeviceOut: {errcode}"));
+					//BassAsio.BASS_ASIO_Free();
+					//Bass.BASS_Free();
+					//this.bIsBASSFree = true;
+					//throw new Exception(string.Format($"Failed to set the number of mixing threads: mixer_DeviceOut: {errcode}"));
+					Trace.TraceWarning($"Failed to set the number of mixing threads: mixer_DeviceOut: {errcode}");
 				};
 			}
 			#endregion
