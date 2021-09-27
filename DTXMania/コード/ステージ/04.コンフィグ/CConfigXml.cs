@@ -415,8 +415,13 @@ namespace DTXMania
 		/// 起動時にEnumerate Songsをする/しない
 		/// </summary>
 		[DataMember(Order = 119)]
-		public COptionBool bEnumerateSongsInBoot;		// #40772 2020.10.12 add yyagi
+		public COptionBool bEnumerateSongsInBoot;       // #40772 2020.10.12 add yyagi
 
+		/// <summary>
+		/// Guitar/BassのnPolyphonicSounds
+		/// </summary>
+		[DataMember(Order = 119)]
+		public COptionInteger nPolyphonicSoundsGB;		// #37271 2021.9.27 add yyagi
 
 		public int GetLaneX(ELane e)
 		{
@@ -635,7 +640,8 @@ namespace DTXMania
 			nChipFadeoutTimeMs = new COptionInteger(2000);
 			rcViewerWindow = new Coordinates.CRect(100, 100, 640, 360);
 			nMasterVolume = new COptionInteger(100);
-			nPolyphonicSounds = new COptionInteger(2);					// #38474 2018.8.3 yyagi 4 -> 2, to reduce sound mixing load 
+			nPolyphonicSounds   = new COptionInteger(4);                  // #38474 2018.8.3 yyagi 4 -> 2, to reduce sound mixing load 
+			nPolyphonicSoundsGB = new COptionInteger(2);
 
 			eClickType = new COptionEnum<EClickType>(EClickType.Off);
 			nClickHighVolume = new COptionInteger(100);
@@ -954,6 +960,7 @@ namespace DTXMania
 
 			nMasterVolume.Initialize( "strCfgSysMasterVolume", 0, 201);
 			nPolyphonicSounds.Initialize( "strCfgSysPolyphonicSounds", 1, 11 );
+			nPolyphonicSoundsGB.Initialize("strCfgSysPolyphonicSoundsGB", 1, 11);
 
 			// dgb
 			for (EPart i = EPart.Drums; i <= EPart.Unknown; i++)

@@ -504,6 +504,7 @@ namespace DTXMania
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.bDynamicBassMixerManagement );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nMasterVolume );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nPolyphonicSounds );
+				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nPolyphonicSoundsGB );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.eClickType );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nClickHighVolume );
 				list項目リスト.Add( CDTXMania.Instance.ConfigIni.nClickLowVolume );

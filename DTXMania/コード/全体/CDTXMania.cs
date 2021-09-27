@@ -433,6 +433,7 @@ namespace DTXMania
 
 					//多重再生数=4
 					CDTXMania.instance.ConfigIni.nPolyphonicSounds.Value = 4;
+					CDTXMania.instance.ConfigIni.nPolyphonicSoundsGB.Value = 2;
 
 					//再生速度x1
 					CDTXMania.instance.ConfigIni.nPlaySpeed.Value = 20;

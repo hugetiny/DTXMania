@@ -216,6 +216,7 @@ namespace DTXMania
 			#endregion
 			this.nBGMAdjust = 0;
 			this.nPolyphonicSounds = CDTXMania.Instance.ConfigIni.nPolyphonicSounds;
+			this.nPolyphonicSoundsGB = CDTXMania.Instance.ConfigIni.nPolyphonicSoundsGB;
 			this.dbDTXVPlaySpeed = 1.0f;
 			this.bUse556x710BGAAVI = false;
 			this.n使用レーン数 = new STDGBSValue<EUseLanes>();
@@ -505,7 +506,7 @@ namespace DTXMania
 		{
 			if (wc.rSound[0] != null && wc.rSound[0].n総演奏時間ms >= 5000)
 			{
-				for (int i = 0; i < nPolyphonicSounds; i++)
+				for (int i = 0; i < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); i++)
 				{
 					if ((wc.rSound[i] != null) && (wc.rSound[i].b再生中))
 					{
@@ -537,7 +538,7 @@ namespace DTXMania
 			{
 				if (wc.rSound[0] != null && wc.rSound[0].n総演奏時間ms >= 5000)
 				{
-					for (int i = 0; i < nPolyphonicSounds; i++)
+					for (int i = 0; i < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); i++)
 					{
 						if ((wc.rSound[i] != null) && (wc.rSound[i].b再生中))
 						{
@@ -560,7 +561,7 @@ namespace DTXMania
             {
                 if (wc.rSound[0] != null)
                 {
-                    for (int i = 0; i < nPolyphonicSounds; i++)
+                    for (int i = 0; i < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); i++)
                     {
                         if ((wc.rSound[i] != null) && (wc.rSound[i].b再生中))
                         {
@@ -581,7 +582,7 @@ namespace DTXMania
 			if (this.listWAV.ContainsKey(nWaveの内部番号))
 			{
 				CWAV cwav = this.listWAV[nWaveの内部番号];
-				for (int i = 0; i < nPolyphonicSounds; i++)
+				for (int i = 0; i < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); i++)
 				{
 					if (cwav.rSound[i] != null && cwav.rSound[i].b再生中)
 					{
@@ -643,15 +644,15 @@ namespace DTXMania
 					}
 
 					#region [ 同時発音数を、チャンネルによって変える ]
-					int nPoly = nPolyphonicSounds;
-					if (!bIsDirectSound)  // DShowでの再生の場合はミキシング負荷が高くないため、
-					{                                   // チップのライフタイム管理を行わない
-						if (cwav.bIsBassSound) nPoly = (nPolyphonicSounds >= 2) ? 2 : 1;
-						else if (cwav.bIsGuitarSound) nPoly = (nPolyphonicSounds >= 2) ? 2 : 1;
+					int nPoly = Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB);
+					//if (!bIsDirectSound)  // DShowでの再生の場合はミキシング負荷が高くないため、
+					//{                                   // チップのライフタイム管理を行わない
+						if (cwav.bIsBassSound) nPoly = nPolyphonicSoundsGB;			//(nPolyphonicSounds >= 2) ? 2 : 1;
+						else if (cwav.bIsGuitarSound) nPoly = nPolyphonicSoundsGB;	//(nPolyphonicSounds >= 2) ? 2 : 1;
 						else if (cwav.bIsSESound) nPoly = 1;
 						else if (cwav.bIsBGMSound) nPoly = 1;
-					}
-					if (cwav.bIsBGMSound) nPoly = 1;
+					//}
+					//if (cwav.bIsBGMSound) nPoly = 1;
 					#endregion
 
 					// 残りはClone等で登録する
@@ -662,7 +663,7 @@ namespace DTXMania
 							cwav.rSound[i] = (CSound)cwav.rSound[0].Clone();    // #24007 2011.9.5 yyagi add: to accelerate loading chip sounds
 																				// CDTXMania.Instance.app.Sound管理.tサウンドを登録する( cwav.rSound[ j ] );
 						}
-						for (int i = nPoly; i < nPolyphonicSounds; i++)
+						for (int i = nPoly; i < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); i++)
 						{
 							cwav.rSound[i] = null;
 						}
@@ -696,7 +697,7 @@ namespace DTXMania
 				catch (Exception exception)
 				{
 					Trace.TraceError("サウンドの生成に失敗しました。({0})({1})({2})", exception.Message, cwav.strコメント文, str);
-					for (int j = 0; j < nPolyphonicSounds; j++)
+					for (int j = 0; j < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); j++)
 					{
 						cwav.rSound[j] = null;
 					}
@@ -752,7 +753,7 @@ namespace DTXMania
 				if (this.listWAV.ContainsKey(pChip.n整数値_内部番号))
 				{
 					CWAV wc = this.listWAV[pChip.n整数値_内部番号];
-					int index = wc.n現在再生中のサウンド番号 = (wc.n現在再生中のサウンド番号 + 1) % nPolyphonicSounds;
+					int index = wc.n現在再生中のサウンド番号 = (wc.n現在再生中のサウンド番号 + 1) % Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB);
 					if ((wc.rSound[0] != null) &&
 						(wc.rSound[0].bストリーム再生する || wc.rSound[index] == null))
 					{
@@ -789,7 +790,7 @@ namespace DTXMania
 			}
 			foreach (CWAV cwav in this.listWAV.Values)
 			{
-				for (int j = 0; j < nPolyphonicSounds; j++)
+				for (int j = 0; j < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); j++)
 				{
 					if ((cwav.rSound[j] != null) && cwav.rSound[j].b再生中)
 					{
@@ -802,7 +803,7 @@ namespace DTXMania
 		{
 			foreach (CWAV cwav in this.listWAV.Values)
 			{
-				for (int i = 0; i < nPolyphonicSounds; i++)
+				for (int i = 0; i < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); i++)
 				{
 					if ((cwav.rSound[i] != null) && cwav.rSound[i].b再生中)
 					{
@@ -820,7 +821,7 @@ namespace DTXMania
 		{
 			foreach (CWAV cwav in this.listWAV.Values)
 			{
-				for (int i = 0; i < nPolyphonicSounds; i++)
+				for (int i = 0; i < Math.Max(nPolyphonicSounds, nPolyphonicSoundsGB); i++)
 				{
 					if ((cwav.rSound[i] != null) && cwav.rSound[i].b一時停止中)
 					{
@@ -1265,6 +1266,7 @@ namespace DTXMania
 		private int n現在の乱数;
 
 		private int nPolyphonicSounds = 4;              // #28228 2012.5.1 yyagi
+		private int nPolyphonicSoundsGB = 4;
 
 		private int n内部番号BPM1to;
 		private int n内部番号WAV1to;

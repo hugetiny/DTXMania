@@ -434,7 +434,7 @@ namespace DTXMania
 							if (CDTXMania.Instance.DTX.listWAV.ContainsKey(pChip.n整数値_内部番号))
 							{
 								CDTX.CWAV wc = CDTXMania.Instance.DTX.listWAV[pChip.n整数値_内部番号];
-								for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPolyphonicSounds; i++)
+								for (int i = 0; i < Math.Max(CDTXMania.Instance.ConfigIni.nPolyphonicSounds, CDTXMania.Instance.ConfigIni.nPolyphonicSoundsGB); i++)
 								{
 									if (wc.rSound[i] != null)
 									{
@@ -3257,7 +3257,7 @@ namespace DTXMania
 						CDTX.CWAV wc = CDTXMania.Instance.DTX.listWAV[pChip.n整数値_内部番号];
 						//Debug.Write( "[AddMixer] BAR=" + pChip.n発声位置 / 384 + ", wav=" + Path.GetFileName( wc.strファイル名 ) + ", time=" + pChip.n発声時刻ms );
 
-						for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPolyphonicSounds; i++)
+						for (int i = 0; i < Math.Max(CDTXMania.Instance.ConfigIni.nPolyphonicSounds, CDTXMania.Instance.ConfigIni.nPolyphonicSoundsGB); i++)
 						{
 							if (wc.rSound[i] != null)
 							{
@@ -3284,7 +3284,7 @@ namespace DTXMania
 					{
 						CDTX.CWAV wc = CDTXMania.Instance.DTX.listWAV[pChip.n整数値_内部番号];
 						//Debug.Write( "[DelMixer] BAR=" + pChip.n発声位置 / 384 +  ", wav=" + Path.GetFileName( wc.strファイル名 ) + ", time=" + pChip.n発声時刻ms );
-						for (int i = 0; i < CDTXMania.Instance.ConfigIni.nPolyphonicSounds; i++)
+						for (int i = 0; i < Math.Max(CDTXMania.Instance.ConfigIni.nPolyphonicSounds, CDTXMania.Instance.ConfigIni.nPolyphonicSoundsGB); i++)
 						{
 							if (wc.rSound[i] != null)
 							{
