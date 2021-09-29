@@ -550,19 +550,19 @@ namespace DTXMania
 				switch (this.n現在のメニュー番号)
 				{
 					case 0:
-						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.System);
+						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.System, false );
 						break;
 
 					case 1:
-						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Drums);
+						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Drums, false );
 						break;
 
 					case 2:
-						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Guitar);
+						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Guitar, false );
 						break;
 
 					case 3:
-						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Bass);
+						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Bass, false );
 						break;
 
 					case 4:
@@ -595,19 +595,19 @@ namespace DTXMania
 				switch (this.n現在のメニュー番号)
 				{
 					case 0:
-						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.System);
+						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.System, false );
 						break;
 
 					case 1:
-						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Drums);
+						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Drums, false );
 						break;
 
 					case 2:
-						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Guitar);
+						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Guitar, false );
 						break;
 
 					case 3:
-						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Bass);
+						this.actList.t項目リストの設定(CActConfigList.Eメニュー種別.Bass, false );
 						break;
 
 					case 4:

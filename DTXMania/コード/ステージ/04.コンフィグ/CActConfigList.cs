@@ -65,6 +65,8 @@ namespace DTXMania
 		}
 		stMenuItemRight[] listMenu;
 
+		Stack<string> flowHistory;
+
 		/// <summary>
 		/// #32059 2013.9.17 yyagi
 		/// </summary>
@@ -124,47 +126,47 @@ namespace DTXMania
 
 			if (this.eメニュー種別 == Eメニュー種別.KeyAssignSystem)
 			{
-				t項目リストの設定(Eメニュー種別.System);
+				t項目リストの設定(Eメニュー種別.System, true);
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.KeyAssignDrums)
 			{
-				t項目リストの設定(Eメニュー種別.Drums);
+				t項目リストの設定(Eメニュー種別.Drums, true );
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.KeyAssignGuitar)
 			{
-				t項目リストの設定(Eメニュー種別.Guitar);
+				t項目リストの設定(Eメニュー種別.Guitar, true );
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.KeyAssignBass)
 			{
-				t項目リストの設定(Eメニュー種別.Bass);
+				t項目リストの設定(Eメニュー種別.Bass, true );
 			}
 			if (this.eメニュー種別 == Eメニュー種別.DisplaySystem)
 			{
-				t項目リストの設定(Eメニュー種別.System);
+				t項目リストの設定(Eメニュー種別.System, true );
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.DisplayDrums)
 			{
-				t項目リストの設定(Eメニュー種別.Drums);
+				t項目リストの設定(Eメニュー種別.Drums, true );
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.DisplayGuitar)
 			{
-				t項目リストの設定(Eメニュー種別.Guitar);
+				t項目リストの設定(Eメニュー種別.Guitar, true );
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.DisplayBass)
 			{
-				t項目リストの設定(Eメニュー種別.Bass);
+				t項目リストの設定(Eメニュー種別.Bass, true );
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.EDrumsSettings)
 			{
-				t項目リストの設定(Eメニュー種別.Drums);
+				t項目リストの設定(Eメニュー種別.Drums, true );
 			}
 			else if (this.eメニュー種別 == Eメニュー種別.HitRangeSettings)
 			{
-				t項目リストの設定(Eメニュー種別.System);
+				t項目リストの設定(Eメニュー種別.System, true );
 			}
 			else if ( this.eメニュー種別 == Eメニュー種別.SoundSettings)
 			{
-				t項目リストの設定(Eメニュー種別.System);
+				t項目リストの設定(Eメニュー種別.System, true );
 			}
 		}
 
@@ -233,8 +235,25 @@ namespace DTXMania
 			this.eメニュー種別 = Eメニュー種別.Unknown;
 		}
 
-		public void t項目リストの設定(Eメニュー種別 eMenu)
+		/// <summary>
+		/// Set item lists in the right-side screen
+		/// </summary>
+		/// <param name="eMenu">E-menu-type</param>
+		/// <param name="bExiting">whether the action is "entering menu(false)" or "exiting menu(true)"</param>
+		public void t項目リストの設定(Eメニュー種別 eMenu, bool bExiting)
 		{
+
+			#region [ Push the last menu strings ]
+			if ( !bExiting && this.list項目リスト?.Count > 0 )
+			{
+				string lastItemName = this.list項目リスト[ n現在の選択項目 ].label;
+				if ( lastItemName != null )
+				{
+					flowHistory.Push( lastItemName );
+				}
+			}
+			#endregion
+
 			this.list項目リスト.Clear();
 
 			Func<EPad, string, string, COptionString> PadNotifier = (pad, lbl, expl) =>
@@ -599,7 +618,20 @@ namespace DTXMania
 				list項目リスト.Add(KeyAssignMenu.Bass);
 			}
 			OnListMenuの初期化();
-			n現在の選択項目 = 0;
+
+
+			if ( bExiting )
+			{
+				#region [ Pull the upper item name from a stack, search it from the upper item lists, then set my position to it ]
+				string lastItemName = ( flowHistory.Count <= 0 ) ? null : flowHistory.Pop();
+				n現在の選択項目 = list項目リスト.FindIndex( s => s.label == lastItemName );
+				if ( n現在の選択項目 < 0 ) n現在の選択項目 = 0;
+				#endregion
+			}
+			else
+			{
+				n現在の選択項目 = 0;
+			}
 			eメニュー種別 = eMenu;
 		}
 
@@ -645,6 +677,7 @@ namespace DTXMania
 			if (b活性化してない)
 			{
 				this.list項目リスト = new List<COptionBase>();
+				this.flowHistory = new Stack<string>();
 				this.eメニュー種別 = Eメニュー種別.Unknown;
 
 				CResources cr = CDTXMania.Instance.Resources;
@@ -677,64 +710,64 @@ namespace DTXMania
 
 				DisplayMenu.Drums.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.DisplayDrums);
+					t項目リストの設定(Eメニュー種別.DisplayDrums, false);
 				};
 				DisplayMenu.Guitar.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.DisplayGuitar);
+					t項目リストの設定( Eメニュー種別.DisplayGuitar, false);
 				};
 				DisplayMenu.Bass.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.DisplayBass);
+					t項目リストの設定( Eメニュー種別.DisplayBass, false );
 				};
 				DisplayMenu.System.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.DisplaySystem);
+					t項目リストの設定( Eメニュー種別.DisplaySystem, false );
 				};
 				KeyAssignMenu.Drums.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.KeyAssignDrums);
+					t項目リストの設定( Eメニュー種別.KeyAssignDrums, false );
 				};
 				KeyAssignMenu.Guitar.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.KeyAssignGuitar);
+					t項目リストの設定(Eメニュー種別.KeyAssignGuitar, false );
 				};
 				KeyAssignMenu.Bass.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.KeyAssignBass);
+					t項目リストの設定(Eメニュー種別.KeyAssignBass, false );
 				};
 				KeyAssignMenu.System.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.KeyAssignSystem);
+					t項目リストの設定(Eメニュー種別.KeyAssignSystem, false );
 				};
 
 				ReturnToMenu.Drums.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.Drums);
+					t項目リストの設定(Eメニュー種別.Drums, true );
 				};
 				ReturnToMenu.Guitar.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.Guitar);
+					t項目リストの設定(Eメニュー種別.Guitar, true );
 				};
 				ReturnToMenu.Bass.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.Bass);
+					t項目リストの設定(Eメニュー種別.Bass, true );
 				};
 				ReturnToMenu.System.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.System);
+					t項目リストの設定(Eメニュー種別.System, true );
 				};
 				EDrumsMenu.Drums.OnEnterDelegate = () =>
 				{
-					t項目リストの設定(Eメニュー種別.EDrumsSettings);
+					t項目リストの設定(Eメニュー種別.EDrumsSettings, false );
 				};
 				HitRangeMenu.OnEnterDelegate = () =>
 				{
-					t項目リストの設定( Eメニュー種別.HitRangeSettings );
+					t項目リストの設定( Eメニュー種別.HitRangeSettings, false );
 				};
 				SoundMenu.OnEnterDelegate = () =>
 				{
-					t項目リストの設定( Eメニュー種別.SoundSettings );
+					t項目リストの設定( Eメニュー種別.SoundSettings, false );
 				};
 
 				#region [ スキン選択肢と、現在選択中のスキン(index)の準備 #28195 2012.5.2 yyagi ]
@@ -782,12 +815,12 @@ namespace DTXMania
 				this.InitialForceHighPower = CDTXMania.Instance.ConfigIni.bForceHighPowerPlan;
 
 				// #27795 2012.3.11 yyagi; System設定の中でDrumsの設定を参照しているため、
-				this.t項目リストの設定(Eメニュー種別.Bass);
+				this.t項目リストの設定(Eメニュー種別.Bass, false );
 				// 活性化の時点でDrumsの設定も入れ込んでおかないと、System設定中に例外発生することがある。
-				this.t項目リストの設定(Eメニュー種別.Guitar);
-				this.t項目リストの設定(Eメニュー種別.Drums);
+				this.t項目リストの設定(Eメニュー種別.Guitar, false );
+				this.t項目リストの設定(Eメニュー種別.Drums, false );
 				// 順番として、最後にSystemを持ってくること。設定一覧の初期位置がSystemのため。
-				this.t項目リストの設定(Eメニュー種別.System);
+				this.t項目リストの設定(Eメニュー種別.System, false );
 
 				base.On活性化();
 			}
@@ -802,6 +835,8 @@ namespace DTXMania
 				this.ct三角矢印アニメ = null;
 
 				OnListMenuの解放();
+				flowHistory.Clear();
+				flowHistory = null;
 				prvFont.Dispose();
 
 				base.On非活性化();
