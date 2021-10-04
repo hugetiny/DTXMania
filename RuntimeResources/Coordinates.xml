@@ -22,6 +22,7 @@
       <Y>15</Y>
     </d2p1:CY>
     <d2p1:Capture i:nil="true" />
+    <d2p1:Down i:nil="true" />
     <d2p1:FT>
       <Y>30</Y>
     </d2p1:FT>
@@ -54,6 +55,7 @@
     <d2p1:SD>
       <Y>22</Y>
     </d2p1:SD>
+    <d2p1:Up i:nil="true" />
   </DrPadOffset>
   <Gauge>
     <X>0</X>
@@ -133,6 +135,7 @@
       <W>85</W>
     </d2p1:CY>
     <d2p1:Capture i:nil="true" />
+    <d2p1:Down i:nil="true" />
     <d2p1:FT>
       <X>387</X>
       <Y>16</Y>
@@ -189,6 +192,7 @@
       <H>18</H>
       <W>72</W>
     </d2p1:SD>
+    <d2p1:Up i:nil="true" />
   </ImgDrChip>
   <ImgDrChipCYDeco>
     <X>459</X>
@@ -230,6 +234,7 @@
       <W>170</W>
     </d2p1:CY>
     <d2p1:Capture i:nil="true" />
+    <d2p1:Down i:nil="true" />
     <d2p1:FT>
       <X>0</X>
       <Y>260</Y>
@@ -281,6 +286,7 @@
       <H>130</H>
       <W>170</W>
     </d2p1:SD>
+    <d2p1:Up i:nil="true" />
   </ImgDrPad>
   <ImgGaugeLight>
     <X>0</X>
