@@ -3502,7 +3502,7 @@ namespace DTXMania
 		/// </summary>
 		protected void tDTXV用の設定()
 		{
-			for (EPad i = EPad.Min; i < EPad.Max; ++i)
+			for (EPad i = EPad.Min; i < EPad.BassPadMax; ++i)
 			{
 				CDTXMania.Instance.ConfigIni.bAutoPlay[i].Value = true;
 			}
