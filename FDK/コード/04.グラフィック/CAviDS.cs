@@ -143,11 +143,8 @@ namespace FDK
 
 		public void Seek(int timeInMs)
 		{
-			int hr = seeker.SetPositions( DsLong.FromInt64((long)(timeInMs * 10000)), AMSeekingSeekingFlags.AbsolutePositioning, null, AMSeekingSeekingFlags.NoPositioning);
-			if ( (uint)hr != 0x80070057 )	// E_INVALIDARG. It tend to occur in seeking to the tail-part in mp4 file. Even if we ignore the error, the seek seems success,
-			{
-				DsError.ThrowExceptionForHR(hr);
-			}
+			int hr = seeker.SetPositions( new DsLong( (long)timeInMs * 10000 ), AMSeekingSeekingFlags.AbsolutePositioning, null, AMSeekingSeekingFlags.NoPositioning );
+			DsError.ThrowExceptionForHR(hr);
 			hr = control.GetState(timeOutMs, out state); // state is Running
 			DsError.ThrowExceptionForHR(hr);
 		}
