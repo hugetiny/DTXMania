@@ -96,6 +96,8 @@ namespace FDK
 				{
 					base.MakeTexture(device, _image, format, b黒を透過する, pool, _label);
 				}
+				_orgWidth = base.szテクスチャサイズ.Width;
+				_orgHeight = base.szテクスチャサイズ.Height;
 				return;
 			}
 
@@ -113,6 +115,9 @@ namespace FDK
 			{
 				orgWidth = _image.Width;	orgHeight = _image.Height;
 			}
+			_orgWidth = orgWidth;
+			_orgHeight = orgHeight;
+
 			int w = orgWidth, h = orgHeight, foldtimes;
 
 			int nサポート可能な最大幅 = device.Capabilities.MaxTextureWidth;
@@ -217,8 +222,6 @@ namespace FDK
 			bmpNew = null;
 			#endregion
 
-			_orgWidth = orgWidth;
-			_orgHeight = orgHeight;
 			_foldtimes = foldtimes;
 			this.sz画像サイズ = new Size( orgWidth, orgHeight );
 		}
@@ -250,7 +253,7 @@ namespace FDK
 //Debug.WriteLine( "powちょうどではないので、溢れあり。まずは1回折りたたむ。" );
 				// 試しに、widthをpowに切り詰め、1回折り返してみる。
 				// width>heightを維持しているなら、テクスチャサイズはより最適な状態になったということになる。
-				if ( pow <= orgHeight * 2 )		// 新width > 新heightを維持できなくなったなら
+				if ( pow < orgHeight * 2 )		// 新width >= 新heightを維持できなくなったなら
 				{								// 最適化不可とみなし、baseの処理に委ねる
 					return false;
 				}

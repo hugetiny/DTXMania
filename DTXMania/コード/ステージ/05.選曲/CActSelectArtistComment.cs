@@ -48,7 +48,8 @@ namespace DTXMania
 						//graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
 						//graphics.DrawString(this.strArtist, this.ft描画用フォント, Brushes.White, (float)0f, (float)0f);
 						//graphics.Dispose();
-						this.txArtist = new CTextureAf(CDTXMania.Instance.Device, imageStrArtist, CDTXMania.Instance.TextureFormat);
+						this.txArtist = new CTextureAf(CDTXMania.Instance.Device, imageStrArtist, CDTXMania.Instance.TextureFormat, _label:"Artist");
+						txArtist.filename = this.strArtist;
 						//this.txArtist.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f);
 						imageStrArtist.Dispose();
 					}
@@ -111,6 +112,7 @@ namespace DTXMania
 					try
 					{
 						this.txComment = new CTextureAf(CDTXMania.Instance.Device, imageStrComment, CDTXMania.Instance.TextureFormat, _label:"Comment");
+						this.txComment.filename = this.strComment;
 						//this.txComment.vc拡大縮小倍率 = new Vector3(0.5f, 0.5f, 1f);
 					}
 					catch (CTextureCreateFailedException)
