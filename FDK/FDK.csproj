@@ -41,7 +41,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;TEST_CancelEnterCodeInAltEnter2 TEST_Direct3D9Ex_ TEST_MultiThreadedMixer_</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEST_CancelEnterCodeInAltEnter2 TEST_Direct3D9Ex_</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>0219</NoWarn>
     <DebugType>full</DebugType>
@@ -178,7 +178,6 @@
     <Compile Include="コード\02.入力\IInputDevice.cs" />
     <Compile Include="コード\02.入力\SlimDX.DirectInput.Key.cs" />
     <Compile Include="コード\02.入力\STInputEvent.cs" />
-    <Compile Include="コード\03.サウンド\BASSThreadedMixerWrapper.cs" />
     <Compile Include="コード\03.サウンド\Cogg.cs" />
     <Compile Include="コード\03.サウンド\Cmp3.cs" />
     <Compile Include="コード\03.サウンド\CSound.cs" />
