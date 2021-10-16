@@ -90,7 +90,7 @@ namespace FDK
 			string userprofile = System.Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
 			// もしユーザー名の情報が出力に存在する場合は、伏字にする
-			if (message.Contains(userprofile))
+			if (message != null && message.Contains(userprofile))
 			{
 				char delimiter = System.IO.Path.DirectorySeparatorChar;
 				string[] u = userprofile.Split(delimiter);
