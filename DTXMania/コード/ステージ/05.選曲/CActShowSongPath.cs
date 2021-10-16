@@ -26,33 +26,25 @@ namespace DTXMania
 			C曲リストノード c曲リストノード = CDTXMania.Instance.stage選曲.r現在選択中の曲;
 			if (cスコア != null)
 			{
-				Bitmap image = new Bitmap(1, 1);
 				#region [ songpathテクスチャ生成 ]
 				TextureFactory.tテクスチャの解放(ref this.txSongPath);
 				this.strSongPath = "dtx    : " + cスコア.ファイル情報.ファイルの絶対パス + Environment.NewLine +
 					"set.def: " + c曲リストノード.pathSetDefの絶対パス;
 				if ((this.strSongPath != null) && (this.strSongPath.Length > 0))
 				{
-					Graphics graphics = Graphics.FromImage(image);
-					graphics.PageUnit = GraphicsUnit.Pixel;
-					StringFormat sf = new StringFormat();
-					sf.FormatFlags = StringFormatFlags.LineLimit;
-					SizeF ef = graphics.MeasureString(this.strSongPath, this.ftSongPath描画用フォント, SampleFramework.GameWindowSize.Width, sf);
-					graphics.Dispose();
 					try
 					{
-						Bitmap bitmap2 = new Bitmap((int)Math.Ceiling((double)ef.Width), (int)Math.Ceiling((double)ef.Height));
-						graphics = Graphics.FromImage(bitmap2);
-						graphics.Clear(System.Drawing.Color.FromArgb(192, 0, 0, 0));
-						graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-						graphics.DrawString(this.strSongPath, this.ftSongPath描画用フォント, Brushes.White,
-							new System.Drawing.RectangleF(0, 0, ef.Width, ef.Height),
-							sf
-						);
-						sf.Dispose();
-						graphics.Dispose();
-						this.txSongPath = new CTexture(CDTXMania.Instance.Device, bitmap2, CDTXMania.Instance.TextureFormat);
-						bitmap2.Dispose();
+						using ( Bitmap bmp = this.pfSongPath描画用フォント.DrawPrivateFont( this.strSongPath, System.Drawing.Color.White ) )
+						using ( Bitmap bmp_back = new Bitmap( SampleFramework.GameWindowSize.Width, bmp.Height ) )
+						using ( Graphics graphics = Graphics.FromImage( bmp_back ) )
+						{
+							graphics.Clear( System.Drawing.Color.FromArgb( 192, 0, 0, 0 ) );
+
+							int w = Math.Min( SampleFramework.GameWindowSize.Width, bmp.Width );
+							graphics.DrawImage( bmp, 0, 0, w, bmp.Height );
+
+							this.txSongPath = new CTexture( CDTXMania.Instance.Device, bmp_back, CDTXMania.Instance.TextureFormat );
+						}
 					}
 					catch (CTextureCreateFailedException)
 					{
@@ -61,7 +53,6 @@ namespace DTXMania
 					}
 				}
 				#endregion
-				image.Dispose();
 			}
 		}
 
@@ -70,14 +61,6 @@ namespace DTXMania
 
 		public override void On活性化()
 		{
-			//string fontname = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicSongCommentFontFileName");
-			//string path = Path.Combine(@"Graphics\fonts", fontname);
-			//this.pfSongPath描画用フォント = new CPrivateFastFont( CSkin.Path(path), (float)(12f * Scale.Y * 72f / 96f) );
-			//// 72f/96f: 従来互換のために追加。DPI依存→非依存化に付随した変更。
-			//this.ftSongPath描画用フォント = this.pfSongPath描画用フォント.font;
-
-			this.ftSongPath描画用フォント = new Font("MS UI Gothic", (float)(12f * Scale.Y));
-
 			this.txSongPath = null;
 			this.strSongPath = "";
 
@@ -86,17 +69,26 @@ namespace DTXMania
 		public override void On非活性化()
 		{
 			TextureFactory.tテクスチャの解放(ref this.txSongPath);
-			if (this.pfSongPath描画用フォント != null)
-			{
-				this.pfSongPath描画用フォント.Dispose();
-				this.pfSongPath描画用フォント = null;
-			}
+			this.pfSongPath描画用フォント?.Dispose();
+			this.pfSongPath描画用フォント = null;
+
 			base.On非活性化();
 		}
 		public override void OnManagedリソースの作成()
 		{
 			if (!base.b活性化してない)
 			{
+				//string fontname = CDTXMania.Instance.Resources.Explanation("strCfgSelectMusicSongCommentFontFileName");
+				//string path = Path.Combine(@"Graphics\fonts", fontname);
+				//this.pfSongPath描画用フォント = new CPrivateFastFont( CSkin.Path(path), (float)(12f * Scale.Y * 72f / 96f) );
+				//// 72f/96f: 従来互換のために追加。DPI依存→非依存化に付随した変更。
+				//this.ftSongPath描画用フォント = this.pfSongPath描画用フォント.font;
+
+				//this.ftSongPath描画用フォント = new Font( "MS UI Gothic", (float)( 12f * Scale.Y ) );
+				string fontname = CDTXMania.Instance.Resources.Explanation( "strCfgConfigurationItemsFontFileName" );
+				string path = Path.Combine( @"Graphics\fonts", fontname );
+				this.pfSongPath描画用フォント = new CPrivateFastFont( CSkin.Path( path ), (int)( 12 * Scale.Y ) ); 
+				
 				this.t選択曲が変更された();
 				base.OnManagedリソースの作成();
 			}
@@ -128,7 +120,7 @@ namespace DTXMania
 
 		#region [ private ]
 		//-----------------
-		private Font ftSongPath描画用フォント;
+		//private Font ftSongPath描画用フォント;
 		private CPrivateFastFont pfSongPath描画用フォント;
 		private string strSongPath;
 		private CTexture txSongPath;

@@ -16,7 +16,7 @@ namespace DTXMania
 		COptionStringList QAuto;
 		STDGBSValue<int> QAutoIndex;	//QAuto.Indexの保持用
 		List<COptionBase> lci;
-		Font ft表示用フォント;
+		CPrivateFastFont ft表示用フォント;
 		CTexture txパネル本体;
 		CTexture tx文字列パネル;
 
@@ -373,17 +373,33 @@ namespace DTXMania
 
 				if (hh[1] == ' ')
 				{
-					graphics.DrawString(hh[0].ToString(), this.ft表示用フォント, Brushes.White, (float)(i/2) * 20 * Scale.X, (float)0f);
+					//graphics.DrawString(hh[0].ToString(), this.ft表示用フォント, Brushes.White, (float)(i/2) * 20 * Scale.X, (float)0f);
+					using ( Bitmap bmp = this.ft表示用フォント.DrawPrivateFont( hh[ 0 ].ToString(), System.Drawing.Color.White ) )
+					{
+						graphics.DrawImage( bmp, (float)( i / 2 ) * 20 * Scale.X, (float)0f, bmp.Width, bmp.Height );
+					}
 				}
 				else
 				{
-					graphics.ScaleTransform(0.5F, 0.5F);
-					graphics.DrawString(hh[0].ToString(), this.ft表示用フォント, Brushes.White, (float)i * 20 * Scale.X, (float)0f);
-					graphics.DrawString(hh[1].ToString(), this.ft表示用フォント, Brushes.White, (float)(i+0.7f) * 20 * Scale.X, (float)12f * Scale.Y);
+					graphics.ScaleTransform( 0.5F, 0.5F );
+					using ( Bitmap bmp = this.ft表示用フォント.DrawPrivateFont( hh[0].ToString(), System.Drawing.Color.White ) )
+					{
+						graphics.DrawImage( bmp, (float)( i ) * 20 * Scale.X, (float)0f, bmp.Width, bmp.Height );
+					}
+					using ( Bitmap bmp = this.ft表示用フォント.DrawPrivateFont( hh[1].ToString(), System.Drawing.Color.White ) )
+					{
+						graphics.DrawImage( bmp, (float)( i + 0.7f ) * 20 * Scale.X, (float)12f * Scale.Y, bmp.Width, bmp.Height );
+					}
+					//graphics.DrawString(hh[0].ToString(), this.ft表示用フォント, Brushes.White, (float)i * 20 * Scale.X, (float)0f);
+					//graphics.DrawString(hh[1].ToString(), this.ft表示用フォント, Brushes.White, (float)(i+0.7f) * 20 * Scale.X, (float)12f * Scale.Y);
 					graphics.ResetTransform();
 				}
 
-				graphics.DrawString(ss.ToString(), this.ft表示用フォント, Brushes.White, (float)(i/2) * 20 * Scale.X, (float)24f * Scale.Y);
+				//graphics.DrawString(ss.ToString(), this.ft表示用フォント, Brushes.White, (float)(i/2) * 20 * Scale.X, (float)24f * Scale.Y);
+				using ( Bitmap bmp = this.ft表示用フォント.DrawPrivateFont( ss.ToString(), System.Drawing.Color.White ) )
+				{
+					graphics.DrawImage( bmp, (float)( i / 2 ) * 20 * Scale.X, (float)24f * Scale.Y, bmp.Width, bmp.Height );
+				}
 			}
 			graphics.Dispose();
 
@@ -573,7 +589,6 @@ namespace DTXMania
 		{
 			if (base.b活性化してない)
 			{
-				this.ft表示用フォント = new Font("Arial", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel);
 				base.On活性化();
 				this.bGotoDetailConfig = false;
 			}
@@ -583,11 +598,6 @@ namespace DTXMania
 		{
 			if (base.b活性化してる)
 			{
-				if (this.ft表示用フォント != null)
-				{
-					this.ft表示用フォント.Dispose();
-					this.ft表示用フォント = null;
-				}
 				base.On非活性化();
 			}
 		}
@@ -596,13 +606,15 @@ namespace DTXMania
 		{
 			if (base.b活性化してる)
 			{
+				//this.ft表示用フォント = new Font("Arial", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel);
+				string fontname = CDTXMania.Instance.Resources.Explanation( "strCfgPopupFontFileName" );
+				string path = Path.Combine( @"Graphics\fonts", fontname );
+				this.ft表示用フォント = new CPrivateFastFont( CSkin.Path( path ), (int)( 20 * Scale.Y ) ); 
+				
 				string pathパネル本体 = CSkin.Path(@"Graphics\ScreenSelect popup auto settings.png");
 				if (File.Exists(pathパネル本体))
 				{
-					if (this.txパネル本体 != null)
-					{
-						this.txパネル本体.Dispose();
-					}
+					this.txパネル本体?.Dispose();
 					this.txパネル本体 = TextureFactory.tテクスチャの生成(pathパネル本体, true);
 				}
 				base.OnManagedリソースの作成();
@@ -615,6 +627,10 @@ namespace DTXMania
 			{
 				TextureFactory.tテクスチャの解放(ref this.txパネル本体);
 				TextureFactory.tテクスチャの解放(ref this.tx文字列パネル);
+
+				this.ft表示用フォント?.Dispose();
+				this.ft表示用フォント = null;
+
 				base.OnManagedリソースの解放();
 			}
 		}

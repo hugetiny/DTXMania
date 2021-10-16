@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using SharpDX;
 using FDK;
 
@@ -30,7 +31,11 @@ namespace DTXMania
 					{
 						if ((cスコア.譜面情報.演奏履歴[i] != null) && (cスコア.譜面情報.演奏履歴[i].Length > 0))
 						{
-							graphics.DrawString(cスコア.譜面情報.演奏履歴[i], this.ft表示用フォント, Brushes.Yellow, (float)0f, (float)(i * 24f * Scale.Y));
+							//graphics.DrawString(cスコア.譜面情報.演奏履歴[i], this.ft表示用フォント, Brushes.Yellow, (float)0f, (float)(i * 24f * Scale.Y));
+							using ( Bitmap bmp = this.prvFont.DrawPrivateFont( cスコア.譜面情報.演奏履歴[ i ], System.Drawing.Color.Yellow ) )
+							{
+								graphics.DrawImage( bmp, (float)0f, (float)( i * 24f * Scale.Y ), bmp.Width, bmp.Height );
+							}
 						}
 					}
 					graphics.Dispose();
@@ -57,16 +62,10 @@ namespace DTXMania
 		{
 			this.n本体X = (int)(0x195 * Scale.X);
 			this.n本体Y = (int)(0x174 * Scale.Y);
-			this.ft表示用フォント = new Font("Arial", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel);
 			base.On活性化();
 		}
 		public override void On非活性化()
 		{
-			if (this.ft表示用フォント != null)
-			{
-				this.ft表示用フォント.Dispose();
-				this.ft表示用フォント = null;
-			}
 			this.ct登場アニメ用 = null;
 			base.On非活性化();
 		}
@@ -74,6 +73,11 @@ namespace DTXMania
 		{
 			if (!base.b活性化してない)
 			{
+				//this.ft表示用フォント = new Font( "Arial", 26f * Scale.Y, FontStyle.Bold, GraphicsUnit.Pixel );
+				string fontname = CDTXMania.Instance.Resources.Explanation( "strCfgSelectMusicInformationFontFileName" );
+				string path = Path.Combine( @"Graphics\fonts", fontname );
+				this.prvFont = new CPrivateFastFont( CSkin.Path( path ), (int)( 13 * Scale.Y ) );
+
 				this.txパネル本体 = TextureFactory.tテクスチャの生成(CSkin.Path(@"Graphics\ScreenSelect play history panel.png"), true);
 				this.t選択曲が変更された();
 				base.OnManagedリソースの作成();
@@ -85,6 +89,10 @@ namespace DTXMania
 			{
 				TextureFactory.tテクスチャの解放(ref this.txパネル本体);
 				TextureFactory.tテクスチャの解放(ref this.tx文字列パネル);
+
+				this.prvFont?.Dispose();
+				this.prvFont = null;
+				
 				base.OnManagedリソースの解放();
 			}
 		}
@@ -128,7 +136,7 @@ namespace DTXMania
 		#region [ private ]
 		//-----------------
 		private CCounter ct登場アニメ用;
-		private Font ft表示用フォント;
+		private CPrivateFastFont prvFont;
 		private int n本体X;
 		private int n本体Y;
 		private CTexture txパネル本体;
