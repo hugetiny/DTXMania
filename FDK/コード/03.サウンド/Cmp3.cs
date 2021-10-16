@@ -44,8 +44,8 @@ namespace FDK
 				(ushort)( wBitsPerSample ),									// wBitsPerSample (8, 16, ...)
 				(ushort)0													// cbSize				
 			);
-			Trace.TraceInformation($"chans={chinfo.chans}, freq={chinfo.freq}, chinfo.origres={chinfo.origres}, BitsPerSample={wBitsPerSample}, nAvgBytePerSec={wfx.nAvgBytesPerSec}, nBlockAlign={wfx.nBlockAlign}");
-			Trace.TraceInformation( $"totalPCMSize={nTotalPCMSize}:{nTotalPCMSize.ToString("x8")}" );
+			//Trace.TraceInformation($"chans={chinfo.chans}, freq={chinfo.freq}, chinfo.origres={chinfo.origres}, BitsPerSample={wBitsPerSample}, nAvgBytePerSec={wfx.nAvgBytesPerSec}, nBlockAlign={wfx.nBlockAlign}");
+			//Trace.TraceInformation( $"totalPCMSize={nTotalPCMSize}:{nTotalPCMSize.ToString("x8")}" );
 			#endregion
 
 			//string fn = Path.GetFileName(filename); 
