@@ -27,21 +27,25 @@ namespace FDK
 			{
 				BASSError be = Bass.BASS_ErrorGetCode();
 				Trace.TraceInformation("Cmp3: StreamCreateFile error: " + be.ToString());
-				return 0;
+				return -1;
 			}
 			nTotalPCMSize = Bass.BASS_ChannelGetLength(stream_in);
 
 			#region [ Getting WAVEFORMEX info ]
 			var chinfo = Bass.BASS_ChannelGetInfo(stream_in);
+			int wBitsPerSample = (chinfo.origres==0)? 16 : chinfo.origres;		// for no3, origres might be zero
+
 			wfx = new CWin32.WAVEFORMATEX(
 				(ushort)1,								// wFormatTag
 				(ushort)chinfo.chans,					// nChannels
 				(uint)chinfo.freq,						// nSamplesPerSec
-				(uint)(chinfo.freq * 2 * chinfo.chans),	// nAvgBytesPerSec
-				(ushort)(2 * chinfo.chans),				// nBlockAlign
-				16,										// wBitsPerSample
-				0										// cbSize				
+				(uint)(chinfo.freq * chinfo.chans * wBitsPerSample / 8 ),	// nAvgBytesPerSec == SampleRate(freq) * NumChannels(chans) * BitsPerSample/8
+				(ushort)(chinfo.chans * wBitsPerSample / 8),				// nBlockAlign== NumChannels * BitsPerSample/8
+				(ushort)( wBitsPerSample ),									// wBitsPerSample (8, 16, ...)
+				(ushort)0													// cbSize				
 			);
+			Trace.TraceInformation($"chans={chinfo.chans}, freq={chinfo.freq}, chinfo.origres={chinfo.origres}, BitsPerSample={wBitsPerSample}, nAvgBytePerSec={wfx.nAvgBytesPerSec}, nBlockAlign={wfx.nBlockAlign}");
+			Trace.TraceInformation( $"totalPCMSize={nTotalPCMSize}:{nTotalPCMSize.ToString("x8")}" );
 			#endregion
 
 			//string fn = Path.GetFileName(filename); 
@@ -55,8 +59,14 @@ namespace FDK
 			#region [ decode ]
 			int LEN = 65536;
 			byte[] data = new byte[LEN]; // 2 x 16-bit and length in is bytes
+
+			for (int i = 0; i < offset; i++ )
+			{
+				Dest[ i ] = 0;
+			}
+
 			long len = 0;
-			long p = 0;
+			long p = offset;
 			do
 			{
 				len = Bass.BASS_ChannelGetData(stream_in, data, LEN);
@@ -64,14 +74,15 @@ namespace FDK
 				{
 					BASSError be = Bass.BASS_ErrorGetCode();
 					Trace.TraceInformation("Cmp3: BASS_ChannelGetData Error: " + be.ToString());
+					break;
 				}
-				if (p + len > nTotalPCMSize)
+				if (p + len > nTotalPCMSize + offset)
 				{
-					len = nTotalPCMSize - p;
+					len = nTotalPCMSize - p + offset;
 				}
 				Array.Copy(data, 0, Dest, p, len);
 				p += len;
-			} while (p < nTotalPCMSize);
+			} while (p < nTotalPCMSize + offset);
 			#endregion
 
 //SaveWav(filename, Dest);

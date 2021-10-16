@@ -2172,7 +2172,7 @@ Debug.WriteLine("更に再生に失敗: " + Path.GetFileName(this.strファイ�
 					bw.Close();
 					ms.Close();
 
-					for ( int i = 0; i < bs.Length; i++ )
+					for ( int i = 0; i < bs.Length; i++ )					// copying header
 					{
 						buffer[ i ] = bs[ i ];
 					}
