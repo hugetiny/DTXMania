@@ -171,9 +171,9 @@ namespace DTXMania
 					"bass_fx.dll is not loaded. bass_fx.dll or bass.dll must not exist." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
-				if (!tDLLの存在チェック("dll\\DirectShowLib.dll",
-					"DirectShowLib.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
-					"DirectShowLib.dll is not found." + newLine + "Please download DTXMania again."
+				if (!tDLLの存在チェック("dll\\DirectShowLib-2005.dll",
+					"DirectShowLib-2005.dll が存在しません。" + newLine + "DTXManiaをダウンロードしなおしてください。",
+					"DirectShowLib-2005.dll is not found." + newLine + "Please download DTXMania again."
 					))
 					bDLLnotfound = true;
 				#endregion
