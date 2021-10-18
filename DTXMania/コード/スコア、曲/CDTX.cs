@@ -627,7 +627,7 @@ namespace DTXMania
 					{
 						cwav.rSound[0] = CDTXMania.Instance.Sound管理.tサウンドを生成する(str, eInstType);
 						cwav.rSound[0].n音量 = 100;
-						if (!CDTXMania.Instance.ConfigIni.bDynamicBassMixerManagement.Value)
+						if (!CDTXMania.Instance.ConfigIni.bDynamicBassMixerManagement.Value && (CDTXMania.Instance.Sound管理.CurrentSoundDeviceType != ESoundDeviceType.DirectSound))
 						{
 							cwav.rSound[0].tBASSサウンドをミキサーに追加する();
 						}
