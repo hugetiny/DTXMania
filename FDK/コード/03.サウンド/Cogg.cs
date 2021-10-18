@@ -70,9 +70,14 @@ namespace FDK
 			// create a buffer for reading samples
 			var readBuffer = new float[vorbis.Channels * vorbis.SampleRate * 5];  // 5sec buffer
 
+			for ( int i = 0; i < offset; i++ )
+			{
+				Dest[ i ] = 0;
+			}
+
 			// go grab samples
 			int cnt;
-			int p = 0;
+			int p = (int)offset;
 			while ((cnt = vorbis.ReadSamples(readBuffer, 0, readBuffer.Length)) > 0)
 			{
 				bool bEnd = false;
@@ -80,9 +85,9 @@ namespace FDK
 				// samples are interleaved (chan0, chan1, chan0, chan1, etc.)
 				// sample value range is -0.99999994f to 0.99999994f unless vorbis.ClipSamples == false
 
-				if (Dest.Length < p + cnt * 4)
+				if (Dest.Length + offset < p + cnt * 4)
 				{
-					cnt = (Dest.Length - p) / 4;
+					cnt = (Dest.Length +(int) offset - p) / 4;
 					bEnd = true;
 				}
 				Buffer.BlockCopy(readBuffer, 0, Dest, p, cnt * 4);
