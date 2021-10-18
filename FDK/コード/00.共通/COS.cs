@@ -135,6 +135,8 @@ namespace FDK
 			_19H2 = 18363,  // 1909: November 2019 Update
 			_20H1 = 19041,	// 2004: May 2020 Update
 			_20H2 = 19042,	// 20H2
+			_21H1 = 19043,	// 21H1
+			W11 = 22000,	// Windows11
 			UNKNOWN = -1,
 			NOTWIN10 = 0
 		}
@@ -146,7 +148,7 @@ namespace FDK
 			int major, minor, build;
 			tpGetOSVersion(out major, out minor, out build);
 
-			if (major != 10)
+			if (major < 10)
 			{
 				ret = WIN10BUILD.NOTWIN10;
 			}
