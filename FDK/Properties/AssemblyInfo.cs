@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct( "FDKライブラリ ver.21" )]
-[assembly: AssemblyCopyright( "Copyright(C) 2000-2017 DTXMania Group" )]
+[assembly: AssemblyCopyright("Copyright(C) 2000-2021 DTXMania Group")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 //[assembly: AssemblyKeyName( "FROMsCspContainer" )]
