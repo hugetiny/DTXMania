@@ -48,6 +48,7 @@ namespace DTXCreator
 			this._LastWorkFolder = Directory.GetCurrentDirectory();
 			this._ViewerInfo = new Viewer();
 			this._InitialOperationMode = false;
+			this._StartupMode = false;
 			this._LastMIDIImportFolder = Directory.GetCurrentDirectory();
 			this._LastMIDIImportSettingsFile = "";
 		}
@@ -394,6 +395,23 @@ namespace DTXCreator
 			}
 		}
 
+		/// <summary>
+		/// スタートアップ動作
+		/// false: 空の新規DTXファイルを開く
+		/// true:  最後に開いたDTXファイルを開く
+		/// </summary>
+		public bool StartupMode
+		{
+			get
+			{
+				return this._StartupMode;
+			}
+			set
+			{
+				this._StartupMode = value;
+			}
+		}
+
 		//public enum ViewerSoundType
 		//{
 		//    DirectSound,
@@ -528,6 +546,7 @@ namespace DTXCreator
 		private int _X;
 		private int _Y;
 		private bool _InitialOperationMode;
+		private bool _StartupMode;
 		private string _LastMIDIImportFolder = "";
 		private string _LastMIDIImportSettingsFile = "";
 		//-----------------
