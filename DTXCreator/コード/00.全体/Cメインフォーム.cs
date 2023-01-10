@@ -15,6 +15,7 @@ using DTXCreator.WAV_BMP_AVI;
 using DTXCreator.UndoRedo;
 using DTXCreator.オプション関連;
 using DTXCreator.MIDIインポート;
+using DTXCreator.MIDIExport;
 using DTXCreator.汎用;
 using DTXCreator.Properties;
 using FDK;
@@ -52,6 +53,7 @@ namespace DTXCreator
 		internal CUndoRedo管理 mgrUndoRedo管理者 = null;
 		internal Cクリップボード cbクリップボード = null;
 		private CMIDIインポート管理 mgrMIDIインポート管理者 = null;
+		private CMIDIExportManager mgrMIDIExportManager = null;
 
 		internal MakeTempDTX makeTempDTX = null;
 
@@ -203,6 +205,7 @@ namespace DTXCreator
 			//-----------------
 			this.mgrオプション管理者 = new Cオプション管理( this );
 			this.mgrMIDIインポート管理者 = new CMIDIインポート管理(this);
+			this.mgrMIDIExportManager    = new CMIDIExportManager(this);
 			//-----------------
 			#endregion
 
@@ -247,8 +250,20 @@ namespace DTXCreator
 			#region [ コマンドライン引数にファイルの指定があるならそれを開く。 ]
 			//-----------------
 			string[] commandLineArgs = Environment.GetCommandLineArgs();
-			if( ( commandLineArgs.Length > 1 ) && File.Exists( commandLineArgs[ 1 ] ) )
-				this.t演奏ファイルを開いて読み込む( commandLineArgs[ 1 ] );
+			if ((commandLineArgs.Length > 1) && File.Exists(commandLineArgs[1]))
+			{
+				this.t演奏ファイルを開いて読み込む(commandLineArgs[1]);
+				return;
+			}
+			//-----------------
+			#endregion
+
+			#region [ 設定で「最後に編集していたファイルを、DTXC起動時に読み込む」ようにしていたならそれを開く。 ]
+			//-----------------
+			if (this.appアプリ設定.RecentFilesNum > 0 && this.appアプリ設定.StartupMode == true)
+			{
+				this.t演奏ファイルを開いて読み込む(this.appアプリ設定.RecentUsedFile[0]);
+			}
 			//-----------------
 			#endregion
 		}
@@ -786,7 +801,7 @@ namespace DTXCreator
 			//-----------------
 			string strExt = Path.GetExtension( strファイル名 ).ToLower();
 
-			if ( strExt.Equals(".dtx") )
+			if ( strExt.Equals(".dtx") || strExt.Equals(".gda") || strExt.Equals(".g2d") || strExt.Equals(".bms") || strExt.Equals(".bme") )
 			{
 				this.t演奏ファイルを開いて読み込む( strファイル名 );
 			}
@@ -5154,6 +5169,12 @@ namespace DTXCreator
             this.mgrMIDIインポート管理者.tMIDIインポート管理をインポートメニューから開く();
             this.mgr譜面管理者.tRefreshDisplayLanes();	// レーンの表示/非表示切り替えに備えて追加
         }
+		private void exportMIDIFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			this.mgrMIDIExportManager.tOpenMIDIExportManagerFromMenu();
+			this.mgr譜面管理者.tRefreshDisplayLanes();   // レーンの表示/非表示切り替えに備えて追加
+
+		}
 		//-----------------
 		#endregion
 		#region [ GUIイベント：メニューバー [ヘルプ] ]
@@ -5801,10 +5822,12 @@ namespace DTXCreator
 			pop.Close();
 		}
 
-		//-----------------
-		#endregion
+        //-----------------
+        #endregion
 
-		//-----------------
-		#endregion
-	}
+        //-----------------
+        #endregion
+
+
+    }
 }
