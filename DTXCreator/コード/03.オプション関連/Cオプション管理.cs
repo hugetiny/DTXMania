@@ -22,6 +22,8 @@ namespace DTXCreator.オプション関連
 			cオプションダイアログ.checkBoxPlaySoundOnChip.CheckState = this.formメインフォーム.appアプリ設定.PlaySoundOnWAVChipAllocated ? CheckState.Checked : CheckState.Unchecked;
 			cオプションダイアログ.radioButton_SelectMode.Checked = this.formメインフォーム.appアプリ設定.InitialOperationMode;
 			cオプションダイアログ.radioButton_EditMode.Checked = !this.formメインフォーム.appアプリ設定.InitialOperationMode;
+			cオプションダイアログ.radioButton_OpenLastDTX.Checked = this.formメインフォーム.appアプリ設定.StartupMode;
+			cオプションダイアログ.radioButton_OpenNewDTXfile.Checked = !this.formメインフォーム.appアプリ設定.StartupMode;
 			#endregion
 			#region [ Laneタブ ]
 			if ( !cオプションダイアログ.bレーンリストの内訳が生成済みである )
@@ -68,7 +70,8 @@ namespace DTXCreator.オプション関連
 				this.formメインフォーム.appアプリ設定.PlaySoundOnWAVChipAllocated = cオプションダイアログ.checkBoxPlaySoundOnChip.Checked;
 
 				this.formメインフォーム.appアプリ設定.InitialOperationMode = cオプションダイアログ.radioButton_SelectMode.Checked;
-				
+				this.formメインフォーム.appアプリ設定.StartupMode = cオプションダイアログ.radioButton_OpenLastDTX.Checked;
+
 				for ( int i = 0; i < this.formメインフォーム.mgr譜面管理者.listレーン.Count; i++ )
 				{
 					DTXCreator.譜面.Cレーン.ELaneType e = this.formメインフォーム.mgr譜面管理者.listレーン[ i ].eLaneType;

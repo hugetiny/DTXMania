@@ -30,6 +30,9 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Cオプションダイアログ));
 			this.tabPage全般 = new System.Windows.Forms.TabPage();
+			this.groupBoxStartupMode = new System.Windows.Forms.GroupBox();
+			this.radioButton_OpenLastDTX = new System.Windows.Forms.RadioButton();
+			this.radioButton_OpenNewDTXfile = new System.Windows.Forms.RadioButton();
 			this.groupBoxDefaultOperationMode = new System.Windows.Forms.GroupBox();
 			this.pictureBox_EditMode = new System.Windows.Forms.PictureBox();
 			this.pictureBox_SelectMode = new System.Windows.Forms.PictureBox();
@@ -64,6 +67,7 @@
 			this.button1 = new System.Windows.Forms.Button();
 			this.buttonOK = new System.Windows.Forms.Button();
 			this.tabPage全般.SuspendLayout();
+			this.groupBoxStartupMode.SuspendLayout();
 			this.groupBoxDefaultOperationMode.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_EditMode)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_SelectMode)).BeginInit();
@@ -79,6 +83,7 @@
 			// tabPage全般
 			// 
 			resources.ApplyResources(this.tabPage全般, "tabPage全般");
+			this.tabPage全般.Controls.Add(this.groupBoxStartupMode);
 			this.tabPage全般.Controls.Add(this.groupBoxDefaultOperationMode);
 			this.tabPage全般.Controls.Add(this.checkBoxPlaySoundOnChip);
 			this.tabPage全般.Controls.Add(this.checkBoxPreviewBGM);
@@ -88,6 +93,28 @@
 			this.tabPage全般.Controls.Add(this.numericUpDown最近使用したファイルの最大表示個数);
 			this.tabPage全般.Name = "tabPage全般";
 			this.tabPage全般.UseVisualStyleBackColor = true;
+			// 
+			// groupBoxStartupMode
+			// 
+			resources.ApplyResources(this.groupBoxStartupMode, "groupBoxStartupMode");
+			this.groupBoxStartupMode.Controls.Add(this.radioButton_OpenLastDTX);
+			this.groupBoxStartupMode.Controls.Add(this.radioButton_OpenNewDTXfile);
+			this.groupBoxStartupMode.Name = "groupBoxStartupMode";
+			this.groupBoxStartupMode.TabStop = false;
+			// 
+			// radioButton_OpenLastDTX
+			// 
+			resources.ApplyResources(this.radioButton_OpenLastDTX, "radioButton_OpenLastDTX");
+			this.radioButton_OpenLastDTX.Name = "radioButton_OpenLastDTX";
+			this.radioButton_OpenLastDTX.TabStop = true;
+			this.radioButton_OpenLastDTX.UseVisualStyleBackColor = true;
+			// 
+			// radioButton_OpenNewDTXfile
+			// 
+			resources.ApplyResources(this.radioButton_OpenNewDTXfile, "radioButton_OpenNewDTXfile");
+			this.radioButton_OpenNewDTXfile.Name = "radioButton_OpenNewDTXfile";
+			this.radioButton_OpenNewDTXfile.TabStop = true;
+			this.radioButton_OpenNewDTXfile.UseVisualStyleBackColor = true;
 			// 
 			// groupBoxDefaultOperationMode
 			// 
@@ -359,6 +386,8 @@
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Cオプションダイアログ_KeyDown);
 			this.tabPage全般.ResumeLayout(false);
 			this.tabPage全般.PerformLayout();
+			this.groupBoxStartupMode.ResumeLayout(false);
+			this.groupBoxStartupMode.PerformLayout();
 			this.groupBoxDefaultOperationMode.ResumeLayout(false);
 			this.groupBoxDefaultOperationMode.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox_EditMode)).EndInit();
@@ -414,5 +443,8 @@
 		internal System.Windows.Forms.RadioButton radioButton_EditMode;
 		internal System.Windows.Forms.RadioButton radioButton_SelectMode;
 		internal System.Windows.Forms.RadioButton radioButton_WASAPI_Shared;
+		private System.Windows.Forms.GroupBox groupBoxStartupMode;
+		internal System.Windows.Forms.RadioButton radioButton_OpenLastDTX;
+		internal System.Windows.Forms.RadioButton radioButton_OpenNewDTXfile;
 	}
 }
