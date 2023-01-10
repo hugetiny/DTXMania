@@ -32,14 +32,15 @@ namespace DTXCreator
 		{
 			Font font = new System.Drawing.Font( "Arial", 8f, FontStyle.Bold );
 			Brush brush = new SolidBrush( Color.FromArgb( 0xff, 179, 194, 251 ) );
-			Rectangle layoutRectangle = new Rectangle( 8, 54, 400, 40 );
-			e.Graphics.DrawString( "Copyright (c) 2000-2017 FROM/K.YAMASAKI All rights reserved.\nMIDI Import feature powered by _t3__", font, brush, layoutRectangle );
+			Rectangle layoutRectangle = new Rectangle( 8, 54, 500, 40 );
+			e.Graphics.DrawString( "Copyright (c) 2000-2023 FROM/K.YAMASAKI All rights reserved.\nMIDI Import feature powered by _t3__", font, brush, layoutRectangle );
 			brush.Dispose();
 			font.Dispose();
 
 			font = new System.Drawing.Font( "MS US Gothic", 12f, FontStyle.Regular );
 			brush = new SolidBrush( Color.FromArgb( 0xff, 220, 220, 220 ) );
-			layoutRectangle = new Rectangle( 330, 220, 150, 20 );
+			//layoutRectangle = new Rectangle( 330, 220, 150, 20 );
+			layoutRectangle = new Rectangle(8, 100, 150, 20);
 			e.Graphics.DrawString( "Release " + Resources.DTXC_VERSION, font, brush, layoutRectangle );
             brush.Dispose();
 			font.Dispose();

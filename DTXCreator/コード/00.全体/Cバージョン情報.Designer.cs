@@ -34,24 +34,25 @@ namespace DTXCreator
 			// 
 			// Cバージョン情報
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 12F );
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackgroundImage = global::DTXCreator.Properties.Resources.バージョン情報;
-			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-			this.ClientSize = new System.Drawing.Size( 450, 250 );
+			this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.ClientSize = new System.Drawing.Size(600, 312);
 			this.ControlBox = false;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Cバージョン情報";
-			this.Padding = new System.Windows.Forms.Padding( 8 );
+			this.Padding = new System.Windows.Forms.Padding(11, 10, 11, 10);
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Paint += new System.Windows.Forms.PaintEventHandler( this.Cバージョン情報_Paint );
-			this.Click += new System.EventHandler( this.Cバージョン情報_Click );
-			this.KeyDown += new System.Windows.Forms.KeyEventHandler( this.Cバージョン情報_KeyDown );
-			this.ResumeLayout( false );
+			this.Click += new System.EventHandler(this.Cバージョン情報_Click);
+			this.Paint += new System.Windows.Forms.PaintEventHandler(this.Cバージョン情報_Paint);
+			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Cバージョン情報_KeyDown);
+			this.ResumeLayout(false);
 
 		}
 		
