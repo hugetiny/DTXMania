@@ -370,7 +370,7 @@ namespace DTXCreator.MIDIExport
 
         internal struct STMIDIEvent
 		{
-            internal ulong       tick;
+            internal ulong      tick;
             internal EPriority  ePriority;
             internal EMIDIEvent eMIDIEvent;
             internal byte       note;
@@ -385,15 +385,13 @@ namespace DTXCreator.MIDIExport
         /// </summary>
         private void tGenerateMIDIFile()
         {
-            //var fileName = @"c:\temp\test.mid";
             var fileName = Path.Combine(formメインフォーム.str作業フォルダ名, formメインフォーム.strDTXファイル名);
             fileName = Path.ChangeExtension(fileName, "dtx.mid");
 
             try
             {
                 int DrumsChannel = 10;
-                //using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.Create)))
-                using (var bw = new BinaryWriter(new MemoryStream()))
+                using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.Create)))
                 {
                     #region [ Header(MThd) ]
                     bw.Write(Encoding.GetEncoding("Shift_JIS").GetBytes("MThd"));
@@ -601,8 +599,6 @@ namespace DTXCreator.MIDIExport
                         }
                     }
                     #endregion
-
-                    //using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.Create)))
                 }
             }
             catch (System.UnauthorizedAccessException e)
