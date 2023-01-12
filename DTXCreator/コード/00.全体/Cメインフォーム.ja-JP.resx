@@ -125,6 +125,9 @@
     <value>556x710サイズのBGA/AVIを
 使用する</value>
   </data>
+  <data name="check556x710BGAAVI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="labelGenre.Location" type="System.Drawing.Point, System.Drawing">
     <value>49, 109</value>
   </data>
@@ -317,6 +320,9 @@
   <data name="tabPage基本情報.Text" xml:space="preserve">
     <value>基本情報</value>
   </data>
+  <data name="tabPage基本情報.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="columnHeaderWAV_ラベル.Text" xml:space="preserve">
     <value>ラベル</value>
   </data>
@@ -328,6 +334,9 @@
   </data>
   <data name="columnHeaderWAV_位置.Text" xml:space="preserve">
     <value>位置</value>
+  </data>
+  <data name="listViewWAVリスト.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripButtonWAVリスト上移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ上に移動します。</value>
@@ -344,11 +353,20 @@
   <data name="toolStripButtonWAVリストプレビュースイッチ.ToolTipText" xml:space="preserve">
     <value>行をクリックしたときにプレビュー音を再生します。</value>
   </data>
+  <data name="toolStripWAVツールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPageWAV.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="columnHeaderBMP_ラベル.Text" xml:space="preserve">
     <value>ラベル</value>
   </data>
   <data name="columnHeaderBMP_ファイル名.Text" xml:space="preserve">
     <value>ファイル</value>
+  </data>
+  <data name="listViewBMPリスト.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripButtonBMPリスト上移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ上に移動します。</value>
@@ -356,11 +374,20 @@
   <data name="toolStripButtonBMPリスト下移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ下に移動します。</value>
   </data>
+  <data name="toolStripBMPツールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPageBMP.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="columnHeaderAVI_ラベル.Text" xml:space="preserve">
     <value>ラベル</value>
   </data>
   <data name="columnHeaderAVI_ファイル名.Text" xml:space="preserve">
     <value>ファイル</value>
+  </data>
+  <data name="listViewAVIリスト.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripButtonAVIリスト上移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ上に移動します。</value>
@@ -368,48 +395,87 @@
   <data name="toolStripButtonAVIリスト下移動.ToolTipText" xml:space="preserve">
     <value>選択行を１つ下に移動します。</value>
   </data>
+  <data name="toolStripAVIツールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPageAVI.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="textBox自由入力欄.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabPage自由入力.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="tabControl情報パネル.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainerタブと譜面を分割.Panel1.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="pictureBox譜面パネル.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="hScrollBar譜面用水平スクロールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainerタブと譜面を分割.Panel2.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="splitContainerタブと譜面を分割.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="statusStripステータスバー.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>1, 0, 19, 0</value>
   </data>
+  <data name="statusStripステータスバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
   <data name="toolStripMenuItem新規.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="toolStripMenuItem新規.Text" xml:space="preserve">
     <value>新規(&amp;N)</value>
   </data>
   <data name="toolStripMenuItem開く.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="toolStripMenuItem開く.Text" xml:space="preserve">
     <value>開く(&amp;O)</value>
   </data>
   <data name="toolStripMenuItem上書き保存.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="toolStripMenuItem上書き保存.Text" xml:space="preserve">
     <value>上書き保存(&amp;S)</value>
   </data>
   <data name="toolStripMenuItem名前を付けて保存.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="toolStripMenuItem名前を付けて保存.Text" xml:space="preserve">
     <value>名前を付けて保存(&amp;A)</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 6</value>
+    <value>268, 6</value>
   </data>
   <data name="toolStripMenuItemMIDIImportFromFileMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="toolStripMenuItemMIDIImportFromFileMenu.Text" xml:space="preserve">
-    <value>MIDIファイルのインポート(&amp;I)</value>
+    <value>MIDIファイルのインポート(&amp;I)...</value>
+  </data>
+  <data name="exportMIDIFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>271, 26</value>
+  </data>
+  <data name="exportMIDIFileToolStripMenuItem.Text" xml:space="preserve">
+    <value>MIDIファイルのエクスポート(&amp;E)...</value>
   </data>
   <data name="toolStripSeparator20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>244, 6</value>
+    <value>268, 6</value>
   </data>
   <data name="toolStripMenuItem終了.Size" type="System.Drawing.Size, System.Drawing">
-    <value>247, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="toolStripMenuItem終了.Text" xml:space="preserve">
     <value>終了(&amp;X)</value>
@@ -610,25 +676,25 @@
     <value>再生(&amp;P)</value>
   </data>
   <data name="toolStripMenuItemオプション.Size" type="System.Drawing.Size, System.Drawing">
-    <value>262, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="toolStripMenuItemオプション.Text" xml:space="preserve">
-    <value>オプション(&amp;O)</value>
+    <value>オプション(&amp;O)...</value>
   </data>
   <data name="toolStripSeparator19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>259, 6</value>
+    <value>268, 6</value>
   </data>
   <data name="importMIDIToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>262, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="importMIDIToolStripMenuItem.Text" xml:space="preserve">
-    <value>MIDIファイルのインポート(&amp;I)</value>
+    <value>MIDIファイルのインポート(&amp;I)...</value>
   </data>
   <data name="exportMIDIFileExperimentalToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>262, 26</value>
+    <value>271, 26</value>
   </data>
   <data name="exportMIDIFileExperimentalToolStripMenuItem.Text" xml:space="preserve">
-    <value>MIDIファイルのエクスポート(&amp;E)</value>
+    <value>MIDIファイルのエクスポート(&amp;E)...</value>
   </data>
   <data name="toolStripMenuItemツール.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 24</value>
@@ -653,6 +719,9 @@
   </data>
   <data name="toolStripMenuItemヘルプ.Text" xml:space="preserve">
     <value>ヘルプ(&amp;H)</value>
+  </data>
+  <data name="menuStripメニューバー.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripButton新規作成.ToolTipText" xml:space="preserve">
     <value>新しい譜面を作成します。</value>
@@ -710,6 +779,12 @@
   </data>
   <data name="toolStripComboBox演奏速度.ToolTipText" xml:space="preserve">
     <value>DTXViewerでの再生速度を指定します。 (#DTXVPLAYSPEED)</value>
+  </data>
+  <data name="toolStripツールバー.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="vScrollBar譜面用垂直スクロールバー.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="toolStripMenuItem選択チップの切り取り.Size" type="System.Drawing.Size, System.Drawing">
     <value>393, 26</value>
@@ -809,6 +884,9 @@
   </data>
   <data name="contextMenuStrip譜面右メニュー.Size" type="System.Drawing.Size, System.Drawing">
     <value>394, 340</value>
+  </data>
+  <data name="contextMenuStrip譜面右メニュー.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1237,5 +1315,8 @@
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
+  </data>
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
   </data>
 </root>

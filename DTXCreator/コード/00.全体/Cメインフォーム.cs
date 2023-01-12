@@ -4956,6 +4956,12 @@ namespace DTXCreator
 		{
 			this.tシナリオ_名前をつけて保存();
 		}
+		private void exportMIDIFileToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+			this.mgrMIDIExportManager.tOpenMIDIExportManagerFromMenu();
+			this.mgr譜面管理者.tRefreshDisplayLanes();   // レーンの表示/非表示切り替えに備えて追加
+		}
+
 		private void toolStripMenuItem終了_Click( object sender, EventArgs e )
 		{
 			this.tシナリオ_終了();
@@ -5822,12 +5828,13 @@ namespace DTXCreator
 			pop.Close();
 		}
 
-        //-----------------
-        #endregion
 
-        //-----------------
-        #endregion
+		//-----------------
+		#endregion
+
+		//-----------------
+		#endregion
 
 
-    }
+	}
 }

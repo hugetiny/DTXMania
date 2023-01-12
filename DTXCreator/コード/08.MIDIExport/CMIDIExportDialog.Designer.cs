@@ -29,42 +29,51 @@ namespace DTXCreator.MIDIExport
         /// </summary>
         private void InitializeComponent()
         {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CMIDIExportDialog));
 			this.button_export = new System.Windows.Forms.Button();
 			this.button_cancel = new System.Windows.Forms.Button();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// button_export
 			// 
-			this.button_export.Location = new System.Drawing.Point(560, 415);
+			resources.ApplyResources(this.button_export, "button_export");
 			this.button_export.Name = "button_export";
-			this.button_export.Size = new System.Drawing.Size(75, 23);
-			this.button_export.TabIndex = 0;
-			this.button_export.Text = "E&xport";
 			this.button_export.UseVisualStyleBackColor = true;
 			this.button_export.Click += new System.EventHandler(this.button_export_Click);
 			// 
 			// button_cancel
 			// 
-			this.button_cancel.Location = new System.Drawing.Point(665, 415);
+			this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			resources.ApplyResources(this.button_cancel, "button_cancel");
 			this.button_cancel.Name = "button_cancel";
-			this.button_cancel.Size = new System.Drawing.Size(75, 23);
-			this.button_cancel.TabIndex = 1;
-			this.button_cancel.Text = "&Cancel";
 			this.button_cancel.UseVisualStyleBackColor = true;
 			this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
+			// 
+			// label1
+			// 
+			resources.ApplyResources(this.label1, "label1");
+			this.label1.Name = "label1";
+			// 
+			// label2
+			// 
+			resources.ApplyResources(this.label2, "label2");
+			this.label2.Name = "label2";
 			// 
 			// CMIDIExportDialog
 			// 
 			this.AcceptButton = this.button_export;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.button_cancel;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.button_cancel);
 			this.Controls.Add(this.button_export);
 			this.Name = "CMIDIExportDialog";
-			this.Text = "MIDI Export";
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 
@@ -72,5 +81,7 @@ namespace DTXCreator.MIDIExport
 
         private System.Windows.Forms.Button button_export;
         private System.Windows.Forms.Button button_cancel;
-    }
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label2;
+	}
 }

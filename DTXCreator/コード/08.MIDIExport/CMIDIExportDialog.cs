@@ -15,34 +15,35 @@ namespace DTXCreator.MIDIExport
 {
     public partial class CMIDIExportDialog : Form
     {
-        //internal enum EType
-        //{
-        //    Title,
-        //    BarLength,
-        //    Bpm,
-        //    //Copyright,
-
-        //    HiHatClose,
-        //    Snare,
-        //    BassDrum,
-        //    HighTom,
-        //    LowTom,
-        //    FloorTom,
-        //    Cymbal,
-        //    RideCymbal,
-        //    HiHatOpen,
-        //    LeftCymbal
-        //}
-
+        private List<int>         listBassDrumWAV = null;
         private List<STMIDIEvent> listMIDIEvent = null;
 
         private Dictionary<int, int>        dicLaneToNote;
         private Dictionary<int, EMIDIEvent> dicLaneToEvent;
 
-        // This will be initialized by CMIDIExportManager
-        public Cメインフォーム formメインフォーム;
+        public Cメインフォーム formメインフォーム;        // This will be initialized by CMIDIExportManager
 
-        internal enum EMIDIEvent : int
+		internal enum ELane : int
+		{
+            BarLength    = 0x02,
+            Bpm          = 0x03,
+            BpmXX        = 0x08,
+
+			HiHatClose   = 0x11,
+			Snare        = 0x12,
+			BassDrum     = 0x13,
+			HighTom      = 0x14,
+			LowTom       = 0x15,
+            Cymbal       = 0x16,
+            FloorTom     = 0x17,
+            HiHatOpen    = 0x18,
+            RideCymbal   = 0x19,
+            LeftCymbal   = 0x1A,
+            LeftPedal    = 0x1B,
+            LeftBassDrum = 0x1C
+        }
+
+	    internal enum EMIDIEvent : int
         {
             NoteOff               = 0x80,
             NoteOn                = 0x90,
@@ -68,29 +69,25 @@ namespace DTXCreator.MIDIExport
 
             dicLaneToNote = new Dictionary<int, int>()
             {
-                { 0x11, 42 },   // HiHat Close
-                { 0x12, 38 },   // Snare
-                { 0x13, 36 },   // Bass Drums   //35
-                { 0x14, 50 },   // High Tom
-                { 0x15, 47 },   // Low Tom
-                { 0x16, 49 },   // Cymbal
-                { 0x17, 41 },   // Floor Tom
-                { 0x18, 46 },   // HiHat Open
-                { 0x19, 51 },   // Ride Cymbal
-                { 0x1A, 55 },    // Left Cymbal
-
-                // 以下は入れておくと便利なので追加
-                { 0x02, (int)EMIDIEvent.Meta_TimeSignature }, // BarLength
-                { 0x03, (int)EMIDIEvent.Meta_Bpm },
-                { 0x08, (int)EMIDIEvent.Meta_Bpm }
-
+                { (int)ELane.HiHatClose,   42 },   // HiHat Close
+                { (int)ELane.Snare,        38 },   // Snare
+                { (int)ELane.BassDrum,     36 },   // Bass Drums
+                { (int)ELane.HighTom,      50 },   // High Tom
+                { (int)ELane.LowTom,       47 },   // Low Tom
+                { (int)ELane.Cymbal,       49 },   // Cymbal
+                { (int)ELane.FloorTom,     41 },   // Floor Tom
+                { (int)ELane.HiHatOpen,    46 },   // HiHat Open
+                { (int)ELane.RideCymbal,   51 },   // Ride Cymbal
+                { (int)ELane.LeftCymbal,   57 },   // Left Cymbal
+                { (int)ELane.LeftPedal,     0 },   // Left Pedal   // LPをBDとするかHiHatとするかは後で決定する
+                { (int)ELane.LeftBassDrum, 36 }    // Left Pedal Bass Drums
             };
 
             dicLaneToEvent = new Dictionary<int, EMIDIEvent>()
             {
-                { 0x02, EMIDIEvent.Meta_TimeSignature }, // BarLength
-                { 0x03, EMIDIEvent.Meta_Bpm },
-                { 0x08, EMIDIEvent.Meta_Bpm }
+                { (int)ELane.BarLength, EMIDIEvent.Meta_TimeSignature },
+                { (int)ELane.Bpm,       EMIDIEvent.Meta_Bpm },
+                { (int)ELane.BpmXX,     EMIDIEvent.Meta_Bpm }
             };
 
         }
@@ -99,6 +96,8 @@ namespace DTXCreator.MIDIExport
         {
             listMIDIEvent?.Clear();
             listMIDIEvent = null;
+            listBassDrumWAV?.Clear();
+            listBassDrumWAV = null;
 
 
             Cursor.Current = Cursors.WaitCursor;
@@ -123,14 +122,20 @@ namespace DTXCreator.MIDIExport
         public void tMIDIExportMain()
         {
             listMIDIEvent = new List<STMIDIEvent>();
+            listBassDrumWAV = new List<int>();
 
             tGenerateChipList();
             tGenerateMIDIFile();
 
             listMIDIEvent?.Clear();
             listMIDIEvent = null;
+            listBassDrumWAV?.Clear();
+            listBassDrumWAV = null;
         }
 
+        /// <summary>
+        /// 同一tickに複数のイベントがある場合の優先順位
+        /// </summary>
         internal enum EPriority : int
         {
             Copyright     = 0,
@@ -151,9 +156,29 @@ namespace DTXCreator.MIDIExport
             #region [  ]
             ulong basetick = 0;
 
-			#region [ TITLE ]
+            #region [ BassDrumで使っているチップ番号を全てlist化する (後でLeftPedalをBassDrumと見做すかどうかの判定に用いる)]
+            foreach (KeyValuePair<int, C小節> item in this.formメインフォーム.mgr譜面管理者.dic小節)
             {
-                string title = "";
+                var c小節 = item.Value;
+                foreach (var cチップ in c小節.listチップ)
+                {
+                    int lane = cチップ.nチャンネル番号00toFF;
+                    if (lane == (int)ELane.BassDrum)
+					{
+                        int chipNo = cチップ.n値_整数1to1295;
+                        if (!listBassDrumWAV.Contains(chipNo))
+						{
+                            listBassDrumWAV.Add(chipNo);
+						}
+					}
+                }
+            }
+			#endregion
+
+
+			#region [ TITLE ]
+			{
+				string title = "";
                 Debug.WriteLine($"txt:{formメインフォーム.textBox曲名.Text}, filename={formメインフォーム.strDTXファイル名}");
                 if (formメインフォーム.textBox曲名.Text.Length > 0)
                 {
@@ -232,7 +257,6 @@ namespace DTXCreator.MIDIExport
 
             foreach (KeyValuePair<int, C小節> item in this.formメインフォーム.mgr譜面管理者.dic小節)
             {
-                //long tickInnerBar = 0;
                 bool existChipInnerBar = false;
 
                 //if (item.Value.listチップ.Count > 0)
@@ -275,64 +299,72 @@ namespace DTXCreator.MIDIExport
                 //Debug.WriteLine("WAV={0}: volume={1}", chipNo, _velocity);
 
                     EMIDIEvent _eMIDIEvent;
-                    byte _note;
                     EPriority _ePriority;
+                    byte _note;
 
-                    // くそダサいですが高速化のためいったんはこれで。(例外処理コストが非常に重いようです)
-                    if (cチップ.nチャンネル番号00toFF != 0x02 &&
-                        cチップ.nチャンネル番号00toFF != 0x03 &&
-                        cチップ.nチャンネル番号00toFF != 0x08 &&
-                        (cチップ.nチャンネル番号00toFF < 0x11 || cチップ.nチャンネル番号00toFF > 0x1A))
-                        goto NextLoop;
+                    int lane = cチップ.nチャンネル番号00toFF;
+                    bool bIsContainLaneInDicLaneToNote  = dicLaneToNote.ContainsKey(lane);
+                    bool bIsContainLaneInDicLaneToEvent = dicLaneToEvent.ContainsKey(lane);
 
-                    try
+                    if (bIsContainLaneInDicLaneToNote || bIsContainLaneInDicLaneToEvent)
                     {
-                        _eMIDIEvent = cチップ.nチャンネル番号00toFF < 0x10 ?
-                                          dicLaneToEvent[cチップ.nチャンネル番号00toFF] : EMIDIEvent.NoteOn;
-                        _note       = (byte)(dicLaneToNote[cチップ.nチャンネル番号00toFF]);
-                        _ePriority  = dicLaneToNote[cチップ.nチャンネル番号00toFF] == (int)(EMIDIEvent.Meta_Bpm) ?
-                                          EPriority.Bpm : EPriority.Others;
-                    }
-                    catch (KeyNotFoundException)
-					{
-                        // Dictionalyにない場合(＝ドラムチップでもBPMでもBarLengthでもない場合)は、
-                        // そのチップを無視して次のチップの処理に進む
-
-                        existChipInnerBar = true;
-                        goto NextLoop;
-                        //continue;
-					}
-                    var _tick = basetick + (ulong)(cチップ.n位置grid);
-
-                    var stMIDIEvent = new STMIDIEvent()
-                    {
-                        tick        = _tick,
-                        eMIDIEvent  = _eMIDIEvent,
-                        note        = _note,
-                        ePriority   = _ePriority,
-                        f           =  cチップ.f値_浮動小数,
-                        velocity    = _velocity
-                    };
-                    listMIDIEvent.Add(stMIDIEvent);
-
-					#region [ Note Onだったなら、1tick後にNote Offを入れる ]
-					if (_eMIDIEvent == EMIDIEvent.NoteOn)
-					{
-                        var stMIDIEvent_NoteOff = new STMIDIEvent()
+                        //try
                         {
-                            tick = _tick + 1,
-                            eMIDIEvent = EMIDIEvent.NoteOff,
-                            note = _note,
-                            ePriority = _ePriority,
-                            f = cチップ.f値_浮動小数,
-                            velocity = 0
+                            _eMIDIEvent = bIsContainLaneInDicLaneToEvent? dicLaneToEvent[lane] : EMIDIEvent.NoteOn;
+                            _ePriority  = bIsContainLaneInDicLaneToEvent && dicLaneToEvent[lane] == EMIDIEvent.Meta_Bpm ?
+                                              EPriority.Bpm : EPriority.Others;
+
+                            // LPは、チップ番号がBDで使われていたならBassDrumとして扱い、そうでなければHiHatCloseとして扱う。
+                            if (lane == (int)ELane.LeftPedal)
+                            {
+                                _note = listBassDrumWAV.Contains(chipNo) ?
+                                            (byte)(dicLaneToNote[(int)ELane.BassDrum]) : (byte)(dicLaneToNote[(int)ELane.HiHatClose]);
+                            }
+                            else
+                            {
+                                _note = bIsContainLaneInDicLaneToNote ? (byte)(dicLaneToNote[lane]) : (byte)0;
+                            }
+                        }
+                        //               catch (KeyNotFoundException)
+                        //{
+                        //                   // Dictionalyにない場合(＝ドラムチップでもBPMでもBarLengthでもない場合)は、
+                        //                   // そのチップを無視して次のチップの処理に進む
+
+                        //                   existChipInnerBar = true;
+                        //                   goto NextLoop;
+                        //                   //continue;
+                        //}
+                        var _tick = basetick + (ulong)(cチップ.n位置grid);
+
+                        var stMIDIEvent = new STMIDIEvent()
+                        {
+                            tick        = _tick,
+                            eMIDIEvent  = _eMIDIEvent,
+                            note        = _note,
+                            ePriority   = _ePriority,
+                            f           =  cチップ.f値_浮動小数,
+                            velocity    = _velocity
                         };
-                        listMIDIEvent.Add(stMIDIEvent_NoteOff);
+                        listMIDIEvent.Add(stMIDIEvent);
 
+    					#region [ Note Onだったなら、1tick後にNote Offを入れる ]
+    					if (_eMIDIEvent == EMIDIEvent.NoteOn)
+	    				{
+                            var stMIDIEvent_NoteOff = new STMIDIEvent()
+                            {
+                                tick = _tick + 1,
+                                eMIDIEvent = EMIDIEvent.NoteOff,
+                                note = _note,
+                                ePriority = _ePriority,
+                                f = cチップ.f値_浮動小数,
+                                velocity = 0
+                            };
+                            listMIDIEvent.Add(stMIDIEvent_NoteOff);
+                        }
+                        #endregion
                     }
-                    #endregion
 
-                    NextLoop:
+                NextLoop:
                     existChipInnerBar = true;
                 }
                 #endregion
@@ -342,23 +374,24 @@ namespace DTXCreator.MIDIExport
 
                 if (existChipInnerBar) EoTtick = basetick;  // 小節内に有意なチップがある限り、その小節は演奏データに含まれるものとする(→データ末尾を定義するtickを更新する)
             }
-            #endregion
+			#endregion
 
+			#region [ list sort ]
+			// note onのあとにnote offを入れたことで、tick順の通りにlistが並んでいないため、
+			// listのソートを行う
+			// ソートに際しては、tickを基準にしつつ、同じtickの時は copyright, time signature, tempoを優先する
 
-            // note onのあとにnote offを入れたことで、tick順の通りにlistが並んでいないため、
-            // listのソートを行う
-            // ソートに際しては、tickを基準にしつつ、同じtickの時は copyright, time signature, tempoを優先する
-
-            listMIDIEvent.Sort((a, b) => {
+			listMIDIEvent.Sort((a, b) => {
                 int result1 = (int)(a.tick - b.tick);
                 int result2 = (int)a.ePriority - (int)b.ePriority;
                 return result1 != 0 ? result1 : result2;
             });
+			#endregion
 
-            #region [ 最終小節の最後に、End of Trackのイベントを追加する ]
+			#region [ 最終小節の最後に、End of Trackのイベントを追加する ]
 
-            // EoTtickより、basetick+1(NoteOff分)の方が先行している場合があるので注意
-            ulong lasttick_inList = 0;
+			// EoTtickより、basetick+1(NoteOff分)の方が先行している場合があるので注意
+			ulong lasttick_inList = 0;
             if (listMIDIEvent.Count > 0)
             {
                 lasttick_inList = listMIDIEvent[listMIDIEvent.Count - 1].tick;
@@ -380,9 +413,6 @@ namespace DTXCreator.MIDIExport
             //    Debug.WriteLine($"tick={m.tick}, eType={m.eMIDIEvent.ToString()}, f={m.f}, note={m.note}, velo={m.velocity}, text={m.text}");
 			//}
             //Debug.WriteLine("=====================================");
-
-
-
         }
 
 
@@ -407,21 +437,21 @@ namespace DTXCreator.MIDIExport
             var fileName = Path.Combine(formメインフォーム.str作業フォルダ名, formメインフォーム.strDTXファイル名);
             fileName = Path.ChangeExtension(fileName, "dtx.mid");
 
-            try
+            //try
             {
                 int DrumsChannel = 10;
                 using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.Create)))
                 {
                     #region [ Header(MThd) ]
-                    bw.Write(Encoding.GetEncoding("Shift_JIS").GetBytes("MThd"));
+                    bw.Write(Encoding.ASCII.GetBytes("MThd"));
                     bw.Write(new byte[] { 0x00, 0x00, 0x00, 0x06 });    // size
                     bw.Write(new byte[] { 0x00, 0x00 });                // format 0
                     bw.Write(new byte[] { 0x00, 0x01 });                // tracks = 1
-                    bw.Write(new byte[] { 0x00, 48 });                  // division of quarter note
+                    bw.Write(new byte[] { 0x00, 192 / 4 });             // division of quarter note
                     #endregion
 
                     #region [ Header(MTrk) ]
-                    bw.Write(Encoding.GetEncoding("Shift_JIS").GetBytes("MTrk"));
+                    bw.Write(Encoding.ASCII.GetBytes("MTrk"));
                     bw.Write(new byte[] { 0x00, 0x00, 0x00, 0x00 });    // size (at first, it is a dummy)
                     #endregion
 
@@ -432,11 +462,12 @@ namespace DTXCreator.MIDIExport
                     #region [ data (MTrk) ]
                     foreach (var e in listMIDIEvent)
                     {
-                        delta = e.tick - lastTick;
+						#region [ put delta time ]
+						delta = e.tick - lastTick;
                         lastTick = e.tick;
                         {
                             byte[] d = GetVarLen(delta);
-                            bw.Write(d);                                    // delta time
+                            bw.Write(d);
 
 							#region [デバッグ表示]
 							//Debug.Write($"delta: {delta}: size:{d.Length} ");
@@ -447,24 +478,26 @@ namespace DTXCreator.MIDIExport
 							//Debug.Write(" ");
 							#endregion
 						}
+						#endregion
 
 						switch (e.eMIDIEvent)
 						{
                             case EMIDIEvent.NoteOff:
-                                bw.Write(new byte[] { (byte)(0x80 + DrumsChannel - 1), e.note, 0 });
+                                bw.Write(new byte[] { (byte)((int)EMIDIEvent.NoteOff + DrumsChannel - 1), e.note, 0 });
                                 //Debug.WriteLine( $"0x80 {e.note} 00");
                                 break;
 
                             case EMIDIEvent.NoteOn:
-                                bw.Write(new byte[] { (byte)(0x90 + DrumsChannel - 1), e.note, (byte)(e.velocity * 127 /100) } );
+                                bw.Write(new byte[] { (byte)((int)EMIDIEvent.NoteOn + DrumsChannel - 1), e.note, (byte)(e.velocity * 127 /100) } );
                                 //Debug.WriteLine( $"0x90 {e.note} {e.velocity}");
                                 break;
 
                             case EMIDIEvent.Meta_Bpm:
-                                {
-                                    // 拍子に変換できない小節長倍率が来た時はBPMを操作して対応するため、
-                                    // 後で元のBPMに戻せるよう、今のBPMをバックアップしておく
-                                    lastBPM = e.f;
+								#region [ BPM変更 ]
+								{
+									// 拍子に変換できない小節長倍率が来た時はBPMを操作して対応するため、
+									// 後で元のBPMに戻せるよう、今のBPMをバックアップしておく
+									lastBPM = e.f;
 
                                     if (e.f > 0.0001)
                                     {
@@ -476,13 +509,15 @@ namespace DTXCreator.MIDIExport
                                     }
                                 }
                                 break;
+							#endregion
 
-                            case EMIDIEvent.Meta_Title:
+							case EMIDIEvent.Meta_Title:
                                 {
                                     byte[] title = System.Text.Encoding.GetEncoding("shift_jis").GetBytes(e.text);
                                     //byte[] title = System.Text.Encoding.GetEncoding("unicode").GetBytes(e.text);    // 互換性確保のため。shift_jisと選べるようにした方がよい
                                     bw.Write(new byte[] { 0xFF, 0x03 });
-                                    bw.Write(GetVarLen((ulong)(title.GetLength(0))));
+                                    //bw.Write(GetVarLen((ulong)(title.GetLength(0))));
+                                    bw.Write(GetVarLen((ulong)(title.Length)));
                                     bw.Write(title);
                                 }
                                 break;
@@ -493,56 +528,67 @@ namespace DTXCreator.MIDIExport
                                     byte[] text = System.Text.Encoding.GetEncoding("shift_jis").GetBytes(e.text);
 
                                     bw.Write(new byte[] { 0xFF, 0x01 });
-                                    bw.Write(GetVarLen((ulong)(text.GetLength(0))));
+                                    //bw.Write(GetVarLen((ulong)(text.GetLength(0))));
+                                    bw.Write(GetVarLen((ulong)(text.Length)));
                                     bw.Write(text);
                                 }
                                 break;
 
                             case EMIDIEvent.Meta_TimeSignature:
-                                {
-                                    decimal d = (decimal)(e.f);
+								#region [ 小節長変更を拍子またはBPMに変換して表現 ]
+								{
+									decimal d = (decimal)(e.f);
                                     decimal dd_ = 128;
 
                                     //d = 0.1m;
                                     //d = 17 / 16m;
-                                    //Debug.WriteLine(" ");
-                                    //Debug.Write($"TimeSignature: f={d}, ");
+                                    Debug.WriteLine(" ");
+                                    Debug.Write($"TimeSignature: f={d}, ");
 
                                     decimal bs = 1m / dd_;
-                                    //Debug.Write($"TimeSignature: bs={bs}, ");
+                                    Debug.Write($"TimeSignature: bs={bs}, ");
                                     decimal nn = d / bs;
 
-                                    //Debug.Write($"TimeSignature: f={d}, 1/{dd_}={bs}, 倍率={nn}");
-                                    // 2のべき乗を分母とする分数で表現できるか？
+                                    Debug.Write($"TimeSignature: f={d}, 1/{dd_}={bs}, 倍率={nn}");
+                                    // 2のべき乗を分母とする分数で表現できるか？ (ここでは、これを「1/128の倍数で表すことができるか?」で確認。)
                                     // できない場合はウエイト的な指定だと割り切る
 
-                                    //Debug.WriteLine($"Tick={e.tick}");
+                                    Debug.WriteLine($"Tick={e.tick}");
 
                                     if (Math.Floor(nn) == nn)
                                     {
                                         // 2^nで割り切れた場合: time signatureのフォーマットに落とし込むことができる
-                                        // まずnnを算出
-                                        while (Math.Floor(nn/2) == nn/2)
+                                        // まず約分してnnを算出
+                                        while (Math.Floor(nn/2) == nn/2 && dd_ > 2)
 										{
                                             nn  /= 2;
                                             dd_ /= 2;
 										}
+
+                                        if (dd_ == 2)   // x/2 になるなら、x/4になるよう補正
+										{
+                                            nn *= 2;
+                                            dd_ *= 2;
+										}
+
                                         //次にddを算出
                                         decimal dd = (decimal)Math.Log((double)dd_, 2);
-                                        // 単純に分子と分母を約分していくと4/4は1/1になるので、4/4に補正
-                                        if (nn==1 && dd==0)
-										{
-                                            nn = 4;
-                                            dd = 2;
-										}
+
+          //                              // 特殊なケースとして、単純に分子と分母を約分していくと4/4は1/1になるので、4/4に補正
+          //                              if (nn==1 && dd==0)
+										//{
+          //                                  nn = 4;
+          //                                  dd = 2;
+										//}
                                         bw.Write(new byte[] { 0xFF, 0x58, 0x04, (byte)nn, (byte)dd, 0x18, 0x08 });
 
-                                        //Debug.WriteLine(" ");
-                                        //Debug.WriteLine($"TimeSignature割り切れる f={e.f}, nn={nn}, dd={dd}");
+                                        Debug.WriteLine(" ");
+                                        Debug.WriteLine($"TimeSignature割り切れる f={e.f}, nn={nn}, dd={dd}");
 
                                         // 直前の小節が2^nを分母とする分数で表現できない物だった場合、
                                         // ここまでBPM操作で辻褄を合わせていたはずなので、
                                         // 分数表現に戻したついでにBPMも元に戻す
+                                        // (辻褄合わせ中に更にBPMを変更しているようなケースは、ここでは考えないこととする)
                                         if (NonStandardTimeSignature)
                                         {
                                             Int32 bpm = (Int32)(60.0 * 1000000 / lastBPM);
@@ -580,8 +626,9 @@ namespace DTXCreator.MIDIExport
                                     //Debug.WriteLine($"TimeSignature delta={delta}, f={e.f}");
                                 }
                                 break;
+					    		#endregion
 
-                            case EMIDIEvent.Meta_EndOfTrack:
+							case EMIDIEvent.Meta_EndOfTrack:
                                 #region [ Enf of Track, Write track size ]
                                 {
                                     bw.Write(new byte[] { 0xFF, 0x2F, 0x00 });  // End of track
@@ -608,10 +655,10 @@ namespace DTXCreator.MIDIExport
                                 }
                                 #endregion
                                 break;
-                                //return;     //ここで終了
+							//return;     //ここで終了
 
-
-                            case EMIDIEvent.Meta_Copyright:
+							#region [ 未使用イベント ]
+							case EMIDIEvent.Meta_Copyright:
                                 break;
                             case EMIDIEvent.PolyphonicKeyPressure:
                             case EMIDIEvent.ControlChange:
@@ -622,19 +669,20 @@ namespace DTXCreator.MIDIExport
                                 break;  // 未使用
                             default:
                                 break;
+                            #endregion
                         }
                     }
                     #endregion
                 }
             }
-			catch (System.UnauthorizedAccessException e)
-			{
-				MessageBox.Show(e.Message, "MIDI Export error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			catch (Exception e)
-			{
-				MessageBox.Show(e.Message, "MIDI Export error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			//catch (System.UnauthorizedAccessException e)
+			//{
+			//	MessageBox.Show(e.Message, "MIDI Export error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//}
+			//catch (Exception e)
+			//{
+			//	MessageBox.Show(e.Message, "MIDI Export error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//}
 		}
 
         /// <summary>
@@ -661,7 +709,7 @@ namespace DTXCreator.MIDIExport
                 }                
             }
 
-            lb.Reverse();
+            if (BitConverter.IsLittleEndian) lb.Reverse();
             return lb.ToArray();
         }
 
