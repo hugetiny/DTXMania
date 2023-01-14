@@ -4,34 +4,45 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using DTXCreator.コード._06.CDialog;
 
 namespace DTXCreator.MIDIExport
 {
     internal class CMIDIExportManager
 	{
-		public CMIDIExportManager( Cメインフォーム pメインフォーム )
+		public CMIDIExportManager( Cメインフォーム pMainForm )
 		{
-			this.formメインフォーム = pメインフォーム;
+			this.formMainForm = pMainForm;
 		}
 		
 		public void tOpenMIDIExportManagerFromMenu()
 		{
+			#region [ 出力ファイル名の設定 ]
+			var filename = Path.Combine(formMainForm.str作業フォルダ名, formMainForm.strDTXファイル名);
+			filename = Path.ChangeExtension(filename, "dtx.mid");
+			#endregion
+
 			CMIDIExportDialog cMIDIExportDialog = new CMIDIExportDialog();
-            cMIDIExportDialog.formメインフォーム = this.formメインフォーム;
+            cMIDIExportDialog.formMainForm = this.formMainForm;
+			cMIDIExportDialog.Initialize(filename);
 
 			if (cMIDIExportDialog.ShowDialog() == DialogResult.OK)
             {
-				string message = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ?
+				string title = (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ja") ?
+					"MIDIファイルへのエクスポート" : "Exporting to MIDI file";
+
+				string message = (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ja") ?
 					"MIDIファイルへの出力が完了しました。" : "Completed output MIDI file successfully.";
 
-				MessageBox.Show( message, "MIDI file export", MessageBoxButtons.OK, MessageBoxIcon.Information );
+				CDialog cDialog = new CDialog(title, message);
+				cDialog.ShowDialog();
 			}
         }
 
-
 		#region [ private ]
         //-----------------
-        private Cメインフォーム formメインフォーム;
+        private Cメインフォーム formMainForm;
 		//-----------------
 		#endregion
 	}

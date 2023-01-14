@@ -16,13 +16,26 @@ namespace DTXCreator.MIDIExport
     public partial class CMIDIExportDialog : Form
     {
         private List<int>         listBassDrumWAV = null;
-        private List<STMIDIEvent> listMIDIEvent = null;
+        private List<STMIDIEvent> listMIDIEvent   = null;
+        private EncodingInfo[]    encodingInfos   = null;
+        private string            outFilename     = null;
+        private int               DrumsChannel    = 10;
 
+        /// <summary>
+        /// mapping: lane number -> MIDI note
+        /// </summary>
         private Dictionary<int, int>        dicLaneToNote;
+
+        /// <summary>
+        /// mapping: lane number -> MIDI event
+        /// </summary>
         private Dictionary<int, EMIDIEvent> dicLaneToEvent;
 
-        public Cメインフォーム formメインフォーム;        // This will be initialized by CMIDIExportManager
+        public Cメインフォーム formMainForm;        // This will be initialized by CMIDIExportManager
 
+        /// <summary>
+        /// mapping: lane name -> lane number
+        /// </summary>
 		internal enum ELane : int
 		{
             BarLength    = 0x02,
@@ -43,6 +56,9 @@ namespace DTXCreator.MIDIExport
             LeftBassDrum = 0x1C
         }
 
+        /// <summary>
+        /// mapping: MIDI Event name -> MIDI Event number
+        /// </summary>
 	    internal enum EMIDIEvent : int
         {
             NoteOff               = 0x80,
@@ -94,20 +110,33 @@ namespace DTXCreator.MIDIExport
 
         private void button_export_Click(object sender, EventArgs e)
         {
+            bool result;
+
             listMIDIEvent?.Clear();
             listMIDIEvent = null;
             listBassDrumWAV?.Clear();
             listBassDrumWAV = null;
 
-
             Cursor.Current = Cursors.WaitCursor;
-            tMIDIExportMain();
+
+			#region [ ComboBoxで設定した値を取得 ]
+			CComboBoxObject cc = (CComboBoxObject) this.comboBox_encodingList.SelectedItem;
+            int codePage = cc.Key;
+            cc = (CComboBoxObject)this.comboBox_LPAssign.SelectedItem;
+            int noteLP   = cc.Key;
+            #endregion
+
+            #region [ ComboBoxの設定を保存 ]
+            this.formMainForm.appアプリ設定.LastMIDIExportEncodingCodePage = codePage;
+            this.formMainForm.appアプリ設定.LastMIDIExportLPAssignIndex    = this.comboBox_LPAssign.SelectedIndex;
+			#endregion
+
+			result = tMIDIExportMain(codePage, noteLP);
+
             Cursor.Current = Cursors.Default;
 
-            this.DialogResult = DialogResult.OK;
+            this.DialogResult = result ? DialogResult.OK : DialogResult.Abort;
             this.Close();
-
-            // FormのAcceptButtonも設定
         }
 
         private void button_cancel_Click(object sender, EventArgs e)
@@ -119,18 +148,22 @@ namespace DTXCreator.MIDIExport
         }
 
 
-        public void tMIDIExportMain()
+        public bool tMIDIExportMain(int codePage, int noteLP)
         {
+            bool result;
+
             listMIDIEvent = new List<STMIDIEvent>();
             listBassDrumWAV = new List<int>();
 
-            tGenerateChipList();
-            tGenerateMIDIFile();
+            tGenerateChipList(noteLP);
+            result = tGenerateMIDIFile(codePage);
 
             listMIDIEvent?.Clear();
             listMIDIEvent = null;
             listBassDrumWAV?.Clear();
             listBassDrumWAV = null;
+
+            return result;
         }
 
         /// <summary>
@@ -151,21 +184,21 @@ namespace DTXCreator.MIDIExport
         /// <summary>
         /// まず、譜面情報からチップのリストを生成する。(その際に、tick情報も生成する)
         /// </summary>
-        private void tGenerateChipList()
+        private void tGenerateChipList(int noteLP)
 		{
             #region [  ]
             ulong basetick = 0;
 
             #region [ BassDrumで使っているチップ番号を全てlist化する (後でLeftPedalをBassDrumと見做すかどうかの判定に用いる)]
-            foreach (KeyValuePair<int, C小節> item in this.formメインフォーム.mgr譜面管理者.dic小節)
+            foreach (KeyValuePair<int, C小節> item in this.formMainForm.mgr譜面管理者.dic小節)
             {
-                var c小節 = item.Value;
-                foreach (var cチップ in c小節.listチップ)
+                var cBAR = item.Value;
+                foreach (var cChip in cBAR.listチップ)
                 {
-                    int lane = cチップ.nチャンネル番号00toFF;
-                    if (lane == (int)ELane.BassDrum)
+                    int lane = cChip.nチャンネル番号00toFF;
+                    if (lane == (int)ELane.BassDrum || lane == (int)ELane.LeftBassDrum)
 					{
-                        int chipNo = cチップ.n値_整数1to1295;
+                        int chipNo = cChip.n値_整数1to1295;
                         if (!listBassDrumWAV.Contains(chipNo))
 						{
                             listBassDrumWAV.Add(chipNo);
@@ -175,18 +208,17 @@ namespace DTXCreator.MIDIExport
             }
 			#endregion
 
-
 			#region [ TITLE ]
 			{
 				string title = "";
-                Debug.WriteLine($"txt:{formメインフォーム.textBox曲名.Text}, filename={formメインフォーム.strDTXファイル名}");
-                if (formメインフォーム.textBox曲名.Text.Length > 0)
+                Debug.WriteLine($"txt:{formMainForm.textBox曲名.Text}, filename={formMainForm.strDTXファイル名}");
+                if (formMainForm.textBox曲名.Text.Length > 0)
                 {
-                    title = formメインフォーム.textBox曲名.Text;
+                    title = formMainForm.textBox曲名.Text;
                 }
-                else if (formメインフォーム.strDTXファイル名 != "")
+                else if (formMainForm.strDTXファイル名 != "")
 				{
-                    title = formメインフォーム.strDTXファイル名;
+                    title = formMainForm.strDTXファイル名;
 				}
 
                 if (title != "")
@@ -205,7 +237,7 @@ namespace DTXCreator.MIDIExport
             #endregion
             #region [ BPM ]
             {
-                float _f = (float)(formメインフォーム.numericUpDownBPM.Value);
+                float _f = (float)(formMainForm.numericUpDownBPM.Value);
                 if (_f > 0.0001)
                 {
                     var stMIDIEvent = new STMIDIEvent()
@@ -221,14 +253,14 @@ namespace DTXCreator.MIDIExport
             }
             #endregion
             #region [ ARTIST ]
-            if (formメインフォーム.textBox製作者.Text.Length > 0)
+            if (formMainForm.textBox製作者.Text.Length > 0)
             {
                 var stMIDIEvent = new STMIDIEvent()
                 {
                     tick = 0,
                     eMIDIEvent = EMIDIEvent.Meta_Title,
                     ePriority = EPriority.Text,
-                    text = "ARTIST:" + formメインフォーム.textBox製作者.Text
+                    text = "ARTIST:" + formMainForm.textBox製作者.Text
                 };
                 listMIDIEvent.Add(stMIDIEvent);
                 Debug.WriteLine($"{stMIDIEvent.text}");
@@ -236,14 +268,14 @@ namespace DTXCreator.MIDIExport
             }
             #endregion
             #region [ COMMENT ]
-            if (formメインフォーム.textBoxコメント.Text.Length > 0)
+            if (formMainForm.textBoxコメント.Text.Length > 0)
             {
                 var stMIDIEvent = new STMIDIEvent()
                 {
                     tick = 0,
                     eMIDIEvent = EMIDIEvent.Meta_Text,
                     ePriority = EPriority.Text,
-                    text = "" + formメインフォーム.textBoxコメント.Text
+                    text = "" + formMainForm.textBoxコメント.Text
                 };
                 listMIDIEvent.Add(stMIDIEvent);
                 Debug.WriteLine($"COMMENT: {stMIDIEvent.text}");
@@ -255,7 +287,7 @@ namespace DTXCreator.MIDIExport
             float lastBarLength = 0.0f;
             ulong EoTtick = 0;
 
-            foreach (KeyValuePair<int, C小節> item in this.formメインフォーム.mgr譜面管理者.dic小節)
+            foreach (KeyValuePair<int, C小節> item in this.formMainForm.mgr譜面管理者.dic小節)
             {
                 bool existChipInnerBar = false;
 
@@ -264,90 +296,92 @@ namespace DTXCreator.MIDIExport
                 //    Debug.WriteLine("[{0}:BAR={1}, f小節長倍率={2}, n小節長倍率を考慮した現在の小節の高さgrid={3}]",
                 //        item.Key, item.Value.n小節番号0to3599, item.Value.f小節長倍率, item.Value.n小節長倍率を考慮した現在の小節の高さgrid);
                 //}
-                //if (item.Value.n小節番号0to3599 > 10)
-				//{
-                //    break;
-				//}
 
-                var c小節 = item.Value;
+
+                var cBAR = item.Value;
 
 
                 #region [ 前小節から小節長倍率が変更されていれば、小節頭で小節長倍率を設定 ]
-                if (c小節.f小節長倍率 != lastBarLength)
+                if (cBAR.f小節長倍率 != lastBarLength)
 				{
 					var stMIDIEvent = new STMIDIEvent()
 					{
 						tick = basetick,
 						eMIDIEvent = EMIDIEvent.Meta_TimeSignature,
 						ePriority = EPriority.TimeSignature,
-						f = c小節.f小節長倍率
+						f = cBAR.f小節長倍率
 					};
 					listMIDIEvent.Add(stMIDIEvent);
-                    lastBarLength = c小節.f小節長倍率;
+                    lastBarLength = cBAR.f小節長倍率;
 				}
 				#endregion
 
 
 				#region [ 小節内のドラムチップとBPMチップ、小節長変更のチップをlistに登録する ]
-				foreach (var cチップ in c小節.listチップ)
+				foreach (var cChip in cBAR.listチップ)
                 {
-                //Debug.WriteLine("channel={0}: grid={1}, value={2}",
-                //        cチップ.nチャンネル番号00toFF.ToString("x2"), cチップ.n位置grid, cチップ.f値_浮動小数);
-                    int chipNo = cチップ.n値_整数1to1295;
-                    WAV_BMP_AVI.CWAV cwav = this.formメインフォーム.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す_なければ新規生成する(chipNo);
+                    //Debug.WriteLine("channel={0}: grid={1}, value={2}",
+                    //        cChip.nチャンネル番号00toFF.ToString("x2"), cChip.n位置grid, cChip.f値_浮動小数);
+                    #region [ velocityの取得 (chipNoは後でLPのBD判定にも使う)]
+                    int chipNo = cChip.n値_整数1to1295;
+                    WAV_BMP_AVI.CWAV cwav = this.formMainForm.mgrWAVリスト管理者.tWAVをキャッシュから検索して返す_なければ新規生成する(chipNo);
                     int _velocity = cwav.n音量0to100;
-                //Debug.WriteLine("WAV={0}: volume={1}", chipNo, _velocity);
+                    //Debug.WriteLine("WAV={0}: volume={1}", chipNo, _velocity);
+                    #endregion
 
                     EMIDIEvent _eMIDIEvent;
-                    EPriority _ePriority;
-                    byte _note;
+                    EPriority  _ePriority;
+                    byte       _note;
 
-                    int lane = cチップ.nチャンネル番号00toFF;
+                    int lane = cChip.nチャンネル番号00toFF;
                     bool bIsContainLaneInDicLaneToNote  = dicLaneToNote.ContainsKey(lane);
                     bool bIsContainLaneInDicLaneToEvent = dicLaneToEvent.ContainsKey(lane);
 
                     if (bIsContainLaneInDicLaneToNote || bIsContainLaneInDicLaneToEvent)
                     {
-                        //try
+                        try
                         {
-                            _eMIDIEvent = bIsContainLaneInDicLaneToEvent? dicLaneToEvent[lane] : EMIDIEvent.NoteOn;
+                            _eMIDIEvent = bIsContainLaneInDicLaneToEvent?
+                                            dicLaneToEvent[lane] : EMIDIEvent.NoteOn;
                             _ePriority  = bIsContainLaneInDicLaneToEvent && dicLaneToEvent[lane] == EMIDIEvent.Meta_Bpm ?
-                                              EPriority.Bpm : EPriority.Others;
+                                            EPriority.Bpm : EPriority.Others;
 
-                            // LPは、チップ番号がBDで使われていたならBassDrumとして扱い、そうでなければHiHatCloseとして扱う。
-                            if (lane == (int)ELane.LeftPedal)
+							if (lane == (int)ELane.LeftPedal)
                             {
+                                #region [ LPは、チップ番号がBDで使われていたならBassDrumとして扱い、そうでなければプルダウンメニューでユーザーが指定したHiHatとして扱う。]
                                 _note = listBassDrumWAV.Contains(chipNo) ?
-                                            (byte)(dicLaneToNote[(int)ELane.BassDrum]) : (byte)(dicLaneToNote[(int)ELane.HiHatClose]);
+                                            //(byte)(dicLaneToNote[(int)ELane.BassDrum]) : (byte)(dicLaneToNote[(int)ELane.HiHatClose]);
+                                            (byte)(dicLaneToNote[(int)ELane.BassDrum]) : (byte)noteLP;
+                                #endregion
                             }
                             else
                             {
                                 _note = bIsContainLaneInDicLaneToNote ? (byte)(dicLaneToNote[lane]) : (byte)0;
                             }
                         }
-                        //               catch (KeyNotFoundException)
-                        //{
-                        //                   // Dictionalyにない場合(＝ドラムチップでもBPMでもBarLengthでもない場合)は、
-                        //                   // そのチップを無視して次のチップの処理に進む
+                        catch (KeyNotFoundException)
+                        {
+                            // Dictionalyにない場合(＝ドラムチップでもBPMでもBarLengthでもない場合)は、
+                            // そのチップを無視して次のチップの処理に進む (ここには来ないはずではあるが)
 
-                        //                   existChipInnerBar = true;
-                        //                   goto NextLoop;
-                        //                   //continue;
-                        //}
-                        var _tick = basetick + (ulong)(cチップ.n位置grid);
+                            existChipInnerBar = true;
+                            goto NextLoop;
+                            //continue;
+                        }
 
+                        var _tick = basetick + (ulong)(cChip.n位置grid);
                         var stMIDIEvent = new STMIDIEvent()
                         {
                             tick        = _tick,
                             eMIDIEvent  = _eMIDIEvent,
                             note        = _note,
                             ePriority   = _ePriority,
-                            f           =  cチップ.f値_浮動小数,
+                            f           =  cChip.f値_浮動小数,
                             velocity    = _velocity
                         };
                         listMIDIEvent.Add(stMIDIEvent);
 
-    					#region [ Note Onだったなら、1tick後にNote Offを入れる ]
+    					#region [ Note Onに対して、1tick後にNote Offを入れる ]
     					if (_eMIDIEvent == EMIDIEvent.NoteOn)
 	    				{
                             var stMIDIEvent_NoteOff = new STMIDIEvent()
@@ -356,7 +390,7 @@ namespace DTXCreator.MIDIExport
                                 eMIDIEvent = EMIDIEvent.NoteOff,
                                 note = _note,
                                 ePriority = _ePriority,
-                                f = cチップ.f値_浮動小数,
+                                f = cChip.f値_浮動小数,
                                 velocity = 0
                             };
                             listMIDIEvent.Add(stMIDIEvent_NoteOff);
@@ -364,13 +398,13 @@ namespace DTXCreator.MIDIExport
                         #endregion
                     }
 
-                NextLoop:
+                    NextLoop:
                     existChipInnerBar = true;
                 }
                 #endregion
 
                 // 次の小節へ
-                basetick += (ulong)(192.0 * c小節.f小節長倍率);
+                basetick += (ulong)(192.0 * cBAR.f小節長倍率);
 
                 if (existChipInnerBar) EoTtick = basetick;  // 小節内に有意なチップがある限り、その小節は演奏データに含まれるものとする(→データ末尾を定義するtickを更新する)
             }
@@ -430,17 +464,14 @@ namespace DTXCreator.MIDIExport
 
 
         /// <summary>
-        /// listMIDIEvent から、SMFファイルを生成する
+        /// Generate Smandard MIDI File from listMIDIEvent
         /// </summary>
-        private void tGenerateMIDIFile()
+        private bool tGenerateMIDIFile(int codePage)
         {
-            var fileName = Path.Combine(formメインフォーム.str作業フォルダ名, formメインフォーム.strDTXファイル名);
-            fileName = Path.ChangeExtension(fileName, "dtx.mid");
-
-            //try
+            bool result = true;
+            try
             {
-                int DrumsChannel = 10;
-                using (var bw = new BinaryWriter(new FileStream(fileName, FileMode.Create)))
+                using (var bw = new BinaryWriter(new FileStream(outFilename, FileMode.Create)))
                 {
                     #region [ Header(MThd) ]
                     bw.Write(Encoding.ASCII.GetBytes("MThd"));
@@ -457,7 +488,7 @@ namespace DTXCreator.MIDIExport
 
                     ulong delta = 0, lastTick = 0;
                     float lastBPM = 120.0f;
-                    bool NonStandardTimeSignature = false;
+                    bool UnderNonStandardTimeSignature = false;
 
                     #region [ data (MTrk) ]
                     foreach (var e in listMIDIEvent)
@@ -483,14 +514,18 @@ namespace DTXCreator.MIDIExport
 						switch (e.eMIDIEvent)
 						{
                             case EMIDIEvent.NoteOff:
-                                bw.Write(new byte[] { (byte)((int)EMIDIEvent.NoteOff + DrumsChannel - 1), e.note, 0 });
+								#region [ ノートオフ ]
+								bw.Write(new byte[] { (byte)((int)EMIDIEvent.NoteOff + DrumsChannel - 1), e.note, 0 });
                                 //Debug.WriteLine( $"0x80 {e.note} 00");
                                 break;
+                                #endregion
 
                             case EMIDIEvent.NoteOn:
-                                bw.Write(new byte[] { (byte)((int)EMIDIEvent.NoteOn + DrumsChannel - 1), e.note, (byte)(e.velocity * 127 /100) } );
+								#region [ ノートオン ]
+								bw.Write(new byte[] { (byte)((int)EMIDIEvent.NoteOn + DrumsChannel - 1), e.note, (byte)(e.velocity * 127 /100) } );
                                 //Debug.WriteLine( $"0x90 {e.note} {e.velocity}");
                                 break;
+                                #endregion
 
                             case EMIDIEvent.Meta_Bpm:
 								#region [ BPM変更 ]
@@ -512,27 +547,26 @@ namespace DTXCreator.MIDIExport
 							#endregion
 
 							case EMIDIEvent.Meta_Title:
-                                {
-                                    byte[] title = System.Text.Encoding.GetEncoding("shift_jis").GetBytes(e.text);
-                                    //byte[] title = System.Text.Encoding.GetEncoding("unicode").GetBytes(e.text);    // 互換性確保のため。shift_jisと選べるようにした方がよい
+								#region [ TITLE設定 ]
+								{
+									byte[] title = System.Text.Encoding.GetEncoding(codePage).GetBytes(e.text);
                                     bw.Write(new byte[] { 0xFF, 0x03 });
-                                    //bw.Write(GetVarLen((ulong)(title.GetLength(0))));
                                     bw.Write(GetVarLen((ulong)(title.Length)));
                                     bw.Write(title);
                                 }
                                 break;
+                                #endregion
 
                             case EMIDIEvent.Meta_Text:
-                                {
-                                    //byte[] text = System.Text.Encoding.Unicode.GetBytes(e.text);    // 互換性確保のため。shift_jisと選べるようにした方がよい
-                                    byte[] text = System.Text.Encoding.GetEncoding("shift_jis").GetBytes(e.text);
-
+								#region [ テキスト ]
+								{
+									byte[] text = System.Text.Encoding.GetEncoding(codePage).GetBytes(e.text);
                                     bw.Write(new byte[] { 0xFF, 0x01 });
-                                    //bw.Write(GetVarLen((ulong)(text.GetLength(0))));
                                     bw.Write(GetVarLen((ulong)(text.Length)));
                                     bw.Write(text);
                                 }
                                 break;
+                                #endregion
 
                             case EMIDIEvent.Meta_TimeSignature:
 								#region [ 小節長変更を拍子またはBPMに変換して表現 ]
@@ -542,18 +576,18 @@ namespace DTXCreator.MIDIExport
 
                                     //d = 0.1m;
                                     //d = 17 / 16m;
-                                    Debug.WriteLine(" ");
-                                    Debug.Write($"TimeSignature: f={d}, ");
+                                    //Debug.WriteLine(" ");
+                                    //Debug.Write($"TimeSignature: f={d}, ");
 
                                     decimal bs = 1m / dd_;
-                                    Debug.Write($"TimeSignature: bs={bs}, ");
+                                    //Debug.Write($"TimeSignature: bs={bs}, ");
                                     decimal nn = d / bs;
 
-                                    Debug.Write($"TimeSignature: f={d}, 1/{dd_}={bs}, 倍率={nn}");
+                                    //Debug.Write($"TimeSignature: f={d}, 1/{dd_}={bs}, 倍率={nn}");
                                     // 2のべき乗を分母とする分数で表現できるか？ (ここでは、これを「1/128の倍数で表すことができるか?」で確認。)
                                     // できない場合はウエイト的な指定だと割り切る
 
-                                    Debug.WriteLine($"Tick={e.tick}");
+                                    //Debug.WriteLine($"Tick={e.tick}");
 
                                     if (Math.Floor(nn) == nn)
                                     {
@@ -574,22 +608,16 @@ namespace DTXCreator.MIDIExport
                                         //次にddを算出
                                         decimal dd = (decimal)Math.Log((double)dd_, 2);
 
-          //                              // 特殊なケースとして、単純に分子と分母を約分していくと4/4は1/1になるので、4/4に補正
-          //                              if (nn==1 && dd==0)
-										//{
-          //                                  nn = 4;
-          //                                  dd = 2;
-										//}
                                         bw.Write(new byte[] { 0xFF, 0x58, 0x04, (byte)nn, (byte)dd, 0x18, 0x08 });
 
-                                        Debug.WriteLine(" ");
-                                        Debug.WriteLine($"TimeSignature割り切れる f={e.f}, nn={nn}, dd={dd}");
+                                        //Debug.WriteLine(" ");
+                                        //Debug.WriteLine($"TimeSignature割り切れる f={e.f}, nn={nn}, dd={dd}");
 
                                         // 直前の小節が2^nを分母とする分数で表現できない物だった場合、
                                         // ここまでBPM操作で辻褄を合わせていたはずなので、
                                         // 分数表現に戻したついでにBPMも元に戻す
                                         // (辻褄合わせ中に更にBPMを変更しているようなケースは、ここでは考えないこととする)
-                                        if (NonStandardTimeSignature)
+                                        if (UnderNonStandardTimeSignature)
                                         {
                                             Int32 bpm = (Int32)(60.0 * 1000000 / lastBPM);
                                             byte[] b = BitConverter.GetBytes(bpm);
@@ -597,7 +625,7 @@ namespace DTXCreator.MIDIExport
                                             bw.Write(new byte[] { 0, 0xFF, 0x51, 0x03, b[1], b[2], b[3] });
                                             //Debug.WriteLine($"BPM戻す {e.f}");
                                         }
-                                        NonStandardTimeSignature = false;
+                                        UnderNonStandardTimeSignature = false;
                                     }
                                     else
 									{
@@ -606,7 +634,7 @@ namespace DTXCreator.MIDIExport
                                         // (音楽的な拍子の正しさを求めているのではない)
                                         // と見做して、BPMを調整して期待される待ち時間を再現する
 
-                                        NonStandardTimeSignature = true;
+                                        UnderNonStandardTimeSignature = true;
 
                                         // 拍子そのものは1/4と設定
                                         bw.Write(new byte[] { 0xFF, 0x58, 0x04, (byte)1, (byte)2, 0x18, 0x08 });
@@ -655,9 +683,8 @@ namespace DTXCreator.MIDIExport
                                 }
                                 #endregion
                                 break;
-							//return;     //ここで終了
 
-							#region [ 未使用イベント ]
+							#region [ Non-used events ]
 							case EMIDIEvent.Meta_Copyright:
                                 break;
                             case EMIDIEvent.PolyphonicKeyPressure:
@@ -666,7 +693,7 @@ namespace DTXCreator.MIDIExport
                             case EMIDIEvent.ChannelPressure:
                             case EMIDIEvent.PitchBend:
                             case EMIDIEvent.SystemExclusive:
-                                break;  // 未使用
+                                break;
                             default:
                                 break;
                             #endregion
@@ -675,15 +702,19 @@ namespace DTXCreator.MIDIExport
                     #endregion
                 }
             }
-			//catch (System.UnauthorizedAccessException e)
-			//{
-			//	MessageBox.Show(e.Message, "MIDI Export error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			//}
-			//catch (Exception e)
-			//{
-			//	MessageBox.Show(e.Message, "MIDI Export error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			//}
-		}
+			catch (System.UnauthorizedAccessException e)
+			{
+				MessageBox.Show(e.Message, "MIDI Export error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                result = false;
+			}
+			catch (Exception e)
+			{
+				MessageBox.Show(e.Message, "MIDI Export error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                result = false;
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// get variable length data
@@ -714,5 +745,77 @@ namespace DTXCreator.MIDIExport
         }
 
 
+        /// <summary>
+        /// Initialize 2 ComboBox (Encoding, LPassign), 1 label (output filename)
+        /// (Called from CMIDIExportManager())
+        /// </summary>
+        public void Initialize(string filename)
+        {
+            #region [ EncodingのComboBoxと、初期選択項目を設定する ]
+            encodingInfos = Encoding.GetEncodings();
+
+            var listEncodingInfo = new List<EncodingInfo>(encodingInfos);
+            listEncodingInfo.Sort
+                ((a, b) => a.DisplayName.CompareTo(b.DisplayName)
+            );
+
+            foreach ( EncodingInfo ei in listEncodingInfo)
+			{
+                var cComboBoxEncodingObject = new CComboBoxObject(ei.CodePage, ei.DisplayName);
+                comboBox_encodingList.Items.Add(cComboBoxEncodingObject);
+			}
+
+			int lastCodePage = this.formMainForm.appアプリ設定.LastMIDIExportEncodingCodePage;
+			int lastIndex = listEncodingInfo.FindIndex(
+				item =>
+				{
+					if (item.CodePage == lastCodePage) return true;
+					else return false;
+				});
+			comboBox_encodingList.SelectedIndex = lastIndex;
+
+            listEncodingInfo.Clear();
+            listEncodingInfo = null;
+            encodingInfos = null;
+            #endregion
+
+            #region [ LPのComboBoxと、初期選択項目を設定する ]
+            var arrayLP = new CComboBoxObject[]
+            {
+                new CComboBoxObject(44, "Hi-Hat Pedal" ),
+                new CComboBoxObject(42, "Hi-Hat Close" ),
+                new CComboBoxObject(46, "Hi-Hat Open" )
+            };
+            comboBox_LPAssign.Items.AddRange(arrayLP);
+            comboBox_LPAssign.SelectedIndex = this.formMainForm.appアプリ設定.LastMIDIExportLPAssignIndex;
+			#endregion
+
+			#region [ 出力ファイル名を設定する ]
+			this.outFilename                    = filename;
+            this.label_outputFilename_text.Text = filename;
+            #endregion
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private class CComboBoxObject
+        {
+            public int Key;
+            public string Value;
+
+            public CComboBoxObject(int key, string value)
+            {
+                Key = key;
+                Value = value;
+            }
+
+            public override string ToString()
+            {
+                return Value;
+            }
+        }
 	}
+
+
 }

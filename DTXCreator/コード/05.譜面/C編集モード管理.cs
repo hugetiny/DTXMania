@@ -16,6 +16,7 @@ namespace DTXCreator.譜面
 		{
 			this._Form = formメインフォーム;
 			this.mgr譜面管理者ref = formメインフォーム.mgr譜面管理者;
+			this.cチップの高さ = new Cチップの高さ();
 		}
 		internal void MouseClick( MouseEventArgs e )
 		{
@@ -86,9 +87,9 @@ namespace DTXCreator.譜面
 					nLaneNo = 0;
 				}
 				int x = this.mgr譜面管理者ref.nレーンの左端X座標dotを返す( nLaneNo );
-				int y = this.mgr譜面管理者ref.n譜面先頭からの位置gridから描画領域内のY座標dotを返す( this.n現在のチップカーソルの譜面先頭からの位置grid, this._Form.pictureBox譜面パネル.ClientSize ) - Cチップ.nチップの高さdot;
+				int y = this.mgr譜面管理者ref.n譜面先頭からの位置gridから描画領域内のY座標dotを返す( this.n現在のチップカーソルの譜面先頭からの位置grid, this._Form.pictureBox譜面パネル.ClientSize ) - cチップの高さ.nチップの高さdot;
 				int width = this.mgr譜面管理者ref.listレーン[ nLaneNo ].n幅dot;
-				int height = Cチップ.nチップの高さdot;
+				int height = cチップの高さ.nチップの高さdot;
 				this.rc現在のチップカーソル領域 = new Rectangle( x, y, width, height );
 			}
 			if ( !rectangle.Equals( this.rc現在のチップカーソル領域 ) && !bOutOfLanes )	// #24264 2011.1.27 yyagi add condition !bOutOfLanes to avoid ArgumentOutOfException in Refresh().
@@ -108,6 +109,7 @@ namespace DTXCreator.譜面
 		private int n現在のチップカーソルがあるレーン番号0to;
 		private int n現在のチップカーソルの譜面先頭からの位置grid;
 		private Rectangle rc現在のチップカーソル領域 = new Rectangle( 0, 0, 0, 0 );
+		private Cチップの高さ cチップの高さ;
 
 		private bool b指定位置にRGBチップがひとつもない( int n譜面先頭からの位置grid, int nRレーン番号0to, int nGレーン番号0to, int nBレーン番号0to )
 		{

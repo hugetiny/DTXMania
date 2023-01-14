@@ -205,7 +205,7 @@ namespace DTXCreator.譜面
 				foreach( Cチップ cチップ in c小節.listチップ )
 				{
 					int num4 = num3 + cチップ.n位置grid;
-					int num5 = C小節.n位置変換dot2grid( Cチップ.nチップの高さdot );
+					int num5 = C小節.n位置変換dot2grid( cチップの高さ.nチップの高さdot );
 					if( ( ( cチップ.nレーン番号0to == num ) && ( num4 <= num2 ) ) && ( num2 <= ( num4 + num5 ) ) )
 					{
 						return cチップ;
@@ -779,6 +779,7 @@ namespace DTXCreator.譜面
 		private StringFormat strfmtレーン割付チップ番号文字フォーマット = new StringFormat();
 		private StringFormat strfmtレーン名文字フォーマット = new StringFormat();
 		private StringFormat strfmt小節番号文字フォーマット = new StringFormat();
+		private Cチップの高さ cチップの高さ = new Cチップの高さ();
 
 		private void t初期化_listレーンの生成()
 		{
@@ -938,9 +939,9 @@ namespace DTXCreator.譜面
 					continue;
 				}
 				rectangle.X = cレーン.n位置Xdot;
-				rectangle.Y = ( rc小節のPicBox内描画領域.Bottom - ( num * C小節.n１グリッドの高さdot ) ) - Cチップ.nチップの高さdot;
+				rectangle.Y = ( rc小節のPicBox内描画領域.Bottom - ( num * C小節.n１グリッドの高さdot ) ) - cチップの高さ.nチップの高さdot;
 				rectangle.Width = cレーン.n幅dot;
-				rectangle.Height = Cチップ.nチップの高さdot;
+				rectangle.Height = cチップの高さ.nチップの高さdot;
 				if( !cチップ.b裏 )
 				{
 					switch( cレーン.eレーン種別 )
