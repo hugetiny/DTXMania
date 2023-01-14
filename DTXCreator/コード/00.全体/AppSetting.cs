@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Globalization;
 
 namespace DTXCreator
 {
@@ -378,6 +379,30 @@ namespace DTXCreator
 			}
 		}
 
+		public int LastMIDIExportEncodingCodePage
+		{
+			get
+			{
+				return this._LastMIDIExportEncodingCodePage;
+			}
+			set
+			{
+				this._LastMIDIExportEncodingCodePage = value;
+			}
+		}
+
+		public int LastMIDIExportLPAssignIndex
+		{
+			get
+			{
+				return this._LastMIDIExportLPAssignIndex;
+			}
+			set
+			{
+				this._LastMIDIExportLPAssignIndex = value;
+			}
+		}
+
 		/// <summary>
 		/// 操作モードの初期値
 		/// false: 編集モード
@@ -549,6 +574,8 @@ namespace DTXCreator
 		private bool _StartupMode;
 		private string _LastMIDIImportFolder = "";
 		private string _LastMIDIImportSettingsFile = "";
+		private int _LastMIDIExportEncodingCodePage = (CultureInfo.CurrentCulture.TwoLetterISOLanguageName == "ja") ? 932 : 65001;
+		private int _LastMIDIExportLPAssignIndex = 0;
 		//-----------------
 		#endregion
 	}

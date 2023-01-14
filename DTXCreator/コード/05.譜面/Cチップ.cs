@@ -6,6 +6,23 @@ using FDK;
 
 namespace DTXCreator.譜面
 {
+	// HighDPI対応のため、チップの高さ(height)は9pix固定ではなく、DPIを加味した値に変更する。
+	public class Cチップの高さ
+	{
+		public int nチップの高さdot = 9;
+
+		public Cチップの高さ()
+		{
+			Bitmap tmpbmp = new Bitmap(1, 1);
+			Graphics g = Graphics.FromImage(tmpbmp);
+			nチップの高さdot = (int)(9.0 * (g.DpiX / 96.0));
+			g.Dispose();
+			g = null;
+			tmpbmp.Dispose();
+			tmpbmp = null;
+		}
+
+	}
 	public class Cチップ : IComparable<Cチップ>
 	{
 		public bool bドラッグで選択中;
@@ -74,7 +91,8 @@ namespace DTXCreator.譜面
 				this._n値_整数1to1295 = value;
 			}
 		}
-		public static readonly int nチップの高さdot = 9;
+		//public static readonly int nチップの高さdot = 9;
+
 		
 		public int CompareTo( Cチップ other )
 		{
@@ -172,7 +190,7 @@ namespace DTXCreator.譜面
 				t裏チップを描画する_番号( g, rcチップ描画領域, str );
 			}
 		}
-		protected static Font ftチップ文字用フォント = new Font( "MS Gothic", 8f, FontStyle.Bold );
+		protected static Font ftチップ文字用フォント = null;
 
 		#region [ private ]
 		//-----------------
@@ -273,8 +291,13 @@ namespace DTXCreator.譜面
 		}
 		private static void tチップを描画する_番号( Graphics g, Rectangle rcチップ描画領域, string str番号文字列, bool b裏チップである )
 		{
-			// 表裏に関係なく、番号描画は共通
+			if (ftチップ文字用フォント == null)
+			{
+				ftチップ文字用フォント = new Font("MS Gothic", (8.0f * 96f / 72f) * ( g.DpiX / 96f), FontStyle.Bold, GraphicsUnit.Pixel);
+			}
 
+			// 表裏に関係なく、番号描画は共通
+			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 			StringFormat format = new StringFormat();
 			format.Alignment = StringAlignment.Center;
 			format.LineAlignment = StringAlignment.Near;

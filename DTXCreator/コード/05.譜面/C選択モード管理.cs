@@ -257,6 +257,7 @@ namespace DTXCreator.譜面
 		private Point pt現在のドラッグ開始位置dot = new Point();
 		private Point pt現在のドラッグ終了位置dot = new Point();
 		private Point pt前回の位置LaneGrid = new Point();
+		private Cチップの高さ cチップの高さ = new Cチップの高さ();
 
 		private void tチップを横に移動する( Cチップ cc, int n移動量lane )
 		{
@@ -426,7 +427,7 @@ namespace DTXCreator.譜面
 					}
 				Label_01B0:
 					num5 = num + cc.n位置grid;
-					int num6 = num5 + C小節.n位置変換dot2grid( Cチップ.nチップの高さdot );
+					int num6 = num5 + C小節.n位置変換dot2grid( cチップの高さ.nチップの高さdot );
 					if( ( num6 < rectangle2.Bottom ) || ( rectangle2.Top < num5 ) )
 					{
 						cc.bドラッグで選択中 = false;
