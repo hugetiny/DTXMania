@@ -478,7 +478,13 @@ namespace DTXCreator.MIDIExport
                     bw.Write(new byte[] { 0x00, 0x00, 0x00, 0x06 });    // size
                     bw.Write(new byte[] { 0x00, 0x00 });                // format 0
                     bw.Write(new byte[] { 0x00, 0x01 });                // tracks = 1
-                    bw.Write(new byte[] { 0x00, 192 / 4 });             // division of quarter note
+
+                    {
+                        Int16 division = (Int16)(192 / 4);
+                        byte[] b = BitConverter.GetBytes(division);
+                        if (BitConverter.IsLittleEndian) Array.Reverse(b);
+                        bw.Write(new byte[] { b[0], b[1] });             // division of quarter note
+                    }
                     #endregion
 
                     #region [ Header(MTrk) ]
