@@ -203,6 +203,8 @@
 			this.toolStripMenuItemレーン内のすべてのチップの選択1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem小節内のすべてのチップの選択 = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator21 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripMenuItem選択したチップを等間隔に配置 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItem小節長変更 = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator17 = new System.Windows.Forms.ToolStripSeparator();
@@ -1599,6 +1601,8 @@
             this.toolStripMenuItemレーン内のすべてのチップの選択1,
             this.toolStripMenuItemレーン内のすべてのチップの選択_特定小節以降2,
             this.toolStripMenuItem小節内のすべてのチップの選択,
+            this.toolStripSeparator21,
+            this.toolStripMenuItem選択したチップを等間隔に配置,
             this.toolStripSeparator16,
             this.toolStripMenuItem小節長変更,
             this.toolStripSeparator17,
@@ -1665,6 +1669,17 @@
 			resources.ApplyResources(this.toolStripMenuItem小節内のすべてのチップの選択, "toolStripMenuItem小節内のすべてのチップの選択");
 			this.toolStripMenuItem小節内のすべてのチップの選択.Name = "toolStripMenuItem小節内のすべてのチップの選択";
 			this.toolStripMenuItem小節内のすべてのチップの選択.Click += new System.EventHandler(this.toolStripMenuItem小節内のすべてのチップの選択_Click);
+			// 
+			// toolStripSeparator21
+			// 
+			resources.ApplyResources(this.toolStripSeparator21, "toolStripSeparator21");
+			this.toolStripSeparator21.Name = "toolStripSeparator21";
+			// 
+			// toolStripMenuItem選択したチップを等間隔に配置
+			// 
+			resources.ApplyResources(this.toolStripMenuItem選択したチップを等間隔に配置, "toolStripMenuItem選択したチップを等間隔に配置");
+			this.toolStripMenuItem選択したチップを等間隔に配置.Name = "toolStripMenuItem選択したチップを等間隔に配置";
+			this.toolStripMenuItem選択したチップを等間隔に配置.Click += new System.EventHandler(this.toolStripMenuItem選択したチップを等間隔に配置_Click);
 			// 
 			// toolStripSeparator16
 			// 
@@ -1953,5 +1968,7 @@
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem終了;
         private System.Windows.Forms.ToolStripMenuItem exportMIDIFileExperimentalToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exportMIDIFileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator21;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem選択したチップを等間隔に配置;
 	}
 }

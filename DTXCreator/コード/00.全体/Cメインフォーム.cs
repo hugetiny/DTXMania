@@ -1085,9 +1085,15 @@ namespace DTXCreator
 
 			this.dlgチップパレット.t一時的に隠蔽する();
 
+			string _title = (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ja") ?
+				"名前を付けて保存" : "Save As";
+
+			string _filter = (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ja") ?
+				"DTXファイル(*.dtx)|*.dtx" : "DTX file(*.dtx)|*.dtx";
+
 			var dialog = new SaveFileDialog() {
-				Title = "名前をつけて保存",
-				Filter = "DTXファイル(*.dtx)|*.dtx",
+				Title = _title,
+				Filter = _filter,
 				FilterIndex = 1,
 				InitialDirectory = this.str作業フォルダ名
 			};
@@ -1745,6 +1751,145 @@ namespace DTXCreator
 			this.tUndoRedo用GUIの有効無効を設定する();
 			this.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
 			this.pictureBox譜面パネル.Refresh();
+		}
+
+		internal struct Cc小節cチップ総tick
+		{
+			internal C小節   pC小節;
+			internal Cチップ pCチップ;
+			internal long    lTotalGrid;
+
+
+			internal Cc小節cチップ総tick(in C小節 _pC小節, in Cチップ _pCチップ, long _lTotalGrid)
+			{
+				pC小節     = _pC小節;
+				pCチップ   = _pCチップ;
+				lTotalGrid = _lTotalGrid;
+			}
+		}
+
+		private void tシナリオ_等間隔に配置()
+		{
+			#region [ 譜面にフォーカスが来てないなら何もしない。 ]
+			//-----------------
+			if (!this.pictureBox譜面パネル.Focused)
+				return;
+			//-----------------
+			#endregion
+
+			#region [ 譜面が持つすべての小節について、選択されているチップを走査しlist化する。]
+			//-----------------
+
+			List<Cc小節cチップ総tick> listc小節cチップ数総tick = new List<Cc小節cチップ総tick>();
+
+			foreach (KeyValuePair<int, C小節> pair in  this.mgr譜面管理者.dic小節)
+			{
+				C小節 c小節 = pair.Value;
+
+				#region [ 小節の持つチップのうち、選択されているチップがあればlistにコピー(参照渡し)する。]
+				//-----------------
+				foreach (Cチップ cチップ in c小節.listチップ)
+				{
+					if (cチップ.b確定選択中)
+					{
+						#region [ listにコピーする。]
+						var cl = new Cc小節cチップ総tick(in c小節, in cチップ, this.mgr譜面管理者.n譜面先頭からみた小節先頭の位置gridを返す(c小節.n小節番号0to3599) + cチップ.n位置grid);
+						listc小節cチップ数総tick.Add(cl);
+						#endregion
+					}
+				}
+				//-----------------
+				#endregion
+			}
+			//-----------------
+			#endregion
+
+			#region [ 選択されたチップの中で、uniqueなgridがいくつかあるか数える (念のためlistをlTotalGrid順でソートする) ]
+			long lastTotalGrid = -1;
+			int  uniqueCount   = 0;
+			listc小節cチップ数総tick.Sort
+				((a, b) =>
+				{
+					return (int)(a.lTotalGrid - b.lTotalGrid);
+				}
+				);
+			foreach ( var c in listc小節cチップ数総tick)
+			{
+				if (c.lTotalGrid != lastTotalGrid)
+				{
+					uniqueCount++;
+					lastTotalGrid = c.lTotalGrid;
+				}
+			}
+			#endregion
+
+			#region [ ユニークなgridが0,1,2個の場合は意味がないので抜ける]
+			if (lastTotalGrid < 3)
+			{
+				listc小節cチップ数総tick?.Clear();
+				listc小節cチップ数総tick = null;
+				return;
+			}
+			#endregion
+
+
+			#region [ ユニークなgridが3以上なら、最初と最後のチップのgrid差を測る ]
+			long gridTotalDuration =
+				listc小節cチップ数総tick[ listc小節cチップ数総tick.Count - 1].lTotalGrid -
+				listc小節cチップ数総tick[0].lTotalGrid;
+			#endregion
+
+
+			#region [ grid差を(チップ数-1)で割り、等分割の間隔を求める ]
+			float gridEachDuration = (float)gridTotalDuration / (uniqueCount - 1);
+			#endregion
+
+			#region [ 最初と最後以外のチップを等間隔になるよう再配置する (誤差が大きくならないように注意) ]
+
+			this.mgr選択モード管理者.t移動開始処理(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+
+			float newTotalGrid = listc小節cチップ数総tick[0].lTotalGrid;
+			lastTotalGrid      = listc小節cチップ数総tick[0].lTotalGrid;
+			int count2         = 0;
+			foreach (var c in listc小節cチップ数総tick)
+			{
+				if (c.lTotalGrid != lastTotalGrid)
+				{
+					lastTotalGrid = c.lTotalGrid;
+					newTotalGrid += gridEachDuration;
+					count2++;
+				}
+				else
+				if (count2 == 0)
+				{
+					continue;						// 最初のgridは再配置不要
+				}
+
+				if (count2 >= uniqueCount) break;	// 最後のgridも再配置不要のため、処理終了
+
+				this.mgr選択モード管理者.tチップを縦に移動する(
+					c.pCチップ,
+					(int)(newTotalGrid - c.lTotalGrid),
+					c.pC小節);
+			}
+			this.mgr選択モード管理者.t移動終了処理(new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0));
+
+			listc小節cチップ数総tick?.Clear();
+			listc小節cチップ数総tick = null;
+			#endregion
+
+
+			#region [ 未保存フラグを立てる。 ]
+			//-----------------
+			this.b未保存 = true;
+			//-----------------
+			#endregion
+
+			#region [ 画面を再描画する。]
+			this.tUndoRedo用GUIの有効無効を設定する();
+			this.t選択チップの有無に応じて編集用GUIの有効無効を設定する();
+			this.pictureBox譜面パネル.Refresh();
+			#endregion
 		}
 		//-----------------
 		#endregion
@@ -2986,6 +3131,10 @@ namespace DTXCreator
 			this.mgr選択モード管理者.t小節上の全チップを選択する( csクリックされた小節.n小節番号0to3599 );
 		}
 
+		private void toolStripMenuItem選択したチップを等間隔に配置_Click(object sender, EventArgs e)
+		{
+			this.tシナリオ_等間隔に配置();
+		}
 		private void toolStripMenuItem小節長変更_Click( object sender, EventArgs e )
 		{
 			// メニューが開かれたときのマウスの座標を取得。

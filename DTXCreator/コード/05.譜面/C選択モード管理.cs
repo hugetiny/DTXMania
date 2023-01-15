@@ -291,7 +291,7 @@ namespace DTXCreator.譜面
 			cc.b移動済 = true;
 			this._Form.b未保存 = true;
 		}
-		private void tチップを縦に移動する( Cチップ cc, int n移動量grid, C小節 csチップのある小節 )
+		internal void tチップを縦に移動する( Cチップ cc, int n移動量grid, C小節 csチップのある小節 )
 		{
 			cc.b移動済 = true;
 			int num = cc.n位置grid + n移動量grid;
@@ -342,7 +342,7 @@ namespace DTXCreator.譜面
 			}
 			this._Form.b未保存 = true;
 		}
-		private void tチップ移動のRedo( Cチップ位置用UndoRedo ur変更前, Cチップ位置用UndoRedo ur変更後 )
+		internal void tチップ移動のRedo( Cチップ位置用UndoRedo ur変更前, Cチップ位置用UndoRedo ur変更後 )
 		{
 			C小節 c小節 = this.mgr譜面管理者ref.p小節を返す( ur変更前.n小節番号0to );
 			if( c小節 != null )
@@ -366,7 +366,7 @@ namespace DTXCreator.譜面
 				this._Form.pictureBox譜面パネル.Refresh();
 			}
 		}
-		private void tチップ移動のUndo( Cチップ位置用UndoRedo ur変更前, Cチップ位置用UndoRedo ur変更後 )
+		internal void tチップ移動のUndo( Cチップ位置用UndoRedo ur変更前, Cチップ位置用UndoRedo ur変更後 )
 		{
 			C小節 c小節 = this.mgr譜面管理者ref.p小節を返す( ur変更後.n小節番号0to );
 			if( c小節 != null )
@@ -440,7 +440,7 @@ namespace DTXCreator.譜面
 				num += num3;
 			}
 		}
-		private void t移動開始処理( MouseEventArgs e )
+		internal void t移動開始処理( MouseEventArgs e )
 		{
 			this.b移動のためにドラッグ中 = true;
 			this.pt現在のドラッグ開始位置dot.X = this.pt現在のドラッグ終了位置dot.X = e.X;
@@ -469,7 +469,7 @@ namespace DTXCreator.譜面
 			this.t画面上下にマウスカーソルがあるなら譜面を縦スクロールする( e );
 			this.t確定選択中のチップを移動する();
 		}
-		private void t移動終了処理( MouseEventArgs e )
+		internal void t移動終了処理( MouseEventArgs e )
 		{
 			this.b移動のためにドラッグ中 = false;
 			foreach( KeyValuePair<int, C小節> pair in this.mgr譜面管理者ref.dic小節 )
