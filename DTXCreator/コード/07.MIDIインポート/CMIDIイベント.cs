@@ -78,7 +78,7 @@ namespace DTXCreator.MIDIインポート
 		public override void 挿入( Cメインフォーム mf, int n四分音符の分解能 )
 		{
 			mf.mgr譜面管理者.tチップを配置または置換する
-				( nレーン番号, (int) n時間 * ( 192 / 4 ) / n四分音符の分解能, nWAV, 0f, b裏チャンネル );
+				( nレーン番号, (int) n時間 * ( CWholeNoteDivision.n分解能 / 4 ) / n四分音符の分解能, nWAV, 0f, b裏チャンネル );
 		}
 	}
 
@@ -100,7 +100,7 @@ namespace DTXCreator.MIDIインポート
 
 		public override void 挿入( Cメインフォーム mf, int n四分音符の分解能 )
 		{
-			int nGrid = (int) n時間 * ( 192 / 4 ) / n四分音符の分解能;
+			int nGrid = (int) n時間 * ( CWholeNoteDivision.n分解能 / 4 ) / n四分音符の分解能;
 			mf.mgr編集モード管理者.tBPMチップを配置する( nGrid, fBPM );
 		}
 	}

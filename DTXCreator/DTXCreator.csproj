@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="コード\00.全体\AppSetting.cs" />
+    <Compile Include="コード\05.譜面\CWholeNoteDivision.cs" />
     <Compile Include="コード\06.汎用\CDialog.cs">
       <SubType>Form</SubType>
     </Compile>

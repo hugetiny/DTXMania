@@ -1206,8 +1206,8 @@ namespace DTXCreator
 				}
 				#endregion
 
-				int n旧Grid数 = (int) ( c小節.f小節長倍率 * 192 + 0.5 );
-				int n新Grid数 = (int) ( dlg.f倍率 * 192 + 0.5 );
+				int n旧Grid数 = (int) ( c小節.f小節長倍率 * CWholeNoteDivision.n分解能 + 0.5 );
+				int n新Grid数 = (int) ( dlg.f倍率 * CWholeNoteDivision.n分解能 + 0.5 );
 				int nGrid増減 = n旧Grid数 - n新Grid数;
 
 				this.t小節長を変更する_小節単位( n小節番号, dlg.f倍率 );
@@ -5431,7 +5431,7 @@ namespace DTXCreator
 		}
 		private void toolStripComboBox譜面拡大率_SelectedIndexChanged( object sender, EventArgs e )
 		{
-			C小節.n基準の高さdot = 192 * ( this.toolStripComboBox譜面拡大率.SelectedIndex + 1 );
+			C小節.n基準の高さdot = CWholeNoteDivision.n分解能_表示用 * ( this.toolStripComboBox譜面拡大率.SelectedIndex + 1 );
 			
 			this.pictureBox譜面パネル.Refresh();
 		}
@@ -5642,11 +5642,11 @@ namespace DTXCreator
 				//	float f小節長倍率 = 1.0f;
 				C小節 c小節_0小節目 = this.mgr譜面管理者.dic小節[ nBGMチップの小節番号 ];
 				Cチップ cチップBGM = c小節_0小節目.listチップ[ nBGMチップのindex ];
-				nBGM位置grid = (int) ( 192f * c小節_0小節目.f小節長倍率 * listBeatPositions[ n1拍目のBeatPositionIndex ].fBeatTime / ( ( 60 * 4 ) / tempo ) + 0.5 );
+				nBGM位置grid = (int) ( CWholeNoteDivision.n分解能 * c小節_0小節目.f小節長倍率 * listBeatPositions[ n1拍目のBeatPositionIndex ].fBeatTime / ( ( 60 * 4 ) / tempo ) + 0.5 );
 				// ここでnBGM位置Gridが192(x小節長)を超えることがある
 				// → 192(x小節長)をひいて、次の小節に回す。(小節ごとに小節長倍率が変化する可能性があることに注意)
 				// → スマン、この実装ではまだ、DTXデータの最初はしばらく小節倍率が一定である前提になっちゃってる・・
-				cチップBGM.n位置grid = (int) ( 192 * c小節_0小節目.f小節長倍率 + 0.5f ) - ( nBGM位置grid % 192 );			// "192-" が必要なことに注意
+				cチップBGM.n位置grid = (int) ( CWholeNoteDivision.n分解能 * c小節_0小節目.f小節長倍率 + 0.5f ) - ( nBGM位置grid % CWholeNoteDivision.n分解能 );			// "192-" が必要なことに注意
 				c小節_0小節目.listチップ[ nBGMチップのindex ] = cチップBGM;
 				this.mgr譜面管理者.dic小節[ nBGMチップの小節番号 ] = c小節_0小節目;
 			}
@@ -5654,15 +5654,15 @@ namespace DTXCreator
 
 			#region [ 0小節目のBPMを設定し、1つ目の拍が1小節目の頭に来るようにする。]
 			// まず、0小節の頭にBPM設定を追加する。
-			this.mgr編集モード管理者.tBPMチップを配置する( 0 * 192, tempo );			// 既にBPMチップが配置されている場合の処理は????????????????
+			this.mgr編集モード管理者.tBPMチップを配置する( 0 * CWholeNoteDivision.n分解能, tempo );			// 既にBPMチップが配置されている場合の処理は????????????????
 			this.numericUpDownBPM.Value = (decimal) ( (int) ( tempo + 0.5 ) );
 			numericUpDownBPM_ValueChanged( null, null );
 			numericUpDownBPM_Leave( null, null );
 
 			// 更に、先の1グリッド分の誤差をなくすために、BGMチップの位置だけでなく、0小節目のBPMも微調整する。
 			float f小節長倍率_ = this.mgr譜面管理者.dic小節[ nBGMチップの小節番号 ].f小節長倍率;					// 手抜き。すまん。
-			float fBGM再生直後のBPM = ( 60 * 4 ) * nBGM位置grid / ( 192.0f * f小節長倍率_ ) / listBeatPositions[ n1拍目のBeatPositionIndex ].fBeatTime;
-			this.mgr編集モード管理者.tBPMチップを配置する( 192 - ( nBGM位置grid % 192 ), fBGM再生直後のBPM );
+			float fBGM再生直後のBPM = ( 60 * 4 ) * nBGM位置grid / ( CWholeNoteDivision.n分解能 * f小節長倍率_ ) / listBeatPositions[ n1拍目のBeatPositionIndex ].fBeatTime;
+			this.mgr編集モード管理者.tBPMチップを配置する( CWholeNoteDivision.n分解能 - ( nBGM位置grid % CWholeNoteDivision.n分解能 ), fBGM再生直後のBPM );
 			#endregion
 
 
@@ -5675,7 +5675,7 @@ namespace DTXCreator
 			//			int lastGrid = (int) ( 192 * this.mgr譜面管理者.dic小節[ 0 ].f小節長倍率 );	// 0小節目の倍率
 			//int last小節内Grid = 0;
 			//int last小節番号 = nBGMチップの小節番号;
-			int n最初の拍のある小節番号 = 1 + ( nBGM位置grid / 192 );
+			int n最初の拍のある小節番号 = 1 + ( nBGM位置grid / CWholeNoteDivision.n分解能 );
 			float lastBeatTime = listBeatPositions[ n1拍目のBeatPositionIndex ].fBeatTime;
 			int lastnGrid = -1;
 
@@ -5749,7 +5749,7 @@ namespace DTXCreator
 
 				#region [ BEATチップを置く ]
 				float f小節長倍率 = this.mgr譜面管理者.dic小節[ n小節番号 ].f小節長倍率;
-				int n小節内Grid = (int) ( 192f * f小節長倍率 * deltatime / ( ( 60 * 4 ) / tempo ) + 0.5 );
+				int n小節内Grid = (int) ( CWholeNoteDivision.n分解能 * f小節長倍率 * deltatime / ( ( 60 * 4 ) / tempo ) + 0.5 );
 
 				#region [ Gridを16分音符単位(==12grid単位)でquantizeする ]
 				//Debug.Write( "nGrid: " + n小節内Grid + " -> " );

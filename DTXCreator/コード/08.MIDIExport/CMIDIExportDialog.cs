@@ -404,7 +404,7 @@ namespace DTXCreator.MIDIExport
                 #endregion
 
                 // 次の小節へ
-                basetick += (ulong)(192.0 * cBAR.f小節長倍率);
+                basetick += (ulong)(CWholeNoteDivision.n分解能 * cBAR.f小節長倍率);
 
                 if (existChipInnerBar) EoTtick = basetick;  // 小節内に有意なチップがある限り、その小節は演奏データに含まれるものとする(→データ末尾を定義するtickを更新する)
             }
@@ -480,7 +480,7 @@ namespace DTXCreator.MIDIExport
                     bw.Write(new byte[] { 0x00, 0x01 });                // tracks = 1
 
                     {
-                        Int16 division = (Int16)(192 / 4);
+                        Int16 division = (Int16)( CWholeNoteDivision.n分解能 / 4);
                         byte[] b = BitConverter.GetBytes(division);
                         if (BitConverter.IsLittleEndian) Array.Reverse(b);
                         bw.Write(new byte[] { b[0], b[1] });             // division of quarter note

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace DTXCreator.譜面
 {
@@ -8,12 +9,13 @@ namespace DTXCreator.譜面
 	{
 		public float f小節長倍率 = 1f;
 		public List<Cチップ> listチップ = new List<Cチップ>();
-		public static int n基準の高さdot = 0xc0;
-		public static readonly int n基準の高さgrid = 0xc0;
-		public static int n１グリッドの高さdot
+		public static int n基準の高さdot  = CWholeNoteDivision.n分解能_表示用; //0xc0;
+		public static int n基準の高さgrid = CWholeNoteDivision.n分解能; //0xc0;
+		public static float n１グリッドの高さdot
 		{
 			get
 			{
+				//return ( n基準の高さdot < n基準の高さgrid ) ? 1 : (n基準の高さdot / n基準の高さgrid);
 				return ( n基準の高さdot / n基準の高さgrid );
 			}
 		}
@@ -57,7 +59,7 @@ namespace DTXCreator.譜面
 		}
 		public int n位置変換count2grid( int nCount )
 		{
-			return (int) ( ( ( n基準の高さgrid * this.f小節長倍率 ) * nCount ) / 384f );
+			return (int) ( ( ( n基準の高さgrid * this.f小節長倍率 ) * nCount ) / CWholeNoteDivision.n分解能*2f );
 		}
 		public static int n位置変換dot2grid( int nDot )
 		{
@@ -65,7 +67,7 @@ namespace DTXCreator.譜面
 		}
 		public int n位置変換grid2count( int nGrid )
 		{
-			return (int) ( ( nGrid * 384f ) / ( n基準の高さgrid * this.f小節長倍率 ) );
+			return (int) ( ( nGrid * CWholeNoteDivision.n分解能*2f ) / ( n基準の高さgrid * this.f小節長倍率 ) );
 		}
 		public static int n位置変換grid2dot( int nGrid )
 		{

@@ -644,13 +644,13 @@ namespace DTXCreator.MIDIインポート
 
 						C小節 c最終小節 = this.formメインフォーム.mgr譜面管理者.p譜面先頭からの位置gridを含む小節を返す( nCurremtMaxBar_FirstGrid );
 						float fCurrent小節倍率 = (c最終小節 == null) ? 1.0f : c最終小節.f小節長倍率;
-						int nCurrentMaxGrid = nCurremtMaxBar_FirstGrid + (int) ( 192 * fCurrent小節倍率 ) - 1;
+						int nCurrentMaxGrid = nCurremtMaxBar_FirstGrid + (int) ( CWholeNoteDivision.n分解能 * fCurrent小節倍率 ) - 1;
 						if ( nCurrentMaxBar < 0 ) nCurrentMaxGrid = -1;
 
 						// 拍子変更イベントの絶対時間が、小節外にあれば、新規に小節を一つ追加する。
 						// 小節長は前の小節長を継承するか、MIDIイベント指定による新しい値にするか。
 						// 小節を1つ追加しただけでは足りないのであれば、whileループで繰り返し追加し続ける。
-						int nEvent時間 = (int)cm.n時間 * ( 192 / 4 ) / n四分音符の分解能;
+						int nEvent時間 = (int)cm.n時間 * ( CWholeNoteDivision.n分解能 / 4 ) / n四分音符の分解能;
 						if ( nCurrentMaxGrid < (int) nEvent時間 )
 						{
 							++nCurrentMaxBar;

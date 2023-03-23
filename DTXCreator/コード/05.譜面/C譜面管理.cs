@@ -102,7 +102,7 @@ namespace DTXCreator.譜面
 		public int nY座標dotが位置するgridを返す_最高解像度( int nY )
 		{
 			int num = this._Form.pictureBox譜面パネル.ClientSize.Height - nY;
-			return ( ( num / C小節.n１グリッドの高さdot ) + this.n現在の譜面表示下辺の譜面先頭からの位置grid );
+			return (int)( ( num / C小節.n１グリッドの高さdot ) + this.n現在の譜面表示下辺の譜面先頭からの位置grid );
 		}
 		public int nレーンの左端X座標dotを返す( int nレーン番号0to )
 		{
@@ -159,7 +159,7 @@ namespace DTXCreator.譜面
 		public int n譜面先頭からの位置gridから描画領域内のY座標dotを返す( int n譜面先頭からの位置grid, Size sz描画領域dot )
 		{
 			int num = n譜面先頭からの位置grid - this.n現在の譜面表示下辺の譜面先頭からの位置grid;
-			return ( sz描画領域dot.Height - ( num * C小節.n１グリッドの高さdot ) );
+			return (int)( sz描画領域dot.Height - ( num * C小節.n１グリッドの高さdot ) );
 		}
 		public int n譜面先頭からみた小節先頭の位置gridを返す( int n小節番号0to3599 )
 		{
@@ -648,7 +648,7 @@ namespace DTXCreator.譜面
 			this.strfmtレーン割付チップ番号文字フォーマット.Alignment = StringAlignment.Near;
 			int h = 0;
 			int num2 = 0;
-			int num3 = this.n現在の譜面表示下辺の譜面先頭からの位置grid * C小節.n１グリッドの高さdot;
+			int num3 = (int)(this.n現在の譜面表示下辺の譜面先頭からの位置grid * C小節.n１グリッドの高さdot);
 			int num4 = num3 + rc可視領域dot.Height;
 			int maxBar = this.n現在の最大の小節番号を返す();
 			int bar = 0;
@@ -917,7 +917,7 @@ namespace DTXCreator.譜面
 				int num = cs.n小節長倍率を考慮した現在の小節の高さgrid;
 				for( int i = 0; i < num; i += this.n現在のガイド幅grid )
 				{
-					int num3 = rc小節のPicBox内描画領域.Bottom - ( i * C小節.n１グリッドの高さdot );
+					int num3 = (int)(rc小節のPicBox内描画領域.Bottom - ( i * C小節.n１グリッドの高さdot ));
 					g.DrawLine( this.penガイド線ペン, rc小節のPicBox内描画領域.X, num3, rc小節のPicBox内描画領域.Right, num3 );
 				}
 			}
@@ -939,7 +939,7 @@ namespace DTXCreator.譜面
 					continue;
 				}
 				rectangle.X = cレーン.n位置Xdot;
-				rectangle.Y = ( rc小節のPicBox内描画領域.Bottom - ( num * C小節.n１グリッドの高さdot ) ) - cチップの高さ.nチップの高さdot;
+				rectangle.Y = (int)(( rc小節のPicBox内描画領域.Bottom - ( num * C小節.n１グリッドの高さdot ) ) - cチップの高さ.nチップの高さdot);
 				rectangle.Width = cレーン.n幅dot;
 				rectangle.Height = cチップの高さ.nチップの高さdot;
 				if( !cチップ.b裏 )
@@ -1017,7 +1017,7 @@ namespace DTXCreator.譜面
 			int num = cs.n小節長倍率を考慮した現在の小節の高さgrid;
 			for( int i = 0; i < num; i += C小節.n基準の高さgrid / 4 )
 			{
-				int num3 = rc小節のPicBox内描画領域.Bottom - ( i * C小節.n１グリッドの高さdot );
+				int num3 = (int)(rc小節のPicBox内描画領域.Bottom - ( i * C小節.n１グリッドの高さdot ));
 				g.DrawLine( this.pen拍線ペン, rc小節のPicBox内描画領域.X, num3, rc小節のPicBox内描画領域.Right, num3 );
 			}
 		}

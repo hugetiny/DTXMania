@@ -533,7 +533,7 @@ namespace DTXCreator
 			}
 			#endregion
 //Debug.WriteLine( "入力: n小節番号=" + n小節番号 + ", nGrid=" + nGrid + ", f値=" + f値 + ", strParam=" + strParams[i] );
-			this.dicBEATチップf値.Add( n小節番号 * 192 + nGrid, (float) f値 );
+			this.dicBEATチップf値.Add( n小節番号 *  CWholeNoteDivision.n分解能 + nGrid, (float) f値 );
 
 			return true;
 		}
@@ -1437,7 +1437,7 @@ namespace DTXCreator
 						cチップ.b裏 = flag;
 						float f;
 						if ( ( nCh == 0xF8 || nCh == 0xF3 ) &&												// BEATチップの場合
-							dicBEATチップf値.TryGetValue( nBar * 192 + (i * 192 / nChips ), out f ) )
+							dicBEATチップf値.TryGetValue( nBar * CWholeNoteDivision.n分解能 + (i * CWholeNoteDivision.n分解能 / nChips ), out f ) )
 						{
 							cチップ.f値_浮動小数 = f;
 //Debug.WriteLine( "f値: nBar=" + nBar + ", f値=" + f );
