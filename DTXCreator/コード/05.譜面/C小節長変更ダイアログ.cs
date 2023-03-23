@@ -36,6 +36,10 @@ namespace DTXCreator.譜面
 		{
 			this.InitializeComponent();
 			this.textBox小節番号.Text = C変換.str小節番号を文字列3桁に変換して返す( n小節番号 );
+
+			int lenIntpart = this.numericUpDown小節長の倍率.Value.ToString().Length;
+			int lenDecpart = this.numericUpDown小節長の倍率.Minimum.ToString().Length - 2;	// -2: "0.001"の頭の"0."のところ分の長さを削除
+			this.numericUpDown小節長の倍率.Select(0, lenIntpart + 1 + lenDecpart );
 		}
 
 		private void numericUpDown小節長の倍率_KeyDown( object sender, KeyEventArgs e )
