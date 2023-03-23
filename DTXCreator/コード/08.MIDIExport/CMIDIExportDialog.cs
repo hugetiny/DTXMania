@@ -591,7 +591,7 @@ namespace DTXCreator.MIDIExport
 
                                     //Debug.Write($"TimeSignature: f={d}, 1/{dd_}={bs}, 倍率={nn}");
                                     // 2のべき乗を分母とする分数で表現できるか？ (ここでは、これを「1/128の倍数で表すことができるか?」で確認。)
-                                    // できない場合はウエイト的な指定だと割り切る
+                                    // できない場合はウエイト的な指定だと見做して、拍子変更ではなくBPM変更でウエイトを表現する
 
                                     //Debug.WriteLine($"Tick={e.tick}");
 
@@ -605,7 +605,7 @@ namespace DTXCreator.MIDIExport
                                             dd_ /= 2;
 										}
 
-                                        if (dd_ == 2)   // x/2 になるなら、x/4になるよう補正
+                                        if (dd_ == 2)   // 拍子が x/2 になるなら、x/4になるよう補正
 										{
                                             nn *= 2;
                                             dd_ *= 2;
