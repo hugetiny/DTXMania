@@ -117,14 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Encoding</value>
-  </data>
   <data name="&gt;&gt;comboBox_LPAssign.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>CMIDIExportDialog</value>
+  <data name="label_Encoding.Text" xml:space="preserve">
+    <value>Encoding</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="button_cancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -140,15 +137,12 @@
   <data name="&gt;&gt;button_cancel.Name" xml:space="preserve">
     <value>button_cancel</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 73</value>
-  </data>
   <data name="&gt;&gt;label_outputFilename.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label_outputFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 116</value>
+    <value>12, 103</value>
   </data>
   <data name="&gt;&gt;toolTip_CMIDIExportDialog.Name" xml:space="preserve">
     <value>toolTip_CMIDIExportDialog</value>
@@ -156,8 +150,8 @@
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 3, 4</value>
   </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
+  <data name="label_LPAssign.Text" xml:space="preserve">
+    <value>LP assign</value>
   </data>
   <data name="comboBox_encodingList.Size" type="System.Drawing.Size, System.Drawing">
     <value>358, 25</value>
@@ -172,19 +166,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="label_outputFilename_text.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 116</value>
+    <value>125, 103</value>
   </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_LPAssign.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 17</value>
+  <data name="label_LPAssign.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
   </data>
   <data name="label_outputFilename_text.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 100</value>
+    <value>358, 168</value>
   </data>
   <data name="&gt;&gt;button_cancel.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -192,14 +180,8 @@
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>8, 17</value>
   </data>
-  <data name="button_cancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>411, 274</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="label_Encoding.ToolTip" xml:space="preserve">
+    <value>Character encoding for title text etc. Usually [Japanese (Shift-JIS)] should be specified.</value>
   </data>
   <data name="comboBox_LPAssign.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -207,23 +189,17 @@
   <data name="$this.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <data name="&gt;&gt;comboBox_LPAssign.Name" xml:space="preserve">
     <value>comboBox_LPAssign</value>
   </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="label_LPAssign.ToolTip" xml:space="preserve">
-    <value>LP(Left Pedal)にアサインするハイハットの種類を選択します。(BD(Bass Drum)に割り当てられているLPはこの設定に関係なくBDにアサインします)</value>
+  <data name="label_outputFilename.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 17</value>
   </data>
   <data name="comboBox_encodingList.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 26</value>
+    <value>128, 12</value>
   </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="button_cancel.Text" xml:space="preserve">
+    <value>&amp;Cancel</value>
   </data>
   <data name="comboBox_encodingList.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -231,26 +207,23 @@
   <data name="&gt;&gt;label_outputFilename_text.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 17</value>
+  <data name="label_LPAssign.ToolTip" xml:space="preserve">
+    <value>Hi-Hat assign for LP(Left Pedal). (if BD(Bass Drum) is assigned to LP, these are assigned as BD (the setting is ignored))</value>
   </data>
   <data name="comboBox_LPAssign.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 70</value>
+    <value>128, 58</value>
   </data>
   <data name="comboBox_LPAssign.Size" type="System.Drawing.Size, System.Drawing">
     <value>358, 25</value>
   </data>
+  <data name="label_Encoding.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
+  </data>
   <data name="&gt;&gt;button_cancel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
-    <value>toolTip1</value>
-  </data>
   <data name="button_export.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="label1.ToolTip" xml:space="preserve">
-    <value>Character encoding for title text etc. Usually [Japanese (Shift-JIS)] should be specified.</value>
   </data>
   <data name="&gt;&gt;label_LPAssign.Name" xml:space="preserve">
     <value>label_LPAssign</value>
@@ -266,9 +239,6 @@
   </data>
   <data name="button_cancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 26</value>
-  </data>
-  <data name="label_outputFilename.ToolTip" xml:space="preserve">
-    <value />
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
@@ -297,20 +267,17 @@
   <data name="&gt;&gt;button_export.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>LP Assign</value>
+  <data name="label_outputFilename.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="label_outputFilename.Text" xml:space="preserve">
     <value>Output filename</value>
   </data>
-  <data name="&gt;&gt;button_cancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="label_LPAssign.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 61</value>
-  </data>
   <data name="&gt;&gt;comboBox_encodingList.Parent" xml:space="preserve">
     <value>$this</value>
+  </data>
+  <data name="&gt;&gt;comboBox_encodingList.Name" xml:space="preserve">
+    <value>comboBox_encodingList</value>
   </data>
   <data name="&gt;&gt;label_outputFilename.Parent" xml:space="preserve">
     <value>$this</value>
@@ -321,23 +288,17 @@
   <data name="&gt;&gt;label_LPAssign.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="button_export.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
   <data name="&gt;&gt;comboBox_LPAssign.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="label_outputFilename.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="button_cancel.Text" xml:space="preserve">
-    <value>&amp;Cancel</value>
+  <data name="&gt;&gt;label_LPAssign.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="label_LPAssign.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="&gt;&gt;label_outputFilename_text.Parent" xml:space="preserve">
     <value>$this</value>
@@ -767,23 +728,23 @@
         AACH/wAAh/8AAI//AAA=
 </value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="label_Encoding.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="button_export.ToolTip" xml:space="preserve">
     <value />
   </data>
-  <data name="label_Encoding.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>CMIDIExportDialog</value>
   </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 29</value>
+  <data name="&gt;&gt;button_cancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Exporting DTX data to MIDI file</value>
   </data>
-  <data name="&gt;&gt;comboBox_encodingList.Name" xml:space="preserve">
-    <value>comboBox_encodingList</value>
+  <data name="label_LPAssign.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 61</value>
   </data>
   <data name="&gt;&gt;label_LPAssign.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -809,20 +770,14 @@
   <data name="&gt;&gt;comboBox_encodingList.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label3.ToolTip" xml:space="preserve">
-    <value>Hi-Hat assign for LP(Left Pedal). (if BD(Bass Drum) is assigned to LP, these are assigned as BD (the setting is ignored))</value>
-  </data>
-  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="button_export.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
   <data name="comboBox_encodingList.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="&gt;&gt;button_export.Name" xml:space="preserve">
     <value>button_export</value>
-  </data>
-  <data name="label_outputFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 17</value>
   </data>
   <data name="&gt;&gt;comboBox_encodingList.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -833,11 +788,8 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>498, 312</value>
   </data>
-  <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label_Encoding.ToolTip" xml:space="preserve">
-    <value />
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label_Encoding.Name" xml:space="preserve">
     <value>label_Encoding</value>
@@ -845,31 +797,22 @@
   <data name="button_export.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 26</value>
   </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="button_cancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>411, 274</value>
   </data>
   <data name="&gt;&gt;toolTip_CMIDIExportDialog.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="toolTip_CMIDIExportDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
   <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>ja-JP</value>
   </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="toolTip_CMIDIExportDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
 </root>

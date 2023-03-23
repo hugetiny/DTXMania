@@ -153,6 +153,9 @@
   <data name="label_Encoding.Text" xml:space="preserve">
     <value>文字コード</value>
   </data>
+  <data name="label_Encoding.ToolTip" xml:space="preserve">
+    <value>曲名などで使用する文字コードを選択します。通常は「日本語 (シフト JIS)」を指定してください。</value>
+  </data>
   <data name="label_outputFilename.Size" type="System.Drawing.Size, System.Drawing">
     <value>96, 20</value>
   </data>
@@ -168,6 +171,9 @@
   <data name="label_LPAssign.Text" xml:space="preserve">
     <value>LPの割り振り先</value>
   </data>
+  <data name="label_LPAssign.ToolTip" xml:space="preserve">
+    <value>LP(Left Pedal)にアサインするハイハットの種類を選択します。(BD(Bass Drum)に割り当てられているLPはこの設定に関係なくBDにアサインします)</value>
+  </data>
   <data name="comboBox_encodingList.Location" type="System.Drawing.Point, System.Drawing">
     <value>128, 13</value>
   </data>
@@ -180,14 +186,14 @@
   <data name="comboBox_encodingList.ToolTip" xml:space="preserve">
     <value>曲名などで使用する文字コードを選択します。通常は「日本語 (シフト JIS)」を指定してください。</value>
   </data>
-  <data name="comboBox_LPAssign.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 58</value>
-  </data>
   <data name="comboBox_LPAssign.Size" type="System.Drawing.Size, System.Drawing">
     <value>358, 28</value>
   </data>
   <data name="comboBox_LPAssign.ToolTip" xml:space="preserve">
     <value>LP(Left Pedal)にアサインするハイハットの種類を選択します。(BD(Bass Drum)に割り当てられているLPはこの設定に関係なくBDにアサインします)</value>
+  </data>
+  <data name="label_outputFilename_text.Size" type="System.Drawing.Size, System.Drawing">
+    <value>358, 129</value>
   </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>8, 20</value>

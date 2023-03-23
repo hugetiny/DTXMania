@@ -2298,6 +2298,7 @@ namespace DTXCreator
 					item != this.toolStripMenuItem名前を付けて保存 &&
 					item != this.toolStripSeparator1 &&
 					item != this.toolStripMenuItemMIDIImportFromFileMenu &&
+					item != this.exportMIDIFileToolStripMenuItem &&
 					item != this.toolStripMenuItem終了 )
 				{
 					this.toolStripMenuItemファイル.DropDownItems.Remove( item );
