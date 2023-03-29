@@ -34,7 +34,7 @@ namespace DTXCreator.譜面
 			int lenDecpart = m.Length;
 			int len = lenIntpart + lenDecpart;
 
-			if (m.Contains("."))
+			if (m.Contains(".") || m.Contains(","))
 			{
 				len -= 1;		// -2: "0.001"のピリオドのところ分の長さを削除
 			}
